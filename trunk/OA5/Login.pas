@@ -105,7 +105,7 @@ end;
 
 procedure TLoginForm.Do_UpdateActions;
 const
-  LogGroupGUID: string='{E432BB88-DDDE-48A8-902A-ED4D6FA38B74}';
+  LogGroupGUID: string='{962C8991-2959-43F6-A7B4-73863EC8E206}';
 begin
   ProcedureHeader('Процедура обновления состояния действий', LogGroupGUID);
   Action_Ok.Enabled:=edbxLogin.Text<>'';
@@ -117,7 +117,7 @@ end;
 
 procedure TLoginForm.Do_Ok;
 const
-  LogGroupGUID: string='{E3589F85-E04E-4DF7-B5F9-E0E8E5083396}';
+  LogGroupGUID: string='{8766EEB1-60BE-4D78-B9F4-0FAD3DDDC4C6}';
 begin
   ProcedureHeader('Процедура закрытия модального окна с результатом mrOk', LogGroupGUID);
   ModalResult:=mrOk;
@@ -137,7 +137,7 @@ end;
 
 procedure TLoginForm.Action_CancelExecute(Sender: TObject);
 const
-  LogGroupGUID: string='{1A7F3F94-317E-4013-B49A-47B71CCBAAD2}';
+  LogGroupGUID: string='{053CBDC4-E004-4055-9043-48242ECE44A8}';
 begin
   ProcedureHeader('Процедура-обработчик действия "'+Action_Cancel.Caption+'"', LogGroupGUID);
   Do_Cancel;
@@ -146,7 +146,7 @@ end;
 
 procedure TLoginForm.Do_Cancel;
 const
-  LogGroupGUID: string='{9341B39A-FE1C-4D56-B03A-EE83E01E25C9}';
+  LogGroupGUID: string='{5E1CBAA8-4442-4494-B599-4DAEDFFAFE2F}';
 begin
   ProcedureHeader('Процедура закрытия модального окна с результатом mrCancel', LogGroupGUID);
   ModalResult:=mrCancel;
@@ -157,7 +157,7 @@ end;
 
 procedure TLoginForm.FieldsChange(Sender: TObject);
 const
-  LogGroupGUID: string='{59008256-880B-44C7-AF9E-1F40C53A3DA1}';
+  LogGroupGUID: string='{DF1696CA-94FC-41B5-A0EE-C24DC939F026}';
 begin
   ProcedureHeader('Процедура-обработчик события изменения значения полей', LogGroupGUID);
   Do_UpdateActions;
@@ -166,7 +166,7 @@ end;
 
 procedure TLoginForm.FormShow(Sender: TObject);
 const
-  LogGroupGUID: string='{E6EA4AA2-4B80-4E91-B1B8-0EE38E44EFC3}';
+  LogGroupGUID: string='{B826CB1D-0670-4A10-A20B-A74946FC3F4D}';
 begin
   ProcedureHeader('Процедура-обработчик события отображения окна', LogGroupGUID);
   LogThis('Отображено окно авторизации.', LogGroupGUID, lmtInfo);
