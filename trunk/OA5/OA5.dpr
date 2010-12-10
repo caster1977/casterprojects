@@ -6,7 +6,8 @@ uses
   Login in 'Login.pas' {LoginForm},
   OA5Types in 'OA5Types.pas',
   OA5Consts in 'OA5Consts.pas',
-  OA5Routines in 'OA5Routines.pas';
+  OA5Routines in 'OA5Routines.pas',
+  mysql in 'mysql.pas';
 
 {$R *.res}
 
