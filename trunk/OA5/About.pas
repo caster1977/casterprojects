@@ -42,11 +42,10 @@ type
     procedure Timer2Timer(Sender: TObject);
     procedure lblEMailAddressClick(Sender: TObject);
   private
-    procedure Do_Close;
-
     procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter(aLogGroupGUID: string);
     procedure LogThis(const aMessage, aLogGroupGUID: string; aMessageType: TLogMessagesType);
+    procedure Do_Close;
   end;
 
 var
@@ -92,15 +91,13 @@ procedure TAboutForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
   LogThis('['+aTitle+']', aLogGroupGUID, lmtDebug);
   LogThis('Начало процедуры...', aLogGroupGUID, lmtDebug);
-  { TODO : Убрать ремарки }
-  // MainForm.Inc_BusyState(aLogGroupGUID);
+  MainForm.Inc_BusyState(aLogGroupGUID);
   Application.ProcessMessages;
 end;
 
 procedure TAboutForm.ProcedureFooter(aLogGroupGUID: string);
 begin
-  { TODO : Убрать ремарки }
-  // MainForm.Dec_BusyState(aLogGroupGUID);
+  MainForm.Dec_BusyState(aLogGroupGUID);
   LogThis('Окончание процедуры.', aLogGroupGUID, lmtDebug);
   Application.ProcessMessages;
 end;
