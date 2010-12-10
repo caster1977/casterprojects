@@ -7,7 +7,8 @@ uses
   OA5Types in 'OA5Types.pas',
   OA5Consts in 'OA5Consts.pas',
   OA5Routines in 'OA5Routines.pas',
-  mysql in 'mysql.pas';
+  mysql in 'mysql.pas',
+  About in 'About.pas' {AboutForm};
 
 {$R *.res}
 

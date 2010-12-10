@@ -27,7 +27,7 @@
 			<DCC_UnitSearchPath>..\Packages\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<DCC_BplOutput>..\Packages\</DCC_BplOutput>
 			<DCC_Description>(C)opyright 2007-2010 by Vlad DraCooLa</DCC_Description>
-			<DCC_UsePackage>vcl;vclx;VclSmp;rtl;vclimg;svnui;svn;bdertl;TeeUI;TeeDB;Tee;vclactnband;vcldb;dbrtl;vcldbx;vcltouch;xmlrtl;dsnap;dsnapcon;adortl;IndyCore;IndySystem;IndyProtocols;vclie;inet;inetdb;webdsnap;websnap;inetdbbde;inetdbxpress;dbexpress;DbxCommonDriver;DataSnapIndy10ServerTransport;DataSnapProviderClient;DataSnapClient;dbxcds;DbxClientDriver;DataSnapServer;AzureCloud;DBXInterBaseDriver;DBXMySQLDriver;DBXFirebirdDriver;DBXSybaseASEDriver;DBXSybaseASADriver;DBXOracleDriver;DBXMSSQLDriver;DBXInformixDriver;DBXDb2Driver;CodeSiteExpressVcl</DCC_UsePackage>
+			<DCC_UsePackage>vcl;vclx;VclSmp;rtl;vclimg;svnui;svn;vclactnband;xmlrtl;IndyCore;IndySystem;IndyProtocols;vclie;inet;inetdbbde;inetdbxpress;DbxCommonDriver;DbxClientDriver;DBXInterBaseDriver;DBXMySQLDriver;DBXFirebirdDriver;DBXSybaseASEDriver;DBXSybaseASADriver;DBXOracleDriver;DBXMSSQLDriver;DBXInformixDriver;DBXDb2Driver;CodeSiteExpressVcl</DCC_UsePackage>
 			<DCC_ImageBase>00400000</DCC_ImageBase>
 			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
 		</PropertyGroup>
@@ -61,6 +61,9 @@
 			<DCCReference Include="OA5Consts.pas"/>
 			<DCCReference Include="OA5Routines.pas"/>
 			<DCCReference Include="mysql.pas"/>
+			<DCCReference Include="About.pas">
+				<Form>AboutForm</Form>
+			</DCCReference>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
@@ -103,18 +106,36 @@
 						<VersionInfoKeys Name="FileDescription">АРМ оператора услуги &quot;Отдых и развлечения&quot;</VersionInfoKeys>
 						<VersionInfoKeys Name="FileVersion">5.0.0.0</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName">OA5</VersionInfoKeys>
-						<VersionInfoKeys Name="LegalCopyright">(C)opyright 2007-2010 by Vlad DraCooLa</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalCopyright">(C)opyright 2007-2010 by Caster</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks"/>
 						<VersionInfoKeys Name="OriginalFilename">OA5.exe</VersionInfoKeys>
 						<VersionInfoKeys Name="ProductName"/>
 						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
-						<VersionInfoKeys Name="Comments"/>
+						<VersionInfoKeys Name="Comments">Посвящается любимым мною женщинам ;)</VersionInfoKeys>
 					</VersionInfoKeys>
 					<Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dcltee9150.bpl">TeeChart Standard 9 Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclbde150.bpl">Embarcadero BDE DB Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dcldb150.bpl">Embarcadero Database Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dcltouch150.bpl">Embarcadero Touch Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclmcn150.bpl">Embarcadero DataSnap Connection Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclmid150.bpl">Embarcadero MyBase DataAccess Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclado150.bpl">Embarcadero ADO DB Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclIntraweb_110_150.bpl">VCL for the Web 11.0 Design Package for Embarcadero RAD Studio XE</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclwebsnap150.bpl">Embarcadero WebSnap Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclwbm150.bpl">Embarcadero InternetExpress Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclsoap150.bpl">Embarcadero SOAP Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclDataSnapIndy10ServerTransport150.bpl">Embarcadero DBExpress DataSnap Server Transport Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclDataSnapProviderClient150.bpl">Embarcadero DBExpress DataSnap Provider Client Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclDataSnapClient150.bpl">Embarcadero DBExpress DataSnap Client Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dcldbx150.bpl">Embarcadero dbExpress Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclDataSnapServer150.bpl">Embarcadero DBExpress DataSnap Server Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclWindowsAzureManagement150.bpl">Embarcadero Windows Azure management components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclDeployCloud150.bpl">Embarcadero Deploy to the Cloud</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dcldbxcds150.bpl">Embarcadero SimpleDataset Component (DBX)</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclib150.bpl">Embarcadero InterBase Express Components</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k150.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dclofficexp150.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\bcboffice2k150.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\bcbofficexp150.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
 					</Excluded_Packages>
 					<Source>
 						<Source Name="MainSource">OA5.dpr</Source>
