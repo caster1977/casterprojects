@@ -2,7 +2,11 @@ program OA5;
 
 uses
   Forms,
-  Main in 'Main.pas' {MainForm};
+  Main in 'Main.pas' {MainForm},
+  Login in 'Login.pas' {LoginForm},
+  OA5Types in 'OA5Types.pas',
+  OA5Consts in 'OA5Consts.pas',
+  OA5Routines in 'OA5Routines.pas';
 
 {$R *.res}
 
