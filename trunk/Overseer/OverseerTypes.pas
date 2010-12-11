@@ -124,18 +124,15 @@ type
     procedure _MySQL_CheckTableExistance(const aTMySQLServerConnectionDetails: TMySQLServerConnectionDetails; const aMySQLDatabase: string; var bError: boolean; var sErrorMessage: string; const aTableName: string);
     procedure _MySQL_LockTables(const aTMySQLServerConnectionDetails: TMySQLServerConnectionDetails; var bError: boolean; var sErrorMessage: string; const aTablesList: string);
     procedure _MySQL_UnlockTables(const aTMySQLServerConnectionDetails: TMySQLServerConnectionDetails; var bError: boolean; var sErrorMessage: string);
-    function _MySQL_InsertRecords(const aTMySQLServerConnectionDetails: TMySQLServerConnectionDetails; var bError: boolean; var sErrorMessage: string; const aQuery: string)
-      : integer;
-    function _MySQL_UpdateRecords(const aTMySQLServerConnectionDetails: TMySQLServerConnectionDetails; var bError: boolean; var sErrorMessage: string; const aQuery: string)
-      : integer;
+    function _MySQL_InsertRecords(const aTMySQLServerConnectionDetails: TMySQLServerConnectionDetails; var bError: boolean; var sErrorMessage: string; const aQuery: string): integer;
+    function _MySQL_UpdateRecords(const aTMySQLServerConnectionDetails: TMySQLServerConnectionDetails; var bError: boolean; var sErrorMessage: string; const aQuery: string): integer;
     procedure ProcedureHeader(aTitle: string);
     procedure ProcedureFooter;
     procedure PreFooter(const aError: boolean; const aErrorMessage: string);
     procedure _CreateProgressBar(const aTime: TDateTime; const aTitle: string; const aMax: integer);
     procedure StepProgressBar;
     procedure LogThis(aMessage: string; aMessageType: TLogMessagesType);
-    function GetWeeksList(const aStartDate, aStopDate: TDate; const aCalculateWeekFromMonday: boolean)
-      : TStringList;
+    function GetWeeksList(const aStartDate, aStopDate: TDate; const aCalculateWeekFromMonday: boolean): TStringList;
     procedure PlaySound;
     procedure ShowBaloonHint(const aBalloonTitle, aBalloonHint: string);
 
@@ -374,8 +371,7 @@ begin
   LogThis('<< Выполнение операции разблокирования таблиц базы данных завершено.', lmtDebug);
 end;
 
-function TThread_Do_SIC._MySQL_UpdateRecords(const aTMySQLServerConnectionDetails: TMySQLServerConnectionDetails; var bError: boolean; var sErrorMessage: string; const aQuery: string)
-  : integer;
+function TThread_Do_SIC._MySQL_UpdateRecords(const aTMySQLServerConnectionDetails: TMySQLServerConnectionDetails; var bError: boolean; var sErrorMessage: string; const aQuery: string): integer;
 begin
   Result:=-1;
   LogThis('>> Выполняется операция обновления данных таблицы...', lmtDebug);
@@ -464,8 +460,7 @@ begin
   LogThis('<< Выполнение операции по созданию таблицы данных завершено.', lmtDebug);
 end;
 
-function TThread_Do_SIC._MySQL_InsertRecords(const aTMySQLServerConnectionDetails: TMySQLServerConnectionDetails; var bError: boolean; var sErrorMessage: string; const aQuery: string)
-  : integer;
+function TThread_Do_SIC._MySQL_InsertRecords(const aTMySQLServerConnectionDetails: TMySQLServerConnectionDetails; var bError: boolean; var sErrorMessage: string; const aQuery: string): integer;
 begin
   Result:=-1;
   LogThis('>> Выполняется операция вставки записей в таблицу...', lmtDebug);
@@ -609,8 +604,7 @@ begin
     end;
 end;
 
-function TThread_Do_SIC.GetWeeksList(const aStartDate, aStopDate: TDate; const aCalculateWeekFromMonday: boolean)
-  : TStringList;
+function TThread_Do_SIC.GetWeeksList(const aStartDate, aStopDate: TDate; const aCalculateWeekFromMonday: boolean): TStringList;
 var
   dtDate: TDate;
   slDatesFullList: TStringList;
