@@ -367,7 +367,6 @@ begin
   else
     Routines_GenerateError('Извините, справочный файл к данной программе не найден.', sErrorMessage, bError);
 
-  { TODO : В проект overseer добавить следующую строку, т.к. она отсутствует }
   PreFooter(Handle, bError, sErrorMessage, LogGroupGUID);
   ProcedureFooter(LogGroupGUID);
 end;
