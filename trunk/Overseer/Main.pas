@@ -5978,16 +5978,7 @@ begin
           else
             begin
               LogThis('Инициализация объекта соединения с сервером MySQL выполнена успешно.', aLogGroupGUID, lmtDebug);
-              bConnected:=mysql_real_connect(
-                hConnection,
-                PAnsiChar(AnsiString(sMySQLHost)),
-                PAnsiChar('overseer'),
-                PAnsiChar(''),
-                PAnsiChar(AnsiString(sMySQLDatabase)),
-                iMySQLPort,
-                nil,
-                integer(bMySQLCompress)*CLIENT_COMPRESS
-              )<>nil;
+              bConnected:=mysql_real_connect(hConnection, PAnsiChar(AnsiString(sMySQLHost)), PAnsiChar('overseer'), PAnsiChar(''), PAnsiChar(AnsiString(sMySQLDatabase)), iMySQLPort, nil, integer(bMySQLCompress)*CLIENT_COMPRESS)<>nil;
               if not bConnected then
                 Routines_GenerateError('Возникла ошибка при попытке подключения к серверу MySQL!'+Routines_GetMySQLErrorInfo(aTMySQLServerConnectionDetails), sErrorMessage, bError)
               else

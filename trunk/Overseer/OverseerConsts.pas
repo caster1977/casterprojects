@@ -142,10 +142,7 @@ const
     +'(ani LIKE  "033_______")'+ //
     ')' //
     ), //
-    (sName: 'БеСТ';
-     sHTMLMobileNetName: 'ЗАО&nbsp;&laquo;БеСТ&raquo;';
-     sHTMLAbonentsName: '&nbsp;абонентов&nbsp;сети&nbsp;ЗАО&nbsp;&laquo;БеСТ&raquo;';
-     sQuery: //
+    (sName: 'БеСТ'; sHTMLMobileNetName: 'ЗАО&nbsp;&laquo;БеСТ&raquo;'; sHTMLAbonentsName: '&nbsp;абонентов&nbsp;сети&nbsp;ЗАО&nbsp;&laquo;БеСТ&raquo;'; sQuery: //
     '(' //
     +'(ani LIKE "00255______") OR ' //
     +'(ani LIKE  "0255______") OR ' //
