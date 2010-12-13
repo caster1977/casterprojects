@@ -12,7 +12,7 @@ object ConfigurationForm: TConfigurationForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  Position = poScreenCenter
+  Position = poMainFormCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
@@ -92,7 +92,7 @@ object ConfigurationForm: TConfigurationForm
       ParentFont = False
       TabOrder = 0
       object cbPage: TComboBox
-        Left = 10
+        Left = 9
         Top = 15
         Width = 510
         Height = 21
@@ -112,7 +112,7 @@ object ConfigurationForm: TConfigurationForm
           ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' FTP-'#1089#1077#1088#1074#1077#1088#1091' '#1040#1057#1050#1056)
       end
       object btnNextPage: TButton
-        Left = 554
+        Left = 553
         Top = 15
         Width = 22
         Height = 22
@@ -124,7 +124,7 @@ object ConfigurationForm: TConfigurationForm
         TabOrder = 2
       end
       object btnPreviousPage: TButton
-        Left = 526
+        Left = 525
         Top = 15
         Width = 22
         Height = 22
@@ -160,11 +160,11 @@ object ConfigurationForm: TConfigurationForm
       ParentFont = False
       TabOrder = 0
       object PageControl1: TPageControl
-        Left = 6
+        Left = 5
         Top = 4
         Width = 574
         Height = 129
-        ActivePage = ts1
+        ActivePage = ts4
         Align = alCustom
         Style = tsButtons
         TabOrder = 0
@@ -172,10 +172,6 @@ object ConfigurationForm: TConfigurationForm
         object ts1: TTabSheet
           Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object vleInterface: TValueListEditor
             Left = 0
             Top = 0
@@ -208,10 +204,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1074#1077#1076#1077#1085#1080#1103' '#1087#1088#1086#1090#1086#1082#1086#1083#1072' '#1088#1072#1073#1086#1090#1099
           ImageIndex = 2
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label2: TLabel
             Left = 285
             Top = 0
@@ -291,7 +283,7 @@ object ConfigurationForm: TConfigurationForm
           end
           object edbxFlushLogOnStringsQuantity: TEdit
             Left = 495
-            Top = 49
+            Top = 47
             Width = 56
             Height = 21
             TabOrder = 6
@@ -327,10 +319,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1092#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1103' '#1086#1090#1095#1105#1090#1086#1074
           ImageIndex = 3
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Bevel3: TBevel
             Left = 0
             Top = 67
@@ -405,10 +393,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' MySQL-'#1089#1077#1088#1074#1077#1088#1091' OVERSEERSERVER'
           ImageIndex = 1
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object vleOVERSEERSERVER: TValueListEditor
             Left = 0
             Top = 0
@@ -434,10 +418,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' MySQL-'#1089#1077#1088#1074#1077#1088#1091' DBSERVER'
           ImageIndex = 4
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object vleDBSERVER: TValueListEditor
             Left = 0
             Top = 0
@@ -467,10 +447,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' MySQL-'#1089#1077#1088#1074#1077#1088#1091' STATSERVER'
           ImageIndex = 6
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object vleSTATSERVER: TValueListEditor
             Left = 0
             Top = 0
@@ -501,10 +477,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' MySQL-'#1089#1077#1088#1074#1077#1088#1091' RNE4SERVER'
           ImageIndex = 7
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object vleRNE4SERVER: TValueListEditor
             Left = 0
             Top = 0
@@ -530,10 +502,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' FTP-'#1089#1077#1088#1074#1077#1088#1091' '#1040#1057#1050#1056
           ImageIndex = 5
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object ValueListEditor1: TValueListEditor
             Left = 0
             Top = 0
