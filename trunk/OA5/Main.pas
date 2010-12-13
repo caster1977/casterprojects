@@ -63,6 +63,7 @@ type
     procedure Action_HelpExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure Action_ConfigurationExecute(Sender: TObject);
   private
     bFirstRun: boolean;
     bAboutWindowExist: boolean;
@@ -74,9 +75,11 @@ type
     procedure PostShowModal(const aWindowName: string; const aLogGroupGUID: string; var aOldBusyState: integer);
     procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage, aLogGroupGUID: string);
 
+    procedure Update_Actions;
+
     procedure Do_About(const aButtonVisible: boolean);
     procedure Do_Help;
-    procedure Update_Actions;
+    procedure Do_Configuration;
   public
     procedure ShowErrorBox(const aHandle: HWND; const aErrorMessage: string; const aLogGroupGUID: string);
     procedure Inc_BusyState(const aLogGroupGUID: string);
@@ -429,6 +432,32 @@ begin
     Application.ProcessMessages;
   *)
 
+  ProcedureFooter(LogGroupGUID);
+end;
+
+procedure TMainForm.Action_ConfigurationExecute(Sender: TObject);
+const
+  LogGroupGUID: string='{2F075D7E-750D-4B06-903F-73D8717518B1}';
+begin
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Configuration.Caption+'"', LogGroupGUID);
+  Do_Configuration;
+  ProcedureFooter(LogGroupGUID);
+end;
+
+procedure TMainForm.Do_Configuration;
+const
+  LogGroupGUID: string='{797493AC-5FA8-4E65-89C1-7FB0CC1C5824}';
+  sModalWinName: string='настроек программы';
+var
+  sErrorMessage: string;
+  bError: boolean;
+  ConfigurationForm: TConfigurationForm;
+  iBusy: integer;
+begin
+  ProcedureHeader('Процедура отображения окна '+sModalWinName, LogGroupGUID);
+  bError:=False;
+
+  PreFooter(Handle, bError, sErrorMessage, LogGroupGUID);
   ProcedureFooter(LogGroupGUID);
 end;
 

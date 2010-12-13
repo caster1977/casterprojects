@@ -8,7 +8,8 @@ uses
   OA5Consts in 'OA5Consts.pas',
   OA5Routines in 'OA5Routines.pas',
   mysql in 'mysql.pas',
-  About in 'About.pas' {AboutForm};
+  About in 'About.pas' {AboutForm},
+  Configuration in 'Configuration.pas' {ConfigurationForm};
 
 {$R *.res}
 
