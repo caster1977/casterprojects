@@ -1,0 +1,33 @@
+object MainForm: TMainForm
+  Left = 0
+  Top = 0
+  AlphaBlend = True
+  AlphaBlendValue = 100
+  BorderStyle = bsToolWindow
+  BorderWidth = 2
+  Caption = 'Caption'
+  ClientHeight = 67
+  ClientWidth = 228
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  FormStyle = fsStayOnTop
+  OldCreateOrder = False
+  Position = poDesigned
+  Visible = True
+  OnCreate = FormCreate
+  OnDblClick = FormDblClick
+  OnMouseMove = FormMouseMove
+  PixelsPerInch = 96
+  TextHeight = 13
+  object ApplicationEvents1: TApplicationEvents
+    OnActivate = ApplicationEvents1Activate
+    OnDeactivate = ApplicationEvents1Deactivate
+    OnMessage = ApplicationEvents1Message
+    Left = 40
+    Top = 30
+  end
+end
