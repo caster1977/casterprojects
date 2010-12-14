@@ -373,7 +373,7 @@ begin
   if bError then
     begin
       MainForm.LogThis(s, LogGroupGUID, lmtError);
-      MessageBox(Handle, PChar(s), PChar('OA3 - Ошибка!'), MB_OK+MB_ICONERROR+MB_DEFBUTTON1);
+      MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'), MB_OK+MB_ICONERROR+MB_DEFBUTTON1);
     end;
   RefreshPhoneList;
   UpdateState;
@@ -699,7 +699,7 @@ begin
           if bError then
             begin
               MainForm.LogThis(s, LogGroupGUID, lmtError);
-              MessageBox(Handle, PChar(s), PChar('OA3 - Ошибка!'), MB_OK+MB_ICONERROR+MB_DEFBUTTON1);
+              MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'), MB_OK+MB_ICONERROR+MB_DEFBUTTON1);
             end;
           RefreshPhoneList;
           UpdateState;
@@ -931,7 +931,7 @@ begin
           if bError then
             begin
               MainForm.LogThis(s, LogGroupGUID, lmtError);
-              MessageBox(Handle, PChar(s), PChar('OA3 - Ошибка!'), MB_OK+MB_ICONERROR+MB_DEFBUTTON1);
+              MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'), MB_OK+MB_ICONERROR+MB_DEFBUTTON1);
             end;
           RefreshPhoneList;
           UpdateState;
@@ -1280,7 +1280,7 @@ begin
                                               ListItem.StateIndex:=6;
                                             end
                                           else
-                                            if string(ResultRow[0])='мобильный (БеСТ)' then
+                                            if string(ResultRow[0])='мобильный (life:)/БеСТ)' then
                                               begin
                                                 ListItem.ImageIndex:=1;
                                                 ListItem.StateIndex:=5;
@@ -1338,7 +1338,7 @@ begin
       lvPhones.Items.BeginUpdate;
       lvPhones.Clear;
       lvPhones.Items.EndUpdate;
-      MessageBox(Handle, PChar(s), PChar('OA3 - Ошибка!'), MB_OK+MB_ICONERROR+MB_DEFBUTTON1);
+      MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'), MB_OK+MB_ICONERROR+MB_DEFBUTTON1);
     end;
   UpdateWithScrollBars;
 
