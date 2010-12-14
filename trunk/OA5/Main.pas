@@ -97,6 +97,7 @@ implementation
 uses
   CommCtrl,
   About,
+  Configuration,
   OA5Consts,
   OA5Routines;
 
