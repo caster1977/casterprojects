@@ -79,6 +79,12 @@ type
     chkbxUseLog: TCheckBox;
     Bevel4: TBevel;
     Bevel5: TBevel;
+    ts6: TTabSheet;
+    sgAutoReplaceList: TStringGrid;
+    btnLineUp: TButton;
+    btnLineDown: TButton;
+    Action_LineUp: TAction;
+    Action_LineDown: TAction;
   private
     { Private declarations }
   public
