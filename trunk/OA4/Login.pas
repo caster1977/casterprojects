@@ -18,8 +18,6 @@ type
     imgKey: TImage;
     procedure FormCreate(Sender: TObject);
     procedure edbxLoginChange(Sender: TObject);
-  private
-  public
   end;
 
 var

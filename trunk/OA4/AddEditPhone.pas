@@ -122,52 +122,52 @@ begin
             cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('стационарный')
           else
             if (Pos('375255', sPhone)=1)and(Length(sPhone)=Length('375255')+6) then // производим отбор телефонов БеСТ
-              cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+              cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
             else
               if (Pos('80255', sPhone)=1)and(Length(sPhone)=Length('80255')+6) then
-                cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+                cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
               else
                 if (Pos('0255', sPhone)=1)and(Length(sPhone)=Length('0255')+6) then
-                  cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+                  cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
                 else
                   if (Pos('00255', sPhone)=1)and(Length(sPhone)=Length('00255')+6) then
-                    cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+                    cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
                   else
                     if (Pos('375256', sPhone)=1)and(Length(sPhone)=Length('375256')+6) then // производим отбор телефонов БеСТ
-                      cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+                      cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
                     else
                       if (Pos('80256', sPhone)=1)and(Length(sPhone)=Length('80256')+6) then
-                        cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+                        cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
                       else
                         if (Pos('0256', sPhone)=1)and(Length(sPhone)=Length('0256')+6) then
-                          cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+                          cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
                         else
                           if (Pos('00256', sPhone)=1)and(Length(sPhone)=Length('00256')+6) then
-                            cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+                            cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
                           else
                             if (Pos('375257', sPhone)=1)and(Length(sPhone)=Length('375257')+6) then // производим отбор телефонов БеСТ
-                              cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+                              cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
                             else
                               if (Pos('80257', sPhone)=1)and(Length(sPhone)=Length('80257')+6) then
-                                cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+                                cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
                               else
                                 if (Pos('0257', sPhone)=1)and(Length(sPhone)=Length('0257')+6) then
-                                  cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+                                  cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
                                 else
                                   if (Pos('00257', sPhone)=1)and(Length(sPhone)=Length('00257')+6) then
-                                    cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+                                    cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
                                   else
                                     if (Pos('375259', sPhone)=1)and(Length(sPhone)=Length('375259')+6) then // производим отбор телефонов БеСТ
-                                      cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+                                      cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
                                     else
                                       if (Pos('80259', sPhone)=1)and(Length(sPhone)=Length('80259')+6) then
-                                        cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+                                        cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
                                       else
                                         if (Pos('0259', sPhone)=1)and(Length(sPhone)=Length('0259')+6) then
-                                          cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+                                          cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
                                         else
                                           if (Pos('00259', sPhone)=1)and(Length(sPhone)=Length('00259')+6) then
-                                            cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (БеСТ)')
+                                            cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (life:)/БеСТ)')
                                           else
                                             if (Pos('375294', sPhone)=1)and(Length(sPhone)=Length('375294')+6) then // производим отбор телефонов БелСел
                                               cmbbxPhoneType.ItemIndex:=cmbbxPhoneType.Items.IndexOf('мобильный (Diallog/БелСел)')

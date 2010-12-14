@@ -40,7 +40,7 @@ begin
   if (((sCustomLogClientFile='')and FileExists(ExtractFilePath(ExpandFileName(Application.ExeName))+'LogKeeper.exe'))or((sCustomLogClientFile<>'')and FileExists(sCustomLogClientFile))) then
     begin
       Application.CreateForm(TMainForm, MainForm);
-  Application.Run;
+      Application.Run;
     end
   else
     begin
