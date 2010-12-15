@@ -67,7 +67,6 @@ type
   private
     bFirstRun: boolean;
     bAboutWindowExist: boolean;
-    iBusyCounter: integer;
     procedure LogThis(const aMessage, aLogGroupGIUD: string; aMessageType: TLogMessagesType);
     procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter(aLogGroupGUID: string);
@@ -81,6 +80,7 @@ type
     procedure Do_Help;
     procedure Do_Configuration;
   public
+    iBusyCounter: integer;
     procedure ShowErrorBox(const aHandle: HWND; const aErrorMessage: string; const aLogGroupGUID: string);
     procedure Inc_BusyState(const aLogGroupGUID: string);
     procedure Dec_BusyState(const aLogGroupGUID: string);
