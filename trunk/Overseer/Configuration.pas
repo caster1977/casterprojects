@@ -189,6 +189,121 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
+procedure TConfigurationForm.Do_Apply;
+const
+  LogGroupGUID: string='{4F771D0D-5B18-44BA-8F38-DAA6CD09873C}';
+begin
+  ProcedureHeader('Процедура закрытия модального окна с результатом mrOk', LogGroupGUID);
+
+  ModalResult:=mrOk;
+  LogThis('Попытка изменения настроек программы была подтверждена пользователем.', LogGroupGUID, lmtInfo);
+  LogThis('Окно изменения настроек программы закрыто.', LogGroupGUID, lmtInfo);
+
+  ProcedureFooter(LogGroupGUID);
+end;
+
+procedure TConfigurationForm.Action_CloseExecute(Sender: TObject);
+const
+  LogGroupGUID: string='{010E4FFC-5789-43A8-8362-50C9A9C23D22}';
+begin
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Close.Caption+'"', LogGroupGUID);
+  Do_Close;
+  ProcedureFooter(LogGroupGUID);
+end;
+
+procedure TConfigurationForm.Do_Close;
+const
+  LogGroupGUID: string='{4090ADB3-1842-4EF2-B9D7-B147355FB7D2}';
+begin
+  ProcedureHeader('Процедура закрытия модального окна с результатом mrClose', LogGroupGUID);
+
+  ModalResult:=mrClose;
+  LogThis('Попытка изменения настроек программы была отменена пользователем.', LogGroupGUID, lmtInfo);
+  LogThis('Окно изменения настроек программы закрыто.', LogGroupGUID, lmtInfo);
+
+  ProcedureFooter(LogGroupGUID);
+end;
+
+procedure TConfigurationForm.Action_HelpExecute(Sender: TObject);
+const
+  LogGroupGUID: string='{7819A531-38CD-487B-836C-9F4E78F810BB}';
+begin
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Help.Caption+'"', LogGroupGUID);
+  Do_Help;
+  ProcedureFooter(LogGroupGUID);
+end;
+
+procedure TConfigurationForm.Do_Help;
+const
+  LogGroupGUID: string='{5A7E5DF5-A7AC-4DE4-92F7-67011C1FFF7B}';
+var
+  bError: boolean;
+  sErrorMessage: string;
+begin
+  ProcedureHeader('Процедура вызова контекстной справки', LogGroupGUID);
+
+  LogThis('Производится попытка открытия справочного файла программы...', LogGroupGUID, lmtInfo);
+  if (FileExists(ExpandFileName(Application.HelpFile))) then
+    Application.HelpContext(HelpContext)
+  else
+    Routines_GenerateError('Извините, справочный файл к данной программе не найден.', sErrorMessage, bError);
+
+  PreFooter(Handle, bError, sErrorMessage, LogGroupGUID);
+  ProcedureFooter(LogGroupGUID);
+end;
+
+procedure TConfigurationForm.Action_PreviousPageExecute(Sender: TObject);
+const
+  LogGroupGUID: string='{1ED34383-81D8-4FB6-94E8-CB046847076B}';
+begin
+  ProcedureHeader('Процедура-обработчик действия "'+Action_PreviousPage.Caption+'"', LogGroupGUID);
+  Do_PreviousPage;
+  ProcedureFooter(LogGroupGUID);
+end;
+
+procedure TConfigurationForm.Do_PreviousPage;
+const
+  LogGroupGUID: string='{8709A13B-4208-4E65-A541-13A39A41CAE4}';
+var
+  i: integer;
+begin
+  ProcedureHeader('Процедура отображения предыдущей страницы настроек программы', LogGroupGUID);
+
+  i:=cbPage.ItemIndex-1;
+  if i<0 then
+    i:=cbPage.Items.Count-1;
+  cbPage.ItemIndex:=i;
+  cbPageSelect(nil);
+
+  ProcedureFooter(LogGroupGUID);
+end;
+
+procedure TConfigurationForm.Action_NextPageExecute(Sender: TObject);
+const
+  LogGroupGUID: string='{07323288-DA47-4420-8BAE-96DFF84FB9A2}';
+begin
+  ProcedureHeader('Процедура-обработчик действия "'+Action_NextPage.Caption+'"', LogGroupGUID);
+  Do_NextPage;
+  ProcedureFooter(LogGroupGUID);
+end;
+
+procedure TConfigurationForm.Do_NextPage;
+const
+  LogGroupGUID: string='{5CFB341C-07A5-43D7-BBBC-BC7CF70B729E}';
+var
+  i: integer;
+begin
+  ProcedureHeader('Процедура отображения следующей страницы настроек программы', LogGroupGUID);
+
+  i:=cbPage.ItemIndex+1;
+  if i>cbPage.Items.Count-1 then
+    i:=0;
+  cbPage.ItemIndex:=i;
+  cbPageSelect(nil);
+
+  ProcedureFooter(LogGroupGUID);
+end;
+
 procedure TConfigurationForm.Action_ChooseReportFolderExecute(Sender: TObject);
 const
   LogGroupGUID: string='{43F7DFCB-2E62-4B0D-A92D-3AE0133F6D56}';
@@ -245,41 +360,6 @@ begin
     end;
 
   PreFooter(Handle, bError, sErrorMessage, LogGroupGUID);
-  ProcedureFooter(LogGroupGUID);
-end;
-
-procedure TConfigurationForm.Action_CloseExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{010E4FFC-5789-43A8-8362-50C9A9C23D22}';
-begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Close.Caption+'"', LogGroupGUID);
-  Do_Close;
-  ProcedureFooter(LogGroupGUID);
-end;
-
-procedure TConfigurationForm.Do_Apply; // завершена
-const
-  LogGroupGUID: string='{4F771D0D-5B18-44BA-8F38-DAA6CD09873C}';
-begin
-  ProcedureHeader('Процедура закрытия модального окна с результатом mrOk', LogGroupGUID);
-
-  ModalResult:=mrOk;
-  LogThis('Попытка изменения настроек программы была подтверждена пользователем.', LogGroupGUID, lmtInfo);
-  LogThis('Окно изменения настроек программы закрыто.', LogGroupGUID, lmtInfo);
-
-  ProcedureFooter(LogGroupGUID);
-end;
-
-procedure TConfigurationForm.Do_Close;
-const
-  LogGroupGUID: string='{4090ADB3-1842-4EF2-B9D7-B147355FB7D2}';
-begin
-  ProcedureHeader('Процедура закрытия модального окна с результатом mrClose', LogGroupGUID);
-
-  ModalResult:=mrClose;
-  LogThis('Попытка изменения настроек программы была отменена пользователем.', LogGroupGUID, lmtInfo);
-  LogThis('Окно изменения настроек программы закрыто.', LogGroupGUID, lmtInfo);
-
   ProcedureFooter(LogGroupGUID);
 end;
 
@@ -375,86 +455,6 @@ begin
       vleSTATSERVER.Cells[1, 10]:='prijaves';
     end;
   LogThis('Настройки '+PageControl1.ActivePage.Caption+' были сброшены пользователем к значениям по умолчанию.', LogGroupGUID, lmtInfo);
-
-  ProcedureFooter(LogGroupGUID);
-end;
-
-procedure TConfigurationForm.Action_HelpExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{7819A531-38CD-487B-836C-9F4E78F810BB}';
-begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Help.Caption+'"', LogGroupGUID);
-  Do_Help;
-  ProcedureFooter(LogGroupGUID);
-end;
-
-procedure TConfigurationForm.Do_Help;
-const
-  LogGroupGUID: string='{5A7E5DF5-A7AC-4DE4-92F7-67011C1FFF7B}';
-var
-  bError: boolean;
-  sErrorMessage: string;
-begin
-  ProcedureHeader('Процедура вызова контекстной справки', LogGroupGUID);
-
-  LogThis('Производится попытка открытия справочного файла программы...', LogGroupGUID, lmtInfo);
-  if (FileExists(ExpandFileName(Application.HelpFile))) then
-    Application.HelpContext(HelpContext)
-  else
-    Routines_GenerateError('Извините, справочный файл к данной программе не найден.', sErrorMessage, bError);
-
-  PreFooter(Handle, bError, sErrorMessage, LogGroupGUID);
-  ProcedureFooter(LogGroupGUID);
-end;
-
-procedure TConfigurationForm.Action_NextPageExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{07323288-DA47-4420-8BAE-96DFF84FB9A2}';
-begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_NextPage.Caption+'"', LogGroupGUID);
-  Do_NextPage;
-  ProcedureFooter(LogGroupGUID);
-end;
-
-procedure TConfigurationForm.Do_NextPage;
-const
-  LogGroupGUID: string='{5CFB341C-07A5-43D7-BBBC-BC7CF70B729E}';
-var
-  i: integer;
-begin
-  ProcedureHeader('Процедура отображения следующей страницы настроек программы', LogGroupGUID);
-
-  i:=cbPage.ItemIndex+1;
-  if i>cbPage.Items.Count-1 then
-    i:=0;
-  cbPage.ItemIndex:=i;
-  cbPageSelect(nil);
-
-  ProcedureFooter(LogGroupGUID);
-end;
-
-procedure TConfigurationForm.Action_PreviousPageExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{1ED34383-81D8-4FB6-94E8-CB046847076B}';
-begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_PreviousPage.Caption+'"', LogGroupGUID);
-  Do_PreviousPage;
-  ProcedureFooter(LogGroupGUID);
-end;
-
-procedure TConfigurationForm.Do_PreviousPage;
-const
-  LogGroupGUID: string='{8709A13B-4208-4E65-A541-13A39A41CAE4}';
-var
-  i: integer;
-begin
-  ProcedureHeader('Процедура отображения предыдущей страницы настроек программы', LogGroupGUID);
-
-  i:=cbPage.ItemIndex-1;
-  if i<0 then
-    i:=cbPage.Items.Count-1;
-  cbPage.ItemIndex:=i;
-  cbPageSelect(nil);
 
   ProcedureFooter(LogGroupGUID);
 end;
