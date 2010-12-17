@@ -99,7 +99,7 @@
 						<VersionInfo Name="MajorVer">1</VersionInfo>
 						<VersionInfo Name="MinorVer">0</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">26</VersionInfo>
+						<VersionInfo Name="Build">27</VersionInfo>
 						<VersionInfo Name="Debug">True</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -111,7 +111,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription">Клиент-приёмник протокола работы программ</VersionInfoKeys>
-						<VersionInfoKeys Name="FileVersion">1.0.0.26</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">1.0.0.27</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName">Log Keeper</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalCopyright">(C)opyright 2009  by Vlad DraCooLa</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks"/>
