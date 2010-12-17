@@ -53,11 +53,11 @@ type
     N14: TMenuItem;
     N15: TMenuItem;
     miStatusBar: TMenuItem;
-    ilSmallImages: TImageList;
-    ilBigImages: TImageList;
+    ilMainFormSmallImages: TImageList;
+    ilMainFormBigImages: TImageList;
     pbMain: TProgressBar;
     imState: TImage;
-    ilStateIcons: TImageList;
+    ilMainFormStateIcons: TImageList;
     procedure Action_QuitExecute(Sender: TObject);
     procedure Action_AboutExecute(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
@@ -261,12 +261,12 @@ begin
     begin
       if iBusyCounter>0 then
         begin
-          ilStateIcons.GetIcon(ICON_BUSY, imState.Picture.Icon);
+          ilMainFormStateIcons.GetIcon(ICON_BUSY, imState.Picture.Icon);
           // Screen.Cursor:=crHourGlass;
         end
       else
         begin
-          ilStateIcons.GetIcon(ICON_READY, imState.Picture.Icon);
+          ilMainFormStateIcons.GetIcon(ICON_READY, imState.Picture.Icon);
           // Screen.Cursor:=crDefault;
         end;
       { TODO : Убрать ремарки }
@@ -457,6 +457,17 @@ var
 begin
   ProcedureHeader('Процедура отображения окна '+sModalWinName, LogGroupGUID);
   bError:=False;
+
+  ConfigurationForm:=TConfigurationForm.Create(Self);
+  with ConfigurationForm do
+    try
+      PreShowModal(sModalWinName, LogGroupGUID, iBusy);
+      ShowModal;
+    finally
+      PostShowModal(sModalWinName, LogGroupGUID, iBusy);
+      Free;
+    end;
+
 
   PreFooter(Handle, bError, sErrorMessage, LogGroupGUID);
   ProcedureFooter(LogGroupGUID);
