@@ -1413,7 +1413,7 @@ begin
       Configuration.bKeepErrorLog:=ReadBool('Протоколирование', 'bKeepErrorLog', True);
       Configuration.bKeepWarningLog:=ReadBool('Протоколирование', 'bKeepWarningLog', True);
       Configuration.bKeepInfoLog:=ReadBool('Протоколирование', 'bKeepInfoLog', True);
-      Configuration.bKeepSQLLog:=ReadBool('Протоколирование', 'bKeepSQLLog', True);
+      Configuration.bKeepSQLLog:=ReadBool('Протоколирование', 'bKeepSQLLog', False);
       Configuration.bKeepDebugLog:=ReadBool('Протоколирование', 'bKeepDebugLog', False);
       Configuration.bFlushLogOnExit:=ReadBool('Протоколирование', 'bFlushLogOnExit', True);
       Configuration.iFlushLogOnStringsQuantity:=ReadInteger('Протоколирование', 'iFlushLogOnStringsQuantity', -1);

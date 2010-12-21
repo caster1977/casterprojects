@@ -398,7 +398,7 @@ begin
       chkbxKeepErrorLog.Checked:=True;
       chkbxKeepWarningLog.Checked:=True;
       chkbxKeepInfoLog.Checked:=True;
-      chkbxKeepSQLLog.Checked:=True;
+      chkbxKeepSQLLog.Checked:=False;
       chkbxKeepDebugLog.Checked:=False;
       chkbxFlushLogOnExit.Checked:=True;
       chkbxFlushLogOnStringsQuantity.Checked:=False;
@@ -572,7 +572,7 @@ begin
   vleInterface.ItemProps[11].EditStyle:=esPickList;
   vleInterface.ItemProps[11].readonly:=True;
   vleInterface.ItemProps[11].PickList:=slBoolean;
-  // overseer
+  // overseerserver
   vleOVERSEERSERVER.ItemProps[1].EditMask:='99999;0; '; // номер порта
   vleOVERSEERSERVER.Cells[1, 2]:=IntToStr(MYSQL_PORT);
   vleOVERSEERSERVER.ItemProps[2].EditMask:='99999;0; '; // таймаут
@@ -580,8 +580,8 @@ begin
   vleOVERSEERSERVER.ItemProps[3].EditStyle:=esPickList; // сжатие данных
   vleOVERSEERSERVER.ItemProps[3].readonly:=True;
   vleOVERSEERSERVER.ItemProps[3].PickList:=slBoolean;
-  vleOVERSEERSERVER.Cells[1, 4]:=vleOVERSEERSERVER.ItemProps[3].PickList.Strings[0];
-  // overseer
+  vleOVERSEERSERVER.Cells[1, 4]:=vleOVERSEERSERVER.ItemProps[3].PickList.Strings[1];
+  // rne4server
   vleRNE4SERVER.ItemProps[1].EditMask:='99999;0; '; // номер порта
   vleRNE4SERVER.Cells[1, 2]:=IntToStr(MYSQL_PORT);
   vleRNE4SERVER.ItemProps[2].EditMask:='99999;0; '; // таймаут
@@ -589,7 +589,7 @@ begin
   vleRNE4SERVER.ItemProps[3].EditStyle:=esPickList; // сжатие данных
   vleRNE4SERVER.ItemProps[3].readonly:=True;
   vleRNE4SERVER.ItemProps[3].PickList:=slBoolean;
-  vleRNE4SERVER.Cells[1, 4]:=vleRNE4SERVER.ItemProps[3].PickList.Strings[0];
+  vleRNE4SERVER.Cells[1, 4]:=vleRNE4SERVER.ItemProps[3].PickList.Strings[1];
   // dbserver
   vleDBSERVER.ItemProps[1].EditMask:='99999;0; '; // номер порта
   vleDBSERVER.Cells[1, 2]:=IntToStr(MYSQL_PORT);
@@ -598,7 +598,7 @@ begin
   vleDBSERVER.ItemProps[3].EditStyle:=esPickList; // сжатие данных
   vleDBSERVER.ItemProps[3].readonly:=True;
   vleDBSERVER.ItemProps[3].PickList:=slBoolean;
-  vleDBSERVER.Cells[1, 4]:=vleDBSERVER.ItemProps[3].PickList.Strings[0];
+  vleDBSERVER.Cells[1, 4]:=vleDBSERVER.ItemProps[3].PickList.Strings[1];
   // statserver
   vleSTATSERVER.ItemProps[1].EditMask:='99999;0; '; // номер порта
   vleSTATSERVER.Cells[1, 2]:=IntToStr(MYSQL_PORT);
@@ -607,7 +607,7 @@ begin
   vleSTATSERVER.ItemProps[3].EditStyle:=esPickList; // сжатие данных
   vleSTATSERVER.ItemProps[3].readonly:=True;
   vleSTATSERVER.ItemProps[3].PickList:=slBoolean;
-  vleSTATSERVER.Cells[1, 4]:=vleSTATSERVER.ItemProps[3].PickList.Strings[0];
+  vleSTATSERVER.Cells[1, 4]:=vleSTATSERVER.ItemProps[3].PickList.Strings[1];
 
   cbPage.ItemIndex:=MainForm.Configuration.iConfigurationFormPage;
   if cbPage.ItemIndex<0 then
