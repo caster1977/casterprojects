@@ -25,6 +25,11 @@ uses
   OA5Types;
 
 type
+  TStringGridX= class(TStringGrid)
+  public
+    procedure MoveRow(FromIndex, ToIndex: Longint);
+  end;
+
   TConfigurationForm=class(TForm)
     ActionManager1: TActionManager;
     Action_Help: TAction;
@@ -77,7 +82,7 @@ type
     ts2: TTabSheet;
     vleRNE4SERVER: TValueListEditor;
     ts3: TTabSheet;
-    vleMESSAGESERVER: TValueListEditor;
+    vleRNE4MESSAGESSERVER: TValueListEditor;
     chkbxCustomLogClientFile: TCheckBox;
     edbxCustomLogClientFile: TEdit;
     btnChoiseCustomLogClientFile: TButton;
@@ -91,6 +96,7 @@ type
     btnLineDown: TButton;
     Action_LineUp: TAction;
     Action_LineDown: TAction;
+    lblAutoReplaceSorry: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure Action_ApplyExecute(Sender: TObject);
     procedure Action_DefaultsExecute(Sender: TObject);
@@ -104,10 +110,10 @@ type
     procedure FormShow(Sender: TObject);
     procedure cbPageSelect(Sender: TObject);
     procedure chkbxCustomLogClientFileClick(Sender: TObject);
-    procedure rbSaveIntoTheTempFolderClick(Sender: TObject);
     procedure chkbxUseLogClick(Sender: TObject);
     procedure edbxFlushLogOnStringsQuantityKeyPress(Sender: TObject; var Key: Char);
     procedure chkbxFlushLogOnStringsQuantityClick(Sender: TObject);
+    procedure rbSaveIntoTheSelectedFolderClick(Sender: TObject);
   public
     slBoolean: TStringList;
   private
@@ -136,8 +142,14 @@ implementation
 uses
   FileCtrl,
   Main,
+  mysql,
   OA5Routines,
   OA5Consts;
+
+procedure TStringGridX.MoveRow(FromIndex, ToIndex: Integer);
+begin
+  inherited;
+end;
 
 procedure TConfigurationForm.LogThis(const aMessage, aLogGroupGUID: string; aMessageType: TLogMessagesType);
 var
@@ -394,8 +406,6 @@ begin
   ProcedureHeader('Процедура выбора папки для сохранения отчётов', LogGroupGUID);
   bError:=False;
 
-  { TODO : Отладить, т.к. была написана с нуля. }
-
   with MainForm do
     begin
       iOldBusyCounter:=iBusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
@@ -436,52 +446,6 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.cbPageSelect(Sender: TObject);
-var
-  i: integer;
-begin
-  // поиск и открытие нужной страницы в компоненте
-  for i:=0 to PageControl1.PageCount-1 do
-    begin
-      if PageControl1.Pages[i].Caption=cbPage.Items[cbPage.ItemIndex] then
-        PageControl1.ActivePageIndex:=i;
-    end;
-
-  { TODO : Отладить, т.к. блок был написан с нуля. }
-
-  // доступность действия сброса настроек в значения по умолчанию
-  if (PageControl1.ActivePage.Caption=' подключения к серверу базы данных услуги')or(PageControl1.ActivePage.Caption=' подключения к серверу системы обмена сообщениями') then
-    begin
-      if PageControl1.ActivePage.Caption=' подключения к серверу базы данных услуги' then
-        begin
-          Action_Defaults.Enabled:=vleRNE4SERVER.Enabled;
-          // Action_Defaults.Visible:=Action_Defaults.Enabled;
-        end;
-      if PageControl1.ActivePage.Caption=' подключения к серверу системы обмена сообщениями' then
-        begin
-          Action_Defaults.Enabled:=vleMESSAGESERVER.Enabled;
-          // Action_Defaults.Visible:=Action_Defaults.Enabled;
-        end;
-    end
-  else
-    if PageControl1.ActivePage.Caption=' списка автозамены' then
-      begin
-        Action_Defaults.Enabled:=False;
-        // Action_Defaults.Visible:=False;
-      end
-    else
-      begin
-        Action_Defaults.Enabled:=True;
-        // Action_Defaults.Visible:=True;
-      end;
-
-  // доступность действия поднятия и опускания строки в списке автощзамены
-  Action_LineUp.Enabled:=(PageControl1.ActivePage.Caption=' списка автозамены')and sgAutoReplaceList.Visible and sgAutoReplaceList.Enabled;
-  Action_LineDown.Enabled:=Action_LineUp.Enabled;
-  // Action_LineUp.Visible:=Action_LineUp.Enabled;
-  // Action_LineDown.Visible:=Action_LineUp.Enabled;
-end;
-
 procedure TConfigurationForm.FormShow(Sender: TObject);
 const
   LogGroupGUID: string='{E3A04C17-B2AB-461E-A4F5-2473EC4E9297}';
@@ -507,82 +471,12 @@ begin
   slBoolean.Free;
 end;
 
-procedure TConfigurationForm.FormCreate(Sender: TObject);
-const
-  LogGroupGUID: string='{928DE88A-9894-4B2A-B8AB-6D9BB130BCF6}';
-  ICON_CONFIGURATION=5;
-begin
-  ProcedureHeader('Процедура-обработчик события создания окна', LogGroupGUID);
-
-  ilConfigurationFormSmallImages.GetIcon(ICON_CONFIGURATION, Icon);
-
-  Action_Help.Enabled:=Application.HelpFile<>'';
-  slBoolean:=TStringList.Create;
-  with slBoolean do
-    begin
-      Add('Нет');
-      Add('Да');
-    end;
-
-  ProcedureFooter(LogGroupGUID);
-end;
-
-procedure TConfigurationForm.Do_Defaults;
-const
-  LogGroupGUID: string='{EDC577E6-6D47-4DC2-973E-AD820C7AC588}';
-begin
-  ProcedureHeader('Процедура сброса настроек к значениям по умолчанию', LogGroupGUID);
-
-  { TODO : Добавить изменение значений контролов на значения по умолчанию }
-
-  if PageControl1.ActivePage.Caption=' интерфейса' then
-    begin
-    end;
-
-  if PageControl1.ActivePage.Caption=' подключения к серверу базы данных услуги' then
-    begin
-    end;
-
-  if PageControl1.ActivePage.Caption=' подключения к серверу системы обмена сообщениями' then
-    begin
-    end;
-
-  if PageControl1.ActivePage.Caption=' ведения протокола работы' then
-    begin
-      chkbxUseLog.Checked:=True;
-      chkbxKeepErrorLog.Checked:=True;
-      chkbxKeepWarningLog.Checked:=True;
-      chkbxKeepInfoLog.Checked:=True;
-      chkbxKeepSQLLog.Checked:=True;
-      chkbxKeepDebugLog.Checked:=False;
-      chkbxFlushLogOnExit.Checked:=True;
-      chkbxFlushLogOnStringsQuantity.Checked:=False;
-      edbxFlushLogOnStringsQuantity.Text:='';
-      chkbxFlushLogOnClearingLog.Checked:=True;
-      chkbxFlushLogOnApply.Checked:=False;
-      chkbxCustomLogClientFile.Checked:=False;
-    end;
-
-  if PageControl1.ActivePage.Caption=' формирования отчётов' then
-    begin
-      rbSaveIntoTheTempFolder.Checked:=True;
-      edbxSelectedFolder.Text:='';
-      chkbxDontDemandOverwriteConfirmation.Checked:=False;
-      chkbxAskForFileName.Checked:=False;
-    end;
-
-  LogThis('Настройки '+PageControl1.ActivePage.Caption+' были сброшены пользователем к значениям по умолчанию.', LogGroupGUID, lmtInfo);
-
-  ProcedureFooter(LogGroupGUID);
-end;
-
 procedure TConfigurationForm.chkbxUseLogClick(Sender: TObject);
 const
   LogGroupGUID: string='{014B87F4-F1A4-43D2-B1C9-86C2ED00B302}';
 var
   bUseLog: boolean;
 begin
-  { TODO : Отладить, т.к. была написана с нуля. }
   ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxUseLog.Caption, LogGroupGUID);
 
   bUseLog:=chkbxUseLog.Enabled and chkbxUseLog.Checked;
@@ -612,10 +506,11 @@ begin
 
   if edbxFlushLogOnStringsQuantity.Enabled then
     begin
-      // if Configuration.iFlushLogOnStringsQuantity>0 then
-      // edbxFlushLogOnStringsQuantity.Text:=IntToStr(Configuration.iFlushLogOnStringsQuantity)
-      // else
-      edbxFlushLogOnStringsQuantity.Text:='10000';
+      with MainForm do
+        if Configuration.iFlushLogOnStringsQuantity>0 then
+          edbxFlushLogOnStringsQuantity.Text:=IntToStr(Configuration.iFlushLogOnStringsQuantity)
+        else
+          edbxFlushLogOnStringsQuantity.Text:='10000';
     end
   else
     edbxFlushLogOnStringsQuantity.Text:='';
@@ -646,7 +541,6 @@ const
 var
   bFlushLogOnStringsQuantity: boolean;
 begin
-  { TODO : Отладить, т.к. была написана с нуля. }
   ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxFlushLogOnStringsQuantity.Caption, LogGroupGUID);
 
   bFlushLogOnStringsQuantity:=chkbxFlushLogOnStringsQuantity.Checked and chkbxFlushLogOnStringsQuantity.Enabled;
@@ -654,10 +548,11 @@ begin
   edbxFlushLogOnStringsQuantity.Enabled:=bFlushLogOnStringsQuantity;
   if bFlushLogOnStringsQuantity then
     begin
-      // if Configuration.iFlushLogOnStringsQuantity>0 then
-      // edbxFlushLogOnStringsQuantity.Text:=IntToStr(Configuration.iFlushLogOnStringsQuantity)
-      // else
-      edbxFlushLogOnStringsQuantity.Text:='10000';
+      with MainForm do
+        if Configuration.iFlushLogOnStringsQuantity>0 then
+          edbxFlushLogOnStringsQuantity.Text:=IntToStr(Configuration.iFlushLogOnStringsQuantity)
+        else
+          edbxFlushLogOnStringsQuantity.Text:='10000';
     end
   else
     edbxFlushLogOnStringsQuantity.Text:='';
@@ -673,7 +568,6 @@ const
 var
   bCustomLogClientFile: boolean;
 begin
-  { TODO : Отладить, т.к. была написана с нуля. }
   ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxCustomLogClientFile.Caption, LogGroupGUID);
 
   bCustomLogClientFile:=chkbxCustomLogClientFile.Checked and chkbxCustomLogClientFile.Enabled;
@@ -688,17 +582,188 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.rbSaveIntoTheTempFolderClick(Sender: TObject);
+procedure TConfigurationForm.rbSaveIntoTheSelectedFolderClick(Sender: TObject);
+const
+  LogGroupGUID: string='{84E7EFE1-95CB-4D28-97F7-0C89FAF95BBD}';
 begin
-  { TODO : Отладить, т.к. была написана с нуля. }
+  if Sender is TRadioButton then
+    with Sender as TRadioButton do
+      begin
+        ProcedureHeader('Процедура отклика на щелчок на радиокнопке "'+Caption+'"', LogGroupGUID);
+        LogThis('Нажата радиокнопка "'+Caption+'".', LogGroupGUID, lmtInfo);
+      end;
+
   edbxSelectedFolder.Enabled:=rbSaveIntoTheSelectedFolder.Checked;
   Action_ChooseReportFolder.Enabled:=rbSaveIntoTheSelectedFolder.Checked;
+
+  ProcedureFooter(LogGroupGUID);
 end;
 
 procedure TConfigurationForm.edbxFlushLogOnStringsQuantityKeyPress(Sender: TObject; var Key: Char);
 begin
   if not CharInSet(Key, ['0'..'9', #8, '-']) then
     Key:=#0; // "погасить" все остальные клавиши
+end;
+
+// !!!!!!!!!!
+// Далее располагаются неотлаженные процедуры
+// !!!!!!!!!!
+
+procedure TConfigurationForm.cbPageSelect(Sender: TObject);
+var
+  i: integer;
+begin
+  // поиск и открытие нужной страницы в компоненте
+  for i:=0 to PageControl1.PageCount-1 do
+    begin
+      if PageControl1.Pages[i].Caption=cbPage.Items[cbPage.ItemIndex] then
+        PageControl1.ActivePageIndex:=i;
+    end;
+
+  { TODO : Отладить, т.к. блок был написан с нуля. }
+
+  // доступность действия сброса настроек в значения по умолчанию
+  if (PageControl1.ActivePage.Caption=' подключения к серверу базы данных услуги')or(PageControl1.ActivePage.Caption=' подключения к серверу системы обмена сообщениями') then
+    begin
+      if PageControl1.ActivePage.Caption=' подключения к серверу базы данных услуги' then
+        begin
+          Action_Defaults.Enabled:=vleRNE4SERVER.Enabled;
+          // Action_Defaults.Visible:=Action_Defaults.Enabled;
+        end;
+      if PageControl1.ActivePage.Caption=' подключения к серверу системы обмена сообщениями' then
+        begin
+          Action_Defaults.Enabled:=vleRNE4MESSAGESSERVER.Enabled;
+          // Action_Defaults.Visible:=Action_Defaults.Enabled;
+        end;
+    end
+  else
+    if PageControl1.ActivePage.Caption=' списка автозамены' then
+      begin
+        Action_Defaults.Enabled:=False;
+        // Action_Defaults.Visible:=False;
+      end
+    else
+      begin
+        Action_Defaults.Enabled:=True;
+        // Action_Defaults.Visible:=True;
+      end;
+
+  // доступность действия поднятия и опускания строки в списке автощзамены
+  Action_LineUp.Enabled:=(PageControl1.ActivePage.Caption=' списка автозамены')and sgAutoReplaceList.Visible and sgAutoReplaceList.Enabled;
+  Action_LineDown.Enabled:=Action_LineUp.Enabled;
+  // Action_LineUp.Visible:=Action_LineUp.Enabled;
+  // Action_LineDown.Visible:=Action_LineUp.Enabled;
+end;
+
+procedure TConfigurationForm.FormCreate(Sender: TObject);
+const
+  LogGroupGUID: string='{928DE88A-9894-4B2A-B8AB-6D9BB130BCF6}';
+  ICON_CONFIGURATION=5;
+begin
+  ProcedureHeader('Процедура-обработчик события создания окна', LogGroupGUID);
+
+  ilConfigurationFormSmallImages.GetIcon(ICON_CONFIGURATION, Icon);
+
+  Action_Help.Enabled:=Application.HelpFile<>'';
+
+  slBoolean:=TStringList.Create;
+  with slBoolean do
+    begin
+      Add('Нет');
+      Add('Да');
+    end;
+
+  lblAutoReplaceSorry.Caption:='Извините, но список доступен только для пользователей'+#10#13+'с правами редактирования базы данных'+#10#13+'при подлючении к базе данных!';
+
+  // инициализации компонентов вкладки настроек интерфейса
+  { TODO : Дописать код }
+
+  // инициализации компонентов вкладки настроек подключения к серверу RNE4SERVER
+  vleRNE4SERVER.ItemProps[1].EditMask:='99999;0; '; // номер порта
+  vleRNE4SERVER.Cells[1, 2]:=IntToStr(MYSQL_PORT);
+  vleRNE4SERVER.ItemProps[2].EditMask:='99999;0; '; // таймаут
+  vleRNE4SERVER.Cells[1, 3]:=IntToStr(30);
+  vleRNE4SERVER.ItemProps[3].EditStyle:=esPickList; // сжатие данных
+  vleRNE4SERVER.ItemProps[3].ReadOnly:=True;
+  vleRNE4SERVER.ItemProps[3].PickList:=slBoolean;
+  vleRNE4SERVER.Cells[1, 4]:=vleRNE4SERVER.ItemProps[3].PickList.Strings[1];
+
+  // инициализации компонентов вкладки настроек подключения к серверу RNE4MESSAGESSERVER
+  vleRNE4MESSAGESSERVER.ItemProps[1].EditMask:='99999;0; '; // номер порта
+  vleRNE4MESSAGESSERVER.Cells[1, 2]:=IntToStr(MYSQL_PORT);
+  vleRNE4MESSAGESSERVER.ItemProps[2].EditMask:='99999;0; '; // таймаут
+  vleRNE4MESSAGESSERVER.Cells[1, 3]:=IntToStr(30);
+  vleRNE4MESSAGESSERVER.ItemProps[3].EditStyle:=esPickList; // сжатие данных
+  vleRNE4MESSAGESSERVER.ItemProps[3].ReadOnly:=True;
+  vleRNE4MESSAGESSERVER.ItemProps[3].PickList:=slBoolean;
+  vleRNE4MESSAGESSERVER.Cells[1, 4]:=vleRNE4MESSAGESSERVER.ItemProps[3].PickList.Strings[1];
+
+  cbPage.ItemIndex:=MainForm.Configuration.iConfigurationFormPage;
+  if cbPage.ItemIndex<0 then
+    cbPage.ItemIndex:=0;
+  cbPageSelect(Sender);
+  rbSaveIntoTheSelectedFolderClick(Sender);
+
+  ProcedureFooter(LogGroupGUID);
+end;
+
+procedure TConfigurationForm.Do_Defaults;
+const
+  LogGroupGUID: string='{EDC577E6-6D47-4DC2-973E-AD820C7AC588}';
+begin
+  ProcedureHeader('Процедура сброса настроек к значениям по умолчанию', LogGroupGUID);
+
+  { TODO : Добавить изменение значений контролов на значения по умолчанию }
+
+  if PageControl1.ActivePage.Caption=' интерфейса' then
+    begin
+    end;
+
+  if PageControl1.ActivePage.Caption=' подключения к серверу базы данных услуги' then
+    begin
+      vleRNE4SERVER.Cells[1, 1]:='RNE4SERVER';
+      vleRNE4SERVER.Cells[1, 2]:=IntToStr(MYSQL_PORT);
+      vleRNE4SERVER.Cells[1, 3]:=IntToStr(30);
+      vleRNE4SERVER.Cells[1, 4]:=vleRNE4SERVER.ItemProps[3].PickList.Strings[1];
+      vleRNE4SERVER.Cells[1, 5]:='rne4';
+    end;
+
+  if PageControl1.ActivePage.Caption=' подключения к серверу системы обмена сообщениями' then
+    begin
+      vleRNE4MESSAGESSERVER.Cells[1, 1]:='RNE4MESSAGESSERVER';
+      vleRNE4MESSAGESSERVER.Cells[1, 2]:=IntToStr(MYSQL_PORT);
+      vleRNE4MESSAGESSERVER.Cells[1, 3]:=IntToStr(30);
+      vleRNE4MESSAGESSERVER.Cells[1, 4]:=vleRNE4MESSAGESSERVER.ItemProps[3].PickList.Strings[1];
+      vleRNE4MESSAGESSERVER.Cells[1, 5]:='rne4';
+    end;
+
+  if PageControl1.ActivePage.Caption=' ведения протокола работы' then
+    begin
+      chkbxUseLog.Checked:=True;
+      chkbxKeepErrorLog.Checked:=True;
+      chkbxKeepWarningLog.Checked:=True;
+      chkbxKeepInfoLog.Checked:=True;
+      chkbxKeepSQLLog.Checked:=False;
+      chkbxKeepDebugLog.Checked:=False;
+      chkbxFlushLogOnExit.Checked:=True;
+      chkbxFlushLogOnStringsQuantity.Checked:=False;
+      edbxFlushLogOnStringsQuantity.Text:='';
+      chkbxFlushLogOnClearingLog.Checked:=True;
+      chkbxFlushLogOnApply.Checked:=False;
+      chkbxCustomLogClientFile.Checked:=False;
+    end;
+
+  if PageControl1.ActivePage.Caption=' формирования отчётов' then
+    begin
+      rbSaveIntoTheTempFolder.Checked:=True;
+      edbxSelectedFolder.Text:='';
+      chkbxDontDemandOverwriteConfirmation.Checked:=False;
+      chkbxAskForFileName.Checked:=False;
+    end;
+
+  LogThis('Настройки '+PageControl1.ActivePage.Caption+' были сброшены пользователем к значениям по умолчанию.', LogGroupGUID, lmtInfo);
+
+  ProcedureFooter(LogGroupGUID);
 end;
 
 end.
