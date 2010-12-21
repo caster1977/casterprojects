@@ -80,6 +80,8 @@ type
     procedure Do_Help;
     procedure Do_Configuration;
   public
+    Configuration: TConfigurationRec;
+    CurrentUser: TUserRec;
     iBusyCounter: integer;
     procedure ShowErrorBox(const aHandle: HWND; const aErrorMessage: string; const aLogGroupGUID: string);
     procedure Inc_BusyState(const aLogGroupGUID: string);

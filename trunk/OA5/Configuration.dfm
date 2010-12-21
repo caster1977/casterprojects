@@ -1,7 +1,8 @@
 object ConfigurationForm: TConfigurationForm
   Left = 0
   Top = 0
-  BorderStyle = bsDialog
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
   Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
   ClientHeight = 332
   ClientWidth = 634
@@ -251,14 +252,14 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1089#1080#1089#1090#1077#1084#1099' '#1086#1073#1084#1077#1085#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1103#1084#1080
           ImageIndex = 4
           TabVisible = False
-          object vleMESSAGESERVER: TValueListEditor
+          object vleRNE4MESSAGESSERVER: TValueListEditor
             Left = 0
             Top = 0
             Width = 606
             Height = 212
             Align = alTop
             Strings.Strings = (
-              #1048#1084#1103' '#1093#1086#1089#1090#1072' '#1080#1083#1080' IP-'#1072#1076#1088#1077#1089'=RNE4MESSAGESERVER'
+              #1048#1084#1103' '#1093#1086#1089#1090#1072' '#1080#1083#1080' IP-'#1072#1076#1088#1077#1089'=RNE4MESSAGESSERVER'
               #1053#1086#1084#1077#1088' '#1087#1086#1088#1090#1072'=3306'
               #1042#1088#1077#1084#1103' '#1086#1078#1080#1076#1072#1085#1080#1103'=30'
               #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1085#1080#1077' '#1089#1078#1072#1090#1080#1103' '#1076#1072#1085#1085#1099#1093'='#1044#1072
@@ -460,7 +461,7 @@ object ConfigurationForm: TConfigurationForm
             Checked = True
             TabOrder = 0
             TabStop = True
-            OnClick = rbSaveIntoTheTempFolderClick
+            OnClick = rbSaveIntoTheSelectedFolderClick
           end
           object rbSaveIntoTheSelectedFolder: TRadioButton
             Left = 0
@@ -469,7 +470,7 @@ object ConfigurationForm: TConfigurationForm
             Height = 17
             Caption = #1057#1086#1093#1088#1072#1085#1103#1090#1100' '#1074' '#1091#1082#1072#1079#1072#1085#1085#1086#1081' '#1087#1072#1087#1082#1077
             TabOrder = 2
-            OnClick = rbSaveIntoTheTempFolderClick
+            OnClick = rbSaveIntoTheSelectedFolderClick
           end
           object rbSaveIntoTheApplicationFolder: TRadioButton
             Left = 0
@@ -478,7 +479,7 @@ object ConfigurationForm: TConfigurationForm
             Height = 17
             Caption = #1057#1086#1093#1088#1072#1085#1103#1090#1100' '#1074' '#1088#1072#1073#1086#1095#1077#1081' '#1087#1072#1087#1082#1077' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
             TabOrder = 1
-            OnClick = rbSaveIntoTheTempFolderClick
+            OnClick = rbSaveIntoTheSelectedFolderClick
           end
           object chkbxAskForFileName: TCheckBox
             Left = 0
@@ -518,6 +519,17 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1089#1087#1080#1089#1082#1072' '#1072#1074#1090#1086#1079#1072#1084#1077#1085#1099
           ImageIndex = 5
           TabVisible = False
+          object lblAutoReplaceSorry: TLabel
+            Left = 0
+            Top = 0
+            Width = 606
+            Height = 213
+            Align = alClient
+            Alignment = taCenter
+            Layout = tlCenter
+            ExplicitWidth = 3
+            ExplicitHeight = 13
+          end
           object sgAutoReplaceList: TStringGrid
             Left = 0
             Top = 0
@@ -618,7 +630,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 304
     Top = 296
     Bitmap = {
-      494C010106000800440010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101060008004C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
