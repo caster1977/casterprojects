@@ -256,7 +256,7 @@ type
   end;
 
   THackControl= class(TControl);
-    TMainForm= class(TForm)MainMenu1: TMainMenu;
+  TMainForm= class(TForm)MainMenu1: TMainMenu;
     ActionManager1: TActionManager;
     ActionToolBar1: TActionToolBar;
     ColorDialog1: TColorDialog;
