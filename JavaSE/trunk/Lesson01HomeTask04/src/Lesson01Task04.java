@@ -1,5 +1,5 @@
-
-public class Lesson01Task04 {
+public class Lesson01Task04 
+{
 	public static void main(String[] args) 
 	{
 		System.out.println("Список арифметических операций:\n");
