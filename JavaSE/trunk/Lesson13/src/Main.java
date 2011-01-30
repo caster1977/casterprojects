@@ -1,28 +1,35 @@
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.border.Border;
 
-import sun.swing.UIAction;
-
-public class Main extends JFrame 
+public class Main extends JFrame  
 {
+	private static final long serialVersionUID = 6048003226374008546L;
+	
 	JLabel label;
 	JButton buton;
 	JTextField textField;
 	
+	class MyAdapter extends MouseAdapter
+	{
+		@Override
+		public void mouseClicked(MouseEvent e) 
+		{
+			label.setText("mouseClicked");
+		}
+	}
+
 	public Main()	
 	{
 		try 
@@ -50,6 +57,7 @@ public class Main extends JFrame
 		
 		label = new JLabel("Hello");
 		buton = new JButton("Hello");
+		buton.addMouseListener(new MyAdapter());
 		textField = new JTextField("Hello");
 		frame.add(label);
 		frame.add(buton);
