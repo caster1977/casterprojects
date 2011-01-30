@@ -9,8 +9,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.Border;
+
+import sun.swing.UIAction;
 
 public class Main extends JFrame 
 {
@@ -20,6 +25,16 @@ public class Main extends JFrame
 	
 	public Main()	
 	{
+		try 
+		{
+		    UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		    SwingUtilities.updateComponentTreeUI(this);
+		} 
+		catch (Exception e) 
+		{
+		    System.err.println("Cannot set look and feel: " + e.getMessage());
+		}
+
 		JFrame frame = new JFrame("Hello, world!");
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -40,13 +55,24 @@ public class Main extends JFrame
 		frame.add(buton);
 		frame.add(textField);
 		
-		
-		
 		frame.setVisible(true);
 	}
 
 	public static void main(String[] args) 
 	{
+		try 
+		{
+			LookAndFeelInfo[] lookAndFeels = UIManager.getInstalledLookAndFeels();
+			for (LookAndFeelInfo lookAndFeelInfo : lookAndFeels) 
+			{
+				System.out.println(lookAndFeelInfo.toString());
+			}
+		} 
+		catch (Exception e) 
+		{
+		    System.err.println("Cannot set look and feel: " + e.getMessage());
+		}
+
 		SwingUtilities.invokeLater
 		(
 			new Runnable()
