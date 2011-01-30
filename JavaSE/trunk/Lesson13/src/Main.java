@@ -21,15 +21,6 @@ public class Main extends JFrame
 	JButton buton;
 	JTextField textField;
 	
-	class MyAdapter extends MouseAdapter
-	{
-		@Override
-		public void mouseClicked(MouseEvent e) 
-		{
-			label.setText("mouseClicked");
-		}
-	}
-
 	public Main()	
 	{
 		try 
@@ -57,7 +48,16 @@ public class Main extends JFrame
 		
 		label = new JLabel("Hello");
 		buton = new JButton("Hello");
-		buton.addMouseListener(new MyAdapter());
+		buton.addMouseListener(
+			new	MouseAdapter() 
+			{
+				@Override
+				public void mouseClicked(MouseEvent e) 
+				{
+					label.setText("mouseClicked");
+				}
+			}
+		);
 		textField = new JTextField("Hello");
 		frame.add(label);
 		frame.add(buton);
