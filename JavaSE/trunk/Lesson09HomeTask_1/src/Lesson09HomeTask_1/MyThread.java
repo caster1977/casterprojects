@@ -11,15 +11,16 @@ public class MyThread extends Thread
 		this.name = name; 
 	}
 
-	private void print10()
+	private synchronized void print10()
 	{
+		String string = this.name + ":\n";
 		for (int j = 1; j <= 10; j++) 
 		{
-			System.out.print(i*10+j);
+			string = string + (i*10+j);
 			if (j<10)
-				System.out.print(" ");
+				string = string + " ";
 		}
-		System.out.println();
+		System.out.println(string);
 		i++;
 	}
 
@@ -30,10 +31,7 @@ public class MyThread extends Thread
 		Thread thread = Thread.currentThread();		
 		thread.setName(name);
 		while (i<10)
-		{
-			System.out.println(thread.getName() + ":");
 			print10();
-		}		
 	}
 	
 }
