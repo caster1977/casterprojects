@@ -2,7 +2,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
@@ -29,7 +28,6 @@ public class Main
 		{
 			System.out.println("Выполнено запрос на получение информации из таблиц базы данных.");
 			ResultSet resultSet = preparedStatement.getResultSet();
-			ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
 			System.out.println("\nРезультаты запроса по слову \""+string+"\":");
 			while (resultSet.next())
 				System.out.println(resultSet.getString(1));
@@ -88,7 +86,6 @@ public class Main
 		}
 		Connection cn = null;
 		Statement statement = null;
-		PreparedStatement preparedStatement = null;
 		
 		try 
 		{
