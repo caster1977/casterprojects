@@ -3658,7 +3658,7 @@ begin
                                       Routines_GenerateError('Возникла ошибка при попытке проверки подключения к серверу MySQL!', sErrorMessage, bError)
                                     else
                                       begin
-                                        q:='SELECT * FROM '+sDBSERVER_XRD_Location+'.'+LowerCase(slXRDMissedList[iMissedListCounter])+';';
+                                        q:='SELECT * FROM '+sDBSERVER_XRD_Location+'.'+LowerCase(slXRDMissedList[iMissedListCounter])+' GROUP BY ani, ddi, datum, vrijeme, dur, rc, srv, rm, izg, izgnum, druga_info, v_oper, v_mreza, qid, ccid, d_qid, d_ccid, qdur;';
                                         LogThis(q, LogGroupGUID, lmtSQL);
                                         if mysql_real_query(Configuration.DBServer.hConnection, PAnsiChar(AnsiString(q)), Length(q))<>0 then
                                           Routines_GenerateError('Возникла ошибка при выполнении последнего SQL-запроса!', sErrorMessage, bError)
@@ -3766,8 +3766,8 @@ begin
                                                                                 Routines_GenerateError('Возникла ошибка при получении количества срок результирующей выборки!', sErrorMessage, bError)
                                                                                 else
                                                                                 begin
-                                                                                if iRoutineCounter<>1 then
-                                                                                Routines_GenerateError('Количество строк выборки ('+IntToStr(iRoutineCounter)+') не соответствует требуемому (1)!', sErrorMessage, bError)
+                                                                                if iRoutineCounter<=0 then
+                                                                                Routines_GenerateError('Количество строк выборки ('+IntToStr(iRoutineCounter)+') не соответствует требуемому (>0)!', sErrorMessage, bError)
                                                                                 else
                                                                                 begin
                                                                                 LogThis('Количество строк выборки соответствует требуемому.', LogGroupGUID, lmtDebug);
