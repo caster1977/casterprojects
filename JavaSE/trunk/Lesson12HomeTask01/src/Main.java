@@ -9,38 +9,38 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 /* 
-Задания JDBC Программирование баз данных в Java
+Р—Р°РґР°РЅРёСЏ JDBC РџСЂРѕРіСЂР°РјРјРёСЂРѕРІР°РЅРёРµ Р±Р°Р· РґР°РЅРЅС‹С… РІ Java
 
-Словарь. 
-В БД хранится англо-русский словарь, в котором для одного английского слова может быть указано несколько его значений и наоборот. 
-Со стороны клиента вводятся последовательно английские (русские) слова. 
-Для каждого из них вывести на консоль все русские (английские) значения слова.
+РЎР»РѕРІР°СЂСЊ. 
+Р’ Р‘Р” С…СЂР°РЅРёС‚СЃСЏ Р°РЅРіР»Рѕ-СЂСѓСЃСЃРєРёР№ СЃР»РѕРІР°СЂСЊ, РІ РєРѕС‚РѕСЂРѕРј РґР»СЏ РѕРґРЅРѕРіРѕ Р°РЅРіР»РёР№СЃРєРѕРіРѕ СЃР»РѕРІР° РјРѕР¶РµС‚ Р±С‹С‚СЊ СѓРєР°Р·Р°РЅРѕ РЅРµСЃРєРѕР»СЊРєРѕ РµРіРѕ Р·РЅР°С‡РµРЅРёР№ Рё РЅР°РѕР±РѕСЂРѕС‚. 
+РЎРѕ СЃС‚РѕСЂРѕРЅС‹ РєР»РёРµРЅС‚Р° РІРІРѕРґСЏС‚СЃСЏ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕ Р°РЅРіР»РёР№СЃРєРёРµ (СЂСѓСЃСЃРєРёРµ) СЃР»РѕРІР°. 
+Р”Р»СЏ РєР°Р¶РґРѕРіРѕ РёР· РЅРёС… РІС‹РІРµСЃС‚Рё РЅР° РєРѕРЅСЃРѕР»СЊ РІСЃРµ СЂСѓСЃСЃРєРёРµ (Р°РЅРіР»РёР№СЃРєРёРµ) Р·РЅР°С‡РµРЅРёСЏ СЃР»РѕРІР°.
 */
 
 public class Main 
 {
 	public static void PrintResult(Connection connection, String query, String string) throws SQLException
 	{
-		// получение данных из таблиц БД
+		// РїРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… РёР· С‚Р°Р±Р»РёС† Р‘Р”
 		PreparedStatement preparedStatement = connection.prepareStatement(query);
 		preparedStatement.setString(1, string);
 		
 		if (preparedStatement.execute())
 		{
-			System.out.println("Выполнено запрос на получение информации из таблиц базы данных.");
+			System.out.println("Р’С‹РїРѕР»РЅРµРЅРѕ Р·Р°РїСЂРѕСЃ РЅР° РїРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё РёР· С‚Р°Р±Р»РёС† Р±Р°Р·С‹ РґР°РЅРЅС‹С….");
 			ResultSet resultSet = preparedStatement.getResultSet();
 			ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-			System.out.println("\nРезультаты запроса по слову \""+string+"\":");
+			System.out.println("\nР РµР·СѓР»СЊС‚Р°С‚С‹ Р·Р°РїСЂРѕСЃР° РїРѕ СЃР»РѕРІСѓ \""+string+"\":");
 			while (resultSet.next())
 				System.out.println(resultSet.getString(1));
 			System.out.println();				
 		}
-		else System.out.println("При выполнении запроса на получение информации из таблиц базы данных произошла ошибка!");
+		else System.out.println("РџСЂРё РІС‹РїРѕР»РЅРµРЅРёРё Р·Р°РїСЂРѕСЃР° РЅР° РїРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё РёР· С‚Р°Р±Р»РёС† Р±Р°Р·С‹ РґР°РЅРЅС‹С… РїСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР°!");
 	}
 
 	public static void main(String[] args) 
 	{
-		// получаем настройки подключения из файла настроек
+		// РїРѕР»СѓС‡Р°РµРј РЅР°СЃС‚СЂРѕР№РєРё РїРѕРґРєР»СЋС‡РµРЅРёСЏ РёР· С„Р°Р№Р»Р° РЅР°СЃС‚СЂРѕРµРє
 		ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
 		String host = resourceBundle.getString("host");
 		String login = resourceBundle.getString("login");
@@ -48,41 +48,41 @@ public class Main
 		String db = resourceBundle.getString("db");
 		String selectquery = "";
 		
-		// даём возможность пользователю выюрать язык 
+		// РґР°С‘Рј РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ РІС‹СЋСЂР°С‚СЊ СЏР·С‹Рє 
 		Scanner sc = new Scanner(System.in);
 		int choise = 0;
 		boolean flag = false;
 		while (! flag)
 		{
-			System.out.print("Для выбора англо-русского словаря введите \"1\", для русско-английского введите \"2\" или нажмите \"3\" для выхода: ");
+			System.out.print("Р”Р»СЏ РІС‹Р±РѕСЂР° Р°РЅРіР»Рѕ-СЂСѓСЃСЃРєРѕРіРѕ СЃР»РѕРІР°СЂСЏ РІРІРµРґРёС‚Рµ \"1\", РґР»СЏ СЂСѓСЃСЃРєРѕ-Р°РЅРіР»РёР№СЃРєРѕРіРѕ РІРІРµРґРёС‚Рµ \"2\" РёР»Рё РЅР°Р¶РјРёС‚Рµ \"3\" РґР»СЏ РІС‹С…РѕРґР°: ");
 			if (sc.hasNextInt())
 			{
 				choise = sc.nextInt();
 				switch (choise) 
 				{
 					case 1:
-						System.out.println("Пользователь выбрал режим англо-русского словаря.");
+						System.out.println("РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РІС‹Р±СЂР°Р» СЂРµР¶РёРј Р°РЅРіР»Рѕ-СЂСѓСЃСЃРєРѕРіРѕ СЃР»РѕРІР°СЂСЏ.");
 						selectquery = "SELECT russian.word FROM english_to_russian LEFT JOIN english ON english.id = english_to_russian.word_id LEFT JOIN russian ON russian.id = english_to_russian.translation_id WHERE english.word=?;";
 						flag = true;					
 						break;
 					case 2:
-						System.out.println("Пользователь выбрал режим русско-английского словаря.");
+						System.out.println("РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РІС‹Р±СЂР°Р» СЂРµР¶РёРј СЂСѓСЃСЃРєРѕ-Р°РЅРіР»РёР№СЃРєРѕРіРѕ СЃР»РѕРІР°СЂСЏ.");
 						selectquery = "SELECT english.word FROM russian_to_english LEFT JOIN russian ON russian.id = russian_to_english.word_id LEFT JOIN english ON english.id = russian_to_english.translation_id WHERE russian.word=?;";
 						flag = true;						
 						break;
 					case 3:
-						System.out.println("Завершение работы программы по выбору пользователя.");
+						System.out.println("Р—Р°РІРµСЂС€РµРЅРёРµ СЂР°Р±РѕС‚С‹ РїСЂРѕРіСЂР°РјРјС‹ РїРѕ РІС‹Р±РѕСЂСѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.");
 						sc.close();
 						System.exit(0);
 						break;
 					default:
-						System.out.println("Вы должны ввести число от \"1\" до \"3\"!");
+						System.out.println("Р’С‹ РґРѕР»Р¶РЅС‹ РІРІРµСЃС‚Рё С‡РёСЃР»Рѕ РѕС‚ \"1\" РґРѕ \"3\"!");
 						break;
 				}				
 			}
 			else 
 			{
-				System.out.println("Ошибка: введено отличное от целочисленного значение!");
+				System.out.println("РћС€РёР±РєР°: РІРІРµРґРµРЅРѕ РѕС‚Р»РёС‡РЅРѕРµ РѕС‚ С†РµР»РѕС‡РёСЃР»РµРЅРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёРµ!");
 				sc.next();
 			}
 		}
@@ -101,109 +101,109 @@ public class Main
 
 		try 
 		{
-			// подключение к серверу
+			// РїРѕРґРєР»СЋС‡РµРЅРёРµ Рє СЃРµСЂРІРµСЂСѓ
 			cn = DriverManager.getConnection( "jdbc:mysql://"+host+"/", login, password);
-			System.out.println("Выполнено соединение с сервером баз данных.");
+			System.out.println("Р’С‹РїРѕР»РЅРµРЅРѕ СЃРѕРµРґРёРЅРµРЅРёРµ СЃ СЃРµСЂРІРµСЂРѕРј Р±Р°Р· РґР°РЅРЅС‹С….");
 
 			statement = cn.createStatement();
 			
-			// переключение кодовой страницы
-			if (statement.executeUpdate("SET NAMES cp1251;")>=0)
-				System.out.println("Выполнен выбор кодовой страницы \"cp1251\" для работы с базой данных.");
+			// РїРµСЂРµРєР»СЋС‡РµРЅРёРµ РєРѕРґРѕРІРѕР№ СЃС‚СЂР°РЅРёС†С‹
+			if (statement.executeUpdate("SET NAMES utf8;")>=0)
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅ РІС‹Р±РѕСЂ РєРѕРґРѕРІРѕР№ СЃС‚СЂР°РЅРёС†С‹ \"utf8\" РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ Р±Р°Р·РѕР№ РґР°РЅРЅС‹С….");
 
-			// уничтожение существующей БД
+			// СѓРЅРёС‡С‚РѕР¶РµРЅРёРµ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµР№ Р‘Р”
 			if (statement.executeUpdate("DROP DATABASE IF EXISTS `"+db+"`;")>=0)
-				System.out.println("Выполнено удаление ранее имеющейся базы данных \""+db+"\".");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅРѕ СѓРґР°Р»РµРЅРёРµ СЂР°РЅРµРµ РёРјРµСЋС‰РµР№СЃСЏ Р±Р°Р·С‹ РґР°РЅРЅС‹С… \""+db+"\".");
 
-			// создание БД
+			// СЃРѕР·РґР°РЅРёРµ Р‘Р”
 			statement = cn.createStatement();
-			if (statement.executeUpdate("CREATE DATABASE `"+db+"` /*!40100 DEFAULT CHARACTER SET cp1251 */;")>=0)
-				System.out.println("Выполнено создание базы данных \""+db+"\".");
+			if (statement.executeUpdate("CREATE DATABASE `"+db+"` /*!40100 DEFAULT CHARACTER SET utf8 */;")>=0)
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅРѕ СЃРѕР·РґР°РЅРёРµ Р±Р°Р·С‹ РґР°РЅРЅС‹С… \""+db+"\".");
 							
-			// выбор БД для работы
+			// РІС‹Р±РѕСЂ Р‘Р” РґР»СЏ СЂР°Р±РѕС‚С‹
 			cn.setCatalog(db);
-			System.out.println("Выполнен выбор Базы данных \""+cn.getCatalog()+"\".");
+			System.out.println("Р’С‹РїРѕР»РЅРµРЅ РІС‹Р±РѕСЂ Р‘Р°Р·С‹ РґР°РЅРЅС‹С… \""+cn.getCatalog()+"\".");
 
 			statement = cn.createStatement();
 
-			// создание таблиц БД
-			if (statement.executeUpdate("CREATE TABLE `english` (`id` int(11) unsigned NOT NULL auto_increment, `word` varchar(255) NOT NULL default '', PRIMARY KEY  (`id`)) ENGINE=MyISAM DEFAULT CHARSET=cp1251;")>=0)
-				System.out.println("Выполнено создание таблицы базы данных для английских слов.");
-			if (statement.executeUpdate("CREATE TABLE `russian` (`id` int(11) unsigned NOT NULL auto_increment, `word` varchar(255) NOT NULL default '', PRIMARY KEY  (`id`)) ENGINE=MyISAM DEFAULT CHARSET=cp1251;")>=0)
-				System.out.println("Выполнено создание таблицы базы данных для русских слов.");
-			if (statement.executeUpdate("CREATE TABLE `english_to_russian` (`id` int(11) unsigned NOT NULL auto_increment, `word_id` int(11) unsigned default NULL, `translation_id` int(11) unsigned default NULL, PRIMARY KEY  (`id`)) ENGINE=MyISAM DEFAULT CHARSET=cp1251;")>=0)
-				System.out.println("Выполнено создание таблицы базы данных для связки английских слов с русскими.");
-			if (statement.executeUpdate("CREATE TABLE `russian_to_english` (`id` int(11) unsigned NOT NULL auto_increment, `word_id` int(11) unsigned default NULL, `translation_id` int(11) unsigned default NULL, PRIMARY KEY  (`id`)) ENGINE=MyISAM DEFAULT CHARSET=cp1251;")>=0)
-				System.out.println("Выполнено создание таблицы базы данных для связки русских слов с английскими.");
+			// СЃРѕР·РґР°РЅРёРµ С‚Р°Р±Р»РёС† Р‘Р”
+			if (statement.executeUpdate("CREATE TABLE `english` (`id` int(11) unsigned NOT NULL auto_increment, `word` varchar(255) NOT NULL default '', PRIMARY KEY  (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;")>=0)
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅРѕ СЃРѕР·РґР°РЅРёРµ С‚Р°Р±Р»РёС†С‹ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ Р°РЅРіР»РёР№СЃРєРёС… СЃР»РѕРІ.");
+			if (statement.executeUpdate("CREATE TABLE `russian` (`id` int(11) unsigned NOT NULL auto_increment, `word` varchar(255) NOT NULL default '', PRIMARY KEY  (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;")>=0)
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅРѕ СЃРѕР·РґР°РЅРёРµ С‚Р°Р±Р»РёС†С‹ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЂСѓСЃСЃРєРёС… СЃР»РѕРІ.");
+			if (statement.executeUpdate("CREATE TABLE `english_to_russian` (`id` int(11) unsigned NOT NULL auto_increment, `word_id` int(11) unsigned default NULL, `translation_id` int(11) unsigned default NULL, PRIMARY KEY  (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;")>=0)
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅРѕ СЃРѕР·РґР°РЅРёРµ С‚Р°Р±Р»РёС†С‹ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЃРІСЏР·РєРё Р°РЅРіР»РёР№СЃРєРёС… СЃР»РѕРІ СЃ СЂСѓСЃСЃРєРёРјРё.");
+			if (statement.executeUpdate("CREATE TABLE `russian_to_english` (`id` int(11) unsigned NOT NULL auto_increment, `word_id` int(11) unsigned default NULL, `translation_id` int(11) unsigned default NULL, PRIMARY KEY  (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;")>=0)
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅРѕ СЃРѕР·РґР°РЅРёРµ С‚Р°Р±Р»РёС†С‹ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЃРІСЏР·РєРё СЂСѓСЃСЃРєРёС… СЃР»РѕРІ СЃ Р°РЅРіР»РёР№СЃРєРёРјРё.");
 			
-			// заполнение таблиц БД
+			// Р·Р°РїРѕР»РЅРµРЅРёРµ С‚Р°Р±Р»РёС† Р‘Р”
 			if (statement.executeUpdate("INSERT INTO `english` VALUES (1,'table');")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для английских слов.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ Р°РЅРіР»РёР№СЃРєРёС… СЃР»РѕРІ.");
 			if (statement.executeUpdate("INSERT INTO `english` VALUES (2,'sun');")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для английских слов.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ Р°РЅРіР»РёР№СЃРєРёС… СЃР»РѕРІ.");
 			if (statement.executeUpdate("INSERT INTO `english` VALUES (3,'tree');")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для английских слов.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ Р°РЅРіР»РёР№СЃРєРёС… СЃР»РѕРІ.");
 			if (statement.executeUpdate("INSERT INTO `english` VALUES (4,'window');")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для английских слов.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ Р°РЅРіР»РёР№СЃРєРёС… СЃР»РѕРІ.");
 			if (statement.executeUpdate("INSERT INTO `english` VALUES (5,'wood');")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для английских слов.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ Р°РЅРіР»РёР№СЃРєРёС… СЃР»РѕРІ.");
 
-			if (statement.executeUpdate("INSERT INTO `russian` VALUES (1,'таблица');")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для русских слов.");
-			if (statement.executeUpdate("INSERT INTO `russian` VALUES (2,'стол');")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для русских слов.");
-			if (statement.executeUpdate("INSERT INTO `russian` VALUES (3,'солнце');")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для русских слов.");
-			if (statement.executeUpdate("INSERT INTO `russian` VALUES (4,'окно');")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для русских слов.");
-			if (statement.executeUpdate("INSERT INTO `russian` VALUES (5,'дерево');")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для русских слов.");
+			if (statement.executeUpdate("INSERT INTO `russian` VALUES (1,'tablica');")==1)
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЂСѓСЃСЃРєРёС… СЃР»РѕРІ.");
+			if (statement.executeUpdate("INSERT INTO `russian` VALUES (2,'stol');")==1)
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЂСѓСЃСЃРєРёС… СЃР»РѕРІ.");
+			if (statement.executeUpdate("INSERT INTO `russian` VALUES (3,'solnce');")==1)
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЂСѓСЃСЃРєРёС… СЃР»РѕРІ.");
+			if (statement.executeUpdate("INSERT INTO `russian` VALUES (4,'okno');")==1)
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЂСѓСЃСЃРєРёС… СЃР»РѕРІ.");
+			if (statement.executeUpdate("INSERT INTO `russian` VALUES (5,'derevo');")==1)
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЂСѓСЃСЃРєРёС… СЃР»РѕРІ.");
 			
 			if (statement.executeUpdate("INSERT INTO `english_to_russian` VALUES (1,1,1);")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для связки английских слов с русскими.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЃРІСЏР·РєРё Р°РЅРіР»РёР№СЃРєРёС… СЃР»РѕРІ СЃ СЂСѓСЃСЃРєРёРјРё.");
 			if (statement.executeUpdate("INSERT INTO `english_to_russian` VALUES (2,1,2);")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для связки английских слов с русскими.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЃРІСЏР·РєРё Р°РЅРіР»РёР№СЃРєРёС… СЃР»РѕРІ СЃ СЂСѓСЃСЃРєРёРјРё.");
 			if (statement.executeUpdate("INSERT INTO `english_to_russian` VALUES (3,2,3);")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для связки английских слов с русскими.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЃРІСЏР·РєРё Р°РЅРіР»РёР№СЃРєРёС… СЃР»РѕРІ СЃ СЂСѓСЃСЃРєРёРјРё.");
 			if (statement.executeUpdate("INSERT INTO `english_to_russian` VALUES (4,3,5);")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для связки английских слов с русскими.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЃРІСЏР·РєРё Р°РЅРіР»РёР№СЃРєРёС… СЃР»РѕРІ СЃ СЂСѓСЃСЃРєРёРјРё.");
 			if (statement.executeUpdate("INSERT INTO `english_to_russian` VALUES (5,4,4);")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для связки английских слов с русскими.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЃРІСЏР·РєРё Р°РЅРіР»РёР№СЃРєРёС… СЃР»РѕРІ СЃ СЂСѓСЃСЃРєРёРјРё.");
 			if (statement.executeUpdate("INSERT INTO `english_to_russian` VALUES (6,5,5);")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для связки английских слов с русскими.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЃРІСЏР·РєРё Р°РЅРіР»РёР№СЃРєРёС… СЃР»РѕРІ СЃ СЂСѓСЃСЃРєРёРјРё.");
 			
 			if (statement.executeUpdate("INSERT INTO `russian_to_english` VALUES (1,1,1);")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для связки русских слов с английскими.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЃРІСЏР·РєРё СЂСѓСЃСЃРєРёС… СЃР»РѕРІ СЃ Р°РЅРіР»РёР№СЃРєРёРјРё.");
 			if (statement.executeUpdate("INSERT INTO `russian_to_english` VALUES (2,2,1);")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для связки русских слов с английскими.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЃРІСЏР·РєРё СЂСѓСЃСЃРєРёС… СЃР»РѕРІ СЃ Р°РЅРіР»РёР№СЃРєРёРјРё.");
 			if (statement.executeUpdate("INSERT INTO `russian_to_english` VALUES (3,3,2);")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для связки русских слов с английскими.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЃРІСЏР·РєРё СЂСѓСЃСЃРєРёС… СЃР»РѕРІ СЃ Р°РЅРіР»РёР№СЃРєРёРјРё.");
 			if (statement.executeUpdate("INSERT INTO `russian_to_english` VALUES (4,4,4);")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для связки русских слов с английскими.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЃРІСЏР·РєРё СЂСѓСЃСЃРєРёС… СЃР»РѕРІ СЃ Р°РЅРіР»РёР№СЃРєРёРјРё.");
 			if (statement.executeUpdate("INSERT INTO `russian_to_english` VALUES (5,5,3);")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для связки русских слов с английскими.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЃРІСЏР·РєРё СЂСѓСЃСЃРєРёС… СЃР»РѕРІ СЃ Р°РЅРіР»РёР№СЃРєРёРјРё.");
 			if (statement.executeUpdate("INSERT INTO `russian_to_english` VALUES (6,5,5);")==1)
-				System.out.println("Выполнена вставка записи в таблицу базы данных для связки русских слов с английскими.");
+				System.out.println("Р’С‹РїРѕР»РЅРµРЅР° РІСЃС‚Р°РІРєР° Р·Р°РїРёСЃРё РІ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РґР°РЅРЅС‹С… РґР»СЏ СЃРІСЏР·РєРё СЂСѓСЃСЃРєРёС… СЃР»РѕРІ СЃ Р°РЅРіР»РёР№СЃРєРёРјРё.");
 			
-			// получение данных из таблиц БД
+			// РїРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… РёР· С‚Р°Р±Р»РёС† Р‘Р”
 			String word = "";
 			while (!(word.compareTo("q")==0))
 			{
-				System.out.print("Введите слово для поиска по словарю либо наберите \"q\" для выхода: ");
+				System.out.print("Р’РІРµРґРёС‚Рµ СЃР»РѕРІРѕ РґР»СЏ РїРѕРёСЃРєР° РїРѕ СЃР»РѕРІР°СЂСЋ Р»РёР±Рѕ РЅР°Р±РµСЂРёС‚Рµ \"q\" РґР»СЏ РІС‹С…РѕРґР°: ");
 				if (sc.hasNext())
 				{
 					word = sc.next();
 					if (word.compareTo("q")==0)
 					{
-						System.out.println("Выполнен выход из режима перевода.");
+						System.out.println("Р’С‹РїРѕР»РЅРµРЅ РІС‹С…РѕРґ РёР· СЂРµР¶РёРјР° РїРµСЂРµРІРѕРґР°.");
 					}
 					else PrintResult(cn, selectquery, word);
 				}
 			}		
 			
-			// отключение от сервера		
+			// РѕС‚РєР»СЋС‡РµРЅРёРµ РѕС‚ СЃРµСЂРІРµСЂР°		
 			cn.close();
-			System.out.println("Выполнено отключение от сервера баз данных.");
+			System.out.println("Р’С‹РїРѕР»РЅРµРЅРѕ РѕС‚РєР»СЋС‡РµРЅРёРµ РѕС‚ СЃРµСЂРІРµСЂР° Р±Р°Р· РґР°РЅРЅС‹С….");
 		} 
 		catch (SQLException e) 
 		{

@@ -11,7 +11,7 @@
 # Server version 5.0.51b-community-nt
 
 DROP DATABASE IF EXISTS `dictionary`;
-CREATE DATABASE `dictionary` /*!40100 DEFAULT CHARACTER SET cp1251 */;
+CREATE DATABASE `dictionary` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `dictionary`;
 
 #
@@ -22,7 +22,7 @@ CREATE TABLE `english` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `word` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 INSERT INTO `english` VALUES (1,'table');
 INSERT INTO `english` VALUES (2,'sun');
 INSERT INTO `english` VALUES (3,'tree');
@@ -38,7 +38,7 @@ CREATE TABLE `english_to_russian` (
   `word_id` int(11) unsigned default NULL,
   `translation_id` int(11) unsigned default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 INSERT INTO `english_to_russian` VALUES (1,1,1);
 INSERT INTO `english_to_russian` VALUES (2,1,2);
 INSERT INTO `english_to_russian` VALUES (3,2,3);
@@ -54,12 +54,12 @@ CREATE TABLE `russian` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `word` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251;
-INSERT INTO `russian` VALUES (1,'таблица');
-INSERT INTO `russian` VALUES (2,'стол');
-INSERT INTO `russian` VALUES (3,'солнце');
-INSERT INTO `russian` VALUES (4,'окно');
-INSERT INTO `russian` VALUES (5,'дерево');
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+INSERT INTO `russian` VALUES (1,'tablica');
+INSERT INTO `russian` VALUES (2,'stol');
+INSERT INTO `russian` VALUES (3,'solnce');
+INSERT INTO `russian` VALUES (4,'okno');
+INSERT INTO `russian` VALUES (5,'derevo');
 
 #
 # Table structure for table russian_to_english
@@ -70,7 +70,7 @@ CREATE TABLE `russian_to_english` (
   `word_id` int(11) unsigned default NULL,
   `translation_id` int(11) unsigned default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 INSERT INTO `russian_to_english` VALUES (1,1,1);
 INSERT INTO `russian_to_english` VALUES (2,2,1);
 INSERT INTO `russian_to_english` VALUES (3,3,2);
