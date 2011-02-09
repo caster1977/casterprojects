@@ -1,5 +1,5 @@
 {$WARN UNIT_PLATFORM OFF}
-unit Configuration;
+unit OA5Options;
 
 interface
 
@@ -25,12 +25,12 @@ uses
   OA5Types;
 
 type
-  TStringGridX= class(TStringGrid)
+  TStringGridX=class(TStringGrid)
   public
     procedure MoveRow(FromIndex, ToIndex: Longint);
   end;
 
-  TConfigurationForm=class(TForm)
+  TOptionsForm=class(TForm)
     ActionManager1: TActionManager;
     Action_Help: TAction;
     Action_Defaults: TAction;
@@ -133,7 +133,7 @@ type
   end;
 
 var
-  ConfigurationForm: TConfigurationForm;
+  OptionsForm: TOptionsForm;
 
 implementation
 
@@ -141,9 +141,10 @@ implementation
 
 uses
   FileCtrl,
-  Main,
+  OA5Main,
   mysql,
   OA5Routines,
+  OA5Configuration,
   OA5Consts;
 
 procedure TStringGridX.MoveRow(FromIndex, ToIndex: Integer);
@@ -151,7 +152,7 @@ begin
   inherited;
 end;
 
-procedure TConfigurationForm.LogThis(const aMessage, aLogGroupGUID: string; aMessageType: TLogMessagesType);
+procedure TOptionsForm.LogThis(const aMessage, aLogGroupGUID: string; aMessageType: TLogMessagesType);
 var
   s: string;
   aCopyData: TCopyDataStruct;
@@ -178,7 +179,7 @@ begin
   SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
 end;
 
-procedure TConfigurationForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
+procedure TOptionsForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
   LogThis('['+aTitle+']', aLogGroupGUID, lmtDebug);
   LogThis('Начало процедуры...', aLogGroupGUID, lmtDebug);
@@ -186,14 +187,14 @@ begin
   Application.ProcessMessages;
 end;
 
-procedure TConfigurationForm.ProcedureFooter(aLogGroupGUID: string);
+procedure TOptionsForm.ProcedureFooter(aLogGroupGUID: string);
 begin
   MainForm.Dec_BusyState(aLogGroupGUID);
   LogThis('Окончание процедуры.', aLogGroupGUID, lmtDebug);
   Application.ProcessMessages;
 end;
 
-procedure TConfigurationForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage, aLogGroupGUID: string);
+procedure TOptionsForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage, aLogGroupGUID: string);
 begin
   if aError then
     MainForm.ShowErrorBox(aHandle, aErrorMessage, aLogGroupGUID)
@@ -202,7 +203,7 @@ begin
   MainForm.pbMain.Position:=MainForm.pbMain.Min;
 end;
 
-procedure TConfigurationForm.Action_ApplyExecute(Sender: TObject);
+procedure TOptionsForm.Action_ApplyExecute(Sender: TObject);
 const
   LogGroupGUID: string='{CA167013-A754-476D-B36F-6CE012D8C21E}';
 begin
@@ -211,7 +212,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.Do_Apply;
+procedure TOptionsForm.Do_Apply;
 const
   LogGroupGUID: string='{33DF7021-2314-4BD2-8FE5-745D3C92231F}';
 begin
@@ -224,7 +225,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.Action_CloseExecute(Sender: TObject);
+procedure TOptionsForm.Action_CloseExecute(Sender: TObject);
 const
   LogGroupGUID: string='{E29B1B88-55F3-4F04-A4E7-99D189526C44}';
 begin
@@ -233,7 +234,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.Do_Close;
+procedure TOptionsForm.Do_Close;
 const
   LogGroupGUID: string='{A114BAEA-0279-44A9-AECA-1D6D0A1C12BA}';
 begin
@@ -246,7 +247,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.Action_HelpExecute(Sender: TObject);
+procedure TOptionsForm.Action_HelpExecute(Sender: TObject);
 const
   LogGroupGUID: string='{C5006F00-F43A-40AE-A060-15853FF8290F}';
 begin
@@ -255,7 +256,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.Do_Help;
+procedure TOptionsForm.Do_Help;
 const
   LogGroupGUID: string='{A107CDA0-8C13-4A7D-A685-15948B680D49}';
 var
@@ -274,7 +275,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.Action_PreviousPageExecute(Sender: TObject);
+procedure TOptionsForm.Action_PreviousPageExecute(Sender: TObject);
 const
   LogGroupGUID: string='{DEEC08B4-451D-480B-A392-1E3127868934}';
 begin
@@ -283,7 +284,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.Do_PreviousPage;
+procedure TOptionsForm.Do_PreviousPage;
 const
   LogGroupGUID: string='{5C70F626-6F88-4F8B-9F16-93DDCDA4A919}';
 var
@@ -300,7 +301,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.Action_NextPageExecute(Sender: TObject);
+procedure TOptionsForm.Action_NextPageExecute(Sender: TObject);
 const
   LogGroupGUID: string='{8AC3593F-EC49-4348-92E9-C34C15492737}';
 begin
@@ -309,7 +310,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.Do_NextPage;
+procedure TOptionsForm.Do_NextPage;
 const
   LogGroupGUID: string='{207F2915-B5C9-4123-A435-AEA01A519A5A}';
 var
@@ -326,7 +327,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.Action_ChooseReportFolderExecute(Sender: TObject);
+procedure TOptionsForm.Action_ChooseReportFolderExecute(Sender: TObject);
 const
   LogGroupGUID: string='{07B749FB-3200-4928-97AB-6C9ECE22181C}';
 begin
@@ -335,7 +336,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.Do_ChooseReportFolder;
+procedure TOptionsForm.Do_ChooseReportFolder;
 const
   LogGroupGUID: string='{10574594-BB2E-4D66-B2B0-45CFE6B0BD58}';
 var
@@ -385,7 +386,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.Action_ChooseLogClientExecute(Sender: TObject);
+procedure TOptionsForm.Action_ChooseLogClientExecute(Sender: TObject);
 const
   LogGroupGUID: string='{2D27F8F7-46A5-4A52-A527-F80BCE16C56D}';
 begin
@@ -394,7 +395,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.Do_ChooseLogClient;
+procedure TOptionsForm.Do_ChooseLogClient;
 const
   LogGroupGUID: string='{94AC07F5-5E72-4F4E-9525-BD309C7C807C}';
 var
@@ -446,7 +447,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.FormShow(Sender: TObject);
+procedure TOptionsForm.FormShow(Sender: TObject);
 const
   LogGroupGUID: string='{E3A04C17-B2AB-461E-A4F5-2473EC4E9297}';
 begin
@@ -455,7 +456,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.Action_DefaultsExecute(Sender: TObject);
+procedure TOptionsForm.Action_DefaultsExecute(Sender: TObject);
 const
   LogGroupGUID: string='{AB46AE80-4A60-4E43-8B6F-47A2D8E1049F}';
 begin
@@ -464,14 +465,14 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+procedure TOptionsForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 const
   LogGroupGUID: string='{307097C9-68DB-47A5-A46D-1432E3A70A84}';
 begin
   slBoolean.Free;
 end;
 
-procedure TConfigurationForm.chkbxUseLogClick(Sender: TObject);
+procedure TOptionsForm.chkbxUseLogClick(Sender: TObject);
 const
   LogGroupGUID: string='{014B87F4-F1A4-43D2-B1C9-86C2ED00B302}';
 var
@@ -535,7 +536,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.chkbxFlushLogOnStringsQuantityClick(Sender: TObject);
+procedure TOptionsForm.chkbxFlushLogOnStringsQuantityClick(Sender: TObject);
 const
   LogGroupGUID: string='{4BB27723-6126-479F-AA75-85258CB0B383}';
 var
@@ -562,7 +563,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.chkbxCustomLogClientFileClick(Sender: TObject);
+procedure TOptionsForm.chkbxCustomLogClientFileClick(Sender: TObject);
 const
   LogGroupGUID: string='{59642A4A-DADE-4683-9005-79FAC3BD0291}';
 var
@@ -582,7 +583,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.rbSaveIntoTheSelectedFolderClick(Sender: TObject);
+procedure TOptionsForm.rbSaveIntoTheSelectedFolderClick(Sender: TObject);
 const
   LogGroupGUID: string='{84E7EFE1-95CB-4D28-97F7-0C89FAF95BBD}';
 begin
@@ -599,7 +600,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.edbxFlushLogOnStringsQuantityKeyPress(Sender: TObject; var Key: Char);
+procedure TOptionsForm.edbxFlushLogOnStringsQuantityKeyPress(Sender: TObject; var Key: Char);
 begin
   if not CharInSet(Key, ['0'..'9', #8, '-']) then
     Key:=#0; // "погасить" все остальные клавиши
@@ -609,7 +610,7 @@ end;
 // Далее располагаются неотлаженные процедуры
 // !!!!!!!!!!
 
-procedure TConfigurationForm.cbPageSelect(Sender: TObject);
+procedure TOptionsForm.cbPageSelect(Sender: TObject);
 var
   i: integer;
 begin
@@ -655,7 +656,7 @@ begin
   // Action_LineDown.Visible:=Action_LineUp.Enabled;
 end;
 
-procedure TConfigurationForm.FormCreate(Sender: TObject);
+procedure TOptionsForm.FormCreate(Sender: TObject);
 const
   LogGroupGUID: string='{928DE88A-9894-4B2A-B8AB-6D9BB130BCF6}';
   ICON_CONFIGURATION=5;
@@ -707,7 +708,7 @@ begin
   ProcedureFooter(LogGroupGUID);
 end;
 
-procedure TConfigurationForm.Do_Defaults;
+procedure TOptionsForm.Do_Defaults;
 const
   LogGroupGUID: string='{EDC577E6-6D47-4DC2-973E-AD820C7AC588}';
 begin
