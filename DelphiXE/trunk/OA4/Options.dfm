@@ -209,7 +209,7 @@ object OptionsForm: TOptionsForm
       Top = 2
       Width = 449
       Height = 213
-      ActivePage = TabSheet5
+      ActivePage = TabSheet1
       Align = alClient
       Style = tsButtons
       TabOrder = 0
@@ -217,10 +217,6 @@ object OptionsForm: TOptionsForm
       object TabSheet1: TTabSheet
         Caption = #1048#1085#1090#1077#1088#1092#1077#1081#1089
         TabVisible = False
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object ScrollBox1: TScrollBox
           Left = 0
           Top = 0
@@ -1185,10 +1181,6 @@ object OptionsForm: TOptionsForm
         Caption = #1057#1077#1088#1074#1077#1088' '#1080' '#1073#1072#1079#1072' '#1076#1072#1085#1085#1099#1093
         ImageIndex = 1
         TabVisible = False
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object GroupBox8: TGroupBox
           Left = 0
           Top = 0
@@ -1310,18 +1302,16 @@ object OptionsForm: TOptionsForm
         Caption = #1057#1087#1080#1089#1086#1082' '#1072#1074#1090#1086#1079#1072#1084#1077#1085#1099
         ImageIndex = 2
         TabVisible = False
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object lblAutoReplaceSorry: TLabel
           Left = 0
           Top = 0
-          Width = 3
-          Height = 13
+          Width = 441
+          Height = 203
           Align = alClient
           Alignment = taCenter
           Layout = tlCenter
+          ExplicitWidth = 3
+          ExplicitHeight = 13
         end
         object sgAutoReplaceList: TStringGrid
           Left = 0
@@ -1349,10 +1339,6 @@ object OptionsForm: TOptionsForm
         Caption = #1055#1088#1086#1095#1077#1077
         ImageIndex = 3
         TabVisible = False
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object chkbxNoLogo: TCheckBox
           Left = 3
           Top = 3
@@ -1456,10 +1442,6 @@ object OptionsForm: TOptionsForm
         Caption = #1054#1073#1084#1077#1085' '#1089#1086#1086#1073#1097#1077#1085#1080#1103#1084#1080
         ImageIndex = 6
         TabVisible = False
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object GroupBox9: TGroupBox
           Left = 0
           Top = 0
