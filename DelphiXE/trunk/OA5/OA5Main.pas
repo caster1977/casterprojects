@@ -1,4 +1,4 @@
-unit Main;
+unit OA5Main;
 
 interface
 
@@ -19,6 +19,8 @@ uses
   ActnMan,
   ImgList,
   OA5Types,
+  OA5User,
+  OA5Configuration,
   ExtCtrls;
 
 type
@@ -64,6 +66,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Action_ConfigurationExecute(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     bFirstRun: boolean;
     bAboutWindowExist: boolean;
@@ -80,8 +83,8 @@ type
     procedure Do_Help;
     procedure Do_Configuration;
   public
-    Configuration: TConfigurationRec;
-    CurrentUser: TUserRec;
+    Configuration: TConfiguration;
+    CurrentUser: TUser;
     iBusyCounter: integer;
     procedure ShowErrorBox(const aHandle: HWND; const aErrorMessage: string; const aLogGroupGUID: string);
     procedure Inc_BusyState(const aLogGroupGUID: string);
@@ -98,8 +101,8 @@ implementation
 
 uses
   CommCtrl,
-  About,
-  Configuration,
+  OA5About,
+  OA5Options,
   OA5Consts,
   OA5Routines;
 
@@ -384,6 +387,7 @@ var
   PanelRect: TRect;
 begin
   bFirstRun:=True;
+  CurrentUser:=TUser.Create;
 
   // предварительная инициализация компонентов
   THackControl(pbMain).SetParent(StatusBar1);
@@ -395,6 +399,11 @@ begin
   imState.SetBounds(PanelRect.Left+1, PanelRect.Top+1, PanelRect.Right-PanelRect.Left+1, PanelRect.Bottom-PanelRect.Top+1);
 
   Update_Actions;
+end;
+
+procedure TMainForm.FormDestroy(Sender: TObject);
+begin
+  CurrentUser.Destroy;
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
@@ -454,14 +463,14 @@ const
 var
   sErrorMessage: string;
   bError: boolean;
-  ConfigurationForm: TConfigurationForm;
+  OptionsForm: TOptionsForm;
   iBusy: integer;
 begin
   ProcedureHeader('Процедура отображения окна '+sModalWinName, LogGroupGUID);
   bError:=False;
 
-  ConfigurationForm:=TConfigurationForm.Create(Self);
-  with ConfigurationForm do
+  OptionsForm:=TOptionsForm.Create(Self);
+  with OptionsForm do
     try
       PreShowModal(sModalWinName, LogGroupGUID, iBusy);
       ShowModal;

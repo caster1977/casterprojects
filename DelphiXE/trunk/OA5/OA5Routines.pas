@@ -4,9 +4,9 @@ interface
 
 uses
   Classes,
+  MySQLConnection,
   OA5Types;
 
-function Routines_GetMySQLErrorInfo(const aTMySQLServerConnectionDetails: TMySQLServerConnectionDetails): string;
 function Routines_GetLocalIP: string;
 function Routines_NormalizeStringForQuery(const Source: string; AddCommas, ReturnNull: boolean): string;
 function Routines_GetConditionalMessage(const Condition: Boolean; TrueMessage, FalseMessage: string): string;
@@ -28,12 +28,6 @@ uses
   SysUtils,
   Clipbrd,
   Registry;
-
-function Routines_GetMySQLErrorInfo(const aTMySQLServerConnectionDetails: TMySQLServerConnectionDetails): string;
-begin
-  Result:=Routines_GetConditionalMessage(mysql_errno(aTMySQLServerConnectionDetails.hConnection)<>0, #10#13+#10#13+'Код ошибки: '+#10#13+IntToStr(mysql_errno(aTMySQLServerConnectionDetails.hConnection))+#10#13+#10#13+'Наименование ошибки: '+#10#13+
-    string(mysql_error(aTMySQLServerConnectionDetails.hConnection)), '');
-end;
 
 function Routines_GetLocalIP: string;
 const

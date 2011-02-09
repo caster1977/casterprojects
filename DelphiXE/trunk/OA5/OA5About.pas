@@ -1,4 +1,4 @@
-unit About;
+unit OA5About;
 
 interface
 
@@ -56,7 +56,7 @@ implementation
 {$R *.dfm}
 
 uses
-  Main,
+  OA5Main,
   ShellAPI,
   OA5Consts;
 
