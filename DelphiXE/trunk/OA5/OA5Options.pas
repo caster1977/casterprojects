@@ -97,6 +97,14 @@ type
     Action_LineUp: TAction;
     Action_LineDown: TAction;
     lblAutoReplaceSorry: TLabel;
+    ts10: TTabSheet;
+    ts7: TTabSheet;
+    chkbxStoreLastLogin: TCheckBox;
+    chkbxStoreLastPassword: TCheckBox;
+    chkbxAutoLogon: TCheckBox;
+    chkbxGetMessages: TCheckBox;
+    Edit1: TEdit;
+    lblGetMessagesCycleDuration: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure Action_ApplyExecute(Sender: TObject);
     procedure Action_DefaultsExecute(Sender: TObject);
@@ -114,6 +122,8 @@ type
     procedure edbxFlushLogOnStringsQuantityKeyPress(Sender: TObject; var Key: Char);
     procedure chkbxFlushLogOnStringsQuantityClick(Sender: TObject);
     procedure rbSaveIntoTheSelectedFolderClick(Sender: TObject);
+    procedure chkbxStoreLastLoginClick(Sender: TObject);
+    procedure chkbxStoreLastPasswordClick(Sender: TObject);
   public
     slBoolean: TStringList;
   private
@@ -650,10 +660,8 @@ begin
       end;
 
   // доступность действия поднятия и опускания строки в списке автощзамены
-  Action_LineUp.Enabled:=(PageControl1.ActivePage.Caption=' списка автозамены')and sgAutoReplaceList.Visible and sgAutoReplaceList.Enabled;
-  Action_LineDown.Enabled:=Action_LineUp.Enabled;
-  // Action_LineUp.Visible:=Action_LineUp.Enabled;
-  // Action_LineDown.Visible:=Action_LineUp.Enabled;
+  Action_LineUp.Visible:=(PageControl1.ActivePage.Caption=' списка автозамены')and sgAutoReplaceList.Visible and sgAutoReplaceList.Enabled;
+  Action_LineDown.Visible:=Action_LineUp.Visible;
 end;
 
 procedure TOptionsForm.FormCreate(Sender: TObject);
@@ -720,6 +728,14 @@ begin
     begin
     end;
 
+  if PageControl1.ActivePage.Caption=' процедуры логирования' then
+    begin
+      chkbxStoreLastLogin.Checked:=False;
+      chkbxStoreLastPassword.Checked:=False;
+      chkbxAutoLogon.Checked:=False;
+      chkbxAutoLogon.Enabled:=False;
+    end;
+
   if PageControl1.ActivePage.Caption=' подключения к серверу базы данных услуги' then
     begin
       vleRNE4SERVER.Cells[1, 1]:='RNE4SERVER';
@@ -763,6 +779,40 @@ begin
     end;
 
   LogThis('Настройки '+PageControl1.ActivePage.Caption+' были сброшены пользователем к значениям по умолчанию.', LogGroupGUID, lmtInfo);
+
+  ProcedureFooter(LogGroupGUID);
+end;
+
+procedure TOptionsForm.chkbxStoreLastLoginClick(Sender: TObject);
+const
+  LogGroupGUID: string='{94563798-81ED-4231-969F-E2CEAC81DD43}';
+var
+  bUseLog: boolean;
+begin
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxStoreLastLogin.Caption, LogGroupGUID);
+
+  chkbxAutoLogon.Enabled:=chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked and chkbxStoreLastPassword.Enabled and chkbxStoreLastPassword.Checked;
+  if not chkbxAutoLogon.Enabled then
+    chkbxAutoLogon.Checked:=False;
+  LogThis('Флажок "'+chkbxStoreLastLogin.Caption+'"'+Routines_GetConditionalMessage(chkbxStoreLastLogin.Checked, 'в', 'от')+'ключен.', LogGroupGUID, lmtInfo);
+  LogThis('Флажок "'+chkbxAutoLogon.Caption+'"'+Routines_GetConditionalMessage(chkbxAutoLogon.Checked, 'в', 'от')+'ключен.', LogGroupGUID, lmtInfo);
+
+  ProcedureFooter(LogGroupGUID);
+end;
+
+procedure TOptionsForm.chkbxStoreLastPasswordClick(Sender: TObject);
+const
+  LogGroupGUID: string='{49F6B4E7-D782-4C9E-A0C4-C4610FE43097}';
+var
+  bUseLog: boolean;
+begin
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxStoreLastPassword.Caption, LogGroupGUID);
+
+  chkbxAutoLogon.Enabled:=chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked and chkbxStoreLastPassword.Enabled and chkbxStoreLastPassword.Checked;
+  if not chkbxAutoLogon.Enabled then
+    chkbxAutoLogon.Checked:=False;
+  LogThis('Флажок "'+chkbxStoreLastPassword.Caption+'"'+Routines_GetConditionalMessage(chkbxStoreLastPassword.Checked, 'в', 'от')+'ключен.', LogGroupGUID, lmtInfo);
+  LogThis('Флажок "'+chkbxAutoLogon.Caption+'"'+Routines_GetConditionalMessage(chkbxAutoLogon.Checked, 'в', 'от')+'ключен.', LogGroupGUID, lmtInfo);
 
   ProcedureFooter(LogGroupGUID);
 end;

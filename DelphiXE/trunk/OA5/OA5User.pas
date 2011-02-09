@@ -23,18 +23,33 @@ type
     property Logged: boolean read FLogged write SetLogged default False;
     property ID: integer read FID write SetID nodefault;
     property Login: string read FLogin write SetLogin nodefault;
-    property Password: string read FPassword write SetPassword;
-    property Fullname: string read FFullname write FFullname;
-    property Position: string read FPosition write FPosition;
-    property Phone: string read FPhone write SetPhone;
+    property Password: string read FPassword write SetPassword nodefault;
+    property Fullname: string read FFullname write FFullname nodefault;
+    property Position: string read FPosition write FPosition nodefault;
+    property Phone: string read FPhone write SetPhone nodefault;
     property Editor: boolean read FEditor write FEditor default False;
     property Administrator: boolean read FAdministrator write FAdministrator default False;
+    constructor Create;
   end;
 
 implementation
 
 uses
   SysUtils;
+
+constructor TUser.Create;
+begin
+  inherited;
+  FLogged:=False;
+  FID:=0;
+  FLogin:='';
+  FPassword:='';
+  FFullname:='';
+  FPosition:='';
+  FPhone:='';
+  FEditor:=False;
+  FAdministrator:=False;
+end;
 
 procedure TUser.SetID(const Value: integer);
 begin

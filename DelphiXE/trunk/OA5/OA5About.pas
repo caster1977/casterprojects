@@ -56,8 +56,8 @@ implementation
 {$R *.dfm}
 
 uses
-  OA5Main,
   ShellAPI,
+  OA5Main,
   OA5Consts;
 
 procedure TAboutForm.LogThis(const aMessage, aLogGroupGUID: string; aMessageType: TLogMessagesType);
