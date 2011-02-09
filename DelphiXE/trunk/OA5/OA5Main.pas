@@ -388,6 +388,7 @@ var
 begin
   bFirstRun:=True;
   CurrentUser:=TUser.Create;
+  Configuration:=TConfiguration.Create;
 
   // предварительная инициализация компонентов
   THackControl(pbMain).SetParent(StatusBar1);
@@ -403,6 +404,7 @@ end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
+  Configuration.Destroy;
   CurrentUser.Destroy;
 end;
 
