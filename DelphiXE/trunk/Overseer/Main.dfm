@@ -197,10 +197,6 @@ object MainForm: TMainForm
           object tsActions: TTabSheet
             Caption = #1055#1088#1086#1075#1088#1077#1089#1089' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103' '#1076#1077#1081#1089#1090#1074#1080#1081
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object lvActionList: TListViewEx
               Left = 0
               Top = 0
@@ -291,10 +287,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-01-...'
           ImageIndex = 7
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_01: TGroupBox
             Left = 0
             Top = 0
@@ -440,10 +432,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-02-...'
           ImageIndex = 1
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_02: TGroupBox
             Left = 0
             Top = 0
@@ -551,10 +539,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-04-...'
           ImageIndex = 8
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_04: TGroupBox
             Left = 0
             Top = 0
@@ -747,10 +731,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-05-...'
           ImageIndex = 5
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_05: TGroupBox
             Left = 0
             Top = 0
@@ -825,10 +805,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-07-...'
           ImageIndex = 2
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_07: TGroupBox
             Left = 0
             Top = 0
@@ -863,10 +839,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-08-...'
           ImageIndex = 6
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
         end
         object ts_SIC_09: TTabSheet
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-09-...'
@@ -1080,10 +1052,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-10-...'
           ImageIndex = 10
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_10: TGroupBox
             Left = 0
             Top = 0
@@ -1277,10 +1245,6 @@ object MainForm: TMainForm
             'yyyymmdd>, <i/o>rd_<yyyy>[mm][dd][_[yyyy][mm][dd]])'
           ImageIndex = 6
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_XRD: TGroupBox
             Left = 0
             Top = 0
@@ -1410,10 +1374,6 @@ object MainForm: TMainForm
           Caption = #1057#1085#1103#1090#1080#1077' '#1086#1087#1083#1072#1090#1099' '#1079#1072' '#1079#1074#1086#1085#1086#1082' '#1085#1072' '#1075#1086#1083#1086#1089#1086#1074#1099#1077' '#1089#1083#1091#1078#1073#1099' '#1057#1048#1062
           ImageIndex = 9
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object GroupBox3: TGroupBox
             Left = 0
             Top = 0
@@ -1609,10 +1569,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1092#1072#1081#1083#1086#1074' '#1074#1099#1075#1088#1091#1079#1082#1080' '#1076#1083#1103' '#1040#1057#1050#1056
           ImageIndex = 11
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object GroupBox4: TGroupBox
             Left = 0
             Top = 0
@@ -2244,7 +2200,7 @@ object MainForm: TMainForm
     Left = 384
     Top = 424
     Bitmap = {
-      494C01012200A000400510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01012200A000440510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000009000000001002000000000000090
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000ECA6A6FFECA6A6FFCF8C8CFF0000
@@ -3994,7 +3950,7 @@ object MainForm: TMainForm
     Left = 256
     Top = 424
     Bitmap = {
-      494C010103000800000110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000800040110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
