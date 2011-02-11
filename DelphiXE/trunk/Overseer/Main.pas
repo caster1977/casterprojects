@@ -1722,6 +1722,7 @@ const
 var
   sErrorMessage: string;
   bError: boolean;
+  sDirectory: string;
 begin
   ProcedureHeader('Процедура открытия папки сохранённых отчётов', LogGroupGUID);
   bError:=False;
@@ -1729,14 +1730,19 @@ begin
   LogThis('Производится попытка открытия папки сохранённых отчётов...', LogGroupGUID, lmtInfo);
   case Configuration.trfReportFolder of
     rfTempFolder:
-      ShellExecute(Application.Handle, 'open', PWideChar(Configuration.sTempFolder), nil, nil, SW_MAXIMIZE);
+      sDirectory:=Configuration.sTempFolder;
     rfApplicationFolder:
-      ShellExecute(Application.Handle, 'open', PWideChar(Configuration.sApplicationFolder), nil, nil, SW_MAXIMIZE);
+      sDirectory:=Configuration.sApplicationFolder;
     rfCustomFolder:
-      ShellExecute(Application.Handle, 'open', PWideChar(Configuration.sCustomFolder), nil, nil, SW_MAXIMIZE);
+      sDirectory:=Configuration.sCustomFolder;
   else
     Routines_GenerateError('Возникла ошибка при определении пути папки сохранённых отчётов!', sErrorMessage, bError);
   end;
+
+  if DirectoryExists(sDirectory) then
+    ShellExecute(Application.Handle, 'open', PWideChar(sDirectory), nil, nil, SW_MAXIMIZE)
+  else
+    Routines_GenerateError('Папка сохранённых отчётов не существует! Проверьте правильность указанного пути ['+sDirectory+']!', sErrorMessage, bError);
 
   PreFooter(Handle, bError, sErrorMessage, LogGroupGUID);
   ProcedureFooter(LogGroupGUID);
@@ -3658,7 +3664,8 @@ begin
                                       Routines_GenerateError('Возникла ошибка при попытке проверки подключения к серверу MySQL!', sErrorMessage, bError)
                                     else
                                       begin
-                                        q:='SELECT * FROM '+sDBSERVER_XRD_Location+'.'+LowerCase(slXRDMissedList[iMissedListCounter])+' GROUP BY ani, ddi, datum, vrijeme, dur, rc, srv, rm, izg, izgnum, druga_info, v_oper, v_mreza, qid, ccid, d_qid, d_ccid, qdur;';
+                                        q:='SELECT * FROM '+sDBSERVER_XRD_Location+'.'+LowerCase(slXRDMissedList[iMissedListCounter])+
+                                          ' GROUP BY ani, ddi, datum, vrijeme, dur, rc, srv, rm, izg, izgnum, druga_info, v_oper, v_mreza, qid, ccid, d_qid, d_ccid, qdur;';
                                         LogThis(q, LogGroupGUID, lmtSQL);
                                         if mysql_real_query(Configuration.DBServer.hConnection, PAnsiChar(AnsiString(q)), Length(q))<>0 then
                                           Routines_GenerateError('Возникла ошибка при выполнении последнего SQL-запроса!', sErrorMessage, bError)
