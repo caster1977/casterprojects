@@ -1,0 +1,46 @@
+<?
+$conn_id=ftp_connect("10.1.1.2");
+$login_result=ftp_login($conn_id, "root", "kron");
+if ((!$conn_id)||(!$login_result)) die("Не удалось установить соединение с FTP сервером $ftp_server под именем $ftp_user_name!\r\n"); else print "Успешно установлено соединение с FTP сервером DBSERVER.\r\n";
+// копирование файлов таблиц prijave, prijave_q с DBSERVER-а на FILESERVER
+if (ftp_chdir($conn_id, "shared_disk/usr/local/var/test/")) print "Выполнен переход в директорию '" . ftp_pwd($conn_id) . "'.\r\n"; else print "Не удалось сменить директорию!\r\n";
+if (ftp_get($conn_id, "d:\\WWW\\mysql\\data\\ARJ\\oldformat_prijave.frm", "prijave.frm", FTP_BINARY)) print "Файл 'prijave.frm' успешно скопирован в файл 'oldformat_prijave.frm'.\r\n"; else die("Не удалось скопировать файл 'prijave.frm' в файл 'oldformat_prijave.frm'.\r\n");
+if (ftp_get($conn_id, "d:\\WWW\\mysql\\data\\ARJ\\oldformat_prijave.ISD", "prijave.ISD", FTP_BINARY)) print "Файл 'prijave.ISD' успешно скопирован в файл 'oldformat_prijave.ISD'.\r\n"; else die("Не удалось скопировать файл 'prijave.ISD' в файл 'oldformat_prijave.ISD'.\r\n");
+if (ftp_get($conn_id, "d:\\WWW\\mysql\\data\\ARJ\\oldformat_prijave.ISM", "prijave.ISM", FTP_BINARY)) print "Файл 'prijave.ISM' успешно скопирован в файл 'oldformat_prijave.ISM'.\r\n"; else die("Не удалось скопировать файл 'prijave.ISM' в файл 'oldformat_prijave.ISM'.\r\n");
+if (ftp_get($conn_id, "d:\\WWW\\mysql\\data\\ARJ\\oldformat_prijave_q.frm", "prijave_q.frm", FTP_BINARY)) print "Файл 'prijave_q.frm' успешно скопирован в файл 'oldformat_prijave_q.frm'.\r\n"; else die("Не удалось скопировать файл 'prijave.frm' в файл 'oldformat_prijave_q.frm'.\r\n");
+if (ftp_get($conn_id, "d:\\WWW\\mysql\\data\\ARJ\\oldformat_prijave_q.ISD", "prijave_q.ISD", FTP_BINARY)) print "Файл 'prijave_q.ISD' успешно скопирован в файл 'oldformat_prijave_q.ISD'.\r\n"; else die("Не удалось скопировать файл 'prijave.ISD' в файл 'oldformat_prijave_q.ISD'.\r\n");
+if (ftp_get($conn_id, "d:\\WWW\\mysql\\data\\ARJ\\oldformat_prijave_q.ISM", "prijave_q.ISM", FTP_BINARY)) print "Файл 'prijave_q.ISM' успешно скопирован в файл 'oldformat_prijave_q.ISM'.\r\n"; else die("Не удалось скопировать файл 'prijave.ISM' в файл 'oldformat_prijave_q.ISM'.\r\n");
+// расчёт прошлого дня
+$ldd=date("d",mktime(0,0,0,date("m"),date("d"),date("Y"))-((mktime(0,0,0,1,2,2000)-mktime(0,0,0,1,1,2000)))); // определение числа вчерашней даты
+$ldm=date("m",mktime(0,0,0,date("m"),date("d"),date("Y"))-((mktime(0,0,0,1,2,2000)-mktime(0,0,0,1,1,2000)))); // определение месяца вчерашней даты
+$ldy=date("Y",mktime(0,0,0,date("m"),date("d"),date("Y"))-((mktime(0,0,0,1,2,2000)-mktime(0,0,0,1,1,2000)))); // определение года вчерашней даты
+// копирование файлов таблицы ird_ за прошедший день с DBSERVER-а на FILESERVER
+if (ftp_chdir($conn_id, "../statistika/")) print "Выполнен переход в директорию '" . ftp_pwd($conn_id) . "'.\r\n"; else print "Не удалось сменить директорию!\r\n";
+if (ftp_get($conn_id, "d:\\WWW\mysql\\data\\ARJ\\oldformat_ird_$ldy$ldm$ldd.frm", "ird_$ldy$ldm$ldd.frm", FTP_BINARY)) print "Файл 'ird_$ldy$ldm$ldd.frm' успешно скопирован в файл 'oldformat_ird_$ldy$ldm$ldd.frm'.\r\n"; else die("Не удалось скопировать файл 'ird_$ldy$ldm$ldd.frm' в файл 'oldformat_ird_$ldy$ldm$ldd.frm'.\r\n");
+if (ftp_get($conn_id, "d:\\WWW\mysql\\data\\ARJ\\oldformat_ird_$ldy$ldm$ldd.ISD", "ird_$ldy$ldm$ldd.ISD", FTP_BINARY)) print "Файл 'ird_$ldy$ldm$ldd.ISD' успешно скопирован в файл 'oldformat_ird_$ldy$ldm$ldd.ISD'.\r\n"; else die("Не удалось скопировать файл 'ird_$ldy$ldm$ldd.ISD' в файл 'oldformat_ird_$ldy$ldm$ldd.ISD'.\r\n");
+if (ftp_get($conn_id, "d:\\WWW\mysql\\data\\ARJ\\oldformat_ird_$ldy$ldm$ldd.ISM", "ird_$ldy$ldm$ldd.ISM", FTP_BINARY)) print "Файл 'ird_$ldy$ldm$ldd.ISM' успешно скопирован в файл 'oldformat_ird_$ldy$ldm$ldd.ISM'.\r\n"; else die("Не удалось скопировать файл 'ird_$ldy$ldm$ldd.ISM' в файл 'oldformat_ird_$ldy$ldm$ldd.ISM'.\r\n");
+if (ftp_get($conn_id, "d:\\WWW\mysql\\data\\ARJ\\oldformat_ord_$ldy$ldm$ldd.frm", "ord_$ldy$ldm$ldd.frm", FTP_BINARY)) print "Файл 'ord_$ldy$ldm$ldd.frm' успешно скопирован в файл 'oldformat_ord_$ldy$ldm$ldd.frm'.\r\n"; else die("Не удалось скопировать файл 'ord_$ldy$ldm$ldd.frm' в файл 'oldformat_ord_$ldy$ldm$ldd.frm'.\r\n");
+if (ftp_get($conn_id, "d:\\WWW\mysql\\data\\ARJ\\oldformat_ord_$ldy$ldm$ldd.ISD", "ord_$ldy$ldm$ldd.ISD", FTP_BINARY)) print "Файл 'ord_$ldy$ldm$ldd.ISD' успешно скопирован в файл 'oldformat_ord_$ldy$ldm$ldd.ISD'.\r\n"; else die("Не удалось скопировать файл 'ord_$ldy$ldm$ldd.ISD' в файл 'oldformat_ord_$ldy$ldm$ldd.ISD'.\r\n");
+if (ftp_get($conn_id, "d:\\WWW\mysql\\data\\ARJ\\oldformat_ord_$ldy$ldm$ldd.ISM", "ord_$ldy$ldm$ldd.ISM", FTP_BINARY)) print "Файл 'ord_$ldy$ldm$ldd.ISM' успешно скопирован в файл 'oldformat_ord_$ldy$ldm$ldd.ISM'.\r\n"; else die("Не удалось скопировать файл 'ord_$ldy$ldm$ldd.ISM' в файл 'oldformat_ord_$ldy$ldm$ldd.ISM'.\r\n");
+ftp_quit($conn_id);
+// преобразование файлов в новый формат при помощи серии MySQL-запросов
+$MYSQLCON=MYSQL_CONNECT("10.1.1.250","root","sqladmin") or die("Can't create connection");
+MYSQL_SELECT_DB("ARJ") or die("Не удалось установить подключение к БД ARJ на MySQL-сервере FILESERVER");
+print "Установлено подключение к БД ARJ на MySQL-сервере FILESERVER.\r\n";
+// преобразование файлов prijave, prijave_q
+MYSQL_QUERY("DROP TABLE IF EXISTS ARJ.prijave, ARJ.prijave_q;");
+MYSQL_QUERY("CREATE TABLE ARJ.prijave (rbr int(8) NOT NULL auto_increment, sifra char(20) NOT NULL default '', rm char(6) default NULL, datpoc date NOT NULL default '0000-00-00', vripoc char(8) default NULL, datzav date default NULL, vrizav char(8) default NULL, stiglo decimal(4,0) default NULL, obradio decimal(4,0) default NULL, tsred decimal(4,0) default NULL, kratki decimal(4,0) default NULL, orgset decimal(4,0) default NULL, connack decimal(4,0) default NULL, orgdur decimal(4,0) default NULL, paused decimal(7,0) default NULL, wait decimal(7,0) default NULL, trans decimal(4,0) default '0', wrap decimal(7,0) default NULL, nums char(30) default NULL, closed decimal(0,0) default '1', ccid decimal(3,0) default '1', PRIMARY KEY  (rbr), KEY sifra (sifra), KEY datpoc (datpoc)) TYPE=MyISAM PACK_KEYS=1;");
+MYSQL_QUERY("CREATE TABLE ARJ.prijave_q (sifra char(20) NOT NULL default '', rm char(6) default NULL, datpoc date NOT NULL default '0000-00-00', vripoc char(8) default NULL, datzav date default NULL, vrizav char(8) default NULL, stiglo decimal(4,0) default NULL, obradio decimal(4,0) default NULL, tsred decimal(4,0) default NULL, kratki decimal(4,0) default NULL, wait decimal(4,0) default NULL, odbio decimal(4,0) default NULL, trans decimal(4,0) default NULL, qid decimal(4,0) default NULL, ccid decimal(3,0) NOT NULL default '0', priority decimal(3,0) NOT NULL default '0', KEY sifra (sifra), KEY datpoc (datpoc)) TYPE=MyISAM PACK_KEYS=1;");
+MYSQL_QUERY("INSERT INTO ARJ.prijave SELECT * FROM ARJ.oldformat_prijave;");
+MYSQL_QUERY("INSERT INTO ARJ.prijave_q SELECT * FROM ARJ.oldformat_prijave_q;");
+MYSQL_QUERY("DROP TABLE IF EXISTS ARJ.oldformat_prijave, ARJ.oldformat_prijave_q;");
+// преобразование файлов ird_ и ord_ за прошедший день
+MYSQL_QUERY("DROP TABLE IF EXISTS ARJ.ird_$ldy$ldm$ldd, ARJ.ord_$ldy$ldm$ldd;");
+MYSQL_QUERY("CREATE TABLE ARJ.ird_$ldy$ldm$ldd (ani char(32) NOT NULL default '', ddi char(32) NOT NULL default '', datum date default NULL, vrijeme time default NULL, dur decimal(11,0) NOT NULL default '0', rc decimal(3,0) NOT NULL default '0', srv decimal(3,0) NOT NULL default '0', rm decimal(3,0) NOT NULL default '0', izg decimal(3,0) NOT NULL default '0', izgnum char(32) NOT NULL default '', druga_info decimal(3,0) NOT NULL default '0', v_oper char(8) default NULL, v_mreza char(8) default NULL, qid decimal(3,0) default NULL, ccid decimal(3,0) default NULL, d_qid decimal(3,0) default NULL, d_ccid decimal(3,0) default NULL, qdur decimal(11,0) NOT NULL default '0', KEY ani (ani(4)), KEY ddi (ddi(4))) TYPE=MyISAM PACK_KEYS=1;");
+MYSQL_QUERY("CREATE TABLE ARJ.ord_$ldy$ldm$ldd (ani char(32) NOT NULL default '', ddi char(32) NOT NULL default '', datum date default NULL, vrijeme time default NULL, dur decimal(11,0) NOT NULL default '0', rc decimal(3,0) NOT NULL default '0', srv decimal(3,0) NOT NULL default '0', rm decimal(3,0) NOT NULL default '0', izg decimal(3,0) NOT NULL default '0', izgnum char(32) NOT NULL default '', druga_info decimal(3,0) NOT NULL default '0', v_oper char(8) default NULL, v_mreza char(8) default NULL, qid decimal(3,0) default NULL, ccid decimal(3,0) default NULL, d_qid decimal(3,0) default NULL, d_ccid decimal(3,0) default NULL, qdur decimal(11,0) NOT NULL default '0', KEY ani (ani(4)), KEY ddi (ddi(4))) TYPE=MyISAM PACK_KEYS=1;");
+MYSQL_QUERY("INSERT INTO ARJ.ird_$ldy$ldm$ldd SELECT * FROM ARJ.oldformat_ird_$ldy$ldm$ldd;");
+MYSQL_QUERY("INSERT INTO ARJ.ord_$ldy$ldm$ldd SELECT * FROM ARJ.oldformat_ord_$ldy$ldm$ldd;");
+MYSQL_QUERY("DROP TABLE IF EXISTS ARJ.oldformat_ird_$ldy$ldm$ldd, ARJ.oldformat_ord_$ldy$ldm$ldd;");
+MYSQL_CLOSE($MYSQLCON);
+print "Все операции выполнены.\r\n";
+?>

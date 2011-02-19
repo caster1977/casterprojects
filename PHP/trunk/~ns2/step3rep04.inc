@@ -1,0 +1,1027 @@
+<?
+$DEBUG="on";
+
+function PrintMessage($at, $as, $bs)
+{
+  switch ($at):
+    case "ERROR":
+      $cf="white";
+      $cb="red";
+      break;
+    case "INFORMATION":
+      $cf="black";
+      $cb="yellow";
+      break;
+    case "QUERY":
+      $cf="black";
+      $cb="white";
+      break;
+    case "SUCCESS":
+      $cf="black";
+      $cb="green";
+      break;
+    default:
+      $cf="black";
+      $cb="gray";
+  endswitch;
+?>
+    <TABLE STYLE="margin: 3px 5px; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">
+      <TR>
+        <TD WIDTH="100" ALIGN="CENTER" STYLE="padding: 3px 5px; border-color: black; border-width: 1px; color: <?echo $cf;?>; background: <?echo $cb;?>; font-weight: bold;"><?echo $as;?></TD>
+        <TD STYLE="padding: 3px 5px;"><?echo $bs;?></TD>
+      </TR>
+    </TABLE>
+<?
+}
+
+function ShowErrorMessage($as, $rep, $time, $abd, $abm, $aby, $aed, $aem, $aey, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC)
+{
+?>
+    <FORM METHOD="GET" ACTION="" STYLE="margin: 15px 15px 0px 15px; padding-bottom: 15px;">
+      <CENTER> <!-- Данный тэг необходим для выравнивания таблицы по центру в браузере MOZILLA -->
+      <TABLE BGCOLOR="WHITE" WIDTH="640" ALIGN="CENTER" STYLE="border-color: black; border-width: 3; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;"> <!-- В данной строке выравнивание таблицы по центру - ALIGN="CENTER" корректно обрабатывается IE и OPERA - в MOZILLA не работает! -->
+        <THEAD ALIGN="CENTER" VALIGN="MIDDLE">
+          <TR>
+            <TD WIDTH="13"></TD>
+            <TD WIDTH="13"></TD>
+            <TD HEIGHT="15"></TD>
+            <TD WIDTH="13"></TD>
+            <TD WIDTH="13"></TD>
+          </TR>
+        </THEAD>
+        <TFOOT ALIGN="CENTER" VALIGN="MIDDLE">
+          <TR>
+            <TD HEIGHT="15" COLSPAN="5"></TD>
+          </TR>
+          <TR>
+            <TD COLSPAN="5">
+              <INPUT TYPE="HIDDEN" NAME="step" VALUE="2">
+              <INPUT TYPE="HIDDEN" NAME="rep" VALUE="<?echo $rep;?>">
+              <INPUT TYPE="HIDDEN" NAME="time" VALUE="<?echo $time;?>">
+              <INPUT TYPE="HIDDEN" NAME="abd" VALUE="<?echo $abd;?>">
+              <INPUT TYPE="HIDDEN" NAME="abm" VALUE="<?echo $abm;?>">
+              <INPUT TYPE="HIDDEN" NAME="aby" VALUE="<?echo $aby;?>">
+              <INPUT TYPE="HIDDEN" NAME="aed" VALUE="<?echo $aed;?>">
+              <INPUT TYPE="HIDDEN" NAME="aem" VALUE="<?echo $aem;?>">
+              <INPUT TYPE="HIDDEN" NAME="aey" VALUE="<?echo $aey;?>">
+<?
+  if ($maker!=""):
+?>
+              <INPUT TYPE="HIDDEN" NAME="maker" VALUE="<?echo $maker;?>">
+<?
+  endif;
+  if ($makerstate!=""):
+?>
+              <INPUT TYPE="HIDDEN" NAME="makerstate" VALUE="<?echo $makerstate;?>">
+<?
+  endif;
+  if ($makerphone!=""):
+?>
+              <INPUT TYPE="HIDDEN" NAME="makerphone" VALUE="<?echo $makerphone;?>">
+<?
+  endif;
+  if ($action!=""):
+?>
+              <INPUT TYPE="HIDDEN" NAME="action" VALUE="<?echo $action;?>">
+<?
+  endif;
+  if ($EMAIL1Addr!=""):
+?>
+              <INPUT TYPE="HIDDEN" NAME="EMAIL1Addr" VALUE="<?echo $EMAIL1Addr;?>">
+<?
+  endif;
+  if ($EMAIL1Name!=""):
+?>
+              <INPUT TYPE="HIDDEN" NAME="EMAIL1Name" VALUE="<?echo $EMAIL1Name;?>">
+<?
+  endif;
+  if ($EMAIL2Addr!=""):
+?>
+              <INPUT TYPE="HIDDEN" NAME="EMAIL2Addr" VALUE="<?echo $EMAIL2Addr;?>">
+<?
+  endif;
+  if ($EMAIL2Name!=""):
+?>
+              <INPUT TYPE="HIDDEN" NAME="EMAIL2Name" VALUE="<?echo $EMAIL2Name;?>">
+<?
+  endif;
+  if ($EMAIL3Addr!=""):
+?>
+              <INPUT TYPE="HIDDEN" NAME="EMAIL3Addr" VALUE="<?echo $EMAIL3Addr;?>">
+<?
+  endif;
+  if ($EMAIL3Name!=""):
+?>
+              <INPUT TYPE="HIDDEN" NAME="EMAIL3Name" VALUE="<?echo $EMAIL3Name;?>">
+<?
+  endif;
+  if ($RECALC!=""):
+?>
+              <INPUT TYPE="HIDDEN" NAME="RECALC" VALUE="<?echo $RECALC;?>">
+<?
+  endif;
+?>
+              <INPUT TYPE="SUBMIT" VALUE="<<< Назад" STYLE="border-color: black; border-width: 2;" ONMOUSEOVER="window.status='Для возврата к шагу выбора параметров отчёта нажмите кнопку &laquo;Назад&raquo;';" ONMOUSEOUT="window.status='';">
+            </TD>
+          </TR>
+          <TR>
+            <TD HEIGHT="15" COLSPAN="5"></TD>
+          </TR>
+        </TFOOT>
+        <TBODY ALIGN="CENTER" VALIGN="MIDDLE">
+          <TR>
+            <TD ROWSPAN="5"></TD>
+            <TD WIDTH="13" ROWSPAN="5" BGCOLOR="red"></TD>
+            <TD HEIGHT="15" BGCOLOR="red"></TD>
+            <TD WIDTH="13" ROWSPAN="5" BGCOLOR="red"></TD>
+            <TD ROWSPAN="5"></TD>
+          </TR>          
+          <TR>
+            <TD ALIGN="CENTER" BGCOLOR="red" STYLE="color: white;"><B>Ошибка!</B></TD>
+          </TR>
+          <TR>
+            <TD HEIGHT="15" BGCOLOR="red"></TD>
+          </TR>
+          <TR>
+            <TD STYLE="padding: 3px 5px;"><?echo $as;?><BR><BR>Нажмите кнопку <B>&laquo;Назад&raquo;</B> для возврата к предыдущему шагу формирования отчёта.</TD>
+          </TR>
+          <TR>
+            <TD HEIGHT="15" BGCOLOR="red"></TD>
+          </TR>
+        </TBODY>
+      </TABLE>
+      </CENTER>
+    </FORM> 
+<?
+}
+
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+  <HEAD>
+    <TITLE><?echo $reports[4]["Наименование"];?></TITLE>
+    <META CONTENT="no-cache" HTTP-EQUIV="pragma">
+    <META CONTENT="no-cache" HTTP-EQUIV="cache-control">
+    <META CONTENT="Dynamic" NAME="Document-state">
+    <META CONTENT="text/html; charset=Windows-1251" HTTP-EQUIV="Content-Type">
+    <LINK REL="home" HREF="http://10.1.1.250/ns2/">
+    <LINK REL="first" HREF="http://10.1.1.250/ns2/">
+    <LINK REL="previous" HREF="http://10.1.1.250/ns2/?step=2&amp;rep=<?echo $rep;?>&amp;time=<?echo $time;
+      if ($abd!=""): echo "&amp;abd=$abd"; endif;
+      if ($abm!=""): echo "&amp;abm=$abm"; endif;
+      if ($aby!=""): echo "&amp;aby=$aby"; endif;
+      if ($aed!=""): echo "&amp;aed=$aed"; endif;
+      if ($aem!=""): echo "&amp;aem=$aem"; endif;
+      if ($aey!=""): echo "&amp;aey=$aey"; endif;
+      if ($maker!=""): echo "&amp;maker=$maker"; endif;
+      if ($makerstate!=""): echo "&amp;makerstate=$makerstate"; endif;
+      if ($makerphone!=""): echo "&amp;makerphone=$makerphone"; endif;
+      if ($action!=""): echo "&amp;action=$action"; endif;
+      if ($EMAIL1Addr!=""): echo "&amp;EMAIL1Addr=$EMAIL1Addr"; endif;
+      if ($EMAIL1Name!=""): echo "&amp;EMAIL1Name=$EMAIL1Name"; endif;
+      if ($EMAIL2Addr!=""): echo "&amp;EMAIL2Addr=$EMAIL2Addr"; endif;
+      if ($EMAIL2Name!=""): echo "&amp;EMAIL2Name=$EMAIL2Name"; endif;
+      if ($EMAIL3Addr!=""): echo "&amp;EMAIL3Addr=$EMAIL3Addr"; endif;
+      if ($EMAIL3Name!=""): echo "&amp;EMAIL3Name=$EMAIL3Name"; endif;
+      if ($RECALC!=""): echo "&amp;RECALC=$RECALC"; endif;?>">
+    <LINK REL="author" HREF="http://vladracoola.by.ru/index1.html">
+    <STYLE MEDIA="screen, print" TYPE="text/css">
+      * {
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 8pt;
+        padding: 0;
+        margin: 0;
+        border-color: transparent;
+        border-width: 0;
+        }
+      TABLE, TD {
+        border-style: solid;
+      }
+    </STYLE>
+  </HEAD>
+  <BODY<?if (($DEBUG=="on")||($action=="email")):?> BGCOLOR="gainsboro"<?endif;?>>
+<?
+      // валидация временного промежутка
+      if (($time!="yesterday")&&($time!="today")&&($time!="lastweek")&&($time!="another")): // если временной промежуток не попадает ни под один из дозволенных - вывести сообщение об ошибке и остановить программу
+        ShowErrorMessage("Задан некорректный временной промежуток!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+        die("");
+      endif;
+      // вывод отладочной информации в случае необходимости
+      if ($DEBUG=="on"):
+        if (($time=="yesterday")||($time=="today")||(($time=="another")&&($startday==$stopday)&&($startmonth==$stopmonth)&&($startyear==$stopyear))):
+          PrintMessage("INFORMATION", "Info", "Выбранный Вами временной период - <B>$startday&nbsp;$months2[$startmonth]&nbsp;$startyear&nbsp;года</B>.");
+        elseif (($time=="lastweek")||($time=="another")):
+          PrintMessage("INFORMATION", "Info", "Выбранный Вами временной период - с <B>$startday&nbsp;$months2[$startmonth]&nbsp;$startyear&nbsp;года</B> по <B>$stopday&nbsp;$months2[$stopmonth]&nbsp;$stopyear&nbsp;года</B>.");
+        endif;
+      endif;
+      // если был выбран произвольный промежуток дат, проводим валидацию дат
+      if ($time=="another"): 
+        if (checkdate($startmonth,$startday,$startyear)<>1): // если была выбрана несуществующая начальная дата
+          ShowErrorMessage("Задана несуществующая начальная дата: <B>$startday&nbsp;".$months2[$startmonth]."&nbsp;$startyear&nbsp;года</B>!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+          die("");
+        endif;
+        if (checkdate($stopmonth,$stopday,$stopyear)<>1): // если была выбрана несуществующая конечная дата
+          ShowErrorMessage("Задана несуществующая конечная дата: <B>$stopday&nbsp;".$months2[$stopmonth]."&nbsp;$stopyear&nbsp;года</B>!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+          die("");
+        endif;
+        if ((mktime(0,0,0,$stopmonth,$stopday,$stopyear)-mktime(0,0,0,$startmonth,$startday,$startyear))<0): // если начальная дата позднее, чем конечная
+          ShowErrorMessage("Задан некорректный диапазон дат: начальная дата (<B>$startday&nbsp;".$months2[$startmonth]."&nbsp;$startyear&nbsp;года</B>) является более поздней, чем конечная дата (<B>$stopday&nbsp;".$months2[$stopmonth]."&nbsp;$stopyear&nbsp;года</B>)!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+          die("");
+        endif;
+        if ((mktime(0,0,0,$startmonth,$startday,$startyear)-mktime(0,0,0,$m,$d,$y))>0): // если начальная "указанная" дата больше, чем текущая, вывести сообщение об ошибке и остановить программу
+          ShowErrorMessage("Выбранная вами начальная дата (<B>$startday&nbsp;".$months2[$startmonth]."&nbsp;$startyear&nbsp;года</B>) больше текущей (<B>$d&nbsp;".$months2[$m]."&nbsp;$y&nbsp;года</B>)!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+          die("");
+        endif;
+        if ((mktime(0,0,0,$stopmonth,$stopday,$stopyear)-mktime(0,0,0,$m,$d,$y))>0): // если конечная "указанная" дата больше, чем текущая, вывести сообщение об ошибке и остановить программу
+          ShowErrorMessage("Выбранная вами конечная дата (<B>$startday&nbsp;".$months2[$startmonth]."&nbsp;$startyear&nbsp;года</B>) больше текущей (<B>$d&nbsp;".$months2[$m]."&nbsp;$y&nbsp;года</B>)!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+          die("");
+        endif;
+      endif;
+      // если начальная дата или конечная дата равны текущей, и начальная и текущая даты не совпадают, выдать сообщение об ошибке и завершить работу
+      if (($time=="today")||(($time=="another")&&($startday==$stopday)&&($startmonth==$stopmonth)&&($startyear==$stopyear)&&($startday==$d)&&($startmonth==$m)&&($startyear==$y))):
+        $thisdayrep=1; // устанавливаем флаг, означающий, что отчёт нужен за текущий день
+        if ($DEBUG=="on"):
+          PrintMessage("INFORMATION", "Info", "Вы выбрали для формирования отчёта текущую дату - <B>$startday&nbsp;".$months2[$startmonth]."&nbsp;$startyear&nbsp;года</B>.");
+        endif;
+      elseif ((($startday==$d)&&($startmonth==$m)&&($startyear==$y))||(($stopday==$d)&&($stopmonth==$m)&&($stopyear==$y))):
+        $s="";
+        if (($startday!=$ldd)||($startmonth!=$ldm)||($startyear!=$ldy)):
+          $s="&nbsp;-&nbsp;$ldd&nbsp;".$months2[$ldm]."&nbsp;$ldy&nbsp;года";
+        endif;
+        ShowErrorMessage("Извините, но формирование отчёта за указанный промежуток времени невозможно: сформировать отчёт за все указанные предыдущие даты (<B>$startday&nbsp;".$months2[$startmonth]."&nbsp;$startyear&nbsp;года$s</B>) можно только отдельно от текущей даты (<B>$d&nbsp;".$months2[$m]."&nbsp;$y&nbsp;года</B>)!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+        die("");
+      else:
+        $thisdayrep=0; // устанавливаем флаг, означающий, что отчёт нужен за прошедшие дни
+        if ($DEBUG=="on"):
+          $s="";
+          if (($startday==$stopday)&&($startmonth==$stopmonth)&&($startyear==$stopyear)):
+            PrintMessage("INFORMATION", "Info", "Вы выбрали для формирования отчёта прошедшую дату - <B>$startday&nbsp;".$months2[$startmonth]."&nbsp;$startyear&nbsp;года</B>.");
+          else:
+            PrintMessage("INFORMATION", "Info", "Вы выбрали для формирования отчёта прошедшие даты - <B>с $startday&nbsp;".$months2[$startmonth]."&nbsp;$startyear&nbsp;года по $stopday&nbsp;".$months2[$stopmonth]."&nbsp;$stopyear&nbsp;года</B>.");
+          endif;
+        endif;
+      endif;
+      // подсчитываем количество дней, входящий в период и помещаем его в переменную $daycount
+      $i=mktime(1,0,0,$stopmonth+0,$stopday+0,$stopyear+0)-mktime(0,0,0,$startmonth+0,$startday+0,$startyear+0);
+      $daycount=0;
+      while ($i>=0):
+        $daycount++;
+        $i=$i-(mktime(1,0,0,1,2,2000)-mktime(1,0,0,1,1,2000));
+      endwhile;
+      if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", "Количество дней входящих в расчётный период: <B>$daycount</B>."); endif;
+      switch ($action):
+        case "print": $s="визуальный просмотр, подготовка к сохранению на диск либо к печати"; break;
+        case "email": $s="отправка по электронной почте"; break;
+        default: $s=""; break;
+      endswitch;
+      if ($s!=""):
+        if ($DEBUG=="on"):
+          PrintMessage("INFORMATION", "Info", "Выбранное Вами действие - <B>$s</B>.");
+        endif;
+      else:
+        ShowErrorMessage("Выбрано некорректое действие!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+        die("");
+      endif;
+      // валидация адресов электронной почты, если выбранное действие - отправка на E-Mail
+      if ($action=="email"):
+        if ((($EMAIL1Addr!="")||($EMAIL1Name!=""))&&($DEBUG=="on")):
+          PrintMessage("INFORMATION", "Info", "Выбранные Вами параметры адресата #1 - <I>Куда:</I> <B>$EMAIL1Addr</B>, <I>Кому:</I> <B>$EMAIL1Name</B>.");
+        endif;
+        if ((($EMAIL2Addr!="")||($EMAIL2Name!=""))&&($DEBUG=="on")):
+          PrintMessage("INFORMATION", "Info", "Выбранные Вами параметры адресата #2 - <I>Куда:</I> <B>$EMAIL2Addr</B>, <I>Кому:</I> <B>$EMAIL2Name</B>.");
+        endif;
+        if ((($EMAIL3Addr!="")||($EMAIL3Name!=""))&&($DEBUG=="on")):
+          PrintMessage("INFORMATION", "Info", "Выбранные Вами параметры адресата #3 - <I>Куда:</I> <B>$EMAIL3Addr</B>, <I>Кому:</I> <B>$EMAIL3Name</B>.");
+        endif;
+        if (($EMAIL1Addr=="")&&($EMAIL2Addr=="")&&($EMAIL3Addr=="")):
+          ShowErrorMessage("Не задано ни одного адресата! Вы должны указать адрес(а) электронной почты (e-mail) в поле(ях) &laquo;<B>Кому</B>&raquo;.<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+          die("");
+        endif;
+      endif;
+      // составление списка необходимых дат периода
+      $period_strings=array();
+      $currentday=$startday+0;
+      $currentmonth=$startmonth+0;
+      $currentyear=$startyear+0;
+      for ($i=1;$i<=$daycount;$i++):
+        $nextday=date("d",mktime(1,0,0,$currentmonth,$currentday,$currentyear)+((mktime(0,0,0,1,2,2005)-mktime(0,0,0,1,1,2005))))+0;
+        $nextmonth=date("m",mktime(1,0,0,$currentmonth,$currentday,$currentyear)+((mktime(0,0,0,1,2,2005)-mktime(0,0,0,1,1,2005))))+0;
+        $nextyear=date("Y",mktime(1,0,0,$currentmonth,$currentday,$currentyear)+((mktime(0,0,0,1,2,2005)-mktime(0,0,0,1,1,2005))))+0;
+        $s="".$currentyear;
+        if ($currentmonth<10): $s.="0"; endif;
+        $s.=$currentmonth;
+        if ($currentday<10): $s.="0"; endif;
+        $s.=$currentday;
+        $period_strings[]=$s;
+        $currentday=$nextday;
+        $currentmonth=$nextmonth;
+        $currentyear=$nextyear;
+      endfor;
+      // вывод списка необходимых таблиц ird_ггггммдд в случае отладки
+      $s="Список подневных таблиц данных, необходимых для формирования отчёта:";
+      foreach ($period_strings as $i):
+        $s.="<BR><B>&nbsp;&nbsp;ird_".$i."<B>";
+      endforeach;
+      if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", $s); endif;
+      // устанавливаем настройки для подключения к серверу
+      if ($thisdayrep==1): // если отчёт нужно сформировать за текущий день
+        $HostName="10.1.1.2";
+        $DBName="statistika";
+      elseif ($thisdayrep==0): // если отчёт нужно сформировать за прошедшие дни
+        $HostName="10.1.1.250";
+        $DBName="newstat";
+      endif;
+      // попытка подключения к указанному серверу
+      $UserName="sel";
+      $Password="";
+      $MySQLConnection=@mysql_connect($HostName,$UserName,$Password);
+      // если не удалось подключиться к серверу - выдать сообщение и выйти по ошибке
+      if ($MySQLConnection==FALSE):
+        ShowErrorMessage("Не удалось установить подключение к MySQL-серверу <B>$HostName</B>!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+        die("");
+      endif;
+      // если не удалось выбрать базу данных на сервере - выйти по ошибке
+      if (@mysql_select_db("$DBName")==FALSE):
+        ShowErrorMessage("Не удалось установить подключение к БД <B>$DBName</B> на MySQL-сервере <B>$HostName</B>!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+        die("");
+      endif;
+      // если удалось подключиться и к серверу и к базе - выдать сообщение в режиме отладки
+      if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Удалось установить подключение к БД <B>$DBName</B> на MySQL-сервере <B>$HostName</B>."); endif;
+
+
+
+      if ($thisdayrep==1): // если отчёт нужно сформировать за текущий день
+        // проверяем на 10.1.1.2 наличие в БД statistika таблицы "ird_".$period_strings[0]
+        // если таблица не найдена - выходим по ошибке
+        // выбираем данные за текущий день и помещаем их сначала в массив, а затем в таблицу rep4 на 10.1.1.250 в БД newstat
+      elseif ($thisdayrep==0): // если отчёт нужно сформировать за прошедшие дни
+        // проверяем наличие на 10.1.1.250 в БД newstat таблицы rep4
+        // если $RECALC=="on" уничтожаем из таблицы rep4 все записи за указанный период
+        // в цикле перебираются все даты периода и данные поочерёдно ищутся в таблице rep4
+        // если данные не найдены - они беруться из ird_xx и irda_xx и заносятся в таблицу rep4
+      endif;
+      // данные выводятся на форму
+      // в конце всего - из таблицы rep4 удаляются все данные за текущий день
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+      // если нужно сформировать отчёт за текущую дату - подключаемся к 10.1.1.2
+      if (($time=="today")||(($time=="another")&&($startday==$stopday)&&($startmonth==$stopmonth)&&($startyear==$stopyear)&&($startday==$d)&&($startmonth==$m)&&($startyear==$y))):
+        // определение параметров для подключения
+        $HostName="10.1.1.2";
+        $DBName="statistika";
+      else: // иначе (за прошедшие даты) - подключаемся к 10.1.1.250
+        // определение параметров для подключения
+        $HostName="10.1.1.250";
+        $DBName="arj";
+      endif;
+      if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", $s); endif;
+      // подключение к MySQL-серверу
+      $UserName="sel";
+      $Password="";
+      $MySQLConnection=@mysql_connect($HostName,$UserName,$Password);
+      // если не удалось подключиться к серверу - выдать сообщение и выйти по ошибке
+      if ($MySQLConnection==FALSE):
+        ShowErrorMessage("Не удалось установить подключение к MySQL-серверу <B>$HostName</B>!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+        die("");
+      endif;
+      // если не удалось выбрать базу данных на сервере - выйти по ошибке
+      if (@mysql_select_db("$DBName")==FALSE):
+        ShowErrorMessage("Не удалось установить подключение к БД <B>$DBName</B> на MySQL-сервере <B>$HostName</B>!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+        die("");
+      endif;
+      // если удалось подключиться и к серверу и к базе - выдать сообщение в режиме отладки
+      if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Удалось установить подключение к БД <B>$DBName</B> на MySQL-сервере <B>$HostName</B>."); endif;
+      // если расчёт идёт за текущий день - значит достаточно проверить наличие всего одной таблицы - и если её нет - выйти по ошибке
+      if ($HostName=="10.1.1.2"):
+        $q="SHOW TABLES FROM ".$DBName." LIKE 'ird_".$period_strings[0]."';";
+        if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+        $table=mysql_query($q);
+        $num_rows=mysql_num_rows($table);
+        if ($num_rows==1):
+          if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Таблица данных <B>ird_".$period_strings[0]."</B> за текущий день (<B>$d&nbsp;".$months2[$m+0]."&nbsp;$y&nbsp;года</B>) найдена успешно."); endif;
+        elseif ($num_rows==0):
+          ShowErrorMessage("Таблица данных <B>ird_".$period_strings[0]."</B> за текущий день (<B>$d&nbsp;".$months2[$m+0]."&nbsp;$y&nbsp;года</B>) в базе данных <B>$DBName</B> не найдена!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+          die("");
+        else:
+          ShowErrorMessage("Сбой при попытке поиска таблицы данных <B>ird_".$period_strings[0]."</B> за текущий день (<B>$d&nbsp;".$months2[$m+0]."&nbsp;$y&nbsp;года</B>) в базе данных <B>$DBName</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+          die("");
+        endif;
+      endif;
+      if ($HostName=="10.1.1.250"):
+        foreach($period_strings as $i):
+          $q="SHOW TABLES FROM ".$DBName." LIKE 'ird_".$i."';";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          $table=mysql_query($q);
+          $num_rows=mysql_num_rows($table);
+          if ($num_rows==1):
+            if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Таблица данных <B>ird_$i</B> найдена успешно."); endif;
+          elseif ($num_rows==0):
+            // нужно вставить код поиска
+
+
+
+
+
+            ShowErrorMessage("Таблица данных <B>ird_$i</B> в базе данных <B>$DBName</B> не найдена!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+
+
+
+
+
+          else:
+            ShowErrorMessage("Сбой при попытке поиска таблицы данных <B>ird_$i</B> в базе данных <B>$DBName</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $startday, $startmonth, $startyear, $stopday, $stopmonth, $stopyear, $maker, $makerstate, $makerphone, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+          endif;
+        endforeach;
+      endif;
+*/
+
+
+
+
+
+
+
+
+
+
+/*
+      // проверка наличия таблицы данных отчёта
+      $q="SHOW TABLES FROM newstat LIKE 'rep4';";
+      if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+      $table=mysql_query($q);
+      $num_rows=mysql_num_rows($table);
+      if ($num_rows==1):
+        if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Таблица данных <B>newstat.rep5</B> найдена успешно."); endif;
+      elseif ($num_rows==0):
+        if ($DEBUG=="on"): PrintMessage("ERROR", "My-SQL", "Таблица данных <B>newstat.rep5</B> не найдена!"); endif;
+        // попытка создания таблицы newstat.rep5
+        if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", "Попытка создания таблицы данных <B>newstat.rep5</B>..."); endif;
+        $q="CREATE TABLE newstat.rep5 (ddi char(7) NOT NULL default '', yearmonth char(6) NOT NULL default '', call_quantity decimal(11,0) default NULL, call_sumtime decimal(13,0) default NULL, call_middletime decimal(13,2) default NULL, allowed_call_quantity decimal(11,0) default NULL, allowed_call_sumtime decimal(13,0) default NULL, allowed_call_middletime decimal(13,2) default NULL, nonallowed_call_percent decimal(5,2) default NULL) TYPE=MyISAM;";
+        if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+        mysql_query($q);
+        // повторная проверка наличия таблицы данных отчёта
+        $q="SHOW TABLES FROM newstat LIKE 'rep5';";
+        if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+        $table=mysql_query($q);
+        $num_rows=mysql_num_rows($table);
+        if ($num_rows==1):
+          if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Таблица данных <B>newstat.rep5</B> найдена успешно."); endif;
+        else:
+          ShowErrorMessage("Сбой при попытке создания таблицы данных <B>newstat.rep5</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+          die("");
+        endif;
+      else:
+        ShowErrorMessage("Сбой при попытке поиска таблицы данных за <B>".$months[$quart*3-(2-$i)]." $year года</B> (<B>".$irda_names[$i]."</B>) в базе данных <B>$DBName</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+        die("");
+      endif;
+
+*/
+
+
+
+/*
+
+      // проверка наличия таблицы данных отчёта
+      $q="SHOW TABLES FROM newstat LIKE 'rep5';";
+      if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+      $table=mysql_query($q);
+      $num_rows=mysql_num_rows($table);
+      if ($num_rows==1):
+        if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Таблица данных <B>newstat.rep5</B> найдена успешно."); endif;
+      elseif ($num_rows==0):
+        if ($DEBUG=="on"): PrintMessage("ERROR", "My-SQL", "Таблица данных <B>newstat.rep5</B> не найдена!"); endif;
+        // попытка создания таблицы newstat.rep5
+        if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", "Попытка создания таблицы данных <B>newstat.rep5</B>..."); endif;
+        $q="CREATE TABLE newstat.rep5 (ddi char(7) NOT NULL default '', yearmonth char(6) NOT NULL default '', call_quantity decimal(11,0) default NULL, call_sumtime decimal(13,0) default NULL, call_middletime decimal(13,2) default NULL, allowed_call_quantity decimal(11,0) default NULL, allowed_call_sumtime decimal(13,0) default NULL, allowed_call_middletime decimal(13,2) default NULL, nonallowed_call_percent decimal(5,2) default NULL) TYPE=MyISAM;";
+        if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+        mysql_query($q);
+        // повторная проверка наличия таблицы данных отчёта
+        $q="SHOW TABLES FROM newstat LIKE 'rep5';";
+        if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+        $table=mysql_query($q);
+        $num_rows=mysql_num_rows($table);
+        if ($num_rows==1):
+          if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Таблица данных <B>newstat.rep5</B> найдена успешно."); endif;
+        else:
+          ShowErrorMessage("Сбой при попытке создания таблицы данных <B>newstat.rep5</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+          die("");
+        endif;
+      else:
+        ShowErrorMessage("Сбой при попытке поиска таблицы данных за <B>".$months[$quart*3-(2-$i)]." $year года</B> (<B>".$irda_names[$i]."</B>) в базе данных <B>$DBName</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+        die("");
+      endif;
+      // если установлен флаг пересчёта данных - нужно удалить всю имеющуюся (возможно) информацию за указанный период из таблицы newstat.rep5
+      if ($RECALC=="on"):
+        for ($i=0;$i<3;$i++):
+          if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", "Попытка удаления данных за <B>".$months[$quart*3-(2-$i)]." $year года</B>..."); endif;
+          $j=$quart*3-(2-$i); if ($j<10) $j="0$j";
+          $q="DELETE FROM newstat.rep5 WHERE yearmonth='$year$j';";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          mysql_query($q);
+          if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", "Проверка наличия записей за <B>".$months[$quart*3-(2-$i)]." $year года</B>..."); endif;
+          $q="SELECT COUNT(*) AS f1 FROM newstat.rep5 WHERE yearmonth='$year$j';";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          $table=mysql_query($q);
+          $num_rows=mysql_num_rows($table);
+          if ($num_rows!=1):
+            ShowErrorMessage("Сбой при получении количества подлежащих удалению записей за <B>".$months[$quart*3-(2-$i)]." $year года</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+          endif;
+          $f1=mysql_result($table, 0, "f1"); // получаем количество строк в таблице
+          if ($f1==0):
+            if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Данные за <B>".$months[$quart*3-(2-$i)]." $year года</B> из таблицы <B>newstat.rep5</B> удалены успешно."); endif;
+          else:
+            ShowErrorMessage("Сбой при попытке удаления записей за <B>".$months[$quart*3-(2-$i)]." $year года</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+          endif;
+        endfor;
+      else:
+        if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", "Флаг пересчёта данных <B>не установлен</B> - ранее расчитанные данные из таблицы <B>newstat.rep5</B> удаляться не будут."); endif;
+      endif;
+      for ($i=0;$i<3;$i++):
+        // поиск готовых данных за требуемый период в таблице newstat.rep5
+        // и если данные найдены - пересчёт выполнять не нужно - достаточно выдать готовый результат
+        if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", "Поиск ранее расчитанных данных за <B>".$months[$quart*3-(2-$i)]." $year года</B> в таблице <B>newstat.rep5</B>..."); endif;
+        $j=$quart*3-(2-$i); if ($j<10) $j="0$j";
+        $q="SELECT COUNT(*) AS f1 FROM newstat.rep5 WHERE yearmonth='$year$j';";
+        if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+        $table=mysql_query($q);
+        $num_rows=mysql_num_rows($table);
+        if ($num_rows!=1):
+          ShowErrorMessage("Сбой при получении количества ранее расчитанных записей за <B>".$months[$quart*3-(2-$i)]." $year года</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+          die("");
+        endif;
+        $f1=mysql_result($table, 0, "f1"); // получаем количество строк в таблице
+        if ($f1==1):
+          if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Данные за <B>".$months[$quart*3-(2-$i)]." $year года</B> в таблице <B>newstat.rep5</B> найдены успешно."); endif;
+        elseif ($f1==0):
+          if ($DEBUG=="on"): PrintMessage("ERROR", "My-SQL", "Данные за <B>".$months[$quart*3-(2-$i)]." $year года</B> в таблице <B>newstat.rep5</B> найдены не были!"); endif;
+        else:
+          ShowErrorMessage("Сбой при попытке получения количества записей за <B>".$months[$quart*3-(2-$i)]." $year года</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+          die("");
+        endif;
+        if ($f1!=1): // если данные не были успешно найдены в таблице - проверить наличие всех таблиц за требующиеся месяцы
+          // проверка наличия всех необходимых файлов
+          if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", "Проверка наличия таблицы данных за <B>".$months[$quart*3-(2-$i)]." $year года</B> (<B>".$irda_names[$i]."</B>)..."); endif;
+          $q="SHOW TABLES FROM arj LIKE '".$irda_names[$i]."';";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          $table=mysql_query($q);
+          $num_rows=mysql_num_rows($table);
+          if ($num_rows==0):
+            ShowErrorMessage("Отчёт не может быть сформирован по причине отсутствия таблицы данных за <B>".$months[$quart*3-(2-$i)]." $year года</B> (<B>".$irda_names[$i]."</B>)!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+          elseif ($num_rows==1):
+            if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Таблица данных за <B>".$months[$quart*3-(2-$i)]." $year года</B> (<B>".$irda_names[$i]."</B>) найдена успешно."); endif;
+          else:
+            ShowErrorMessage("Сбой при попытке поиска таблицы данных за <B>".$months[$quart*3-(2-$i)]." $year года</B> (<B>".$irda_names[$i]."</B>) в базе данных <B>$DBName</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+          endif;
+// проведение расчётов за месяц с занесением данных в таблицу
+          // удаляем все временные таблицы, использующиеся при формировании отчётов
+          if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", "Удаление временных таблиц данных (<B>newstat.rep5_1</B>, <B>newstat.rep5_2</B>, <B>newstat.rep5_3</B>)..."); endif;
+          $q="DROP TABLE IF EXISTS newstat.rep5_1, newstat.rep5_2, newstat.rep5_3;";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          mysql_query($q);
+          // проверяем, удалены ли все перечисленные таблицы
+          if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", "Проверка наличия временных таблиц данных (<B>newstat.rep5_1</B>, <B>newstat.rep5_2</B>, <B>newstat.rep5_3</B>)..."); endif;
+          $q="SHOW TABLES FROM newstat LIKE 'rep5_%';";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          $table=mysql_query($q);
+          $num_rows=mysql_num_rows($table);
+          if ($num_rows==0):
+            if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Временные таблицы данных (<B>newstat.rep5_1</B>, <B>newstat.rep5_2</B>, <B>newstat.rep5_3</B>) удалены успешно."); endif;
+          else:
+            ShowErrorMessage("Сбой при попытке удаления временных таблиц данных, используемых при расчётах (<B>newstat.rep5_1</B>, <B>newstat.rep5_2</B>, <B>newstat.rep5_3</B>)!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+          endif;
+          // создаём временные таблицы
+          if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", "Создание временных таблиц данных (<B>newstat.rep5_1</B>, <B>newstat.rep5_2</B>, <B>newstat.rep5_3</B>)..."); endif;
+          $q="CREATE TABLE newstat.rep5_1 (ddi char(7) NOT NULL default '', yearmonth char(6) NOT NULL default '', call_quantity decimal(11,0) default NULL, call_sumtime decimal(13,0) default NULL, allowed_call_quantity decimal(11,0) default NULL, allowed_call_sumtime decimal(13,0) default NULL) TYPE=MyISAM COMMENT='выборка по поступившим абонентам';";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          mysql_query($q);
+          $q="CREATE TABLE newstat.rep5_2 (ddi char(7) NOT NULL default '', yearmonth char(6) NOT NULL default '', call_quantity decimal(11,0) default NULL, call_sumtime decimal(13,0) default NULL, allowed_call_quantity decimal(11,0) default NULL, allowed_call_sumtime decimal(13,0) default NULL) TYPE=MyISAM COMMENT='выборка по обслуженным абонентам';";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          mysql_query($q);
+          $q="CREATE TABLE newstat.rep5_3 (ddi char(7) NOT NULL default '', yearmonth char(6) NOT NULL default '', call_quantity decimal(11,0) default NULL, call_sumtime decimal(13,0) default NULL, call_middletime decimal(13,2) default NULL, allowed_call_quantity decimal(11,0) default NULL, allowed_call_sumtime decimal(13,0) default NULL, allowed_call_middletime decimal(13,2) default NULL, nonallowed_call_percent decimal(5,2) default NULL) TYPE=MyISAM COMMENT='суммарная выборка';";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          mysql_query($q);
+          // проверка наличия созданных таблиц
+          if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", "Проверка наличия временных таблиц данных (<B>newstat.rep5_1</B>, <B>newstat.rep5_2</B>, <B>newstat.rep5_3</B>)..."); endif;
+          $q="SHOW TABLES FROM newstat LIKE 'rep5_%';";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          $table=mysql_query($q);
+          $num_rows=mysql_num_rows($table);
+          if ($num_rows==3):
+            if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Временные таблицы данных (<B>newstat.rep5_1</B>, <B>newstat.rep5_2</B>, <B>newstat.rep5_3</B>) созданы успешно."); endif;
+          else:
+            ShowErrorMessage("Сбой при попытке создания временных таблиц данных, используемых при расчётах (<B>newstat.rep5_1</B>, <B>newstat.rep5_2</B>, <B>newstat.rep5_3</B>)!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+          endif;
+          $q="INSERT INTO newstat.rep5_1 SELECT ddi AS 'Номер услуги', '$year$j', COUNT(*) AS 'Количество поступивших звонков', SUM(dur) AS 'Общая продолжительность звонков', '' AS 'Количество обслуженных звонков', '' AS 'Общая продолжительность обслуженных звонков' FROM arj.".$irda_names[$i]." WHERE ddi='009' GROUP BY ddi;";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          mysql_query($q);
+          if (mysql_affected_rows()==1):
+            if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Результат выборки был успешно помещён во временную таблицу данных (<B>newstat.rep5_1</B>."); endif;
+          else:
+            ShowErrorMessage("Сбой при попытке помещения результатов запроса во временную таблицу <B>newstat.rep5_1</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+          endif;
+          $q="INSERT INTO newstat.rep5_2 SELECT ddi AS 'Номер услуги', '$year$j', '' AS 'Количество поступивших звонков', '' AS 'Общая продолжительность звонков', COUNT(*) AS 'Количество обслуженных звонков', SUM(dur) AS 'Общая продолжительность обслуженных звонков' FROM arj.".$irda_names[$i]." WHERE ddi='009' AND (dur>0) AND (v_mreza>'') AND (rm>0) GROUP BY ddi;";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          mysql_query($q);
+          if (mysql_affected_rows()==1):
+            if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Результат выборки был успешно помещён во временную таблицу данных <B>newstat.rep5_2</B>."); endif;
+          else:
+            ShowErrorMessage("Сбой при попытке помещения результатов запроса во временную таблицу <B>newstat.rep5_2</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+          endif;
+          $q="INSERT INTO newstat.rep5_3 SELECT a.ddi AS 'Номер услуги', '$year$j', a.call_quantity AS 'Количество поступивших звонков', a.call_sumtime AS 'Общая продолжительность поступивших звонков', a.call_sumtime/a.call_quantity AS 'Среднее время поступившего звонка', b.allowed_call_quantity AS 'Количество обслуженных звонков', b.allowed_call_sumtime AS 'Общая продолжительность обслуженных звонков', b.allowed_call_sumtime/b.allowed_call_quantity AS 'Среднее время обслуженного звонка', (1-(b.allowed_call_quantity/a.call_quantity))*100 AS 'Процент отказов' FROM newstat.rep5_1 AS a, newstat.rep5_2 AS b WHERE a.ddi=b.ddi;";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          mysql_query($q);
+          if (mysql_affected_rows()==1):
+            if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Результат выборки был успешно помещён во временную таблицу данных (<B>newstat.rep5_3</B>."); endif;
+          else:
+            ShowErrorMessage("Сбой при попытке помещения результатов запроса во временную таблицу <B>newstat.rep5_3</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+          endif;
+          if ($DEBUG=="on"): PrintMessage("INFORMATION", "My-SQL", "Помещение результата выборки в таблицу данных <B>newstat.rep5</B>..."); endif;
+          $q="INSERT INTO newstat.rep5 SELECT * FROM newstat.rep5_3 WHERE yearmonth='$year$j';";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          mysql_query($q);
+          if (mysql_affected_rows()==1):
+            if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Результат выборки был успешно помещён в таблицу данных <B>newstat.rep5</B>."); endif;
+          else:
+            ShowErrorMessage("Сбой при попытке помещения результатов запроса в таблицу <B>newstat.rep5</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+          endif;
+          // удаляем все временные таблицы, использующиеся при формировании отчётов
+          if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", "Удаление временных таблиц данных (<B>newstat.rep5_1</B>, <B>newstat.rep5_2</B>, <B>newstat.rep5_3</B>)..."); endif;
+          $q="DROP TABLE IF EXISTS newstat.rep5_1, newstat.rep5_2, newstat.rep5_3;";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          mysql_query($q);
+          // проверяем, удалены ли все перечисленные таблицы
+          if ($DEBUG=="on"): PrintMessage("INFORMATION", "Info", "Проверка наличия временных таблиц данных (<B>newstat.rep5_1</B>, <B>newstat.rep5_2</B>, <B>newstat.rep5_3</B>)..."); endif;
+          $q="SHOW TABLES FROM newstat LIKE 'rep5_%';";
+          if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+          $table=mysql_query($q);
+          $num_rows=mysql_num_rows($table);
+          if ($num_rows==0):
+            if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Временные таблицы данных (<B>newstat.rep5_1</B>, <B>newstat.rep5_2</B>, <B>newstat.rep5_3</B>) удалены успешно."); endif;
+          else:
+            ShowErrorMessage("Сбой при попытке удаления временных таблиц данных, используемых при расчётах (<B>newstat.rep5_1</B>, <B>newstat.rep5_2</B>, <B>newstat.rep5_3</B>)!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+          endif;
+        endif;
+      endfor;
+      // получение всех данных, необходимых для составления формы, из таблицы newstat.rep5 и заполнение результирующего массива значениями
+      $result_array=array();
+      for ($i=$quartbm;$i<=$quartem;$i++):
+        $j=$i; if ($j<10) $j="0".$j;
+        $j1[]=$j;
+        $q="SELECT RIGHT(yearmonth,2) AS f1, LEFT(yearmonth,4) AS f2, call_quantity AS f3, call_sumtime AS f4, allowed_call_quantity AS f5, allowed_call_sumtime AS f6, nonallowed_call_percent AS f7 FROM newstat.rep5 WHERE ddi='009' AND yearmonth='$year$j' ORDER BY yearmonth;";
+        if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+        $table=mysql_query($q);
+        $num_rows=mysql_num_rows($table);
+        if ($num_rows==1):
+          if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Данные за <B>".$months[$j+0]." $year года</B> были успешно найдены в таблице <B>newstat.rep5</B>."); endif;
+        else:
+          ShowErrorMessage("Сбой при попытке получения данных за <B>".$month[$j+0]." $year года</B> из таблицы <B>newstat.rep5</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+          die("");
+        endif;
+        $tmp_array=mysql_fetch_assoc($table);
+        $result_array[]=$tmp_array;
+      endfor;
+      $q="SELECT '' AS f1, '' AS f2, SUM(call_quantity) AS f3, SUM(call_sumtime) AS f4, SUM(allowed_call_quantity) AS f5, SUM(allowed_call_sumtime) AS f6, (100-((SUM(allowed_call_quantity)/SUM(call_quantity))*100)) AS f7 FROM newstat.rep5 WHERE ddi='009' AND (yearmonth='$year".$j1[0]."' OR yearmonth='$year".$j1[1]."' OR yearmonth='$year".$j1[2]."') GROUP BY ddi;";
+      if ($DEBUG=="on"): PrintMessage("QUERY", "SQL", $q); endif;
+      $table=mysql_query($q);
+      $num_rows=mysql_num_rows($table);
+      if ($num_rows==1):
+        if ($DEBUG=="on"): PrintMessage("SUCCESS", "My-SQL", "Данные за <B>".$quartals[$quart]." квартал $year года</B> были успешно найдены в таблице <B>newstat.rep5</B>."); endif;
+      else:
+        ShowErrorMessage("Сбой при попытке получения данных за <B>".$quartals[$quart]." квартал $year года</B> из таблицы <B>newstat.rep5</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+        die("");
+      endif;
+      $tmp_array=mysql_fetch_assoc($table);
+      $result_array[]=$tmp_array;
+
+      // всё - к этому моменту есть все данные для вывода результатов в документ:
+      // в ассоциативном массиве $result_array[] содержатся данные за три месяца квартала (элементы 0,1,2) и итоговые значения за весь квартал (элемент 3)
+      // в переменных $maker, $makerstate, $makerphone содержатся данные об исполнителе
+      // в переменных $quartbd, $quartbm, $year - начальная дата квартала, в переменных $quarted, $quartem, $year - конечная дата квартала
+      $bodymessage="    <CENTER>
+    <TABLE ALIGN=\"CENTER\" BORDER=\"1\" BGCOLOR=\"WHITE\" WIDTH=\"656\" STYLE=\"border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;\">
+      <TBODY VALIGN=\"MIDDLE\" STYLE=\"border-color: white; border-width: 0;\">
+        <TR>
+          <TD HEIGHT=\"1px\" STYLE=\"border-color: white; border-width: 0;\" WIDTH=\"95px\"></TD>
+          <TD HEIGHT=\"1px\" STYLE=\"border-color: white; border-width: 0;\" WIDTH=\"105px\"></TD>
+          <TD HEIGHT=\"1px\" STYLE=\"border-color: white; border-width: 0;\" WIDTH=\"130px\"></TD>
+          <TD HEIGHT=\"1px\" STYLE=\"border-color: white; border-width: 0;\" WIDTH=\"105px\"></TD>
+          <TD HEIGHT=\"1px\" STYLE=\"border-color: white; border-width: 0;\" WIDTH=\"130px\"></TD>
+          <TD HEIGHT=\"1px\" STYLE=\"border-color: white; border-width: 0;\"></TD>
+        </TR>
+        <TR>
+          <TD COLSPAN=\"6\" STYLE=\"border-bottom-color: #CCCCCC; border-top-color: white; border-left-color: white; border-right-color: white; border-width: 0px 0px 1px 0px; font-size: 7pt; text-align: right;\">Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD>
+        </TR>
+        <TR>
+          <TD COLSPAN=\"6\" STYLE=\"border-color: white; border-width: 0; text-align: center; font-size: 13pt; font-weight: bold; padding: 50px 0px 3px 0px;\">Статистика по услуге &laquo;009&raquo; за период<BR>с ".$quartbd." ".$months2[$quartbm]." $year года по $quarted ".$months2[$quartem]." $year года</TD>
+        </TR>
+        <TR>
+          <TD STYLE=\"text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;\">Период<BR>(месяц,<BR>год)</TD>
+          <TD STYLE=\"text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;\">Количество<BR>поступивших<BR>звонков</TD>
+          <TD STYLE=\"text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;\">Общая<BR>длительность<BR>поступивших<BR>звонков, сек.</TD>
+          <TD STYLE=\"text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;\">Количество<BR>обслуженных<BR>звонков</TD>
+          <TD STYLE=\"text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;\">Общая<BR>длительность<BR>обслуженных<BR>звонков, сек.</TD>
+          <TD STYLE=\"text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;\">Отказы<BR>по<BR>услуге,<BR>%</TD>
+        </TR>";
+        for ($i=0;$i<(count($result_array)-1);$i++):
+          $bodymessage.="
+        <TR>
+          <TD STYLE=\"text-align: center; border-width: 0px 2px ".(1-($i==(count($result_array)-2)))."px 2px; border-color: black; padding: 1px 2px;\">".$months[$result_array[$i]["f1"]+0]."&nbsp;".$result_array[$i]["f2"]."</TD>
+          <TD STYLE=\"text-align:  right; border-width: 0px 2px ".(1-($i==(count($result_array)-2)))."px 0px; border-color: black; padding: 1px 2px;\">".$result_array[$i]["f3"]."</TD>
+          <TD STYLE=\"text-align:  right; border-width: 0px 2px ".(1-($i==(count($result_array)-2)))."px 0px; border-color: black; padding: 1px 2px;\">".$result_array[$i]["f4"]."</TD>
+          <TD STYLE=\"text-align:  right; border-width: 0px 2px ".(1-($i==(count($result_array)-2)))."px 0px; border-color: black; padding: 1px 2px;\">".$result_array[$i]["f5"]."</TD>
+          <TD STYLE=\"text-align:  right; border-width: 0px 2px ".(1-($i==(count($result_array)-2)))."px 0px; border-color: black; padding: 1px 2px;\">".$result_array[$i]["f6"]."</TD>
+          <TD STYLE=\"text-align: center; border-width: 0px 2px ".(1-($i==(count($result_array)-2)))."px 0px; border-color: black; padding: 1px 2px;\">".$result_array[$i]["f7"]."</TD>
+        </TR>";
+        endfor;
+        $bodymessage.="
+        <TR>
+          <TD STYLE=\"text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;\">Итого:</TD>
+          <TD STYLE=\"text-align:  right; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;\">".$result_array[count($result_array)-1]["f3"]."</TD>
+          <TD STYLE=\"text-align:  right; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;\">".$result_array[count($result_array)-1]["f4"]."</TD>
+          <TD STYLE=\"text-align:  right; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;\">".$result_array[count($result_array)-1]["f5"]."</TD>
+          <TD STYLE=\"text-align:  right; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;\">".$result_array[count($result_array)-1]["f6"]."</TD>
+          <TD STYLE=\"text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;\">".$result_array[count($result_array)-1]["f7"]."</TD>
+        </TR>
+        <TR>
+          <TD VALIGN=\"TOP\" COLSPAN=\"6\" STYLE=\"text-align: left; media: print, screen; font-size: 7pt; border-color: white; border-width: 0; padding-top: 40px;\">";
+        if (($maker!="")||($makerstate!="")||($makerphone!="")) $bodymessage.="Исполнитель:";
+        if ($makerstate!="") $bodymessage.="<BR>$makerstate";
+        if ($maker!="") $bodymessage.="<BR>$maker";
+        if ($makerphone!="") $bodymessage.="<BR>$makerphone";
+        $bodymessage.="</TD>
+        <TR>
+           <TD COLSPAN=\"6\" HEIGHT=\"680\" STYLE=\"text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;\"></TD>
+        </TR>
+        <TR>
+           <TD COLSPAN=\"6\" STYLE=\"text-align: center; font-size: 5pt; border-bottom-color: white; border-top-color: #CCCCCC; border-left-color: white; border-right-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;\">Отчёт подготовлен $d ".$months2[$m]." $y года в ".date("H:i:s")." при помощи программного комплекса &laquo;OVERSEER&raquo;, &copy;&nbsp;2005&nbsp;by&nbsp;Vlad&nbsp;Ivanov</TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+    </CENTER>
+";
+      if ($action=="print"):
+        if ($DEBUG=="on") PrintMessage("INFORMATION", "Info", "Выполняется вывод отчёта на экран для просмотра/печати. Рабочая область отчёта закрашена белым цветом.");
+        echo $bodymessage;
+      elseif ($action=="email"):
+        if ($DEBUG=="on") PrintMessage("INFORMATION", "Info", "Выполняется отправка отчёта указанным адресатам (см. выше).");
+        $message="<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">
+<HTML>
+  <HEAD>
+    <TITLE>".$reports[5]["Наименование"]."</TITLE>
+    <META CONTENT=\"no-cache\" HTTP-EQUIV=\"pragma\">
+    <META CONTENT=\"no-cache\" HTTP-EQUIV=\"cache-control\">
+    <META CONTENT=\"Dynamic\" NAME=\"Document-state\">
+    <META CONTENT=\"text/html; charset=Windows-1251\" HTTP-EQUIV=\"Content-Type\">
+    <LINK REL=\"author\" HREF=\"http://vladracoola.by.ru/index1.html\">
+    <STYLE MEDIA=\"screen, print\" TYPE=\"text/css\">
+      * {
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 8pt;
+        padding: 0;
+        margin: 0;
+        border-color: transparent;
+        border-width: 0;
+        border-style: solid;
+        }
+      TABLE, TD {
+        border-style: solid;
+      }
+    </STYLE>
+  </HEAD>
+  <BODY>
+".$bodymessage."
+  </BODY>
+</HTML>";
+        $s="";
+        // отправка писем адресатам в случае если был выбран соответствующий пункт и заполнены поля адресатов
+        if (($EMAIL1Addr!="")&&($action=="email")&&($message!="")):
+          $Headers="Priority: urgent\nMIME-Version: 1.0\nContent-Type: text/html; charset=Windows-1251\nFrom: \"Справочно-информационный цех филиала МГТС РУП Белтелеком\" <sic009@tut.by>\nTo: ";
+          if ($EMAIL1Name!="") $Headers.="\"$EMAIL1Name\" ";
+          $Headers.="<$EMAIL1Addr>\nContent-Type: text/html; charset=Windows-1251";
+          if (mail("$EMAIL1Addr",$Subject,$message,$Headers)):
+            if ($EMAIL1Name!="") $s=" <B>$EMAIL1Name</B>";
+            PrintMessage("SUCCESS", "Инфо", "Отправка отчёта$s по адресу <B>$EMAIL1Addr</B> прошла успешно.");
+          else:
+            if ($EMAIL1Name!="") $s=" <B>$EMAIL1Name</B>";
+            ShowErrorMessage("Не удалось отправить отчёт$s по адресу <B>$EMAIL1Addr</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+          endif;
+        endif;
+        if (($EMAIL2Addr!="")&&($action=="email")&&($message!="")):
+          $Headers="Priority: urgent\nMIME-Version: 1.0\nContent-Type: text/html; charset=Windows-1251\nFrom: \"Справочно-информационный цех филиала МГТС РУП Белтелеком\" <sic009@tut.by>\nTo: ";
+          if ($EMAIL2Name!="") $Headers.="\"$EMAIL2Name\" ";
+          $Headers.="<$EMAIL2Addr>\nContent-Type: text/html; charset=Windows-1251";
+          if (mail("$EMAIL2Addr",$Subject,$message,$Headers)):
+            if ($EMAIL2Name!="") $s=" <B>$EMAIL2Name</B>";
+            PrintMessage("SUCCESS", "Инфо", "Отправка отчёта$s по адресу <B>$EMAIL2Addr</B> прошла успешно.");
+          else:
+            if ($EMAIL2Name!="") $s=" <B>$EMAIL2Name</B>";
+            ShowErrorMessage("Не удалось отправить отчёт$s по адресу <B>$EMAIL2Addr</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+          endif;
+        endif;
+        if (($EMAIL3Addr!="")&&($action=="email")&&($message!="")):
+          $Headers="Priority: urgent\nMIME-Version: 1.0\nContent-Type: text/html; charset=Windows-1251\nFrom: \"Справочно-информационный цех филиала МГТС РУП Белтелеком\" <sic009@tut.by>\nTo: ";
+          if ($EMAIL3Name!="") $Headers.="\"$EMAIL3Name\" ";
+          $Headers.="<$EMAIL3Addr>\nContent-Type: text/html; charset=Windows-1251";
+          if (mail("$EMAIL3Addr",$Subject,$message,$Headers)):
+            if ($EMAIL3Name!="") $s=" <B>$EMAIL3Name</B>";
+            PrintMessage("SUCCESS", "Инфо", "Отправка отчёта$s по адресу <B>$EMAIL3Addr</B> прошла успешно.");
+          else:
+            if ($EMAIL3Name!="") $s=" <B>$EMAIL3Name</B>";
+            ShowErrorMessage("Не удалось отправить отчёт$s по адресу <B>$EMAIL3Addr</B>!<BR>Обратитесь к инженеру-программисту или системному администратору!", $rep, $time, $aqq, $aqy, $action, $EMAIL1Addr, $EMAIL1Name, $EMAIL2Addr, $EMAIL2Name, $EMAIL3Addr, $EMAIL3Name, $RECALC);
+?>
+  </BODY>
+</HTML>
+<?
+            die("");
+          endif;
+        endif;
+      endif;
+*/
+?>
+
+  </BODY>
+</HTML>

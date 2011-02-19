@@ -1,0 +1,74 @@
+// *** формирование SQL-выборки на основе запроса (для строк) ***
+$table=MYSQL_QUERY("
+SELECT
+ left(date,7) as date,
+ ddi,
+ sum(countT) as countT,
+ sum(durat) as durat,
+ (sum(durat)/sum(countT)) as mt,
+ (sum(countCT)-sum(countT)) as failed,
+ sum(countCT) as countCT
+FROM
+ day
+WHERE
+ ((date >= '$syear-$smonth-$sday') and (date <= '$fyear-$fmonth-$fday'))
+GROUP BY
+ date, ddi
+ORDER BY 
+ $sort;");
+
+$num_rows = MYSQL_NUM_ROWS($table); // получение количества строк выборки
+$i=0; // переменная для значения текущей позиции строки в выборке
+IF ($num_rows==0) PRINT"<H1>За заданный период времени записей не найдено!<H1>";
+ELSE
+{
+ WHILE ($i < $num_rows)
+ {
+  $j=0; // количество строк на текущей странице
+  PRINT "<H1>$title</H1>\n<TABLE CLASS=\"border\" WIDTH=100%>\n<TBODY>\n";
+  PRINT "<TR><TH><A HREF=\"report10.php?sort=date&syear=$syear&smonth=$smonth&sday=$sday&fyear=$fyear&fmonth=$fmonth&fday=$fday\">Дата</A></TH><TH><A HREF=\"report10.php?sort=ddi&syear=$syear&smonth=$smonth&sday=$sday&fyear=$fyear&fmonth=$fmonth&fday=$fday\">Телефон<BR>услуги</A></TH><TH><A HREF=\"report10.php?sort=countT&syear=$syear&smonth=$smonth&sday=$sday&fyear=$fyear&fmonth=$fmonth&fday=$fday\">Принято<BR>звонков</A></TH><TH><A HREF=\"report10.php?sort=durat&syear=$syear&smonth=$smonth&sday=$sday&fyear=$fyear&fmonth=$fmonth&fday=$fday\">Длительность<BR>звонков</A></TH><TH><A HREF=\"report10.php?sort=mt&syear=$syear&smonth=$smonth&sday=$sday&fyear=$fyear&fmonth=$fmonth&fday=$fday\">Среднее<BR>время<BR>звонка</A></TH><TH><A HREF=\"report10.php?sort=failed&syear=$syear&smonth=$smonth&sday=$sday&fyear=$fyear&fmonth=$fmonth&fday=$fday\">Отклонено<BR>звонков</A></TH><TH><A HREF=\"report10.php?sort=countCT&syear=$syear&smonth=$smonth&sday=$sday&fyear=$fyear&fmonth=$fmonth&fday=$fday\">Всего<BR>звонков</A></TH></TR>\n";
+  WHILE (($i < $num_rows) & ($j<=32))
+  {
+   $field1=mysql_result($table, $i, "date");	// 'Дата'
+   $field2=mysql_result($table, $i, "ddi");	// 'Телефон услуги'
+   $field3=mysql_result($table, $i, "countT");	// 'Принято звонков'
+   $field4=mysql_result($table, $i, "durat");	// 'Длительность звонков'
+   $field5=mysql_result($table, $i, "mt");	// 'Среднее время'
+   $field6=mysql_result($table, $i, "failed");	// 'Отклонено звонков'
+   $field7=mysql_result($table, $i, "countCT");	// 'Поступило звонков всего'
+   if ($field2=="1111") $field2="099";
+   if ($field2=="2222") $field2="9909111";
+   $i++;
+   $j++;
+   PRINT "<TR><TD><NOBR>$field1</NOBR></TD><TD>$field2</TD><TD class=\"ra\">$field3</TD><TD class=\"ra\">$field4</TD><TD class=\"ra\">$field5</TD><TD class=\"ra\"";
+   IF ($field6>200) PRINT " BGCOLOR=\"orange\"";
+   PRINT ">$field6</TD><TD class=\"ra\">$field7</TD></TR>\n";
+  }
+  IF ($i < $num_rows) PRINT "</TBODY>\n</TABLE>\n<BR><BR>\n";
+ }
+ $table=MYSQL_QUERY("
+ SELECT
+  '' as z,
+  date,
+  ddi,
+  sum(countT) as countT,
+  sum(durat) as durat,
+  (sum(durat)/sum(countT)) as mt,
+  (sum(countCT)-sum(countT)) as failed,
+  sum(countCT) as countCT
+ FROM
+  day
+ WHERE
+  ((date >= '$syear-$smonth-$sday') and (date <= '$fyear-$fmonth-$fday'))
+ GROUP BY
+  z;");
+ $field1=mysql_result($table, 0, "countT");	// 'Принято звонков'
+ $field2=mysql_result($table, 0, "durat");	// 'Длительность звонков'
+ $field3=mysql_result($table, 0, "mt");		// 'Среднее время'
+ $field4=mysql_result($table, 0, "failed");	// 'Отклонено звонков'
+ $field5=mysql_result($table, 0, "countCT");	// 'Поступило звонков всего'
+ 
+ PRINT "<TR><TH>Всего</TH><TH></TH><TH CLASS=\"ra\">$field1</TH><TH CLASS=\"ra\">$field2</TH><TH CLASS=\"ra\">$field3</TH><TH CLASS=\"ra\">$field4</TH><TH CLASS=\"ra\">$field5</TH></TR>\n</TBODY>\n</TABLE>\n<BR><BR>\n";
+}
+PRINT "</BODY>\n</HTML>\n";
+?>

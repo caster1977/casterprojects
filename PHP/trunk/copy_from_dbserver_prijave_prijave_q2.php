@@ -1,0 +1,38 @@
+<?
+$conn_id=ftp_connect("10.1.1.2");
+$login_result=ftp_login($conn_id, "root", "kron");
+if ((!$conn_id)||(!$login_result)) die("Не удалось установить соединение с FTP сервером $ftp_server под именем $ftp_user_name!\r\n"); else print "Успешно установлено соединение с FTP сервером DBSERVER.\r\n";
+//  копирование файлов таблиц prijave, prijave_q с DBSERVER-а на STATSERVER
+if (ftp_chdir($conn_id, "shared_disk/usr/mysql32356/data/test/")) print "Выполнен переход в директорию '" . ftp_pwd($conn_id) . "'.\r\n"; else print "Не удалось сменить директорию!\r\n";
+if (ftp_get($conn_id, "D:\\mysql\\data\\prijaves\\oldformat_prijave.frm", "prijave.frm", FTP_BINARY)) print "Файл 'prijave.frm' успешно скопирован в файл 'oldformat_prijave.frm'.\r\n"; else die("Не удалось скопировать файл 'prijave.frm' в файл 'oldformat_prijave.frm'.\r\n");
+if (ftp_get($conn_id, "D:\\mysql\\data\\prijaves\\oldformat_prijave.MYD", "prijave.MYD", FTP_BINARY)) print "Файл 'prijave.MYD' успешно скопирован в файл 'oldformat_prijave.ISD'.\r\n"; else die("Не удалось скопировать файл 'prijave.ISD' в файл 'oldformat_prijave.MYD'.\r\n");
+if (ftp_get($conn_id, "D:\\mysql\\data\\prijaves\\oldformat_prijave.MYI", "prijave.MYI", FTP_BINARY)) print "Файл 'prijave.MYI' успешно скопирован в файл 'oldformat_prijave.ISM'.\r\n"; else die("Не удалось скопировать файл 'prijave.ISM' в файл 'oldformat_prijave.MYI'.\r\n");
+if (ftp_get($conn_id, "D:\\mysql\\data\\prijaves\\oldformat_prijave_q.frm", "prijave_q.frm", FTP_BINARY)) print "Файл 'prijave_q.frm' успешно скопирован в файл 'oldformat_prijave_q.frm'.\r\n"; else die("Не удалось скопировать файл 'prijave.frm' в файл 'oldformat_prijave_q.frm'.\r\n");
+if (ftp_get($conn_id, "D:\\mysql\\data\\prijaves\\oldformat_prijave_q.MYD", "prijave_q.MYD", FTP_BINARY)) print "Файл 'prijave_q.MYD' успешно скопирован в файл 'oldformat_prijave_q.MYD'.\r\n"; else die("Не удалось скопировать файл 'prijave.MYD' в файл 'oldformat_prijave_q.MYD'.\r\n");
+if (ftp_get($conn_id, "D:\\mysql\\data\\prijaves\\oldformat_prijave_q.MYI", "prijave_q.MYI", FTP_BINARY)) print "Файл 'prijave_q.MYI' успешно скопирован в файл 'oldformat_prijave_q.MYI'.\r\n"; else die("Не удалось скопировать файл 'prijave.MYI' в файл 'oldformat_prijave_q.MYI'.\r\n");
+// расчёт прошлого дня
+$ldd="28";//$ldd=date("d",mktime(0,0,0,date("m"),date("d"),date("Y"))-((mktime(0,0,0,1,2,2000)-mktime(0,0,0,1,1,2000)))); // определение числа вчерашней даты
+$ldm="03";//$ldm=date("m",mktime(0,0,0,date("m"),date("d"),date("Y"))-((mktime(0,0,0,1,2,2000)-mktime(0,0,0,1,1,2000)))); // определение месяца вчерашней даты
+$ldy="2010";//$ldy=date("Y",mktime(0,0,0,date("m"),date("d"),date("Y"))-((mktime(0,0,0,1,2,2000)-mktime(0,0,0,1,1,2000)))); // определение года вчерашней даты
+ftp_quit($conn_id);
+//  преобразование файлов в новый формат при помощи серии MySQL-запросов
+$MYSQLCON=MYSQL_CONNECT("10.1.1.240","root","sqladmin") or die("Can't create connection");
+MYSQL_SELECT_DB("prijaves") or die("Не удалось установить подключение к БД prijaves на MySQL-сервере STATSERVER");
+print "Установлено подключение к БД prijaves на MySQL-сервере STATSERVER.\r\n";
+//  преобразование файлов prijave, prijave_q
+MYSQL_QUERY("DROP TABLE IF EXISTS prijaves.prijave, prijaves.prijave_q;");
+MYSQL_QUERY("CREATE TABLE prijaves.prijave (rbr int(11) NOT NULL auto_increment, sifra char(20) NOT NULL default '', rm char(6) default NULL, datpoc date NOT NULL default '0000-00-00', vripoc char(8) default NULL, datzav date default NULL, vrizav char(8) default NULL, stiglo decimal(4,0) default NULL, obradio decimal(4,0) default NULL, tsred decimal(4,0) default NULL, kratki decimal(4,0) default NULL, orgset decimal(4,0) default NULL, connack decimal(4,0) default NULL, orgdur decimal(4,0) default NULL, paused decimal(7,0) default NULL, wait decimal(7,0) default NULL, trans decimal(4,0) default '0', wrap decimal(7,0) default NULL, nums char(30) default NULL, closed decimal(0,0) default '1', ccid decimal(3,0) default '1', PRIMARY KEY  (rbr), KEY sifra (sifra), KEY datpoc (datpoc), KEY rm (rm), KEY vripoc (vripoc), KEY datzav (datzav), KEY vrizav (vrizav)) TYPE=MyISAM PACK_KEYS=1;");
+MYSQL_QUERY("CREATE TABLE prijaves.prijave_q (sifra char(20) NOT NULL default '', rm char(6) default NULL, datpoc date NOT NULL default '0000-00-00', vripoc char(8) default NULL, datzav date default NULL, vrizav char(8) default NULL, stiglo decimal(4,0) default NULL, obradio decimal(4,0) default NULL, tsred decimal(4,0) default NULL, kratki decimal(4,0) default NULL, wait decimal(4,0) default NULL, odbio decimal(4,0) default NULL, trans decimal(4,0) default NULL, qid decimal(4,0) default NULL, ccid decimal(3,0) NOT NULL default '0', priority decimal(3,0) NOT NULL default '0', rbr int(11) NOT NULL auto_increment, PRIMARY KEY  (rbr), KEY sifra (sifra), KEY datpoc (datpoc), KEY rm (rm), KEY vripoc (vripoc), KEY datzav (datzav), KEY vrizav (vrizav)) TYPE=MyISAM PACK_KEYS=1;");
+
+//MYSQL_QUERY("CREATE TABLE ARJ.nusers (sifra varchar(20) NOT NULL default '', ime varchar(30) default NULL, prezime varchar(30) default NULL, passwd varchar(30) default NULL, tip char(1) default NULL, opis varchar(30) default NULL, vlasnik varchar(20) default NULL, ccid decimal(3,0) NOT NULL default '0', wrap decimal(3,0) NOT NULL default '0', ext decimal(3,0) NOT NULL default '0', logged decimal(0,0) NOT NULL default '0', ipadr varchar(20) default NULL, rm decimal(3,0) NOT NULL default '0', telno varchar(32) default NULL, inet decimal(3,0) NOT NULL default '0', rccid decimal(3,0) NOT NULL default '0', UNIQUE KEY sifcc (sifra,ccid)) TYPE=MyISAM PACK_KEYS=1;");
+
+MYSQL_QUERY("INSERT INTO prijaves.prijave SELECT * FROM prijaves.oldformat_prijave;");
+MYSQL_QUERY("INSERT INTO prijaves.prijave_q SELECT * FROM prijaves.oldformat_prijave_q;");
+MYSQL_QUERY("DROP TABLE IF EXISTS prijaves.oldformat_prijave, prijaves.oldformat_prijave_q, prijaves.prijave_$ldy$ldm$ldd, prijaves.prijave_q_$ldy$ldm$ldd;");
+
+MYSQL_QUERY("CREATE TABLE prijaves.prijave_$ldy$ldm$ldd (PRIMARY KEY (rbr), KEY sifra (sifra), KEY datpoc (datpoc), KEY rm (rm), KEY vripoc (vripoc), KEY datzav (datzav), KEY vrizav (vrizav)) SELECT * FROM prijaves.prijave WHERE datpoc BETWEEN ADDDATE('$ldy$ldm$ldd', INTERVAL -1 DAY) AND '$ldy$ldm$ldd' AND datzav BETWEEN '$ldy$ldm$ldd' AND ADDDATE('$ldy$ldm$ldd', INTERVAL 1 DAY);");
+MYSQL_QUERY("CREATE TABLE prijaves.prijave_q_$ldy$ldm$ldd (PRIMARY KEY (rbr), KEY sifra (sifra), KEY datpoc (datpoc), KEY rm (rm), KEY vripoc (vripoc), KEY datzav (datzav), KEY vrizav (vrizav)) SELECT * FROM prijaves.prijave_q WHERE datpoc BETWEEN ADDDATE('$ldy$ldm$ldd', INTERVAL -1 DAY) AND '$ldy$ldm$ldd' AND datzav BETWEEN '$ldy$ldm$ldd' AND ADDDATE('$ldy$ldm$ldd', INTERVAL 1 DAY);");
+
+MYSQL_CLOSE($MYSQLCON);
+print "Все операции выполнены.\r\n";
+?>
