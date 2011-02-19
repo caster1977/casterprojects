@@ -1,0 +1,96 @@
+<? // Отчёт "Статистика Content Provider за дату (Гидромет)"
+
+// *** подключение к серверу MySQL ***
+$hostname="10.1.1.2";
+$username="sel";
+$password="";
+$dbName="MyStat";
+$MYSQLCON = MYSQL_CONNECT($hostname,$username,$password) OR DIE("Can't create connection");
+MYSQL_SELECT_DB("$dbName") OR DIE("Can't select DataBase"); 
+
+// *** если режим сортировки не задан - задать по умолчанию ***
+if ($sort=="")
+  $sort="ani";
+
+// *** формирование титула отчёта ***
+$title="Статистика Content Provider за ";
+if (($sday==$fday)&&($smonth==$fmonth)&&($syear==$fyear))
+  $dayrep=1;
+if ($dayrep==1) {
+  $title .=$sday;
+  $title .=" ";
+  if ($smonth=="01") $title .="января ";
+  if ($smonth=="02") $title .="февраля ";
+  if ($smonth=="03") $title .="марта ";
+  if ($smonth=="04") $title .="апреля ";
+  if ($smonth=="05") $title .="мая ";
+  if ($smonth=="06") $title .="июня ";
+  if ($smonth=="07") $title .="июля ";
+  if ($smonth=="08") $title .="августа ";
+  if ($smonth=="09") $title .="сентября ";
+  if ($smonth=="10") $title .="октября ";
+  if ($smonth=="11") $title .="ноября ";
+  if ($smonth=="12") $title .="декабря ";
+  $title .="$syear года";
+}
+else {
+  $title .="период с $sday/$smonth/$syear по $fday/$fmonth/$fyear";
+}
+
+// *** формирование заголовка HTML-документа ***
+print "<!-- \nДля печати выставьте следующие параметры страницы:\nслева:30.00\nсверху, справа, снизу 5.00\nориентация книжная\nнижний колонтитул: &b&bСтраница &p из &P\n-->\n";
+print "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n";
+print "<HTML>\n<HEAD>\n";
+print "<TITLE>$title</TITLE>\n";
+print "<META content=\"text/html; charset=Windows-1251\" http-equiv=Content-Type>\n";
+print "<STYLE>@import url(ie5.css);</STYLE>\n";
+print "<LINK DISABLED REL=\"stylesheet\" HREF=\"ie5.css\">\n";
+print "</HEAD>\n<BODY>\n";
+print "<H1>$title</H1>\n<TABLE CLASS=\"border\" WIDTH=100%>\n<TBODY>\n<TR><TH><A HREF=\"report08.php?&syear=$syear&smonth=$smonth&sday=$sday&fyear=$fyear&fmonth=$fmonth&fday=$fday\">Номер<BR>телефона</A></TH><TH>Код<BR>службы</TH><TH>Дата<BR>звонка</TH><TH>Время<BR>звонка</TH><TH><A HREF=\"report08.php?sort=dur&syear=$syear&smonth=$smonth&sday=$sday&fyear=$fyear&fmonth=$fmonth&fday=$fday\">Длительность<BR>звонка</A></TH></TR>\n";
+
+$iyear=$syear;		// временная переменная для перебора дат
+$iday=$sday;$iday++;$iday--; // временная переменная для перебора дат
+$imonth=$smonth;$imonth++;$imonth--; // временная переменная для перебора дат
+$i2day=$fday; $i2day++; $i2day--;
+$i2month=$fmonth; $i2month++; $i2month--;
+
+
+do {
+  $ird="ird_$iyear";
+  if ($imonth>9) $ird .=$imonth;
+  else {
+    $ird .="0$imonth";
+  }
+  if ($iday>9) $ird .=$iday;
+  else {
+    $ird .="0$iday";
+  }
+  $table=MYSQL_QUERY("SELECT ani, datum, vrijeme, SEC_TO_TIME(dur) as dur FROM statistika.$ird WHERE (dur>1) AND (ddi='098') ORDER BY $sort;");
+  $num_rows = MYSQL_NUM_ROWS($table); // получение количества строк выборки
+  $i=0; // переменная для значения текущей позиции строки в выборке
+  if ($num_rows>0) {
+    while ($i < $num_rows) {
+      $field1=mysql_result($table, $i, "ani");		// 'Номер телефона'
+      $field2=mysql_result($table, $i, "datum");	// 'Дата звонка'
+      $field3=mysql_result($table, $i, "vrijeme");	// 'Время звонка'
+      $field4=mysql_result($table, $i, "dur");		// 'Длительность звонка'
+      print "<TR><TD><NOBR>$field1</NOBR></TD><TD>098</TD><TD><NOBR>$field2</NOBR></TD><TD><NOBR>$field3</NOBR></TD><TD>$field4</TD></TR>\n";
+      $i++;
+    }
+  }
+  do {
+    $iday++;
+    if ($iday==32) {
+      $iday=1; $imonth++;
+    }
+    if ($imonth==13) {
+      $imonth=1; $iyear++;
+    }
+  } while (checkdate($imonth,$iday,$iyear)<>1);
+  if (($iday<=$i2day)||(($imonth!=$i2month)||($iyear!=$fyear))) 
+    print "<TR><TD COLSPAN=5></TD></TR>";
+  if (mktime($imonth,$iday,$iyear)>mktime($i2month,$i2day,$fyear)) break;
+} while (($iday<=$i2day)||(($imonth!=$i2month)||($iyear!=$fyear)));
+print "<TR><TH COLSPAN=5 CLASS=\"la\">Исполнитель:</TH></TR>";
+print "</TBODY>\n</TABLE>\n</TBODY>\n</TABLE>\n</BODY>\n</HTML>\n</BODY>\n</HTML>\n";
+?>

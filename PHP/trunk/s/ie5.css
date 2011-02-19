@@ -1,0 +1,31 @@
+/* общее для всех элементов */
+*               {font-family: Verdana, Arial, Helvetica, sans-serif;}
+/* тело документа */
+BODY            {font-size: 8pt; background-color: white; margin: 10px; color: #000000;}
+/* стили plane-текста */
+P               {font-size: 8pt; text-indent: 20px; margin-top: 2px; margin-bottom: 2px; text-align: justify; font-weight: normal; color: #000000; background: transparent;}
+/* стили ссылок */
+A               {font-size: inherit; text-align: left; font-weight: bold; background: transparent; text-decoration:none;}
+A:link          {color: #000000; font-weight: bold;}
+A:hover         {color: #000000; text-decoration:underline; font-weight: bold;}
+A:active        {color: #000000; font-weight: bold;}
+A:visited       {color: #000000; font-weight: bold;}
+/* стили заголовков */
+H1              {font-size: 13pt; margin-top: 5px; margin-bottom: 5px; text-align: center; font-weight: bold; color: #000000; background-color: transparent; padding-top: 3px; padding-bottom: 3px;}
+/* стили таблиц */
+CAPTION         {font-size: 13pt; margin-top: 5px; margin-bottom: 5px; text-align: center; font-weight: bold; color: #000000; background-color: transparent; padding-top: 3px; padding-bottom: 3px;}
+TABLE           {caption-side: top; table-layout: auto; empty-cells: show; font-size: 8pt; float: none; clear: both; border-collapse: collapse; background-color: transparent;}
+TBODY           {vertical-align: top;}
+TD              {font-weight: normal; padding: 0px 5px;}
+TH              {font-weight: bold; padding: 0px 5px;}
+TH.la           {font-weight: bold; padding: 0px 5px; text-align: left;}
+TH.ra           {font-weight: bold; padding: 0px 5px; text-align: right;}
+TABLE.border, TABLE.border_la {border: 2px solid #000000;}
+TABLE.border TH {text-align: center; border: 2px solid #000000; padding: 2px 5px;}
+TABLE.border TD {text-align: center; padding: 2px 5px; border-width: 1px 2px; border-color: #000000; border-style: solid}
+TABLE.border TH.la {text-align: left; border: 2px solid #000000; padding: 2px 5px;}
+TABLE.border TD.la {text-align: left; padding: 2px 5px; border-width: 1px 2px; border-color: #000000; border-style: solid}
+TABLE.border TH.ra {text-align: right; border: 2px solid #000000; padding: 2px 5px;}
+TABLE.border TD.ra {text-align: right; padding: 2px 5px; border-width: 1px 2px; border-color: #000000; border-style: solid}
+TABLE.border_la TH {text-align: left; border: 2px solid #000000; padding: 2px 5px;}
+TABLE.border_la TD {text-align: left; padding: 2px 5px; border-width: 1px 2px; border-color: #000000; border-style: solid}
