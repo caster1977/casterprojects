@@ -222,7 +222,6 @@ object OptionsForm: TOptionsForm
           Top = 0
           Width = 441
           Height = 203
-          VertScrollBar.Position = 322
           Align = alClient
           BevelInner = bvNone
           BevelOuter = bvNone
@@ -230,7 +229,7 @@ object OptionsForm: TOptionsForm
           TabOrder = 0
           object GroupBox1: TGroupBox
             Left = 0
-            Top = 171
+            Top = 493
             Width = 424
             Height = 345
             Align = alTop
@@ -863,7 +862,7 @@ object OptionsForm: TOptionsForm
           end
           object GroupBox3: TGroupBox
             Left = 0
-            Top = -322
+            Top = 0
             Width = 424
             Height = 75
             Align = alTop
@@ -970,7 +969,7 @@ object OptionsForm: TOptionsForm
           end
           object GroupBox2: TGroupBox
             Left = 0
-            Top = 35
+            Top = 357
             Width = 424
             Height = 90
             Align = alTop
@@ -1007,7 +1006,7 @@ object OptionsForm: TOptionsForm
           end
           object GroupBox4: TGroupBox
             Left = 0
-            Top = -247
+            Top = 75
             Width = 424
             Height = 282
             Align = alTop
@@ -1142,7 +1141,7 @@ object OptionsForm: TOptionsForm
           end
           object GroupBox5: TGroupBox
             Left = 0
-            Top = 125
+            Top = 447
             Width = 424
             Height = 46
             Align = alTop

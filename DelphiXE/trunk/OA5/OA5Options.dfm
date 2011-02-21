@@ -16,6 +16,8 @@ object OptionsForm: TOptionsForm
   Position = poMainFormCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
+  OnMouseWheelDown = FormMouseWheelDown
+  OnMouseWheelUp = FormMouseWheelUp
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -128,6 +130,8 @@ object OptionsForm: TOptionsForm
         OnSelect = cbPageSelect
         Items.Strings = (
           ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
+          ' '#1075#1083#1072#1074#1085#1086#1075#1086' '#1086#1082#1085#1072
+          ' '#1087#1086#1083#1086#1078#1077#1085#1080#1103' '#1076#1080#1072#1083#1086#1075#1086#1074#1099#1093' '#1086#1082#1086#1085
           ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093' '#1091#1089#1083#1091#1075#1080
           ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1089#1080#1089#1090#1077#1084#1099' '#1086#1073#1084#1077#1085#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1103#1084#1080
           ' '#1087#1088#1086#1094#1077#1076#1091#1088#1099' '#1083#1086#1075#1080#1088#1086#1074#1072#1085#1080#1103
@@ -188,7 +192,7 @@ object OptionsForm: TOptionsForm
         Top = 3
         Width = 614
         Height = 223
-        ActivePage = ts4
+        ActivePage = ts10
         Align = alCustom
         Style = tsButtons
         TabOrder = 0
@@ -211,7 +215,6 @@ object OptionsForm: TOptionsForm
                 #1055#1086#1076#1072#1074#1072#1090#1100' '#1079#1074#1091#1082#1086#1074#1086#1081' '#1089#1080#1075#1085#1072#1083' '#1087#1088#1080' '#1079#1072#1074#1077#1088#1096#1077#1085#1080#1080' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103' '#1076#1083#1080#1090#1077#1083#1100#1085#1086#1075#1086' '#1076 +
                 #1077#1081#1089#1090#1074#1080#1103'='#1044#1072
               #1055#1088#1086#1082#1088#1091#1095#1080#1074#1072#1090#1100' '#1086#1082#1085#1086' '#1087#1088#1086#1090#1086#1082#1086#1083#1072' '#1082' '#1087#1086#1089#1083#1077#1076#1085#1077#1084#1091' '#1101#1083#1077#1084#1077#1085#1090#1091' '#1089#1087#1080#1089#1082#1072'='#1044#1072
-              #1055#1088#1086#1074#1077#1088#1103#1090#1100' '#1074#1093#1086#1076#1103#1097#1080#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103' '#1088#1072#1079' '#1074' ('#1082#1086#1083#1080#1095#1077#1089#1090#1074#1086' '#1084#1080#1085#1091#1090')=5'
               #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100' '#1091#1082#1072#1079#1072#1085#1085#1099#1081' '#1089#1087#1088#1072#1074#1086#1095#1085#1099#1081' '#1092#1072#1081#1083'=')
             TabOrder = 0
             TitleCaptions.Strings = (
@@ -222,93 +225,9 @@ object OptionsForm: TOptionsForm
               186)
           end
         end
-        object ts7: TTabSheet
-          Caption = ' '#1087#1088#1086#1094#1077#1076#1091#1088#1099' '#1083#1086#1075#1080#1088#1086#1074#1072#1085#1080#1103
-          ImageIndex = 7
-          TabVisible = False
-          object chkbxStoreLastLogin: TCheckBox
-            Left = 0
-            Top = 0
-            Width = 606
-            Height = 17
-            Caption = #1057#1086#1093#1088#1072#1085#1103#1090#1100' '#1083#1086#1075#1080#1085' '#1087#1086#1089#1083#1077#1076#1085#1077#1075#1086' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
-            TabOrder = 0
-            OnClick = chkbxStoreLastLoginClick
-          end
-          object chkbxStoreLastPassword: TCheckBox
-            Left = 0
-            Top = 23
-            Width = 606
-            Height = 17
-            Caption = #1057#1086#1093#1088#1072#1085#1103#1090#1100' '#1087#1072#1088#1086#1083#1100' '#1087#1086#1089#1083#1077#1076#1085#1077#1075#1086' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
-            TabOrder = 1
-            OnClick = chkbxStoreLastPasswordClick
-          end
-          object chkbxAutoLogon: TCheckBox
-            Left = 0
-            Top = 46
-            Width = 606
-            Height = 17
-            Caption = 
-              #1042#1099#1087#1086#1083#1085#1103#1090#1100' '#1072#1074#1090#1086#1084#1072#1090#1080#1095#1077#1089#1082#1080#1081' '#1074#1093#1086#1076', '#1080#1089#1087#1086#1083#1100#1079#1091#1103' '#1089#1086#1093#1088#1072#1085#1105#1085#1085#1099#1077' '#1083#1086#1075#1080#1085' '#1080' '#1087#1072#1088 +
-              #1086#1083#1100' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
-            Enabled = False
-            TabOrder = 2
-          end
-        end
-        object ts2: TTabSheet
-          Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093' '#1091#1089#1083#1091#1075#1080
-          ImageIndex = 1
-          TabVisible = False
-          object vleRNE4SERVER: TValueListEditor
-            Left = 0
-            Top = 0
-            Width = 606
-            Height = 212
-            Align = alTop
-            Strings.Strings = (
-              #1048#1084#1103' '#1093#1086#1089#1090#1072' '#1080#1083#1080' IP-'#1072#1076#1088#1077#1089'=RNE4SERVER'
-              #1053#1086#1084#1077#1088' '#1087#1086#1088#1090#1072'=3306'
-              #1042#1088#1077#1084#1103' '#1086#1078#1080#1076#1072#1085#1080#1103'=30'
-              #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1085#1080#1077' '#1089#1078#1072#1090#1080#1103' '#1076#1072#1085#1085#1099#1093'='#1044#1072
-              #1048#1084#1103' '#1088#1072#1073#1086#1095#1077#1081' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093'=rne4')
-            TabOrder = 0
-            TitleCaptions.Strings = (
-              #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1087#1072#1088#1072#1084#1077#1090#1088#1072
-              #1047#1085#1072#1095#1077#1085#1080#1077)
-            ColWidths = (
-              302
-              298)
-          end
-        end
-        object ts3: TTabSheet
-          Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1089#1080#1089#1090#1077#1084#1099' '#1086#1073#1084#1077#1085#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1103#1084#1080
-          ImageIndex = 4
-          TabVisible = False
-          object vleRNE4MESSAGESSERVER: TValueListEditor
-            Left = 0
-            Top = 0
-            Width = 606
-            Height = 212
-            Align = alTop
-            Strings.Strings = (
-              #1048#1084#1103' '#1093#1086#1089#1090#1072' '#1080#1083#1080' IP-'#1072#1076#1088#1077#1089'=RNE4MESSAGESSERVER'
-              #1053#1086#1084#1077#1088' '#1087#1086#1088#1090#1072'=3306'
-              #1042#1088#1077#1084#1103' '#1086#1078#1080#1076#1072#1085#1080#1103'=30'
-              #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1085#1080#1077' '#1089#1078#1072#1090#1080#1103' '#1076#1072#1085#1085#1099#1093'='#1044#1072
-              #1048#1084#1103' '#1088#1072#1073#1086#1095#1077#1081' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093'=rne4')
-            TabOrder = 0
-            TitleCaptions.Strings = (
-              #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1087#1072#1088#1072#1084#1077#1090#1088#1072
-              #1047#1085#1072#1095#1077#1085#1080#1077)
-            ColWidths = (
-              302
-              298)
-          end
-        end
         object ts4: TTabSheet
           Caption = ' '#1074#1077#1076#1077#1085#1080#1103' '#1087#1088#1086#1090#1086#1082#1086#1083#1072' '#1088#1072#1073#1086#1090#1099
-          ImageIndex = 2
+          ImageIndex = 1
           TabVisible = False
           object Bevel4: TBevel
             Left = 0
@@ -473,6 +392,697 @@ object OptionsForm: TOptionsForm
             OnClick = chkbxUseLogClick
           end
         end
+        object ts8: TTabSheet
+          Caption = ' '#1087#1086#1083#1086#1078#1077#1085#1080#1103' '#1076#1080#1072#1083#1086#1075#1086#1074#1099#1093' '#1086#1082#1086#1085
+          ImageIndex = 8
+          TabVisible = False
+          object ScrollBox1: TScrollBox
+            Left = 0
+            Top = 0
+            Width = 606
+            Height = 213
+            HorzScrollBar.Range = 588
+            VertScrollBar.Range = 327
+            Align = alClient
+            AutoScroll = False
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BorderStyle = bsNone
+            TabOrder = 0
+            object lblLoginFormPosition: TLabel
+              Left = 0
+              Top = 3
+              Width = 94
+              Height = 13
+              Caption = #1054#1082#1085#1086' '#1083#1086#1075#1080#1088#1086#1074#1072#1085#1080#1103
+            end
+            object lblLoginFormPositionX: TLabel
+              Left = 340
+              Top = 3
+              Width = 6
+              Height = 13
+              Caption = 'x'
+            end
+            object lblLoginFormPositionY: TLabel
+              Left = 427
+              Top = 3
+              Width = 6
+              Height = 13
+              Caption = 'y'
+            end
+            object lblOptionsFormPosition: TLabel
+              Left = 0
+              Top = 30
+              Width = 102
+              Height = 13
+              Caption = #1054#1082#1085#1086' '#1082#1086#1085#1092#1080#1075#1091#1088#1072#1094#1080#1080
+            end
+            object lblOptionsFormPositionX: TLabel
+              Left = 340
+              Top = 30
+              Width = 6
+              Height = 13
+              Caption = 'x'
+            end
+            object lblOptionsFormPositionY: TLabel
+              Left = 427
+              Top = 30
+              Width = 6
+              Height = 13
+              Caption = 'y'
+            end
+            object lblUsersFormPosition: TLabel
+              Left = 0
+              Top = 57
+              Width = 116
+              Height = 13
+              Caption = #1054#1082#1085#1086' '#1091#1095#1105#1090#1085#1099#1093' '#1079#1072#1087#1080#1089#1077#1081
+            end
+            object lblUsersFormPositionX: TLabel
+              Left = 340
+              Top = 57
+              Width = 6
+              Height = 13
+              Caption = 'x'
+            end
+            object lblUsersFormPositionY: TLabel
+              Left = 427
+              Top = 57
+              Width = 6
+              Height = 13
+              Caption = 'y'
+            end
+            object lblSetPasswordFormPosition: TLabel
+              Left = 0
+              Top = 84
+              Width = 99
+              Height = 13
+              Caption = #1054#1082#1085#1086' '#1089#1084#1077#1085#1099' '#1087#1072#1088#1086#1083#1103
+            end
+            object lblSetPasswordFormPositionX: TLabel
+              Left = 340
+              Top = 84
+              Width = 6
+              Height = 13
+              Caption = 'x'
+            end
+            object lblSetPasswordFormPositionY: TLabel
+              Left = 427
+              Top = 84
+              Width = 6
+              Height = 13
+              Caption = 'y'
+            end
+            object lblStatisticFormPosition: TLabel
+              Left = 0
+              Top = 111
+              Width = 87
+              Height = 13
+              Caption = #1054#1082#1085#1086' '#1089#1090#1072#1090#1080#1089#1090#1080#1082#1080
+            end
+            object lblStatisticFormPositionX: TLabel
+              Left = 340
+              Top = 111
+              Width = 6
+              Height = 13
+              Caption = 'x'
+            end
+            object lblStatisticFormPositionY: TLabel
+              Left = 427
+              Top = 111
+              Width = 6
+              Height = 13
+              Caption = 'y'
+            end
+            object lblMaintenanceFormPosition: TLabel
+              Left = 0
+              Top = 138
+              Width = 119
+              Height = 13
+              Caption = #1054#1082#1085#1086' '#1086#1073#1089#1083#1091#1078#1080#1074#1072#1085#1080#1103' '#1041#1044
+            end
+            object lblMaintenanceFormPositionX: TLabel
+              Left = 340
+              Top = 138
+              Width = 6
+              Height = 13
+              Caption = 'x'
+            end
+            object lblMaintenanceFormPositionY: TLabel
+              Left = 427
+              Top = 138
+              Width = 6
+              Height = 13
+              Caption = 'y'
+            end
+            object lblClearingFormPosition: TLabel
+              Left = 0
+              Top = 165
+              Width = 87
+              Height = 13
+              Caption = #1054#1082#1085#1086' '#1086#1095#1080#1089#1090#1082#1080' '#1041#1044
+            end
+            object lblClearingFormPositionX: TLabel
+              Left = 340
+              Top = 165
+              Width = 6
+              Height = 13
+              Caption = 'x'
+            end
+            object lblClearingFormPositionY: TLabel
+              Left = 427
+              Top = 165
+              Width = 6
+              Height = 13
+              Caption = 'y'
+            end
+            object lblViewPostListFormPosition: TLabel
+              Left = 0
+              Top = 192
+              Width = 122
+              Height = 13
+              Caption = #1054#1082#1085#1086' '#1089#1087#1080#1089#1082#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1081
+            end
+            object lblViewPostListFormPositionX: TLabel
+              Left = 340
+              Top = 192
+              Width = 6
+              Height = 13
+              Caption = 'x'
+            end
+            object lblViewPostListFormPositionY: TLabel
+              Left = 427
+              Top = 192
+              Width = 6
+              Height = 13
+              Caption = 'y'
+            end
+            object lblCreateViewPostFormPosition: TLabel
+              Left = 0
+              Top = 219
+              Width = 141
+              Height = 13
+              Caption = #1054#1082#1085#1086' '#1087#1088#1086#1089#1084#1086#1090#1088#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
+            end
+            object lblCreateViewPostFormPositionX: TLabel
+              Left = 340
+              Top = 219
+              Width = 6
+              Height = 13
+              Caption = 'x'
+            end
+            object lblCreateViewPostFormPositionY: TLabel
+              Left = 427
+              Top = 219
+              Width = 6
+              Height = 13
+              Caption = 'y'
+            end
+            object lblPhonesFormPosition: TLabel
+              Left = 0
+              Top = 246
+              Width = 122
+              Height = 13
+              Caption = #1054#1082#1085#1086' '#1089#1087#1080#1089#1082#1072' '#1090#1077#1083#1077#1092#1086#1085#1086#1074
+            end
+            object lblPhonesFormPositionX: TLabel
+              Left = 340
+              Top = 246
+              Width = 6
+              Height = 13
+              Caption = 'x'
+            end
+            object lblPhonesFormPositionY: TLabel
+              Left = 427
+              Top = 246
+              Width = 6
+              Height = 13
+              Caption = 'y'
+            end
+            object lblAddEditPhoneFormPosition: TLabel
+              Left = 0
+              Top = 273
+              Width = 135
+              Height = 13
+              Caption = #1054#1082#1085#1086' '#1087#1088#1086#1089#1084#1086#1090#1088#1072' '#1090#1077#1083#1077#1092#1086#1085#1072
+            end
+            object lblAddEditPhoneFormPositionX: TLabel
+              Left = 340
+              Top = 273
+              Width = 6
+              Height = 13
+              Caption = 'x'
+            end
+            object lblAddEditPhoneFormPositionY: TLabel
+              Left = 427
+              Top = 273
+              Width = 6
+              Height = 13
+              Caption = 'y'
+            end
+            object lblAddMassMsrFormPosition: TLabel
+              Left = 0
+              Top = 300
+              Width = 119
+              Height = 13
+              Caption = #1054#1082#1085#1086' '#1084#1072#1089#1089#1086#1074#1086#1081' '#1074#1089#1090#1072#1074#1082#1080
+            end
+            object lblAddMassMsrFormPositionX: TLabel
+              Left = 340
+              Top = 300
+              Width = 6
+              Height = 13
+              Caption = 'x'
+            end
+            object lblAddMassMsrFormPositionY: TLabel
+              Left = 427
+              Top = 300
+              Width = 6
+              Height = 13
+              Caption = 'y'
+            end
+            object edbxLoginFormPositionX: TEdit
+              Left = 352
+              Top = 0
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 0
+            end
+            object edbxLoginFormPositionY: TEdit
+              Left = 439
+              Top = 0
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 1
+            end
+            object chkbxLoginFormPositionByCenter: TCheckBox
+              Left = 514
+              Top = 2
+              Width = 74
+              Height = 17
+              Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
+              Checked = True
+              State = cbChecked
+              TabOrder = 2
+            end
+            object edbxOptionsFormPositionX: TEdit
+              Left = 352
+              Top = 27
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 3
+            end
+            object edbxOptionsFormPositionY: TEdit
+              Left = 439
+              Top = 27
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 4
+            end
+            object chkbxOptionsFormPositionByCenter: TCheckBox
+              Left = 514
+              Top = 29
+              Width = 74
+              Height = 17
+              Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
+              Checked = True
+              State = cbChecked
+              TabOrder = 5
+            end
+            object edbxUsersFormPositionX: TEdit
+              Left = 352
+              Top = 54
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 6
+            end
+            object edbxUsersFormPositionY: TEdit
+              Left = 439
+              Top = 54
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 7
+            end
+            object chkbxUsersFormPositionByCenter: TCheckBox
+              Left = 514
+              Top = 56
+              Width = 74
+              Height = 17
+              Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
+              Checked = True
+              State = cbChecked
+              TabOrder = 8
+            end
+            object edbxSetPasswordFormPositionX: TEdit
+              Left = 352
+              Top = 81
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 9
+            end
+            object edbxSetPasswordFormPositionY: TEdit
+              Left = 439
+              Top = 81
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 10
+            end
+            object chkbxSetPasswordFormPositionByCenter: TCheckBox
+              Left = 514
+              Top = 83
+              Width = 74
+              Height = 17
+              Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
+              Checked = True
+              State = cbChecked
+              TabOrder = 11
+            end
+            object edbxStatisticFormPositionX: TEdit
+              Left = 352
+              Top = 108
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 12
+            end
+            object edbxStatisticFormPositionY: TEdit
+              Left = 439
+              Top = 108
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 13
+            end
+            object chkbxStatisticFormPositionByCenter: TCheckBox
+              Left = 514
+              Top = 110
+              Width = 74
+              Height = 17
+              Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
+              Checked = True
+              State = cbChecked
+              TabOrder = 14
+            end
+            object edbxMaintenanceFormPositionX: TEdit
+              Left = 352
+              Top = 135
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 15
+            end
+            object edbxMaintenanceFormPositionY: TEdit
+              Left = 439
+              Top = 135
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 16
+            end
+            object chkbxMaintenanceFormPositionByCenter: TCheckBox
+              Left = 514
+              Top = 137
+              Width = 74
+              Height = 17
+              Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
+              Checked = True
+              State = cbChecked
+              TabOrder = 17
+            end
+            object edbxClearingFormPositionX: TEdit
+              Left = 352
+              Top = 162
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 18
+            end
+            object edbxClearingFormPositionY: TEdit
+              Left = 439
+              Top = 162
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 19
+            end
+            object chkbxClearingFormPositionByCenter: TCheckBox
+              Left = 514
+              Top = 164
+              Width = 74
+              Height = 17
+              Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
+              Checked = True
+              State = cbChecked
+              TabOrder = 20
+            end
+            object edbxViewPostListFormPositionX: TEdit
+              Left = 352
+              Top = 189
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 21
+            end
+            object edbxViewPostListFormPositionY: TEdit
+              Left = 439
+              Top = 189
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 22
+            end
+            object chkbxViewPostListFormPositionByCenter: TCheckBox
+              Left = 514
+              Top = 191
+              Width = 74
+              Height = 17
+              Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
+              Checked = True
+              State = cbChecked
+              TabOrder = 23
+            end
+            object edbxCreateViewPostFormPositionX: TEdit
+              Left = 352
+              Top = 216
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 24
+            end
+            object edbxCreateViewPostFormPositionY: TEdit
+              Left = 439
+              Top = 216
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 25
+            end
+            object chkbxCreateViewPostFormPositionByCenter: TCheckBox
+              Left = 514
+              Top = 218
+              Width = 74
+              Height = 17
+              Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
+              Checked = True
+              State = cbChecked
+              TabOrder = 26
+            end
+            object edbxPhonesFormPositionX: TEdit
+              Left = 352
+              Top = 243
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 27
+            end
+            object edbxPhonesFormPositionY: TEdit
+              Left = 439
+              Top = 243
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 28
+            end
+            object chkbxPhonesFormPositionByCenter: TCheckBox
+              Left = 514
+              Top = 245
+              Width = 74
+              Height = 17
+              Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
+              Checked = True
+              State = cbChecked
+              TabOrder = 29
+            end
+            object edbxAddEditPhoneFormPositionX: TEdit
+              Left = 352
+              Top = 270
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 30
+            end
+            object edbxAddEditPhoneFormPositionY: TEdit
+              Left = 439
+              Top = 270
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 31
+            end
+            object chkbxAddEditPhoneFormPositionByCenter: TCheckBox
+              Left = 514
+              Top = 272
+              Width = 74
+              Height = 17
+              Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
+              Checked = True
+              State = cbChecked
+              TabOrder = 32
+            end
+            object edbxAddMassMsrFormPositionX: TEdit
+              Left = 352
+              Top = 297
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 33
+            end
+            object edbxAddMassMsrFormPositionY: TEdit
+              Left = 439
+              Top = 297
+              Width = 69
+              Height = 21
+              Enabled = False
+              MaxLength = 4
+              TabOrder = 34
+            end
+            object chkbxAddMassMsrFormPositionByCenter: TCheckBox
+              Left = 514
+              Top = 299
+              Width = 74
+              Height = 17
+              Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
+              Checked = True
+              State = cbChecked
+              TabOrder = 35
+            end
+          end
+        end
+        object ts7: TTabSheet
+          Caption = ' '#1087#1088#1086#1094#1077#1076#1091#1088#1099' '#1083#1086#1075#1080#1088#1086#1074#1072#1085#1080#1103
+          ImageIndex = 7
+          TabVisible = False
+          object chkbxStoreLastLogin: TCheckBox
+            Left = 0
+            Top = 0
+            Width = 606
+            Height = 17
+            Caption = #1057#1086#1093#1088#1072#1085#1103#1090#1100' '#1083#1086#1075#1080#1085' '#1087#1086#1089#1083#1077#1076#1085#1077#1075#1086' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
+            TabOrder = 0
+            OnClick = chkbxStoreLastLoginClick
+          end
+          object chkbxStoreLastPassword: TCheckBox
+            Left = 0
+            Top = 23
+            Width = 606
+            Height = 17
+            Caption = #1057#1086#1093#1088#1072#1085#1103#1090#1100' '#1087#1072#1088#1086#1083#1100' '#1087#1086#1089#1083#1077#1076#1085#1077#1075#1086' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
+            TabOrder = 1
+            OnClick = chkbxStoreLastPasswordClick
+          end
+          object chkbxAutoLogon: TCheckBox
+            Left = 0
+            Top = 46
+            Width = 606
+            Height = 17
+            Caption = 
+              #1042#1099#1087#1086#1083#1085#1103#1090#1100' '#1072#1074#1090#1086#1084#1072#1090#1080#1095#1077#1089#1082#1080#1081' '#1074#1093#1086#1076', '#1080#1089#1087#1086#1083#1100#1079#1091#1103' '#1089#1086#1093#1088#1072#1085#1105#1085#1085#1099#1077' '#1083#1086#1075#1080#1085' '#1080' '#1087#1072#1088 +
+              #1086#1083#1100' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
+            Enabled = False
+            TabOrder = 2
+          end
+        end
+        object ts2: TTabSheet
+          Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093' '#1091#1089#1083#1091#1075#1080
+          ImageIndex = 1
+          TabVisible = False
+          object vleRNE4SERVER: TValueListEditor
+            Left = 0
+            Top = 0
+            Width = 606
+            Height = 212
+            Align = alTop
+            Strings.Strings = (
+              #1048#1084#1103' '#1093#1086#1089#1090#1072' '#1080#1083#1080' IP-'#1072#1076#1088#1077#1089'=RNE4SERVER'
+              #1053#1086#1084#1077#1088' '#1087#1086#1088#1090#1072'=3306'
+              #1042#1088#1077#1084#1103' '#1086#1078#1080#1076#1072#1085#1080#1103'=30'
+              #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1085#1080#1077' '#1089#1078#1072#1090#1080#1103' '#1076#1072#1085#1085#1099#1093'='#1044#1072
+              #1048#1084#1103' '#1088#1072#1073#1086#1095#1077#1081' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093'=rne4')
+            TabOrder = 0
+            TitleCaptions.Strings = (
+              #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1087#1072#1088#1072#1084#1077#1090#1088#1072
+              #1047#1085#1072#1095#1077#1085#1080#1077)
+            ColWidths = (
+              302
+              298)
+          end
+        end
+        object ts3: TTabSheet
+          Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1089#1080#1089#1090#1077#1084#1099' '#1086#1073#1084#1077#1085#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1103#1084#1080
+          ImageIndex = 4
+          TabVisible = False
+          object vleRNE4MESSAGESSERVER: TValueListEditor
+            Left = 0
+            Top = 0
+            Width = 606
+            Height = 212
+            Align = alTop
+            Strings.Strings = (
+              #1048#1084#1103' '#1093#1086#1089#1090#1072' '#1080#1083#1080' IP-'#1072#1076#1088#1077#1089'=RNE4MESSAGESSERVER'
+              #1053#1086#1084#1077#1088' '#1087#1086#1088#1090#1072'=3306'
+              #1042#1088#1077#1084#1103' '#1086#1078#1080#1076#1072#1085#1080#1103'=30'
+              #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1085#1080#1077' '#1089#1078#1072#1090#1080#1103' '#1076#1072#1085#1085#1099#1093'='#1044#1072
+              #1048#1084#1103' '#1088#1072#1073#1086#1095#1077#1081' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093'=rne4')
+            TabOrder = 0
+            TitleCaptions.Strings = (
+              #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1087#1072#1088#1072#1084#1077#1090#1088#1072
+              #1047#1085#1072#1095#1077#1085#1080#1077)
+            ColWidths = (
+              302
+              298)
+          end
+        end
         object ts5: TTabSheet
           Caption = ' '#1092#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1103' '#1086#1090#1095#1105#1090#1086#1074
           ImageIndex = 3
@@ -584,7 +1194,7 @@ object OptionsForm: TOptionsForm
               283)
           end
         end
-        object ts10: TTabSheet
+        object ts9: TTabSheet
           Caption = ' '#1087#1088#1086#1095#1080#1077
           ImageIndex = 6
           TabVisible = False
@@ -612,6 +1222,105 @@ object OptionsForm: TOptionsForm
             TabOrder = 1
             OnChange = edbxGetMessagesCycleDurationChange
             OnKeyPress = edbxGetMessagesCycleDurationKeyPress
+          end
+        end
+        object ts10: TTabSheet
+          Caption = ' '#1075#1083#1072#1074#1085#1086#1075#1086' '#1086#1082#1085#1072
+          ImageIndex = 9
+          TabVisible = False
+          ExplicitTop = 27
+          ExplicitHeight = 192
+          object lblMainFormPosition: TLabel
+            Left = 11
+            Top = 3
+            Width = 42
+            Height = 13
+            Caption = #1055#1086#1079#1080#1094#1080#1103
+          end
+          object lblMainFormSize: TLabel
+            Left = 11
+            Top = 30
+            Width = 43
+            Height = 13
+            Caption = #1056#1072#1079#1084#1077#1088#1099
+          end
+          object lblMainFormPositionX: TLabel
+            Left = 339
+            Top = 3
+            Width = 6
+            Height = 13
+            Caption = 'x'
+          end
+          object lblMainFormPositionY: TLabel
+            Left = 426
+            Top = 3
+            Width = 6
+            Height = 13
+            Caption = 'y'
+          end
+          object lblMainFormWidth: TLabel
+            Left = 339
+            Top = 30
+            Width = 6
+            Height = 13
+            Caption = 'x'
+          end
+          object lblMainFormHeight: TLabel
+            Left = 426
+            Top = 30
+            Width = 6
+            Height = 13
+            Caption = 'y'
+          end
+          object edbxMainFormPositionX: TEdit
+            Left = 351
+            Top = 0
+            Width = 69
+            Height = 21
+            Enabled = False
+            MaxLength = 4
+            TabOrder = 0
+          end
+          object edbxMainFormPositionY: TEdit
+            Left = 438
+            Top = 0
+            Width = 69
+            Height = 21
+            Enabled = False
+            MaxLength = 4
+            TabOrder = 1
+          end
+          object chkbxMainFormPositionByCenter: TCheckBox
+            Left = 513
+            Top = 2
+            Width = 74
+            Height = 17
+            Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
+            Checked = True
+            State = cbChecked
+            TabOrder = 2
+          end
+          object edbxMainFormWidth: TEdit
+            Left = 351
+            Top = 27
+            Width = 69
+            Height = 21
+            TabOrder = 3
+          end
+          object edbxMainFormHeight: TEdit
+            Left = 438
+            Top = 27
+            Width = 69
+            Height = 21
+            TabOrder = 4
+          end
+          object chkbxStartupFullScreen: TCheckBox
+            Left = 513
+            Top = 29
+            Width = 90
+            Height = 17
+            Caption = #1085#1072' '#1074#1077#1089#1100' '#1101#1082#1088#1072#1085
+            TabOrder = 5
           end
         end
       end
@@ -693,7 +1402,7 @@ object OptionsForm: TOptionsForm
     Left = 304
     Top = 296
     Bitmap = {
-      494C010106000800700010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800740010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
