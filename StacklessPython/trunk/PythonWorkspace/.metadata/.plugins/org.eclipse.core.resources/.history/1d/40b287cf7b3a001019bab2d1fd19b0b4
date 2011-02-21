@@ -1,0 +1,5 @@
+from apihelper import help
+li = []
+help(li, 30, 0)
+import odbchelper
+help(odbchelper, 30, 0)

@@ -1,0 +1,12 @@
+# coding=utf8
+import odbchelper
+params = {"server":"mpilgrim", "database":"master", "uid":"sa", "pwd":"secret"}
+print odbchelper.buildConnectionString(params) 
+print odbchelper.buildConnectionString.__doc__
+print odbchelper.__name__
+d = {"server":"mpilgrim", "database":"master"}
+print d
+print d["server"]
+print d["database"]
+d["uid"] = "sa"
+print d
