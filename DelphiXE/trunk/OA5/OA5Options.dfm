@@ -133,7 +133,7 @@ object OptionsForm: TOptionsForm
           ' '#1087#1088#1086#1094#1077#1076#1091#1088#1099' '#1083#1086#1075#1080#1088#1086#1074#1072#1085#1080#1103
           ' '#1074#1077#1076#1077#1085#1080#1103' '#1087#1088#1086#1090#1086#1082#1086#1083#1072' '#1088#1072#1073#1086#1090#1099
           ' '#1092#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1103' '#1086#1090#1095#1105#1090#1086#1074
-          ' '#1089#1087#1080#1089#1082#1072' '#1072#1074#1090#1086#1079#1072#1084#1077#1085#1099)
+          ' '#1087#1088#1086#1095#1080#1077)
       end
       object btnNextPage: TButton
         Left = 593
@@ -188,7 +188,7 @@ object OptionsForm: TOptionsForm
         Top = 3
         Width = 614
         Height = 223
-        ActivePage = ts10
+        ActivePage = ts4
         Align = alCustom
         Style = tsButtons
         TabOrder = 0
@@ -226,7 +226,6 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1087#1088#1086#1094#1077#1076#1091#1088#1099' '#1083#1086#1075#1080#1088#1086#1074#1072#1085#1080#1103
           ImageIndex = 7
           TabVisible = False
-          ExplicitTop = -2
           object chkbxStoreLastLogin: TCheckBox
             Left = 0
             Top = 0
@@ -319,7 +318,7 @@ object OptionsForm: TOptionsForm
             Align = alTop
             Shape = bsBottomLine
           end
-          object Label2: TLabel
+          object lblFlushLog: TLabel
             Left = 306
             Top = 32
             Width = 254
@@ -333,7 +332,7 @@ object OptionsForm: TOptionsForm
             Height = 124
             Shape = bsFrame
           end
-          object Label3: TLabel
+          object lblShowData: TLabel
             Left = 0
             Top = 32
             Width = 184
@@ -579,7 +578,6 @@ object OptionsForm: TOptionsForm
             Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goRowMoving, goEditing]
             ParentCtl3D = False
             TabOrder = 0
-            ExplicitHeight = 192
             ColWidths = (
               14
               285
@@ -590,8 +588,6 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1087#1088#1086#1095#1080#1077
           ImageIndex = 6
           TabVisible = False
-          ExplicitTop = 27
-          ExplicitHeight = 192
           object lblGetMessagesCycleDuration: TLabel
             Left = 394
             Top = 3
@@ -606,13 +602,16 @@ object OptionsForm: TOptionsForm
             Height = 17
             Caption = #1040#1074#1090#1086#1084#1072#1090#1080#1095#1077#1089#1082#1080' '#1087#1088#1086#1074#1077#1088#1103#1090#1100' '#1074#1093#1086#1076#1103#1097#1080#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103' '#1088#1072#1079' '#1074
             TabOrder = 0
+            OnClick = chkbxGetMessagesClick
           end
-          object Edit1: TEdit
+          object edbxGetMessagesCycleDuration: TEdit
             Left = 319
             Top = 0
             Width = 69
             Height = 21
             TabOrder = 1
+            OnChange = edbxGetMessagesCycleDurationChange
+            OnKeyPress = edbxGetMessagesCycleDurationKeyPress
           end
         end
       end
@@ -694,7 +693,7 @@ object OptionsForm: TOptionsForm
     Left = 304
     Top = 296
     Bitmap = {
-      494C0101060008006C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800700010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
