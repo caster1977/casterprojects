@@ -1,0 +1,17 @@
+'''
+Created on 28.01.2011
+
+@author: caster
+'''
+
+class MyClass(object):
+    '''
+    classdocs
+    '''
+
+
+    def __init__(selfparams):
+        '''
+        Constructor
+        '''
+        
