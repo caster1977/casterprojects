@@ -644,7 +644,7 @@ end;
 procedure TOptionsForm.edbxGetMessagesCycleDurationChange(Sender: TObject);
 begin
   if StrToIntDef(edbxGetMessagesCycleDuration.Text, 1)>60 then
-    edbxOrgPanelHeight.Text:='60';
+    edbxGetMessagesCycleDuration.Text:='60';
 end;
 
 procedure TOptionsForm.btnDefaultsClick(Sender: TObject);

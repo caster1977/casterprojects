@@ -56,9 +56,9 @@ type
     ts1: TTabSheet;
     vleInterface: TValueListEditor;
     ts4: TTabSheet;
-    Label2: TLabel;
+    lblFlushLog: TLabel;
     Bevel1: TBevel;
-    Label3: TLabel;
+    lblShowData: TLabel;
     Bevel2: TBevel;
     chkbxKeepInfoLog: TCheckBox;
     chkbxKeepWarningLog: TCheckBox;
@@ -103,7 +103,7 @@ type
     chkbxStoreLastPassword: TCheckBox;
     chkbxAutoLogon: TCheckBox;
     chkbxGetMessages: TCheckBox;
-    Edit1: TEdit;
+    edbxGetMessagesCycleDuration: TEdit;
     lblGetMessagesCycleDuration: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure Action_ApplyExecute(Sender: TObject);
@@ -124,6 +124,10 @@ type
     procedure rbSaveIntoTheSelectedFolderClick(Sender: TObject);
     procedure chkbxStoreLastLoginClick(Sender: TObject);
     procedure chkbxStoreLastPasswordClick(Sender: TObject);
+    procedure chkbxGetMessagesClick(Sender: TObject);
+    procedure edbxGetMessagesCycleDurationKeyPress(Sender: TObject;
+      var Key: Char);
+    procedure edbxGetMessagesCycleDurationChange(Sender: TObject);
   public
     slBoolean: TStringList;
   private
@@ -492,6 +496,8 @@ begin
 
   bUseLog:=chkbxUseLog.Enabled and chkbxUseLog.Checked;
 
+  lblShowData.Enabled:=bUseLog;
+
   chkbxKeepInfoLog.Enabled:=bUseLog;
   chkbxKeepInfoLog.Checked:=chkbxKeepInfoLog.Checked and chkbxKeepInfoLog.Enabled;
 
@@ -506,6 +512,8 @@ begin
 
   chkbxKeepDebugLog.Enabled:=bUseLog;
   chkbxKeepDebugLog.Checked:=chkbxKeepDebugLog.Checked and chkbxKeepDebugLog.Enabled;
+
+  lblFlushLog.Enabled:=bUseLog;
 
   chkbxFlushLogOnExit.Enabled:=bUseLog;
   chkbxFlushLogOnExit.Checked:=chkbxFlushLogOnExit.Checked and chkbxFlushLogOnExit.Enabled;
@@ -815,6 +823,36 @@ begin
   LogThis('Флажок "'+chkbxAutoLogon.Caption+'"'+Routines_GetConditionalMessage(chkbxAutoLogon.Checked, 'в', 'от')+'ключен.', LogGroupGUID, lmtInfo);
 
   ProcedureFooter(LogGroupGUID);
+end;
+
+procedure TOptionsForm.chkbxGetMessagesClick(Sender: TObject);
+const
+  LogGroupGUID: string='{622C5734-31C1-4C43-BF9E-8257AEC0BBB1}';
+begin
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxGetMessages.Caption, LogGroupGUID);
+
+  edbxGetMessagesCycleDuration.Enabled:=chkbxGetMessages.Checked;
+  if edbxGetMessagesCycleDuration.Enabled then
+    edbxGetMessagesCycleDuration.Text:=IntToStr(MainForm.Configuration.iGetMessagesCycleDuration)
+  else edbxGetMessagesCycleDuration.Clear;
+  LogThis('Флажок "'+chkbxGetMessages.Caption+'"'+Routines_GetConditionalMessage(chkbxGetMessages.Checked, 'в', 'от')+'ключен.', LogGroupGUID, lmtInfo);
+
+  ProcedureFooter(LogGroupGUID);
+end;
+
+procedure TOptionsForm.edbxGetMessagesCycleDurationChange(Sender: TObject);
+begin
+  if StrToIntDef(edbxGetMessagesCycleDuration.Text, 1)<1 then
+    edbxGetMessagesCycleDuration.Text:='1';
+  if StrToIntDef(edbxGetMessagesCycleDuration.Text, 1)>60 then
+    edbxGetMessagesCycleDuration.Text:='60';
+end;
+
+procedure TOptionsForm.edbxGetMessagesCycleDurationKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if not CharInSet(Key, ['0'..'9', #8, '-']) then
+    Key:=#0; // "погасить" все остальные клавиши
 end;
 
 end.

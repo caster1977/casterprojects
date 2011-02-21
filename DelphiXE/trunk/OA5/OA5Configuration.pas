@@ -8,7 +8,6 @@ uses
 type
   TConfiguration=class
     RNE4Server, MessagesServer: TMySQLConnection;
-
     // bAutoLogon, bStoreLastLogin, bStoreLastPassword: boolean;
     // sLastLogin, sLastPassword: string;
     //
@@ -33,6 +32,7 @@ type
     // bKeepDebugLog: boolean; // нужно ли вести лог отладочной информации
     // bFlushLogOnExit: boolean; // выполнять ли сохранение лога в файл при выходе из программы
     iFlushLogOnStringsQuantity: integer; // при каком количестве строк лога скидывать их в файл
+    iGetMessagesCycleDuration: integer; // количество минут, через которое нужно проверять новые сообщения
     // bFlushLogOnClearingLog: boolean; // выполнять ли сохранение лога в файл при очистке лога
     //
     // sApplicationFolder: string;
@@ -55,7 +55,6 @@ type
     // bShowSearchAddressOtherEditBox: boolean;
     // bUseMultibuffer: boolean;
     // bGetMessages: boolean;
-    // iGetMessagesCycleDuration: integer;
     // iOrgSortColumn: integer;
     // iMsrSortColumn: integer;
     // bFullScreen: boolean;
@@ -85,5 +84,7 @@ type
   end;
 
 implementation
+
+{ TConfiguration }
 
 end.
