@@ -97,7 +97,7 @@ type
     Action_LineUp: TAction;
     Action_LineDown: TAction;
     lblAutoReplaceSorry: TLabel;
-    ts10: TTabSheet;
+    ts9: TTabSheet;
     ts7: TTabSheet;
     chkbxStoreLastLogin: TCheckBox;
     chkbxStoreLastPassword: TCheckBox;
@@ -105,6 +105,93 @@ type
     chkbxGetMessages: TCheckBox;
     edbxGetMessagesCycleDuration: TEdit;
     lblGetMessagesCycleDuration: TLabel;
+    ts8: TTabSheet;
+    ScrollBox1: TScrollBox;
+    lblLoginFormPosition: TLabel;
+    lblLoginFormPositionX: TLabel;
+    edbxLoginFormPositionX: TEdit;
+    lblLoginFormPositionY: TLabel;
+    edbxLoginFormPositionY: TEdit;
+    chkbxLoginFormPositionByCenter: TCheckBox;
+    lblOptionsFormPosition: TLabel;
+    lblOptionsFormPositionX: TLabel;
+    edbxOptionsFormPositionX: TEdit;
+    lblOptionsFormPositionY: TLabel;
+    edbxOptionsFormPositionY: TEdit;
+    chkbxOptionsFormPositionByCenter: TCheckBox;
+    lblUsersFormPosition: TLabel;
+    lblUsersFormPositionX: TLabel;
+    edbxUsersFormPositionX: TEdit;
+    lblUsersFormPositionY: TLabel;
+    edbxUsersFormPositionY: TEdit;
+    chkbxUsersFormPositionByCenter: TCheckBox;
+    lblSetPasswordFormPosition: TLabel;
+    lblSetPasswordFormPositionX: TLabel;
+    edbxSetPasswordFormPositionX: TEdit;
+    lblSetPasswordFormPositionY: TLabel;
+    edbxSetPasswordFormPositionY: TEdit;
+    chkbxSetPasswordFormPositionByCenter: TCheckBox;
+    lblStatisticFormPosition: TLabel;
+    lblStatisticFormPositionX: TLabel;
+    edbxStatisticFormPositionX: TEdit;
+    lblStatisticFormPositionY: TLabel;
+    edbxStatisticFormPositionY: TEdit;
+    chkbxStatisticFormPositionByCenter: TCheckBox;
+    lblMaintenanceFormPosition: TLabel;
+    lblMaintenanceFormPositionX: TLabel;
+    edbxMaintenanceFormPositionX: TEdit;
+    lblMaintenanceFormPositionY: TLabel;
+    edbxMaintenanceFormPositionY: TEdit;
+    chkbxMaintenanceFormPositionByCenter: TCheckBox;
+    lblClearingFormPosition: TLabel;
+    lblClearingFormPositionX: TLabel;
+    edbxClearingFormPositionX: TEdit;
+    lblClearingFormPositionY: TLabel;
+    edbxClearingFormPositionY: TEdit;
+    chkbxClearingFormPositionByCenter: TCheckBox;
+    lblViewPostListFormPosition: TLabel;
+    lblViewPostListFormPositionX: TLabel;
+    lblViewPostListFormPositionY: TLabel;
+    edbxViewPostListFormPositionX: TEdit;
+    edbxViewPostListFormPositionY: TEdit;
+    chkbxViewPostListFormPositionByCenter: TCheckBox;
+    lblCreateViewPostFormPosition: TLabel;
+    lblCreateViewPostFormPositionX: TLabel;
+    lblCreateViewPostFormPositionY: TLabel;
+    edbxCreateViewPostFormPositionX: TEdit;
+    edbxCreateViewPostFormPositionY: TEdit;
+    chkbxCreateViewPostFormPositionByCenter: TCheckBox;
+    lblPhonesFormPosition: TLabel;
+    lblPhonesFormPositionX: TLabel;
+    lblPhonesFormPositionY: TLabel;
+    edbxPhonesFormPositionX: TEdit;
+    edbxPhonesFormPositionY: TEdit;
+    chkbxPhonesFormPositionByCenter: TCheckBox;
+    lblAddEditPhoneFormPosition: TLabel;
+    lblAddEditPhoneFormPositionX: TLabel;
+    edbxAddEditPhoneFormPositionX: TEdit;
+    lblAddEditPhoneFormPositionY: TLabel;
+    edbxAddEditPhoneFormPositionY: TEdit;
+    chkbxAddEditPhoneFormPositionByCenter: TCheckBox;
+    lblAddMassMsrFormPosition: TLabel;
+    lblAddMassMsrFormPositionX: TLabel;
+    lblAddMassMsrFormPositionY: TLabel;
+    edbxAddMassMsrFormPositionX: TEdit;
+    edbxAddMassMsrFormPositionY: TEdit;
+    chkbxAddMassMsrFormPositionByCenter: TCheckBox;
+    ts10: TTabSheet;
+    lblMainFormPosition: TLabel;
+    lblMainFormSize: TLabel;
+    lblMainFormPositionX: TLabel;
+    edbxMainFormPositionX: TEdit;
+    lblMainFormPositionY: TLabel;
+    edbxMainFormPositionY: TEdit;
+    chkbxMainFormPositionByCenter: TCheckBox;
+    lblMainFormWidth: TLabel;
+    edbxMainFormWidth: TEdit;
+    lblMainFormHeight: TLabel;
+    edbxMainFormHeight: TEdit;
+    chkbxStartupFullScreen: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure Action_ApplyExecute(Sender: TObject);
     procedure Action_DefaultsExecute(Sender: TObject);
@@ -128,6 +215,10 @@ type
     procedure edbxGetMessagesCycleDurationKeyPress(Sender: TObject;
       var Key: Char);
     procedure edbxGetMessagesCycleDurationChange(Sender: TObject);
+    procedure FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
+    procedure FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
   public
     slBoolean: TStringList;
   private
@@ -853,6 +944,20 @@ procedure TOptionsForm.edbxGetMessagesCycleDurationKeyPress(Sender: TObject;
 begin
   if not CharInSet(Key, ['0'..'9', #8, '-']) then
     Key:=#0; // "погасить" все остальные клавиши
+end;
+
+procedure TOptionsForm.FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+  if PageControl1.ActivePage.Caption=' положения диалоговых окон' then
+    SendMessage(ScrollBox1.Handle, WM_VSCROLL, SB_LINEDOWN, 0);
+end;
+
+procedure TOptionsForm.FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+  if PageControl1.ActivePage.Caption=' положения диалоговых окон' then
+    SendMessage(ScrollBox1.Handle, WM_VSCROLL, SB_LINEUP, 0);
 end;
 
 end.
