@@ -3,25 +3,25 @@
 			<ProjectGuid>{9115DE23-7659-4E25-816E-EA5AFA9116AE}</ProjectGuid>
 		</PropertyGroup>
 		<ItemGroup>
-			<Projects Include="OA4\OA4.dproj">
+			<Projects Include="Beeper\trunk\Beeper.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="OA5\OA5.dproj">
+			<Projects Include="LogKeeper\trunk\LogKeeper.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="Overseer\Overseer.dproj">
+			<Projects Include="OA4\trunk\OA4.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="LogKeeper\LogKeeper.dproj">
+			<Projects Include="OA4LogServer\trunk\OA4LogServer.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="OA4LogServer\OA4LogServer.dproj">
+			<Projects Include="OA5\trunk\OA5.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="Beeper\Beeper.dproj">
+			<Projects Include="Overseer\trunk\Overseer.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="Packages\MyComponents.dproj">
+			<Projects Include="Packages\trunk\MyComponents.dproj">
 				<Dependencies/>
 			</Projects>
 		</ItemGroup>
@@ -32,77 +32,77 @@
 				<Default.Personality/>
 			</BorlandProject>
 		</ProjectExtensions>
-		<Target Name="OA4">
-			<MSBuild Projects="OA4\OA4.dproj"/>
-		</Target>
-		<Target Name="OA4:Clean">
-			<MSBuild Projects="OA4\OA4.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="OA4:Make">
-			<MSBuild Projects="OA4\OA4.dproj" Targets="Make"/>
-		</Target>
-		<Target Name="OA5">
-			<MSBuild Projects="OA5\OA5.dproj"/>
-		</Target>
-		<Target Name="OA5:Clean">
-			<MSBuild Projects="OA5\OA5.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="OA5:Make">
-			<MSBuild Projects="OA5\OA5.dproj" Targets="Make"/>
-		</Target>
-		<Target Name="Overseer">
-			<MSBuild Projects="Overseer\Overseer.dproj"/>
-		</Target>
-		<Target Name="Overseer:Clean">
-			<MSBuild Projects="Overseer\Overseer.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="Overseer:Make">
-			<MSBuild Projects="Overseer\Overseer.dproj" Targets="Make"/>
-		</Target>
-		<Target Name="LogKeeper">
-			<MSBuild Projects="LogKeeper\LogKeeper.dproj"/>
-		</Target>
-		<Target Name="LogKeeper:Clean">
-			<MSBuild Projects="LogKeeper\LogKeeper.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="LogKeeper:Make">
-			<MSBuild Projects="LogKeeper\LogKeeper.dproj" Targets="Make"/>
-		</Target>
-		<Target Name="OA4LogServer">
-			<MSBuild Projects="OA4LogServer\OA4LogServer.dproj"/>
-		</Target>
-		<Target Name="OA4LogServer:Clean">
-			<MSBuild Projects="OA4LogServer\OA4LogServer.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="OA4LogServer:Make">
-			<MSBuild Projects="OA4LogServer\OA4LogServer.dproj" Targets="Make"/>
-		</Target>
 		<Target Name="Beeper">
-			<MSBuild Projects="Beeper\Beeper.dproj"/>
+			<MSBuild Projects="Beeper\trunk\Beeper.dproj"/>
 		</Target>
 		<Target Name="Beeper:Clean">
-			<MSBuild Projects="Beeper\Beeper.dproj" Targets="Clean"/>
+			<MSBuild Projects="Beeper\trunk\Beeper.dproj" Targets="Clean"/>
 		</Target>
 		<Target Name="Beeper:Make">
-			<MSBuild Projects="Beeper\Beeper.dproj" Targets="Make"/>
+			<MSBuild Projects="Beeper\trunk\Beeper.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="LogKeeper">
+			<MSBuild Projects="LogKeeper\trunk\LogKeeper.dproj"/>
+		</Target>
+		<Target Name="LogKeeper:Clean">
+			<MSBuild Projects="LogKeeper\trunk\LogKeeper.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="LogKeeper:Make">
+			<MSBuild Projects="LogKeeper\trunk\LogKeeper.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="OA4">
+			<MSBuild Projects="OA4\trunk\OA4.dproj"/>
+		</Target>
+		<Target Name="OA4:Clean">
+			<MSBuild Projects="OA4\trunk\OA4.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="OA4:Make">
+			<MSBuild Projects="OA4\trunk\OA4.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="OA4LogServer">
+			<MSBuild Projects="OA4LogServer\trunk\OA4LogServer.dproj"/>
+		</Target>
+		<Target Name="OA4LogServer:Clean">
+			<MSBuild Projects="OA4LogServer\trunk\OA4LogServer.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="OA4LogServer:Make">
+			<MSBuild Projects="OA4LogServer\trunk\OA4LogServer.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="OA5">
+			<MSBuild Projects="OA5\trunk\OA5.dproj"/>
+		</Target>
+		<Target Name="OA5:Clean">
+			<MSBuild Projects="OA5\trunk\OA5.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="OA5:Make">
+			<MSBuild Projects="OA5\trunk\OA5.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Overseer">
+			<MSBuild Projects="Overseer\trunk\Overseer.dproj"/>
+		</Target>
+		<Target Name="Overseer:Clean">
+			<MSBuild Projects="Overseer\trunk\Overseer.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Overseer:Make">
+			<MSBuild Projects="Overseer\trunk\Overseer.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="MyComponents">
-			<MSBuild Projects="Packages\MyComponents.dproj"/>
+			<MSBuild Projects="Packages\trunk\MyComponents.dproj"/>
 		</Target>
 		<Target Name="MyComponents:Clean">
-			<MSBuild Projects="Packages\MyComponents.dproj" Targets="Clean"/>
+			<MSBuild Projects="Packages\trunk\MyComponents.dproj" Targets="Clean"/>
 		</Target>
 		<Target Name="MyComponents:Make">
-			<MSBuild Projects="Packages\MyComponents.dproj" Targets="Make"/>
+			<MSBuild Projects="Packages\trunk\MyComponents.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="OA4;OA5;Overseer;LogKeeper;OA4LogServer;Beeper;MyComponents"/>
+			<CallTarget Targets="Beeper;LogKeeper;OA4;OA4LogServer;OA5;Overseer;MyComponents"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="OA4:Clean;OA5:Clean;Overseer:Clean;LogKeeper:Clean;OA4LogServer:Clean;Beeper:Clean;MyComponents:Clean"/>
+			<CallTarget Targets="Beeper:Clean;LogKeeper:Clean;OA4:Clean;OA4LogServer:Clean;OA5:Clean;Overseer:Clean;MyComponents:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="OA4:Make;OA5:Make;Overseer:Make;LogKeeper:Make;OA4LogServer:Make;Beeper:Make;MyComponents:Make"/>
+			<CallTarget Targets="Beeper:Make;LogKeeper:Make;OA4:Make;OA4LogServer:Make;OA5:Make;Overseer:Make;MyComponents:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
