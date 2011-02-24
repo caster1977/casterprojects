@@ -21,7 +21,8 @@ uses
   OA5Types,
   OA5User,
   OA5Configuration,
-  ExtCtrls;
+  ExtCtrls,
+  CodeSiteLogging;
 
 type
   THackControl=class(TControl);
