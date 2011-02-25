@@ -885,8 +885,6 @@ end;
 procedure TOptionsForm.chkbxStoreLastLoginClick(Sender: TObject);
 const
   LogGroupGUID: string='{94563798-81ED-4231-969F-E2CEAC81DD43}';
-var
-  bUseLog: boolean;
 begin
   ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxStoreLastLogin.Caption, LogGroupGUID);
 
@@ -902,8 +900,6 @@ end;
 procedure TOptionsForm.chkbxStoreLastPasswordClick(Sender: TObject);
 const
   LogGroupGUID: string='{49F6B4E7-D782-4C9E-A0C4-C4610FE43097}';
-var
-  bUseLog: boolean;
 begin
   ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxStoreLastPassword.Caption, LogGroupGUID);
 
