@@ -12,7 +12,8 @@ uses
   OA5Options in 'OA5Options.pas' {OptionsForm},
   OA5Configuration in 'OA5Configuration.pas',
   MySQLConnection in 'MySQLConnection.pas',
-  OA5User in 'OA5User.pas';
+  OA5User in 'OA5User.pas',
+  Log in 'Log.pas';
 
 {$R *.res}
 
