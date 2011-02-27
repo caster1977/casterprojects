@@ -33,6 +33,7 @@ contains
   getFVI in 'getFVI.pas',
   SysMenu in 'SysMenu.pas',
   fisSysMenu in 'fisSysMenu.pas',
-  ListViewEx in 'ListViewEx.pas';
+  ListViewEx in 'ListViewEx.pas',
+  LogProvider in 'LogProvider.pas';
 
 end.
