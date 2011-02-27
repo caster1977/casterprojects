@@ -22,7 +22,7 @@ uses
   OA5User,
   OA5Configuration,
   ExtCtrls,
-  CodeSiteLogging;
+  CodeSiteLogging, LogProvider, StdCtrls;
 
 type
   THackControl=class(TControl);
@@ -61,6 +61,7 @@ type
     pbMain: TProgressBar;
     imState: TImage;
     ilMainFormStateIcons: TImageList;
+    Log: TLogProvider;
     procedure Action_QuitExecute(Sender: TObject);
     procedure Action_AboutExecute(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
@@ -71,12 +72,11 @@ type
   private
     bFirstRun: boolean;
     bAboutWindowExist: boolean;
-    procedure LogThis(const aMessage, aLogGroupGIUD: string; aMessageType: TLogMessagesType);
     procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
-    procedure ProcedureFooter(aLogGroupGUID: string);
-    procedure PreShowModal(const aWindowName: string; const aLogGroupGUID: string; var aOldBusyState: integer);
-    procedure PostShowModal(const aWindowName: string; const aLogGroupGUID: string; var aOldBusyState: integer);
-    procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage, aLogGroupGUID: string);
+    procedure ProcedureFooter;
+    procedure PreShowModal(const aWindowName: string; var aOldBusyState: integer);
+    procedure PostShowModal(const aWindowName: string; var aOldBusyState: integer);
+    procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
 
     procedure Update_Actions;
 
@@ -87,10 +87,10 @@ type
     Configuration: TConfiguration;
     CurrentUser: TUser;
     iBusyCounter: integer;
-    procedure ShowErrorBox(const aHandle: HWND; const aErrorMessage: string; const aLogGroupGUID: string);
-    procedure Inc_BusyState(const aLogGroupGUID: string);
-    procedure Dec_BusyState(const aLogGroupGUID: string);
-    procedure Refresh_BusyState(const aLogGroupGUID: string);
+    procedure ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
+    procedure Inc_BusyState;
+    procedure Dec_BusyState;
+    procedure Refresh_BusyState;
   end;
 
 var
@@ -107,162 +107,73 @@ uses
   OA5Consts,
   OA5Routines;
 
-procedure TMainForm.LogThis(const aMessage, aLogGroupGIUD: string; aMessageType: TLogMessagesType);
-{ TODO : Убрать ремарки }
-(*
-  var
-  i: integer;
-  ListItem: TListItem;
-  s: string;
-  m: AnsiString;
-  aCopyData: TCopyDataStruct;
-*)
-begin
-  { TODO : Убрать ремарки }
-  (*
-    i:=-1;
-    SessionLogEventCount:=SessionLogEventCount+1;
-
-    if Configuration.bUseExternalLog then
-    begin
-    case aMessageType of
-    lmtError:
-    s:='ERROR  ';
-    lmtWarning:
-    s:='WARNING';
-    lmtInfo:
-    s:='INFO   ';
-    lmtSQL:
-    s:='SQL    ';
-    lmtDebug:
-    s:='DEBUG  ';
-    end;
-    m:=AnsiString(Application.ExeName+#09+CurrentUser.sLogin+#09+ // текущий залогированный пользователь
-    s+#09+ // тип сообщения
-    StringReplace(FormatDateTime('dd.mm.yyyy hh:nn:ss', Now), ' ', #09, [rfReplaceAll])+#09+
-    // дата и время сообщения
-    aLogGroupGIUD+#09+StringReplace(Format('%10u', [SessionLogEventCount]), ' ', '0', [rfReplaceAll])+#09+
-    // порядковый номер сообщения
-    aMessage); // текст сообщения
-    // проверка наличия LogKeeper и его запуск в случае отсутствия
-    if IsWindow(hLogKeeper) then
-    begin // если LogKeeper запущен
-    with aCopyData do
-    begin
-    dwData:=0;
-    cbData:=Length(m)+1;
-    lpData:=PAnsiChar(m);
-    end;
-    SendMessage(hLogKeeper, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
-    // LogThis('Произведена отправка программе лог-клиента строки данных: ['+m+']', LogGroupGUID, lmtDebug);
-    end
-    else
-    begin
-    Configuration.bUseExternalLog:=False;
-    pnlLog.Visible:=not Configuration.bUseExternalLog;
-    Height:=600-152*integer(Configuration.bUseExternalLog);
-    Timer1.Enabled:=Configuration.bUseExternalLog;
-    end;
-    end;
-    if not Configuration.bUseExternalLog then
-    begin
-    if (((Configuration.bKeepErrorLog)and(aMessageType=lmtError))or((Configuration.bKeepWarningLog)and(aMessageType=lmtWarning))or((Configuration.bKeepInfoLog)and(aMessageType=lmtInfo))or((Configuration.bKeepSQLLog)and(aMessageType=lmtSQL))or
-    ((Configuration.bKeepDebugLog)and(aMessageType=lmtDebug))) then
-    begin
-    case aMessageType of
-    lmtError:
-    i:=ICON_ERROR;
-    lmtWarning:
-    i:=ICON_WARNING;
-    lmtInfo:
-    i:=ICON_INFO;
-    lmtSQL:
-    i:=ICON_SQL;
-    lmtDebug:
-    i:=ICON_DEBUG;
-    end;
-    ListItem:=lvLog.Items.Add;
-    ListItem.ImageIndex:=i; // тип сообщения
-    ListItem.Caption:=FormatDateTime('dd.mm.yyyy hh:nn:ss', Now); // дата и время сообщения
-    ListItem.SubItems.Add(aLogGroupGIUD);
-    ListItem.SubItems.Add(StringReplace(Format('%10u', [SessionLogEventCount]), ' ', '0', [rfReplaceAll])); // порядковый номер сообщения
-    ListItem.SubItems.Add(CurrentUser.sLogin); // текущий залогированный пользователь
-    ListItem.SubItems.Add(aMessage); // текст сообщения
-    if (Configuration.iFlushLogOnStringsQuantity>0)and(lvLog.Items.Count=Configuration.iFlushLogOnStringsQuantity) then
-    Do_FlushLogToFile;
-    if Configuration.bScrollToLastLogMessage then
-    SendMessage(lvLog.Handle, LVM_ENSUREVISIBLE, lvLog.Items.Count-1, 0);
-    end;
-    end;
-  *)
-end;
-
 procedure TMainForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
-  LogThis('['+aTitle+']', aLogGroupGUID, lmtDebug);
-  LogThis('Начало процедуры...', aLogGroupGUID, lmtDebug);
-  MainForm.Inc_BusyState(aLogGroupGUID);
+  Log.EnterMethod('['+aTitle+']', aLogGroupGUID);
+  Log.SendDebug('Начало процедуры...');
+  MainForm.Inc_BusyState;
   Application.ProcessMessages;
 end;
 
-procedure TMainForm.ProcedureFooter(aLogGroupGUID: string);
+procedure TMainForm.ProcedureFooter;
 begin
-  MainForm.Dec_BusyState(aLogGroupGUID);
-  LogThis('Окончание процедуры.', aLogGroupGUID, lmtDebug);
+  MainForm.Dec_BusyState;
+  Log.SendDebug('Окончание процедуры.');
+  Log.ExitMethod;
   Application.ProcessMessages;
 end;
 
-procedure TMainForm.PreShowModal(const aWindowName: string; const aLogGroupGUID: string; var aOldBusyState: integer);
+procedure TMainForm.PreShowModal(const aWindowName: string; var aOldBusyState: integer);
 begin
-  LogThis('Производится попытка отображения модального окна '+aWindowName+'.', aLogGroupGUID, lmtDebug);
+  Log.SendDebug('Производится попытка отображения модального окна '+aWindowName+'.');
   with MainForm do
     begin
       aOldBusyState:=iBusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
       iBusyCounter:=0; // обнуление счётчика перед открытием модального окна
-      Refresh_BusyState(aLogGroupGUID); // обновление состояния индикатора
+      Refresh_BusyState; // обновление состояния индикатора
     end;
 end;
 
-procedure TMainForm.PostShowModal(const aWindowName: string; const aLogGroupGUID: string; var aOldBusyState: integer);
+procedure TMainForm.PostShowModal(const aWindowName: string; var aOldBusyState: integer);
 begin
   with MainForm do
     begin
       iBusyCounter:=aOldBusyState; // возвращение старого значения счётчика
-      Refresh_BusyState(aLogGroupGUID); // обновление состояния индикатора
+      Refresh_BusyState; // обновление состояния индикатора
     end;
-  LogThis('Окно '+aWindowName+' скрыто.', aLogGroupGUID, lmtDebug);
+  Log.SendDebug('Окно '+aWindowName+' скрыто.');
 end;
 
-procedure TMainForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage, aLogGroupGUID: string);
+procedure TMainForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
 begin
   if aError then
-    MainForm.ShowErrorBox(aHandle, aErrorMessage, aLogGroupGUID)
+    MainForm.ShowErrorBox(aHandle, aErrorMessage)
   else
-    LogThis('Процедура выполнена без ошибок.', aLogGroupGUID, lmtDebug);
+    Log.SendDebug('Процедура выполнена без ошибок.');
   MainForm.pbMain.Position:=MainForm.pbMain.Min;
 end;
 
-procedure TMainForm.ShowErrorBox(const aHandle: HWND; const aErrorMessage: string; const aLogGroupGUID: string);
+procedure TMainForm.ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
 var
   iOldBusyCounter: integer;
 begin
-  LogThis(aErrorMessage, aLogGroupGUID, lmtError);
+  Log.SendError(aErrorMessage);
 
   iOldBusyCounter:=iBusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
   iBusyCounter:=0; // обнуление счётчика перед открытием модального окна
-  Refresh_BusyState(aLogGroupGUID); // обновление состояния индикатора
+  Refresh_BusyState; // обновление состояния индикатора
 
   MessageBox(aHandle, PWideChar(aErrorMessage), PWideChar(MainForm.Caption+' - Ошибка!'), MB_OK+MB_ICONERROR+MB_DEFBUTTON1);
   Application.ProcessMessages;
 
   iBusyCounter:=iOldBusyCounter; // возвращение старого значения счётчика
-  Refresh_BusyState(aLogGroupGUID); // обновление состояния индикатора
+  Refresh_BusyState; // обновление состояния индикатора
   Application.ProcessMessages;
 end;
 
-procedure TMainForm.Refresh_BusyState(const aLogGroupGUID: string);
+procedure TMainForm.Refresh_BusyState;
 begin
-  LogThis('Установлен режим "'+Routines_GetConditionalMessage(iBusyCounter>0, 'Занято', 'Готово')+'".', aLogGroupGUID, lmtDebug);
+  Log.SendDebug('Установлен режим "'+Routines_GetConditionalMessage(iBusyCounter>0, 'Занято', 'Готово')+'".');
   with MainForm do
     begin
       if iBusyCounter>0 then
@@ -282,46 +193,43 @@ begin
   Application.ProcessMessages;
 end;
 
-procedure TMainForm.Inc_BusyState(const aLogGroupGUID: string);
+procedure TMainForm.Inc_BusyState;
 begin
   with MainForm do
     begin
       iBusyCounter:=iBusyCounter+1;
       if iBusyCounter<0 then
         iBusyCounter:=0;
-      Refresh_BusyState(aLogGroupGUID);
+      Refresh_BusyState;
     end;
 end;
 
-procedure TMainForm.Dec_BusyState(const aLogGroupGUID: string);
+procedure TMainForm.Dec_BusyState;
 begin
   with MainForm do
     begin
       iBusyCounter:=iBusyCounter-1;
       if iBusyCounter<0 then
         iBusyCounter:=0;
-      Refresh_BusyState(aLogGroupGUID);
+      Refresh_BusyState;
     end;
 end;
 
 procedure TMainForm.Action_AboutExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{44236B13-4C15-4E14-95CF-E114A38D09B4}';
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_About.Caption+'"', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик действия "'+Action_About.Caption+'"', '{90CC0AAB-ED7C-46FF-97FF-4431F18EBA1A}');
   Do_About(True);
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TMainForm.Do_About(const aButtonVisible: boolean);
 const
-  LogGroupGUID: string='{12AD944B-B412-4D41-A2AB-1836C6352752}';
   sModalWinName: string='"О программе..."';
 var
   AboutForm: TAboutForm;
   iBusy: integer;
 begin
-  ProcedureHeader('Процедура отображения окна '+sModalWinName, LogGroupGUID);
+  ProcedureHeader('Процедура отображения окна '+sModalWinName, '{754C2801-ED59-4595-AC3E-20DBF98F6779}');
 
   if bAboutWindowExist then
     SetForegroundWindow(FindWindow('TAboutForm', 'About "OVERSEER"...'))
@@ -332,58 +240,50 @@ begin
         try
           bAboutWindowExist:=True;
           Action_Close.Visible:=aButtonVisible;
-          PreShowModal(sModalWinName, LogGroupGUID, iBusy);
+          PreShowModal(sModalWinName, iBusy);
           ShowModal;
         finally
-          PostShowModal(sModalWinName, LogGroupGUID, iBusy);
+          PostShowModal(sModalWinName, iBusy);
           Free;
           bAboutWindowExist:=False;
         end;
     end;
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TMainForm.Action_HelpExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{833A3420-BD1D-4E91-B93C-52B5E6097903}';
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Help.Caption+'"', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Help.Caption+'"', '{D066E67D-C195-440D-94C2-6757C427DCF6}');
   Do_Help;
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TMainForm.Action_QuitExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{54E1F179-4466-488D-95E5-3834A9FE152E}';
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Quit.Caption+'"', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Quit.Caption+'"', '{5DB14721-5FC4-4B42-B0DB-4E7C323A2AA2}');
   Close;
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TMainForm.Do_Help;
-const
-  LogGroupGUID: string='{75115337-2C85-4E66-8682-600655E65900}';
 var
   bError: boolean;
   sErrorMessage: string;
 begin
-  ProcedureHeader('Процедура открытия справочного файла программы', LogGroupGUID);
+  ProcedureHeader('Процедура открытия справочного файла программы', '{457E450C-4870-4B17-9594-EB7F91B4578E}');
 
-  LogThis('Производится попытка открытия справочного файла программы...', LogGroupGUID, lmtInfo);
+  Log.SendInfo('Производится попытка открытия справочного файла программы...');
   if (FileExists(ExpandFileName(Application.HelpFile))) then
     Application.HelpContext(0)
   else
     Routines_GenerateError('Извините, справочный файл к данной программе не найден.', sErrorMessage, bError);
 
-  PreFooter(Handle, bError, sErrorMessage, LogGroupGUID);
-  ProcedureFooter(LogGroupGUID);
+  PreFooter(Handle, bError, sErrorMessage);
+  ProcedureFooter;
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
-const
-  LogGroupGUID: string='{C8F9C829-6C14-494B-A3E4-8BB9C81315DD}';
 var
   PanelRect: TRect;
 begin
@@ -410,26 +310,22 @@ begin
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
-const
-  LogGroupGUID: string='{C4BC0413-F2EF-4D45-8B02-E6CA2C908B04}';
 begin
-  ProcedureHeader('Процедура-обработчик события отображения окна', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик события отображения окна', '{9FD296B5-1A3D-4E90-85CA-492271D2B6A9}');
 
   if bFirstRun then
     begin
       iBusyCounter:=0;
       bFirstRun:=False;
     end;
-  Refresh_BusyState(LogGroupGUID);
+  Refresh_BusyState;
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TMainForm.Update_Actions;
-const
-  LogGroupGUID: string='{455018F4-DC3C-4B17-876A-65E39F204633}';
 begin
-  ProcedureHeader('Процедура обновления состояния действий соединения с сервером', LogGroupGUID);
+  ProcedureHeader('Процедура обновления состояния действий соединения с сервером', '{03351462-40CF-47ED-AE96-3F9E0D9EA148}');
 
   { TODO : Убрать ремарки }
   (*
@@ -447,21 +343,18 @@ begin
     Application.ProcessMessages;
   *)
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TMainForm.Action_ConfigurationExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{2F075D7E-750D-4B06-903F-73D8717518B1}';
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Configuration.Caption+'"', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Configuration.Caption+'"', '{024B2718-8D00-49A1-9E1E-C02CB2696CE0}');
   Do_Configuration;
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TMainForm.Do_Configuration;
 const
-  LogGroupGUID: string='{797493AC-5FA8-4E65-89C1-7FB0CC1C5824}';
   sModalWinName: string='настроек программы';
 var
   sErrorMessage: string;
@@ -469,22 +362,22 @@ var
   OptionsForm: TOptionsForm;
   iBusy: integer;
 begin
-  ProcedureHeader('Процедура отображения окна '+sModalWinName, LogGroupGUID);
+  ProcedureHeader('Процедура отображения окна '+sModalWinName, '{6D4FF7B1-8713-4149-B8C1-04AC2C48F116}');
   bError:=False;
 
   OptionsForm:=TOptionsForm.Create(Self);
   with OptionsForm do
     try
-      PreShowModal(sModalWinName, LogGroupGUID, iBusy);
+      PreShowModal(sModalWinName, iBusy);
       ShowModal;
     finally
-      PostShowModal(sModalWinName, LogGroupGUID, iBusy);
+      PostShowModal(sModalWinName, iBusy);
       Free;
     end;
 
 
-  PreFooter(Handle, bError, sErrorMessage, LogGroupGUID);
-  ProcedureFooter(LogGroupGUID);
+  PreFooter(Handle, bError, sErrorMessage);
+  ProcedureFooter;
 end;
 
 end.
