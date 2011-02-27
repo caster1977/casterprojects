@@ -91,13 +91,13 @@ procedure TAboutForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
   LogThis('['+aTitle+']', aLogGroupGUID, lmtDebug);
   LogThis('Начало процедуры...', aLogGroupGUID, lmtDebug);
-  MainForm.Inc_BusyState(aLogGroupGUID);
+  MainForm.Inc_BusyState;
   Application.ProcessMessages;
 end;
 
 procedure TAboutForm.ProcedureFooter(aLogGroupGUID: string);
 begin
-  MainForm.Dec_BusyState(aLogGroupGUID);
+  MainForm.Dec_BusyState;
   LogThis('Окончание процедуры.', aLogGroupGUID, lmtDebug);
   Application.ProcessMessages;
 end;

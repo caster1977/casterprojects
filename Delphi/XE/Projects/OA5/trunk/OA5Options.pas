@@ -22,7 +22,7 @@ uses
   Grids,
   ValEdit,
   ComCtrls,
-  OA5Types;
+  OA5Types, LogProvider;
 
 type
   TStringGridX=class(TStringGrid)
@@ -192,6 +192,7 @@ type
     lblMainFormHeight: TLabel;
     edbxMainFormHeight: TEdit;
     chkbxStartupFullScreen: TCheckBox;
+    Log: TLogProvider;
     procedure FormCreate(Sender: TObject);
     procedure Action_ApplyExecute(Sender: TObject);
     procedure Action_DefaultsExecute(Sender: TObject);
@@ -232,9 +233,8 @@ type
     procedure Do_ChooseLogClient;
 
     procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
-    procedure ProcedureFooter(aLogGroupGUID: string);
-    procedure LogThis(const aMessage, aLogGroupGUID: string; aMessageType: TLogMessagesType);
-    procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage, aLogGroupGUID: string);
+    procedure ProcedureFooter;
+    procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
   end;
 
 var
@@ -257,6 +257,7 @@ begin
   inherited;
 end;
 
+(*
 procedure TOptionsForm.LogThis(const aMessage, aLogGroupGUID: string; aMessageType: TLogMessagesType);
 var
   s: string;
@@ -283,119 +284,104 @@ begin
     end;
   SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
 end;
+*)
 
 procedure TOptionsForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
-  LogThis('['+aTitle+']', aLogGroupGUID, lmtDebug);
-  LogThis('Начало процедуры...', aLogGroupGUID, lmtDebug);
-  MainForm.Inc_BusyState(aLogGroupGUID);
+  Log.EnterMethod('['+aTitle+']', aLogGroupGUID);
+  Log.SendDebug('Начало процедуры...');
+  MainForm.Inc_BusyState;
   Application.ProcessMessages;
 end;
 
-procedure TOptionsForm.ProcedureFooter(aLogGroupGUID: string);
+procedure TOptionsForm.ProcedureFooter;
 begin
-  MainForm.Dec_BusyState(aLogGroupGUID);
-  LogThis('Окончание процедуры.', aLogGroupGUID, lmtDebug);
+  MainForm.Dec_BusyState;
+  Log.SendDebug('Окончание процедуры.');
   Application.ProcessMessages;
 end;
 
-procedure TOptionsForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage, aLogGroupGUID: string);
+procedure TOptionsForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
 begin
   if aError then
-    MainForm.ShowErrorBox(aHandle, aErrorMessage, aLogGroupGUID)
+    MainForm.ShowErrorBox(aHandle, aErrorMessage)
   else
-    LogThis('Процедура выполнена без ошибок.', aLogGroupGUID, lmtDebug);
+    Log.SendDebug('Процедура выполнена без ошибок.');
   MainForm.pbMain.Position:=MainForm.pbMain.Min;
 end;
 
 procedure TOptionsForm.Action_ApplyExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{CA167013-A754-476D-B36F-6CE012D8C21E}';
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Apply.Caption+'"', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Apply.Caption+'"', '{84DDCA84-3467-43EB-9005-E35C20FD98D0}');
   Do_Apply;
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.Do_Apply;
-const
-  LogGroupGUID: string='{33DF7021-2314-4BD2-8FE5-745D3C92231F}';
 begin
-  ProcedureHeader('Процедура закрытия модального окна с результатом mrOk', LogGroupGUID);
+  ProcedureHeader('Процедура закрытия модального окна с результатом mrOk', '{55D9E5EB-97B6-47FC-B149-348070521077}');
 
   ModalResult:=mrOk;
-  LogThis('Попытка изменения настроек программы была подтверждена пользователем.', LogGroupGUID, lmtInfo);
-  LogThis('Окно изменения настроек программы закрыто.', LogGroupGUID, lmtInfo);
+  Log.SendInfo('Попытка изменения настроек программы была подтверждена пользователем.');
+  Log.SendInfo('Окно изменения настроек программы закрыто.');
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.Action_CloseExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{E29B1B88-55F3-4F04-A4E7-99D189526C44}';
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Close.Caption+'"', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Close.Caption+'"', '{609A88EE-6BC8-4F0F-9C3D-EC1D6FD1A50F}');
   Do_Close;
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.Do_Close;
-const
-  LogGroupGUID: string='{A114BAEA-0279-44A9-AECA-1D6D0A1C12BA}';
 begin
-  ProcedureHeader('Процедура закрытия модального окна с результатом mrClose', LogGroupGUID);
+  ProcedureHeader('Процедура закрытия модального окна с результатом mrClose', '{6B58486E-78C2-4F8B-9923-BFC7F5FEA88C}');
 
   ModalResult:=mrClose;
-  LogThis('Попытка изменения настроек программы была отменена пользователем.', LogGroupGUID, lmtInfo);
-  LogThis('Окно изменения настроек программы закрыто.', LogGroupGUID, lmtInfo);
+  Log.SendInfo('Попытка изменения настроек программы была отменена пользователем.');
+  Log.SendInfo('Окно изменения настроек программы закрыто.');
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.Action_HelpExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{C5006F00-F43A-40AE-A060-15853FF8290F}';
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Help.Caption+'"', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Help.Caption+'"', '{0CB39D36-EC59-4C76-AFE5-1718B99DA0CA}');
   Do_Help;
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.Do_Help;
-const
-  LogGroupGUID: string='{A107CDA0-8C13-4A7D-A685-15948B680D49}';
 var
   bError: boolean;
   sErrorMessage: string;
 begin
-  ProcedureHeader('Процедура вызова контекстной справки', LogGroupGUID);
+  ProcedureHeader('Процедура вызова контекстной справки', '{4852C968-A8CC-4A2B-947E-4BA717D6A8EE}');
 
-  LogThis('Производится попытка открытия справочного файла программы...', LogGroupGUID, lmtInfo);
+  Log.SendInfo('Производится попытка открытия справочного файла программы...');
   if (FileExists(ExpandFileName(Application.HelpFile))) then
     Application.HelpContext(HelpContext)
   else
     Routines_GenerateError('Извините, справочный файл к данной программе не найден.', sErrorMessage, bError);
 
-  PreFooter(Handle, bError, sErrorMessage, LogGroupGUID);
-  ProcedureFooter(LogGroupGUID);
+  PreFooter(Handle, bError, sErrorMessage);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.Action_PreviousPageExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{DEEC08B4-451D-480B-A392-1E3127868934}';
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_PreviousPage.Caption+'"', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик действия "'+Action_PreviousPage.Caption+'"', '{50728BC6-7E7C-4D0D-9C17-E7919DE4A4C3}');
   Do_PreviousPage;
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.Do_PreviousPage;
-const
-  LogGroupGUID: string='{5C70F626-6F88-4F8B-9F16-93DDCDA4A919}';
 var
   i: integer;
 begin
-  ProcedureHeader('Процедура отображения предыдущей страницы настроек программы', LogGroupGUID);
+  ProcedureHeader('Процедура отображения предыдущей страницы настроек программы', '{8CC5AFC0-A130-40F8-A13E-441914AFE036}');
 
   i:=cbPage.ItemIndex-1;
   if i<0 then
@@ -403,25 +389,21 @@ begin
   cbPage.ItemIndex:=i;
   cbPageSelect(nil);
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.Action_NextPageExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{8AC3593F-EC49-4348-92E9-C34C15492737}';
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_NextPage.Caption+'"', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик действия "'+Action_NextPage.Caption+'"', '{0D4FC270-5B1E-4E59-8EBF-89ADBAC0E89F}');
   Do_NextPage;
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.Do_NextPage;
-const
-  LogGroupGUID: string='{207F2915-B5C9-4123-A435-AEA01A519A5A}';
 var
   i: integer;
 begin
-  ProcedureHeader('Процедура отображения следующей страницы настроек программы', LogGroupGUID);
+  ProcedureHeader('Процедура отображения следующей страницы настроек программы', '{0408CB52-5F42-4BE4-8BB5-09EBA649B868}');
 
   i:=cbPage.ItemIndex+1;
   if i>cbPage.Items.Count-1 then
@@ -429,35 +411,31 @@ begin
   cbPage.ItemIndex:=i;
   cbPageSelect(nil);
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.Action_ChooseReportFolderExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{07B749FB-3200-4928-97AB-6C9ECE22181C}';
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_ChooseReportFolder.Caption+'"', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик действия "'+Action_ChooseReportFolder.Caption+'"', '{0F2D97AB-C59D-456A-ABCA-C390806F896C}');
   Do_ChooseReportFolder;
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.Do_ChooseReportFolder;
-const
-  LogGroupGUID: string='{10574594-BB2E-4D66-B2B0-45CFE6B0BD58}';
 var
   s, sPath: string;
   sErrorMessage: string;
   bError: boolean;
   iOldBusyCounter: integer;
 begin
-  ProcedureHeader('Процедура выбора папки для сохранения отчётов', LogGroupGUID);
+  ProcedureHeader('Процедура выбора папки для сохранения отчётов', '{58DA7933-E4BD-4402-9E83-2446DB94BE14}');
   bError:=False;
 
   with MainForm do
     begin
       iOldBusyCounter:=iBusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
       iBusyCounter:=0; // обнуление счётчика перед открытием модального окна
-      Refresh_BusyState(LogGroupGUID); // обновление состояния индикатора
+      Refresh_BusyState; // обновление состояния индикатора
     end;
 
   s:=edbxSelectedFolder.Text;
@@ -471,7 +449,7 @@ begin
         if SysUtils.DirectoryExists(sPath) then
           begin
             edbxSelectedFolder.Text:=sPath;
-            LogThis('В качестве папки для сохранения отчётов выбрана папка "'+sPath+'".', LogGroupGUID, lmtDebug);
+            Log.SendDebug('В качестве папки для сохранения отчётов выбрана папка "'+sPath+'".');
           end
         else
           begin
@@ -483,40 +461,36 @@ begin
   with MainForm do
     begin
       iBusyCounter:=iOldBusyCounter; // возвращение старого значения счётчика
-      Refresh_BusyState(LogGroupGUID); // обновление состояния индикатора
+      Refresh_BusyState; // обновление состояния индикатора
       Application.ProcessMessages;
     end;
 
-  PreFooter(Handle, bError, sErrorMessage, LogGroupGUID);
-  ProcedureFooter(LogGroupGUID);
+  PreFooter(Handle, bError, sErrorMessage);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.Action_ChooseLogClientExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{2D27F8F7-46A5-4A52-A527-F80BCE16C56D}';
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_ChooseReportFolder.Caption+'"', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик действия "'+Action_ChooseReportFolder.Caption+'"', '{24E77954-BFEB-4128-B764-C31ED26D068C}');
   Do_ChooseLogClient;
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.Do_ChooseLogClient;
-const
-  LogGroupGUID: string='{94AC07F5-5E72-4F4E-9525-BD309C7C807C}';
 var
   sPath: string;
   sErrorMessage: string;
   bError: boolean;
   iOldBusyCounter: integer;
 begin
-  ProcedureHeader('Процедура выбора папки для сохранения отчётов', LogGroupGUID);
+  ProcedureHeader('Процедура выбора папки для сохранения отчётов', '{D4DB6A7E-DEB9-433D-BAF5-74E86459D66C}');
   bError:=False;
 
   with MainForm do
     begin
       iOldBusyCounter:=iBusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
       iBusyCounter:=0; // обнуление счётчика перед открытием модального окна
-      Refresh_BusyState(LogGroupGUID); // обновление состояния индикатора
+      Refresh_BusyState; // обновление состояния индикатора
     end;
 
   with TOpenDialog.Create(Self) do
@@ -535,7 +509,7 @@ begin
           else
             begin
               edbxCustomLogClientFile.Text:=FileName;
-              LogThis('В качестве папки для сохранения отчётов выбрана папка "'+sPath+'".', LogGroupGUID, lmtDebug);
+              Log.SendDebug('В качестве папки для сохранения отчётов выбрана папка "'+sPath+'".');
             end;
     finally
       Free;
@@ -544,46 +518,38 @@ begin
   with MainForm do
     begin
       iBusyCounter:=iOldBusyCounter; // возвращение старого значения счётчика
-      Refresh_BusyState(LogGroupGUID); // обновление состояния индикатора
+      Refresh_BusyState; // обновление состояния индикатора
       Application.ProcessMessages;
     end;
 
-  PreFooter(Handle, bError, sErrorMessage, LogGroupGUID);
-  ProcedureFooter(LogGroupGUID);
+  PreFooter(Handle, bError, sErrorMessage);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.FormShow(Sender: TObject);
-const
-  LogGroupGUID: string='{E3A04C17-B2AB-461E-A4F5-2473EC4E9297}';
 begin
-  ProcedureHeader('Процедура-обработчик события отображения окна', LogGroupGUID);
-  LogThis('Отображено окно изменения настроек программы.', LogGroupGUID, lmtInfo);
-  ProcedureFooter(LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик события отображения окна', '{3D3256A6-E8E3-4709-A3B3-B7A6E90A75BF}');
+  Log.SendInfo('Отображено окно изменения настроек программы.');
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.Action_DefaultsExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{AB46AE80-4A60-4E43-8B6F-47A2D8E1049F}';
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Defaults.Caption+'"', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Defaults.Caption+'"', '{9B790597-F8F3-47A8-96FE-472EFFB6020E}');
   Do_Defaults;
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-const
-  LogGroupGUID: string='{307097C9-68DB-47A5-A46D-1432E3A70A84}';
 begin
   slBoolean.Free;
 end;
 
 procedure TOptionsForm.chkbxUseLogClick(Sender: TObject);
-const
-  LogGroupGUID: string='{014B87F4-F1A4-43D2-B1C9-86C2ED00B302}';
 var
   bUseLog: boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxUseLog.Caption, LogGroupGUID);
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxUseLog.Caption, '{20AFAF3C-D977-4A28-8779-C5F59EB39B45}');
 
   bUseLog:=chkbxUseLog.Enabled and chkbxUseLog.Checked;
 
@@ -640,18 +606,16 @@ begin
 
   Action_ChooseLogClient.Enabled:=chkbxCustomLogClientFile.Checked and chkbxCustomLogClientFile.Enabled;
 
-  LogThis('Флажок "'+chkbxUseLog.Caption+'"'+Routines_GetConditionalMessage(bUseLog, 'в', 'от')+'ключен.', LogGroupGUID, lmtInfo);
+  Log.SendInfo('Флажок "'+chkbxUseLog.Caption+'"'+Routines_GetConditionalMessage(bUseLog, 'в', 'от')+'ключен.');
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.chkbxFlushLogOnStringsQuantityClick(Sender: TObject);
-const
-  LogGroupGUID: string='{4BB27723-6126-479F-AA75-85258CB0B383}';
 var
   bFlushLogOnStringsQuantity: boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxFlushLogOnStringsQuantity.Caption, LogGroupGUID);
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxFlushLogOnStringsQuantity.Caption, '{56071FBF-61AE-472E-B52B-BC239C45CD7C}');
 
   bFlushLogOnStringsQuantity:=chkbxFlushLogOnStringsQuantity.Checked and chkbxFlushLogOnStringsQuantity.Enabled;
 
@@ -667,18 +631,16 @@ begin
   else
     edbxFlushLogOnStringsQuantity.Text:='';
 
-  LogThis('Флажок "'+chkbxFlushLogOnStringsQuantity.Caption+'"'+Routines_GetConditionalMessage(bFlushLogOnStringsQuantity, 'в', 'от')+'ключен.', LogGroupGUID, lmtInfo);
+  Log.SendInfo('Флажок "'+chkbxFlushLogOnStringsQuantity.Caption+'"'+Routines_GetConditionalMessage(bFlushLogOnStringsQuantity, 'в', 'от')+'ключен.');
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.chkbxCustomLogClientFileClick(Sender: TObject);
-const
-  LogGroupGUID: string='{59642A4A-DADE-4683-9005-79FAC3BD0291}';
 var
   bCustomLogClientFile: boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxCustomLogClientFile.Caption, LogGroupGUID);
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxCustomLogClientFile.Caption, '{4CBC38D1-3DB9-480E-BA9A-246708A0C0A2}');
 
   bCustomLogClientFile:=chkbxCustomLogClientFile.Checked and chkbxCustomLogClientFile.Enabled;
 
@@ -687,26 +649,24 @@ begin
   if not bCustomLogClientFile then
     edbxCustomLogClientFile.Text:='';
 
-  LogThis('Флажок "'+chkbxCustomLogClientFile.Caption+'"'+Routines_GetConditionalMessage(bCustomLogClientFile, 'в', 'от')+'ключен.', LogGroupGUID, lmtInfo);
+  Log.SendInfo('Флажок "'+chkbxCustomLogClientFile.Caption+'"'+Routines_GetConditionalMessage(bCustomLogClientFile, 'в', 'от')+'ключен.');
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.rbSaveIntoTheSelectedFolderClick(Sender: TObject);
-const
-  LogGroupGUID: string='{84E7EFE1-95CB-4D28-97F7-0C89FAF95BBD}';
 begin
   if Sender is TRadioButton then
     with Sender as TRadioButton do
       begin
-        ProcedureHeader('Процедура отклика на щелчок на радиокнопке "'+Caption+'"', LogGroupGUID);
-        LogThis('Нажата радиокнопка "'+Caption+'".', LogGroupGUID, lmtInfo);
+        ProcedureHeader('Процедура отклика на щелчок на радиокнопке "'+Caption+'"', '{77B71A67-5A1E-4D56-ADE8-C42EBD13CAC0}');
+        Log.SendInfo('Нажата радиокнопка "'+Caption+'".');
       end;
 
   edbxSelectedFolder.Enabled:=rbSaveIntoTheSelectedFolder.Checked;
   Action_ChooseReportFolder.Enabled:=rbSaveIntoTheSelectedFolder.Checked;
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.edbxFlushLogOnStringsQuantityKeyPress(Sender: TObject; var Key: Char);
@@ -812,7 +772,7 @@ begin
   cbPageSelect(Sender);
   rbSaveIntoTheSelectedFolderClick(Sender);
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.Do_Defaults;
@@ -877,54 +837,48 @@ begin
       chkbxAskForFileName.Checked:=False;
     end;
 
-  LogThis('Настройки '+PageControl1.ActivePage.Caption+' были сброшены пользователем к значениям по умолчанию.', LogGroupGUID, lmtInfo);
+  Log.SendInfo('Настройки '+PageControl1.ActivePage.Caption+' были сброшены пользователем к значениям по умолчанию.');
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.chkbxStoreLastLoginClick(Sender: TObject);
-const
-  LogGroupGUID: string='{94563798-81ED-4231-969F-E2CEAC81DD43}';
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxStoreLastLogin.Caption, LogGroupGUID);
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxStoreLastLogin.Caption, '{DF6E7711-9716-4511-8C02-AA1F34D95096}');
 
   chkbxAutoLogon.Enabled:=chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked and chkbxStoreLastPassword.Enabled and chkbxStoreLastPassword.Checked;
   if not chkbxAutoLogon.Enabled then
     chkbxAutoLogon.Checked:=False;
-  LogThis('Флажок "'+chkbxStoreLastLogin.Caption+'"'+Routines_GetConditionalMessage(chkbxStoreLastLogin.Checked, 'в', 'от')+'ключен.', LogGroupGUID, lmtInfo);
-  LogThis('Флажок "'+chkbxAutoLogon.Caption+'"'+Routines_GetConditionalMessage(chkbxAutoLogon.Checked, 'в', 'от')+'ключен.', LogGroupGUID, lmtInfo);
+  Log.SendInfo('Флажок "'+chkbxStoreLastLogin.Caption+'"'+Routines_GetConditionalMessage(chkbxStoreLastLogin.Checked, 'в', 'от')+'ключен.');
+  Log.SendInfo('Флажок "'+chkbxAutoLogon.Caption+'"'+Routines_GetConditionalMessage(chkbxAutoLogon.Checked, 'в', 'от')+'ключен.');
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.chkbxStoreLastPasswordClick(Sender: TObject);
-const
-  LogGroupGUID: string='{49F6B4E7-D782-4C9E-A0C4-C4610FE43097}';
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxStoreLastPassword.Caption, LogGroupGUID);
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxStoreLastPassword.Caption, '{C9AD62BE-833A-4C57-904C-0ED5DFB0634F}');
 
   chkbxAutoLogon.Enabled:=chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked and chkbxStoreLastPassword.Enabled and chkbxStoreLastPassword.Checked;
   if not chkbxAutoLogon.Enabled then
     chkbxAutoLogon.Checked:=False;
-  LogThis('Флажок "'+chkbxStoreLastPassword.Caption+'"'+Routines_GetConditionalMessage(chkbxStoreLastPassword.Checked, 'в', 'от')+'ключен.', LogGroupGUID, lmtInfo);
-  LogThis('Флажок "'+chkbxAutoLogon.Caption+'"'+Routines_GetConditionalMessage(chkbxAutoLogon.Checked, 'в', 'от')+'ключен.', LogGroupGUID, lmtInfo);
+  Log.SendInfo('Флажок "'+chkbxStoreLastPassword.Caption+'"'+Routines_GetConditionalMessage(chkbxStoreLastPassword.Checked, 'в', 'от')+'ключен.');
+  Log.SendInfo('Флажок "'+chkbxAutoLogon.Caption+'"'+Routines_GetConditionalMessage(chkbxAutoLogon.Checked, 'в', 'от')+'ключен.');
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.chkbxGetMessagesClick(Sender: TObject);
-const
-  LogGroupGUID: string='{622C5734-31C1-4C43-BF9E-8257AEC0BBB1}';
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxGetMessages.Caption, LogGroupGUID);
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxGetMessages.Caption, '{5C3B5E46-E8F7-4BD1-8092-16B88A617F55}');
 
   edbxGetMessagesCycleDuration.Enabled:=chkbxGetMessages.Checked;
   if edbxGetMessagesCycleDuration.Enabled then
     edbxGetMessagesCycleDuration.Text:=IntToStr(MainForm.Configuration.iGetMessagesCycleDuration)
   else edbxGetMessagesCycleDuration.Clear;
-  LogThis('Флажок "'+chkbxGetMessages.Caption+'"'+Routines_GetConditionalMessage(chkbxGetMessages.Checked, 'в', 'от')+'ключен.', LogGroupGUID, lmtInfo);
+  Log.SendInfo('Флажок "'+chkbxGetMessages.Caption+'"'+Routines_GetConditionalMessage(chkbxGetMessages.Checked, 'в', 'от')+'ключен.');
 
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.edbxGetMessagesCycleDurationChange(Sender: TObject);
