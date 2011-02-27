@@ -30,16 +30,11 @@ type
     FLanguageInfo: string;
     FComments: string;
     procedure SetFilename(const Value: TFilename);
-    { Private declarations }
   protected
-    { Protected declarations }
     property VersionInfoSize: cardinal read FVersionInfoSize;
     procedure LoadFromFile;
     procedure ClearAll;
-  public
-    { Public declarations }
   published
-    { Published declarations }
     function GetBuildOnly: string;
     property Filename: TFilename read FFilename write SetFilename;
     property LanguageInfo: string read FLanguageInfo;
