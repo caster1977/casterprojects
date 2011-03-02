@@ -7,6 +7,28 @@ uses
   Forms;
 
 type
+  TLogFile = class
+  strict private
+    FEnabled: boolean;
+    FName: string;
+    FPath: string;
+  public
+    constructor Create;
+  published
+    property Enabled: boolean read FEnabled write FEnabled default False;
+    property Name: string read FName write FName;
+    property Path: string read FPath write FPath;
+  end;
+
+  TLogClient = class
+  strict private
+    FEnabled: boolean;
+  public
+    constructor Create;
+  published
+    property Enabled: boolean read FEnabled write FEnabled default False;
+  end;
+
   TLogProvider=class(TComponent)
   strict private
     FEnabled: boolean;
@@ -14,10 +36,14 @@ type
     FApplication: TApplication;
     FUserName: string;
     FCounter: longword;
+    FLogFile: TLogFile;
+    FLogClient: TLogClient;
     function GetHost: string;
     function GetApplicationName: string;
     function GetFormName: string;
   public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     procedure SendError(const AString: string);
     procedure SendWarning(const AString: string);
     procedure SendInfo(const AString: string);
@@ -26,14 +52,15 @@ type
     procedure Send(const AString: string);
     procedure EnterMethod(const AString, AGUID: string);
     procedure ExitMethod;
-    constructor Create(AOwner: TComponent); override;
     property Counter: longword read FCounter;
     property ApplicationName: string read GetApplicationName;
+    property HostName: string read GetHost;
+    property FormName: string read GetFormName;
     property UserName: string read FUserName write FUserName;
   published
     property Enabled: Boolean read FEnabled write FEnabled default true;
-    property HostName: string read GetHost;
-    property FormName: string read GetFormName;
+    property LogFile: TLogFile read FLogFile write FLogFile;
+    property LogClient: TLogClient read FLogClient write FLogClient;
   end;
 
 procedure register;
@@ -49,6 +76,20 @@ begin
   RegisterComponents('MyComponents', [TLogProvider]);
 end;
 
+constructor TLogFile.Create;
+begin
+  inherited;
+  FEnabled:=False;
+  FName:='';
+  FPath:='';
+end;
+
+constructor TLogClient.Create;
+begin
+  inherited;
+  FEnabled:=False;
+end;
+
 constructor TLogProvider.Create(AOwner: TComponent);
 begin
   inherited Create(aOwner);
@@ -62,6 +103,27 @@ begin
       if TForm(AOwner).Owner is TApplication then
         FApplication:=TApplication(AOwner.Owner);
     end;
+  FLogFile:=TLogFile.Create;
+  with FLogFile do
+    begin
+      Enabled:=False;
+      Name:='';
+      Path:='';
+    end;
+  FLogClient:=TLogClient.Create;
+  with FLogClient do
+    begin
+      Enabled:=True;
+    end;
+end;
+
+destructor TLogProvider.Destroy;
+begin
+  if FLogFile<>nil then
+    FLogFile.Free;
+  if FLogClient<>nil then
+    FLogClient.Free;
+  inherited;
 end;
 
 function TLogProvider.GetHost: string;
@@ -224,5 +286,9 @@ end;
   end;
   end;
 *)
+
+{ TLogClient }
+
+{ TLogFile }
 
 end.
