@@ -250,4 +250,8 @@ object AboutForm: TAboutForm
     Left = 312
     Top = 8
   end
+  object Log: TLogProvider
+    Left = 40
+    Top = 208
+  end
 end
