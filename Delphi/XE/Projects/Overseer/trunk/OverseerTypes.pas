@@ -521,13 +521,14 @@ begin
 end;
 
 procedure TThread_Do_SIC.StepProgressBar;
-begin
-  Synchronize( //
-    procedure //
+
+  procedure p; //
   begin //
     _ProgressBar.Position:=_ProgressBar.Position+_ProgressBar.Step; //
-  end //
-    ); //
+  end; //
+
+begin
+  Synchronize(p); //
 end;
 
 procedure TThread_Do_SIC._CreateProgressBar(const aTime: TDateTime; const aTitle: string; const aMax: integer);
