@@ -170,4 +170,8 @@ object LoginForm: TLoginForm
       OnExecute = Action_CancelExecute
     end
   end
+  object Log: TLogProvider
+    Left = 64
+    Top = 16
+  end
 end

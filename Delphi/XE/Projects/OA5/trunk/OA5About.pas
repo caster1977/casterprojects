@@ -18,7 +18,8 @@ uses
   ExtCtrls,
   OA5Types,
   getFVI,
-  StdCtrls;
+  StdCtrls,
+  LogProvider;
 
 type
   TAboutForm=class(TForm)
@@ -35,6 +36,7 @@ type
     lblVersion: TLabel;
     imgApplicationIcon: TImage;
     lblTitle: TLabel;
+    Log: TLogProvider;
     procedure Action_CloseExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -43,8 +45,7 @@ type
     procedure lblEMailAddressClick(Sender: TObject);
   private
     procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
-    procedure ProcedureFooter(aLogGroupGUID: string);
-    procedure LogThis(const aMessage, aLogGroupGUID: string; aMessageType: TLogMessagesType);
+    procedure ProcedureFooter;
     procedure Do_Close;
   end;
 
@@ -60,6 +61,7 @@ uses
   OA5Main,
   OA5Consts;
 
+(*
 procedure TAboutForm.LogThis(const aMessage, aLogGroupGUID: string; aMessageType: TLogMessagesType);
 var
   s: string;
@@ -86,37 +88,35 @@ begin
     end;
   SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
 end;
+*)
 
 procedure TAboutForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
-  LogThis('['+aTitle+']', aLogGroupGUID, lmtDebug);
-  LogThis('Начало процедуры...', aLogGroupGUID, lmtDebug);
+  Log.EnterMethod('['+aTitle+']', aLogGroupGUID);
+  Log.SendDebug('Начало процедуры...');
   MainForm.Inc_BusyState;
   Application.ProcessMessages;
 end;
 
-procedure TAboutForm.ProcedureFooter(aLogGroupGUID: string);
+procedure TAboutForm.ProcedureFooter;
 begin
   MainForm.Dec_BusyState;
-  LogThis('Окончание процедуры.', aLogGroupGUID, lmtDebug);
+  Log.SendDebug('Окончание процедуры.');
+  Log.ExitMethod;
   Application.ProcessMessages;
 end;
 
 procedure TAboutForm.FormCreate(Sender: TObject);
-const
-  LogGroupGUID: string='{D5F63818-B7A4-4402-9B7F-F73982428C93}';
 begin
-  ProcedureHeader('Процедура-обработчик события создания окна', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик события создания окна', '{0B2B4443-33C8-44ED-8E91-C55FFCBB75E4}');
   gsFileVersionInfo1.Filename:=Application.ExeName;
   Action_Close.Visible:=False;
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TAboutForm.FormShow(Sender: TObject);
-const
-  LogGroupGUID: string='{855FFBFA-BE54-41C2-B039-E485EB834BE6}';
 begin
-  ProcedureHeader('Процедура-обработчик события отображения окна', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик события отображения окна', '{BF30B1AE-7EA8-42ED-A2E1-6BB23BE961B3}');
   if Action_Close.Visible then
     begin
       Timer1.Enabled:=False;
@@ -132,36 +132,30 @@ begin
   btnClose.default:=Action_Close.Visible;
   lblVersion.Caption:=Format('Версия %s билд %s', [copy(gsFileVersionInfo1.FileVersion, 1, LastDelimiter('.', gsFileVersionInfo1.FileVersion)-1), gsFileVersionInfo1.GetBuildOnly]);
   lblLegalCopyright.Caption:=gsFileVersionInfo1.LegalCopyright;
-  LogThis('Отображено окно "О программе...".', LogGroupGUID, lmtInfo);
-  ProcedureFooter(LogGroupGUID);
+  Log.SendInfo('Отображено окно "О программе...".');
+  ProcedureFooter;
 end;
 
 procedure TAboutForm.Action_CloseExecute(Sender: TObject);
-const
-  LogGroupGUID: string='{C7F253A6-6654-4B07-8BBB-0CE66F649BF9}';
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Close.Caption+'"', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Close.Caption+'"', '{D141CB7B-C326-4B85-BDFC-5F5107598AEA}');
   Do_Close;
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TAboutForm.Do_Close;
-const
-  LogGroupGUID: string='{D7505404-3E9E-4962-87E0-B5A240BF28CE}';
 begin
-  ProcedureHeader('Процедура закрытия модального окна с результатом mrClose', LogGroupGUID);
+  ProcedureHeader('Процедура закрытия модального окна с результатом mrClose', '{0C17F685-16BC-4D7F-B964-287B74A1CABF}');
   ModalResult:=mrClose;
-  LogThis('Окно "О программе..." закрыто.', LogGroupGUID, lmtInfo);
-  ProcedureFooter(LogGroupGUID);
+  Log.SendInfo('Окно "О программе..." закрыто.');
+  ProcedureFooter;
 end;
 
 procedure TAboutForm.Timer1Timer(Sender: TObject);
-const
-  LogGroupGUID: string='{4FD69E44-3560-46EE-83ED-AD0FFC20A0DF}';
 begin
-  ProcedureHeader('Процедура закрытия окна по истечению счётчика таймера', LogGroupGUID);
+  ProcedureHeader('Процедура закрытия окна по истечению счётчика таймера', '{1A3ED186-8181-467D-8491-E6C021EB2174}');
   Do_Close;
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 procedure TAboutForm.Timer2Timer(Sender: TObject);
@@ -172,12 +166,10 @@ begin
 end;
 
 procedure TAboutForm.lblEMailAddressClick(Sender: TObject);
-const
-  LogGroupGUID: string='{E1A6413A-F33A-4DC2-B281-CE50DF74296D}';
 begin
-  ProcedureHeader('Процедура-обработчик щелчка по метке адреса электронной почты', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик щелчка по метке адреса электронной почты', '{A2E28A1B-21CE-4B40-8CB7-944094FAB627}');
   ShellExecute(Application.Handle, 'open', PWideChar('mailto:vlad_dracula@tut.by'), nil, nil, SW_MAXIMIZE);
-  ProcedureFooter(LogGroupGUID);
+  ProcedureFooter;
 end;
 
 end.
