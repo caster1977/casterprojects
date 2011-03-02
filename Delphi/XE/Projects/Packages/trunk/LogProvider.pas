@@ -7,7 +7,10 @@ uses
   Forms;
 
 type
-  TLogFile = class
+
+{$M+}
+
+  TLogFile=class
   strict private
     FEnabled: boolean;
     FName: string;
@@ -20,7 +23,7 @@ type
     property Path: string read FPath write FPath;
   end;
 
-  TLogClient = class
+  TLogClient=class
   strict private
     FEnabled: boolean;
   public
@@ -29,7 +32,18 @@ type
     property Enabled: boolean read FEnabled write FEnabled default False;
   end;
 
+{$M-}
+
+  TLogThread = class(TThread)
+  protected
+    procedure Execute; override;
+  public
+    constructor Create;
+  end;
+
   TLogProvider=class(TComponent)
+  private type
+    TLogMessagesType=(lmtError, lmtWarning, lmtInfo, lmtSQL, lmtDebug); // типы сообщений передаваемых в лог
   strict private
     FEnabled: boolean;
     FForm: TForm;
@@ -42,7 +56,7 @@ type
     function GetApplicationName: string;
     function GetFormName: string;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
     procedure SendError(const AString: string);
     procedure SendWarning(const AString: string);
@@ -68,13 +82,17 @@ procedure register;
 implementation
 
 uses
+  Windows,
   WinSock,
-  Controls;
+  Controls,
+  SysUtils;
 
 procedure register;
 begin
   RegisterComponents('MyComponents', [TLogProvider]);
 end;
+
+{ TLogFile }
 
 constructor TLogFile.Create;
 begin
@@ -84,13 +102,30 @@ begin
   FPath:='';
 end;
 
+{ TLogClient }
+
 constructor TLogClient.Create;
 begin
   inherited;
   FEnabled:=False;
 end;
 
-constructor TLogProvider.Create(AOwner: TComponent);
+{ TLogThread }
+
+constructor TLogThread.Create;
+begin
+  inherited Create(True);
+  Priority:=tpLower;
+  FreeOnTerminate:=False;
+end;
+
+procedure TLogThread.Execute;
+begin
+  inherited;
+
+end;
+
+constructor TLogProvider.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
   FApplication:=nil;
@@ -104,25 +139,15 @@ begin
         FApplication:=TApplication(AOwner.Owner);
     end;
   FLogFile:=TLogFile.Create;
-  with FLogFile do
-    begin
-      Enabled:=False;
-      Name:='';
-      Path:='';
-    end;
   FLogClient:=TLogClient.Create;
-  with FLogClient do
-    begin
-      Enabled:=True;
-    end;
 end;
 
 destructor TLogProvider.Destroy;
 begin
-  if FLogFile<>nil then
-    FLogFile.Free;
   if FLogClient<>nil then
     FLogClient.Free;
+  if FLogFile<>nil then
+    FLogFile.Free;
   inherited;
 end;
 
@@ -148,8 +173,24 @@ begin
 end;
 
 procedure TLogProvider.Send(const AString: string);
+//var
+//  s: string;
+//  aCopyData: TCopyDataStruct;
 begin
-
+//  with TLogThread.Create do
+//    try
+//      Start; // запускаем выполнение потока
+//    except
+//      on Exception do;
+//    end;
+//  s:=IntToStr(WMCD_MODALLOG)+';'+s+';'+aMessage+';'+aLogGroupGUID;
+//  with aCopyData do
+//    begin
+//      dwData:=0;
+//      cbData:=Length(s)+1;
+//      lpData:=PAnsiChar(AnsiString(s));
+//    end;
+//  SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
 end;
 
 procedure TLogProvider.SendDebug(const AString: string);
@@ -286,9 +327,5 @@ end;
   end;
   end;
 *)
-
-{ TLogClient }
-
-{ TLogFile }
 
 end.
