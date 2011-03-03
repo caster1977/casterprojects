@@ -3,13 +3,13 @@ unit LogProvider;
 interface
 
 uses
+  Windows,
   Classes,
   Forms;
 
 type
 
 {$M+}
-
   TLogFile=class
   strict private
     FEnabled: boolean;
@@ -31,45 +31,57 @@ type
   published
     property Enabled: boolean read FEnabled write FEnabled default False;
   end;
-
 {$M-}
 
-  TLogThread = class(TThread)
+  TSendLogStringToClientThread=class(TThread)
+  strict private
+    FLogString: string;
   protected
     procedure Execute; override;
   public
-    constructor Create;
+    constructor Create(const LogString: string);
+  end;
+
+  TSaveLogStringToFileThread=class(TThread)
+  strict private
+    FLogString: string;
+  protected
+    procedure Execute; override;
+  public
+    constructor Create(const LogString: string);
   end;
 
   TLogProvider=class(TComponent)
-  private type
-    TLogMessagesType=(lmtError, lmtWarning, lmtInfo, lmtSQL, lmtDebug); // типы сообщений передаваемых в лог
   strict private
     FEnabled: boolean;
     FForm: TForm;
     FApplication: TApplication;
     FUserName: string;
-    FCounter: longword;
+    FCount: longword;
     FLogFile: TLogFile;
     FLogClient: TLogClient;
-    function GetHost: string;
-    function GetApplicationName: string;
-    function GetFormName: string;
   public
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
+
+    function GetLocalHostName: string;
+    function GetApplicationHandle: HWnd;
+    function GetApplicationFileName: string;
+    function GetApplicationFilePath: string;
+    function GetFormHandle: HWnd;
+    function GetFormName: string;
+
     procedure SendError(const AString: string);
     procedure SendWarning(const AString: string);
     procedure SendInfo(const AString: string);
     procedure SendDebug(const AString: string);
     procedure SendSQL(const AString: string);
     procedure Send(const AString: string);
+
     procedure EnterMethod(const AString, AGUID: string);
     procedure ExitMethod;
-    property Counter: longword read FCounter;
-    property ApplicationName: string read GetApplicationName;
-    property HostName: string read GetHost;
-    property FormName: string read GetFormName;
+
+    property Count: longword read FCount;
     property UserName: string read FUserName write FUserName;
   published
     property Enabled: Boolean read FEnabled write FEnabled default true;
@@ -82,10 +94,10 @@ procedure register;
 implementation
 
 uses
-  Windows,
   WinSock,
   Controls,
-  SysUtils;
+  SysUtils,
+  log_message;
 
 procedure register;
 begin
@@ -110,27 +122,48 @@ begin
   FEnabled:=False;
 end;
 
-{ TLogThread }
+{ TSendLogStringToClientThread }
 
-constructor TLogThread.Create;
+constructor TSendLogStringToClientThread.Create(const LogString: string);
 begin
   inherited Create(True);
   Priority:=tpLower;
   FreeOnTerminate:=False;
+  if (FLogString<>'') then
+    FLogString:=LogString;
 end;
 
-procedure TLogThread.Execute;
+procedure TSendLogStringToClientThread.Execute;
 begin
   inherited;
-
+  { TODO : Реализовать передачу строки из нити целевому клиенту. }
 end;
+
+{ TSendLogStringToClientThread }
+
+constructor TSaveLogStringToFileThread.Create(const LogString: string);
+begin
+  inherited Create(True);
+  Priority:=tpLower;
+  FreeOnTerminate:=False;
+  if (FLogString<>'') then
+    FLogString:=LogString;
+end;
+
+procedure TSaveLogStringToFileThread.Execute;
+begin
+  inherited;
+  { TODO : Реализовать запись строки из нити в целевой файл. }
+end;
+
+{ TLogProvider }
 
 constructor TLogProvider.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
   FApplication:=nil;
   FForm:=nil;
-  FCounter:=0;
+  FCount:=0;
   FEnabled:=True;
   if AOwner is TForm then
     begin
@@ -151,7 +184,7 @@ begin
   inherited;
 end;
 
-function TLogProvider.GetHost: string;
+function TLogProvider.GetLocalHostName: string;
 const
   WSVer=$101;
 var
@@ -174,28 +207,60 @@ end;
 
 procedure TLogProvider.Send(const AString: string);
 //var
-//  s: string;
-//  aCopyData: TCopyDataStruct;
+// s: string;
+// aCopyData: TCopyDataStruct;
 begin
-//  with TLogThread.Create do
-//    try
-//      Start; // запускаем выполнение потока
-//    except
-//      on Exception do;
-//    end;
-//  s:=IntToStr(WMCD_MODALLOG)+';'+s+';'+aMessage+';'+aLogGroupGUID;
-//  with aCopyData do
-//    begin
-//      dwData:=0;
-//      cbData:=Length(s)+1;
-//      lpData:=PAnsiChar(AnsiString(s));
-//    end;
-//  SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
+  // with TLogThread.Create do
+  // try
+  // Start; // запускаем выполнение потока
+  // except
+  // on Exception do;
+  // end;
+  // s:=IntToStr(WMCD_MODALLOG)+';'+s+';'+aMessage+';'+aLogGroupGUID;
+  // with aCopyData do
+  // begin
+  // dwData:=0;
+  // cbData:=Length(s)+1;
+  // lpData:=PAnsiChar(AnsiString(s));
+  // end;
+  // SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
 end;
 
 procedure TLogProvider.SendDebug(const AString: string);
+var
+  lm: IXMLLog_messageType;
+  dt: TDateTime;
+  Year, Month, Day: word;
+  Hour, Minute, Second, MSecond: word;
 begin
+  // оформление передаваемого сообщения в виде XML-документа
+  dt:=Now;
+  DecodeDate(dt, Year, Month, Day);
+  DecodeTime(dt, Hour, Minute, Second, MSecond);
 
+  lm:=Newlog_message;
+
+  lm.Host:=GetLocalHostName;
+
+  lm.Application.Handle:=GetApplicationHandle;
+  lm.Application.FileName:=GetApplicationFileName;
+  lm.Application.FilePath:=GetApplicationFilePath;
+
+  lm.Message.Index:=Count;
+
+  lm.Message.Date.Year:=Year;
+  lm.Message.Date.Month:=Month;
+  lm.Message.Date.Day:=Day;
+
+  lm.Message.Time.Hour:=Hour;
+  lm.Message.Time.Minute:=Hour;
+  lm.Message.Time.Second:=Second;
+  lm.Message.Time.MSecond:=MSecond;
+
+  lm.Message.MessageType:=lmtDebug;
+
+  lm.Message.Text:=AString;
+  //MessageBox(lm.Application.Handle, PWideChar(lm.XML), PWideChar('Debug'), MB_OK+MB_ICONINFORMATION+MB_DEFBUTTON1);
 end;
 
 procedure TLogProvider.SendError(const AString: string);
@@ -228,10 +293,30 @@ begin
 
 end;
 
-function TLogProvider.GetApplicationName: string;
+function TLogProvider.GetApplicationHandle: HWnd;
 begin
   if FApplication<>nil then
-    Result:=FApplication.ExeName;
+    Result:=FApplication.Handle
+  else Result:=0;
+end;
+
+function TLogProvider.GetApplicationFileName: string;
+begin
+  if FApplication<>nil then
+    Result:=ExtractFileName(FApplication.ExeName);
+end;
+
+function TLogProvider.GetApplicationFilePath: string;
+begin
+  if FApplication<>nil then
+    Result:=ExtractFilePath(FApplication.ExeName);
+end;
+
+function TLogProvider.GetFormHandle: HWnd;
+begin
+  if FForm<>nil then
+    Result:=FForm.Handle
+  else Result:=0;
 end;
 
 function TLogProvider.GetFormName: string;
