@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<log_message>
+    <host>10.1.1.222</host>
+    <application>
+        <handle>131324</handle>
+        <filename>OA5.EXE</filename>
+        <filepath>OA5</filepath>
+        <form>
+            <handle>131324</handle>
+            <name>Main</name>
+        </form>
+        <method>
+            <guid>{298F56FB-F73A-408B-8601-D4A9EC593619}</guid>
+        </method>
+        <user>caster</user>
+    </application>
+    <message>
+        <index>42</index>
+        <date>
+            <day>3</day>
+            <month>3</month>
+            <year>2011</year>
+        </date>
+        <time>
+            <hour>13</hour>
+            <minute>18</minute>
+            <second>44</second>
+            <msecond>154</msecond>
+        </time>
+        <type>Error</type>
+        <text>Ошибка данных!</text>
+    </message>
+</log_message>
