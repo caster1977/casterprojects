@@ -5,9 +5,12 @@ interface
 uses
   Windows,
   Classes,
+  Generics.Collections,
   Forms;
 
 type
+
+  TLogProvider=class;
 
 {$M+}
   TLogFile=class
@@ -33,26 +36,18 @@ type
   end;
 {$M-}
 
-  TSendLogStringToClientThread=class(TThread)
+  TLogThread=class(TThread)
   strict private
-    FLogString: string;
+    FOwner: TLogProvider;
   protected
     procedure Execute; override;
   public
-    constructor Create(const LogString: string);
-  end;
-
-  TSaveLogStringToFileThread=class(TThread)
-  strict private
-    FLogString: string;
-  protected
-    procedure Execute; override;
-  public
-    constructor Create(const LogString: string);
+    constructor Create(Value: TLogProvider);
   end;
 
   TLogProvider=class(TComponent)
   strict private
+    FLogThread: TLogThread;
     FEnabled: boolean;
     FForm: TForm;
     FApplication: TApplication;
@@ -60,6 +55,8 @@ type
     FCount: longword;
     FLogFile: TLogFile;
     FLogClient: TLogClient;
+  private
+    XMLStringsList: TList<string>;
   public
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
@@ -109,9 +106,6 @@ end;
 constructor TLogFile.Create;
 begin
   inherited;
-  FEnabled:=False;
-  FName:='';
-  FPath:='';
 end;
 
 { TLogClient }
@@ -119,41 +113,26 @@ end;
 constructor TLogClient.Create;
 begin
   inherited;
-  FEnabled:=False;
 end;
 
-{ TSendLogStringToClientThread }
+{ TLogThread }
 
-constructor TSendLogStringToClientThread.Create(const LogString: string);
+constructor TLogThread.Create(Value: TLogProvider);
 begin
   inherited Create(True);
+  FOwner:=Value;
+
   Priority:=tpLower;
   FreeOnTerminate:=False;
-  if (FLogString<>'') then
-    FLogString:=LogString;
 end;
 
-procedure TSendLogStringToClientThread.Execute;
+procedure TLogThread.Execute;
 begin
   inherited;
-  { TODO : Реализовать передачу строки из нити целевому клиенту. }
-end;
-
-{ TSendLogStringToClientThread }
-
-constructor TSaveLogStringToFileThread.Create(const LogString: string);
-begin
-  inherited Create(True);
-  Priority:=tpLower;
-  FreeOnTerminate:=False;
-  if (FLogString<>'') then
-    FLogString:=LogString;
-end;
-
-procedure TSaveLogStringToFileThread.Execute;
-begin
-  inherited;
-  { TODO : Реализовать запись строки из нити в целевой файл. }
+  while not Terminated do
+    begin
+    { TODO : Реализовать передачу строк цели. }
+    end;
 end;
 
 { TLogProvider }
@@ -173,10 +152,25 @@ begin
     end;
   FLogFile:=TLogFile.Create;
   FLogClient:=TLogClient.Create;
+  // если мы не в редиме дизайнера, создаём поток для обработки сообщений протокола
+  if not (csDesigning in ComponentState) then
+    begin
+      XMLStringsList:=TList<string>.Create;
+      FLogThread:=TLogThread.Create(Self);
+      try
+        FLogThread.Start; // запускаем выполнение потока
+      except
+        on E: Exception do raise;
+      end;
+    end;
 end;
 
 destructor TLogProvider.Destroy;
 begin
+  if FLogThread<>nil then
+    FLogThread.Free;
+  if XMLStringsList<>nil then
+    XMLStringsList.Free;
   if FLogClient<>nil then
     FLogClient.Free;
   if FLogFile<>nil then
@@ -210,12 +204,6 @@ procedure TLogProvider.Send(const AString: string);
 // s: string;
 // aCopyData: TCopyDataStruct;
 begin
-  // with TLogThread.Create do
-  // try
-  // Start; // запускаем выполнение потока
-  // except
-  // on Exception do;
-  // end;
   // s:=IntToStr(WMCD_MODALLOG)+';'+s+';'+aMessage+';'+aLogGroupGUID;
   // with aCopyData do
   // begin
@@ -260,7 +248,11 @@ begin
   lm.Message.MessageType:=lmtDebug;
 
   lm.Message.Text:=AString;
-  //MessageBox(lm.Application.Handle, PWideChar(lm.XML), PWideChar('Debug'), MB_OK+MB_ICONINFORMATION+MB_DEFBUTTON1);
+
+  if (XMLStringsList<>nil) and (FLogThread<>nil) then
+    begin
+      XMLStringsList.Add(lm.XML);
+    end;
 end;
 
 procedure TLogProvider.SendError(const AString: string);
