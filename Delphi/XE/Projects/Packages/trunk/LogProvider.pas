@@ -13,6 +13,7 @@ type
   TLogProvider=class;
 
 {$M+}
+
   TLogFile=class
   strict private
     FEnabled: boolean;
@@ -22,7 +23,7 @@ type
     constructor Create;
   published
     property Enabled: boolean read FEnabled write FEnabled default False;
-    property Name: string read FName write FName;
+    property name: string read FName write FName;
     property Path: string read FPath write FPath;
   end;
 
@@ -42,20 +43,21 @@ type
   protected
     procedure Execute; override;
   public
-    constructor Create(Value: TLogProvider);
+    constructor Create(aLogProvider: TLogProvider);
   end;
 
   TLogProvider=class(TComponent)
   strict private
     FLogThread: TLogThread;
     FEnabled: boolean;
-    FForm: TForm;
     FApplication: TApplication;
     FUserName: string;
     FCount: longword;
     FLogFile: TLogFile;
     FLogClient: TLogClient;
   private
+    // StopFlag: boolean;
+    FForm: TForm;
     XMLStringsList: TList<string>;
   public
     constructor Create(aOwner: TComponent); override;
@@ -68,14 +70,14 @@ type
     function GetFormHandle: HWnd;
     function GetFormName: string;
 
-    procedure SendError(const AString: string);
-    procedure SendWarning(const AString: string);
-    procedure SendInfo(const AString: string);
-    procedure SendDebug(const AString: string);
-    procedure SendSQL(const AString: string);
-    procedure Send(const AString: string);
+    procedure SendError(const aString: string);
+    procedure SendWarning(const aString: string);
+    procedure SendInfo(const aString: string);
+    procedure SendDebug(const aString: string);
+    procedure SendSQL(const aString: string);
+    procedure Send(const aString: string);
 
-    procedure EnterMethod(const AString, AGUID: string);
+    procedure EnterMethod(const aString, aGUID: string);
     procedure ExitMethod;
 
     property Count: longword read FCount;
@@ -117,13 +119,14 @@ end;
 
 { TLogThread }
 
-constructor TLogThread.Create(Value: TLogProvider);
+constructor TLogThread.Create(aLogProvider: TLogProvider);
 begin
   inherited Create(True);
-  FOwner:=Value;
+  NameThreadForDebugging('TLogThread');
+  FOwner:=aLogProvider;
 
   Priority:=tpLower;
-  FreeOnTerminate:=False;
+  FreeOnTerminate:=True;
 end;
 
 procedure TLogThread.Execute;
@@ -131,7 +134,23 @@ begin
   inherited;
   while not Terminated do
     begin
-    { TODO : Реализовать передачу строк цели. }
+      try
+        if FOwner<>nil then
+          begin
+            Synchronize( procedure begin if FOwner.XMLStringsList<>nil then if FOwner.XMLStringsList.Count>0 then if FOwner.FForm<>nil then begin FOwner.FForm.Caption:=FOwner.XMLStringsList.Items[0]; FOwner.XMLStringsList.Delete(0);
+              // if FOwner.XMLStringsList.Count>0 then begin
+              // FOwner.StopFlag:=True;
+              // else
+              // Self.Suspended:=True;
+              // end;
+            end; end)
+          end;
+      except
+        on E: Exception do
+          raise;
+      end;
+
+      { TODO : Реализовать передачу строк цели. }
     end;
 end;
 
@@ -153,28 +172,25 @@ begin
   FLogFile:=TLogFile.Create;
   FLogClient:=TLogClient.Create;
   // если мы не в редиме дизайнера, создаём поток для обработки сообщений протокола
-  if not (csDesigning in ComponentState) then
+  if not(csDesigning in ComponentState) then
     begin
       XMLStringsList:=TList<string>.Create;
       FLogThread:=TLogThread.Create(Self);
       try
         FLogThread.Start; // запускаем выполнение потока
       except
-        on E: Exception do raise;
+        on E: Exception do
+          raise;
       end;
     end;
 end;
 
 destructor TLogProvider.Destroy;
 begin
-  if FLogThread<>nil then
-    FLogThread.Free;
-  if XMLStringsList<>nil then
-    XMLStringsList.Free;
-  if FLogClient<>nil then
-    FLogClient.Free;
-  if FLogFile<>nil then
-    FLogFile.Free;
+  FLogThread.Free;
+  XMLStringsList.Free;
+  FLogClient.Free;
+  FLogFile.Free;
   inherited;
 end;
 
@@ -199,8 +215,8 @@ begin
     end;
 end;
 
-procedure TLogProvider.Send(const AString: string);
-//var
+procedure TLogProvider.Send(const aString: string);
+// var
 // s: string;
 // aCopyData: TCopyDataStruct;
 begin
@@ -214,68 +230,75 @@ begin
   // SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
 end;
 
-procedure TLogProvider.SendDebug(const AString: string);
+procedure TLogProvider.SendDebug(const aString: string);
 var
   lm: IXMLLog_messageType;
-  dt: TDateTime;
-  Year, Month, Day: word;
-  Hour, Minute, Second, MSecond: word;
+  dtNow: TDateTime;
+  wYear, wMonth, wDay, wHour, wMinute, wSecond, wMSecond: word;
 begin
   // оформление передаваемого сообщения в виде XML-документа
-  dt:=Now;
-  DecodeDate(dt, Year, Month, Day);
-  DecodeTime(dt, Hour, Minute, Second, MSecond);
-
   lm:=Newlog_message;
-
-  lm.Host:=GetLocalHostName;
-
-  lm.Application.Handle:=GetApplicationHandle;
-  lm.Application.FileName:=GetApplicationFileName;
-  lm.Application.FilePath:=GetApplicationFilePath;
-
-  lm.Message.Index:=Count;
-
-  lm.Message.Date.Year:=Year;
-  lm.Message.Date.Month:=Month;
-  lm.Message.Date.Day:=Day;
-
-  lm.Message.Time.Hour:=Hour;
-  lm.Message.Time.Minute:=Hour;
-  lm.Message.Time.Second:=Second;
-  lm.Message.Time.MSecond:=MSecond;
-
-  lm.Message.MessageType:=lmtDebug;
-
-  lm.Message.Text:=AString;
-
-  if (XMLStringsList<>nil) and (FLogThread<>nil) then
+  if lm<>nil then
     begin
-      XMLStringsList.Add(lm.XML);
+      lm.Host:=GetLocalHostName;
+      with lm.Application do
+        begin
+          Handle:=GetApplicationHandle;
+          FileName:=GetApplicationFileName;
+          FilePath:=GetApplicationFilePath;
+        end;
+      dtNow:=Now;
+      DecodeDate(dtNow, wYear, wMonth, wDay);
+      DecodeTime(dtNow, wHour, wMinute, wSecond, wMSecond);
+      with lm.Message do
+        begin
+          index:=Count;
+          Text:=aString;
+          MessageType:=lmtDebug;
+          with Date do
+            begin
+              Year:=wYear;
+              Month:=wMonth;
+              Day:=wDay;
+            end;
+          with Time do
+            begin
+              Hour:=wHour;
+              Minute:=wHour;
+              Second:=wSecond;
+              MSecond:=wMSecond;
+            end;
+        end;
+      if (XMLStringsList<>nil)and(FLogThread<>nil) then
+        begin
+          FLogThread.Suspended:=True; // останавливаем поток
+          XMLStringsList.Add(lm.XML); // добавляем новую строку
+          FLogThread.Suspended:=False; // продолжаем выполнение потока
+        end;
     end;
 end;
 
-procedure TLogProvider.SendError(const AString: string);
+procedure TLogProvider.SendError(const aString: string);
 begin
 
 end;
 
-procedure TLogProvider.SendInfo(const AString: string);
+procedure TLogProvider.SendInfo(const aString: string);
 begin
 
 end;
 
-procedure TLogProvider.SendSQL(const AString: string);
+procedure TLogProvider.SendSQL(const aString: string);
 begin
 
 end;
 
-procedure TLogProvider.SendWarning(const AString: string);
+procedure TLogProvider.SendWarning(const aString: string);
 begin
 
 end;
 
-procedure TLogProvider.EnterMethod(const AString, AGUID: string);
+procedure TLogProvider.EnterMethod(const aString, aGUID: string);
 begin
 
 end;
@@ -289,7 +312,8 @@ function TLogProvider.GetApplicationHandle: HWnd;
 begin
   if FApplication<>nil then
     Result:=FApplication.Handle
-  else Result:=0;
+  else
+    Result:=0;
 end;
 
 function TLogProvider.GetApplicationFileName: string;
@@ -308,7 +332,8 @@ function TLogProvider.GetFormHandle: HWnd;
 begin
   if FForm<>nil then
     Result:=FForm.Handle
-  else Result:=0;
+  else
+    Result:=0;
 end;
 
 function TLogProvider.GetFormName: string;
