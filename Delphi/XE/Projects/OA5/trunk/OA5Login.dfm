@@ -171,7 +171,7 @@ object LoginForm: TLoginForm
     end
   end
   object Log: TLogProvider
-    Left = 64
-    Top = 16
+    Left = 72
+    Top = 32
   end
 end

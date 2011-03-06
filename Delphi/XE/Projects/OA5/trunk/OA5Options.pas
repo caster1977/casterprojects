@@ -288,8 +288,7 @@ end;
 
 procedure TOptionsForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
-  Log.EnterMethod('['+aTitle+']', aLogGroupGUID);
-  Log.SendDebug('Начало процедуры...');
+  Log.EnterMethod(aTitle, aLogGroupGUID);
   MainForm.Inc_BusyState;
   Application.ProcessMessages;
 end;
@@ -297,7 +296,7 @@ end;
 procedure TOptionsForm.ProcedureFooter;
 begin
   MainForm.Dec_BusyState;
-  Log.SendDebug('Окончание процедуры.');
+  Log.ExitMethod;
   Application.ProcessMessages;
 end;
 
@@ -725,10 +724,9 @@ end;
 
 procedure TOptionsForm.FormCreate(Sender: TObject);
 const
-  LogGroupGUID: string='{928DE88A-9894-4B2A-B8AB-6D9BB130BCF6}';
   ICON_CONFIGURATION=5;
 begin
-  ProcedureHeader('Процедура-обработчик события создания окна', LogGroupGUID);
+  ProcedureHeader('Процедура-обработчик события создания окна', '{928DE88A-9894-4B2A-B8AB-6D9BB130BCF6}');
 
   ilConfigurationFormSmallImages.GetIcon(ICON_CONFIGURATION, Icon);
 
@@ -776,10 +774,8 @@ begin
 end;
 
 procedure TOptionsForm.Do_Defaults;
-const
-  LogGroupGUID: string='{EDC577E6-6D47-4DC2-973E-AD820C7AC588}';
 begin
-  ProcedureHeader('Процедура сброса настроек к значениям по умолчанию', LogGroupGUID);
+  ProcedureHeader('Процедура сброса настроек к значениям по умолчанию', '{EDC577E6-6D47-4DC2-973E-AD820C7AC588}');
 
   { TODO : Добавить изменение значений контролов на значения по умолчанию }
 

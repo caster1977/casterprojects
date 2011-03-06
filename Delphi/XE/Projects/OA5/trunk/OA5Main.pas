@@ -109,8 +109,7 @@ uses
 
 procedure TMainForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
-  Log.EnterMethod('['+aTitle+']', aLogGroupGUID);
-  Log.SendDebug('Начало процедуры...');
+  Log.EnterMethod(aTitle, aLogGroupGUID);
   MainForm.Inc_BusyState;
   Application.ProcessMessages;
 end;
@@ -118,7 +117,6 @@ end;
 procedure TMainForm.ProcedureFooter;
 begin
   MainForm.Dec_BusyState;
-  Log.SendDebug('Окончание процедуры.');
   Log.ExitMethod;
   Application.ProcessMessages;
 end;
