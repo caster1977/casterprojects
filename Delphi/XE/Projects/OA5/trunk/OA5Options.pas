@@ -655,12 +655,11 @@ end;
 
 procedure TOptionsForm.rbSaveIntoTheSelectedFolderClick(Sender: TObject);
 begin
+  ProcedureHeader('Процедура отклика на щелчок на радиокнопке', '{77B71A67-5A1E-4D56-ADE8-C42EBD13CAC0}');
+
   if Sender is TRadioButton then
     with Sender as TRadioButton do
-      begin
-        ProcedureHeader('Процедура отклика на щелчок на радиокнопке "'+Caption+'"', '{77B71A67-5A1E-4D56-ADE8-C42EBD13CAC0}');
-        Log.SendInfo('Нажата радиокнопка "'+Caption+'".');
-      end;
+      Log.SendInfo('Нажата радиокнопка "'+Caption+'".');
 
   edbxSelectedFolder.Enabled:=rbSaveIntoTheSelectedFolder.Checked;
   Action_ChooseReportFolder.Enabled:=rbSaveIntoTheSelectedFolder.Checked;
