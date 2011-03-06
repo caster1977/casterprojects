@@ -4,9 +4,11 @@ interface
 
 uses
   Windows,
+  Messages,
   Classes,
   Generics.Collections,
-  Forms;
+  Forms,
+  log_message;
 
 type
 
@@ -51,12 +53,13 @@ type
     FLogThread: TLogThread;
     FEnabled: boolean;
     FApplication: TApplication;
+    FGUIDList: TList<string>;
     FUserName: string;
     FCount: longword;
     FLogFile: TLogFile;
     FLogClient: TLogClient;
+    procedure Send(const aString: string; const aMessageType: TLogMessagesType);
   private
-    // StopFlag: boolean;
     FForm: TForm;
     XMLStringsList: TList<string>;
   public
@@ -75,7 +78,6 @@ type
     procedure SendInfo(const aString: string);
     procedure SendDebug(const aString: string);
     procedure SendSQL(const aString: string);
-    procedure Send(const aString: string);
 
     procedure EnterMethod(const aString, aGUID: string);
     procedure ExitMethod;
@@ -95,8 +97,7 @@ implementation
 uses
   WinSock,
   Controls,
-  SysUtils,
-  log_message;
+  SysUtils;
 
 procedure register;
 begin
@@ -122,36 +123,50 @@ end;
 constructor TLogThread.Create(aLogProvider: TLogProvider);
 begin
   inherited Create(True);
-  NameThreadForDebugging('TLogThread');
   FOwner:=aLogProvider;
 
   Priority:=tpLower;
-  FreeOnTerminate:=True;
+  FreeOnTerminate:=False;
 end;
 
 procedure TLogThread.Execute;
+var
+  s: string;
+// s: string;
+// aCopyData: TCopyDataStruct;
 begin
   inherited;
   while not Terminated do
     begin
       try
         if FOwner<>nil then
-          begin
-            Synchronize( procedure begin if FOwner.XMLStringsList<>nil then if FOwner.XMLStringsList.Count>0 then if FOwner.FForm<>nil then begin FOwner.FForm.Caption:=FOwner.XMLStringsList.Items[0]; FOwner.XMLStringsList.Delete(0);
-              // if FOwner.XMLStringsList.Count>0 then begin
-              // FOwner.StopFlag:=True;
-              // else
-              // Self.Suspended:=True;
-              // end;
-            end; end)
+          with FOwner do
+            if XMLStringsList<>nil then
+              if XMLStringsList.Count>0 then
+                if FForm<>nil then
+                  begin
+                    Synchronize(
+                      procedure
+                      begin
+                        s:=FOwner.XMLStringsList.Items[0];
+                        FForm.Caption:=s;
+                        XMLStringsList.Delete(0);
+                      end
+                    )
           end;
       except
-        on E: Exception do
-          raise;
+        Application.HandleException(Self);
       end;
-
-      { TODO : Реализовать передачу строк цели. }
+      Sleep(0);
     end;
+  // s:=IntToStr(WMCD_MODALLOG)+';'+s+';'+aMessage+';'+aLogGroupGUID;
+  // with aCopyData do
+  // begin
+  // dwData:=0;
+  // cbData:=Length(s)+1;
+  // lpData:=PAnsiChar(AnsiString(s));
+  // end;
+  // SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
 end;
 
 { TLogProvider }
@@ -162,7 +177,6 @@ begin
   FApplication:=nil;
   FForm:=nil;
   FCount:=0;
-  FEnabled:=True;
   if AOwner is TForm then
     begin
       FForm:=TForm(AOwner);
@@ -175,19 +189,23 @@ begin
   if not(csDesigning in ComponentState) then
     begin
       XMLStringsList:=TList<string>.Create;
+      FGUIDList:=TList<string>.Create;
       FLogThread:=TLogThread.Create(Self);
       try
+        //FLogThread.NameThreadForDebugging(AnsiString('TLogThread_'+FForm.Caption));
         FLogThread.Start; // запускаем выполнение потока
       except
-        on E: Exception do
-          raise;
+        Application.HandleException(Self);
       end;
     end;
+  FEnabled:=True;
 end;
 
 destructor TLogProvider.Destroy;
 begin
+  FEnabled:=False;
   FLogThread.Free;
+  FGUIDList.Free;
   XMLStringsList.Free;
   FLogClient.Free;
   FLogFile.Free;
@@ -215,28 +233,14 @@ begin
     end;
 end;
 
-procedure TLogProvider.Send(const aString: string);
-// var
-// s: string;
-// aCopyData: TCopyDataStruct;
-begin
-  // s:=IntToStr(WMCD_MODALLOG)+';'+s+';'+aMessage+';'+aLogGroupGUID;
-  // with aCopyData do
-  // begin
-  // dwData:=0;
-  // cbData:=Length(s)+1;
-  // lpData:=PAnsiChar(AnsiString(s));
-  // end;
-  // SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
-end;
-
-procedure TLogProvider.SendDebug(const aString: string);
+procedure TLogProvider.Send(const aString: string; const aMessageType: TLogMessagesType);
 var
   lm: IXMLLog_messageType;
   dtNow: TDateTime;
   wYear, wMonth, wDay, wHour, wMinute, wSecond, wMSecond: word;
 begin
   // оформление передаваемого сообщения в виде XML-документа
+  Application.ProcessMessages;
   lm:=Newlog_message;
   if lm<>nil then
     begin
@@ -246,6 +250,9 @@ begin
           Handle:=GetApplicationHandle;
           FileName:=GetApplicationFileName;
           FilePath:=GetApplicationFilePath;
+          if FGUIDList.Count>0 then
+            Method.Guid:=FGUIDList.Last
+          else raise Exception.Create('Спиоок GUID методов пуст!');
         end;
       dtNow:=Now;
       DecodeDate(dtNow, wYear, wMonth, wDay);
@@ -254,7 +261,7 @@ begin
         begin
           index:=Count;
           Text:=aString;
-          MessageType:=lmtDebug;
+          MessageType:=aMessageType;
           with Date do
             begin
               Year:=wYear;
@@ -271,41 +278,54 @@ begin
         end;
       if (XMLStringsList<>nil)and(FLogThread<>nil) then
         begin
-          FLogThread.Suspended:=True; // останавливаем поток
           XMLStringsList.Add(lm.XML); // добавляем новую строку
+          FCount:=FCount+1;
           FLogThread.Suspended:=False; // продолжаем выполнение потока
         end;
     end;
 end;
 
+procedure TLogProvider.SendDebug(const aString: string);
+begin
+  Send(aString, lmtDebug);
+end;
+
 procedure TLogProvider.SendError(const aString: string);
 begin
-
+  Send(aString, lmtError);
 end;
 
 procedure TLogProvider.SendInfo(const aString: string);
 begin
-
+  Send(aString, lmtInfo);
 end;
 
 procedure TLogProvider.SendSQL(const aString: string);
 begin
-
+  Send(aString, lmtSQL);
 end;
 
 procedure TLogProvider.SendWarning(const aString: string);
 begin
-
+  Send(aString, lmtWarning);
 end;
 
 procedure TLogProvider.EnterMethod(const aString, aGUID: string);
 begin
-
+  if Length(aGUID)=38 then
+    FGUIDList.Add(aGUID)
+  else
+    raise Exception.Create('Не удалось добавить элемент в список GUID методов из-за некорректной длины строки!');
+  Send('['+aString+']',lmtDebug);
+  Send('Начало процедуры...',lmtDebug);
 end;
 
 procedure TLogProvider.ExitMethod;
 begin
-
+  Send('Окончание процедуры.',lmtDebug);
+  if FGUIDList.Count>0 then
+    FGUIDList.Delete(FGUIDList.Count-1)
+  else raise Exception.Create('Не удалось удалить последний элемент списка GUID методов, т.к. список пуст!');
 end;
 
 function TLogProvider.GetApplicationHandle: HWnd;
