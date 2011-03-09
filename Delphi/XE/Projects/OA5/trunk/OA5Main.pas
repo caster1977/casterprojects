@@ -22,7 +22,8 @@ uses
   OA5User,
   OA5Configuration,
   ExtCtrls,
-  CodeSiteLogging, LogProvider, StdCtrls;
+  CodeSiteLogging, LogProvider, StdCtrls, Sockets, IdTCPConnection, IdTCPClient,
+  IdBaseComponent, IdComponent, IdUDPBase, IdUDPClient;
 
 type
   THackControl=class(TControl);
@@ -62,6 +63,8 @@ type
     imState: TImage;
     ilMainFormStateIcons: TImageList;
     Log: TLogProvider;
+    IdUDPClient1: TIdUDPClient;
+    IdTCPClient1: TIdTCPClient;
     procedure Action_QuitExecute(Sender: TObject);
     procedure Action_AboutExecute(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
