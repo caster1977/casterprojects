@@ -21,12 +21,13 @@ type
     FEnabled: boolean;
     FName: string;
     FPath: string;
+    procedure SetPath(const Value: string);
   public
     constructor Create;
   published
     property Enabled: boolean read FEnabled write FEnabled default False;
-    property name: string read FName write FName;
-    property Path: string read FPath write FPath;
+    property Name: string read FName write FName;
+    property Path: string read FPath write SetPath;
   end;
 
   TLogClient=class
@@ -62,6 +63,7 @@ type
   private
     FForm: TForm;
     XMLStringsList: TList<string>;
+    procedure SetEnabled(const Value: Boolean);
   public
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
@@ -84,8 +86,8 @@ type
 
     property Count: longword read FCount;
     property UserName: string read FUserName write FUserName;
+    property Enabled: Boolean read FEnabled write SetEnabled default False;
   published
-    property Enabled: Boolean read FEnabled write FEnabled default true;
     property LogFile: TLogFile read FLogFile write FLogFile;
     property LogClient: TLogClient read FLogClient write FLogClient;
   end;
@@ -111,6 +113,17 @@ begin
   inherited;
 end;
 
+procedure TLogFile.SetPath(const Value: string);
+var
+  s: string;
+begin
+  s:=Trim(Value);
+  if s<>'' then
+    if s[Length(s)]<>PathDelim then
+      s:=s+PathDelim;
+  FPath:=s;
+end;
+
 { TLogClient }
 
 constructor TLogClient.Create;
@@ -124,7 +137,6 @@ constructor TLogThread.Create(aLogProvider: TLogProvider);
 begin
   inherited Create(True);
   FOwner:=aLogProvider;
-
   Priority:=tpLower;
   FreeOnTerminate:=False;
 end;
@@ -132,32 +144,44 @@ end;
 procedure TLogThread.Execute;
 var
   s: string;
-// s: string;
-// aCopyData: TCopyDataStruct;
+  // aCopyData: TCopyDataStruct;
 begin
   inherited;
+{$IFDEF DEBUG}
+  if FOwner<>nil then
+    if FOwner.FForm<>nil then
+      NameThreadForDebugging(AnsiString('TLogThread_'+FOwner.FForm.Name));
+{$ENDIF}
   while not Terminated do
     begin
       try
         if FOwner<>nil then
           with FOwner do
             if XMLStringsList<>nil then
-              if XMLStringsList.Count>0 then
-                if FForm<>nil then
-                  begin
-                    Synchronize(
-                      procedure
-                      begin
-                        s:=FOwner.XMLStringsList.Items[0];
-                        FForm.Caption:=s;
-                        XMLStringsList.Delete(0);
-                      end
-                    )
-          end;
+              while XMLStringsList.Count>0 do
+                begin
+                  if FForm<>nil then
+                    begin
+                      // забираем очередную строку из списка сообщений
+                      Synchronize(
+                        procedure
+                        begin
+                          s:=XMLStringsList.Items[0];
+                          FForm.Caption:=s;
+                          XMLStringsList.Delete(0);
+                        end
+                      );
+                      // обрабатываем полученную строку
+                      if s>'' then
+                        begin
+                        end;
+                    end;
+                end;
+        Sleep(0);
       except
         Application.HandleException(Self);
       end;
-      Sleep(0);
+
     end;
   // s:=IntToStr(WMCD_MODALLOG)+';'+s+';'+aMessage+';'+aLogGroupGUID;
   // with aCopyData do
@@ -172,6 +196,8 @@ end;
 { TLogProvider }
 
 constructor TLogProvider.Create(aOwner: TComponent);
+var
+  s: string;
 begin
   inherited Create(aOwner);
   FApplication:=nil;
@@ -185,20 +211,20 @@ begin
     end;
   FLogFile:=TLogFile.Create;
   FLogClient:=TLogClient.Create;
-  // если мы не в редиме дизайнера, создаём поток для обработки сообщений протокола
+
+  // если мы не в режиме дизайнера
   if not(csDesigning in ComponentState) then
     begin
       XMLStringsList:=TList<string>.Create;
       FGUIDList:=TList<string>.Create;
+      // создание и запуск потока
       FLogThread:=TLogThread.Create(Self);
       try
-        //FLogThread.NameThreadForDebugging(AnsiString('TLogThread_'+FForm.Caption));
-        FLogThread.Start; // запускаем выполнение потока
+        FLogThread.Start;
       except
         Application.HandleException(Self);
       end;
     end;
-  FEnabled:=True;
 end;
 
 destructor TLogProvider.Destroy;
@@ -252,7 +278,8 @@ begin
           FilePath:=GetApplicationFilePath;
           if FGUIDList.Count>0 then
             Method.Guid:=FGUIDList.Last
-          else raise Exception.Create('Спиоок GUID методов пуст!');
+          else
+            raise Exception.Create('Спиоок GUID методов пуст!');
         end;
       dtNow:=Now;
       DecodeDate(dtNow, wYear, wMonth, wDay);
@@ -310,22 +337,28 @@ begin
   Send(aString, lmtWarning);
 end;
 
+procedure TLogProvider.SetEnabled(const Value: Boolean);
+begin
+  FEnabled := Value;
+end;
+
 procedure TLogProvider.EnterMethod(const aString, aGUID: string);
 begin
   if Length(aGUID)=38 then
     FGUIDList.Add(aGUID)
   else
     raise Exception.Create('Не удалось добавить элемент в список GUID методов из-за некорректной длины строки!');
-  Send('['+aString+']',lmtDebug);
-  Send('Начало процедуры...',lmtDebug);
+  Send('['+aString+']', lmtDebug);
+  Send('Начало процедуры...', lmtDebug);
 end;
 
 procedure TLogProvider.ExitMethod;
 begin
-  Send('Окончание процедуры.',lmtDebug);
+  Send('Окончание процедуры.', lmtDebug);
   if FGUIDList.Count>0 then
     FGUIDList.Delete(FGUIDList.Count-1)
-  else raise Exception.Create('Не удалось удалить последний элемент списка GUID методов, т.к. список пуст!');
+  else
+    raise Exception.Create('Не удалось удалить последний элемент списка GUID методов, т.к. список пуст!');
 end;
 
 function TLogProvider.GetApplicationHandle: HWnd;
