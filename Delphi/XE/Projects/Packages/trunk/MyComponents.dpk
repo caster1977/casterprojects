@@ -36,7 +36,7 @@ contains
   fisSysMenu in 'fisSysMenu.pas',
   ListViewEx in 'ListViewEx.pas',
   LogProvider in 'LogProvider.pas',
-  log_message in 'log_message.pas';
+  LogKeeperData in 'LogKeeperData.pas';
 
 end.
 
