@@ -306,8 +306,8 @@ end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
-  Configuration.Destroy;
-  CurrentUser.Destroy;
+  Configuration.Free;
+  CurrentUser.Free;
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);

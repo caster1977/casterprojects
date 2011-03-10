@@ -43,6 +43,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
     procedure lblEMailAddressClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
@@ -102,6 +103,12 @@ begin
   MainForm.Dec_BusyState;
   Log.ExitMethod;
   Application.ProcessMessages;
+end;
+
+procedure TAboutForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+//  while not Log.Done do
+//    Application.ProcessMessages;
 end;
 
 procedure TAboutForm.FormCreate(Sender: TObject);
