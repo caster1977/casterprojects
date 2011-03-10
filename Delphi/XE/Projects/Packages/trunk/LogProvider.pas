@@ -8,7 +8,7 @@ uses
   Classes,
   Generics.Collections,
   Forms,
-  log_message;
+  LogKeeperData;
 
 type
 
@@ -43,6 +43,7 @@ type
   TLogThread=class(TThread)
   strict private
     FOwner: TLogProvider;
+    procedure OnTerminateProc(Sender: TObject);
   protected
     procedure Execute; override;
   public
@@ -56,14 +57,15 @@ type
     FApplication: TApplication;
     FGUIDList: TList<string>;
     FUserName: string;
-    FCount: longword;
     FLogFile: TLogFile;
     FLogClient: TLogClient;
+    FCount: longword;
     procedure Send(const aString: string; const aMessageType: TLogMessagesType);
+    procedure SetEnabled(const Value: Boolean);
   private
     FForm: TForm;
     XMLStringsList: TList<string>;
-    procedure SetEnabled(const Value: Boolean);
+    function GetDone: boolean;
   public
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
@@ -87,6 +89,7 @@ type
     property Count: longword read FCount;
     property UserName: string read FUserName write FUserName;
     property Enabled: Boolean read FEnabled write SetEnabled default False;
+    property Done: boolean read GetDone;
   published
     property LogFile: TLogFile read FLogFile write FLogFile;
     property LogClient: TLogClient read FLogClient write FLogClient;
@@ -139,12 +142,14 @@ begin
   FOwner:=aLogProvider;
   Priority:=tpLower;
   FreeOnTerminate:=False;
+  OnTerminate:=OnTerminateProc;
 end;
 
 procedure TLogThread.Execute;
 var
   s: string;
   // aCopyData: TCopyDataStruct;
+  b: boolean;
 begin
   inherited;
 {$IFDEF DEBUG}
@@ -152,37 +157,34 @@ begin
     if FOwner.FForm<>nil then
       NameThreadForDebugging(AnsiString('TLogThread_'+FOwner.FForm.Name));
 {$ENDIF}
-  while not Terminated do
-    begin
-      try
-        if FOwner<>nil then
-          with FOwner do
-            if XMLStringsList<>nil then
-              while XMLStringsList.Count>0 do
-                begin
-                  if FForm<>nil then
-                    begin
-                      // забираем очередную строку из списка сообщений
-                      Synchronize(
-                        procedure
-                        begin
-                          s:=XMLStringsList.Items[0];
-                          FForm.Caption:=s;
-                          XMLStringsList.Delete(0);
-                        end
-                      );
-                      // обрабатываем полученную строку
-                      if s>'' then
-                        begin
-                        end;
-                    end;
-                end;
+  try
+    while not Terminated do
+      begin
+        repeat
+          b:=True;
+          if FOwner<>nil then
+            if FOwner.XMLStringsList<>nil then
+              if FOwner.XMLStringsList.Count>0 then
+                Synchronize(
+                  procedure
+                  begin
+                    if FOwner<>nil then
+                      if FOwner.XMLStringsList<>nil then
+                        if FOwner.XMLStringsList.Count>0 then
+                          begin
+                            s:=FOwner.XMLStringsList.Items[0];
+                            FOwner.XMLStringsList.Delete(0);
+                            b:=FOwner.XMLStringsList.Count<1;
+                          end;
+                  end
+                );
+        until b;
         Sleep(0);
-      except
-        Application.HandleException(Self);
       end;
-
-    end;
+    // если что-то нуна сделать по принудительному окончанию работы потока, это нужно добавить “”“
+  except
+    Application.HandleException(Self);
+  end;
   // s:=IntToStr(WMCD_MODALLOG)+';'+s+';'+aMessage+';'+aLogGroupGUID;
   // with aCopyData do
   // begin
@@ -193,11 +195,16 @@ begin
   // SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
 end;
 
+procedure TLogThread.OnTerminateProc(Sender: TObject);
+begin
+  if FOwner<>nil then
+    if FOwner.XMLStringsList.Count>0 then
+      FOwner.XMLStringsList.Clear;
+end;
+
 { TLogProvider }
 
 constructor TLogProvider.Create(aOwner: TComponent);
-var
-  s: string;
 begin
   inherited Create(aOwner);
   FApplication:=nil;
@@ -229,6 +236,8 @@ end;
 
 destructor TLogProvider.Destroy;
 begin
+  while not Done do
+    Application.ProcessMessages;
   FEnabled:=False;
   FLogThread.Free;
   FGUIDList.Free;
@@ -261,48 +270,59 @@ end;
 
 procedure TLogProvider.Send(const aString: string; const aMessageType: TLogMessagesType);
 var
-  lm: IXMLLog_messageType;
+  lmd: IXMLLogkeeperdataType;
+  lm: IXMLMessageType;
   dtNow: TDateTime;
   wYear, wMonth, wDay, wHour, wMinute, wSecond, wMSecond: word;
 begin
   // оформление передаваемого сообщени€ в виде XML-документа
+  dtNow:=Now;
+  DecodeDate(dtNow, wYear, wMonth, wDay);
+  DecodeTime(dtNow, wHour, wMinute, wSecond, wMSecond);
   Application.ProcessMessages;
-  lm:=Newlog_message;
-  if lm<>nil then
+
+  lmd:=NewlogKeeperData;
+  if lmd<>nil then
     begin
-      lm.Host:=GetLocalHostName;
-      with lm.Application do
-        begin
-          Handle:=GetApplicationHandle;
-          FileName:=GetApplicationFileName;
-          FilePath:=GetApplicationFilePath;
-          if FGUIDList.Count>0 then
-            Method.Guid:=FGUIDList.Last
-          else
-            raise Exception.Create('—пиоок GUID методов пуст!');
-        end;
-      dtNow:=Now;
-      DecodeDate(dtNow, wYear, wMonth, wDay);
-      DecodeTime(dtNow, wHour, wMinute, wSecond, wMSecond);
-      with lm.Message do
-        begin
-          index:=Count;
-          Text:=aString;
-          MessageType:=aMessageType;
-          with Date do
-            begin
-              Year:=wYear;
-              Month:=wMonth;
-              Day:=wDay;
-            end;
-          with Time do
-            begin
-              Hour:=wHour;
-              Minute:=wHour;
-              Second:=wSecond;
-              MSecond:=wMSecond;
-            end;
-        end;
+      lm:=lmd.Add;
+      if lm<>nil then
+        with lm do
+          begin
+
+            index:=Count;
+
+            with Date do
+              begin
+                Year:=wYear;
+                Month:=wMonth;
+                Day:=wDay;
+              end;
+
+            with Time do
+              begin
+                Hour:=wHour;
+                Minute:=wHour;
+                Second:=wSecond;
+                MSecond:=wMSecond;
+              end;
+
+            Host:=GetLocalHostName;
+
+            with lm.Application do
+              begin
+                Handle:=GetApplicationHandle;
+                FileName:=GetApplicationFileName;
+                FilePath:=GetApplicationFilePath;
+                if FGUIDList.Count>0 then
+                  Method.Guid:=FGUIDList.Last
+                else
+                  raise Exception.Create('—пиоок GUID методов пуст!');
+              end;
+
+            MessageType:=aMessageType;
+            Text:=aString;
+          end;
+
       if (XMLStringsList<>nil)and(FLogThread<>nil) then
         begin
           XMLStringsList.Add(lm.XML); // добавл€ем новую строку
@@ -339,7 +359,7 @@ end;
 
 procedure TLogProvider.SetEnabled(const Value: Boolean);
 begin
-  FEnabled := Value;
+  FEnabled:=Value;
 end;
 
 procedure TLogProvider.EnterMethod(const aString, aGUID: string);
@@ -367,6 +387,16 @@ begin
     Result:=FApplication.Handle
   else
     Result:=0;
+end;
+
+function TLogProvider.GetDone: boolean;
+begin
+  Result:=True;
+  if not(csDesigning in ComponentState) then
+    begin
+      if XMLStringsList<>nil then
+        Result:=XMLStringsList.Count<1;
+    end;
 end;
 
 function TLogProvider.GetApplicationFileName: string;
