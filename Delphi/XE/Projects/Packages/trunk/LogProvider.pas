@@ -14,53 +14,50 @@ type
 
   TLogProvider=class;
 
-{$M+}
-
   TLogFile=class(TPersistent)
   strict private
-    FOwner: TLogProvider;
     FEnabled: boolean;
     FName: string;
     FPath: string;
-    procedure SetPath(const Value: string);
-  private
+    FParent: TLogProvider;
     procedure SetEnabled(const Value: boolean);
+    procedure SetName(const Value: string);
+    procedure SetPath(const Value: string);
   public
-    constructor Create(aLogProvider: TLogProvider);
+    constructor Create(aParent: TLogProvider);
   published
     property Enabled: boolean read FEnabled write SetEnabled default False;
-    property Name: string read FName write FName;
+    property Name: string read FName write SetName;
     property Path: string read FPath write SetPath;
   end;
 
   TLogClient=class(TPersistent)
   strict private
-    FOwner: TLogProvider;
     FEnabled: boolean;
+    FParent: TLogProvider;
   private
     procedure SetEnabled(const Value: boolean);
   public
-    constructor Create(aLogProvider: TLogProvider);
+    constructor Create(aParent: TLogProvider);
   published
     property Enabled: boolean read FEnabled write SetEnabled default False;
   end;
-{$M-}
 
   TLogThread=class(TThread)
   strict private
-    FOwner: TLogProvider;
+    FParent: TLogProvider;
     // procedure OnTerminateProc(Sender: TObject);
   protected
     procedure Execute; override;
   public
-    constructor Create(aLogProvider: TLogProvider);
+    constructor Create(aParent: TLogProvider);
   end;
 
   TLogProvider=class(TComponent)
   strict private
-    FLogThread: TLogThread;
     FEnabled: boolean;
-    FApplication: TApplication;
+    FLogThread: TLogThread;
+    FParentApplication: TApplication;
     FGUIDList: TList<string>;
     FUserName: string;
     FLogFile: TLogFile;
@@ -70,7 +67,7 @@ type
     procedure SetEnabled(const Value: Boolean);
     function Done: boolean;
   private
-    FForm: TForm;
+    FParentForm: TForm;
     XMLStringsList: TList<string>;
   public
     constructor Create(aOwner: TComponent); override;
@@ -116,10 +113,10 @@ end;
 
 { TLogFile }
 
-constructor TLogFile.Create(aLogProvider: TLogProvider);
+constructor TLogFile.Create(aParent: TLogProvider);
 begin
   inherited Create;
-  FOwner:=aLogProvider;
+  FParent:=aParent;
 end;
 
 procedure TLogFile.SetEnabled(const Value: boolean);
@@ -127,19 +124,25 @@ begin
   // если компонент уже включён, нужно его выключить и опять включить, чтобы прошла инициализация новых настроек
   if FEnabled<>Value then
     begin
-      if FOwner<>nil then
+      if FParent<>nil then
         begin
-          if FOwner.Enabled then
+          if FParent.Enabled then
             begin
-              FOwner.Enabled:=False;
+              FParent.Enabled:=False;
               FEnabled:=Value;
-              FOwner.Enabled:=True;
+              FParent.Enabled:=True;
             end
           else
             FEnabled:=Value;
         end
-      else raise Exception.Create('Компонент-хозяин лог-файла равен NULL!');
+      else
+        raise Exception.Create('Компонент-хозяин лог-файла равен NULL!');
     end;
+end;
+
+procedure TLogFile.SetName(const Value: string);
+begin
+  FName:=Value;
 end;
 
 procedure TLogFile.SetPath(const Value: string);
@@ -155,10 +158,10 @@ end;
 
 { TLogClient }
 
-constructor TLogClient.Create(aLogProvider: TLogProvider);
+constructor TLogClient.Create(aParent: TLogProvider);
 begin
   inherited Create;
-  FOwner:=aLogProvider;
+  FParent:=aParent;
 end;
 
 procedure TLogClient.SetEnabled(const Value: boolean);
@@ -166,27 +169,28 @@ begin
   // если компонент уже включён, нужно его выключить и опять включить, чтобы прошла инициализация новых настроек
   if FEnabled<>Value then
     begin
-      if FOwner<>nil then
+      if FParent<>nil then
         begin
-          if FOwner.Enabled then
+          if FParent.Enabled then
             begin
-              FOwner.Enabled:=False;
+              FParent.Enabled:=False;
               FEnabled:=Value;
-              FOwner.Enabled:=True;
+              FParent.Enabled:=True;
             end
           else
             FEnabled:=Value;
         end
-      else raise Exception.Create('Компонент-хозяин лог-файла равен NULL!');
+      else
+        raise Exception.Create('Компонент-хозяин лог-файла равен NULL!');
     end;
 end;
 
 { TLogThread }
 
-constructor TLogThread.Create(aLogProvider: TLogProvider);
+constructor TLogThread.Create(aParent: TLogProvider);
 begin
   inherited Create(True);
-  FOwner:=aLogProvider;
+  FParent:=aParent;
   Priority:=tpLower;
   FreeOnTerminate:=False;
   // OnTerminate:=OnTerminateProc;
@@ -206,19 +210,19 @@ var
 begin
   inherited;
 {$IFDEF DEBUG}
-  if FOwner<>nil then
-    if FOwner.FForm<>nil then
-      NameThreadForDebugging(AnsiString('TLogThread_'+FOwner.FForm.Name));
+  if FParent<>nil then
+    if FParent.FParentForm<>nil then
+      NameThreadForDebugging(AnsiString('TLogThread_'+FParent.FParentForm.Name));
 {$ENDIF}
   try
     while not Terminated do
       begin
         repeat
           b:=True;
-          if FOwner<>nil then
-            if FOwner.XMLStringsList<>nil then
-              if FOwner.XMLStringsList.Count>0 then
-                Synchronize( procedure begin if FOwner<>nil then if FOwner.XMLStringsList<>nil then if FOwner.XMLStringsList.Count>0 then begin s:=FOwner.XMLStringsList.Items[0]; FOwner.XMLStringsList.Delete(0); b:=FOwner.XMLStringsList.Count<1;
+          if FParent<>nil then
+            if FParent.XMLStringsList<>nil then
+              if FParent.XMLStringsList.Count>0 then
+                Synchronize( procedure begin if FParent<>nil then if FParent.XMLStringsList<>nil then if FParent.XMLStringsList.Count>0 then begin s:=FParent.XMLStringsList.Items[0]; FParent.XMLStringsList.Delete(0); b:=FParent.XMLStringsList.Count<1;
                 end; end);
         until b;
         Sleep(0);
@@ -244,9 +248,9 @@ begin
   inherited Create(aOwner);
   if AOwner is TForm then
     begin
-      FForm:=TForm(AOwner);
+      FParentForm:=TForm(AOwner);
       if TForm(AOwner).Owner is TApplication then
-        FApplication:=TApplication(AOwner.Owner);
+        FParentApplication:=TApplication(AOwner.Owner);
     end;
   FLogFile:=TLogFile.Create(Self);
   FLogClient:=TLogClient.Create(Self);
@@ -456,8 +460,8 @@ end;
 
 function TLogProvider.GetApplicationHandle: HWnd;
 begin
-  if FApplication<>nil then
-    Result:=FApplication.Handle
+  if FParentApplication<>nil then
+    Result:=FParentApplication.Handle
   else
     Result:=0;
 end;
@@ -474,28 +478,28 @@ end;
 
 function TLogProvider.GetApplicationFileName: string;
 begin
-  if FApplication<>nil then
-    Result:=ExtractFileName(FApplication.ExeName);
+  if FParentApplication<>nil then
+    Result:=ExtractFileName(FParentApplication.ExeName);
 end;
 
 function TLogProvider.GetApplicationFilePath: string;
 begin
-  if FApplication<>nil then
-    Result:=ExtractFilePath(FApplication.ExeName);
+  if FParentApplication<>nil then
+    Result:=ExtractFilePath(FParentApplication.ExeName);
 end;
 
 function TLogProvider.GetFormHandle: HWnd;
 begin
-  if FForm<>nil then
-    Result:=FForm.Handle
+  if FParentForm<>nil then
+    Result:=FParentForm.Handle
   else
     Result:=0;
 end;
 
 function TLogProvider.GetFormName: string;
 begin
-  if FForm<>nil then
-    Result:=FForm.Caption;
+  if FParentForm<>nil then
+    Result:=FParentForm.Caption;
 end;
 
 (*
