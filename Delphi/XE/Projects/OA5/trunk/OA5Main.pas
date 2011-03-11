@@ -63,8 +63,6 @@ type
     imState: TImage;
     ilMainFormStateIcons: TImageList;
     Log: TLogProvider;
-    IdUDPClient1: TIdUDPClient;
-    IdTCPClient1: TIdTCPClient;
     procedure Action_QuitExecute(Sender: TObject);
     procedure Action_AboutExecute(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
@@ -318,6 +316,7 @@ begin
     begin
       iBusyCounter:=0;
       bFirstRun:=False;
+      //Log.Enabled:=True;
     end;
   Refresh_BusyState;
 
