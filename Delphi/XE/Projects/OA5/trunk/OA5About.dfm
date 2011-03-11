@@ -221,6 +221,7 @@ object AboutForm: TAboutForm
     Height = 25
     Cursor = crHandPoint
     Action = Action_Close
+    Cancel = True
     Default = True
     TabOrder = 0
   end
