@@ -16,34 +16,40 @@ type
 
 {$M+}
 
-  TLogFile=class
+  TLogFile=class(TPersistent)
   strict private
+    FOwner: TLogProvider;
     FEnabled: boolean;
     FName: string;
     FPath: string;
     procedure SetPath(const Value: string);
+  private
+    procedure SetEnabled(const Value: boolean);
   public
-    constructor Create;
+    constructor Create(aLogProvider: TLogProvider);
   published
-    property Enabled: boolean read FEnabled write FEnabled default False;
+    property Enabled: boolean read FEnabled write SetEnabled default False;
     property Name: string read FName write FName;
     property Path: string read FPath write SetPath;
   end;
 
-  TLogClient=class
+  TLogClient=class(TPersistent)
   strict private
+    FOwner: TLogProvider;
     FEnabled: boolean;
+  private
+    procedure SetEnabled(const Value: boolean);
   public
-    constructor Create;
+    constructor Create(aLogProvider: TLogProvider);
   published
-    property Enabled: boolean read FEnabled write FEnabled default False;
+    property Enabled: boolean read FEnabled write SetEnabled default False;
   end;
 {$M-}
 
   TLogThread=class(TThread)
   strict private
     FOwner: TLogProvider;
-    procedure OnTerminateProc(Sender: TObject);
+    // procedure OnTerminateProc(Sender: TObject);
   protected
     procedure Execute; override;
   public
@@ -62,10 +68,10 @@ type
     FCount: longword;
     procedure Send(const aString: string; const aMessageType: TLogMessagesType);
     procedure SetEnabled(const Value: Boolean);
+    function Done: boolean;
   private
     FForm: TForm;
     XMLStringsList: TList<string>;
-    function GetDone: boolean;
   public
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
@@ -88,11 +94,10 @@ type
 
     property Count: longword read FCount;
     property UserName: string read FUserName write FUserName;
-    property Enabled: Boolean read FEnabled write SetEnabled default False;
-    property Done: boolean read GetDone;
   published
     property LogFile: TLogFile read FLogFile write FLogFile;
     property LogClient: TLogClient read FLogClient write FLogClient;
+    property Enabled: Boolean read FEnabled write SetEnabled default False;
   end;
 
 procedure register;
@@ -111,9 +116,30 @@ end;
 
 { TLogFile }
 
-constructor TLogFile.Create;
+constructor TLogFile.Create(aLogProvider: TLogProvider);
 begin
-  inherited;
+  inherited Create;
+  FOwner:=aLogProvider;
+end;
+
+procedure TLogFile.SetEnabled(const Value: boolean);
+begin
+  // если компонент уже включён, нужно его выключить и опять включить, чтобы прошла инициализация новых настроек
+  if FEnabled<>Value then
+    begin
+      if FOwner<>nil then
+        begin
+          if FOwner.Enabled then
+            begin
+              FOwner.Enabled:=False;
+              FEnabled:=Value;
+              FOwner.Enabled:=True;
+            end
+          else
+            FEnabled:=Value;
+        end
+      else raise Exception.Create('Компонент-хозяин лог-файла равен NULL!');
+    end;
 end;
 
 procedure TLogFile.SetPath(const Value: string);
@@ -129,9 +155,30 @@ end;
 
 { TLogClient }
 
-constructor TLogClient.Create;
+constructor TLogClient.Create(aLogProvider: TLogProvider);
 begin
-  inherited;
+  inherited Create;
+  FOwner:=aLogProvider;
+end;
+
+procedure TLogClient.SetEnabled(const Value: boolean);
+begin
+  // если компонент уже включён, нужно его выключить и опять включить, чтобы прошла инициализация новых настроек
+  if FEnabled<>Value then
+    begin
+      if FOwner<>nil then
+        begin
+          if FOwner.Enabled then
+            begin
+              FOwner.Enabled:=False;
+              FEnabled:=Value;
+              FOwner.Enabled:=True;
+            end
+          else
+            FEnabled:=Value;
+        end
+      else raise Exception.Create('Компонент-хозяин лог-файла равен NULL!');
+    end;
 end;
 
 { TLogThread }
@@ -142,7 +189,13 @@ begin
   FOwner:=aLogProvider;
   Priority:=tpLower;
   FreeOnTerminate:=False;
-  OnTerminate:=OnTerminateProc;
+  // OnTerminate:=OnTerminateProc;
+  // procedure TLogThread.OnTerminateProc(Sender: TObject);
+  // begin
+  // if FOwner<>nil then
+  // if FOwner.XMLStringsList.Count>0 then
+  // FOwner.XMLStringsList.Clear;
+  // end;
 end;
 
 procedure TLogThread.Execute;
@@ -165,19 +218,8 @@ begin
           if FOwner<>nil then
             if FOwner.XMLStringsList<>nil then
               if FOwner.XMLStringsList.Count>0 then
-                Synchronize(
-                  procedure
-                  begin
-                    if FOwner<>nil then
-                      if FOwner.XMLStringsList<>nil then
-                        if FOwner.XMLStringsList.Count>0 then
-                          begin
-                            s:=FOwner.XMLStringsList.Items[0];
-                            FOwner.XMLStringsList.Delete(0);
-                            b:=FOwner.XMLStringsList.Count<1;
-                          end;
-                  end
-                );
+                Synchronize( procedure begin if FOwner<>nil then if FOwner.XMLStringsList<>nil then if FOwner.XMLStringsList.Count>0 then begin s:=FOwner.XMLStringsList.Items[0]; FOwner.XMLStringsList.Delete(0); b:=FOwner.XMLStringsList.Count<1;
+                end; end);
         until b;
         Sleep(0);
       end;
@@ -195,29 +237,19 @@ begin
   // SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
 end;
 
-procedure TLogThread.OnTerminateProc(Sender: TObject);
-begin
-  if FOwner<>nil then
-    if FOwner.XMLStringsList.Count>0 then
-      FOwner.XMLStringsList.Clear;
-end;
-
 { TLogProvider }
 
 constructor TLogProvider.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
-  FApplication:=nil;
-  FForm:=nil;
-  FCount:=0;
   if AOwner is TForm then
     begin
       FForm:=TForm(AOwner);
       if TForm(AOwner).Owner is TApplication then
         FApplication:=TApplication(AOwner.Owner);
     end;
-  FLogFile:=TLogFile.Create;
-  FLogClient:=TLogClient.Create;
+  FLogFile:=TLogFile.Create(Self);
+  FLogClient:=TLogClient.Create(Self);
 
   // если мы не в режиме дизайнера
   if not(csDesigning in ComponentState) then
@@ -236,8 +268,19 @@ end;
 
 destructor TLogProvider.Destroy;
 begin
-  while not Done do
-    Application.ProcessMessages;
+  if not(csDesigning in ComponentState) then
+    begin
+      if not Done then
+        if FLogThread<>nil then
+          if (not FLogThread.Terminated)and(not FLogThread.Finished) then
+            FLogThread.Suspended:=False
+          else
+            if XMLStringsList<>nil then
+              if XMLStringsList.Count>0 then
+                XMLStringsList.Clear;
+      while not Done do
+        Application.ProcessMessages;
+    end;
   FEnabled:=False;
   FLogThread.Free;
   FGUIDList.Free;
@@ -288,7 +331,6 @@ begin
       if lm<>nil then
         with lm do
           begin
-
             index:=Count;
 
             with Date do
@@ -358,8 +400,39 @@ begin
 end;
 
 procedure TLogProvider.SetEnabled(const Value: Boolean);
+var
+  s: string;
 begin
-  FEnabled:=Value;
+  if FEnabled<>Value then
+    begin
+      if Value then
+        begin
+          // включение функций ведения лога
+          if FLogFile.Enabled then
+            begin
+              // проверка наличия файла
+              // включение записи в файл
+              s:=FLogFile.Path+FLogFile.Name;
+              if not FileExists(s) then
+                begin
+                  s:=s+';';
+                end;
+            end;
+
+          if FLogClient.Enabled then
+            begin
+              // поиск клиентов
+              // включение передачи данных клиенту
+
+            end;
+        end
+      else
+        begin
+          // отключение функций ведения лога
+
+        end;
+      FEnabled:=Value;
+    end;
 end;
 
 procedure TLogProvider.EnterMethod(const aString, aGUID: string);
@@ -389,7 +462,7 @@ begin
     Result:=0;
 end;
 
-function TLogProvider.GetDone: boolean;
+function TLogProvider.Done: boolean;
 begin
   Result:=True;
   if not(csDesigning in ComponentState) then
