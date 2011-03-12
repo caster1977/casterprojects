@@ -8,6 +8,7 @@ uses
   Classes,
   Generics.Collections,
   Forms,
+  XMLDoc,
   LogKeeperData;
 
 type
@@ -20,14 +21,20 @@ type
     FName: string;
     FPath: string;
     FParent: TLogProvider;
+    FFileHandle: integer;
+    FLogXMLDocument: TXMLDocument;
     procedure SetEnabled(const Value: boolean);
     procedure SetName(const Value: string);
     procedure SetPath(const Value: string);
   public
     constructor Create(aParent: TLogProvider);
+    destructor Destroy; override;
+    procedure Open;
+    procedure Append(Element: IXMLMessageType);
+    procedure Close;
   published
     property Enabled: boolean read FEnabled write SetEnabled default False;
-    property Name: string read FName write SetName;
+    property name: string read FName write SetName;
     property Path: string read FPath write SetPath;
   end;
 
@@ -35,7 +42,6 @@ type
   strict private
     FEnabled: boolean;
     FParent: TLogProvider;
-  private
     procedure SetEnabled(const Value: boolean);
   public
     constructor Create(aParent: TLogProvider);
@@ -66,6 +72,14 @@ type
     procedure Send(const aString: string; const aMessageType: TLogMessagesType);
     procedure SetEnabled(const Value: Boolean);
     function Done: boolean;
+    function GetLocalHostName: string;
+    function GetApplicationHandle: HWnd;
+    function GetApplicationFileName: string;
+    function GetApplicationFilePath: string;
+    function GetFormHandle: HWnd;
+    function GetFormName: string;
+    procedure Update;
+    property Count: longword read FCount;
   private
     FParentForm: TForm;
     XMLStringsList: TList<string>;
@@ -73,28 +87,19 @@ type
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
 
-    function GetLocalHostName: string;
-    function GetApplicationHandle: HWnd;
-    function GetApplicationFileName: string;
-    function GetApplicationFilePath: string;
-    function GetFormHandle: HWnd;
-    function GetFormName: string;
-
+    procedure EnterMethod(const aString, aGUID: string);
+    procedure ExitMethod;
     procedure SendError(const aString: string);
     procedure SendWarning(const aString: string);
     procedure SendInfo(const aString: string);
     procedure SendDebug(const aString: string);
     procedure SendSQL(const aString: string);
 
-    procedure EnterMethod(const aString, aGUID: string);
-    procedure ExitMethod;
-
-    property Count: longword read FCount;
     property UserName: string read FUserName write FUserName;
   published
+    property Enabled: Boolean read FEnabled write SetEnabled default False;
     property LogFile: TLogFile read FLogFile write FLogFile;
     property LogClient: TLogClient read FLogClient write FLogClient;
-    property Enabled: Boolean read FEnabled write SetEnabled default False;
   end;
 
 procedure register;
@@ -113,10 +118,55 @@ end;
 
 { TLogFile }
 
+procedure TLogFile.Append(Element: IXMLMessageType);
+var
+  XMLLogkeeperdataType: IXMLLogkeeperdataType;
+begin
+  XMLLogkeeperdataType.ChildNodes.Add(Element);
+end;
+
+procedure TLogFile.Close;
+begin
+  if FFileHandle>-1 then
+    FileClose(FFileHandle);
+end;
+
 constructor TLogFile.Create(aParent: TLogProvider);
 begin
   inherited Create;
   FParent:=aParent;
+  FFileHandle:=-1;
+end;
+
+destructor TLogFile.Destroy;
+begin
+  Close;
+  inherited;
+end;
+
+procedure TLogFile.Open;
+var
+  s: string;
+begin
+  (*
+  if not (FFileHandle>-1) then
+    begin
+      s:=FPath+FName;
+      if not FileExists(s) then
+        FFileHandle:=FileCreate(s,fmOpenReadWrite)
+      else FFileHandle:=FileOpen(s,fmOpenReadWrite);
+    end;
+  *)
+
+//  s:=FPath+FName;
+//  if not FileExists(s) then
+//    FFileHandle:=FileCreate(s,fmOpenReadWrite);
+//  FLogXMLDocument:=TXMLDocument.Create(Self);
+//  var
+//      StockList: IXMLStockListType;
+//    begin
+//      XMLDocument1.FileName := 'Stocks.xml';
+//      StockList := Getstocklist(XMLDocument1);
 end;
 
 procedure TLogFile.SetEnabled(const Value: boolean);
@@ -207,6 +257,7 @@ var
   s: string;
   // aCopyData: TCopyDataStruct;
   b: boolean;
+
 begin
   inherited;
 {$IFDEF DEBUG}
@@ -222,8 +273,19 @@ begin
           if FParent<>nil then
             if FParent.XMLStringsList<>nil then
               if FParent.XMLStringsList.Count>0 then
-                Synchronize( procedure begin if FParent<>nil then if FParent.XMLStringsList<>nil then if FParent.XMLStringsList.Count>0 then begin s:=FParent.XMLStringsList.Items[0]; FParent.XMLStringsList.Delete(0); b:=FParent.XMLStringsList.Count<1;
-                end; end);
+                Synchronize(
+                  procedure
+                  begin
+                    if FParent<>nil then
+                      if FParent.XMLStringsList<>nil then
+                        if FParent.XMLStringsList.Count>0 then
+                          begin
+                            s:=FParent.XMLStringsList.Items[0];
+                            FParent.XMLStringsList.Delete(0);
+                            b:=FParent.XMLStringsList.Count<1;
+                          end;
+                  end
+                );
         until b;
         Sleep(0);
       end;
@@ -359,10 +421,16 @@ begin
                 Handle:=GetApplicationHandle;
                 FileName:=GetApplicationFileName;
                 FilePath:=GetApplicationFilePath;
+                with Form do
+                  begin
+                    Handle:=GetFormHandle;
+                    name:=GetFormName;
+                  end;
                 if FGUIDList.Count>0 then
                   Method.Guid:=FGUIDList.Last
                 else
                   raise Exception.Create('Спиоок GUID методов пуст!');
+                User:=UserName;
               end;
 
             MessageType:=aMessageType;
@@ -404,38 +472,39 @@ begin
 end;
 
 procedure TLogProvider.SetEnabled(const Value: Boolean);
-var
-  s: string;
 begin
   if FEnabled<>Value then
     begin
-      if Value then
-        begin
-          // включение функций ведения лога
-          if FLogFile.Enabled then
-            begin
-              // проверка наличия файла
-              // включение записи в файл
-              s:=FLogFile.Path+FLogFile.Name;
-              if not FileExists(s) then
-                begin
-                  s:=s+';';
-                end;
-            end;
-
-          if FLogClient.Enabled then
-            begin
-              // поиск клиентов
-              // включение передачи данных клиенту
-
-            end;
-        end
-      else
-        begin
-          // отключение функций ведения лога
-
-        end;
       FEnabled:=Value;
+      Update;
+    end;
+end;
+
+procedure TLogProvider.Update;
+begin
+  if Enabled then
+    begin
+      // включение функций ведения лога
+      try
+        if FLogFile.Enabled then
+          FLogFile.Open
+        else
+          FLogFile.Close;
+
+        if FLogClient.Enabled then
+          begin
+            // поиск клиентов
+            // включение передачи данных клиенту
+
+          end;
+      except
+        Application.HandleException(Self);
+      end;
+    end
+  else
+    begin
+      // отключение функций ведения лога
+      FLogFile.Close;
     end;
 end;
 
@@ -479,13 +548,17 @@ end;
 function TLogProvider.GetApplicationFileName: string;
 begin
   if FParentApplication<>nil then
-    Result:=ExtractFileName(FParentApplication.ExeName);
+    Result:=ExtractFileName(FParentApplication.ExeName)
+  else
+    Exception.Create('Не удалось получить имя файла приложения, поскольку указатель на приложение пуст!');
 end;
 
 function TLogProvider.GetApplicationFilePath: string;
 begin
   if FParentApplication<>nil then
-    Result:=ExtractFilePath(FParentApplication.ExeName);
+    Result:=ExtractFilePath(FParentApplication.ExeName)
+  else
+    Exception.Create('Не удалось получить путь к приложению, поскольку указатель на приложение пуст!');
 end;
 
 function TLogProvider.GetFormHandle: HWnd;
@@ -493,13 +566,15 @@ begin
   if FParentForm<>nil then
     Result:=FParentForm.Handle
   else
-    Result:=0;
+    raise Exception.Create('Не удалось получить handle родительской формы, поскольку указатель на родительскую форму пуст!');
 end;
 
 function TLogProvider.GetFormName: string;
 begin
   if FParentForm<>nil then
-    Result:=FParentForm.Caption;
+    Result:=FParentForm.Caption
+  else
+    raise Exception.Create('Не удалось получить заголовок родительской формы, поскольку указатель на родительскую форму пуст!');
 end;
 
 (*
