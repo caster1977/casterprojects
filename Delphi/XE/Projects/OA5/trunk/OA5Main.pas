@@ -22,8 +22,16 @@ uses
   OA5User,
   OA5Configuration,
   ExtCtrls,
-  CodeSiteLogging, LogProvider, StdCtrls, Sockets, IdTCPConnection, IdTCPClient,
-  IdBaseComponent, IdComponent, IdUDPBase, IdUDPClient;
+  CodeSiteLogging,
+  LogProvider,
+  StdCtrls,
+  Sockets,
+  IdTCPConnection,
+  IdTCPClient,
+  IdBaseComponent,
+  IdComponent,
+  IdUDPBase,
+  IdUDPClient;
 
 type
   THackControl=class(TControl);
@@ -316,7 +324,7 @@ begin
     begin
       iBusyCounter:=0;
       bFirstRun:=False;
-      //Log.Enabled:=True;
+      // Log.Enabled:=True;
     end;
   Refresh_BusyState;
 
@@ -374,7 +382,6 @@ begin
       PostShowModal(sModalWinName, iBusy);
       Free;
     end;
-
 
   PreFooter(Handle, bError, sErrorMessage);
   ProcedureFooter;
