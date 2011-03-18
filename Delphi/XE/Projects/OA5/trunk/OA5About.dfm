@@ -235,10 +235,6 @@ object AboutForm: TAboutForm
       OnExecute = Action_CloseExecute
     end
   end
-  object gsFileVersionInfo1: TgsFileVersionInfo
-    Left = 8
-    Top = 208
-  end
   object Timer1: TTimer
     Interval = 3000
     OnTimer = Timer1Timer
@@ -251,8 +247,12 @@ object AboutForm: TAboutForm
     Left = 312
     Top = 8
   end
+  object gsFileVersionInfo1: TgsFileVersionInfo
+    Left = 16
+    Top = 192
+  end
   object Log: TLogProvider
-    Left = 40
+    Left = 280
     Top = 208
   end
 end

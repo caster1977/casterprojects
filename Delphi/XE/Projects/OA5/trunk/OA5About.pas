@@ -26,7 +26,6 @@ type
     Shape1: TShape;
     ActionManager1: TActionManager;
     Action_Close: TAction;
-    gsFileVersionInfo1: TgsFileVersionInfo;
     Timer1: TTimer;
     Timer2: TTimer;
     lblEMail: TLabel;
@@ -36,6 +35,7 @@ type
     lblVersion: TLabel;
     imgApplicationIcon: TImage;
     lblTitle: TLabel;
+    gsFileVersionInfo1: TgsFileVersionInfo;
     Log: TLogProvider;
     procedure Action_CloseExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
