@@ -136,7 +136,7 @@
 						<VersionInfo Name="MajorVer">4</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">129</VersionInfo>
+						<VersionInfo Name="Build">130</VersionInfo>
 						<VersionInfo Name="Debug">True</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -148,7 +148,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription">АРМ оператора услуги &quot;Отдых и развлечения&quot;</VersionInfoKeys>
-						<VersionInfoKeys Name="FileVersion">4.1.0.129</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">4.1.0.130</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName">OA4</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalCopyright">(C)opyright 2007-2010 by Vlad DraCooLa</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks"/>
