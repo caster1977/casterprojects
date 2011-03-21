@@ -107,6 +107,7 @@ end;
 procedure TAboutForm.FormCreate(Sender: TObject);
 begin
   ProcedureHeader('Процедура-обработчик события создания окна', '{0B2B4443-33C8-44ED-8E91-C55FFCBB75E4}');
+  gsFileVersionInfo1.Filename:=Application.ExeName;
   Action_Close.Visible:=False;
   ProcedureFooter;
 end;
