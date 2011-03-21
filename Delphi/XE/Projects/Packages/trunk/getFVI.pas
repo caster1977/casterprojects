@@ -38,21 +38,22 @@ type
     property VersionInfoSize: cardinal read FVersionInfoSize;
     procedure LoadFromFile;
     procedure ClearAll;
+    procedure Loaded; override;
   public
     function GetBuildOnly: string;
     constructor Create(AOwner: TComponent); override;
   published
     property Filename: TFilename read FFilename write SetFilename;
-    property LanguageInfo: string read FLanguageInfo;
-    property CompanyName: string read FCompanyName;
-    property FileDescription: string read FFileDescription;
-    property FileVersion: string read FFileVersion;
-    property InternalName: string read FInternalName;
-    property LegalCopyright: string read FLegalCopyright;
-    property OriginalFilename: string read FOriginalFilename;
-    property ProductName: string read FProductName;
-    property ProductVersion: string read FProductVersion;
-    property Comments: string read FComments;
+    property LanguageInfo: string read FLanguageInfo stored False;
+    property CompanyName: string read FCompanyName stored False;
+    property FileDescription: string read FFileDescription stored False;
+    property FileVersion: string read FFileVersion stored False;
+    property InternalName: string read FInternalName stored False;
+    property LegalCopyright: string read FLegalCopyright stored False;
+    property OriginalFilename: string read FOriginalFilename stored False;
+    property ProductName: string read FProductName stored False;
+    property ProductVersion: string read FProductVersion stored False;
+    property Comments: string read FComments stored False;
   end;
 
 procedure register;
@@ -88,7 +89,7 @@ constructor TgsFileVersionInfo.Create(AOwner: TComponent);
 begin
   inherited;
   if not(csDesigning in ComponentState) then
-    Filename:=Application.ExeName;
+    FFilename:=Application.ExeName;
 end;
 
 function TgsFileVersionInfo.GetBuildOnly: string;
@@ -99,6 +100,13 @@ begin
   s:=FileVersion;
   p:=LastDelimiter('.', s);
   Result:=copy(s, p+1, length(s)-p);
+end;
+
+procedure TgsFileVersionInfo.Loaded;
+begin
+  inherited;
+  if not(csDesigning in ComponentState) then
+    LoadFromFile;
 end;
 
 procedure TgsFileVersionInfo.LoadFromFile;
