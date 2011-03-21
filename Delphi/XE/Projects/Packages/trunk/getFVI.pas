@@ -12,10 +12,14 @@ unit getFVI;
 
 interface
 
-uses Windows, Messages, SysUtils, Classes;
+uses
+  Windows,
+  Messages,
+  SysUtils,
+  Classes;
 
 type
-  TgsFileVersionInfo= class(TComponent)
+  TgsFileVersionInfo=class(TComponent)
   private
     FFilename: TFilename;
     FVersionInfoSize: cardinal;
@@ -34,8 +38,10 @@ type
     property VersionInfoSize: cardinal read FVersionInfoSize;
     procedure LoadFromFile;
     procedure ClearAll;
-  published
+  public
     function GetBuildOnly: string;
+    constructor Create(AOwner: TComponent); override;
+  published
     property Filename: TFilename read FFilename write SetFilename;
     property LanguageInfo: string read FLanguageInfo;
     property CompanyName: string read FCompanyName;
@@ -53,7 +59,9 @@ procedure register;
 
 implementation
 
-uses dialogs;
+uses
+  dialogs,
+  Forms;
 
 procedure register;
 begin
@@ -74,6 +82,13 @@ begin
   FProductName:='';
   FProductVersion:='';
   FComments:='';
+end;
+
+constructor TgsFileVersionInfo.Create(AOwner: TComponent);
+begin
+  inherited;
+  if not(csDesigning in ComponentState) then
+    Filename:=Application.ExeName;
 end;
 
 function TgsFileVersionInfo.GetBuildOnly: string;
