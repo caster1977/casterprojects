@@ -247,12 +247,12 @@ object AboutForm: TAboutForm
     Left = 312
     Top = 8
   end
-  object gsFileVersionInfo1: TgsFileVersionInfo
-    Left = 16
-    Top = 192
-  end
   object Log: TLogProvider
     Left = 280
+    Top = 208
+  end
+  object gsFileVersionInfo1: TgsFileVersionInfo
+    Left = 248
     Top = 208
   end
 end

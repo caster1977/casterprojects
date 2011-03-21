@@ -35,8 +35,8 @@ type
     lblVersion: TLabel;
     imgApplicationIcon: TImage;
     lblTitle: TLabel;
-    gsFileVersionInfo1: TgsFileVersionInfo;
     Log: TLogProvider;
+    gsFileVersionInfo1: TgsFileVersionInfo;
     procedure Action_CloseExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -107,7 +107,6 @@ end;
 procedure TAboutForm.FormCreate(Sender: TObject);
 begin
   ProcedureHeader('Процедура-обработчик события создания окна', '{0B2B4443-33C8-44ED-8E91-C55FFCBB75E4}');
-  gsFileVersionInfo1.Filename:=Application.ExeName;
   Action_Close.Visible:=False;
   ProcedureFooter;
 end;
