@@ -110,7 +110,6 @@ const
   LogGroupGUID: string='{DE0DCC91-CA35-448A-9D90-90AE67C0B19B}';
 begin
   ProcedureHeader('Процедура-обработчик события создания окна', LogGroupGUID);
-  gsFileVersionInfo1.Filename:=Application.ExeName;
   Action_Close.Visible:=False;
   ProcedureFooter(LogGroupGUID);
 end;
