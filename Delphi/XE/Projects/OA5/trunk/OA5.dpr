@@ -19,7 +19,7 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar:=True;
-  Application.Title := 'Test';
+  Application.Title := '';
   Application.CreateForm(TMainForm, MainForm);
   Application.Run;
 end.
