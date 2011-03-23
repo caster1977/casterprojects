@@ -21,7 +21,7 @@ type
     FFileName: string;
     FFilePath: string;
     FOwner: TLogProvider;
-    FLogXMLDocument: TXMLDocument;
+    FLogKeeperData: IXMLLogkeeperdataType;
     procedure SetEnabled(const Value: boolean);
     procedure SetFileName(const Value: string);
     procedure SetFilePath(const Value: string);
@@ -70,7 +70,6 @@ type
   strict private
     FEnabled: boolean;
     FLogThread: TLogThread;
-    FOwnerApplication: TApplication;
     FGUIDList: TList<string>;
     FUserName: string;
     FLogFile: TLogFile;
@@ -87,7 +86,7 @@ type
     function GetApplicationFilePath: string;
     function GetFormHandle: HWnd;
     function GetFormName: string;
-    procedure Update;
+    procedure RefreshConnections;
     property Count: longword read FCount;
   private
     FOwnerForm: TForm;
@@ -150,21 +149,39 @@ begin
       FOwner:=TLogFile(Source).FOwner;
       FFileName:=TLogFile(Source).FFileName;
       FFilePath:=TLogFile(Source).FFilePath;
-      FLogXMLDocument:=TLogFile(Source).FLogXMLDocument;
+      FLogKeeperData:=TLogFile(Source).FLogKeeperData;
     end;
 end;
 
 procedure TLogFile.Close;
+var
+  s: string;
+  DestinationFileName: string;
+  XMLFile: TXMLDocument;
 begin
+  if Assigned(FLogKeeperData) then
+    begin
+      if FilePath='' then
+        FilePath:=ExtractFilePath(Application.ExeName);
+      DestinationFileName:=FilePath+FileName;
+
+      XMLFile:=TXMLDocument.Create(nil);
+      try
+        XMLFile.LoadFromXML(FLogKeeperData.XML);
+        XMLFile.SaveToFile(DestinationFileName);
+      finally
+        XMLFile.Free;
+      end;
+    end;
 end;
 
 constructor TLogFile.Create(AOwner: TLogProvider);
 begin
   inherited Create;
   FEnabled:=False;
-  FFileName:='';
-  FFilePath:='';
   FOwner:=AOwner;
+  FFilePath:='';
+  FFileName:='LogFile.xml';
 end;
 
 destructor TLogFile.Destroy;
@@ -179,16 +196,17 @@ begin
 end;
 
 procedure TLogFile.Open;
+var
+  SourceFileName: string;
 begin
-  // s:=FPath+FName;
-  // if not FileExists(s) then
-  // FFileHandle:=FileCreate(s,fmOpenReadWrite);
-  // FLogXMLDocument:=TXMLDocument.Create(Self);
-  // var
-  // StockList: IXMLStockListType;
-  // begin
-  // XMLDocument1.FileName := 'Stocks.xml';
-  // StockList := Getstocklist(XMLDocument1);
+  if FilePath='' then
+    FilePath:=ExtractFilePath(Application.ExeName);
+  SourceFileName:=FilePath+FileName;
+
+  if FileExists(SourceFileName) then
+    FLogKeeperData:=LoadlogKeeperData(SourceFileName)
+  else
+    FLogKeeperData:=NewlogKeeperData;
 end;
 
 procedure TLogFile.SetEnabled(const Value: boolean);
@@ -196,16 +214,19 @@ begin
   // если компонент уже включён, нужно его выключить и опять включить, чтобы прошла инициализация новых настроек
   if FEnabled<>Value then
     if Assigned(FOwner) then
-      if FOwner.Enabled then
-        begin
-          FOwner.Enabled:=False;
-          FEnabled:=Value;
-          FOwner.Enabled:=True;
-        end
+      if not((csLoading in FOwner.ComponentState)or(csDesigning in FOwner.ComponentState)) then
+        if FOwner.Enabled then
+          begin
+            FOwner.Enabled:=False;
+            FEnabled:=Value;
+            FOwner.Enabled:=True;
+          end
+        else
+          FEnabled:=Value
       else
         FEnabled:=Value
     else
-      raise Exception.Create('Компонент-хозяин лог-файла равен NULL!');
+      raise EInvalidPointer.Create('Компонент-хозяин лог-файла равен NULL!');
 end;
 
 procedure TLogFile.SetFileName(const Value: string);
@@ -263,16 +284,19 @@ begin
   // если компонент уже включён, нужно его выключить и опять включить, чтобы прошла инициализация новых настроек
   if FEnabled<>Value then
     if Assigned(FOwner) then
-      if FOwner.Enabled then
-        begin
-          FOwner.Enabled:=False;
-          FEnabled:=Value;
-          FOwner.Enabled:=True;
-        end
+      if not((csLoading in FOwner.ComponentState)or(csDesigning in FOwner.ComponentState)) then
+        if FOwner.Enabled then
+          begin
+            FOwner.Enabled:=False;
+            FEnabled:=Value;
+            FOwner.Enabled:=True;
+          end
+        else
+          FEnabled:=Value
       else
         FEnabled:=Value
     else
-      raise Exception.Create('Компонент-хозяин лог-файла равен NULL!');
+      raise EInvalidPointer.Create('Компонент-хозяин лог-клиента равен NULL!');
 end;
 
 { TLogThread }
@@ -340,11 +364,7 @@ begin
   FEnabled:=False;
   FUserName:='';
   if AOwner is TForm then
-    begin
-      FOwnerForm:=TForm(AOwner);
-      if TForm(AOwner).Owner is TApplication then
-        FOwnerApplication:=TApplication(AOwner.Owner);
-    end;
+    FOwnerForm:=TForm(AOwner);
   FLogFile:=TLogFile.Create(Self);
   FLogClient:=TLogClient.Create(Self);
 
@@ -411,7 +431,8 @@ end;
 procedure TLogProvider.Loaded;
 begin
   inherited;
-  Update;
+  if not(csDesigning in ComponentState) then
+    RefreshConnections;
 end;
 
 procedure TLogProvider.Send(const aString: string; const aMessageType: TLogMessagesType);
@@ -517,37 +538,42 @@ begin
   if FEnabled<>Value then
     begin
       FEnabled:=Value;
-      if not(csLoading in ComponentState) then
-        Update;
+      // только после прогрузки, и только в случае, если программа запущена на выполнение, а не находится в состоянии разработки
+      if not((csLoading in ComponentState)or(csDesigning in ComponentState)) then
+        RefreshConnections;
     end;
 end;
 
-procedure TLogProvider.Update;
+procedure TLogProvider.RefreshConnections;
 begin
-  if Enabled then
+  // только в случае, если программа запущена на выполнение, а не находится в состоянии разработки
+  if not(csDesigning in ComponentState) then
     begin
-      // включение функций ведения лога
-      try
-        if FLogFile.Enabled then
-          FLogFile.Open
-        else
-          FLogFile.Close;
+      if Enabled then
+        begin
+          try
+            // включение функций ведения лога
+            if FLogFile.Enabled then
+              FLogFile.Open
+            else
+              FLogFile.Close;
 
-        if FLogClient.Enabled then
-          begin
-            // поиск клиентов
-            // включение передачи данных клиенту
+            if FLogClient.Enabled then
+              begin
+                // поиск клиентов
+                // включение передачи данных клиенту
 
+              end;
+          except
+            Application.HandleException(Self);
           end;
-      except
-        Application.HandleException(Self);
-      end;
-    end
-  else
-    begin
-      // отключение функций ведения лога
-      FLogFile.Close;
-      FLogClient.Close;
+        end
+      else
+        begin
+          // отключение функций ведения лога
+          FLogFile.Close;
+          FLogClient.Close;
+        end;
     end;
 end;
 
@@ -572,10 +598,7 @@ end;
 
 function TLogProvider.GetApplicationHandle: HWnd;
 begin
-  if Assigned(FOwnerApplication) then
-    Result:=FOwnerApplication.Handle
-  else
-    Result:=0;
+  Result:=Application.Handle;
 end;
 
 procedure TLogProvider.DoAfterSending;
@@ -602,18 +625,12 @@ end;
 
 function TLogProvider.GetApplicationFileName: string;
 begin
-  if Assigned(FOwnerApplication) then
-    Result:=ExtractFileName(FOwnerApplication.ExeName)
-  else
-    Exception.Create('Не удалось получить имя файла приложения, поскольку указатель на приложение пуст!');
+  Result:=ExtractFileName(Application.ExeName);
 end;
 
 function TLogProvider.GetApplicationFilePath: string;
 begin
-  if Assigned(FOwnerApplication) then
-    Result:=ExtractFilePath(FOwnerApplication.ExeName)
-  else
-    Exception.Create('Не удалось получить путь к приложению, поскольку указатель на приложение пуст!');
+  Result:=ExtractFilePath(Application.ExeName);
 end;
 
 function TLogProvider.GetFormHandle: HWnd;

@@ -42,8 +42,6 @@ type
   public
     function GetBuildOnly: string;
     constructor Create(AOwner: TComponent); override;
-  published
-    property Filename: TFilename read FFilename write SetFilename;
     property LanguageInfo: string read FLanguageInfo stored False;
     property CompanyName: string read FCompanyName stored False;
     property FileDescription: string read FFileDescription stored False;
@@ -54,6 +52,8 @@ type
     property ProductName: string read FProductName stored False;
     property ProductVersion: string read FProductVersion stored False;
     property Comments: string read FComments stored False;
+  published
+    property Filename: TFilename read FFilename write SetFilename;
   end;
 
 procedure register;
