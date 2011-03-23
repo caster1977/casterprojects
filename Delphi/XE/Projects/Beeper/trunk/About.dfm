@@ -208,4 +208,8 @@ object AboutForm: TAboutForm
     Left = 315
     Top = 5
   end
+  object gsFileVersionInfo1: TgsFileVersionInfo
+    Left = 312
+    Top = 48
+  end
 end

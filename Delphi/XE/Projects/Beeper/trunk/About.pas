@@ -30,6 +30,7 @@ type
     Button1: TButton;
     Timer2: TTimer;
     Label4: TLabel;
+    gsFileVersionInfo1: TgsFileVersionInfo;
     procedure Timer2Timer(Sender: TObject);
     procedure Label5Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);

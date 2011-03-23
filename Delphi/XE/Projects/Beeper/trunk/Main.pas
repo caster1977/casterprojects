@@ -43,7 +43,6 @@ type
     N2: TMenuItem;
     N3: TMenuItem;
     Action_About: TAction;
-    gsFileVersionInfo1: TgsFileVersionInfo;
     ApplicationEvents1: TApplicationEvents;
     N4: TMenuItem;
     N5: TMenuItem;
@@ -685,7 +684,6 @@ begin
   ToolTipForm.Visible:=False;
   LoadConfigIni;
   AssignHotkeys;
-  gsFileVersionInfo1.Filename:=Application.ExeName;
   if not(FileExists(ExpandFileName(Application.HelpFile))) then
     begin
       Action_Help.Enabled:=False;
