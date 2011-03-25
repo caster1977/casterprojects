@@ -325,7 +325,7 @@ begin
   NewCOMInitClass;
   inherited;
 
-  // именование потока в случае отладки программы
+  // присвоение имени потоку при отладке программы
 {$IFDEF DEBUG}
   if Assigned(FOwner) then
     if Assigned(FOwner.FOwnerForm) then
@@ -350,6 +350,7 @@ begin
                           Synchronize( procedure begin FOwner.XMLStringsList.Delete(0); end);
                         end;
 
+(*
                   if Assigned(FOwner.LogFile) then
                     begin
                       if FOwner.LogFile.Enabled then
@@ -369,7 +370,7 @@ begin
                           FreeAndNil(XMLDocument); { TODO -cERROR : ошибка происходит здесь!!!! }
                         end;
                     end;
-
+*)
                   Application.ProcessMessages;
                   b:=FOwner.XMLStringsList.Count<1;
                 end;
