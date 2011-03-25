@@ -55,7 +55,7 @@
 			<DCCReference Include="ListViewEx.pas"/>
 			<DCCReference Include="LogProvider.pas"/>
 			<DCCReference Include="LogKeeperData.pas"/>
-			<DCCReference Include="Ole2.pas"/>
+			<DCCReference Include="COMInit.pas"/>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

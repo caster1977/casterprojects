@@ -37,6 +37,7 @@ contains
   ListViewEx in 'ListViewEx.pas',
   LogProvider in 'LogProvider.pas',
   LogKeeperData in 'LogKeeperData.pas',
-  Ole2 in 'Ole2.pas';
+  COMInit in 'COMInit.pas';
+
 end.
 
