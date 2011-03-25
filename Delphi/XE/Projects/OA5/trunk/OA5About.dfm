@@ -248,6 +248,7 @@ object AboutForm: TAboutForm
     Top = 8
   end
   object Log: TLogProvider
+    LogFile.FileName = 'LogFile.xml'
     Left = 280
     Top = 208
   end
