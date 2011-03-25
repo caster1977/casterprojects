@@ -23,8 +23,6 @@ type
     procedure SetEnabled(const Value: boolean);
     procedure SetFileName(const Value: string);
     procedure SetFilePath(const Value: string);
-  private
-    FLogKeeperData: IXMLLogkeeperdataType;
   protected
     function GetOwner: TPersistent; override;
   public
@@ -33,7 +31,7 @@ type
     destructor Destroy; override;
     procedure Open;
     procedure Close;
-    //procedure Append(const aXML: string);
+    // procedure Append(const aXML: string);
   published
     property Enabled: boolean read FEnabled write SetEnabled default False;
     property FileName: string read FFileName write SetFileName;
@@ -122,11 +120,12 @@ procedure register;
 implementation
 
 uses
-  Ole2,
+  XMLIntf,
   XMLDoc,
   WinSock,
   Controls,
-  SysUtils;
+  SysUtils,
+  COMInit;
 
 procedure register;
 begin
@@ -144,29 +143,29 @@ begin
       FOwner:=TLogFile(Source).FOwner;
       FFileName:=TLogFile(Source).FFileName;
       FFilePath:=TLogFile(Source).FFilePath;
-      FLogKeeperData:=TLogFile(Source).FLogKeeperData;
     end;
 end;
 
 procedure TLogFile.Close;
-var
-  DestinationFileName: string;
-  XMLFile: TXMLDocument;
+// var
+// DestinationFileName: string;
+// XMLFile: TXMLDocument;
 begin
-  if Assigned(FLogKeeperData) then
-    begin
-      if FilePath='' then
-        FilePath:=ExtractFilePath(Application.ExeName);
-      DestinationFileName:=FilePath+FileName;
-
-      XMLFile:=TXMLDocument.Create(nil);
-      try
-        XMLFile.LoadFromXML(FLogKeeperData.XML);
-        XMLFile.SaveToFile(DestinationFileName);
-      finally
-        XMLFile.Free;
-      end;
-    end;
+  // if Assigned(FLogKeeperData) then
+  // begin
+  // if FilePath='' then
+  // FilePath:=ExtractFilePath(Application.ExeName);
+  // DestinationFileName:=FilePath+FileName;
+  //
+  // ? if Assigned(FOwner) then
+  // XMLFile:=TXMLDocument.Create(FOwner);
+  // try
+  // XMLFile.LoadFromXML(FLogKeeperData.XML);
+  // XMLFile.SaveToFile(DestinationFileName);
+  // finally
+  // XMLFile.Free;
+  // end;
+  // end;
 end;
 
 constructor TLogFile.Create(AOwner: TLogProvider);
@@ -190,17 +189,17 @@ begin
 end;
 
 procedure TLogFile.Open;
-var
-  SourceFileName: string;
+// var
+// SourceFileName: string;
 begin
-  if FilePath='' then
-    FilePath:=ExtractFilePath(Application.ExeName);
-  SourceFileName:=FilePath+FileName;
-
-  if FileExists(SourceFileName) then
-    FLogKeeperData:=LoadlogKeeperData(SourceFileName)
-  else
-    FLogKeeperData:=NewlogKeeperData;
+  // if FilePath='' then
+  // FilePath:=ExtractFilePath(Application.ExeName);
+  // SourceFileName:=FilePath+FileName;
+  //
+  // if FileExists(SourceFileName) then
+  // FLogKeeperData:=LoadlogKeeperData(SourceFileName)
+  // else
+  // FLogKeeperData:=NewlogKeeperData;
 end;
 
 procedure TLogFile.SetEnabled(const Value: boolean);
@@ -301,31 +300,39 @@ begin
   FOwner:=AOwner;
   Priority:=tpLower;
   FreeOnTerminate:=False;
-  // OnTerminate:=OnTerminateProc;
-  // procedure TLogThread.OnTerminateProc(Sender: TObject);
-  // begin
-  // if FOwner<>nil then
-  // if FOwner.XMLStringsList.Count>0 then
-  // FOwner.XMLStringsList.Clear;
-  // end;
+  { OnTerminate:=OnTerminateProc; }
 end;
+
+{
+  procedure TLogThread.OnTerminateProc(Sender: TObject);
+  begin
+  if FOwner<>nil then
+  if FOwner.XMLStringsList.Count>0 then
+  FOwner.XMLStringsList.Clear;
+  end;
+}
 
 procedure TLogThread.Execute;
 var
   sXML: string;
   // aCopyData: TCopyDataStruct;
   b: boolean;
-  LogData: IXMLLogkeeperdataType;
-  XMLFile: TXMLDocument;
-//  XMLMessage: IXMLMessageType;
+  // XMLMessage: IXMLMessageType;
+  XMLDocument: TXMLDocument;
+  XMLLogkeeperdata: IXMLLogkeeperdataType;
 begin
-  CoInitialize(nil);
+  // инициализация COM и выполнение кода класса-предка
+  NewCOMInitClass;
   inherited;
+
+  // именование потока в случае отладки программы
 {$IFDEF DEBUG}
   if Assigned(FOwner) then
     if Assigned(FOwner.FOwnerForm) then
       NameThreadForDebugging(AnsiString('TLogThread_'+FOwner.FOwnerForm.Name));
 {$ENDIF}
+
+
   try
     while not Terminated do
       begin
@@ -335,40 +342,31 @@ begin
             if Assigned(FOwner.XMLStringsList) then
               if FOwner.XMLStringsList.Count>0 then
                 begin
-                  Synchronize(
-                    procedure
-                    begin
-                      if Assigned(FOwner) then
-                        if Assigned(FOwner.XMLStringsList) then
-                          if FOwner.XMLStringsList.Count>0 then
-                            begin
-                              sXML:=FOwner.XMLStringsList.Items[0];
-                              FOwner.XMLStringsList.Delete(0);
-                            end;
-                    end);
+                  if Assigned(FOwner) then
+                    if Assigned(FOwner.XMLStringsList) then
+                      if FOwner.XMLStringsList.Count>0 then
+                        begin
+                          sXML:=FOwner.XMLStringsList.Items[0];
+                          Synchronize( procedure begin FOwner.XMLStringsList.Delete(0); end);
+                        end;
 
                   if Assigned(FOwner.LogFile) then
                     begin
                       if FOwner.LogFile.Enabled then
                         begin
-                          XMLFile:=TXMLDocument.Create(nil);
-                          try
-                            XMLFile.LoadFromXML(sXML);
-//                            LogData:=GetLogKeeperData(XMLFile);
-//                            LogData.Clear;
-//                            if LogData.Count>0 then
-                              begin
-//                                Synchronize(
-//                                  procedure
-//                                  begin
-//                                    XMLMessage:=FOwner.LogFile.FLogKeeperData.Add;
-//                                    .Add(LogData.Message[0])
-//                                  end);
-                              end;
-                          finally
-                            { TODO -cERROR : ошибка происходит здесь!!!! }
-                            FreeAndNil(XMLFile);
-                          end;
+                          XMLDocument:=TXMLDocument.Create(FOwner);
+                          XMLDocument.LoadFromXML(sXML);
+                          XMLLogkeeperdata:=GetLogKeeperData(XMLDocument as IXMLDocument); { TODO -cERROR : вот это действие вызывает ошибку!!!! }
+                          if XMLLogkeeperdata.Count>0 then
+                            begin
+                              // Synchronize(
+                              // procedure
+                              // begin
+                              // XMLMessage:=FOwner.LogFile.FLogKeeperData.Add;
+                              // .Add(LogData.Message[0])
+                              // end);
+                            end;
+                          FreeAndNil(XMLDocument); { TODO -cERROR : ошибка происходит здесь!!!! }
                         end;
                     end;
 
@@ -390,7 +388,6 @@ begin
   // lpData:=PAnsiChar(AnsiString(s));
   // end;
   // SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
-  CoUnInitialize;
 end;
 
 { TLogProvider }
@@ -774,8 +771,8 @@ end;
   end;
 *)
 
-//initialization
-//  CoInitialize(nil);
-//finalization
-//  CoUnInitialize;
+// initialization
+// CoInitialize(nil);
+// finalization
+// CoUnInitialize;
 end.
