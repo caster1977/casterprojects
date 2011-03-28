@@ -37,7 +37,8 @@ contains
   ListViewEx in 'ListViewEx.pas',
   LogProvider in 'LogProvider.pas',
   LogKeeperData in 'LogKeeperData.pas',
-  COMInit in 'COMInit.pas';
+  uCOMInit in 'uCOMInit.pas',
+  uLogClasses in 'uLogClasses.pas';
 
 end.
 

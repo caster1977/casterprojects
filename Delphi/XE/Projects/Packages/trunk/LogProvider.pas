@@ -8,66 +8,13 @@ uses
   Classes,
   Generics.Collections,
   Forms,
+  uLogClasses,
   LogKeeperData;
 
 type
-
-  TLogProvider=class;
-
-  TLogFile=class(TPersistent)
-  strict private
-    FEnabled: boolean;
-    FFileName: string;
-    FFilePath: string;
-    FOwner: TLogProvider;
-    procedure SetEnabled(const Value: boolean);
-    procedure SetFileName(const Value: string);
-    procedure SetFilePath(const Value: string);
-  protected
-    function GetOwner: TPersistent; override;
-  public
-    procedure Assign(Source: TPersistent); override;
-    constructor Create(AOwner: TLogProvider);
-    destructor Destroy; override;
-    procedure Open;
-    procedure Close;
-    // procedure Append(const aXML: string);
-  published
-    property Enabled: boolean read FEnabled write SetEnabled default False;
-    property FileName: string read FFileName write SetFileName;
-    property FilePath: string read FFilePath write SetFilePath;
-  end;
-
-  TLogClient=class(TPersistent)
-  strict private
-    FEnabled: boolean;
-    FOwner: TLogProvider;
-    procedure SetEnabled(const Value: boolean);
-  protected
-    function GetOwner: TPersistent; override;
-  public
-    procedure Assign(Source: TPersistent); override;
-    constructor Create(AOwner: TLogProvider);
-    procedure Open;
-    procedure Close;
-  published
-    property Enabled: boolean read FEnabled write SetEnabled default False;
-  end;
-
-  TLogThread=class(TThread)
-  strict private
-    FOwner: TLogProvider;
-    // procedure OnTerminateProc(Sender: TObject);
-  protected
-    procedure Execute; override;
-  public
-    constructor Create(AOwner: TLogProvider);
-  end;
-
   TLogProvider=class(TComponent)
   strict private
     FEnabled: boolean;
-    FLogThread: TLogThread;
     FGUIDList: TList<string>;
     FUserName: string;
     FLogFile: TLogFile;
@@ -77,18 +24,16 @@ type
     FAfterSending: TNotifyEvent;
     procedure Send(const aString: string; const aMessageType: TLogMessagesType);
     procedure SetEnabled(const Value: Boolean);
-    function Done: boolean;
     function GetLocalHostName: string;
     function GetApplicationHandle: HWnd;
     function GetApplicationFileName: string;
     function GetApplicationFilePath: string;
     function GetFormHandle: HWnd;
     function GetFormName: string;
-    procedure RefreshConnections;
     property Count: longword read FCount;
+    procedure RefreshConnections;
   private
     FOwnerForm: TForm;
-    XMLStringsList: TList<string>;
   strict protected
     procedure DoBeforeSending; virtual;
     procedure DoAfterSending; virtual;
@@ -124,271 +69,11 @@ uses
   XMLDoc,
   WinSock,
   Controls,
-  SysUtils,
-  COMInit;
+  SysUtils;
 
 procedure register;
 begin
   RegisterComponents('MyComponents', [TLogProvider]);
-end;
-
-{ TLogFile }
-
-procedure TLogFile.Assign(Source: TPersistent);
-begin
-  inherited;
-  if Source is TLogFile then
-    begin
-      FEnabled:=TLogFile(Source).FEnabled;
-      FOwner:=TLogFile(Source).FOwner;
-      FFileName:=TLogFile(Source).FFileName;
-      FFilePath:=TLogFile(Source).FFilePath;
-    end;
-end;
-
-procedure TLogFile.Close;
-// var
-// DestinationFileName: string;
-// XMLFile: TXMLDocument;
-begin
-  // if Assigned(FLogKeeperData) then
-  // begin
-  // if FilePath='' then
-  // FilePath:=ExtractFilePath(Application.ExeName);
-  // DestinationFileName:=FilePath+FileName;
-  //
-  // ? if Assigned(FOwner) then
-  // XMLFile:=TXMLDocument.Create(FOwner);
-  // try
-  // XMLFile.LoadFromXML(FLogKeeperData.XML);
-  // XMLFile.SaveToFile(DestinationFileName);
-  // finally
-  // XMLFile.Free;
-  // end;
-  // end;
-end;
-
-constructor TLogFile.Create(AOwner: TLogProvider);
-begin
-  inherited Create;
-  FEnabled:=False;
-  FOwner:=AOwner;
-  FFilePath:='';
-  FFileName:='LogFile.xml';
-end;
-
-destructor TLogFile.Destroy;
-begin
-  Close;
-  inherited;
-end;
-
-function TLogFile.GetOwner: TPersistent;
-begin
-  Result:=FOwner;
-end;
-
-procedure TLogFile.Open;
-// var
-// SourceFileName: string;
-begin
-  // if FilePath='' then
-  // FilePath:=ExtractFilePath(Application.ExeName);
-  // SourceFileName:=FilePath+FileName;
-  //
-  // if FileExists(SourceFileName) then
-  // FLogKeeperData:=LoadlogKeeperData(SourceFileName)
-  // else
-  // FLogKeeperData:=NewlogKeeperData;
-end;
-
-procedure TLogFile.SetEnabled(const Value: boolean);
-begin
-  // если компонент уже включён, нужно его выключить и опять включить, чтобы прошла инициализация новых настроек
-  if FEnabled<>Value then
-    if Assigned(FOwner) then
-      if not((csLoading in FOwner.ComponentState)or(csDesigning in FOwner.ComponentState)) then
-        if FOwner.Enabled then
-          begin
-            FOwner.Enabled:=False;
-            FEnabled:=Value;
-            FOwner.Enabled:=True;
-          end
-        else
-          FEnabled:=Value
-      else
-        FEnabled:=Value
-    else
-      raise EInvalidPointer.Create('Компонент-хозяин лог-файла равен NULL!');
-end;
-
-procedure TLogFile.SetFileName(const Value: string);
-begin
-  FFileName:=Value;
-end;
-
-procedure TLogFile.SetFilePath(const Value: string);
-var
-  s: string;
-begin
-  s:=Trim(Value);
-  if s<>'' then
-    if s[Length(s)]<>PathDelim then
-      s:=s+PathDelim;
-  FFilePath:=s;
-end;
-
-{ TLogClient }
-
-procedure TLogClient.Assign(Source: TPersistent);
-begin
-  inherited;
-  if Source is TLogClient then
-    begin
-      FEnabled:=TLogClient(Source).FEnabled;
-      FOwner:=TLogClient(Source).FOwner;
-    end;
-end;
-
-procedure TLogClient.Close;
-begin
-
-end;
-
-constructor TLogClient.Create(AOwner: TLogProvider);
-begin
-  inherited Create;
-  FEnabled:=False;
-  FOwner:=AOwner;
-end;
-
-function TLogClient.GetOwner: TPersistent;
-begin
-  Result:=FOwner;
-end;
-
-procedure TLogClient.Open;
-begin
-
-end;
-
-procedure TLogClient.SetEnabled(const Value: boolean);
-begin
-  // если компонент уже включён, нужно его выключить и опять включить, чтобы прошла инициализация новых настроек
-  if FEnabled<>Value then
-    if Assigned(FOwner) then
-      if not((csLoading in FOwner.ComponentState)or(csDesigning in FOwner.ComponentState)) then
-        if FOwner.Enabled then
-          begin
-            FOwner.Enabled:=False;
-            FEnabled:=Value;
-            FOwner.Enabled:=True;
-          end
-        else
-          FEnabled:=Value
-      else
-        FEnabled:=Value
-    else
-      raise EInvalidPointer.Create('Компонент-хозяин лог-клиента равен NULL!');
-end;
-
-{ TLogThread }
-
-constructor TLogThread.Create(AOwner: TLogProvider);
-begin
-  inherited Create(True);
-  FOwner:=AOwner;
-  Priority:=tpLower;
-  FreeOnTerminate:=False;
-  { OnTerminate:=OnTerminateProc; }
-end;
-
-{
-  procedure TLogThread.OnTerminateProc(Sender: TObject);
-  begin
-  if FOwner<>nil then
-  if FOwner.XMLStringsList.Count>0 then
-  FOwner.XMLStringsList.Clear;
-  end;
-}
-
-procedure TLogThread.Execute;
-var
-  sXML: string;
-  // aCopyData: TCopyDataStruct;
-  b: boolean;
-  // XMLMessage: IXMLMessageType;
-  XMLDocument: TXMLDocument;
-  XMLLogkeeperdata: IXMLLogkeeperdataType;
-begin
-  // инициализация COM и выполнение кода класса-предка
-  NewCOMInitClass;
-  inherited;
-
-  // присвоение имени потоку при отладке программы
-{$IFDEF DEBUG}
-  if Assigned(FOwner) then
-    if Assigned(FOwner.FOwnerForm) then
-      NameThreadForDebugging(AnsiString('TLogThread_'+FOwner.FOwnerForm.Name));
-{$ENDIF}
-
-
-  try
-    while not Terminated do
-      begin
-        repeat
-          b:=True;
-          if Assigned(FOwner) then
-            if Assigned(FOwner.XMLStringsList) then
-              if FOwner.XMLStringsList.Count>0 then
-                begin
-                  if Assigned(FOwner) then
-                    if Assigned(FOwner.XMLStringsList) then
-                      if FOwner.XMLStringsList.Count>0 then
-                        begin
-                          sXML:=FOwner.XMLStringsList.Items[0];
-                          Synchronize( procedure begin FOwner.XMLStringsList.Delete(0); end);
-                        end;
-
-(*
-                  if Assigned(FOwner.LogFile) then
-                    begin
-                      if FOwner.LogFile.Enabled then
-                        begin
-                          XMLDocument:=TXMLDocument.Create(FOwner);
-                          XMLDocument.LoadFromXML(sXML);
-                          XMLLogkeeperdata:=GetLogKeeperData(XMLDocument as IXMLDocument); { TODO -cERROR : вот это действие вызывает ошибку!!!! }
-                          if XMLLogkeeperdata.Count>0 then
-                            begin
-                              // Synchronize(
-                              // procedure
-                              // begin
-                              // XMLMessage:=FOwner.LogFile.FLogKeeperData.Add;
-                              // .Add(LogData.Message[0])
-                              // end);
-                            end;
-                          FreeAndNil(XMLDocument); { TODO -cERROR : ошибка происходит здесь!!!! }
-                        end;
-                    end;
-*)
-                  Application.ProcessMessages;
-                  b:=FOwner.XMLStringsList.Count<1;
-                end;
-        until b;
-        Sleep(0);
-      end;
-    // если что-то нуна сделать по принудительному окончанию работы потока, это нужно добавить ТУТ
-  except
-    Application.HandleException(Self);
-  end;
-  // s:=IntToStr(WMCD_MODALLOG)+';'+s+';'+aMessage+';'+aLogGroupGUID;
-  // with aCopyData do
-  // begin
-  // dwData:=0;
-  // cbData:=Length(s)+1;
-  // lpData:=PAnsiChar(AnsiString(s));
-  // end;
-  // SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
 end;
 
 { TLogProvider }
@@ -402,43 +87,16 @@ begin
     FOwnerForm:=TForm(AOwner);
   FLogFile:=TLogFile.Create(Self);
   FLogClient:=TLogClient.Create(Self);
-
-  // если мы не в режиме дизайнера
   if not(csDesigning in ComponentState) then
-    begin
-      XMLStringsList:=TList<string>.Create;
-      FGUIDList:=TList<string>.Create;
-      // создание и запуск потока
-      FLogThread:=TLogThread.Create(Self);
-      try
-        FLogThread.Start;
-      except
-        Application.HandleException(Self);
-      end;
-    end;
+    FGUIDList:=TList<string>.Create;
 end;
 
 destructor TLogProvider.Destroy;
 begin
-  if not(csDesigning in ComponentState) then
-    begin
-      if not Done then
-        if Assigned(FLogThread) then
-          if (not FLogThread.Terminated)and(not FLogThread.Finished) then
-            FLogThread.Suspended:=False
-          else
-            if Assigned(XMLStringsList) then
-              if XMLStringsList.Count>0 then
-                XMLStringsList.Clear;
-      while not Done do
-        Application.ProcessMessages;
-    end;
   FEnabled:=False;
-  FreeAndNil(FLogThread);
   FreeAndNil(FLogFile);
   FreeAndNil(FLogClient);
   FreeAndNil(FGUIDList);
-  FreeAndNil(XMLStringsList);
   inherited;
 end;
 
@@ -476,71 +134,92 @@ var
   lm: IXMLMessageType;
   dtNow: TDateTime;
   wYear, wMonth, wDay, wHour, wMinute, wSecond, wMSecond: word;
+  bNeedToSend: boolean;
 begin
-  DoBeforeSending;
-
-  // оформление передаваемого сообщения в виде XML-документа
-  dtNow:=Now;
-  DecodeDate(dtNow, wYear, wMonth, wDay);
-  DecodeTime(dtNow, wHour, wMinute, wSecond, wMSecond);
-  Application.ProcessMessages;
-
-  lmd:=NewlogKeeperData;
-  if Assigned(lmd) then
+  // если компонент включен
+  if Enabled then
     begin
-      lm:=lmd.Add;
-      if Assigned(lm) then
-        with lm do
-          begin
-            index:=Count;
-
-            with Date do
-              begin
-                Year:=wYear;
-                Month:=wMonth;
-                Day:=wDay;
-              end;
-
-            with Time do
-              begin
-                Hour:=wHour;
-                Minute:=wHour;
-                Second:=wSecond;
-                MSecond:=wMSecond;
-              end;
-
-            Host:=GetLocalHostName;
-
-            with lm.Application do
-              begin
-                Handle:=GetApplicationHandle;
-                FileName:=GetApplicationFileName;
-                FilePath:=GetApplicationFilePath;
-                with Form do
-                  begin
-                    Handle:=GetFormHandle;
-                    name:=GetFormName;
-                  end;
-                if FGUIDList.Count>0 then
-                  Method.Guid:=FGUIDList.Last
-                else
-                  raise Exception.Create('Спиоок GUID методов пуст!');
-                User:=UserName;
-              end;
-
-            MessageType:=aMessageType;
-            Text:=aString;
-          end;
-
-      if Assigned(XMLStringsList)and Assigned(FLogThread) then
+      bNeedToSend:=False;
+      if Assigned(FLogFile) then
+        if FLogFile.Enabled then
+          bNeedToSend:=True;
+      if Assigned(FLogClient) then
+        if FLogClient.Enabled then
+          bNeedToSend:=True;
+      if bNeedToSend then
         begin
-          XMLStringsList.Add(lmd.XML); // добавляем новую строку
+          DoBeforeSending;
+
+          dtNow:=Now;
+          DecodeDate(dtNow, wYear, wMonth, wDay);
+          DecodeTime(dtNow, wHour, wMinute, wSecond, wMSecond);
+          Application.ProcessMessages;
+
+          // оформление передаваемого сообщения в виде XML-документа
+          lmd:=NewlogKeeperData;
+          if Assigned(lmd) then
+            begin
+              lm:=lmd.Add;
+              if Assigned(lm) then
+                with lm do
+                  begin
+                    Index:=Count;
+                    with Date do
+                      begin
+                        Year:=wYear;
+                        Month:=wMonth;
+                        Day:=wDay;
+                      end;
+                    with Time do
+                      begin
+                        Hour:=wHour;
+                        Minute:=wHour;
+                        Second:=wSecond;
+                        MSecond:=wMSecond;
+                      end;
+                    Host:=GetLocalHostName;
+                    with lm.Application do
+                      begin
+                        Handle:=GetApplicationHandle;
+                        FileName:=GetApplicationFileName;
+                        FilePath:=GetApplicationFilePath;
+                        with Form do
+                          begin
+                            Handle:=GetFormHandle;
+                            name:=GetFormName;
+                          end;
+                        if FGUIDList.Count>0 then
+                          Method.Guid:=FGUIDList.Last
+                        else
+                          raise Exception.Create('Спиоок GUID методов пуст!');
+                        User:=UserName;
+                      end;
+                    MessageType:=aMessageType;
+                    Text:=aString;
+                  end;
+
+              // если включена отправка в файл
+              if Assigned(FLogFile) then
+                with FLogFile do
+                  if Enabled then
+                    begin
+                      AppendToQueue(lmd.XML);
+                      Suspended:=False;
+                    end;
+
+              // если включена отправка в клиента
+              if Assigned(FLogClient) then
+                with FLogClient do
+                  if Enabled then
+                    begin
+                      AppendToQueue(lmd.XML);
+                      Suspended:=False;
+                    end;
+            end;
           FCount:=FCount+1;
-          FLogThread.Suspended:=False; // продолжаем выполнение потока
+          DoAfterSending;
         end;
     end;
-
-  DoAfterSending;
 end;
 
 procedure TLogProvider.SendDebug(const aString: string);
@@ -583,33 +262,11 @@ procedure TLogProvider.RefreshConnections;
 begin
   // только в случае, если программа запущена на выполнение, а не находится в состоянии разработки
   if not(csDesigning in ComponentState) then
-    begin
-      if Enabled then
-        begin
-          try
-            // включение функций ведения лога
-            if FLogFile.Enabled then
-              FLogFile.Open
-            else
-              FLogFile.Close;
-
-            if FLogClient.Enabled then
-              begin
-                // поиск клиентов
-                // включение передачи данных клиенту
-
-              end;
-          except
-            Application.HandleException(Self);
-          end;
-        end
-      else
-        begin
-          // отключение функций ведения лога
-          FLogFile.Close;
-          FLogClient.Close;
-        end;
-    end;
+    if Enabled then
+      begin
+        FLogClient.Refresh;
+        FLogFile.Refresh;
+      end;
 end;
 
 procedure TLogProvider.EnterMethod(const aString, aGUID: string);
@@ -646,16 +303,6 @@ procedure TLogProvider.DoBeforeSending;
 begin
   if Assigned(FBeforeSending) then
     FBeforeSending(Self);
-end;
-
-function TLogProvider.Done: boolean;
-begin
-  Result:=True;
-  if not(csDesigning in ComponentState) then
-    begin
-      if Assigned(XMLStringsList) then
-        Result:=XMLStringsList.Count<1;
-    end;
 end;
 
 function TLogProvider.GetApplicationFileName: string;
@@ -772,8 +419,25 @@ end;
   end;
 *)
 
-// initialization
-// CoInitialize(nil);
-// finalization
-// CoUnInitialize;
+(*
+  Как послать широковещательный UDP пакет
+  procedure TMainForm.FormCreate(Sender: TObject);
+  var
+  Init: TWSAData;
+  SockOpt: BOOL;
+  Sock: TSocket;
+  Target: TSockAddrIn;
+  begin
+  WSAStartup($101,Init);
+  Sock:=Socket(PF_INET,SOCK_DGRAM,IPPROTO_UDP);
+  SockOpt:=TRUE;
+  SetSockOpt(Sock,SOL_SOCKET,SO_BROADCAST, PChar(@SockOpt),SizeOf(SockOpt)) ;
+  Target.sin_port:=htons(8167); //номер порта
+  Target.sin_addr.S_addr:=INADDR_BROADCAST;
+  Target.sa_family:=AF_INET;
+  SendTo(Sock,Data,DataBytes,0,Target,SizeOf(Target));
+  WSACleanup;
+  end;
+*)
+
 end.
