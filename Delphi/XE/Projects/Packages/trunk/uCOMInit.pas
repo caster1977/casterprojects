@@ -1,4 +1,4 @@
-unit COMInit;
+unit uCOMInit;
 
 interface
 
