@@ -3,6 +3,7 @@ unit uLogClasses;
 interface
 
 uses
+  LogKeeperData,
   Classes,
   Generics.Collections;
 
@@ -15,9 +16,9 @@ type
   TLogDestination=class(TPersistent)
   strict private
     FEnabled: boolean;
-    FConnected: boolean;
     procedure SetEnabled(const Value: boolean);
   private
+    FConnected: boolean;
     FThread: TLogThread;
     FOwner: TComponent;
     function Done: boolean;
@@ -31,12 +32,11 @@ type
     property Connected: boolean read FConnected;
     property Enabled: boolean read FEnabled write SetEnabled default False;
   public
-    procedure Assign(Source: TPersistent); override;
     constructor Create(AOwner: TComponent); virtual;
     destructor Destroy; override;
     procedure AppendToQueue(const Value: string);
     property Suspended: boolean read GetSuspended write SetSuspended stored False;
-    procedure Refresh;
+    procedure Refresh; virtual;
   end;
 
   TLogClient=class(TLogDestination)
@@ -52,6 +52,7 @@ type
 
   TLogFile=class(TLogDestination)
   strict private
+    FLogKeeperData: IXMLLogkeeperdataType;
     FFileName: string;
     FFilePath: string;
     procedure SetFileName(const Value: string);
@@ -60,7 +61,6 @@ type
     procedure Open; override;
     procedure Close; override;
   public
-    procedure Assign(Source: TPersistent); override;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
@@ -71,8 +71,9 @@ type
 
   TLogThread=class(TThread)
   strict private
-    FOwner: TLogDestination;
     procedure OnTerminateProc(Sender: TObject);
+  private
+    FOwner: TLogDestination;
   protected
     function GetOwner: TPersistent; virtual;
     procedure Execute; override;
@@ -94,6 +95,8 @@ implementation
 
 uses
   uCOMInit,
+  XMLDoc,
+  XMLIntf,
   SysUtils,
   Forms;
 
@@ -114,7 +117,7 @@ begin
   inherited;
 {$IFDEF DEBUG}
   if Assigned(FOwner) then
-    NameThreadForDebugging(AnsiString(Self.ClassName+'_'+FOwner.ClassName));
+    NameThreadForDebugging(AnsiString(FOwner.FOwner.Owner.Name+'.'+GetOwner.GetNamePath+'.'+Self.ClassName));
 {$ENDIF}
 end;
 
@@ -143,19 +146,6 @@ begin
     raise EInvalidPointer.Create('Объект списка очереди сообщений равен NULL!');
 end;
 
-procedure TLogDestination.Assign(Source: TPersistent);
-begin
-  inherited;
-  if Source is TLogDestination then
-    begin
-      FEnabled:=TLogDestination(Source).FEnabled;
-      FOwner:=TLogDestination(Source).FOwner;
-      Queue:=TLogDestination(Source).Queue;
-      if TLogDestination(Source).FConnected then
-        Open;
-    end;
-end;
-
 constructor TLogDestination.Create(AOwner: TComponent);
 begin
   inherited Create;
@@ -173,6 +163,20 @@ end;
 
 destructor TLogDestination.Destroy;
 begin
+  if not(csDesigning in FOwner.ComponentState) then
+    begin
+      if not Done then
+        if Assigned(FThread) then
+          if (not FThread.Terminated)and(not FThread.Finished) then
+            Suspended:=False
+          else
+            if Assigned(Queue) then
+              if Queue.Count>0 then
+                Queue.Clear;
+      while (not Done)and Connected do
+        Application.ProcessMessages;
+    end;
+  FreeAndNil(FThread);
   Enabled:=False;
   FreeAndNil(Queue);
   inherited;
@@ -242,8 +246,39 @@ end;
 { TLogClientThread }
 
 procedure TLogClientThread.Execute;
+var
+  sXML: string;
+  b: boolean;
 begin
   inherited;
+  try
+    while not Terminated do
+      begin
+        repeat
+          b:=True;
+          sXML:='';
+          if Assigned(FOwner) then
+            if Assigned(FOwner.Queue) then
+              if FOwner.Queue.Count>0 then
+                begin
+                  if FOwner.Connected then
+                    begin
+                      sXML:=FOwner.Queue.Items[0];
+                      Synchronize( procedure begin FOwner.Queue.Delete(0); end);
+
+                      { TODO : добавить код записи полученной строки в файл }
+
+                    end;
+                  b:=(FOwner.Queue.Count<1)or not FOwner.Connected;
+                end;
+        until b;
+        Sleep(0);
+      end;
+    // если что-то нуна сделать по принудительному окончанию работы потока, это нужно добавить ТУТ
+    Application.ProcessMessages;
+  except
+    Application.HandleException(Self);
+  end;
 end;
 
 { TLogClient }
@@ -269,20 +304,6 @@ end;
 
 destructor TLogClient.Destroy;
 begin
-  if not(csDesigning in FOwner.ComponentState) then
-    begin
-      if not Done then
-        if Assigned(FThread) then
-          if (not FThread.Terminated)and(not FThread.Finished) then
-            Suspended:=False
-          else
-            if Assigned(Queue) then
-              if Queue.Count>0 then
-                Queue.Clear;
-      while not Done do
-        Application.ProcessMessages;
-    end;
-  FreeAndNil(FThread);
   inherited;
 end;
 
@@ -294,19 +315,34 @@ end;
 
 { TLogFile }
 
-procedure TLogFile.Assign(Source: TPersistent);
-begin
-  inherited;
-  if Source is TLogFile then
-    begin
-      FFileName:=TLogFile(Source).FFileName;
-      FFilePath:=TLogFile(Source).FFilePath;
-    end;
-end;
-
 procedure TLogFile.Close;
+var
+  DestinationFileName: string;
+  XMLFile: TXMLDocument;
+  aOptions: TXMLDocOptions;
 begin
+  if Assigned(FLogKeeperData) then
+    begin
+      if FilePath='' then
+        FilePath:=ExtractFilePath(Application.ExeName);
+      DestinationFileName:=FilePath+FileName;
 
+      if Assigned(FOwner) then
+        begin
+          XMLFile:=TXMLDocument.Create(FOwner);
+          try
+            // '<?xml version="1.0" encoding="UTF-8" ?>'+
+            XMLFile.LoadFromXML(FLogKeeperData.XML);
+            XMLFile.DOMDocument.prefix:='<?xml version="1.0" encoding="UTF-8" ?>';
+            //XMLFile.Options:=[doNodeAutoCreate, doNodeAutoIndent, doAttrNull, doAutoPrefix, doNamespaceDecl, doAutoSave];
+            XMLFile.SaveToFile(DestinationFileName);
+          finally
+            XMLFile.Free;
+          end;
+        end;
+      FLogKeeperData:=nil;
+      FConnected:=Assigned(FLogKeeperData);
+    end;
 end;
 
 constructor TLogFile.Create(AOwner: TComponent);
@@ -327,13 +363,22 @@ end;
 
 destructor TLogFile.Destroy;
 begin
-
   inherited;
 end;
 
 procedure TLogFile.Open;
+var
+  SourceFileName: string;
 begin
-
+  // подключаемся к файлу лога
+  if FilePath='' then
+    FilePath:=ExtractFilePath(Application.ExeName);
+  SourceFileName:=FilePath+FileName;
+  if FileExists(SourceFileName) then
+    FLogKeeperData:=LoadlogKeeperData(SourceFileName)
+  else
+    FLogKeeperData:=NewlogKeeperData;
+  FConnected:=Assigned(FLogKeeperData);
 end;
 
 procedure TLogFile.SetFileName(const Value: string);
@@ -353,48 +398,6 @@ begin
 end;
 
 (*
-  procedure TLogFile.SetActive(const Value: boolean);
-  // var
-  // SourceFileName: string;
-  // DestinationFileName: string;
-  // XMLFile: TXMLDocument;
-  begin
-  if Enabled then
-  if FActive<>Value then
-  begin
-  if Value then
-  begin
-  // подключаемся к файлу лога
-  // if FilePath='' then
-  // FilePath:=ExtractFilePath(Application.ExeName);
-  // SourceFileName:=FilePath+FileName;
-  // if FileExists(SourceFileName) then
-  // FLogKeeperData:=LoadlogKeeperData(SourceFileName)
-  // else
-  // FLogKeeperData:=NewlogKeeperData;
-  end
-  else
-  begin
-  // if Assigned(FLogKeeperData) then
-  // begin
-  // if FilePath='' then
-  // FilePath:=ExtractFilePath(Application.ExeName);
-  // DestinationFileName:=FilePath+FileName;
-  //
-  // //? if Assigned(FOwner) then
-  // XMLFile:=TXMLDocument.Create(FOwner);
-  // try
-  // XMLFile.LoadFromXML(FLogKeeperData.XML);
-  // XMLFile.SaveToFile(DestinationFileName);
-  // finally
-  // XMLFile.Free;
-  // end;
-  // end;
-  end;
-  FActive:=Value;
-  end;
-  end;
-
   procedure TLogFile.SetEnabled(const Value: boolean);
   begin
   // если компонент уже включён, нужно его выключить и опять включить, чтобы прошла инициализация новых настроек
@@ -415,9 +418,6 @@ end;
   raise EInvalidPointer.Create('Компонент-хозяин лог-файла равен NULL!');
   end;
 
-*)
-
-(*
   procedure TLogThread.Execute;
   var
   sXML: string;
@@ -488,8 +488,39 @@ end;
 { TLogFileThread }
 
 procedure TLogFileThread.Execute;
+var
+  sXML: string;
+  b: boolean;
 begin
   inherited;
+  try
+    while not Terminated do
+      begin
+        repeat
+          b:=True;
+          sXML:='';
+          if Assigned(FOwner) then
+            if Assigned(FOwner.Queue) then
+              if FOwner.Queue.Count>0 then
+                begin
+                  if FOwner.Connected then
+                    begin
+                      sXML:=FOwner.Queue.Items[0];
+                      Synchronize( procedure begin FOwner.Queue.Delete(0); end);
+
+                      { TODO : добавить код записи полученной строки в файл }
+
+                    end;
+                  b:=(FOwner.Queue.Count<1)or not FOwner.Connected;
+                end;
+        until b;
+        Sleep(0);
+      end;
+    // если что-то нуна сделать по принудительному окончанию работы потока, это нужно добавить ТУТ
+    Application.ProcessMessages;
+  except
+    Application.HandleException(Self);
+  end;
 end;
 
 end.
