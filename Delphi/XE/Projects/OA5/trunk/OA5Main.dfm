@@ -200,7 +200,7 @@ object MainForm: TMainForm
     Left = 80
     Top = 192
     Bitmap = {
-      494C010108003000640210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108003000840210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -610,7 +610,7 @@ object MainForm: TMainForm
     Left = 112
     Top = 192
     Bitmap = {
-      494C0101080018004C0220002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101080018006C0220002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000008000000060000000010020000000000000C0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2206,7 +2206,7 @@ object MainForm: TMainForm
     Left = 144
     Top = 192
     Bitmap = {
-      494C0101020004003C0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101020004005C0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2352,5 +2352,104 @@ object MainForm: TMainForm
     LogClient.Enabled = True
     Left = 176
     Top = 192
+  end
+  object XMLDocument1: TXMLDocument
+    XML.Strings = (
+      '<?xml version="1.0"?>'
+      '<logkeeperdata>'
+      #9'<message>'
+      #9#9'<index>42</index>'
+      #9#9'<date>'
+      #9#9#9'<day>3</day>'
+      #9#9#9'<month>3</month>'
+      #9#9#9'<year>2011</year>'
+      #9#9'</date>'
+      #9#9'<time>'
+      #9#9#9'<hour>13</hour>'
+      #9#9#9'<minute>18</minute>'
+      #9#9#9'<second>44</second>'
+      #9#9#9'<msecond>154</msecond>'
+      #9#9'</time>'
+      #9#9'<host>10.1.1.222</host>'
+      #9#9'<application>'
+      #9#9#9'<handle>131324</handle>'
+      #9#9#9'<filename>OA5.EXE</filename>'
+      #9#9#9'<filepath>OA5</filepath>'
+      #9#9#9'<form>'
+      #9#9#9#9'<handle>131324</handle>'
+      #9#9#9#9'<name>Main</name>'
+      #9#9#9'</form>'
+      #9#9#9'<method>'
+      #9#9#9#9'<guid>{298F56FB-F73A-408B-8601-D4A9EC593619}</guid>'
+      #9#9#9'</method>'
+      #9#9#9'<user>caster</user>'
+      #9#9'</application>'
+      #9#9'<type>Error</type>'
+      #9#9'<text>'#1054#1096#1080#1073#1082#1072' '#1076#1072#1085#1085#1099#1093'!</text>'
+      #9'</message>'
+      #9'<message>'
+      #9#9'<index>43</index>'
+      #9#9'<date>'
+      #9#9#9'<day>3</day>'
+      #9#9#9'<month>3</month>'
+      #9#9#9'<year>2011</year>'
+      #9#9'</date>'
+      #9#9'<time>'
+      #9#9#9'<hour>13</hour>'
+      #9#9#9'<minute>18</minute>'
+      #9#9#9'<second>44</second>'
+      #9#9#9'<msecond>154</msecond>'
+      #9#9'</time>'
+      #9#9'<host>10.1.1.222</host>'
+      #9#9'<application>'
+      #9#9#9'<handle>131324</handle>'
+      #9#9#9'<filename>OA5.EXE</filename>'
+      #9#9#9'<filepath>OA5</filepath>'
+      #9#9#9'<form>'
+      #9#9#9#9'<handle>131324</handle>'
+      #9#9#9#9'<name>Main</name>'
+      #9#9#9'</form>'
+      #9#9#9'<method>'
+      #9#9#9#9'<guid>{298F56FB-F73A-408B-8601-D4A9EC593619}</guid>'
+      #9#9#9'</method>'
+      #9#9#9'<user>caster</user>'
+      #9#9'</application>'
+      #9#9'<type>Error</type>'
+      #9#9'<text>'#1054#1096#1080#1073#1082#1072' '#1076#1072#1085#1085#1099#1093'!</text>'
+      #9'</message>'
+      #9'<message>'
+      #9#9'<index>44</index>'
+      #9#9'<date>'
+      #9#9#9'<day>3</day>'
+      #9#9#9'<month>3</month>'
+      #9#9#9'<year>2011</year>'
+      #9#9'</date>'
+      #9#9'<time>'
+      #9#9#9'<hour>13</hour>'
+      #9#9#9'<minute>18</minute>'
+      #9#9#9'<second>44</second>'
+      #9#9#9'<msecond>154</msecond>'
+      #9#9'</time>'
+      #9#9'<host>10.1.1.222</host>'
+      #9#9'<application>'
+      #9#9#9'<handle>131324</handle>'
+      #9#9#9'<filename>OA5.EXE</filename>'
+      #9#9#9'<filepath>OA5</filepath>'
+      #9#9#9'<form>'
+      #9#9#9#9'<handle>131324</handle>'
+      #9#9#9#9'<name>Main</name>'
+      #9#9#9'</form>'
+      #9#9#9'<method>'
+      #9#9#9#9'<guid>{298F56FB-F73A-408B-8601-D4A9EC593619}</guid>'
+      #9#9#9'</method>'
+      #9#9#9'<user>caster</user>'
+      #9#9'</application>'
+      #9#9'<type>Error</type>'
+      #9#9'<text>'#1054#1096#1080#1073#1082#1072' '#1076#1072#1085#1085#1099#1093'!</text>'
+      #9'</message>'
+      '</logkeeperdata>')
+    Left = 456
+    Top = 240
+    DOMVendorDesc = 'MSXML'
   end
 end
