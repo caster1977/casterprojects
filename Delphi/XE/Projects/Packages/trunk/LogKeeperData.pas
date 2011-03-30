@@ -21,6 +21,7 @@ uses
 type
 
   TLogMessagesType=(lmtError, lmtWarning, lmtInfo, lmtSQL, lmtDebug);
+  TLogMessagesTypes = set of TLogMessagesType;
 
   { Forward Decls }
 
