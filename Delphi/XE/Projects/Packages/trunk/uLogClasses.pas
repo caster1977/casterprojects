@@ -3,6 +3,7 @@ unit uLogClasses;
 interface
 
 uses
+  Windows,
   LogKeeperData,
   Classes,
   Generics.Collections;
@@ -52,12 +53,18 @@ type
 
   TLogFile=class(TLogDestination)
   strict private
-    FLogKeeperData: IXMLLogkeeperdataType;
-    FFileName: string;
+    FFileNameSuffix: string;
     FFilePath: string;
-    procedure SetFileName(const Value: string);
+    FOpenedFileName: string;
+    FFileExtension: string;
+    procedure SetFileExtension(const Value: string);
+    procedure SetFileNameSuffix(const Value: string);
     procedure SetFilePath(const Value: string);
+    function GenerateNewFileName: string;
+    function StoreFileExtension: Boolean;
+    function StoreFileNameSuffix: Boolean;
   private
+    FLogKeeperData: IXMLLogkeeperdataType;
     procedure Open; override;
     procedure Close; override;
   public
@@ -65,8 +72,9 @@ type
     destructor Destroy; override;
   published
     property Enabled;
-    property FileName: string read FFileName write SetFileName;
     property FilePath: string read FFilePath write SetFilePath;
+    property FileExtension: string read FFileExtension write SetFileExtension stored StoreFileExtension;
+    property FileNameSuffix: string read FFileNameSuffix write SetFileNameSuffix stored StoreFileNameSuffix;
   end;
 
   TLogThread=class(TThread)
@@ -95,12 +103,17 @@ implementation
 
 uses
   uCOMInit,
+  LogProvider,
   XMLDoc,
   XMLIntf,
   SysUtils,
   Forms;
 
-{ TLogThread }
+const
+  DEFAULT_FILENAME_SUFFIX: string='';
+  DEFAULT_FILE_EXTENSION: string='xml';
+
+  { TLogThread }
 
 constructor TLogThread.Create(AOwner: TLogDestination);
 begin
@@ -113,7 +126,6 @@ end;
 
 procedure TLogThread.Execute;
 begin
-  NewCOMInitClass;
   inherited;
 {$IFDEF DEBUG}
   if Assigned(FOwner) then
@@ -318,30 +330,31 @@ end;
 procedure TLogFile.Close;
 var
   DestinationFileName: string;
-  XMLFile: TXMLDocument;
-  aOptions: TXMLDocOptions;
+  XMLFile: IXMLDocument;
 begin
   if Assigned(FLogKeeperData) then
     begin
-      if FilePath='' then
-        FilePath:=ExtractFilePath(Application.ExeName);
-      DestinationFileName:=FilePath+FileName;
-
-      if Assigned(FOwner) then
+      if FLogKeeperData.Count>0 then
         begin
-          XMLFile:=TXMLDocument.Create(FOwner);
-          try
-            // '<?xml version="1.0" encoding="UTF-8" ?>'+
-            XMLFile.LoadFromXML(FLogKeeperData.XML);
-            XMLFile.DOMDocument.prefix:='<?xml version="1.0" encoding="UTF-8" ?>';
-            //XMLFile.Options:=[doNodeAutoCreate, doNodeAutoIndent, doAttrNull, doAutoPrefix, doNamespaceDecl, doAutoSave];
-            XMLFile.SaveToFile(DestinationFileName);
-          finally
-            XMLFile.Free;
-          end;
+          if FOpenedFileName<>'' then
+            DestinationFileName:=FOpenedFileName
+          else
+            DestinationFileName:=GenerateNewFileName;
+          if Assigned(FOwner) then
+            begin
+              XMLFile:=TXMLDocument.Create(FOwner);
+              try
+                XMLFile.LoadFromXML(FLogKeeperData.XML);
+                XMLFile.DOMDocument.insertBefore(XMLFile.DOMDocument.createProcessingInstruction('xml', 'version="1.0" encoding="UTF-8"'), XMLFile.DOMDocument.childNodes[0]);
+                XMLFile.SaveToFile(DestinationFileName);
+              finally
+                XMLFile:=nil;
+              end;
+            end;
         end;
+      FOpenedFileName:='';
       FLogKeeperData:=nil;
-      FConnected:=Assigned(FLogKeeperData);
+      FConnected:=False;
     end;
 end;
 
@@ -349,7 +362,8 @@ constructor TLogFile.Create(AOwner: TComponent);
 begin
   inherited;
   FFilePath:='';
-  FFileName:='LogFile.xml';
+  FFileExtension:=DEFAULT_FILE_EXTENSION;
+  FOpenedFileName:='';
   if not(csDesigning in AOwner.ComponentState) then
     begin
       FThread:=TLogFileThread.Create(Self);
@@ -366,24 +380,59 @@ begin
   inherited;
 end;
 
+function TLogFile.GenerateNewFileName: string;
+begin
+  if FilePath='' then
+    FilePath:=ExtractFilePath(Application.ExeName);
+  Result:=Result+'LogKeeperFile_'+FormatDateTime('yyyymmddhhnnsszzz', Now);
+  if FileNameSuffix<>'' then
+    Result:=Result+'_';
+  Result:=Result+FileNameSuffix+'.'+FFileExtension;
+end;
+
 procedure TLogFile.Open;
 var
   SourceFileName: string;
+  Doc: IXMLDocument;
 begin
-  // подключаемся к файлу лога
-  if FilePath='' then
-    FilePath:=ExtractFilePath(Application.ExeName);
-  SourceFileName:=FilePath+FileName;
-  if FileExists(SourceFileName) then
-    FLogKeeperData:=LoadlogKeeperData(SourceFileName)
-  else
-    FLogKeeperData:=NewlogKeeperData;
+  SourceFileName:=GenerateNewFileName;
+  try
+    if FileExists(SourceFileName) then
+      FLogKeeperData:=LoadlogKeeperData(SourceFileName)
+    else
+      Doc:=TXMLDocument.Create(FOwner);
+    try
+      Doc.Active:=True;
+      if Doc.Version<>'' then
+        Doc.Version:='1.0';
+      FLogKeeperData:=GetLogKeeperData(Doc);
+    finally
+      Doc:=nil;
+    end;
+  except
+    Application.HandleException(Self);
+  end;
   FConnected:=Assigned(FLogKeeperData);
+  if FConnected then
+    FOpenedFileName:=SourceFileName;
 end;
 
-procedure TLogFile.SetFileName(const Value: string);
+procedure TLogFile.SetFileExtension(const Value: string);
+var
+  s: string;
 begin
-  FFileName:=Value;
+  s:=Trim(Value);
+  if FFileExtension<>s then
+    if s<>'' then
+      FFileExtension:=s
+    else
+      FFileExtension:=DEFAULT_FILE_EXTENSION;
+end;
+
+procedure TLogFile.SetFileNameSuffix(const Value: string);
+begin
+  if Trim(Value)<>FFileNameSuffix then
+    FFileNameSuffix:=Trim(Value);
 end;
 
 procedure TLogFile.SetFilePath(const Value: string);
@@ -395,6 +444,16 @@ begin
     if s[Length(s)]<>PathDelim then
       s:=s+PathDelim;
   FFilePath:=s;
+end;
+
+function TLogFile.StoreFileExtension: Boolean;
+begin
+  Result:=FileExtension<>DEFAULT_FILE_EXTENSION;
+end;
+
+function TLogFile.StoreFileNameSuffix: Boolean;
+begin
+  Result:=FileNameSuffix<>DEFAULT_FILENAME_SUFFIX;
 end;
 
 (*
@@ -418,62 +477,9 @@ end;
   raise EInvalidPointer.Create('Компонент-хозяин лог-файла равен NULL!');
   end;
 
-  procedure TLogThread.Execute;
   var
-  sXML: string;
-  b: boolean;
-  // XMLDocument: TXMLDocument;
-  // XMLLogkeeperdata: IXMLLogkeeperdataType;
-  // XMLMessage: IXMLMessageType;
   // aCopyData: TCopyDataStruct;
   begin
-  try
-  while not Terminated do
-  begin
-  repeat
-  b:=True;
-  if Assigned(FOwner) then
-  if Assigned(FOwner.XMLStringsList) then
-  if FOwner.XMLStringsList.Count>0 then
-  begin
-  if Assigned(FOwner) then
-  if Assigned(FOwner.XMLStringsList) then
-  if FOwner.XMLStringsList.Count>0 then
-  begin
-  sXML:=FOwner.XMLStringsList.Items[0];
-  Synchronize( procedure begin FOwner.XMLStringsList.Delete(0); end);
-  end;
-
-  if Assigned(FOwner.LogFile) then
-  begin
-  if FOwner.LogFile.Enabled then
-  begin
-  XMLDocument:=TXMLDocument.Create(FOwner);
-  XMLDocument.LoadFromXML(sXML);
-  XMLLogkeeperdata:=GetLogKeeperData(XMLDocument as IXMLDocument); { TODO -cERROR : вот это действие вызывает ошибку!!!! }
-  if XMLLogkeeperdata.Count>0 then
-  begin
-  // Synchronize(
-  // procedure
-  // begin
-  // XMLMessage:=FOwner.LogFile.FLogKeeperData.Add;
-  // .Add(LogData.Message[0])
-  // end);
-  end;
-  FreeAndNil(XMLDocument); { TODO -cERROR : ошибка происходит здесь!!!! }
-  end;
-  end;
-
-  Application.ProcessMessages;
-  b:=FOwner.XMLStringsList.Count<1;
-  end;
-  until b;
-  Sleep(0);
-  end;
-  // если что-то нуна сделать по принудительному окончанию работы потока, это нужно добавить ТУТ
-  except
-  Application.HandleException(Self);
-  end;
   // s:=IntToStr(WMCD_MODALLOG)+';'+s+';'+aMessage+';'+aLogGroupGUID;
   // with aCopyData do
   // begin
@@ -491,7 +497,11 @@ procedure TLogFileThread.Execute;
 var
   sXML: string;
   b: boolean;
+  XMLDocument: TXMLDocument;
+  XMLLogkeeperdata: IXMLLogkeeperdataType;
+  XMLMessageSource, XMLMessageDestination: IXMLMessageType;
 begin
+  NewCOMInitClass;
   inherited;
   try
     while not Terminated do
@@ -508,7 +518,31 @@ begin
                       sXML:=FOwner.Queue.Items[0];
                       Synchronize( procedure begin FOwner.Queue.Delete(0); end);
 
-                      { TODO : добавить код записи полученной строки в файл }
+                      if FOwner.Enabled then
+                        begin
+                          XMLDocument:=TXMLDocument.Create(FOwner.FOwner);
+                          XMLDocument.LoadFromXML(sXML);
+                          XMLLogkeeperdata:=GetLogKeeperData(XMLDocument as IXMLDocument);
+                          if XMLLogkeeperdata.Count>0 then
+                            begin
+                              if FOwner is TLogFile then
+                                if Assigned(TLogFile(FOwner).FLogKeeperData) then
+                                  begin
+                                    Synchronize( procedure begin XMLMessageSource:=XMLLogkeeperdata.Message[0]; XMLMessageDestination:=TLogFile(FOwner).FLogKeeperData.Add; XMLMessageDestination.Index:=XMLMessageSource.Index;
+                                      XMLMessageDestination.Date.Day:=XMLMessageSource.Date.Day; XMLMessageDestination.Date.Month:=XMLMessageSource.Date.Month; XMLMessageDestination.Date.Year:=XMLMessageSource.Date.Year;
+                                      XMLMessageDestination.Time.Hour:=XMLMessageSource.Time.Hour; XMLMessageDestination.Time.Minute:=XMLMessageSource.Time.Minute; XMLMessageDestination.Time.Second:=XMLMessageSource.Time.Second;
+                                      XMLMessageDestination.Time.Msecond:=XMLMessageSource.Time.Msecond; XMLMessageDestination.Host:=XMLMessageSource.Host; XMLMessageDestination.Application.Handle:=XMLMessageSource.Application.Handle;
+                                      XMLMessageDestination.Application.Filename:=XMLMessageSource.Application.Filename; XMLMessageDestination.Application.Filepath:=XMLMessageSource.Application.Filepath;
+                                      XMLMessageDestination.Application.Form.Handle:=XMLMessageSource.Application.Form.Handle; XMLMessageDestination.Application.Form.Name:=XMLMessageSource.Application.Form.Name;
+                                      XMLMessageDestination.Application.Method.Guid:=XMLMessageSource.Application.Method.Guid; XMLMessageDestination.Application.User:=XMLMessageSource.Application.User;
+                                      XMLMessageDestination.MessageType:=XMLMessageSource.MessageType; XMLMessageDestination.Text:=XMLMessageSource.Text; end);
+                                    XMLMessageSource:=nil;
+                                    XMLMessageDestination:=nil;
+                                  end;
+                            end;
+                          XMLLogkeeperdata:=nil;
+                          FreeAndNil(XMLDocument);
+                        end;
 
                     end;
                   b:=(FOwner.Queue.Count<1)or not FOwner.Connected;
@@ -516,8 +550,6 @@ begin
         until b;
         Sleep(0);
       end;
-    // если что-то нуна сделать по принудительному окончанию работы потока, это нужно добавить ТУТ
-    Application.ProcessMessages;
   except
     Application.HandleException(Self);
   end;

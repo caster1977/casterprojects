@@ -12,8 +12,12 @@ uses
   LogKeeperData;
 
 type
+//  TWndFarProc = function: integer; stdcall;
+
   TLogProvider=class(TComponent)
   strict private
+    dwRecipients: DWORD;
+    msgLogKeeperClientQuery: cardinal;
     FEnabled: boolean;
     FGUIDList: TList<string>;
     FUserName: string;
@@ -22,6 +26,8 @@ type
     FCount: longword;
     FBeforeSending: TNotifyEvent;
     FAfterSending: TNotifyEvent;
+    FAllowedTypes: TLogMessagesTypes;
+    prOldWndProc: TWndMethod;
     procedure Send(const aString: string; const aMessageType: TLogMessagesType);
     procedure SetEnabled(const Value: Boolean);
     function GetLocalHostName: string;
@@ -32,14 +38,14 @@ type
     function GetFormName: string;
     property Count: longword read FCount;
     procedure RefreshConnections;
-  private
-    FOwnerForm: TForm;
+    procedure NewWindowProc(var Msg: TMessage);
   strict protected
     procedure DoBeforeSending; virtual;
     procedure DoAfterSending; virtual;
   protected
     procedure Loaded; override;
   public
+    FOwnerForm: TForm;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
@@ -58,6 +64,7 @@ type
     property LogClient: TLogClient read FLogClient write FLogClient;
     property BeforeSending: TNotifyEvent read FBeforeSending write FBeforeSending;
     property AfterSending: TNotifyEvent read FAfterSending write FAfterSending;
+    property AllowedTypes: TLogMessagesTypes read FAllowedTypes write FAllowedTypes default [lmtError, lmtWarning, lmtInfo, lmtSQL];
   end;
 
 procedure register;
@@ -65,8 +72,9 @@ procedure register;
 implementation
 
 uses
-  XMLIntf,
+  uCOMInit,
   XMLDoc,
+  XMLIntf,
   WinSock,
   Controls,
   SysUtils;
@@ -83,16 +91,32 @@ begin
   inherited;
   FEnabled:=False;
   FUserName:='';
+  FAllowedTypes:=[lmtError, lmtWarning, lmtInfo, lmtSQL];
   if AOwner is TForm then
     FOwnerForm:=TForm(AOwner);
   FLogFile:=TLogFile.Create(Self);
   FLogClient:=TLogClient.Create(Self);
   if not(csDesigning in ComponentState) then
-    FGUIDList:=TList<string>.Create;
+    begin
+      FGUIDList:=TList<string>.Create;
+
+      prOldWndProc:=FOwnerForm.WindowProc;
+      FOwnerForm.WindowProc:=NewWindowProc;
+
+      msgLogKeeperClientQuery:=RegisterWindowMessage('msgLogKeeperClientQuery');
+      dwRecipients:=BSM_APPLICATIONS;
+      if Assigned(FOwnerForm) then
+        BroadcastSystemMessage(BSF_IGNORECURRENTTASK or BSF_POSTMESSAGE, @dwRecipients, msgLogKeeperClientQuery, FOwnerForm.Handle, 0);
+    end;
 end;
 
 destructor TLogProvider.Destroy;
 begin
+  if not(csDesigning in ComponentState) then
+    begin
+      if Assigned(FOwnerForm) then
+        FOwnerForm.WindowProc:=prOldWndProc;
+    end;
   FEnabled:=False;
   FreeAndNil(FLogFile);
   FreeAndNil(FLogClient);
@@ -128,123 +152,161 @@ begin
     RefreshConnections;
 end;
 
+procedure TLogProvider.NewWindowProc(var Msg: TMessage);
+begin
+  if Msg.Msg=msgLogKeeperClientQuery then
+    begin
+      Application.MessageBox(PWideChar('Получено сообщение msgLogKeeperClientQuery!'),PWideChar('Информация'));
+//      if Msg.lParam=1 then
+//        hBaseInfo:=Msg.wParam; // обновляем хэндл окна-приёмника
+//      Handled:=True;
+    end;
+
+//    WM_SYSCOMMAND:;
+//      if (assigned(Fmenu))and(FEnabled) then
+//        CallClickhandler(fMenu.Items, message.WParam);
+//    WM_DESTROY:;
+//      DeleteMenuItems;
+  end;
+  prOldWndProc(message);
+end;
+
 procedure TLogProvider.Send(const aString: string; const aMessageType: TLogMessagesType);
 var
   lmd: IXMLLogkeeperdataType;
   lm: IXMLMessageType;
   dtNow: TDateTime;
+  Doc: IXMLDocument;
   wYear, wMonth, wDay, wHour, wMinute, wSecond, wMSecond: word;
   bNeedToSend: boolean;
 begin
+  // NewCOMInitClass;
   // если компонент включен
   if Enabled then
     begin
-      bNeedToSend:=False;
-      if Assigned(FLogFile) then
-        if FLogFile.Enabled then
-          bNeedToSend:=True;
-      if Assigned(FLogClient) then
-        if FLogClient.Enabled then
-          bNeedToSend:=True;
-      if bNeedToSend then
-        begin
-          DoBeforeSending;
+      try
+        bNeedToSend:=False;
+        if Assigned(FLogFile) then
+          if FLogFile.Enabled then
+            bNeedToSend:=True;
+        if Assigned(FLogClient) then
+          if FLogClient.Enabled then
+            bNeedToSend:=True;
+        if bNeedToSend then
+          begin
+            DoBeforeSending;
 
-          dtNow:=Now;
-          DecodeDate(dtNow, wYear, wMonth, wDay);
-          DecodeTime(dtNow, wHour, wMinute, wSecond, wMSecond);
-          Application.ProcessMessages;
+            dtNow:=Now;
+            DecodeDate(dtNow, wYear, wMonth, wDay);
+            DecodeTime(dtNow, wHour, wMinute, wSecond, wMSecond);
+            Application.ProcessMessages;
 
-          // оформление передаваемого сообщения в виде XML-документа
-          lmd:=NewlogKeeperData;
-          if Assigned(lmd) then
-            begin
-              lm:=lmd.Add;
-              if Assigned(lm) then
-                with lm do
-                  begin
-                    Index:=Count;
-                    with Date do
-                      begin
-                        Year:=wYear;
-                        Month:=wMonth;
-                        Day:=wDay;
-                      end;
-                    with Time do
-                      begin
-                        Hour:=wHour;
-                        Minute:=wHour;
-                        Second:=wSecond;
-                        MSecond:=wMSecond;
-                      end;
-                    Host:=GetLocalHostName;
-                    with lm.Application do
-                      begin
-                        Handle:=GetApplicationHandle;
-                        FileName:=GetApplicationFileName;
-                        FilePath:=GetApplicationFilePath;
-                        with Form do
-                          begin
-                            Handle:=GetFormHandle;
-                            name:=GetFormName;
-                          end;
-                        if FGUIDList.Count>0 then
-                          Method.Guid:=FGUIDList.Last
-                        else
-                          raise Exception.Create('Спиоок GUID методов пуст!');
-                        User:=UserName;
-                      end;
-                    MessageType:=aMessageType;
-                    Text:=aString;
-                  end;
+            // оформление передаваемого сообщения в виде XML-документа
+            Doc:=TXMLDocument.Create(Self);
+            Doc.Active:=True;
+            if Doc.Version<>'' then
+              Doc.Version:='1.0';
+            lmd:=GetLogKeeperData(Doc);
 
-              // если включена отправка в файл
-              if Assigned(FLogFile) then
-                with FLogFile do
-                  if Enabled then
+            if Assigned(lmd) then
+              begin
+                lm:=lmd.Add;
+                if Assigned(lm) then
+                  with lm do
                     begin
-                      AppendToQueue(lmd.XML);
-                      Suspended:=False;
+                      index:=Count;
+                      with Date do
+                        begin
+                          Year:=wYear;
+                          Month:=wMonth;
+                          Day:=wDay;
+                        end;
+                      with Time do
+                        begin
+                          Hour:=wHour;
+                          Minute:=wHour;
+                          Second:=wSecond;
+                          MSecond:=wMSecond;
+                        end;
+                      Host:=GetLocalHostName;
+                      with lm.Application do
+                        begin
+                          Handle:=GetApplicationHandle;
+                          FileName:=GetApplicationFileName;
+                          FilePath:=GetApplicationFilePath;
+                          with Form do
+                            begin
+                              Handle:=GetFormHandle;
+                              name:=GetFormName;
+                            end;
+                          if FGUIDList.Count>0 then
+                            Method.Guid:=FGUIDList.Last
+                          else
+                            raise Exception.Create('Спиоок GUID методов пуст!');
+                          User:=UserName;
+                        end;
+                      MessageType:=aMessageType;
+                      Text:=aString;
                     end;
 
-              // если включена отправка в клиента
-              if Assigned(FLogClient) then
-                with FLogClient do
-                  if Enabled then
-                    begin
-                      AppendToQueue(lmd.XML);
-                      Suspended:=False;
-                    end;
-            end;
-          FCount:=FCount+1;
-          DoAfterSending;
-        end;
+                // если включена отправка в файл
+                if Assigned(FLogFile) then
+                  with FLogFile do
+                    if Enabled then
+                      begin
+                        AppendToQueue(lmd.XML);
+                        Suspended:=False;
+                      end;
+
+                // если включена отправка в клиента
+                if Assigned(FLogClient) then
+                  with FLogClient do
+                    if Enabled then
+                      begin
+                        AppendToQueue(lmd.XML);
+                        Suspended:=False;
+                      end;
+              end;
+
+            lmd:=nil;
+            Doc:=nil;
+            FCount:=FCount+1;
+            DoAfterSending;
+          end;
+      except
+        Application.HandleException(Self);
+      end;
     end;
 end;
 
 procedure TLogProvider.SendDebug(const aString: string);
 begin
-  Send(aString, lmtDebug);
+  if lmtDebug in AllowedTypes then
+    Send(aString, lmtDebug);
 end;
 
 procedure TLogProvider.SendError(const aString: string);
 begin
-  Send(aString, lmtError);
+  if lmtError in AllowedTypes then
+    Send(aString, lmtError);
 end;
 
 procedure TLogProvider.SendInfo(const aString: string);
 begin
-  Send(aString, lmtInfo);
+  if lmtInfo in AllowedTypes then
+    Send(aString, lmtInfo);
 end;
 
 procedure TLogProvider.SendSQL(const aString: string);
 begin
-  Send(aString, lmtSQL);
+  if lmtSQL in AllowedTypes then
+    Send(aString, lmtSQL);
 end;
 
 procedure TLogProvider.SendWarning(const aString: string);
 begin
-  Send(aString, lmtWarning);
+  if lmtWarning in AllowedTypes then
+    Send(aString, lmtWarning);
 end;
 
 procedure TLogProvider.SetEnabled(const Value: Boolean);
@@ -275,13 +337,13 @@ begin
     FGUIDList.Add(aGUID)
   else
     raise Exception.Create('Не удалось добавить элемент в список GUID методов из-за некорректной длины строки!');
-  Send('['+aString+']', lmtDebug);
-  Send('Начало процедуры...', lmtDebug);
+  SendDebug('['+aString+']');
+  SendDebug('Начало процедуры...');
 end;
 
 procedure TLogProvider.ExitMethod;
 begin
-  Send('Окончание процедуры.', lmtDebug);
+  SendDebug('Окончание процедуры.');
   if FGUIDList.Count>0 then
     FGUIDList.Delete(FGUIDList.Count-1)
   else
