@@ -12,12 +12,10 @@ uses
   LogKeeperData;
 
 type
-//  TWndFarProc = function: integer; stdcall;
-
   TLogProvider=class(TComponent)
   strict private
     dwRecipients: DWORD;
-    msgLogKeeperClientQuery: cardinal;
+    msgLogKeeperClientQuery, msgLogKeeperClientAnswer: cardinal;
     FEnabled: boolean;
     FGUIDList: TList<string>;
     FUserName: string;
@@ -72,7 +70,6 @@ procedure register;
 implementation
 
 uses
-  uCOMInit,
   XMLDoc,
   XMLIntf,
   WinSock,
@@ -104,9 +101,10 @@ begin
       FOwnerForm.WindowProc:=NewWindowProc;
 
       msgLogKeeperClientQuery:=RegisterWindowMessage('msgLogKeeperClientQuery');
+      msgLogKeeperClientAnswer:=RegisterWindowMessage('msgLogKeeperClientAnswer');
       dwRecipients:=BSM_APPLICATIONS;
       if Assigned(FOwnerForm) then
-        BroadcastSystemMessage(BSF_IGNORECURRENTTASK or BSF_POSTMESSAGE, @dwRecipients, msgLogKeeperClientQuery, FOwnerForm.Handle, 0);
+        BroadcastSystemMessage(BSF_IGNORECURRENTTASK, @dwRecipients, msgLogKeeperClientQuery, FOwnerForm.Handle, 0);
     end;
 end;
 
@@ -154,21 +152,15 @@ end;
 
 procedure TLogProvider.NewWindowProc(var Msg: TMessage);
 begin
-  if Msg.Msg=msgLogKeeperClientQuery then
+  if Msg.Msg=msgLogKeeperClientAnswer then
     begin
-      Application.MessageBox(PWideChar('Получено сообщение msgLogKeeperClientQuery!'),PWideChar('Информация'));
-//      if Msg.lParam=1 then
-//        hBaseInfo:=Msg.wParam; // обновляем хэндл окна-приёмника
-//      Handled:=True;
+      // if Msg.WParam=FOwnerForm.Handle then
+      Application.MessageBox(PWideChar('Получено сообщение msgLogKeeperClientQuery в форму '+FOwnerForm.Name+'!'), PWideChar('Информация'));
+      // if Msg.lParam=1 then
+      // hBaseInfo:=Msg.wParam; // обновляем хэндл окна-приёмника
+      // Handled:=True;
     end;
-
-//    WM_SYSCOMMAND:;
-//      if (assigned(Fmenu))and(FEnabled) then
-//        CallClickhandler(fMenu.Items, message.WParam);
-//    WM_DESTROY:;
-//      DeleteMenuItems;
-  end;
-  prOldWndProc(message);
+  prOldWndProc(Msg);
 end;
 
 procedure TLogProvider.Send(const aString: string; const aMessageType: TLogMessagesType);
@@ -180,7 +172,6 @@ var
   wYear, wMonth, wDay, wHour, wMinute, wSecond, wMSecond: word;
   bNeedToSend: boolean;
 begin
-  // NewCOMInitClass;
   // если компонент включен
   if Enabled then
     begin
