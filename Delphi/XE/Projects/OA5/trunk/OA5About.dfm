@@ -248,7 +248,9 @@ object AboutForm: TAboutForm
     Top = 8
   end
   object Log: TLogProvider
-    LogFile.FileName = 'LogFile.xml'
+    Enabled = True
+    LogFile.Enabled = True
+    LogClient.Enabled = True
     Left = 280
     Top = 208
   end

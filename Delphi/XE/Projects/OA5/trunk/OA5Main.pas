@@ -71,7 +71,6 @@ type
     imState: TImage;
     ilMainFormStateIcons: TImageList;
     Log: TLogProvider;
-    XMLDocument1: TXMLDocument;
     procedure Action_QuitExecute(Sender: TObject);
     procedure Action_AboutExecute(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
