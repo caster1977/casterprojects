@@ -3,9 +3,7 @@ unit OA5Routines;
 interface
 
 uses
-  Classes,
-  MySQLConnection,
-  OA5Types;
+  Classes;
 
 function Routines_GetLocalIP: string;
 function Routines_NormalizeStringForQuery(const Source: string; AddCommas, ReturnNull: boolean): string;

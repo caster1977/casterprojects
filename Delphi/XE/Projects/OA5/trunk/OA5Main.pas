@@ -301,11 +301,11 @@ begin
   // предварительная инициализация компонентов
   THackControl(pbMain).SetParent(StatusBar1);
   SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
-  pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right-PanelRect.Left, PanelRect.Bottom-PanelRect.Top);
+  pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right-PanelRect.Left, PanelRect.Bottom-PanelRect.Top-1);
 
   THackControl(imState).SetParent(StatusBar1);
   SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
-  imState.SetBounds(PanelRect.Left+1, PanelRect.Top+1, PanelRect.Right-PanelRect.Left+1, PanelRect.Bottom-PanelRect.Top+1);
+  imState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
 
   Update_Actions;
 end;
@@ -324,7 +324,6 @@ begin
     begin
       iBusyCounter:=0;
       bFirstRun:=False;
-      // Log.Enabled:=True;
     end;
   Refresh_BusyState;
 
