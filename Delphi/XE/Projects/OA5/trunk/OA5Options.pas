@@ -22,7 +22,7 @@ uses
   Grids,
   ValEdit,
   ComCtrls,
-  OA5Types, LogProvider;
+  OA5Types, uLogProvider;
 
 type
   TStringGridX=class(TStringGrid)

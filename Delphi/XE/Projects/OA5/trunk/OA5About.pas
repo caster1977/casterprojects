@@ -19,7 +19,7 @@ uses
   OA5Types,
   getFVI,
   StdCtrls,
-  LogProvider;
+  uLogProvider;
 
 type
   TAboutForm=class(TForm)
