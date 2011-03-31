@@ -18,7 +18,7 @@ uses
   PlatformDefaultStyleActnCtrls,
   ActnMan,
   ExtCtrls,
-  OA5Types, LogProvider;
+  OA5Types, uLogProvider;
 
 type
   TLoginForm=class(TForm)

@@ -23,7 +23,7 @@ uses
   OA5Configuration,
   ExtCtrls,
   CodeSiteLogging,
-  LogProvider,
+  uLogProvider,
   StdCtrls,
   Sockets,
   IdTCPConnection,
