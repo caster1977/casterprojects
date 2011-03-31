@@ -38,5 +38,8 @@ contains
   uLogProvider in 'uLogProvider.pas',
   LogKeeperData in 'LogKeeperData.pas',
   uCOMInit in 'uCOMInit.pas',
-  uLogClasses in 'uLogClasses.pas';
+  uLogClasses in 'uLogClasses.pas',
+  uRoutines in 'uRoutines.pas',
+  mysql in 'mysql.pas';
+
 end.
