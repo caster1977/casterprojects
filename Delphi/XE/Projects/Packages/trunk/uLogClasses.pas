@@ -103,7 +103,7 @@ implementation
 
 uses
   uCOMInit,
-  LogProvider,
+  uLogProvider,
   XMLDoc,
   XMLIntf,
   SysUtils,
@@ -497,7 +497,7 @@ procedure TLogFileThread.Execute;
 var
   sXML: string;
   b: boolean;
-  XMLDocument: TXMLDocument;
+  XMLDocument: IXMLDocument;
   XMLLogkeeperdata: IXMLLogkeeperdataType;
   XMLMessageSource, XMLMessageDestination: IXMLMessageType;
 begin
@@ -541,7 +541,7 @@ begin
                                   end;
                             end;
                           XMLLogkeeperdata:=nil;
-                          FreeAndNil(XMLDocument);
+                          XMLDocument:=nil;
                         end;
 
                     end;

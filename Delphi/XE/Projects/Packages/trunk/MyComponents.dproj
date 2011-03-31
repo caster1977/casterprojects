@@ -53,7 +53,7 @@
 			<DCCReference Include="SysMenu.pas"/>
 			<DCCReference Include="fisSysMenu.pas"/>
 			<DCCReference Include="ListViewEx.pas"/>
-			<DCCReference Include="LogProvider.pas"/>
+			<DCCReference Include="uLogProvider.pas"/>
 			<DCCReference Include="LogKeeperData.pas"/>
 			<DCCReference Include="uCOMInit.pas"/>
 			<DCCReference Include="uLogClasses.pas"/>

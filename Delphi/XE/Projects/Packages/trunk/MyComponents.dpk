@@ -35,10 +35,8 @@ contains
   SysMenu in 'SysMenu.pas',
   fisSysMenu in 'fisSysMenu.pas',
   ListViewEx in 'ListViewEx.pas',
-  LogProvider in 'LogProvider.pas',
+  uLogProvider in 'uLogProvider.pas',
   LogKeeperData in 'LogKeeperData.pas',
   uCOMInit in 'uCOMInit.pas',
   uLogClasses in 'uLogClasses.pas';
-
 end.
-

@@ -1,4 +1,4 @@
-unit LogProvider;
+unit uLogProvider;
 
 interface
 
@@ -240,7 +240,6 @@ begin
                       Text:=aString;
                     end;
 
-                // если включена отправка в файл
                 if Assigned(FLogFile) then
                   with FLogFile do
                     if Enabled then
@@ -249,7 +248,6 @@ begin
                         Suspended:=False;
                       end;
 
-                // если включена отправка в клиента
                 if Assigned(FLogClient) then
                   with FLogClient do
                     if Enabled then
@@ -257,6 +255,7 @@ begin
                         AppendToQueue(lmd.XML);
                         Suspended:=False;
                       end;
+                lm:=nil;
               end;
 
             lmd:=nil;
