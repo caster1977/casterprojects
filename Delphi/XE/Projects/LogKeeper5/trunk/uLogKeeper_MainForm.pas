@@ -14,7 +14,9 @@ uses
   Dialogs,
   uLogProvider,
   ExtCtrls,
-  ComCtrls, ImgList;
+  ComCtrls,
+  ImgList,
+  AppEvnts;
 
 type
   TMainForm=class(TForm)
@@ -23,7 +25,10 @@ type
     pbMain: TProgressBar;
     imState: TImage;
     ilMainFormStateIcons: TImageList;
+    ApplicationEvents1: TApplicationEvents;
     procedure FormShow(Sender: TObject);
+    procedure ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
+    procedure FormCreate(Sender: TObject);
   strict private
     bFirstRun: boolean;
     iBusyCounter: integer;
@@ -40,6 +45,7 @@ type
 
 var
   MainForm: TMainForm;
+  msgLogKeeperClientQuery, msgLogKeeperClientAnswer: cardinal;
 
 implementation
 
@@ -138,6 +144,16 @@ begin
     end;
 end;
 
+procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
+begin
+  if Msg.message=msgLogKeeperClientQuery then
+    begin
+      PostMessage(Msg.wParam, msgLogKeeperClientAnswer, Handle, 0);
+      Handled:=True;
+      MessageBox(Handle, PWideChar('Получено сообщение msgLogKeeperClientQuery в форму '+Name+'!'), PWideChar('LogKeeper - Информация!'), MB_OK+MB_ICONINFORMATION+MB_DEFBUTTON1);
+    end;
+end;
+
 procedure TMainForm.Dec_BusyState;
 begin
   with MainForm do
@@ -147,6 +163,10 @@ begin
         iBusyCounter:=0;
       Refresh_BusyState;
     end;
+end;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
@@ -163,4 +183,7 @@ begin
   ProcedureFooter;
 end;
 
+initialization
+  msgLogKeeperClientQuery:=RegisterWindowMessage('msgLogKeeperClientQuery');
+  msgLogKeeperClientAnswer:=RegisterWindowMessage('msgLogKeeperClientAnswer');
 end.
