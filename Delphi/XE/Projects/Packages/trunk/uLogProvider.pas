@@ -97,14 +97,18 @@ begin
     begin
       FGUIDList:=TList<string>.Create;
 
+      // перехват обработчика сообщений
       prOldWndProc:=FOwnerForm.WindowProc;
       FOwnerForm.WindowProc:=NewWindowProc;
 
+      // регистрация глобальных переменных
       msgLogKeeperClientQuery:=RegisterWindowMessage('msgLogKeeperClientQuery');
       msgLogKeeperClientAnswer:=RegisterWindowMessage('msgLogKeeperClientAnswer');
+
+      // отправка широковещательного сообщения клиентам на локальном компе
       dwRecipients:=BSM_APPLICATIONS;
       if Assigned(FOwnerForm) then
-        BroadcastSystemMessage(BSF_IGNORECURRENTTASK, @dwRecipients, msgLogKeeperClientQuery, FOwnerForm.Handle, 0);
+        BroadcastSystemMessage(BSF_IGNORECURRENTTASK or BSF_POSTMESSAGE, @dwRecipients, msgLogKeeperClientQuery, FOwnerForm.Handle, 0);
     end;
 end;
 
@@ -155,7 +159,7 @@ begin
   if Msg.Msg=msgLogKeeperClientAnswer then
     begin
       // if Msg.WParam=FOwnerForm.Handle then
-      Application.MessageBox(PWideChar('Получено сообщение msgLogKeeperClientQuery в форму '+FOwnerForm.Name+'!'), PWideChar('Информация'));
+      MessageBox(FOwnerForm.Handle, PWideChar('Получено сообщение msgLogKeeperClientAnswer в форму '+FOwnerForm.Name+'!'), PWideChar('OA5 - Информация!'), MB_OK+MB_ICONINFORMATION+MB_DEFBUTTON1);
       // if Msg.lParam=1 then
       // hBaseInfo:=Msg.wParam; // обновляем хэндл окна-приёмника
       // Handled:=True;
