@@ -20,6 +20,7 @@ type
     procedure SetPassword(const Value: string);
     procedure SetPhone(const Value: string);
   public
+    constructor Create;
     property Logged: boolean read FLogged write SetLogged default False;
     property ID: integer read FID write SetID nodefault;
     property Login: string read FLogin write SetLogin nodefault;
@@ -29,7 +30,6 @@ type
     property Phone: string read FPhone write SetPhone nodefault;
     property Editor: boolean read FEditor write FEditor default False;
     property Administrator: boolean read FAdministrator write FAdministrator default False;
-    constructor Create;
   end;
 
 implementation
