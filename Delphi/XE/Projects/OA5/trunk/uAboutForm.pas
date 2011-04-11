@@ -1,4 +1,4 @@
-unit OA5About;
+unit uAboutForm;
 
 interface
 
@@ -58,7 +58,7 @@ implementation
 
 uses
   ShellAPI,
-  OA5Main,
+  uMainForm,
   OA5Consts;
 
 (*

@@ -1,4 +1,4 @@
-unit OA5Login;
+unit uLoginForm;
 
 interface
 
@@ -54,7 +54,7 @@ implementation
 {$R *.dfm}
 
 uses
-  OA5Main,
+  uMainForm,
   OA5Routines,
   OA5Consts;
 

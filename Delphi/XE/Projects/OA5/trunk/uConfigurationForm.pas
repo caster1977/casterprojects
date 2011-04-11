@@ -1,5 +1,5 @@
 {$WARN UNIT_PLATFORM OFF}
-unit OA5Options;
+unit uConfigurationForm;
 
 interface
 
@@ -246,10 +246,10 @@ implementation
 
 uses
   FileCtrl,
-  OA5Main,
+  uMainForm,
   mysql,
   OA5Routines,
-  OA5Configuration,
+  uConfigurationClass,
   OA5Consts;
 
 procedure TStringGridX.MoveRow(FromIndex, ToIndex: Integer);

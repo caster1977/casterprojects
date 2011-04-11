@@ -1,4 +1,4 @@
-unit MySQLConnection;
+unit uMySQLConnectionClass;
 
 interface
 
