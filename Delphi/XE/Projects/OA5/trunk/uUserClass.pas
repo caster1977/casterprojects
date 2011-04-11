@@ -1,4 +1,4 @@
-unit OA5User;
+unit uUserClass;
 
 interface
 

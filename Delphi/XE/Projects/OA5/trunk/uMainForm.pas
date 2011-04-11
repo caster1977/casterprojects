@@ -1,4 +1,4 @@
-unit OA5Main;
+unit uMainForm;
 
 interface
 
@@ -19,8 +19,8 @@ uses
   ActnMan,
   ImgList,
   OA5Types,
-  OA5User,
-  OA5Configuration,
+  uUserClass,
+  uConfigurationClass,
   ExtCtrls,
   CodeSiteLogging,
   uLogProvider,
@@ -111,8 +111,8 @@ implementation
 
 uses
   CommCtrl,
-  OA5About,
-  OA5Options,
+  uAboutForm,
+  uConfigurationForm,
   OA5Consts,
   OA5Routines;
 

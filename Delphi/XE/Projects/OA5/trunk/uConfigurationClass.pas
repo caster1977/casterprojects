@@ -1,9 +1,9 @@
-unit OA5Configuration;
+unit uConfigurationClass;
 
 interface
 
 uses
-  MySQLConnection;
+  uMySQLConnectionClass;
 
 type
   TConfiguration=class
