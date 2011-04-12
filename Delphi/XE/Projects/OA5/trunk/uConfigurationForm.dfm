@@ -132,6 +132,7 @@ object OptionsForm: TOptionsForm
           ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
           ' '#1075#1083#1072#1074#1085#1086#1075#1086' '#1086#1082#1085#1072
           ' '#1087#1086#1083#1086#1078#1077#1085#1080#1103' '#1076#1080#1072#1083#1086#1075#1086#1074#1099#1093' '#1086#1082#1086#1085
+          ' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1080
           ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093' '#1091#1089#1083#1091#1075#1080
           ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1089#1080#1089#1090#1077#1084#1099' '#1086#1073#1084#1077#1085#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1103#1084#1080
           ' '#1087#1088#1086#1094#1077#1076#1091#1088#1099' '#1083#1086#1075#1080#1088#1086#1074#1072#1085#1080#1103
@@ -200,43 +201,75 @@ object OptionsForm: TOptionsForm
         object ts1: TTabSheet
           Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
-          object vleInterface: TValueListEditor
+          object chkbxShowAboutWindowAtLaunch: TCheckBox
             Left = 0
             Top = 0
             Width = 606
-            Height = 212
-            Align = alTop
-            Strings.Strings = (
-              #1053#1077' '#1086#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1086#1082#1085#1086' "'#1054' '#1087#1088#1086#1075#1088#1072#1084#1084#1077'..." '#1087#1088#1080' '#1079#1072#1087#1091#1089#1082#1077'='#1053#1077#1090
-              #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' ID '#1079#1072#1087#1080#1089#1077#1081' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093' '#1087#1088#1080' '#1088#1072#1073#1086#1090#1077' '#1087#1088#1086#1075#1088#1072#1084#1084#1099'='#1053#1077#1090
-              #1058#1088#1077#1073#1086#1074#1072#1090#1100' '#1087#1086#1076#1090#1074#1077#1088#1078#1076#1077#1085#1080#1077' '#1087#1088#1080' '#1074#1099#1093#1086#1076#1077' '#1080#1079' '#1087#1088#1086#1075#1088#1072#1084#1084#1099'='#1044#1072
-              #1047#1072#1087#1091#1089#1082#1072#1090#1100' '#1087#1088#1086#1075#1088#1072#1084#1091' '#1087#1088#1080' '#1089#1090#1072#1088#1090#1077' Windows='#1044#1072
-              
-                #1055#1086#1076#1072#1074#1072#1090#1100' '#1079#1074#1091#1082#1086#1074#1086#1081' '#1089#1080#1075#1085#1072#1083' '#1087#1088#1080' '#1079#1072#1074#1077#1088#1096#1077#1085#1080#1080' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103' '#1076#1083#1080#1090#1077#1083#1100#1085#1086#1075#1086' '#1076 +
-                #1077#1081#1089#1090#1074#1080#1103'='#1044#1072
-              #1055#1088#1086#1082#1088#1091#1095#1080#1074#1072#1090#1100' '#1086#1082#1085#1086' '#1087#1088#1086#1090#1086#1082#1086#1083#1072' '#1082' '#1087#1086#1089#1083#1077#1076#1085#1077#1084#1091' '#1101#1083#1077#1084#1077#1085#1090#1091' '#1089#1087#1080#1089#1082#1072'='#1044#1072
-              #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100' '#1091#1082#1072#1079#1072#1085#1085#1099#1081' '#1089#1087#1088#1072#1074#1086#1095#1085#1099#1081' '#1092#1072#1081#1083'=')
+            Height = 17
+            Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1086#1082#1085#1086' "'#1054' '#1087#1088#1086#1075#1088#1072#1084#1084#1077'..." '#1087#1088#1080' '#1079#1072#1087#1091#1089#1082#1077
             TabOrder = 0
-            TitleCaptions.Strings = (
-              #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1087#1072#1088#1072#1084#1077#1090#1088#1072
-              #1047#1085#1072#1095#1077#1085#1080#1077)
-            ColWidths = (
-              414
-              186)
+          end
+          object chkbxShowToolbarAtLaunch: TCheckBox
+            Left = 0
+            Top = 23
+            Width = 606
+            Height = 17
+            Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1087#1072#1085#1077#1083#1100' '#1082#1085#1086#1087#1086#1082' '#1087#1088#1080' '#1079#1072#1087#1091#1089#1082#1077' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+            TabOrder = 1
+          end
+          object chkbxShowStatusbarAtLaunch: TCheckBox
+            Left = 0
+            Top = 46
+            Width = 606
+            Height = 17
+            Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1087#1072#1085#1077#1083#1100' '#1089#1090#1072#1090#1091#1089#1072' '#1087#1088#1080' '#1079#1072#1087#1091#1089#1082#1077' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+            TabOrder = 2
+          end
+          object chkbxShowEditboxHints: TCheckBox
+            Left = 0
+            Top = 69
+            Width = 606
+            Height = 17
+            Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1074#1089#1087#1083#1099#1074#1072#1102#1097#1080#1077' '#1087#1086#1076#1089#1082#1072#1079#1082#1080' '#1076#1083#1103' '#1087#1086#1083#1077#1081' '#1074#1074#1086#1076#1072
+            TabOrder = 3
+          end
+          object chkbxShowCommonSearchEditbox: TCheckBox
+            Left = 0
+            Top = 92
+            Width = 606
+            Height = 17
+            Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1077#1076#1080#1085#1086#1077' '#1087#1086#1083#1077' '#1074#1074#1086#1076#1072' '#1076#1083#1103' '#1087#1086#1080#1089#1082#1072' '#1076#1072#1085#1085#1099#1093
+            TabOrder = 4
+          end
+          object chkbxShowID: TCheckBox
+            Left = 0
+            Top = 115
+            Width = 606
+            Height = 17
+            Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1087#1086#1083#1077' ID '#1079#1072#1087#1080#1089#1077#1081' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093' '#1087#1088#1080' '#1088#1072#1073#1086#1090#1077' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+            TabOrder = 5
+          end
+          object chkbxUseMultibuffer: TCheckBox
+            Left = 0
+            Top = 138
+            Width = 606
+            Height = 17
+            Caption = #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100' '#1084#1091#1083#1100#1090#1080#1073#1091#1092#1077#1088' '#1076#1083#1103' '#1086#1087#1077#1088#1072#1094#1080#1081' '#1082#1086#1087#1080#1088#1086#1074#1072#1085#1080#1103' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1081
+            TabOrder = 6
+          end
+          object chkbxShowConfirmationOnQuit: TCheckBox
+            Left = 0
+            Top = 161
+            Width = 606
+            Height = 17
+            Caption = #1058#1088#1077#1073#1086#1074#1072#1090#1100' '#1087#1086#1076#1090#1074#1077#1088#1078#1076#1077#1085#1080#1077' '#1087#1088#1080' '#1074#1099#1093#1086#1076#1077' '#1080#1079' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+            TabOrder = 7
           end
         end
         object ts4: TTabSheet
           Caption = ' '#1074#1077#1076#1077#1085#1080#1103' '#1087#1088#1086#1090#1086#1082#1086#1083#1072' '#1088#1072#1073#1086#1090#1099
           ImageIndex = 1
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Bevel4: TBevel
             Left = 0
             Top = 25
@@ -287,7 +320,7 @@ object OptionsForm: TOptionsForm
             Width = 257
             Height = 17
             Caption = #1074#1099#1074#1086#1076#1080#1090#1100' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1086#1085#1085#1099#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
-            TabOrder = 0
+            TabOrder = 1
           end
           object chkbxKeepWarningLog: TCheckBox
             Left = 10
@@ -295,7 +328,7 @@ object OptionsForm: TOptionsForm
             Width = 257
             Height = 17
             Caption = #1074#1099#1074#1086#1076#1080#1090#1100' '#1074#1072#1078#1085#1099#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
-            TabOrder = 1
+            TabOrder = 2
           end
           object chkbxKeepErrorLog: TCheckBox
             Left = 10
@@ -303,7 +336,7 @@ object OptionsForm: TOptionsForm
             Width = 257
             Height = 17
             Caption = #1074#1099#1074#1086#1076#1080#1090#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1103' '#1086#1073' '#1086#1096#1080#1073#1082#1072#1093
-            TabOrder = 2
+            TabOrder = 3
           end
           object chkbxKeepSQLLog: TCheckBox
             Left = 10
@@ -311,7 +344,7 @@ object OptionsForm: TOptionsForm
             Width = 257
             Height = 17
             Caption = #1074#1099#1074#1086#1076#1080#1090#1100' '#1090#1077#1082#1089#1090' SQL-'#1079#1072#1087#1088#1086#1089#1086#1074
-            TabOrder = 3
+            TabOrder = 4
           end
           object chkbxFlushLogOnStringsQuantity: TCheckBox
             Left = 314
@@ -319,7 +352,7 @@ object OptionsForm: TOptionsForm
             Width = 195
             Height = 17
             Caption = #1087#1088#1080' '#1076#1086#1089#1090#1080#1078#1077#1085#1080#1080' '#1082#1086#1083#1080#1095#1077#1089#1090#1074#1072' '#1089#1090#1088#1086#1082
-            TabOrder = 5
+            TabOrder = 7
             OnClick = chkbxFlushLogOnStringsQuantityClick
           end
           object chkbxFlushLogOnExit: TCheckBox
@@ -328,14 +361,14 @@ object OptionsForm: TOptionsForm
             Width = 257
             Height = 17
             Caption = #1087#1088#1080' '#1079#1072#1074#1077#1088#1096#1077#1085#1080#1080' '#1088#1072#1073#1086#1090#1099' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
-            TabOrder = 4
+            TabOrder = 6
           end
           object edbxFlushLogOnStringsQuantity: TEdit
             Left = 541
             Top = 79
             Width = 56
             Height = 21
-            TabOrder = 6
+            TabOrder = 8
             Text = '10000'
             OnKeyPress = edbxFlushLogOnStringsQuantityKeyPress
           end
@@ -345,7 +378,7 @@ object OptionsForm: TOptionsForm
             Width = 257
             Height = 17
             Caption = #1087#1088#1080' '#1086#1087#1077#1088#1072#1094#1080#1080' '#1086#1095#1080#1089#1090#1082#1080' '#1087#1088#1086#1090#1086#1082#1086#1083#1072
-            TabOrder = 7
+            TabOrder = 9
           end
           object chkbxFlushLogOnApply: TCheckBox
             Left = 314
@@ -353,7 +386,7 @@ object OptionsForm: TOptionsForm
             Width = 257
             Height = 17
             Caption = #1087#1088#1080' '#1085#1072#1078#1072#1090#1080#1080' '#1082#1085#1086#1087#1082#1080' "'#1055#1088#1080#1084#1077#1085#1080#1090#1100'"'
-            TabOrder = 8
+            TabOrder = 10
           end
           object chkbxKeepDebugLog: TCheckBox
             Left = 10
@@ -361,7 +394,7 @@ object OptionsForm: TOptionsForm
             Width = 257
             Height = 17
             Caption = #1074#1099#1074#1086#1076#1080#1090#1100' '#1086#1090#1083#1072#1076#1086#1095#1085#1091#1102' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1102
-            TabOrder = 9
+            TabOrder = 5
           end
           object chkbxCustomLogClientFile: TCheckBox
             Left = 0
@@ -369,7 +402,7 @@ object OptionsForm: TOptionsForm
             Width = 300
             Height = 17
             Caption = #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100' '#1074#1085#1077#1096#1085#1080#1081' '#1082#1083#1080#1077#1085#1090' '#1087#1088#1086#1090#1086#1082#1086#1083#1080#1088#1086#1074#1072#1085#1080#1103':'
-            TabOrder = 10
+            TabOrder = 11
             OnClick = chkbxCustomLogClientFileClick
           end
           object edbxCustomLogClientFile: TEdit
@@ -379,7 +412,7 @@ object OptionsForm: TOptionsForm
             Height = 21
             Enabled = False
             ReadOnly = True
-            TabOrder = 11
+            TabOrder = 12
           end
           object btnChoiseCustomLogClientFile: TButton
             Left = 584
@@ -388,7 +421,7 @@ object OptionsForm: TOptionsForm
             Height = 21
             Cursor = crHandPoint
             Action = Action_ChooseLogClient
-            TabOrder = 12
+            TabOrder = 13
           end
           object chkbxUseLog: TCheckBox
             Left = 0
@@ -396,7 +429,7 @@ object OptionsForm: TOptionsForm
             Width = 300
             Height = 17
             Caption = #1042#1077#1089#1090#1080' '#1083#1086#1075' '#1088#1072#1073#1086#1090#1099' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
-            TabOrder = 13
+            TabOrder = 0
             OnClick = chkbxUseLogClick
           end
         end
@@ -404,10 +437,6 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1087#1086#1083#1086#1078#1077#1085#1080#1103' '#1076#1080#1072#1083#1086#1075#1086#1074#1099#1093' '#1086#1082#1086#1085
           ImageIndex = 8
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object ScrollBox1: TScrollBox
             Left = 0
             Top = 0
@@ -1015,10 +1044,6 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1087#1088#1086#1094#1077#1076#1091#1088#1099' '#1083#1086#1075#1080#1088#1086#1074#1072#1085#1080#1103
           ImageIndex = 7
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object chkbxStoreLastLogin: TCheckBox
             Left = 0
             Top = 0
@@ -1053,10 +1078,6 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093' '#1091#1089#1083#1091#1075#1080
           ImageIndex = 1
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object vleRNE4SERVER: TValueListEditor
             Left = 0
             Top = 0
@@ -1082,10 +1103,6 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1089#1080#1089#1090#1077#1084#1099' '#1086#1073#1084#1077#1085#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1103#1084#1080
           ImageIndex = 4
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object vleRNE4MESSAGESSERVER: TValueListEditor
             Left = 0
             Top = 0
@@ -1111,10 +1128,6 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1092#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1103' '#1086#1090#1095#1105#1090#1086#1074
           ImageIndex = 3
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Bevel3: TBevel
             Left = 0
             Top = 0
@@ -1190,18 +1203,16 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1089#1087#1080#1089#1082#1072' '#1072#1074#1090#1086#1079#1072#1084#1077#1085#1099
           ImageIndex = 5
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object lblAutoReplaceSorry: TLabel
             Left = 0
             Top = 0
-            Width = 3
-            Height = 13
+            Width = 606
+            Height = 213
             Align = alClient
             Alignment = taCenter
             Layout = tlCenter
+            ExplicitWidth = 3
+            ExplicitHeight = 13
           end
           object sgAutoReplaceList: TStringGrid
             Left = 0
@@ -1228,44 +1239,78 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1087#1088#1086#1095#1080#1077
           ImageIndex = 6
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object lblGetMessagesCycleDuration: TLabel
-            Left = 394
-            Top = 3
+            Left = 376
+            Top = 55
             Width = 30
             Height = 13
             Caption = #1084#1080#1085#1091#1090
           end
           object chkbxGetMessages: TCheckBox
             Left = 0
-            Top = 2
-            Width = 313
+            Top = 54
+            Width = 295
             Height = 17
             Caption = #1040#1074#1090#1086#1084#1072#1090#1080#1095#1077#1089#1082#1080' '#1087#1088#1086#1074#1077#1088#1103#1090#1100' '#1074#1093#1086#1076#1103#1097#1080#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103' '#1088#1072#1079' '#1074
-            TabOrder = 0
+            TabOrder = 2
             OnClick = chkbxGetMessagesClick
           end
           object edbxGetMessagesCycleDuration: TEdit
-            Left = 319
-            Top = 0
+            Left = 301
+            Top = 52
             Width = 69
             Height = 21
-            TabOrder = 1
+            TabOrder = 3
             OnChange = edbxGetMessagesCycleDurationChange
             OnKeyPress = edbxGetMessagesCycleDurationKeyPress
+          end
+          object chkbxCustomHelpFile: TCheckBox
+            Left = 0
+            Top = 81
+            Width = 238
+            Height = 17
+            Caption = #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100' '#1091#1082#1072#1079#1072#1085#1085#1099#1081' '#1089#1087#1088#1072#1074#1086#1095#1085#1099#1081' '#1092#1072#1081#1083
+            TabOrder = 4
+          end
+          object edbxCustomHelpFile: TEdit
+            Left = 244
+            Top = 79
+            Width = 334
+            Height = 21
+            Enabled = False
+            TabOrder = 5
+          end
+          object btnChoiseCustomHelpFile: TButton
+            Left = 584
+            Top = 79
+            Width = 22
+            Height = 21
+            Caption = '...'
+            TabOrder = 6
+          end
+          object chkbxLaunchAtStartup: TCheckBox
+            Left = 0
+            Top = 0
+            Width = 238
+            Height = 17
+            Caption = #1047#1072#1087#1091#1089#1082#1072#1090#1100' '#1087#1088#1086#1075#1088#1072#1084#1091' '#1087#1088#1080' '#1089#1090#1072#1088#1090#1077' Windows'
+            TabOrder = 0
+          end
+          object chkbxPlaySoundOnComplete: TCheckBox
+            Left = 0
+            Top = 27
+            Width = 238
+            Height = 17
+            Caption = 
+              #1055#1086#1076#1072#1074#1072#1090#1100' '#1079#1074#1091#1082#1086#1074#1086#1081' '#1089#1080#1075#1085#1072#1083' '#1087#1088#1080' '#1079#1072#1074#1077#1088#1096#1077#1085#1080#1080' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103' '#1076#1083#1080#1090#1077#1083#1100#1085#1086#1075#1086' '#1076 +
+              #1077#1081#1089#1090#1074#1080#1103
+            TabOrder = 1
           end
         end
         object ts10: TTabSheet
           Caption = ' '#1075#1083#1072#1074#1085#1086#1075#1086' '#1086#1082#1085#1072
           ImageIndex = 9
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object lblMainFormPosition: TLabel
             Left = 11
             Top = 3
@@ -1359,6 +1404,89 @@ object OptionsForm: TOptionsForm
             TabOrder = 5
           end
         end
+        object ts11: TTabSheet
+          Caption = ' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1080
+          ImageIndex = 10
+          TabVisible = False
+          object lbOrganizationPanelHeight: TLabel
+            Left = 11
+            Top = 3
+            Width = 143
+            Height = 13
+            Caption = #1042#1099#1089#1086#1090#1072' '#1087#1072#1085#1077#1083#1080' '#1086#1088#1075#1072#1085#1080#1079#1072#1094#1080#1081
+          end
+          object lbDataPanelWidth: TLabel
+            Left = 11
+            Top = 30
+            Width = 121
+            Height = 13
+            Caption = #1064#1080#1088#1080#1085#1072' '#1087#1072#1085#1077#1083#1080' '#1076#1072#1085#1085#1099#1093
+          end
+          object edbxOrganizationPanelHeight: TEdit
+            Left = 360
+            Top = 0
+            Width = 81
+            Height = 21
+            Enabled = False
+            MaxLength = 4
+            TabOrder = 0
+          end
+          object edbxDataPanelWidth: TEdit
+            Left = 360
+            Top = 27
+            Width = 81
+            Height = 21
+            TabOrder = 2
+          end
+          object chkbxOrganizationPanelHalfHeight: TCheckBox
+            Left = 447
+            Top = 2
+            Width = 156
+            Height = 17
+            Caption = #1087#1086#1083#1086#1074#1080#1085#1072' '#1074#1099#1089#1086#1090#1099' '#1086#1082#1085#1072
+            TabOrder = 1
+          end
+          object chkbxDataPanelHalfWidth: TCheckBox
+            Left = 447
+            Top = 29
+            Width = 156
+            Height = 17
+            Caption = #1087#1086#1083#1086#1074#1080#1085#1072' '#1096#1080#1088#1080#1085#1099' '#1086#1082#1085#1072
+            TabOrder = 3
+          end
+          object chkbxShowDataInOtherInfoPanel: TCheckBox
+            Left = 11
+            Top = 54
+            Width = 592
+            Height = 17
+            Caption = #1042' '#1088#1077#1078#1080#1084#1077' '#1087#1088#1086#1089#1084#1086#1090#1088#1072' '#1087#1086#1082#1072#1079#1099#1074#1072#1090#1100' '#1076#1072#1085#1085#1099#1077' '#1074' '#1086#1082#1085#1077' '#1087#1088#1086#1095#1077#1081' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1080
+            TabOrder = 4
+          end
+          object chkbxShowMeasuresListAsRichEdit: TCheckBox
+            Left = 11
+            Top = 77
+            Width = 592
+            Height = 17
+            Caption = #1042' '#1088#1077#1078#1080#1084#1077' '#1087#1088#1086#1089#1084#1086#1090#1088#1072' '#1086#1073#1098#1077#1076#1080#1085#1103#1090#1100' '#1084#1077#1088#1086#1087#1088#1103#1090#1080#1103' '#1074' '#1086#1073#1097#1080#1081' '#1089#1087#1080'c'#1086#1082
+            TabOrder = 5
+          end
+          object chkbxMarkSearchedStrings: TCheckBox
+            Left = 11
+            Top = 100
+            Width = 582
+            Height = 17
+            Caption = #1042' '#1088#1077#1078#1080#1084#1077' '#1087#1088#1086#1089#1084#1086#1090#1088#1072' '#1074#1099#1076#1077#1083#1103#1090#1100' '#1080#1089#1082#1086#1084#1099#1077' '#1092#1088#1072#1075#1084#1077#1085#1090#1099' '#1089#1090#1088#1086#1082' '
+            TabOrder = 6
+          end
+          object chkbxPutTownAtTheEnd: TCheckBox
+            Left = 11
+            Top = 123
+            Width = 592
+            Height = 17
+            Caption = #1055#1086#1084#1077#1089#1090#1080#1090#1100' '#1085#1072#1079#1074#1072#1085#1080#1077' '#1075#1086#1088#1086#1076#1072' '#1074' '#1082#1086#1085#1077#1094' '#1089#1090#1088#1086#1082#1080' '#1072#1076#1088#1077#1089#1072
+            TabOrder = 7
+          end
+        end
       end
     end
   end
@@ -1438,7 +1566,7 @@ object OptionsForm: TOptionsForm
     Left = 304
     Top = 296
     Bitmap = {
-      494C010106000800C00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800D40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1713,7 +1841,7 @@ object OptionsForm: TOptionsForm
     Enabled = True
     LogFile.Enabled = True
     LogClient.Enabled = True
-    Left = 304
-    Top = 240
+    Left = 568
+    Top = 248
   end
 end

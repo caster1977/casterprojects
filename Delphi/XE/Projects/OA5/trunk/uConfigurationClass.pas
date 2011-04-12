@@ -3,29 +3,85 @@ unit uConfigurationClass;
 interface
 
 uses
-  uMySQLConnectionClass;
+  uMySQLConnectionClass, LogKeeperData, Types;
 
 type
+  TReportFolders=(rfTempFolder, rfApplicationFolder, rfCustomFolder);
+
   TConfiguration=class
+  type
+    TFormPosition= record
+      bCenter: boolean;
+      x, y: integer;
+    end;
   strict private
-    FUseLog: boolean; // нужно ли вести лог работы программы
-    FKeepErrorLog: boolean; // нужно ли вести лог сообщений типа error
-    FKeepWarningLog: boolean; // нужно ли вести лог сообщений типа warning
-    FKeepInfoLog: boolean; // нужно ли вести лог сообщений типа info
-    FKeepSQLLog: boolean; // нужно ли вести лог запросов MySQL
-    FKeepDebugLog: boolean; // нужно ли вести лог отладочной информации
-    FStoreLastLogin: boolean; // нужно ли хранить последний введённый логин
-    FStoreLastPassword: boolean; // нужно ли хранить последний введённый пароль
-    FAutoLogon: boolean; // нужно ли выполнять автологирование
-    procedure SetKeepErrorLog(const Value: boolean);
+    // вкладка "настройки интерфейса"
+    FShowAboutWindowAtLaunch: boolean; // Отображать окно "О программе..." при запуске
+    FShowToolbarAtLaunch: boolean; // Отображать панель кнопок при запуске программы
+    FShowStatusbarAtLaunch: boolean; // Отображать панель статуса при запуске программы
+    FShowEditboxHints: boolean; // Отображать всплывающие подсказки для полей ввода
+    FShowCommonSearchEditbox: boolean; // Отображать единое поле ввода для поиска данных
+    FShowID: boolean; // Отображать поле ID записей базы данных при работе программы
+    FUseMultibuffer: boolean; // Использовать мультибуфер для операций копирования мероприятий
+    FShowConfirmationOnQuit: boolean; // Требовать подтверждение при выходе из программы
+
+    // вкладка "настройки ведения протокола работы"
+    FUseLog: boolean; // Вести лог работы программы
+    FKeepLogTypes: TLogMessagesTypes; // выводить сообщения перечисленных типов
+    FFlushLogOnExit: boolean; // Сбрасывать протокол работы в текстовый файл при завершении работы программы
+    FFlushLogOnStrings: boolean; // Сбрасывать протокол работы в текстовый файл при достижении количества строк
+    FFlushLogOnStringsQuantity: word; // Сбрасывать протокол работы в текстовый файл при достижении количества строк (непосредственно количество)
+    FFlushLogOnClearingLog: boolean; // Сбрасывать протокол работы в текстовый файл при операции очистки протокола
+    FFlushLogOnApply: boolean; // Сбрасывать протокол работы в текстовый файл при нажатии кнопки "Применить"
+    FCustomLogClientFile: boolean; // Использовать внешний клиент протоколирования
+    FCustomLogClientFileName: string; // имя файла внешнего клиента протоколирования
+
+    // вкладка "настройки положения диалоговых окон"
+    FMainFormPosition,
+    FLoginFormPosition,
+    FOptionsFormPosition,
+    FUsersFormPosition,
+    FSetPasswordFormPosition,
+    FStatisticFormPosition,
+    FMaintenanceFormPosition,
+    FClearingFormPosition,
+    FViewPostListFormPosition,
+    FCreateViewPostFormPosition,
+    FPhonesFormPosition,
+    FAddEditPhoneFormPosition,
+    FAddMassMsrFormPosition: TFormPosition;
+
+    // вкладка "настройки процедуры логирования"
+    FStoreLastLogin: boolean; // Сохранять логин последнего пользователя
+    FStoreLastPassword: boolean; // Сохранять пароль последнего пользователя
+    FAutoLogon: boolean; // Выполнять автоматический вход, используя сохранённые логин и пароль пользователя
+
+    // вкладка "настройки подключения к серверу базы данных услуги"
+
+    // вкладка "настройки подключения к серверу системы обмена сообщениями"
+
+    // вкладка "настройки формирования отчётов"
+    FReportFolder: TReportFolders; //
+    FSelectedReportFolder: string; //
+    FDontDemandOverwriteConfirmation: boolean; //
+    FAskForFileName: boolean; //
+
+    // вкладка "настройки списка автозамены"
+
+    // вкладка "настройки прочие
+
+    // вкладка "настройки главного окна
+    FMainFormWidth: TPoint;
+    FMainFormWidth: integer;
+    FMainFormHeight: integer;
+
+    // вкладка "настройки отображения информации
+
     procedure SetUseLog(const Value: boolean);
-    procedure SetKeepDebugLog(const Value: boolean);
-    procedure SetKeepInfoLog(const Value: boolean);
-    procedure SetKeepSQLLog(const Value: boolean);
-    procedure SetKeepWarningLog(const Value: boolean);
     procedure SetStoreLastLogin(const Value: boolean);
     procedure SetStoreLastPassword(const Value: boolean);
     procedure SetAutoLogon(const Value: boolean);
+    procedure SetKeepLogTypes(const Value: TLogMessagesTypes);
   public
     RNE4Server, MessagesServer: TMySQLConnection;
     // sLastLogin, sLastPassword: string;
@@ -72,35 +128,14 @@ type
     // iOrgSortColumn: integer;
     // iMsrSortColumn: integer;
     // bFullScreen: boolean;
-    // fpMainForm: TFormPosition;
-    // iMainFormWidth: integer;
-    // iMainFormHeight: integer;
+
     // iOrgPanelHeight: integer;
     // bOrgPanelHalfHeight: boolean;
     // iDataPanelWidth: integer;
     // bDataPanelHalfWidth: boolean;
-    // fpLoginForm: TFormPosition;
-    // fpOptionsForm: TFormPosition;
-    // fpUsersForm: TFormPosition;
-    // fpSetPasswordForm: TFormPosition;
-    // fpStatisticForm: TFormPosition;
-    // fpMaintenanceForm: TFormPosition;
-    // fpClearingForm: TFormPosition;
-    // fpViewPostListForm: TFormPosition;
-    // fpCreateViewPostForm: TFormPosition;
-    // fpPhonesForm: TFormPosition;
-    // fpAddEditPhoneForm: TFormPosition;
-    // fpAddMassMsrForm: TFormPosition;
-    //
-    // sCustomHelpFile: string;
-    // sCustomLogClientFile: string;
   public
     property UseLog: boolean read FUseLog write SetUseLog default True; // нужно ли вести лог работы программы
-    property KeepErrorLog: boolean read FKeepErrorLog write SetKeepErrorLog default True; // нужно ли вести лог сообщений типа error
-    property KeepWarningLog: boolean read FKeepWarningLog write SetKeepWarningLog default True; // нужно ли вести лог сообщений типа warning
-    property KeepInfoLog: boolean read FKeepInfoLog write SetKeepInfoLog default True; // нужно ли вести лог сообщений типа info
-    property KeepSQLLog: boolean read FKeepSQLLog write SetKeepSQLLog default False; // нужно ли вести лог запросов MySQL
-    property KeepDebugLog: boolean read FKeepDebugLog write SetKeepDebugLog default False; // нужно ли вести лог отладочной информации
+    property KeepLogTypes: TLogMessagesTypes read FKeepLogTypes write SetKeepLogTypes default [lmtError,lmtWarning,lmtInfo];
 
     property StoreLastLogin: boolean read FStoreLastLogin write SetStoreLastLogin default False; // нужно ли хранить последний введённый логин
     property StoreLastPassword: boolean read FStoreLastPassword write SetStoreLastPassword default False; // нужно ли хранить последний введённый пароль
@@ -112,54 +147,16 @@ implementation
 uses
   SysUtils;
 
-procedure TConfiguration.SetKeepInfoLog(const Value: boolean);
+procedure TConfiguration.SetKeepLogTypes(const Value: TLogMessagesTypes);
 begin
-  if not UseLog then
-    raise Exception.Create('Для включения отправки информационных сообщений необходимо сначала включить протоколирование работы программы!')
-  else
-    FKeepInfoLog:=Value;
-end;
-
-procedure TConfiguration.SetKeepSQLLog(const Value: boolean);
-begin
-  if not UseLog then
-    raise Exception.Create('Для включения отправки текста запросов MySQL необходимо сначала включить протоколирование работы программы!')
-  else
-    FKeepSQLLog:=Value;
-end;
-
-procedure TConfiguration.SetKeepWarningLog(const Value: boolean);
-begin
-  if not UseLog then
-    raise Exception.Create('Для включения отправки предупреждений необходимо сначала включить протоколирование работы программы!')
-  else
-    FKeepWarningLog:=Value;
+  if FKeepLogTypes<>Value then
+    FKeepLogTypes := Value;
 end;
 
 procedure TConfiguration.SetUseLog(const Value: boolean);
 begin
-  FUseLog:=Value;
-  KeepErrorLog:=False;
-  KeepWarningLog:=False;
-  KeepInfoLog:=False;
-  KeepSQLLog:=False;
-  KeepDebugLog:=False;
-end;
-
-procedure TConfiguration.SetKeepDebugLog(const Value: boolean);
-begin
-  if not UseLog then
-    raise Exception.Create('Для включения отправки отладочных сообщений необходимо сначала включить протоколирование работы программы!')
-  else
-    FKeepDebugLog:=Value;
-end;
-
-procedure TConfiguration.SetKeepErrorLog(const Value: boolean);
-begin
-  if not UseLog then
-    raise Exception.Create('Для включения отправки сообщений об ошибках необходимо сначала включить протоколирование работы программы!')
-  else
-    FKeepErrorLog:=Value;
+  if FUseLog<>Value then
+    FUseLog:=Value;
 end;
 
 procedure TConfiguration.SetStoreLastLogin(const Value: boolean);
