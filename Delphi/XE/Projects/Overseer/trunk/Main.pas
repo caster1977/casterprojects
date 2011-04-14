@@ -271,6 +271,10 @@ type
     chkbxScrollToLastLogMessage: TCheckBox;
     TabSheet2: TTabSheet;
     GroupBox4: TGroupBox;
+    ts_SIC_06: TTabSheet;
+    gb_SIC_06: TGroupBox;
+    lbService_SIC_06: TLabel;
+    cbService_SIC_06: TComboBox;
     procedure ApplicationEvents1Hint(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
@@ -427,6 +431,7 @@ type
     function Do_SIC_04(const aStartDate, aStopDate: TDate; const aOpenWithBrowser: boolean; const aGroupByPeriod: TGroupByPeriod; const aCalculateWeekFromMonday, aAllUsers, aCreateDetailedReport, aShowSQLQueries, aShowIdleUsers: boolean;
       const aSelectedUserList: TStringList): boolean;
     function Do_SIC_05(const aStartDate, aStopDate: TDate; const aOpenWithBrowser: boolean; const aGroupByPeriod: TGroupByPeriod; const aServiceIndex: integer; const aCalculateWeekFromMonday: boolean): boolean;
+    function Do_SIC_06(const aStartDate, aStopDate: TDate; const aOpenWithBrowser: boolean; const aServiceIndex: integer): boolean;
     function Do_SIC_07(const aStartDate, aStopDate: TDate; const aOpenWithBrowser: boolean; const aGroupByPeriod: TGroupByPeriod; const aCalculateWeekFromMonday: boolean): boolean;
     function Do_SIC_08(const aStartDate, aStopDate: TDate; const aOpenWithBrowser: boolean): boolean;
     function Do_SIC_09(const aStartDate, aStopDate: TDate; const aOpenWithBrowser: boolean; const aNetIndex: integer; const aSummaryReport, aOldReport: boolean; const aSelectedServicesList: TStringList): boolean;
@@ -486,6 +491,7 @@ uses
   Thread_Do_SIC_03,
   Thread_Do_SIC_04,
   Thread_Do_SIC_05,
+  Thread_Do_SIC_06,
   Thread_Do_SIC_07,
   Thread_Do_SIC_08,
   Thread_Do_SIC_09,
@@ -2561,6 +2567,15 @@ begin
               Routines_GenerateError('Произошла ошибка во вложенной функции формирования отчёта!', sErrorMessage, bError);
         end;
 
+      if cbActionsList.Text='Формирование отчёта по форме № СИЦ-06-...' then
+        begin
+          if (cbService_SIC_06.ItemIndex<0)and(cbService_SIC_06.ItemIndex>(aServices_Count-1)) then
+            Routines_GenerateError('Не удалось произвести конвертацию выбраной услуги!', sErrorMessage, bError)
+          else
+            if not Do_SIC_06(EncodeDate(wStartYear, wStartMonth, wStartDay), EncodeDate(wStopYear, wStopMonth, wStopDay), True, cbService_SIC_06.ItemIndex) then
+              Routines_GenerateError('Произошла ошибка во вложенной функции формирования отчёта!', sErrorMessage, bError);
+        end;
+
       if cbActionsList.Text='Формирование отчёта по форме № СИЦ-07-...' then
         if not Do_SIC_07(EncodeDate(wStartYear, wStartMonth, wStartDay), EncodeDate(wStopYear, wStopMonth, wStopDay), True, gbp, not(cbWeekStartsFromDayOfBeginning_SIC_07.Checked and cbWeekStartsFromDayOfBeginning_SIC_07.Enabled)) then
           Routines_GenerateError('Произошла ошибка во вложенной функции формирования отчёта!', sErrorMessage, bError);
@@ -2732,6 +2747,10 @@ begin
       cbService_SIC_05.ItemIndex:=0;
       cbWeekStartsFromDayOfBeginning_SIC_05.Checked:=False;
     end;
+  if (cbActionsList.Text='Формирование отчёта по форме № СИЦ-06-...') then
+    begin
+      cbService_SIC_06.ItemIndex:=0;
+    end;
   if (cbActionsList.Text='Формирование отчёта по форме № СИЦ-07-...') then
     begin
       cbWeekStartsFromDayOfBeginning_SIC_07.Checked:=False;
@@ -2840,7 +2859,8 @@ begin
   // bStartOfTheWeek:=SameDate(StartOfTheWeek(dtStartDate), dtStartDate);
   // bEndOfTheWeek:=SameDate(EndOfTheWeek(dtStopDate), dtStopDate);
 
-  if (cbActionsList.Text='Формирование отчёта по форме № СИЦ-01-...')or(cbActionsList.Text='Формирование отчёта по форме № СИЦ-03-...')or(cbActionsList.Text='Формирование отчёта по форме № СИЦ-08-...')or
+  if (cbActionsList.Text='Формирование отчёта по форме № СИЦ-01-...')or(cbActionsList.Text='Формирование отчёта по форме № СИЦ-03-...')or
+    (cbActionsList.Text='Формирование отчёта по форме № СИЦ-06-...')or(cbActionsList.Text='Формирование отчёта по форме № СИЦ-08-...')or
     (cbActionsList.Text='Формирование отчёта по форме № СИЦ-09-...')or(cbActionsList.Text='Формирование таблиц данных входящих/исходящих вызовов (<i/o>rd_<yyyymmdd>, <i/o>rd_<yyyy>[mm][dd][_[yyyy][mm][dd]])')or
     (cbActionsList.Text='Снятие оплаты за звонок на голосовые службы СИЦ')or(cbActionsList.Text='Формирование файлов выгрузки для АСКР') then
     begin
@@ -4760,6 +4780,12 @@ begin
     cbService_SIC_05.Items.Add(aServices[i].sNumber+' - '+aServices[i].sName);
   cbService_SIC_05.Items.EndUpdate;
 
+  cbService_SIC_06.Clear;
+  cbService_SIC_06.Items.BeginUpdate;
+  for i:=0 to aServices_Count-1 do
+    cbService_SIC_06.Items.Add(aServices[i].sNumber+' - '+aServices[i].sName);
+  cbService_SIC_06.Items.EndUpdate;
+
   lvServices_SIC_09.Clear;
   lvServices_SIC_09.Items.BeginUpdate;
   for i:=0 to aServices_Count-1 do
@@ -5762,6 +5788,35 @@ begin
     end;
 
   Do_SIC_05:=not bError;
+end;
+
+function TMainForm.Do_SIC_06(const aStartDate, aStopDate: TDate; const aOpenWithBrowser: boolean; const aServiceIndex: integer): boolean;
+const
+  LogGroupGUID: string='{BC065FDC-7748-44C2-88A9-70B44694FD09}';
+var
+  bError: boolean;
+  sErrorMessage: string;
+begin
+  bError:=False;
+
+  // создание нового потока в котором будут выполняться все действия по формированию отчёта
+  with TThread_Do_SIC_06.Create( //
+    '{2902D8CC-B068-4A09-B4C0-4B5DDD418572}', //
+    aStartDate, //
+    aStopDate, //
+    aOpenWithBrowser, //
+    CurrentUser, //
+    Configuration, //
+    aServiceIndex //
+    ) do //
+    try
+      Start; // запускаем выполнение потока
+    except
+      on Exception do
+        Routines_GenerateError('Произошла ошибка при запуске дочернего потока!', sErrorMessage, bError);
+    end;
+
+  Do_SIC_06:=not bError;
 end;
 
 function TMainForm.Do_SIC_08(const aStartDate, aStopDate: TDate; const aOpenWithBrowser: boolean): boolean;

@@ -197,10 +197,6 @@ object MainForm: TMainForm
           object tsActions: TTabSheet
             Caption = #1055#1088#1086#1075#1088#1077#1089#1089' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103' '#1076#1077#1081#1089#1090#1074#1080#1081
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object lvActionList: TListViewEx
               Left = 0
               Top = 0
@@ -282,7 +278,7 @@ object MainForm: TMainForm
         Top = 44
         Width = 449
         Height = 296
-        ActivePage = ts_SIC_09
+        ActivePage = ts_SIC_05
         Align = alCustom
         Style = tsButtons
         TabOrder = 3
@@ -291,10 +287,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-01-...'
           ImageIndex = 7
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_01: TGroupBox
             Left = 0
             Top = 0
@@ -440,10 +432,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-02-...'
           ImageIndex = 1
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_02: TGroupBox
             Left = 0
             Top = 0
@@ -494,10 +482,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-03-...'
           ImageIndex = 4
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_03: TGroupBox
             Left = 0
             Top = 0
@@ -555,10 +539,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-04-...'
           ImageIndex = 8
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_04: TGroupBox
             Left = 0
             Top = 0
@@ -751,10 +731,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-05-...'
           ImageIndex = 5
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_05: TGroupBox
             Left = 0
             Top = 0
@@ -810,18 +786,56 @@ object MainForm: TMainForm
               Font.Style = []
               ParentFont = False
               TabOrder = 1
-              Items.Strings = (
-                #1087#1086' '#1074#1089#1077#1084' '#1086#1087#1077#1088#1072#1090#1086#1088#1072#1084' ('#1089#1091#1084#1084#1072#1088#1085#1072#1103')'
-                #1052#1043#1058#1057' ('#1075#1086#1088#1086#1076' '#1080' '#1087#1088#1080#1075#1086#1088#1086#1076' - 80172xxxxxx, 80173xxxxxx, 80175xxxxxx)'
-                
-                  #1052#1062#1057' (80291xxxxxx, 80293xxxxxx, 80296xxxxxx, 80299xxxxxx, 8044xxx' +
-                  'xxxx)'
-                
-                  #1052#1058#1057' (80292xxxxxx, 80295xxxxxx, 80297xxxxxx, 80298xxxxxx, 8033xxx' +
-                  'xxxx)'
-                #1041#1077#1057#1058' (80259xxxxxx, 80256xxxxxx)'
-                #1041#1077#1083#1057#1077#1083' (80294xxxxxx)'
-                #1087#1088#1086#1095#1080#1077' ('#1079#1074#1086#1085#1082#1080', '#1085#1077' '#1074#1086#1096#1077#1076#1096#1080#1077' '#1074' '#1087#1088#1077#1076#1099#1076#1091#1097#1080#1077' '#1075#1088#1091#1087#1087#1099')')
+            end
+          end
+        end
+        object ts_SIC_06: TTabSheet
+          Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-06-...'
+          ImageIndex = 12
+          TabVisible = False
+          ExplicitTop = 27
+          ExplicitHeight = 265
+          object gb_SIC_06: TGroupBox
+            Left = 0
+            Top = 0
+            Width = 441
+            Height = 286
+            Align = alClient
+            Caption = ' 3. '#1042#1099#1073#1077#1088#1080#1090#1077' '#1087#1088#1086#1095#1080#1077' '#1087#1072#1088#1072#1084#1077#1090#1088#1099': '
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+            TabOrder = 0
+            object lbService_SIC_06: TLabel
+              Left = 8
+              Top = 16
+              Width = 64
+              Height = 13
+              Caption = #1059#1089#1083#1091#1075#1072' '#1057#1048#1062':'
+              FocusControl = cbService_SIC_06
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = []
+              ParentFont = False
+            end
+            object cbService_SIC_06: TComboBox
+              Left = 8
+              Top = 32
+              Width = 426
+              Height = 21
+              Style = csDropDownList
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 0
             end
           end
         end
@@ -829,10 +843,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-07-...'
           ImageIndex = 2
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_07: TGroupBox
             Left = 0
             Top = 0
@@ -867,10 +877,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-08-...'
           ImageIndex = 6
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
         end
         object ts_SIC_09: TTabSheet
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-09-...'
@@ -1084,10 +1090,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-10-...'
           ImageIndex = 10
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_10: TGroupBox
             Left = 0
             Top = 0
@@ -1281,10 +1283,6 @@ object MainForm: TMainForm
             'yyyymmdd>, <i/o>rd_<yyyy>[mm][dd][_[yyyy][mm][dd]])'
           ImageIndex = 6
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_XRD: TGroupBox
             Left = 0
             Top = 0
@@ -1414,10 +1412,6 @@ object MainForm: TMainForm
           Caption = #1057#1085#1103#1090#1080#1077' '#1086#1087#1083#1072#1090#1099' '#1079#1072' '#1079#1074#1086#1085#1086#1082' '#1085#1072' '#1075#1086#1083#1086#1089#1086#1074#1099#1077' '#1089#1083#1091#1078#1073#1099' '#1057#1048#1062
           ImageIndex = 9
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object GroupBox3: TGroupBox
             Left = 0
             Top = 0
@@ -1613,10 +1607,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1092#1072#1081#1083#1086#1074' '#1074#1099#1075#1088#1091#1079#1082#1080' '#1076#1083#1103' '#1040#1057#1050#1056
           ImageIndex = 11
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object GroupBox4: TGroupBox
             Left = 0
             Top = 0
@@ -2248,7 +2238,7 @@ object MainForm: TMainForm
     Left = 384
     Top = 424
     Bitmap = {
-      494C01012200A000480510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01012200A000540510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000009000000001002000000000000090
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000ECA6A6FFECA6A6FFCF8C8CFF0000
@@ -3998,7 +3988,7 @@ object MainForm: TMainForm
     Left = 256
     Top = 424
     Bitmap = {
-      494C010103000800080110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000800140110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
