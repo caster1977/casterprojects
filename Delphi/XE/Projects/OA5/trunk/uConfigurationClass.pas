@@ -29,8 +29,8 @@ type
     FUseLog: boolean; // Вести лог работы программы
     FKeepLogTypes: TLogMessagesTypes; // выводить сообщения перечисленных типов
     FFlushLogOnExit: boolean; // Сбрасывать протокол работы в текстовый файл при завершении работы программы
-    FFlushLogOnStrings: boolean; // Сбрасывать протокол работы в текстовый файл при достижении количества строк
-    FFlushLogOnStringsQuantity: word; // Сбрасывать протокол работы в текстовый файл при достижении количества строк (непосредственно количество)
+    FEnableFlushLogOnStringsQuantity: boolean; // Сбрасывать протокол работы в текстовый файл при достижении количества строк
+    FFlushLogOnStringsQuantity: integer; // Сбрасывать протокол работы в текстовый файл при достижении количества строк (непосредственно количество)
     FFlushLogOnClearingLog: boolean; // Сбрасывать протокол работы в текстовый файл при операции очистки протокола
     FFlushLogOnApply: boolean; // Сбрасывать протокол работы в текстовый файл при нажатии кнопки "Применить"
     FCustomLogClientFile: boolean; // Использовать внешний клиент протоколирования
@@ -68,71 +68,54 @@ type
 
     // вкладка "настройки списка автозамены"
 
-    // вкладка "настройки прочие
+    // вкладка "настройки прочие"
+    FLaunchAtStartup: boolean;
+    FPlaySoundOnComplete: boolean;
+    FEnableAutoGetMessages: boolean;
+    FAutoGetMessagesCycleDuration: integer;
+    FEnableCustomHelpFile: boolean;
+    FCustomHelpFile: string;
 
-    // вкладка "настройки главного окна
-    FMainFormWidth: TPoint;
-    FMainFormWidth: integer;
-    FMainFormHeight: integer;
+    // вкладка "настройки главного окна"
+    FMainFormRect: TRect;
+    FMainFormPositionByCenter: boolean;
+    FFullScreenAtLaunch: boolean;
 
-    // вкладка "настройки отображения информации
+    // вкладка "настройки отображения информации"
+    FOrganizationPanelHeight: word; // Высота панели организаций
+    FOrganizationPanelHalfHeight: boolean; // половина высоты окна
+    FDataPanelWidth: word; // Ширина панели данных
+    FDataPanelHalfWidth: boolean; // половина ширины окна
+    FShowDataInOtherInfoPanel: boolean; // В режиме просмотра показывать данные в окне прочей информации
+    FShowMeasuresListAsRichEdit: boolean; // В режиме просмотра объединять меропрятия в общий спиcок
+    FMarkSearchedStrings: boolean; // В режиме просмотра выделять искомые фрагменты строк
+    FPutTownAtTheEnd: boolean; // Поместить название города в конец строки адреса
+
+    FLastLogin: string;
+    FLastPassword: string;
 
     procedure SetUseLog(const Value: boolean);
     procedure SetStoreLastLogin(const Value: boolean);
     procedure SetStoreLastPassword(const Value: boolean);
     procedure SetAutoLogon(const Value: boolean);
     procedure SetKeepLogTypes(const Value: TLogMessagesTypes);
+    function GetTempFolder: string;
+    function GetApplicationFolder: string;
+    function GetReportFolder: string;
   public
     RNE4Server, MessagesServer: TMySQLConnection;
-    // sLastLogin, sLastPassword: string;
     //
-    // sLocalHost: string;
     iConfigurationFormPage: integer; // номер последней открытой страницы окна конфигурации программы
     //
-    // bAlwaysShowTrayIcon: boolean; // всегда отобращать иконку в трее
-    // bShowQuitConfirmation: boolean;
-    // bUseExternalLog: boolean;
     // sDefaultAction: string;
-    // bNoStatusBar: boolean;
-    // bScrollToLastLogMessage: boolean;
-    // bAutorun: boolean;
-    // bStartInTray: boolean;
-    // bPlaySoundAfterAction: boolean;
-    // bShowBaloonHintAfterAction: boolean;
-    //
-    // bFlushLogOnExit: boolean; // выполнять ли сохранение лога в файл при выходе из программы
-    iFlushLogOnStringsQuantity: integer; // при каком количестве строк лога скидывать их в файл
-    iGetMessagesCycleDuration: integer; // количество минут, через которое нужно проверять новые сообщения
-    // bFlushLogOnClearingLog: boolean; // выполнять ли сохранение лога в файл при очистке лога
-    //
     // sApplicationFolder: string;
     // sTempFolder: string;
     // sCustomFolder: string;
     // trfReportFolder: TReportFolders;
-    // bDontDemandOverwriteConfirmation: boolean;
-    // bAskForFileName: boolean;
-
-    // bNoLogo: boolean;
-    // bShowID: boolean;
-    // bDontShowQuitConfirmation: boolean;
     // bImmediatelyQuit: boolean;
-    // bNoToolBar: boolean;
-    // bShowDataInOtherInfoPanel: boolean;
-    // bShowMeasuresListAsRichEdit: boolean;
-    // bMarkSearchedStrings: boolean;
-    // bPutTownAtTheEnd: boolean;
-    // bHideEditBoxToolTips: boolean;
-    // bShowSearchAddressOtherEditBox: boolean;
-    // bUseMultibuffer: boolean;
-    // bGetMessages: boolean;
     // iOrgSortColumn: integer;
     // iMsrSortColumn: integer;
     // bFullScreen: boolean;
-
-    // iOrgPanelHeight: integer;
-    // bOrgPanelHalfHeight: boolean;
-    // iDataPanelWidth: integer;
-    // bDataPanelHalfWidth: boolean;
   public
     property UseLog: boolean read FUseLog write SetUseLog default True; // нужно ли вести лог работы программы
     property KeepLogTypes: TLogMessagesTypes read FKeepLogTypes write SetKeepLogTypes default [lmtError,lmtWarning,lmtInfo];
@@ -140,12 +123,20 @@ type
     property StoreLastLogin: boolean read FStoreLastLogin write SetStoreLastLogin default False; // нужно ли хранить последний введённый логин
     property StoreLastPassword: boolean read FStoreLastPassword write SetStoreLastPassword default False; // нужно ли хранить последний введённый пароль
     property AutoLogon: boolean read FAutoLogon write SetAutoLogon default False; // нужно ли выполнять автологирование
+
+    property LastLogin: string read FLastLogin;
+    property LastPassword: string read FLastPassword;
+
+    property ReportFolder: string read GetReportFolder stored False;
+    property FlushLogOnStringsQuantity: integer read FFlushLogOnStringsQuantity write FFlushLogOnStringsQuantity;
+    property AutoGetMessagesCycleDuration: integer read FAutoGetMessagesCycleDuration write FAutoGetMessagesCycleDuration;
+
   end;
 
 implementation
 
 uses
-  SysUtils;
+  SysUtils, Windows, Forms;
 
 procedure TConfiguration.SetKeepLogTypes(const Value: TLogMessagesTypes);
 begin
@@ -177,6 +168,62 @@ begin
       if not(Value and StoreLastLogin) then
         AutoLogon:=False;
     end;
+end;
+
+function TConfiguration.GetReportFolder: string;
+begin
+  case FReportFolder of
+    rfTempFolder: GetReportFolder:=GetTempFolder;
+    rfApplicationFolder: GetReportFolder:=GetApplicationFolder;
+    rfCustomFolder: GetReportFolder:=FSelectedReportFolder;
+  end;
+end;
+
+function TConfiguration.GetApplicationFolder: string;
+var
+  s, sErrorMessage: string;
+  bError: boolean;
+begin
+  bError:=False;
+  GetApplicationFolder:='';
+
+  s:=ExtractFilePath(ExpandFileName(Application.ExeName));
+  if DirectoryExists(s) then
+      GetApplicationFolder:=s
+  else
+    raise Exception.Create('Возникла ошибка при попытке получения пути рабочей папки программы!')
+end;
+
+function TConfiguration.GetTempFolder: string;
+var
+  sErrorMessage: string;
+  bError: boolean;
+  r: cardinal;
+  TempPathNameBuffer: PWideChar;
+begin
+  bError:=False;
+  TempPathNameBuffer:=nil;
+  GetTempFolder:='';
+
+  try
+    GetMem(TempPathNameBuffer, 1024+1);
+    r:=GetTempPath(1024, TempPathNameBuffer);
+    if r>0 then
+      begin
+        if r>1024 then
+          begin
+            FreeMem(TempPathNameBuffer);
+            GetMem(TempPathNameBuffer, r+1);
+          end;
+        if DirectoryExists(TempPathNameBuffer) then
+          GetTempFolder:=TempPathNameBuffer
+        else
+          raise Exception.Create('Возникла ошибка при попытке получения пути временной папки!')
+      end;
+  finally
+    if TempPathNameBuffer<>nil then
+      FreeMem(TempPathNameBuffer);
+  end;
 end;
 
 procedure TConfiguration.SetAutoLogon(const Value: boolean);
