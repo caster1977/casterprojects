@@ -193,7 +193,7 @@ object OptionsForm: TOptionsForm
         Top = 3
         Width = 614
         Height = 223
-        ActivePage = ts10
+        ActivePage = ts9
         Align = alCustom
         Style = tsButtons
         TabOrder = 0
@@ -201,6 +201,10 @@ object OptionsForm: TOptionsForm
         object ts1: TTabSheet
           Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object chkbxShowAboutWindowAtLaunch: TCheckBox
             Left = 0
             Top = 0
@@ -270,6 +274,10 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1074#1077#1076#1077#1085#1080#1103' '#1087#1088#1086#1090#1086#1082#1086#1083#1072' '#1088#1072#1073#1086#1090#1099
           ImageIndex = 1
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Bevel4: TBevel
             Left = 0
             Top = 25
@@ -346,14 +354,14 @@ object OptionsForm: TOptionsForm
             Caption = #1074#1099#1074#1086#1076#1080#1090#1100' '#1090#1077#1082#1089#1090' SQL-'#1079#1072#1087#1088#1086#1089#1086#1074
             TabOrder = 4
           end
-          object chkbxFlushLogOnStringsQuantity: TCheckBox
+          object chkbxEnableFlushLogOnStringsQuantity: TCheckBox
             Left = 314
             Top = 81
             Width = 195
             Height = 17
             Caption = #1087#1088#1080' '#1076#1086#1089#1090#1080#1078#1077#1085#1080#1080' '#1082#1086#1083#1080#1095#1077#1089#1090#1074#1072' '#1089#1090#1088#1086#1082
             TabOrder = 7
-            OnClick = chkbxFlushLogOnStringsQuantityClick
+            OnClick = chkbxEnableFlushLogOnStringsQuantityClick
           end
           object chkbxFlushLogOnExit: TCheckBox
             Left = 314
@@ -437,6 +445,10 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1087#1086#1083#1086#1078#1077#1085#1080#1103' '#1076#1080#1072#1083#1086#1075#1086#1074#1099#1093' '#1086#1082#1086#1085
           ImageIndex = 8
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object ScrollBox1: TScrollBox
             Left = 0
             Top = 0
@@ -1044,6 +1056,10 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1087#1088#1086#1094#1077#1076#1091#1088#1099' '#1083#1086#1075#1080#1088#1086#1074#1072#1085#1080#1103
           ImageIndex = 7
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object chkbxStoreLastLogin: TCheckBox
             Left = 0
             Top = 0
@@ -1078,6 +1094,10 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093' '#1091#1089#1083#1091#1075#1080
           ImageIndex = 1
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object vleRNE4SERVER: TValueListEditor
             Left = 0
             Top = 0
@@ -1103,6 +1123,10 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1089#1080#1089#1090#1077#1084#1099' '#1086#1073#1084#1077#1085#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1103#1084#1080
           ImageIndex = 4
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object vleRNE4MESSAGESSERVER: TValueListEditor
             Left = 0
             Top = 0
@@ -1128,6 +1152,10 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1092#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1103' '#1086#1090#1095#1105#1090#1086#1074
           ImageIndex = 3
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Bevel3: TBevel
             Left = 0
             Top = 0
@@ -1203,16 +1231,18 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1089#1087#1080#1089#1082#1072' '#1072#1074#1090#1086#1079#1072#1084#1077#1085#1099
           ImageIndex = 5
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object lblAutoReplaceSorry: TLabel
             Left = 0
             Top = 0
-            Width = 606
-            Height = 213
+            Width = 3
+            Height = 13
             Align = alClient
             Alignment = taCenter
             Layout = tlCenter
-            ExplicitWidth = 3
-            ExplicitHeight = 13
           end
           object sgAutoReplaceList: TStringGrid
             Left = 0
@@ -1239,32 +1269,32 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1087#1088#1086#1095#1080#1077
           ImageIndex = 6
           TabVisible = False
-          object lblGetMessagesCycleDuration: TLabel
+          object lblAutoGetMessagesCycleDuration: TLabel
             Left = 376
             Top = 55
             Width = 30
             Height = 13
             Caption = #1084#1080#1085#1091#1090
           end
-          object chkbxGetMessages: TCheckBox
+          object chkbxEnableAutoGetMessages: TCheckBox
             Left = 0
             Top = 54
             Width = 295
             Height = 17
             Caption = #1040#1074#1090#1086#1084#1072#1090#1080#1095#1077#1089#1082#1080' '#1087#1088#1086#1074#1077#1088#1103#1090#1100' '#1074#1093#1086#1076#1103#1097#1080#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103' '#1088#1072#1079' '#1074
             TabOrder = 2
-            OnClick = chkbxGetMessagesClick
+            OnClick = chkbxEnableAutoGetMessagesClick
           end
-          object edbxGetMessagesCycleDuration: TEdit
+          object edbxAutoGetMessagesCycleDuration: TEdit
             Left = 301
             Top = 52
             Width = 69
             Height = 21
             TabOrder = 3
-            OnChange = edbxGetMessagesCycleDurationChange
-            OnKeyPress = edbxGetMessagesCycleDurationKeyPress
+            OnChange = edbxAutoGetMessagesCycleDurationChange
+            OnKeyPress = edbxAutoGetMessagesCycleDurationKeyPress
           end
-          object chkbxCustomHelpFile: TCheckBox
+          object chkbxEnableCustomHelpFile: TCheckBox
             Left = 0
             Top = 81
             Width = 238
@@ -1311,6 +1341,10 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1075#1083#1072#1074#1085#1086#1075#1086' '#1086#1082#1085#1072
           ImageIndex = 9
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object lblMainFormPosition: TLabel
             Left = 11
             Top = 3
@@ -1380,6 +1414,7 @@ object OptionsForm: TOptionsForm
             Checked = True
             State = cbChecked
             TabOrder = 2
+            OnClick = chkbxMainFormPositionByCenterClick
           end
           object edbxMainFormWidth: TEdit
             Left = 351
@@ -1395,19 +1430,24 @@ object OptionsForm: TOptionsForm
             Height = 21
             TabOrder = 4
           end
-          object chkbxStartupFullScreen: TCheckBox
+          object chkbxFullScreenAtLaunch: TCheckBox
             Left = 513
             Top = 29
             Width = 90
             Height = 17
             Caption = #1085#1072' '#1074#1077#1089#1100' '#1101#1082#1088#1072#1085
             TabOrder = 5
+            OnClick = chkbxFullScreenAtLaunchClick
           end
         end
         object ts11: TTabSheet
           Caption = ' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1080
           ImageIndex = 10
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object lbOrganizationPanelHeight: TLabel
             Left = 11
             Top = 3
@@ -1566,7 +1606,7 @@ object OptionsForm: TOptionsForm
     Left = 304
     Top = 296
     Bitmap = {
-      494C010106000800D40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800F00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

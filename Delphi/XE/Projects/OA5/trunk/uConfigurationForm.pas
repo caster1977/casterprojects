@@ -63,7 +63,7 @@ type
     chkbxKeepWarningLog: TCheckBox;
     chkbxKeepErrorLog: TCheckBox;
     chkbxKeepSQLLog: TCheckBox;
-    chkbxFlushLogOnStringsQuantity: TCheckBox;
+    chkbxEnableFlushLogOnStringsQuantity: TCheckBox;
     chkbxFlushLogOnExit: TCheckBox;
     edbxFlushLogOnStringsQuantity: TEdit;
     chkbxFlushLogOnClearingLog: TCheckBox;
@@ -101,9 +101,9 @@ type
     chkbxStoreLastLogin: TCheckBox;
     chkbxStoreLastPassword: TCheckBox;
     chkbxAutoLogon: TCheckBox;
-    chkbxGetMessages: TCheckBox;
-    edbxGetMessagesCycleDuration: TEdit;
-    lblGetMessagesCycleDuration: TLabel;
+    chkbxEnableAutoGetMessages: TCheckBox;
+    edbxAutoGetMessagesCycleDuration: TEdit;
+    lblAutoGetMessagesCycleDuration: TLabel;
     ts8: TTabSheet;
     ScrollBox1: TScrollBox;
     lblLoginFormPosition: TLabel;
@@ -190,7 +190,7 @@ type
     edbxMainFormWidth: TEdit;
     lblMainFormHeight: TLabel;
     edbxMainFormHeight: TEdit;
-    chkbxStartupFullScreen: TCheckBox;
+    chkbxFullScreenAtLaunch: TCheckBox;
     Log: TLogProvider;
     ts11: TTabSheet;
     lbOrganizationPanelHeight: TLabel;
@@ -203,7 +203,7 @@ type
     chkbxShowMeasuresListAsRichEdit: TCheckBox;
     chkbxMarkSearchedStrings: TCheckBox;
     chkbxPutTownAtTheEnd: TCheckBox;
-    chkbxCustomHelpFile: TCheckBox;
+    chkbxEnableCustomHelpFile: TCheckBox;
     edbxCustomHelpFile: TEdit;
     btnChoiseCustomHelpFile: TButton;
     chkbxLaunchAtStartup: TCheckBox;
@@ -231,18 +231,20 @@ type
     procedure chkbxCustomLogClientFileClick(Sender: TObject);
     procedure chkbxUseLogClick(Sender: TObject);
     procedure edbxFlushLogOnStringsQuantityKeyPress(Sender: TObject; var Key: Char);
-    procedure chkbxFlushLogOnStringsQuantityClick(Sender: TObject);
+    procedure chkbxEnableFlushLogOnStringsQuantityClick(Sender: TObject);
     procedure rbSaveIntoTheSelectedFolderClick(Sender: TObject);
     procedure chkbxStoreLastLoginClick(Sender: TObject);
     procedure chkbxStoreLastPasswordClick(Sender: TObject);
-    procedure chkbxGetMessagesClick(Sender: TObject);
-    procedure edbxGetMessagesCycleDurationKeyPress(Sender: TObject;
+    procedure chkbxEnableAutoGetMessagesClick(Sender: TObject);
+    procedure edbxAutoGetMessagesCycleDurationKeyPress(Sender: TObject;
       var Key: Char);
-    procedure edbxGetMessagesCycleDurationChange(Sender: TObject);
+    procedure edbxAutoGetMessagesCycleDurationChange(Sender: TObject);
     procedure FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
       MousePos: TPoint; var Handled: Boolean);
     procedure FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
       MousePos: TPoint; var Handled: Boolean);
+    procedure chkbxMainFormPositionByCenterClick(Sender: TObject);
+    procedure chkbxFullScreenAtLaunchClick(Sender: TObject);
   public
     slBoolean: TStringList;
   private
@@ -597,16 +599,16 @@ begin
   chkbxFlushLogOnExit.Enabled:=bUseLog;
   chkbxFlushLogOnExit.Checked:=chkbxFlushLogOnExit.Checked and chkbxFlushLogOnExit.Enabled;
 
-  chkbxFlushLogOnStringsQuantity.Enabled:=bUseLog;
-  chkbxFlushLogOnStringsQuantity.Checked:=chkbxFlushLogOnStringsQuantity.Checked and chkbxFlushLogOnStringsQuantity.Enabled;
+  chkbxEnableFlushLogOnStringsQuantity.Enabled:=bUseLog;
+  chkbxEnableFlushLogOnStringsQuantity.Checked:=chkbxEnableFlushLogOnStringsQuantity.Checked and chkbxEnableFlushLogOnStringsQuantity.Enabled;
 
-  edbxFlushLogOnStringsQuantity.Enabled:=bUseLog and chkbxFlushLogOnStringsQuantity.Checked and chkbxFlushLogOnStringsQuantity.Enabled;
+  edbxFlushLogOnStringsQuantity.Enabled:=bUseLog and chkbxEnableFlushLogOnStringsQuantity.Checked and chkbxEnableFlushLogOnStringsQuantity.Enabled;
 
   if edbxFlushLogOnStringsQuantity.Enabled then
     begin
       with MainForm do
-        if Configuration.iFlushLogOnStringsQuantity>0 then
-          edbxFlushLogOnStringsQuantity.Text:=IntToStr(Configuration.iFlushLogOnStringsQuantity)
+        if Configuration.FlushLogOnStringsQuantity>0 then
+          edbxFlushLogOnStringsQuantity.Text:=IntToStr(Configuration.FlushLogOnStringsQuantity)
         else
           edbxFlushLogOnStringsQuantity.Text:='10000';
     end
@@ -633,27 +635,27 @@ begin
   ProcedureFooter;
 end;
 
-procedure TOptionsForm.chkbxFlushLogOnStringsQuantityClick(Sender: TObject);
+procedure TOptionsForm.chkbxEnableFlushLogOnStringsQuantityClick(Sender: TObject);
 var
   bFlushLogOnStringsQuantity: boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxFlushLogOnStringsQuantity.Caption, '{56071FBF-61AE-472E-B52B-BC239C45CD7C}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxEnableFlushLogOnStringsQuantity.Caption, '{56071FBF-61AE-472E-B52B-BC239C45CD7C}');
 
-  bFlushLogOnStringsQuantity:=chkbxFlushLogOnStringsQuantity.Checked and chkbxFlushLogOnStringsQuantity.Enabled;
+  bFlushLogOnStringsQuantity:=chkbxEnableFlushLogOnStringsQuantity.Checked and chkbxEnableFlushLogOnStringsQuantity.Enabled;
 
   edbxFlushLogOnStringsQuantity.Enabled:=bFlushLogOnStringsQuantity;
   if bFlushLogOnStringsQuantity then
     begin
       with MainForm do
-        if Configuration.iFlushLogOnStringsQuantity>0 then
-          edbxFlushLogOnStringsQuantity.Text:=IntToStr(Configuration.iFlushLogOnStringsQuantity)
+        if Configuration.FlushLogOnStringsQuantity>0 then
+          edbxFlushLogOnStringsQuantity.Text:=IntToStr(Configuration.FlushLogOnStringsQuantity)
         else
           edbxFlushLogOnStringsQuantity.Text:='10000';
     end
   else
     edbxFlushLogOnStringsQuantity.Text:='';
 
-  Log.SendInfo('Флажок "'+chkbxFlushLogOnStringsQuantity.Caption+'"'+Routines_GetConditionalMessage(bFlushLogOnStringsQuantity, 'в', 'от')+'ключен.');
+  Log.SendInfo('Флажок "'+chkbxEnableFlushLogOnStringsQuantity.Caption+'"'+Routines_GetConditionalMessage(bFlushLogOnStringsQuantity, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -840,7 +842,7 @@ begin
       chkbxKeepSQLLog.Checked:=False;
       chkbxKeepDebugLog.Checked:=False;
       chkbxFlushLogOnExit.Checked:=True;
-      chkbxFlushLogOnStringsQuantity.Checked:=False;
+      chkbxEnableFlushLogOnStringsQuantity.Checked:=False;
       edbxFlushLogOnStringsQuantity.Text:='';
       chkbxFlushLogOnClearingLog.Checked:=True;
       chkbxFlushLogOnApply.Checked:=False;
@@ -858,6 +860,37 @@ begin
   Log.SendInfo('Настройки '+PageControl1.ActivePage.Caption+' были сброшены пользователем к значениям по умолчанию.');
 
   ProcedureFooter;
+end;
+
+procedure TOptionsForm.chkbxFullScreenAtLaunchClick(Sender: TObject);
+begin
+  chkbxMainFormPositionByCenter.Enabled:=not chkbxFullScreenAtLaunch.Checked;
+  if not chkbxMainFormPositionByCenter.Enabled then
+    chkbxMainFormPositionByCenter.Checked:=False;
+
+  edbxMainFormPositionX.Enabled:=not(chkbxMainFormPositionByCenter.Checked or chkbxFullScreenAtLaunch.Checked);
+//  if edbxMainFormPositionX.Enabled then
+//    edbxMainFormPositionX.Text:=IntToStr(MainForm.Configuration.fpMainForm.x)
+//  else
+//    edbxMainFormPositionX.Clear;
+
+  edbxMainFormPositionY.Enabled:=not(chkbxMainFormPositionByCenter.Checked or chkbxFullScreenAtLaunch.Checked);
+//  if edbxMainFormPositionY.Enabled then
+//    edbxMainFormPositionY.Text:=IntToStr(MainForm.Configuration.fpMainForm.y)
+//  else
+//    edbxMainFormPositionY.Clear;
+
+  edbxMainFormWidth.Enabled:=not chkbxFullScreenAtLaunch.Checked;
+//  if edbxMainFormWidth.Enabled then
+//    edbxMainFormWidth.Text:=IntToStr(MainForm.Configuration.iMainFormWidth)
+//  else
+//    edbxMainFormWidth.Clear;
+
+  edbxMainFormHeight.Enabled:=not chkbxFullScreenAtLaunch.Checked;
+//  if edbxMainFormHeight.Enabled then
+//    edbxMainFormHeight.Text:=IntToStr(MainForm.Configuration.iMainFormHeight)
+//  else
+//    edbxMainFormHeight.Clear;
 end;
 
 procedure TOptionsForm.chkbxStoreLastLoginClick(Sender: TObject);
@@ -886,28 +919,43 @@ begin
   ProcedureFooter;
 end;
 
-procedure TOptionsForm.chkbxGetMessagesClick(Sender: TObject);
+procedure TOptionsForm.chkbxEnableAutoGetMessagesClick(Sender: TObject);
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxGetMessages.Caption, '{5C3B5E46-E8F7-4BD1-8092-16B88A617F55}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxEnableAutoGetMessages.Caption, '{5C3B5E46-E8F7-4BD1-8092-16B88A617F55}');
 
-  edbxGetMessagesCycleDuration.Enabled:=chkbxGetMessages.Checked;
-  if edbxGetMessagesCycleDuration.Enabled then
-    edbxGetMessagesCycleDuration.Text:=IntToStr(MainForm.Configuration.iGetMessagesCycleDuration)
-  else edbxGetMessagesCycleDuration.Clear;
-  Log.SendInfo('Флажок "'+chkbxGetMessages.Caption+'"'+Routines_GetConditionalMessage(chkbxGetMessages.Checked, 'в', 'от')+'ключен.');
+  edbxAutoGetMessagesCycleDuration.Enabled:=chkbxEnableAutoGetMessages.Checked;
+  if edbxAutoGetMessagesCycleDuration.Enabled then
+    edbxAutoGetMessagesCycleDuration.Text:=IntToStr(MainForm.Configuration.AutoGetMessagesCycleDuration)
+  else edbxAutoGetMessagesCycleDuration.Clear;
+  Log.SendInfo('Флажок "'+chkbxEnableAutoGetMessages.Caption+'"'+Routines_GetConditionalMessage(chkbxEnableAutoGetMessages.Checked, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
 
-procedure TOptionsForm.edbxGetMessagesCycleDurationChange(Sender: TObject);
+procedure TOptionsForm.chkbxMainFormPositionByCenterClick(Sender: TObject);
 begin
-  if StrToIntDef(edbxGetMessagesCycleDuration.Text, 1)<1 then
-    edbxGetMessagesCycleDuration.Text:='1';
-  if StrToIntDef(edbxGetMessagesCycleDuration.Text, 1)>60 then
-    edbxGetMessagesCycleDuration.Text:='60';
+  edbxMainFormPositionX.Enabled:=not chkbxMainFormPositionByCenter.Checked;
+//  if edbxMainFormPositionX.Enabled then
+//    edbxMainFormPositionX.Text:=IntToStr(MainForm.Configuration.fpMainForm.x)
+//  else
+//    edbxMainFormPositionX.Clear;
+
+  edbxMainFormPositionY.Enabled:=not chkbxMainFormPositionByCenter.Checked;
+//  if edbxMainFormPositionY.Enabled then
+//    edbxMainFormPositionY.Text:=IntToStr(MainForm.Configuration.fpMainForm.y)
+//  else
+//    edbxMainFormPositionY.Clear;
 end;
 
-procedure TOptionsForm.edbxGetMessagesCycleDurationKeyPress(Sender: TObject;
+procedure TOptionsForm.edbxAutoGetMessagesCycleDurationChange(Sender: TObject);
+begin
+  if StrToIntDef(edbxAutoGetMessagesCycleDuration.Text, 1)<1 then
+    edbxAutoGetMessagesCycleDuration.Text:='1';
+  if StrToIntDef(edbxAutoGetMessagesCycleDuration.Text, 1)>60 then
+    edbxAutoGetMessagesCycleDuration.Text:='60';
+end;
+
+procedure TOptionsForm.edbxAutoGetMessagesCycleDurationKeyPress(Sender: TObject;
   var Key: Char);
 begin
   if not CharInSet(Key, ['0'..'9', #8, '-']) then
