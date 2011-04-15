@@ -136,7 +136,7 @@
 						<VersionInfo Name="MajorVer">1</VersionInfo>
 						<VersionInfo Name="MinorVer">0</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">79</VersionInfo>
+						<VersionInfo Name="Build">80</VersionInfo>
 						<VersionInfo Name="Debug">True</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -148,7 +148,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">1.0.0.79</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">1.0.0.80</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName">overseer</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalCopyright">(C)opyright 2009-2010 by Vlad Ivanov</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks"/>

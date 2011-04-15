@@ -29,6 +29,16 @@ const
   saMonths1: array [1..12] of string=('январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь');
   saMonths2: array [1..12] of string=('января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря');
 
+  aRegions_Count=6;
+  aRegions: array [0..aRegions_Count-1] of trRegion=( //
+    (sPrefix: '015'; sName: 'Гродненская область'),
+    (sPrefix: '016'; sName: 'Брестская область'),
+    (sPrefix: '017'; sName: 'Минская область'),
+    (sPrefix: '021'; sName: 'Витебская область'),
+    (sPrefix: '022'; sName: 'Могилёвская область'),
+    (sPrefix: '023'; sName: 'Гомельская область')
+  ); //
+
   aServices_Count=26;
   aServices: array [0..aServices_Count-1] of trService=( //
     (sNumber: '109'; sName: 'Платная справка'; bAutoService: False; bUsedInReport_SIC_03: True), //
@@ -58,6 +68,7 @@ const
     (sNumber: '99197'; sName: 'Межгород, именины'; bAutoService: True; bUsedInReport_SIC_03: False), //
     (sNumber: '9919911'; sName: 'Межгород, бесплатная справка'; bAutoService: False; bUsedInReport_SIC_03: False) //
     ); //
+
   aNets_Count=7;
   aNets: array [0..aNets_Count-1] of trNet=( //
     (sName: ''; sHTMLMobileNetName: ''; sHTMLAbonentsName: ''; sQuery: ''), // все сети полностью
