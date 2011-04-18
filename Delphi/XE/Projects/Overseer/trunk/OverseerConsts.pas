@@ -29,16 +29,6 @@ const
   saMonths1: array [1..12] of string=('январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь');
   saMonths2: array [1..12] of string=('января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря');
 
-  aRegions_Count=6;
-  aRegions: array [0..aRegions_Count-1] of trRegion=( //
-    (sPrefix: '015'; sName: 'Гродненская область'),
-    (sPrefix: '016'; sName: 'Брестская область'),
-    (sPrefix: '017'; sName: 'Минская область'),
-    (sPrefix: '021'; sName: 'Витебская область'),
-    (sPrefix: '022'; sName: 'Могилёвская область'),
-    (sPrefix: '023'; sName: 'Гомельская область')
-  ); //
-
   aServices_Count=26;
   aServices: array [0..aServices_Count-1] of trService=( //
     (sNumber: '109'; sName: 'Платная справка'; bAutoService: False; bUsedInReport_SIC_03: True), //
@@ -69,10 +59,346 @@ const
     (sNumber: '9919911'; sName: 'Межгород, бесплатная справка'; bAutoService: False; bUsedInReport_SIC_03: False) //
     ); //
 
+  aNets_Count=13;
+  aNets: array [0..aNets_Count-1] of trNet=( //
+    (sName: ''; sHTMLMobileNetName: ''; sHTMLAbonentsName: ''; sQuery: ''), // все сети полностью
+    (sName: 'Минская ГТС'; sHTMLMobileNetName: ''; sHTMLAbonentsName: '&nbsp;абонентов&nbsp;филиала&nbsp;&laquo;Минская&nbsp;ГТС&raquo;'; sQuery: //
+    '(' //
+    // городские телефоны, начинающиеся на цифру "2"
+    // нормальная длина номера
+    +'(ani LIKE "00172______") OR ' //
+    +'(ani LIKE  "0172______") OR ' //
+    +'(ani LIKE    "02______") OR ' //
+    +'(ani LIKE     "2______") OR ' //
+    // обрезана одна цифра с конца
+    +'(ani LIKE "00172_____") OR ' //
+    +'(ani LIKE  "0172_____") OR ' //
+    +'(ani LIKE    "02_____") OR ' //
+    // обрезаны две цифры с конца
+    +'(ani LIKE "00172____") OR ' //
+    +'(ani LIKE  "0172____") OR ' //
+    +'(ani LIKE    "02____") OR ' //
+
+    // городские телефоны, начинающиеся на цифру "3"
+    // нормальная длина номера
+    +'(ani LIKE "00173______") OR ' //
+    +'(ani LIKE  "0173______") OR ' //
+    +'(ani LIKE    "03______") OR ' //
+    +'(ani LIKE     "3______") OR ' //
+    // обрезана одна цифра с конца
+    +'(ani LIKE "00173_____") OR ' //
+    +'(ani LIKE  "0173_____") OR ' //
+    +'(ani LIKE    "03_____") OR ' //
+    // обрезаны две цифры с конца
+    +'(ani LIKE "00173____") OR ' //
+    +'(ani LIKE  "0173____") OR ' //
+    +'(ani LIKE    "03____") OR ' //
+
+    // пригородные телефоны, начинающиеся на цифру "5"
+    +'(ani LIKE "00175______") OR ' //
+    +'(ani LIKE  "0175______") OR ' //
+    +'(ani LIKE    "05______") OR ' //
+    +'(ani LIKE     "5______") OR ' //
+
+    // таксофоны, начинающиеся на цифру "8"
+    +'(ani LIKE "00178______") OR ' //
+    +'(ani LIKE  "0178______") OR ' //
+    +'(ani LIKE    "08______") OR ' //
+    +'(ani LIKE     "8______")'+ //
+    ')' //
+    ), //
+
+    (sName: 'Минская область'; sHTMLMobileNetName: ''; sHTMLAbonentsName: '&nbsp;абонентов&nbsp;Минской&nbsp;области'; sQuery: //
+    '('
+    +'((ani LIKE "0017%") OR (ani LIKE "017%")) AND ' //
+    +'(!(' //
+    // городские телефоны, начинающиеся на цифру "2"
+    // нормальная длина номера
+    +'(ani LIKE "00172______") OR ' //
+    +'(ani LIKE  "0172______") OR ' //
+    // обрезана одна цифра с конца
+    +'(ani LIKE "00172_____") OR ' //
+    +'(ani LIKE  "0172_____") OR ' //
+    // обрезаны две цифры с конца
+    +'(ani LIKE "00172____") OR ' //
+    +'(ani LIKE  "0172____") OR ' //
+    // городские телефоны, начинающиеся на цифру "3"
+    // нормальная длина номера
+    +'(ani LIKE "00173______") OR ' //
+    +'(ani LIKE  "0173______") OR ' //
+    // обрезана одна цифра с конца
+    +'(ani LIKE "00173_____") OR ' //
+    +'(ani LIKE  "0173_____") OR ' //
+    // обрезаны две цифры с конца
+    +'(ani LIKE "00173____") OR ' //
+    +'(ani LIKE  "0173____") OR ' //
+    // пригородные телефоны, начинающиеся на цифру "5"
+    +'(ani LIKE "00175______") OR ' //
+    +'(ani LIKE  "0175______") OR ' //
+    // таксофоны, начинающиеся на цифру "8"
+    +'(ani LIKE "00178______") OR ' //
+    +'(ani LIKE  "0178______")' //
+    +'))'+ //
+    ')'
+    ), //
+
+    (sName: 'Гродненская область'; sHTMLMobileNetName: ''; sHTMLAbonentsName: '&nbsp;абонентов&nbsp;Гродненской&nbsp;области'; sQuery: //
+    '(' //
+      +'((ani LIKE "8015%") AND (!(ani LIKE "8______"))) OR ' //
+      +'(ani LIKE "0015%") OR ' //
+      +'(ani LIKE "015%")'+ //
+    ')' //
+    ), //
+
+    (sName: 'Брестская область'; sHTMLMobileNetName: ''; sHTMLAbonentsName: '&nbsp;абонентов&nbsp;Брестской&nbsp;области'; sQuery: //
+    '(' //
+      +'((ani LIKE "8016%") AND (!(ani LIKE "8______"))) OR ' //
+      +'(ani LIKE "0016%") OR ' //
+      +'(ani LIKE "016%")'+ //
+    ')' //
+    ), //
+
+    (sName: 'Витебская область'; sHTMLMobileNetName: ''; sHTMLAbonentsName: '&nbsp;абонентов&nbsp;Витебской&nbsp;области'; sQuery: //
+    '(' //
+      +'((ani LIKE "8021%") AND (!(ani LIKE "8______"))) OR ' //
+      +'(ani LIKE "0021%") OR ' //
+      +'((ani LIKE "021%") AND (!((ani LIKE "021_____") OR (ani LIKE "021____") OR (ani LIKE "021___"))))'+ //
+    ')' //
+    ), //
+
+    (sName: 'Могилёвская область'; sHTMLMobileNetName: ''; sHTMLAbonentsName: '&nbsp;абонентов&nbsp;Могилёвской&nbsp;области'; sQuery: //
+    '(' //
+      +'((ani LIKE "8022%") AND (!(ani LIKE "8______"))) OR ' //
+      +'(ani LIKE "0022%") OR ' //
+      +'((ani LIKE "022%") AND (!((ani LIKE "022_____") OR (ani LIKE "022____") OR (ani LIKE "022___"))))'+ //
+    ')' //
+    ), //
+
+    (sName: 'Гомельская область'; sHTMLMobileNetName: ''; sHTMLAbonentsName: '&nbsp;абонентов&nbsp;Гомельской&nbsp;области'; sQuery: //
+    '(' //
+      +'((ani LIKE "8023%") AND (!(ani LIKE "8______"))) OR ' //
+      +'(ani LIKE "0023%") OR ' //
+      +'((ani LIKE "023%") AND (!((ani LIKE "023_____") OR (ani LIKE "023____") OR (ani LIKE "023___"))))'+ //
+    ')' //
+    ), //
+
+    (sName: 'МЦС'; sHTMLMobileNetName: 'СП&nbsp;&laquo;МЦС&raquo;'; sHTMLAbonentsName: '&nbsp;абонентов&nbsp;сети&nbsp;СП&nbsp;&laquo;МЦС&raquo;'; sQuery: //
+    '(' //
+    +'(ani LIKE "00291______") OR ' //
+    +'(ani LIKE  "0291______") OR ' //
+
+    +'(ani LIKE "00293______") OR ' //
+    +'(ani LIKE  "0293______") OR ' //
+
+    +'(ani LIKE "00296______") OR ' //
+    +'(ani LIKE  "0296______") OR ' //
+
+    +'(ani LIKE "00299______") OR ' //
+    +'(ani LIKE  "0299______") OR ' //
+
+    +'(ani LIKE "0044_______") OR ' //
+    +'(ani LIKE  "044_______")'+ //
+    ')' //
+    ), //
+
+    (sName: 'МТС'; sHTMLMobileNetName: 'СООО&nbsp;&laquo;МТС&raquo;'; sHTMLAbonentsName: '&nbsp;абонентов&nbsp;сети&nbsp;СООО&nbsp;&laquo;МТС&raquo;'; sQuery: //
+    '(' //
+    +'(ani LIKE "00292______") OR ' //
+    +'(ani LIKE  "0292______") OR ' //
+
+    +'(ani LIKE "00295______") OR ' //
+    +'(ani LIKE  "0295______") OR ' //
+
+    +'(ani LIKE "00297______") OR ' //
+    +'(ani LIKE  "0297______") OR ' //
+
+    +'(ani LIKE "00298______") OR ' //
+    +'(ani LIKE  "0298______") OR ' //
+
+    +'(ani LIKE "0033_______") OR ' //
+    +'(ani LIKE  "033_______")'+ //
+    ')' //
+    ), //
+
+    (sName: 'БеСТ'; sHTMLMobileNetName: 'ЗАО&nbsp;&laquo;БеСТ&raquo;'; sHTMLAbonentsName: '&nbsp;абонентов&nbsp;сети&nbsp;ЗАО&nbsp;&laquo;БеСТ&raquo;'; sQuery: //
+    '(' //
+    +'(ani LIKE "00255______") OR ' //
+    +'(ani LIKE  "0255______") OR ' //
+
+    +'(ani LIKE "00256______") OR ' //
+    +'(ani LIKE  "0256______") OR ' //
+
+    +'(ani LIKE "00257______") OR ' //
+    +'(ani LIKE  "0257______") OR ' //
+
+    +'(ani LIKE "00259______") OR ' //
+    +'(ani LIKE  "0259______")'+ //
+    ')' //
+    ), //
+
+    (sName: 'БелСел'; sHTMLMobileNetName: 'СП&nbsp;&laquo;БелСел&raquo;'; sHTMLAbonentsName: '&nbsp;абонентов&nbsp;сети&nbsp;СП&nbsp;&laquo;БелСел&raquo;'; sQuery: //
+    '(' //
+    +'(ani LIKE "00294______") OR ' //
+    +'(ani LIKE  "0294______")'+ //
+    ')' //
+    ), //
+
+    (sName: 'прочие'; sHTMLMobileNetName: ''; sHTMLAbonentsName: '&nbsp;прочих&nbsp;абонентов'; sQuery: //
+    '(!' // выборка только тех телефонов, которые не попадают в указанный ниже список ;)
+    +'(' //
+
+    // минские городские телефоны
+    +'(ani LIKE "00172______") OR ' //
+    +'(ani LIKE  "0172______") OR ' //
+    +'(ani LIKE    "02______") OR ' //
+    +'(ani LIKE     "2______") OR ' //
+
+    +'(ani LIKE "00172_____") OR ' //
+    +'(ani LIKE  "0172_____") OR ' //
+    +'(ani LIKE    "02_____") OR ' //
+
+    +'(ani LIKE "00172____") OR ' //
+    +'(ani LIKE  "0172____") OR ' //
+    +'(ani LIKE    "02____") OR ' //
+
+    +'(ani LIKE "00173______") OR ' //
+    +'(ani LIKE  "0173______") OR ' //
+    +'(ani LIKE    "03______") OR ' //
+    +'(ani LIKE     "3______") OR ' //
+
+    +'(ani LIKE "00173_____") OR ' //
+    +'(ani LIKE  "0173_____") OR ' //
+    +'(ani LIKE    "03_____") OR ' //
+
+    +'(ani LIKE "00173____") OR ' //
+    +'(ani LIKE  "0173____") OR ' //
+    +'(ani LIKE    "03____") OR ' //
+
+    +'(ani LIKE "00175______") OR ' //
+    +'(ani LIKE  "0175______") OR ' //
+    +'(ani LIKE    "05______") OR ' //
+    +'(ani LIKE     "5______") OR ' //
+
+    +'(ani LIKE "00178______") OR ' //
+    +'(ani LIKE  "0178______") OR ' //
+    +'(ani LIKE    "08______") OR ' //
+    +'(ani LIKE     "8______") OR ' //
+
+    // Минская область
+    +'(((ani LIKE "0017%") OR (ani LIKE "017%")) AND ' //
+    +'(!(' //
+    // городские телефоны, начинающиеся на цифру "2"
+    // нормальная длина номера
+    +'(ani LIKE "00172______") OR ' //
+    +'(ani LIKE  "0172______") OR ' //
+    // обрезана одна цифра с конца
+    +'(ani LIKE "00172_____") OR ' //
+    +'(ani LIKE  "0172_____") OR ' //
+    // обрезаны две цифры с конца
+    +'(ani LIKE "00172____") OR ' //
+    +'(ani LIKE  "0172____") OR ' //
+    // городские телефоны, начинающиеся на цифру "3"
+    // нормальная длина номера
+    +'(ani LIKE "00173______") OR ' //
+    +'(ani LIKE  "0173______") OR ' //
+    // обрезана одна цифра с конца
+    +'(ani LIKE "00173_____") OR ' //
+    +'(ani LIKE  "0173_____") OR ' //
+    // обрезаны две цифры с конца
+    +'(ani LIKE "00173____") OR ' //
+    +'(ani LIKE  "0173____") OR ' //
+    // пригородные телефоны, начинающиеся на цифру "5"
+    +'(ani LIKE "00175______") OR ' //
+    +'(ani LIKE  "0175______") OR ' //
+    // таксофоны, начинающиеся на цифру "8"
+    +'(ani LIKE "00178______") OR ' //
+    +'(ani LIKE  "0178______")' //
+    +'))) OR ' //
+
+    // Гродненская область
+    +'((ani LIKE "8015%") AND (!(ani LIKE "8______"))) OR ' //
+    +'(ani LIKE "0015%") OR ' //
+    +'(ani LIKE "015%") OR ' //
+
+    // Брестская область
+    +'((ani LIKE "8016%") AND (!(ani LIKE "8______"))) OR ' //
+    +'(ani LIKE "0016%") OR ' //
+    +'(ani LIKE "016%") OR ' //
+
+    // Витебская область
+    +'((ani LIKE "8021%") AND (!(ani LIKE "8______"))) OR ' //
+    +'(ani LIKE "0021%") OR ' //
+    +'((ani LIKE "021%") AND (!((ani LIKE "021_____") OR (ani LIKE "021____") OR (ani LIKE "021___")))) OR ' //
+
+    // Могилёвская область
+    +'((ani LIKE "8022%") AND (!(ani LIKE "8______"))) OR ' //
+    +'(ani LIKE "0022%") OR ' //
+    +'((ani LIKE "022%") AND (!((ani LIKE "022_____") OR (ani LIKE "022____") OR (ani LIKE "022___")))) OR ' //
+
+    // Гомельская область
+    +'((ani LIKE "8023%") AND (!(ani LIKE "8______"))) OR ' //
+    +'(ani LIKE "0023%") OR ' //
+    +'((ani LIKE "023%") AND (!((ani LIKE "023_____") OR (ani LIKE "023____") OR (ani LIKE "023___")))) OR ' //
+
+    // МЦС
+    +'(ani LIKE "00291______") OR ' //
+    +'(ani LIKE  "0291______") OR ' //
+
+    +'(ani LIKE "00293______") OR ' //
+    +'(ani LIKE  "0293______") OR ' //
+
+    +'(ani LIKE "00296______") OR ' //
+    +'(ani LIKE  "0296______") OR ' //
+
+    +'(ani LIKE "00299______") OR ' //
+    +'(ani LIKE  "0299______") OR ' //
+
+    +'(ani LIKE "0044_______") OR ' //
+    +'(ani LIKE  "044_______") OR ' //
+
+    // МТС
+    +'(ani LIKE "00292______") OR ' //
+    +'(ani LIKE  "0292______") OR ' //
+
+    +'(ani LIKE "00295______") OR ' //
+    +'(ani LIKE  "0295______") OR ' //
+
+    +'(ani LIKE "00297______") OR ' //
+    +'(ani LIKE  "0297______") OR ' //
+
+    +'(ani LIKE "00298______") OR ' //
+    +'(ani LIKE  "0298______") OR ' //
+
+    +'(ani LIKE "0033_______") OR ' //
+    +'(ani LIKE  "033_______") OR ' //
+
+    // БеСТ
+    +'(ani LIKE "00255______") OR ' //
+    +'(ani LIKE  "0255______") OR ' //
+
+    +'(ani LIKE "00256______") OR ' //
+    +'(ani LIKE  "0256______") OR ' //
+
+    +'(ani LIKE "00257______") OR ' //
+    +'(ani LIKE  "0257______") OR ' //
+
+    +'(ani LIKE "00259______") OR ' //
+    +'(ani LIKE  "0259______") OR ' //
+
+    // БелСел
+    +'(ani LIKE "00294______") OR ' //
+    +'(ani LIKE  "0294______")' //
+
+    +')'+ //
+    ')' //
+    ) //
+    );
+
+(*
   aNets_Count=7;
   aNets: array [0..aNets_Count-1] of trNet=( //
     (sName: ''; sHTMLMobileNetName: ''; sHTMLAbonentsName: ''; sQuery: ''), // все сети полностью
-    (sName: 'МГТС'; sHTMLMobileNetName: ''; sHTMLAbonentsName: '&nbsp;абонентов&nbsp;&laquo;МГТС&raquo;'; sQuery: //
+    (sName: 'Минская ГТС'; sHTMLMobileNetName: ''; sHTMLAbonentsName: '&nbsp;абонентов&nbsp;&laquo;МГТС&raquo;'; sQuery: //
     '(' //
     // городские телефоны, начинающиеся на цифру "2"
     // нормальная длина номера
@@ -268,6 +594,7 @@ const
     ')' //
     ) //
     );
+*)
 
   USD_TARIF_BEST_109_DAY: double=0.06;
   USD_TARIF_BEST_109_NIGHT: double=0.12;

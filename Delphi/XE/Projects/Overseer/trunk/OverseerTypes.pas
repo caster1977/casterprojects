@@ -22,11 +22,6 @@ type
     bUsedInReport_SIC_03: boolean;
   end;
 
-  trRegion=record
-    sPrefix: string;
-    sName: string;
-  end;
-
   trNet=record
     sName: string;
     sHTMLMobileNetName: string;
