@@ -110,15 +110,6 @@ begin
       sReportPeriod:='период с'+Routines_GetConditionalMessage(wStartDay=2, 'о', '')+' '+sLongStartDate+' по '+sLongStopDate;
   end;
 
-//  if aServices[ServiceIndex].sNumber='199' then
-//    sWherePartForService:='LEFT(ddi,4)="1111"'
-//  else
-//    if aServices[ServiceIndex].sNumber='9910911' then
-//      sWherePartForService:='LEFT(ddi,4)="2222"'
-//    else
-//      sWherePartForService:='LEFT(ddi,'+IntToStr(Length(aServices[ServiceIndex].sNumber))+')="'+aServices[ServiceIndex].sNumber+'"';
-
-
   if aServices[ServiceIndex].sNumber='199' then
     sWherePartForService:='((ddi LIKE "1111%" OR ddi LIKE "199%") AND srv=0)'
   else
@@ -143,7 +134,7 @@ begin
   LogThis('Начато формирование отчёта по форме № '+sReportCode+' за '+sReportPeriod+'.', lmtInfo);
 
   // создание строки прогесса в окне прогресса действий
-  _CreateProgressBar(dtNow, 'Формирование отчёта по форме № '+sReportCode+' за '+sReportPeriod+'...', 100);
+  _CreateProgressBar(dtNow, 'Формирование отчёта по форме № '+sReportCode+' за '+sReportPeriod+'...', 11+(aNets_Count-2)*2);
 
   // формирование/поиск сводной таблицы irda
   Synchronize( procedure begin //
@@ -225,7 +216,7 @@ begin
                               +' AND '+sWherePartForService+' ' //
                               +'GROUP BY a;';
                             _MySQL_InsertRecords(FConfiguration.StatServer, bError, sErrorMessage, q); //
-                            StepProgressBar; //
+                            StepProgressBar; // 6
 
                             if not bError then
                               begin
@@ -248,7 +239,7 @@ begin
                                   +' AND dur>0 ' //
                                   +'GROUP BY a;';
                                 _MySQL_InsertRecords(FConfiguration.StatServer, bError, sErrorMessage, q); //
-                                StepProgressBar; //
+                                StepProgressBar; // 27
                               end;
                           end;
                       if not bError then
@@ -270,7 +261,7 @@ begin
                             +'LEFT JOIN '+FConfiguration.StatServer.sMySQLDatabase_IRDA_Location+'.tmp_06_2 AS b ' //
                             +'ON b.region=a.region ' //
                             +'ORDER BY a.sort_id;');
-                          StepProgressBar; //
+                          StepProgressBar; // 28
                         end;
 
                       if not bError then
@@ -336,9 +327,9 @@ begin
                                   q:='SELECT' //
                                     +' region,' //
                                     +' call_quantity,' //
-                                    +' call_sumtime,' //
                                     +' allowed_call_quantity,' //
                                     +' allowed_call_sumtime,' //
+                                    +' allowed_call_middletime,' //
                                     +' nonallowed_call_percent ' //
                                     +'FROM '+FConfiguration.StatServer.sMySQLDatabase_IRDA_Location+'.tmp_06_3 ' //
                                     +'ORDER BY sort_id;'; //
@@ -366,11 +357,10 @@ begin
                                                   sHTML:=sHTML+'        <TR>'+#13#10;
                                                   sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Телефонная сеть</TD>'+#13#10;
                                                   sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Пришло на<BR>СТ-платформу<BR>звонков,<BR>штук</TD>'+#13#10;
-                                                  sHTML:=sHTML+
-                                                    '          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Общая<BR>длительность<BR>поступивших<BR>звонков, сек.</TD>'+#13#10;
                                                   sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Обслужено<BR>звонков,<BR>штук</TD>'+#13#10;
+                                                  sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Общая<BR>длительность<BR>обслуженных<BR>звонков, сек.</TD>'+#13#10;
                                                   sHTML:=sHTML+
-                                                    '          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Общая<BR>длительность<BR>обслуженных<BR>звонков, сек.</TD>'+#13#10;
+                                                    '          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Средняя<BR>длительность<BR>обслуженных<BR>звонков, сек.</TD>'+#13#10;
                                                   sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Отказы<BR>по<BR>услуге,<BR>%</TD>'+#13#10;
                                                   sHTML:=sHTML+'        </TR>'+#13#10;
                                                   for iRowCounter:=0 to iRowQuantity-1 do
@@ -423,7 +413,7 @@ begin
                                 end;
                             end;
                           LogThis('<< Выполнение операция получения данных для строк отчёта завершено.', lmtDebug);
-                          StepProgressBar; //
+                          StepProgressBar; // 29
 
                           // получение итоговых данных
                           if not bError then
@@ -441,9 +431,9 @@ begin
                                         begin
                                           q:='SELECT' //
                                             +' SUM(call_quantity),' //
-                                            +' SUM(call_sumtime),' //
                                             +' SUM(allowed_call_quantity),' //
                                             +' SUM(allowed_call_sumtime),' //
+                                            +' SUM(allowed_call_sumtime)/SUM(allowed_call_quantity),' //
                                             +' 100-((SUM(allowed_call_quantity)/SUM(call_quantity))*100) ' //
                                             +'FROM '+FConfiguration.StatServer.sMySQLDatabase_IRDA_Location+'.tmp_06_3 ' //
                                             +'GROUP BY "";'; //
@@ -500,7 +490,7 @@ begin
                                         end;
                                     end;
                                   LogThis('<< Выполнение операция получения данных для итоговой строки завершено.', lmtDebug);
-                                  StepProgressBar; // 10
+                                  StepProgressBar; // 30
                                 end;
 
                               if not bError then
@@ -533,7 +523,7 @@ begin
                                   sHTML:=sHTML+'  </BODY>'+#13#10;
                                   sHTML:=sHTML+'</HTML>'+#13#10;
                                   // _LogThis(sHTML, lmtDebug);
-                                  StepProgressBar; //
+                                  StepProgressBar; // 31
                                 end;
                             end;
                         end;
@@ -544,7 +534,7 @@ begin
 
       // отключение от MySQL-сервера по окончанию работы текущей процедуры с базами данных - даже в случае ошибки
       _MySQL_CloseConnection(FConfiguration.StatServer, bError, sErrorMessage);
-      StepProgressBar; //
+      StepProgressBar; // 32
 
       // открытие отчёта браузером
       if not bError then //
@@ -552,7 +542,7 @@ begin
           Synchronize( procedure begin //
             if not MainForm.Do_SaveReportAsHTMLAndOpen(sHTML, 'Статистика звонков на услугу СИЦ '+aServices[ServiceIndex].sNumber+' за '+sReportPeriod+' [форма № '+sReportCode+'].htm', OpenWithBrowser, True)
           then Routines_GenerateError('Произошла ошибка во вложенной функции сохранения и открытия отчёта!', sErrorMessage, bError); end); //
-          StepProgressBar; //
+          StepProgressBar; // 33
         end;
     end;
 

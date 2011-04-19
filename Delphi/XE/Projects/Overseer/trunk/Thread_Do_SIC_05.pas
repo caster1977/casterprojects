@@ -169,12 +169,23 @@ begin
   end;
 
   if aServices[ServiceIndex].sNumber='199' then
-    sWherePartForService:='LEFT(ddi,4)="1111"'
+    sWherePartForService:='((ddi LIKE "1111%" OR ddi LIKE "199%") AND srv=0)'
   else
     if aServices[ServiceIndex].sNumber='9910911' then
-      sWherePartForService:='LEFT(ddi,4)="2222"'
+      sWherePartForService:='((ddi LIKE "2222%" OR ddi LIKE "9910911%") AND srv=0)'
     else
-      sWherePartForService:='LEFT(ddi,'+IntToStr(Length(aServices[ServiceIndex].sNumber))+')="'+aServices[ServiceIndex].sNumber+'"';
+      begin
+        sWherePartForService:='(ddi LIKE "'+aServices[ServiceIndex].sNumber+'%" AND srv=';
+        for iRoutineCounter:=0 to aServices_Count-1 do
+          if aServices[iRoutineCounter].sNumber=aServices[ServiceIndex].sNumber then
+            begin
+              sWherePartForService:=sWherePartForService+Routines_GetConditionalMessage(aServices[iRoutineCounter].bAutoService, '1', '0');
+              Break;
+            end;
+        if (aServices[ServiceIndex].sNumber='130')or(aServices[ServiceIndex].sNumber='2003498') then
+          sWherePartForService:=sWherePartForService+' AND ((((vrijeme BETWEEN "08:30:00" AND "19:59:59") AND WEEKDAY(datum) IN(0,1,2,3,4)) OR ((vrijeme BETWEEN "09:00:00" AND "14:59:59") AND WEEKDAY(datum)=5)))';
+        sWherePartForService:=sWherePartForService+')';
+      end;
 
   sReportCode:='ÑÈÖ-05-'+aServices[ServiceIndex].sNumber+'-'+sReportSuffix;
 
@@ -269,8 +280,7 @@ begin
                                       +' DATE_FORMAT(datum,"%Y.%m.%d")' //
                                       +' BETWEEN "'+FormatDateTime('yyyy.mm.dd', StrToDate(Copy(slWeeksList[iRoutineCounter], 0, 10)))+'"' //
                                       +' AND "'+FormatDateTime('yyyy.mm.dd', StrToDate(Copy(slWeeksList[iRoutineCounter], 14, 10)))+'"' //
-                                      +' AND '+sWherePartForService //
-                                      +' AND (srv=0 OR srv=1)' //
+                                      +' AND '+sWherePartForService+' ' //
                                       +'GROUP BY period ' //
                                       +'ORDER BY datum, vrijeme;'); //
                                   end;
@@ -299,7 +309,6 @@ begin
                                           +' BETWEEN "'+FormatDateTime('yyyy.mm.dd', StrToDate(Copy(slWeeksList[iRoutineCounter], 0, 10)))+'"' //
                                           +' AND "'+FormatDateTime('yyyy.mm.dd', StrToDate(Copy(slWeeksList[iRoutineCounter], 14, 10)))+'"' //
                                           +' AND '+sWherePartForService //
-                                          +' AND srv='+Routines_GetConditionalMessage(aServices[ServiceIndex].bAutoService, '1', '0') //
                                           +' AND v_mreza>""' //
                                           +Routines_GetConditionalMessage(aServices[ServiceIndex].bAutoService, '', ' AND v_oper>""') //
                                           +Routines_GetConditionalMessage(aServices[ServiceIndex].bAutoService, '', ' AND rm>0') //
@@ -326,8 +335,7 @@ begin
                             +' "",' //
                             +' "" ' //
                             +'FROM '+FConfiguration.StatServer.sMySQLDatabase_IRDA_Location+'.'+sTableName+' ' //
-                            +'WHERE '+sWherePartForService //
-                            +' AND (srv=0 OR srv=1) ' //
+                            +'WHERE '+sWherePartForService+' ' //
                             +'GROUP BY '+sGroupByQuery+' ' //
                             +'ORDER BY datum, vrijeme;'); //
                           StepProgressBar; // 8
@@ -347,7 +355,6 @@ begin
                                 +'FROM '+FConfiguration.StatServer.sMySQLDatabase_IRDA_Location+'.'+sTableName+' ' //
                                 +'WHERE' //
                                 +' '+sWherePartForService //
-                                +' AND srv='+Routines_GetConditionalMessage(aServices[ServiceIndex].bAutoService, '1', '0') //
                                 +' AND v_mreza>""' //
                                 +Routines_GetConditionalMessage(aServices[ServiceIndex].bAutoService, '', ' AND v_oper>""') //
                                 +Routines_GetConditionalMessage(aServices[ServiceIndex].bAutoService, '', ' AND rm>0') //
