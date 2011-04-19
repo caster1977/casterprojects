@@ -26,9 +26,13 @@ type
     procedure SetLogin(const Value: string);
     procedure SetPassword(const Value: string);
     procedure SetDatabase(const Value: string);
+  protected
+    function GetLastErrorInfo: string;
+    class function PrepareStringValueForQuery(const Source: string; AddCommas, ReturnNull: boolean): string; static;
   public
     property Connected: boolean read FConnected write SetConnected;
     property Connection: PMYSQL read FConnection write SetConnection;
+
     property Host: string read FHost write SetHost;
     property Port: integer read FPort write SetPort default MYSQL_PORT;
     property Timeout: integer read FTimeout write SetTimeout default 30;
@@ -36,7 +40,6 @@ type
     property Login: string read FLogin write SetLogin;
     property Password: string read FPassword write SetPassword;
     property Database: string read FDatabase write SetDatabase;
-    function GetLastErrorInfo: string;
   end;
 
 implementation
@@ -46,10 +49,36 @@ uses
 
 function TMySQLConnection.GetLastErrorInfo: string;
 begin
-  if mysql_errno(FConnection)<>0 then
-    Result:=#10#13+#10#13+'Код ошибки: '+#10#13+IntToStr(mysql_errno(FConnection))+#10#13+#10#13+'Наименование ошибки: '+#10#13+string(mysql_error(FConnection))
+  if Assigned(FConnection) then
+    if mysql_errno(FConnection)<>0 then
+      Result:=#10#13+#10#13+'Код ошибки: '+#10#13+IntToStr(mysql_errno(FConnection))+#10#13+#10#13+'Наименование ошибки: '+#10#13+string(mysql_error(FConnection))
+    else
+      Result:=''
   else
-    Result:='';
+    raise EInvalidPointer.Create('Возникла ошибка при попытке получения указателя активного соединения!');
+end;
+
+class function TMySQLConnection.PrepareStringValueForQuery(const Source: string; AddCommas, ReturnNull: boolean): string;
+var
+  z: PAnsiChar;
+begin
+  Result:='';
+  if (ReturnNull and(Trim(Source)='')) then
+    Result:='NULL'
+  else
+    begin
+      z:=GetMemory(Length(PAnsiChar(AnsiString(Source)))*2+1);
+      try
+        mysql_escape_string(z, PAnsiChar(AnsiString(Source)), Length(PAnsiChar(AnsiString(Source))));
+        if AddCommas then
+          Result:='"'+string(StrPas(z))+'"'
+        else
+          Result:=string(StrPas(z));
+      finally
+        if z<>nil then
+          FreeMemory(z);
+      end;
+    end;
 end;
 
 procedure TMySQLConnection.SetCompression(const Value: boolean);

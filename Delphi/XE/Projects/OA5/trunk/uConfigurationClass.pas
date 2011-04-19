@@ -3,14 +3,17 @@ unit uConfigurationClass;
 interface
 
 uses
-  uMySQLConnectionClass, LogKeeperData, Types;
+  uMySQLConnectionClass,
+  LogKeeperData,
+  Types,
+  uSingleton;
 
 type
   TReportFolders=(rfTempFolder, rfApplicationFolder, rfCustomFolder);
 
-  TConfiguration=class
+  TConfiguration=class(TSingleton)
   type
-    TFormPosition= record
+    TFormPosition=record
       bCenter: boolean;
       x, y: integer;
     end;
@@ -23,32 +26,32 @@ type
     FShowCommonSearchEditbox: boolean; // Отображать единое поле ввода для поиска данных
     FShowID: boolean; // Отображать поле ID записей базы данных при работе программы
     FUseMultibuffer: boolean; // Использовать мультибуфер для операций копирования мероприятий
-    FShowConfirmationOnQuit: boolean; // Требовать подтверждение при выходе из программы
+    FShowConfirmationAtQuit: boolean; // Требовать подтверждение при выходе из программы
 
     // вкладка "настройки ведения протокола работы"
-    FUseLog: boolean; // Вести лог работы программы
+    FEnableLog: boolean; // Вести лог работы программы
     FKeepLogTypes: TLogMessagesTypes; // выводить сообщения перечисленных типов
     FFlushLogOnExit: boolean; // Сбрасывать протокол работы в текстовый файл при завершении работы программы
-    FEnableFlushLogOnStringsQuantity: boolean; // Сбрасывать протокол работы в текстовый файл при достижении количества строк
-    FFlushLogOnStringsQuantity: integer; // Сбрасывать протокол работы в текстовый файл при достижении количества строк (непосредственно количество)
+    FFlushLogOnStringsQuantity: boolean; // Сбрасывать протокол работы в текстовый файл при достижении количества строк
+    FFlushLogOnStringsQuantityValue: integer; // Сбрасывать протокол работы в текстовый файл при достижении количества строк (непосредственно количество)
     FFlushLogOnClearingLog: boolean; // Сбрасывать протокол работы в текстовый файл при операции очистки протокола
     FFlushLogOnApply: boolean; // Сбрасывать протокол работы в текстовый файл при нажатии кнопки "Применить"
     FCustomLogClientFile: boolean; // Использовать внешний клиент протоколирования
-    FCustomLogClientFileName: string; // имя файла внешнего клиента протоколирования
+    FCustomLogClientFileValue: string; // имя файла внешнего клиента протоколирования
 
     // вкладка "настройки положения диалоговых окон"
-    FMainFormPosition,
-    FLoginFormPosition,
-    FOptionsFormPosition,
-    FUsersFormPosition,
-    FSetPasswordFormPosition,
-    FStatisticFormPosition,
-    FMaintenanceFormPosition,
-    FClearingFormPosition,
-    FViewPostListFormPosition,
-    FCreateViewPostFormPosition,
-    FPhonesFormPosition,
-    FAddEditPhoneFormPosition,
+    FMainFormPosition: TFormPosition;
+    FLoginFormPosition: TFormPosition;
+    FOptionsFormPosition: TFormPosition;
+    FUsersFormPosition: TFormPosition;
+    FSetPasswordFormPosition: TFormPosition;
+    FStatisticFormPosition: TFormPosition;
+    FMaintenanceFormPosition: TFormPosition;
+    FClearingFormPosition: TFormPosition;
+    FViewPostListFormPosition: TFormPosition;
+    FCreateViewPostFormPosition: TFormPosition;
+    FPhonesFormPosition: TFormPosition;
+    FAddEditPhoneFormPosition: TFormPosition;
     FAddMassMsrFormPosition: TFormPosition;
 
     // вкладка "настройки процедуры логирования"
@@ -116,9 +119,8 @@ type
     // iOrgSortColumn: integer;
     // iMsrSortColumn: integer;
     // bFullScreen: boolean;
-  public
-    property UseLog: boolean read FUseLog write SetUseLog default True; // нужно ли вести лог работы программы
-    property KeepLogTypes: TLogMessagesTypes read FKeepLogTypes write SetKeepLogTypes default [lmtError,lmtWarning,lmtInfo];
+    property EnableLog: boolean read FEnableLog write SetUseLog default True; // нужно ли вести лог работы программы
+    property KeepLogTypes: TLogMessagesTypes read FKeepLogTypes write SetKeepLogTypes default [lmtError, lmtWarning, lmtInfo];
 
     property StoreLastLogin: boolean read FStoreLastLogin write SetStoreLastLogin default False; // нужно ли хранить последний введённый логин
     property StoreLastPassword: boolean read FStoreLastPassword write SetStoreLastPassword default False; // нужно ли хранить последний введённый пароль
@@ -128,7 +130,7 @@ type
     property LastPassword: string read FLastPassword;
 
     property ReportFolder: string read GetReportFolder stored False;
-    property FlushLogOnStringsQuantity: integer read FFlushLogOnStringsQuantity write FFlushLogOnStringsQuantity;
+    property FlushLogOnStringsQuantityValue: integer read FFlushLogOnStringsQuantityValue write FFlushLogOnStringsQuantityValue;
     property AutoGetMessagesCycleDuration: integer read FAutoGetMessagesCycleDuration write FAutoGetMessagesCycleDuration;
 
   end;
@@ -136,18 +138,20 @@ type
 implementation
 
 uses
-  SysUtils, Windows, Forms;
+  SysUtils,
+  Windows,
+  Forms;
 
 procedure TConfiguration.SetKeepLogTypes(const Value: TLogMessagesTypes);
 begin
   if FKeepLogTypes<>Value then
-    FKeepLogTypes := Value;
+    FKeepLogTypes:=Value;
 end;
 
 procedure TConfiguration.SetUseLog(const Value: boolean);
 begin
-  if FUseLog<>Value then
-    FUseLog:=Value;
+  if FEnableLog<>Value then
+    FEnableLog:=Value;
 end;
 
 procedure TConfiguration.SetStoreLastLogin(const Value: boolean);
@@ -173,9 +177,12 @@ end;
 function TConfiguration.GetReportFolder: string;
 begin
   case FReportFolder of
-    rfTempFolder: GetReportFolder:=GetTempFolder;
-    rfApplicationFolder: GetReportFolder:=GetApplicationFolder;
-    rfCustomFolder: GetReportFolder:=FSelectedReportFolder;
+    rfTempFolder:
+      GetReportFolder:=GetTempFolder;
+    rfApplicationFolder:
+      GetReportFolder:=GetApplicationFolder;
+    rfCustomFolder:
+      GetReportFolder:=FSelectedReportFolder;
   end;
 end;
 
@@ -189,7 +196,7 @@ begin
 
   s:=ExtractFilePath(ExpandFileName(Application.ExeName));
   if DirectoryExists(s) then
-      GetApplicationFolder:=s
+    GetApplicationFolder:=s
   else
     raise Exception.Create('Возникла ошибка при попытке получения пути рабочей папки программы!')
 end;
