@@ -40,6 +40,7 @@ contains
   uCOMInit in 'uCOMInit.pas',
   uLogClasses in 'uLogClasses.pas',
   uRoutines in 'uRoutines.pas',
-  mysql in 'mysql.pas';
+  mysql in 'mysql.pas',
+  uSingleton in 'uSingleton.pas';
 
 end.
