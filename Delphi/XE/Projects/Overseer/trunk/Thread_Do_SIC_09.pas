@@ -138,7 +138,7 @@ begin
     Routines_GenerateError('Не задано ни одной услуги для формирования отчёта!', sErrorMessage, bError);
 
   if not bError then
-    if not(NetIndex in [0..6]) then
+    if not(NetIndex in [0..aNets_Count-1]) then
       Routines_GenerateError('Для формирования отчёта выбрана неопределённая телефонная сеть!', sErrorMessage, bError);
 
   if not bError then
@@ -1753,8 +1753,8 @@ begin
                     +'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD>'+#13#10;
                   sHTML:=sHTML+'        </TR>'+#13#10;
                   sHTML:=sHTML+'        <TR>'+#13#10;
-                  sHTML:=sHTML+'          <TD COLSPAN="9" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 12pt; font-weight: bold; padding: 20px 0px 3px 0px;">' //
-                    +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ&nbsp;за&nbsp;'+sReportPeriod+'</TD>'+#13#10; //
+                  sHTML:=sHTML+'          <TD COLSPAN="9" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 10pt; font-weight: bold; padding: 20px 0px 3px 0px;">' //
+                    +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'</TD>'+#13#10; //
                   sHTML:=sHTML+'        </TR>'+#13#10;
                   sHTML:=sHTML+'        <TR>'+#13#10;
                   sHTML:=sHTML+'          <TD ROWSPAN="3" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+#13#10;
@@ -2402,8 +2402,8 @@ begin
                         +'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD>'+#13#10;
                       sHTML:=sHTML+'        </TR>'+#13#10;
                       sHTML:=sHTML+'        <TR>'+#13#10;
-                      sHTML:=sHTML+'          <TD COLSPAN="7" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 12pt; font-weight: bold; padding: 20px 0px 3px 0px;">' //
-                        +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ&nbsp;за&nbsp;'+sReportPeriod+'</TD>'+#13#10;
+                      sHTML:=sHTML+'          <TD COLSPAN="7" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 10pt; font-weight: bold; padding: 20px 0px 3px 0px;">' //
+                        +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'</TD>'+#13#10;
                       sHTML:=sHTML+'        </TR>'+#13#10;
                       sHTML:=sHTML+'        <TR>'+#13#10;
                       sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+#13#10;
@@ -2886,7 +2886,7 @@ begin
 
                       if not bError then
                         begin
-                          sHTML:=sHTML+'        <TR STYLE="height: 50px;">'+#13#10;
+                          sHTML:=sHTML+'        <TR STYLE="height: 20px;">'+#13#10;
                           sHTML:=sHTML+'          <TD COLSPAN="7" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 0px; padding: 0px;"></TD>'+#13#10;
                           sHTML:=sHTML+'        </TR>'+#13#10;
                           sHTML:=sHTML+'      </TBODY>'+#13#10;
@@ -2933,8 +2933,8 @@ begin
                         +'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD>'+#13#10;
                       sHTML:=sHTML+'        </TR>'+#13#10;
                       sHTML:=sHTML+'        <TR>'+#13#10;
-                      sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 12pt; font-weight: bold; padding: 20px 0px 3px 0px;">' //
-                        +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ&nbsp;за&nbsp;'+sReportPeriod+'&nbsp;(лист&nbsp;№&nbsp;1&nbsp;из&nbsp;3)</TD>'+#13#10; //
+                      sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 10pt; font-weight: bold; padding: 20px 0px 3px 0px;">' //
+                        +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'&nbsp;(лист&nbsp;№&nbsp;1&nbsp;из&nbsp;3)</TD>'+#13#10; //
                       sHTML:=sHTML+'        </TR>'+#13#10;
                       sHTML:=sHTML+'        <TR>'+#13#10;
                       sHTML:=sHTML+'          <TD ROWSPAN="3" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+#13#10;
@@ -3522,8 +3522,8 @@ begin
                           sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="136px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
                           sHTML:=sHTML+'        </TR>'+#13#10;
                           sHTML:=sHTML+'        <TR>'+#13#10;
-                          sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 12pt; font-weight: bold; padding: 66px 0px 3px 0px;">' //
-                            +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ&nbsp;за&nbsp;'+sReportPeriod+'&nbsp;(лист&nbsp;№&nbsp;2&nbsp;из&nbsp;3)</TD>'+#13#10; //
+                          sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 10pt; font-weight: bold; padding: 66px 0px 3px 0px;">' //
+                            +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'&nbsp;(лист&nbsp;№&nbsp;2&nbsp;из&nbsp;3)</TD>'+#13#10; //
                           sHTML:=sHTML+'        </TR>'+#13#10;
                           sHTML:=sHTML+'        <TR>'+#13#10;
                           sHTML:=sHTML+'          <TD ROWSPAN="3" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+#13#10;
@@ -4077,8 +4077,8 @@ begin
                           sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="136px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
                           sHTML:=sHTML+'        </TR>'+#13#10;
                           sHTML:=sHTML+'        <TR>'+#13#10;
-                          sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 12pt; font-weight: bold; padding: 66px 0px 3px 0px;">' //
-                            +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ&nbsp;за&nbsp;'+sReportPeriod+'&nbsp;(лист&nbsp;№&nbsp;3&nbsp;из&nbsp;3)</TD>'+#13#10; //
+                          sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 10pt; font-weight: bold; padding: 66px 0px 3px 0px;">' //
+                            +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'&nbsp;(лист&nbsp;№&nbsp;3&nbsp;из&nbsp;3)</TD>'+#13#10; //
                           sHTML:=sHTML+'        </TR>'+#13#10;
                           sHTML:=sHTML+'        <TR>'+#13#10;
                           sHTML:=sHTML+'          <TD ROWSPAN="3" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+#13#10;
@@ -4635,8 +4635,8 @@ begin
                       sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
                       sHTML:=sHTML+'        </TR>'+#13#10;
                       sHTML:=sHTML+'        <TR>'+#13#10;
-                      sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 12pt; font-weight: bold; padding: 20px 0px 3px 0px;">' //
-                        +'Статистика&nbsp;отказов&nbsp;по&nbsp;звонкам'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ&nbsp;за&nbsp;'+sReportPeriod+'</TD>'+#13#10;
+                      sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 10pt; font-weight: bold; padding: 20px 0px 3px 0px;">' //
+                        +'Статистика&nbsp;отказов&nbsp;по&nbsp;звонкам'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'</TD>'+#13#10;
                       sHTML:=sHTML+'        </TR>'+#13#10;
                       sHTML:=sHTML+'        <TR>'+#13#10;
                       sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+#13#10;
