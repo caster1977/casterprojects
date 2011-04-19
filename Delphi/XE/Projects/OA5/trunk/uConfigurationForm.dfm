@@ -193,7 +193,7 @@ object OptionsForm: TOptionsForm
         Top = 3
         Width = 614
         Height = 223
-        ActivePage = ts9
+        ActivePage = ts4
         Align = alCustom
         Style = tsButtons
         TabOrder = 0
@@ -261,7 +261,7 @@ object OptionsForm: TOptionsForm
             Caption = #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100' '#1084#1091#1083#1100#1090#1080#1073#1091#1092#1077#1088' '#1076#1083#1103' '#1086#1087#1077#1088#1072#1094#1080#1081' '#1082#1086#1087#1080#1088#1086#1074#1072#1085#1080#1103' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1081
             TabOrder = 6
           end
-          object chkbxShowConfirmationOnQuit: TCheckBox
+          object chkbxShowConfirmationAtQuit: TCheckBox
             Left = 0
             Top = 161
             Width = 606
@@ -431,14 +431,14 @@ object OptionsForm: TOptionsForm
             Action = Action_ChooseLogClient
             TabOrder = 13
           end
-          object chkbxUseLog: TCheckBox
+          object chkbxEnableLog: TCheckBox
             Left = 0
             Top = 0
             Width = 300
             Height = 17
             Caption = #1042#1077#1089#1090#1080' '#1083#1086#1075' '#1088#1072#1073#1086#1090#1099' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
             TabOrder = 0
-            OnClick = chkbxUseLogClick
+            OnClick = chkbxEnableLogClick
           end
         end
         object ts8: TTabSheet
@@ -1269,6 +1269,10 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1087#1088#1086#1095#1080#1077
           ImageIndex = 6
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object lblAutoGetMessagesCycleDuration: TLabel
             Left = 376
             Top = 55
@@ -1606,7 +1610,7 @@ object OptionsForm: TOptionsForm
     Left = 304
     Top = 296
     Bitmap = {
-      494C010106000800F00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800F80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -86,7 +86,7 @@ type
     edbxCustomLogClientFile: TEdit;
     btnChoiseCustomLogClientFile: TButton;
     Action_ChooseReportFolder: TAction;
-    chkbxUseLog: TCheckBox;
+    chkbxEnableLog: TCheckBox;
     Bevel4: TBevel;
     Bevel5: TBevel;
     ts6: TTabSheet;
@@ -214,7 +214,7 @@ type
     chkbxShowCommonSearchEditbox: TCheckBox;
     chkbxShowID: TCheckBox;
     chkbxUseMultibuffer: TCheckBox;
-    chkbxShowConfirmationOnQuit: TCheckBox;
+    chkbxShowConfirmationAtQuit: TCheckBox;
     chkbxPlaySoundOnComplete: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure Action_ApplyExecute(Sender: TObject);
@@ -229,7 +229,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure cbPageSelect(Sender: TObject);
     procedure chkbxCustomLogClientFileClick(Sender: TObject);
-    procedure chkbxUseLogClick(Sender: TObject);
+    procedure chkbxEnableLogClick(Sender: TObject);
     procedure edbxFlushLogOnStringsQuantityKeyPress(Sender: TObject; var Key: Char);
     procedure chkbxEnableFlushLogOnStringsQuantityClick(Sender: TObject);
     procedure rbSaveIntoTheSelectedFolderClick(Sender: TObject);
@@ -569,13 +569,13 @@ begin
   slBoolean.Free;
 end;
 
-procedure TOptionsForm.chkbxUseLogClick(Sender: TObject);
+procedure TOptionsForm.chkbxEnableLogClick(Sender: TObject);
 var
   bUseLog: boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxUseLog.Caption, '{20AFAF3C-D977-4A28-8779-C5F59EB39B45}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxEnableLog.Caption, '{20AFAF3C-D977-4A28-8779-C5F59EB39B45}');
 
-  bUseLog:=chkbxUseLog.Enabled and chkbxUseLog.Checked;
+  bUseLog:=chkbxEnableLog.Enabled and chkbxEnableLog.Checked;
 
   lblShowData.Enabled:=bUseLog;
 
@@ -607,8 +607,8 @@ begin
   if edbxFlushLogOnStringsQuantity.Enabled then
     begin
       with MainForm do
-        if Configuration.FlushLogOnStringsQuantity>0 then
-          edbxFlushLogOnStringsQuantity.Text:=IntToStr(Configuration.FlushLogOnStringsQuantity)
+        if Configuration.FlushLogOnStringsQuantityValue>0 then
+          edbxFlushLogOnStringsQuantity.Text:=IntToStr(Configuration.FlushLogOnStringsQuantityValue)
         else
           edbxFlushLogOnStringsQuantity.Text:='10000';
     end
@@ -630,7 +630,7 @@ begin
 
   Action_ChooseLogClient.Enabled:=chkbxCustomLogClientFile.Checked and chkbxCustomLogClientFile.Enabled;
 
-  Log.SendInfo('Флажок "'+chkbxUseLog.Caption+'"'+Routines_GetConditionalMessage(bUseLog, 'в', 'от')+'ключен.');
+  Log.SendInfo('Флажок "'+chkbxEnableLog.Caption+'"'+Routines_GetConditionalMessage(bUseLog, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -647,8 +647,8 @@ begin
   if bFlushLogOnStringsQuantity then
     begin
       with MainForm do
-        if Configuration.FlushLogOnStringsQuantity>0 then
-          edbxFlushLogOnStringsQuantity.Text:=IntToStr(Configuration.FlushLogOnStringsQuantity)
+        if Configuration.FlushLogOnStringsQuantityValue>0 then
+          edbxFlushLogOnStringsQuantity.Text:=IntToStr(Configuration.FlushLogOnStringsQuantityValue)
         else
           edbxFlushLogOnStringsQuantity.Text:='10000';
     end
@@ -835,7 +835,7 @@ begin
 
   if PageControl1.ActivePage.Caption=' ведения протокола работы' then
     begin
-      chkbxUseLog.Checked:=True;
+      chkbxEnableLog.Checked:=True;
       chkbxKeepErrorLog.Checked:=True;
       chkbxKeepWarningLog.Checked:=True;
       chkbxKeepInfoLog.Checked:=True;
