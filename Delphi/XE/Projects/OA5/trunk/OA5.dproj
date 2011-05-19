@@ -57,9 +57,7 @@
 			<DCCReference Include="uLoginForm.pas">
 				<Form>LoginForm</Form>
 			</DCCReference>
-			<DCCReference Include="OA5Types.pas"/>
 			<DCCReference Include="OA5Consts.pas"/>
-			<DCCReference Include="OA5Routines.pas"/>
 			<DCCReference Include="uAboutForm.pas">
 				<Form>AboutForm</Form>
 			</DCCReference>
