@@ -5,17 +5,20 @@ interface
 uses
   Classes;
 
-function Routines_GetLocalIP: string;
-function Routines_NormalizeStringForQuery(const Source: string; AddCommas, ReturnNull: boolean): string;
-function Routines_GetConditionalMessage(const Condition: Boolean; TrueMessage, FalseMessage: string): string;
-procedure Routines_CopyStringToClipboard(const Value: string);
-procedure Routines_CutStringByLimiterToStringList(const Source: string; var Destination: TStringList; const Limiter: char);
-procedure Routines_GenerateError(const aMessage: string; var aErrorMessage: string; var aErrorFlag: boolean);
-function Routines_ValidatePhoneString(const Value: string): string;
-function Routines_IsStringIsPhone(const aString: string): boolean;
-procedure Routines_AddApplicationToRunKey(const RunName, ApplicationName: string);
-procedure Routines_DeleteApplicationFromRunKey(const RunName: string);
-function Routines_IsApplicationInRunKey(const RunName: string): Boolean;
+type
+  Routines=class
+  public
+    class function GetLocalIP: string;
+    class function GetConditionalString(const Condition: Boolean; TrueString, FalseString: string): string; static;
+    class procedure CopyStringToClipboard(const Value: string); static;
+    class procedure CutStringByLimiterToStringList(const Source: string; var Destination: TStringList; const Limiter: char); static;
+    class procedure GenerateError(const aMessage: string; var aErrorMessage: string; var aErrorFlag: boolean); static;
+    class function ValidatePhoneString(const Value: string): string; static;
+    class function IsStringIsPhone(const aString: string): boolean; static;
+    class procedure AddApplicationToRunKey(const RunName, ApplicationName: string); static;
+    class procedure DeleteApplicationFromRunKey(const RunName: string); static;
+    class function IsApplicationInRunKey(const RunName: string): Boolean; static;
+  end;
 
 implementation
 
@@ -27,7 +30,7 @@ uses
   Clipbrd,
   Registry;
 
-function Routines_GetLocalIP: string;
+class function Routines.GetLocalIP: string;
 const
   WSVer=$101;
 var
@@ -48,53 +51,31 @@ begin
     end;
 end;
 
-function Routines_NormalizeStringForQuery(const Source: string; AddCommas, ReturnNull: boolean): string;
-var
-  z: PAnsiChar;
-begin
-  Routines_NormalizeStringForQuery:='';
-  if ((ReturnNull)and(Trim(Source)='')) then
-    Routines_NormalizeStringForQuery:='NULL'
-  else
-    begin
-      z:=GetMemory(Length(PAnsiChar(AnsiString(Source)))*2+1);
-      try
-        mysql_escape_string(z, PAnsiChar(AnsiString(Source)), Length(PAnsiChar(AnsiString(Source))));
-        if AddCommas then
-          Routines_NormalizeStringForQuery:='"'+string(StrPas(z))+'"'
-        else
-          Routines_NormalizeStringForQuery:=string(StrPas(z));
-      finally
-        if z<>nil then
-          FreeMemory(z);
-      end;
-    end;
-end;
-
-function Routines_GetConditionalMessage(const Condition: Boolean; TrueMessage, FalseMessage: string): string;
+class function Routines.GetConditionalString(const Condition: Boolean; TrueString, FalseString: string): string;
 begin
   if Condition then
-    Result:=TrueMessage
+    Result:=TrueString
   else
-    Result:=FalseMessage;
+    Result:=FalseString;
 end;
 
-procedure Routines_CopyStringToClipboard(const Value: string);
+class procedure Routines.CopyStringToClipboard(const Value: string);
 begin
   ClipBoard.Clear;
   ClipBoard.SetTextBuf(PWideChar(Value));
 end;
 
-procedure Routines_CutStringByLimiterToStringList(const Source: string; var Destination: TStringList; const Limiter: char);
+class procedure Routines.CutStringByLimiterToStringList(const Source: string; var Destination: TStringList; const Limiter: char);
 var
   i: integer;
   s, s1: string;
 begin
   s:=Source;
-  if Destination=nil then
-    Destination:=TStringList.Create
+  if Assigned(Destination) then
+    Destination.Clear
   else
-    Destination.Clear;
+    Destination:=TStringList.Create;
+
   Destination.Sorted:=False;
   while Length(s)>0 do
     begin
@@ -114,13 +95,13 @@ begin
     end;
 end;
 
-procedure Routines_GenerateError(const aMessage: string; var aErrorMessage: string; var aErrorFlag: boolean);
+class procedure Routines.GenerateError(const aMessage: string; var aErrorMessage: string; var aErrorFlag: boolean);
 begin
   aErrorMessage:=aMessage;
   aErrorFlag:=True;
 end;
 
-function Routines_ValidatePhoneString(const Value: string): string;
+class function Routines.ValidatePhoneString(const Value: string): string;
 var
   s: string;
 begin
@@ -143,7 +124,7 @@ begin
   Result:=s;
 end;
 
-function Routines_IsStringIsPhone(const aString: string): boolean;
+class function Routines.IsStringIsPhone(const aString: string): boolean;
 var
   b: boolean;
   aSL: TStringList;
@@ -151,7 +132,7 @@ var
   s: string;
 begin
   b:=True;
-  s:=Routines_ValidatePhoneString(aString);
+  s:=Routines.ValidatePhoneString(aString);
 
   if s='' then // если строка пуста - возращаем "false"
     b:=False;
@@ -163,7 +144,7 @@ begin
   try
     aSL.Duplicates:=dupIgnore;
     aSL.Sorted:=True;
-    Routines_CutStringByLimiterToStringList(s, aSL, ' ');
+    Routines.CutStringByLimiterToStringList(s, aSL, ' ');
     for i:=0 to aSL.Count-1 do
       if (Length(aSL[i])<3)or(Length(aSL[i])>12) then
         b:=False;
@@ -174,7 +155,7 @@ begin
   Result:=b;
 end;
 
-procedure Routines_AddApplicationToRunKey(const RunName, ApplicationName: string);
+class procedure Routines.AddApplicationToRunKey(const RunName, ApplicationName: string);
 begin
   with TRegistry.Create do
     try
@@ -191,7 +172,7 @@ begin
     end;
 end;
 
-function Routines_IsApplicationInRunKey(const RunName: string): Boolean;
+class function Routines.IsApplicationInRunKey(const RunName: string): Boolean;
 begin
   with TRegistry.Create do
     try
@@ -204,7 +185,7 @@ begin
     end;
 end;
 
-procedure Routines_DeleteApplicationFromRunKey(const RunName: string);
+class procedure Routines.DeleteApplicationFromRunKey(const RunName: string);
 begin
   with TRegistry.Create do
     try
