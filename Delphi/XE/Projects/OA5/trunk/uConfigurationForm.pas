@@ -19,17 +19,12 @@ uses
   PlatformDefaultStyleActnCtrls,
   ActnMan,
   ExtCtrls,
-  Grids,
   ValEdit,
+  Grids,
   ComCtrls,
-  OA5Types, uLogProvider;
+  uLogProvider;
 
 type
-  TStringGridX=class(TStringGrid)
-  public
-    procedure MoveRow(FromIndex, ToIndex: Longint);
-  end;
-
   TOptionsForm=class(TForm)
     ActionManager1: TActionManager;
     Action_Help: TAction;
@@ -276,11 +271,6 @@ uses
   OA5Routines,
   uConfigurationClass,
   OA5Consts;
-
-procedure TStringGridX.MoveRow(FromIndex, ToIndex: Integer);
-begin
-  inherited;
-end;
 
 (*
 procedure TOptionsForm.LogThis(const aMessage, aLogGroupGUID: string; aMessageType: TLogMessagesType);

@@ -188,10 +188,8 @@ end;
 
 function TConfiguration.GetApplicationFolder: string;
 var
-  s, sErrorMessage: string;
-  bError: boolean;
+  s: string;
 begin
-  bError:=False;
   GetApplicationFolder:='';
 
   s:=ExtractFilePath(ExpandFileName(Application.ExeName));
@@ -203,12 +201,9 @@ end;
 
 function TConfiguration.GetTempFolder: string;
 var
-  sErrorMessage: string;
-  bError: boolean;
   r: cardinal;
   TempPathNameBuffer: PWideChar;
 begin
-  bError:=False;
   TempPathNameBuffer:=nil;
   GetTempFolder:='';
 

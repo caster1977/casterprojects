@@ -31,7 +31,11 @@ uses
   IdBaseComponent,
   IdComponent,
   IdUDPBase,
-  IdUDPClient, xmldom, XMLIntf, msxmldom, XMLDoc;
+  IdUDPClient,
+  xmldom,
+  XMLIntf,
+  msxmldom,
+  XMLDoc;
 
 type
   THackControl=class(TControl);
@@ -114,7 +118,7 @@ uses
   uAboutForm,
   uConfigurationForm,
   OA5Consts,
-  OA5Routines;
+  uRoutines;
 
 procedure TMainForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
@@ -180,7 +184,7 @@ end;
 
 procedure TMainForm.Refresh_BusyState;
 begin
-  Log.SendDebug('Установлен режим "'+Routines_GetConditionalMessage(iBusyCounter>0, 'Занято', 'Готово')+'".');
+  Log.SendDebug('Установлен режим "'+Routines.GetConditionalString(iBusyCounter>0, 'Занято', 'Готово')+'".');
   with MainForm do
     begin
       if iBusyCounter>0 then
@@ -195,7 +199,7 @@ begin
         end;
       { TODO : Убрать ремарки }
       // if not Configuration.bNoStatusBar then
-      StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=Routines_GetConditionalMessage(iBusyCounter>0, 'Пожалуйста, подождите...', 'Готово');
+      StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=Routines.GetConditionalString(iBusyCounter>0, 'Пожалуйста, подождите...', 'Готово');
     end;
   Application.ProcessMessages;
 end;
@@ -284,7 +288,7 @@ begin
   if (FileExists(ExpandFileName(Application.HelpFile))) then
     Application.HelpContext(0)
   else
-    Routines_GenerateError('Извините, справочный файл к данной программе не найден.', sErrorMessage, bError);
+    Routines.GenerateError('Извините, справочный файл к данной программе не найден.', sErrorMessage, bError);
 
   PreFooter(Handle, bError, sErrorMessage);
   ProcedureFooter;
@@ -293,19 +297,28 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 var
   PanelRect: TRect;
+
+  procedure BindMainProgressBarToStatusBar;
+  begin
+    THackControl(pbMain).SetParent(StatusBar1);
+    SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
+    pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right-PanelRect.Left, PanelRect.Bottom-PanelRect.Top-1);
+  end;
+
+  procedure BindStateImageToStatusBar;
+  begin
+    THackControl(imState).SetParent(StatusBar1);
+    SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
+    imState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
+  end;
+
 begin
   bFirstRun:=True;
   CurrentUser:=TUser.Create;
   Configuration:=TConfiguration.Create;
 
-  // предварительная инициализация компонентов
-  THackControl(pbMain).SetParent(StatusBar1);
-  SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
-  pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right-PanelRect.Left, PanelRect.Bottom-PanelRect.Top-1);
-
-  THackControl(imState).SetParent(StatusBar1);
-  SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
-  imState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
+  BindMainProgressBarToStatusBar;
+  BindStateImageToStatusBar;
 
   Update_Actions;
 end;
