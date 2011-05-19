@@ -1,3 +1,5 @@
+{$WARNINGS OFF}
+
 unit uSingleton;
 
 interface

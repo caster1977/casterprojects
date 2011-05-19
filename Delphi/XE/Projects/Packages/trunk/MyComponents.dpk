@@ -41,6 +41,9 @@ contains
   uLogClasses in 'uLogClasses.pas',
   uRoutines in 'uRoutines.pas',
   mysql in 'mysql.pas',
-  uSingleton in 'uSingleton.pas';
-
+  uSingleton in 'uSingleton.pas',
+  uTypes in 'uTypes.pas';
 end.
+
+
+
