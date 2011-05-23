@@ -46,14 +46,14 @@ type
     FOwnerForm: TForm;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-
-    procedure EnterMethod(const aString, aGUID: string);
-    procedure ExitMethod;
     procedure SendError(const aString: string);
     procedure SendWarning(const aString: string);
     procedure SendInfo(const aString: string);
     procedure SendDebug(const aString: string);
     procedure SendSQL(const aString: string);
+
+    procedure EnterMethod(const aString, aGUID: string);
+    procedure ExitMethod;
 
     property UserName: string read FUserName write FUserName;
   published
