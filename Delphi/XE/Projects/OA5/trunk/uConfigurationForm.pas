@@ -778,7 +778,7 @@ begin
   vleRNE4MESSAGESSERVER.ItemProps[3].PickList:=slBoolean;
   vleRNE4MESSAGESSERVER.Cells[1, 4]:=vleRNE4MESSAGESSERVER.ItemProps[3].PickList.Strings[1];
 
-  cbPage.ItemIndex:=MainForm.Configuration.iConfigurationFormPage;
+  cbPage.ItemIndex:=MainForm.Configuration.ConfigurationFormPage;
   if cbPage.ItemIndex<0 then
     cbPage.ItemIndex:=0;
   cbPageSelect(Sender);

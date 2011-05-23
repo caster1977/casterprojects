@@ -193,7 +193,7 @@ object OptionsForm: TOptionsForm
         Top = 3
         Width = 614
         Height = 223
-        ActivePage = ts4
+        ActivePage = ts11
         Align = alCustom
         Style = tsButtons
         TabOrder = 0
@@ -274,6 +274,10 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1074#1077#1076#1077#1085#1080#1103' '#1087#1088#1086#1090#1086#1082#1086#1083#1072' '#1088#1072#1073#1086#1090#1099
           ImageIndex = 1
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Bevel4: TBevel
             Left = 0
             Top = 25
@@ -1329,7 +1333,7 @@ object OptionsForm: TOptionsForm
           object chkbxPlaySoundOnComplete: TCheckBox
             Left = 0
             Top = 27
-            Width = 238
+            Width = 441
             Height = 17
             Caption = 
               #1055#1086#1076#1072#1074#1072#1090#1100' '#1079#1074#1091#1082#1086#1074#1086#1081' '#1089#1080#1075#1085#1072#1083' '#1087#1088#1080' '#1079#1072#1074#1077#1088#1096#1077#1085#1080#1080' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103' '#1076#1083#1080#1090#1077#1083#1100#1085#1086#1075#1086' '#1076 +
@@ -1444,10 +1448,6 @@ object OptionsForm: TOptionsForm
           Caption = ' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1080
           ImageIndex = 10
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object lbOrganizationPanelHeight: TLabel
             Left = 11
             Top = 3
@@ -1606,7 +1606,7 @@ object OptionsForm: TOptionsForm
     Left = 304
     Top = 296
     Bitmap = {
-      494C010106000800FC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800100110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1881,7 +1881,7 @@ object OptionsForm: TOptionsForm
     Enabled = True
     LogFile.Enabled = True
     LogClient.Enabled = True
-    Left = 568
-    Top = 248
+    Left = 560
+    Top = 208
   end
 end
