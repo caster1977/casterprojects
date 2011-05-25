@@ -392,6 +392,12 @@ begin
       ShowModal;
     finally
       PostShowModal(sModalWinName, iBusy);
+      if ModalResult=mrOk then
+        try
+          Configuration.Save;
+        except
+          Application.HandleException(Self);
+        end;
       Free;
     end;
 
