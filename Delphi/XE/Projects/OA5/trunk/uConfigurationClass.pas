@@ -111,9 +111,11 @@ type
     procedure SetFileName(const Value: string);
   public
     // sDefaultAction: string;
+
     // sApplicationFolder: string;
     // sTempFolder: string;
     // sCustomFolder: string;
+
     // trfReportFolder: TReportFolders;
     // bImmediatelyQuit: boolean;
     // iOrgSortColumn: integer;
@@ -176,10 +178,10 @@ type
     property MessagesServer: TMySQLConnection read FMessagesServer write FMessagesServer stored False;
 
     // вкладка "настройки формирования отчётов"
-    property ReportFolder: TReportFolders write FReportFolder;
+    property ReportFolder: TReportFolders read FReportFolder write FReportFolder stored False;
     property ReportFolderValue: string read GetReportFolderValue stored False;
     property SelectedReportFolder: string read FSelectedReportFolder write FSelectedReportFolder stored False;
-    property DontDemandOverwriteConfirmation: boolean read FDontDemandOverwriteConfirmation write FDontDemandOverwriteConfirmation stored False;
+    property DontDemandOverwriteConfirmation: boolean read FDontDemandOverwriteConfirmation write FDontDemandOverwriteConfirmation default False;
     property AskForFileName: boolean read FAskForFileName write FAskForFileName default True;
 
     // вкладка "настройки прочие"
@@ -356,6 +358,12 @@ begin
             Database:=ReadString('Сервер и база данных', 'MessagesServer.sDatabase', 'rne4messages');
           end;
 
+        // вкладка "настройки формирования отчётов"
+        ReportFolder:=TReportFolders(ReadInteger('Формирование отчётов', 'iReportFolder', integer(rfApplicationFolder)));
+        SelectedReportFolder:=ReadString('Формирование отчётов', 'sSelectedReportFolder', '');
+        DontDemandOverwriteConfirmation:=ReadBool('Формирование отчётов', 'bDontDemandOverwriteConfirmation', False);
+        AskForFileName:=ReadBool('Формирование отчётов', 'bAskForFileName', True);
+
         // вкладка "настройки прочие"
         LaunchAtStartup:=ReadBool('Прочие', 'bLaunchAtStartup', False);
         PlaySoundOnComplete:=ReadBool('Прочие', 'bPlaySoundOnComplete', True);
@@ -391,8 +399,131 @@ begin
 end;
 
 procedure TConfiguration.Save;
-begin
+var
+  IniFile: TIniFile;
 
+  procedure WriteFormPosition(IniFile: TIniFile; FormPosition: TFormPosition; const FormPositionName: string);
+  begin
+    with IniFile do
+      begin
+        WriteBool('Положение диалоговых окон', FormPositionName+'.bCenter', FormPosition.bCenter);
+        WriteInteger('Положение диалоговых окон', FormPositionName+'.x', FormPosition.x);
+        WriteInteger('Положение диалоговых окон', FormPositionName+'.y', FormPosition.y);
+      end;
+  end;
+
+begin
+  if FileName>'' then
+    begin
+      IniFile:=TIniFile.Create(FileName);
+      with IniFile do
+        try
+          // вкладка "настройки интерфейса"
+          WriteBool('Интерфейс', 'bShowAboutWindowAtLaunch', ShowAboutWindowAtLaunch);
+          WriteBool('Интерфейс', 'bShowToolbarAtLaunch', ShowToolbarAtLaunch);
+          WriteBool('Интерфейс', 'bShowStatusbarAtLaunch', ShowStatusbarAtLaunch);
+          WriteBool('Интерфейс', 'bShowEditboxHints', ShowEditboxHints);
+          WriteBool('Интерфейс', 'bShowCommonSearchEditbox', ShowCommonSearchEditbox);
+          WriteBool('Интерфейс', 'bShowID', ShowID);
+          WriteBool('Интерфейс', 'bUseMultibuffer', UseMultibuffer);
+          WriteBool('Интерфейс', 'bShowConfirmationAtQuit', ShowConfirmationAtQuit);
+
+          // вкладка "настройки ведения протокола работы"
+          WriteBool('Протоколирование', 'bEnableLog', EnableLog);
+          WriteBool('Протоколирование', 'bFlushLogOnExit', FlushLogOnExit);
+          WriteBool('Протоколирование', 'bFlushLogOnStringsQuantity', FlushLogOnStringsQuantity);
+          WriteInteger('Протоколирование', 'iFlushLogOnStringsQuantityValue', FlushLogOnStringsQuantityValue);
+          WriteBool('Протоколирование', 'bFlushLogOnClearingLog', FlushLogOnClearingLog);
+          WriteBool('Протоколирование', 'bFlushLogOnApply', FlushLogOnApply);
+          WriteBool('Протоколирование', 'bCustomLogClientFile', CustomLogClientFile);
+          WriteString('Протоколирование', 'sCustomLogClientFileValue', CustomLogClientFileValue);
+
+          WriteBool('Протоколирование', 'bKeepErrorLog', lmtError in KeepLogTypes);
+          WriteBool('Протоколирование', 'bKeepWarningLog', lmtWarning in KeepLogTypes);
+          WriteBool('Протоколирование', 'bKeepInfoLog', lmtInfo in KeepLogTypes);
+          WriteBool('Протоколирование', 'bKeepSQLLog', lmtSQL in KeepLogTypes);
+          WriteBool('Протоколирование', 'bKeepDebugLog', lmtDebug in KeepLogTypes);
+
+          // вкладка "настройки положения диалоговых окон"
+          WriteFormPosition(IniFile, LoginFormPosition, 'LoginFormPosition');
+          WriteFormPosition(IniFile, OptionsFormPosition, 'OptionsFormPosition');
+          WriteFormPosition(IniFile, UsersFormPosition, 'UsersFormPosition');
+          WriteFormPosition(IniFile, SetPasswordFormPosition, 'SetPasswordFormPosition');
+          WriteFormPosition(IniFile, StatisticFormPosition, 'StatisticFormPosition');
+          WriteFormPosition(IniFile, MaintenanceFormPosition, 'MaintenanceFormPosition');
+          WriteFormPosition(IniFile, ClearingFormPosition, 'ClearingFormPosition');
+          WriteFormPosition(IniFile, ViewPostListFormPosition, 'ViewPostListFormPosition');
+          WriteFormPosition(IniFile, CreateViewPostFormPosition, 'CreateViewPostFormPosition');
+          WriteFormPosition(IniFile, PhonesFormPosition, 'PhonesFormPosition');
+          WriteFormPosition(IniFile, AddEditPhoneFormPosition, 'AddEditPhoneFormPosition');
+          WriteFormPosition(IniFile, AddMassMsrFormPosition, 'AddMassMsrFormPosition');
+
+          // вкладка "настройки процедуры логирования"
+          WriteBool('Идентификация', 'bStoreLastLogin', StoreLastLogin);
+          WriteBool('Идентификация', 'bStoreLastPassword', StoreLastPassword);
+          WriteBool('Идентификация', 'bAutoLogon', AutoLogon);
+
+          // вкладка "подключения к серверу базы данных услуги"
+          with RNE4Server do
+            begin
+              WriteString('Сервер и база данных', 'RNE4Server.sHost', Host);
+              WriteInteger('Сервер и база данных', 'RNE4Server.iPort', Port);
+              WriteInteger('Сервер и база данных', 'RNE4Server.iTimeout', Timeout);
+              WriteBool('Сервер и база данных', 'RNE4Server.bCompression', Compression);
+              // WriteString('Сервер и база данных', 'RNE4Server.sLogin', Login);
+              // WriteString('Сервер и база данных', 'RNE4Server.sPassword', Password);
+              WriteString('Сервер и база данных', 'RNE4Server.sDatabase', Database);
+            end;
+
+          // вкладка "подключения к серверу системы обмена сообщениями"
+          with MessagesServer do
+            begin
+              WriteString('Сервер и база данных', 'MessagesServer.sHost', Host);
+              WriteInteger('Сервер и база данных', 'MessagesServer.iPort', Port);
+              WriteInteger('Сервер и база данных', 'MessagesServer.iTimeout', Timeout);
+              WriteBool('Сервер и база данных', 'MessagesServer.bCompression', Compression);
+              // WriteString('Сервер и база данных', 'MessagesServer.sLogin', Login);
+              // WriteString('Сервер и база данных', 'MessagesServer.sPassword', Password);
+              WriteString('Сервер и база данных', 'MessagesServer.sDatabase', Database);
+            end;
+
+          // вкладка "настройки формирования отчётов"
+          WriteInteger('Формирование отчётов', 'iReportFolder', integer(ReportFolder));
+          WriteString('Формирование отчётов', 'sSelectedReportFolder', SelectedReportFolder);
+          WriteBool('Формирование отчётов', 'bDontDemandOverwriteConfirmation', DontDemandOverwriteConfirmation);
+          WriteBool('Формирование отчётов', 'bAskForFileName', AskForFileName);
+
+          // вкладка "настройки прочие"
+          WriteBool('Прочие', 'bLaunchAtStartup', LaunchAtStartup);
+          WriteBool('Прочие', 'bPlaySoundOnComplete', PlaySoundOnComplete);
+          WriteBool('Прочие', 'bEnableAutoGetMessages', EnableAutoGetMessages);
+          WriteInteger('Прочие', 'bAutoGetMessagesCycleDuration', AutoGetMessagesCycleDuration);
+          WriteBool('Прочие', 'bEnableCustomHelpFile', EnableCustomHelpFile);
+          WriteString('Прочие', 'bCustomHelpFile', CustomHelpFile);
+
+          // вкладка "настройки главного окна"
+          WriteInteger('Главное окно', 'MainFormRect.iLeft', MainFormRect.Left);
+          WriteInteger('Главное окно', 'MainFormRect.iTop', MainFormRect.Top);
+          WriteInteger('Главное окно', 'MainFormRect.iRight', MainFormRect.Right);
+          WriteInteger('Главное окно', 'MainFormRect.iBottom', MainFormRect.Bottom);
+          WriteBool('Главное окно', 'bMainFormPositionByCenter', MainFormPositionByCenter);
+          WriteBool('Главное окно', 'bFullScreenAtLaunch', FullScreenAtLaunch);
+
+          // вкладка "настройки отображения информации"
+          WriteInteger('Отображение информации', 'iOrganizationPanelHeight', OrganizationPanelHeight);
+          WriteBool('Отображение информации', 'bOrganizationPanelHalfHeight', OrganizationPanelHalfHeight);
+          WriteInteger('Отображение информации', 'iDataPanelWidth', DataPanelWidth);
+          WriteBool('Отображение информации', 'bOrganizationPanelHalfHeight', OrganizationPanelHalfHeight);
+          WriteBool('Отображение информации', 'bShowDataInOtherInfoPanel', ShowDataInOtherInfoPanel);
+          WriteBool('Отображение информации', 'bShowMeasuresListAsRichEdit', ShowMeasuresListAsRichEdit);
+          WriteBool('Отображение информации', 'bMarkSearchedStrings', MarkSearchedStrings);
+          WriteBool('Отображение информации', 'bPutTownAtTheEnd', PutTownAtTheEnd);
+        finally
+          IniFile.Free;
+        end
+    end
+  else
+    raise Exception.Create('Имя файла конфигурации не должно быть пустым!');
 end;
 
 procedure TConfiguration.SetKeepLogTypes(const Value: TLogMessagesTypes);
@@ -435,16 +566,8 @@ begin
     rfApplicationFolder:
       Result:=GetApplicationFolder;
     rfCustomFolder:
-      Result:=FSelectedReportFolder;
+      Result:=SelectedReportFolder;
   end;
-end;
-
-constructor TConfiguration.Create;
-begin
-  inherited;
-  RNE4Server:=TMySQLConnection.Create;
-  MessagesServer:=TMySQLConnection.Create;
-  FFileName:=ExtractFilePath(ExpandFileName(Application.ExeName))+StringReplace(ExtractFileName(Application.ExeName), '.exe', '.ini', [rfIgnoreCase]);
 end;
 
 destructor TConfiguration.Destroy;
@@ -514,6 +637,168 @@ begin
       FFileName:=Trim(Value)
     else
       raise Exception.Create('Имя файла конфигурации не должно быть пустым!');
+end;
+
+constructor TConfiguration.Create;
+begin
+  inherited;
+
+  // инициализация динамических членов класса
+  RNE4Server:=TMySQLConnection.Create;
+  MessagesServer:=TMySQLConnection.Create;
+
+  // инициализация пеерменных класса
+  FFileName:=ExtractFilePath(ExpandFileName(Application.ExeName))+StringReplace(ExtractFileName(Application.ExeName), '.exe', '.ini', [rfIgnoreCase]);
+  FConfigurationFormPage:=0;
+  FLastLogin:='';
+  FLastPassword:='';
+
+  // вкладка "настройки интерфейса"
+  FShowAboutWindowAtLaunch:=True;
+  FShowToolbarAtLaunch:=True;
+  FShowStatusbarAtLaunch:=True;
+  FShowEditboxHints:=True;
+  FShowCommonSearchEditbox:=True;
+  FShowID:=False;
+  FUseMultibuffer:=True;
+  FShowConfirmationAtQuit:=True;
+
+  // вкладка "настройки ведения протокола работы"
+  FEnableLog:=True;
+  FKeepLogTypes:=[lmtError, lmtWarning, lmtInfo];
+  FFlushLogOnExit:=True;
+  FFlushLogOnStringsQuantity:=True;
+  FFlushLogOnStringsQuantityValue:=-1;
+  FFlushLogOnClearingLog:=True;
+  FFlushLogOnApply:=False;
+  FCustomLogClientFile:=False;
+  FCustomLogClientFileValue:='';
+
+  // вкладка "настройки положения диалоговых окон"
+  with FLoginFormPosition do
+    begin
+      bCenter:=True;
+      FLoginFormPosition.x:=0;
+      FLoginFormPosition.y:=0;
+    end;
+
+  with FOptionsFormPosition do
+    begin
+      bCenter:=True;
+      FLoginFormPosition.x:=0;
+      FLoginFormPosition.y:=0;
+    end;
+
+  with FUsersFormPosition do
+    begin
+      bCenter:=True;
+      FLoginFormPosition.x:=0;
+      FLoginFormPosition.y:=0;
+    end;
+
+  with FSetPasswordFormPosition do
+    begin
+      bCenter:=True;
+      FLoginFormPosition.x:=0;
+      FLoginFormPosition.y:=0;
+    end;
+
+  with FStatisticFormPosition do
+    begin
+      bCenter:=True;
+      FLoginFormPosition.x:=0;
+      FLoginFormPosition.y:=0;
+    end;
+
+  with FMaintenanceFormPosition do
+    begin
+      bCenter:=True;
+      FLoginFormPosition.x:=0;
+      FLoginFormPosition.y:=0;
+    end;
+
+  with FClearingFormPosition do
+    begin
+      bCenter:=True;
+      FLoginFormPosition.x:=0;
+      FLoginFormPosition.y:=0;
+    end;
+
+  with FViewPostListFormPosition do
+    begin
+      bCenter:=True;
+      FLoginFormPosition.x:=0;
+      FLoginFormPosition.y:=0;
+    end;
+
+  with FCreateViewPostFormPosition do
+    begin
+      bCenter:=True;
+      FLoginFormPosition.x:=0;
+      FLoginFormPosition.y:=0;
+    end;
+
+  with FPhonesFormPosition do
+    begin
+      bCenter:=True;
+      FLoginFormPosition.x:=0;
+      FLoginFormPosition.y:=0;
+    end;
+
+  with FAddEditPhoneFormPosition do
+    begin
+      bCenter:=True;
+      FLoginFormPosition.x:=0;
+      FLoginFormPosition.y:=0;
+    end;
+
+  with FAddMassMsrFormPosition do
+    begin
+      bCenter:=True;
+      FLoginFormPosition.x:=0;
+      FLoginFormPosition.y:=0;
+    end;
+
+  // вкладка "настройки процедуры логирования"
+  FStoreLastLogin:=False;
+  FStoreLastPassword:=False;
+  FAutoLogon:=False;
+
+  // вкладка "настройки подключения к серверу базы данных услуги"
+  property RNE4Server: TMySQLConnection read FRNE4Server write FRNE4Server stored False;
+
+  // вкладка "настройки подключения к серверу системы обмена сообщениями"
+  property MessagesServer: TMySQLConnection read FMessagesServer write FMessagesServer stored False;
+
+  // вкладка "настройки формирования отчётов"
+  FReportFolder:=rfApplicationFolder;
+  FSelectedReportFolder:='';
+  FDontDemandOverwriteConfirmation:=False;
+  AskForFileName:=True;
+
+  // вкладка "настройки прочие"
+  property LaunchAtStartup: boolean read FLaunchAtStartup write FLaunchAtStartup default False;
+  property PlaySoundOnComplete: boolean read FPlaySoundOnComplete write FPlaySoundOnComplete default True;
+  property EnableAutoGetMessages: boolean read FEnableAutoGetMessages write FEnableAutoGetMessages default True;
+  property AutoGetMessagesCycleDuration: integer read FAutoGetMessagesCycleDuration write FAutoGetMessagesCycleDuration default 5;
+  property EnableCustomHelpFile: boolean read FEnableCustomHelpFile write FEnableCustomHelpFile default False;
+  property CustomHelpFile: string read FCustomHelpFile write FCustomHelpFile;
+
+  // вкладка "настройки главного окна"
+  property MainFormRect: TRect read FMainFormRect write FMainFormRect stored False;
+  property MainFormPositionByCenter: boolean read FMainFormPositionByCenter write FMainFormPositionByCenter default True;
+  property FullScreenAtLaunch: boolean read FFullScreenAtLaunch write FFullScreenAtLaunch default False;
+
+  // вкладка "настройки отображения информации"
+  property OrganizationPanelHeight: integer read FOrganizationPanelHeight write FOrganizationPanelHeight default 100;
+  property OrganizationPanelHalfHeight: boolean read FOrganizationPanelHalfHeight write FOrganizationPanelHalfHeight default True;
+  property DataPanelWidth: integer read FDataPanelWidth write FDataPanelWidth default 340;
+  property DataPanelHalfWidth: boolean read FDataPanelHalfWidth write FDataPanelHalfWidth default False;
+  property ShowDataInOtherInfoPanel: boolean read FShowDataInOtherInfoPanel write FShowDataInOtherInfoPanel default True;
+  property ShowMeasuresListAsRichEdit: boolean read FShowMeasuresListAsRichEdit write FShowMeasuresListAsRichEdit default True;
+  property MarkSearchedStrings: boolean read FMarkSearchedStrings write FMarkSearchedStrings default True;
+  property PutTownAtTheEnd: boolean read FPutTownAtTheEnd write FPutTownAtTheEnd default False;
+
 end;
 
 end.
