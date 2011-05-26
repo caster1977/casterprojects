@@ -316,6 +316,11 @@ begin
   bFirstRun:=True;
   CurrentUser:=TUser.Create;
   Configuration:=TConfiguration.Create;
+  try
+    Configuration.Load;
+  except
+    Application.HandleException(Self);
+  end;
 
   BindMainProgressBarToStatusBar;
   BindStateImageToStatusBar;
