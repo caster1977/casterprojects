@@ -393,6 +393,11 @@ begin
   OptionsForm:=TOptionsForm.Create(Self);
   with OptionsForm do
     try
+      // инициализация значений контролов исходя из текущей конфигурации
+
+
+
+
       PreShowModal(sModalWinName, iBusy);
       ShowModal;
     finally
