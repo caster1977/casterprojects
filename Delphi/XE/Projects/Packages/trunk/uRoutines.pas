@@ -12,7 +12,7 @@ type
     class function GetConditionalString(const Condition: Boolean; TrueString, FalseString: string): string; static;
     class procedure CopyStringToClipboard(const Value: string); static;
     class procedure CutStringByLimiterToStringList(const Source: string; var Destination: TStringList; const Limiter: char); static;
-    class procedure GenerateError(const aMessage: string; var aErrorMessage: string; var aErrorFlag: boolean); static;
+    class procedure GenerateError(const aMessage: string; out aErrorMessage: string; out aErrorFlag: boolean); static;
     class function ValidatePhoneString(const Value: string): string; static;
     class function IsStringIsPhone(const aString: string): boolean; static;
     class procedure AddApplicationToRunKey(const RunName, ApplicationName: string); static;
@@ -95,7 +95,7 @@ begin
     end;
 end;
 
-class procedure Routines.GenerateError(const aMessage: string; var aErrorMessage: string; var aErrorFlag: boolean);
+class procedure Routines.GenerateError(const aMessage: string; out aErrorMessage: string; out aErrorFlag: boolean);
 begin
   aErrorMessage:=aMessage;
   aErrorFlag:=True;
