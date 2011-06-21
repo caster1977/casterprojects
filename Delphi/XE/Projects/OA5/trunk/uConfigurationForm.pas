@@ -33,7 +33,7 @@ type
     Action_Apply: TAction;
     Action_PreviousPage: TAction;
     Action_NextPage: TAction;
-    Action_ChooseLogClient: TAction;
+    Action_ChooseCustomLogClientFile: TAction;
     ilConfigurationFormSmallImages: TImageList;
     pnlButtons: TPanel;
     btnApply: TButton;
@@ -58,19 +58,19 @@ type
     chkbxKeepWarningLog: TCheckBox;
     chkbxKeepErrorLog: TCheckBox;
     chkbxKeepSQLLog: TCheckBox;
-    chkbxEnableFlushLogOnStringsQuantity: TCheckBox;
+    chkbxFlushLogOnStringsQuantity: TCheckBox;
     chkbxFlushLogOnExit: TCheckBox;
-    edbxFlushLogOnStringsQuantity: TEdit;
+    edbxFlushLogOnStringsQuantityValue: TEdit;
     chkbxFlushLogOnClearingLog: TCheckBox;
     chkbxFlushLogOnApply: TCheckBox;
     chkbxKeepDebugLog: TCheckBox;
     ts5: TTabSheet;
     Bevel3: TBevel;
     rbSaveIntoTheTempFolder: TRadioButton;
-    rbSaveIntoTheSelectedFolder: TRadioButton;
+    rbSaveIntoTheCustomFolder: TRadioButton;
     rbSaveIntoTheApplicationFolder: TRadioButton;
     chkbxAskForFileName: TCheckBox;
-    edbxSelectedFolder: TEdit;
+    edbxCustomReportFolderValue: TEdit;
     btnSelectFolder: TButton;
     chkbxDontDemandOverwriteConfirmation: TCheckBox;
     ts2: TTabSheet;
@@ -78,8 +78,8 @@ type
     ts3: TTabSheet;
     vleRNE4MESSAGESSERVER: TValueListEditor;
     chkbxCustomLogClientFile: TCheckBox;
-    edbxCustomLogClientFile: TEdit;
-    btnChoiseCustomLogClientFile: TButton;
+    edbxCustomLogClientFileValue: TEdit;
+    btnChooseCustomLogClientFile: TButton;
     Action_ChooseReportFolder: TAction;
     chkbxEnableLog: TCheckBox;
     Bevel4: TBevel;
@@ -198,9 +198,9 @@ type
     chkbxShowMeasuresListAsRichEdit: TCheckBox;
     chkbxMarkSearchedStrings: TCheckBox;
     chkbxPutTownAtTheEnd: TCheckBox;
-    chkbxEnableCustomHelpFile: TCheckBox;
-    edbxCustomHelpFile: TEdit;
-    btnChoiseCustomHelpFile: TButton;
+    chkbxCustomHelpFile: TCheckBox;
+    edbxCustomHelpFileValue: TEdit;
+    btnChooseCustomHelpFile: TButton;
     chkbxLaunchAtStartup: TCheckBox;
     chkbxShowAboutWindowAtLaunch: TCheckBox;
     chkbxShowToolbarAtLaunch: TCheckBox;
@@ -211,6 +211,7 @@ type
     chkbxUseMultibuffer: TCheckBox;
     chkbxShowConfirmationAtQuit: TCheckBox;
     chkbxPlaySoundOnComplete: TCheckBox;
+    Action_ChooseCustomHelpFile: TAction;
     procedure FormCreate(Sender: TObject);
     procedure Action_ApplyExecute(Sender: TObject);
     procedure Action_DefaultsExecute(Sender: TObject);
@@ -219,42 +220,50 @@ type
     procedure Action_PreviousPageExecute(Sender: TObject);
     procedure Action_NextPageExecute(Sender: TObject);
     procedure Action_ChooseReportFolderExecute(Sender: TObject);
-    procedure Action_ChooseLogClientExecute(Sender: TObject);
+    procedure Action_ChooseCustomLogClientFileExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);
     procedure cbPageSelect(Sender: TObject);
     procedure chkbxCustomLogClientFileClick(Sender: TObject);
     procedure chkbxEnableLogClick(Sender: TObject);
-    procedure edbxFlushLogOnStringsQuantityKeyPress(Sender: TObject; var Key: Char);
-    procedure chkbxEnableFlushLogOnStringsQuantityClick(Sender: TObject);
-    procedure rbSaveIntoTheSelectedFolderClick(Sender: TObject);
+    procedure edbxFlushLogOnStringsQuantityValueKeyPress(Sender: TObject; var Key: Char);
+    procedure chkbxFlushLogOnStringsQuantityClick(Sender: TObject);
+    procedure rbSaveIntoTheCustomFolderClick(Sender: TObject);
     procedure chkbxStoreLastLoginClick(Sender: TObject);
     procedure chkbxStoreLastPasswordClick(Sender: TObject);
     procedure chkbxEnableAutoGetMessagesClick(Sender: TObject);
-    procedure edbxAutoGetMessagesCycleDurationKeyPress(Sender: TObject;
-      var Key: Char);
+    procedure edbxAutoGetMessagesCycleDurationKeyPress(Sender: TObject; var Key: Char);
     procedure edbxAutoGetMessagesCycleDurationChange(Sender: TObject);
-    procedure FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
-      MousePos: TPoint; var Handled: Boolean);
-    procedure FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
-      MousePos: TPoint; var Handled: Boolean);
+    procedure FormMouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+    procedure FormMouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
     procedure chkbxMainFormPositionByCenterClick(Sender: TObject);
     procedure chkbxFullScreenAtLaunchClick(Sender: TObject);
-  public
+    procedure Action_ChooseCustomHelpFileExecute(Sender: TObject);
+    procedure chkbxCustomHelpFileClick(Sender: TObject);
+    procedure edbxMainFormPositionXKeyPress(Sender: TObject; var Key: Char);
+    procedure edbxMainFormPositionYKeyPress(Sender: TObject; var Key: Char);
+    procedure edbxMainFormWidthKeyPress(Sender: TObject; var Key: Char);
+    procedure edbxMainFormHeightKeyPress(Sender: TObject; var Key: Char);
+    procedure edbxOrganizationPanelHeightKeyPress(Sender: TObject; var Key: Char);
+    procedure edbxDataPanelWidthKeyPress(Sender: TObject; var Key: Char);
+    procedure chkbxOrganizationPanelHalfHeightClick(Sender: TObject);
+    procedure chkbxDataPanelHalfWidthClick(Sender: TObject);
+  strict private
     slBoolean: TStringList;
   private
+    procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
+    procedure ProcedureFooter;
+    procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+  public
     procedure Do_Help;
     procedure Do_Defaults;
     procedure Do_Close;
     procedure Do_Apply;
     procedure Do_NextPage;
     procedure Do_PreviousPage;
-    procedure Do_ChooseReportFolder;
-    procedure Do_ChooseLogClient;
-
-    procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
-    procedure ProcedureFooter;
-    procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+    procedure Do_ChooseCustomReportFolder;
+    procedure Do_ChooseLogClientFile;
+    procedure Do_ChooseCustomHelpFile;
   end;
 
 var
@@ -265,41 +274,13 @@ implementation
 {$R *.dfm}
 
 uses
+  LogKeeperData,
   FileCtrl,
   uMainForm,
+  uRoutines,
   mysql,
-  OA5Routines,
   uConfigurationClass,
   OA5Consts;
-
-(*
-procedure TOptionsForm.LogThis(const aMessage, aLogGroupGUID: string; aMessageType: TLogMessagesType);
-var
-  s: string;
-  aCopyData: TCopyDataStruct;
-begin
-  case aMessageType of
-    lmtError:
-      s:='ERROR';
-    lmtWarning:
-      s:='WARNING';
-    lmtInfo:
-      s:='INFO';
-    lmtSQL:
-      s:='SQL';
-    lmtDebug:
-      s:='DEBUG';
-  end;
-  s:=IntToStr(WMCD_MODALLOG)+';'+s+';'+aMessage+';'+aLogGroupGUID;
-  with aCopyData do
-    begin
-      dwData:=0;
-      cbData:=Length(s)+1;
-      lpData:=PAnsiChar(AnsiString(s));
-    end;
-  SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
-end;
-*)
 
 procedure TOptionsForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
@@ -378,7 +359,7 @@ begin
   if (FileExists(ExpandFileName(Application.HelpFile))) then
     Application.HelpContext(HelpContext)
   else
-    Routines_GenerateError('Извините, справочный файл к данной программе не найден.', sErrorMessage, bError);
+    Routines.GenerateError('Извините, справочный файл к данной программе не найден.', sErrorMessage, bError);
 
   PreFooter(Handle, bError, sErrorMessage);
   ProcedureFooter;
@@ -431,11 +412,61 @@ end;
 procedure TOptionsForm.Action_ChooseReportFolderExecute(Sender: TObject);
 begin
   ProcedureHeader('Процедура-обработчик действия "'+Action_ChooseReportFolder.Caption+'"', '{0F2D97AB-C59D-456A-ABCA-C390806F896C}');
-  Do_ChooseReportFolder;
+  Do_ChooseCustomReportFolder;
   ProcedureFooter;
 end;
 
-procedure TOptionsForm.Do_ChooseReportFolder;
+procedure TOptionsForm.Do_ChooseCustomHelpFile;
+var
+  sPath: string;
+  sErrorMessage: string;
+  bError: boolean;
+  iOldBusyCounter: integer;
+begin
+  ProcedureHeader('Процедура выбора стороннего справочного файла к программе', '{DBF9ACD7-9F70-4D0A-9D90-CA893744CBBB}');
+  bError:=False;
+
+  with MainForm do
+    begin
+      iOldBusyCounter:=iBusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
+      iBusyCounter:=0; // обнуление счётчика перед открытием модального окна
+      Refresh_BusyState; // обновление состояния индикатора
+    end;
+
+  with TOpenDialog.Create(Self) do
+    try
+      Filter:='Файл справки к программе|'+StringReplace(ExtractFileName(Application.ExeName), '.exe', '.chm', [rfReplaceAll, rfIgnoreCase])+'|Справочные файлы формата .CHM|*.chm|Справочные файлы формата .HLP|*.hlp';
+      DefaultExt:='chm';
+      Title:='Выберите файл справки...';
+      FilterIndex:=1;
+      Options:=[ofReadOnly, ofFileMustExist];
+      if Execute then
+        if FileName='' then
+          Routines.GenerateError('Возникла ошибка при выборе файла справки - файл не был выбран!', sErrorMessage, bError)
+        else
+          if not FileExists(FileName) then
+            Routines.GenerateError('Возникла ошибка при выборе файла справки - выбранный файл не существует!', sErrorMessage, bError)
+          else
+            begin
+              edbxCustomHelpFileValue.Text:=FileName;
+              Log.SendDebug('В качестве стороннего справочного файла выбрана файл "'+sPath+'".');
+            end;
+    finally
+      Free;
+    end;
+
+  with MainForm do
+    begin
+      iBusyCounter:=iOldBusyCounter; // возвращение старого значения счётчика
+      Refresh_BusyState; // обновление состояния индикатора
+      Application.ProcessMessages;
+    end;
+
+  PreFooter(Handle, bError, sErrorMessage);
+  ProcedureFooter;
+end;
+
+procedure TOptionsForm.Do_ChooseCustomReportFolder;
 var
   s, sPath: string;
   sErrorMessage: string;
@@ -452,7 +483,7 @@ begin
       Refresh_BusyState; // обновление состояния индикатора
     end;
 
-  s:=edbxSelectedFolder.Text;
+  s:=edbxCustomReportFolderValue.Text;
 
   if SelectDirectory('Выберите папку', '', s, [sdNewFolder, sdNewUI], Self) then
     if (s<>'') then
@@ -462,13 +493,13 @@ begin
           sPath:=sPath+'\';
         if SysUtils.DirectoryExists(sPath) then
           begin
-            edbxSelectedFolder.Text:=sPath;
+            edbxCustomReportFolderValue.Text:=sPath;
             Log.SendDebug('В качестве папки для сохранения отчётов выбрана папка "'+sPath+'".');
           end
         else
           begin
-            edbxSelectedFolder.Text:='';
-            Routines_GenerateError('Возникла ошибка при выборе папки - указанная папка не существует!', sErrorMessage, bError);
+            edbxCustomReportFolderValue.Text:='';
+            Routines.GenerateError('Возникла ошибка при выборе папки - указанная папка не существует!', sErrorMessage, bError);
           end;
       end;
 
@@ -483,21 +514,28 @@ begin
   ProcedureFooter;
 end;
 
-procedure TOptionsForm.Action_ChooseLogClientExecute(Sender: TObject);
+procedure TOptionsForm.Action_ChooseCustomHelpFileExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_ChooseReportFolder.Caption+'"', '{24E77954-BFEB-4128-B764-C31ED26D068C}');
-  Do_ChooseLogClient;
+  ProcedureHeader('Процедура-обработчик действия "'+Action_ChooseCustomHelpFile.Caption+'"', '{708E3642-722E-4556-9774-2F813BD540ED}');
+  Do_ChooseCustomHelpFile;
   ProcedureFooter;
 end;
 
-procedure TOptionsForm.Do_ChooseLogClient;
+procedure TOptionsForm.Action_ChooseCustomLogClientFileExecute(Sender: TObject);
+begin
+  ProcedureHeader('Процедура-обработчик действия "'+Action_ChooseReportFolder.Caption+'"', '{24E77954-BFEB-4128-B764-C31ED26D068C}');
+  Do_ChooseLogClientFile;
+  ProcedureFooter;
+end;
+
+procedure TOptionsForm.Do_ChooseLogClientFile;
 var
   sPath: string;
   sErrorMessage: string;
   bError: boolean;
   iOldBusyCounter: integer;
 begin
-  ProcedureHeader('Процедура выбора папки для сохранения отчётов', '{D4DB6A7E-DEB9-433D-BAF5-74E86459D66C}');
+  ProcedureHeader('Процедура выбора внешнего клиента протоколирования', '{DCD63D88-72D9-42E5-91EC-35906B335D27}');
   bError:=False;
 
   with MainForm do
@@ -516,14 +554,14 @@ begin
       Options:=[ofReadOnly, ofFileMustExist];
       if Execute then
         if FileName='' then
-          Routines_GenerateError('Возникла ошибка при выборе файла внешнего клиента протоколирования - файл не был выбран!', sErrorMessage, bError)
+          Routines.GenerateError('Возникла ошибка при выборе файла внешнего клиента протоколирования - файл не был выбран!', sErrorMessage, bError)
         else
           if not FileExists(FileName) then
-            Routines_GenerateError('Возникла ошибка при выборе файла внешнего клиента протоколирования - выбранный файл не существует!', sErrorMessage, bError)
+            Routines.GenerateError('Возникла ошибка при выборе файла внешнего клиента протоколирования - выбранный файл не существует!', sErrorMessage, bError)
           else
             begin
-              edbxCustomLogClientFile.Text:=FileName;
-              Log.SendDebug('В качестве папки для сохранения отчётов выбрана папка "'+sPath+'".');
+              edbxCustomLogClientFileValue.Text:=FileName;
+              Log.SendDebug('В качестве файла внешнего клиента протоколирования выбран файл "'+sPath+'".');
             end;
     finally
       Free;
@@ -589,21 +627,20 @@ begin
   chkbxFlushLogOnExit.Enabled:=bUseLog;
   chkbxFlushLogOnExit.Checked:=chkbxFlushLogOnExit.Checked and chkbxFlushLogOnExit.Enabled;
 
-  chkbxEnableFlushLogOnStringsQuantity.Enabled:=bUseLog;
-  chkbxEnableFlushLogOnStringsQuantity.Checked:=chkbxEnableFlushLogOnStringsQuantity.Checked and chkbxEnableFlushLogOnStringsQuantity.Enabled;
+  chkbxFlushLogOnStringsQuantity.Enabled:=bUseLog;
+  chkbxFlushLogOnStringsQuantity.Checked:=chkbxFlushLogOnStringsQuantity.Checked and chkbxFlushLogOnStringsQuantity.Enabled;
 
-  edbxFlushLogOnStringsQuantity.Enabled:=bUseLog and chkbxEnableFlushLogOnStringsQuantity.Checked and chkbxEnableFlushLogOnStringsQuantity.Enabled;
+  edbxFlushLogOnStringsQuantityValue.Enabled:=bUseLog and chkbxFlushLogOnStringsQuantity.Checked and chkbxFlushLogOnStringsQuantity.Enabled;
 
-  if edbxFlushLogOnStringsQuantity.Enabled then
+  if edbxFlushLogOnStringsQuantityValue.Enabled then
     begin
-      with MainForm do
-        if Configuration.FlushLogOnStringsQuantityValue>0 then
-          edbxFlushLogOnStringsQuantity.Text:=IntToStr(Configuration.FlushLogOnStringsQuantityValue)
-        else
-          edbxFlushLogOnStringsQuantity.Text:='10000';
+      if MainForm.Configuration.FlushLogOnStringsQuantityValue>0 then
+        edbxFlushLogOnStringsQuantityValue.Text:=IntToStr(MainForm.Configuration.FlushLogOnStringsQuantityValue)
+      else
+        edbxFlushLogOnStringsQuantityValue.Text:='10000';
     end
   else
-    edbxFlushLogOnStringsQuantity.Text:='';
+    edbxFlushLogOnStringsQuantityValue.Text:='';
 
   chkbxFlushLogOnClearingLog.Enabled:=bUseLog;
   chkbxFlushLogOnClearingLog.Checked:=chkbxFlushLogOnClearingLog.Checked and chkbxFlushLogOnClearingLog.Enabled;
@@ -614,38 +651,42 @@ begin
   chkbxCustomLogClientFile.Enabled:=bUseLog;
   chkbxCustomLogClientFile.Checked:=chkbxCustomLogClientFile.Checked and chkbxCustomLogClientFile.Enabled;
 
-  edbxCustomLogClientFile.Enabled:=bUseLog and chkbxCustomLogClientFile.Checked and chkbxCustomLogClientFile.Enabled;
+  edbxCustomLogClientFileValue.Enabled:=bUseLog and chkbxCustomLogClientFile.Checked and chkbxCustomLogClientFile.Enabled;
   if not bUseLog then
-    edbxCustomLogClientFile.Text:='';
+    edbxCustomLogClientFileValue.Text:='';
 
-  Action_ChooseLogClient.Enabled:=chkbxCustomLogClientFile.Checked and chkbxCustomLogClientFile.Enabled;
+  Action_ChooseCustomLogClientFile.Enabled:=chkbxCustomLogClientFile.Checked and chkbxCustomLogClientFile.Enabled;
 
-  Log.SendInfo('Флажок "'+chkbxEnableLog.Caption+'"'+Routines_GetConditionalMessage(bUseLog, 'в', 'от')+'ключен.');
+  Log.SendInfo('Флажок "'+chkbxEnableLog.Caption+'"'+Routines.GetConditionalString(bUseLog, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
 
-procedure TOptionsForm.chkbxEnableFlushLogOnStringsQuantityClick(Sender: TObject);
+procedure TOptionsForm.chkbxFlushLogOnStringsQuantityClick(Sender: TObject);
 var
   bFlushLogOnStringsQuantity: boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxEnableFlushLogOnStringsQuantity.Caption, '{56071FBF-61AE-472E-B52B-BC239C45CD7C}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxFlushLogOnStringsQuantity.Caption, '{56071FBF-61AE-472E-B52B-BC239C45CD7C}');
 
-  bFlushLogOnStringsQuantity:=chkbxEnableFlushLogOnStringsQuantity.Checked and chkbxEnableFlushLogOnStringsQuantity.Enabled;
+  bFlushLogOnStringsQuantity:=chkbxFlushLogOnStringsQuantity.Checked and chkbxFlushLogOnStringsQuantity.Enabled;
 
-  edbxFlushLogOnStringsQuantity.Enabled:=bFlushLogOnStringsQuantity;
-  if bFlushLogOnStringsQuantity then
-    begin
-      with MainForm do
-        if Configuration.FlushLogOnStringsQuantityValue>0 then
-          edbxFlushLogOnStringsQuantity.Text:=IntToStr(Configuration.FlushLogOnStringsQuantityValue)
-        else
-          edbxFlushLogOnStringsQuantity.Text:='10000';
-    end
-  else
-    edbxFlushLogOnStringsQuantity.Text:='';
+  edbxFlushLogOnStringsQuantityValue.Enabled:=bFlushLogOnStringsQuantity;
 
-  Log.SendInfo('Флажок "'+chkbxEnableFlushLogOnStringsQuantity.Caption+'"'+Routines_GetConditionalMessage(bFlushLogOnStringsQuantity, 'в', 'от')+'ключен.');
+  edbxFlushLogOnStringsQuantityValue.Text:=Routines.GetConditionalString(bFlushLogOnStringsQuantity, Routines.GetConditionalString(MainForm.Configuration.FlushLogOnStringsQuantityValue>0, IntToStr(MainForm.Configuration.FlushLogOnStringsQuantityValue),
+    IntToStr(DefaultValue_FlushLogOnStringsQuantityValue)), '');
+
+  // if bFlushLogOnStringsQuantity then
+  // begin
+  // with MainForm do
+  // if FlushLogOnStringsQuantityValue>0 then
+  // edbxFlushLogOnStringsQuantityValue.Text:=IntToStr(FlushLogOnStringsQuantityValue)
+  // else
+  // edbxFlushLogOnStringsQuantityValue.Text:='10000';
+  // end
+  // else
+  // edbxFlushLogOnStringsQuantityValue.Text:='';
+
+  Log.SendInfo('Флажок "'+chkbxFlushLogOnStringsQuantity.Caption+'"'+Routines.GetConditionalString(bFlushLogOnStringsQuantity, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -658,17 +699,32 @@ begin
 
   bCustomLogClientFile:=chkbxCustomLogClientFile.Checked and chkbxCustomLogClientFile.Enabled;
 
-  edbxCustomLogClientFile.Enabled:=bCustomLogClientFile;
-  Action_ChooseLogClient.Enabled:=bCustomLogClientFile;
+  edbxCustomLogClientFileValue.Enabled:=bCustomLogClientFile;
+  Action_ChooseCustomLogClientFile.Enabled:=bCustomLogClientFile;
   if not bCustomLogClientFile then
-    edbxCustomLogClientFile.Text:='';
+    edbxCustomLogClientFileValue.Text:='';
 
-  Log.SendInfo('Флажок "'+chkbxCustomLogClientFile.Caption+'"'+Routines_GetConditionalMessage(bCustomLogClientFile, 'в', 'от')+'ключен.');
+  Log.SendInfo('Флажок "'+chkbxCustomLogClientFile.Caption+'"'+Routines.GetConditionalString(bCustomLogClientFile, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
 
-procedure TOptionsForm.rbSaveIntoTheSelectedFolderClick(Sender: TObject);
+procedure TOptionsForm.chkbxDataPanelHalfWidthClick(Sender: TObject);
+var
+  bDataPanelHalfWidth: boolean;
+begin
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxDataPanelHalfWidth.Caption, '{E88569C6-BFE3-4AE7-B34B-6CA8179B0FEA}');
+
+  bDataPanelHalfWidth:=chkbxDataPanelHalfWidth.Checked and chkbxDataPanelHalfWidth.Enabled;
+  edbxDataPanelWidth.Enabled:=not bDataPanelHalfWidth;
+  edbxDataPanelWidth.Text:=Routines.GetConditionalString(bDataPanelHalfWidth, '', IntToStr(MainForm.Configuration.DataPanelWidth));
+
+  Log.SendInfo('Флажок "'+chkbxDataPanelHalfWidth.Caption+'"'+Routines.GetConditionalString(bDataPanelHalfWidth, 'в', 'от')+'ключен.');
+
+  ProcedureFooter;
+end;
+
+procedure TOptionsForm.rbSaveIntoTheCustomFolderClick(Sender: TObject);
 begin
   ProcedureHeader('Процедура отклика на щелчок на радиокнопке', '{77B71A67-5A1E-4D56-ADE8-C42EBD13CAC0}');
 
@@ -676,13 +732,45 @@ begin
     with Sender as TRadioButton do
       Log.SendInfo('Нажата радиокнопка "'+Caption+'".');
 
-  edbxSelectedFolder.Enabled:=rbSaveIntoTheSelectedFolder.Checked;
-  Action_ChooseReportFolder.Enabled:=rbSaveIntoTheSelectedFolder.Checked;
+  edbxCustomReportFolderValue.Enabled:=rbSaveIntoTheCustomFolder.Checked;
+  Action_ChooseReportFolder.Enabled:=rbSaveIntoTheCustomFolder.Checked;
+  if not rbSaveIntoTheCustomFolder.Checked then
+    edbxCustomReportFolderValue.Text:='';
 
   ProcedureFooter;
 end;
 
-procedure TOptionsForm.edbxFlushLogOnStringsQuantityKeyPress(Sender: TObject; var Key: Char);
+procedure TOptionsForm.edbxFlushLogOnStringsQuantityValueKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not CharInSet(Key, ['0'..'9', #8, '-']) then
+    Key:=#0; // "погасить" все остальные клавиши
+end;
+
+procedure TOptionsForm.edbxMainFormHeightKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not CharInSet(Key, ['0'..'9', #8, '-']) then
+    Key:=#0; // "погасить" все остальные клавиши
+end;
+
+procedure TOptionsForm.edbxMainFormPositionXKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not CharInSet(Key, ['0'..'9', #8, '-']) then
+    Key:=#0; // "погасить" все остальные клавиши
+end;
+
+procedure TOptionsForm.edbxMainFormPositionYKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not CharInSet(Key, ['0'..'9', #8, '-']) then
+    Key:=#0; // "погасить" все остальные клавиши
+end;
+
+procedure TOptionsForm.edbxMainFormWidthKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not CharInSet(Key, ['0'..'9', #8, '-']) then
+    Key:=#0; // "погасить" все остальные клавиши
+end;
+
+procedure TOptionsForm.edbxOrganizationPanelHeightKeyPress(Sender: TObject; var Key: Char);
 begin
   if not CharInSet(Key, ['0'..'9', #8, '-']) then
     Key:=#0; // "погасить" все остальные клавиши
@@ -778,11 +866,9 @@ begin
   vleRNE4MESSAGESSERVER.ItemProps[3].PickList:=slBoolean;
   vleRNE4MESSAGESSERVER.Cells[1, 4]:=vleRNE4MESSAGESSERVER.ItemProps[3].PickList.Strings[1];
 
-  cbPage.ItemIndex:=MainForm.Configuration.ConfigurationFormPage;
-  if cbPage.ItemIndex<0 then
-    cbPage.ItemIndex:=0;
+  cbPage.ItemIndex:=0;
   cbPageSelect(Sender);
-  rbSaveIntoTheSelectedFolderClick(Sender);
+  rbSaveIntoTheCustomFolderClick(Sender);
 
   ProcedureFooter;
 end;
@@ -793,94 +879,180 @@ begin
 
   { TODO : Добавить изменение значений контролов на значения по умолчанию }
 
+  // вкладка "настройки интерфейса"
   if PageControl1.ActivePage.Caption=' интерфейса' then
     begin
+      // выставление значений по умолчанию для контролов
+      chkbxShowAboutWindowAtLaunch.Checked:=DefaultValue_ShowAboutWindowAtLaunch;
+      chkbxShowToolbarAtLaunch.Checked:=DefaultValue_ShowToolbarAtLaunch;
+      chkbxShowStatusbarAtLaunch.Checked:=DefaultValue_ShowStatusbarAtLaunch;
+      chkbxShowEditboxHints.Checked:=DefaultValue_ShowEditboxHints;
+      chkbxShowCommonSearchEditbox.Checked:=DefaultValue_ShowCommonSearchEditbox;
+      chkbxShowID.Checked:=DefaultValue_ShowID;
+      chkbxUseMultibuffer.Checked:=DefaultValue_UseMultibuffer;
+      chkbxShowConfirmationAtQuit.Checked:=DefaultValue_ShowConfirmationAtQuit;
     end;
 
-  if PageControl1.ActivePage.Caption=' процедуры логирования' then
-    begin
-      chkbxStoreLastLogin.Checked:=False;
-      chkbxStoreLastPassword.Checked:=False;
-      chkbxAutoLogon.Checked:=False;
-      chkbxAutoLogon.Enabled:=False;
-    end;
-
-  if PageControl1.ActivePage.Caption=' подключения к серверу базы данных услуги' then
-    begin
-      vleRNE4SERVER.Cells[1, 1]:='RNE4SERVER';
-      vleRNE4SERVER.Cells[1, 2]:=IntToStr(MYSQL_PORT);
-      vleRNE4SERVER.Cells[1, 3]:=IntToStr(30);
-      vleRNE4SERVER.Cells[1, 4]:=vleRNE4SERVER.ItemProps[3].PickList.Strings[1];
-      vleRNE4SERVER.Cells[1, 5]:='rne4';
-    end;
-
-  if PageControl1.ActivePage.Caption=' подключения к серверу системы обмена сообщениями' then
-    begin
-      vleRNE4MESSAGESSERVER.Cells[1, 1]:='RNE4MESSAGESSERVER';
-      vleRNE4MESSAGESSERVER.Cells[1, 2]:=IntToStr(MYSQL_PORT);
-      vleRNE4MESSAGESSERVER.Cells[1, 3]:=IntToStr(30);
-      vleRNE4MESSAGESSERVER.Cells[1, 4]:=vleRNE4MESSAGESSERVER.ItemProps[3].PickList.Strings[1];
-      vleRNE4MESSAGESSERVER.Cells[1, 5]:='rne4';
-    end;
-
+  // вкладка "настройки ведения протокола работы"
   if PageControl1.ActivePage.Caption=' ведения протокола работы' then
     begin
-      chkbxEnableLog.Checked:=True;
-      chkbxKeepErrorLog.Checked:=True;
-      chkbxKeepWarningLog.Checked:=True;
-      chkbxKeepInfoLog.Checked:=True;
-      chkbxKeepSQLLog.Checked:=False;
-      chkbxKeepDebugLog.Checked:=False;
-      chkbxFlushLogOnExit.Checked:=True;
-      chkbxEnableFlushLogOnStringsQuantity.Checked:=False;
-      edbxFlushLogOnStringsQuantity.Text:='';
-      chkbxFlushLogOnClearingLog.Checked:=True;
-      chkbxFlushLogOnApply.Checked:=False;
-      chkbxCustomLogClientFile.Checked:=False;
+      // выставление значений по умолчанию для элементов интерфейса
+      chkbxEnableLog.Checked:=DefaultValue_EnableLog;
+      chkbxKeepErrorLog.Checked:=(lmtError in DefaultValue_KeepLogTypes)and DefaultValue_EnableLog;
+      chkbxKeepWarningLog.Checked:=(lmtWarning in DefaultValue_KeepLogTypes)and DefaultValue_EnableLog;
+      chkbxKeepInfoLog.Checked:=(lmtInfo in DefaultValue_KeepLogTypes)and DefaultValue_EnableLog;
+      chkbxKeepSQLLog.Checked:=(lmtSQL in DefaultValue_KeepLogTypes)and DefaultValue_EnableLog;
+      chkbxKeepDebugLog.Checked:=(lmtDebug in DefaultValue_KeepLogTypes)and DefaultValue_EnableLog;
+      chkbxFlushLogOnExit.Checked:=DefaultValue_FlushLogOnExit and DefaultValue_EnableLog;
+      chkbxFlushLogOnStringsQuantity.Checked:=DefaultValue_FlushLogOnStringsQuantity and DefaultValue_EnableLog;
+      if DefaultValue_FlushLogOnStringsQuantity and DefaultValue_EnableLog then
+        edbxFlushLogOnStringsQuantityValue.Text:=IntToStr(DefaultValue_FlushLogOnStringsQuantityValue)
+      else
+        edbxFlushLogOnStringsQuantityValue.Text:='';
+      chkbxFlushLogOnClearingLog.Checked:=DefaultValue_FlushLogOnClearingLog and DefaultValue_EnableLog;
+      chkbxFlushLogOnApply.Checked:=DefaultValue_FlushLogOnApply and DefaultValue_EnableLog;
+      chkbxCustomLogClientFile.Checked:=DefaultValue_CustomLogClientFile and DefaultValue_EnableLog;
+      if DefaultValue_CustomLogClientFile and DefaultValue_EnableLog then
+        edbxCustomLogClientFileValue.Text:=DefaultValue_CustomLogClientFileValue
+      else
+        edbxCustomLogClientFileValue.Text:='';
+      // выставление доступа к элементам интерфейса
+      lblShowData.Enabled:=DefaultValue_EnableLog;
+      chkbxKeepErrorLog.Enabled:=DefaultValue_EnableLog;
+      chkbxKeepWarningLog.Enabled:=DefaultValue_EnableLog;
+      chkbxKeepInfoLog.Enabled:=DefaultValue_EnableLog;
+      chkbxKeepSQLLog.Enabled:=DefaultValue_EnableLog;
+      chkbxKeepDebugLog.Enabled:=DefaultValue_EnableLog;
+      lblFlushLog.Enabled:=DefaultValue_EnableLog;
+      chkbxFlushLogOnExit.Enabled:=DefaultValue_EnableLog;
+      chkbxFlushLogOnStringsQuantity.Enabled:=DefaultValue_EnableLog;
+      edbxFlushLogOnStringsQuantityValue.Enabled:=DefaultValue_EnableLog;
+      chkbxFlushLogOnClearingLog.Enabled:=DefaultValue_EnableLog;
+      chkbxFlushLogOnApply.Enabled:=DefaultValue_EnableLog;
+      chkbxCustomLogClientFile.Enabled:=DefaultValue_EnableLog;
+      edbxCustomLogClientFileValue.Enabled:=DefaultValue_CustomLogClientFile and DefaultValue_EnableLog;
+      Action_ChooseCustomLogClientFile.Enabled:=DefaultValue_CustomLogClientFile and DefaultValue_EnableLog;
     end;
 
+  // вкладка "настройки процедуры логирования"
+  if PageControl1.ActivePage.Caption=' процедуры логирования' then
+    begin
+      // выставление значений по умолчанию для элементов интерфейса
+      chkbxStoreLastLogin.Checked:=DefaultValue_StoreLastLogin;
+      chkbxStoreLastPassword.Checked:=DefaultValue_StoreLastPassword;
+      chkbxAutoLogon.Checked:=DefaultValue_AutoLogon and DefaultValue_StoreLastLogin and DefaultValue_StoreLastPassword;
+      // выставление доступа к элементам интерфейса
+      chkbxAutoLogon.Enabled:=DefaultValue_StoreLastLogin and DefaultValue_StoreLastPassword;
+    end;
+
+  // вкладка "подключения к серверу базы данных услуги"
+  if PageControl1.ActivePage.Caption=' подключения к серверу базы данных услуги' then
+    begin
+      // выставление значений по умолчанию для элементов интерфейса
+      vleRNE4SERVER.Cells[1, 1]:=DefaultValue_RNE4Server_Host;
+      vleRNE4SERVER.Cells[1, 2]:=IntToStr(DefaultValue_RNE4Server_Port);
+      vleRNE4SERVER.Cells[1, 3]:=IntToStr(DefaultValue_RNE4Server_Timeout);
+      vleRNE4SERVER.Cells[1, 4]:=vleRNE4SERVER.ItemProps[3].PickList.Strings[integer(DefaultValue_RNE4Server_Compression)];
+      vleRNE4SERVER.Cells[1, 5]:=DefaultValue_RNE4Server_Database;
+    end;
+
+  // вкладка "подключения к серверу системы обмена сообщениями"
+  if PageControl1.ActivePage.Caption=' подключения к серверу системы обмена сообщениями' then
+    begin
+      // выставление значений по умолчанию для элементов интерфейса
+      vleRNE4MESSAGESSERVER.Cells[1, 1]:=DefaultValue_MessagesServer_Host;
+      vleRNE4MESSAGESSERVER.Cells[1, 2]:=IntToStr(DefaultValue_MessagesServer_Port);
+      vleRNE4MESSAGESSERVER.Cells[1, 3]:=IntToStr(DefaultValue_MessagesServer_Timeout);
+      vleRNE4MESSAGESSERVER.Cells[1, 4]:=vleRNE4MESSAGESSERVER.ItemProps[3].PickList.Strings[integer(DefaultValue_MessagesServer_Compression)];
+      vleRNE4MESSAGESSERVER.Cells[1, 5]:=DefaultValue_MessagesServer_Database;
+    end;
+
+  // вкладка "настройки формирования отчётов"
   if PageControl1.ActivePage.Caption=' формирования отчётов' then
     begin
-      rbSaveIntoTheTempFolder.Checked:=True;
-      edbxSelectedFolder.Text:='';
-      chkbxDontDemandOverwriteConfirmation.Checked:=False;
-      chkbxAskForFileName.Checked:=False;
+      // выставление значений по умолчанию для элементов интерфейса
+      rbSaveIntoTheTempFolder.Checked:=DefaultValue_ReportFolder=rfTempFolder;
+      rbSaveIntoTheApplicationFolder.Checked:=DefaultValue_ReportFolder=rfApplicationFolder;
+      rbSaveIntoTheCustomFolder.Checked:=DefaultValue_ReportFolder=rfCustomFolder;
+      edbxCustomReportFolderValue.Text:=DefaultValue_CustomReportFolderValue;
+      chkbxDontDemandOverwriteConfirmation.Checked:=DefaultValue_DontDemandOverwriteConfirmation;
+      chkbxAskForFileName.Checked:=DefaultValue_AskForFileName;
+      // выставление доступа к элементам интерфейса
+      edbxCustomReportFolderValue.Enabled:=DefaultValue_ReportFolder=rfCustomFolder;
+      Action_ChooseReportFolder.Enabled:=DefaultValue_ReportFolder=rfCustomFolder;
     end;
 
-  Log.SendInfo('Настройки '+PageControl1.ActivePage.Caption+' были сброшены пользователем к значениям по умолчанию.');
+  // вкладка "настройки прочие"
+  if PageControl1.ActivePage.Caption=' прочие' then
+    begin
+      // выставление значений по умолчанию для элементов интерфейса
+      chkbxLaunchAtStartup.Checked:=DefaultValue_LaunchAtStartup;
+      chkbxPlaySoundOnComplete.Checked:=DefaultValue_PlaySoundOnComplete;
+      chkbxEnableAutoGetMessages.Checked:=DefaultValue_EnableAutoGetMessages;
+      edbxAutoGetMessagesCycleDuration.Text:=Routines.GetConditionalString(DefaultValue_EnableAutoGetMessages, IntToStr(DefaultValue_AutoGetMessagesCycleDuration), '');
+      chkbxCustomHelpFile.Checked:=DefaultValue_CustomHelpFile;
+      edbxCustomHelpFileValue.Text:=Routines.GetConditionalString(DefaultValue_CustomHelpFile, DefaultValue_CustomHelpFileValue, '');
+      // выставление доступа к элементам интерфейса
+      edbxAutoGetMessagesCycleDuration.Enabled:=DefaultValue_EnableAutoGetMessages;
+      edbxCustomHelpFileValue.Enabled:=DefaultValue_CustomHelpFile;
+      Action_ChooseCustomHelpFile.Enabled:=DefaultValue_CustomHelpFile;
+    end;
+
+  // вкладка "настройки главного окна"
+  if PageControl1.ActivePage.Caption=' главного окна' then
+    begin
+      // выставление значений по умолчанию для элементов интерфейса
+      edbxMainFormPositionX.Text:=Routines.GetConditionalString(not(DefaultValue_MainFormPositionByCenter or DefaultValue_FullScreenAtLaunch), IntToStr(DefaultValue_MainFormRect_Left), '');
+      edbxMainFormPositionY.Text:=Routines.GetConditionalString(not(DefaultValue_MainFormPositionByCenter or DefaultValue_FullScreenAtLaunch), IntToStr(DefaultValue_MainFormRect_Top), '');
+      chkbxMainFormPositionByCenter.Checked:=DefaultValue_MainFormPositionByCenter and(not DefaultValue_FullScreenAtLaunch);
+      edbxMainFormWidth.Text:=Routines.GetConditionalString(DefaultValue_FullScreenAtLaunch, '', IntToStr(DefaultValue_MainFormRect_Right-DefaultValue_MainFormRect_Left));
+      edbxMainFormHeight.Text:=Routines.GetConditionalString(DefaultValue_FullScreenAtLaunch, '', IntToStr(DefaultValue_MainFormRect_Bottom-DefaultValue_MainFormRect_Top));
+      chkbxFullScreenAtLaunch.Checked:=DefaultValue_FullScreenAtLaunch;
+    end;
+
+  // вкладка "настройки отображения информации"
+  if PageControl1.ActivePage.Caption=' отображения информации' then
+    begin
+      // выставление значений по умолчанию для элементов интерфейса
+      edbxOrganizationPanelHeight.Text:=Routines.GetConditionalString(DefaultValue_OrganizationPanelHalfHeight, '', IntToStr(DefaultValue_OrganizationPanelHeight));
+      chkbxOrganizationPanelHalfHeight.Checked:=DefaultValue_OrganizationPanelHalfHeight;
+      edbxDataPanelWidth.Text:=Routines.GetConditionalString(DefaultValue_DataPanelHalfWidth, '', IntToStr(DefaultValue_DataPanelWidth));
+      chkbxDataPanelHalfWidth.Checked:=DefaultValue_DataPanelHalfWidth;
+      chkbxShowDataInOtherInfoPanel.Checked:=DefaultValue_ShowDataInOtherInfoPanel;
+      chkbxShowMeasuresListAsRichEdit.Checked:=DefaultValue_ShowMeasuresListAsRichEdit;
+      chkbxMarkSearchedStrings.Checked:=DefaultValue_MarkSearchedStrings;
+      chkbxPutTownAtTheEnd.Checked:=DefaultValue_PutTownAtTheEnd;;
+      // выставление доступа к элементам интерфейса
+      edbxOrganizationPanelHeight.Enabled:=not DefaultValue_OrganizationPanelHalfHeight;
+      edbxDataPanelWidth.Enabled:=not DefaultValue_DataPanelHalfWidth;
+    end;
+
+  Log.SendInfo('Настройки '+PageControl1.ActivePage.Caption+' были сброшены пользователем в значения по умолчанию.');
 
   ProcedureFooter;
 end;
 
 procedure TOptionsForm.chkbxFullScreenAtLaunchClick(Sender: TObject);
+var
+  bFullScreenAtLaunch: boolean;
 begin
-  chkbxMainFormPositionByCenter.Enabled:=not chkbxFullScreenAtLaunch.Checked;
-  if not chkbxMainFormPositionByCenter.Enabled then
-    chkbxMainFormPositionByCenter.Checked:=False;
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxFullScreenAtLaunch.Caption, '{52688629-980D-4725-A207-FD5D898B16AB}');
 
-  edbxMainFormPositionX.Enabled:=not(chkbxMainFormPositionByCenter.Checked or chkbxFullScreenAtLaunch.Checked);
-//  if edbxMainFormPositionX.Enabled then
-//    edbxMainFormPositionX.Text:=IntToStr(MainForm.Configuration.fpMainForm.x)
-//  else
-//    edbxMainFormPositionX.Clear;
+  bFullScreenAtLaunch:=chkbxFullScreenAtLaunch.Checked and chkbxFullScreenAtLaunch.Enabled;
+  chkbxMainFormPositionByCenter.Enabled:=not bFullScreenAtLaunch;
+  chkbxMainFormPositionByCenter.Checked:=chkbxMainFormPositionByCenter.Checked and(not bFullScreenAtLaunch);
+  edbxMainFormPositionX.Enabled:=(not bFullScreenAtLaunch)and(not chkbxMainFormPositionByCenter.Checked);
+  edbxMainFormPositionY.Enabled:=(not bFullScreenAtLaunch)and(not chkbxMainFormPositionByCenter.Checked);
+  edbxMainFormWidth.Enabled:=not bFullScreenAtLaunch;
+  edbxMainFormHeight.Enabled:=not bFullScreenAtLaunch;
+  edbxMainFormPositionX.Text:=Routines.GetConditionalString(edbxMainFormPositionX.Enabled, IntToStr(MainForm.Configuration.MainFormRect.Left), '');
+  edbxMainFormPositionY.Text:=Routines.GetConditionalString(edbxMainFormPositionY.Enabled, IntToStr(MainForm.Configuration.MainFormRect.Top), '');
+  edbxMainFormWidth.Text:=Routines.GetConditionalString(not bFullScreenAtLaunch, IntToStr(MainForm.Configuration.MainFormRect.Right-MainForm.Configuration.MainFormRect.Left), '');
+  edbxMainFormHeight.Text:=Routines.GetConditionalString(not bFullScreenAtLaunch, IntToStr(MainForm.Configuration.MainFormRect.Bottom-MainForm.Configuration.MainFormRect.Top), '');
 
-  edbxMainFormPositionY.Enabled:=not(chkbxMainFormPositionByCenter.Checked or chkbxFullScreenAtLaunch.Checked);
-//  if edbxMainFormPositionY.Enabled then
-//    edbxMainFormPositionY.Text:=IntToStr(MainForm.Configuration.fpMainForm.y)
-//  else
-//    edbxMainFormPositionY.Clear;
+  Log.SendInfo('Флажок "'+chkbxMainFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(bFullScreenAtLaunch, 'в', 'от')+'ключен.');
 
-  edbxMainFormWidth.Enabled:=not chkbxFullScreenAtLaunch.Checked;
-//  if edbxMainFormWidth.Enabled then
-//    edbxMainFormWidth.Text:=IntToStr(MainForm.Configuration.iMainFormWidth)
-//  else
-//    edbxMainFormWidth.Clear;
-
-  edbxMainFormHeight.Enabled:=not chkbxFullScreenAtLaunch.Checked;
-//  if edbxMainFormHeight.Enabled then
-//    edbxMainFormHeight.Text:=IntToStr(MainForm.Configuration.iMainFormHeight)
-//  else
-//    edbxMainFormHeight.Clear;
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.chkbxStoreLastLoginClick(Sender: TObject);
@@ -888,10 +1060,9 @@ begin
   ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxStoreLastLogin.Caption, '{DF6E7711-9716-4511-8C02-AA1F34D95096}');
 
   chkbxAutoLogon.Enabled:=chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked and chkbxStoreLastPassword.Enabled and chkbxStoreLastPassword.Checked;
-  if not chkbxAutoLogon.Enabled then
-    chkbxAutoLogon.Checked:=False;
-  Log.SendInfo('Флажок "'+chkbxStoreLastLogin.Caption+'"'+Routines_GetConditionalMessage(chkbxStoreLastLogin.Checked, 'в', 'от')+'ключен.');
-  Log.SendInfo('Флажок "'+chkbxAutoLogon.Caption+'"'+Routines_GetConditionalMessage(chkbxAutoLogon.Checked, 'в', 'от')+'ключен.');
+  chkbxAutoLogon.Checked:=chkbxAutoLogon.Checked and chkbxAutoLogon.Enabled;
+  Log.SendInfo('Флажок "'+chkbxStoreLastLogin.Caption+'"'+Routines.GetConditionalString(chkbxStoreLastLogin.Checked, 'в', 'от')+'ключен.');
+  Log.SendInfo('Флажок "'+chkbxAutoLogon.Caption+'"'+Routines.GetConditionalString(chkbxAutoLogon.Checked, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -901,10 +1072,9 @@ begin
   ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxStoreLastPassword.Caption, '{C9AD62BE-833A-4C57-904C-0ED5DFB0634F}');
 
   chkbxAutoLogon.Enabled:=chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked and chkbxStoreLastPassword.Enabled and chkbxStoreLastPassword.Checked;
-  if not chkbxAutoLogon.Enabled then
-    chkbxAutoLogon.Checked:=False;
-  Log.SendInfo('Флажок "'+chkbxStoreLastPassword.Caption+'"'+Routines_GetConditionalMessage(chkbxStoreLastPassword.Checked, 'в', 'от')+'ключен.');
-  Log.SendInfo('Флажок "'+chkbxAutoLogon.Caption+'"'+Routines_GetConditionalMessage(chkbxAutoLogon.Checked, 'в', 'от')+'ключен.');
+  chkbxAutoLogon.Checked:=chkbxAutoLogon.Checked and chkbxAutoLogon.Enabled;
+  Log.SendInfo('Флажок "'+chkbxStoreLastPassword.Caption+'"'+Routines.GetConditionalString(chkbxStoreLastPassword.Checked, 'в', 'от')+'ключен.');
+  Log.SendInfo('Флажок "'+chkbxAutoLogon.Caption+'"'+Routines.GetConditionalString(chkbxAutoLogon.Checked, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -914,27 +1084,60 @@ begin
   ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxEnableAutoGetMessages.Caption, '{5C3B5E46-E8F7-4BD1-8092-16B88A617F55}');
 
   edbxAutoGetMessagesCycleDuration.Enabled:=chkbxEnableAutoGetMessages.Checked;
-  if edbxAutoGetMessagesCycleDuration.Enabled then
-    edbxAutoGetMessagesCycleDuration.Text:=IntToStr(MainForm.Configuration.AutoGetMessagesCycleDuration)
-  else edbxAutoGetMessagesCycleDuration.Clear;
-  Log.SendInfo('Флажок "'+chkbxEnableAutoGetMessages.Caption+'"'+Routines_GetConditionalMessage(chkbxEnableAutoGetMessages.Checked, 'в', 'от')+'ключен.');
+  edbxAutoGetMessagesCycleDuration.Text:=Routines.GetConditionalString(edbxAutoGetMessagesCycleDuration.Enabled, IntToStr(MainForm.Configuration.AutoGetMessagesCycleDuration), '');
+  Log.SendInfo('Флажок "'+chkbxEnableAutoGetMessages.Caption+'"'+Routines.GetConditionalString(chkbxEnableAutoGetMessages.Checked, 'в', 'от')+'ключен.');
+
+  ProcedureFooter;
+end;
+
+procedure TOptionsForm.chkbxCustomHelpFileClick(Sender: TObject);
+var
+  bCustomHelpFile: boolean;
+begin
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxCustomHelpFile.Caption, '{C4007F3B-8108-4F5D-8699-A1855EC707B1}');
+
+  bCustomHelpFile:=chkbxCustomHelpFile.Checked and chkbxCustomHelpFile.Enabled;
+
+  edbxCustomLogClientFileValue.Enabled:=bCustomHelpFile;
+  Action_ChooseCustomHelpFile.Enabled:=bCustomHelpFile;
+  if not bCustomHelpFile then
+    edbxCustomHelpFileValue.Text:='';
+
+  Log.SendInfo('Флажок "'+chkbxCustomHelpFile.Caption+'"'+Routines.GetConditionalString(bCustomHelpFile, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
 
 procedure TOptionsForm.chkbxMainFormPositionByCenterClick(Sender: TObject);
+var
+  bMainFormPositionByCenter: boolean;
 begin
-  edbxMainFormPositionX.Enabled:=not chkbxMainFormPositionByCenter.Checked;
-//  if edbxMainFormPositionX.Enabled then
-//    edbxMainFormPositionX.Text:=IntToStr(MainForm.Configuration.fpMainForm.x)
-//  else
-//    edbxMainFormPositionX.Clear;
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxMainFormPositionByCenter.Caption, '{0C75BE73-4F1F-4C3E-8938-728609D1E4F1}');
 
-  edbxMainFormPositionY.Enabled:=not chkbxMainFormPositionByCenter.Checked;
-//  if edbxMainFormPositionY.Enabled then
-//    edbxMainFormPositionY.Text:=IntToStr(MainForm.Configuration.fpMainForm.y)
-//  else
-//    edbxMainFormPositionY.Clear;
+  bMainFormPositionByCenter:=chkbxMainFormPositionByCenter.Checked and chkbxMainFormPositionByCenter.Enabled;
+  edbxMainFormPositionX.Enabled:=not bMainFormPositionByCenter;
+  edbxMainFormPositionY.Enabled:=not bMainFormPositionByCenter;
+  edbxMainFormPositionX.Text:=Routines.GetConditionalString(edbxMainFormPositionX.Enabled, IntToStr(MainForm.Configuration.MainFormRect.Left), '');
+  edbxMainFormPositionY.Text:=Routines.GetConditionalString(edbxMainFormPositionY.Enabled, IntToStr(MainForm.Configuration.MainFormRect.Top), '');
+
+  Log.SendInfo('Флажок "'+chkbxMainFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(bMainFormPositionByCenter, 'в', 'от')+'ключен.');
+
+  ProcedureFooter;
+end;
+
+procedure TOptionsForm.chkbxOrganizationPanelHalfHeightClick(Sender: TObject);
+var
+  bOrganizationPanelHalfHeight: boolean;
+begin
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxOrganizationPanelHalfHeight.Caption, '{DB478623-5C76-41CE-AD55-E8E101D15815}');
+
+  bOrganizationPanelHalfHeight:=chkbxOrganizationPanelHalfHeight.Checked and chkbxOrganizationPanelHalfHeight.Enabled;
+  edbxOrganizationPanelHeight.Enabled:=not bOrganizationPanelHalfHeight;
+  edbxOrganizationPanelHeight.Text:=Routines.GetConditionalString(bOrganizationPanelHalfHeight, '', IntToStr(MainForm.Configuration.OrganizationPanelHeight));
+
+  Log.SendInfo('Флажок "'+chkbxOrganizationPanelHalfHeight.Caption+'"'+Routines.GetConditionalString(bOrganizationPanelHalfHeight, 'в', 'от')+'ключен.');
+
+  ProcedureFooter;
 end;
 
 procedure TOptionsForm.edbxAutoGetMessagesCycleDurationChange(Sender: TObject);
@@ -945,22 +1148,25 @@ begin
     edbxAutoGetMessagesCycleDuration.Text:='60';
 end;
 
-procedure TOptionsForm.edbxAutoGetMessagesCycleDurationKeyPress(Sender: TObject;
-  var Key: Char);
+procedure TOptionsForm.edbxAutoGetMessagesCycleDurationKeyPress(Sender: TObject; var Key: Char);
 begin
   if not CharInSet(Key, ['0'..'9', #8, '-']) then
     Key:=#0; // "погасить" все остальные клавиши
 end;
 
-procedure TOptionsForm.FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
-  MousePos: TPoint; var Handled: Boolean);
+procedure TOptionsForm.edbxDataPanelWidthKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not CharInSet(Key, ['0'..'9', #8, '-']) then
+    Key:=#0; // "погасить" все остальные клавиши
+end;
+
+procedure TOptionsForm.FormMouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
   if PageControl1.ActivePage.Caption=' положения диалоговых окон' then
     SendMessage(ScrollBox1.Handle, WM_VSCROLL, SB_LINEDOWN, 0);
 end;
 
-procedure TOptionsForm.FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
-  MousePos: TPoint; var Handled: Boolean);
+procedure TOptionsForm.FormMouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
   if PageControl1.ActivePage.Caption=' положения диалоговых окон' then
     SendMessage(ScrollBox1.Handle, WM_VSCROLL, SB_LINEUP, 0);

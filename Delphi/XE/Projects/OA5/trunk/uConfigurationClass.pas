@@ -6,10 +6,92 @@ uses
   uMySQLConnectionClass,
   LogKeeperData,
   Types,
+  mysql,
   uSingleton;
 
 type
   TReportFolders=(rfTempFolder, rfApplicationFolder, rfCustomFolder);
+
+const
+  // вкладка "настройки интерфейса"
+  DefaultValue_ShowAboutWindowAtLaunch: boolean=True;
+  DefaultValue_ShowToolbarAtLaunch: boolean=True;
+  DefaultValue_ShowStatusbarAtLaunch: boolean=True;
+  DefaultValue_ShowEditboxHints: boolean=True;
+  DefaultValue_ShowCommonSearchEditbox: boolean=True;
+  DefaultValue_ShowID: boolean=False;
+  DefaultValue_UseMultibuffer: boolean=True;
+  DefaultValue_ShowConfirmationAtQuit: boolean=True;
+
+  // вкладка "настройки ведения протокола работы"
+  DefaultValue_EnableLog: boolean=True;
+  DefaultValue_KeepLogTypes: TLogMessagesTypes=[lmtError, lmtWarning, lmtInfo];
+  DefaultValue_FlushLogOnExit: boolean=True;
+  DefaultValue_FlushLogOnStringsQuantity: boolean=True;
+  DefaultValue_FlushLogOnStringsQuantityValue: integer=10000;
+  DefaultValue_FlushLogOnClearingLog: boolean=True;
+  DefaultValue_FlushLogOnApply: boolean=False;
+  DefaultValue_CustomLogClientFile: boolean=False;
+  DefaultValue_CustomLogClientFileValue: string='';
+
+  // вкладка "настройки положения диалоговых окон"
+
+  // вкладка "настройки процедуры логирования"
+  DefaultValue_StoreLastLogin: boolean=False;
+  DefaultValue_StoreLastPassword: boolean=False;
+  DefaultValue_AutoLogon: boolean=False;
+
+  // вкладка "подключения к серверу базы данных услуги"
+  DefaultValue_RNE4Server_Host: string='RNE4SERVER';
+  DefaultValue_RNE4Server_Port: integer=MYSQL_PORT;
+  DefaultValue_RNE4Server_Timeout: integer=30;
+  DefaultValue_RNE4Server_Compression: boolean=True;
+  DefaultValue_RNE4Server_Login: string='';
+  DefaultValue_RNE4Server_Password: string='';
+  DefaultValue_RNE4Server_Database: string='rne4';
+
+  // вкладка "подключения к серверу системы обмена сообщениями"
+  DefaultValue_MessagesServer_Host: string='RNE4MESSAGESSERVER';
+  DefaultValue_MessagesServer_Port: integer=MYSQL_PORT;
+  DefaultValue_MessagesServer_Timeout: integer=30;
+  DefaultValue_MessagesServer_Compression: boolean=True;
+  DefaultValue_MessagesServer_Login: string='';
+  DefaultValue_MessagesServer_Password: string='';
+  DefaultValue_MessagesServer_Database: string='rne4messages';
+
+  // вкладка "настройки формирования отчётов"
+  DefaultValue_ReportFolder: TReportFolders=rfApplicationFolder;
+  DefaultValue_CustomReportFolderValue: string='';
+  DefaultValue_DontDemandOverwriteConfirmation: boolean=False;
+  DefaultValue_AskForFileName: boolean=True;
+
+  // вкладка "настройки прочие"
+  DefaultValue_LaunchAtStartup: boolean=False;
+  DefaultValue_PlaySoundOnComplete: boolean=True;
+  DefaultValue_EnableAutoGetMessages: boolean=True;
+  DefaultValue_AutoGetMessagesCycleDuration: integer=5;
+  DefaultValue_CustomHelpFile: boolean=False;
+  DefaultValue_CustomHelpFileValue: string='';
+
+  // вкладка "настройки главного окна"
+  DefaultValue_MainFormRect_Left: integer=0;
+  DefaultValue_MainFormRect_Top: integer=0;
+  DefaultValue_MainFormRect_Right: integer=800;
+  DefaultValue_MainFormRect_Bottom: integer=600;
+  DefaultValue_MainFormPositionByCenter: boolean=True;
+  DefaultValue_FullScreenAtLaunch: boolean=False;
+
+  // вкладка "настройки отображения информации"
+  DefaultValue_OrganizationPanelHeight: integer=100;
+  DefaultValue_OrganizationPanelHalfHeight: boolean=True;
+  DefaultValue_DataPanelWidth: integer=340;
+  DefaultValue_DataPanelHalfWidth: boolean=False;
+  DefaultValue_ShowDataInOtherInfoPanel: boolean=True;
+  DefaultValue_ShowMeasuresListAsRichEdit: boolean=True;
+  DefaultValue_MarkSearchedStrings: boolean=True;
+  DefaultValue_PutTownAtTheEnd: boolean=False;
+
+type
 
   TConfiguration=class(TSingleton)
   type
@@ -71,7 +153,7 @@ type
 
     // вкладка "настройки формирования отчётов"
     FReportFolder: TReportFolders; //
-    FSelectedReportFolder: string; //
+    FCustomReportFolderValue: string; //
     FDontDemandOverwriteConfirmation: boolean; //
     FAskForFileName: boolean; //
 
@@ -82,8 +164,8 @@ type
     FPlaySoundOnComplete: boolean;
     FEnableAutoGetMessages: boolean;
     FAutoGetMessagesCycleDuration: integer;
-    FEnableCustomHelpFile: boolean;
-    FCustomHelpFile: string;
+    FCustomHelpFile: boolean;
+    FCustomHelpFileValue: string;
 
     // вкладка "настройки главного окна"
     FMainFormRect: TRect;
@@ -115,14 +197,14 @@ type
     procedure SetAutoGetMessagesCycleDuration(const Value: integer);
     procedure SetClearingFormPosition(const Value: TFormPosition);
     procedure SetCreateViewPostFormPosition(const Value: TFormPosition);
-    procedure SetCustomHelpFile(const Value: string);
+    procedure SetCustomHelpFile(const Value: boolean);
+    procedure SetCustomHelpFileValue(const Value: string);
     procedure SetCustomLogClientFile(const Value: boolean);
     procedure SetCustomLogClientFileValue(const Value: string);
     procedure SetDataPanelHalfWidth(const Value: boolean);
     procedure SetDataPanelWidth(const Value: integer);
     procedure SetDontDemandOverwriteConfirmation(const Value: boolean);
     procedure SetEnableAutoGetMessages(const Value: boolean);
-    procedure SetEnableCustomHelpFile(const Value: boolean);
     procedure SetFlushLogOnApply(const Value: boolean);
     procedure SetFlushLogOnClearingLog(const Value: boolean);
     procedure SetFlushLogOnExit(const Value: boolean);
@@ -144,7 +226,7 @@ type
     procedure SetPutTownAtTheEnd(const Value: boolean);
     procedure SetReportFolder(const Value: TReportFolders);
     procedure SetRNE4Server(const Value: TMySQLConnection);
-    procedure SetSelectedReportFolder(const Value: string);
+    procedure SetCustomReportFolderValue(const Value: string);
     procedure SetSetPasswordFormPosition(const Value: TFormPosition);
     procedure SetShowAboutWindowAtLaunch(const Value: boolean);
     procedure SetShowCommonSearchEditbox(const Value: boolean);
@@ -223,7 +305,7 @@ type
     // вкладка "настройки формирования отчётов"
     property ReportFolder: TReportFolders read FReportFolder write SetReportFolder stored False;
     property ReportFolderValue: string read GetReportFolderValue stored False;
-    property SelectedReportFolder: string read FSelectedReportFolder write SetSelectedReportFolder stored False;
+    property CustomReportFolderValue: string read FCustomReportFolderValue write SetCustomReportFolderValue stored False;
     property DontDemandOverwriteConfirmation: boolean read FDontDemandOverwriteConfirmation write SetDontDemandOverwriteConfirmation default False;
     property AskForFileName: boolean read FAskForFileName write SetAskForFileName default True;
 
@@ -232,8 +314,8 @@ type
     property PlaySoundOnComplete: boolean read FPlaySoundOnComplete write SetPlaySoundOnComplete default True;
     property EnableAutoGetMessages: boolean read FEnableAutoGetMessages write SetEnableAutoGetMessages default True;
     property AutoGetMessagesCycleDuration: integer read FAutoGetMessagesCycleDuration write SetAutoGetMessagesCycleDuration default 5;
-    property EnableCustomHelpFile: boolean read FEnableCustomHelpFile write SetEnableCustomHelpFile default False;
-    property CustomHelpFile: string read FCustomHelpFile write SetCustomHelpFile stored False;
+    property CustomHelpFile: boolean read FCustomHelpFile write SetCustomHelpFile default False;
+    property CustomHelpFileValue: string read FCustomHelpFileValue write SetCustomHelpFileValue stored False;
 
     // вкладка "настройки главного окна"
     property MainFormRect: TRect read FMainFormRect write SetMainFormRect stored False;
@@ -257,8 +339,7 @@ uses
   SysUtils,
   Windows,
   Forms,
-  IniFiles,
-  mysql;
+  IniFiles;
 
 procedure TConfiguration.Load;
 var
@@ -269,41 +350,41 @@ begin
     with TIniFile.Create(FileName) do
       begin
         // вкладка "настройки интерфейса"
-        ShowAboutWindowAtLaunch:=ReadBool('Интерфейс', 'bShowAboutWindowAtLaunch', True);
-        ShowToolbarAtLaunch:=ReadBool('Интерфейс', 'bShowToolbarAtLaunch', True);
-        ShowStatusbarAtLaunch:=ReadBool('Интерфейс', 'bShowStatusbarAtLaunch', True);
-        ShowEditboxHints:=ReadBool('Интерфейс', 'bShowEditboxHints', True);
-        ShowCommonSearchEditbox:=ReadBool('Интерфейс', 'bShowCommonSearchEditbox', True);
-        ShowID:=ReadBool('Интерфейс', 'bShowID', False);
-        UseMultibuffer:=ReadBool('Интерфейс', 'bUseMultibuffer', True);
-        ShowConfirmationAtQuit:=ReadBool('Интерфейс', 'bShowConfirmationAtQuit', True);
+        ShowAboutWindowAtLaunch:=ReadBool('Интерфейс', 'bShowAboutWindowAtLaunch', DefaultValue_ShowAboutWindowAtLaunch);
+        ShowToolbarAtLaunch:=ReadBool('Интерфейс', 'bShowToolbarAtLaunch', DefaultValue_ShowToolbarAtLaunch);
+        ShowStatusbarAtLaunch:=ReadBool('Интерфейс', 'bShowStatusbarAtLaunch', DefaultValue_ShowStatusbarAtLaunch);
+        ShowEditboxHints:=ReadBool('Интерфейс', 'bShowEditboxHints', DefaultValue_ShowEditboxHints);
+        ShowCommonSearchEditbox:=ReadBool('Интерфейс', 'bShowCommonSearchEditbox', DefaultValue_ShowCommonSearchEditbox);
+        ShowID:=ReadBool('Интерфейс', 'bShowID', DefaultValue_ShowID);
+        UseMultibuffer:=ReadBool('Интерфейс', 'bUseMultibuffer', DefaultValue_UseMultibuffer);
+        ShowConfirmationAtQuit:=ReadBool('Интерфейс', 'bShowConfirmationAtQuit', DefaultValue_ShowConfirmationAtQuit);
 
         // вкладка "настройки ведения протокола работы"
-        EnableLog:=ReadBool('Протоколирование', 'bEnableLog', True);
-        FlushLogOnExit:=ReadBool('Протоколирование', 'bFlushLogOnExit', True);
-        FlushLogOnStringsQuantity:=ReadBool('Протоколирование', 'bFlushLogOnStringsQuantity', True);
-        FlushLogOnStringsQuantityValue:=ReadInteger('Протоколирование', 'iFlushLogOnStringsQuantityValue', -1);
-        FlushLogOnClearingLog:=ReadBool('Протоколирование', 'bFlushLogOnClearingLog', True);
-        FlushLogOnApply:=ReadBool('Протоколирование', 'bFlushLogOnApply', False);
-        CustomLogClientFile:=ReadBool('Протоколирование', 'bCustomLogClientFile', False);
-        CustomLogClientFileValue:=ReadString('Протоколирование', 'sCustomLogClientFileValue', '');
-        if ReadBool('Протоколирование', 'bKeepErrorLog', True) then
+        EnableLog:=ReadBool('Протоколирование', 'bEnableLog', DefaultValue_EnableLog);
+        FlushLogOnExit:=ReadBool('Протоколирование', 'bFlushLogOnExit', DefaultValue_FlushLogOnExit);
+        FlushLogOnStringsQuantity:=ReadBool('Протоколирование', 'bFlushLogOnStringsQuantity', DefaultValue_FlushLogOnStringsQuantity);
+        FlushLogOnStringsQuantityValue:=ReadInteger('Протоколирование', 'iFlushLogOnStringsQuantityValue', DefaultValue_FlushLogOnStringsQuantityValue);
+        FlushLogOnClearingLog:=ReadBool('Протоколирование', 'bFlushLogOnClearingLog', DefaultValue_FlushLogOnClearingLog);
+        FlushLogOnApply:=ReadBool('Протоколирование', 'bFlushLogOnApply', DefaultValue_FlushLogOnApply);
+        CustomLogClientFile:=ReadBool('Протоколирование', 'bCustomLogClientFile', DefaultValue_CustomLogClientFile);
+        CustomLogClientFileValue:=ReadString('Протоколирование', 'sCustomLogClientFileValue', DefaultValue_CustomLogClientFileValue);
+        if ReadBool('Протоколирование', 'bKeepErrorLog', lmtError in DefaultValue_KeepLogTypes) then
           KeepLogTypes:=KeepLogTypes+[lmtError]
         else
           KeepLogTypes:=KeepLogTypes-[lmtError];
-        if ReadBool('Протоколирование', 'bKeepWarningLog', True) then
+        if ReadBool('Протоколирование', 'bKeepWarningLog', lmtWarning in DefaultValue_KeepLogTypes) then
           KeepLogTypes:=KeepLogTypes+[lmtWarning]
         else
           KeepLogTypes:=KeepLogTypes-[lmtWarning];
-        if ReadBool('Протоколирование', 'bKeepInfoLog', True) then
+        if ReadBool('Протоколирование', 'bKeepInfoLog', lmtInfo in DefaultValue_KeepLogTypes) then
           KeepLogTypes:=KeepLogTypes+[lmtInfo]
         else
           KeepLogTypes:=KeepLogTypes-[lmtInfo];
-        if ReadBool('Протоколирование', 'bKeepSQLLog', True) then
+        if ReadBool('Протоколирование', 'bKeepSQLLog', lmtSQL in DefaultValue_KeepLogTypes) then
           KeepLogTypes:=KeepLogTypes+[lmtSQL]
         else
           KeepLogTypes:=KeepLogTypes-[lmtSQL];
-        if ReadBool('Протоколирование', 'bKeepDebugLog', True) then
+        if ReadBool('Протоколирование', 'bKeepDebugLog', lmtDebug in DefaultValue_KeepLogTypes) then
           KeepLogTypes:=KeepLogTypes+[lmtDebug]
         else
           KeepLogTypes:=KeepLogTypes-[lmtDebug];
@@ -373,69 +454,69 @@ begin
           end;
 
         // вкладка "настройки процедуры логирования"
-        StoreLastLogin:=ReadBool('Идентификация', 'bStoreLastLogin', False);
-        StoreLastPassword:=ReadBool('Идентификация', 'bStoreLastPassword', False);
-        AutoLogon:=ReadBool('Идентификация', 'bAutoLogon', False);
+        StoreLastLogin:=ReadBool('Идентификация', 'bStoreLastLogin', DefaultValue_StoreLastLogin);
+        StoreLastPassword:=ReadBool('Идентификация', 'bStoreLastPassword', DefaultValue_StoreLastPassword);
+        AutoLogon:=ReadBool('Идентификация', 'bAutoLogon', DefaultValue_AutoLogon);
 
         // вкладка "подключения к серверу базы данных услуги"
         with RNE4Server do
           begin
-            Host:=ReadString('Сервер и база данных', 'RNE4Server.sHost', 'localhost');
-            Port:=ReadInteger('Сервер и база данных', 'RNE4Server.iPort', MYSQL_PORT);
-            Timeout:=ReadInteger('Сервер и база данных', 'RNE4Server.iTimeout', 30);
-            Compression:=ReadBool('Сервер и база данных', 'RNE4Server.bCompression', True);
-            // Login:=ReadString('Сервер и база данных', 'RNE4Server.sLogin', '');
-            // Password:=ReadString('Сервер и база данных', 'RNE4Server.sPassword', '');
-            Database:=ReadString('Сервер и база данных', 'RNE4Server.sDatabase', 'rne4');
+            Host:=ReadString('Сервер и база данных', 'RNE4Server.sHost', DefaultValue_RNE4Server_Host);
+            Port:=ReadInteger('Сервер и база данных', 'RNE4Server.iPort', DefaultValue_RNE4Server_Port);
+            Timeout:=ReadInteger('Сервер и база данных', 'RNE4Server.iTimeout', DefaultValue_RNE4Server_Timeout);
+            Compression:=ReadBool('Сервер и база данных', 'RNE4Server.bCompression', DefaultValue_RNE4Server_Compression);
+            Login:=ReadString('Сервер и база данных', 'RNE4Server.sLogin', DefaultValue_RNE4Server_Login);
+            Password:=ReadString('Сервер и база данных', 'RNE4Server.sPassword', DefaultValue_RNE4Server_Password);
+            Database:=ReadString('Сервер и база данных', 'RNE4Server.sDatabase', DefaultValue_RNE4Server_Database);
           end;
 
         // вкладка "подключения к серверу системы обмена сообщениями"
         with MessagesServer do
           begin
-            Host:=ReadString('Сервер и база данных', 'MessagesServer.sHost', 'localhost');
-            Port:=ReadInteger('Сервер и база данных', 'MessagesServer.iPort', MYSQL_PORT);
-            Timeout:=ReadInteger('Сервер и база данных', 'MessagesServer.iTimeout', 30);
-            Compression:=ReadBool('Сервер и база данных', 'MessagesServer.bCompression', True);
-            // Login:=ReadString('Сервер и база данных', 'MessagesServer.sLogin', '');
-            // Password:=ReadString('Сервер и база данных', 'MessagesServer.sPassword', '');
-            Database:=ReadString('Сервер и база данных', 'MessagesServer.sDatabase', 'rne4messages');
+            Host:=ReadString('Сервер и база данных', 'MessagesServer.sHost', DefaultValue_MessagesServer_Host);
+            Port:=ReadInteger('Сервер и база данных', 'MessagesServer.iPort', DefaultValue_MessagesServer_Port);
+            Timeout:=ReadInteger('Сервер и база данных', 'MessagesServer.iTimeout', DefaultValue_MessagesServer_Timeout);
+            Compression:=ReadBool('Сервер и база данных', 'MessagesServer.bCompression', DefaultValue_MessagesServer_Compression);
+            Login:=ReadString('Сервер и база данных', 'MessagesServer.sLogin', DefaultValue_MessagesServer_Login);
+            Password:=ReadString('Сервер и база данных', 'MessagesServer.sPassword', DefaultValue_MessagesServer_Password);
+            Database:=ReadString('Сервер и база данных', 'MessagesServer.sDatabase', DefaultValue_MessagesServer_Database);
           end;
 
         // вкладка "настройки формирования отчётов"
         ReportFolder:=TReportFolders(ReadInteger('Формирование отчётов', 'iReportFolder', integer(rfApplicationFolder)));
-        SelectedReportFolder:=ReadString('Формирование отчётов', 'sSelectedReportFolder', '');
+        CustomReportFolderValue:=ReadString('Формирование отчётов', 'sCustomReportFolderValue', '');
         DontDemandOverwriteConfirmation:=ReadBool('Формирование отчётов', 'bDontDemandOverwriteConfirmation', False);
         AskForFileName:=ReadBool('Формирование отчётов', 'bAskForFileName', True);
 
         // вкладка "настройки прочие"
-        LaunchAtStartup:=ReadBool('Прочие', 'bLaunchAtStartup', False);
-        PlaySoundOnComplete:=ReadBool('Прочие', 'bPlaySoundOnComplete', True);
-        EnableAutoGetMessages:=ReadBool('Прочие', 'bEnableAutoGetMessages', True);
-        AutoGetMessagesCycleDuration:=ReadInteger('Протоколирование', 'iAutoGetMessagesCycleDuration', 5);
-        EnableCustomHelpFile:=ReadBool('Прочие', 'bEnableCustomHelpFile', False);
-        CustomHelpFile:=ReadString('Прочие', 'sCustomHelpFile', '');
+        LaunchAtStartup:=ReadBool('Прочие', 'bLaunchAtStartup', DefaultValue_LaunchAtStartup);
+        PlaySoundOnComplete:=ReadBool('Прочие', 'bPlaySoundOnComplete', DefaultValue_PlaySoundOnComplete);
+        EnableAutoGetMessages:=ReadBool('Прочие', 'bEnableAutoGetMessages', DefaultValue_EnableAutoGetMessages);
+        AutoGetMessagesCycleDuration:=ReadInteger('Протоколирование', 'iAutoGetMessagesCycleDuration', DefaultValue_AutoGetMessagesCycleDuration);
+        CustomHelpFile:=ReadBool('Прочие', 'bCustomHelpFile', DefaultValue_CustomHelpFile);
+        CustomHelpFileValue:=ReadString('Прочие', 'sCustomHelpFileValue', DefaultValue_CustomHelpFileValue);
 
         // вкладка "настройки главного окна"
         with Rect do
           begin
-            Left:=ReadInteger('Главное окно', 'MainFormRect.iLeft', 0);
-            Top:=ReadInteger('Главное окно', 'MainFormRect.iTop', 0);
-            Right:=ReadInteger('Главное окно', 'MainFormRect.iRight', 800);
-            Bottom:=ReadInteger('Главное окно', 'MainFormRect.iBottom', 600);
+            Left:=ReadInteger('Главное окно', 'MainFormRect.iLeft', DefaultValue_MainFormRect_Left);
+            Top:=ReadInteger('Главное окно', 'MainFormRect.iTop', DefaultValue_MainFormRect_Top);
+            Right:=ReadInteger('Главное окно', 'MainFormRect.iRight', DefaultValue_MainFormRect_Right);
+            Bottom:=ReadInteger('Главное окно', 'MainFormRect.iBottom', DefaultValue_MainFormRect_Bottom);
             MainFormRect:=Rect;
           end;
-        MainFormPositionByCenter:=ReadBool('Главное окно', 'bMainFormPositionByCenter', True);
-        FullScreenAtLaunch:=ReadBool('Главное окно', 'bFullScreenAtLaunch', False);
+        MainFormPositionByCenter:=ReadBool('Главное окно', 'bMainFormPositionByCenter', DefaultValue_MainFormPositionByCenter);
+        FullScreenAtLaunch:=ReadBool('Главное окно', 'bFullScreenAtLaunch', DefaultValue_FullScreenAtLaunch);
 
         // вкладка "настройки отображения информации"
-        OrganizationPanelHeight:=ReadInteger('Отображение информации', 'iOrganizationPanelHeight', 100);
-        OrganizationPanelHalfHeight:=ReadBool('Отображение информации', 'bOrganizationPanelHalfHeight', True);
-        DataPanelWidth:=ReadInteger('Отображение информации', 'iDataPanelWidth', 340);
-        DataPanelHalfWidth:=ReadBool('Отображение информации', 'bOrganizationPanelHalfHeight', False);
-        ShowDataInOtherInfoPanel:=ReadBool('Отображение информации', 'bShowDataInOtherInfoPanel', True);
-        ShowMeasuresListAsRichEdit:=ReadBool('Отображение информации', 'bShowMeasuresListAsRichEdit', True);
-        MarkSearchedStrings:=ReadBool('Отображение информации', 'bMarkSearchedStrings', True);
-        PutTownAtTheEnd:=ReadBool('Отображение информации', 'bPutTownAtTheEnd', False);
+        OrganizationPanelHeight:=ReadInteger('Отображение информации', 'iOrganizationPanelHeight', DefaultValue_OrganizationPanelHeight);
+        OrganizationPanelHalfHeight:=ReadBool('Отображение информации', 'bOrganizationPanelHalfHeight', DefaultValue_OrganizationPanelHalfHeight);
+        DataPanelWidth:=ReadInteger('Отображение информации', 'iDataPanelWidth', DefaultValue_DataPanelWidth);
+        DataPanelHalfWidth:=ReadBool('Отображение информации', 'bOrganizationPanelHalfHeight', DefaultValue_DataPanelHalfWidth);
+        ShowDataInOtherInfoPanel:=ReadBool('Отображение информации', 'bShowDataInOtherInfoPanel', DefaultValue_ShowDataInOtherInfoPanel);
+        ShowMeasuresListAsRichEdit:=ReadBool('Отображение информации', 'bShowMeasuresListAsRichEdit', DefaultValue_ShowMeasuresListAsRichEdit);
+        MarkSearchedStrings:=ReadBool('Отображение информации', 'bMarkSearchedStrings', DefaultValue_MarkSearchedStrings);
+        PutTownAtTheEnd:=ReadBool('Отображение информации', 'bPutTownAtTheEnd', DefaultValue_PutTownAtTheEnd);
       end
   else
     raise Exception.Create('Имя файла конфигурации не должно быть пустым!');
@@ -532,7 +613,7 @@ begin
 
           // вкладка "настройки формирования отчётов"
           WriteInteger('Формирование отчётов', 'iReportFolder', integer(ReportFolder));
-          WriteString('Формирование отчётов', 'sSelectedReportFolder', SelectedReportFolder);
+          WriteString('Формирование отчётов', 'sCustomReportFolderValue', CustomReportFolderValue);
           WriteBool('Формирование отчётов', 'bDontDemandOverwriteConfirmation', DontDemandOverwriteConfirmation);
           WriteBool('Формирование отчётов', 'bAskForFileName', AskForFileName);
 
@@ -541,8 +622,8 @@ begin
           WriteBool('Прочие', 'bPlaySoundOnComplete', PlaySoundOnComplete);
           WriteBool('Прочие', 'bEnableAutoGetMessages', EnableAutoGetMessages);
           WriteInteger('Прочие', 'bAutoGetMessagesCycleDuration', AutoGetMessagesCycleDuration);
-          WriteBool('Прочие', 'bEnableCustomHelpFile', EnableCustomHelpFile);
-          WriteString('Прочие', 'bCustomHelpFile', CustomHelpFile);
+          WriteBool('Прочие', 'bCustomHelpFile', CustomHelpFile);
+          WriteString('Прочие', 'bCustomHelpFileValue', CustomHelpFileValue);
 
           // вкладка "настройки главного окна"
           WriteInteger('Главное окно', 'MainFormRect.iLeft', MainFormRect.Left);
@@ -583,7 +664,7 @@ end;
 
 procedure TConfiguration.SetLoginFormPosition(const Value: TFormPosition);
 begin
-  if ((FLoginFormPosition.bCenter<>Value.bCenter) or (FLoginFormPosition.x<>Value.x) or (FLoginFormPosition.y<>Value.y)) then
+  if ((FLoginFormPosition.bCenter<>Value.bCenter)or(FLoginFormPosition.x<>Value.x)or(FLoginFormPosition.y<>Value.y)) then
     FLoginFormPosition:=Value;
 end;
 
@@ -595,13 +676,13 @@ end;
 
 procedure TConfiguration.SetMainFormRect(const Value: TRect);
 begin
-  if ((FMainFormRect.Left<>Value.Left) or (FMainFormRect.Top<>Value.Top) or (FMainFormRect.Right<>Value.Right) or (FMainFormRect.Bottom<>Value.Bottom)) then
+  if ((FMainFormRect.Left<>Value.Left)or(FMainFormRect.Top<>Value.Top)or(FMainFormRect.Right<>Value.Right)or(FMainFormRect.Bottom<>Value.Bottom)) then
     FMainFormRect:=Value;
 end;
 
 procedure TConfiguration.SetMaintenanceFormPosition(const Value: TFormPosition);
 begin
-  if ((FMaintenanceFormPosition.bCenter<>Value.bCenter) or (FMaintenanceFormPosition.x<>Value.x) or (FMaintenanceFormPosition.y<>Value.y)) then
+  if ((FMaintenanceFormPosition.bCenter<>Value.bCenter)or(FMaintenanceFormPosition.x<>Value.x)or(FMaintenanceFormPosition.y<>Value.y)) then
     FMaintenanceFormPosition:=Value;
 end;
 
@@ -619,7 +700,7 @@ end;
 
 procedure TConfiguration.SetOptionsFormPosition(const Value: TFormPosition);
 begin
-  if ((FOptionsFormPosition.bCenter<>Value.bCenter) or (FOptionsFormPosition.x<>Value.x) or (FOptionsFormPosition.y<>Value.y)) then
+  if ((FOptionsFormPosition.bCenter<>Value.bCenter)or(FOptionsFormPosition.x<>Value.x)or(FOptionsFormPosition.y<>Value.y)) then
     FOptionsFormPosition:=Value;
 end;
 
@@ -637,7 +718,7 @@ end;
 
 procedure TConfiguration.SetPhonesFormPosition(const Value: TFormPosition);
 begin
-  if ((FPhonesFormPosition.bCenter<>Value.bCenter) or (FPhonesFormPosition.x<>Value.x) or (FPhonesFormPosition.y<>Value.y)) then
+  if ((FPhonesFormPosition.bCenter<>Value.bCenter)or(FPhonesFormPosition.x<>Value.x)or(FPhonesFormPosition.y<>Value.y)) then
     FPhonesFormPosition:=Value;
 end;
 
@@ -671,15 +752,15 @@ begin
     FEnableLog:=Value;
 end;
 
-procedure TConfiguration.SetSelectedReportFolder(const Value: string);
+procedure TConfiguration.SetCustomReportFolderValue(const Value: string);
 begin
-  if FSelectedReportFolder<>Value then
-    FSelectedReportFolder:=Value;
+  if FCustomReportFolderValue<>Value then
+    FCustomReportFolderValue:=Value;
 end;
 
 procedure TConfiguration.SetSetPasswordFormPosition(const Value: TFormPosition);
 begin
-  if ((FSetPasswordFormPosition.bCenter<>Value.bCenter) or (FSetPasswordFormPosition.x<>Value.x) or (FSetPasswordFormPosition.y<>Value.y)) then
+  if ((FSetPasswordFormPosition.bCenter<>Value.bCenter)or(FSetPasswordFormPosition.x<>Value.x)or(FSetPasswordFormPosition.y<>Value.y)) then
     FSetPasswordFormPosition:=Value;
 end;
 
@@ -739,7 +820,7 @@ end;
 
 procedure TConfiguration.SetStatisticFormPosition(const Value: TFormPosition);
 begin
-  if ((FStatisticFormPosition.bCenter<>Value.bCenter) or (FStatisticFormPosition.x<>Value.x) or (FStatisticFormPosition.y<>Value.y)) then
+  if ((FStatisticFormPosition.bCenter<>Value.bCenter)or(FStatisticFormPosition.x<>Value.x)or(FStatisticFormPosition.y<>Value.y)) then
     FStatisticFormPosition:=Value;
 end;
 
@@ -751,13 +832,13 @@ end;
 
 procedure TConfiguration.SetUsersFormPosition(const Value: TFormPosition);
 begin
-  if ((FUsersFormPosition.bCenter<>Value.bCenter) or (FUsersFormPosition.x<>Value.x) or (FUsersFormPosition.y<>Value.y)) then
+  if ((FUsersFormPosition.bCenter<>Value.bCenter)or(FUsersFormPosition.x<>Value.x)or(FUsersFormPosition.y<>Value.y)) then
     FUsersFormPosition:=Value;
 end;
 
 procedure TConfiguration.SetViewPostListFormPosition(const Value: TFormPosition);
 begin
-  if ((FViewPostListFormPosition.bCenter<>Value.bCenter) or (FViewPostListFormPosition.x<>Value.x) or (FViewPostListFormPosition.y<>Value.y)) then
+  if ((FViewPostListFormPosition.bCenter<>Value.bCenter)or(FViewPostListFormPosition.x<>Value.x)or(FViewPostListFormPosition.y<>Value.y)) then
     FViewPostListFormPosition:=Value;
 end;
 
@@ -789,7 +870,7 @@ begin
     rfApplicationFolder:
       Result:=GetApplicationFolder;
     rfCustomFolder:
-      Result:=SelectedReportFolder;
+      Result:=CustomReportFolderValue;
   end;
 end;
 
@@ -844,13 +925,13 @@ end;
 
 procedure TConfiguration.SetAddEditPhoneFormPosition(const Value: TFormPosition);
 begin
-  if ((FAddEditPhoneFormPosition.bCenter<>Value.bCenter) or (FAddEditPhoneFormPosition.x<>Value.x) or (FAddEditPhoneFormPosition.y<>Value.y)) then
+  if ((FAddEditPhoneFormPosition.bCenter<>Value.bCenter)or(FAddEditPhoneFormPosition.x<>Value.x)or(FAddEditPhoneFormPosition.y<>Value.y)) then
     FAddEditPhoneFormPosition:=Value;
 end;
 
 procedure TConfiguration.SetAddMassMsrFormPosition(const Value: TFormPosition);
 begin
-  if ((FAddMassMsrFormPosition.bCenter<>Value.bCenter) or (FAddMassMsrFormPosition.x<>Value.x) or (FAddMassMsrFormPosition.y<>Value.y)) then
+  if ((FAddMassMsrFormPosition.bCenter<>Value.bCenter)or(FAddMassMsrFormPosition.x<>Value.x)or(FAddMassMsrFormPosition.y<>Value.y)) then
     FAddMassMsrFormPosition:=Value;
 end;
 
@@ -879,20 +960,20 @@ end;
 
 procedure TConfiguration.SetClearingFormPosition(const Value: TFormPosition);
 begin
-  if ((FClearingFormPosition.bCenter<>Value.bCenter) or (FClearingFormPosition.x<>Value.x) or (FClearingFormPosition.y<>Value.y)) then
+  if ((FClearingFormPosition.bCenter<>Value.bCenter)or(FClearingFormPosition.x<>Value.x)or(FClearingFormPosition.y<>Value.y)) then
     FClearingFormPosition:=Value;
 end;
 
 procedure TConfiguration.SetCreateViewPostFormPosition(const Value: TFormPosition);
 begin
-  if ((FCreateViewPostFormPosition.bCenter<>Value.bCenter) or (FCreateViewPostFormPosition.x<>Value.x) or (FCreateViewPostFormPosition.y<>Value.y)) then
+  if ((FCreateViewPostFormPosition.bCenter<>Value.bCenter)or(FCreateViewPostFormPosition.x<>Value.x)or(FCreateViewPostFormPosition.y<>Value.y)) then
     FCreateViewPostFormPosition:=Value;
 end;
 
-procedure TConfiguration.SetCustomHelpFile(const Value: string);
+procedure TConfiguration.SetCustomHelpFileValue(const Value: string);
 begin
-  if FCustomHelpFile<>Value then
-    FCustomHelpFile:=Value;
+  if FCustomHelpFileValue<>Value then
+    FCustomHelpFileValue:=Value;
 end;
 
 procedure TConfiguration.SetCustomLogClientFile(const Value: boolean);
@@ -931,10 +1012,10 @@ begin
     FEnableAutoGetMessages:=Value;
 end;
 
-procedure TConfiguration.SetEnableCustomHelpFile(const Value: boolean);
+procedure TConfiguration.SetCustomHelpFile(const Value: boolean);
 begin
-  if FEnableCustomHelpFile<>Value then
-    FEnableCustomHelpFile:=Value;
+  if FCustomHelpFile<>Value then
+    FCustomHelpFile:=Value;
 end;
 
 procedure TConfiguration.SetFileName(const Value: string);
@@ -997,25 +1078,25 @@ begin
   FLastPassword:='';
 
   // вкладка "настройки интерфейса"
-  FShowAboutWindowAtLaunch:=True;
-  FShowToolbarAtLaunch:=True;
-  FShowStatusbarAtLaunch:=True;
-  FShowEditboxHints:=True;
-  FShowCommonSearchEditbox:=True;
-  FShowID:=False;
-  FUseMultibuffer:=True;
-  FShowConfirmationAtQuit:=True;
+  FShowAboutWindowAtLaunch:=DefaultValue_ShowAboutWindowAtLaunch;
+  FShowToolbarAtLaunch:=DefaultValue_ShowToolbarAtLaunch;
+  FShowStatusbarAtLaunch:=DefaultValue_ShowStatusbarAtLaunch;
+  FShowEditboxHints:=DefaultValue_ShowEditboxHints;
+  FShowCommonSearchEditbox:=DefaultValue_ShowCommonSearchEditbox;
+  FShowID:=DefaultValue_ShowID;
+  FUseMultibuffer:=DefaultValue_UseMultibuffer;
+  FShowConfirmationAtQuit:=DefaultValue_ShowConfirmationAtQuit;
 
   // вкладка "настройки ведения протокола работы"
-  FEnableLog:=True;
-  FKeepLogTypes:=[lmtError, lmtWarning, lmtInfo];
-  FFlushLogOnExit:=True;
-  FFlushLogOnStringsQuantity:=True;
-  FFlushLogOnStringsQuantityValue:=-1;
-  FFlushLogOnClearingLog:=True;
-  FFlushLogOnApply:=False;
-  FCustomLogClientFile:=False;
-  FCustomLogClientFileValue:='';
+  FEnableLog:=DefaultValue_EnableLog;
+  FKeepLogTypes:=DefaultValue_KeepLogTypes;
+  FFlushLogOnExit:=DefaultValue_FlushLogOnExit;
+  FFlushLogOnStringsQuantity:=DefaultValue_FlushLogOnStringsQuantity;
+  FFlushLogOnStringsQuantityValue:=DefaultValue_FlushLogOnStringsQuantityValue;
+  FFlushLogOnClearingLog:=DefaultValue_FlushLogOnClearingLog;
+  FFlushLogOnApply:=DefaultValue_FlushLogOnApply;
+  FCustomLogClientFile:=DefaultValue_CustomLogClientFile;
+  FCustomLogClientFileValue:=DefaultValue_CustomLogClientFileValue;
 
   // вкладка "настройки положения диалоговых окон"
   with FLoginFormPosition do
@@ -1103,9 +1184,9 @@ begin
     end;
 
   // вкладка "настройки процедуры логирования"
-  FStoreLastLogin:=False;
-  FStoreLastPassword:=False;
-  FAutoLogon:=False;
+  FStoreLastLogin:=DefaultValue_StoreLastLogin;
+  FStoreLastPassword:=DefaultValue_StoreLastPassword;
+  FAutoLogon:=DefaultValue_AutoLogon;
 
   // вкладка "настройки подключения к серверу базы данных услуги"
   with FRNE4Server do
@@ -1113,13 +1194,13 @@ begin
       Connected:=False;
       Connection:=nil;
       LogProvider:=nil;
-      Host:='';
-      Port:=MYSQL_PORT;
-      Timeout:=30;
-      Compression:=True;
-      Login:='';
-      Password:='';
-      Database:='';
+      Host:=DefaultValue_RNE4Server_Host;
+      Port:=DefaultValue_RNE4Server_Port;
+      Timeout:=DefaultValue_RNE4Server_Timeout;
+      Compression:=DefaultValue_RNE4Server_Compression;
+      Login:=DefaultValue_RNE4Server_Login;
+      Password:=DefaultValue_RNE4Server_Password;
+      Database:=DefaultValue_RNE4Server_Database;
     end;
 
   // вкладка "настройки подключения к серверу системы обмена сообщениями"
@@ -1128,49 +1209,49 @@ begin
       Connected:=False;
       Connection:=nil;
       LogProvider:=nil;
-      Host:='';
-      Port:=MYSQL_PORT;
-      Timeout:=30;
-      Compression:=True;
-      Login:='';
-      Password:='';
-      Database:='';
+      Host:=DefaultValue_MessagesServer_Host;
+      Port:=DefaultValue_MessagesServer_Port;
+      Timeout:=DefaultValue_MessagesServer_Timeout;
+      Compression:=DefaultValue_MessagesServer_Compression;
+      Login:=DefaultValue_MessagesServer_Login;
+      Password:=DefaultValue_MessagesServer_Password;
+      Database:=DefaultValue_MessagesServer_Database;
     end;
 
   // вкладка "настройки формирования отчётов"
-  FReportFolder:=rfApplicationFolder;
-  FSelectedReportFolder:='';
-  FDontDemandOverwriteConfirmation:=False;
-  AskForFileName:=True;
+  FReportFolder:=DefaultValue_ReportFolder;
+  FCustomReportFolderValue:=DefaultValue_CustomReportFolderValue;
+  FDontDemandOverwriteConfirmation:=DefaultValue_DontDemandOverwriteConfirmation;
+  AskForFileName:=DefaultValue_AskForFileName;
 
   // вкладка "настройки прочие"
-  FLaunchAtStartup:=False;
-  FPlaySoundOnComplete:=True;
-  FEnableAutoGetMessages:=True;
-  FAutoGetMessagesCycleDuration:=5;
-  FEnableCustomHelpFile:=False;
-  FCustomHelpFile:='';
+  FLaunchAtStartup:=DefaultValue_LaunchAtStartup;
+  FPlaySoundOnComplete:=DefaultValue_PlaySoundOnComplete;
+  FEnableAutoGetMessages:=DefaultValue_EnableAutoGetMessages;
+  FAutoGetMessagesCycleDuration:=DefaultValue_AutoGetMessagesCycleDuration;
+  FCustomHelpFile:=DefaultValue_CustomHelpFile;
+  FCustomHelpFileValue:=DefaultValue_CustomHelpFileValue;
 
   // вкладка "настройки главного окна"
   with FMainFormRect do
     begin
-      Left:=0;
-      Top:=0;
-      Right:=800;
-      Bottom:=600;
+      Left:=DefaultValue_MainFormRect_Left;
+      Top:=DefaultValue_MainFormRect_Top;
+      Right:=DefaultValue_MainFormRect_Right;
+      Bottom:=DefaultValue_MainFormRect_Bottom;
     end;
-  FMainFormPositionByCenter:=True;
-  FFullScreenAtLaunch:=False;
+  FMainFormPositionByCenter:=DefaultValue_MainFormPositionByCenter;
+  FFullScreenAtLaunch:=DefaultValue_FullScreenAtLaunch;
 
   // вкладка "настройки отображения информации"
-  FOrganizationPanelHeight:=100;
-  FOrganizationPanelHalfHeight:=True;
-  FDataPanelWidth:=340;
-  FDataPanelHalfWidth:=False;
-  FShowDataInOtherInfoPanel:=True;
-  FShowMeasuresListAsRichEdit:=True;
-  FMarkSearchedStrings:=True;
-  FPutTownAtTheEnd:=False;
+  FOrganizationPanelHeight:=DefaultValue_OrganizationPanelHeight;
+  FOrganizationPanelHalfHeight:=DefaultValue_OrganizationPanelHalfHeight;
+  FDataPanelWidth:=DefaultValue_DataPanelWidth;
+  FDataPanelHalfWidth:=DefaultValue_DataPanelHalfWidth;
+  FShowDataInOtherInfoPanel:=DefaultValue_ShowDataInOtherInfoPanel;
+  FShowMeasuresListAsRichEdit:=DefaultValue_ShowMeasuresListAsRichEdit;
+  FMarkSearchedStrings:=DefaultValue_MarkSearchedStrings;
+  FPutTownAtTheEnd:=DefaultValue_PutTownAtTheEnd;
 end;
 
 end.
