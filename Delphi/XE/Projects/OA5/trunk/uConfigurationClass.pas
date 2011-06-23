@@ -35,6 +35,9 @@ const
   DefaultValue_CustomLogClientFileValue: string='';
 
   // вкладка "настройки положения диалоговых окон"
+  DefaultValue_FormPosition_Center: boolean = True;
+  DefaultValue_FormPosition_x: integer = 0;
+  DefaultValue_FormPosition_y: integer = 0;
 
   // вкладка "настройки процедуры логирования"
   DefaultValue_StoreLastLogin: boolean=False;
@@ -392,64 +395,64 @@ begin
         // вкладка "настройки положения диалоговых окон"
         with FormPosition do
           begin
-            bCenter:=ReadBool('Положение диалоговых окон', 'LoginFormPosition.bCenter', True);
-            x:=ReadInteger('Положение диалоговых окон', 'LoginFormPosition.ix', -1);
-            y:=ReadInteger('Положение диалоговых окон', 'LoginFormPosition.iy', -1);
+            bCenter:=ReadBool('Положение диалоговых окон', 'LoginFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'LoginFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'LoginFormPosition.iy', DefaultValue_FormPosition_y);
             LoginFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'OptionsFormPosition.bCenter', True);
-            x:=ReadInteger('Положение диалоговых окон', 'OptionsFormPosition.ix', -1);
-            y:=ReadInteger('Положение диалоговых окон', 'OptionsFormPosition.iy', -1);
+            bCenter:=ReadBool('Положение диалоговых окон', 'OptionsFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'OptionsFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'OptionsFormPosition.iy', DefaultValue_FormPosition_y);
             OptionsFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'UsersFormPosition.bCenter', True);
-            x:=ReadInteger('Положение диалоговых окон', 'UsersFormPosition.ix', -1);
-            y:=ReadInteger('Положение диалоговых окон', 'UsersFormPosition.iy', -1);
+            bCenter:=ReadBool('Положение диалоговых окон', 'UsersFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'UsersFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'UsersFormPosition.iy', DefaultValue_FormPosition_y);
             UsersFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'SetPasswordFormPosition.bCenter', True);
-            x:=ReadInteger('Положение диалоговых окон', 'SetPasswordFormPosition.ix', -1);
-            y:=ReadInteger('Положение диалоговых окон', 'SetPasswordFormPosition.iy', -1);
+            bCenter:=ReadBool('Положение диалоговых окон', 'SetPasswordFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'SetPasswordFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'SetPasswordFormPosition.iy', DefaultValue_FormPosition_y);
             SetPasswordFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'StatisticFormPosition.bCenter', True);
-            x:=ReadInteger('Положение диалоговых окон', 'StatisticFormPosition.ix', -1);
-            y:=ReadInteger('Положение диалоговых окон', 'StatisticFormPosition.iy', -1);
+            bCenter:=ReadBool('Положение диалоговых окон', 'StatisticFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'StatisticFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'StatisticFormPosition.iy', DefaultValue_FormPosition_y);
             StatisticFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'MaintenanceFormPosition.bCenter', True);
-            x:=ReadInteger('Положение диалоговых окон', 'MaintenanceFormPosition.ix', -1);
-            y:=ReadInteger('Положение диалоговых окон', 'MaintenanceFormPosition.iy', -1);
+            bCenter:=ReadBool('Положение диалоговых окон', 'MaintenanceFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'MaintenanceFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'MaintenanceFormPosition.iy', DefaultValue_FormPosition_y);
             MaintenanceFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'ClearingFormPosition.bCenter', True);
-            x:=ReadInteger('Положение диалоговых окон', 'ClearingFormPosition.ix', -1);
-            y:=ReadInteger('Положение диалоговых окон', 'ClearingFormPosition.iy', -1);
+            bCenter:=ReadBool('Положение диалоговых окон', 'ClearingFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'ClearingFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'ClearingFormPosition.iy', DefaultValue_FormPosition_y);
             ClearingFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'ViewPostListFormPosition.bCenter', True);
-            x:=ReadInteger('Положение диалоговых окон', 'ViewPostListFormPosition.ix', -1);
-            y:=ReadInteger('Положение диалоговых окон', 'ViewPostListFormPosition.iy', -1);
+            bCenter:=ReadBool('Положение диалоговых окон', 'ViewPostListFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'ViewPostListFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'ViewPostListFormPosition.iy', DefaultValue_FormPosition_y);
             ViewPostListFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'CreateViewPostFormPosition.bCenter', True);
-            x:=ReadInteger('Положение диалоговых окон', 'CreateViewPostFormPosition.ix', -1);
-            y:=ReadInteger('Положение диалоговых окон', 'CreateViewPostFormPosition.iy', -1);
+            bCenter:=ReadBool('Положение диалоговых окон', 'CreateViewPostFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'CreateViewPostFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'CreateViewPostFormPosition.iy', DefaultValue_FormPosition_y);
             CreateViewPostFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'PhonesFormPosition.bCenter', True);
-            x:=ReadInteger('Положение диалоговых окон', 'PhonesFormPosition.ix', -1);
-            y:=ReadInteger('Положение диалоговых окон', 'PhonesFormPosition.iy', -1);
+            bCenter:=ReadBool('Положение диалоговых окон', 'PhonesFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'PhonesFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'PhonesFormPosition.iy', DefaultValue_FormPosition_y);
             PhonesFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'AddEditPhoneFormPosition.bCenter', True);
-            x:=ReadInteger('Положение диалоговых окон', 'AddEditPhoneFormPosition.ix', -1);
-            y:=ReadInteger('Положение диалоговых окон', 'AddEditPhoneFormPosition.iy', -1);
+            bCenter:=ReadBool('Положение диалоговых окон', 'AddEditPhoneFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'AddEditPhoneFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'AddEditPhoneFormPosition.iy', DefaultValue_FormPosition_y);
             AddEditPhoneFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'AddMassMsrFormPosition.bCenter', True);
-            x:=ReadInteger('Положение диалоговых окон', 'AddMassMsrFormPosition.ix', -1);
-            y:=ReadInteger('Положение диалоговых окон', 'AddMassMsrFormPosition.iy', -1);
+            bCenter:=ReadBool('Положение диалоговых окон', 'AddMassMsrFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'AddMassMsrFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'AddMassMsrFormPosition.iy', DefaultValue_FormPosition_y);
             AddMassMsrFormPosition:=FormPosition;
           end;
 
@@ -531,8 +534,8 @@ var
     with IniFile do
       begin
         WriteBool('Положение диалоговых окон', FormPositionName+'.bCenter', FormPosition.bCenter);
-        WriteInteger('Положение диалоговых окон', FormPositionName+'.x', FormPosition.x);
-        WriteInteger('Положение диалоговых окон', FormPositionName+'.y', FormPosition.y);
+        WriteInteger('Положение диалоговых окон', FormPositionName+'.ix', FormPosition.x);
+        WriteInteger('Положение диалоговых окон', FormPositionName+'.iy', FormPosition.y);
       end;
   end;
 
@@ -1101,86 +1104,86 @@ begin
   // вкладка "настройки положения диалоговых окон"
   with FLoginFormPosition do
     begin
-      bCenter:=True;
-      FLoginFormPosition.x:=0;
-      FLoginFormPosition.y:=0;
+      bCenter:=DefaultValue_FormPosition_Center;
+      x:=DefaultValue_FormPosition_x;
+      y:=DefaultValue_FormPosition_y;
     end;
 
   with FOptionsFormPosition do
     begin
-      bCenter:=True;
-      FLoginFormPosition.x:=0;
-      FLoginFormPosition.y:=0;
+      bCenter:=DefaultValue_FormPosition_Center;
+      x:=DefaultValue_FormPosition_x;
+      y:=DefaultValue_FormPosition_y;
     end;
 
   with FUsersFormPosition do
     begin
-      bCenter:=True;
-      FLoginFormPosition.x:=0;
-      FLoginFormPosition.y:=0;
+      bCenter:=DefaultValue_FormPosition_Center;
+      x:=DefaultValue_FormPosition_x;
+      y:=DefaultValue_FormPosition_y;
     end;
 
   with FSetPasswordFormPosition do
     begin
-      bCenter:=True;
-      FLoginFormPosition.x:=0;
-      FLoginFormPosition.y:=0;
+      bCenter:=DefaultValue_FormPosition_Center;
+      x:=DefaultValue_FormPosition_x;
+      y:=DefaultValue_FormPosition_y;
     end;
 
   with FStatisticFormPosition do
     begin
-      bCenter:=True;
-      FLoginFormPosition.x:=0;
-      FLoginFormPosition.y:=0;
+      bCenter:=DefaultValue_FormPosition_Center;
+      x:=DefaultValue_FormPosition_x;
+      y:=DefaultValue_FormPosition_y;
     end;
 
   with FMaintenanceFormPosition do
     begin
-      bCenter:=True;
-      FLoginFormPosition.x:=0;
-      FLoginFormPosition.y:=0;
+      bCenter:=DefaultValue_FormPosition_Center;
+      x:=DefaultValue_FormPosition_x;
+      y:=DefaultValue_FormPosition_y;
     end;
 
   with FClearingFormPosition do
     begin
-      bCenter:=True;
-      FLoginFormPosition.x:=0;
-      FLoginFormPosition.y:=0;
+      bCenter:=DefaultValue_FormPosition_Center;
+      x:=DefaultValue_FormPosition_x;
+      y:=DefaultValue_FormPosition_y;
     end;
 
   with FViewPostListFormPosition do
     begin
-      bCenter:=True;
-      FLoginFormPosition.x:=0;
-      FLoginFormPosition.y:=0;
+      bCenter:=DefaultValue_FormPosition_Center;
+      x:=DefaultValue_FormPosition_x;
+      y:=DefaultValue_FormPosition_y;
     end;
 
   with FCreateViewPostFormPosition do
     begin
-      bCenter:=True;
-      FLoginFormPosition.x:=0;
-      FLoginFormPosition.y:=0;
+      bCenter:=DefaultValue_FormPosition_Center;
+      x:=DefaultValue_FormPosition_x;
+      y:=DefaultValue_FormPosition_y;
     end;
 
   with FPhonesFormPosition do
     begin
-      bCenter:=True;
-      FLoginFormPosition.x:=0;
-      FLoginFormPosition.y:=0;
+      bCenter:=DefaultValue_FormPosition_Center;
+      x:=DefaultValue_FormPosition_x;
+      y:=DefaultValue_FormPosition_y;
     end;
 
   with FAddEditPhoneFormPosition do
     begin
-      bCenter:=True;
-      FLoginFormPosition.x:=0;
-      FLoginFormPosition.y:=0;
+      bCenter:=DefaultValue_FormPosition_Center;
+      x:=DefaultValue_FormPosition_x;
+      y:=DefaultValue_FormPosition_y;
     end;
 
   with FAddMassMsrFormPosition do
     begin
-      bCenter:=True;
-      FLoginFormPosition.x:=0;
-      FLoginFormPosition.y:=0;
+      bCenter:=DefaultValue_FormPosition_Center;
+      x:=DefaultValue_FormPosition_x;
+      y:=DefaultValue_FormPosition_y;
     end;
 
   // вкладка "настройки процедуры логирования"
