@@ -193,7 +193,7 @@ object OptionsForm: TOptionsForm
         Top = 3
         Width = 614
         Height = 223
-        ActivePage = ts4
+        ActivePage = ts8
         Align = alCustom
         Style = tsButtons
         TabOrder = 0
@@ -455,6 +455,7 @@ object OptionsForm: TOptionsForm
             Width = 606
             Height = 213
             HorzScrollBar.Range = 588
+            VertScrollBar.Position = 114
             VertScrollBar.Range = 327
             Align = alClient
             AutoScroll = False
@@ -464,268 +465,269 @@ object OptionsForm: TOptionsForm
             TabOrder = 0
             object lblLoginFormPosition: TLabel
               Left = 0
-              Top = 3
+              Top = -111
               Width = 94
               Height = 13
               Caption = #1054#1082#1085#1086' '#1083#1086#1075#1080#1088#1086#1074#1072#1085#1080#1103
             end
             object lblLoginFormPositionX: TLabel
               Left = 340
-              Top = 3
+              Top = -111
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblLoginFormPositionY: TLabel
               Left = 427
-              Top = 3
+              Top = -111
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblOptionsFormPosition: TLabel
               Left = 0
-              Top = 30
+              Top = -84
               Width = 102
               Height = 13
               Caption = #1054#1082#1085#1086' '#1082#1086#1085#1092#1080#1075#1091#1088#1072#1094#1080#1080
             end
             object lblOptionsFormPositionX: TLabel
               Left = 340
-              Top = 30
+              Top = -84
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblOptionsFormPositionY: TLabel
               Left = 427
-              Top = 30
+              Top = -84
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblUsersFormPosition: TLabel
               Left = 0
-              Top = 57
+              Top = -57
               Width = 116
               Height = 13
               Caption = #1054#1082#1085#1086' '#1091#1095#1105#1090#1085#1099#1093' '#1079#1072#1087#1080#1089#1077#1081
             end
             object lblUsersFormPositionX: TLabel
               Left = 340
-              Top = 57
+              Top = -57
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblUsersFormPositionY: TLabel
               Left = 427
-              Top = 57
+              Top = -57
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblSetPasswordFormPosition: TLabel
               Left = 0
-              Top = 84
+              Top = -30
               Width = 99
               Height = 13
               Caption = #1054#1082#1085#1086' '#1089#1084#1077#1085#1099' '#1087#1072#1088#1086#1083#1103
             end
             object lblSetPasswordFormPositionX: TLabel
               Left = 340
-              Top = 84
+              Top = -30
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblSetPasswordFormPositionY: TLabel
               Left = 427
-              Top = 84
+              Top = -30
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblStatisticFormPosition: TLabel
               Left = 0
-              Top = 111
+              Top = -3
               Width = 87
               Height = 13
               Caption = #1054#1082#1085#1086' '#1089#1090#1072#1090#1080#1089#1090#1080#1082#1080
             end
             object lblStatisticFormPositionX: TLabel
               Left = 340
-              Top = 111
+              Top = -3
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblStatisticFormPositionY: TLabel
               Left = 427
-              Top = 111
+              Top = -3
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblMaintenanceFormPosition: TLabel
               Left = 0
-              Top = 138
+              Top = 24
               Width = 119
               Height = 13
               Caption = #1054#1082#1085#1086' '#1086#1073#1089#1083#1091#1078#1080#1074#1072#1085#1080#1103' '#1041#1044
             end
             object lblMaintenanceFormPositionX: TLabel
               Left = 340
-              Top = 138
+              Top = 24
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblMaintenanceFormPositionY: TLabel
               Left = 427
-              Top = 138
+              Top = 24
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblClearingFormPosition: TLabel
               Left = 0
-              Top = 165
+              Top = 51
               Width = 87
               Height = 13
               Caption = #1054#1082#1085#1086' '#1086#1095#1080#1089#1090#1082#1080' '#1041#1044
             end
             object lblClearingFormPositionX: TLabel
               Left = 340
-              Top = 165
+              Top = 51
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblClearingFormPositionY: TLabel
               Left = 427
-              Top = 165
+              Top = 51
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblViewPostListFormPosition: TLabel
               Left = 0
-              Top = 192
+              Top = 78
               Width = 122
               Height = 13
               Caption = #1054#1082#1085#1086' '#1089#1087#1080#1089#1082#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1081
             end
             object lblViewPostListFormPositionX: TLabel
               Left = 340
-              Top = 192
+              Top = 78
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblViewPostListFormPositionY: TLabel
               Left = 427
-              Top = 192
+              Top = 78
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblCreateViewPostFormPosition: TLabel
               Left = 0
-              Top = 219
+              Top = 105
               Width = 141
               Height = 13
               Caption = #1054#1082#1085#1086' '#1087#1088#1086#1089#1084#1086#1090#1088#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
             end
             object lblCreateViewPostFormPositionX: TLabel
               Left = 340
-              Top = 219
+              Top = 105
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblCreateViewPostFormPositionY: TLabel
               Left = 427
-              Top = 219
+              Top = 105
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblPhonesFormPosition: TLabel
               Left = 0
-              Top = 246
+              Top = 132
               Width = 122
               Height = 13
               Caption = #1054#1082#1085#1086' '#1089#1087#1080#1089#1082#1072' '#1090#1077#1083#1077#1092#1086#1085#1086#1074
             end
             object lblPhonesFormPositionX: TLabel
               Left = 340
-              Top = 246
+              Top = 132
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblPhonesFormPositionY: TLabel
               Left = 427
-              Top = 246
+              Top = 132
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblAddEditPhoneFormPosition: TLabel
               Left = 0
-              Top = 273
+              Top = 159
               Width = 135
               Height = 13
               Caption = #1054#1082#1085#1086' '#1087#1088#1086#1089#1084#1086#1090#1088#1072' '#1090#1077#1083#1077#1092#1086#1085#1072
             end
             object lblAddEditPhoneFormPositionX: TLabel
               Left = 340
-              Top = 273
+              Top = 159
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblAddEditPhoneFormPositionY: TLabel
               Left = 427
-              Top = 273
+              Top = 159
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblAddMassMsrFormPosition: TLabel
               Left = 0
-              Top = 300
+              Top = 186
               Width = 119
               Height = 13
               Caption = #1054#1082#1085#1086' '#1084#1072#1089#1089#1086#1074#1086#1081' '#1074#1089#1090#1072#1074#1082#1080
             end
             object lblAddMassMsrFormPositionX: TLabel
               Left = 340
-              Top = 300
+              Top = 186
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblAddMassMsrFormPositionY: TLabel
               Left = 427
-              Top = 300
+              Top = 186
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object edbxLoginFormPositionX: TEdit
               Left = 352
-              Top = 0
+              Top = -114
               Width = 69
               Height = 21
               Enabled = False
               MaxLength = 4
+              ReadOnly = True
               TabOrder = 0
             end
             object edbxLoginFormPositionY: TEdit
               Left = 439
-              Top = 0
+              Top = -114
               Width = 69
               Height = 21
               Enabled = False
@@ -734,17 +736,18 @@ object OptionsForm: TOptionsForm
             end
             object chkbxLoginFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 2
+              Top = -112
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
               Checked = True
               State = cbChecked
               TabOrder = 2
+              OnClick = chkbxLoginFormPositionByCenterClick
             end
             object edbxOptionsFormPositionX: TEdit
               Left = 352
-              Top = 27
+              Top = -87
               Width = 69
               Height = 21
               Enabled = False
@@ -753,7 +756,7 @@ object OptionsForm: TOptionsForm
             end
             object edbxOptionsFormPositionY: TEdit
               Left = 439
-              Top = 27
+              Top = -87
               Width = 69
               Height = 21
               Enabled = False
@@ -762,17 +765,18 @@ object OptionsForm: TOptionsForm
             end
             object chkbxOptionsFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 29
+              Top = -85
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
               Checked = True
               State = cbChecked
               TabOrder = 5
+              OnClick = chkbxOptionsFormPositionByCenterClick
             end
             object edbxUsersFormPositionX: TEdit
               Left = 352
-              Top = 54
+              Top = -60
               Width = 69
               Height = 21
               Enabled = False
@@ -781,7 +785,7 @@ object OptionsForm: TOptionsForm
             end
             object edbxUsersFormPositionY: TEdit
               Left = 439
-              Top = 54
+              Top = -60
               Width = 69
               Height = 21
               Enabled = False
@@ -790,17 +794,18 @@ object OptionsForm: TOptionsForm
             end
             object chkbxUsersFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 56
+              Top = -58
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
               Checked = True
               State = cbChecked
               TabOrder = 8
+              OnClick = chkbxUsersFormPositionByCenterClick
             end
             object edbxSetPasswordFormPositionX: TEdit
               Left = 352
-              Top = 81
+              Top = -33
               Width = 69
               Height = 21
               Enabled = False
@@ -809,7 +814,7 @@ object OptionsForm: TOptionsForm
             end
             object edbxSetPasswordFormPositionY: TEdit
               Left = 439
-              Top = 81
+              Top = -33
               Width = 69
               Height = 21
               Enabled = False
@@ -818,17 +823,18 @@ object OptionsForm: TOptionsForm
             end
             object chkbxSetPasswordFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 83
+              Top = -31
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
               Checked = True
               State = cbChecked
               TabOrder = 11
+              OnClick = chkbxSetPasswordFormPositionByCenterClick
             end
             object edbxStatisticFormPositionX: TEdit
               Left = 352
-              Top = 108
+              Top = -6
               Width = 69
               Height = 21
               Enabled = False
@@ -837,7 +843,7 @@ object OptionsForm: TOptionsForm
             end
             object edbxStatisticFormPositionY: TEdit
               Left = 439
-              Top = 108
+              Top = -6
               Width = 69
               Height = 21
               Enabled = False
@@ -846,17 +852,18 @@ object OptionsForm: TOptionsForm
             end
             object chkbxStatisticFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 110
+              Top = -4
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
               Checked = True
               State = cbChecked
               TabOrder = 14
+              OnClick = chkbxStatisticFormPositionByCenterClick
             end
             object edbxMaintenanceFormPositionX: TEdit
               Left = 352
-              Top = 135
+              Top = 21
               Width = 69
               Height = 21
               Enabled = False
@@ -865,7 +872,7 @@ object OptionsForm: TOptionsForm
             end
             object edbxMaintenanceFormPositionY: TEdit
               Left = 439
-              Top = 135
+              Top = 21
               Width = 69
               Height = 21
               Enabled = False
@@ -874,17 +881,18 @@ object OptionsForm: TOptionsForm
             end
             object chkbxMaintenanceFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 137
+              Top = 23
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
               Checked = True
               State = cbChecked
               TabOrder = 17
+              OnClick = chkbxMaintenanceFormPositionByCenterClick
             end
             object edbxClearingFormPositionX: TEdit
               Left = 352
-              Top = 162
+              Top = 48
               Width = 69
               Height = 21
               Enabled = False
@@ -893,7 +901,7 @@ object OptionsForm: TOptionsForm
             end
             object edbxClearingFormPositionY: TEdit
               Left = 439
-              Top = 162
+              Top = 48
               Width = 69
               Height = 21
               Enabled = False
@@ -902,17 +910,18 @@ object OptionsForm: TOptionsForm
             end
             object chkbxClearingFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 164
+              Top = 50
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
               Checked = True
               State = cbChecked
               TabOrder = 20
+              OnClick = chkbxClearingFormPositionByCenterClick
             end
             object edbxViewPostListFormPositionX: TEdit
               Left = 352
-              Top = 189
+              Top = 75
               Width = 69
               Height = 21
               Enabled = False
@@ -921,7 +930,7 @@ object OptionsForm: TOptionsForm
             end
             object edbxViewPostListFormPositionY: TEdit
               Left = 439
-              Top = 189
+              Top = 75
               Width = 69
               Height = 21
               Enabled = False
@@ -930,17 +939,18 @@ object OptionsForm: TOptionsForm
             end
             object chkbxViewPostListFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 191
+              Top = 77
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
               Checked = True
               State = cbChecked
               TabOrder = 23
+              OnClick = chkbxViewPostListFormPositionByCenterClick
             end
             object edbxCreateViewPostFormPositionX: TEdit
               Left = 352
-              Top = 216
+              Top = 102
               Width = 69
               Height = 21
               Enabled = False
@@ -949,7 +959,7 @@ object OptionsForm: TOptionsForm
             end
             object edbxCreateViewPostFormPositionY: TEdit
               Left = 439
-              Top = 216
+              Top = 102
               Width = 69
               Height = 21
               Enabled = False
@@ -958,17 +968,18 @@ object OptionsForm: TOptionsForm
             end
             object chkbxCreateViewPostFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 218
+              Top = 104
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
               Checked = True
               State = cbChecked
               TabOrder = 26
+              OnClick = chkbxCreateViewPostFormPositionByCenterClick
             end
             object edbxPhonesFormPositionX: TEdit
               Left = 352
-              Top = 243
+              Top = 129
               Width = 69
               Height = 21
               Enabled = False
@@ -977,7 +988,7 @@ object OptionsForm: TOptionsForm
             end
             object edbxPhonesFormPositionY: TEdit
               Left = 439
-              Top = 243
+              Top = 129
               Width = 69
               Height = 21
               Enabled = False
@@ -986,17 +997,18 @@ object OptionsForm: TOptionsForm
             end
             object chkbxPhonesFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 245
+              Top = 131
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
               Checked = True
               State = cbChecked
               TabOrder = 29
+              OnClick = chkbxPhonesFormPositionByCenterClick
             end
             object edbxAddEditPhoneFormPositionX: TEdit
               Left = 352
-              Top = 270
+              Top = 156
               Width = 69
               Height = 21
               Enabled = False
@@ -1005,7 +1017,7 @@ object OptionsForm: TOptionsForm
             end
             object edbxAddEditPhoneFormPositionY: TEdit
               Left = 439
-              Top = 270
+              Top = 156
               Width = 69
               Height = 21
               Enabled = False
@@ -1014,17 +1026,18 @@ object OptionsForm: TOptionsForm
             end
             object chkbxAddEditPhoneFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 272
+              Top = 158
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
               Checked = True
               State = cbChecked
               TabOrder = 32
+              OnClick = chkbxAddEditPhoneFormPositionByCenterClick
             end
             object edbxAddMassMsrFormPositionX: TEdit
               Left = 352
-              Top = 297
+              Top = 183
               Width = 69
               Height = 21
               Enabled = False
@@ -1033,7 +1046,7 @@ object OptionsForm: TOptionsForm
             end
             object edbxAddMassMsrFormPositionY: TEdit
               Left = 439
-              Top = 297
+              Top = 183
               Width = 69
               Height = 21
               Enabled = False
@@ -1042,13 +1055,14 @@ object OptionsForm: TOptionsForm
             end
             object chkbxAddMassMsrFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 299
+              Top = 185
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
               Checked = True
               State = cbChecked
               TabOrder = 35
+              OnClick = chkbxAddMassMsrFormPositionByCenterClick
             end
           end
         end
@@ -1071,6 +1085,7 @@ object OptionsForm: TOptionsForm
             Width = 606
             Height = 17
             Caption = #1057#1086#1093#1088#1072#1085#1103#1090#1100' '#1087#1072#1088#1086#1083#1100' '#1087#1086#1089#1083#1077#1076#1085#1077#1075#1086' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
+            Enabled = False
             TabOrder = 1
             OnClick = chkbxStoreLastPasswordClick
           end
@@ -1126,7 +1141,7 @@ object OptionsForm: TOptionsForm
               #1053#1086#1084#1077#1088' '#1087#1086#1088#1090#1072'=3306'
               #1042#1088#1077#1084#1103' '#1086#1078#1080#1076#1072#1085#1080#1103'=30'
               #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1085#1080#1077' '#1089#1078#1072#1090#1080#1103' '#1076#1072#1085#1085#1099#1093'='#1044#1072
-              #1048#1084#1103' '#1088#1072#1073#1086#1095#1077#1081' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093'=rne4')
+              #1048#1084#1103' '#1088#1072#1073#1086#1095#1077#1081' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093'=rne4messages')
             TabOrder = 0
             TitleCaptions.Strings = (
               #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1087#1072#1088#1072#1084#1077#1090#1088#1072
@@ -1609,7 +1624,7 @@ object OptionsForm: TOptionsForm
     Left = 304
     Top = 296
     Bitmap = {
-      494C010106000800B40110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800D80110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
