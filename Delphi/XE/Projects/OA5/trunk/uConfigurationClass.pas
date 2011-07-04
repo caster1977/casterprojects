@@ -12,6 +12,11 @@ uses
 type
   TReportFolders=(rfTempFolder, rfApplicationFolder, rfCustomFolder);
 
+  TFormPosition=record
+    bCenter: boolean;
+    x, y: integer;
+  end;
+
 const
   // вкладка "настройки интерфейса"
   DefaultValue_ShowAboutWindowAtLaunch: boolean=True;
@@ -35,9 +40,9 @@ const
   DefaultValue_CustomLogClientFileValue: string='';
 
   // вкладка "настройки положения диалоговых окон"
-  DefaultValue_FormPosition_Center: boolean = True;
-  DefaultValue_FormPosition_x: integer = 0;
-  DefaultValue_FormPosition_y: integer = 0;
+  DefaultValue_FormPosition_Center: boolean=True;
+  DefaultValue_FormPosition_x: integer=0;
+  DefaultValue_FormPosition_y: integer=0;
 
   // вкладка "настройки процедуры логирования"
   DefaultValue_StoreLastLogin: boolean=False;
@@ -72,7 +77,7 @@ const
   DefaultValue_LaunchAtStartup: boolean=False;
   DefaultValue_PlaySoundOnComplete: boolean=True;
   DefaultValue_EnableAutoGetMessages: boolean=True;
-  DefaultValue_AutoGetMessagesCycleDuration: integer=5;
+  DefaultValue_AutoGetMessagesCycleDurationValue: integer=5;
   DefaultValue_CustomHelpFile: boolean=False;
   DefaultValue_CustomHelpFileValue: string='';
 
@@ -97,11 +102,6 @@ const
 type
 
   TConfiguration=class(TSingleton)
-  type
-    TFormPosition=record
-      bCenter: boolean;
-      x, y: integer;
-    end;
   strict private
     FFileName: string;
     FConfigurationFormPage: integer;
@@ -166,7 +166,7 @@ type
     FLaunchAtStartup: boolean;
     FPlaySoundOnComplete: boolean;
     FEnableAutoGetMessages: boolean;
-    FAutoGetMessagesCycleDuration: integer;
+    FAutoGetMessagesCycleDurationValue: integer;
     FCustomHelpFile: boolean;
     FCustomHelpFileValue: string;
 
@@ -197,7 +197,7 @@ type
     procedure SetAddEditPhoneFormPosition(const Value: TFormPosition);
     procedure SetAddMassMsrFormPosition(const Value: TFormPosition);
     procedure SetAskForFileName(const Value: boolean);
-    procedure SetAutoGetMessagesCycleDuration(const Value: integer);
+    procedure SetAutoGetMessagesCycleDurationValue(const Value: integer);
     procedure SetClearingFormPosition(const Value: TFormPosition);
     procedure SetCreateViewPostFormPosition(const Value: TFormPosition);
     procedure SetCustomHelpFile(const Value: boolean);
@@ -316,7 +316,7 @@ type
     property LaunchAtStartup: boolean read FLaunchAtStartup write SetLaunchAtStartup default False;
     property PlaySoundOnComplete: boolean read FPlaySoundOnComplete write SetPlaySoundOnComplete default True;
     property EnableAutoGetMessages: boolean read FEnableAutoGetMessages write SetEnableAutoGetMessages default True;
-    property AutoGetMessagesCycleDuration: integer read FAutoGetMessagesCycleDuration write SetAutoGetMessagesCycleDuration default 5;
+    property AutoGetMessagesCycleDurationValue: integer read FAutoGetMessagesCycleDurationValue write SetAutoGetMessagesCycleDurationValue default 5;
     property CustomHelpFile: boolean read FCustomHelpFile write SetCustomHelpFile default False;
     property CustomHelpFileValue: string read FCustomHelpFileValue write SetCustomHelpFileValue stored False;
 
@@ -495,7 +495,7 @@ begin
         LaunchAtStartup:=ReadBool('Прочие', 'bLaunchAtStartup', DefaultValue_LaunchAtStartup);
         PlaySoundOnComplete:=ReadBool('Прочие', 'bPlaySoundOnComplete', DefaultValue_PlaySoundOnComplete);
         EnableAutoGetMessages:=ReadBool('Прочие', 'bEnableAutoGetMessages', DefaultValue_EnableAutoGetMessages);
-        AutoGetMessagesCycleDuration:=ReadInteger('Протоколирование', 'iAutoGetMessagesCycleDuration', DefaultValue_AutoGetMessagesCycleDuration);
+        AutoGetMessagesCycleDurationValue:=ReadInteger('Протоколирование', 'iAutoGetMessagesCycleDurationValue', DefaultValue_AutoGetMessagesCycleDurationValue);
         CustomHelpFile:=ReadBool('Прочие', 'bCustomHelpFile', DefaultValue_CustomHelpFile);
         CustomHelpFileValue:=ReadString('Прочие', 'sCustomHelpFileValue', DefaultValue_CustomHelpFileValue);
 
@@ -624,7 +624,7 @@ begin
           WriteBool('Прочие', 'bLaunchAtStartup', LaunchAtStartup);
           WriteBool('Прочие', 'bPlaySoundOnComplete', PlaySoundOnComplete);
           WriteBool('Прочие', 'bEnableAutoGetMessages', EnableAutoGetMessages);
-          WriteInteger('Прочие', 'bAutoGetMessagesCycleDuration', AutoGetMessagesCycleDuration);
+          WriteInteger('Прочие', 'iAutoGetMessagesCycleDurationValue', AutoGetMessagesCycleDurationValue);
           WriteBool('Прочие', 'bCustomHelpFile', CustomHelpFile);
           WriteString('Прочие', 'bCustomHelpFileValue', CustomHelpFileValue);
 
@@ -944,10 +944,10 @@ begin
     FAskForFileName:=Value;
 end;
 
-procedure TConfiguration.SetAutoGetMessagesCycleDuration(const Value: integer);
+procedure TConfiguration.SetAutoGetMessagesCycleDurationValue(const Value: integer);
 begin
-  if FAutoGetMessagesCycleDuration<>Value then
-    FAutoGetMessagesCycleDuration:=Value;
+  if FAutoGetMessagesCycleDurationValue<>Value then
+    FAutoGetMessagesCycleDurationValue:=Value;
 end;
 
 procedure TConfiguration.SetAutoLogon(const Value: boolean);
@@ -1231,7 +1231,7 @@ begin
   FLaunchAtStartup:=DefaultValue_LaunchAtStartup;
   FPlaySoundOnComplete:=DefaultValue_PlaySoundOnComplete;
   FEnableAutoGetMessages:=DefaultValue_EnableAutoGetMessages;
-  FAutoGetMessagesCycleDuration:=DefaultValue_AutoGetMessagesCycleDuration;
+  FAutoGetMessagesCycleDurationValue:=DefaultValue_AutoGetMessagesCycleDurationValue;
   FCustomHelpFile:=DefaultValue_CustomHelpFile;
   FCustomHelpFileValue:=DefaultValue_CustomHelpFileValue;
 
