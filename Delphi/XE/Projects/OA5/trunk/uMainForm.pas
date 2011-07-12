@@ -82,6 +82,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure Action_ConfigurationExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     bFirstRun: boolean;
     bAboutWindowExist: boolean;
@@ -96,6 +97,9 @@ type
     procedure Do_About(const aButtonVisible: boolean);
     procedure Do_Help;
     procedure Do_Configuration;
+    procedure Do_LoadConfiguration;
+    procedure Do_ApplyConfiguration;
+    procedure Do_SaveConfiguration;
   public
     Configuration: TConfiguration;
     CurrentUser: TUser;
@@ -283,6 +287,7 @@ var
   sErrorMessage: string;
 begin
   ProcedureHeader('Процедура открытия справочного файла программы', '{457E450C-4870-4B17-9594-EB7F91B4578E}');
+  bError:=False;
 
   Log.SendInfo('Производится попытка открытия справочного файла программы...');
   if (FileExists(ExpandFileName(Application.HelpFile))) then
@@ -292,6 +297,12 @@ begin
 
   PreFooter(Handle, bError, sErrorMessage);
   ProcedureFooter;
+end;
+
+procedure TMainForm.FormDestroy(Sender: TObject);
+begin
+  Configuration.Free;
+  CurrentUser.Free;
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -316,22 +327,18 @@ begin
   bFirstRun:=True;
   CurrentUser:=TUser.Create;
   Configuration:=TConfiguration.Create;
-  try
-    Configuration.Load;
-  except
-    Application.HandleException(Self);
-  end;
 
   BindMainProgressBarToStatusBar;
   BindStateImageToStatusBar;
 
-  Update_Actions;
-end;
+  Sleep(1000);
 
-procedure TMainForm.FormDestroy(Sender: TObject);
-begin
-  Configuration.Free;
-  CurrentUser.Free;
+  // загрузка настроек из файла
+  Do_LoadConfiguration;
+  // применение настроек к интерфейсу
+  Do_ApplyConfiguration;
+
+  Update_Actions;
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
@@ -382,29 +389,95 @@ procedure TMainForm.Do_Configuration;
 const
   sModalWinName: string='настроек программы';
 var
-  sErrorMessage: string;
-  bError: boolean;
-  OptionsForm: TOptionsForm;
+  ConfigurationForm: TConfigurationForm;
   iBusy: integer;
 begin
-  ProcedureHeader('Процедура отображения окна '+sModalWinName, '{6D4FF7B1-8713-4149-B8C1-04AC2C48F116}');
-  bError:=False;
+  ProcedureHeader('Процедура отображения окна '+sModalWinName, '{886B460D-4C73-46BE-829E-E4421B7C4378}');
 
-  OptionsForm:=TOptionsForm.Create(Self);
-  with OptionsForm do
+  ConfigurationForm:=TConfigurationForm.Create(Self);
+  with ConfigurationForm do
     try
       PreShowModal(sModalWinName, iBusy);
       ShowModal;
     finally
       PostShowModal(sModalWinName, iBusy);
       if ModalResult=mrOk then
-        try
-          Configuration.Save;
-        except
-          Application.HandleException(Self);
-        end;
+        Do_ApplyConfiguration;
       Free;
     end;
+
+  ProcedureFooter;
+end;
+
+procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  ProcedureHeader('Процедура-обработчик события закрытия окна', '{A430AB2D-F069-4FFF-A5CA-883D7B3E1985}');
+
+  Do_SaveConfiguration;
+
+  ProcedureFooter;
+end;
+
+procedure TMainForm.Do_ApplyConfiguration;
+begin
+  ProcedureHeader('Процедура применения изменений к интерфейсу программы', '{67A9E9BC-62AC-4848-B20D-C8B5095DEB6C}');
+
+  // установка параметров протоколирования в соответствии с настройками программы
+  Log.UserName:=MainForm.CurrentUser.Login;
+  Log.AllowedTypes:=MainForm.Configuration.KeepLogTypes;
+  Log.Enabled:=MainForm.Configuration.EnableLog;
+
+  ProcedureFooter;
+end;
+
+procedure TMainForm.Do_LoadConfiguration;
+var
+  bError: boolean;
+  sErrorMessage: string;
+begin
+  ProcedureHeader('Процедура чтения настроек программы из файла', '{650B9486-2600-4038-B711-3281F7252336}');
+  bError:=False;
+
+  Log.SendInfo('Производится попытка чтения настроек программы из файла...');
+  try
+    try
+      Screen.Cursor:=crHandPoint;
+      Configuration.Load;
+      Log.SendInfo('Чтение настроек программы в файл прошло успешно.');
+    finally
+      Screen.Cursor:=crDefault;
+    end;
+  except
+    Routines.GenerateError('Произошла ошибка при попытке чтения настроек программы из файла!', sErrorMessage, bError);
+    Application.HandleException(Self);
+  end;
+
+  PreFooter(Handle, bError, sErrorMessage);
+  ProcedureFooter;
+end;
+
+
+procedure TMainForm.Do_SaveConfiguration;
+var
+  bError: boolean;
+  sErrorMessage: string;
+begin
+  ProcedureHeader('Процедура записи настроек программы в файл', '{2BD55804-9631-45C8-9484-42F4DDC45C29}');
+  bError:=False;
+
+  Log.SendInfo('Производится попытка записи настроек программы в файл...');
+  try
+    try
+      Screen.Cursor:=crHourGlass;
+      Configuration.Save;
+      Log.SendInfo('Запись настроек программы в файл прошла успешно.');
+    finally
+      Screen.Cursor:=crDefault;
+    end;
+  except
+    Routines.GenerateError('Произошла ошибка при попытке записи настроек программы в файл!', sErrorMessage, bError);
+    Application.HandleException(Self);
+  end;
 
   PreFooter(Handle, bError, sErrorMessage);
   ProcedureFooter;

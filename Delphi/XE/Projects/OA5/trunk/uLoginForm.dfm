@@ -171,6 +171,9 @@ object LoginForm: TLoginForm
     end
   end
   object Log: TLogProvider
+    LogFile.Enabled = True
+    LogFile.FileNameSuffix = 'OA5_LoginForm'
+    LogClient.Enabled = True
     Left = 112
     Top = 16
   end

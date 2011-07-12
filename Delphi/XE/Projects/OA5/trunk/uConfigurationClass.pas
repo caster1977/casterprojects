@@ -90,9 +90,9 @@ const
   DefaultValue_FullScreenAtLaunch: boolean=False;
 
   // вкладка "настройки отображения информации"
-  DefaultValue_OrganizationPanelHeight: integer=100;
+  DefaultValue_OrganizationPanelHeightValue: integer=100;
   DefaultValue_OrganizationPanelHalfHeight: boolean=True;
-  DefaultValue_DataPanelWidth: integer=340;
+  DefaultValue_DataPanelWidthValue: integer=340;
   DefaultValue_DataPanelHalfWidth: boolean=False;
   DefaultValue_ShowDataInOtherInfoPanel: boolean=True;
   DefaultValue_ShowMeasuresListAsRichEdit: boolean=True;
@@ -131,7 +131,7 @@ type
 
     // вкладка "настройки положения диалоговых окон"
     FLoginFormPosition: TFormPosition;
-    FOptionsFormPosition: TFormPosition;
+    FConfigurationFormPosition: TFormPosition;
     FUsersFormPosition: TFormPosition;
     FSetPasswordFormPosition: TFormPosition;
     FStatisticFormPosition: TFormPosition;
@@ -176,9 +176,9 @@ type
     FFullScreenAtLaunch: boolean;
 
     // вкладка "настройки отображения информации"
-    FOrganizationPanelHeight: integer; // Высота панели организаций
+    FOrganizationPanelHeightValue: integer; // Высота панели организаций
     FOrganizationPanelHalfHeight: boolean; // половина высоты окна
-    FDataPanelWidth: integer; // Ширина панели данных
+    FDataPanelWidthValue: integer; // Ширина панели данных
     FDataPanelHalfWidth: boolean; // половина ширины окна
     FShowDataInOtherInfoPanel: boolean; // В режиме просмотра показывать данные в окне прочей информации
     FShowMeasuresListAsRichEdit: boolean; // В режиме просмотра объединять меропрятия в общий спиcок
@@ -205,7 +205,7 @@ type
     procedure SetCustomLogClientFile(const Value: boolean);
     procedure SetCustomLogClientFileValue(const Value: string);
     procedure SetDataPanelHalfWidth(const Value: boolean);
-    procedure SetDataPanelWidth(const Value: integer);
+    procedure SetDataPanelWidthValue(const Value: integer);
     procedure SetDontDemandOverwriteConfirmation(const Value: boolean);
     procedure SetEnableAutoGetMessages(const Value: boolean);
     procedure SetFlushLogOnApply(const Value: boolean);
@@ -221,9 +221,9 @@ type
     procedure SetMaintenanceFormPosition(const Value: TFormPosition);
     procedure SetMarkSearchedStrings(const Value: boolean);
     procedure SetMessagesServer(const Value: TMySQLConnection);
-    procedure SetOptionsFormPosition(const Value: TFormPosition);
+    procedure SetConfigurationFormPosition(const Value: TFormPosition);
     procedure SetOrganizationPanelHalfHeight(const Value: boolean);
-    procedure SetOrganizationPanelHeight(const Value: integer);
+    procedure SetOrganizationPanelHeightValue(const Value: integer);
     procedure SetPhonesFormPosition(const Value: TFormPosition);
     procedure SetPlaySoundOnComplete(const Value: boolean);
     procedure SetPutTownAtTheEnd(const Value: boolean);
@@ -282,7 +282,7 @@ type
 
     // вкладка "настройки положения диалоговых окон"
     property LoginFormPosition: TFormPosition read FLoginFormPosition write SetLoginFormPosition stored False;
-    property OptionsFormPosition: TFormPosition read FOptionsFormPosition write SetOptionsFormPosition stored False;
+    property ConfigurationFormPosition: TFormPosition read FConfigurationFormPosition write SetConfigurationFormPosition stored False;
     property UsersFormPosition: TFormPosition read FUsersFormPosition write SetUsersFormPosition stored False;
     property SetPasswordFormPosition: TFormPosition read FSetPasswordFormPosition write SetSetPasswordFormPosition stored False;
     property StatisticFormPosition: TFormPosition read FStatisticFormPosition write SetStatisticFormPosition stored False;
@@ -326,9 +326,9 @@ type
     property FullScreenAtLaunch: boolean read FFullScreenAtLaunch write SetFullScreenAtLaunch default False;
 
     // вкладка "настройки отображения информации"
-    property OrganizationPanelHeight: integer read FOrganizationPanelHeight write SetOrganizationPanelHeight default 100;
+    property OrganizationPanelHeightValue: integer read FOrganizationPanelHeightValue write SetOrganizationPanelHeightValue default 100;
     property OrganizationPanelHalfHeight: boolean read FOrganizationPanelHalfHeight write SetOrganizationPanelHalfHeight default True;
-    property DataPanelWidth: integer read FDataPanelWidth write SetDataPanelWidth default 340;
+    property DataPanelWidthValue: integer read FDataPanelWidthValue write SetDataPanelWidthValue default 340;
     property DataPanelHalfWidth: boolean read FDataPanelHalfWidth write SetDataPanelHalfWidth default False;
     property ShowDataInOtherInfoPanel: boolean read FShowDataInOtherInfoPanel write SetShowDataInOtherInfoPanel default True;
     property ShowMeasuresListAsRichEdit: boolean read FShowMeasuresListAsRichEdit write SetShowMeasuresListAsRichEdit default True;
@@ -339,6 +339,7 @@ type
 implementation
 
 uses
+  Controls,
   SysUtils,
   Windows,
   Forms,
@@ -400,10 +401,10 @@ begin
             y:=ReadInteger('Положение диалоговых окон', 'LoginFormPosition.iy', DefaultValue_FormPosition_y);
             LoginFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'OptionsFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'OptionsFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'OptionsFormPosition.iy', DefaultValue_FormPosition_y);
-            OptionsFormPosition:=FormPosition;
+            bCenter:=ReadBool('Положение диалоговых окон', 'ConfigurationFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'ConfigurationFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'ConfigurationFormPosition.iy', DefaultValue_FormPosition_y);
+            ConfigurationFormPosition:=FormPosition;
 
             bCenter:=ReadBool('Положение диалоговых окон', 'UsersFormPosition.bCenter', DefaultValue_FormPosition_Center);
             x:=ReadInteger('Положение диалоговых окон', 'UsersFormPosition.ix', DefaultValue_FormPosition_x);
@@ -512,9 +513,9 @@ begin
         FullScreenAtLaunch:=ReadBool('Главное окно', 'bFullScreenAtLaunch', DefaultValue_FullScreenAtLaunch);
 
         // вкладка "настройки отображения информации"
-        OrganizationPanelHeight:=ReadInteger('Отображение информации', 'iOrganizationPanelHeight', DefaultValue_OrganizationPanelHeight);
+        OrganizationPanelHeightValue:=ReadInteger('Отображение информации', 'iOrganizationPanelHeightValue', DefaultValue_OrganizationPanelHeightValue);
         OrganizationPanelHalfHeight:=ReadBool('Отображение информации', 'bOrganizationPanelHalfHeight', DefaultValue_OrganizationPanelHalfHeight);
-        DataPanelWidth:=ReadInteger('Отображение информации', 'iDataPanelWidth', DefaultValue_DataPanelWidth);
+        DataPanelWidthValue:=ReadInteger('Отображение информации', 'iDataPanelWidthValue', DefaultValue_DataPanelWidthValue);
         DataPanelHalfWidth:=ReadBool('Отображение информации', 'bOrganizationPanelHalfHeight', DefaultValue_DataPanelHalfWidth);
         ShowDataInOtherInfoPanel:=ReadBool('Отображение информации', 'bShowDataInOtherInfoPanel', DefaultValue_ShowDataInOtherInfoPanel);
         ShowMeasuresListAsRichEdit:=ReadBool('Отображение информации', 'bShowMeasuresListAsRichEdit', DefaultValue_ShowMeasuresListAsRichEdit);
@@ -573,7 +574,7 @@ begin
 
           // вкладка "настройки положения диалоговых окон"
           WriteFormPosition(IniFile, LoginFormPosition, 'LoginFormPosition');
-          WriteFormPosition(IniFile, OptionsFormPosition, 'OptionsFormPosition');
+          WriteFormPosition(IniFile, ConfigurationFormPosition, 'ConfigurationFormPosition');
           WriteFormPosition(IniFile, UsersFormPosition, 'UsersFormPosition');
           WriteFormPosition(IniFile, SetPasswordFormPosition, 'SetPasswordFormPosition');
           WriteFormPosition(IniFile, StatisticFormPosition, 'StatisticFormPosition');
@@ -637,9 +638,9 @@ begin
           WriteBool('Главное окно', 'bFullScreenAtLaunch', FullScreenAtLaunch);
 
           // вкладка "настройки отображения информации"
-          WriteInteger('Отображение информации', 'iOrganizationPanelHeight', OrganizationPanelHeight);
+          WriteInteger('Отображение информации', 'iOrganizationPanelHeightValue', OrganizationPanelHeightValue);
           WriteBool('Отображение информации', 'bOrganizationPanelHalfHeight', OrganizationPanelHalfHeight);
-          WriteInteger('Отображение информации', 'iDataPanelWidth', DataPanelWidth);
+          WriteInteger('Отображение информации', 'iDataPanelWidthValue', DataPanelWidthValue);
           WriteBool('Отображение информации', 'bOrganizationPanelHalfHeight', OrganizationPanelHalfHeight);
           WriteBool('Отображение информации', 'bShowDataInOtherInfoPanel', ShowDataInOtherInfoPanel);
           WriteBool('Отображение информации', 'bShowMeasuresListAsRichEdit', ShowMeasuresListAsRichEdit);
@@ -701,10 +702,10 @@ begin
     FMessagesServer:=Value;
 end;
 
-procedure TConfiguration.SetOptionsFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetConfigurationFormPosition(const Value: TFormPosition);
 begin
-  if ((FOptionsFormPosition.bCenter<>Value.bCenter)or(FOptionsFormPosition.x<>Value.x)or(FOptionsFormPosition.y<>Value.y)) then
-    FOptionsFormPosition:=Value;
+  if ((FConfigurationFormPosition.bCenter<>Value.bCenter)or(FConfigurationFormPosition.x<>Value.x)or(FConfigurationFormPosition.y<>Value.y)) then
+    FConfigurationFormPosition:=Value;
 end;
 
 procedure TConfiguration.SetOrganizationPanelHalfHeight(const Value: boolean);
@@ -713,10 +714,10 @@ begin
     FOrganizationPanelHalfHeight:=Value;
 end;
 
-procedure TConfiguration.SetOrganizationPanelHeight(const Value: integer);
+procedure TConfiguration.SetOrganizationPanelHeightValue(const Value: integer);
 begin
-  if FOrganizationPanelHeight<>Value then
-    FOrganizationPanelHeight:=Value;
+  if FOrganizationPanelHeightValue<>Value then
+    FOrganizationPanelHeightValue:=Value;
 end;
 
 procedure TConfiguration.SetPhonesFormPosition(const Value: TFormPosition);
@@ -956,9 +957,13 @@ begin
     begin
       if not(StoreLastLogin and StoreLastPassword) then
         raise Exception.Create('Для включения настройки автологирования необходимо сначала включить слхранение логина и пароля последнего пользователя!')
+      else
+        if FAutoLogon<>Value then
+          FAutoLogon:=Value;
     end
   else
-    FAutoLogon:=Value;
+    if FAutoLogon<>Value then
+      FAutoLogon:=Value;
 end;
 
 procedure TConfiguration.SetClearingFormPosition(const Value: TFormPosition);
@@ -997,10 +1002,10 @@ begin
     FDataPanelHalfWidth:=Value;
 end;
 
-procedure TConfiguration.SetDataPanelWidth(const Value: integer);
+procedure TConfiguration.SetDataPanelWidthValue(const Value: integer);
 begin
-  if FDataPanelWidth<>Value then
-    FDataPanelWidth:=Value;
+  if FDataPanelWidthValue<>Value then
+    FDataPanelWidthValue:=Value;
 end;
 
 procedure TConfiguration.SetDontDemandOverwriteConfirmation(const Value: boolean);
@@ -1109,7 +1114,7 @@ begin
       y:=DefaultValue_FormPosition_y;
     end;
 
-  with FOptionsFormPosition do
+  with FConfigurationFormPosition do
     begin
       bCenter:=DefaultValue_FormPosition_Center;
       x:=DefaultValue_FormPosition_x;
@@ -1247,9 +1252,9 @@ begin
   FFullScreenAtLaunch:=DefaultValue_FullScreenAtLaunch;
 
   // вкладка "настройки отображения информации"
-  FOrganizationPanelHeight:=DefaultValue_OrganizationPanelHeight;
+  FOrganizationPanelHeightValue:=DefaultValue_OrganizationPanelHeightValue;
   FOrganizationPanelHalfHeight:=DefaultValue_OrganizationPanelHalfHeight;
-  FDataPanelWidth:=DefaultValue_DataPanelWidth;
+  FDataPanelWidthValue:=DefaultValue_DataPanelWidthValue;
   FDataPanelHalfWidth:=DefaultValue_DataPanelHalfWidth;
   FShowDataInOtherInfoPanel:=DefaultValue_ShowDataInOtherInfoPanel;
   FShowMeasuresListAsRichEdit:=DefaultValue_ShowMeasuresListAsRichEdit;

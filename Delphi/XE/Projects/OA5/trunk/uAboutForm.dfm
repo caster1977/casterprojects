@@ -248,8 +248,8 @@ object AboutForm: TAboutForm
     Top = 8
   end
   object Log: TLogProvider
-    Enabled = True
     LogFile.Enabled = True
+    LogFile.FileNameSuffix = 'OA5_AboutForm'
     LogClient.Enabled = True
     Left = 280
     Top = 208
