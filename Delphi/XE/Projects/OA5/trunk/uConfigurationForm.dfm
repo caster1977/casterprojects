@@ -1,4 +1,4 @@
-object OptionsForm: TOptionsForm
+object ConfigurationForm: TConfigurationForm
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
@@ -13,7 +13,7 @@ object OptionsForm: TOptionsForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  Position = poMainFormCenter
+  Position = poDesigned
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnMouseWheelDown = FormMouseWheelDown
@@ -193,7 +193,7 @@ object OptionsForm: TOptionsForm
         Top = 3
         Width = 614
         Height = 223
-        ActivePage = ts10
+        ActivePage = ts4
         Align = alCustom
         Style = tsButtons
         TabOrder = 0
@@ -201,10 +201,6 @@ object OptionsForm: TOptionsForm
         object ts1: TTabSheet
           Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object chkbxShowAboutWindowAtLaunch: TCheckBox
             Left = 0
             Top = 0
@@ -487,21 +483,21 @@ object OptionsForm: TOptionsForm
               Height = 13
               Caption = 'y'
             end
-            object lblOptionsFormPosition: TLabel
+            object lblConfigurationFormPosition: TLabel
               Left = 0
               Top = 30
               Width = 102
               Height = 13
               Caption = #1054#1082#1085#1086' '#1082#1086#1085#1092#1080#1075#1091#1088#1072#1094#1080#1080
             end
-            object lblOptionsFormPositionX: TLabel
+            object lblConfigurationFormPositionX: TLabel
               Left = 340
               Top = 30
               Width = 6
               Height = 13
               Caption = 'x'
             end
-            object lblOptionsFormPositionY: TLabel
+            object lblConfigurationFormPositionY: TLabel
               Left = 427
               Top = 30
               Width = 6
@@ -725,7 +721,6 @@ object OptionsForm: TOptionsForm
               Height = 21
               Enabled = False
               MaxLength = 4
-              ReadOnly = True
               TabOrder = 0
               OnKeyPress = edbxNumericFieldKeyPress
             end
@@ -750,7 +745,7 @@ object OptionsForm: TOptionsForm
               TabOrder = 2
               OnClick = chkbxLoginFormPositionByCenterClick
             end
-            object edbxOptionsFormPositionX: TEdit
+            object edbxConfigurationFormPositionX: TEdit
               Left = 352
               Top = 27
               Width = 69
@@ -760,7 +755,7 @@ object OptionsForm: TOptionsForm
               TabOrder = 3
               OnKeyPress = edbxNumericFieldKeyPress
             end
-            object edbxOptionsFormPositionY: TEdit
+            object edbxConfigurationFormPositionY: TEdit
               Left = 439
               Top = 27
               Width = 69
@@ -770,7 +765,7 @@ object OptionsForm: TOptionsForm
               TabOrder = 4
               OnKeyPress = edbxNumericFieldKeyPress
             end
-            object chkbxOptionsFormPositionByCenter: TCheckBox
+            object chkbxConfigurationFormPositionByCenter: TCheckBox
               Left = 514
               Top = 29
               Width = 74
@@ -779,7 +774,7 @@ object OptionsForm: TOptionsForm
               Checked = True
               State = cbChecked
               TabOrder = 5
-              OnClick = chkbxOptionsFormPositionByCenterClick
+              OnClick = chkbxConfigurationFormPositionByCenterClick
             end
             object edbxUsersFormPositionX: TEdit
               Left = 352
@@ -1333,7 +1328,7 @@ object OptionsForm: TOptionsForm
             Top = 79
             Width = 334
             Height = 21
-            Enabled = False
+            ReadOnly = True
             TabOrder = 5
           end
           object btnChooseCustomHelpFile: TButton
@@ -1488,7 +1483,7 @@ object OptionsForm: TOptionsForm
             Height = 13
             Caption = #1064#1080#1088#1080#1085#1072' '#1087#1072#1085#1077#1083#1080' '#1076#1072#1085#1085#1099#1093
           end
-          object edbxOrganizationPanelHeight: TEdit
+          object edbxOrganizationPanelHeightValue: TEdit
             Left = 360
             Top = 0
             Width = 81
@@ -1498,7 +1493,7 @@ object OptionsForm: TOptionsForm
             TabOrder = 0
             OnKeyPress = edbxNumericFieldKeyPress
           end
-          object edbxDataPanelWidth: TEdit
+          object edbxDataPanelWidthValue: TEdit
             Left = 360
             Top = 27
             Width = 81
@@ -1651,7 +1646,7 @@ object OptionsForm: TOptionsForm
     Left = 304
     Top = 296
     Bitmap = {
-      494C010106000800080210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800940210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1923,10 +1918,10 @@ object OptionsForm: TOptionsForm
       000000000000}
   end
   object Log: TLogProvider
-    Enabled = True
     LogFile.Enabled = True
+    LogFile.FileNameSuffix = 'OA5_ConfigurationForm'
     LogClient.Enabled = True
-    Left = 560
-    Top = 208
+    Left = 272
+    Top = 296
   end
 end

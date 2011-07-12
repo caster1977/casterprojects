@@ -6,7 +6,7 @@ uses
   uLoginForm in 'uLoginForm.pas' {LoginForm},
   OA5Consts in 'OA5Consts.pas',
   uAboutForm in 'uAboutForm.pas' {AboutForm},
-  uConfigurationForm in 'uConfigurationForm.pas' {OptionsForm},
+  uConfigurationForm in 'uConfigurationForm.pas' {ConfigurationForm},
   uConfigurationClass in 'uConfigurationClass.pas',
   uMySQLConnectionClass in 'uMySQLConnectionClass.pas',
   uUserClass in 'uUserClass.pas';

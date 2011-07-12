@@ -62,7 +62,7 @@
 				<Form>AboutForm</Form>
 			</DCCReference>
 			<DCCReference Include="uConfigurationForm.pas">
-				<Form>OptionsForm</Form>
+				<Form>ConfigurationForm</Form>
 			</DCCReference>
 			<DCCReference Include="uConfigurationClass.pas"/>
 			<DCCReference Include="uMySQLConnectionClass.pas"/>
