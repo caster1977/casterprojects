@@ -3,23 +3,17 @@ unit uAboutForm;
 interface
 
 uses
-  Windows,
-  Messages,
-  SysUtils,
-  Variants,
-  Classes,
-  Graphics,
-  Controls,
   Forms,
-  Dialogs,
   ActnList,
-  PlatformDefaultStyleActnCtrls,
   ActnMan,
   ExtCtrls,
-  OA5Types,
   getFVI,
   StdCtrls,
-  uLogProvider;
+  uLogProvider,
+  Classes,
+  PlatformDefaultStyleActnCtrls,
+  Controls,
+  Graphics;
 
 type
   TAboutForm=class(TForm)
@@ -43,7 +37,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
     procedure lblEMailAddressClick(Sender: TObject);
-  private
+  strict private
     procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
     procedure Do_Close;
@@ -57,38 +51,10 @@ implementation
 {$R *.dfm}
 
 uses
+  Windows,
+  SysUtils,
   ShellAPI,
-  uMainForm,
-  OA5Consts;
-
-(*
-procedure TAboutForm.LogThis(const aMessage, aLogGroupGUID: string; aMessageType: TLogMessagesType);
-var
-  s: string;
-  aCopyData: TCopyDataStruct;
-begin
-  case aMessageType of
-    lmtError:
-      s:='ERROR';
-    lmtWarning:
-      s:='WARNING';
-    lmtInfo:
-      s:='INFO';
-    lmtSQL:
-      s:='SQL';
-    lmtDebug:
-      s:='DEBUG';
-  end;
-  s:=IntToStr(WMCD_MODALLOG)+';'+s+';'+aMessage+';'+aLogGroupGUID;
-  with aCopyData do
-    begin
-      dwData:=0;
-      cbData:=Length(s)+1;
-      lpData:=PAnsiChar(AnsiString(s));
-    end;
-  SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
-end;
-*)
+  uMainForm;
 
 procedure TAboutForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
