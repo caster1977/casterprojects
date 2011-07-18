@@ -5,24 +5,19 @@ interface
 
 uses
   Windows,
-  Messages,
-  SysUtils,
-  Variants,
   Classes,
-  Graphics,
   Controls,
   Forms,
-  Dialogs,
   StdCtrls,
-  ImgList,
   ActnList,
-  PlatformDefaultStyleActnCtrls,
   ActnMan,
   ExtCtrls,
   ValEdit,
   Grids,
   ComCtrls,
-  uLogProvider;
+  uLogProvider,
+  ImgList,
+  PlatformDefaultStyleActnCtrls;
 
 type
   TConfigurationForm=class(TForm)
@@ -254,12 +249,10 @@ type
     procedure chkbxAddMassMsrFormPositionByCenterClick(Sender: TObject);
     procedure edbxNumericFieldKeyPress(Sender: TObject; var Key: Char);
   strict private
-    slBoolean: TStringList;
-  private
+    slBooleanValues: TStringList;
     procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
     procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
-  public
     procedure Do_Help;
     procedure Do_Defaults;
     procedure Do_Close;
@@ -280,15 +273,17 @@ implementation
 {$R *.dfm}
 
 uses
+  Dialogs,
+  SysUtils,
+  Messages,
   LogKeeperData,
   FileCtrl,
   uMainForm,
   uLoginForm,
   uAboutForm,
+  uAddMassMsrForm,
   uRoutines,
-  mysql,
-  uConfigurationClass,
-  OA5Consts;
+  uConfigurationClass;
 
 procedure TConfigurationForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
@@ -1085,7 +1080,7 @@ end;
 procedure TConfigurationForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   MainForm.Configuration.ConfigurationFormPage:=cbPage.ItemIndex;
-  slBoolean.Free;
+  slBooleanValues.Free;
 end;
 
 procedure TConfigurationForm.chkbxEnableLogClick(Sender: TObject);
@@ -1228,8 +1223,8 @@ const
 begin
   ProcedureHeader('Процедура-обработчик события создания окна', '{928DE88A-9894-4B2A-B8AB-6D9BB130BCF6}');
 
-  slBoolean:=TStringList.Create;
-  with slBoolean do
+  slBooleanValues:=TStringList.Create;
+  with slBooleanValues do
     begin
       Add('Нет');
       Add('Да');
@@ -1395,7 +1390,7 @@ begin
       vleRNE4SERVER.ItemProps[2].EditMask:='99999;0; ';
       vleRNE4SERVER.Cells[1, 3]:=IntToStr(RNE4Server.Timeout);
       vleRNE4SERVER.ItemProps[3].EditStyle:=esPickList;
-      vleRNE4SERVER.ItemProps[3].PickList:=slBoolean;
+      vleRNE4SERVER.ItemProps[3].PickList:=slBooleanValues;
       vleRNE4SERVER.ItemProps[3].ReadOnly:=True;
       vleRNE4SERVER.Cells[1, 4]:=vleRNE4SERVER.ItemProps[3].PickList.Strings[integer(RNE4Server.Compression)];
       vleRNE4SERVER.Cells[1, 5]:=RNE4Server.Database;
@@ -1407,7 +1402,7 @@ begin
       vleRNE4MESSAGESSERVER.ItemProps[2].EditMask:='99999;0; ';
       vleRNE4MESSAGESSERVER.Cells[1, 3]:=IntToStr(MessagesServer.Timeout);
       vleRNE4MESSAGESSERVER.ItemProps[3].EditStyle:=esPickList;
-      vleRNE4MESSAGESSERVER.ItemProps[3].PickList:=slBoolean;
+      vleRNE4MESSAGESSERVER.ItemProps[3].PickList:=slBooleanValues;
       vleRNE4MESSAGESSERVER.ItemProps[3].ReadOnly:=True;
       vleRNE4MESSAGESSERVER.Cells[1, 4]:=vleRNE4MESSAGESSERVER.ItemProps[3].PickList.Strings[integer(MessagesServer.Compression)];
       vleRNE4MESSAGESSERVER.Cells[1, 5]:=MessagesServer.Database;
@@ -1712,7 +1707,7 @@ end;
 procedure TConfigurationForm.chkbxAddMassMsrFormPositionByCenterClick(Sender: TObject);
 var
   b: boolean;
-  // AddMassMsrForm: TAddMassMsrForm;
+  AddMassMsrForm: TAddMassMsrForm;
 begin
   ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxAddMassMsrFormPositionByCenter.Caption, '{8E88B020-CF7F-4F40-9C02-B64741BD3133}');
 
@@ -1726,13 +1721,13 @@ begin
     end
   else
     begin
-      // AddMassMsrForm:=TAddMassMsrForm.Create(Self);
-      // try
-      // edbxAddMassMsrFormPositionX.Text:=IntToStr((Screen.WorkAreaWidth-AddMassMsrForm.Width)div 2);
-      // edbxAddMassMsrFormPositionY.Text:=IntToStr((Screen.WorkAreaHeight-AddMassMsrForm.Height)div 2);
-      // finally
-      // AddMassMsrForm.Free;
-      // end;
+      AddMassMsrForm:=TAddMassMsrForm.Create(Self);
+      try
+        edbxAddMassMsrFormPositionX.Text:=IntToStr((Screen.WorkAreaWidth-AddMassMsrForm.Width)div 2);
+        edbxAddMassMsrFormPositionY.Text:=IntToStr((Screen.WorkAreaHeight-AddMassMsrForm.Height)div 2);
+      finally
+        AddMassMsrForm.Free;
+      end;
     end;
   Log.SendInfo('Флажок "'+chkbxAddMassMsrFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 

@@ -83,7 +83,7 @@ type
     procedure Action_ConfigurationExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-  private
+  strict private
     bFirstRun: boolean;
     bAboutWindowExist: boolean;
     procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
@@ -93,7 +93,6 @@ type
     procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
 
     procedure Update_Actions;
-
     procedure Do_About(const aButtonVisible: boolean);
     procedure Do_Help;
     procedure Do_Configuration;
@@ -121,6 +120,8 @@ uses
   CommCtrl,
   uAboutForm,
   uConfigurationForm,
+  uAddMassMsrForm,
+  uLoginForm,
   OA5Consts,
   uRoutines;
 
@@ -324,14 +325,17 @@ var
   end;
 
 begin
+  // переменная правдива с момента запуска программы до момента отображения главного окна
   bFirstRun:=True;
+  // создание и инициализщация объекта текущего пользователя
   CurrentUser:=TUser.Create;
+  // создание и инициализщация объекта конфигурации
   Configuration:=TConfiguration.Create;
 
+  // привязка прогрессбара к позиции на строке статуса
   BindMainProgressBarToStatusBar;
+  // привязка иконки готовности к позиции на строке статуса
   BindStateImageToStatusBar;
-
-  Sleep(1000);
 
   // загрузка настроек из файла
   Do_LoadConfiguration;
@@ -418,44 +422,37 @@ begin
   ProcedureFooter;
 end;
 
-procedure TMainForm.Do_ApplyConfiguration;
-begin
-  ProcedureHeader('Процедура применения изменений к интерфейсу программы', '{67A9E9BC-62AC-4848-B20D-C8B5095DEB6C}');
-
-  // установка параметров протоколирования в соответствии с настройками программы
-  Log.UserName:=MainForm.CurrentUser.Login;
-  Log.AllowedTypes:=MainForm.Configuration.KeepLogTypes;
-  Log.Enabled:=MainForm.Configuration.EnableLog;
-
-  ProcedureFooter;
-end;
-
 procedure TMainForm.Do_LoadConfiguration;
 var
   bError: boolean;
   sErrorMessage: string;
 begin
-  ProcedureHeader('Процедура чтения настроек программы из файла', '{650B9486-2600-4038-B711-3281F7252336}');
-  bError:=False;
-
-  Log.SendInfo('Производится попытка чтения настроек программы из файла...');
+  if not bFirstRun then
+    begin
+      ProcedureHeader('Процедура чтения настроек программы из файла', '{650B9486-2600-4038-B711-3281F7252336}');
+      bError:=False;
+      Log.SendInfo('Производится попытка чтения настроек программы из файла...');
+    end;
   try
     try
       Screen.Cursor:=crHandPoint;
       Configuration.Load;
-      Log.SendInfo('Чтение настроек программы в файл прошло успешно.');
+      if not bFirstRun then
+        Log.SendInfo('Чтение настроек программы в файл прошло успешно.');
     finally
       Screen.Cursor:=crDefault;
     end;
   except
-    Routines.GenerateError('Произошла ошибка при попытке чтения настроек программы из файла!', sErrorMessage, bError);
+    if not bFirstRun then
+      Routines.GenerateError('Произошла ошибка при попытке чтения настроек программы из файла!', sErrorMessage, bError);
     Application.HandleException(Self);
   end;
-
-  PreFooter(Handle, bError, sErrorMessage);
-  ProcedureFooter;
+  if not bFirstRun then
+    begin
+      PreFooter(Handle, bError, sErrorMessage);
+      ProcedureFooter;
+    end;
 end;
-
 
 procedure TMainForm.Do_SaveConfiguration;
 var
@@ -480,6 +477,18 @@ begin
   end;
 
   PreFooter(Handle, bError, sErrorMessage);
+  ProcedureFooter;
+end;
+
+procedure TMainForm.Do_ApplyConfiguration;
+begin
+  ProcedureHeader('Процедура применения изменений к интерфейсу программы', '{67A9E9BC-62AC-4848-B20D-C8B5095DEB6C}');
+
+  // установка параметров протоколирования в соответствии с настройками программы
+  Log.UserName:=MainForm.CurrentUser.Login;
+  Log.AllowedTypes:=MainForm.Configuration.KeepLogTypes;
+  Log.Enabled:=MainForm.Configuration.EnableLog;
+
   ProcedureFooter;
 end;
 

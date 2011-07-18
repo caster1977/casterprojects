@@ -3,22 +3,17 @@ unit uLoginForm;
 interface
 
 uses
-  Windows,
-  Messages,
-  SysUtils,
-  Variants,
-  Classes,
-  Graphics,
-  Controls,
   Forms,
-  Dialogs,
   Mask,
   StdCtrls,
   ActnList,
-  PlatformDefaultStyleActnCtrls,
   ActnMan,
   ExtCtrls,
-  OA5Types, uLogProvider;
+  uLogProvider,
+  PlatformDefaultStyleActnCtrls,
+  Controls,
+  Graphics,
+  Classes;
 
 type
   TLoginForm=class(TForm)
@@ -38,7 +33,7 @@ type
     procedure Action_OkExecute(Sender: TObject);
     procedure Action_CancelExecute(Sender: TObject);
     procedure FieldsChange(Sender: TObject);
-  private
+  strict private
     procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
     procedure Do_UpdateActions;
@@ -55,37 +50,8 @@ implementation
 
 uses
   uMainForm,
-  OA5Routines,
-  OA5Consts;
+  OA5Routines;
 
-(*
-procedure TLoginForm.LogThis(const aMessage, aLogGroupGUID: string; aMessageType: TLogMessagesType);
-var
-  s: string;
-  aCopyData: TCopyDataStruct;
-begin
-  case aMessageType of
-    lmtError:
-      s:='ERROR';
-    lmtWarning:
-      s:='WARNING';
-    lmtInfo:
-      s:='INFO';
-    lmtSQL:
-      s:='SQL';
-    lmtDebug:
-      s:='DEBUG';
-  end;
-  s:=IntToStr(WMCD_MODALLOG)+';'+s+';'+aMessage+';'+aLogGroupGUID;
-  with aCopyData do
-    begin
-      dwData:=0;
-      cbData:=Length(s)+1;
-      lpData:=PAnsiChar(AnsiString(s));
-    end;
-  SendMessage(MainForm.Handle, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
-end;
-*)
 procedure TLoginForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
   Log.EnterMethod(aTitle, aLogGroupGUID);
