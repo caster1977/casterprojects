@@ -92,7 +92,7 @@ type
     procedure PostShowModal(const aWindowName: string; var aOldBusyState: integer);
     procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
 
-    procedure Update_Actions;
+    procedure Do_UpdateActions;
     procedure Do_About(const aButtonVisible: boolean);
     procedure Do_Help;
     procedure Do_Configuration;
@@ -342,7 +342,7 @@ begin
   // применение настроек к интерфейсу
   Do_ApplyConfiguration;
 
-  Update_Actions;
+  Do_UpdateActions;
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
@@ -359,9 +359,9 @@ begin
   ProcedureFooter;
 end;
 
-procedure TMainForm.Update_Actions;
+procedure TMainForm.Do_UpdateActions;
 begin
-  ProcedureHeader('Процедура обновления состояния действий соединения с сервером', '{03351462-40CF-47ED-AE96-3F9E0D9EA148}');
+  ProcedureHeader('Процедура обновления состояния действий', '{03351462-40CF-47ED-AE96-3F9E0D9EA148}');
 
   { TODO : Убрать ремарки }
   (*

@@ -1,6 +1,7 @@
 object AddMassMsrForm: TAddMassMsrForm
   Left = 0
   Top = 0
+  Hint = #1054#1082#1085#1086' '#1084#1072#1089#1089#1086#1074#1086#1075#1086' '#1088#1072#1079#1084#1085#1086#1078#1077#1085#1080#1103' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1081
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = #1052#1072#1089#1089#1086#1074#1086#1077' '#1088#1072#1079#1084#1085#1086#1078#1077#1085#1080#1077' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1081
@@ -15,6 +16,7 @@ object AddMassMsrForm: TAddMassMsrForm
   OldCreateOrder = False
   Position = poDesigned
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object pnlButtons: TPanel
@@ -122,16 +124,18 @@ object AddMassMsrForm: TAddMassMsrForm
         Width = 162
         Height = 160
         MultiSelect = True
-        Date = 40739.429314247680000000
-        EndDate = 40739.429314247680000000
+        Date = 40739.723518900470000000
+        EndDate = 40739.000000000000000000
         TabOrder = 0
+        OnClick = MonthCalendar1Click
       end
-      object Edit1: TEdit
+      object edbxTime: TEdit
         Left = 0
         Top = 192
         Width = 162
         Height = 21
         TabOrder = 1
+        OnChange = edbxTimeChange
       end
       object Button1: TButton
         Left = 81
@@ -153,7 +157,7 @@ object AddMassMsrForm: TAddMassMsrForm
       BevelOuter = bvNone
       BorderWidth = 5
       TabOrder = 1
-      object ListView1: TListView
+      object lvMsrDateTimeList: TListView
         Left = 6
         Top = 0
         Width = 168
@@ -161,17 +165,19 @@ object AddMassMsrForm: TAddMassMsrForm
         Columns = <
           item
             Caption = #1044#1072#1090#1072
-            Width = 60
+            Width = 82
           end
           item
             Caption = #1042#1088#1077#1084#1103
-            Width = 60
+            Width = 82
           end>
         ReadOnly = True
         RowSelect = True
         SortType = stBoth
         TabOrder = 0
         ViewStyle = vsReport
+        OnCompare = lvMsrDateTimeListCompare
+        OnSelectItem = lvMsrDateTimeListSelectItem
       end
       object Button2: TButton
         Left = 6
@@ -202,6 +208,7 @@ object AddMassMsrForm: TAddMassMsrForm
       Caption = '&'#1057#1087#1088#1072#1074#1082#1072
       Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1087#1088#1072#1074#1082#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1089#1087#1088#1072#1074#1086#1095#1085#1086#1075#1086' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
       ImageIndex = 0
+      OnExecute = Action_HelpExecute
     end
     object Action_Add: TAction
       Caption = '&'#1044#1086#1073#1072#1074#1080#1090#1100
@@ -209,6 +216,7 @@ object AddMassMsrForm: TAddMassMsrForm
         #1044#1086#1073#1072#1074#1080#1090#1100' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1076#1086#1073#1072#1074#1083#1077#1085#1080#1103' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1081' '#1085#1072' '#1091#1082#1072#1079#1072 +
         #1085#1085#1099#1081' '#1087#1077#1088#1080#1086#1076' '#1080' '#1074#1088#1077#1084#1103
       ImageIndex = 3
+      OnExecute = Action_AddExecute
     end
     object Action_Delete: TAction
       Caption = '&'#1059#1076#1072#1083#1080#1090#1100
@@ -216,17 +224,20 @@ object AddMassMsrForm: TAddMassMsrForm
         #1059#1076#1072#1083#1080#1090#1100' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1074#1099#1076#1077#1083#1077#1085#1085#1086#1075#1086' '#1101#1083#1077#1084#1077#1085#1090#1072' '#1089#1087 +
         #1080#1089#1082#1072
       ImageIndex = 1
+      OnExecute = Action_DeleteExecute
     end
     object Action_Clear: TAction
       Caption = '&'#1054#1095#1080#1089#1090#1080#1090#1100
       Hint = #1054#1095#1080#1089#1090#1080#1090#1100' '#1089#1087#1080#1089#1086#1082'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1085#1086#1081' '#1086#1095#1080#1089#1090#1082#1080' '#1089#1087#1080#1089#1082#1072
       ImageIndex = 4
+      OnExecute = Action_ClearExecute
     end
     object Action_Close: TAction
       Caption = '&'#1047#1072#1082#1088#1099#1090#1100
       Hint = 
         #1047#1072#1082#1088#1099#1090#1100' '#1086#1082#1085#1086'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1084#1077#1085#1099' '#1074#1089#1077#1093' '#1074#1085#1077#1089#1105#1085#1085#1099#1093' '#1080#1079#1084#1077#1085#1077#1085#1080#1081' '#1080' '#1079#1072#1082#1088#1099 +
         #1090#1080#1103' '#1086#1082#1085#1072
+      OnExecute = Action_CloseExecute
     end
     object Action_Confirm: TAction
       Caption = '&'#1055#1086#1076#1090#1074#1077#1088#1076#1080#1090#1100
@@ -234,6 +245,7 @@ object AddMassMsrForm: TAddMassMsrForm
         #1055#1086#1076#1090#1074#1077#1088#1076#1080#1090#1100' '#1080#1079#1084#1077#1085#1077#1085#1080#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1076#1090#1074#1077#1088#1078#1076#1077#1085#1080#1103' '#1074#1085#1077#1089#1077#1085#1080#1103' '#1074' '#1073#1074#1079#1091' ' +
         #1076#1072#1085#1085#1099#1093' '#1074#1089#1077#1093' '#1076#1086#1073#1072#1074#1083#1077#1085#1085#1099#1093' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1081' '#1080' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072
       ImageIndex = 2
+      OnExecute = Action_ConfirmExecute
     end
   end
   object Log: TLogProvider
@@ -244,7 +256,7 @@ object AddMassMsrForm: TAddMassMsrForm
     Left = 208
     Top = 176
     Bitmap = {
-      494C010106000800500010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800740010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

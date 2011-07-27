@@ -43,9 +43,6 @@ type
     procedure Do_Close;
   end;
 
-var
-  AboutForm: TAboutForm;
-
 implementation
 
 {$R *.dfm}
