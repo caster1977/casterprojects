@@ -10,7 +10,8 @@ uses
   uConfigurationClass in 'uConfigurationClass.pas',
   uMySQLConnectionClass in 'uMySQLConnectionClass.pas',
   uUserClass in 'uUserClass.pas',
-  uAddMassMsrForm in 'uAddMassMsrForm.pas' {AddMassMsrForm};
+  uAddMassMsrForm in 'uAddMassMsrForm.pas' {AddMassMsrForm},
+  uStatisticForm in 'uStatisticForm.pas' {StatisticForm};
 
 {$R *.res}
 

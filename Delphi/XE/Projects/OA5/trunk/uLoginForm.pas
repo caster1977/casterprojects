@@ -41,9 +41,6 @@ type
     procedure Do_Cancel;
   end;
 
-var
-  LoginForm: TLoginForm;
-
 implementation
 
 {$R *.dfm}

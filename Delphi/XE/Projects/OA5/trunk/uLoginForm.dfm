@@ -1,12 +1,12 @@
 object LoginForm: TLoginForm
   Left = 0
   Top = 0
+  Hint = #1054#1082#1085#1086' '#1080#1076#1077#1085#1090#1080#1092#1080#1082#1072#1094#1080#1080' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
   BorderIcons = []
   BorderStyle = bsDialog
-  BorderWidth = 6
   Caption = #1059#1095#1105#1090#1085#1072#1103' '#1079#1072#1087#1080#1089#1100
-  ClientHeight = 86
-  ClientWidth = 232
+  ClientHeight = 103
+  ClientWidth = 238
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,24 +17,23 @@ object LoginForm: TLoginForm
   Position = poScreenCenter
   OnShow = FormShow
   DesignSize = (
-    232
-    86)
+    238
+    103)
   PixelsPerInch = 96
   TextHeight = 13
   object Bevel2: TBevel
     Left = 0
-    Top = 54
-    Width = 232
-    Height = 32
+    Top = 62
+    Width = 238
+    Height = 41
     Align = alBottom
     Shape = bsTopLine
-    ExplicitLeft = -62
-    ExplicitTop = 67
-    ExplicitWidth = 282
+    ExplicitTop = 56
+    ExplicitWidth = 212
   end
   object imgKey: TImage
-    Left = 103
-    Top = 62
+    Left = 107
+    Top = 71
     Width = 24
     Height = 24
     Anchors = [akLeft, akBottom]
@@ -96,28 +95,28 @@ object LoginForm: TLoginForm
       80000100800001008000010080000100800001008000010080000100C0000300
       FFFFFF00}
     Transparent = True
-    ExplicitTop = 75
+    ExplicitTop = 76
   end
   object lblLogin: TLabel
-    Left = 0
-    Top = 3
+    Left = 8
+    Top = 11
     Width = 34
     Height = 13
     Caption = '&'#1051#1086#1075#1080#1085':'
     FocusControl = edbxLogin
   end
   object lblPassword: TLabel
-    Left = 0
-    Top = 30
+    Left = 8
+    Top = 38
     Width = 41
     Height = 13
     Caption = '&'#1055#1072#1088#1086#1083#1100':'
     FocusControl = mePassword
   end
   object btnOk: TButton
-    Left = 0
-    Top = 62
-    Width = 80
+    Left = 8
+    Top = 71
+    Width = 93
     Height = 24
     Cursor = crHandPoint
     Action = Action_Ok
@@ -125,9 +124,9 @@ object LoginForm: TLoginForm
     TabOrder = 2
   end
   object btnCancel: TButton
-    Left = 152
-    Top = 62
-    Width = 80
+    Left = 137
+    Top = 71
+    Width = 93
     Height = 24
     Cursor = crHandPoint
     Action = Action_Cancel
@@ -136,28 +135,30 @@ object LoginForm: TLoginForm
     TabOrder = 3
   end
   object edbxLogin: TEdit
-    Left = 63
-    Top = 0
-    Width = 169
+    Left = 64
+    Top = 8
+    Width = 166
     Height = 21
     Hint = #1042#1074#1077#1076#1080#1090#1077' '#1042#1072#1096' '#1083#1086#1075#1080#1085
+    Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
     TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1083#1086#1075#1080#1085' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
     OnChange = FieldsChange
   end
   object mePassword: TMaskEdit
-    Left = 63
-    Top = 27
-    Width = 169
+    Left = 64
+    Top = 35
+    Width = 166
     Height = 21
     Hint = #1042#1074#1077#1076#1080#1090#1077' '#1042#1072#1096' '#1087#1072#1088#1086#1083#1100
+    Anchors = [akLeft, akTop, akRight]
     TabOrder = 1
     TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1087#1072#1088#1086#1083#1100' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
     OnChange = FieldsChange
   end
   object ActionManager1: TActionManager
-    Left = 32
-    Top = 16
+    Left = 64
+    Top = 56
     StyleName = 'Platform Default'
     object Action_Ok: TAction
       Caption = '&Ok'
@@ -174,7 +175,7 @@ object LoginForm: TLoginForm
     LogFile.Enabled = True
     LogFile.FileNameSuffix = 'OA5_LoginForm'
     LogClient.Enabled = True
-    Left = 112
-    Top = 16
+    Left = 16
+    Top = 56
   end
 end

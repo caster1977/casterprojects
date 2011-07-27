@@ -1,6 +1,7 @@
 object AboutForm: TAboutForm
   Left = 0
   Top = 0
+  Hint = #1054#1082#1085#1086' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1080' '#1086' '#1087#1088#1086#1075#1088#1072#1084#1084#1077
   AlphaBlend = True
   AlphaBlendValue = 222
   BorderIcons = []

@@ -265,9 +265,6 @@ type
     procedure Do_PageSelect;
   end;
 
-var
-  ConfigurationForm: TConfigurationForm;
-
 implementation
 
 {$R *.dfm}
