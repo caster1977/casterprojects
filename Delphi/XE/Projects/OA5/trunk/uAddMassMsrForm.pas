@@ -416,10 +416,40 @@ procedure TAddMassMsrForm.FormCreate(Sender: TObject);
 const
   ICON_ADDMASSMSR=5;
 begin
-  ProcedureHeader('Процедура-обработчик события создания окна', '{F2D7CFF2-C4E5-40C8-89B6-7D1318AF91A6}');
+  ProcedureHeader('Процедура-обработчик события создания окна', '{C60DAAE3-5E20-473B-8895-240001F68D38}');
 
   ilAddMassMsrFormSmallImages.GetIcon(ICON_ADDMASSMSR, Icon);
   Action_Help.Enabled:=Application.HelpFile<>'';
+
+  with MainForm.Configuration do
+    begin
+      // установка параметров протоколирования в соответствии с настройками программы
+      Log.UserName:=MainForm.CurrentUser.Login;
+      Log.AllowedTypes:=KeepLogTypes;
+      Log.Enabled:=EnableLog;
+
+      // установка положения окна конфигурации в соответсвии со значениями конфигурации программы
+      if AddMassMsrFormPosition.bCenter then
+        Position:=poScreenCenter
+      else
+        begin
+          Position:=poDesigned;
+          if AddMassMsrFormPosition.x<Screen.WorkAreaLeft then
+            Left:=Screen.WorkAreaLeft
+          else
+            if AddMassMsrFormPosition.x>Screen.WorkAreaLeft+Screen.WorkAreaWidth then
+              Left:=Screen.WorkAreaLeft+Screen.WorkAreaWidth-Width
+            else
+              Left:=AddMassMsrFormPosition.x;
+          if AddMassMsrFormPosition.y<Screen.WorkAreaTop then
+            Top:=Screen.WorkAreaTop
+          else
+            if AddMassMsrFormPosition.y>Screen.WorkAreaTop+Screen.WorkAreaHeight then
+              Top:=Screen.WorkAreaTop+Screen.WorkAreaHeight-Height
+            else
+              Top:=AddMassMsrFormPosition.y;
+        end;
+    end;
 
   ProcedureFooter;
 end;

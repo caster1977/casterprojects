@@ -202,6 +202,10 @@ object ConfigurationForm: TConfigurationForm
         object ts1: TTabSheet
           Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object chkbxShowAboutWindowAtLaunch: TCheckBox
             Left = 0
             Top = 0
@@ -271,6 +275,10 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1074#1077#1076#1077#1085#1080#1103' '#1087#1088#1086#1090#1086#1082#1086#1083#1072' '#1088#1072#1073#1086#1090#1099
           ImageIndex = 1
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Bevel4: TBevel
             Left = 0
             Top = 25
@@ -456,7 +464,6 @@ object ConfigurationForm: TConfigurationForm
             Width = 606
             Height = 213
             HorzScrollBar.Range = 588
-            VertScrollBar.Position = 114
             VertScrollBar.Range = 327
             Align = alClient
             AutoScroll = False
@@ -466,259 +473,259 @@ object ConfigurationForm: TConfigurationForm
             TabOrder = 0
             object lblLoginFormPosition: TLabel
               Left = 0
-              Top = -111
+              Top = 3
               Width = 94
               Height = 13
               Caption = #1054#1082#1085#1086' '#1083#1086#1075#1080#1088#1086#1074#1072#1085#1080#1103
             end
             object lblLoginFormPositionX: TLabel
               Left = 340
-              Top = -111
+              Top = 3
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblLoginFormPositionY: TLabel
               Left = 427
-              Top = -111
+              Top = 3
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblConfigurationFormPosition: TLabel
               Left = 0
-              Top = -84
+              Top = 30
               Width = 102
               Height = 13
               Caption = #1054#1082#1085#1086' '#1082#1086#1085#1092#1080#1075#1091#1088#1072#1094#1080#1080
             end
             object lblConfigurationFormPositionX: TLabel
               Left = 340
-              Top = -84
+              Top = 30
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblConfigurationFormPositionY: TLabel
               Left = 427
-              Top = -84
+              Top = 30
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblUsersFormPosition: TLabel
               Left = 0
-              Top = -57
+              Top = 57
               Width = 116
               Height = 13
               Caption = #1054#1082#1085#1086' '#1091#1095#1105#1090#1085#1099#1093' '#1079#1072#1087#1080#1089#1077#1081
             end
             object lblUsersFormPositionX: TLabel
               Left = 340
-              Top = -57
+              Top = 57
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblUsersFormPositionY: TLabel
               Left = 427
-              Top = -57
+              Top = 57
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblSetPasswordFormPosition: TLabel
               Left = 0
-              Top = -30
+              Top = 84
               Width = 99
               Height = 13
               Caption = #1054#1082#1085#1086' '#1089#1084#1077#1085#1099' '#1087#1072#1088#1086#1083#1103
             end
             object lblSetPasswordFormPositionX: TLabel
               Left = 340
-              Top = -30
+              Top = 84
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblSetPasswordFormPositionY: TLabel
               Left = 427
-              Top = -30
+              Top = 84
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblReportFormPosition: TLabel
               Left = 0
-              Top = -3
+              Top = 111
               Width = 71
               Height = 13
               Caption = #1054#1082#1085#1086' '#1086#1090#1095#1105#1090#1086#1074
             end
             object lblReportFormPositionX: TLabel
               Left = 340
-              Top = -3
+              Top = 111
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblReportFormPositionY: TLabel
               Left = 427
-              Top = -3
+              Top = 111
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblMaintenanceFormPosition: TLabel
               Left = 0
-              Top = 24
+              Top = 138
               Width = 119
               Height = 13
               Caption = #1054#1082#1085#1086' '#1086#1073#1089#1083#1091#1078#1080#1074#1072#1085#1080#1103' '#1041#1044
             end
             object lblMaintenanceFormPositionX: TLabel
               Left = 340
-              Top = 24
+              Top = 138
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblMaintenanceFormPositionY: TLabel
               Left = 427
-              Top = 24
+              Top = 138
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblClearingFormPosition: TLabel
               Left = 0
-              Top = 51
+              Top = 165
               Width = 87
               Height = 13
               Caption = #1054#1082#1085#1086' '#1086#1095#1080#1089#1090#1082#1080' '#1041#1044
             end
             object lblClearingFormPositionX: TLabel
               Left = 340
-              Top = 51
+              Top = 165
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblClearingFormPositionY: TLabel
               Left = 427
-              Top = 51
+              Top = 165
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblViewPostListFormPosition: TLabel
               Left = 0
-              Top = 78
+              Top = 192
               Width = 122
               Height = 13
               Caption = #1054#1082#1085#1086' '#1089#1087#1080#1089#1082#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1081
             end
             object lblViewPostListFormPositionX: TLabel
               Left = 340
-              Top = 78
+              Top = 192
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblViewPostListFormPositionY: TLabel
               Left = 427
-              Top = 78
+              Top = 192
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblCreateViewPostFormPosition: TLabel
               Left = 0
-              Top = 105
+              Top = 219
               Width = 141
               Height = 13
               Caption = #1054#1082#1085#1086' '#1087#1088#1086#1089#1084#1086#1090#1088#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
             end
             object lblCreateViewPostFormPositionX: TLabel
               Left = 340
-              Top = 105
+              Top = 219
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblCreateViewPostFormPositionY: TLabel
               Left = 427
-              Top = 105
+              Top = 219
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblPhonesFormPosition: TLabel
               Left = 0
-              Top = 132
+              Top = 246
               Width = 122
               Height = 13
               Caption = #1054#1082#1085#1086' '#1089#1087#1080#1089#1082#1072' '#1090#1077#1083#1077#1092#1086#1085#1086#1074
             end
             object lblPhonesFormPositionX: TLabel
               Left = 340
-              Top = 132
+              Top = 246
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblPhonesFormPositionY: TLabel
               Left = 427
-              Top = 132
+              Top = 246
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblAddEditPhoneFormPosition: TLabel
               Left = 0
-              Top = 159
+              Top = 273
               Width = 135
               Height = 13
               Caption = #1054#1082#1085#1086' '#1087#1088#1086#1089#1084#1086#1090#1088#1072' '#1090#1077#1083#1077#1092#1086#1085#1072
             end
             object lblAddEditPhoneFormPositionX: TLabel
               Left = 340
-              Top = 159
+              Top = 273
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblAddEditPhoneFormPositionY: TLabel
               Left = 427
-              Top = 159
+              Top = 273
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object lblAddMassMsrFormPosition: TLabel
               Left = 0
-              Top = 186
+              Top = 300
               Width = 119
               Height = 13
               Caption = #1054#1082#1085#1086' '#1084#1072#1089#1089#1086#1074#1086#1081' '#1074#1089#1090#1072#1074#1082#1080
             end
             object lblAddMassMsrFormPositionX: TLabel
               Left = 340
-              Top = 186
+              Top = 300
               Width = 6
               Height = 13
               Caption = 'x'
             end
             object lblAddMassMsrFormPositionY: TLabel
               Left = 427
-              Top = 186
+              Top = 300
               Width = 6
               Height = 13
               Caption = 'y'
             end
             object edbxLoginFormPositionX: TEdit
               Left = 352
-              Top = -114
+              Top = 0
               Width = 69
               Height = 21
               Enabled = False
@@ -728,7 +735,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxLoginFormPositionY: TEdit
               Left = 439
-              Top = -114
+              Top = 0
               Width = 69
               Height = 21
               Enabled = False
@@ -738,7 +745,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object chkbxLoginFormPositionByCenter: TCheckBox
               Left = 514
-              Top = -112
+              Top = 2
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
@@ -749,7 +756,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxConfigurationFormPositionX: TEdit
               Left = 352
-              Top = -87
+              Top = 27
               Width = 69
               Height = 21
               Enabled = False
@@ -759,7 +766,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxConfigurationFormPositionY: TEdit
               Left = 439
-              Top = -87
+              Top = 27
               Width = 69
               Height = 21
               Enabled = False
@@ -769,7 +776,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object chkbxConfigurationFormPositionByCenter: TCheckBox
               Left = 514
-              Top = -85
+              Top = 29
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
@@ -780,7 +787,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxUsersFormPositionX: TEdit
               Left = 352
-              Top = -60
+              Top = 54
               Width = 69
               Height = 21
               Enabled = False
@@ -790,7 +797,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxUsersFormPositionY: TEdit
               Left = 439
-              Top = -60
+              Top = 54
               Width = 69
               Height = 21
               Enabled = False
@@ -800,7 +807,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object chkbxUsersFormPositionByCenter: TCheckBox
               Left = 514
-              Top = -58
+              Top = 56
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
@@ -811,7 +818,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxSetPasswordFormPositionX: TEdit
               Left = 352
-              Top = -33
+              Top = 81
               Width = 69
               Height = 21
               Enabled = False
@@ -821,7 +828,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxSetPasswordFormPositionY: TEdit
               Left = 439
-              Top = -33
+              Top = 81
               Width = 69
               Height = 21
               Enabled = False
@@ -831,7 +838,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object chkbxSetPasswordFormPositionByCenter: TCheckBox
               Left = 514
-              Top = -31
+              Top = 83
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
@@ -842,7 +849,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxReportFormPositionX: TEdit
               Left = 352
-              Top = -6
+              Top = 108
               Width = 69
               Height = 21
               Enabled = False
@@ -852,7 +859,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxReportFormPositionY: TEdit
               Left = 439
-              Top = -6
+              Top = 108
               Width = 69
               Height = 21
               Enabled = False
@@ -862,7 +869,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object chkbxReportFormPositionByCenter: TCheckBox
               Left = 514
-              Top = -4
+              Top = 110
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
@@ -873,7 +880,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxMaintenanceFormPositionX: TEdit
               Left = 352
-              Top = 21
+              Top = 135
               Width = 69
               Height = 21
               Enabled = False
@@ -883,7 +890,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxMaintenanceFormPositionY: TEdit
               Left = 439
-              Top = 21
+              Top = 135
               Width = 69
               Height = 21
               Enabled = False
@@ -893,7 +900,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object chkbxMaintenanceFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 23
+              Top = 137
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
@@ -904,7 +911,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxClearingFormPositionX: TEdit
               Left = 352
-              Top = 48
+              Top = 162
               Width = 69
               Height = 21
               Enabled = False
@@ -914,7 +921,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxClearingFormPositionY: TEdit
               Left = 439
-              Top = 48
+              Top = 162
               Width = 69
               Height = 21
               Enabled = False
@@ -924,7 +931,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object chkbxClearingFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 50
+              Top = 164
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
@@ -935,7 +942,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxViewPostListFormPositionX: TEdit
               Left = 352
-              Top = 75
+              Top = 189
               Width = 69
               Height = 21
               Enabled = False
@@ -945,7 +952,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxViewPostListFormPositionY: TEdit
               Left = 439
-              Top = 75
+              Top = 189
               Width = 69
               Height = 21
               Enabled = False
@@ -955,7 +962,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object chkbxViewPostListFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 77
+              Top = 191
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
@@ -966,7 +973,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxCreateViewPostFormPositionX: TEdit
               Left = 352
-              Top = 102
+              Top = 216
               Width = 69
               Height = 21
               Enabled = False
@@ -976,7 +983,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxCreateViewPostFormPositionY: TEdit
               Left = 439
-              Top = 102
+              Top = 216
               Width = 69
               Height = 21
               Enabled = False
@@ -986,7 +993,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object chkbxCreateViewPostFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 104
+              Top = 218
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
@@ -997,7 +1004,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxPhonesFormPositionX: TEdit
               Left = 352
-              Top = 129
+              Top = 243
               Width = 69
               Height = 21
               Enabled = False
@@ -1007,7 +1014,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxPhonesFormPositionY: TEdit
               Left = 439
-              Top = 129
+              Top = 243
               Width = 69
               Height = 21
               Enabled = False
@@ -1017,7 +1024,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object chkbxPhonesFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 131
+              Top = 245
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
@@ -1028,7 +1035,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxAddEditPhoneFormPositionX: TEdit
               Left = 352
-              Top = 156
+              Top = 270
               Width = 69
               Height = 21
               Enabled = False
@@ -1038,7 +1045,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxAddEditPhoneFormPositionY: TEdit
               Left = 439
-              Top = 156
+              Top = 270
               Width = 69
               Height = 21
               Enabled = False
@@ -1048,7 +1055,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object chkbxAddEditPhoneFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 158
+              Top = 272
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
@@ -1059,7 +1066,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxAddMassMsrFormPositionX: TEdit
               Left = 352
-              Top = 183
+              Top = 297
               Width = 69
               Height = 21
               Enabled = False
@@ -1069,7 +1076,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object edbxAddMassMsrFormPositionY: TEdit
               Left = 439
-              Top = 183
+              Top = 297
               Width = 69
               Height = 21
               Enabled = False
@@ -1079,7 +1086,7 @@ object ConfigurationForm: TConfigurationForm
             end
             object chkbxAddMassMsrFormPositionByCenter: TCheckBox
               Left = 514
-              Top = 185
+              Top = 299
               Width = 74
               Height = 17
               Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
@@ -1094,6 +1101,10 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1088#1086#1094#1077#1076#1091#1088#1099' '#1083#1086#1075#1080#1088#1086#1074#1072#1085#1080#1103
           ImageIndex = 7
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object chkbxStoreLastLogin: TCheckBox
             Left = 0
             Top = 0
@@ -1129,6 +1140,10 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093' '#1091#1089#1083#1091#1075#1080
           ImageIndex = 1
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object vleRNE4SERVER: TValueListEditor
             Left = 0
             Top = 0
@@ -1154,6 +1169,10 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1089#1080#1089#1090#1077#1084#1099' '#1086#1073#1084#1077#1085#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1103#1084#1080
           ImageIndex = 4
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object vleRNE4MESSAGESSERVER: TValueListEditor
             Left = 0
             Top = 0
@@ -1179,6 +1198,10 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1092#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1103' '#1086#1090#1095#1105#1090#1086#1074
           ImageIndex = 3
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Bevel3: TBevel
             Left = 0
             Top = 0
@@ -1254,16 +1277,18 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1089#1087#1080#1089#1082#1072' '#1072#1074#1090#1086#1079#1072#1084#1077#1085#1099
           ImageIndex = 5
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object lblAutoReplaceSorry: TLabel
             Left = 0
             Top = 0
-            Width = 606
-            Height = 213
+            Width = 3
+            Height = 13
             Align = alClient
             Alignment = taCenter
             Layout = tlCenter
-            ExplicitWidth = 3
-            ExplicitHeight = 13
           end
           object sgAutoReplaceList: TStringGrid
             Left = 0
@@ -1290,6 +1315,10 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1088#1086#1095#1080#1077
           ImageIndex = 6
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object lblAutoGetMessagesCycleDuration: TLabel
             Left = 376
             Top = 55
@@ -1365,6 +1394,10 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1075#1083#1072#1074#1085#1086#1075#1086' '#1086#1082#1085#1072
           ImageIndex = 9
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object lblMainFormPosition: TLabel
             Left = 11
             Top = 3
@@ -1471,6 +1504,10 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1080
           ImageIndex = 10
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object lbOrganizationPanelHeight: TLabel
             Left = 11
             Top = 3
@@ -1648,7 +1685,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 304
     Top = 296
     Bitmap = {
-      494C010106000800C40210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800C80210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

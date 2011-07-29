@@ -33,6 +33,7 @@ type
     procedure Action_OkExecute(Sender: TObject);
     procedure Action_CancelExecute(Sender: TObject);
     procedure FieldsChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   strict private
     procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
@@ -109,6 +110,45 @@ procedure TLoginForm.FieldsChange(Sender: TObject);
 begin
   ProcedureHeader('Процедура-обработчик события изменения значения полей', '{93B9E5F4-4353-4053-A07E-DED31D7011F0}');
   Do_UpdateActions;
+  ProcedureFooter;
+end;
+
+procedure TLoginForm.FormCreate(Sender: TObject);
+const
+  ICON_ADDMASSMSR=5;
+begin
+  ProcedureHeader('Процедура-обработчик события создания окна', '{B7B2C87E-2141-43CA-A41B-23FE0E874839}');
+
+  with MainForm.Configuration do
+    begin
+      // установка параметров протоколирования в соответствии с настройками программы
+      Log.UserName:=MainForm.CurrentUser.Login;
+      Log.AllowedTypes:=KeepLogTypes;
+      Log.Enabled:=EnableLog;
+
+      // установка положения окна конфигурации в соответсвии со значениями конфигурации программы
+      if LoginFormPosition.bCenter then
+        Position:=poScreenCenter
+      else
+        begin
+          Position:=poDesigned;
+          if LoginFormPosition.x<Screen.WorkAreaLeft then
+            Left:=Screen.WorkAreaLeft
+          else
+            if LoginFormPosition.x>Screen.WorkAreaLeft+Screen.WorkAreaWidth then
+              Left:=Screen.WorkAreaLeft+Screen.WorkAreaWidth-Width
+            else
+              Left:=LoginFormPosition.x;
+          if LoginFormPosition.y<Screen.WorkAreaTop then
+            Top:=Screen.WorkAreaTop
+          else
+            if LoginFormPosition.y>Screen.WorkAreaTop+Screen.WorkAreaHeight then
+              Top:=Screen.WorkAreaTop+Screen.WorkAreaHeight-Height
+            else
+              Top:=LoginFormPosition.y;
+        end;
+    end;
+
   ProcedureFooter;
 end;
 

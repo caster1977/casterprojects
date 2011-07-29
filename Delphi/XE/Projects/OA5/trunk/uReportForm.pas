@@ -223,10 +223,40 @@ procedure TReportForm.FormCreate(Sender: TObject);
 const
   ICON_STATISTIC=0;
 begin
-  ProcedureHeader('Процедура-обработчик события создания окна', '{9C442450-6D58-4C07-A359-B1A1FB7F9ED0}');
+  ProcedureHeader('Процедура-обработчик события создания окна', '{84933C2E-2797-40EF-96C1-0E13F61295CD}');
 
   ilStatisticFormSmallImages.GetIcon(ICON_STATISTIC, Icon);
   Action_Help.Enabled:=Application.HelpFile<>'';
+
+  with MainForm.Configuration do
+    begin
+      // установка параметров протоколирования в соответствии с настройками программы
+      Log.UserName:=MainForm.CurrentUser.Login;
+      Log.AllowedTypes:=KeepLogTypes;
+      Log.Enabled:=EnableLog;
+
+      // установка положения окна конфигурации в соответсвии со значениями конфигурации программы
+      if ReportFormPosition.bCenter then
+        Position:=poScreenCenter
+      else
+        begin
+          Position:=poDesigned;
+          if ReportFormPosition.x<Screen.WorkAreaLeft then
+            Left:=Screen.WorkAreaLeft
+          else
+            if ReportFormPosition.x>Screen.WorkAreaLeft+Screen.WorkAreaWidth then
+              Left:=Screen.WorkAreaLeft+Screen.WorkAreaWidth-Width
+            else
+              Left:=ReportFormPosition.x;
+          if ReportFormPosition.y<Screen.WorkAreaTop then
+            Top:=Screen.WorkAreaTop
+          else
+            if ReportFormPosition.y>Screen.WorkAreaTop+Screen.WorkAreaHeight then
+              Top:=Screen.WorkAreaTop+Screen.WorkAreaHeight-Height
+            else
+              Top:=ReportFormPosition.y;
+        end;
+    end;
 
   ProcedureFooter;
 end;

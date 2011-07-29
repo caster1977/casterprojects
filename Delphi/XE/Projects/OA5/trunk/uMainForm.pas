@@ -53,7 +53,7 @@ type
     Action_Help: TAction;
     Action_Configuration: TAction;
     Action_Accounts: TAction;
-    Action_Reports: TAction;
+    Action_Report: TAction;
     Action_Logon: TAction;
     Action_Logout: TAction;
     N5: TMenuItem;
@@ -83,6 +83,7 @@ type
     procedure Action_ConfigurationExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure Action_ReportExecute(Sender: TObject);
   strict private
     bFirstRun: boolean;
     bAboutWindowExist: boolean;
@@ -96,6 +97,7 @@ type
     procedure Do_About(const aButtonVisible: boolean);
     procedure Do_Help;
     procedure Do_Configuration;
+    procedure Do_Report;
     procedure Do_LoadConfiguration;
     procedure Do_ApplyConfiguration;
     procedure Do_SaveConfiguration;
@@ -120,6 +122,7 @@ uses
   CommCtrl,
   uAboutForm,
   uConfigurationForm,
+  uReportForm,
   uAddMassMsrForm,
   uLoginForm,
   OA5Consts,
@@ -279,6 +282,13 @@ procedure TMainForm.Action_QuitExecute(Sender: TObject);
 begin
   ProcedureHeader('Процедура-обработчик действия "'+Action_Quit.Caption+'"', '{5DB14721-5FC4-4B42-B0DB-4E7C323A2AA2}');
   Close;
+  ProcedureFooter;
+end;
+
+procedure TMainForm.Action_ReportExecute(Sender: TObject);
+begin
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Report.Caption+'"', '{90957E86-35D1-4C1B-9C1F-4C99CE5D2B56}');
+  Do_Report;
   ProcedureFooter;
 end;
 
@@ -488,6 +498,31 @@ begin
   Log.UserName:=MainForm.CurrentUser.Login;
   Log.AllowedTypes:=MainForm.Configuration.KeepLogTypes;
   Log.Enabled:=MainForm.Configuration.EnableLog;
+
+  ProcedureFooter;
+end;
+
+procedure TMainForm.Do_Report;
+const
+  sModalWinName: string='формирования статистических отчётов по работе пользователей';
+var
+  ReportForm: TReportForm;
+  iBusy: integer;
+begin
+  ProcedureHeader('Процедура отображения окна '+sModalWinName, '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
+
+  ReportForm:=TReportForm.Create(Self);
+  with ReportForm do
+    try
+      PreShowModal(sModalWinName, iBusy);
+      ShowModal;
+    finally
+      PostShowModal(sModalWinName, iBusy);
+      { TODO : дописать! }
+      // if ModalResult=mrOk then
+      // Do_ApplyConfiguration;
+      Free;
+    end;
 
   ProcedureFooter;
 end;
