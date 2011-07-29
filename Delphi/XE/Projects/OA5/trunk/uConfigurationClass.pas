@@ -134,7 +134,7 @@ type
     FConfigurationFormPosition: TFormPosition;
     FUsersFormPosition: TFormPosition;
     FSetPasswordFormPosition: TFormPosition;
-    FStatisticFormPosition: TFormPosition;
+    FReportFormPosition: TFormPosition;
     FMaintenanceFormPosition: TFormPosition;
     FClearingFormPosition: TFormPosition;
     FViewPostListFormPosition: TFormPosition;
@@ -240,7 +240,7 @@ type
     procedure SetShowMeasuresListAsRichEdit(const Value: boolean);
     procedure SetShowStatusbarAtLaunch(const Value: boolean);
     procedure SetShowToolbarAtLaunch(const Value: boolean);
-    procedure SetStatisticFormPosition(const Value: TFormPosition);
+    procedure SetReportFormPosition(const Value: TFormPosition);
     procedure SetUseMultibuffer(const Value: boolean);
     procedure SetUsersFormPosition(const Value: TFormPosition);
     procedure SetViewPostListFormPosition(const Value: TFormPosition);
@@ -285,7 +285,7 @@ type
     property ConfigurationFormPosition: TFormPosition read FConfigurationFormPosition write SetConfigurationFormPosition stored False;
     property UsersFormPosition: TFormPosition read FUsersFormPosition write SetUsersFormPosition stored False;
     property SetPasswordFormPosition: TFormPosition read FSetPasswordFormPosition write SetSetPasswordFormPosition stored False;
-    property StatisticFormPosition: TFormPosition read FStatisticFormPosition write SetStatisticFormPosition stored False;
+    property ReportFormPosition: TFormPosition read FReportFormPosition write SetReportFormPosition stored False;
     property MaintenanceFormPosition: TFormPosition read FMaintenanceFormPosition write SetMaintenanceFormPosition stored False;
     property ClearingFormPosition: TFormPosition read FClearingFormPosition write SetClearingFormPosition stored False;
     property ViewPostListFormPosition: TFormPosition read FViewPostListFormPosition write SetViewPostListFormPosition stored False;
@@ -416,10 +416,10 @@ begin
             y:=ReadInteger('Положение диалоговых окон', 'SetPasswordFormPosition.iy', DefaultValue_FormPosition_y);
             SetPasswordFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'StatisticFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'StatisticFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'StatisticFormPosition.iy', DefaultValue_FormPosition_y);
-            StatisticFormPosition:=FormPosition;
+            bCenter:=ReadBool('Положение диалоговых окон', 'ReportFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'ReportFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'ReportFormPosition.iy', DefaultValue_FormPosition_y);
+            ReportFormPosition:=FormPosition;
 
             bCenter:=ReadBool('Положение диалоговых окон', 'MaintenanceFormPosition.bCenter', DefaultValue_FormPosition_Center);
             x:=ReadInteger('Положение диалоговых окон', 'MaintenanceFormPosition.ix', DefaultValue_FormPosition_x);
@@ -577,7 +577,7 @@ begin
           WriteFormPosition(IniFile, ConfigurationFormPosition, 'ConfigurationFormPosition');
           WriteFormPosition(IniFile, UsersFormPosition, 'UsersFormPosition');
           WriteFormPosition(IniFile, SetPasswordFormPosition, 'SetPasswordFormPosition');
-          WriteFormPosition(IniFile, StatisticFormPosition, 'StatisticFormPosition');
+          WriteFormPosition(IniFile, ReportFormPosition, 'ReportFormPosition');
           WriteFormPosition(IniFile, MaintenanceFormPosition, 'MaintenanceFormPosition');
           WriteFormPosition(IniFile, ClearingFormPosition, 'ClearingFormPosition');
           WriteFormPosition(IniFile, ViewPostListFormPosition, 'ViewPostListFormPosition');
@@ -822,10 +822,10 @@ begin
     FShowToolbarAtLaunch:=Value;
 end;
 
-procedure TConfiguration.SetStatisticFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetReportFormPosition(const Value: TFormPosition);
 begin
-  if ((FStatisticFormPosition.bCenter<>Value.bCenter)or(FStatisticFormPosition.x<>Value.x)or(FStatisticFormPosition.y<>Value.y)) then
-    FStatisticFormPosition:=Value;
+  if ((FReportFormPosition.bCenter<>Value.bCenter)or(FReportFormPosition.x<>Value.x)or(FReportFormPosition.y<>Value.y)) then
+    FReportFormPosition:=Value;
 end;
 
 procedure TConfiguration.SetUseMultibuffer(const Value: boolean);
@@ -1135,7 +1135,7 @@ begin
       y:=DefaultValue_FormPosition_y;
     end;
 
-  with FStatisticFormPosition do
+  with FReportFormPosition do
     begin
       bCenter:=DefaultValue_FormPosition_Center;
       x:=DefaultValue_FormPosition_x;
