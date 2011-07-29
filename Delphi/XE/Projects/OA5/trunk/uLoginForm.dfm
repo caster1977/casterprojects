@@ -15,6 +15,7 @@ object LoginForm: TLoginForm
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
   OnShow = FormShow
   DesignSize = (
     238
