@@ -120,12 +120,12 @@ type
     lblSetPasswordFormPositionY: TLabel;
     edbxSetPasswordFormPositionY: TEdit;
     chkbxSetPasswordFormPositionByCenter: TCheckBox;
-    lblStatisticFormPosition: TLabel;
-    lblStatisticFormPositionX: TLabel;
-    edbxStatisticFormPositionX: TEdit;
-    lblStatisticFormPositionY: TLabel;
-    edbxStatisticFormPositionY: TEdit;
-    chkbxStatisticFormPositionByCenter: TCheckBox;
+    lblReportFormPosition: TLabel;
+    lblReportFormPositionX: TLabel;
+    edbxReportFormPositionX: TEdit;
+    lblReportFormPositionY: TLabel;
+    edbxReportFormPositionY: TEdit;
+    chkbxReportFormPositionByCenter: TCheckBox;
     lblMaintenanceFormPosition: TLabel;
     lblMaintenanceFormPositionX: TLabel;
     edbxMaintenanceFormPositionX: TEdit;
@@ -239,7 +239,7 @@ type
     procedure chkbxConfigurationFormPositionByCenterClick(Sender: TObject);
     procedure chkbxUsersFormPositionByCenterClick(Sender: TObject);
     procedure chkbxSetPasswordFormPositionByCenterClick(Sender: TObject);
-    procedure chkbxStatisticFormPositionByCenterClick(Sender: TObject);
+    procedure chkbxReportFormPositionByCenterClick(Sender: TObject);
     procedure chkbxMaintenanceFormPositionByCenterClick(Sender: TObject);
     procedure chkbxClearingFormPositionByCenterClick(Sender: TObject);
     procedure chkbxViewPostListFormPositionByCenterClick(Sender: TObject);
@@ -279,6 +279,7 @@ uses
   uLoginForm,
   uAboutForm,
   uAddMassMsrForm,
+  uReportForm,
   uRoutines,
   uConfigurationClass;
 
@@ -449,10 +450,10 @@ begin
       FormPosition.y:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxSetPasswordFormPositionY.Text), ''), DefaultValue_FormPosition_y);
       SetPasswordFormPosition:=FormPosition;
 
-      FormPosition.bCenter:=chkbxStatisticFormPositionByCenter.Checked and chkbxStatisticFormPositionByCenter.Enabled;
-      FormPosition.x:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxStatisticFormPositionX.Text), ''), DefaultValue_FormPosition_x);
-      FormPosition.y:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxStatisticFormPositionY.Text), ''), DefaultValue_FormPosition_y);
-      StatisticFormPosition:=FormPosition;
+      FormPosition.bCenter:=chkbxReportFormPositionByCenter.Checked and chkbxReportFormPositionByCenter.Enabled;
+      FormPosition.x:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxReportFormPositionX.Text), ''), DefaultValue_FormPosition_x);
+      FormPosition.y:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxReportFormPositionY.Text), ''), DefaultValue_FormPosition_y);
+      ReportFormPosition:=FormPosition;
 
       FormPosition.bCenter:=chkbxMaintenanceFormPositionByCenter.Checked and chkbxMaintenanceFormPositionByCenter.Enabled;
       FormPosition.x:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxMaintenanceFormPositionX.Text), ''), DefaultValue_FormPosition_x);
@@ -921,11 +922,11 @@ begin
   edbxSetPasswordFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
   edbxSetPasswordFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
-  chkbxStatisticFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
-  edbxStatisticFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
-  edbxStatisticFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
-  edbxStatisticFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
-  edbxStatisticFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+  chkbxReportFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+  edbxReportFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+  edbxReportFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+  edbxReportFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+  edbxReportFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
   chkbxMaintenanceFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
   edbxMaintenanceFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
@@ -1326,11 +1327,11 @@ begin
       edbxSetPasswordFormPositionX.Enabled:=not SetPasswordFormPosition.bCenter;
       edbxSetPasswordFormPositionY.Enabled:=not SetPasswordFormPosition.bCenter;
 
-      chkbxStatisticFormPositionByCenter.Checked:=StatisticFormPosition.bCenter;
-      edbxStatisticFormPositionX.Text:=Routines.GetConditionalString(StatisticFormPosition.bCenter, '', IntToStr(StatisticFormPosition.x));
-      edbxStatisticFormPositionY.Text:=Routines.GetConditionalString(StatisticFormPosition.bCenter, '', IntToStr(StatisticFormPosition.y));
-      edbxStatisticFormPositionX.Enabled:=not StatisticFormPosition.bCenter;
-      edbxStatisticFormPositionY.Enabled:=not StatisticFormPosition.bCenter;
+      chkbxReportFormPositionByCenter.Checked:=ReportFormPosition.bCenter;
+      edbxReportFormPositionX.Text:=Routines.GetConditionalString(ReportFormPosition.bCenter, '', IntToStr(ReportFormPosition.x));
+      edbxReportFormPositionY.Text:=Routines.GetConditionalString(ReportFormPosition.bCenter, '', IntToStr(ReportFormPosition.y));
+      edbxReportFormPositionX.Enabled:=not ReportFormPosition.bCenter;
+      edbxReportFormPositionY.Enabled:=not ReportFormPosition.bCenter;
 
       chkbxMaintenanceFormPositionByCenter.Checked:=MaintenanceFormPosition.bCenter;
       edbxMaintenanceFormPositionX.Text:=Routines.GetConditionalString(MaintenanceFormPosition.bCenter, '', IntToStr(MaintenanceFormPosition.x));
@@ -1543,32 +1544,32 @@ begin
   ProcedureFooter;
 end;
 
-procedure TConfigurationForm.chkbxStatisticFormPositionByCenterClick(Sender: TObject);
+procedure TConfigurationForm.chkbxReportFormPositionByCenterClick(Sender: TObject);
 var
   b: boolean;
-  // StatisticForm: TStatisticForm;
+  ReportForm: TReportForm;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxStatisticFormPositionByCenter.Caption, '{24AC0BDC-F297-4CB9-BC03-8A19926A70C6}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxReportFormPositionByCenter.Caption, '{24AC0BDC-F297-4CB9-BC03-8A19926A70C6}');
 
-  b:=chkbxStatisticFormPositionByCenter.Enabled and chkbxStatisticFormPositionByCenter.Checked;
-  edbxStatisticFormPositionX.Enabled:=not b;
-  edbxStatisticFormPositionY.Enabled:=not b;
+  b:=chkbxReportFormPositionByCenter.Enabled and chkbxReportFormPositionByCenter.Checked;
+  edbxReportFormPositionX.Enabled:=not b;
+  edbxReportFormPositionY.Enabled:=not b;
   if b then
     begin
-      edbxStatisticFormPositionX.Text:='';
-      edbxStatisticFormPositionY.Text:='';
+      edbxReportFormPositionX.Text:='';
+      edbxReportFormPositionY.Text:='';
     end
   else
     begin
-      // StatisticForm:=TStatisticForm.Create(Self);
-      // try
-      // edbxStatisticFormPositionX.Text:=IntToStr((Screen.WorkAreaWidth-StatisticForm.Width)div 2);
-      // edbxStatisticFormPositionY.Text:=IntToStr((Screen.WorkAreaHeight-StatisticForm.Height)div 2);
-      // finally
-      // StatisticForm.Free;
-      // end;
+      ReportForm:=TReportForm.Create(Self);
+      try
+        edbxReportFormPositionX.Text:=IntToStr((Screen.WorkAreaWidth-ReportForm.Width)div 2);
+        edbxReportFormPositionY.Text:=IntToStr((Screen.WorkAreaHeight-ReportForm.Height)div 2);
+      finally
+        ReportForm.Free;
+      end;
     end;
-  Log.SendInfo('Флажок "'+chkbxStatisticFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+  Log.SendInfo('Флажок "'+chkbxReportFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;

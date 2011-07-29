@@ -70,8 +70,8 @@
 			<DCCReference Include="uAddMassMsrForm.pas">
 				<Form>AddMassMsrForm</Form>
 			</DCCReference>
-			<DCCReference Include="uStatisticForm.pas">
-				<Form>StatisticForm</Form>
+			<DCCReference Include="uReportForm.pas">
+				<Form>ReportForm</Form>
 			</DCCReference>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
