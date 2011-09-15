@@ -115,12 +115,12 @@
 						<VersionInfoKeys Name="FileDescription">АРМ оператора услуги &quot;Отдых и развлечения&quot;</VersionInfoKeys>
 						<VersionInfoKeys Name="FileVersion">5.0.0.0</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName">OA5</VersionInfoKeys>
-						<VersionInfoKeys Name="LegalCopyright">(C)opyright 2007-2010 by Caster</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalCopyright">(C)opyright 2007-2011 by Caster</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks"/>
 						<VersionInfoKeys Name="OriginalFilename">OA5.exe</VersionInfoKeys>
 						<VersionInfoKeys Name="ProductName"/>
-						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
-						<VersionInfoKeys Name="Comments">Посвящается любимым мною женщинам ;)</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductVersion">5.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments">Посвящается моей любимой жене ;)</VersionInfoKeys>
 					</VersionInfoKeys>
 					<Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dcltee9150.bpl">TeeChart Standard 9 Components</Excluded_Packages>
