@@ -11,7 +11,8 @@ uses
   uMySQLConnectionClass in 'uMySQLConnectionClass.pas',
   uUserClass in 'uUserClass.pas',
   uAddMassMsrForm in 'uAddMassMsrForm.pas' {AddMassMsrForm},
-  uReportForm in 'uReportForm.pas' {ReportForm};
+  uReportForm in 'uReportForm.pas' {ReportForm},
+  uSetPasswordForm in 'uSetPasswordForm.pas' {SetPasswordForm};
 
 {$R *.res}
 

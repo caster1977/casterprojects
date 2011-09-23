@@ -836,6 +836,7 @@ begin
     end
   else
     Action_Defaults.Enabled:=not(PageControl1.ActivePage.Caption=' списка автозамены');
+  Log.SendDebug('Действие "'+Action_Defaults.Caption+'" '+Routines.GetConditionalString(Action_Defaults.Enabled, 'в', 'от')+'ключено.');
 
   // доступность действия поднятия и опускания строки в списке автощзамены
   Action_LineUp.Visible:=(PageControl1.ActivePage.Caption=' списка автозамены')and sgAutoReplaceList.Visible and sgAutoReplaceList.Enabled;
@@ -895,6 +896,7 @@ begin
       chkbxCustomLogClientFile.Enabled:=DefaultValue_EnableLog;
       edbxCustomLogClientFileValue.Enabled:=DefaultValue_CustomLogClientFile and DefaultValue_EnableLog;
       Action_ChooseCustomLogClientFile.Enabled:=DefaultValue_CustomLogClientFile and DefaultValue_EnableLog;
+      Log.SendDebug('Действие "'+Action_ChooseCustomLogClientFile.Caption+'" '+Routines.GetConditionalString(Action_ChooseCustomLogClientFile.Enabled, 'в', 'от')+'ключено.');
     end;
 
   // вкладка "настройки положения диалоговых окон"
@@ -1016,6 +1018,7 @@ begin
       // выставление доступа к элементам интерфейса
       edbxCustomReportFolderValue.Enabled:=DefaultValue_ReportFolder=rfCustomFolder;
       Action_ChooseReportFolder.Enabled:=DefaultValue_ReportFolder=rfCustomFolder;
+      Log.SendDebug('Действие "'+Action_ChooseReportFolder.Caption+'" '+Routines.GetConditionalString(Action_ChooseReportFolder.Enabled, 'в', 'от')+'ключено.');
     end;
 
   // вкладка "настройки прочие"
@@ -1032,6 +1035,7 @@ begin
       edbxAutoGetMessagesCycleDurationValue.Enabled:=DefaultValue_EnableAutoGetMessages;
       edbxCustomHelpFileValue.Enabled:=DefaultValue_CustomHelpFile;
       Action_ChooseCustomHelpFile.Enabled:=DefaultValue_CustomHelpFile;
+      Log.SendDebug('Действие "'+Action_ChooseCustomHelpFile.Caption+'" '+Routines.GetConditionalString(Action_ChooseCustomHelpFile.Enabled, 'в', 'от')+'ключено.');
     end;
 
   // вкладка "настройки главного окна"
@@ -1085,7 +1089,7 @@ procedure TConfigurationForm.chkbxEnableLogClick(Sender: TObject);
 var
   bUseLog: boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxEnableLog.Caption, '{20AFAF3C-D977-4A28-8779-C5F59EB39B45}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxEnableLog.Caption+'"', '{20AFAF3C-D977-4A28-8779-C5F59EB39B45}');
 
   bUseLog:=chkbxEnableLog.Enabled and chkbxEnableLog.Checked;
 
@@ -1131,8 +1135,9 @@ begin
     edbxCustomLogClientFileValue.Text:='';
 
   Action_ChooseCustomLogClientFile.Enabled:=chkbxCustomLogClientFile.Checked and chkbxCustomLogClientFile.Enabled;
+  Log.SendDebug('Действие "'+Action_ChooseCustomLogClientFile.Caption+'" '+Routines.GetConditionalString(Action_ChooseCustomLogClientFile.Enabled, 'в', 'от')+'ключено.');
 
-  Log.SendInfo('Флажок "'+chkbxEnableLog.Caption+'"'+Routines.GetConditionalString(bUseLog, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxEnableLog.Caption+'"'+Routines.GetConditionalString(bUseLog, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1141,14 +1146,14 @@ procedure TConfigurationForm.chkbxFlushLogOnStringsQuantityClick(Sender: TObject
 var
   bFlushLogOnStringsQuantity: boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxFlushLogOnStringsQuantity.Caption, '{56071FBF-61AE-472E-B52B-BC239C45CD7C}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxFlushLogOnStringsQuantity.Caption+'"', '{56071FBF-61AE-472E-B52B-BC239C45CD7C}');
 
   bFlushLogOnStringsQuantity:=chkbxFlushLogOnStringsQuantity.Checked and chkbxFlushLogOnStringsQuantity.Enabled;
   edbxFlushLogOnStringsQuantityValue.Enabled:=bFlushLogOnStringsQuantity;
   edbxFlushLogOnStringsQuantityValue.Text:=Routines.GetConditionalString(bFlushLogOnStringsQuantity, Routines.GetConditionalString(MainForm.Configuration.FlushLogOnStringsQuantityValue>0,
     IntToStr(MainForm.Configuration.FlushLogOnStringsQuantityValue), IntToStr(DefaultValue_FlushLogOnStringsQuantityValue)), '');
 
-  Log.SendInfo('Флажок "'+chkbxFlushLogOnStringsQuantity.Caption+'"'+Routines.GetConditionalString(bFlushLogOnStringsQuantity, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxFlushLogOnStringsQuantity.Caption+'"'+Routines.GetConditionalString(bFlushLogOnStringsQuantity, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1157,16 +1162,17 @@ procedure TConfigurationForm.chkbxCustomLogClientFileClick(Sender: TObject);
 var
   bCustomLogClientFile: boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxCustomLogClientFile.Caption, '{4CBC38D1-3DB9-480E-BA9A-246708A0C0A2}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxCustomLogClientFile.Caption+'"', '{4CBC38D1-3DB9-480E-BA9A-246708A0C0A2}');
 
   bCustomLogClientFile:=chkbxCustomLogClientFile.Checked and chkbxCustomLogClientFile.Enabled;
 
   edbxCustomLogClientFileValue.Enabled:=bCustomLogClientFile;
   Action_ChooseCustomLogClientFile.Enabled:=bCustomLogClientFile;
+  Log.SendDebug('Действие "'+Action_ChooseCustomLogClientFile.Caption+'" '+Routines.GetConditionalString(Action_ChooseCustomLogClientFile.Enabled, 'в', 'от')+'ключено.');
   if not bCustomLogClientFile then
     edbxCustomLogClientFileValue.Text:='';
 
-  Log.SendInfo('Флажок "'+chkbxCustomLogClientFile.Caption+'"'+Routines.GetConditionalString(bCustomLogClientFile, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxCustomLogClientFile.Caption+'"'+Routines.GetConditionalString(bCustomLogClientFile, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1175,13 +1181,13 @@ procedure TConfigurationForm.chkbxDataPanelHalfWidthClick(Sender: TObject);
 var
   bDataPanelHalfWidth: boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxDataPanelHalfWidth.Caption, '{E88569C6-BFE3-4AE7-B34B-6CA8179B0FEA}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxDataPanelHalfWidth.Caption+'"', '{E88569C6-BFE3-4AE7-B34B-6CA8179B0FEA}');
 
   bDataPanelHalfWidth:=chkbxDataPanelHalfWidth.Checked and chkbxDataPanelHalfWidth.Enabled;
   edbxDataPanelWidthValue.Enabled:=not bDataPanelHalfWidth;
   edbxDataPanelWidthValue.Text:=Routines.GetConditionalString(bDataPanelHalfWidth, '', IntToStr(MainForm.Configuration.DataPanelWidthValue));
 
-  Log.SendInfo('Флажок "'+chkbxDataPanelHalfWidth.Caption+'"'+Routines.GetConditionalString(bDataPanelHalfWidth, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxDataPanelHalfWidth.Caption+'"'+Routines.GetConditionalString(bDataPanelHalfWidth, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1196,6 +1202,7 @@ begin
 
   edbxCustomReportFolderValue.Enabled:=rbSaveIntoTheCustomFolder.Checked;
   Action_ChooseReportFolder.Enabled:=rbSaveIntoTheCustomFolder.Checked;
+  Log.SendDebug('Действие "'+Action_ChooseReportFolder.Caption+'" '+Routines.GetConditionalString(Action_ChooseReportFolder.Enabled, 'в', 'от')+'ключено.');
   if not rbSaveIntoTheCustomFolder.Checked then
     edbxCustomReportFolderValue.Text:='';
 
@@ -1230,6 +1237,7 @@ begin
 
   ilConfigurationFormSmallImages.GetIcon(ICON_CONFIGURATION, Icon);
   Action_Help.Enabled:=Application.HelpFile<>'';
+  Log.SendDebug('Действие "'+Action_Help.Caption+'" '+Routines.GetConditionalString(Action_Help.Enabled, 'в', 'от')+'ключено.');
 
   with MainForm.Configuration do
     begin
@@ -1299,6 +1307,7 @@ begin
       chkbxCustomLogClientFile.Enabled:=EnableLog;
       edbxCustomLogClientFileValue.Enabled:=CustomLogClientFile and EnableLog;
       Action_ChooseCustomLogClientFile.Enabled:=CustomLogClientFile and EnableLog;
+      Log.SendDebug('Действие "'+Action_ChooseCustomLogClientFile.Caption+'" '+Routines.GetConditionalString(Action_ChooseCustomLogClientFile.Enabled, 'в', 'от')+'ключено.');
 
       // вкладка "настройки положения диалоговых окон"
       ScrollBox1.VertScrollBar.Position:=0;
@@ -1414,6 +1423,7 @@ begin
       chkbxAskForFileName.Checked:=AskForFileName;
       edbxCustomReportFolderValue.Enabled:=ReportFolder=rfCustomFolder;
       Action_ChooseReportFolder.Enabled:=ReportFolder=rfCustomFolder;
+      Log.SendDebug('Действие "'+Action_ChooseReportFolder.Caption+'" '+Routines.GetConditionalString(Action_ChooseReportFolder.Enabled, 'в', 'от')+'ключено.');
 
       // вкладка "настройки списка автозамены"
       lblAutoReplaceSorry.Caption:='Извините, но список доступен только для пользователей'+#10#13+'с правами редактирования базы данных'+#10#13+'при подлючении к базе данных!';
@@ -1430,6 +1440,7 @@ begin
       edbxAutoGetMessagesCycleDurationValue.Enabled:=EnableAutoGetMessages;
       edbxCustomHelpFileValue.Enabled:=CustomHelpFile;
       Action_ChooseCustomHelpFile.Enabled:=CustomHelpFile;
+      Log.SendDebug('Действие "'+Action_ChooseCustomHelpFile.Caption+'" '+Routines.GetConditionalString(Action_ChooseCustomHelpFile.Enabled, 'в', 'от')+'ключено.');
 
       // вкладка "настройки главного окна"
       edbxMainFormPositionX.Text:=Routines.GetConditionalString(not(MainFormPositionByCenter or FullScreenAtLaunch), IntToStr(MainFormRect.Left), '');
@@ -1464,7 +1475,7 @@ procedure TConfigurationForm.chkbxFullScreenAtLaunchClick(Sender: TObject);
 var
   bFullScreenAtLaunch: boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxFullScreenAtLaunch.Caption, '{52688629-980D-4725-A207-FD5D898B16AB}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxFullScreenAtLaunch.Caption+'"', '{52688629-980D-4725-A207-FD5D898B16AB}');
 
   bFullScreenAtLaunch:=chkbxFullScreenAtLaunch.Checked and chkbxFullScreenAtLaunch.Enabled;
   chkbxMainFormPositionByCenter.Enabled:=not bFullScreenAtLaunch;
@@ -1479,7 +1490,7 @@ begin
   edbxMainFormWidth.Text:=Routines.GetConditionalString(not bFullScreenAtLaunch, IntToStr(MainForm.Configuration.MainFormRect.Right-MainForm.Configuration.MainFormRect.Left), '');
   edbxMainFormHeight.Text:=Routines.GetConditionalString(not bFullScreenAtLaunch, IntToStr(MainForm.Configuration.MainFormRect.Bottom-MainForm.Configuration.MainFormRect.Top), '');
 
-  Log.SendInfo('Флажок "'+chkbxMainFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(bFullScreenAtLaunch, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxMainFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(bFullScreenAtLaunch, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1489,7 +1500,7 @@ var
   b: boolean;
   LoginForm: TLoginForm;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxLoginFormPositionByCenter.Caption, '{4F120B29-021D-4F4C-893C-F33E907F3D7A}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxLoginFormPositionByCenter.Caption+'"', '{4F120B29-021D-4F4C-893C-F33E907F3D7A}');
 
   b:=chkbxLoginFormPositionByCenter.Enabled and chkbxLoginFormPositionByCenter.Checked;
   edbxLoginFormPositionX.Enabled:=not b;
@@ -1509,7 +1520,7 @@ begin
         LoginForm.Free;
       end;
     end;
-  Log.SendInfo('Флажок "'+chkbxLoginFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxLoginFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1519,7 +1530,7 @@ var
   b: boolean;
   // SetPasswordForm: TSetPasswordForm;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxSetPasswordFormPositionByCenter.Caption, '{9ED32D46-9E32-4491-B6AB-6D5BBF7FD074}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxSetPasswordFormPositionByCenter.Caption+'"', '{9ED32D46-9E32-4491-B6AB-6D5BBF7FD074}');
 
   b:=chkbxSetPasswordFormPositionByCenter.Enabled and chkbxSetPasswordFormPositionByCenter.Checked;
   edbxSetPasswordFormPositionX.Enabled:=not b;
@@ -1539,7 +1550,7 @@ begin
       // SetPasswordForm.Free;
       // end;
     end;
-  Log.SendInfo('Флажок "'+chkbxSetPasswordFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxSetPasswordFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1549,7 +1560,7 @@ var
   b: boolean;
   ReportForm: TReportForm;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxReportFormPositionByCenter.Caption, '{24AC0BDC-F297-4CB9-BC03-8A19926A70C6}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxReportFormPositionByCenter.Caption+'"', '{24AC0BDC-F297-4CB9-BC03-8A19926A70C6}');
 
   b:=chkbxReportFormPositionByCenter.Enabled and chkbxReportFormPositionByCenter.Checked;
   edbxReportFormPositionX.Enabled:=not b;
@@ -1569,34 +1580,34 @@ begin
         ReportForm.Free;
       end;
     end;
-  Log.SendInfo('Флажок "'+chkbxReportFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxReportFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
 
 procedure TConfigurationForm.chkbxStoreLastLoginClick(Sender: TObject);
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxStoreLastLogin.Caption, '{DF6E7711-9716-4511-8C02-AA1F34D95096}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxStoreLastLogin.Caption+'"', '{DF6E7711-9716-4511-8C02-AA1F34D95096}');
 
   chkbxStoreLastPassword.Enabled:=chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked;
   chkbxStoreLastPassword.Checked:=chkbxStoreLastPassword.Checked and chkbxStoreLastPassword.Enabled;
   chkbxAutoLogon.Enabled:=chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked and chkbxStoreLastPassword.Enabled and chkbxStoreLastPassword.Checked;
   chkbxAutoLogon.Checked:=chkbxAutoLogon.Checked and chkbxAutoLogon.Enabled;
-  Log.SendInfo('Флажок "'+chkbxStoreLastLogin.Caption+'"'+Routines.GetConditionalString(chkbxStoreLastLogin.Checked, 'в', 'от')+'ключен.');
-  Log.SendInfo('Флажок "'+chkbxStoreLastPassword.Caption+'"'+Routines.GetConditionalString(chkbxStoreLastPassword.Checked, 'в', 'от')+'ключен.');
-  Log.SendInfo('Флажок "'+chkbxAutoLogon.Caption+'"'+Routines.GetConditionalString(chkbxAutoLogon.Checked, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxStoreLastLogin.Caption+'"'+Routines.GetConditionalString(chkbxStoreLastLogin.Checked, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxStoreLastPassword.Caption+'"'+Routines.GetConditionalString(chkbxStoreLastPassword.Checked, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxAutoLogon.Caption+'"'+Routines.GetConditionalString(chkbxAutoLogon.Checked, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
 
 procedure TConfigurationForm.chkbxStoreLastPasswordClick(Sender: TObject);
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxStoreLastPassword.Caption, '{C9AD62BE-833A-4C57-904C-0ED5DFB0634F}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxStoreLastPassword.Caption+'"', '{C9AD62BE-833A-4C57-904C-0ED5DFB0634F}');
 
   chkbxAutoLogon.Enabled:=chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked and chkbxStoreLastPassword.Enabled and chkbxStoreLastPassword.Checked;
   chkbxAutoLogon.Checked:=chkbxAutoLogon.Checked and chkbxAutoLogon.Enabled;
-  Log.SendInfo('Флажок "'+chkbxStoreLastPassword.Caption+'"'+Routines.GetConditionalString(chkbxStoreLastPassword.Checked, 'в', 'от')+'ключен.');
-  Log.SendInfo('Флажок "'+chkbxAutoLogon.Caption+'"'+Routines.GetConditionalString(chkbxAutoLogon.Checked, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxStoreLastPassword.Caption+'"'+Routines.GetConditionalString(chkbxStoreLastPassword.Checked, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxAutoLogon.Caption+'"'+Routines.GetConditionalString(chkbxAutoLogon.Checked, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1606,7 +1617,7 @@ var
   b: boolean;
   // UsersForm: TUsersForm;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxUsersFormPositionByCenter.Caption, '{F7984D0B-E438-4B31-8BC8-9C24190065C4}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxUsersFormPositionByCenter.Caption+'"', '{F7984D0B-E438-4B31-8BC8-9C24190065C4}');
 
   b:=chkbxUsersFormPositionByCenter.Enabled and chkbxUsersFormPositionByCenter.Checked;
   edbxUsersFormPositionX.Enabled:=not b;
@@ -1626,7 +1637,7 @@ begin
       // UsersForm.Free;
       // end;
     end;
-  Log.SendInfo('Флажок "'+chkbxUsersFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxUsersFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1636,7 +1647,7 @@ var
   b: boolean;
   // ViewPostListForm: TViewPostListForm;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxViewPostListFormPositionByCenter.Caption, '{0CEE11D1-8BEF-4853-AA5A-707DD2E2FD34}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxViewPostListFormPositionByCenter.Caption+'"', '{0CEE11D1-8BEF-4853-AA5A-707DD2E2FD34}');
 
   b:=chkbxViewPostListFormPositionByCenter.Enabled and chkbxViewPostListFormPositionByCenter.Checked;
   edbxViewPostListFormPositionX.Enabled:=not b;
@@ -1656,18 +1667,18 @@ begin
       // ViewPostListForm.Free;
       // end;
     end;
-  Log.SendInfo('Флажок "'+chkbxViewPostListFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxViewPostListFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
 
 procedure TConfigurationForm.chkbxEnableAutoGetMessagesClick(Sender: TObject);
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxEnableAutoGetMessages.Caption, '{5C3B5E46-E8F7-4BD1-8092-16B88A617F55}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxEnableAutoGetMessages.Caption+'"', '{5C3B5E46-E8F7-4BD1-8092-16B88A617F55}');
 
   edbxAutoGetMessagesCycleDurationValue.Enabled:=chkbxEnableAutoGetMessages.Checked;
   edbxAutoGetMessagesCycleDurationValue.Text:=Routines.GetConditionalString(edbxAutoGetMessagesCycleDurationValue.Enabled, IntToStr(MainForm.Configuration.AutoGetMessagesCycleDurationValue), '');
-  Log.SendInfo('Флажок "'+chkbxEnableAutoGetMessages.Caption+'"'+Routines.GetConditionalString(chkbxEnableAutoGetMessages.Checked, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxEnableAutoGetMessages.Caption+'"'+Routines.GetConditionalString(chkbxEnableAutoGetMessages.Checked, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1677,7 +1688,7 @@ var
   b: boolean;
   // AddEditPhoneForm: TAddEditPhoneForm;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxAddEditPhoneFormPositionByCenter.Caption, '{9D51B088-F24F-4EBC-9CDB-BBD50B769BBB}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxAddEditPhoneFormPositionByCenter.Caption+'"', '{9D51B088-F24F-4EBC-9CDB-BBD50B769BBB}');
 
   b:=chkbxAddEditPhoneFormPositionByCenter.Enabled and chkbxAddEditPhoneFormPositionByCenter.Checked;
   edbxAddEditPhoneFormPositionX.Enabled:=not b;
@@ -1697,7 +1708,7 @@ begin
       // AddEditPhoneForm.Free;
       // end;
     end;
-  Log.SendInfo('Флажок "'+chkbxAddEditPhoneFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxAddEditPhoneFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1707,7 +1718,7 @@ var
   b: boolean;
   AddMassMsrForm: TAddMassMsrForm;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxAddMassMsrFormPositionByCenter.Caption, '{8E88B020-CF7F-4F40-9C02-B64741BD3133}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxAddMassMsrFormPositionByCenter.Caption+'"', '{8E88B020-CF7F-4F40-9C02-B64741BD3133}');
 
   b:=chkbxAddMassMsrFormPositionByCenter.Enabled and chkbxAddMassMsrFormPositionByCenter.Checked;
   edbxAddMassMsrFormPositionX.Enabled:=not b;
@@ -1727,7 +1738,7 @@ begin
         AddMassMsrForm.Free;
       end;
     end;
-  Log.SendInfo('Флажок "'+chkbxAddMassMsrFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxAddMassMsrFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1737,7 +1748,7 @@ var
   b: boolean;
   // ClearingForm: TClearingForm;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxClearingFormPositionByCenter.Caption, '{6EF352F0-799F-4ECB-8FA5-D283943475C6}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxClearingFormPositionByCenter.Caption+'"', '{6EF352F0-799F-4ECB-8FA5-D283943475C6}');
 
   b:=chkbxClearingFormPositionByCenter.Enabled and chkbxClearingFormPositionByCenter.Checked;
   edbxClearingFormPositionX.Enabled:=not b;
@@ -1757,7 +1768,7 @@ begin
       // ClearingForm.Free;
       // end;
     end;
-  Log.SendInfo('Флажок "'+chkbxClearingFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxClearingFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1767,7 +1778,7 @@ var
   b: boolean;
   // CreateViewPostForm: TCreateViewPostForm;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxCreateViewPostFormPositionByCenter.Caption, '{E4C4C710-0120-4391-8B8B-3A3DF1D7F95B}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxCreateViewPostFormPositionByCenter.Caption+'"', '{E4C4C710-0120-4391-8B8B-3A3DF1D7F95B}');
 
   b:=chkbxCreateViewPostFormPositionByCenter.Enabled and chkbxCreateViewPostFormPositionByCenter.Checked;
   edbxCreateViewPostFormPositionX.Enabled:=not b;
@@ -1787,7 +1798,7 @@ begin
       // CreateViewPostForm.Free;
       // end;
     end;
-  Log.SendInfo('Флажок "'+chkbxCreateViewPostFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxCreateViewPostFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1796,16 +1807,17 @@ procedure TConfigurationForm.chkbxCustomHelpFileClick(Sender: TObject);
 var
   bCustomHelpFile: boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxCustomHelpFile.Caption, '{C4007F3B-8108-4F5D-8699-A1855EC707B1}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxCustomHelpFile.Caption+'"', '{C4007F3B-8108-4F5D-8699-A1855EC707B1}');
 
   bCustomHelpFile:=chkbxCustomHelpFile.Enabled and chkbxCustomHelpFile.Checked;
 
   edbxCustomHelpFileValue.Enabled:=bCustomHelpFile;
   Action_ChooseCustomHelpFile.Enabled:=bCustomHelpFile;
+  Log.SendDebug('Действие "'+Action_ChooseCustomHelpFile.Caption+'" '+Routines.GetConditionalString(Action_ChooseCustomHelpFile.Enabled, 'в', 'от')+'ключено.');
   if not bCustomHelpFile then
     edbxCustomHelpFileValue.Text:='';
 
-  Log.SendInfo('Флажок "'+chkbxCustomHelpFile.Caption+'"'+Routines.GetConditionalString(bCustomHelpFile, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxCustomHelpFile.Caption+'"'+Routines.GetConditionalString(bCustomHelpFile, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1814,7 +1826,7 @@ procedure TConfigurationForm.chkbxMainFormPositionByCenterClick(Sender: TObject)
 var
   bMainFormPositionByCenter: boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxMainFormPositionByCenter.Caption, '{0C75BE73-4F1F-4C3E-8938-728609D1E4F1}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxMainFormPositionByCenter.Caption+'"', '{0C75BE73-4F1F-4C3E-8938-728609D1E4F1}');
 
   bMainFormPositionByCenter:=chkbxMainFormPositionByCenter.Checked and chkbxMainFormPositionByCenter.Enabled;
   edbxMainFormPositionX.Enabled:=not bMainFormPositionByCenter;
@@ -1822,7 +1834,7 @@ begin
   edbxMainFormPositionX.Text:=Routines.GetConditionalString(edbxMainFormPositionX.Enabled, IntToStr(MainForm.Configuration.MainFormRect.Left), '');
   edbxMainFormPositionY.Text:=Routines.GetConditionalString(edbxMainFormPositionY.Enabled, IntToStr(MainForm.Configuration.MainFormRect.Top), '');
 
-  Log.SendInfo('Флажок "'+chkbxMainFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(bMainFormPositionByCenter, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxMainFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(bMainFormPositionByCenter, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1832,7 +1844,7 @@ var
   b: boolean;
   // MaintenanceForm: TMaintenanceForm;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxMaintenanceFormPositionByCenter.Caption, '{4F229484-7E9F-42E6-A641-FA1713C99D80}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxMaintenanceFormPositionByCenter.Caption+'"', '{4F229484-7E9F-42E6-A641-FA1713C99D80}');
 
   b:=chkbxMaintenanceFormPositionByCenter.Enabled and chkbxMaintenanceFormPositionByCenter.Checked;
   edbxMaintenanceFormPositionX.Enabled:=not b;
@@ -1852,7 +1864,7 @@ begin
       // MaintenanceForm.Free;
       // end;
     end;
-  Log.SendInfo('Флажок "'+chkbxMaintenanceFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxMaintenanceFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1861,7 +1873,7 @@ procedure TConfigurationForm.chkbxConfigurationFormPositionByCenterClick(Sender:
 var
   b: boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxConfigurationFormPositionByCenter.Caption, '{BED5B417-AF81-44BC-A216-3C6D966C8A3E}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxConfigurationFormPositionByCenter.Caption+'"', '{BED5B417-AF81-44BC-A216-3C6D966C8A3E}');
 
   b:=chkbxConfigurationFormPositionByCenter.Enabled and chkbxConfigurationFormPositionByCenter.Checked;
   edbxConfigurationFormPositionX.Enabled:=not b;
@@ -1876,7 +1888,7 @@ begin
       edbxConfigurationFormPositionX.Text:=IntToStr((Screen.WorkAreaWidth-Width)div 2);
       edbxConfigurationFormPositionY.Text:=IntToStr((Screen.WorkAreaHeight-Height)div 2);
     end;
-  Log.SendInfo('Флажок "'+chkbxConfigurationFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxConfigurationFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1885,13 +1897,13 @@ procedure TConfigurationForm.chkbxOrganizationPanelHalfHeightClick(Sender: TObje
 var
   bOrganizationPanelHalfHeight: boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxOrganizationPanelHalfHeight.Caption, '{DB478623-5C76-41CE-AD55-E8E101D15815}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxOrganizationPanelHalfHeight.Caption+'"', '{DB478623-5C76-41CE-AD55-E8E101D15815}');
 
   bOrganizationPanelHalfHeight:=chkbxOrganizationPanelHalfHeight.Checked and chkbxOrganizationPanelHalfHeight.Enabled;
   edbxOrganizationPanelHeightValue.Enabled:=not bOrganizationPanelHalfHeight;
   edbxOrganizationPanelHeightValue.Text:=Routines.GetConditionalString(bOrganizationPanelHalfHeight, '', IntToStr(MainForm.Configuration.OrganizationPanelHeightValue));
 
-  Log.SendInfo('Флажок "'+chkbxOrganizationPanelHalfHeight.Caption+'"'+Routines.GetConditionalString(bOrganizationPanelHalfHeight, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxOrganizationPanelHalfHeight.Caption+'"'+Routines.GetConditionalString(bOrganizationPanelHalfHeight, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;
@@ -1901,7 +1913,7 @@ var
   b: boolean;
   // PhonesForm: TPhonesForm;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке '+chkbxPhonesFormPositionByCenter.Caption, '{B3057ACB-A356-4036-997D-FC6034C1974F}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxPhonesFormPositionByCenter.Caption+'"', '{B3057ACB-A356-4036-997D-FC6034C1974F}');
 
   b:=chkbxPhonesFormPositionByCenter.Enabled and chkbxPhonesFormPositionByCenter.Checked;
   edbxPhonesFormPositionX.Enabled:=not b;
@@ -1921,7 +1933,7 @@ begin
       // PhonesForm.Free;
       // end;
     end;
-  Log.SendInfo('Флажок "'+chkbxPhonesFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxPhonesFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;

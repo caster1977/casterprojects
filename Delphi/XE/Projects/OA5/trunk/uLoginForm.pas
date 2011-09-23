@@ -3,42 +3,49 @@ unit uLoginForm;
 interface
 
 uses
+  Windows,
   Forms,
   Mask,
   StdCtrls,
   ActnList,
   ActnMan,
   ExtCtrls,
-  uLogProvider,
   PlatformDefaultStyleActnCtrls,
   Controls,
   Graphics,
-  Classes;
+  Classes,
+  ImgList,
+  uLogProvider;
 
 type
   TLoginForm=class(TForm)
     Bevel2: TBevel;
-    imgKey: TImage;
     ActionManager1: TActionManager;
     Action_Ok: TAction;
-    Action_Cancel: TAction;
+    Action_Close: TAction;
     btnOk: TButton;
-    btnCancel: TButton;
+    btnClose: TButton;
     lblLogin: TLabel;
     lblPassword: TLabel;
     edbxLogin: TEdit;
     mePassword: TMaskEdit;
     Log: TLogProvider;
+    ilLoginFormSmallImages: TImageList;
+    Action_Help: TAction;
+    btnHelp: TButton;
     procedure FormShow(Sender: TObject);
     procedure Action_OkExecute(Sender: TObject);
-    procedure Action_CancelExecute(Sender: TObject);
+    procedure Action_CloseExecute(Sender: TObject);
     procedure FieldsChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure Action_HelpExecute(Sender: TObject);
   strict private
     procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
+    procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
     procedure Do_UpdateActions;
     procedure Do_Ok;
+    procedure Do_Help;
     procedure Do_Cancel;
   end;
 
@@ -47,8 +54,9 @@ implementation
 {$R *.dfm}
 
 uses
+  SysUtils,
   uMainForm,
-  OA5Routines;
+  uRoutines;
 
 procedure TLoginForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
@@ -64,13 +72,22 @@ begin
   Application.ProcessMessages;
 end;
 
+procedure TLoginForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+begin
+  if aError then
+    MainForm.ShowErrorBox(aHandle, aErrorMessage)
+  else
+    Log.SendDebug('Процедура выполнена без ошибок.');
+  MainForm.pbMain.Position:=MainForm.pbMain.Min;
+end;
+
 procedure TLoginForm.Do_UpdateActions;
 begin
   ProcedureHeader('Процедура обновления состояния действий', '{348CBBCC-9845-40ED-9C35-39F5D58F4EAA}');
   Action_Ok.Enabled:=edbxLogin.Text<>'';
-  Log.SendDebug('Действие "'+Action_Ok.Caption+'" '+Routines_GetConditionalMessage(Action_Ok.Enabled, 'в', 'от')+'ключено.');
+  Log.SendDebug('Действие "'+Action_Ok.Caption+'" '+Routines.GetConditionalString(Action_Ok.Enabled, 'в', 'от')+'ключено.');
   btnOk.Default:=Action_Ok.Enabled;
-  btnCancel.Default:=not Action_Ok.Enabled;
+  btnClose.Default:=not Action_Ok.Enabled;
   ProcedureFooter;
 end;
 
@@ -90,10 +107,35 @@ begin
   ProcedureFooter;
 end;
 
-procedure TLoginForm.Action_CancelExecute(Sender: TObject);
+procedure TLoginForm.Action_HelpExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Cancel.Caption+'"', '{1DFD76E1-46A7-4ADA-A2F3-AAF70AC8060C}');
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Help.Caption+'"', '{394B4218-5393-4162-95FE-9740CEB2F2C9}');
+  Do_Help;
+  ProcedureFooter;
+end;
+
+procedure TLoginForm.Action_CloseExecute(Sender: TObject);
+begin
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Close.Caption+'"', '{1DFD76E1-46A7-4ADA-A2F3-AAF70AC8060C}');
   Do_Cancel;
+  ProcedureFooter;
+end;
+
+procedure TLoginForm.Do_Help;
+var
+  bError: boolean;
+  sErrorMessage: string;
+begin
+  ProcedureHeader('Процедура вызова контекстной справки', '{95536062-F76C-495C-B1F2-70E50F7A9FF0}');
+  bError:=False;
+
+  Log.SendInfo('Производится попытка открытия справочного файла программы...');
+  if (FileExists(ExpandFileName(Application.HelpFile))) then
+    Application.HelpContext(HelpContext)
+  else
+    Routines.GenerateError('Извините, справочный файл к данной программе не найден.', sErrorMessage, bError);
+
+  PreFooter(Handle, bError, sErrorMessage);
   ProcedureFooter;
 end;
 
@@ -115,9 +157,13 @@ end;
 
 procedure TLoginForm.FormCreate(Sender: TObject);
 const
-  ICON_ADDMASSMSR=5;
+  ICON_LOGIN=1;
 begin
   ProcedureHeader('Процедура-обработчик события создания окна', '{B7B2C87E-2141-43CA-A41B-23FE0E874839}');
+
+  ilLoginFormSmallImages.GetIcon(ICON_LOGIN, Icon);
+  Action_Help.Enabled:=Application.HelpFile<>'';
+  Log.SendDebug('Действие "'+Action_Help.Caption+'" '+Routines.GetConditionalString(Action_Help.Enabled, 'в', 'от')+'ключено.');
 
   with MainForm.Configuration do
     begin
