@@ -16,6 +16,7 @@ object ReportForm: TReportForm
   OldCreateOrder = False
   Position = poDesigned
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -27,7 +28,7 @@ object ReportForm: TReportForm
     BevelOuter = bvNone
     BorderWidth = 6
     TabOrder = 0
-    object Label1: TLabel
+    object lbChooseUsers: TLabel
       Left = 6
       Top = 7
       Width = 198
@@ -44,7 +45,7 @@ object ReportForm: TReportForm
       Align = alBottom
       Anchors = [akLeft, akTop, akRight, akBottom]
       ItemHeight = 13
-      TabOrder = 0
+      TabOrder = 2
     end
     object btnSelectNone: TButton
       Left = 257
@@ -64,7 +65,7 @@ object ReportForm: TReportForm
       Cursor = crHandPoint
       Action = Action_SelectAll
       Images = ilStatisticFormSmallImages
-      TabOrder = 2
+      TabOrder = 0
     end
   end
   object Panel2: TPanel
@@ -100,7 +101,7 @@ object ReportForm: TReportForm
       Anchors = [akRight, akBottom]
       Cancel = True
       Default = True
-      TabOrder = 0
+      TabOrder = 4
     end
     object btnHelp: TButton
       Left = 307
@@ -110,7 +111,7 @@ object ReportForm: TReportForm
       Cursor = crHandPoint
       Action = Action_Help
       Anchors = [akRight, akBottom]
-      TabOrder = 1
+      TabOrder = 5
     end
     object btnCreate: TButton
       Left = 4
@@ -120,7 +121,7 @@ object ReportForm: TReportForm
       Cursor = crHandPoint
       Action = Action_Create
       Anchors = [akLeft, akBottom]
-      TabOrder = 2
+      TabOrder = 3
     end
     object GroupBox1: TGroupBox
       Left = 4
@@ -130,69 +131,84 @@ object ReportForm: TReportForm
       Align = alCustom
       Anchors = [akLeft, akTop, akRight]
       Caption = '2. '#1042#1099#1073#1077#1088#1080#1090#1077' '#1087#1077#1088#1080#1086#1076' '#1074#1088#1077#1084#1077#1085#1080':'
-      TabOrder = 3
+      TabOrder = 0
       DesignSize = (
         384
         132)
-      object RadioButton1: TRadioButton
+      object rbChoisenDate: TRadioButton
         Left = 7
         Top = 16
         Width = 146
         Height = 17
-        Caption = #1091#1082#1072#1079#1072#1085#1085#1099#1081' '#1076#1077#1085#1100':'
+        Caption = #1091#1082#1072#1079#1072#1085#1085#1099#1081' &'#1076#1077#1085#1100':'
         TabOrder = 0
       end
-      object RadioButton2: TRadioButton
+      object rbChoisenMonth: TRadioButton
         Left = 7
         Top = 39
         Width = 146
         Height = 17
-        Caption = #1091#1082#1072#1079#1072#1085#1085#1099#1081' '#1084#1077#1089#1103#1094':'
-        TabOrder = 1
+        Caption = #1091#1082#1072#1079#1072#1085#1085#1099#1081' &'#1084#1077#1089#1103#1094':'
+        TabOrder = 2
       end
-      object RadioButton3: TRadioButton
+      object rbChoisenQuarter: TRadioButton
         Left = 7
         Top = 62
         Width = 146
         Height = 17
-        Caption = #1091#1082#1072#1079#1072#1085#1085#1099#1081' '#1082#1074#1072#1088#1090#1072#1083':'
-        TabOrder = 2
+        Caption = #1091#1082#1072#1079#1072#1085#1085#1099#1081' &'#1082#1074#1072#1088#1090#1072#1083':'
+        TabOrder = 5
       end
-      object RadioButton4: TRadioButton
+      object rbChoisenYear: TRadioButton
         Left = 7
         Top = 85
         Width = 146
         Height = 17
-        Caption = #1091#1082#1072#1079#1072#1085#1085#1099#1081' '#1075#1086#1076':'
-        TabOrder = 3
+        Caption = #1091#1082#1072#1079#1072#1085#1085#1099#1081' &'#1075#1086#1076':'
+        TabOrder = 8
       end
-      object RadioButton5: TRadioButton
+      object rbChoisenPeriod: TRadioButton
         Left = 7
         Top = 108
         Width = 146
         Height = 17
-        Caption = #1091#1082#1072#1079#1072#1085#1085#1099#1081' '#1087#1077#1088#1080#1086#1076':'
-        TabOrder = 4
+        Caption = #1091#1082#1072#1079#1072#1085#1085#1099#1081' &'#1087#1077#1088#1080#1086#1076':'
+        TabOrder = 10
       end
-      object ComboBox1: TComboBox
+      object cbChoisenMonth_Month: TComboBox
         Left = 187
         Top = 37
         Width = 92
         Height = 21
+        Style = csDropDownList
         Anchors = [akTop, akRight]
-        TabOrder = 5
-        Text = 'ComboBox1'
+        DropDownCount = 12
+        TabOrder = 3
+        Items.Strings = (
+          #1103#1085#1074#1072#1088#1100
+          #1092#1077#1074#1088#1072#1083#1100
+          #1084#1072#1088#1090
+          #1072#1087#1088#1077#1083#1100
+          #1084#1072#1081
+          #1080#1102#1085#1100
+          #1080#1102#1083#1100
+          #1072#1074#1075#1091#1089#1090
+          #1089#1077#1085#1090#1103#1073#1088#1100
+          #1086#1082#1090#1103#1073#1088#1100
+          #1085#1086#1103#1073#1088#1100
+          #1076#1077#1082#1072#1073#1088#1100)
       end
-      object ComboBox2: TComboBox
+      object cbChoisenMonth_Year: TComboBox
         Left = 285
         Top = 37
         Width = 92
         Height = 21
+        Style = csDropDownList
         Anchors = [akTop, akRight]
-        TabOrder = 6
-        Text = 'ComboBox1'
+        DropDownCount = 10
+        TabOrder = 4
       end
-      object DateTimePicker1: TDateTimePicker
+      object dtpChoisenDate: TDateTimePicker
         Left = 285
         Top = 14
         Width = 92
@@ -200,36 +216,44 @@ object ReportForm: TReportForm
         Anchors = [akTop, akRight]
         Date = 40752.659840254630000000
         Time = 40752.659840254630000000
-        TabOrder = 7
+        TabOrder = 1
       end
-      object ComboBox3: TComboBox
+      object cbChoisenQuarter_Quarter: TComboBox
         Left = 187
         Top = 60
         Width = 92
         Height = 21
+        Style = csDropDownList
         Anchors = [akTop, akRight]
-        TabOrder = 8
-        Text = 'ComboBox1'
+        DropDownCount = 4
+        TabOrder = 6
+        Items.Strings = (
+          'I'
+          'II'
+          'III'
+          'IV')
       end
-      object ComboBox4: TComboBox
+      object cbChoisenQuarter_Year: TComboBox
         Left = 285
         Top = 60
         Width = 92
         Height = 21
+        Style = csDropDownList
         Anchors = [akTop, akRight]
-        TabOrder = 9
-        Text = 'ComboBox1'
+        DropDownCount = 10
+        TabOrder = 7
       end
-      object ComboBox5: TComboBox
+      object cbChoisenYear: TComboBox
         Left = 285
         Top = 83
         Width = 92
         Height = 21
+        Style = csDropDownList
         Anchors = [akTop, akRight]
-        TabOrder = 10
-        Text = 'ComboBox1'
+        DropDownCount = 10
+        TabOrder = 9
       end
-      object DateTimePicker2: TDateTimePicker
+      object dtpChoisenPeriod_Start: TDateTimePicker
         Left = 187
         Top = 106
         Width = 92
@@ -239,7 +263,7 @@ object ReportForm: TReportForm
         Time = 40752.659840254630000000
         TabOrder = 11
       end
-      object DateTimePicker3: TDateTimePicker
+      object dtpChoisenPeriod_Stop: TDateTimePicker
         Left = 285
         Top = 106
         Width = 92
@@ -257,53 +281,53 @@ object ReportForm: TReportForm
       Height = 63
       Anchors = [akLeft, akTop, akRight]
       Caption = '3. '#1042#1099#1073#1077#1088#1080#1090#1077' '#1087#1072#1088#1072#1084#1077#1090#1088#1099' '#1075#1088#1091#1087#1087#1080#1088#1086#1074#1082#1080' '#1076#1072#1085#1085#1099#1093':'
-      TabOrder = 4
-      object RadioButton6: TRadioButton
+      TabOrder = 1
+      object rbGroupByHours: TRadioButton
         Left = 7
         Top = 16
         Width = 66
         Height = 17
-        Caption = #1087#1086' '#1095#1072#1089#1072#1084
+        Caption = #1087#1086' &'#1095#1072#1089#1072#1084
         TabOrder = 0
       end
-      object RadioButton7: TRadioButton
+      object rbGroupByDays: TRadioButton
         Left = 79
         Top = 16
         Width = 66
         Height = 17
-        Caption = #1087#1086' '#1076#1085#1103#1084
+        Caption = #1087#1086' '#1076#1085'&'#1103#1084
         TabOrder = 1
       end
-      object RadioButton8: TRadioButton
+      object rbGroupByWeeks: TRadioButton
         Left = 151
         Top = 16
         Width = 82
         Height = 17
-        Caption = #1087#1086' '#1085#1077#1076#1077#1083#1103#1084
+        Caption = #1087#1086' '#1085'&'#1077#1076#1077#1083#1103#1084
         TabOrder = 2
       end
-      object RadioButton9: TRadioButton
+      object rbGroupByMonths: TRadioButton
         Left = 239
         Top = 15
         Width = 82
         Height = 17
-        Caption = #1087#1086' '#1084#1077#1089#1103#1094#1072#1084
+        Caption = #1087#1086' '#1084#1077#1089#1103'&'#1094#1072#1084
         TabOrder = 3
       end
-      object RadioButton10: TRadioButton
+      object rbGroupByQuarters: TRadioButton
         Left = 7
         Top = 39
         Width = 90
         Height = 17
-        Caption = #1087#1086' '#1082#1074#1072#1088#1090#1072#1083#1072#1084
+        Caption = #1087#1086' '#1082'&'#1074#1072#1088#1090#1072#1083#1072#1084
         TabOrder = 4
       end
-      object RadioButton11: TRadioButton
+      object rbGroupByYears: TRadioButton
         Left = 103
         Top = 39
         Width = 66
         Height = 17
-        Caption = #1087#1086' '#1075#1086#1076#1072#1084
+        Caption = #1087#1086' '#1075'&'#1086#1076#1072#1084
         TabOrder = 5
       end
     end
@@ -314,11 +338,11 @@ object ReportForm: TReportForm
       Height = 109
       Anchors = [akLeft, akTop, akRight]
       Caption = '4. '#1042#1099#1073#1077#1088#1080#1090#1077' '#1076#1086#1087#1086#1083#1085#1080#1090#1077#1083#1100#1085#1099#1077' '#1087#1072#1088#1072#1084#1077#1090#1088#1099' '#1086#1090#1095#1105#1090#1072':'
-      TabOrder = 5
+      TabOrder = 2
       DesignSize = (
         384
         109)
-      object CheckBox1: TCheckBox
+      object chkbxDetailed: TCheckBox
         Left = 7
         Top = 16
         Width = 370
@@ -326,26 +350,27 @@ object ReportForm: TReportForm
         Anchors = [akLeft, akTop, akRight]
         Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1090#1100' '#1087#1086#1076#1088#1086#1073#1085#1099#1081' '#1086#1090#1095#1105#1090
         TabOrder = 0
+        OnClick = chkbxDetailedClick
       end
-      object CheckBox2: TCheckBox
+      object chkbxShowSQLQueries: TCheckBox
         Left = 7
-        Top = 62
+        Top = 39
         Width = 370
         Height = 17
         Anchors = [akLeft, akTop, akRight]
         Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1090#1077#1082#1089#1090' SQL-'#1079#1072#1087#1088#1086#1089#1086#1074
         TabOrder = 1
       end
-      object CheckBox3: TCheckBox
+      object chkbxShowIdleUsers: TCheckBox
         Left = 7
-        Top = 39
+        Top = 62
         Width = 370
         Height = 17
         Anchors = [akLeft, akTop, akRight]
         Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1077#1081', '#1085#1077' '#1080#1079#1084#1077#1085#1103#1074#1096#1080#1093' '#1041#1044' '#1074' '#1091#1082#1072#1079#1072#1085#1085#1099#1081' '#1087#1077#1088#1080#1086#1076
         TabOrder = 2
       end
-      object CheckBox4: TCheckBox
+      object chkbxWeekStartsFromDayOfBeginning: TCheckBox
         Left = 7
         Top = 85
         Width = 370
@@ -360,7 +385,7 @@ object ReportForm: TReportForm
     Left = 176
     Top = 288
     Bitmap = {
-      494C010104000800400010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101040008008C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -664,7 +689,7 @@ object ReportForm: TReportForm
       OnExecute = Action_SelectNoneExecute
     end
     object Action_Create: TAction
-      Caption = #1057#1086#1079#1076#1072#1090#1100
+      Caption = #1057#1086#1079#1076#1072#1090'&'#1100
       Hint = #1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1085#1072#1095#1072#1083#1072' '#1092#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1103' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1091#1082#1072#1079#1072#1085#1085#1099#1084' '#1091#1089#1083#1086#1074#1080#1103#1084
       OnExecute = Action_CreateExecute
     end

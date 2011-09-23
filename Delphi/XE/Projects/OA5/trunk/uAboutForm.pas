@@ -90,7 +90,7 @@ begin
       AlphaBlendValue:=0;
       Timer2.Enabled:=True;
     end;
-  btnClose.default:=Action_Close.Visible;
+  btnClose.Default:=Action_Close.Visible;
   lblVersion.Caption:=Format('Версия %s билд %s', [copy(gsFileVersionInfo1.FileVersion, 1, LastDelimiter('.', gsFileVersionInfo1.FileVersion)-1), gsFileVersionInfo1.GetBuildOnly]);
   lblLegalCopyright.Caption:=gsFileVersionInfo1.LegalCopyright;
   Log.SendInfo('Отображено окно "О программе...".');

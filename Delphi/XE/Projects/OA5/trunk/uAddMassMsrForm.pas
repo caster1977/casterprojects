@@ -294,9 +294,13 @@ begin
   ProcedureHeader('Процедура обновления состояния действий', '{E82D3684-F61B-4852-B94D-10AE52F902CF}');
 
   Action_Add.Enabled:=IsStringIsTime(edbxTime.Text);
+  Log.SendDebug('Действие "'+Action_Add.Caption+'" '+Routines.GetConditionalString(Action_Add.Enabled, 'в', 'от')+'ключено.');
   Action_Delete.Enabled:=lvMsrDateTimeList.Selected<>nil;
+  Log.SendDebug('Действие "'+Action_Delete.Caption+'" '+Routines.GetConditionalString(Action_Delete.Enabled, 'в', 'от')+'ключено.');
   Action_Clear.Enabled:=lvMsrDateTimeList.Items.Count>0;
+  Log.SendDebug('Действие "'+Action_Clear.Caption+'" '+Routines.GetConditionalString(Action_Clear.Enabled, 'в', 'от')+'ключено.');
   Action_Confirm.Enabled:=lvMsrDateTimeList.Items.Count>0;
+  Log.SendDebug('Действие "'+Action_Confirm.Caption+'" '+Routines.GetConditionalString(Action_Confirm.Enabled, 'в', 'от')+'ключено.');
 
   ProcedureFooter;
 end;
@@ -420,6 +424,7 @@ begin
 
   ilAddMassMsrFormSmallImages.GetIcon(ICON_ADDMASSMSR, Icon);
   Action_Help.Enabled:=Application.HelpFile<>'';
+  Log.SendDebug('Действие "'+Action_Help.Caption+'" '+Routines.GetConditionalString(Action_Help.Enabled, 'в', 'от')+'ключено.');
 
   with MainForm.Configuration do
     begin
