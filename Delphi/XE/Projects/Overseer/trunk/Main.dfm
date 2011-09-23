@@ -494,10 +494,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-03-...'
           ImageIndex = 4
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_03: TGroupBox
             Left = 0
             Top = 0
@@ -555,10 +551,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-04-...'
           ImageIndex = 8
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_04: TGroupBox
             Left = 0
             Top = 0
@@ -751,10 +743,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-05-...'
           ImageIndex = 5
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_05: TGroupBox
             Left = 0
             Top = 0
@@ -817,10 +805,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-06-...'
           ImageIndex = 12
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_06: TGroupBox
             Left = 0
             Top = 0
@@ -1135,10 +1119,6 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-10-...'
           ImageIndex = 10
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object gb_SIC_10: TGroupBox
             Left = 0
             Top = 0
@@ -2176,7 +2156,7 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 2
         end
-        object cbChoisenPeriod_Start: TDateTimePicker
+        object dtpChoisenPeriod_Start: TDateTimePicker
           Left = 145
           Top = 257
           Width = 88
@@ -2207,7 +2187,7 @@ object MainForm: TMainForm
           TabOrder = 15
           OnClick = TimePeriodChange
         end
-        object cbChoisenPeriod_Stop: TDateTimePicker
+        object dtpChoisenPeriod_Stop: TDateTimePicker
           Left = 239
           Top = 257
           Width = 88
@@ -2299,7 +2279,7 @@ object MainForm: TMainForm
     Left = 384
     Top = 424
     Bitmap = {
-      494C01012200A000680510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01012200A000700510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000009000000001002000000000000090
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000ECA6A6FFECA6A6FFCF8C8CFF0000
@@ -4049,7 +4029,7 @@ object MainForm: TMainForm
     Left = 256
     Top = 424
     Bitmap = {
-      494C010103000800280110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000800300110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

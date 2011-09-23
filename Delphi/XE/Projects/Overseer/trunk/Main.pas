@@ -162,9 +162,9 @@ type
     cbChoisenMonth_Year: TComboBox;
     rbChoisenDate: TRadioButton;
     dtpChoisenDate: TDateTimePicker;
-    cbChoisenPeriod_Start: TDateTimePicker;
+    dtpChoisenPeriod_Start: TDateTimePicker;
     rbChoisenPeriod: TRadioButton;
-    cbChoisenPeriod_Stop: TDateTimePicker;
+    dtpChoisenPeriod_Stop: TDateTimePicker;
     ebCustomNameOfXRDA: TEdit;
     cbCustomNameOfXRDA: TCheckBox;
     cbRecreateXRDA: TCheckBox;
@@ -2150,8 +2150,8 @@ begin
 
   cbChoisenYear.ItemIndex:=cbChoisenYear.Items.IndexOf(IntToStr(wLastYear));
 
-  cbChoisenPeriod_Start.DateTime:=dtLastDate;
-  cbChoisenPeriod_Stop.DateTime:=dtLastDate;
+  dtpChoisenPeriod_Start.DateTime:=dtLastDate;
+  dtpChoisenPeriod_Stop.DateTime:=dtLastDate;
 
   PageControl2.ActivePage:=tsLog;
 
@@ -2362,16 +2362,16 @@ begin
             end;
           if rbChoisenPeriod.Checked then
             begin
-              if cbChoisenPeriod_Start.Date>cbChoisenPeriod_Stop.Date then
-                Routines_GenerateError('Выбранная начальная дата ('+FormatDateTime('dd.mm.yyyy', cbChoisenPeriod_Start.Date)+') больше, чем конечная ('+FormatDateTime('dd.mm.yyyy', cbChoisenPeriod_Stop.Date)+')!', sErrorMessage, bError)
+              if dtpChoisenPeriod_Start.Date>dtpChoisenPeriod_Stop.Date then
+                Routines_GenerateError('Выбранная начальная дата ('+FormatDateTime('dd.mm.yyyy', dtpChoisenPeriod_Start.Date)+') больше, чем конечная ('+FormatDateTime('dd.mm.yyyy', dtpChoisenPeriod_Stop.Date)+')!', sErrorMessage, bError)
               else
                 begin
-                  wStartDay:=DayOf(cbChoisenPeriod_Start.Date);
-                  wStartMonth:=MonthOf(cbChoisenPeriod_Start.Date);
-                  wStartYear:=YearOf(cbChoisenPeriod_Start.Date);
-                  wStopDay:=DayOf(cbChoisenPeriod_Stop.Date);
-                  wStopMonth:=MonthOf(cbChoisenPeriod_Stop.Date);
-                  wStopYear:=YearOf(cbChoisenPeriod_Stop.Date);
+                  wStartDay:=DayOf(dtpChoisenPeriod_Start.Date);
+                  wStartMonth:=MonthOf(dtpChoisenPeriod_Start.Date);
+                  wStartYear:=YearOf(dtpChoisenPeriod_Start.Date);
+                  wStopDay:=DayOf(dtpChoisenPeriod_Stop.Date);
+                  wStopMonth:=MonthOf(dtpChoisenPeriod_Stop.Date);
+                  wStopYear:=YearOf(dtpChoisenPeriod_Stop.Date);
                 end;
             end;
           if rbChoisenMonth.Checked then
@@ -2842,8 +2842,8 @@ var
 begin
   ProcedureHeader('Процедура обновления состояния вариантов группировки', LogGroupGUID);
 
-  dtStartDate:=cbChoisenPeriod_Start.Date;
-  dtStopDate:=cbChoisenPeriod_Stop.Date;
+  dtStartDate:=dtpChoisenPeriod_Start.Date;
+  dtStopDate:=dtpChoisenPeriod_Stop.Date;
 
   wStartMonth:=MonthOf(dtStartDate);
   wStopMonth:=MonthOf(dtStopDate);
@@ -4285,16 +4285,16 @@ begin
         end;
       if rbChoisenPeriod.Checked then
         begin
-          if cbChoisenPeriod_Start.Date>cbChoisenPeriod_Stop.Date then
-            Routines_GenerateError('Выбранная начальная дата ('+FormatDateTime('dd.mm.yyyy', cbChoisenPeriod_Start.Date)+') больше, чем конечная ('+FormatDateTime('dd.mm.yyyy', cbChoisenPeriod_Stop.Date)+')!', sErrorMessage, bError)
+          if dtpChoisenPeriod_Start.Date>dtpChoisenPeriod_Stop.Date then
+            Routines_GenerateError('Выбранная начальная дата ('+FormatDateTime('dd.mm.yyyy', dtpChoisenPeriod_Start.Date)+') больше, чем конечная ('+FormatDateTime('dd.mm.yyyy', dtpChoisenPeriod_Stop.Date)+')!', sErrorMessage, bError)
           else
             begin
-              wStartDay:=DayOf(cbChoisenPeriod_Start.Date);
-              wStartMonth:=MonthOf(cbChoisenPeriod_Start.Date);
-              wStartYear:=YearOf(cbChoisenPeriod_Start.Date);
-              wStopDay:=DayOf(cbChoisenPeriod_Stop.Date);
-              wStopMonth:=MonthOf(cbChoisenPeriod_Stop.Date);
-              wStopYear:=YearOf(cbChoisenPeriod_Stop.Date);
+              wStartDay:=DayOf(dtpChoisenPeriod_Start.Date);
+              wStartMonth:=MonthOf(dtpChoisenPeriod_Start.Date);
+              wStartYear:=YearOf(dtpChoisenPeriod_Start.Date);
+              wStopDay:=DayOf(dtpChoisenPeriod_Stop.Date);
+              wStopMonth:=MonthOf(dtpChoisenPeriod_Stop.Date);
+              wStopYear:=YearOf(dtpChoisenPeriod_Stop.Date);
             end;
         end;
       if rbChoisenMonth.Checked then
@@ -5023,16 +5023,16 @@ begin
         end;
       if rbChoisenPeriod.Checked then
         begin
-          if cbChoisenPeriod_Start.Date>cbChoisenPeriod_Stop.Date then
-            Routines_GenerateError('Выбранная начальная дата ('+FormatDateTime('dd.mm.yyyy', cbChoisenPeriod_Start.Date)+') больше, чем конечная ('+FormatDateTime('dd.mm.yyyy', cbChoisenPeriod_Stop.Date)+')!', sErrorMessage, bError)
+          if dtpChoisenPeriod_Start.Date>dtpChoisenPeriod_Stop.Date then
+            Routines_GenerateError('Выбранная начальная дата ('+FormatDateTime('dd.mm.yyyy', dtpChoisenPeriod_Start.Date)+') больше, чем конечная ('+FormatDateTime('dd.mm.yyyy', dtpChoisenPeriod_Stop.Date)+')!', sErrorMessage, bError)
           else
             begin
-              wStartDay:=DayOf(cbChoisenPeriod_Start.Date);
-              wStartMonth:=MonthOf(cbChoisenPeriod_Start.Date);
-              wStartYear:=YearOf(cbChoisenPeriod_Start.Date);
-              wStopDay:=DayOf(cbChoisenPeriod_Stop.Date);
-              wStopMonth:=MonthOf(cbChoisenPeriod_Stop.Date);
-              wStopYear:=YearOf(cbChoisenPeriod_Stop.Date);
+              wStartDay:=DayOf(dtpChoisenPeriod_Start.Date);
+              wStartMonth:=MonthOf(dtpChoisenPeriod_Start.Date);
+              wStartYear:=YearOf(dtpChoisenPeriod_Start.Date);
+              wStopDay:=DayOf(dtpChoisenPeriod_Stop.Date);
+              wStopMonth:=MonthOf(dtpChoisenPeriod_Stop.Date);
+              wStopYear:=YearOf(dtpChoisenPeriod_Stop.Date);
             end;
         end;
       if rbChoisenMonth.Checked then

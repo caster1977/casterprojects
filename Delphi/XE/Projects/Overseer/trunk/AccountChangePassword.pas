@@ -52,9 +52,6 @@ type
     procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage, aLogGroupGUID: string);
   end;
 
-var
-  AccountChangePasswordForm: TAccountChangePasswordForm;
-
 implementation
 
 {$R *.dfm}
@@ -138,8 +135,8 @@ const
 begin
   ProcedureHeader('Процедура-обработчик события отображения окна', LogGroupGUID);
 
-  LogThis('Отображено окно изменения пароля учётной записи.', LogGroupGUID, lmtInfo);
   Do_UpdateActions;
+  LogThis('Отображено окно изменения пароля учётной записи.', LogGroupGUID, lmtInfo);
 
   ProcedureFooter(LogGroupGUID);
 end;
