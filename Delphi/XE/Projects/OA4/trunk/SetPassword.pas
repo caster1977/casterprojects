@@ -3,11 +3,21 @@ unit SetPassword;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, StdCtrls, Mask;
+  Windows,
+  Messages,
+  SysUtils,
+  Variants,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  ExtCtrls,
+  StdCtrls,
+  Mask;
 
 type
-  TSetPasswordForm = class(TForm)
+  TSetPasswordForm=class(TForm)
     Panel1: TPanel;
     edbxPassword: TEdit;
     edbxConfirmation: TMaskEdit;
@@ -19,14 +29,7 @@ type
     chkbxShowPassword: TCheckBox;
     procedure chkbxShowPasswordClick(Sender: TObject);
     procedure chkbxChange(Sender: TObject);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
-
-var
-  SetPasswordForm: TSetPasswordForm;
 
 implementation
 
