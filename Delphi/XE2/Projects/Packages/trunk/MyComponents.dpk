@@ -1,0 +1,50 @@
+package MyComponents;
+
+{$R *.res}
+{$R 'fisSysMenu.dcr'}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  xmlrtl;
+
+contains
+  getFVI in 'getFVI.pas',
+  SysMenu in 'SysMenu.pas',
+  fisSysMenu in 'fisSysMenu.pas',
+  ListViewEx in 'ListViewEx.pas',
+  uLogProvider in 'uLogProvider.pas',
+  LogKeeperData in 'LogKeeperData.pas',
+  uCOMInit in 'uCOMInit.pas',
+  uLogClasses in 'uLogClasses.pas',
+  uRoutines in 'uRoutines.pas',
+  mysql in 'mysql.pas',
+  uSingleton in 'uSingleton.pas',
+  uTypes in 'uTypes.pas';
+
+end.
