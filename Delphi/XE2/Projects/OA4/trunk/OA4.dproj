@@ -1,0 +1,260 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{6CCF5979-4E97-4F97-A9D7-7C23BDA99E43}</ProjectGuid>
+			<MainSource>OA4.dpr</MainSource>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+			<ProjectVersion>13.4</ProjectVersion>
+			<Base>True</Base>
+			<AppType>Application</AppType>
+			<FrameworkType>VCL</FrameworkType>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<TargetedPlatforms>1</TargetedPlatforms>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+			<Base_Win64>true</Base_Win64>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+			<Base_Win32>true</Base_Win32>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+			<Cfg_1_Win32>true</Cfg_1_Win32>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+			<Cfg_2_Win32>true</Cfg_2_Win32>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<Manifest_File>None</Manifest_File>
+			<Icon_MainIcon>OA4_Icon.ico</Icon_MainIcon>
+			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
+			<VerInfo_Debug>true</VerInfo_Debug>
+			<VerInfo_Build>135</VerInfo_Build>
+			<VerInfo_MajorVer>4</VerInfo_MajorVer>
+			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<VerInfo_MinorVer>1</VerInfo_MinorVer>
+			<VerInfo_Keys>CompanyName=;FileDescription=АРМ оператора услуги &quot;Отдых и развлечения&quot;;FileVersion=4.1.0.135;InternalName=OA4;LegalCopyright=(C)opyright 2007-2011 by Vlad DraCooLa;LegalTrademarks=;OriginalFilename=OA4.exe;ProductName=OA4;ProductVersion=4.1.0.135;Comments=</VerInfo_Keys>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<DCC_BplOutput>..\Packages\</DCC_BplOutput>
+			<DCC_DependencyCheckOutputName>OA4.exe</DCC_DependencyCheckOutputName>
+			<DCC_UnitSearchPath>..\Packages;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_UsePackage>vcl;rtl;vclx;VclSmp;vclactnband;MyComponents;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<DCC_RangeChecking>true</DCC_RangeChecking>
+			<DCC_Platform>x86</DCC_Platform>
+			<DCC_Optimize>false</DCC_Optimize>
+			<DCC_K>false</DCC_K>
+			<DCC_F>false</DCC_F>
+			<DCC_S>false</DCC_S>
+			<DCC_N>true</DCC_N>
+			<DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
+			<DebugSourcePath>C:\Program Files\Borland\BDS\4.0\source\Win32\Samples\Source;$(DebugSourcePath)</DebugSourcePath>
+			<DCC_E>false</DCC_E>
+			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win64)'!=''">
+			<Icon_MainIcon>OA4_Icon.ico</Icon_MainIcon>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<DCC_ExeOutput>RELEASE</DCC_ExeOutput>
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_ExeOutput>DEBUG</DCC_ExeOutput>
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<VerInfo_Keys>CompanyName=;FileDescription=АРМ оператора услуги &apos;&apos;Отдых и развлечения&apos;&apos;;FileVersion=4.1.0.135;InternalName=OA4;LegalCopyright=(C)opyright 2007-2011 by Vlad DraCooLa;LegalTrademarks=;OriginalFilename=OA4.exe;ProductName=OA4;ProductVersion=4.1.0.135;Comments=</VerInfo_Keys>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+		</PropertyGroup>
+		<ItemGroup>
+			<DelphiCompile Include="$(MainSource)">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="Users.pas">
+				<Form>UsersForm</Form>
+			</DCCReference>
+			<DCCReference Include="About.pas">
+				<Form>AboutForm</Form>
+			</DCCReference>
+			<DCCReference Include="Login.pas">
+				<Form>LoginForm</Form>
+			</DCCReference>
+			<DCCReference Include="ViewPostList.pas">
+				<Form>ViewPostListForm</Form>
+			</DCCReference>
+			<DCCReference Include="SetPassword.pas">
+				<Form>SetPasswordForm</Form>
+			</DCCReference>
+			<DCCReference Include="Main.pas">
+				<Form>MainForm</Form>
+			</DCCReference>
+			<DCCReference Include="Options.pas">
+				<Form>OptionsForm</Form>
+			</DCCReference>
+			<DCCReference Include="Statistic.pas">
+				<Form>StatisticForm</Form>
+			</DCCReference>
+			<DCCReference Include="CreateViewPost.pas">
+				<Form>CreateViewPostForm</Form>
+			</DCCReference>
+			<DCCReference Include="Phones.pas">
+				<Form>PhonesForm</Form>
+			</DCCReference>
+			<DCCReference Include="AddEditPhone.pas">
+				<Form>AddEditPhoneForm</Form>
+			</DCCReference>
+			<DCCReference Include="Clearing.pas">
+				<Form>ClearingForm</Form>
+			</DCCReference>
+			<DCCReference Include="Maintenance.pas">
+				<Form>MaintenanceForm</Form>
+			</DCCReference>
+			<DCCReference Include="AddMassMsr.pas">
+				<Form>AddMassMsrForm</Form>
+			</DCCReference>
+			<DCCReference Include="MultiBuffer.pas">
+				<Form>MultiBufferForm</Form>
+			</DCCReference>
+			<DCCReference Include="mysql.pas"/>
+			<None Include="main_what_to_do.inc">
+				<ContainerId>File</ContainerId>
+			</None>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<ItemGroup/>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')" Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Source>
+						<Source Name="MainSource">OA4.dpr</Source>
+					</Source>
+					<Parameters/>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
+						<VersionInfo Name="MajorVer">4</VersionInfo>
+						<VersionInfo Name="MinorVer">1</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">141</VersionInfo>
+						<VersionInfo Name="Debug">True</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1049</VersionInfo>
+						<VersionInfo Name="CodePage">1251</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName"/>
+						<VersionInfoKeys Name="FileDescription">АРМ оператора услуги &quot;Отдых и развлечения&quot;</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">4.1.0.141</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName">OA4</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalCopyright">(C)opyright 2007-2010 by Vlad DraCooLa</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename">OA4.exe</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductName">OA4</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductVersion">4.1.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+					</VersionInfoKeys>
+					<Excluded_Packages/>
+					<DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="__COMPAT_LAYER">&apos;ElevateCreateProcess&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="ALLUSERSPROFILE">&apos;C:\ProgramData&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="APPDATA">&apos;C:\Users\caster\AppData\Roaming&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="BDS">&apos;c:\program files\embarcadero\rad studio\7.0&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="BDSAppDataBaseDir">&apos;BDS&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="BDSCOMMONDIR">&apos;C:\Users\Public\Documents\RAD Studio\7.0&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="BDSUSERDIR">&apos;C:\Users\caster\Documents\RAD Studio\7.0&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="CG_BOOST_ROOT">&apos;C:\Program Files\Embarcadero\RAD Studio\7.0\include\boost_1_39&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="CommonProgramFiles">&apos;C:\Program Files\Common Files&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="COMPUTERNAME">&apos;VLAD&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="ComSpec">&apos;C:\Windows\system32\cmd.exe&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="DELPHI">&apos;c:\program files\embarcadero\rad studio\7.0&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="EMAIL">&apos;D:\BatMail&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="FP_NO_HOST_CHECK">&apos;NO&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="HOMEDRIVE">&apos;C:&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="HOMEPATH">&apos;\Users\caster&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="LOCALAPPDATA">&apos;C:\Users\caster\AppData\Local&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="LOGONSERVER">&apos;\\VLAD&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="NUMBER_OF_PROCESSORS">&apos;4&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="OS">&apos;Windows_NT&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="PATHEXT">&apos;.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="PROCESSOR_ARCHITECTURE">&apos;x86&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="PROCESSOR_IDENTIFIER">&apos;x86 Family 6 Model 23 Stepping 7, GenuineIntel&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="PROCESSOR_LEVEL">&apos;6&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="PROCESSOR_REVISION">&apos;1707&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="ProgramData">&apos;C:\ProgramData&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="ProgramFiles">&apos;C:\Program Files&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="PSModulePath">&apos;C:\Windows\system32\WindowsPowerShell\v1.0\Modules\&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="PUBLIC">&apos;C:\Users\Public&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="SESSIONNAME">&apos;Console&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="SystemDrive">&apos;C:&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="SystemRoot">&apos;C:\Windows&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="TEMP">&apos;C:\Temp&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="TMP">&apos;C:\Temp&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="USERDOMAIN">&apos;VLAD&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="USERNAME">&apos;caster&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="USERPROFILE">&apos;C:\Users\caster&apos;</DebugSysEnvironmentVariables>
+						<DebugSysEnvironmentVariables Name="windir">&apos;C:\Windows&apos;</DebugSysEnvironmentVariables>
+					</DebugSysEnvironmentVariables>
+					<DebugEnvironmentVariables>
+						<DebugEnvironmentVariables Name="BDSPROJECTSDIR">&apos;D:\My Documents\RAD Studio\Projects&apos;</DebugEnvironmentVariables>
+					</DebugEnvironmentVariables>
+				</Delphi.Personality>
+				<Platforms>
+					<Platform value="Win64">False</Platform>
+					<Platform value="Win32">True</Platform>
+				</Platforms>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+	</Project>
