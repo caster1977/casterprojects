@@ -1,0 +1,211 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{19439578-49E1-47C5-B714-60C70A5E63FB}</ProjectGuid>
+			<ProjectVersion>13.4</ProjectVersion>
+			<MainSource>Overseer.dpr</MainSource>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+			<Base>True</Base>
+			<AppType>Application</AppType>
+			<FrameworkType>VCL</FrameworkType>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<TargetedPlatforms>1</TargetedPlatforms>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+			<Base_Win64>true</Base_Win64>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+			<Base_Win32>true</Base_Win32>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+			<Cfg_2_Win32>true</Cfg_2_Win32>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<VerInfo_Build>86</VerInfo_Build>
+			<VerInfo_Debug>true</VerInfo_Debug>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.86;InternalName=overseer;LegalCopyright=(C)opyright 2009-2010 by Vlad Ivanov;LegalTrademarks=;OriginalFilename=overseer.exe;ProductName=overseer;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<VerInfo_Locale>1049</VerInfo_Locale>
+			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_UnitSearchPath>..\Packages;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_Description>(C)opyright 2009-2010 by Vlad Ivanov</DCC_Description>
+			<DCC_DependencyCheckOutputName>Overseer.exe</DCC_DependencyCheckOutputName>
+			<DCC_UsePackage>vcl;rtl;vclx;vclactnband;dbrtl;vcldb;bdertl;VclSmp;DBXSybaseASADriver;DbxCommonDriver;DBXInterBaseDriver;DBXMySQLDriver;DbxClientDriver;DBXSybaseASEDriver;DBXOracleDriver;DBXMSSQLDriver;DBXInformixDriver;DBXDb2Driver;vclie;xmlrtl;inet;inetdbbde;inetdbxpress;vclribbon;Package1;vcldbx;dsnap;dsnapcon;TeeUI;TeeDB;Tee;dclado120;adortl120;IndyCore;IndySystem;IndyProtocols;intrawebdb_100_120;Intraweb_100_120;dbexpress;DataSnapIndy10ServerTransport;DataSnapProviderClient;DataSnapServer;dbxcds;websnap;webdsnap;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<DCC_Platform>x86</DCC_Platform>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win64)'!=''">
+			<Icon_MainIcon>Overseer_Icon.ico</Icon_MainIcon>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<Icon_MainIcon>Overseer_Icon.ico</Icon_MainIcon>
+			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Debugger_DebugSourcePath>C:\Program Files\Embarcadero\RAD Studio\8.0\source;$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<DCC_ExeOutput>RELEASE</DCC_ExeOutput>
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<Icon_MainIcon>Overseer_Icon.ico</Icon_MainIcon>
+			<Manifest_File>None</Manifest_File>
+			<DCC_ExeOutput>DEBUG</DCC_ExeOutput>
+			<DCC_BplOutput>..\Packages\</DCC_BplOutput>
+			<DCC_UnitSearchPath>..\Packages\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_Optimize>false</DCC_Optimize>
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+		</PropertyGroup>
+		<ItemGroup>
+			<DelphiCompile Include="$(MainSource)">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<RcCompile Include="waves.rc">
+				<ContainerId>RC</ContainerId>
+				<Form>waves.res</Form>
+			</RcCompile>
+			<DCCReference Include="Main.pas">
+				<Form>MainForm</Form>
+			</DCCReference>
+			<DCCReference Include="About.pas">
+				<Form>AboutForm</Form>
+			</DCCReference>
+			<DCCReference Include="mysql.pas"/>
+			<DCCReference Include="Configuration.pas">
+				<Form>ConfigurationForm</Form>
+			</DCCReference>
+			<DCCReference Include="FindGIUD.pas">
+				<Form>FindGUIDForm</Form>
+			</DCCReference>
+			<DCCReference Include="Login.pas">
+				<Form>LoginForm</Form>
+			</DCCReference>
+			<DCCReference Include="Accounts.pas">
+				<Form>AccountsForm</Form>
+			</DCCReference>
+			<DCCReference Include="AccountCreate.pas">
+				<Form>AccountCreateForm</Form>
+			</DCCReference>
+			<DCCReference Include="AccountChangePassword.pas">
+				<Form>AccountChangePasswordForm</Form>
+			</DCCReference>
+			<DCCReference Include="AccountProperties.pas">
+				<Form>AccountPropertiesForm</Form>
+			</DCCReference>
+			<DCCReference Include="Comments.pas">
+				<Form>CommentsForm</Form>
+			</DCCReference>
+			<DCCReference Include="Permissions.pas">
+				<Form>PermissionsForm</Form>
+			</DCCReference>
+			<DCCReference Include="Thread_Do_SIC_03.pas"/>
+			<DCCReference Include="OverseerTypes.pas"/>
+			<DCCReference Include="OverseerConsts.pas"/>
+			<DCCReference Include="Thread_Do_SIC_01.pas"/>
+			<DCCReference Include="Thread_Do_SIC_07.pas"/>
+			<DCCReference Include="Thread_Do_SIC_04.pas"/>
+			<DCCReference Include="Thread_Do_SIC_05.pas"/>
+			<DCCReference Include="Thread_Do_SIC_08.pas"/>
+			<DCCReference Include="Thread_Do_SIC_09.pas"/>
+			<DCCReference Include="Thread_Do_SIC_10.pas"/>
+			<DCCReference Include="OverseerRoutines.pas"/>
+			<DCCReference Include="Thread_Do_ASKR.pas"/>
+			<DCCReference Include="Thread_Do_SIC_06.pas"/>
+			<None Include="NonUsedSources.txt"/>
+			<None Include="Overseer.todo"/>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<ItemGroup/>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')" Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Source>
+						<Source Name="MainSource">Overseer.dpr</Source>
+					</Source>
+					<Parameters>
+						<Parameters Name="DebugSourceDirs">C:\Program Files\Embarcadero\RAD Studio\8.0\source</Parameters>
+					</Parameters>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">97</VersionInfo>
+						<VersionInfo Name="Debug">True</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1049</VersionInfo>
+						<VersionInfo Name="CodePage">1251</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName"/>
+						<VersionInfoKeys Name="FileDescription"/>
+						<VersionInfoKeys Name="FileVersion">1.0.0.97</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName">overseer</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalCopyright">(C)opyright 2009-2010 by Vlad Ivanov</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename">overseer.exe</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductName">overseer</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+					</VersionInfoKeys>
+					<Excluded_Packages/>
+				</Delphi.Personality>
+				<Platforms>
+					<Platform value="Win64">False</Platform>
+					<Platform value="Win32">True</Platform>
+				</Platforms>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+	</Project>
