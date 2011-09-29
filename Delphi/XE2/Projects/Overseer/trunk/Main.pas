@@ -6199,7 +6199,7 @@ begin
   Application.ProcessMessages;
 end;
 
-procedure TMainForm.ProcedureFooter(aLogGroupGUID: string);
+procedure TMainForm.ProcedureFooter(const aLogGroupGUID: string);
 begin
   MainForm.Dec_BusyState(aLogGroupGUID);
   LogThis('Окончание процедуры.', aLogGroupGUID, lmtDebug);
