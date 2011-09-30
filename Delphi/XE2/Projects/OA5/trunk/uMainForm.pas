@@ -34,7 +34,8 @@ uses
   xmldom,
   XMLIntf,
   msxmldom,
-  XMLDoc;
+  XMLDoc,
+  Vcl.AppEvnts;
 
 type
   THackControl=class(TControl);
@@ -74,6 +75,7 @@ type
     imState: TImage;
     ilMainFormStateIcons: TImageList;
     Log: TLogProvider;
+    ApplicationEvents1: TApplicationEvents;
     procedure Action_QuitExecute(Sender: TObject);
     procedure Action_AboutExecute(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
@@ -83,6 +85,8 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure Action_ReportExecute(Sender: TObject);
+    procedure miStatusBarClick(Sender: TObject);
+    procedure ApplicationEvents1Hint(Sender: TObject);
   strict private
     bFirstRun: boolean;
     bAboutWindowExist: boolean;
@@ -195,18 +199,11 @@ begin
   with MainForm do
     begin
       if iBusyCounter>0 then
-        begin
-          ilMainFormStateIcons.GetIcon(ICON_BUSY, imState.Picture.Icon);
-          // Screen.Cursor:=crHourGlass;
-        end
+        ilMainFormStateIcons.GetIcon(ICON_BUSY, imState.Picture.Icon)
       else
-        begin
-          ilMainFormStateIcons.GetIcon(ICON_READY, imState.Picture.Icon);
-          // Screen.Cursor:=crDefault;
-        end;
-      { TODO : Убрать ремарки }
-      // if not Configuration.bNoStatusBar then
-      StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=Routines.GetConditionalString(iBusyCounter>0, 'Пожалуйста, подождите...', 'Готово');
+        ilMainFormStateIcons.GetIcon(ICON_READY, imState.Picture.Icon);
+      if Configuration.ShowStatusbar then
+        StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=Routines.GetConditionalString(iBusyCounter>0, 'Пожалуйста, подождите...', 'Готово');
     end;
   Application.ProcessMessages;
 end;
@@ -220,6 +217,17 @@ begin
         iBusyCounter:=0;
       Refresh_BusyState;
     end;
+end;
+
+procedure TMainForm.miStatusBarClick(Sender: TObject);
+begin
+  ProcedureHeader('Процедура включения/отключения отображения панели статуса', '{3550143C-FACD-490F-A327-4E1496CDEC5E}');
+
+  StatusBar1.Visible:=miStatusbar.Checked;
+  Configuration.ShowStatusbar:=StatusBar1.Visible;
+  Log.SendInfo('Панель статуса '+Routines.GetConditionalString(StatusBar1.Visible, 'в', 'от')+'ключена.');
+
+  ProcedureFooter;
 end;
 
 procedure TMainForm.Dec_BusyState;
@@ -291,6 +299,12 @@ begin
   ProcedureFooter;
 end;
 
+procedure TMainForm.ApplicationEvents1Hint(Sender: TObject);
+begin
+  if Configuration.ShowStatusbar then
+    StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=GetLongHint(Application.Hint);
+end;
+
 procedure TMainForm.Do_Help;
 var
   bError: boolean;
@@ -348,6 +362,7 @@ begin
 
   // загрузка настроек из файла
   Do_LoadConfiguration;
+
   // применение настроек к интерфейсу
   Do_ApplyConfiguration;
 
@@ -497,6 +512,10 @@ begin
   Log.UserName:=MainForm.CurrentUser.Login;
   Log.AllowedTypes:=MainForm.Configuration.KeepLogTypes;
   Log.Enabled:=MainForm.Configuration.EnableLog;
+
+  // установка видимости панели статуса в соответствии с настройками программы
+  miStatusbar.Checked:=Configuration.ShowStatusbar;
+  StatusBar1.Visible:=Configuration.ShowStatusbar;
 
   ProcedureFooter;
 end;

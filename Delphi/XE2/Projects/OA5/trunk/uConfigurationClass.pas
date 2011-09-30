@@ -20,8 +20,8 @@ type
 const
   // вкладка "настройки интерфейса"
   DefaultValue_ShowAboutWindowAtLaunch: boolean=True;
-  DefaultValue_ShowToolbarAtLaunch: boolean=True;
-  DefaultValue_ShowStatusbarAtLaunch: boolean=True;
+  DefaultValue_ShowToolbar: boolean=True;
+  DefaultValue_ShowStatusbar: boolean=True;
   DefaultValue_ShowEditboxHints: boolean=True;
   DefaultValue_ShowCommonSearchEditbox: boolean=True;
   DefaultValue_ShowID: boolean=False;
@@ -110,8 +110,8 @@ type
 
     // вкладка "настройки интерфейса"
     FShowAboutWindowAtLaunch: boolean; // Отображать окно "О программе..." при запуске
-    FShowToolbarAtLaunch: boolean; // Отображать панель кнопок при запуске программы
-    FShowStatusbarAtLaunch: boolean; // Отображать панель статуса при запуске программы
+    FShowToolbar: boolean; // Отображать панель кнопок
+    FShowStatusbar: boolean; // Отображать панель статуса
     FShowEditboxHints: boolean; // Отображать всплывающие подсказки для полей ввода
     FShowCommonSearchEditbox: boolean; // Отображать единое поле ввода для поиска данных
     FShowID: boolean; // Отображать поле ID записей базы данных при работе программы
@@ -142,6 +142,7 @@ type
     FPhonesFormPosition: TFormPosition;
     FAddEditPhoneFormPosition: TFormPosition;
     FAddMassMsrFormPosition: TFormPosition;
+    FPermissionsFormPosition: TFormPosition;
 
     // вкладка "настройки процедуры логирования"
     FStoreLastLogin: boolean; // Сохранять логин последнего пользователя
@@ -196,6 +197,7 @@ type
     procedure SetFileName(const Value: string);
     procedure SetAddEditPhoneFormPosition(const Value: TFormPosition);
     procedure SetAddMassMsrFormPosition(const Value: TFormPosition);
+    procedure SetPermissionsFormPosition(const Value: TFormPosition);
     procedure SetAskForFileName(const Value: boolean);
     procedure SetAutoGetMessagesCycleDurationValue(const Value: integer);
     procedure SetClearingFormPosition(const Value: TFormPosition);
@@ -238,8 +240,8 @@ type
     procedure SetShowEditboxHints(const Value: boolean);
     procedure SetShowID(const Value: boolean);
     procedure SetShowMeasuresListAsRichEdit(const Value: boolean);
-    procedure SetShowStatusbarAtLaunch(const Value: boolean);
-    procedure SetShowToolbarAtLaunch(const Value: boolean);
+    procedure SetShowStatusbar(const Value: boolean);
+    procedure SetShowToolbar(const Value: boolean);
     procedure SetReportFormPosition(const Value: TFormPosition);
     procedure SetUseMultibuffer(const Value: boolean);
     procedure SetUsersFormPosition(const Value: TFormPosition);
@@ -249,9 +251,36 @@ type
     // bImmediatelyQuit: boolean;
     // iOrgSortColumn: integer;
     // iMsrSortColumn: integer;
+    ///	<summary>
+    ///	  Конструктор класса.
+    ///	</summary>
+    ///	<remarks>
+    ///	  Инициализирует значения переменных класса и создаёт вложенные объекты
+    ///	  подключений к mysql-серверу.
+    ///	</remarks>
     constructor Create; override;
+
+    ///	<summary>
+    ///	  Процедура загрузки значений переменных класса (конфигурации) из
+    ///	  INI-файла.
+    ///	</summary>
+    ///	<remarks>
+    ///	  Если необходимые значения не были найдены в INI-файле конфигурации,
+    ///	  переменные класса будут инициализированы значениями по умолчанию.
+    ///	</remarks>
     procedure Load;
+
+    ///	<summary>
+    ///	  Процедура записи значений переменных класса (конфигурации) в INI-файл.
+    ///	</summary>
     procedure Save;
+
+    ///	<summary>
+    ///	  Деструктор объекта.
+    ///	</summary>
+    ///	<remarks>
+    ///	  Освобождает вложенные объекты подключений к mysql-серверу.
+    ///	</remarks>
     destructor Destroy; override;
 
     property FileName: string read FFileName write SetFileName stored False;
@@ -261,8 +290,8 @@ type
 
     // вкладка "настройки интерфейса"
     property ShowAboutWindowAtLaunch: boolean read FShowAboutWindowAtLaunch write SetShowAboutWindowAtLaunch default True;
-    property ShowToolbarAtLaunch: boolean read FShowToolbarAtLaunch write SetShowToolbarAtLaunch default True;
-    property ShowStatusbarAtLaunch: boolean read FShowStatusbarAtLaunch write SetShowStatusbarAtLaunch default True;
+    property ShowToolbar: boolean read FShowToolbar write SetShowToolbar default True;
+    property ShowStatusbar: boolean read FShowStatusbar write SetShowStatusbar default True;
     property ShowEditboxHints: boolean read FShowEditboxHints write SetShowEditboxHints default True;
     property ShowCommonSearchEditbox: boolean read FShowCommonSearchEditbox write SetShowCommonSearchEditbox default True;
     property ShowID: boolean read FShowID write SetShowID default False;
@@ -293,6 +322,7 @@ type
     property PhonesFormPosition: TFormPosition read FPhonesFormPosition write SetPhonesFormPosition stored False;
     property AddEditPhoneFormPosition: TFormPosition read FAddEditPhoneFormPosition write SetAddEditPhoneFormPosition stored False;
     property AddMassMsrFormPosition: TFormPosition read FAddMassMsrFormPosition write SetAddMassMsrFormPosition stored False;
+    property PermissionsFormPosition: TFormPosition read FPermissionsFormPosition write SetPermissionsFormPosition stored False;
 
     // вкладка "настройки процедуры логирования"
     property StoreLastLogin: boolean read FStoreLastLogin write SetStoreLastLogin default False; // нужно ли хранить последний введённый логин
@@ -300,9 +330,19 @@ type
     property AutoLogon: boolean read FAutoLogon write SetAutoLogon default False; // нужно ли выполнять автологирование
 
     // вкладка "настройки подключения к серверу базы данных услуги"
+
+    ///	<summary>
+    ///	  Вложенный объект подлючения к mysql-серверу, где хранятся данные
+    ///	  услуги "Отдых и развлечения".
+    ///	</summary>
     property RNE4Server: TMySQLConnection read FRNE4Server write SetRNE4Server stored False;
 
     // вкладка "настройки подключения к серверу системы обмена сообщениями"
+
+    ///	<summary>
+    ///	  Вложенный объект подлючения к mysql-серверу, где хранится переписка
+    ///	  пользователей услуги "Отдых и развлечения".
+    ///	</summary>
     property MessagesServer: TMySQLConnection read FMessagesServer write SetMessagesServer stored False;
 
     // вкладка "настройки формирования отчётов"
@@ -355,8 +395,8 @@ begin
       begin
         // вкладка "настройки интерфейса"
         ShowAboutWindowAtLaunch:=ReadBool('Интерфейс', 'bShowAboutWindowAtLaunch', DefaultValue_ShowAboutWindowAtLaunch);
-        ShowToolbarAtLaunch:=ReadBool('Интерфейс', 'bShowToolbarAtLaunch', DefaultValue_ShowToolbarAtLaunch);
-        ShowStatusbarAtLaunch:=ReadBool('Интерфейс', 'bShowStatusbarAtLaunch', DefaultValue_ShowStatusbarAtLaunch);
+        ShowToolbar:=ReadBool('Интерфейс', 'bShowToolbar', DefaultValue_ShowToolbar);
+        ShowStatusbar:=ReadBool('Интерфейс', 'bShowStatusbar', DefaultValue_ShowStatusbar);
         ShowEditboxHints:=ReadBool('Интерфейс', 'bShowEditboxHints', DefaultValue_ShowEditboxHints);
         ShowCommonSearchEditbox:=ReadBool('Интерфейс', 'bShowCommonSearchEditbox', DefaultValue_ShowCommonSearchEditbox);
         ShowID:=ReadBool('Интерфейс', 'bShowID', DefaultValue_ShowID);
@@ -455,6 +495,11 @@ begin
             x:=ReadInteger('Положение диалоговых окон', 'AddMassMsrFormPosition.ix', DefaultValue_FormPosition_x);
             y:=ReadInteger('Положение диалоговых окон', 'AddMassMsrFormPosition.iy', DefaultValue_FormPosition_y);
             AddMassMsrFormPosition:=FormPosition;
+
+            bCenter:=ReadBool('Положение диалоговых окон', 'PermissionsFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'PermissionsFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'PermissionsFormPosition.iy', DefaultValue_FormPosition_y);
+            PermissionsFormPosition:=FormPosition;
           end;
 
         // вкладка "настройки процедуры логирования"
@@ -548,8 +593,8 @@ begin
         try
           // вкладка "настройки интерфейса"
           WriteBool('Интерфейс', 'bShowAboutWindowAtLaunch', ShowAboutWindowAtLaunch);
-          WriteBool('Интерфейс', 'bShowToolbarAtLaunch', ShowToolbarAtLaunch);
-          WriteBool('Интерфейс', 'bShowStatusbarAtLaunch', ShowStatusbarAtLaunch);
+          WriteBool('Интерфейс', 'bShowToolbar', ShowToolbar);
+          WriteBool('Интерфейс', 'bShowStatusbar', ShowStatusbar);
           WriteBool('Интерфейс', 'bShowEditboxHints', ShowEditboxHints);
           WriteBool('Интерфейс', 'bShowCommonSearchEditbox', ShowCommonSearchEditbox);
           WriteBool('Интерфейс', 'bShowID', ShowID);
@@ -585,6 +630,7 @@ begin
           WriteFormPosition(IniFile, PhonesFormPosition, 'PhonesFormPosition');
           WriteFormPosition(IniFile, AddEditPhoneFormPosition, 'AddEditPhoneFormPosition');
           WriteFormPosition(IniFile, AddMassMsrFormPosition, 'AddMassMsrFormPosition');
+          WriteFormPosition(IniFile, PermissionsFormPosition, 'PermissionsFormPosition');
 
           // вкладка "настройки процедуры логирования"
           WriteBool('Идентификация', 'bStoreLastLogin', StoreLastLogin);
@@ -810,16 +856,16 @@ begin
     FShowMeasuresListAsRichEdit:=Value;
 end;
 
-procedure TConfiguration.SetShowStatusbarAtLaunch(const Value: boolean);
+procedure TConfiguration.SetShowStatusbar(const Value: boolean);
 begin
-  if FShowStatusbarAtLaunch<>Value then
-    FShowStatusbarAtLaunch:=Value;
+  if FShowStatusbar<>Value then
+    FShowStatusbar:=Value;
 end;
 
-procedure TConfiguration.SetShowToolbarAtLaunch(const Value: boolean);
+procedure TConfiguration.SetShowToolbar(const Value: boolean);
 begin
-  if FShowToolbarAtLaunch<>Value then
-    FShowToolbarAtLaunch:=Value;
+  if FShowToolbar<>Value then
+    FShowToolbar:=Value;
 end;
 
 procedure TConfiguration.SetReportFormPosition(const Value: TFormPosition);
@@ -937,6 +983,12 @@ procedure TConfiguration.SetAddMassMsrFormPosition(const Value: TFormPosition);
 begin
   if ((FAddMassMsrFormPosition.bCenter<>Value.bCenter)or(FAddMassMsrFormPosition.x<>Value.x)or(FAddMassMsrFormPosition.y<>Value.y)) then
     FAddMassMsrFormPosition:=Value;
+end;
+
+procedure TConfiguration.SetPermissionsFormPosition(const Value: TFormPosition);
+begin
+  if ((FPermissionsFormPosition.bCenter<>Value.bCenter)or(FPermissionsFormPosition.x<>Value.x)or(FPermissionsFormPosition.y<>Value.y)) then
+    FPermissionsFormPosition:=Value;
 end;
 
 procedure TConfiguration.SetAskForFileName(const Value: boolean);
@@ -1087,8 +1139,8 @@ begin
 
   // вкладка "настройки интерфейса"
   FShowAboutWindowAtLaunch:=DefaultValue_ShowAboutWindowAtLaunch;
-  FShowToolbarAtLaunch:=DefaultValue_ShowToolbarAtLaunch;
-  FShowStatusbarAtLaunch:=DefaultValue_ShowStatusbarAtLaunch;
+  FShowToolbar:=DefaultValue_ShowToolbar;
+  FShowStatusbar:=DefaultValue_ShowStatusbar;
   FShowEditboxHints:=DefaultValue_ShowEditboxHints;
   FShowCommonSearchEditbox:=DefaultValue_ShowCommonSearchEditbox;
   FShowID:=DefaultValue_ShowID;
@@ -1185,6 +1237,13 @@ begin
     end;
 
   with FAddMassMsrFormPosition do
+    begin
+      bCenter:=DefaultValue_FormPosition_Center;
+      x:=DefaultValue_FormPosition_x;
+      y:=DefaultValue_FormPosition_y;
+    end;
+
+  with FPermissionsFormPosition do
     begin
       bCenter:=DefaultValue_FormPosition_Center;
       x:=DefaultValue_FormPosition_x;

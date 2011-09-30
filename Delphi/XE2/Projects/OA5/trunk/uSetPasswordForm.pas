@@ -3,18 +3,18 @@
 interface
 
 uses
-  ActnList,
-  ActnMan,
-  Classes,
-  Controls,
-  ExtCtrls,
-  Forms,
-  ImgList,
-  Mask,
-  PlatformDefaultStyleActnCtrls,
-  StdCtrls,
+  Vcl.ActnList,
+  Vcl.ActnMan,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.ExtCtrls,
+  Vcl.Forms,
+  Vcl.ImgList,
+  Vcl.Mask,
+  Vcl.StdCtrls,
   uLogProvider,
-  Windows;
+  Winapi.Windows,
+  Vcl.PlatformDefaultStyleActnCtrls;
 
 type
   TSetPasswordForm=class(TForm)

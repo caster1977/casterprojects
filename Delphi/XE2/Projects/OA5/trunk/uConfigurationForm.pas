@@ -198,8 +198,8 @@ type
     btnChooseCustomHelpFile: TButton;
     chkbxLaunchAtStartup: TCheckBox;
     chkbxShowAboutWindowAtLaunch: TCheckBox;
-    chkbxShowToolbarAtLaunch: TCheckBox;
-    chkbxShowStatusbarAtLaunch: TCheckBox;
+    chkbxShowToolbar: TCheckBox;
+    chkbxShowStatusbar: TCheckBox;
     chkbxShowEditboxHints: TCheckBox;
     chkbxShowCommonSearchEditbox: TCheckBox;
     chkbxShowID: TCheckBox;
@@ -247,6 +247,7 @@ type
     procedure chkbxPhonesFormPositionByCenterClick(Sender: TObject);
     procedure chkbxAddEditPhoneFormPositionByCenterClick(Sender: TObject);
     procedure chkbxAddMassMsrFormPositionByCenterClick(Sender: TObject);
+    procedure chkbxPermissionsFormPositionByCenterClick(Sender: TObject);
     procedure edbxNumericFieldKeyPress(Sender: TObject; var Key: Char);
   strict private
     slBooleanValues: TStringList;
@@ -279,6 +280,7 @@ uses
   uLoginForm,
   uAboutForm,
   uAddMassMsrForm,
+  uPermissionsForm,
   uReportForm,
   uRoutines,
   uConfigurationClass;
@@ -383,8 +385,8 @@ begin
     begin
       // вкладка "настройки интерфейса"
       ShowAboutWindowAtLaunch:=chkbxShowAboutWindowAtLaunch.Enabled and chkbxShowAboutWindowAtLaunch.Checked;
-      ShowToolbarAtLaunch:=chkbxShowToolbarAtLaunch.Enabled and chkbxShowToolbarAtLaunch.Checked;
-      ShowStatusbarAtLaunch:=chkbxShowStatusbarAtLaunch.Enabled and chkbxShowStatusbarAtLaunch.Checked;
+      ShowToolbar:=chkbxShowToolbar.Enabled and chkbxShowToolbar.Checked;
+      ShowStatusbar:=chkbxShowStatusbar.Enabled and chkbxShowStatusbar.Checked;
       ShowEditboxHints:=chkbxShowEditboxHints.Enabled and chkbxShowEditboxHints.Checked;
       ShowCommonSearchEditbox:=chkbxShowCommonSearchEditbox.Enabled and chkbxShowCommonSearchEditbox.Checked;
       ShowID:=chkbxShowID.Enabled and chkbxShowID.Checked;
@@ -489,6 +491,11 @@ begin
       FormPosition.x:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxAddMassMsrFormPositionX.Text), ''), DefaultValue_FormPosition_x);
       FormPosition.y:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxAddMassMsrFormPositionY.Text), ''), DefaultValue_FormPosition_y);
       AddMassMsrFormPosition:=FormPosition;
+
+      FormPosition.bCenter:=chkbxPermissionsFormPositionByCenter.Checked and chkbxPermissionsFormPositionByCenter.Enabled;
+      FormPosition.x:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxPermissionsFormPositionX.Text), ''), DefaultValue_FormPosition_x);
+      FormPosition.y:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxPermissionsFormPositionY.Text), ''), DefaultValue_FormPosition_y);
+      PermissionsFormPosition:=FormPosition;
 
       // вкладка "настройки процедуры логирования"
       StoreLastLogin:=chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked;
@@ -854,8 +861,8 @@ begin
     begin
       // выставление значений по умолчанию для контролов
       chkbxShowAboutWindowAtLaunch.Checked:=DefaultValue_ShowAboutWindowAtLaunch;
-      chkbxShowToolbarAtLaunch.Checked:=DefaultValue_ShowToolbarAtLaunch;
-      chkbxShowStatusbarAtLaunch.Checked:=DefaultValue_ShowStatusbarAtLaunch;
+      chkbxShowToolbar.Checked:=DefaultValue_ShowToolbar;
+      chkbxShowStatusbar.Checked:=DefaultValue_ShowStatusbar;
       chkbxShowEditboxHints.Checked:=DefaultValue_ShowEditboxHints;
       chkbxShowCommonSearchEditbox.Checked:=DefaultValue_ShowCommonSearchEditbox;
       chkbxShowID.Checked:=DefaultValue_ShowID;
@@ -971,6 +978,12 @@ begin
   edbxAddMassMsrFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
   edbxAddMassMsrFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
   edbxAddMassMsrFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+
+  chkbxPermissionsFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+  edbxPermissionsFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+  edbxPermissionsFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+  edbxPermissionsFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+  edbxPermissionsFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
   // вкладка "настройки процедуры логирования"
   if PageControl1.ActivePage.Caption=' процедуры логирования' then
@@ -1270,8 +1283,8 @@ begin
 
       // вкладка "настройки интерфейса"
       chkbxShowAboutWindowAtLaunch.Checked:=ShowAboutWindowAtLaunch;
-      chkbxShowToolbarAtLaunch.Checked:=ShowToolbarAtLaunch;
-      chkbxShowStatusbarAtLaunch.Checked:=ShowStatusbarAtLaunch;
+      chkbxShowToolbar.Checked:=ShowToolbar;
+      chkbxShowStatusbar.Checked:=ShowStatusbar;
       chkbxShowEditboxHints.Checked:=ShowEditboxHints;
       chkbxShowCommonSearchEditbox.Checked:=ShowCommonSearchEditbox;
       chkbxShowID.Checked:=ShowID;
@@ -1383,6 +1396,12 @@ begin
       edbxAddMassMsrFormPositionY.Text:=Routines.GetConditionalString(AddMassMsrFormPosition.bCenter, '', IntToStr(AddMassMsrFormPosition.y));
       edbxAddMassMsrFormPositionX.Enabled:=not AddMassMsrFormPosition.bCenter;
       edbxAddMassMsrFormPositionY.Enabled:=not AddMassMsrFormPosition.bCenter;
+
+      chkbxPermissionsFormPositionByCenter.Checked:=PermissionsFormPosition.bCenter;
+      edbxPermissionsFormPositionX.Text:=Routines.GetConditionalString(PermissionsFormPosition.bCenter, '', IntToStr(PermissionsFormPosition.x));
+      edbxPermissionsFormPositionY.Text:=Routines.GetConditionalString(PermissionsFormPosition.bCenter, '', IntToStr(PermissionsFormPosition.y));
+      edbxPermissionsFormPositionX.Enabled:=not PermissionsFormPosition.bCenter;
+      edbxPermissionsFormPositionY.Enabled:=not PermissionsFormPosition.bCenter;
 
       // вкладка "настройки процедуры логирования"
       chkbxStoreLastLogin.Checked:=StoreLastLogin;
@@ -1742,6 +1761,39 @@ begin
 
   ProcedureFooter;
 end;
+
+procedure TConfigurationForm.chkbxPermissionsFormPositionByCenterClick(Sender: TObject);
+var
+  b: boolean;
+  PermissionsForm: TPermissionsForm;
+begin
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxPermissionsFormPositionByCenter.Caption+'"', '{D6CC8CB4-3B01-449C-84C4-8F3B55C9AE92}');
+
+  b:=chkbxPermissionsFormPositionByCenter.Enabled and chkbxPermissionsFormPositionByCenter.Checked;
+  edbxPermissionsFormPositionX.Enabled:=not b;
+  edbxPermissionsFormPositionY.Enabled:=not b;
+  if b then
+    begin
+      edbxPermissionsFormPositionX.Text:='';
+      edbxPermissionsFormPositionY.Text:='';
+    end
+  else
+    begin
+      PermissionsForm:=TPermissionsForm.Create(Self);
+      try
+        edbxPermissionsFormPositionX.Text:=IntToStr((Screen.WorkAreaWidth-PermissionsForm.Width)div 2);
+        edbxPermissionsFormPositionY.Text:=IntToStr((Screen.WorkAreaHeight-PermissionsForm.Height)div 2);
+      finally
+        PermissionsForm.Free;
+      end;
+    end;
+  Log.SendDebug('Флажок "'+chkbxPermissionsFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+
+  ProcedureFooter;
+end;
+
+
+
 
 procedure TConfigurationForm.chkbxClearingFormPositionByCenterClick(Sender: TObject);
 var

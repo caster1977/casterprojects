@@ -194,7 +194,7 @@ object ConfigurationForm: TConfigurationForm
         Top = 3
         Width = 614
         Height = 223
-        ActivePage = ts8
+        ActivePage = ts1
         Align = alCustom
         Style = tsButtons
         TabOrder = 0
@@ -202,10 +202,6 @@ object ConfigurationForm: TConfigurationForm
         object ts1: TTabSheet
           Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object chkbxShowAboutWindowAtLaunch: TCheckBox
             Left = 0
             Top = 0
@@ -214,20 +210,20 @@ object ConfigurationForm: TConfigurationForm
             Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1086#1082#1085#1086' "'#1054' '#1087#1088#1086#1075#1088#1072#1084#1084#1077'..." '#1087#1088#1080' '#1079#1072#1087#1091#1089#1082#1077
             TabOrder = 0
           end
-          object chkbxShowToolbarAtLaunch: TCheckBox
+          object chkbxShowToolbar: TCheckBox
             Left = 0
             Top = 23
             Width = 606
             Height = 17
-            Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1087#1072#1085#1077#1083#1100' '#1082#1085#1086#1087#1086#1082' '#1087#1088#1080' '#1079#1072#1087#1091#1089#1082#1077' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+            Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1087#1072#1085#1077#1083#1100' '#1082#1085#1086#1087#1086#1082
             TabOrder = 1
           end
-          object chkbxShowStatusbarAtLaunch: TCheckBox
+          object chkbxShowStatusbar: TCheckBox
             Left = 0
             Top = 46
             Width = 606
             Height = 17
-            Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1087#1072#1085#1077#1083#1100' '#1089#1090#1072#1090#1091#1089#1072' '#1087#1088#1080' '#1079#1072#1087#1091#1089#1082#1077' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+            Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1087#1072#1085#1077#1083#1100' '#1089#1090#1072#1090#1091#1089#1072
             TabOrder = 2
           end
           object chkbxShowEditboxHints: TCheckBox
@@ -458,6 +454,10 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1086#1083#1086#1078#1077#1085#1080#1103' '#1076#1080#1072#1083#1086#1075#1086#1074#1099#1093' '#1086#1082#1086#1085
           ImageIndex = 8
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object ScrollBox1: TScrollBox
             Left = 0
             Top = 0
@@ -1685,7 +1685,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 304
     Top = 296
     Bitmap = {
-      494C010106000800D80210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800E00210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
