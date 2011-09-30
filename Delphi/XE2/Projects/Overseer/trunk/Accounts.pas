@@ -265,6 +265,7 @@ begin
 
   iSortByColumn:=0;
   lvAccounts.Selected:=nil;
+  ImageList1.GetIcon(1, Icon);
   with Action_Help do
     begin
       Enabled:=Application.HelpFile<>'';

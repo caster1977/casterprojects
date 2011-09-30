@@ -85,17 +85,14 @@ var
   sShortStartDate, sShortStopDate, sSQLFormatStartDate, sSQLFormatStopDate, sLongStartDate, sLongStopDate: string;
   sReportPeriod: string;
   sTableName: string;
-  iRoutineCounter, iPhonesCounter: integer;
+  iRoutineCounter: integer;
   iRowQuantity, iRowCounter: integer;
   slUserList, slPeriodList: TStringList;
   iPeriodCounter: integer;
-  dtDate: TDate;
-  iFullListCounter: integer;
   q: string;
   s: string;
   ResultSet: PMYSQL_RES;
   ResultRow: PMYSQL_ROW;
-  sServiceName: string;
   sPeriodColumnQuery, sGroupByQuery: string;
   sPeriodColumn: string;
   sReportSuffix: string;

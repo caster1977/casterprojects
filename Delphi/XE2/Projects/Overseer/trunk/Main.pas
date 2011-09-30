@@ -550,7 +550,7 @@ begin
               cbData:=Length(m)+1;
               lpData:=PAnsiChar(m);
             end;
-          SendMessage(hLogKeeper, WM_COPYDATA, Longint(MainForm.Handle), Longint(@aCopyData));
+          SendMessage(hLogKeeper, WM_COPYDATA, Longint(Handle), Longint(@aCopyData));
           // LogThis('Произведена отправка программе лог-клиента строки данных: ['+m+']', LogGroupGUID, lmtDebug);
         end
       else
@@ -683,7 +683,7 @@ begin
   ProcedureHeader('Процедура-обработчик щелчка на иконке в трее', LogGroupGUID);
 
   if Visible then
-    SetForegroundWindow(MainForm.Handle);
+    SetForegroundWindow(Handle);
 
   ProcedureFooter(LogGroupGUID);
 end;
@@ -909,9 +909,9 @@ procedure TMainForm.ApplicationEvents1Hint(Sender: TObject);
 // LogGroupGUID: string = '{C87E45B5-DCEB-4BE2-A094-4B1181AE7CAB}';
 begin
   // критичная по количеству выполнений процедура - в целях незасорения лога заголовок отключён
-  // ProcedureHeader('Процедура отображения строки контекстной подсказки в панели статуса',LogGroupGUID,False,False);
+  // ProcedureHeader('Процедура отображения строки контекстной подсказки в панели статуса',LogGroupGUID);
   StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=GetLongHint(Application.Hint);
-  // ProcedureFooter(LogGroupGUID,False,False);
+  // ProcedureFooter(LogGroupGUID);
 end;
 
 procedure TMainForm.miStatusbarClick(Sender: TObject);
@@ -1124,8 +1124,8 @@ begin
           ProgressBarRect:=lvActionList.Items[i].DisplayRect(drBounds);
           ProgressBarRect.Top:=ProgressBarRect.Top+1;
           ProgressBarRect.Bottom:=ProgressBarRect.Bottom-2;
-          ProgressBarRect.Left:=ProgressBarRect.Left+MainForm.lvActionList.Columns[0].Width+1;
-          ProgressBarRect.Right:=ProgressBarRect.Left+MainForm.lvActionList.Columns[1].Width-1;
+          ProgressBarRect.Left:=ProgressBarRect.Left+lvActionList.Columns[0].Width+1;
+          ProgressBarRect.Right:=ProgressBarRect.Left+lvActionList.Columns[1].Width-1;
           TProgressBar(lvActionList.Items[i].Data).BoundsRect:=ProgressBarRect;
           TProgressBar(lvActionList.Items[i].Data).Visible:=(BOOL(ListView_IsItemVisible(lvActionList.Handle, lvActionList.Items[i].index))=True)and(i>=ListView_GetTopIndex(lvActionList.Handle));
         end;
@@ -1462,7 +1462,7 @@ begin
         end;
 
       pnlLog.Visible:=not Configuration.bUseExternalLog;
-      MainForm.Height:=600-152*integer(Configuration.bUseExternalLog);
+      Height:=600-152*integer(Configuration.bUseExternalLog);
       Timer1.Enabled:=Configuration.bUseExternalLog;
 
       if bFirstRun then
@@ -1958,7 +1958,7 @@ begin
           // LogThis('Была предпринята попытка применения настроек программы.', LogGroupGUID, lmtDebug);
           // секция "Интерфейс"
           Configuration.bAlwaysShowTrayIcon:=vleInterface.Cells[1, 1]='Да';
-          TrayIcon1.Visible:=Configuration.bAlwaysShowTrayIcon or(not MainForm.Visible);
+          TrayIcon1.Visible:=Configuration.bAlwaysShowTrayIcon or(not {MainForm.}Visible);
           Configuration.bShowQuitConfirmation:=vleInterface.Cells[1, 2]='Да';
           Configuration.bStoreLastLogin:=vleInterface.Cells[1, 3]='Да';
           Configuration.bStoreLastPassword:=vleInterface.Cells[1, 4]='Да';
@@ -1972,7 +1972,7 @@ begin
 
           chkbxScrollToLastLogMessage.Checked:=chkbxScrollToLastLogMessage.Enabled and Configuration.bScrollToLastLogMessage;
           pnlLog.Visible:=not Configuration.bUseExternalLog;
-          MainForm.Height:=600-152*integer(Configuration.bUseExternalLog);
+          {MainForm.}Height:=600-152*integer(Configuration.bUseExternalLog);
           Timer1.Enabled:=Configuration.bUseExternalLog;
           Configuration.sDefaultAction:=Routines_GetConditionalMessage(cbActionsList.Items.IndexOf(vleInterface.Cells[1, 7])>-1, vleInterface.Cells[1, 7], '');
 
@@ -2241,7 +2241,6 @@ begin
 
   with TAccountsForm.Create(Self) do
     try
-      MainForm.ImageList1.GetIcon(ICON_ACCOUNTS, Icon);
       PreShowModal(sModalWinName, LogGroupGUID, iBusy);
       ShowModal;
     finally
@@ -2859,10 +2858,10 @@ begin
   // bStartOfTheWeek:=SameDate(StartOfTheWeek(dtStartDate), dtStartDate);
   // bEndOfTheWeek:=SameDate(EndOfTheWeek(dtStopDate), dtStopDate);
 
-  if (cbActionsList.Text='Формирование отчёта по форме № СИЦ-01-...')or(cbActionsList.Text='Формирование отчёта по форме № СИЦ-03-...')or
-    (cbActionsList.Text='Формирование отчёта по форме № СИЦ-06-...')or(cbActionsList.Text='Формирование отчёта по форме № СИЦ-08-...')or
-    (cbActionsList.Text='Формирование отчёта по форме № СИЦ-09-...')or(cbActionsList.Text='Формирование таблиц данных входящих/исходящих вызовов (<i/o>rd_<yyyymmdd>, <i/o>rd_<yyyy>[mm][dd][_[yyyy][mm][dd]])')or
-    (cbActionsList.Text='Снятие оплаты за звонок на голосовые службы СИЦ')or(cbActionsList.Text='Формирование файлов выгрузки для АСКР') then
+  if (cbActionsList.Text='Формирование отчёта по форме № СИЦ-01-...')or(cbActionsList.Text='Формирование отчёта по форме № СИЦ-03-...')or(cbActionsList.Text='Формирование отчёта по форме № СИЦ-06-...')or
+    (cbActionsList.Text='Формирование отчёта по форме № СИЦ-08-...')or(cbActionsList.Text='Формирование отчёта по форме № СИЦ-09-...')or
+    (cbActionsList.Text='Формирование таблиц данных входящих/исходящих вызовов (<i/o>rd_<yyyymmdd>, <i/o>rd_<yyyy>[mm][dd][_[yyyy][mm][dd]])')or(cbActionsList.Text='Снятие оплаты за звонок на голосовые службы СИЦ')or
+    (cbActionsList.Text='Формирование файлов выгрузки для АСКР') then
     begin
       gbGroupingPeriod.Visible:=False;
       rbGroupByYears.Enabled:=False;
@@ -3256,7 +3255,7 @@ const
   LogGroupGUID: string='{A98BEE49-03AB-44A4-BA81-633908F5B06E}';
 var
   ResultSet, ResultSet2: PMYSQL_RES;
-  ResultRow, ResultRow2: PMYSQL_ROW;
+  ResultRow: PMYSQL_ROW;
   q, sCreateQuery, sLockQuery: string;
   iRoutineCounter, iFullListCounter, iMissedListCounter, iSourceRowCounter, iRowCountSource, iRowCountDestination: integer;
   sErrorMessage: string;
@@ -4224,8 +4223,8 @@ begin
 
   // расчёт выбранного временного периода
   LogThis('>> Выполняется операция расчёта выбранного временного периода...', LogGroupGUID, lmtDebug);
-  if not(rbLastDate.Checked or rbChoisenDate.Checked or rbLastWeek.Checked or rbLastMonth.Checked or rbChoisenMonth.Checked or rbLastQuarter.Checked or rbChoisenQuarter.Checked or rbLastYear.Checked or rbChoisenYear.Checked or
-    rbChoisenPeriod.Checked) then
+  if not(rbLastDate.Checked or rbChoisenDate.Checked or rbLastWeek.Checked or rbLastMonth.Checked or rbChoisenMonth.Checked or rbLastQuarter.Checked or rbChoisenQuarter.Checked or rbLastYear.Checked or rbChoisenYear.Checked or rbChoisenPeriod.Checked)
+  then
     Routines_GenerateError('Не был выбран период!', sErrorMessage, bError)
   else
     begin
@@ -4962,8 +4961,8 @@ begin
 
   // расчёт выбранного временного периода
   LogThis('>> Выполняется операция расчёта выбранного временного периода...', LogGroupGUID, lmtDebug);
-  if not(rbLastDate.Checked or rbChoisenDate.Checked or rbLastWeek.Checked or rbLastMonth.Checked or rbChoisenMonth.Checked or rbLastQuarter.Checked or rbChoisenQuarter.Checked or rbLastYear.Checked or rbChoisenYear.Checked or
-    rbChoisenPeriod.Checked) then
+  if not(rbLastDate.Checked or rbChoisenDate.Checked or rbLastWeek.Checked or rbLastMonth.Checked or rbChoisenMonth.Checked or rbLastQuarter.Checked or rbChoisenQuarter.Checked or rbLastYear.Checked or rbChoisenYear.Checked or rbChoisenPeriod.Checked)
+  then
     Routines_GenerateError('Не был выбран период!', sErrorMessage, bError)
   else
     begin
@@ -5420,13 +5419,13 @@ begin
                             if not bError then
                               begin
                                 // проверяем наличие таблицы прав пользователей в базе данных
-                                MySQL_CheckTableExistance(LogGroupGUID, MainForm.Configuration.OverseerServer, MainForm.Configuration.OverseerServer.sMySQLDatabase, bError, sErrorMessage, '_permissions');
+                                MySQL_CheckTableExistance(LogGroupGUID, Configuration.OverseerServer, Configuration.OverseerServer.sMySQLDatabase, bError, sErrorMessage, '_permissions');
                                 StepProgressBar; // 7
 
                                 if not bError then
                                   begin
                                     // блокирование таблиц
-                                    MySQL_LockTables(LogGroupGUID, MainForm.Configuration.OverseerServer, bError, sErrorMessage, MainForm.Configuration.OverseerServer.sMySQLDatabase+'._actions READ, _permissions READ');
+                                    MySQL_LockTables(LogGroupGUID, Configuration.OverseerServer, bError, sErrorMessage, Configuration.OverseerServer.sMySQLDatabase+'._actions READ, _permissions READ');
                                     StepProgressBar; // 8
 
                                     // получение данных таблицы действий
@@ -5553,44 +5552,29 @@ end;
 procedure TMainForm.Refresh_BusyState(const aLogGroupGUID: string);
 begin
   LogThis('Установлен режим "'+Routines_GetConditionalMessage(iBusyCounter>0, 'Занято', 'Готово')+'".', aLogGroupGUID, lmtDebug);
-  with MainForm do
-    begin
-      if iBusyCounter>0 then
-        begin
-          ImageList1.GetIcon(ICON_BUSY, Image1.Picture.Icon);
-          // Screen.Cursor:=crHourGlass;
-        end
-      else
-        begin
-          ImageList1.GetIcon(ICON_READY, Image1.Picture.Icon);
-          // Screen.Cursor:=crDefault;
-        end;
-      if not Configuration.bNoStatusBar then
-        StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=Routines_GetConditionalMessage(iBusyCounter>0, 'Пожалуйста, подождите...', 'Готово');
-    end;
+  if iBusyCounter>0 then
+    ImageList1.GetIcon(ICON_BUSY, Image1.Picture.Icon)
+  else
+    ImageList1.GetIcon(ICON_READY, Image1.Picture.Icon);
+  if not Configuration.bNoStatusBar then
+    StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=Routines_GetConditionalMessage(iBusyCounter>0, 'Пожалуйста, подождите...', 'Готово');
   Application.ProcessMessages;
 end;
 
 procedure TMainForm.Inc_BusyState(const aLogGroupGUID: string);
 begin
-  with MainForm do
-    begin
-      iBusyCounter:=iBusyCounter+1;
-      if iBusyCounter<0 then
-        iBusyCounter:=0;
-      Refresh_BusyState(aLogGroupGUID);
-    end;
+  iBusyCounter:=iBusyCounter+1;
+  if iBusyCounter<0 then
+    iBusyCounter:=0;
+  Refresh_BusyState(aLogGroupGUID);
 end;
 
 procedure TMainForm.Dec_BusyState(const aLogGroupGUID: string);
 begin
-  with MainForm do
-    begin
-      iBusyCounter:=iBusyCounter-1;
-      if iBusyCounter<0 then
-        iBusyCounter:=0;
-      Refresh_BusyState(aLogGroupGUID);
-    end;
+  iBusyCounter:=iBusyCounter-1;
+  if iBusyCounter<0 then
+    iBusyCounter:=0;
+  Refresh_BusyState(aLogGroupGUID);
 end;
 
 procedure TMainForm.ShowErrorBox(const aHandle: HWND; const aErrorMessage: string; const aLogGroupGUID: string);
@@ -6185,23 +6169,23 @@ end;
 procedure TMainForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage, aLogGroupGUID: string);
 begin
   if aError then
-    MainForm.ShowErrorBox(aHandle, aErrorMessage, aLogGroupGUID)
+    ShowErrorBox(aHandle, aErrorMessage, aLogGroupGUID)
   else
     LogThis('Процедура выполнена без ошибок.', aLogGroupGUID, lmtDebug);
-  MainForm.pbMain.Position:=MainForm.pbMain.Min;
+  pbMain.Position:=pbMain.Min;
 end;
 
 procedure TMainForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
 begin
   LogThis('['+aTitle+']', aLogGroupGUID, lmtDebug);
   LogThis('Начало процедуры...', aLogGroupGUID, lmtDebug);
-  MainForm.Inc_BusyState(aLogGroupGUID);
+  Inc_BusyState(aLogGroupGUID);
   Application.ProcessMessages;
 end;
 
 procedure TMainForm.ProcedureFooter(const aLogGroupGUID: string);
 begin
-  MainForm.Dec_BusyState(aLogGroupGUID);
+  Dec_BusyState(aLogGroupGUID);
   LogThis('Окончание процедуры.', aLogGroupGUID, lmtDebug);
   Application.ProcessMessages;
 end;
@@ -6209,21 +6193,15 @@ end;
 procedure TMainForm.PreShowModal(const aWindowName: string; const aLogGroupGUID: string; var aOldBusyState: integer);
 begin
   LogThis('Производится попытка отображения модального окна '+aWindowName+'.', aLogGroupGUID, lmtDebug);
-  with MainForm do
-    begin
-      aOldBusyState:=iBusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
-      iBusyCounter:=0; // обнуление счётчика перед открытием модального окна
-      Refresh_BusyState(aLogGroupGUID); // обновление состояния индикатора
-    end;
+  aOldBusyState:=iBusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
+  iBusyCounter:=0; // обнуление счётчика перед открытием модального окна
+  Refresh_BusyState(aLogGroupGUID); // обновление состояния индикатора
 end;
 
 procedure TMainForm.PostShowModal(const aWindowName: string; const aLogGroupGUID: string; var aOldBusyState: integer);
 begin
-  with MainForm do
-    begin
-      iBusyCounter:=aOldBusyState; // возвращение старого значения счётчика
-      Refresh_BusyState(aLogGroupGUID); // обновление состояния индикатора
-    end;
+  iBusyCounter:=aOldBusyState; // возвращение старого значения счётчика
+  Refresh_BusyState(aLogGroupGUID); // обновление состояния индикатора
   LogThis('Окно '+aWindowName+' скрыто.', aLogGroupGUID, lmtDebug);
 end;
 
@@ -6337,8 +6315,8 @@ begin
   else
     begin
       TrayIcon1.Visible:=Configuration.bAlwaysShowTrayIcon;
-      MainForm.Visible:=True;
-      SetForegroundWindow(MainForm.Handle);
+      Visible:=True;
+      SetForegroundWindow(Handle);
       Application.Restore;
     end;
 
@@ -6522,7 +6500,7 @@ begin
   StrLCopy(cText, Msg.CopyDataStruct.lpData, Msg.CopyDataStruct.cbData);
   // LogThis(PChar('Данные, полученые из внешнего процесса: ['+cText+']'), LogGroupGUID, lmtDebug);
 
-  if Msg.From=HWND(MainForm.Handle) then
+  if Msg.From=Handle then
     begin
       sl:=TStringList.Create;
       try
