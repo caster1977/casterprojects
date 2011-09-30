@@ -85,9 +85,8 @@ var
   sReportPeriod: string;
   iRoutineCounter: integer;
   iRowQuantity, iRowCounter: integer;
-  slUserList, slPeriodList: TStringList;
+  slUserList: TStringList;
   q: string;
-  s: string;
   ResultSet: PMYSQL_RES;
   ResultRow: PMYSQL_ROW;
   sUserGroupName: string;

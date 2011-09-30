@@ -49,14 +49,13 @@ const
 var
   q, s, sErrorMessage: string;
   bError: boolean;
-  i, j: integer;
+  j: integer;
   iRoutineCounter: integer;
   iRowCounter: integer;
   ResultSet: PMYSQL_RES;
   ResultRow: PMYSQL_ROW;
   wStartDay, wStartMonth, wStartYear, wStopDay, wStopMonth, wStopYear: word;
   sShortStartDate, sShortStopDate, sSQLFormatStartDate, sSQLFormatStopDate, sLongStartDate, sLongStopDate: string;
-  iYear: integer;
   sHTML, sNet: string;
   sAbonentType: string;
   sReportPeriod: string;
@@ -64,7 +63,6 @@ var
   dtNow: TDateTime;
   sTableName: string;
   iNetIndex_In_aNets: integer;
-  StatServer: TMySQLServerConnectionDetails;
 
   i109_DayCalls, i109_NightCalls, i188_Calls, i192_Calls, i195_Calls, i175_Calls, i175_Minutes, i190_Calls, i190_Minutes: integer;
   i191_Calls, i191_Minutes, i193_Calls, i193_Minutes, i194_Calls, i194_Minutes, i196_Calls, i196_Minutes, i197_Calls, i197_Minutes: integer;
@@ -240,9 +238,12 @@ begin
   if not bError then
     begin
       // формирование/поиск сводной таблицы irda
-      Synchronize( procedure begin //
-        if not MainForm.Do_CreateXRDA(StartDate, StopDate, True, XRDInput, sTableName, False, True, False) then //
-        Routines_GenerateError('Произошла ошибка в процессе подготовки таблиц данных входящих звонков!', sErrorMessage, bError); end); //
+      Synchronize(
+        procedure
+        begin //
+          if not MainForm.Do_CreateXRDA(StartDate, StopDate, True, XRDInput, sTableName, False, True, False) then //
+            Routines_GenerateError('Произошла ошибка в процессе подготовки таблиц данных входящих звонков!', sErrorMessage, bError);
+        end); //
       StepProgressBar; // 1
     end;
 
@@ -747,10 +748,13 @@ begin
 
   if not bError then //
     begin
-      Synchronize( procedure begin //
-        if not MainForm.Do_SaveReportAsHTMLAndOpen(sHTML, 'Сведения о входящем трафике в сеть РУП Белтелеком на платные справочные службы от сети '+StringReplace(StringReplace(StringReplace(sNet, '&laquo;', '', [rfReplaceAll]), '&raquo;', '',
-        [rfReplaceAll]), '&nbsp;', ' ', [rfReplaceAll])+' за '+sReportPeriod+' [форма № '+sReportCode+'].htm', OpenWithBrowser, True) then //
-        Routines_GenerateError('Произошла ошибка во вложенной функции сохранения и открытия отчёта!', sErrorMessage, bError); end); //
+      Synchronize(
+        procedure
+        begin //
+          if not MainForm.Do_SaveReportAsHTMLAndOpen(sHTML, 'Сведения о входящем трафике в сеть РУП Белтелеком на платные справочные службы от сети '+StringReplace(StringReplace(StringReplace(sNet, '&laquo;', '', [rfReplaceAll]), '&raquo;', '',
+            [rfReplaceAll]), '&nbsp;', ' ', [rfReplaceAll])+' за '+sReportPeriod+' [форма № '+sReportCode+'].htm', OpenWithBrowser, True) then //
+            Routines_GenerateError('Произошла ошибка во вложенной функции сохранения и открытия отчёта!', sErrorMessage, bError);
+        end); //
       StepProgressBar; // 14
     end;
 

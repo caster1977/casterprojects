@@ -103,6 +103,15 @@ begin
   bError:=False;
   sTableName:='';
 
+  ibVoiceBlockSummary_call_quantity:=0;
+  iAutoBlockSummary_call_quantity:=0;
+  ibVoiceBlockSummary_call_sumtime_in_sec:=0;
+  iAutoBlockSummary_call_sumtime_in_sec:=0;
+  ibVoiceBlockSummary_call_sumtime_in_min_div_60:=0;
+  iAutoBlockSummary_call_sumtime_in_min_div_60:=0;
+  ibVoiceBlockSummary_call_sumtime_in_min_each:=0;
+  iAutoBlockSummary_call_sumtime_in_min_each:=0;
+
   dtNow:=Now;
 
   wStartDay:=DayOf(StartDate);
