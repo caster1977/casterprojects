@@ -71,6 +71,7 @@ type
     procedure Action_CloseExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure chkbxDetailedClick(Sender: TObject);
+    procedure chklbxUsersClickCheck(Sender: TObject);
   strict private
     dtLastDate: TDate;
 
@@ -149,6 +150,13 @@ procedure TReportForm.chkbxDetailedClick(Sender: TObject);
 begin
   ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxDetailed.Caption+'"', '{8A3559CE-76D8-4EEC-95A0-06D5BA525295}');
   Do_SwitchDetailed;
+  ProcedureFooter;
+end;
+
+procedure TReportForm.chklbxUsersClickCheck(Sender: TObject);
+begin
+  ProcedureHeader('Процедура реакции на пеметку/снятие пометки чекбокса в списке пользователей', '{ABB897ED-01E2-42F0-B85F-DFF2467830A9}');
+  Do_UpdateActions;
   ProcedureFooter;
 end;
 

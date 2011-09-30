@@ -104,8 +104,7 @@ object LoginForm: TLoginForm
   end
   object ActionManager1: TActionManager
     Images = ilLoginFormSmallImages
-    Left = 184
-    Top = 32
+    Left = 208
     StyleName = 'Platform Default'
     object Action_Ok: TAction
       Caption = '&'#1054#1082
@@ -130,15 +129,13 @@ object LoginForm: TLoginForm
     LogFile.Enabled = True
     LogFile.FileNameSuffix = 'OA5_LoginForm'
     LogClient.Enabled = True
-    Left = 152
-    Top = 32
+    Left = 176
   end
   object ilLoginFormSmallImages: TImageList
     AllocBy = 2
-    Left = 216
-    Top = 32
+    Left = 240
     Bitmap = {
-      494C0101020004002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000005346450053464500534645005346450053464500534645000000

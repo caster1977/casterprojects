@@ -12,7 +12,8 @@ uses
   uUserClass in 'uUserClass.pas',
   uAddMassMsrForm in 'uAddMassMsrForm.pas' {AddMassMsrForm},
   uReportForm in 'uReportForm.pas' {ReportForm},
-  uSetPasswordForm in 'uSetPasswordForm.pas' {SetPasswordForm};
+  uSetPasswordForm in 'uSetPasswordForm.pas' {SetPasswordForm},
+  uPermissionsForm in 'uPermissionsForm.pas' {PermissionsForm};
 
 {$R *.res}
 

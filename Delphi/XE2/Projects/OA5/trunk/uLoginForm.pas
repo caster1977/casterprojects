@@ -46,7 +46,7 @@ type
     procedure Do_UpdateActions;
     procedure Do_Ok;
     procedure Do_Help;
-    procedure Do_Cancel;
+    procedure Do_Close;
   end;
 
 implementation
@@ -94,9 +94,11 @@ end;
 procedure TLoginForm.Do_Ok;
 begin
   ProcedureHeader('Процедура закрытия модального окна с результатом mrOk', '{38630A3A-99DB-4D54-A9A4-42BBA7F6DC42}');
+
   ModalResult:=mrOk;
   Log.SendInfo('Попытка авторизации была подтверждена пользователем.');
   Log.SendInfo('Окно авторизации закрыто.');
+
   ProcedureFooter;
 end;
 
@@ -117,7 +119,7 @@ end;
 procedure TLoginForm.Action_CloseExecute(Sender: TObject);
 begin
   ProcedureHeader('Процедура-обработчик действия "'+Action_Close.Caption+'"', '{1DFD76E1-46A7-4ADA-A2F3-AAF70AC8060C}');
-  Do_Cancel;
+  Do_Close;
   ProcedureFooter;
 end;
 
@@ -139,12 +141,14 @@ begin
   ProcedureFooter;
 end;
 
-procedure TLoginForm.Do_Cancel;
+procedure TLoginForm.Do_Close;
 begin
-  ProcedureHeader('Процедура закрытия модального окна с результатом mrCancel', '{AFC63B2A-379B-4A09-98F3-549C5570B3D2}');
-  ModalResult:=mrCancel;
+  ProcedureHeader('Процедура закрытия модального окна с результатом mrClose', '{AFC63B2A-379B-4A09-98F3-549C5570B3D2}');
+
+  ModalResult:=mrClose;
   Log.SendInfo('Попытка авторизации была отменена пользователем.');
   Log.SendInfo('Окно авторизации закрыто.');
+
   ProcedureFooter;
 end;
 
