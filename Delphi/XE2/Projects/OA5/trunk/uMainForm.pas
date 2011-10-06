@@ -509,13 +509,45 @@ begin
   ProcedureHeader('Процедура применения изменений к интерфейсу программы', '{67A9E9BC-62AC-4848-B20D-C8B5095DEB6C}');
 
   // установка параметров протоколирования в соответствии с настройками программы
-  Log.UserName:=MainForm.CurrentUser.Login;
-  Log.AllowedTypes:=MainForm.Configuration.KeepLogTypes;
-  Log.Enabled:=MainForm.Configuration.EnableLog;
+  Log.UserName:=CurrentUser.Login;
+  Log.AllowedTypes:=Configuration.KeepLogTypes;
+  Log.Enabled:=Configuration.EnableLog;
 
   // установка видимости панели статуса в соответствии с настройками программы
   miStatusbar.Checked:=Configuration.ShowStatusbar;
   StatusBar1.Visible:=Configuration.ShowStatusbar;
+
+  // установка позиции и размеров главного окна в соответсвии с параметрами конфигурации
+  if Configuration.FullScreenAtLaunch then
+    begin
+      WindowState:=wsNormal;
+      Position:=poDesigned;
+      Left:=Configuration.MainFormLeft;
+      Top:=Configuration.MainFormTop;
+      Width:=Configuration.MainFormWidth;
+      Height:=Configuration.MainFormHeight;
+      WindowState:=wsMaximized;
+    end
+  else
+    if Configuration.MainFormPositionByCenter then
+      begin
+        WindowState:=wsNormal;
+        Position:=poDesigned;
+        Left:=Configuration.MainFormLeft;
+        Top:=Configuration.MainFormTop;
+        Width:=Configuration.MainFormWidth;
+        Height:=Configuration.MainFormHeight;
+        Position:=poScreenCenter;
+      end
+    else
+      begin
+        WindowState:=wsNormal;
+        Position:=poDesigned;
+        Left:=Configuration.MainFormLeft;
+        Top:=Configuration.MainFormTop;
+        Width:=Configuration.MainFormWidth;
+        Height:=Configuration.MainFormHeight;
+      end;
 
   ProcedureFooter;
 end;

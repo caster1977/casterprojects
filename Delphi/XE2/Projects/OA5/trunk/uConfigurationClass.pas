@@ -82,10 +82,10 @@ const
   DefaultValue_CustomHelpFileValue: string='';
 
   // вкладка "настройки главного окна"
-  DefaultValue_MainFormRect_Left: integer=0;
-  DefaultValue_MainFormRect_Top: integer=0;
-  DefaultValue_MainFormRect_Right: integer=800;
-  DefaultValue_MainFormRect_Bottom: integer=600;
+  DefaultValue_MainFormLeft: integer=0;
+  DefaultValue_MainFormTop: integer=0;
+  DefaultValue_MainFormWidth: integer=800;
+  DefaultValue_MainFormHeight: integer=600;
   DefaultValue_MainFormPositionByCenter: boolean=True;
   DefaultValue_FullScreenAtLaunch: boolean=False;
 
@@ -172,7 +172,10 @@ type
     FCustomHelpFileValue: string;
 
     // вкладка "настройки главного окна"
-    FMainFormRect: TRect;
+    FMainFormLeft: integer;
+    FMainFormTop: integer;
+    FMainFormWidth: integer;
+    FMainFormHeight: integer;
     FMainFormPositionByCenter: boolean;
     FFullScreenAtLaunch: boolean;
 
@@ -219,7 +222,6 @@ type
     procedure SetLaunchAtStartup(const Value: boolean);
     procedure SetLoginFormPosition(const Value: TFormPosition);
     procedure SetMainFormPositionByCenter(const Value: boolean);
-    procedure SetMainFormRect(const Value: TRect);
     procedure SetMaintenanceFormPosition(const Value: TFormPosition);
     procedure SetMarkSearchedStrings(const Value: boolean);
     procedure SetMessagesServer(const Value: TMySQLConnection);
@@ -246,6 +248,11 @@ type
     procedure SetUseMultibuffer(const Value: boolean);
     procedure SetUsersFormPosition(const Value: TFormPosition);
     procedure SetViewPostListFormPosition(const Value: TFormPosition);
+  private
+    procedure SetMainFormHeight(const Value: integer);
+    procedure SetMainFormLeft(const Value: integer);
+    procedure SetMainFormTop(const Value: integer);
+    procedure SetMainFormWidth(const Value: integer);
   public
     // sDefaultAction: string;
     // bImmediatelyQuit: boolean;
@@ -361,7 +368,10 @@ type
     property CustomHelpFileValue: string read FCustomHelpFileValue write SetCustomHelpFileValue stored False;
 
     // вкладка "настройки главного окна"
-    property MainFormRect: TRect read FMainFormRect write SetMainFormRect stored False;
+    property MainFormLeft: integer read FMainFormLeft write SetMainFormLeft stored False;
+    property MainFormTop: integer read FMainFormTop write SetMainFormTop stored False;
+    property MainFormWidth: integer read FMainFormWidth write SetMainFormWidth stored False;
+    property MainFormHeight: integer read FMainFormHeight write SetMainFormHeight stored False;
     property MainFormPositionByCenter: boolean read FMainFormPositionByCenter write SetMainFormPositionByCenter default True;
     property FullScreenAtLaunch: boolean read FFullScreenAtLaunch write SetFullScreenAtLaunch default False;
 
@@ -388,7 +398,6 @@ uses
 procedure TConfiguration.Load;
 var
   FormPosition: TFormPosition;
-  Rect: TRect;
 begin
   if FileName>'' then
     with TIniFile.Create(FileName) do
@@ -546,14 +555,10 @@ begin
         CustomHelpFileValue:=ReadString('Прочие', 'sCustomHelpFileValue', DefaultValue_CustomHelpFileValue);
 
         // вкладка "настройки главного окна"
-        with Rect do
-          begin
-            Left:=ReadInteger('Главное окно', 'MainFormRect.iLeft', DefaultValue_MainFormRect_Left);
-            Top:=ReadInteger('Главное окно', 'MainFormRect.iTop', DefaultValue_MainFormRect_Top);
-            Right:=ReadInteger('Главное окно', 'MainFormRect.iRight', DefaultValue_MainFormRect_Right);
-            Bottom:=ReadInteger('Главное окно', 'MainFormRect.iBottom', DefaultValue_MainFormRect_Bottom);
-            MainFormRect:=Rect;
-          end;
+        MainFormLeft:=ReadInteger('Главное окно', 'iMainFormLeft', DefaultValue_MainFormLeft);
+        MainFormTop:=ReadInteger('Главное окно', 'iMainFormTop', DefaultValue_MainFormTop);
+        MainFormWidth:=ReadInteger('Главное окно', 'iMainFormWidth', DefaultValue_MainFormWidth);
+        MainFormHeight:=ReadInteger('Главное окно', 'iMainFormHeight', DefaultValue_MainFormHeight);
         MainFormPositionByCenter:=ReadBool('Главное окно', 'bMainFormPositionByCenter', DefaultValue_MainFormPositionByCenter);
         FullScreenAtLaunch:=ReadBool('Главное окно', 'bFullScreenAtLaunch', DefaultValue_FullScreenAtLaunch);
 
@@ -676,10 +681,10 @@ begin
           WriteString('Прочие', 'bCustomHelpFileValue', CustomHelpFileValue);
 
           // вкладка "настройки главного окна"
-          WriteInteger('Главное окно', 'MainFormRect.iLeft', MainFormRect.Left);
-          WriteInteger('Главное окно', 'MainFormRect.iTop', MainFormRect.Top);
-          WriteInteger('Главное окно', 'MainFormRect.iRight', MainFormRect.Right);
-          WriteInteger('Главное окно', 'MainFormRect.iBottom', MainFormRect.Bottom);
+          WriteInteger('Главное окно', 'iMainFormLeft', MainFormLeft);
+          WriteInteger('Главное окно', 'iMainFormTop', MainFormTop);
+          WriteInteger('Главное окно', 'iMainFormWidth', MainFormWidth);
+          WriteInteger('Главное окно', 'iMainFormHeight', MainFormHeight);
           WriteBool('Главное окно', 'bMainFormPositionByCenter', MainFormPositionByCenter);
           WriteBool('Главное окно', 'bFullScreenAtLaunch', FullScreenAtLaunch);
 
@@ -718,16 +723,34 @@ begin
     FLoginFormPosition:=Value;
 end;
 
+procedure TConfiguration.SetMainFormHeight(const Value: integer);
+begin
+  if FMainFormHeight<>Value then
+  FMainFormHeight := Value;
+end;
+
+procedure TConfiguration.SetMainFormLeft(const Value: integer);
+begin
+  if FMainFormLeft<>Value then
+  FMainFormLeft := Value;
+end;
+
 procedure TConfiguration.SetMainFormPositionByCenter(const Value: boolean);
 begin
   if FMainFormPositionByCenter<>Value then
     FMainFormPositionByCenter:=Value;
 end;
 
-procedure TConfiguration.SetMainFormRect(const Value: TRect);
+procedure TConfiguration.SetMainFormTop(const Value: integer);
 begin
-  if ((FMainFormRect.Left<>Value.Left)or(FMainFormRect.Top<>Value.Top)or(FMainFormRect.Right<>Value.Right)or(FMainFormRect.Bottom<>Value.Bottom)) then
-    FMainFormRect:=Value;
+  if FMainFormTop<>Value then
+  FMainFormTop := Value;
+end;
+
+procedure TConfiguration.SetMainFormWidth(const Value: integer);
+begin
+  if FMainFormWidth<>Value then
+  FMainFormWidth := Value;
 end;
 
 procedure TConfiguration.SetMaintenanceFormPosition(const Value: TFormPosition);
@@ -1300,13 +1323,10 @@ begin
   FCustomHelpFileValue:=DefaultValue_CustomHelpFileValue;
 
   // вкладка "настройки главного окна"
-  with FMainFormRect do
-    begin
-      Left:=DefaultValue_MainFormRect_Left;
-      Top:=DefaultValue_MainFormRect_Top;
-      Right:=DefaultValue_MainFormRect_Right;
-      Bottom:=DefaultValue_MainFormRect_Bottom;
-    end;
+  MainFormLeft:=DefaultValue_MainFormLeft;
+  MainFormTop:=DefaultValue_MainFormTop;
+  MainFormWidth:=DefaultValue_MainFormWidth;
+  MainFormHeight:=DefaultValue_MainFormHeight;
   FMainFormPositionByCenter:=DefaultValue_MainFormPositionByCenter;
   FFullScreenAtLaunch:=DefaultValue_FullScreenAtLaunch;
 

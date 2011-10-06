@@ -207,6 +207,12 @@ type
     chkbxShowConfirmationAtQuit: TCheckBox;
     chkbxPlaySoundOnComplete: TCheckBox;
     Action_ChooseCustomHelpFile: TAction;
+    lblPermissionsFormPosition: TLabel;
+    lblPermissionsFormPositionX: TLabel;
+    edbxPermissionsFormPositionX: TEdit;
+    lblPermissionsFormPositionY: TLabel;
+    edbxPermissionsFormPositionY: TEdit;
+    chkbxPermissionsFormPositionByCenter: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure Action_ApplyExecute(Sender: TObject);
     procedure Action_DefaultsExecute(Sender: TObject);
@@ -280,6 +286,7 @@ uses
   uLoginForm,
   uAboutForm,
   uAddMassMsrForm,
+  uSetPasswordForm,
   uPermissionsForm,
   uReportForm,
   uRoutines,
@@ -374,7 +381,6 @@ end;
 procedure TConfigurationForm.Do_Apply;
 var
   FormPosition: TFormPosition;
-  Rect: TRect;
 begin
   ProcedureHeader('Процедура закрытия модального окна с результатом mrOk', '{55D9E5EB-97B6-47FC-B149-348070521077}');
 
@@ -552,50 +558,47 @@ begin
       FullScreenAtLaunch:=chkbxFullScreenAtLaunch.Enabled and chkbxFullScreenAtLaunch.Checked;
       if chkbxFullScreenAtLaunch.Enabled and chkbxFullScreenAtLaunch.Checked then
         begin
-          Rect.Left:=0;
-          Rect.Top:=0;
-          Rect.Right:=Screen.WorkAreaRect.Right;
-          Rect.Bottom:=Screen.WorkAreaRect.Bottom;
-          MainFormRect:=Rect;
+          MainFormLeft:=Screen.WorkAreaLeft;
+          MainFormTop:=Screen.WorkAreaTop;
+          MainFormWidth:=Screen.WorkAreaWidth;
+          MainFormHeight:=Screen.WorkAreaHeight;
         end
       else
         if chkbxMainFormPositionByCenter.Enabled and chkbxMainFormPositionByCenter.Checked then
           begin
             if edbxMainFormWidth.Enabled then
-              Rect.Right:=StrToIntDef(Trim(edbxMainFormWidth.Text), DefaultValue_MainFormRect_Right+1)-1
+              MainFormWidth:=StrToIntDef(Trim(edbxMainFormWidth.Text), DefaultValue_MainFormWidth)
             else
-              Rect.Right:=DefaultValue_MainFormRect_Right;
+              MainFormWidth:=DefaultValue_MainFormWidth;
 
             if edbxMainFormHeight.Enabled then
-              Rect.Bottom:=StrToIntDef(Trim(edbxMainFormHeight.Text), DefaultValue_MainFormRect_Bottom+1)-1
+              MainFormHeight:=StrToIntDef(Trim(edbxMainFormHeight.Text), DefaultValue_MainFormHeight)
             else
-              Rect.Bottom:=DefaultValue_MainFormRect_Bottom;
-            Rect.Left:=Screen.WorkAreaWidth-Rect.Right-1;
-            Rect.Top:=Screen.WorkAreaHeight-Rect.Bottom-1;
-            MainFormRect:=Rect;
+              MainFormHeight:=DefaultValue_MainFormHeight;
+            MainFormLeft:=(Screen.WorkAreaWidth-MainFormWidth)div 2;
+            MainFormTop:=(Screen.WorkAreaHeight-MainFormHeight)div 2;
           end
         else
           begin
             if edbxMainFormPositionX.Enabled then
-              Rect.Left:=StrToIntDef(Trim(edbxMainFormPositionX.Text), DefaultValue_MainFormRect_Left)
+              MainFormLeft:=StrToIntDef(Trim(edbxMainFormPositionX.Text), DefaultValue_MainFormLeft)
             else
-              Rect.Left:=DefaultValue_MainFormRect_Left;
+              MainFormLeft:=DefaultValue_MainFormLeft;
 
             if edbxMainFormPositionY.Enabled then
-              Rect.Top:=StrToIntDef(Trim(edbxMainFormPositionY.Text), DefaultValue_MainFormRect_Top)
+              MainFormTop:=StrToIntDef(Trim(edbxMainFormPositionY.Text), DefaultValue_MainFormTop)
             else
-              Rect.Top:=DefaultValue_MainFormRect_Top;
+              MainFormTop:=DefaultValue_MainFormTop;
 
             if edbxMainFormWidth.Enabled then
-              Rect.Right:=StrToIntDef(Trim(edbxMainFormWidth.Text), DefaultValue_MainFormRect_Right+1)-1
+              MainFormWidth:=StrToIntDef(Trim(edbxMainFormWidth.Text), DefaultValue_MainFormWidth)
             else
-              Rect.Right:=DefaultValue_MainFormRect_Right;
+              MainFormWidth:=DefaultValue_MainFormWidth;
 
             if edbxMainFormHeight.Enabled then
-              Rect.Bottom:=StrToIntDef(Trim(edbxMainFormHeight.Text), DefaultValue_MainFormRect_Bottom+1)-1
+              MainFormHeight:=StrToIntDef(Trim(edbxMainFormHeight.Text), DefaultValue_MainFormHeight)
             else
-              Rect.Bottom:=DefaultValue_MainFormRect_Bottom;
-            MainFormRect:=Rect;
+              MainFormHeight:=DefaultValue_MainFormHeight;
           end;
 
       // вкладка "настройки отображения информации"
@@ -1055,11 +1058,11 @@ begin
   if PageControl1.ActivePage.Caption=' главного окна' then
     begin
       // выставление значений по умолчанию для элементов интерфейса
-      edbxMainFormPositionX.Text:=Routines.GetConditionalString(not(DefaultValue_MainFormPositionByCenter or DefaultValue_FullScreenAtLaunch), IntToStr(DefaultValue_MainFormRect_Left), '');
-      edbxMainFormPositionY.Text:=Routines.GetConditionalString(not(DefaultValue_MainFormPositionByCenter or DefaultValue_FullScreenAtLaunch), IntToStr(DefaultValue_MainFormRect_Top), '');
+      edbxMainFormPositionX.Text:=Routines.GetConditionalString(not(DefaultValue_MainFormPositionByCenter or DefaultValue_FullScreenAtLaunch), IntToStr(DefaultValue_MainFormLeft), '');
+      edbxMainFormPositionY.Text:=Routines.GetConditionalString(not(DefaultValue_MainFormPositionByCenter or DefaultValue_FullScreenAtLaunch), IntToStr(DefaultValue_MainFormTop), '');
       chkbxMainFormPositionByCenter.Checked:=DefaultValue_MainFormPositionByCenter and(not DefaultValue_FullScreenAtLaunch);
-      edbxMainFormWidth.Text:=Routines.GetConditionalString(DefaultValue_FullScreenAtLaunch, '', IntToStr(DefaultValue_MainFormRect_Right-DefaultValue_MainFormRect_Left));
-      edbxMainFormHeight.Text:=Routines.GetConditionalString(DefaultValue_FullScreenAtLaunch, '', IntToStr(DefaultValue_MainFormRect_Bottom-DefaultValue_MainFormRect_Top));
+      edbxMainFormWidth.Text:=Routines.GetConditionalString(DefaultValue_FullScreenAtLaunch, '', IntToStr(DefaultValue_MainFormWidth));
+      edbxMainFormHeight.Text:=Routines.GetConditionalString(DefaultValue_FullScreenAtLaunch, '', IntToStr(DefaultValue_MainFormHeight));
       chkbxFullScreenAtLaunch.Checked:=DefaultValue_FullScreenAtLaunch;
     end;
 
@@ -1462,11 +1465,11 @@ begin
       Log.SendDebug('Действие "'+Action_ChooseCustomHelpFile.Caption+'" '+Routines.GetConditionalString(Action_ChooseCustomHelpFile.Enabled, 'в', 'от')+'ключено.');
 
       // вкладка "настройки главного окна"
-      edbxMainFormPositionX.Text:=Routines.GetConditionalString(not(MainFormPositionByCenter or FullScreenAtLaunch), IntToStr(MainFormRect.Left), '');
-      edbxMainFormPositionY.Text:=Routines.GetConditionalString(not(MainFormPositionByCenter or FullScreenAtLaunch), IntToStr(MainFormRect.Top), '');
+      edbxMainFormPositionX.Text:=Routines.GetConditionalString(not(MainFormPositionByCenter or FullScreenAtLaunch), IntToStr(MainFormLeft), '');
+      edbxMainFormPositionY.Text:=Routines.GetConditionalString(not(MainFormPositionByCenter or FullScreenAtLaunch), IntToStr(MainFormTop), '');
       chkbxMainFormPositionByCenter.Checked:=MainFormPositionByCenter and(not FullScreenAtLaunch);
-      edbxMainFormWidth.Text:=Routines.GetConditionalString(FullScreenAtLaunch, '', IntToStr(MainFormRect.Right-MainFormRect.Left));
-      edbxMainFormHeight.Text:=Routines.GetConditionalString(FullScreenAtLaunch, '', IntToStr(MainFormRect.Bottom-MainFormRect.Top));
+      edbxMainFormWidth.Text:=Routines.GetConditionalString(FullScreenAtLaunch, '', IntToStr(MainFormWidth));
+      edbxMainFormHeight.Text:=Routines.GetConditionalString(FullScreenAtLaunch, '', IntToStr(MainFormHeight));
       chkbxFullScreenAtLaunch.Checked:=FullScreenAtLaunch;
 
       // вкладка "настройки отображения информации"
@@ -1504,10 +1507,10 @@ begin
   edbxMainFormWidth.Enabled:=not bFullScreenAtLaunch;
   edbxMainFormHeight.Enabled:=not bFullScreenAtLaunch;
 
-  edbxMainFormPositionX.Text:=Routines.GetConditionalString(edbxMainFormPositionX.Enabled, IntToStr(MainForm.Configuration.MainFormRect.Left), '');
-  edbxMainFormPositionY.Text:=Routines.GetConditionalString(edbxMainFormPositionY.Enabled, IntToStr(MainForm.Configuration.MainFormRect.Top), '');
-  edbxMainFormWidth.Text:=Routines.GetConditionalString(not bFullScreenAtLaunch, IntToStr(MainForm.Configuration.MainFormRect.Right-MainForm.Configuration.MainFormRect.Left), '');
-  edbxMainFormHeight.Text:=Routines.GetConditionalString(not bFullScreenAtLaunch, IntToStr(MainForm.Configuration.MainFormRect.Bottom-MainForm.Configuration.MainFormRect.Top), '');
+  edbxMainFormPositionX.Text:=Routines.GetConditionalString(edbxMainFormPositionX.Enabled, IntToStr(MainForm.Configuration.MainFormLeft), '');
+  edbxMainFormPositionY.Text:=Routines.GetConditionalString(edbxMainFormPositionY.Enabled, IntToStr(MainForm.Configuration.MainFormTop), '');
+  edbxMainFormWidth.Text:=Routines.GetConditionalString(not bFullScreenAtLaunch, IntToStr(MainForm.Configuration.MainFormWidth), '');
+  edbxMainFormHeight.Text:=Routines.GetConditionalString(not bFullScreenAtLaunch, IntToStr(MainForm.Configuration.MainFormHeight), '');
 
   Log.SendDebug('Флажок "'+chkbxMainFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(bFullScreenAtLaunch, 'в', 'от')+'ключен.');
 
@@ -1547,7 +1550,7 @@ end;
 procedure TConfigurationForm.chkbxSetPasswordFormPositionByCenterClick(Sender: TObject);
 var
   b: boolean;
-  // SetPasswordForm: TSetPasswordForm;
+  SetPasswordForm: TSetPasswordForm;
 begin
   ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxSetPasswordFormPositionByCenter.Caption+'"', '{9ED32D46-9E32-4491-B6AB-6D5BBF7FD074}');
 
@@ -1561,13 +1564,13 @@ begin
     end
   else
     begin
-      // SetPasswordForm:=TSetPasswordForm.Create(Self);
-      // try
-      // edbxSetPasswordFormPositionX.Text:=IntToStr((Screen.WorkAreaWidth-SetPasswordForm.Width)div 2);
-      // edbxSetPasswordFormPositionY.Text:=IntToStr((Screen.WorkAreaHeight-SetPasswordForm.Height)div 2);
-      // finally
-      // SetPasswordForm.Free;
-      // end;
+      SetPasswordForm:=TSetPasswordForm.Create(Self);
+      try
+        edbxSetPasswordFormPositionX.Text:=IntToStr((Screen.WorkAreaWidth-SetPasswordForm.Width)div 2);
+        edbxSetPasswordFormPositionY.Text:=IntToStr((Screen.WorkAreaHeight-SetPasswordForm.Height)div 2);
+      finally
+        SetPasswordForm.Free;
+      end;
     end;
   Log.SendDebug('Флажок "'+chkbxSetPasswordFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 
@@ -1792,9 +1795,6 @@ begin
   ProcedureFooter;
 end;
 
-
-
-
 procedure TConfigurationForm.chkbxClearingFormPositionByCenterClick(Sender: TObject);
 var
   b: boolean;
@@ -1883,8 +1883,8 @@ begin
   bMainFormPositionByCenter:=chkbxMainFormPositionByCenter.Checked and chkbxMainFormPositionByCenter.Enabled;
   edbxMainFormPositionX.Enabled:=not bMainFormPositionByCenter;
   edbxMainFormPositionY.Enabled:=not bMainFormPositionByCenter;
-  edbxMainFormPositionX.Text:=Routines.GetConditionalString(edbxMainFormPositionX.Enabled, IntToStr(MainForm.Configuration.MainFormRect.Left), '');
-  edbxMainFormPositionY.Text:=Routines.GetConditionalString(edbxMainFormPositionY.Enabled, IntToStr(MainForm.Configuration.MainFormRect.Top), '');
+  edbxMainFormPositionX.Text:=Routines.GetConditionalString(edbxMainFormPositionX.Enabled, IntToStr(MainForm.Configuration.MainFormLeft), '');
+  edbxMainFormPositionY.Text:=Routines.GetConditionalString(edbxMainFormPositionY.Enabled, IntToStr(MainForm.Configuration.MainFormTop), '');
 
   Log.SendDebug('Флажок "'+chkbxMainFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(bMainFormPositionByCenter, 'в', 'от')+'ключен.');
 
