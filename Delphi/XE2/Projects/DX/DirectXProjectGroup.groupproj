@@ -3,11 +3,14 @@
 			<ProjectGuid>{99DA5975-A368-4D4D-93A2-F80AD5A739B2}</ProjectGuid>
 		</PropertyGroup>
 		<ItemGroup>
-			<Projects Include="Example1\Example1_MyDll.dproj">
+			<Projects Include="Example01\Example01_MyDll.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="Example1\Example1.dproj">
-				<Dependencies>Example1\Example1_MyDll.dproj</Dependencies>
+			<Projects Include="Example01\Example01.dproj">
+				<Dependencies>Example01\Example01_MyDll.dproj</Dependencies>
+			</Projects>
+			<Projects Include="Example02\Example02.dproj">
+				<Dependencies>Example01\Example01_MyDll.dproj</Dependencies>
 			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
@@ -17,32 +20,41 @@
 				<Default.Personality/>
 			</BorlandProject>
 		</ProjectExtensions>
-		<Target Name="Example1_MyDll">
-			<MSBuild Projects="Example1\Example1_MyDll.dproj"/>
+		<Target Name="Example01_MyDll">
+			<MSBuild Projects="Example01\Example01_MyDll.dproj"/>
 		</Target>
-		<Target Name="Example1_MyDll:Clean">
-			<MSBuild Projects="Example1\Example1_MyDll.dproj" Targets="Clean"/>
+		<Target Name="Example01_MyDll:Clean">
+			<MSBuild Projects="Example01\Example01_MyDll.dproj" Targets="Clean"/>
 		</Target>
-		<Target Name="Example1_MyDll:Make">
-			<MSBuild Projects="Example1\Example1_MyDll.dproj" Targets="Make"/>
+		<Target Name="Example01_MyDll:Make">
+			<MSBuild Projects="Example01\Example01_MyDll.dproj" Targets="Make"/>
 		</Target>
-		<Target Name="Example1" DependsOnTargets="Example1_MyDll">
-			<MSBuild Projects="Example1\Example1.dproj"/>
+		<Target Name="Example01" DependsOnTargets="Example01_MyDll">
+			<MSBuild Projects="Example01\Example01.dproj"/>
 		</Target>
-		<Target Name="Example1:Clean" DependsOnTargets="Example1_MyDll:Clean">
-			<MSBuild Projects="Example1\Example1.dproj" Targets="Clean"/>
+		<Target Name="Example01:Clean" DependsOnTargets="Example01_MyDll:Clean">
+			<MSBuild Projects="Example01\Example01.dproj" Targets="Clean"/>
 		</Target>
-		<Target Name="Example1:Make" DependsOnTargets="Example1_MyDll:Make">
-			<MSBuild Projects="Example1\Example1.dproj" Targets="Make"/>
+		<Target Name="Example01:Make" DependsOnTargets="Example01_MyDll:Make">
+			<MSBuild Projects="Example01\Example01.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Example02" DependsOnTargets="Example01_MyDll">
+			<MSBuild Projects="Example02\Example02.dproj"/>
+		</Target>
+		<Target Name="Example02:Clean" DependsOnTargets="Example01_MyDll:Clean">
+			<MSBuild Projects="Example02\Example02.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Example02:Make" DependsOnTargets="Example01_MyDll:Make">
+			<MSBuild Projects="Example02\Example02.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="Example1_MyDll;Example1"/>
+			<CallTarget Targets="Example01_MyDll;Example01;Example02"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="Example1_MyDll:Clean;Example1:Clean"/>
+			<CallTarget Targets="Example01_MyDll:Clean;Example01:Clean;Example02:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="Example1_MyDll:Make;Example1:Make"/>
+			<CallTarget Targets="Example01_MyDll:Make;Example01:Make;Example02:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
