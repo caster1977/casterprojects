@@ -1,4 +1,4 @@
-object Form2: TForm2
+object MainForm: TMainForm
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
@@ -13,6 +13,8 @@ object Form2: TForm2
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
+  OnClick = FormClick
   PixelsPerInch = 96
   TextHeight = 13
 end
