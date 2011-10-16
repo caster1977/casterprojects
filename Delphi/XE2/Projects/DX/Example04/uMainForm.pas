@@ -20,9 +20,11 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure ApplicationEvents1Restore(Sender: TObject);
+    procedure ApplicationEvents1Activate(Sender: TObject);
   private
     FDD: IDirectDraw7;
     FDDSPrimary: IDirectDrawSurface7;
+    procedure Do_Paint;
     procedure ErrorOut(hRet: HRESULT; const FuncName: string);
     procedure FormPaint(Sender: TObject);
     procedure FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer; var Resize: Boolean);
@@ -35,7 +37,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TMainForm.ApplicationEvents1Restore(Sender: TObject);
+procedure TMainForm.Do_Paint;
 var
   // Вспомогательный дескриптор, идентификатор устройства вывода GDI
   hRet: HRESULT; // Для анализа успешности действий
@@ -104,10 +106,9 @@ begin
       ErrorOut(hRet, 'Create Primary Surface');
       Exit;
     end;
+  OnCanResize:=FormCanResize;
   OnPaint:=FormPaint;
   OnResize:=FormPaint;
-  OnActivate:=FormPaint;
-  OnCanResize:=FormCanResize;
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
@@ -121,34 +122,19 @@ begin
     end;
 end;
 
-procedure TMainForm.FormPaint(Sender: TObject);
-var
-  // Вспомогательный дескриптор, идентификатор устройства вывода GDI
-  hRet: HRESULT; // Для анализа успешности действий
-  DC: HDC;
-  wrkCanvas: TCanvas; // Вспомогательный объект, рабочая канва
+procedure TMainForm.ApplicationEvents1Activate(Sender: TObject);
 begin
-  while True do
-    begin // возможно, rод придется повторять неоднократно
-      hRet:=FDDSPrimary.GetDC(DC); // Заново получаем дескриптор
-      if Succeeded(hRet) then
-        begin
-          wrkCanvas:=TCanvas.Create;
-          wrkCanvas.Handle:=DC;
-          wrkCanvas.Ellipse(Left+50, Top+50, Left+100, Top+100);
-          wrkCanvas.Free;
-          FDDSPrimary.ReleaseDC(DC);
-          Break;
-        end;
-      // Поверхность потеряна, надо восстановить if hRet = DDERR_SURFACELOST then begin
-      hRet:=FDDSPrimary._Restore;
-      // Если не удалось восстановить, дальше продолжать нельзя
-      if hRet<>DD_OK then
-        Break;
-      // Ошибка отлична от DDERR_WASSTILLDRAWING, следовательно непоправима
-      if hRet<>DDERR_WASSTILLDRAWING then
-        Break;
-    end;
+  Do_Paint;
+end;
+
+procedure TMainForm.ApplicationEvents1Restore(Sender: TObject);
+begin
+  Do_Paint;
+end;
+
+procedure TMainForm.FormPaint(Sender: TObject);
+begin
+  Do_Paint;
 end;
 
 procedure TMainForm.FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer; var Resize: Boolean);
