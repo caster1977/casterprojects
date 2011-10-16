@@ -16,6 +16,7 @@ object MainForm: TMainForm
   PixelsPerInch = 96
   TextHeight = 13
   object ApplicationEvents1: TApplicationEvents
+    OnActivate = ApplicationEvents1Activate
     OnRestore = ApplicationEvents1Restore
     Left = 232
     Top = 88
