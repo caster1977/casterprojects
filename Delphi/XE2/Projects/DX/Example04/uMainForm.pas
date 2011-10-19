@@ -129,6 +129,7 @@ end;
 
 procedure TMainForm.ApplicationEvents1Restore(Sender: TObject);
 begin
+  WindowState := wsMaximized;
   Do_Paint;
 end;
 
