@@ -21,6 +21,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object ApplicationEvents1: TApplicationEvents
     OnActivate = ApplicationEvents1Activate
+    OnDeactivate = ApplicationEvents1Deactivate
     OnRestore = ApplicationEvents1Restore
     Left = 232
     Top = 88
