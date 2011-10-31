@@ -258,36 +258,36 @@ type
     // bImmediatelyQuit: boolean;
     // iOrgSortColumn: integer;
     // iMsrSortColumn: integer;
-    ///	<summary>
-    ///	  Конструктор класса.
-    ///	</summary>
-    ///	<remarks>
-    ///	  Инициализирует значения переменных класса и создаёт вложенные объекты
-    ///	  подключений к mysql-серверу.
-    ///	</remarks>
+    /// <summary>
+    /// Конструктор класса.
+    /// </summary>
+    /// <remarks>
+    /// Инициализирует значения переменных класса и создаёт вложенные объекты
+    /// подключений к mysql-серверу.
+    /// </remarks>
     constructor Create; override;
 
-    ///	<summary>
-    ///	  Процедура загрузки значений переменных класса (конфигурации) из
-    ///	  INI-файла.
-    ///	</summary>
-    ///	<remarks>
-    ///	  Если необходимые значения не были найдены в INI-файле конфигурации,
-    ///	  переменные класса будут инициализированы значениями по умолчанию.
-    ///	</remarks>
+    /// <summary>
+    /// Процедура загрузки значений переменных класса (конфигурации) из
+    /// INI-файла.
+    /// </summary>
+    /// <remarks>
+    /// Если необходимые значения не были найдены в INI-файле конфигурации,
+    /// переменные класса будут инициализированы значениями по умолчанию.
+    /// </remarks>
     procedure Load;
 
-    ///	<summary>
-    ///	  Процедура записи значений переменных класса (конфигурации) в INI-файл.
-    ///	</summary>
+    /// <summary>
+    /// Процедура записи значений переменных класса (конфигурации) в INI-файл.
+    /// </summary>
     procedure Save;
 
-    ///	<summary>
-    ///	  Деструктор объекта.
-    ///	</summary>
-    ///	<remarks>
-    ///	  Освобождает вложенные объекты подключений к mysql-серверу.
-    ///	</remarks>
+    /// <summary>
+    /// Деструктор объекта.
+    /// </summary>
+    /// <remarks>
+    /// Освобождает вложенные объекты подключений к mysql-серверу.
+    /// </remarks>
     destructor Destroy; override;
 
     property FileName: string read FFileName write SetFileName stored False;
@@ -338,18 +338,18 @@ type
 
     // вкладка "настройки подключения к серверу базы данных услуги"
 
-    ///	<summary>
-    ///	  Вложенный объект подлючения к mysql-серверу, где хранятся данные
-    ///	  услуги "Отдых и развлечения".
-    ///	</summary>
+    /// <summary>
+    /// Вложенный объект подлючения к mysql-серверу, где хранятся данные
+    /// услуги "Отдых и развлечения".
+    /// </summary>
     property RNE4Server: TMySQLConnection read FRNE4Server write SetRNE4Server stored False;
 
     // вкладка "настройки подключения к серверу системы обмена сообщениями"
 
-    ///	<summary>
-    ///	  Вложенный объект подлючения к mysql-серверу, где хранится переписка
-    ///	  пользователей услуги "Отдых и развлечения".
-    ///	</summary>
+    /// <summary>
+    /// Вложенный объект подлючения к mysql-серверу, где хранится переписка
+    /// пользователей услуги "Отдых и развлечения".
+    /// </summary>
     property MessagesServer: TMySQLConnection read FMessagesServer write SetMessagesServer stored False;
 
     // вкладка "настройки формирования отчётов"
@@ -596,107 +596,112 @@ begin
       IniFile:=TIniFile.Create(FileName);
       with IniFile do
         try
-          // вкладка "настройки интерфейса"
-          WriteBool('Интерфейс', 'bShowAboutWindowAtLaunch', ShowAboutWindowAtLaunch);
-          WriteBool('Интерфейс', 'bShowToolbar', ShowToolbar);
-          WriteBool('Интерфейс', 'bShowStatusbar', ShowStatusbar);
-          WriteBool('Интерфейс', 'bShowEditboxHints', ShowEditboxHints);
-          WriteBool('Интерфейс', 'bShowCommonSearchEditbox', ShowCommonSearchEditbox);
-          WriteBool('Интерфейс', 'bShowID', ShowID);
-          WriteBool('Интерфейс', 'bUseMultibuffer', UseMultibuffer);
-          WriteBool('Интерфейс', 'bShowConfirmationAtQuit', ShowConfirmationAtQuit);
+          try
+            // вкладка "настройки интерфейса"
+            WriteBool('Интерфейс', 'bShowAboutWindowAtLaunch', ShowAboutWindowAtLaunch);
+            WriteBool('Интерфейс', 'bShowToolbar', ShowToolbar);
+            WriteBool('Интерфейс', 'bShowStatusbar', ShowStatusbar);
+            WriteBool('Интерфейс', 'bShowEditboxHints', ShowEditboxHints);
+            WriteBool('Интерфейс', 'bShowCommonSearchEditbox', ShowCommonSearchEditbox);
+            WriteBool('Интерфейс', 'bShowID', ShowID);
+            WriteBool('Интерфейс', 'bUseMultibuffer', UseMultibuffer);
+            WriteBool('Интерфейс', 'bShowConfirmationAtQuit', ShowConfirmationAtQuit);
 
-          // вкладка "настройки ведения протокола работы"
-          WriteBool('Протоколирование', 'bEnableLog', EnableLog);
-          WriteBool('Протоколирование', 'bFlushLogOnExit', FlushLogOnExit);
-          WriteBool('Протоколирование', 'bFlushLogOnStringsQuantity', FlushLogOnStringsQuantity);
-          WriteInteger('Протоколирование', 'iFlushLogOnStringsQuantityValue', FlushLogOnStringsQuantityValue);
-          WriteBool('Протоколирование', 'bFlushLogOnClearingLog', FlushLogOnClearingLog);
-          WriteBool('Протоколирование', 'bFlushLogOnApply', FlushLogOnApply);
-          WriteBool('Протоколирование', 'bCustomLogClientFile', CustomLogClientFile);
-          WriteString('Протоколирование', 'sCustomLogClientFileValue', CustomLogClientFileValue);
+            // вкладка "настройки ведения протокола работы"
+            WriteBool('Протоколирование', 'bEnableLog', EnableLog);
+            WriteBool('Протоколирование', 'bFlushLogOnExit', FlushLogOnExit);
+            WriteBool('Протоколирование', 'bFlushLogOnStringsQuantity', FlushLogOnStringsQuantity);
+            WriteInteger('Протоколирование', 'iFlushLogOnStringsQuantityValue', FlushLogOnStringsQuantityValue);
+            WriteBool('Протоколирование', 'bFlushLogOnClearingLog', FlushLogOnClearingLog);
+            WriteBool('Протоколирование', 'bFlushLogOnApply', FlushLogOnApply);
+            WriteBool('Протоколирование', 'bCustomLogClientFile', CustomLogClientFile);
+            WriteString('Протоколирование', 'sCustomLogClientFileValue', CustomLogClientFileValue);
 
-          WriteBool('Протоколирование', 'bKeepErrorLog', lmtError in KeepLogTypes);
-          WriteBool('Протоколирование', 'bKeepWarningLog', lmtWarning in KeepLogTypes);
-          WriteBool('Протоколирование', 'bKeepInfoLog', lmtInfo in KeepLogTypes);
-          WriteBool('Протоколирование', 'bKeepSQLLog', lmtSQL in KeepLogTypes);
-          WriteBool('Протоколирование', 'bKeepDebugLog', lmtDebug in KeepLogTypes);
+            WriteBool('Протоколирование', 'bKeepErrorLog', lmtError in KeepLogTypes);
+            WriteBool('Протоколирование', 'bKeepWarningLog', lmtWarning in KeepLogTypes);
+            WriteBool('Протоколирование', 'bKeepInfoLog', lmtInfo in KeepLogTypes);
+            WriteBool('Протоколирование', 'bKeepSQLLog', lmtSQL in KeepLogTypes);
+            WriteBool('Протоколирование', 'bKeepDebugLog', lmtDebug in KeepLogTypes);
 
-          // вкладка "настройки положения диалоговых окон"
-          WriteFormPosition(IniFile, LoginFormPosition, 'LoginFormPosition');
-          WriteFormPosition(IniFile, ConfigurationFormPosition, 'ConfigurationFormPosition');
-          WriteFormPosition(IniFile, UsersFormPosition, 'UsersFormPosition');
-          WriteFormPosition(IniFile, SetPasswordFormPosition, 'SetPasswordFormPosition');
-          WriteFormPosition(IniFile, ReportFormPosition, 'ReportFormPosition');
-          WriteFormPosition(IniFile, MaintenanceFormPosition, 'MaintenanceFormPosition');
-          WriteFormPosition(IniFile, ClearingFormPosition, 'ClearingFormPosition');
-          WriteFormPosition(IniFile, ViewPostListFormPosition, 'ViewPostListFormPosition');
-          WriteFormPosition(IniFile, CreateViewPostFormPosition, 'CreateViewPostFormPosition');
-          WriteFormPosition(IniFile, PhonesFormPosition, 'PhonesFormPosition');
-          WriteFormPosition(IniFile, AddEditPhoneFormPosition, 'AddEditPhoneFormPosition');
-          WriteFormPosition(IniFile, AddMassMsrFormPosition, 'AddMassMsrFormPosition');
-          WriteFormPosition(IniFile, PermissionsFormPosition, 'PermissionsFormPosition');
+            // вкладка "настройки положения диалоговых окон"
+            WriteFormPosition(IniFile, LoginFormPosition, 'LoginFormPosition');
+            WriteFormPosition(IniFile, ConfigurationFormPosition, 'ConfigurationFormPosition');
+            WriteFormPosition(IniFile, UsersFormPosition, 'UsersFormPosition');
+            WriteFormPosition(IniFile, SetPasswordFormPosition, 'SetPasswordFormPosition');
+            WriteFormPosition(IniFile, ReportFormPosition, 'ReportFormPosition');
+            WriteFormPosition(IniFile, MaintenanceFormPosition, 'MaintenanceFormPosition');
+            WriteFormPosition(IniFile, ClearingFormPosition, 'ClearingFormPosition');
+            WriteFormPosition(IniFile, ViewPostListFormPosition, 'ViewPostListFormPosition');
+            WriteFormPosition(IniFile, CreateViewPostFormPosition, 'CreateViewPostFormPosition');
+            WriteFormPosition(IniFile, PhonesFormPosition, 'PhonesFormPosition');
+            WriteFormPosition(IniFile, AddEditPhoneFormPosition, 'AddEditPhoneFormPosition');
+            WriteFormPosition(IniFile, AddMassMsrFormPosition, 'AddMassMsrFormPosition');
+            WriteFormPosition(IniFile, PermissionsFormPosition, 'PermissionsFormPosition');
 
-          // вкладка "настройки процедуры логирования"
-          WriteBool('Идентификация', 'bStoreLastLogin', StoreLastLogin);
-          WriteBool('Идентификация', 'bStoreLastPassword', StoreLastPassword);
-          WriteBool('Идентификация', 'bAutoLogon', AutoLogon);
+            // вкладка "настройки процедуры логирования"
+            WriteBool('Идентификация', 'bStoreLastLogin', StoreLastLogin);
+            WriteBool('Идентификация', 'bStoreLastPassword', StoreLastPassword);
+            WriteBool('Идентификация', 'bAutoLogon', AutoLogon);
 
-          // вкладка "подключения к серверу базы данных услуги"
-          with RNE4Server do
-            begin
-              WriteString('Сервер и база данных', 'RNE4Server.sHost', Host);
-              WriteInteger('Сервер и база данных', 'RNE4Server.iPort', Port);
-              WriteInteger('Сервер и база данных', 'RNE4Server.iTimeout', Timeout);
-              WriteBool('Сервер и база данных', 'RNE4Server.bCompression', Compression);
-              // WriteString('Сервер и база данных', 'RNE4Server.sLogin', Login);
-              // WriteString('Сервер и база данных', 'RNE4Server.sPassword', Password);
-              WriteString('Сервер и база данных', 'RNE4Server.sDatabase', Database);
-            end;
+            // вкладка "подключения к серверу базы данных услуги"
+            with RNE4Server do
+              begin
+                WriteString('Сервер и база данных', 'RNE4Server.sHost', Host);
+                WriteInteger('Сервер и база данных', 'RNE4Server.iPort', Port);
+                WriteInteger('Сервер и база данных', 'RNE4Server.iTimeout', Timeout);
+                WriteBool('Сервер и база данных', 'RNE4Server.bCompression', Compression);
+                // WriteString('Сервер и база данных', 'RNE4Server.sLogin', Login);
+                // WriteString('Сервер и база данных', 'RNE4Server.sPassword', Password);
+                WriteString('Сервер и база данных', 'RNE4Server.sDatabase', Database);
+              end;
 
-          // вкладка "подключения к серверу системы обмена сообщениями"
-          with MessagesServer do
-            begin
-              WriteString('Сервер и база данных', 'MessagesServer.sHost', Host);
-              WriteInteger('Сервер и база данных', 'MessagesServer.iPort', Port);
-              WriteInteger('Сервер и база данных', 'MessagesServer.iTimeout', Timeout);
-              WriteBool('Сервер и база данных', 'MessagesServer.bCompression', Compression);
-              // WriteString('Сервер и база данных', 'MessagesServer.sLogin', Login);
-              // WriteString('Сервер и база данных', 'MessagesServer.sPassword', Password);
-              WriteString('Сервер и база данных', 'MessagesServer.sDatabase', Database);
-            end;
+            // вкладка "подключения к серверу системы обмена сообщениями"
+            with MessagesServer do
+              begin
+                WriteString('Сервер и база данных', 'MessagesServer.sHost', Host);
+                WriteInteger('Сервер и база данных', 'MessagesServer.iPort', Port);
+                WriteInteger('Сервер и база данных', 'MessagesServer.iTimeout', Timeout);
+                WriteBool('Сервер и база данных', 'MessagesServer.bCompression', Compression);
+                // WriteString('Сервер и база данных', 'MessagesServer.sLogin', Login);
+                // WriteString('Сервер и база данных', 'MessagesServer.sPassword', Password);
+                WriteString('Сервер и база данных', 'MessagesServer.sDatabase', Database);
+              end;
 
-          // вкладка "настройки формирования отчётов"
-          WriteInteger('Формирование отчётов', 'iReportFolder', integer(ReportFolder));
-          WriteString('Формирование отчётов', 'sCustomReportFolderValue', CustomReportFolderValue);
-          WriteBool('Формирование отчётов', 'bDontDemandOverwriteConfirmation', DontDemandOverwriteConfirmation);
-          WriteBool('Формирование отчётов', 'bAskForFileName', AskForFileName);
+            // вкладка "настройки формирования отчётов"
+            WriteInteger('Формирование отчётов', 'iReportFolder', integer(ReportFolder));
+            WriteString('Формирование отчётов', 'sCustomReportFolderValue', CustomReportFolderValue);
+            WriteBool('Формирование отчётов', 'bDontDemandOverwriteConfirmation', DontDemandOverwriteConfirmation);
+            WriteBool('Формирование отчётов', 'bAskForFileName', AskForFileName);
 
-          // вкладка "настройки прочие"
-          WriteBool('Прочие', 'bLaunchAtStartup', LaunchAtStartup);
-          WriteBool('Прочие', 'bPlaySoundOnComplete', PlaySoundOnComplete);
-          WriteBool('Прочие', 'bEnableAutoGetMessages', EnableAutoGetMessages);
-          WriteInteger('Прочие', 'iAutoGetMessagesCycleDurationValue', AutoGetMessagesCycleDurationValue);
-          WriteBool('Прочие', 'bCustomHelpFile', CustomHelpFile);
-          WriteString('Прочие', 'bCustomHelpFileValue', CustomHelpFileValue);
+            // вкладка "настройки прочие"
+            WriteBool('Прочие', 'bLaunchAtStartup', LaunchAtStartup);
+            WriteBool('Прочие', 'bPlaySoundOnComplete', PlaySoundOnComplete);
+            WriteBool('Прочие', 'bEnableAutoGetMessages', EnableAutoGetMessages);
+            WriteInteger('Прочие', 'iAutoGetMessagesCycleDurationValue', AutoGetMessagesCycleDurationValue);
+            WriteBool('Прочие', 'bCustomHelpFile', CustomHelpFile);
+            WriteString('Прочие', 'bCustomHelpFileValue', CustomHelpFileValue);
 
-          // вкладка "настройки главного окна"
-          WriteInteger('Главное окно', 'iMainFormLeft', MainFormLeft);
-          WriteInteger('Главное окно', 'iMainFormTop', MainFormTop);
-          WriteInteger('Главное окно', 'iMainFormWidth', MainFormWidth);
-          WriteInteger('Главное окно', 'iMainFormHeight', MainFormHeight);
-          WriteBool('Главное окно', 'bMainFormPositionByCenter', MainFormPositionByCenter);
-          WriteBool('Главное окно', 'bFullScreenAtLaunch', FullScreenAtLaunch);
+            // вкладка "настройки главного окна"
+            WriteInteger('Главное окно', 'iMainFormLeft', MainFormLeft);
+            WriteInteger('Главное окно', 'iMainFormTop', MainFormTop);
+            WriteInteger('Главное окно', 'iMainFormWidth', MainFormWidth);
+            WriteInteger('Главное окно', 'iMainFormHeight', MainFormHeight);
+            WriteBool('Главное окно', 'bMainFormPositionByCenter', MainFormPositionByCenter);
+            WriteBool('Главное окно', 'bFullScreenAtLaunch', FullScreenAtLaunch);
 
-          // вкладка "настройки отображения информации"
-          WriteInteger('Отображение информации', 'iOrganizationPanelHeightValue', OrganizationPanelHeightValue);
-          WriteBool('Отображение информации', 'bOrganizationPanelHalfHeight', OrganizationPanelHalfHeight);
-          WriteInteger('Отображение информации', 'iDataPanelWidthValue', DataPanelWidthValue);
-          WriteBool('Отображение информации', 'bOrganizationPanelHalfHeight', OrganizationPanelHalfHeight);
-          WriteBool('Отображение информации', 'bShowDataInOtherInfoPanel', ShowDataInOtherInfoPanel);
-          WriteBool('Отображение информации', 'bShowMeasuresListAsRichEdit', ShowMeasuresListAsRichEdit);
-          WriteBool('Отображение информации', 'bMarkSearchedStrings', MarkSearchedStrings);
-          WriteBool('Отображение информации', 'bPutTownAtTheEnd', PutTownAtTheEnd);
+            // вкладка "настройки отображения информации"
+            WriteInteger('Отображение информации', 'iOrganizationPanelHeightValue', OrganizationPanelHeightValue);
+            WriteBool('Отображение информации', 'bOrganizationPanelHalfHeight', OrganizationPanelHalfHeight);
+            WriteInteger('Отображение информации', 'iDataPanelWidthValue', DataPanelWidthValue);
+            WriteBool('Отображение информации', 'bOrganizationPanelHalfHeight', OrganizationPanelHalfHeight);
+            WriteBool('Отображение информации', 'bShowDataInOtherInfoPanel', ShowDataInOtherInfoPanel);
+            WriteBool('Отображение информации', 'bShowMeasuresListAsRichEdit', ShowMeasuresListAsRichEdit);
+            WriteBool('Отображение информации', 'bMarkSearchedStrings', MarkSearchedStrings);
+            WriteBool('Отображение информации', 'bPutTownAtTheEnd', PutTownAtTheEnd);
+          except
+            on EIniFileException do
+              raise EIniFileException.Create('Произошла ошибка при попытке записи настроек программы в файл конфигурации!');
+          end;
         finally
           IniFile.Free;
         end
@@ -726,13 +731,13 @@ end;
 procedure TConfiguration.SetMainFormHeight(const Value: integer);
 begin
   if FMainFormHeight<>Value then
-  FMainFormHeight := Value;
+    FMainFormHeight:=Value;
 end;
 
 procedure TConfiguration.SetMainFormLeft(const Value: integer);
 begin
   if FMainFormLeft<>Value then
-  FMainFormLeft := Value;
+    FMainFormLeft:=Value;
 end;
 
 procedure TConfiguration.SetMainFormPositionByCenter(const Value: boolean);
@@ -744,13 +749,13 @@ end;
 procedure TConfiguration.SetMainFormTop(const Value: integer);
 begin
   if FMainFormTop<>Value then
-  FMainFormTop := Value;
+    FMainFormTop:=Value;
 end;
 
 procedure TConfiguration.SetMainFormWidth(const Value: integer);
 begin
   if FMainFormWidth<>Value then
-  FMainFormWidth := Value;
+    FMainFormWidth:=Value;
 end;
 
 procedure TConfiguration.SetMaintenanceFormPosition(const Value: TFormPosition);

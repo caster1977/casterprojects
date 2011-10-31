@@ -35,7 +35,8 @@ uses
   XMLIntf,
   msxmldom,
   XMLDoc,
-  Vcl.AppEvnts;
+  Vcl.AppEvnts,
+  System.IniFiles;
 
 type
   THackControl=class(TControl);
@@ -441,6 +442,15 @@ procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   ProcedureHeader('Процедура-обработчик события закрытия окна', '{A430AB2D-F069-4FFF-A5CA-883D7B3E1985}');
 
+  // применение текущих настроек главного окна к конфигурации
+  Configuration.MainFormLeft:=Left;
+  Configuration.MainFormTop:=Top;
+  Configuration.MainFormWidth:=Width;
+  Configuration.MainFormHeight:=Height;
+  Configuration.MainFormPositionByCenter:=False;
+  Configuration.FullScreenAtLaunch:=WindowState=wsMaximized;
+
+  // запись конфигурации
   Do_SaveConfiguration;
 
   ProcedureFooter;
@@ -496,8 +506,25 @@ begin
       Screen.Cursor:=crDefault;
     end;
   except
-    Routines.GenerateError('Произошла ошибка при попытке записи настроек программы в файл!', sErrorMessage, bError);
-    Application.HandleException(Self);
+    on E: EIniFileException do
+      begin
+        Routines.GenerateError(E.Message, sErrorMessage, bError);
+        if MessageBox(Handle, PWideChar('Вы желаете повторить попытку записи настроек программы в файл?'), PWideChar(MainForm.Caption+' - Предупреждение'), MB_OKCANCEL+MB_ICONWARNING+MB_DEFBUTTON1)=IDOK then
+          try
+            Screen.Cursor:=crHourGlass;
+            try
+              Configuration.Save;
+              Log.SendInfo('Запись настроек программы в файл прошла успешно.');
+            except
+              on E: EIniFileException do
+                Routines.GenerateError(E.Message, sErrorMessage, bError);
+            end;
+          finally
+            Screen.Cursor:=crDefault;
+          end;
+      end;
+    else
+      Application.HandleException(Self);
   end;
 
   PreFooter(Handle, bError, sErrorMessage);
@@ -518,35 +545,19 @@ begin
   StatusBar1.Visible:=Configuration.ShowStatusbar;
 
   // установка позиции и размеров главного окна в соответсвии с параметрами конфигурации
+  WindowState:=wsNormal;
+  Position:=poDesigned;
+  Left:=Configuration.MainFormLeft;
+  Top:=Configuration.MainFormTop;
+  Width:=Configuration.MainFormWidth;
+  Height:=Configuration.MainFormHeight;
   if Configuration.FullScreenAtLaunch then
-    begin
-      WindowState:=wsNormal;
-      Position:=poDesigned;
-      Left:=Configuration.MainFormLeft;
-      Top:=Configuration.MainFormTop;
-      Width:=Configuration.MainFormWidth;
-      Height:=Configuration.MainFormHeight;
-      WindowState:=wsMaximized;
-    end
+    WindowState:=wsMaximized
   else
     if Configuration.MainFormPositionByCenter then
       begin
-        WindowState:=wsNormal;
-        Position:=poDesigned;
-        Left:=Configuration.MainFormLeft;
-        Top:=Configuration.MainFormTop;
-        Width:=Configuration.MainFormWidth;
-        Height:=Configuration.MainFormHeight;
         Position:=poScreenCenter;
-      end
-    else
-      begin
-        WindowState:=wsNormal;
-        Position:=poDesigned;
-        Left:=Configuration.MainFormLeft;
-        Top:=Configuration.MainFormTop;
-        Width:=Configuration.MainFormWidth;
-        Height:=Configuration.MainFormHeight;
+        Configuration.MainFormPositionByCenter:=False;
       end;
 
   ProcedureFooter;
@@ -576,5 +587,5 @@ begin
 
   ProcedureFooter;
 end;
-{ TODO : Доделать сохранение параметров и полодения главного окна программы при выходе! }
+
 end.

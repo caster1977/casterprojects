@@ -1058,12 +1058,12 @@ begin
   if PageControl1.ActivePage.Caption=' главного окна' then
     begin
       // выставление значений по умолчанию для элементов интерфейса
+      chkbxFullScreenAtLaunch.Checked:=DefaultValue_FullScreenAtLaunch;
+      chkbxMainFormPositionByCenter.Checked:=DefaultValue_MainFormPositionByCenter and(not DefaultValue_FullScreenAtLaunch);
       edbxMainFormPositionX.Text:=Routines.GetConditionalString(not(DefaultValue_MainFormPositionByCenter or DefaultValue_FullScreenAtLaunch), IntToStr(DefaultValue_MainFormLeft), '');
       edbxMainFormPositionY.Text:=Routines.GetConditionalString(not(DefaultValue_MainFormPositionByCenter or DefaultValue_FullScreenAtLaunch), IntToStr(DefaultValue_MainFormTop), '');
-      chkbxMainFormPositionByCenter.Checked:=DefaultValue_MainFormPositionByCenter and(not DefaultValue_FullScreenAtLaunch);
       edbxMainFormWidth.Text:=Routines.GetConditionalString(DefaultValue_FullScreenAtLaunch, '', IntToStr(DefaultValue_MainFormWidth));
       edbxMainFormHeight.Text:=Routines.GetConditionalString(DefaultValue_FullScreenAtLaunch, '', IntToStr(DefaultValue_MainFormHeight));
-      chkbxFullScreenAtLaunch.Checked:=DefaultValue_FullScreenAtLaunch;
     end;
 
   // вкладка "настройки отображения информации"
