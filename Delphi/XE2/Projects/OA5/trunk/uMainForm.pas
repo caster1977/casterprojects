@@ -3,6 +3,7 @@
 interface
 
 uses
+  uTypes,
   Windows,
   Messages,
   SysUtils,
@@ -109,6 +110,7 @@ type
     Configuration: TConfiguration;
     CurrentUser: TUser;
     iBusyCounter: integer;
+    raMultibuffer: array [0..99] of TMsrBufferRec;
     procedure ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
     procedure Inc_BusyState;
     procedure Dec_BusyState;

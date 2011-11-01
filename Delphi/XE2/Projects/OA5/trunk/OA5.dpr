@@ -4,7 +4,7 @@ uses
   Forms,
   uMainForm in 'uMainForm.pas' {MainForm},
   uLoginForm in 'uLoginForm.pas' {LoginForm},
-  OA5Consts in 'OA5Consts.pas',
+  uConsts in 'uConsts.pas',
   uAboutForm in 'uAboutForm.pas' {AboutForm},
   uConfigurationForm in 'uConfigurationForm.pas' {ConfigurationForm},
   uConfigurationClass in 'uConfigurationClass.pas',
@@ -13,7 +13,9 @@ uses
   uAddMassMsrForm in 'uAddMassMsrForm.pas' {AddMassMsrForm},
   uReportForm in 'uReportForm.pas' {ReportForm},
   uSetPasswordForm in 'uSetPasswordForm.pas' {SetPasswordForm},
-  uPermissionsForm in 'uPermissionsForm.pas' {PermissionsForm};
+  uPermissionsForm in 'uPermissionsForm.pas' {PermissionsForm},
+  uMultiBufferForm in 'uMultiBufferForm.pas' {MultiBufferForm},
+  uTypes in 'uTypes.pas';
 
 {$R *.res}
 

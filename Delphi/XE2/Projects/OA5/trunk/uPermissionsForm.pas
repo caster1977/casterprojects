@@ -198,7 +198,7 @@ var
   b: boolean;
   i: integer;
 begin
-  ProcedureHeader('Процедура обновления состояния действий', '{3ED4C156-FDB8-4F56-9E52-B3F393FE249D}');
+  ProcedureHeader('Процедура обновления состояния действий', '{1DE54128-029B-42D0-B94B-63F44B16C60A}');
 
   b:=False;
   for i:=0 to chklbxPermissions.Items.Count-1 do
@@ -209,7 +209,6 @@ begin
       end;
   Action_SelectAll.Enabled:=(chklbxPermissions.Items.Count>0)and b;
   Log.SendDebug('Действие "'+Action_SelectAll.Caption+'" '+Routines.GetConditionalString(Action_SelectAll.Enabled, 'в', 'от')+'ключено.');
-  btnSelectAll.Enabled:=Action_SelectAll.Enabled;
 
   b:=False;
   for i:=0 to chklbxPermissions.Items.Count-1 do
@@ -220,7 +219,6 @@ begin
       end;
   Action_SelectNone.Enabled:=(chklbxPermissions.Items.Count>0)and b;
   Log.SendDebug('Действие "'+Action_SelectNone.Caption+'" '+Routines.GetConditionalString(Action_SelectNone.Enabled, 'в', 'от')+'ключено.');
-  btnSelectNone.Enabled:=Action_SelectNone.Enabled;
 
   ProcedureFooter;
 end;
