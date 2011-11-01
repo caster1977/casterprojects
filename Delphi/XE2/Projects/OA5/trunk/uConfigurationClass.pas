@@ -143,6 +143,7 @@ type
     FAddEditPhoneFormPosition: TFormPosition;
     FAddMassMsrFormPosition: TFormPosition;
     FPermissionsFormPosition: TFormPosition;
+    FMultibufferFormPosition: TFormPosition;
 
     // вкладка "настройки процедуры логирования"
     FStoreLastLogin: boolean; // Сохранять логин последнего пользователя
@@ -201,6 +202,7 @@ type
     procedure SetAddEditPhoneFormPosition(const Value: TFormPosition);
     procedure SetAddMassMsrFormPosition(const Value: TFormPosition);
     procedure SetPermissionsFormPosition(const Value: TFormPosition);
+    procedure SetMultibufferFormPosition(const Value: TFormPosition);
     procedure SetAskForFileName(const Value: boolean);
     procedure SetAutoGetMessagesCycleDurationValue(const Value: integer);
     procedure SetClearingFormPosition(const Value: TFormPosition);
@@ -330,6 +332,7 @@ type
     property AddEditPhoneFormPosition: TFormPosition read FAddEditPhoneFormPosition write SetAddEditPhoneFormPosition stored False;
     property AddMassMsrFormPosition: TFormPosition read FAddMassMsrFormPosition write SetAddMassMsrFormPosition stored False;
     property PermissionsFormPosition: TFormPosition read FPermissionsFormPosition write SetPermissionsFormPosition stored False;
+    property MultibufferFormPosition: TFormPosition read FMultibufferFormPosition write SetMultibufferFormPosition stored False;
 
     // вкладка "настройки процедуры логирования"
     property StoreLastLogin: boolean read FStoreLastLogin write SetStoreLastLogin default False; // нужно ли хранить последний введённый логин
@@ -509,6 +512,11 @@ begin
             x:=ReadInteger('Положение диалоговых окон', 'PermissionsFormPosition.ix', DefaultValue_FormPosition_x);
             y:=ReadInteger('Положение диалоговых окон', 'PermissionsFormPosition.iy', DefaultValue_FormPosition_y);
             PermissionsFormPosition:=FormPosition;
+
+            bCenter:=ReadBool('Положение диалоговых окон', 'MultibufferFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'MultibufferFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'MultibufferFormPosition.iy', DefaultValue_FormPosition_y);
+            MultibufferFormPosition:=FormPosition;
           end;
 
         // вкладка "настройки процедуры логирования"
@@ -637,6 +645,7 @@ begin
             WriteFormPosition(IniFile, AddEditPhoneFormPosition, 'AddEditPhoneFormPosition');
             WriteFormPosition(IniFile, AddMassMsrFormPosition, 'AddMassMsrFormPosition');
             WriteFormPosition(IniFile, PermissionsFormPosition, 'PermissionsFormPosition');
+            WriteFormPosition(IniFile, MultibufferFormPosition, 'MultibufferFormPosition');
 
             // вкладка "настройки процедуры логирования"
             WriteBool('Идентификация', 'bStoreLastLogin', StoreLastLogin);
@@ -1019,6 +1028,12 @@ begin
     FPermissionsFormPosition:=Value;
 end;
 
+procedure TConfiguration.SetMultibufferFormPosition(const Value: TFormPosition);
+begin
+  if ((FMultibufferFormPosition.bCenter<>Value.bCenter)or(FMultibufferFormPosition.x<>Value.x)or(FMultibufferFormPosition.y<>Value.y)) then
+    FMultibufferFormPosition:=Value;
+end;
+
 procedure TConfiguration.SetAskForFileName(const Value: boolean);
 begin
   if FAskForFileName<>Value then
@@ -1272,6 +1287,13 @@ begin
     end;
 
   with FPermissionsFormPosition do
+    begin
+      bCenter:=DefaultValue_FormPosition_Center;
+      x:=DefaultValue_FormPosition_x;
+      y:=DefaultValue_FormPosition_y;
+    end;
+
+  with FMultibufferFormPosition do
     begin
       bCenter:=DefaultValue_FormPosition_Center;
       x:=DefaultValue_FormPosition_x;

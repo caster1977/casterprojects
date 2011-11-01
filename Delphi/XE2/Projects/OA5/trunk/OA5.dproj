@@ -115,7 +115,7 @@
 			<DCCReference Include="uLoginForm.pas">
 				<Form>LoginForm</Form>
 			</DCCReference>
-			<DCCReference Include="OA5Consts.pas"/>
+			<DCCReference Include="uConsts.pas"/>
 			<DCCReference Include="uAboutForm.pas">
 				<Form>AboutForm</Form>
 			</DCCReference>
@@ -138,6 +138,11 @@
 				<Form>PermissionsForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
+			<DCCReference Include="uMultiBufferForm.pas">
+				<Form>MultiBufferForm</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
+			<DCCReference Include="uTypes.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

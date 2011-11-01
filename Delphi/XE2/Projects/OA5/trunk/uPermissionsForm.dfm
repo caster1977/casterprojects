@@ -6,7 +6,7 @@ object PermissionsForm: TPermissionsForm
   BorderStyle = bsSingle
   Caption = #1059#1087#1088#1072#1074#1083#1077#1085#1080#1077' '#1087#1088#1072#1074#1072#1084#1080' '#1076#1086#1089#1090#1091#1087#1072' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
   ClientHeight = 310
-  ClientWidth = 645
+  ClientWidth = 634
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,21 +17,22 @@ object PermissionsForm: TPermissionsForm
   OnCreate = FormCreate
   OnShow = FormShow
   DesignSize = (
-    645
+    634
     310)
   PixelsPerInch = 96
   TextHeight = 13
   object Bevel2: TBevel
     Left = 0
     Top = 269
-    Width = 645
+    Width = 634
     Height = 41
     Align = alBottom
     Shape = bsTopLine
     ExplicitTop = 264
+    ExplicitWidth = 645
   end
   object btnHelp: TButton
-    Left = 556
+    Left = 545
     Top = 277
     Width = 81
     Height = 25
@@ -41,7 +42,7 @@ object PermissionsForm: TPermissionsForm
     TabOrder = 5
   end
   object btnApply: TButton
-    Left = 382
+    Left = 371
     Top = 277
     Width = 81
     Height = 25
@@ -52,7 +53,7 @@ object PermissionsForm: TPermissionsForm
     TabOrder = 3
   end
   object btnClose: TButton
-    Left = 469
+    Left = 458
     Top = 277
     Width = 81
     Height = 25
@@ -103,7 +104,7 @@ object PermissionsForm: TPermissionsForm
   object chklbxPermissions: TCheckListBox
     Left = 8
     Top = 8
-    Width = 629
+    Width = 618
     Height = 255
     OnClickCheck = chklbxPermissionsClickCheck
     Align = alCustom
@@ -123,7 +124,7 @@ object PermissionsForm: TPermissionsForm
     Left = 368
     Top = 120
     Bitmap = {
-      494C010104002000C40110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104002000D00110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
