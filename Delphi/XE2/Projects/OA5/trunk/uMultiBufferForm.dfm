@@ -38,7 +38,6 @@ object MultiBufferForm: TMultiBufferForm
     Cancel = True
     Default = True
     TabOrder = 0
-    ExplicitLeft = 459
   end
   object btnHelp: TButton
     Left = 535
@@ -49,7 +48,6 @@ object MultiBufferForm: TMultiBufferForm
     Action = Action_Help
     Anchors = [akRight, akBottom]
     TabOrder = 1
-    ExplicitLeft = 546
   end
   object btnPaste: TButton
     Left = 8
@@ -112,7 +110,7 @@ object MultiBufferForm: TMultiBufferForm
     Left = 368
     Top = 120
     Bitmap = {
-      494C010101002000DC0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010101002000E00110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000005346450053464500534645005346450053464500534645000000
