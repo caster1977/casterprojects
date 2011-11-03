@@ -15,7 +15,8 @@ uses
   uSetPasswordForm in 'uSetPasswordForm.pas' {SetPasswordForm},
   uPermissionsForm in 'uPermissionsForm.pas' {PermissionsForm},
   uMultiBufferForm in 'uMultiBufferForm.pas' {MultiBufferForm},
-  uTypes in 'uTypes.pas';
+  uTypes in 'uTypes.pas',
+  uMultiBufferClass in 'uMultiBufferClass.pas';
 
 {$R *.res}
 

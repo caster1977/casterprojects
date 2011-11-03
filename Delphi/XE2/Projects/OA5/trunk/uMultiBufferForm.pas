@@ -230,6 +230,13 @@ begin
   ProcedureFooter;
 end;
 
+procedure TMultiBufferForm.lvBufferSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
+begin
+  ProcedureHeader('Процедура-обработчик события выбора элемента списка', '{85E95E47-C35D-4FCA-8319-39B52C4047CB}');
+  Do_UpdateListViewScrollBarVisibility;
+  ProcedureFooter;
+end;
+
 procedure TMultiBufferForm.Do_UpdateListViewScrollBarVisibility;
 var
   h: HWND;
@@ -245,13 +252,6 @@ begin
   lvBuffer.FlatScrollBars:=False; // принудительная перерисовка элемента управления
   lvBuffer.FlatScrollBars:=True;
 
-  ProcedureFooter;
-end;
-
-procedure TMultiBufferForm.lvBufferSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
-begin
-  ProcedureHeader('Процедура-обработчик события выбора элемента списка', '{85E95E47-C35D-4FCA-8319-39B52C4047CB}');
-  Do_UpdateListViewScrollBarVisibility;
   ProcedureFooter;
 end;
 
