@@ -265,14 +265,11 @@ begin
 end;
 
 procedure TMultiBufferForm.Do_Clear;
-var
-  i: integer;
 begin
   ProcedureHeader('Процедура очистки списка элементов', '{2E8AC92F-B5AF-47CA-B6D7-2063421BCC77}');
 
   lvBuffer.Clear;
-  for i:=0 to (SizeOf(MainForm.raMultiBuffer)div(SizeOf(TMsrBufferRec)))-1 do
-    MainForm.raMultiBuffer[i].bStoredDataExists:=False;
+  MainForm.MeasuresMultiBuffer.Clear;
 
   Do_UpdateActions;
   Do_UpdateListViewScrollBarVisibility;
@@ -288,7 +285,7 @@ begin
     begin
       if StrToIntDef(lvBuffer.Selected.Caption, -1)>-1 then
         begin
-          MainForm.raMultibuffer[StrToInt(lvBuffer.Selected.Caption)].bStoredDataExists:=False;
+          MainForm.MeasuresMultiBuffer.Delete(StrToInt(lvBuffer.Selected.Caption));
           lvBuffer.Selected.Delete;
         end;
     end;

@@ -37,7 +37,8 @@ uses
   msxmldom,
   XMLDoc,
   Vcl.AppEvnts,
-  System.IniFiles;
+  System.IniFiles,
+  uMultiBufferClass;
 
 type
   THackControl=class(TControl);
@@ -78,6 +79,10 @@ type
     ilMainFormStateIcons: TImageList;
     Log: TLogProvider;
     ApplicationEvents1: TApplicationEvents;
+    Action_Multibuffer: TAction;
+    N16: TMenuItem;
+    N17: TMenuItem;
+    Button1: TButton;
     procedure Action_QuitExecute(Sender: TObject);
     procedure Action_AboutExecute(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
@@ -89,6 +94,8 @@ type
     procedure Action_ReportExecute(Sender: TObject);
     procedure miStatusBarClick(Sender: TObject);
     procedure ApplicationEvents1Hint(Sender: TObject);
+    procedure Action_MultibufferExecute(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   strict private
     bFirstRun: boolean;
     bAboutWindowExist: boolean;
@@ -110,7 +117,7 @@ type
     Configuration: TConfiguration;
     CurrentUser: TUser;
     iBusyCounter: integer;
-    raMultibuffer: array [0..99] of TMsrBufferRec;
+    MeasuresMultiBuffer: TMultiBufferClass;
     procedure ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
     procedure Inc_BusyState;
     procedure Dec_BusyState;
@@ -129,10 +136,18 @@ uses
   uAboutForm,
   uConfigurationForm,
   uReportForm,
+  uMultiBufferForm,
+  uMeasureDataClass,
   uAddMassMsrForm,
   uLoginForm,
   OA5Consts,
   uRoutines;
+
+resourcestring
+  sAboutFormSuffix = '"О программе..."';
+  sConfigurationFormSuffix = 'настроек программы';
+  sReportFormSuffix = 'формирования статистических отчётов по работе пользователей';
+  sMultiBufferFormSuffix = 'мультибуфера';
 
 procedure TMainForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
 begin
@@ -252,13 +267,11 @@ begin
 end;
 
 procedure TMainForm.Do_About(const aButtonVisible: boolean);
-const
-  sModalWinName: string='"О программе..."';
 var
   AboutForm: TAboutForm;
   iBusy: integer;
 begin
-  ProcedureHeader('Процедура отображения окна '+sModalWinName, '{754C2801-ED59-4595-AC3E-20DBF98F6779}');
+  ProcedureHeader('Процедура отображения окна '+sAboutFormSuffix, '{754C2801-ED59-4595-AC3E-20DBF98F6779}');
 
   if bAboutWindowExist then
     SetForegroundWindow(FindWindow('TAboutForm', 'About "OVERSEER"...'))
@@ -269,10 +282,10 @@ begin
         try
           bAboutWindowExist:=True;
           Action_Close.Visible:=aButtonVisible;
-          PreShowModal(sModalWinName, iBusy);
+          PreShowModal(sAboutFormSuffix, iBusy);
           ShowModal;
         finally
-          PostShowModal(sModalWinName, iBusy);
+          PostShowModal(sAboutFormSuffix, iBusy);
           Free;
           bAboutWindowExist:=False;
         end;
@@ -328,6 +341,7 @@ end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
+  MeasuresMultiBuffer.Free;
   Configuration.Free;
   CurrentUser.Free;
 end;
@@ -357,6 +371,8 @@ begin
   CurrentUser:=TUser.Create;
   // создание и инициализщация объекта конфигурации
   Configuration:=TConfiguration.Create;
+  // создание и инициализщация объекта мультибуфера
+  MeasuresMultiBuffer:=TMultiBufferClass.Create;
 
   // привязка прогрессбара к позиции на строке статуса
   BindMainProgressBarToStatusBar;
@@ -417,21 +433,19 @@ begin
 end;
 
 procedure TMainForm.Do_Configuration;
-const
-  sModalWinName: string='настроек программы';
 var
   ConfigurationForm: TConfigurationForm;
   iBusy: integer;
 begin
-  ProcedureHeader('Процедура отображения окна '+sModalWinName, '{886B460D-4C73-46BE-829E-E4421B7C4378}');
+  ProcedureHeader('Процедура отображения окна '+sConfigurationFormSuffix, '{886B460D-4C73-46BE-829E-E4421B7C4378}');
 
   ConfigurationForm:=TConfigurationForm.Create(Self);
   with ConfigurationForm do
     try
-      PreShowModal(sModalWinName, iBusy);
+      PreShowModal(sConfigurationFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(sModalWinName, iBusy);
+      PostShowModal(sConfigurationFormSuffix, iBusy);
       if ModalResult=mrOk then
         Do_ApplyConfiguration;
       Free;
@@ -566,21 +580,19 @@ begin
 end;
 
 procedure TMainForm.Do_Report;
-const
-  sModalWinName: string='формирования статистических отчётов по работе пользователей';
 var
   ReportForm: TReportForm;
   iBusy: integer;
 begin
-  ProcedureHeader('Процедура отображения окна '+sModalWinName, '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
+  ProcedureHeader('Процедура отображения окна '+sReportFormSuffix, '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
 
   ReportForm:=TReportForm.Create(Self);
   with ReportForm do
     try
-      PreShowModal(sModalWinName, iBusy);
+      PreShowModal(sReportFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(sModalWinName, iBusy);
+      PostShowModal(sReportFormSuffix, iBusy);
       { TODO : дописать! }
       // if ModalResult=mrOk then
       // Do_ApplyConfiguration;
@@ -588,6 +600,41 @@ begin
     end;
 
   ProcedureFooter;
+end;
+
+procedure TMainForm.Action_MultibufferExecute(Sender: TObject);
+var
+  MultiBufferForm: TMultiBufferForm;
+  iBusy: integer;
+begin
+  ProcedureHeader('Процедура отображения окна '+sMultiBufferFormSuffix, '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
+
+  MultiBufferForm:=TMultiBufferForm.Create(Self);
+  with MultiBufferForm do
+    try
+      PreShowModal(sMultiBufferFormSuffix, iBusy);
+      ShowModal;
+    finally
+      PostShowModal(sMultiBufferFormSuffix, iBusy);
+      { TODO : дописать! }
+      // if ModalResult=mrOk then
+      // Do_ApplyConfiguration;
+      Free;
+    end;
+
+  ProcedureFooter;
+end;
+
+procedure TMainForm.Button1Click(Sender: TObject);
+var
+  c: TMeasureDataClass;
+begin
+  c:=TMeasureDataClass.Create;
+  c._OrganizationID:=1;
+  c._Type:='1';
+  c._Name:='2';
+  c.Normalize;
+  MeasuresMultiBuffer.Append(c);
 end;
 
 end.

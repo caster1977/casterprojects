@@ -64,7 +64,7 @@
 			<DCC_UnitSearchPath>..\Packages\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<DCC_BplOutput>..\Packages\</DCC_BplOutput>
 			<DCC_Description>(C)opyright 2007-2010 by Vlad DraCooLa</DCC_Description>
-			<DCC_UsePackage>vcl;vclx;VclSmp;rtl;vclimg;svnui;svn;vclactnband;xmlrtl;IndyCore;IndySystem;IndyProtocols;vclie;inet;inetdbbde;inetdbxpress;DbxCommonDriver;DbxClientDriver;DBXInterBaseDriver;DBXMySQLDriver;DBXFirebirdDriver;DBXSybaseASEDriver;DBXSybaseASADriver;DBXOracleDriver;DBXMSSQLDriver;DBXInformixDriver;DBXDb2Driver;CodeSiteExpressVcl;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_UsePackage>vcl;vclx;VclSmp;rtl;vclimg;vclactnband;xmlrtl;IndyCore;IndySystem;IndyProtocols;vclie;inet;inetdbbde;inetdbxpress;DbxCommonDriver;DbxClientDriver;DBXInterBaseDriver;DBXMySQLDriver;DBXFirebirdDriver;DBXSybaseASEDriver;DBXSybaseASADriver;DBXOracleDriver;DBXMSSQLDriver;DBXInformixDriver;DBXDb2Driver;CodeSiteExpressVcl;$(DCC_UsePackage)</DCC_UsePackage>
 			<DCC_ImageBase>00400000</DCC_ImageBase>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win64)'!=''">
@@ -74,6 +74,7 @@
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<DCC_UsePackage>svnui;svn;$(DCC_UsePackage)</DCC_UsePackage>
 			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Soap.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 			<Debugger_IncludeSystemVars>true</Debugger_IncludeSystemVars>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
