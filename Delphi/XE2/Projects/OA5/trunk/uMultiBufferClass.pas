@@ -43,7 +43,7 @@ var
   i: Integer;
 begin
   for i:=Count-1 downto 0 do
-    Items[I].Free;
+    Items[i].Free;
 end;
 
 constructor TMultiBufferClass.Create;
@@ -59,9 +59,11 @@ begin
 end;
 
 destructor TMultiBufferClass.Destroy;
+var
+  i: integer;
 begin
-  while Count>0 do
-    Items[0].Free;
+  for i:=Count-1 downto 0 do
+    Items[i].Free;
   FreeAndNil(FItems);
   inherited;
 end;
