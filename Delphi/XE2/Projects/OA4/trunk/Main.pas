@@ -5348,7 +5348,7 @@ begin
       t1:=DateTimeToTimeStamp(dtpMsrStartDate.DateTime);
       t2:=DateTimeToTimeStamp(dtpMsrStopDate.DateTime);
       a1:=TimeStampToMSecs(t2)-TimeStampToMSecs(t1);
-      if (a2>0) then
+      if (a2>0) then // внимание! значение a2 в данном случае УЖЕ равно a1, т.к. переменная абсолютная!!!
         begin
           spedMsrDurationDays.Value:=Int64(a2)div Int64(86400000);
           a2:=Int64(a2)-Int64((Int64(spedMsrDurationDays.Value)*Int64(86400000)));

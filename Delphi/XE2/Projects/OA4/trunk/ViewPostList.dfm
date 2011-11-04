@@ -44,7 +44,7 @@ object ViewPostListForm: TViewPostListForm
       OnClick = btnCreateClick
     end
     object btnClose: TButton
-      Left = 432
+      Left = 428
       Top = 6
       Width = 75
       Height = 25
@@ -58,7 +58,7 @@ object ViewPostListForm: TViewPostListForm
       TabOrder = 3
     end
     object btnHelp: TButton
-      Left = 513
+      Left = 509
       Top = 6
       Width = 75
       Height = 25
@@ -182,7 +182,7 @@ object ViewPostListForm: TViewPostListForm
     Left = 375
     Top = 105
     Bitmap = {
-      494C010102000400140013000F00FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400180013000F00FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000004C0000000F0000000100200000000000D011
       000000000000000000000000000000000000000000009D968C006B5942006B59
       42006B5942006B5942006B5942006B5942006B5942006B5942006B5942006B59
