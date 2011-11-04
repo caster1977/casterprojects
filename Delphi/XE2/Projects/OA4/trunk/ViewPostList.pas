@@ -25,8 +25,6 @@ type
     procedure btnCreateClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lvMessagesSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
-  private
-  public
   end;
 
 var

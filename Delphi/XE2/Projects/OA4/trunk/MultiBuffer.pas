@@ -3,11 +3,21 @@
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, ComCtrls;
+  Windows,
+  Messages,
+  SysUtils,
+  Variants,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  StdCtrls,
+  ExtCtrls,
+  ComCtrls;
 
 type
-  TMultiBufferForm = class(TForm)
+  TMultiBufferForm=class(TForm)
     lvBuffer: TListView;
     pnlButtons: TPanel;
     btnPaste: TButton;
@@ -16,25 +26,21 @@ type
     btnDelete: TButton;
     btnClear: TButton;
     procedure FormCreate(Sender: TObject);
-    procedure lvBufferSelectItem(Sender: TObject; Item: TListItem;
-      Selected: Boolean);
+    procedure lvBufferSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
     procedure btnClearClick(Sender: TObject);
     procedure btnDeleteClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     procedure Update_ListViewScrollBarVisibility;
     procedure Update_ButtonState;
-  public
   end;
-
-var
-  MultiBufferForm: TMultiBufferForm;
 
 implementation
 
 {$R *.dfm}
 
-uses Main;
+uses
+  Main;
 // raMultibuffer: array[0..99] of TMsrBufferRec;
 
 procedure TMultiBufferForm.FormCreate(Sender: TObject);
@@ -49,11 +55,11 @@ begin
 
   if lvBuffer.Items.Count>0 then
     ActiveControl:=lvBuffer
-  else ActiveControl:=btnClose;
+  else
+    ActiveControl:=btnClose;
 end;
 
-procedure TMultiBufferForm.lvBufferSelectItem(Sender: TObject; Item: TListItem;
-  Selected: Boolean);
+procedure TMultiBufferForm.lvBufferSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
 begin
   Update_ButtonState;
   Update_ListViewScrollBarVisibility;
@@ -61,20 +67,21 @@ end;
 
 procedure TMultiBufferForm.Update_ButtonState;
 begin
-   btnDelete.Enabled:=lvBuffer.Selected<>nil;
-   btnClear.Enabled:=lvBuffer.Items.Count>0;
-   btnPaste.Enabled:=lvBuffer.Items.Count>0;
+  btnDelete.Enabled:=lvBuffer.Selected<>nil;
+  btnClear.Enabled:=lvBuffer.Items.Count>0;
+  btnPaste.Enabled:=lvBuffer.Items.Count>0;
 end;
 
 procedure TMultiBufferForm.Update_ListViewScrollBarVisibility;
 var
-  h : HWND;
+  h: HWND;
 begin
   h:=lvBuffer.Handle;
   lvBuffer.Column[0].Width:=75;
-  if (GetWindowLong(h,GWL_STYLE) and WS_VSCROLL)=WS_VSCROLL then
+  if (GetWindowLong(h, GWL_STYLE)and WS_VSCROLL)=WS_VSCROLL then
     lvBuffer.Column[1].Width:=lvBuffer.Width-(lvBuffer.BevelWidth*2)-2-GetSystemMetrics(SM_CXVSCROLL)-lvBuffer.Column[0].Width
-  else lvBuffer.Column[1].Width:=lvBuffer.Width-(lvBuffer.BevelWidth*2)-2-lvBuffer.Column[0].Width;
+  else
+    lvBuffer.Column[1].Width:=lvBuffer.Width-(lvBuffer.BevelWidth*2)-2-lvBuffer.Column[0].Width;
   lvBuffer.FlatScrollBars:=False;
   lvBuffer.FlatScrollBars:=True;
 end;
@@ -84,7 +91,7 @@ var
   i: integer;
 begin
   lvBuffer.Clear;
-  for i:=0 to (SizeOf(MainForm.raMultiBuffer) div (SizeOf(TMsrBufferRec)))-1 do
+  for i:=0 to (SizeOf(MainForm.raMultiBuffer)div(SizeOf(TMsrBufferRec)))-1 do
     MainForm.raMultiBuffer[i].bStoredDataExists:=False;
   Update_ButtonState;
   Update_ListViewScrollBarVisibility;
@@ -94,7 +101,7 @@ procedure TMultiBufferForm.btnDeleteClick(Sender: TObject);
 begin
   if lvBuffer.Selected<>nil then
     begin
-      if StrToIntDef(lvBuffer.Selected.Caption,-1)>-1 then
+      if StrToIntDef(lvBuffer.Selected.Caption, -1)>-1 then
         begin
           MainForm.raMultibuffer[StrToInt(lvBuffer.Selected.Caption)].bStoredDataExists:=False;
           lvBuffer.Selected.Delete;
