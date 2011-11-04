@@ -45,17 +45,19 @@ type
     procedure FormCreate(Sender: TObject);
     procedure Action_DeleteExecute(Sender: TObject);
     procedure Action_PasteExecute(Sender: TObject);
+    procedure Action_ClearExecute(Sender: TObject);
   strict private
     procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
     procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
     procedure Do_Help;
     procedure Do_Close;
+    procedure Do_UpdateActions;
+    procedure Do_UpdateListViewScrollBarVisibility;
+    { TODO : Переделать методы, перечисленные ниже }
     procedure Do_Paste;
     procedure Do_Delete;
     procedure Do_Clear;
-    procedure Do_UpdateActions;
-    procedure Do_UpdateListViewScrollBarVisibility;
   end;
 
 implementation
@@ -101,6 +103,13 @@ procedure TMultiBufferForm.Action_PasteExecute(Sender: TObject);
 begin
   ProcedureHeader('Процедура-обработчик действия "'+Action_Paste.Caption+'"', '{0DC0CD76-2CF2-4502-A386-A5F6C1E8E7B3}');
   Do_Paste;
+  ProcedureFooter;
+end;
+
+procedure TMultiBufferForm.Action_ClearExecute(Sender: TObject);
+begin
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Clear.Caption+'"', '{6276AF19-2B53-4A4F-90D5-40F1973EEED5}');
+  Do_Clear;
   ProcedureFooter;
 end;
 

@@ -16,7 +16,8 @@ uses
   uPermissionsForm in 'uPermissionsForm.pas' {PermissionsForm},
   uMultiBufferForm in 'uMultiBufferForm.pas' {MultiBufferForm},
   uTypes in 'uTypes.pas',
-  uMultiBufferClass in 'uMultiBufferClass.pas';
+  uMultiBufferClass in 'uMultiBufferClass.pas',
+  uMeasureDataClass in 'uMeasureDataClass.pas';
 
 {$R *.res}
 
