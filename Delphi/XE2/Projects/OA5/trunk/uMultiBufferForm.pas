@@ -170,12 +170,12 @@ procedure TMultiBufferForm.Do_UpdateActions;
 begin
   ProcedureHeader('Процедура обновления состояния действий', '{75BE1246-C69A-4BB0-A6D9-1DB7FA775D81}');
 
+//  Action_Paste.Enabled:=lvBuffer.Items.Count>0;
+//  Log.SendDebug('Действие "'+Action_Paste.Caption+'" '+Routines.GetConditionalString(Action_Paste.Enabled, 'в', 'от')+'ключено.');
   Action_Delete.Enabled:=lvBuffer.Selected<>nil;
   Log.SendDebug('Действие "'+Action_Delete.Caption+'" '+Routines.GetConditionalString(Action_Delete.Enabled, 'в', 'от')+'ключено.');
   Action_Clear.Enabled:=lvBuffer.Items.Count>0;
   Log.SendDebug('Действие "'+Action_Clear.Caption+'" '+Routines.GetConditionalString(Action_Clear.Enabled, 'в', 'от')+'ключено.');
-  Action_Paste.Enabled:=lvBuffer.Items.Count>0;
-  Log.SendDebug('Действие "'+Action_Paste.Caption+'" '+Routines.GetConditionalString(Action_Paste.Enabled, 'в', 'от')+'ключено.');
 
   ProcedureFooter;
 end;
@@ -242,7 +242,7 @@ end;
 procedure TMultiBufferForm.lvBufferSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
 begin
   ProcedureHeader('Процедура-обработчик события выбора элемента списка', '{85E95E47-C35D-4FCA-8319-39B52C4047CB}');
-  Do_UpdateListViewScrollBarVisibility;
+  Do_UpdateActions;
   ProcedureFooter;
 end;
 
@@ -269,7 +269,7 @@ begin
   ProcedureHeader('Процедура очистки списка элементов', '{2E8AC92F-B5AF-47CA-B6D7-2063421BCC77}');
 
   lvBuffer.Clear;
-  MainForm.MeasuresMultiBuffer.Clear;
+  MainForm.MeasuresMultiBuffer._Clear;
 
   Do_UpdateActions;
   Do_UpdateListViewScrollBarVisibility;
@@ -285,7 +285,7 @@ begin
     begin
       if StrToIntDef(lvBuffer.Selected.Caption, -1)>-1 then
         begin
-          MainForm.MeasuresMultiBuffer.Delete(StrToInt(lvBuffer.Selected.Caption));
+          MainForm.MeasuresMultiBuffer._Delete(lvBuffer.Selected.Index);
           lvBuffer.Selected.Delete;
         end;
     end;
