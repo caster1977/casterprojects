@@ -1,14 +1,14 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
-			<ProjectGuid>{AF582594-9E50-4A84-B0E5-3D09E95E3B82}</ProjectGuid>
+			<ProjectGuid>{616C11E0-3A76-4E6B-AAE1-0772397A5D5B}</ProjectGuid>
 			<ProjectVersion>13.4</ProjectVersion>
 			<FrameworkType>VCL</FrameworkType>
-			<MainSource>SharedMemoryActiveX.dpr</MainSource>
+			<MainSource>SharedMemoryCOMApplication.dpr</MainSource>
 			<Base>True</Base>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<Platform Condition="'$(Platform)'==''">Win32</Platform>
 			<TargetedPlatforms>1</TargetedPlatforms>
-			<AppType>Library</AppType>
+			<AppType>Application</AppType>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
 			<Base>true</Base>
@@ -41,8 +41,8 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<DCC_UsePackage>bindcompfmx;fmx;rtl;fmxase;bindcomp;inet;fmxobj;xmlrtl;inetdbxpress;fmxdae;IndyProtocols;bindengine;$(DCC_UsePackage)</DCC_UsePackage>
+			<Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
 			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
-			<GenDll>true</GenDll>
 			<DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
 			<DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
 			<DCC_E>false</DCC_E>
@@ -55,10 +55,11 @@
 			<DCC_UsePackage>bindcompvcl;vclie;vcltouch;VclSmp;vcl;vclx;vclimg;vclactnband;$(DCC_UsePackage)</DCC_UsePackage>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<DCC_UsePackage>bindcompvcl;MyComponents;vclie;vcltouch;VclSmp;vcl;CodeSiteExpressPkg;inetdbbde;vclx;svnui;svn;vclimg;fmi;vclactnband;$(DCC_UsePackage)</DCC_UsePackage>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
-			<DCC_UsePackage>bindcompvcl;MyComponents;vclie;vcltouch;VclSmp;vcl;CodeSiteExpressPkg;inetdbbde;vclx;svnui;svn;vclimg;fmi;vclactnband;$(DCC_UsePackage)</DCC_UsePackage>
 			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
@@ -81,8 +82,6 @@
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
-			<DCCReference Include="SharedMemoryActiveX_TLB.pas"/>
-			<RidlCompile Include="SharedMemoryActiveX.ridl"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
@@ -100,9 +99,6 @@
 			<Borland.ProjectType/>
 			<BorlandProject>
 				<Delphi.Personality>
-					<Source>
-						<Source Name="MainSource">SharedMemoryActiveX.dpr</Source>
-					</Source>
 					<VersionInfo>
 						<VersionInfo Name="IncludeVerInfo">False</VersionInfo>
 						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
@@ -130,11 +126,11 @@
 						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
 						<VersionInfoKeys Name="Comments"/>
 					</VersionInfoKeys>
+					<Source>
+						<Source Name="MainSource">SharedMemoryCOMApplication.dpr</Source>
+					</Source>
 				</Delphi.Personality>
 				<Deployment/>
-				<ActiveXProjectInfo>
-					<version>1</version>
-				</ActiveXProjectInfo>
 				<Platforms>
 					<Platform value="Win64">False</Platform>
 					<Platform value="Win32">True</Platform>

@@ -8,7 +8,7 @@ uses
   Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan, Vcl.ImgList;
 
 type
-  TForm2 = class(TForm)
+  TMainForm = class(TForm)
     ImageList1: TImageList;
     ActionManager1: TActionManager;
     Action_Quit: TAction;
@@ -22,17 +22,42 @@ type
     N2: TMenuItem;
     N3: TMenuItem;
     StatusBar1: TStatusBar;
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
 
 var
-  Form2: TForm2;
+  MainForm: TMainForm;
 
 implementation
 
 {$R *.dfm}
+
+const
+  MUTEX_REQUEST_TIMEOUT=1000;
+
+var
+  HMapMutex: THandle;
+
+function LockMap: Boolean;
+begin
+  Result:=True;
+  HMapMutex:=CreateMutex(nil, False, PWideChar('SharedMemoryMutex'));
+  if HMapMutex=0 then
+    begin
+      ShowMessage('Не могу создать мьютекс');
+      Result:=False;
+    end
+  else
+    if WaitForSingleObject(HMapMutex, MUTEX_REQUEST_TIMEOUT)=WAIT_FAILED then
+      begin
+        ShowMessage('Невозможно заблокировать объект отображения файла');
+        Result:=False;
+      end;
+end;
+
+procedure UnlockMap;
+begin
+  ReleaseMutex(HMapMutex);
+  CloseHandle(HMapMutex);
+end;
 
 end.

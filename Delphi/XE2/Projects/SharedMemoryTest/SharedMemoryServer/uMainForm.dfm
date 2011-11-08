@@ -12,6 +12,7 @@ object MainForm: TMainForm
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object StatusBar1: TStatusBar
@@ -20,9 +21,19 @@ object MainForm: TMainForm
     Width = 635
     Height = 19
     Panels = <>
-    ExplicitLeft = 264
-    ExplicitTop = 184
-    ExplicitWidth = 0
+  end
+  object Memo1: TMemo
+    Left = 0
+    Top = 0
+    Width = 635
+    Height = 281
+    Align = alClient
+    ScrollBars = ssVertical
+    TabOrder = 1
+    ExplicitLeft = 288
+    ExplicitTop = 88
+    ExplicitWidth = 185
+    ExplicitHeight = 89
   end
   object MainMenu1: TMainMenu
     Images = ImageList1
@@ -78,7 +89,7 @@ object MainForm: TMainForm
     Left = 144
     Top = 72
     Bitmap = {
-      494C010103000800200010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000800240010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
