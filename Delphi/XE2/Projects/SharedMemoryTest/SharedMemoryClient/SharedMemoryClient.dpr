@@ -2,13 +2,13 @@ program SharedMemoryClient;
 
 uses
   Vcl.Forms,
-  uMainForm in 'uMainForm.pas' {Form2};
+  uMainForm in 'uMainForm.pas' {MainForm};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TForm2, Form2);
+  Application.CreateForm(TMainForm, MainForm);
   Application.Run;
 end.

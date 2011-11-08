@@ -9,10 +9,13 @@
 			<Projects Include="SharedMemoryClient\SharedMemoryClient.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="SharedMemoryActiveX\SharedMemoryActiveX.dproj">
+			<Projects Include="..\OA5\OA5.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="..\OA5\OA5.dproj">
+			<Projects Include="SharedMemoryCOMApplication\SharedMemoryCOMApplication.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="..\Packages\MyComponents.dproj">
 				<Dependencies/>
 			</Projects>
 		</ItemGroup>
@@ -41,15 +44,6 @@
 		<Target Name="SharedMemoryClient:Make">
 			<MSBuild Projects="SharedMemoryClient\SharedMemoryClient.dproj" Targets="Make"/>
 		</Target>
-		<Target Name="SharedMemoryActiveX">
-			<MSBuild Projects="SharedMemoryActiveX\SharedMemoryActiveX.dproj"/>
-		</Target>
-		<Target Name="SharedMemoryActiveX:Clean">
-			<MSBuild Projects="SharedMemoryActiveX\SharedMemoryActiveX.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="SharedMemoryActiveX:Make">
-			<MSBuild Projects="SharedMemoryActiveX\SharedMemoryActiveX.dproj" Targets="Make"/>
-		</Target>
 		<Target Name="OA5">
 			<MSBuild Projects="..\OA5\OA5.dproj"/>
 		</Target>
@@ -59,14 +53,32 @@
 		<Target Name="OA5:Make">
 			<MSBuild Projects="..\OA5\OA5.dproj" Targets="Make"/>
 		</Target>
+		<Target Name="SharedMemoryCOMApplication">
+			<MSBuild Projects="SharedMemoryCOMApplication\SharedMemoryCOMApplication.dproj"/>
+		</Target>
+		<Target Name="SharedMemoryCOMApplication:Clean">
+			<MSBuild Projects="SharedMemoryCOMApplication\SharedMemoryCOMApplication.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="SharedMemoryCOMApplication:Make">
+			<MSBuild Projects="SharedMemoryCOMApplication\SharedMemoryCOMApplication.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="MyComponents">
+			<MSBuild Projects="..\Packages\MyComponents.dproj"/>
+		</Target>
+		<Target Name="MyComponents:Clean">
+			<MSBuild Projects="..\Packages\MyComponents.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="MyComponents:Make">
+			<MSBuild Projects="..\Packages\MyComponents.dproj" Targets="Make"/>
+		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="SharedMemoryServer;SharedMemoryClient;SharedMemoryActiveX;OA5"/>
+			<CallTarget Targets="SharedMemoryServer;SharedMemoryClient;OA5;SharedMemoryCOMApplication;MyComponents"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="SharedMemoryServer:Clean;SharedMemoryClient:Clean;SharedMemoryActiveX:Clean;OA5:Clean"/>
+			<CallTarget Targets="SharedMemoryServer:Clean;SharedMemoryClient:Clean;OA5:Clean;SharedMemoryCOMApplication:Clean;MyComponents:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="SharedMemoryServer:Make;SharedMemoryClient:Make;SharedMemoryActiveX:Make;OA5:Make"/>
+			<CallTarget Targets="SharedMemoryServer:Make;SharedMemoryClient:Make;OA5:Make;SharedMemoryCOMApplication:Make;MyComponents:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
