@@ -606,12 +606,28 @@ procedure TMainForm.Action_MultibufferExecute(Sender: TObject);
 var
   MultiBufferForm: TMultiBufferForm;
   iBusy: integer;
+  i: integer;
+  aListItem: TListItem;
 begin
   ProcedureHeader('Процедура отображения окна '+sMultiBufferFormSuffix, '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
 
   MultiBufferForm:=TMultiBufferForm.Create(Self);
   with MultiBufferForm do
     try
+      for i:=0 to MeasuresMultiBuffer._Count-1 do
+        begin
+          aListItem:=lvBuffer.Items.Add;
+          aListItem.Caption:=IntToStr(i);
+          aListItem.SubItems.Add(
+            MeasuresMultiBuffer[i]._Type+'|'+
+            MeasuresMultiBuffer[i]._Name+'|'+
+            MeasuresMultiBuffer[i]._Author+'|'+
+            MeasuresMultiBuffer[i]._Producer+'|'+
+            MeasuresMultiBuffer[i]._Performer+'|'+
+            MeasuresMultiBuffer[i]._Organizer+'|'+
+            MeasuresMultiBuffer[i]._TicketPrice+'|'+
+            string(MeasuresMultiBuffer[i]._OtherInfoPlane));
+        end;
       PreShowModal(sMultiBufferFormSuffix, iBusy);
       ShowModal;
     finally
@@ -634,7 +650,7 @@ begin
   c._Type:='1';
   c._Name:='2';
   c.Normalize;
-  MeasuresMultiBuffer.Append(c);
+  MeasuresMultiBuffer._Append(c);
 end;
 
 end.
