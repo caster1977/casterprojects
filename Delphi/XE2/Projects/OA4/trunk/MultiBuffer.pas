@@ -41,7 +41,6 @@ implementation
 
 uses
   Main;
-// raMultibuffer: array[0..99] of TMsrBufferRec;
 
 procedure TMultiBufferForm.FormCreate(Sender: TObject);
 begin
