@@ -37,11 +37,10 @@ type
     StatusBar1: TStatusBar;
     Memo1: TMemo;
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   strict private
     USER_WM_READDATA, USER_WM_WRITEDATA, USER_WM_DONE: cardinal;
     function Do_RegisterWindowMessages: boolean;
-    function Do_LockMappedFile: Boolean;
-    procedure Do_UnlockMappedFile;
   protected
     procedure WndProc(var Message: TMessage); override;
   end;
@@ -54,37 +53,7 @@ implementation
 {$R *.dfm}
 
 uses
-  uCommon,
-  WinAPI.Windows;
-
-const
-  MUTEX_REQUEST_TIMEOUT=1000;
-
-var
-  HMapMutex: THandle;
-
-function TMainForm.Do_LockMappedFile: Boolean;
-begin
-  Result:=True;
-  HMapMutex:=CreateMutex(nil, False, PWideChar('SharedMemoryMutex'));
-  if HMapMutex=0 then
-    begin
-      ShowMessage('Не могу создать мьютекс');
-      Result:=False;
-    end
-  else
-    if WaitForSingleObject(HMapMutex, MUTEX_REQUEST_TIMEOUT)=WAIT_FAILED then
-      begin
-        ShowMessage('Невозможно заблокировать объект отображения файла');
-        Result:=False;
-      end;
-end;
-
-procedure TMainForm.Do_UnlockMappedFile;
-begin
-  ReleaseMutex(HMapMutex);
-  CloseHandle(HMapMutex);
-end;
+  uCommon;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 // var
@@ -115,6 +84,11 @@ begin
   // CopyMemory(Pointer(Str), lbBaseAdd, 12);
   // Memo1.Lines.Add(str); // по идее тут я в мемо должен получить кусок своего текстового файла
   // этого не происходит
+end;
+
+procedure TMainForm.FormShow(Sender: TObject);
+begin
+  if Do_RegisterWindowMessages then;
 end;
 
 function TMainForm.Do_RegisterWindowMessages: boolean;
