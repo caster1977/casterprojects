@@ -78,6 +78,10 @@
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<DCC_BplOutput>C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\</DCC_BplOutput>
+			<DCC_UnitSearchPath>C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_DcpOutput>C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\</DCC_DcpOutput>
+			<DCC_DcuOutput>C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\</DCC_DcuOutput>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
 		<ItemGroup>
@@ -149,7 +153,9 @@
 					<Source>
 						<Source Name="MainSource">MyComponents.dpk</Source>
 					</Source>
-					<Excluded_Packages/>
+					<Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\9.0\Bpl\MyComponents.bpl">File C:\Users\Public\Documents\RAD Studio\9.0\Bpl\MyComponents.bpl not found</Excluded_Packages>
+					</Excluded_Packages>
 				</Delphi.Personality>
 				<Platforms>
 					<Platform value="Win64">False</Platform>
