@@ -29,6 +29,12 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+			<Cfg_1_Win32>true</Cfg_1_Win32>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
 			<Cfg_2>true</Cfg_2>
 			<CfgParent>Base</CfgParent>
@@ -60,12 +66,10 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
 			<DCC_UsePackage>vcl;MyComponents;$(DCC_UsePackage)</DCC_UsePackage>
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<Icon_MainIcon>MyComponents_Icon.ico</Icon_MainIcon>
 			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -73,15 +77,14 @@
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
 			<DCC_DebugInformation>false</DCC_DebugInformation>
 		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<VerInfo_Locale>1033</VerInfo_Locale>
+		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
 			<DCC_Optimize>false</DCC_Optimize>
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-			<DCC_BplOutput>C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\</DCC_BplOutput>
-			<DCC_UnitSearchPath>C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-			<DCC_DcpOutput>C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\</DCC_DcpOutput>
-			<DCC_DcuOutput>C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\</DCC_DcuOutput>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
 		<ItemGroup>
@@ -153,9 +156,7 @@
 					<Source>
 						<Source Name="MainSource">MyComponents.dpk</Source>
 					</Source>
-					<Excluded_Packages>
-						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\9.0\Bpl\MyComponents.bpl">File C:\Users\Public\Documents\RAD Studio\9.0\Bpl\MyComponents.bpl not found</Excluded_Packages>
-					</Excluded_Packages>
+					<Excluded_Packages/>
 				</Delphi.Personality>
 				<Platforms>
 					<Platform value="Win64">False</Platform>
