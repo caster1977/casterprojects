@@ -18,6 +18,9 @@
 			<Projects Include="..\Packages\MyComponents.dproj">
 				<Dependencies/>
 			</Projects>
+			<Projects Include="SharedMemoryCommon\SharedMemoryCommon.dproj">
+				<Dependencies/>
+			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -71,14 +74,23 @@
 		<Target Name="MyComponents:Make">
 			<MSBuild Projects="..\Packages\MyComponents.dproj" Targets="Make"/>
 		</Target>
+		<Target Name="SharedMemoryCommon">
+			<MSBuild Projects="SharedMemoryCommon\SharedMemoryCommon.dproj"/>
+		</Target>
+		<Target Name="SharedMemoryCommon:Clean">
+			<MSBuild Projects="SharedMemoryCommon\SharedMemoryCommon.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="SharedMemoryCommon:Make">
+			<MSBuild Projects="SharedMemoryCommon\SharedMemoryCommon.dproj" Targets="Make"/>
+		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="SharedMemoryServer;SharedMemoryClient;OA5;SharedMemoryCOMApplication;MyComponents"/>
+			<CallTarget Targets="SharedMemoryServer;SharedMemoryClient;OA5;SharedMemoryCOMApplication;MyComponents;SharedMemoryCommon"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="SharedMemoryServer:Clean;SharedMemoryClient:Clean;OA5:Clean;SharedMemoryCOMApplication:Clean;MyComponents:Clean"/>
+			<CallTarget Targets="SharedMemoryServer:Clean;SharedMemoryClient:Clean;OA5:Clean;SharedMemoryCOMApplication:Clean;MyComponents:Clean;SharedMemoryCommon:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="SharedMemoryServer:Make;SharedMemoryClient:Make;OA5:Make;SharedMemoryCOMApplication:Make;MyComponents:Make"/>
+			<CallTarget Targets="SharedMemoryServer:Make;SharedMemoryClient:Make;OA5:Make;SharedMemoryCOMApplication:Make;MyComponents:Make;SharedMemoryCommon:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
