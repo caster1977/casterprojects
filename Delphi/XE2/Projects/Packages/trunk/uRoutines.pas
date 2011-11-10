@@ -22,7 +22,7 @@ type
     /// </i>
     /// </para>
     /// </remarks>
-    class function GetLocalIP: string;
+    class function GetLocalIP: string; static;
     class function GetConditionalString(const Condition: Boolean; TrueString, FalseString: string): string; static;
     class procedure CopyStringToClipboard(const Value: string); static;
     class procedure CutStringByLimiterToStringList(const Source: string; var Destination: TStringList; const Limiter: char); static;
