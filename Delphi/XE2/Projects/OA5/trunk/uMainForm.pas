@@ -8,7 +8,7 @@ uses
   Messages,
   SysUtils,
   Variants,
-  Classes,
+  System.Classes,
   Graphics,
   Controls,
   Forms,
@@ -485,7 +485,7 @@ begin
     end;
   try
     try
-      Screen.Cursor:=crHandPoint;
+      Screen.Cursor:=crHourGlass;
       Configuration.Load;
       if not bFirstRun then
         Log.SendInfo('Чтение настроек программы в файл прошло успешно.');
