@@ -21,6 +21,12 @@
 			<Projects Include="SharedMemoryCommon\SharedMemoryCommon.dproj">
 				<Dependencies/>
 			</Projects>
+			<Projects Include="..\Searchinform\Server\ServerSharedMemory.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="..\Overseer\Overseer.dproj">
+				<Dependencies/>
+			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -83,14 +89,32 @@
 		<Target Name="SharedMemoryCommon:Make">
 			<MSBuild Projects="SharedMemoryCommon\SharedMemoryCommon.dproj" Targets="Make"/>
 		</Target>
+		<Target Name="ServerSharedMemory">
+			<MSBuild Projects="..\Searchinform\Server\ServerSharedMemory.dproj"/>
+		</Target>
+		<Target Name="ServerSharedMemory:Clean">
+			<MSBuild Projects="..\Searchinform\Server\ServerSharedMemory.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="ServerSharedMemory:Make">
+			<MSBuild Projects="..\Searchinform\Server\ServerSharedMemory.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Overseer">
+			<MSBuild Projects="..\Overseer\Overseer.dproj"/>
+		</Target>
+		<Target Name="Overseer:Clean">
+			<MSBuild Projects="..\Overseer\Overseer.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Overseer:Make">
+			<MSBuild Projects="..\Overseer\Overseer.dproj" Targets="Make"/>
+		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="SharedMemoryServer;SharedMemoryClient;OA5;SharedMemoryCOMApplication;MyComponents;SharedMemoryCommon"/>
+			<CallTarget Targets="SharedMemoryServer;SharedMemoryClient;OA5;SharedMemoryCOMApplication;MyComponents;SharedMemoryCommon;ServerSharedMemory;Overseer"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="SharedMemoryServer:Clean;SharedMemoryClient:Clean;OA5:Clean;SharedMemoryCOMApplication:Clean;MyComponents:Clean;SharedMemoryCommon:Clean"/>
+			<CallTarget Targets="SharedMemoryServer:Clean;SharedMemoryClient:Clean;OA5:Clean;SharedMemoryCOMApplication:Clean;MyComponents:Clean;SharedMemoryCommon:Clean;ServerSharedMemory:Clean;Overseer:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="SharedMemoryServer:Make;SharedMemoryClient:Make;OA5:Make;SharedMemoryCOMApplication:Make;MyComponents:Make;SharedMemoryCommon:Make"/>
+			<CallTarget Targets="SharedMemoryServer:Make;SharedMemoryClient:Make;OA5:Make;SharedMemoryCOMApplication:Make;MyComponents:Make;SharedMemoryCommon:Make;ServerSharedMemory:Make;Overseer:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>

@@ -2,6 +2,14 @@ unit uCommon;
 
 interface
 
+const
+  ICON_BUSY=0;
+  ICON_READY=1;
+
+  STATUSBAR_STATE_PANEL_NUMBER: integer=0;
+  STATUSBAR_PROGRESS_PANEL_NUMBER: integer=1;
+  STATUSBAR_HINT_PANEL_NUMBER: integer=2;
+
 resourcestring
   TEXT_READDATA='WM_READDATA';
   TEXT_WRITEDATA='WM_WRITEDATA';
@@ -16,8 +24,10 @@ resourcestring
 type
   TCommonFunctions=class
   public
-    class function Do_LockMappedFile(var MutexHandle: THandle; const TimeOut: cardinal): Boolean;
-    class function Do_UnlockMappedFile(const MutexHandle: THandle): boolean;
+    class function Do_LockMappedFile(var MutexHandle: THandle; const TimeOut: cardinal): Boolean; static;
+    class function Do_UnlockMappedFile(const MutexHandle: THandle): boolean; static;
+    class procedure GenerateError(const aMessage: string; out aErrorMessage: string; out aErrorFlag: boolean); static;
+    class function GetConditionalString(const Condition: Boolean; TrueString, FalseString: string): string; static;
   end;
 
 implementation
@@ -44,13 +54,27 @@ end;
 class function TCommonFunctions.Do_UnlockMappedFile(const MutexHandle: THandle): boolean;
 begin
   Result:=False;
-  if ReleaseMutex(MutexHandle)=0 then
+  if not ReleaseMutex(MutexHandle) then
     raise Exception.Create(TEXT_ERROR_RELEASE_MUTEX)
   else
     if CloseHandle(MutexHandle) then
       raise Exception.Create(TEXT_ERROR_CLOSE_MUTEX_HANDLE)
     else
       Result:=True;
+end;
+
+class procedure TCommonFunctions.GenerateError(const aMessage: string; out aErrorMessage: string; out aErrorFlag: boolean);
+begin
+  aErrorMessage:=aMessage;
+  aErrorFlag:=True;
+end;
+
+class function TCommonFunctions.GetConditionalString(const Condition: Boolean; TrueString, FalseString: string): string;
+begin
+  if Condition then
+    Result:=TrueString
+  else
+    Result:=FalseString;
 end;
 
 end.
