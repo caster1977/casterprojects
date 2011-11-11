@@ -385,6 +385,8 @@ begin
   // применение настроек к интерфейсу
   Do_ApplyConfiguration;
 
+  { TODO : добавить отображение окна "о программе" }
+
   Do_UpdateActions;
 end;
 

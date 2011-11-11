@@ -404,7 +404,7 @@ var
 begin
   if FileName>'' then
     with TIniFile.Create(FileName) do
-      begin
+      try
         // вкладка "настройки интерфейса"
         ShowAboutWindowAtLaunch:=ReadBool('Интерфейс', 'bShowAboutWindowAtLaunch', DefaultValue_ShowAboutWindowAtLaunch);
         ShowToolbar:=ReadBool('Интерфейс', 'bShowToolbar', DefaultValue_ShowToolbar);
@@ -579,6 +579,8 @@ begin
         ShowMeasuresListAsRichEdit:=ReadBool('Отображение информации', 'bShowMeasuresListAsRichEdit', DefaultValue_ShowMeasuresListAsRichEdit);
         MarkSearchedStrings:=ReadBool('Отображение информации', 'bMarkSearchedStrings', DefaultValue_MarkSearchedStrings);
         PutTownAtTheEnd:=ReadBool('Отображение информации', 'bPutTownAtTheEnd', DefaultValue_PutTownAtTheEnd);
+      finally
+        Free;
       end
   else
     raise Exception.Create('Имя файла конфигурации не должно быть пустым!');
