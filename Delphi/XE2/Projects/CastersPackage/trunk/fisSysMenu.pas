@@ -30,9 +30,9 @@ const
   TAB=#9;
 
 type
-  TWndFarProc= function: integer; stdcall;
+  TWndFarProc=function: integer; stdcall;
 
-  TfisSysMenu= class(TComponent)
+  TfisSysMenu=class(TComponent)
   private
     FEnabled: boolean;
     FMenu: TPopupmenu;
@@ -64,7 +64,7 @@ implementation
 
 procedure register;
 begin
-  RegisterComponents('MyComponents', [TfisSysMenu]);
+  RegisterComponents('CasterComponents', [TfisSysMenu]);
 end;
 
 // The new window procedure and helper function are global because passing
