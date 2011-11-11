@@ -79,8 +79,11 @@
 			<DCC_RemoteDebug>true</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<VerInfo_Debug>true</VerInfo_Debug>
+			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=(C)opyright 2011 by Vlad Ivanov;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-			<Icon_MainIcon>c:\program files\embarcadero\rad studio\9.0\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<DCC_RemoteDebug>false</DCC_RemoteDebug>
 		</PropertyGroup>
@@ -109,6 +112,9 @@
 			</DCCReference>
 			<DCCReference Include="uConfigurationClass.pas"/>
 			<DCCReference Include="uRetranslatorThreadClass.pas"/>
+			<DCCReference Include="uAboutForm.pas">
+				<Form>AboutForm</Form>
+			</DCCReference>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

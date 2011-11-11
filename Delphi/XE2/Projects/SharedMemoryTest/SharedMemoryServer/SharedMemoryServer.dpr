@@ -5,7 +5,8 @@ uses
   uMainForm in 'uMainForm.pas' {MainForm},
   uConfigurationForm in 'uConfigurationForm.pas' {ConfigurationForm},
   uConfigurationClass in 'uConfigurationClass.pas',
-  uRetranslatorThreadClass in 'uRetranslatorThreadClass.pas';
+  uRetranslatorThreadClass in 'uRetranslatorThreadClass.pas',
+  uAboutForm in 'uAboutForm.pas' {AboutForm};
 
 {$R *.res}
 
@@ -13,6 +14,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMainForm, MainForm);
-  Application.CreateForm(TConfigurationForm, ConfigurationForm);
   Application.Run;
 end.
