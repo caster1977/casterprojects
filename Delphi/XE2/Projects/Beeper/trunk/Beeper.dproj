@@ -29,6 +29,12 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+			<Cfg_1_Win32>true</Cfg_1_Win32>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
 			<Cfg_2>true</Cfg_2>
 			<CfgParent>Base</CfgParent>
@@ -41,6 +47,11 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_UnitSearchPath>..\CastersPackage\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+			<DCC_DcuOutput>.\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
+			<DCC_BplOutput>.\$(Platform)\$(Config)\Package</DCC_BplOutput>
+			<DCC_DcpOutput>.\$(Platform)\$(Config)\DCP</DCC_DcpOutput>
 			<Manifest_File>None</Manifest_File>
 			<VerInfo_MajorVer>3</VerInfo_MajorVer>
 			<Icon_MainIcon>Beeper_Icon.ico</Icon_MainIcon>
@@ -53,7 +64,6 @@
 			<DCC_DependencyCheckOutputName>Beeper.exe</DCC_DependencyCheckOutputName>
 			<DCC_ImageBase>00400000</DCC_ImageBase>
 			<DCC_UsePackage>vcl;rtl;vclx;dbrtl;vcldb;xmlrtl;vclie;inet;inetdbbde;inetdbxpress;dclOfficeXP;VclSmp;bdertl;vclactnband;MyComponents;vcldbx;$(DCC_UsePackage)</DCC_UsePackage>
-			<DCC_UnitSearchPath>..\Packages;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<DCC_Platform>x86</DCC_Platform>
 			<DCC_Description>(C)opyright 2008-2010 by Vlad DraCooLa</DCC_Description>
 			<DCC_K>false</DCC_K>
@@ -79,6 +89,9 @@
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
 			<DCC_DebugInformation>false</DCC_DebugInformation>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
 			<VerInfo_Debug>true</VerInfo_Debug>
@@ -142,7 +155,7 @@
 						<VersionInfo Name="MajorVer">1</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">63</VersionInfo>
+						<VersionInfo Name="Build">64</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -154,7 +167,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">1.1.0.63</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">1.1.0.64</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright">(C)opyright 2008-2010 by Vlad DraCooLa</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks"/>
