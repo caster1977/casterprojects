@@ -55,7 +55,7 @@
 			<Manifest_File>None</Manifest_File>
 			<VerInfo_MajorVer>3</VerInfo_MajorVer>
 			<Icon_MainIcon>Beeper_Icon.ico</Icon_MainIcon>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=3.0.0.35;InternalName=;LegalCopyright=(C)opyright 2008-2010 by Vlad DraCooLa;LegalTrademarks=;OriginalFilename=Beeper.exe;ProductName=BEEPER;ProductVersion=3.1.0.35;Comments=</VerInfo_Keys>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=3.0.0.35;InternalName=;LegalCopyright=(C)opyright 2008-2010 by Vlad DraCooLa;LegalTrademarks=;OriginalFilename=Beeper.exe;ProductName=BEEPER;ProductVersion=3.0.0.35;Comments=</VerInfo_Keys>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<VerInfo_Build>35</VerInfo_Build>
 			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
@@ -79,14 +79,14 @@
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<DCC_Define>Platform32bit;$(DCC_Define)</DCC_Define>
 			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 			<Debugger_IncludeSystemVars>true</Debugger_IncludeSystemVars>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
-			<DCC_ExeOutput>RELEASE</DCC_ExeOutput>
-			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
 			<DCC_DebugInformation>false</DCC_DebugInformation>
 		</PropertyGroup>
@@ -95,13 +95,10 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
 			<VerInfo_Debug>true</VerInfo_Debug>
-			<DCC_ExeOutput>DEBUG</DCC_ExeOutput>
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=3.1.0.35;InternalName=;LegalCopyright=(C)opyright 2008-2010 by Vlad DraCooLa;LegalTrademarks=;OriginalFilename=Beeper.exe;ProductName=BEEPER;ProductVersion=3.1.0.35;Comments=</VerInfo_Keys>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-			<DCC_ExeOutput>DEBUG</DCC_ExeOutput>
 		</PropertyGroup>
 		<ItemGroup>
 			<DelphiCompile Include="$(MainSource)">
@@ -155,7 +152,7 @@
 						<VersionInfo Name="MajorVer">1</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">64</VersionInfo>
+						<VersionInfo Name="Build">73</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -167,7 +164,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">1.1.0.64</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">1.1.0.73</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright">(C)opyright 2008-2010 by Vlad DraCooLa</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks"/>
