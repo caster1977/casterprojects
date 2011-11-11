@@ -10,10 +10,23 @@ const
   STATUSBAR_PROGRESS_PANEL_NUMBER: integer=1;
   STATUSBAR_HINT_PANEL_NUMBER: integer=2;
 
+  CONST_DEFAULTVALUE_DATABLOCKSIZE = 1024;
+  CONST_DEFAULTVALUE_RETRANSLATORPAUSE = 1000;
+
+  WPARAM_SM_SERVER_READY = 1; // сигнал клиентам о том, что сервер готов к установке соединения, в LPARAM находится размер буфера для передачи данных в байтах
+  WPARAM_SM_SERVER_READING = 2; // сигнал клиенту о том, что сервер начинает считывать данные в блок памяти и клиенту нужно ждать, пока не прийдёт сообщение о запросе очередного блока данных
+  WPARAM_SM_SERVER_WAITING_FOR_DATA = 3; // сигнал клиенту о том, что сервер ждёт данные блока для чтения и в LPARAM находится номер блока, который ждёт сервер
+
+  WPARAM_SM_CLIENT_SENDS_HANDLE = 1; // сигнал серверу о том, что в LPARAM находится handle клиента
+  WPARAM_SM_CLIENT_SENDS_FILENAME = 2; // сигнал серверу о том, что в LPARAM находится указатель на имя передаваемого файла
+  WPARAM_SM_CLIENT_SENDS_DATA = 3; // сигнал серверу о том, что клиент начинает записывать данные в блок памяти и в LPARAM находится номер передаваемой части
+  WPARAM_SM_CLIENT_SENDS_SIZE = 4; // сигнал серверу о том, что клиент окончил записывать данные затребованного чанка в блок памяти и данные готовы для чтения и в LPARAM находится размер записанного в память блока данных в байтах
+  WPARAM_SM_CLIENT_SENDS_CRC32 = 5; // сигнал серверу о том, что в LPARAM находится контрольная сумма записанной части
+  WPARAM_SM_CLIENT_SENDS_EOF = 6; // сигнал серверу о том, что был достигнут конец файла и можно "закрыть" файл
+
 resourcestring
-  TEXT_READDATA='WM_READDATA';
-  TEXT_WRITEDATA='WM_WRITEDATA';
-  TEXT_DONE='WM_DONE';
+  TEXT_WM_SM_SERVER = 'WM_SM_SERVER';
+  TEXT_WM_SM_CLIENT = 'WM_SM_CLIENT';
 
   TEXT_MUTEX_NAME='SharedMemoryMutex';
   TEXT_ERROR_CREATE_MUTEX='Не удалось создать флаг управления процессом чтения/записи!';

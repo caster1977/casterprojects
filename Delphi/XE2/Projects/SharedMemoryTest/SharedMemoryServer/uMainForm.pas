@@ -20,7 +20,9 @@ uses
   Vcl.ComCtrls,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
-  uConfigurationClass;
+  uConfigurationClass,
+  Vcl.AppEvnts,
+  uRetranslatorThreadClass;
 
 resourcestring
   TEXT_MAINFORM_CAPTION='Shared Memory Server';
@@ -47,25 +49,29 @@ type
     pbMain: TProgressBar;
     imState: TImage;
     ilMainFormStateIcons: TImageList;
+    ApplicationEvents1: TApplicationEvents;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Action_ConfigurationExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Action_QuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
+    procedure ApplicationEvents1Hint(Sender: TObject);
+    procedure Action_AboutExecute(Sender: TObject);
   strict private
+    FDataFile: file of byte;
     bFirstRun: boolean;
     iBusyCounter: integer;
     bAboutWindowExist: boolean;
-    USER_WM_READDATA, USER_WM_WRITEDATA, USER_WM_DONE: cardinal;
-
+    WM_SM_SERVER, WM_SM_CLIENT: cardinal;
+    RetranslatorThread: TRetranslatorThread;
+    ClientHandle: THandle;
     procedure ProcedureHeader;
     procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
     procedure ProcedureFooter;
     procedure PreShowModal(var aOldBusyState: integer);
     procedure PostShowModal(var aOldBusyState: integer);
-    procedure Inc_BusyState;
-    procedure Dec_BusyState;
     procedure Refresh_BusyState;
     procedure ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
 
@@ -75,10 +81,10 @@ type
     procedure Do_Configuration;
 
     function Do_RegisterWindowMessages: boolean;
-  protected
-    procedure WndProc(var Message: TMessage); override;
   public
     Configuration: TConfiguration;
+    procedure Inc_BusyState;
+    procedure Dec_BusyState;
   end;
 
 var
@@ -92,6 +98,7 @@ uses
   System.IniFiles,
   Winapi.CommCtrl,
   uCommon,
+  uAboutForm,
   uConfigurationForm;
 
 procedure TMainForm.ProcedureHeader;
@@ -253,30 +260,31 @@ begin
 end;
 
 procedure TMainForm.Do_About(const aButtonVisible: boolean);
-// var
-// AboutForm: TAboutForm;
-// iBusy: integer;
+var
+  AboutForm: TAboutForm;
+  iBusy: integer;
 begin
-  // ProcedureHeader;
-  // if bAboutWindowExist then
-  // SetForegroundWindow(FindWindow('TAboutForm', TEXT_ABOUTFORM_CAPTION))
-  // else
-  // begin
-  // AboutForm:=TAboutForm.Create(Self);
-  // with AboutForm do
-  // try
-  // bAboutWindowExist:=True;
-  // Caption:=TEXT_ABOUTFORM_CAPTION;
-  // Action_Close.Visible:=aButtonVisible;
-  // PreShowModal(iBusy);
-  // ShowModal;
-  // finally
-  // PostShowModal(iBusy);
-  // Free;
-  // bAboutWindowExist:=False;
-  // end;
-  // end;
-  // ProcedureFooter;
+  ProcedureHeader;
+  if bAboutWindowExist then
+    SetForegroundWindow(FindWindow('TAboutForm', PWideChar(TEXT_ABOUTFORM_CAPTION)))
+  else
+    begin
+      AboutForm:=TAboutForm.Create(Self);
+      with AboutForm do
+        try
+          bAboutWindowExist:=True;
+          Caption:=TEXT_ABOUTFORM_CAPTION;
+          lblTitle.Caption:=TEXT_MAINFORM_CAPTION;
+          Action_Close.Visible:=aButtonVisible;
+          PreShowModal(iBusy);
+          ShowModal;
+        finally
+          PostShowModal(iBusy);
+          Free;
+          bAboutWindowExist:=False;
+        end;
+    end;
+  ProcedureFooter;
 end;
 
 procedure TMainForm.Do_Configuration;
@@ -299,22 +307,21 @@ end;
 
 function TMainForm.Do_RegisterWindowMessages: boolean;
 resourcestring
-  RegisterWindowErrorMessage='Ќе удалось выполнить операцию регистрации оконного сообщени€!  од ошибки: ';
+  TEXT_REGISTERWINDOWMESSAGEERROR='Ќе удалось выполнить операцию регистрации оконного сообщени€!  од ошибки: ';
 begin
   ProcedureHeader;
+  Result:=False;
   try
-    USER_WM_READDATA:=RegisterWindowMessage(PWideChar(TEXT_READDATA));
-    if USER_WM_READDATA=0 then
-      raise Exception.Create(RegisterWindowErrorMessage+IntToStr(GetLastError));
-    USER_WM_WRITEDATA:=RegisterWindowMessage(PWideChar(TEXT_WRITEDATA));
-    if USER_WM_WRITEDATA=0 then
-      raise Exception.Create(RegisterWindowErrorMessage+IntToStr(GetLastError));
-    USER_WM_DONE:=RegisterWindowMessage(PWideChar(TEXT_DONE));
-    if USER_WM_DONE=0 then
-      raise Exception.Create(RegisterWindowErrorMessage+IntToStr(GetLastError));
+    WM_SM_SERVER:=RegisterWindowMessage(PWideChar(TEXT_WM_SM_SERVER));
+    if WM_SM_SERVER=0 then
+      raise Exception.Create(TEXT_REGISTERWINDOWMESSAGEERROR+IntToStr(GetLastError));
+    WM_SM_CLIENT:=RegisterWindowMessage(PWideChar(TEXT_WM_SM_CLIENT));
+    if WM_SM_CLIENT=0 then
+      raise Exception.Create(TEXT_REGISTERWINDOWMESSAGEERROR+IntToStr(GetLastError));
+    Result:=True;
   except
     on E: Exception do
-      MessageBox(Handle, PWideChar(E.Message), PWideChar(Caption+' - ќшибка!'), MB_OK+MB_ICONERROR+MB_DEFBUTTON1);
+      ShowErrorBox(Handle, E.Message);
   end;
   ProcedureFooter;
 end;
@@ -322,10 +329,7 @@ end;
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   ProcedureHeader;
-
-  // запись конфигурации
-  Do_SaveConfiguration;
-
+  Do_SaveConfiguration; // запись конфигурации
   ProcedureFooter;
 end;
 
@@ -403,12 +407,21 @@ begin
     begin
       iBusyCounter:=0;
       bFirstRun:=False;
-      if Do_RegisterWindowMessages then
-        { TODO : дописать }
-          ;
+      Do_About(False); // отображение окна "ќ программе"
+
+      if not Do_RegisterWindowMessages then
+        Application.Terminate;
+      { TODO : дописать }
     end;
   Refresh_BusyState;
 
+  ProcedureFooter;
+end;
+
+procedure TMainForm.Action_AboutExecute(Sender: TObject);
+begin
+  ProcedureHeader;
+  Do_About(True);
   ProcedureFooter;
 end;
 
@@ -426,54 +439,58 @@ begin
   ProcedureFooter;
 end;
 
-procedure TMainForm.WndProc(var Message: TMessage);
+procedure TMainForm.ApplicationEvents1Hint(Sender: TObject);
+begin
+  StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=GetLongHint(Application.Hint);
+end;
+
+procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
 var
   lpData: Pointer;
   lLineSize, ltemp: Integer;
   lpBuffer: array of Byte;
 begin
-  inherited;
-  if message.Msg=USER_WM_READDATA then;
-  if message.Msg=USER_WM_WRITEDATA then;
-  if message.Msg=USER_WM_DONE then;
-  { TODO : дописать }
-
-  try
-    if message.Msg=FtWM_CLIENT_WRITE then
-      begin
-        isListened:=True;
-        LogFile.Add(llTRACE, TEXT_WM_SERVER_READ);
-        lpData:=MapViewOfFile(FhSharedMemory, FILE_MAP_READ, 0, 0, BlockSize);
-        if lpData=nil then
-          begin
-            Exit;
-            RaiseLastOSError;
-          end;
-        lLineSize:=message.WParam;
-        LogFile.Add(llTRACE, TEXT_WRITE_SIZE_OF_INPUT+IntToStr(lLineSize));
-        SetLength(lpBuffer, lLineSize);
-        LogFile.Add(llTRACE, TEXT_READ_DATA_SHARED_MEMORY);
-        CopyMemory(@lpBuffer[0], Pointer(Integer(lpData)+4), lLineSize);
-        LogFile.Add(llTRACE, TEXT_SERVER_READ_BEG);
-        BlockWrite(FFile, lpBuffer, lLineSize, ltemp);
-        LogFile.Add(llTRACE, TEXT_SERVER_READ_END);
-        UnmapViewOfFile(lpData);
-        LogFile.Add(llTRACE, TEXT_SLEEP+FloatToStr(TransferFileTimeInterval/1000)+TEXT_SECOND);
-        Sleep(TransferFileTimeInterval);
-        LogFile.Add(llTRACE, TEXT_WM_SERVER_POST);
-        PostMessage(HWND_BROADCAST, FtWM_SERVER_READ, 0, 0);
-      end;
-    if message.Msg=FtWM_EOF then
-      begin
-        CloseFile(FFile);
-        LogFile.Add(llINFO, TEXT_FILE_TRANSFERAD);
-      end;
-  except
-    on e: Exception do
-      begin
-        LogFile.Add(llERROR, TEXT_ERROR_PREFIX+e.Message);
-      end;
-  end;
+  Handled:=False;
+  if Msg.message=WM_SM_CLIENT then
+    case Msg.wParam of
+      WPARAM_SM_CLIENT_SENDS_HANDLE: // сигнал серверу о том, что в LPARAM находитс€ handle клиента
+        begin
+          ClientHandle:=Msg.lParam;
+          { TODO : дописать }
+          Handled:=True;
+        end;
+      WPARAM_SM_CLIENT_SENDS_FILENAME: // сигнал серверу о том, что в LPARAM находитс€ указатель на им€ передаваемого файла
+        begin
+          // получаем им€ передаваемого файла
+          // создаЄм файл на диске
+          { TODO : дописать }
+          Handled:=True;
+        end;
+      WPARAM_SM_CLIENT_SENDS_DATA: // сигнал серверу о том, что клиент начинает записывать данные в блок пам€ти и в LPARAM находитс€ номер передаваемой части
+        begin
+          // ждЄм, пока клиент записывает чанк в общую пам€ть
+          { TODO : возможно, стоит добавить вывод номера части, которую записываеит клиент? }
+          { TODO : дописать }
+          Handled:=True;
+        end;
+      WPARAM_SM_CLIENT_SENDS_SIZE: // сигнал серверу о том, что клиент окончил записывать данные затребованного чанка в блок пам€ти и данные готовы дл€ чтени€ и в LPARAM находитс€ размер записанного в пам€ть блока данных в байтах
+        begin
+          PostMessage(ClientHandle, WM_SM_SERVER, WPARAM_SM_SERVER_READING, 0);
+          { TODO : дописать }
+          Handled:=True;
+        end;
+      WPARAM_SM_CLIENT_SENDS_CRC32: // сигнал серверу о том, что в LPARAM находитс€ контрольна€ сумма записанной части
+        begin
+          { TODO : дописать }
+          Handled:=True;
+        end;
+      WPARAM_SM_CLIENT_SENDS_EOF: // сигнал серверу о том, что был достигнут конец файла и можно "закрыть" файл
+        begin
+          CloseFile(FDataFile);
+          { TODO : дописать }
+          Handled:=True;
+        end;
+    end;
 end;
 
 end.
