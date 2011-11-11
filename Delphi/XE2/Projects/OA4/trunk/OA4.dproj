@@ -47,6 +47,10 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+			<DCC_DcuOutput>.\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
+			<DCC_BplOutput>.\$(Platform)\$(Config)\Package</DCC_BplOutput>
+			<DCC_DcpOutput>.\$(Platform)\$(Config)\DCP</DCC_DcpOutput>
 			<Manifest_File>None</Manifest_File>
 			<Icon_MainIcon>OA4_Icon.ico</Icon_MainIcon>
 			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
@@ -58,9 +62,8 @@
 			<VerInfo_MinorVer>1</VerInfo_MinorVer>
 			<VerInfo_Keys>CompanyName=;FileDescription=АРМ оператора услуги &quot;Отдых и развлечения&quot;;FileVersion=4.1.0.135;InternalName=OA4;LegalCopyright=(C)opyright 2007-2011 by Vlad DraCooLa;LegalTrademarks=;OriginalFilename=OA4.exe;ProductName=OA4;ProductVersion=4.1.0.135;Comments=</VerInfo_Keys>
 			<VerInfo_Locale>1033</VerInfo_Locale>
-			<DCC_BplOutput>..\Packages\</DCC_BplOutput>
 			<DCC_DependencyCheckOutputName>OA4.exe</DCC_DependencyCheckOutputName>
-			<DCC_UnitSearchPath>..\Packages;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_UnitSearchPath>..\CastersPackage\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<DCC_UsePackage>vcl;rtl;vclx;VclSmp;vclactnband;MyComponents;$(DCC_UsePackage)</DCC_UsePackage>
 			<DCC_ImageBase>00400000</DCC_ImageBase>
 			<DCC_RangeChecking>true</DCC_RangeChecking>
@@ -80,11 +83,11 @@
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<DCC_Define>Platform32bit;$(DCC_Define)</DCC_Define>
 			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
-			<DCC_ExeOutput>RELEASE</DCC_ExeOutput>
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
@@ -94,7 +97,6 @@
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
-			<DCC_ExeOutput>DEBUG</DCC_ExeOutput>
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
