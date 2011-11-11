@@ -131,9 +131,7 @@ var
   p: integer;
 begin
   if bAboutWindowExist then
-    begin
-      SetForegroundWindow(FindWindow('TAboutForm', 'About "Beeper"...'));
-    end
+    SetForegroundWindow(FindWindow('TAboutForm', 'About "Beeper"...'))
   else
     begin
       bAboutWindowExist:=True;
@@ -316,7 +314,7 @@ begin
         TrayIcon1.ShowBalloonHint;
     end;
   if bSoundEnabled then
-    PlaySound('WAVE_5', HInstance, SND_RESOURCE or SND_ASYNC);
+    PlaySound('WAVE_0', HInstance, SND_RESOURCE or SND_ASYNC);
   Update_Actions;
 end;
 
@@ -336,7 +334,7 @@ begin
         TrayIcon1.ShowBalloonHint;
     end;
   if bSoundEnabled then
-    PlaySound('WAVE_6', HInstance, SND_RESOURCE or SND_ASYNC);
+    PlaySound('WAVE_1', HInstance, SND_RESOURCE or SND_ASYNC);
   Update_Actions;
 end;
 
