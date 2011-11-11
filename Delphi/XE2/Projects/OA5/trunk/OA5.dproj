@@ -53,16 +53,19 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+			<DCC_DcuOutput>.\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
+			<DCC_DcpOutput>.\$(Platform)\$(Config)\DCP</DCC_DcpOutput>
 			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
-			<Icon_MainIcon>OA5_Icon.ico</Icon_MainIcon>
+			<Icon_MainIcon>c:\program files\embarcadero\rad studio\9.0\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
 			<Manifest_File>None</Manifest_File>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<VerInfo_MajorVer>5</VerInfo_MajorVer>
 			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;Web.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
 			<VerInfo_Keys>CompanyName=;FileDescription=АРМ оператора услуги &apos;&apos;Отдых и развлечения&apos;&apos;;FileVersion=5.0.0.0;InternalName=OA5;LegalCopyright=(C)opyright 2007-2011 by Caster;LegalTrademarks=;OriginalFilename=OA5.exe;ProductName=;ProductVersion=5.0.0.0;Comments=Посвящается моей любимой жене </VerInfo_Keys>
 			<VerInfo_Locale>1033</VerInfo_Locale>
-			<DCC_UnitSearchPath>..\Packages\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-			<DCC_BplOutput>..\Packages\</DCC_BplOutput>
+			<DCC_UnitSearchPath>..\CastersPackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_BplOutput>.\$(Platform)\$(Config)\Package</DCC_BplOutput>
 			<DCC_Description>(C)opyright 2007-2010 by Vlad DraCooLa</DCC_Description>
 			<DCC_UsePackage>vcl;vclx;VclSmp;rtl;vclimg;vclactnband;xmlrtl;IndyCore;IndySystem;IndyProtocols;vclie;inet;inetdbbde;inetdbxpress;DbxCommonDriver;DbxClientDriver;DBXInterBaseDriver;DBXMySQLDriver;DBXFirebirdDriver;DBXSybaseASEDriver;DBXSybaseASADriver;DBXOracleDriver;DBXMSSQLDriver;DBXInformixDriver;DBXDb2Driver;CodeSiteExpressVcl;$(DCC_UsePackage)</DCC_UsePackage>
 			<DCC_ImageBase>00400000</DCC_ImageBase>
@@ -74,6 +77,7 @@
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<DCC_Define>Platform32bit;$(DCC_Define)</DCC_Define>
 			<DCC_UsePackage>svnui;svn;$(DCC_UsePackage)</DCC_UsePackage>
 			<DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Soap.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 			<Debugger_IncludeSystemVars>true</Debugger_IncludeSystemVars>
@@ -81,7 +85,6 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
 			<VerInfo_Debug>true</VerInfo_Debug>
-			<DCC_ExeOutput>DEBUG</DCC_ExeOutput>
 			<DCC_RangeChecking>true</DCC_RangeChecking>
 			<DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
 			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
@@ -93,11 +96,9 @@
 			<DCC_RemoteDebug>true</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-			<Icon_MainIcon>c:\program files\embarcadero\rad studio\9.0\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
-			<DCC_ExeOutput>RELEASE</DCC_ExeOutput>
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
