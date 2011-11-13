@@ -64,7 +64,7 @@ type
     bFirstRun: boolean;
     iBusyCounter: integer;
     bAboutWindowExist: boolean;
-    WM_SM_SERVER, WM_SM_CLIENT: cardinal;
+    WM_SERVER, WM_CLIENT: cardinal;
     RetranslatorThread: TRetranslatorThread;
     ClientHandle: THandle;
     procedure ProcedureHeader;
@@ -312,11 +312,11 @@ begin
   ProcedureHeader;
   Result:=False;
   try
-    WM_SM_SERVER:=RegisterWindowMessage(PWideChar(TEXT_WM_SM_SERVER));
-    if WM_SM_SERVER=0 then
+    WM_SERVER:=RegisterWindowMessage(PWideChar(TEXT_WM_SM_SERVER));
+    if WM_SERVER=0 then
       raise Exception.Create(TEXT_REGISTERWINDOWMESSAGEERROR+IntToStr(GetLastError));
-    WM_SM_CLIENT:=RegisterWindowMessage(PWideChar(TEXT_WM_SM_CLIENT));
-    if WM_SM_CLIENT=0 then
+    WM_CLIENT:=RegisterWindowMessage(PWideChar(TEXT_WM_SM_CLIENT));
+    if WM_CLIENT=0 then
       raise Exception.Create(TEXT_REGISTERWINDOWMESSAGEERROR+IntToStr(GetLastError));
     Result:=True;
   except
@@ -451,40 +451,40 @@ var
   lpBuffer: array of Byte;
 begin
   Handled:=False;
-  if Msg.message=WM_SM_CLIENT then
+  if Msg.message=WM_CLIENT then
     case Msg.wParam of
-      WPARAM_SM_CLIENT_SENDS_HANDLE: // сигнал серверу о том, что в LPARAM находится handle клиента
+      WPARAM_CLIENT_SENDS_HANDLE: // сигнал серверу о том, что в LPARAM находится handle клиента
         begin
           ClientHandle:=Msg.lParam;
           { TODO : дописать }
           Handled:=True;
         end;
-      WPARAM_SM_CLIENT_SENDS_FILENAME: // сигнал серверу о том, что в LPARAM находится указатель на имя передаваемого файла
+      WPARAM_CLIENT_SENDS_FILENAME: // сигнал серверу о том, что в LPARAM находится указатель на имя передаваемого файла
         begin
           // получаем имя передаваемого файла
           // создаём файл на диске
           { TODO : дописать }
           Handled:=True;
         end;
-      WPARAM_SM_CLIENT_SENDS_DATA: // сигнал серверу о том, что клиент начинает записывать данные в блок памяти и в LPARAM находится номер передаваемой части
+      WPARAM_CLIENT_SENDS_DATA: // сигнал серверу о том, что клиент начинает записывать данные в блок памяти и в LPARAM находится номер передаваемой части
         begin
           // ждём, пока клиент записывает чанк в общую память
           { TODO : возможно, стоит добавить вывод номера части, которую записываеит клиент? }
           { TODO : дописать }
           Handled:=True;
         end;
-      WPARAM_SM_CLIENT_SENDS_SIZE: // сигнал серверу о том, что клиент окончил записывать данные затребованного чанка в блок памяти и данные готовы для чтения и в LPARAM находится размер записанного в память блока данных в байтах
+      WPARAM_CLIENT_SENDS_SIZE: // сигнал серверу о том, что клиент окончил записывать данные затребованного чанка в блок памяти и данные готовы для чтения и в LPARAM находится размер записанного в память блока данных в байтах
         begin
-          PostMessage(ClientHandle, WM_SM_SERVER, WPARAM_SM_SERVER_READING, 0);
+          PostMessage(ClientHandle, WM_SERVER, WPARAM_SERVER_READING, 0);
           { TODO : дописать }
           Handled:=True;
         end;
-      WPARAM_SM_CLIENT_SENDS_CRC32: // сигнал серверу о том, что в LPARAM находится контрольная сумма записанной части
+      WPARAM_CLIENT_SENDS_CRC32: // сигнал серверу о том, что в LPARAM находится контрольная сумма записанной части
         begin
           { TODO : дописать }
           Handled:=True;
         end;
-      WPARAM_SM_CLIENT_SENDS_EOF: // сигнал серверу о том, что был достигнут конец файла и можно "закрыть" файл
+      WPARAM_CLIENT_SENDS_EOF: // сигнал серверу о том, что был достигнут конец файла и можно "закрыть" файл
         begin
           CloseFile(FDataFile);
           { TODO : дописать }

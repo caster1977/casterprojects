@@ -9,7 +9,6 @@ uses
   ExtCtrls,
   getFVI,
   StdCtrls,
-  uLogProvider,
   Classes,
   PlatformDefaultStyleActnCtrls,
   Controls,
