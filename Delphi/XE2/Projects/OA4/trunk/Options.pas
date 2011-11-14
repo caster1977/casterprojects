@@ -535,7 +535,7 @@ procedure TOptionsForm.FormCreate(Sender: TObject);
 begin
   btnHelp.Enabled:=Application.HelpFile<>'';
   ScrollBox1.VertScrollBar.Position:=0;
-  lblAutoReplaceSorry.Caption:='Извините, но список доступен только для пользователей'+#10#13+'с правами редактирования базы данных'+#10#13+'при подлючении к базе данных!';
+  lblAutoReplaceSorry.Caption:='Извините, но список доступен только для пользователей'+sLineBreak+'с правами редактирования базы данных'+sLineBreak+'при подлючении к базе данных!';
   bNormalizeNow:=False;
 end;
 

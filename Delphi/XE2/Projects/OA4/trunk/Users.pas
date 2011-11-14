@@ -657,7 +657,7 @@ begin
         end
       else
         begin
-          MessageBox(Handle, PChar('Для данной учётной записи задан пустой пароль.'+#10#13+'Не забудьте сменить его!'), PChar('OA4 - Внимание!'), MB_OK+MB_ICONWARNING+MB_DEFBUTTON1);
+          MessageBox(Handle, PChar('Для данной учётной записи задан пустой пароль.'+sLineBreak+'Не забудьте сменить его!'), PChar('OA4 - Внимание!'), MB_OK+MB_ICONWARNING+MB_DEFBUTTON1);
           btnSetPassword.SetFocus;
         end;
     end
@@ -785,7 +785,7 @@ end;
 procedure TUsersForm.TreeView1Changing(Sender: TObject; Node: TTreeNode; var AllowChange: Boolean);
 begin
   if bUserModified then
-    if MessageBox(Handle, PChar('Вы внесли изменения в учётную запись "'+TreeView1.Selected.Text+'".'+#10#13+'Сохранить изменения?'), PChar('OA3 - Внимание!'), MB_OKCANCEL+MB_ICONWARNING+MB_DEFBUTTON1)=mrOk then
+    if MessageBox(Handle, PChar('Вы внесли изменения в учётную запись "'+TreeView1.Selected.Text+'".'+sLineBreak+'Сохранить изменения?'), PChar('OA3 - Внимание!'), MB_OKCANCEL+MB_ICONWARNING+MB_DEFBUTTON1)=mrOk then
       btnSaveUserClick(Sender);
 end;
 
