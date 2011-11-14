@@ -69,7 +69,7 @@ function TMySQLConnection.GetLastErrorInfo: string;
 begin
   if Assigned(FConnection) then
     if mysql_errno(FConnection)<>0 then
-      Result:=#10#13+#10#13+'Код ошибки: '+#10#13+IntToStr(mysql_errno(FConnection))+#10#13+#10#13+'Наименование ошибки: '+#10#13+string(mysql_error(FConnection))
+      Result:=sLineBreak+sLineBreak+'Код ошибки: '+sLineBreak+IntToStr(mysql_errno(FConnection))+sLineBreak+sLineBreak+'Наименование ошибки: '+sLineBreak+string(mysql_error(FConnection))
     else
       Result:=''
   else
