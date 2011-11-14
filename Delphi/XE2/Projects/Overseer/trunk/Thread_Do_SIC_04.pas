@@ -310,53 +310,53 @@ begin
                 // начало формирования текста HTML-файла
                 if not bError then
                   begin
-                    sHTML:=sHTML+'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'+#13#10;
-                    sHTML:=sHTML+'<HTML>'+#13#10;
-                    sHTML:=sHTML+'  <HEAD>'+#13#10;
-                    sHTML:=sHTML+'    <TITLE>Статистика по работе пользователей АРМ услуги Отдых и развлечения за '+sReportPeriod+'</TITLE>'+#13#10;
-                    sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="pragma">'+#13#10;
-                    sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="cache-control">'+#13#10;
-                    sHTML:=sHTML+'    <META CONTENT="Dynamic" NAME="Document-state">'+#13#10;
-                    sHTML:=sHTML+'    <META content="text/html; charset=Windows-1251" http-equiv="Content-Type">'+#13#10;
-                    sHTML:=sHTML+'    <STYLE MEDIA="screen, print" TYPE="text/css">'+#13#10;
-                    sHTML:=sHTML+'      * {'+#13#10;
-                    sHTML:=sHTML+'        font-family: Verdana, Arial, Helvetica, sans-serif;'+#13#10;
-                    sHTML:=sHTML+'        font-size: 7pt;'+#13#10;
-                    sHTML:=sHTML+'        padding: 0;'+#13#10;
-                    sHTML:=sHTML+'        margin: 0;'+#13#10;
-                    sHTML:=sHTML+'        border-color: transparent;'+#13#10;
-                    sHTML:=sHTML+'        border-width: 0;'+#13#10;
-                    sHTML:=sHTML+'        }'+#13#10;
-                    sHTML:=sHTML+'      TABLE, TD {'+#13#10;
-                    sHTML:=sHTML+'        border-style: solid;'+#13#10;
-                    sHTML:=sHTML+'      }'+#13#10;
-                    sHTML:=sHTML+'    </STYLE>'+#13#10;
-                    sHTML:=sHTML+'  </HEAD>'+#13#10;
-                    sHTML:=sHTML+'  <BODY>'+#13#10;
-                    sHTML:=sHTML+'    <CENTER>'+#13#10;
-                    sHTML:=sHTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="656" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+#13#10;
-                    sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+#13#10;
-                    sHTML:=sHTML+'        <TR>'+#13#10;
-                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+Routines_GetConditionalMessage(CreateDetailedReport, '100', '196')+'px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+Routines_GetConditionalMessage(CreateDetailedReport, '100', '115')+'px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+Routines_GetConditionalMessage(CreateDetailedReport, '100', '115')+'px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+Routines_GetConditionalMessage(CreateDetailedReport, '*', '115px')+'" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
+                    sHTML:=sHTML+'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'+sLineBreak;
+                    sHTML:=sHTML+'<HTML>'+sLineBreak;
+                    sHTML:=sHTML+'  <HEAD>'+sLineBreak;
+                    sHTML:=sHTML+'    <TITLE>Статистика по работе пользователей АРМ услуги Отдых и развлечения за '+sReportPeriod+'</TITLE>'+sLineBreak;
+                    sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="pragma">'+sLineBreak;
+                    sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="cache-control">'+sLineBreak;
+                    sHTML:=sHTML+'    <META CONTENT="Dynamic" NAME="Document-state">'+sLineBreak;
+                    sHTML:=sHTML+'    <META content="text/html; charset=Windows-1251" http-equiv="Content-Type">'+sLineBreak;
+                    sHTML:=sHTML+'    <STYLE MEDIA="screen, print" TYPE="text/css">'+sLineBreak;
+                    sHTML:=sHTML+'      * {'+sLineBreak;
+                    sHTML:=sHTML+'        font-family: Verdana, Arial, Helvetica, sans-serif;'+sLineBreak;
+                    sHTML:=sHTML+'        font-size: 7pt;'+sLineBreak;
+                    sHTML:=sHTML+'        padding: 0;'+sLineBreak;
+                    sHTML:=sHTML+'        margin: 0;'+sLineBreak;
+                    sHTML:=sHTML+'        border-color: transparent;'+sLineBreak;
+                    sHTML:=sHTML+'        border-width: 0;'+sLineBreak;
+                    sHTML:=sHTML+'        }'+sLineBreak;
+                    sHTML:=sHTML+'      TABLE, TD {'+sLineBreak;
+                    sHTML:=sHTML+'        border-style: solid;'+sLineBreak;
+                    sHTML:=sHTML+'      }'+sLineBreak;
+                    sHTML:=sHTML+'    </STYLE>'+sLineBreak;
+                    sHTML:=sHTML+'  </HEAD>'+sLineBreak;
+                    sHTML:=sHTML+'  <BODY>'+sLineBreak;
+                    sHTML:=sHTML+'    <CENTER>'+sLineBreak;
+                    sHTML:=sHTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="656" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+sLineBreak;
+                    sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+sLineBreak;
+                    sHTML:=sHTML+'        <TR>'+sLineBreak;
+                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+Routines_GetConditionalMessage(CreateDetailedReport, '100', '196')+'px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+Routines_GetConditionalMessage(CreateDetailedReport, '100', '115')+'px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+Routines_GetConditionalMessage(CreateDetailedReport, '100', '115')+'px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+Routines_GetConditionalMessage(CreateDetailedReport, '*', '115px')+'" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
                     if not CreateDetailedReport then
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="115px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                    sHTML:=sHTML+'        </TR>'+#13#10;
-                    sHTML:=sHTML+'        <TR>'+#13#10;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="115px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                    sHTML:=sHTML+'        </TR>'+sLineBreak;
+                    sHTML:=sHTML+'        <TR>'+sLineBreak;
                     sHTML:=sHTML+
                       '          <TD COLSPAN="3" STYLE="border-bottom-color: #CCCCCC; border-top-color: white; border-left-color: white; font-weight: bold; border-right-color: white; border-width: 0px 0px 1px 0px; font-size: 10pt; text-align: left;">Форма № '
-                      +sReportCode+'</TD>'+#13#10;
+                      +sReportCode+'</TD>'+sLineBreak;
                     sHTML:=sHTML+'          <TD '+Routines_GetConditionalMessage(CreateDetailedReport, '', 'COLSPAN="2" ')+
                       'STYLE="border-bottom-color: #CCCCCC; border-top-color: white; border-left-color: white; border-right-color: white; border-width: 0px 0px 1px 0px; font-size: 6pt; text-align: right;">'+
-                      'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD>'+#13#10;
-                    sHTML:=sHTML+'        </TR>'+#13#10;
-                    sHTML:=sHTML+'        <TR>'+#13#10;
+                      'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD>'+sLineBreak;
+                    sHTML:=sHTML+'        </TR>'+sLineBreak;
+                    sHTML:=sHTML+'        <TR>'+sLineBreak;
                     sHTML:=sHTML+'          <TD COLSPAN="'+Routines_GetConditionalMessage(CreateDetailedReport, '4', '5')+
                       '" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 13pt; font-weight: bold; padding: 20px 0px 3px 0px;">Статистика по работе пользователей<BR>АРМ услуги &laquo;Отдых и развлечения&raquo;<BR>за '+
-                      sReportPeriod+'</TD>'+#13#10;
-                    sHTML:=sHTML+'        </TR>'+#13#10;
+                      sReportPeriod+'</TD>'+sLineBreak;
+                    sHTML:=sHTML+'        </TR>'+sLineBreak;
 
                     if CreateDetailedReport then
                       begin
@@ -452,21 +452,21 @@ begin
                                                                     if (iRowQuantity>0)or ShowIdleUsers then
                                                                       begin
                                                                         bAnyReportDataExists:=True;
-                                                                        sHTML:=sHTML+'        <TR>'+#13#10;
+                                                                        sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                                         sHTML:=sHTML+'          <TD COLSPAN="4" STYLE="border-color: white; border-width: 0; text-align: left; font-weight: bold; font-size: 10pt; padding: 20px 0px 3px 0px;">' //
-                                                                          +Trim(slUserList[iRoutineCounter])+':</TD>'+#13#10; //
-                                                                        sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                          +Trim(slUserList[iRoutineCounter])+':</TD>'+sLineBreak; //
+                                                                        sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                       end;
                                                                     if iRowQuantity>0 then
                                                                       begin
-                                                                        sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                        sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Дата</TD>'+#13#10;
-                                                                        sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Время</TD>'+#13#10;
+                                                                        sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                        sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Дата</TD>'+sLineBreak;
+                                                                        sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Время</TD>'+sLineBreak;
                                                                         sHTML:=sHTML+'          <TD '+Routines_GetConditionalMessage(ShowSQLQueries, '', 'COLSPAN="2"')+
-                                                                          'STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Действие</TD>'+#13#10;
+                                                                          'STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Действие</TD>'+sLineBreak;
                                                                         if ShowSQLQueries then
-                                                                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Текст SQL-запроса</TD>'+#13#10;
-                                                                        sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Текст SQL-запроса</TD>'+sLineBreak;
+                                                                        sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                         for iRowCounter:=0 to iRowQuantity-1 do
                                                                           if bError then
                                                                             Break
@@ -498,28 +498,28 @@ begin
                                                                                 +Routines_GetConditionalMessage(string(ResultRow[3])='org', ' организации', '') //
                                                                                 +Routines_GetConditionalMessage(string(ResultRow[3])='msr', ' мероприятия', '') //
                                                                                 +Routines_GetConditionalMessage(StrToIntDef(string(ResultRow[4]), -1)>-1, ' ID #'+string(ResultRow[4]), '')); //
-                                                                                sHTML:=sHTML+'        <TR>'+#13#10;
+                                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                                'px 2px; border-color: black; padding: 1px 2px;">'+Routines_GetConditionalMessage(string(ResultRow[0])='', '-', string(ResultRow[0]))+'</TD>'+#13#10;
+                                                                                'px 2px; border-color: black; padding: 1px 2px;">'+Routines_GetConditionalMessage(string(ResultRow[0])='', '-', string(ResultRow[0]))+'</TD>'+sLineBreak;
                                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                                'px 0px; border-color: black; padding: 1px 2px;">'+Routines_GetConditionalMessage(string(ResultRow[1])='', '-', string(ResultRow[1]))+'</TD>'+#13#10;
+                                                                                'px 0px; border-color: black; padding: 1px 2px;">'+Routines_GetConditionalMessage(string(ResultRow[1])='', '-', string(ResultRow[1]))+'</TD>'+sLineBreak;
                                                                                 sHTML:=sHTML+'          <TD '+Routines_GetConditionalMessage(ShowSQLQueries, '', 'COLSPAN="2"')+'STYLE="text-align: center; border-width: 0px 2px '+
                                                                                 Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+'px 0px; border-color: black; padding: 1px 2px;">'+Routines_GetConditionalMessage(s='', '-', s)+
-                                                                                '</TD>'+#13#10;
+                                                                                '</TD>'+sLineBreak;
                                                                                 if ShowSQLQueries then
                                                                                 sHTML:=sHTML+'          <TD STYLE="text-align:   left; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                                'px 0px; border-color: black; padding: 1px 2px;">'+Routines_GetConditionalMessage(string(ResultRow[3])='', '-', string(ResultRow[5]))+'</TD>'+#13#10;
-                                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                                'px 0px; border-color: black; padding: 1px 2px;">'+Routines_GetConditionalMessage(string(ResultRow[3])='', '-', string(ResultRow[5]))+'</TD>'+sLineBreak;
+                                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                                 end;
                                                                             end;
                                                                       end
                                                                     else
                                                                       if ShowIdleUsers then
                                                                         begin
-                                                                          sHTML:=sHTML+'        <TR>'+#13#10;
+                                                                          sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                                           sHTML:=sHTML+
-                                                                            '          <TD COLSPAN="4" STYLE="border-color: white; border-width: 0; text-align: left; padding: 0px;">Не найдено ни одного действия за данный период времени.</TD>'+#13#10;
-                                                                          sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                            '          <TD COLSPAN="4" STYLE="border-color: white; border-width: 0; text-align: left; padding: 0px;">Не найдено ни одного действия за данный период времени.</TD>'+sLineBreak;
+                                                                          sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                         end;
                                                                   end;
                                                                 mysql_free_result(ResultSet);
@@ -770,19 +770,19 @@ begin
                                                         if (slPeriodList.Count>0)or ShowIdleUsers then
                                                           begin
                                                             bAnyReportDataExists:=True;
-                                                            sHTML:=sHTML+'        <TR>'+#13#10;
+                                                            sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="border-color: white; border-width: 0; text-align: left; font-weight: bold; font-size: 10pt; padding: 20px 0px 3px 0px;">'+
-                                                              Trim(slUserList[iRoutineCounter])+':</TD>'+#13#10;
-                                                            sHTML:=sHTML+'        </TR>'+#13#10;
+                                                              Trim(slUserList[iRoutineCounter])+':</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                             if slPeriodList.Count>0 then
                                                               begin
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Период'+sPeriodColumn+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Создано</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Исправлено</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Удалено</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Восстановлено</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Период'+sPeriodColumn+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Создано</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Исправлено</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Удалено</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Восстановлено</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                 // перебор строк периода и получение количества дейтвий каждого типа за данный период
                                                                 for iPeriodCounter:=0 to slPeriodList.Count-1 do
                                                                   if bError then
@@ -861,18 +861,18 @@ begin
                                                                                 iQuantityModified_UserSummary:=iQuantityModified_UserSummary+iQuantityModified;
                                                                                 iQuantityDeleted_UserSummary:=iQuantityDeleted_UserSummary+iQuantityDeleted;
                                                                                 iQuantityRecoveried_UserSummary:=iQuantityRecoveried_UserSummary+iQuantityRecoveried;
-                                                                                sHTML:=sHTML+'        <TR>'+#13#10;
+                                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iPeriodCounter=(slPeriodList.Count-1), '2', '1')+
-                                                                                'px 2px; border-color: black; padding: 1px 2px;">'+slPeriodList[iPeriodCounter]+'</TD>'+#13#10;
+                                                                                'px 2px; border-color: black; padding: 1px 2px;">'+slPeriodList[iPeriodCounter]+'</TD>'+sLineBreak;
                                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iPeriodCounter=(slPeriodList.Count-1), '2', '1')+
-                                                                                'px 0px; border-color: black; padding: 1px 2px;">'+Routines_GetConditionalMessage(iQuantityCreated=0, '-', IntToStr(iQuantityCreated))+'</TD>'+#13#10;
+                                                                                'px 0px; border-color: black; padding: 1px 2px;">'+Routines_GetConditionalMessage(iQuantityCreated=0, '-', IntToStr(iQuantityCreated))+'</TD>'+sLineBreak;
                                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iPeriodCounter=(slPeriodList.Count-1), '2', '1')+
-                                                                                'px 0px; border-color: black; padding: 1px 2px;">'+Routines_GetConditionalMessage(iQuantityModified=0, '-', IntToStr(iQuantityModified))+'</TD>'+#13#10;
+                                                                                'px 0px; border-color: black; padding: 1px 2px;">'+Routines_GetConditionalMessage(iQuantityModified=0, '-', IntToStr(iQuantityModified))+'</TD>'+sLineBreak;
                                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iPeriodCounter=(slPeriodList.Count-1), '2', '1')+
-                                                                                'px 0px; border-color: black; padding: 1px 2px;">'+Routines_GetConditionalMessage(iQuantityDeleted=0, '-', IntToStr(iQuantityDeleted))+'</TD>'+#13#10;
+                                                                                'px 0px; border-color: black; padding: 1px 2px;">'+Routines_GetConditionalMessage(iQuantityDeleted=0, '-', IntToStr(iQuantityDeleted))+'</TD>'+sLineBreak;
                                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iPeriodCounter=(slPeriodList.Count-1), '2', '1')+
-                                                                                'px 0px; border-color: black; padding: 1px 2px;">'+Routines_GetConditionalMessage(iQuantityRecoveried=0, '-', IntToStr(iQuantityRecoveried))+'</TD>'+#13#10;
-                                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                                'px 0px; border-color: black; padding: 1px 2px;">'+Routines_GetConditionalMessage(iQuantityRecoveried=0, '-', IntToStr(iQuantityRecoveried))+'</TD>'+sLineBreak;
+                                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                                 end;
                                                                                 end;
                                                                                 end;
@@ -887,26 +887,26 @@ begin
                                                                 // добавление итоговой строки
                                                                 if not bError then
                                                                   begin
-                                                                    sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; padding: 2px;">Итого:</TD>'+#13#10;
+                                                                    sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; padding: 2px;">Итого:</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; padding: 2px;">'+
-                                                                      Routines_GetConditionalMessage(iQuantityCreated_UserSummary=0, '-', IntToStr(iQuantityCreated_UserSummary))+'</TD>'+#13#10;
+                                                                      Routines_GetConditionalMessage(iQuantityCreated_UserSummary=0, '-', IntToStr(iQuantityCreated_UserSummary))+'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; padding: 2px;">'+
-                                                                      Routines_GetConditionalMessage(iQuantityModified_UserSummary=0, '-', IntToStr(iQuantityModified_UserSummary))+'</TD>'+#13#10;
+                                                                      Routines_GetConditionalMessage(iQuantityModified_UserSummary=0, '-', IntToStr(iQuantityModified_UserSummary))+'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; padding: 2px;">'+
-                                                                      Routines_GetConditionalMessage(iQuantityDeleted_UserSummary=0, '-', IntToStr(iQuantityDeleted_UserSummary))+'</TD>'+#13#10;
+                                                                      Routines_GetConditionalMessage(iQuantityDeleted_UserSummary=0, '-', IntToStr(iQuantityDeleted_UserSummary))+'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; padding: 2px;">'+
-                                                                      Routines_GetConditionalMessage(iQuantityRecoveried_UserSummary=0, '-', IntToStr(iQuantityRecoveried_UserSummary))+'</TD>'+#13#10;
-                                                                    sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                      Routines_GetConditionalMessage(iQuantityRecoveried_UserSummary=0, '-', IntToStr(iQuantityRecoveried_UserSummary))+'</TD>'+sLineBreak;
+                                                                    sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                   end;
                                                               end
                                                             else
                                                               if ShowIdleUsers then
                                                                 begin
-                                                                  sHTML:=sHTML+'        <TR>'+#13#10;
+                                                                  sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                                   sHTML:=sHTML+
-                                                                    '          <TD COLSPAN="5" STYLE="border-color: white; border-width: 0; text-align: left; padding: 0px;">Не найдено ни одного действия за данный период времени.</TD>'+#13#10;
-                                                                  sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                    '          <TD COLSPAN="5" STYLE="border-color: white; border-width: 0; text-align: left; padding: 0px;">Не найдено ни одного действия за данный период времени.</TD>'+sLineBreak;
+                                                                  sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                 end;
                                                           end;
                                                       end;
@@ -938,34 +938,34 @@ begin
           // если не было выведено никаких табличных данных - выводим строку об отсутствии данных в БД
           if not bAnyReportDataExists then
             begin
-              sHTML:=sHTML+'        <TR>'+#13#10;
+              sHTML:=sHTML+'        <TR>'+sLineBreak;
               sHTML:=sHTML+'          <TD COLSPAN="'+Routines_GetConditionalMessage(CreateDetailedReport, '4', '5')+
-                '" STYLE="border-color: white; border-width: 0px; text-align: left; font-size: 10pt; padding: 20px 0px 3px 0px;">Данные за указанный период времени отсутствуют.</TD>'+#13#10;
-              sHTML:=sHTML+'        </TR>'+#13#10;
+                '" STYLE="border-color: white; border-width: 0px; text-align: left; font-size: 10pt; padding: 20px 0px 3px 0px;">Данные за указанный период времени отсутствуют.</TD>'+sLineBreak;
+              sHTML:=sHTML+'        </TR>'+sLineBreak;
             end;
-          sHTML:=sHTML+'        <TR>'+#13#10;
-          sHTML:=sHTML+'          <TD COLSPAN="'+Routines_GetConditionalMessage(CreateDetailedReport, '4', '5')+'" STYLE="text-align: center; border-width: 0px; border-color: white; padding: 1px 2px;"></TD>'+#13#10;
-          sHTML:=sHTML+'        </TR>'+#13#10;
-          sHTML:=sHTML+'        <TR>'+#13#10;
+          sHTML:=sHTML+'        <TR>'+sLineBreak;
+          sHTML:=sHTML+'          <TD COLSPAN="'+Routines_GetConditionalMessage(CreateDetailedReport, '4', '5')+'" STYLE="text-align: center; border-width: 0px; border-color: white; padding: 1px 2px;"></TD>'+sLineBreak;
+          sHTML:=sHTML+'        </TR>'+sLineBreak;
+          sHTML:=sHTML+'        <TR>'+sLineBreak;
           sHTML:=sHTML+'          <TD VALIGN="TOP" COLSPAN="'+Routines_GetConditionalMessage(CreateDetailedReport, '4', '5')+'" STYLE="text-align: left; font-size: 7pt; border-color: white; border-width: 0; padding-top: 40px;">Исполнитель:<BR>'+
-            Self.CurrentUser.sPosition+'<BR>'+Self.CurrentUser.sFullName+'<BR>'+Self.CurrentUser.sContactPhone+'</TD>'+#13#10;
-          sHTML:=sHTML+'        </TR>'+#13#10;
-          sHTML:=sHTML+'        <TR>'+#13#10;
+            Self.CurrentUser.sPosition+'<BR>'+Self.CurrentUser.sFullName+'<BR>'+Self.CurrentUser.sContactPhone+'</TD>'+sLineBreak;
+          sHTML:=sHTML+'        </TR>'+sLineBreak;
+          sHTML:=sHTML+'        <TR>'+sLineBreak;
           sHTML:=sHTML+'           <TD COLSPAN="'+Routines_GetConditionalMessage(CreateDetailedReport, '4', '5')+
-            '" HEIGHT="20" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;"></TD>'+#13#10;
-          sHTML:=sHTML+'        </TR>'+#13#10;
-          sHTML:=sHTML+'        <TR>'+#13#10;
+            '" HEIGHT="20" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;"></TD>'+sLineBreak;
+          sHTML:=sHTML+'        </TR>'+sLineBreak;
+          sHTML:=sHTML+'        <TR>'+sLineBreak;
           dtNow:=Now;
           sHTML:=sHTML+'           <TD COLSPAN="'+Routines_GetConditionalMessage(CreateDetailedReport, '4', '5')+
             '" STYLE="text-align: center; font-size: 5pt; border-bottom-color: white; border-top-color: #CCCCCC; border-left-color: white; border-right-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;">'+'Отчёт подготовлен '+
             IntToStr(DayOf(dtNow))+' '+saMonths2[MonthOf(dtNow)]+' '+IntToStr(YearOf(dtNow))+' года в '+FormatDateTime('hh:nn:ss', dtNow)+
-            ' при помощи программного комплекса &laquo;OVERSEER&raquo;, &copy;&nbsp;2009-2010&nbsp;by&nbsp;Vlad&nbsp;Ivanov</TD>'+#13#10;
-          sHTML:=sHTML+'        </TR>'+#13#10;
-          sHTML:=sHTML+'      </TBODY>'+#13#10;
-          sHTML:=sHTML+'    </TABLE>'+#13#10;
-          sHTML:=sHTML+'    </CENTER>'+#13#10;
-          sHTML:=sHTML+'  </BODY>'+#13#10;
-          sHTML:=sHTML+'</HTML>'+#13#10;
+            ' при помощи программного комплекса &laquo;OVERSEER&raquo;, &copy;&nbsp;2009-2010&nbsp;by&nbsp;Vlad&nbsp;Ivanov</TD>'+sLineBreak;
+          sHTML:=sHTML+'        </TR>'+sLineBreak;
+          sHTML:=sHTML+'      </TBODY>'+sLineBreak;
+          sHTML:=sHTML+'    </TABLE>'+sLineBreak;
+          sHTML:=sHTML+'    </CENTER>'+sLineBreak;
+          sHTML:=sHTML+'  </BODY>'+sLineBreak;
+          sHTML:=sHTML+'</HTML>'+sLineBreak;
           // _LogThis(sHTML, lmtDebug);
           StepProgressBar; // 16
 

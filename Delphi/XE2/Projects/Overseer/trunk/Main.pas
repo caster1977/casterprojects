@@ -4011,15 +4011,15 @@ begin
       Application.ProcessMessages;
       sMessage:='Действие выполнено успешно.';
       if bRecreateXRD then
-        sMessage:=sMessage+#13#10+'Таблицы '+sSTATSERVER_XRD_Location+'.'+cXRDPrefix+'rd_<yyyymmdd> были успешно переформированы на сервере '+Configuration.StatServer.sMySQLHost+'.'
+        sMessage:=sMessage+sLineBreak+'Таблицы '+sSTATSERVER_XRD_Location+'.'+cXRDPrefix+'rd_<yyyymmdd> были успешно переформированы на сервере '+Configuration.StatServer.sMySQLHost+'.'
       else
-        sMessage:=sMessage+#13#10+'Наличие таблиц '+sSTATSERVER_XRD_Location+'.'+cXRDPrefix+'rd_<yyyymmdd> на сервере '+Configuration.StatServer.sMySQLHost+' успешно проверено.';
+        sMessage:=sMessage+sLineBreak+'Наличие таблиц '+sSTATSERVER_XRD_Location+'.'+cXRDPrefix+'rd_<yyyymmdd> на сервере '+Configuration.StatServer.sMySQLHost+' успешно проверено.';
       if bCreateXRDA and bXRDATableExists and(not bRecreateXRDA) then
-        sMessage:=sMessage+#13#10+'Наличие таблицы '+sSTATSERVER_XRDA_Location+'.'+LowerCase(sXRDATableName)+' на сервере '+Configuration.StatServer.sMySQLHost+' успешно проверено.';
+        sMessage:=sMessage+sLineBreak+'Наличие таблицы '+sSTATSERVER_XRDA_Location+'.'+LowerCase(sXRDATableName)+' на сервере '+Configuration.StatServer.sMySQLHost+' успешно проверено.';
       if bCreateXRDA and(not bXRDATableExists) then
-        sMessage:=sMessage+#13#10+'Таблица '+sSTATSERVER_XRDA_Location+'.'+LowerCase(sXRDATableName)+' была успешно сформирована на сервере '+Configuration.StatServer.sMySQLHost+'.';
+        sMessage:=sMessage+sLineBreak+'Таблица '+sSTATSERVER_XRDA_Location+'.'+LowerCase(sXRDATableName)+' была успешно сформирована на сервере '+Configuration.StatServer.sMySQLHost+'.';
       if bRecreateXRDA and bXRDATableExists then
-        sMessage:=sMessage+#13#10+'Таблица '+sSTATSERVER_XRDA_Location+'.'+LowerCase(sXRDATableName)+' была успешно переформирована на сервере '+Configuration.StatServer.sMySQLHost+'.';
+        sMessage:=sMessage+sLineBreak+'Таблица '+sSTATSERVER_XRDA_Location+'.'+LowerCase(sXRDATableName)+' была успешно переформирована на сервере '+Configuration.StatServer.sMySQLHost+'.';
       MessageBox(Handle, PWideChar(sMessage), PWideChar('OVERSEER - Информация'), MB_OK+MB_ICONINFORMATION+MB_DEFBUTTON1);
     end;
 
@@ -5359,7 +5359,7 @@ begin
                                     else
                                       begin
                                         if i=0 then
-                                          Routines_GenerateError('Пользователя с указанными логином и паролем не существует! '+#13#10+'Проверьте текущий язык ввода, состояние клавиши Caps Lock и правильность набора.', sErrorMessage, bError)
+                                          Routines_GenerateError('Пользователя с указанными логином и паролем не существует! '+sLineBreak+'Проверьте текущий язык ввода, состояние клавиши Caps Lock и правильность набора.', sErrorMessage, bError)
                                         else
                                           begin
                                             if i>1 then
