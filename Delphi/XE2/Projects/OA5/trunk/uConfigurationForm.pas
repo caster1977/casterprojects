@@ -1448,7 +1448,7 @@ begin
       Log.SendDebug('Действие "'+Action_ChooseReportFolder.Caption+'" '+Routines.GetConditionalString(Action_ChooseReportFolder.Enabled, 'в', 'от')+'ключено.');
 
       // вкладка "настройки списка автозамены"
-      lblAutoReplaceSorry.Caption:='Извините, но список доступен только для пользователей'+#10#13+'с правами редактирования базы данных'+#10#13+'при подлючении к базе данных!';
+      lblAutoReplaceSorry.Caption:='Извините, но список доступен только для пользователей'+sLineBreak+'с правами редактирования базы данных'+sLineBreak+'при подлючении к базе данных!';
 
       // вкладка "настройки прочие"
       chkbxLaunchAtStartup.Checked:=LaunchAtStartup;
