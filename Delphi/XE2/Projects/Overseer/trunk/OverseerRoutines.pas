@@ -34,7 +34,7 @@ uses
 
 function Routines_GetMySQLErrorInfo(const aTMySQLServerConnectionDetails: TMySQLServerConnectionDetails): string;
 begin
-  Result:=Routines_GetConditionalMessage(mysql_errno(aTMySQLServerConnectionDetails.hConnection)<>0, #10#13+#10#13+'Код ошибки: '+#10#13+IntToStr(mysql_errno(aTMySQLServerConnectionDetails.hConnection))+#10#13+#10#13+'Наименование ошибки: '+#10#13+
+  Result:=Routines_GetConditionalMessage(mysql_errno(aTMySQLServerConnectionDetails.hConnection)<>0, sLineBreak+sLineBreak+'Код ошибки: '+sLineBreak+IntToStr(mysql_errno(aTMySQLServerConnectionDetails.hConnection))+sLineBreak+sLineBreak+'Наименование ошибки: '+sLineBreak+
     string(mysql_error(aTMySQLServerConnectionDetails.hConnection)), '');
 end;
 

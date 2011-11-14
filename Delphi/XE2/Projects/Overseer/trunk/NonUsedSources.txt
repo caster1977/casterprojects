@@ -250,23 +250,23 @@
 //                sStartDate:=DateToStr(EncodeDate(StrToInt(cmbbxSelectedYear.Items[cmbbxSelectedYear.ItemIndex]), 1, 1));
 //                sStopDate:=DateToStr(EncodeDate(StrToInt(cmbbxSelectedYear.Items[cmbbxSelectedYear.ItemIndex]), 12, 31));
 //              end;
-//            HTML:='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">'+#13#10;
-//            HTML:=HTML+'<HTML>'+#13#10;
-//            HTML:=HTML+'  <HEAD>'+#13#10;
-//            HTML:=HTML+'    <TITLE>Статистика по работе пользователей АРМ услуги "Отдых и развлечения" за период с '+sStartDate+' по '+sStopDate+'</TITLE>'+#13#10;
-//            HTML:=HTML+'    <META CONTENT="no-cache" HTTP-EQUIV="pragma">'+#13#10;
-//            HTML:=HTML+'    <META CONTENT="no-cache" HTTP-EQUIV="cache-control">'+#13#10;
-//            HTML:=HTML+'    <META CONTENT=Dynamic NAME=Document-state>'+#13#10;
-//            HTML:=HTML+'    <META content="text/html; charset=Windows-1251" http-equiv=Content-Type>'+#13#10;
-//            HTML:=HTML+'    <STYLE MEDIA="screen, print" TYPE="text/css">'+#13#10;
-//            HTML:=HTML+'      * {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt; padding: 0; margin: 0; border-color: transparent; border-width: 0;}'+#13#10;
-//            HTML:=HTML+'      TABLE, TD {border-style: solid;}'+#13#10;
-//            HTML:=HTML+'    </STYLE>'+#13#10;
-//            HTML:=HTML+'  </HEAD>'+#13#10;
-//            HTML:=HTML+'  <BODY>'+#13#10;
-//            HTML:=HTML+'    <CENTER>'+#13#10;
-//            HTML:=HTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="656" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+#13#10;
-//            HTML:=HTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+#13#10;
+//            HTML:='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">'+sLineBreak;
+//            HTML:=HTML+'<HTML>'+sLineBreak;
+//            HTML:=HTML+'  <HEAD>'+sLineBreak;
+//            HTML:=HTML+'    <TITLE>Статистика по работе пользователей АРМ услуги "Отдых и развлечения" за период с '+sStartDate+' по '+sStopDate+'</TITLE>'+sLineBreak;
+//            HTML:=HTML+'    <META CONTENT="no-cache" HTTP-EQUIV="pragma">'+sLineBreak;
+//            HTML:=HTML+'    <META CONTENT="no-cache" HTTP-EQUIV="cache-control">'+sLineBreak;
+//            HTML:=HTML+'    <META CONTENT=Dynamic NAME=Document-state>'+sLineBreak;
+//            HTML:=HTML+'    <META content="text/html; charset=Windows-1251" http-equiv=Content-Type>'+sLineBreak;
+//            HTML:=HTML+'    <STYLE MEDIA="screen, print" TYPE="text/css">'+sLineBreak;
+//            HTML:=HTML+'      * {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt; padding: 0; margin: 0; border-color: transparent; border-width: 0;}'+sLineBreak;
+//            HTML:=HTML+'      TABLE, TD {border-style: solid;}'+sLineBreak;
+//            HTML:=HTML+'    </STYLE>'+sLineBreak;
+//            HTML:=HTML+'  </HEAD>'+sLineBreak;
+//            HTML:=HTML+'  <BODY>'+sLineBreak;
+//            HTML:=HTML+'    <CENTER>'+sLineBreak;
+//            HTML:=HTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="656" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+sLineBreak;
+//            HTML:=HTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+sLineBreak;
 //            // определение параметров создаваемого отчёта
 //            if chkbxDetailed.Checked then
 //              begin
@@ -275,17 +275,17 @@
 //            else
 //              begin
 //                // свёрнутый отчёт
-//                HTML:=HTML+'        <TR>'+#13#10;
-//                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="80px"></TD>'+#13#10;
-//                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+#13#10;
-//                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+#13#10;
-//                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+#13#10;
-//                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+#13#10;
-//                HTML:=HTML+'        </TR>'+#13#10;
+//                HTML:=HTML+'        <TR>'+sLineBreak;
+//                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="80px"></TD>'+sLineBreak;
+//                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+sLineBreak;
+//                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+sLineBreak;
+//                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+sLineBreak;
+//                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+sLineBreak;
+//                HTML:=HTML+'        </TR>'+sLineBreak;
 //                HTML:=HTML+'        <TR><TD COLSPAN="5" STYLE="border-bottom-color: #CCCCCC; border-top-color: white; border-left-color: white; border-right-color: white; border-width: 0px 0px 1px 0px; font-size: 7pt; text-align: right;">';
-//                HTML:=HTML+'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD></TR>'+#13#10;
+//                HTML:=HTML+'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD></TR>'+sLineBreak;
 //                HTML:=HTML+'        <TR><TD COLSPAN="5" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 13pt; font-weight: bold; padding: 20px 0px 3px 0px;">';
-//                HTML:=HTML+'Статистика&nbsp;по&nbsp;работе&nbsp;пользователей АРМ&nbsp;&laquo;Отдых&nbsp;и&nbsp;развлечения&raquo; за период с '+sStartDate+' по '+sStopDate+'<BR></TD></TR>'+#13#10;
+//                HTML:=HTML+'Статистика&nbsp;по&nbsp;работе&nbsp;пользователей АРМ&nbsp;&laquo;Отдых&nbsp;и&nbsp;развлечения&raquo; за период с '+sStartDate+' по '+sStopDate+'<BR></TD></TR>'+sLineBreak;
 //                // перебираем список отмеченых пользователей
 //                for k:=0 to chklbxUsers.Count-1 do
 //                  begin
@@ -354,18 +354,18 @@
 //                          // перебираем полученный список дат и делаем выборки по типам действий для каждой из дат
 //                        else
 //                          begin
-//                            HTML:=HTML+'        <TR>'+#13#10;
-//                            HTML:=HTML+'          <TD VALIGN="TOP" COLSPAN="5" STYLE="text-align: left; font-size: 12pt; font-weight: bold; border-color: white; border-width: 0; padding: 20px 2px 2px 0px;">'+s+'</TD>'+#13#10;
-//                            HTML:=HTML+'        </TR>'+#13#10;
+//                            HTML:=HTML+'        <TR>'+sLineBreak;
+//                            HTML:=HTML+'          <TD VALIGN="TOP" COLSPAN="5" STYLE="text-align: left; font-size: 12pt; font-weight: bold; border-color: white; border-width: 0; padding: 20px 2px 2px 0px;">'+s+'</TD>'+sLineBreak;
+//                            HTML:=HTML+'        </TR>'+sLineBreak;
 //                            if i>0 then
 //                              begin
-//                                HTML:=HTML+'        <TR>'+#13#10;
-//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Дата</TD>'+#13#10;
-//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Создано</TD>'+#13#10;
-//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Исправлено</TD>'+#13#10;
-//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Удалено</TD>'+#13#10;
-//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Восстановлено</TD>'+#13#10;
-//                                HTML:=HTML+'        </TR>'+#13#10;
+//                                HTML:=HTML+'        <TR>'+sLineBreak;
+//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Дата</TD>'+sLineBreak;
+//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Создано</TD>'+sLineBreak;
+//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Исправлено</TD>'+sLineBreak;
+//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Удалено</TD>'+sLineBreak;
+//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Восстановлено</TD>'+sLineBreak;
+//                                HTML:=HTML+'        </TR>'+sLineBreak;
 //                                ProgressBar1.Max:=slTemp.Count;
 //                                for j:=0 to slTemp.Count-1 do
 //                                  begin
@@ -532,48 +532,48 @@
 //                                    else
 //                                      GenerateError('Возникла ошибка при выполнении запроса!', s, bError);
 //                                    // вывод результатов
-//                                    HTML:=HTML+'        <TR>'+#13#10;
+//                                    HTML:=HTML+'        <TR>'+sLineBreak;
 //                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 2px; border-color: black; font-size: 8pt; padding: 2px;">'+Copy(slTemp[j], 9, 2)+'.'+Copy
-//                                      (slTemp[j], 6, 2)+'.'+Copy(slTemp[j], 0, 4)+'</TD>'+#13#10;
-//                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sIns+'</TD>'+#13#10;
-//                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sMod+'</TD>'+#13#10;
-//                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sDel+'</TD>'+#13#10;
-//                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sRec+'</TD>'+#13#10;
-//                                    HTML:=HTML+'        </TR>'+#13#10;
+//                                      (slTemp[j], 6, 2)+'.'+Copy(slTemp[j], 0, 4)+'</TD>'+sLineBreak;
+//                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sIns+'</TD>'+sLineBreak;
+//                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sMod+'</TD>'+sLineBreak;
+//                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sDel+'</TD>'+sLineBreak;
+//                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sRec+'</TD>'+sLineBreak;
+//                                    HTML:=HTML+'        </TR>'+sLineBreak;
 //                                    ProgressBar1.StepIt;
 //                                  end;
 //                                // итого
-//                                HTML:=HTML+'        <TR>'+#13#10;
-//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-size: 8pt; padding: 2px;">Итого:</TD>'+#13#10;
-//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumIns)+'</TD>'+#13#10;
-//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumMod)+'</TD>'+#13#10;
-//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumDel)+'</TD>'+#13#10;
-//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumRec)+'</TD>'+#13#10;
-//                                HTML:=HTML+'        </TR>'+#13#10;
+//                                HTML:=HTML+'        <TR>'+sLineBreak;
+//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-size: 8pt; padding: 2px;">Итого:</TD>'+sLineBreak;
+//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumIns)+'</TD>'+sLineBreak;
+//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumMod)+'</TD>'+sLineBreak;
+//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumDel)+'</TD>'+sLineBreak;
+//                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumRec)+'</TD>'+sLineBreak;
+//                                HTML:=HTML+'        </TR>'+sLineBreak;
 //                                ProgressBar1.Position:=ProgressBar1.Min;
 //                              end
 //                            else
 //                              begin
-//                                HTML:=HTML+'        <TR>'+#13#10;
-//                                HTML:=HTML+'          <TD COLSPAN="5" STYLE="text-align: left; border-width: 0px; border-color: white; font-size: 8pt; padding: 2px 2px 2px 0px;">Данные по работе указанного пользователя отсутствуют.</TD>'+#13#10;
-//                                HTML:=HTML+'        </TR>'+#13#10;
+//                                HTML:=HTML+'        <TR>'+sLineBreak;
+//                                HTML:=HTML+'          <TD COLSPAN="5" STYLE="text-align: left; border-width: 0px; border-color: white; font-size: 8pt; padding: 2px 2px 2px 0px;">Данные по работе указанного пользователя отсутствуют.</TD>'+sLineBreak;
+//                                HTML:=HTML+'        </TR>'+sLineBreak;
 //                              end;
 //                          end;
 //                      end;
 //                  end;
-//                HTML:=HTML+'        <TR>'+#13#10;
-//                HTML:=HTML+'          <TD COLSPAN="5" HEIGHT="20" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;"></TD>'+#13#10;
-//                HTML:=HTML+'        </TR>'+#13#10;
-//                HTML:=HTML+'        <TR>'+#13#10;
+//                HTML:=HTML+'        <TR>'+sLineBreak;
+//                HTML:=HTML+'          <TD COLSPAN="5" HEIGHT="20" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;"></TD>'+sLineBreak;
+//                HTML:=HTML+'        </TR>'+sLineBreak;
+//                HTML:=HTML+'        <TR>'+sLineBreak;
 //                HTML:=HTML+'          <TD COLSPAN="5" STYLE="text-align: center; font-size: 5pt; border-bottom-color: white; border-top-color: #CCCCCC; border-left-color: white; border-right-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;">Отчёт подготовлен '+DateToStr(EncodeDate(Year, Month, Day))+' в '+TimeToStr
-//                  (EncodeTime(Hour, Min, Sec, MSec))+' при помощи АРМ услуги &laquo;Отдых и развлечения&raquo;, &copy;&nbsp;2008&nbsp;by&nbsp;Vlad&nbsp;Ivanov</TD>'+#13#10;
-//                HTML:=HTML+'        </TR>'+#13#10;
+//                  (EncodeTime(Hour, Min, Sec, MSec))+' при помощи АРМ услуги &laquo;Отдых и развлечения&raquo;, &copy;&nbsp;2008&nbsp;by&nbsp;Vlad&nbsp;Ivanov</TD>'+sLineBreak;
+//                HTML:=HTML+'        </TR>'+sLineBreak;
 //              end;
-//            HTML:=HTML+'      </TBODY>'+#13#10;
-//            HTML:=HTML+'    </TABLE>'+#13#10;
-//            HTML:=HTML+'    </CENTER>'+#13#10;
-//            HTML:=HTML+'  </BODY>'+#13#10;
-//            HTML:=HTML+'</HTML>'+#13#10;
+//            HTML:=HTML+'      </TBODY>'+sLineBreak;
+//            HTML:=HTML+'    </TABLE>'+sLineBreak;
+//            HTML:=HTML+'    </CENTER>'+sLineBreak;
+//            HTML:=HTML+'  </BODY>'+sLineBreak;
+//            HTML:=HTML+'</HTML>'+sLineBreak;
 //
 //            with TStringList.Create do
 //              try
@@ -1972,210 +1972,210 @@ begin
     begin
       // формирование текста HTML-файла
       sReportCode:='СИЦ-03-'+UpperCase(sAbonentType)+'-'+cReportSuffix;
-      sHTML:=sHTML+'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'+#13#10;
-      sHTML:=sHTML+'<HTML>'+#13#10;
-      sHTML:=sHTML+'  <HEAD>'+#13#10;
+      sHTML:=sHTML+'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'+sLineBreak;
+      sHTML:=sHTML+'<HTML>'+sLineBreak;
+      sHTML:=sHTML+'  <HEAD>'+sLineBreak;
       sHTML:=sHTML+'    <TITLE>Сведения о входящем трафике в сеть РУП "Белтелеком" на платные справочные службы от сети '+StringReplace(StringReplace(StringReplace(sNet, '&laquo;', '"', [rfReplaceAll]), '&raquo;', '"', [rfReplaceAll]), '&nbsp;',
-        ' ', [rfReplaceAll])+' за период с '+sLongStartDate+' по '+sLongStopDate+'</TITLE>'+#13#10;
-      sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="pragma">'+#13#10;
-      sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="cache-control">'+#13#10;
-      sHTML:=sHTML+'    <META CONTENT="Dynamic" NAME="Document-state">'+#13#10;
-      sHTML:=sHTML+'    <META content="text/html; charset=Windows-1251" http-equiv="Content-Type">'+#13#10;
-      sHTML:=sHTML+'    <STYLE MEDIA="screen, print" TYPE="text/css">'+#13#10;
-      sHTML:=sHTML+'      *       {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt;}'+#13#10;
-      sHTML:=sHTML+'      BODY    {font-size: 8pt; background-color: white; margin: 5px; color: #000000;}'+#13#10;
-      sHTML:=sHTML+'      P       {font-size: inherit; text-indent: 0; margin-top: 2px; margin-bottom: 2px; text-align: justify; font-weight: normal; color: #000000; background: transparent;}'+#13#10;
-      sHTML:=sHTML+'      A       {font-size: inherit; text-align: left; font-weight: bold; background: transparent; text-decoration:none;}'+#13#10;
-      sHTML:=sHTML+'      H1      {font-size: 13pt; margin-top: 5px; margin-bottom: 5px; text-align: center; font-weight: bold; color: #000000; background-color: transparent; padding-top: 3px; padding-bottom: 3px;}'+#13#10;
-      sHTML:=sHTML+'      CAPTION {font-size: 13pt; margin-top: 5px; margin-bottom: 5px; text-align: center; font-weight: bold; color: #000000; background-color: transparent; padding-top: 3px; padding-bottom: 3px;}'+#13#10;
-      sHTML:=sHTML+'      TABLE   {caption-side: top; table-layout: fixed; empty-cells: show; font-size: 8pt; float: none; clear: both; border-collapse: collapse; background-color: transparent;}'+#13#10;
-      sHTML:=sHTML+'      TBODY   {vertical-align: top;}'+#13#10;
-      sHTML:=sHTML+'      TD      {font-weight: normal; padding: 0 5px;}'+#13#10;
-      sHTML:=sHTML+'      TH      {font-weight: bold; padding: 0 5px;}'+#13#10;
-      sHTML:=sHTML+'    </STYLE>'+#13#10;
-      sHTML:=sHTML+'  </HEAD>'+#13#10;
-      sHTML:=sHTML+'  <BODY>'+#13#10;
-      sHTML:=sHTML+'    <CENTER>'+#13#10;
-      sHTML:=sHTML+'    <TABLE BORDER="1" WIDTH="1000px" ALIGN="CENTER" STYLE="border-width: 0; border-style: solid; border-color: #FFFFFF; font-size: 8pt;">'+#13#10;
-      sHTML:=sHTML+'      <TBODY STYLE="vertical-align: top;">'+#13#10;
-      sHTML:=sHTML+'        <TR VALIGN="MIDDLE" STYLE="font-weight: bold;">'+#13#10;
-      sHTML:=sHTML+'          <TH WIDTH="95px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+#13#10;
-      sHTML:=sHTML+'          <TH WIDTH="135px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+#13#10;
-      sHTML:=sHTML+'          <TH WIDTH="135px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+#13#10;
-      sHTML:=sHTML+'          <TH WIDTH="135px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+#13#10;
-      sHTML:=sHTML+'          <TH WIDTH="135px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+#13#10;
-      sHTML:=sHTML+'          <TH WIDTH="135px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+#13#10;
-      sHTML:=sHTML+'          <TH WIDTH="135px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+#13#10;
-      sHTML:=sHTML+'          <TH WIDTH="95px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
+        ' ', [rfReplaceAll])+' за период с '+sLongStartDate+' по '+sLongStopDate+'</TITLE>'+sLineBreak;
+      sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="pragma">'+sLineBreak;
+      sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="cache-control">'+sLineBreak;
+      sHTML:=sHTML+'    <META CONTENT="Dynamic" NAME="Document-state">'+sLineBreak;
+      sHTML:=sHTML+'    <META content="text/html; charset=Windows-1251" http-equiv="Content-Type">'+sLineBreak;
+      sHTML:=sHTML+'    <STYLE MEDIA="screen, print" TYPE="text/css">'+sLineBreak;
+      sHTML:=sHTML+'      *       {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt;}'+sLineBreak;
+      sHTML:=sHTML+'      BODY    {font-size: 8pt; background-color: white; margin: 5px; color: #000000;}'+sLineBreak;
+      sHTML:=sHTML+'      P       {font-size: inherit; text-indent: 0; margin-top: 2px; margin-bottom: 2px; text-align: justify; font-weight: normal; color: #000000; background: transparent;}'+sLineBreak;
+      sHTML:=sHTML+'      A       {font-size: inherit; text-align: left; font-weight: bold; background: transparent; text-decoration:none;}'+sLineBreak;
+      sHTML:=sHTML+'      H1      {font-size: 13pt; margin-top: 5px; margin-bottom: 5px; text-align: center; font-weight: bold; color: #000000; background-color: transparent; padding-top: 3px; padding-bottom: 3px;}'+sLineBreak;
+      sHTML:=sHTML+'      CAPTION {font-size: 13pt; margin-top: 5px; margin-bottom: 5px; text-align: center; font-weight: bold; color: #000000; background-color: transparent; padding-top: 3px; padding-bottom: 3px;}'+sLineBreak;
+      sHTML:=sHTML+'      TABLE   {caption-side: top; table-layout: fixed; empty-cells: show; font-size: 8pt; float: none; clear: both; border-collapse: collapse; background-color: transparent;}'+sLineBreak;
+      sHTML:=sHTML+'      TBODY   {vertical-align: top;}'+sLineBreak;
+      sHTML:=sHTML+'      TD      {font-weight: normal; padding: 0 5px;}'+sLineBreak;
+      sHTML:=sHTML+'      TH      {font-weight: bold; padding: 0 5px;}'+sLineBreak;
+      sHTML:=sHTML+'    </STYLE>'+sLineBreak;
+      sHTML:=sHTML+'  </HEAD>'+sLineBreak;
+      sHTML:=sHTML+'  <BODY>'+sLineBreak;
+      sHTML:=sHTML+'    <CENTER>'+sLineBreak;
+      sHTML:=sHTML+'    <TABLE BORDER="1" WIDTH="1000px" ALIGN="CENTER" STYLE="border-width: 0; border-style: solid; border-color: #FFFFFF; font-size: 8pt;">'+sLineBreak;
+      sHTML:=sHTML+'      <TBODY STYLE="vertical-align: top;">'+sLineBreak;
+      sHTML:=sHTML+'        <TR VALIGN="MIDDLE" STYLE="font-weight: bold;">'+sLineBreak;
+      sHTML:=sHTML+'          <TH WIDTH="95px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH WIDTH="135px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH WIDTH="135px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH WIDTH="135px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH WIDTH="135px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH WIDTH="135px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH WIDTH="135px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH WIDTH="95px" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
       sHTML:=sHTML+'        <TR STYLE="font-size: 6pt;"><TD COLSPAN="4" STYLE="font-weight: bold; border-color: #FFFFFF; border-style: solid; border-width: 0 0 1px 0; font-size: 10pt;">Форма № '+sReportCode+'</TD>'+
-        '<TD COLSPAN="4" STYLE="border-color: gray; border-style: solid; border-width: 0 0 1px 0; text-align: right;">'+'Справочно-информационный цех филиала &laquo;МГТС&raquo; РУП &laquo;Белтелеком&raquo;</TD></TR>'+#13#10;
+        '<TD COLSPAN="4" STYLE="border-color: gray; border-style: solid; border-width: 0 0 1px 0; text-align: right;">'+'Справочно-информационный цех филиала &laquo;МГТС&raquo; РУП &laquo;Белтелеком&raquo;</TD></TR>'+sLineBreak;
       sHTML:=sHTML+'        <TR><TD COLSPAN="8" STYLE="font-weight: bold; padding-top: 0.5cm; padding-bottom: 0.3cm; border-color: #FFFFFF; border-style: solid; '+
         'border-width: 0; font-size: 13pt; margin-top: 5px; margin-bottom: 5px; text-align: center; font-weight: bold; color: #000000; background-color: transparent;">'+
-        'Сведения&nbsp;о&nbsp;входящем&nbsp;трафике в&nbsp;сеть&nbsp;РУП&nbsp;&laquo;Белтелеком&raquo; на&nbsp;платные&nbsp;справочные&nbsp;службы от&nbsp;сети&nbsp;'+sNet+'</TD></TR>'+#13#10;
+        'Сведения&nbsp;о&nbsp;входящем&nbsp;трафике в&nbsp;сеть&nbsp;РУП&nbsp;&laquo;Белтелеком&raquo; на&nbsp;платные&nbsp;справочные&nbsp;службы от&nbsp;сети&nbsp;'+sNet+'</TD></TR>'+sLineBreak;
       sHTML:=sHTML+'        <TR><TD COLSPAN="6" STYLE="border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: right; font-size: 10pt;">Период:</TD>'+
-        '<TD COLSPAN="2" STYLE="border-color: #000000; border-style: solid; border-width: 1px; text-align: center; font-size: 10pt; font-weight: bold;">'+sReportPeriod+'</TD></TR>'+#13#10;
+        '<TD COLSPAN="2" STYLE="border-color: #000000; border-style: solid; border-width: 1px; text-align: center; font-size: 10pt; font-weight: bold;">'+sReportPeriod+'</TD></TR>'+sLineBreak;
       sHTML:=sHTML+'        <TR><TD COLSPAN="6" STYLE="font-weight: bold; padding-bottom: 0.5cm; padding-left: 0; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: left; font-size: 10pt;">'+
         '5. Входящий трафик на платные справочные службы РУП &laquo;Белтелеком&raquo;</TD>'+
-        '<TD COLSPAN="2" STYLE="font-weight: bold; padding-bottom: 0.5cm; padding-left: 0; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: left; font-size: 10pt;">&nbsp;</TD></TR>'+#13#10;
-      sHTML:=sHTML+'        <TR><TD COLSPAN="8" STYLE="padding-bottom: 0.5cm; padding-left: 0; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: left; font-size: 9pt;">5.1. Услуги со способом взаиморасчётов за факт пользования</TD></TR>'+#13#10;
-      sHTML:=sHTML+'        <TR VALIGN="MIDDLE" STYLE="font-weight: bold;">'+#13#10;
-      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 2px 2px;" ROWSPAN="2">Служба</TH>'+#13#10;
-      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 1px 0;" COLSPAN="2">Количество соединений</TH>'+#13#10;
-      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 1px 0;" COLSPAN="2">Тариф, долларов США</TH>'+#13#10;
-      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 1px 0;" COLSPAN="3">Сумма, долларов США</TH>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR VALIGN="MIDDLE" STYLE="font-weight: bold;">'+#13#10;
-      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;">Дневное время*</TH>'+#13#10;
-      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">Ночное время**</TH>'+#13#10;
-      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;">Дневное время*</TH>'+#13#10;
-      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">Ночное время**</TH>'+#13#10;
-      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;">Дневное время*</TH>'+#13#10;
-      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;">Ночное время**</TH>'+#13#10;
-      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">Всего</TH>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 2px;"><B>I</B></TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;"><B>II</B></TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;"><B>III</B></TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;"><B>IV</B></TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;"><B>V</B></TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;"><B>VI</B><BR><FONT STYLE="font-size: 6pt;">(ст. II * ст. IV)</FONT></TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;"><B>VII</B><BR><FONT STYLE="font-size: 6pt;">(ст. III * ст. V)</FONT></TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;"><B>VIII</B><BR><FONT STYLE="font-size: 6pt;">(ст. VI + ст. VII)</FONT></TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">109</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 1px 0;">'+IntToStr(i109_DayCalls)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i109_NightCalls)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 1px 0;">'+FormatFloat('#0.##########', f109_DayTarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', f109_NightTarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 1px 0;">'+FormatFloat('#0.##########', i109_DayCalls*f109_DayTarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 1px 0;">'+FormatFloat('#0.##########', i109_NightCalls*f109_NightTarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i109_DayCalls*f109_DayTarif+i109_NightCalls*f109_NightTarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">188</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;" COLSPAN="2">'+IntToStr(i188_Calls)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;" COLSPAN="2">'+FormatFloat('#0.##########', f188_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 1px 0;" COLSPAN="2">'+FormatFloat('#0.##########', i188_Calls*f188_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i188_Calls*f188_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">192</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;" COLSPAN="2">'+IntToStr(i192_Calls)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;" COLSPAN="2">'+FormatFloat('#0.##########', f192_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 1px 0;" COLSPAN="2">'+FormatFloat('#0.##########', i192_Calls*f192_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i192_Calls*f192_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 2px;">195</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;" COLSPAN="2">'+IntToStr(i195_Calls)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;" COLSPAN="2">'+FormatFloat('#0.##########', f195_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;" COLSPAN="2">'+FormatFloat('#0.##########', i195_Calls*f195_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">'+FormatFloat('#0.##########', i195_Calls*f195_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'      </TBODY>'+#13#10;
-      sHTML:=sHTML+'    </TABLE>'+#13#10;
-      sHTML:=sHTML+'    <TABLE BORDER="1" WIDTH="1000" ALIGN="CENTER" STYLE="border: 0 solid #FFFFFF; font-size: 8pt;">'+#13#10;
-      sHTML:=sHTML+'      <TBODY STYLE="vertical-align: top;">'+#13#10;
-      sHTML:=sHTML+'        <TR VALIGN="MIDDLE" STYLE="font-weight: bold;">'+#13#10;
-      sHTML:=sHTML+'          <TH WIDTH="200" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+#13#10;
-      sHTML:=sHTML+'          <TH WIDTH="200" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+#13#10;
-      sHTML:=sHTML+'          <TH WIDTH="200" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+#13#10;
-      sHTML:=sHTML+'          <TH WIDTH="200" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+#13#10;
-      sHTML:=sHTML+'          <TH WIDTH="*" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR>'+#13#10;
-      sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="padding: 0.5cm 0; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: left; font-size: 9pt;">5.2. Услуги со способом взаиморасчётов за трафик</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR VALIGN="MIDDLE" STYLE="font-weight: bold;">'+#13#10;
-      sHTML:=sHTML+'          <TD ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 2px 2px;">Служба</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 2px 0;">Количество соединений</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 2px 0;">Продолжительность соединений, минут</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 2px 0;">Тариф, долларов США</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 2px 0;">Сумма, долларов США</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 2px;"><B>I</B></TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;"><B>II</B></TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;"><B>III</B></TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;"><B>IV</B></TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;"><B>V</B><BR><FONT STYLE="font-size: 6pt;">(ст. III * ст. IV)</FONT></TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">175</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i175_Calls)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i175_Minutes)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', f175_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i175_Minutes*f175_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">190</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i190_Calls)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i190_Minutes)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', f190_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i190_Minutes*f190_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">191</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i191_Calls)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i191_Minutes)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', f191_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i191_Minutes*f191_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">193</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i193_Calls)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i193_Minutes)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', f193_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i193_Minutes*f193_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">194</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i194_Calls)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i194_Minutes)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', f194_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i194_Minutes*f194_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">196</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i196_Calls)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i196_Minutes)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', f196_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i196_Minutes*f196_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 2px;">197</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">'+IntToStr(i197_Calls)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">'+IntToStr(i197_Minutes)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">'+FormatFloat('#0.##########', f197_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">'+FormatFloat('#0.##########', i197_Minutes*f197_Tarif)+'</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR>'+#13#10;
-      sHTML:=sHTML+'          <TD COLSPAN="4" STYLE="padding: 0.5cm 0 0 0; font-weight: bold; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: left; font-size: 9pt;">Итого в пользу РУП &laquo;Белтелеком&raquo;:</TD>'+#13#10;
+        '<TD COLSPAN="2" STYLE="font-weight: bold; padding-bottom: 0.5cm; padding-left: 0; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: left; font-size: 10pt;">&nbsp;</TD></TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR><TD COLSPAN="8" STYLE="padding-bottom: 0.5cm; padding-left: 0; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: left; font-size: 9pt;">5.1. Услуги со способом взаиморасчётов за факт пользования</TD></TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR VALIGN="MIDDLE" STYLE="font-weight: bold;">'+sLineBreak;
+      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 2px 2px;" ROWSPAN="2">Служба</TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 1px 0;" COLSPAN="2">Количество соединений</TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 1px 0;" COLSPAN="2">Тариф, долларов США</TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 1px 0;" COLSPAN="3">Сумма, долларов США</TH>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR VALIGN="MIDDLE" STYLE="font-weight: bold;">'+sLineBreak;
+      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;">Дневное время*</TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">Ночное время**</TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;">Дневное время*</TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">Ночное время**</TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;">Дневное время*</TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;">Ночное время**</TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">Всего</TH>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 2px;"><B>I</B></TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;"><B>II</B></TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;"><B>III</B></TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;"><B>IV</B></TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;"><B>V</B></TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;"><B>VI</B><BR><FONT STYLE="font-size: 6pt;">(ст. II * ст. IV)</FONT></TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;"><B>VII</B><BR><FONT STYLE="font-size: 6pt;">(ст. III * ст. V)</FONT></TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;"><B>VIII</B><BR><FONT STYLE="font-size: 6pt;">(ст. VI + ст. VII)</FONT></TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">109</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 1px 0;">'+IntToStr(i109_DayCalls)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i109_NightCalls)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 1px 0;">'+FormatFloat('#0.##########', f109_DayTarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', f109_NightTarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 1px 0;">'+FormatFloat('#0.##########', i109_DayCalls*f109_DayTarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 1px 0;">'+FormatFloat('#0.##########', i109_NightCalls*f109_NightTarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i109_DayCalls*f109_DayTarif+i109_NightCalls*f109_NightTarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">188</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;" COLSPAN="2">'+IntToStr(i188_Calls)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;" COLSPAN="2">'+FormatFloat('#0.##########', f188_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 1px 0;" COLSPAN="2">'+FormatFloat('#0.##########', i188_Calls*f188_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i188_Calls*f188_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">192</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;" COLSPAN="2">'+IntToStr(i192_Calls)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;" COLSPAN="2">'+FormatFloat('#0.##########', f192_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 1px 0;" COLSPAN="2">'+FormatFloat('#0.##########', i192_Calls*f192_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i192_Calls*f192_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 2px;">195</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;" COLSPAN="2">'+IntToStr(i195_Calls)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;" COLSPAN="2">'+FormatFloat('#0.##########', f195_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 1px 2px 0;" COLSPAN="2">'+FormatFloat('#0.##########', i195_Calls*f195_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">'+FormatFloat('#0.##########', i195_Calls*f195_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'      </TBODY>'+sLineBreak;
+      sHTML:=sHTML+'    </TABLE>'+sLineBreak;
+      sHTML:=sHTML+'    <TABLE BORDER="1" WIDTH="1000" ALIGN="CENTER" STYLE="border: 0 solid #FFFFFF; font-size: 8pt;">'+sLineBreak;
+      sHTML:=sHTML+'      <TBODY STYLE="vertical-align: top;">'+sLineBreak;
+      sHTML:=sHTML+'        <TR VALIGN="MIDDLE" STYLE="font-weight: bold;">'+sLineBreak;
+      sHTML:=sHTML+'          <TH WIDTH="200" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH WIDTH="200" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH WIDTH="200" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH WIDTH="200" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+sLineBreak;
+      sHTML:=sHTML+'          <TH WIDTH="*" ALIGN="CENTER" STYLE="padding: 0px; border-color: #000000; border-style: solid; border-width: 0;"></TH>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR>'+sLineBreak;
+      sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="padding: 0.5cm 0; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: left; font-size: 9pt;">5.2. Услуги со способом взаиморасчётов за трафик</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR VALIGN="MIDDLE" STYLE="font-weight: bold;">'+sLineBreak;
+      sHTML:=sHTML+'          <TD ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 2px 2px;">Служба</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 2px 0;">Количество соединений</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 2px 0;">Продолжительность соединений, минут</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 2px 0;">Тариф, долларов США</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD ALIGN="CENTER" STYLE="padding: 5px; border-color: #000000; border-style: solid; border-width: 2px 2px 2px 0;">Сумма, долларов США</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 2px;"><B>I</B></TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;"><B>II</B></TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;"><B>III</B></TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;"><B>IV</B></TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="font-size: 7pt; padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;"><B>V</B><BR><FONT STYLE="font-size: 6pt;">(ст. III * ст. IV)</FONT></TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">175</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i175_Calls)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i175_Minutes)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', f175_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i175_Minutes*f175_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">190</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i190_Calls)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i190_Minutes)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', f190_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i190_Minutes*f190_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">191</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i191_Calls)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i191_Minutes)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', f191_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i191_Minutes*f191_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">193</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i193_Calls)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i193_Minutes)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', f193_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i193_Minutes*f193_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">194</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i194_Calls)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i194_Minutes)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', f194_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i194_Minutes*f194_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 2px;">196</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i196_Calls)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+IntToStr(i196_Minutes)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', f196_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 1px 0;">'+FormatFloat('#0.##########', i196_Minutes*f196_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR ALIGN="CENTER">'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 2px;">197</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">'+IntToStr(i197_Calls)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">'+IntToStr(i197_Minutes)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">'+FormatFloat('#0.##########', f197_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 2px; border-color: #000000; border-style: solid; border-width: 0 2px 2px 0;">'+FormatFloat('#0.##########', i197_Minutes*f197_Tarif)+'</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR>'+sLineBreak;
+      sHTML:=sHTML+'          <TD COLSPAN="4" STYLE="padding: 0.5cm 0 0 0; font-weight: bold; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: left; font-size: 9pt;">Итого в пользу РУП &laquo;Белтелеком&raquo;:</TD>'+sLineBreak;
       sHTML:=sHTML+'          <TD STYLE="padding: 0.5cm 0 0 0; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: right; font-size: 9pt; font-weight: bold;">'+FormatFloat('#0.##########',
         i109_DayCalls*f109_DayTarif+i109_NightCalls*f109_NightTarif+i188_Calls*f188_Tarif+i192_Calls*f192_Tarif+i195_Calls*f195_Tarif+i175_Minutes*f175_Tarif+i190_Minutes*f190_Tarif+i191_Minutes*f191_Tarif+i193_Minutes*f193_Tarif+i194_Minutes*
-          f194_Tarif+i196_Minutes*f196_Tarif+i197_Minutes*f197_Tarif)+' долл. США</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR>'+#13#10;
-      sHTML:=sHTML+'          <TD COLSPAN="4" STYLE="padding: 0; font-style: italic; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: left; font-size: 9pt;">Курс доллара США на '+sLongStopDate+':</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 0; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: right; font-size: 9pt; font-style: italic;">бел. руб.</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR>'+#13#10;
-      sHTML:=sHTML+'          <TD COLSPAN="4" STYLE="padding: 0; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: left; font-size: 9pt;">Эквивалент в белорусских рублях:</TD>'+#13#10;
-      sHTML:=sHTML+'          <TD STYLE="padding: 0; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: right; font-size: 9pt;">бел. руб.</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'        <TR VALIGN="BOTTOM" STYLE="height: 1.4cm;">'+#13#10;
+          f194_Tarif+i196_Minutes*f196_Tarif+i197_Minutes*f197_Tarif)+' долл. США</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR>'+sLineBreak;
+      sHTML:=sHTML+'          <TD COLSPAN="4" STYLE="padding: 0; font-style: italic; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: left; font-size: 9pt;">Курс доллара США на '+sLongStopDate+':</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 0; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: right; font-size: 9pt; font-style: italic;">бел. руб.</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR>'+sLineBreak;
+      sHTML:=sHTML+'          <TD COLSPAN="4" STYLE="padding: 0; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: left; font-size: 9pt;">Эквивалент в белорусских рублях:</TD>'+sLineBreak;
+      sHTML:=sHTML+'          <TD STYLE="padding: 0; border-color: #FFFFFF; border-style: solid; border-width: 0; text-align: right; font-size: 9pt;">бел. руб.</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'        <TR VALIGN="BOTTOM" STYLE="height: 1.4cm;">'+sLineBreak;
       sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="padding: 0; text-align: left; font-size: 6pt; border-color: #FFFFFF; border-style: solid; border-width: 0;">'+
         '<I>Примечания:</I><BR>*: ежедневное оказание услуг с 06<SUP>00</SUP> до 21<SUP>59</SUP> (для справочной службы &laquo;009&raquo;, 8-ABC-9900911)'+
-        '<BR>**: ежедневное оказание услуг с 21<SUP>00</SUP> до 05<SUP>59</SUP> (для справочной службы &laquo;009&raquo;, 8-ABC-9900911)</TD>'+#13#10;
-      sHTML:=sHTML+'        </TR>'+#13#10;
-      sHTML:=sHTML+'      </TBODY>'+#13#10;
-      sHTML:=sHTML+'    </TABLE>'+#13#10;
-      sHTML:=sHTML+'    </CENTER>'+#13#10;
-      sHTML:=sHTML+'  </BODY>'+#13#10;
-      sHTML:=sHTML+'</HTML>'+#13#10;
+        '<BR>**: ежедневное оказание услуг с 21<SUP>00</SUP> до 05<SUP>59</SUP> (для справочной службы &laquo;009&raquo;, 8-ABC-9900911)</TD>'+sLineBreak;
+      sHTML:=sHTML+'        </TR>'+sLineBreak;
+      sHTML:=sHTML+'      </TBODY>'+sLineBreak;
+      sHTML:=sHTML+'    </TABLE>'+sLineBreak;
+      sHTML:=sHTML+'    </CENTER>'+sLineBreak;
+      sHTML:=sHTML+'  </BODY>'+sLineBreak;
+      sHTML:=sHTML+'</HTML>'+sLineBreak;
       LogThis(sHTML, LogGroupGUID, lmtInfo);
     end;
 
@@ -2423,53 +2423,53 @@ begin
                   begin
                     sReportCode:='СИЦ-04-'+GetConditionalMessage(bAllUsers, 'В', 'У')+'-'+GetConditionalMessage(bShowIdleUsers, 'А', 'Н')+'-'+GetConditionalMessage(bCreateDetailedReport, 'Р', 'С')+GetConditionalMessage
                       (bCreateDetailedReport and bShowSQLQueries, 'З', '')+'-'+GetConditionalMessage(bCreateDetailedReport, cReportSuffix, sReportSuffix);
-                    sHTML:=sHTML+'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'+#13#10;
-                    sHTML:=sHTML+'<HTML>'+#13#10;
-                    sHTML:=sHTML+'  <HEAD>'+#13#10;
-                    sHTML:=sHTML+'    <TITLE>Статистика по работе пользователей АРМ услуги Отдых и развлечения за '+sReportPeriod+'</TITLE>'+#13#10;
-                    sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="pragma">'+#13#10;
-                    sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="cache-control">'+#13#10;
-                    sHTML:=sHTML+'    <META CONTENT="Dynamic" NAME="Document-state">'+#13#10;
-                    sHTML:=sHTML+'    <META content="text/html; charset=Windows-1251" http-equiv="Content-Type">'+#13#10;
-                    sHTML:=sHTML+'    <STYLE MEDIA="screen, print" TYPE="text/css">'+#13#10;
-                    sHTML:=sHTML+'      * {'+#13#10;
-                    sHTML:=sHTML+'        font-family: Verdana, Arial, Helvetica, sans-serif;'+#13#10;
-                    sHTML:=sHTML+'        font-size: 7pt;'+#13#10;
-                    sHTML:=sHTML+'        padding: 0;'+#13#10;
-                    sHTML:=sHTML+'        margin: 0;'+#13#10;
-                    sHTML:=sHTML+'        border-color: transparent;'+#13#10;
-                    sHTML:=sHTML+'        border-width: 0;'+#13#10;
-                    sHTML:=sHTML+'        }'+#13#10;
-                    sHTML:=sHTML+'      TABLE, TD {'+#13#10;
-                    sHTML:=sHTML+'        border-style: solid;'+#13#10;
-                    sHTML:=sHTML+'      }'+#13#10;
-                    sHTML:=sHTML+'    </STYLE>'+#13#10;
-                    sHTML:=sHTML+'  </HEAD>'+#13#10;
-                    sHTML:=sHTML+'  <BODY>'+#13#10;
-                    sHTML:=sHTML+'    <CENTER>'+#13#10;
-                    sHTML:=sHTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="656" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+#13#10;
-                    sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+#13#10;
-                    sHTML:=sHTML+'        <TR>'+#13#10;
-                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+GetConditionalMessage(bCreateDetailedReport, '100', '196')+'px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+GetConditionalMessage(bCreateDetailedReport, '100', '115')+'px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+GetConditionalMessage(bCreateDetailedReport, '100', '115')+'px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+GetConditionalMessage(bCreateDetailedReport, '*', '115px')+'" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
+                    sHTML:=sHTML+'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'+sLineBreak;
+                    sHTML:=sHTML+'<HTML>'+sLineBreak;
+                    sHTML:=sHTML+'  <HEAD>'+sLineBreak;
+                    sHTML:=sHTML+'    <TITLE>Статистика по работе пользователей АРМ услуги Отдых и развлечения за '+sReportPeriod+'</TITLE>'+sLineBreak;
+                    sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="pragma">'+sLineBreak;
+                    sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="cache-control">'+sLineBreak;
+                    sHTML:=sHTML+'    <META CONTENT="Dynamic" NAME="Document-state">'+sLineBreak;
+                    sHTML:=sHTML+'    <META content="text/html; charset=Windows-1251" http-equiv="Content-Type">'+sLineBreak;
+                    sHTML:=sHTML+'    <STYLE MEDIA="screen, print" TYPE="text/css">'+sLineBreak;
+                    sHTML:=sHTML+'      * {'+sLineBreak;
+                    sHTML:=sHTML+'        font-family: Verdana, Arial, Helvetica, sans-serif;'+sLineBreak;
+                    sHTML:=sHTML+'        font-size: 7pt;'+sLineBreak;
+                    sHTML:=sHTML+'        padding: 0;'+sLineBreak;
+                    sHTML:=sHTML+'        margin: 0;'+sLineBreak;
+                    sHTML:=sHTML+'        border-color: transparent;'+sLineBreak;
+                    sHTML:=sHTML+'        border-width: 0;'+sLineBreak;
+                    sHTML:=sHTML+'        }'+sLineBreak;
+                    sHTML:=sHTML+'      TABLE, TD {'+sLineBreak;
+                    sHTML:=sHTML+'        border-style: solid;'+sLineBreak;
+                    sHTML:=sHTML+'      }'+sLineBreak;
+                    sHTML:=sHTML+'    </STYLE>'+sLineBreak;
+                    sHTML:=sHTML+'  </HEAD>'+sLineBreak;
+                    sHTML:=sHTML+'  <BODY>'+sLineBreak;
+                    sHTML:=sHTML+'    <CENTER>'+sLineBreak;
+                    sHTML:=sHTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="656" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+sLineBreak;
+                    sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+sLineBreak;
+                    sHTML:=sHTML+'        <TR>'+sLineBreak;
+                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+GetConditionalMessage(bCreateDetailedReport, '100', '196')+'px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+GetConditionalMessage(bCreateDetailedReport, '100', '115')+'px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+GetConditionalMessage(bCreateDetailedReport, '100', '115')+'px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                    sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="'+GetConditionalMessage(bCreateDetailedReport, '*', '115px')+'" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
                     if not bCreateDetailedReport then
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="115px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                    sHTML:=sHTML+'        </TR>'+#13#10;
-                    sHTML:=sHTML+'        <TR>'+#13#10;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="115px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                    sHTML:=sHTML+'        </TR>'+sLineBreak;
+                    sHTML:=sHTML+'        <TR>'+sLineBreak;
                     sHTML:=sHTML+
                       '          <TD COLSPAN="3" STYLE="border-bottom-color: #CCCCCC; border-top-color: white; border-left-color: white; font-weight: bold; border-right-color: white; border-width: 0px 0px 1px 0px; font-size: 10pt; text-align: left;">Форма № '
-                      +sReportCode+'</TD>'+#13#10;
+                      +sReportCode+'</TD>'+sLineBreak;
                     sHTML:=sHTML+'          <TD '+GetConditionalMessage(bCreateDetailedReport, '', 'COLSPAN="2" ')+
                       'STYLE="border-bottom-color: #CCCCCC; border-top-color: white; border-left-color: white; border-right-color: white; border-width: 0px 0px 1px 0px; font-size: 7pt; text-align: right;">'+
-                      'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD>'+#13#10;
-                    sHTML:=sHTML+'        </TR>'+#13#10;
-                    sHTML:=sHTML+'        <TR>'+#13#10;
+                      'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD>'+sLineBreak;
+                    sHTML:=sHTML+'        </TR>'+sLineBreak;
+                    sHTML:=sHTML+'        <TR>'+sLineBreak;
                     sHTML:=sHTML+'          <TD COLSPAN="'+GetConditionalMessage(bCreateDetailedReport, '4', '5')+
                       '" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 13pt; font-weight: bold; padding: 20px 0px 3px 0px;">Статистика по работе пользователей<BR>АРМ услуги &laquo;Отдых и развлечения&raquo;<BR>за '+
-                      sReportPeriod+'</TD>'+#13#10;
-                    sHTML:=sHTML+'        </TR>'+#13#10;
+                      sReportPeriod+'</TD>'+sLineBreak;
+                    sHTML:=sHTML+'        </TR>'+sLineBreak;
 
                     if bCreateDetailedReport then
                       begin
@@ -2564,21 +2564,21 @@ begin
                                                                   if (iRowQuantity>0)or bShowIdleUsers then
                                                                     begin
                                                                       bAnyReportDataExists:=True;
-                                                                      sHTML:=sHTML+'        <TR>'+#13#10;
+                                                                      sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                                       sHTML:=sHTML+'          <TD COLSPAN="4" STYLE="border-color: white; border-width: 0; text-align: left; font-weight: bold; font-size: 10pt; padding: 20px 0px 3px 0px;">' //
-                                                                        +Trim(slUserList[iRoutineCounter])+':</TD>'+#13#10; //
-                                                                      sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                        +Trim(slUserList[iRoutineCounter])+':</TD>'+sLineBreak; //
+                                                                      sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                     end;
                                                                   if iRowQuantity>0 then
                                                                     begin
-                                                                      sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Дата</TD>'+#13#10;
-                                                                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Время</TD>'+#13#10;
+                                                                      sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Дата</TD>'+sLineBreak;
+                                                                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Время</TD>'+sLineBreak;
                                                                       sHTML:=sHTML+'          <TD '+GetConditionalMessage(bShowSQLQueries, '', 'COLSPAN="2"')+
-                                                                        'STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Действие</TD>'+#13#10;
+                                                                        'STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Действие</TD>'+sLineBreak;
                                                                       if bShowSQLQueries then
-                                                                        sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Текст SQL-запроса</TD>'+#13#10;
-                                                                      sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                        sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Текст SQL-запроса</TD>'+sLineBreak;
+                                                                      sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                       for iRowCounter:=0 to iRowQuantity-1 do
                                                                         if bError then
                                                                           Break
@@ -2609,27 +2609,27 @@ begin
                                                                                     +GetConditionalMessage(string(ResultRow[3])='org', ' организации', '') //
                                                                                     +GetConditionalMessage(string(ResultRow[3])='msr', ' мероприятия', '') //
                                                                                     +GetConditionalMessage(StrToIntDef(string(ResultRow[4]), -1)>-1, ' ID #'+string(ResultRow[4]), '')); //
-                                                                                sHTML:=sHTML+'        <TR>'+#13#10;
+                                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')
-                                                                                  +'px 2px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(string(ResultRow[0])='', '-', string(ResultRow[0]))+'</TD>'+#13#10;
+                                                                                  +'px 2px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(string(ResultRow[0])='', '-', string(ResultRow[0]))+'</TD>'+sLineBreak;
                                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')
-                                                                                  +'px 0px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(string(ResultRow[1])='', '-', string(ResultRow[1]))+'</TD>'+#13#10;
+                                                                                  +'px 0px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(string(ResultRow[1])='', '-', string(ResultRow[1]))+'</TD>'+sLineBreak;
                                                                                 sHTML:=sHTML+'          <TD '+GetConditionalMessage(bShowSQLQueries, '', 'COLSPAN="2"')+'STYLE="text-align: center; border-width: 0px 2px '+GetConditionalMessage
-                                                                                  (iRowCounter=(iRowQuantity-1), '2', '1')+'px 0px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(s='', '-', s)+'</TD>'+#13#10;
+                                                                                  (iRowCounter=(iRowQuantity-1), '2', '1')+'px 0px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(s='', '-', s)+'</TD>'+sLineBreak;
                                                                                 if bShowSQLQueries then
                                                                                   sHTML:=sHTML+'          <TD STYLE="text-align:   left; border-width: 0px 2px '+GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')
-                                                                                    +'px 0px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(string(ResultRow[3])='', '-', string(ResultRow[5]))+'</TD>'+#13#10;
-                                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                                    +'px 0px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(string(ResultRow[3])='', '-', string(ResultRow[5]))+'</TD>'+sLineBreak;
+                                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                               end;
                                                                           end;
                                                                     end
                                                                   else
                                                                     if bShowIdleUsers then
                                                                       begin
-                                                                        sHTML:=sHTML+'        <TR>'+#13#10;
+                                                                        sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                                         sHTML:=sHTML+
-                                                                          '          <TD COLSPAN="4" STYLE="border-color: white; border-width: 0; text-align: left; padding: 0px;">Не найдено ни одного действия за данный период времени.</TD>'+#13#10;
-                                                                        sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                          '          <TD COLSPAN="4" STYLE="border-color: white; border-width: 0; text-align: left; padding: 0px;">Не найдено ни одного действия за данный период времени.</TD>'+sLineBreak;
+                                                                        sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                       end;
                                                                 end;
                                                               mysql_free_result(ResultSet);
@@ -2878,19 +2878,19 @@ begin
                                                         if (slPeriodList.Count>0)or bShowIdleUsers then
                                                           begin
                                                             bAnyReportDataExists:=True;
-                                                            sHTML:=sHTML+'        <TR>'+#13#10;
+                                                            sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="border-color: white; border-width: 0; text-align: left; font-weight: bold; font-size: 10pt; padding: 20px 0px 3px 0px;">'+Trim
-                                                              (slUserList[iRoutineCounter])+':</TD>'+#13#10;
-                                                            sHTML:=sHTML+'        </TR>'+#13#10;
+                                                              (slUserList[iRoutineCounter])+':</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                             if slPeriodList.Count>0 then
                                                               begin
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Период'+sPeriodColumn+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Создано</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Исправлено</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Удалено</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Восстановлено</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Период'+sPeriodColumn+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Создано</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Исправлено</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Удалено</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Восстановлено</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                 // перебор строк периода и получение количества дейтвий каждого типа за данный период
                                                                 for iPeriodCounter:=0 to slPeriodList.Count-1 do
                                                                   if bError then
@@ -2967,18 +2967,18 @@ begin
                                                                                                   iQuantityModified_UserSummary:=iQuantityModified_UserSummary+iQuantityModified;
                                                                                                   iQuantityDeleted_UserSummary:=iQuantityDeleted_UserSummary+iQuantityDeleted;
                                                                                                   iQuantityRecoveried_UserSummary:=iQuantityRecoveried_UserSummary+iQuantityRecoveried;
-                                                                                                  sHTML:=sHTML+'        <TR>'+#13#10;
+                                                                                                  sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                                                                   sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+GetConditionalMessage(iPeriodCounter=(slPeriodList.Count-1), '2', '1')
-                                                                                                    +'px 2px; border-color: black; padding: 1px 2px;">'+slPeriodList[iPeriodCounter]+'</TD>'+#13#10;
+                                                                                                    +'px 2px; border-color: black; padding: 1px 2px;">'+slPeriodList[iPeriodCounter]+'</TD>'+sLineBreak;
                                                                                                   sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+GetConditionalMessage(iPeriodCounter=(slPeriodList.Count-1), '2', '1')
-                                                                                                    +'px 0px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(iQuantityCreated=0, '-', IntToStr(iQuantityCreated))+'</TD>'+#13#10;
+                                                                                                    +'px 0px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(iQuantityCreated=0, '-', IntToStr(iQuantityCreated))+'</TD>'+sLineBreak;
                                                                                                   sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+GetConditionalMessage(iPeriodCounter=(slPeriodList.Count-1), '2', '1')
-                                                                                                    +'px 0px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(iQuantityModified=0, '-', IntToStr(iQuantityModified))+'</TD>'+#13#10;
+                                                                                                    +'px 0px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(iQuantityModified=0, '-', IntToStr(iQuantityModified))+'</TD>'+sLineBreak;
                                                                                                   sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+GetConditionalMessage(iPeriodCounter=(slPeriodList.Count-1), '2', '1')
-                                                                                                    +'px 0px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(iQuantityDeleted=0, '-', IntToStr(iQuantityDeleted))+'</TD>'+#13#10;
+                                                                                                    +'px 0px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(iQuantityDeleted=0, '-', IntToStr(iQuantityDeleted))+'</TD>'+sLineBreak;
                                                                                                   sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+GetConditionalMessage(iPeriodCounter=(slPeriodList.Count-1), '2', '1')
-                                                                                                    +'px 0px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(iQuantityRecoveried=0, '-', IntToStr(iQuantityRecoveried))+'</TD>'+#13#10;
-                                                                                                  sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                                                    +'px 0px; border-color: black; padding: 1px 2px;">'+GetConditionalMessage(iQuantityRecoveried=0, '-', IntToStr(iQuantityRecoveried))+'</TD>'+sLineBreak;
+                                                                                                  sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                                                 end;
                                                                                             end;
                                                                                         end;
@@ -2993,26 +2993,26 @@ begin
                                                                 // добавление итоговой строки
                                                                 if not bError then
                                                                   begin
-                                                                    sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; padding: 2px;">Итого:</TD>'+#13#10;
+                                                                    sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; padding: 2px;">Итого:</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; padding: 2px;">'+GetConditionalMessage(iQuantityCreated_UserSummary=0,
-                                                                      '-', IntToStr(iQuantityCreated_UserSummary))+'</TD>'+#13#10;
+                                                                      '-', IntToStr(iQuantityCreated_UserSummary))+'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; padding: 2px;">'+GetConditionalMessage(iQuantityModified_UserSummary=0,
-                                                                      '-', IntToStr(iQuantityModified_UserSummary))+'</TD>'+#13#10;
+                                                                      '-', IntToStr(iQuantityModified_UserSummary))+'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; padding: 2px;">'+GetConditionalMessage(iQuantityDeleted_UserSummary=0,
-                                                                      '-', IntToStr(iQuantityDeleted_UserSummary))+'</TD>'+#13#10;
+                                                                      '-', IntToStr(iQuantityDeleted_UserSummary))+'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; padding: 2px;">'+GetConditionalMessage(iQuantityRecoveried_UserSummary=0,
-                                                                      '-', IntToStr(iQuantityRecoveried_UserSummary))+'</TD>'+#13#10;
-                                                                    sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                      '-', IntToStr(iQuantityRecoveried_UserSummary))+'</TD>'+sLineBreak;
+                                                                    sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                   end;
                                                               end
                                                             else
                                                               if bShowIdleUsers then
                                                                 begin
-                                                                  sHTML:=sHTML+'        <TR>'+#13#10;
+                                                                  sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                                   sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="border-color: white; border-width: 0; text-align: left; padding: 0px;">Не найдено ни одного действия за данный период времени.</TD>'+
-                                                                    #13#10;
-                                                                  sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                    sLineBreak;
+                                                                  sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                 end;
                                                           end;
                                                       end;
@@ -3044,34 +3044,34 @@ begin
           // если не было выведено никаких табличных данных - выводим строку об отсутствии данных в БД
           if not bAnyReportDataExists then
             begin
-              sHTML:=sHTML+'        <TR>'+#13#10;
+              sHTML:=sHTML+'        <TR>'+sLineBreak;
               sHTML:=sHTML+'          <TD COLSPAN="'+GetConditionalMessage(bCreateDetailedReport, '4', '5')+
-                '" STYLE="border-color: white; border-width: 0px; text-align: left; font-size: 10pt; padding: 20px 0px 3px 0px;">Данные за указанный период времени отсутствуют.</TD>'+#13#10;
-              sHTML:=sHTML+'        </TR>'+#13#10;
+                '" STYLE="border-color: white; border-width: 0px; text-align: left; font-size: 10pt; padding: 20px 0px 3px 0px;">Данные за указанный период времени отсутствуют.</TD>'+sLineBreak;
+              sHTML:=sHTML+'        </TR>'+sLineBreak;
             end;
-          sHTML:=sHTML+'        <TR>'+#13#10;
-          sHTML:=sHTML+'          <TD COLSPAN="'+GetConditionalMessage(bCreateDetailedReport, '4', '5')+'" STYLE="text-align: center; border-width: 0px; border-color: white; padding: 1px 2px;"></TD>'+#13#10;
-          sHTML:=sHTML+'        </TR>'+#13#10;
-          sHTML:=sHTML+'        <TR>'+#13#10;
+          sHTML:=sHTML+'        <TR>'+sLineBreak;
+          sHTML:=sHTML+'          <TD COLSPAN="'+GetConditionalMessage(bCreateDetailedReport, '4', '5')+'" STYLE="text-align: center; border-width: 0px; border-color: white; padding: 1px 2px;"></TD>'+sLineBreak;
+          sHTML:=sHTML+'        </TR>'+sLineBreak;
+          sHTML:=sHTML+'        <TR>'+sLineBreak;
           sHTML:=sHTML+'          <TD VALIGN="TOP" COLSPAN="'+GetConditionalMessage(bCreateDetailedReport, '4', '5')+'" STYLE="text-align: left; font-size: 7pt; border-color: white; border-width: 0; padding-top: 40px;">Исполнитель:<BR>'+
-            CurrentUser.sPosition+'<BR>'+CurrentUser.sFullName+'<BR>'+CurrentUser.sContactPhone+'</TD>'+#13#10;
-          sHTML:=sHTML+'        </TR>'+#13#10;
-          sHTML:=sHTML+'        <TR>'+#13#10;
+            CurrentUser.sPosition+'<BR>'+CurrentUser.sFullName+'<BR>'+CurrentUser.sContactPhone+'</TD>'+sLineBreak;
+          sHTML:=sHTML+'        </TR>'+sLineBreak;
+          sHTML:=sHTML+'        <TR>'+sLineBreak;
           sHTML:=sHTML+'           <TD COLSPAN="'+GetConditionalMessage(bCreateDetailedReport, '4', '5')+
-            '" HEIGHT="20" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;"></TD>'+#13#10;
-          sHTML:=sHTML+'        </TR>'+#13#10;
-          sHTML:=sHTML+'        <TR>'+#13#10;
+            '" HEIGHT="20" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;"></TD>'+sLineBreak;
+          sHTML:=sHTML+'        </TR>'+sLineBreak;
+          sHTML:=sHTML+'        <TR>'+sLineBreak;
           dtNow:=Now;
           sHTML:=sHTML+'           <TD COLSPAN="'+GetConditionalMessage(bCreateDetailedReport, '4', '5')+
             '" STYLE="text-align: center; font-size: 5pt; border-bottom-color: white; border-top-color: #CCCCCC; border-left-color: white; border-right-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;">'+'Отчёт подготовлен '+IntToStr
             (DayOf(dtNow))+' '+saMonths2[MonthOf(dtNow)]+' '+IntToStr(YearOf(dtNow))+' года в '+FormatDateTime('hh:nn:ss', dtNow)
-            +' при помощи программного комплекса &laquo;OVERSEER&raquo;, &copy;&nbsp;2009-2010&nbsp;by&nbsp;Vlad&nbsp;Ivanov</TD>'+#13#10;
-          sHTML:=sHTML+'        </TR>'+#13#10;
-          sHTML:=sHTML+'      </TBODY>'+#13#10;
-          sHTML:=sHTML+'    </TABLE>'+#13#10;
-          sHTML:=sHTML+'    </CENTER>'+#13#10;
-          sHTML:=sHTML+'  </BODY>'+#13#10;
-          sHTML:=sHTML+'</HTML>'+#13#10;
+            +' при помощи программного комплекса &laquo;OVERSEER&raquo;, &copy;&nbsp;2009-2010&nbsp;by&nbsp;Vlad&nbsp;Ivanov</TD>'+sLineBreak;
+          sHTML:=sHTML+'        </TR>'+sLineBreak;
+          sHTML:=sHTML+'      </TBODY>'+sLineBreak;
+          sHTML:=sHTML+'    </TABLE>'+sLineBreak;
+          sHTML:=sHTML+'    </CENTER>'+sLineBreak;
+          sHTML:=sHTML+'  </BODY>'+sLineBreak;
+          sHTML:=sHTML+'</HTML>'+sLineBreak;
           LogThis(sHTML, LogGroupGUID, lmtInfo);
           StepProgressBar(ProgressBar1); // 16
 

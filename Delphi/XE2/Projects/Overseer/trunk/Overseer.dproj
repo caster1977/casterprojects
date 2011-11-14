@@ -29,6 +29,12 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+			<Cfg_1_Win32>true</Cfg_1_Win32>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
 			<Cfg_2>true</Cfg_2>
 			<CfgParent>Base</CfgParent>
@@ -47,6 +53,12 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<Manifest_File>None</Manifest_File>
+			<DCC_BplOutput>.\$(Platform)\$(Config)\Package</DCC_BplOutput>
+			<DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+			<DCC_DcpOutput>.\$(Platform)\$(Config)\DCP</DCC_DcpOutput>
+			<DCC_DcuOutput>.\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
+			<Icon_MainIcon>Overseer_Icon.ico</Icon_MainIcon>
 			<VerInfo_Build>86</VerInfo_Build>
 			<VerInfo_Debug>true</VerInfo_Debug>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
@@ -54,7 +66,7 @@
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.86;InternalName=overseer;LegalCopyright=(C)opyright 2009-2010 by Vlad Ivanov;LegalTrademarks=;OriginalFilename=overseer.exe;ProductName=overseer;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<VerInfo_Locale>1049</VerInfo_Locale>
 			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win;$(DCC_Namespace)</DCC_Namespace>
-			<DCC_UnitSearchPath>..\Packages;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_UnitSearchPath>..\CastersPackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<DCC_Description>(C)opyright 2009-2010 by Vlad Ivanov</DCC_Description>
 			<DCC_DependencyCheckOutputName>Overseer.exe</DCC_DependencyCheckOutputName>
 			<DCC_UsePackage>vcl;rtl;vclx;vclactnband;dbrtl;vcldb;bdertl;VclSmp;DBXSybaseASADriver;DbxCommonDriver;DBXInterBaseDriver;DBXMySQLDriver;DbxClientDriver;DBXSybaseASEDriver;DBXOracleDriver;DBXMSSQLDriver;DBXInformixDriver;DBXDb2Driver;vclie;xmlrtl;inet;inetdbbde;inetdbxpress;vclribbon;Package1;vcldbx;dsnap;dsnapcon;TeeUI;TeeDB;Tee;dclado120;adortl120;IndyCore;IndySystem;IndyProtocols;intrawebdb_100_120;Intraweb_100_120;dbexpress;DataSnapIndy10ServerTransport;DataSnapProviderClient;DataSnapServer;dbxcds;websnap;webdsnap;$(DCC_UsePackage)</DCC_UsePackage>
@@ -69,8 +81,7 @@
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-			<Icon_MainIcon>Overseer_Icon.ico</Icon_MainIcon>
+			<DCC_Define>Platform32bit;$(DCC_Define)</DCC_Define>
 			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<VerInfo_Locale>1033</VerInfo_Locale>
@@ -78,18 +89,17 @@
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
-			<DCC_ExeOutput>RELEASE</DCC_ExeOutput>
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
 			<DCC_DebugInformation>false</DCC_DebugInformation>
 		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
-			<Icon_MainIcon>Overseer_Icon.ico</Icon_MainIcon>
-			<Manifest_File>None</Manifest_File>
-			<DCC_ExeOutput>DEBUG</DCC_ExeOutput>
-			<DCC_BplOutput>..\Packages\</DCC_BplOutput>
-			<DCC_UnitSearchPath>..\Packages\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<DCC_Optimize>false</DCC_Optimize>
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 		</PropertyGroup>
@@ -210,7 +220,9 @@
 						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
 						<VersionInfoKeys Name="Comments"/>
 					</VersionInfoKeys>
-					<Excluded_Packages/>
+					<Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\MyComponents.bpl">File C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\MyComponents.bpl not found</Excluded_Packages>
+					</Excluded_Packages>
 				</Delphi.Personality>
 				<Platforms>
 					<Platform value="Win64">False</Platform>

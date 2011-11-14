@@ -1710,78 +1710,78 @@ begin
               bVoiceBlockExists:=False;
               bAutoBlockExists:=False;
 
-              sHTML:=sHTML+'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'+#13#10;
-              sHTML:=sHTML+'<HTML>'+#13#10;
-              sHTML:=sHTML+'  <HEAD>'+#13#10;
+              sHTML:=sHTML+'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'+sLineBreak;
+              sHTML:=sHTML+'<HTML>'+sLineBreak;
+              sHTML:=sHTML+'  <HEAD>'+sLineBreak;
               sHTML:=sHTML+'    <TITLE>Статистика звонков'+StringReplace(StringReplace(StringReplace(aNets[NetIndex].sHTMLAbonentsName, '&laquo;', '', [rfReplaceAll]), '&raquo;', '', [rfReplaceAll]), '&nbsp;', ' ', [rfReplaceAll])+
-                ' на услуги СИЦ за '+sReportPeriod+' [форма № '+sReportCode+']</TITLE>'+#13#10;
-              sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="pragma">'+#13#10;
-              sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="cache-control">'+#13#10;
-              sHTML:=sHTML+'    <META CONTENT="Dynamic" NAME="Document-state">'+#13#10;
-              sHTML:=sHTML+'    <META content="text/html; charset=Windows-1251" http-equiv="Content-Type">'+#13#10;
-              sHTML:=sHTML+'    <STYLE MEDIA="screen, print" TYPE="text/css">'+#13#10;
-              sHTML:=sHTML+'      * {'+#13#10;
-              sHTML:=sHTML+'        font-family: Verdana, Arial, Helvetica, sans-serif;'+#13#10;
-              sHTML:=sHTML+'        font-size: 7pt;'+#13#10;
-              sHTML:=sHTML+'        padding: 0;'+#13#10;
-              sHTML:=sHTML+'        margin: 0;'+#13#10;
-              sHTML:=sHTML+'        border-color: transparent;'+#13#10;
-              sHTML:=sHTML+'        border-width: 0;'+#13#10;
-              sHTML:=sHTML+'        }'+#13#10;
-              sHTML:=sHTML+'      TABLE, TD {'+#13#10;
-              sHTML:=sHTML+'        border-style: solid;'+#13#10;
-              sHTML:=sHTML+'      }'+#13#10;
-              sHTML:=sHTML+'    </STYLE>'+#13#10;
-              sHTML:=sHTML+'  </HEAD>'+#13#10;
-              sHTML:=sHTML+'  <BODY>'+#13#10;
+                ' на услуги СИЦ за '+sReportPeriod+' [форма № '+sReportCode+']</TITLE>'+sLineBreak;
+              sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="pragma">'+sLineBreak;
+              sHTML:=sHTML+'    <META CONTENT="no-cache" HTTP-EQUIV="cache-control">'+sLineBreak;
+              sHTML:=sHTML+'    <META CONTENT="Dynamic" NAME="Document-state">'+sLineBreak;
+              sHTML:=sHTML+'    <META content="text/html; charset=Windows-1251" http-equiv="Content-Type">'+sLineBreak;
+              sHTML:=sHTML+'    <STYLE MEDIA="screen, print" TYPE="text/css">'+sLineBreak;
+              sHTML:=sHTML+'      * {'+sLineBreak;
+              sHTML:=sHTML+'        font-family: Verdana, Arial, Helvetica, sans-serif;'+sLineBreak;
+              sHTML:=sHTML+'        font-size: 7pt;'+sLineBreak;
+              sHTML:=sHTML+'        padding: 0;'+sLineBreak;
+              sHTML:=sHTML+'        margin: 0;'+sLineBreak;
+              sHTML:=sHTML+'        border-color: transparent;'+sLineBreak;
+              sHTML:=sHTML+'        border-width: 0;'+sLineBreak;
+              sHTML:=sHTML+'        }'+sLineBreak;
+              sHTML:=sHTML+'      TABLE, TD {'+sLineBreak;
+              sHTML:=sHTML+'        border-style: solid;'+sLineBreak;
+              sHTML:=sHTML+'      }'+sLineBreak;
+              sHTML:=sHTML+'    </STYLE>'+sLineBreak;
+              sHTML:=sHTML+'  </HEAD>'+sLineBreak;
+              sHTML:=sHTML+'  <BODY>'+sLineBreak;
 
               if OldReport then
                 begin // начало формирования упрощённого отчёта
-                  sHTML:=sHTML+'    <CENTER>'+#13#10;
+                  sHTML:=sHTML+'    <CENTER>'+sLineBreak;
 
-                  sHTML:=sHTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="1000" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+#13#10;
+                  sHTML:=sHTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="1000" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+sLineBreak;
                   // border-spacing: 0px;
-                  sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+#13#10;
-                  sHTML:=sHTML+'        <TR>'+#13#10;
-                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="52px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="171px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="171px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="111px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="111px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="111px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="111px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="111px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="51px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                  sHTML:=sHTML+'        </TR>'+#13#10;
+                  sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+sLineBreak;
+                  sHTML:=sHTML+'        <TR>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="52px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="171px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="171px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="111px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="111px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="111px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="111px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="111px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="51px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                  sHTML:=sHTML+'        </TR>'+sLineBreak;
 
-                  sHTML:=sHTML+'        <TR>'+#13#10;
+                  sHTML:=sHTML+'        <TR>'+sLineBreak;
                   sHTML:=sHTML+
                     '          <TD COLSPAN="4" STYLE="border-bottom-color: #CCCCCC; border-top-color: white; border-left-color: white; font-weight: bold; border-right-color: white; border-width: 0px 0px 1px 0px; font-size: 10pt; text-align: left;">Форма № '
-                    +sReportCode+'</TD>'+#13#10;
+                    +sReportCode+'</TD>'+sLineBreak;
                   sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="border-bottom-color: #CCCCCC; border-top-color: white; border-left-color: white; border-right-color: white; border-width: 0px 0px 1px 0px; font-size: 7pt; text-align: right;">' //
-                    +'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD>'+#13#10;
-                  sHTML:=sHTML+'        </TR>'+#13#10;
-                  sHTML:=sHTML+'        <TR>'+#13#10;
+                    +'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD>'+sLineBreak;
+                  sHTML:=sHTML+'        </TR>'+sLineBreak;
+                  sHTML:=sHTML+'        <TR>'+sLineBreak;
                   sHTML:=sHTML+'          <TD COLSPAN="9" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 10pt; font-weight: bold; padding: 20px 0px 3px 0px;">' //
-                    +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'</TD>'+#13#10; //
-                  sHTML:=sHTML+'        </TR>'+#13#10;
-                  sHTML:=sHTML+'        <TR>'+#13#10;
-                  sHTML:=sHTML+'          <TD ROWSPAN="3" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Пришло на СТ-платформу</TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Принято СТ-платформой</TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Обслужено*</TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD ROWSPAN="3" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Процент отказов, %</TD>'+#13#10;
-                  sHTML:=sHTML+'        </TR>'+#13#10;
-                  sHTML:=sHTML+'        <TR>'+#13#10;
-                  sHTML:=sHTML+'          <TD COLSPAN="3" ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество звонков, штук</TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD COLSPAN="3" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Длительность звонков</TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Средняя длительность звонка, секунд</TD>'+#13#10;
-                  sHTML:=sHTML+'        </TR>'+#13#10;
-                  sHTML:=sHTML+'        <TR>'+#13#10;
-                  sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">секунд</TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут**</TD>'+#13#10;
-                  sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут***</TD>'+#13#10;
-                  sHTML:=sHTML+'        </TR>'+#13#10;
+                    +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'</TD>'+sLineBreak; //
+                  sHTML:=sHTML+'        </TR>'+sLineBreak;
+                  sHTML:=sHTML+'        <TR>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD ROWSPAN="3" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Пришло на СТ-платформу</TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Принято СТ-платформой</TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Обслужено*</TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD ROWSPAN="3" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Процент отказов, %</TD>'+sLineBreak;
+                  sHTML:=sHTML+'        </TR>'+sLineBreak;
+                  sHTML:=sHTML+'        <TR>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD COLSPAN="3" ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество звонков, штук</TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD COLSPAN="3" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Длительность звонков</TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Средняя длительность звонка, секунд</TD>'+sLineBreak;
+                  sHTML:=sHTML+'        </TR>'+sLineBreak;
+                  sHTML:=sHTML+'        <TR>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">секунд</TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут**</TD>'+sLineBreak;
+                  sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут***</TD>'+sLineBreak;
+                  sHTML:=sHTML+'        </TR>'+sLineBreak;
 
                   // блок голосовых услуг
                   if not bError then
@@ -1844,11 +1844,11 @@ begin
                                                   // шапка блока
                                                   bBlockDataExists:=True; // флаг для вывода итоговых данных текущего блока услуг
                                                   bVoiceBlockExists:=True;
-                                                  sHTML:=sHTML+'        <TR>'+#13#10;
+                                                  sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                   sHTML:=sHTML+
                                                     '          <TD COLSPAN="9" STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Обслуживаемые телефонистами</TD>'
-                                                    +#13#10;
-                                                  sHTML:=sHTML+'        </TR>'+#13#10;
+                                                    +sLineBreak;
+                                                  sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                   for iRowCounter:=0 to iRowQuantity-1 do
                                                     if bError then
                                                       Break
@@ -1863,26 +1863,26 @@ begin
                                                           begin
                                                             LogThis('Операция получения очередной строки выборки ('+IntToStr(iRowCounter)+') прошла успешно.', lmtDebug);
                                                             // тело блока
-                                                            sHTML:=sHTML+'        <TR>'+#13#10;
+                                                            sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
+                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[7])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[7])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[8])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'        </TR>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[8])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                           end;
                                                       end;
                                                 end;
@@ -1969,25 +1969,25 @@ begin
                                                                 ibVoiceBlockSummary_call_sumtime_in_min_div_60:=StrToIntDef(string(ResultRow[4]), -1);
                                                                 ibVoiceBlockSummary_call_sumtime_in_min_each:=StrToIntDef(string(ResultRow[5]), -1);
 
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[6])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[7])+
-                                                                  '</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                               end;
                                                           end;
                                                       end;
@@ -2067,11 +2067,11 @@ begin
                                                   // шапка блока
                                                   bBlockDataExists:=True; // флаг для вывода итоговых данных текущего блока услуг
                                                   bAutoBlockExists:=True;
-                                                  sHTML:=sHTML+'        <TR>'+#13#10;
+                                                  sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                   sHTML:=sHTML+
                                                     '          <TD COLSPAN="9" STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Обслуживаемые автоинформатором</TD>'
-                                                    +#13#10;
-                                                  sHTML:=sHTML+'        </TR>'+#13#10;
+                                                    +sLineBreak;
+                                                  sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                   for iRowCounter:=0 to iRowQuantity-1 do
                                                     if bError then
                                                       Break
@@ -2086,26 +2086,26 @@ begin
                                                           begin
                                                             LogThis('Операция получения очередной строки выборки ('+IntToStr(iRowCounter)+') прошла успешно.', lmtDebug);
                                                             // тело блока
-                                                            sHTML:=sHTML+'        <TR>'+#13#10;
+                                                            sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
+                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[7])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[7])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[8])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'        </TR>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[8])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                           end;
                                                       end;
                                                 end;
@@ -2192,25 +2192,25 @@ begin
                                                                 iAutoBlockSummary_call_sumtime_in_min_div_60:=StrToIntDef(string(ResultRow[4]), -1);
                                                                 iAutoBlockSummary_call_sumtime_in_min_each:=StrToIntDef(string(ResultRow[5]), -1);
 
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[6])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[7])+
-                                                                  '</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                               end;
                                                           end;
                                                       end;
@@ -2293,39 +2293,39 @@ begin
                                                         else
                                                           begin
                                                             LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                            sHTML:=sHTML+'        <TR>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Всего:</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
+                                                            sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Всего:</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
 
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: '+Routines_GetConditionalMessage((ibVoiceBlockSummary_call_quantity<>-1)and(iAutoBlockSummary_call_quantity<>-1), 'right', 'center')+
                                                               '; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+
                                                               Routines_GetConditionalMessage((ibVoiceBlockSummary_call_quantity<>-1)and(iAutoBlockSummary_call_quantity<>-1), IntToStr(ibVoiceBlockSummary_call_quantity+iAutoBlockSummary_call_quantity),
-                                                              '-')+'</TD>'+#13#10;
+                                                              '-')+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: '+Routines_GetConditionalMessage((ibVoiceBlockSummary_call_sumtime_in_sec<>-1)and(iAutoBlockSummary_call_sumtime_in_sec<>-1), 'right',
                                                               'center')+'; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+
                                                               Routines_GetConditionalMessage((ibVoiceBlockSummary_call_sumtime_in_sec<>-1)and(iAutoBlockSummary_call_sumtime_in_sec<>-1),
-                                                              IntToStr(ibVoiceBlockSummary_call_sumtime_in_sec+iAutoBlockSummary_call_sumtime_in_sec), '-')+'</TD>'+#13#10;
+                                                              IntToStr(ibVoiceBlockSummary_call_sumtime_in_sec+iAutoBlockSummary_call_sumtime_in_sec), '-')+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: '+Routines_GetConditionalMessage((ibVoiceBlockSummary_call_sumtime_in_min_div_60<>-1)and(iAutoBlockSummary_call_sumtime_in_min_div_60<>-1),
                                                               'right', 'center')+'; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+
                                                               Routines_GetConditionalMessage((ibVoiceBlockSummary_call_sumtime_in_min_div_60<>-1)and(iAutoBlockSummary_call_sumtime_in_min_div_60<>-1),
-                                                              IntToStr(ibVoiceBlockSummary_call_sumtime_in_min_div_60+iAutoBlockSummary_call_sumtime_in_min_div_60), '-')+'</TD>'+#13#10;
+                                                              IntToStr(ibVoiceBlockSummary_call_sumtime_in_min_div_60+iAutoBlockSummary_call_sumtime_in_min_div_60), '-')+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: '+Routines_GetConditionalMessage((ibVoiceBlockSummary_call_sumtime_in_min_each<>-1)and(iAutoBlockSummary_call_sumtime_in_min_each<>-1),
                                                               'right', 'center')+'; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+
                                                               Routines_GetConditionalMessage((ibVoiceBlockSummary_call_sumtime_in_min_each<>-1)and(iAutoBlockSummary_call_sumtime_in_min_each<>-1),
-                                                              IntToStr(ibVoiceBlockSummary_call_sumtime_in_min_each+iAutoBlockSummary_call_sumtime_in_min_each), '-')+'</TD>'+#13#10;
+                                                              IntToStr(ibVoiceBlockSummary_call_sumtime_in_min_each+iAutoBlockSummary_call_sumtime_in_min_each), '-')+'</TD>'+sLineBreak;
 
                                                             if ((ibVoiceBlockSummary_call_quantity<>-1)and(iAutoBlockSummary_call_quantity<>-1)and(ibVoiceBlockSummary_call_sumtime_in_sec<>-1)and(iAutoBlockSummary_call_sumtime_in_sec<>-1)) then
                                                               begin
                                                                 rSummary_call_average_time:=(ibVoiceBlockSummary_call_sumtime_in_sec+iAutoBlockSummary_call_sumtime_in_sec)/(ibVoiceBlockSummary_call_quantity+iAutoBlockSummary_call_quantity);
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+Format('%8.2f', [rSummary_call_average_time]
-                                                                  )+'</TD>'+#13#10;
+                                                                  )+'</TD>'+sLineBreak;
                                                               end
                                                             else
-                                                              sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
+                                                              sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
 
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'        </TR>'+#13#10;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                           end;
                                                       end;
                                                   end;
@@ -2345,28 +2345,28 @@ begin
 
                   if not bError then
                     begin
-                      sHTML:=sHTML+'        <TR VALIGN="BOTTOM" STYLE="height: 1.2cm;">'+#13#10;
+                      sHTML:=sHTML+'        <TR VALIGN="BOTTOM" STYLE="height: 1.2cm;">'+sLineBreak;
                       sHTML:=sHTML+'          <TD COLSPAN="9" STYLE="padding: 0px; text-align: left; font-size: 6pt; border-color: #FFFFFF; border-style: solid; border-width: 0px;">'+
                         '<I>Примечания:</I><BR>*: получило ответ автоинформатора (для услуг, обслуживаемых автоинформатором) либо получило ответ телефониста (для услуг, обслуживаемых телефонистами)'+
-                        '<BR>**: общая длительность звонков в секундах, делённая на 60<BR>***: сумма длительностей звонков, округлённых до полных минут</TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
+                        '<BR>**: общая длительность звонков в секундах, делённая на 60<BR>***: сумма длительностей звонков, округлённых до полных минут</TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
                       sHTML:=sHTML+'          <TD COLSPAN="9" STYLE="text-align: left; font-size: 7pt; border-color: white; border-width: 0; padding-top: 30px;">'+'Исполнитель:<BR>'+CurrentUser.sPosition+'<BR>'+CurrentUser.sFullName+'<BR>'+
-                        CurrentUser.sContactPhone+'</TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
-                      sHTML:=sHTML+'          <TD COLSPAN="9" HEIGHT="20" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;"></TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
+                        CurrentUser.sContactPhone+'</TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD COLSPAN="9" HEIGHT="20" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
                       dtNow:=Now;
                       sHTML:=sHTML+'           <TD COLSPAN="9" STYLE="text-align: center; font-size: 5pt; border-bottom-color: white; border-top-color: #CCCCCC; border-left-color: white; ' //
                         +'border-right-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;">' //
                         +'Отчёт подготовлен '+IntToStr(DayOf(dtNow))+' '+saMonths2[MonthOf(dtNow)]+' '+IntToStr(YearOf(dtNow))+' года в '+FormatDateTime('hh:nn:ss', dtNow) //
-                        +' при помощи программного комплекса &laquo;OVERSEER&raquo;, &copy;&nbsp;2009-2010&nbsp;by&nbsp;Vlad&nbsp;Ivanov</TD>'+#13#10; //
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'      </TBODY>'+#13#10;
-                      sHTML:=sHTML+'    </TABLE>'+#13#10;
-                      sHTML:=sHTML+'    </CENTER>'+#13#10;
+                        +' при помощи программного комплекса &laquo;OVERSEER&raquo;, &copy;&nbsp;2009-2010&nbsp;by&nbsp;Vlad&nbsp;Ivanov</TD>'+sLineBreak; //
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'      </TBODY>'+sLineBreak;
+                      sHTML:=sHTML+'    </TABLE>'+sLineBreak;
+                      sHTML:=sHTML+'    </CENTER>'+sLineBreak;
 
                       StepProgressBar; // 94
                       StepProgressBar; // 95
@@ -2389,43 +2389,43 @@ begin
                 begin
                   if SummaryReport then
                     begin // начало формирования краткого отчёта
-                      sHTML:=sHTML+'    <CENTER>'+#13#10;
+                      sHTML:=sHTML+'    <CENTER>'+sLineBreak;
 
-                      sHTML:=sHTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="1000" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+#13#10;
+                      sHTML:=sHTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="1000" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+sLineBreak;
                       // border-spacing: 0px;
-                      sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="100px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="150px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="150px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="150px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="150px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="150px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="150px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
+                      sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="100px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="150px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="150px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="150px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="150px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="150px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="150px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
                       sHTML:=sHTML+
                         '          <TD COLSPAN="4" STYLE="border-bottom-color: #CCCCCC; border-top-color: white; border-left-color: white; font-weight: bold; border-right-color: white; border-width: 0px 0px 1px 0px; font-size: 10pt; text-align: left;">Форма № '
-                        +sReportCode+'</TD>'+#13#10;
+                        +sReportCode+'</TD>'+sLineBreak;
                       sHTML:=sHTML+'          <TD COLSPAN="3" STYLE="border-bottom-color: #CCCCCC; border-top-color: white; border-left-color: white; border-right-color: white; border-width: 0px 0px 1px 0px; font-size: 7pt; text-align: right;">' //
-                        +'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
+                        +'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
                       sHTML:=sHTML+'          <TD COLSPAN="7" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 10pt; font-weight: bold; padding: 20px 0px 3px 0px;">' //
-                        +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'</TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
-                      sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Пришло на СТ-платформу</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Принято СТ-платформой</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Получило ответ автоинформатора (обслужено автоинформатором)</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Распределено на рабочее место</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Получило ответ оператора (обслужено телефонистами)</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">С длительностью от трёх секунд или выдан номер</TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
-                      sHTML:=sHTML+'          <TD COLSPAN="6" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество, штук</TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
+                        +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'</TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Пришло на СТ-платформу</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Принято СТ-платформой</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Получило ответ автоинформатора (обслужено автоинформатором)</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Распределено на рабочее место</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Получило ответ оператора (обслужено телефонистами)</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">С длительностью от трёх секунд или выдан номер</TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD COLSPAN="6" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество, штук</TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
 
                       // блок голосовых услуг
                       if not bError then
@@ -2481,11 +2481,11 @@ begin
                                                       // шапка блока
                                                       bBlockDataExists:=True; // флаг для вывода итоговых данных текущего блока услуг
                                                       bVoiceBlockExists:=True;
-                                                      sHTML:=sHTML+'        <TR>'+#13#10;
+                                                      sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                       sHTML:=sHTML+
                                                         '          <TD COLSPAN="7" STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Обслуживаемые телефонистами</TD>'
-                                                        +#13#10;
-                                                      sHTML:=sHTML+'        </TR>'+#13#10;
+                                                        +sLineBreak;
+                                                      sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                       for iRowCounter:=0 to iRowQuantity-1 do
                                                         if bError then
                                                           Break
@@ -2500,22 +2500,22 @@ begin
                                                               begin
                                                                 LogThis('Операция получения очередной строки выборки ('+IntToStr(iRowCounter)+') прошла успешно.', lmtDebug);
                                                                 // тело блока
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
+                                                                  'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                               end;
                                                           end;
                                                     end;
@@ -2590,21 +2590,21 @@ begin
                                                                 else
                                                                   begin
                                                                     LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                                    sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+#13#10;
+                                                                    sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[0])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[1])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[2])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[3])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[4])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[5])
-                                                                      +'</TD>'+#13#10;
-                                                                    sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
+                                                                    sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                   end;
                                                               end;
                                                           end;
@@ -2674,11 +2674,11 @@ begin
                                                       // шапка блока
                                                       bBlockDataExists:=True; // флаг для вывода итоговых данных текущего блока услуг
                                                       bAutoBlockExists:=True;
-                                                      sHTML:=sHTML+'        <TR>'+#13#10;
+                                                      sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                       sHTML:=sHTML+
                                                         '          <TD COLSPAN="7" STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Обслуживаемые автоинформатором</TD>'
-                                                        +#13#10;
-                                                      sHTML:=sHTML+'        </TR>'+#13#10;
+                                                        +sLineBreak;
+                                                      sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                       for iRowCounter:=0 to iRowQuantity-1 do
                                                         if bError then
                                                           Break
@@ -2693,22 +2693,22 @@ begin
                                                               begin
                                                                 LogThis('Операция получения очередной строки выборки ('+IntToStr(iRowCounter)+') прошла успешно.', lmtDebug);
                                                                 // тело блока
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
+                                                                  'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">-</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">-</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">-</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">-</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                               end;
                                                           end;
                                                     end;
@@ -2780,18 +2780,18 @@ begin
                                                                 else
                                                                   begin
                                                                     LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                                    sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+#13#10;
+                                                                    sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[0])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[1])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[2])
-                                                                      +'</TD>'+#13#10;
-                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                    sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
+                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                    sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                   end;
                                                               end;
                                                           end;
@@ -2867,15 +2867,15 @@ begin
                                                             else
                                                               begin
                                                                 LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Всего:</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Всего:</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                               end;
                                                           end;
                                                       end;
@@ -2895,13 +2895,13 @@ begin
 
                       if not bError then
                         begin
-                          sHTML:=sHTML+'        <TR STYLE="height: 20px;">'+#13#10;
-                          sHTML:=sHTML+'          <TD COLSPAN="7" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 0px; padding: 0px;"></TD>'+#13#10;
-                          sHTML:=sHTML+'        </TR>'+#13#10;
-                          sHTML:=sHTML+'      </TBODY>'+#13#10;
-                          sHTML:=sHTML+'    </TABLE>'+#13#10;
+                          sHTML:=sHTML+'        <TR STYLE="height: 20px;">'+sLineBreak;
+                          sHTML:=sHTML+'          <TD COLSPAN="7" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 0px; padding: 0px;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
+                          sHTML:=sHTML+'      </TBODY>'+sLineBreak;
+                          sHTML:=sHTML+'    </TABLE>'+sLineBreak;
 
-                          sHTML:=sHTML+'    </CENTER>'+#13#10;
+                          sHTML:=sHTML+'    </CENTER>'+sLineBreak;
 
                           StepProgressBar; // 94
                           StepProgressBar; // 95
@@ -2917,55 +2917,55 @@ begin
                     end // конец формирования краткого отчёта
                   else
                     begin // начало формирования полного отчёта
-                      sHTML:=sHTML+'    <CENTER>'+#13#10;
-                      sHTML:=sHTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="1000" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+#13#10;
+                      sHTML:=sHTML+'    <CENTER>'+sLineBreak;
+                      sHTML:=sHTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="1000" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+sLineBreak;
                       // border-spacing: 0px;
-                      sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="70px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="86px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="136px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="86px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="136px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
+                      sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="70px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="86px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="136px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="86px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="136px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
                       sHTML:=sHTML+
                         '          <TD COLSPAN="6" STYLE="border-bottom-color: #CCCCCC; border-top-color: white; border-left-color: white; font-weight: bold; border-right-color: white; border-width: 0px 0px 1px 0px; font-size: 10pt; text-align: left;">Форма № '
-                        +sReportCode+'</TD>'+#13#10;
+                        +sReportCode+'</TD>'+sLineBreak;
                       sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="border-bottom-color: #CCCCCC; border-top-color: white; border-left-color: white; border-right-color: white; border-width: 0px 0px 1px 0px; font-size: 7pt; text-align: right;">' //
-                        +'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
+                        +'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
                       sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 10pt; font-weight: bold; padding: 20px 0px 3px 0px;">' //
-                        +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'&nbsp;(лист&nbsp;№&nbsp;1&nbsp;из&nbsp;3)</TD>'+#13#10; //
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
-                      sHTML:=sHTML+'          <TD ROWSPAN="3" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Пришло на СТ-платформу</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Принято СТ-платформой</TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
-                      sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество звонков, штук</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD COLSPAN="3" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Длительность звонков</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Средняя длительность звонка, секунд</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество звонков, штук</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD COLSPAN="3" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Длительность звонков</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Средняя длительность звонка, секунд</TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">секунд</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут*</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут**</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">секунд</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут*</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут**</TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
+                        +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'&nbsp;(лист&nbsp;№&nbsp;1&nbsp;из&nbsp;3)</TD>'+sLineBreak; //
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD ROWSPAN="3" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Пришло на СТ-платформу</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Принято СТ-платформой</TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество звонков, штук</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD COLSPAN="3" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Длительность звонков</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Средняя длительность звонка, секунд</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество звонков, штук</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD COLSPAN="3" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Длительность звонков</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Средняя длительность звонка, секунд</TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">секунд</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут*</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут**</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">секунд</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут*</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут**</TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
 
                       // первый блок голосовых услуг
                       if not bError then
@@ -3025,11 +3025,11 @@ begin
                                                       // шапка блока
                                                       bBlockDataExists:=True; // флаг для вывода итоговых данных текущего блока услуг
                                                       bVoiceBlockExists:=True;
-                                                      sHTML:=sHTML+'        <TR>'+#13#10;
+                                                      sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                       sHTML:=sHTML+
                                                         '          <TD COLSPAN="11" STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Обслуживаемые телефонистами</TD>'
-                                                        +#13#10;
-                                                      sHTML:=sHTML+'        </TR>'+#13#10;
+                                                        +sLineBreak;
+                                                      sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                       for iRowCounter:=0 to iRowQuantity-1 do
                                                         if bError then
                                                           Break
@@ -3044,30 +3044,30 @@ begin
                                                               begin
                                                                 LogThis('Операция получения очередной строки выборки ('+IntToStr(iRowCounter)+') прошла успешно.', lmtDebug);
                                                                 // тело блока
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
+                                                                  'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[7])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[7])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[8])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[8])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[9])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[9])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[10])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[10])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                               end;
                                                           end;
                                                     end;
@@ -3146,29 +3146,29 @@ begin
                                                                 else
                                                                   begin
                                                                     LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                                    sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+#13#10;
+                                                                    sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[0])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[1])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[2])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[3])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[4])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[5])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[6])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[7])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[8])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[9])
-                                                                      +'</TD>'+#13#10;
-                                                                    sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
+                                                                    sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                   end;
                                                               end;
                                                           end;
@@ -3245,11 +3245,11 @@ begin
                                                       // шапка блока
                                                       bBlockDataExists:=True; // флаг для вывода итоговых данных текущего блока услуг
                                                       bAutoBlockExists:=True;
-                                                      sHTML:=sHTML+'        <TR>'+#13#10;
+                                                      sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                       sHTML:=sHTML+
                                                         '          <TD COLSPAN="11" STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Обслуживаемые автоинформатором</TD>'
-                                                        +#13#10;
-                                                      sHTML:=sHTML+'        </TR>'+#13#10;
+                                                        +sLineBreak;
+                                                      sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                       for iRowCounter:=0 to iRowQuantity-1 do
                                                         if bError then
                                                           Break
@@ -3264,30 +3264,30 @@ begin
                                                               begin
                                                                 LogThis('Операция получения очередной строки выборки ('+IntToStr(iRowCounter)+') прошла успешно.', lmtDebug);
                                                                 // тело блока
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
+                                                                  'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[7])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[7])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[8])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[8])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[9])+'</TD>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[9])+'</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[10])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                  'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[10])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                               end;
                                                           end;
                                                     end;
@@ -3366,29 +3366,29 @@ begin
                                                                 else
                                                                   begin
                                                                     LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                                    sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+#13#10;
+                                                                    sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                    sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[0])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[1])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[2])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[3])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[4])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[5])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[6])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[7])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[8])
-                                                                      +'</TD>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
                                                                     sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[9])
-                                                                      +'</TD>'+#13#10;
-                                                                    sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                      +'</TD>'+sLineBreak;
+                                                                    sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                                   end;
                                                               end;
                                                           end;
@@ -3468,19 +3468,19 @@ begin
                                                             else
                                                               begin
                                                                 LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Всего:</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[6])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[7])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[8])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[9])+'</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Всего:</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[6])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[7])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[8])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[9])+'</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                               end;
                                                           end;
                                                       end;
@@ -3500,62 +3500,62 @@ begin
 
                       if not bError then
                         begin
-                          sHTML:=sHTML+'        <TR VALIGN="BOTTOM" STYLE="height: 1.2cm;">'+#13#10;
+                          sHTML:=sHTML+'        <TR VALIGN="BOTTOM" STYLE="height: 1.2cm;">'+sLineBreak;
                           sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="padding: 0px; text-align: left; font-size: 6pt; border-color: #FFFFFF; border-style: solid; border-width: 0px;">'+
-                            '<I>Примечания:</I><BR>*: общая длительность звонков в секундах, делённая на 60'+'<BR>**: сумма длительностей звонков, округлённых до полных минут</TD>'+#13#10;
-                          sHTML:=sHTML+'        </TR>'+#13#10;
-                          sHTML:=sHTML+'      </TBODY>'+#13#10;
-                          sHTML:=sHTML+'    </TABLE>'+#13#10;
-                          sHTML:=sHTML+'    </CENTER>'+#13#10;
+                            '<I>Примечания:</I><BR>*: общая длительность звонков в секундах, делённая на 60'+'<BR>**: сумма длительностей звонков, округлённых до полных минут</TD>'+sLineBreak;
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
+                          sHTML:=sHTML+'      </TBODY>'+sLineBreak;
+                          sHTML:=sHTML+'    </TABLE>'+sLineBreak;
+                          sHTML:=sHTML+'    </CENTER>'+sLineBreak;
                         end;
 
                       // второй блок голосовых услуг
                       if not bError then
                         begin
-                          sHTML:=sHTML+'    <CENTER STYLE="page-break-before: always;">'+#13#10;
+                          sHTML:=sHTML+'    <CENTER STYLE="page-break-before: always;">'+sLineBreak;
                           sHTML:=sHTML+
-                            '    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="1000" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+#13#10;
+                            '    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="1000" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+sLineBreak;
                           // border-spacing: 0px;
-                          sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+#13#10;
-                          sHTML:=sHTML+'        <TR>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="70px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="86px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="136px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="86px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="136px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'        </TR>'+#13#10;
-                          sHTML:=sHTML+'        <TR>'+#13#10;
+                          sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+sLineBreak;
+                          sHTML:=sHTML+'        <TR>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="70px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="86px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="136px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="86px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="136px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
+                          sHTML:=sHTML+'        <TR>'+sLineBreak;
                           sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 10pt; font-weight: bold; padding: 66px 0px 3px 0px;">' //
-                            +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'&nbsp;(лист&nbsp;№&nbsp;2&nbsp;из&nbsp;3)</TD>'+#13#10; //
-                          sHTML:=sHTML+'        </TR>'+#13#10;
-                          sHTML:=sHTML+'        <TR>'+#13#10;
-                          sHTML:=sHTML+'          <TD ROWSPAN="3" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+#13#10;
+                            +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'&nbsp;(лист&nbsp;№&nbsp;2&nbsp;из&nbsp;3)</TD>'+sLineBreak; //
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
+                          sHTML:=sHTML+'        <TR>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD ROWSPAN="3" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+sLineBreak;
                           sHTML:=sHTML+
-                            '          <TD COLSPAN="5" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Получило ответ автоинформатора (обслужено автоинформатором)</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Распределено на рабочее место</TD>'+#13#10;
-                          sHTML:=sHTML+'        </TR>'+#13#10;
-                          sHTML:=sHTML+'        <TR>'+#13#10;
-                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество звонков, штук</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD COLSPAN="3" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Длительность звонков</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Средняя длительность звонка, секунд</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество звонков, штук</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD COLSPAN="3" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Длительность звонков</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Средняя длительность звонка, секунд</TD>'+#13#10;
-                          sHTML:=sHTML+'        </TR>'+#13#10;
-                          sHTML:=sHTML+'        <TR>'+#13#10;
-                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">секунд</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут*</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут**</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">секунд</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут*</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут**</TD>'+#13#10;
-                          sHTML:=sHTML+'        </TR>'+#13#10;
+                            '          <TD COLSPAN="5" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Получило ответ автоинформатора (обслужено автоинформатором)</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Распределено на рабочее место</TD>'+sLineBreak;
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
+                          sHTML:=sHTML+'        <TR>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество звонков, штук</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD COLSPAN="3" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Длительность звонков</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Средняя длительность звонка, секунд</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество звонков, штук</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD COLSPAN="3" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Длительность звонков</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Средняя длительность звонка, секунд</TD>'+sLineBreak;
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
+                          sHTML:=sHTML+'        <TR>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">секунд</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут*</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут**</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">секунд</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут*</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут**</TD>'+sLineBreak;
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
 
                           bBlockDataExists:=False;
                           LogThis('>> Выполняется операция получения данных из временной таблицы '+Configuration.StatServer.sMySQLDatabase_IRDA_Location+'.tmp_09_4...', lmtDebug);
@@ -3610,11 +3610,11 @@ begin
                                                   // шапка блока
                                                   bBlockDataExists:=True; // флаг для вывода итоговых данных текущего блока услуг
                                                   bVoiceBlockExists:=True;
-                                                  sHTML:=sHTML+'        <TR>'+#13#10;
+                                                  sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                   sHTML:=sHTML+
                                                     '          <TD COLSPAN="11" STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Обслуживаемые телефонистами</TD>'
-                                                    +#13#10;
-                                                  sHTML:=sHTML+'        </TR>'+#13#10;
+                                                    +sLineBreak;
+                                                  sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                   for iRowCounter:=0 to iRowQuantity-1 do
                                                     if bError then
                                                       Break
@@ -3629,30 +3629,30 @@ begin
                                                           begin
                                                             LogThis('Операция получения очередной строки выборки ('+IntToStr(iRowCounter)+') прошла успешно.', lmtDebug);
                                                             // тело блока
-                                                            sHTML:=sHTML+'        <TR>'+#13#10;
+                                                            sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
+                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[7])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[7])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[8])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[8])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[9])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[9])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[10])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'        </TR>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[10])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                           end;
                                                       end;
                                                 end;
@@ -3727,29 +3727,29 @@ begin
                                                             else
                                                               begin
                                                                 LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[6])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[7])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[8])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[9])+
-                                                                  '</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                               end;
                                                           end;
                                                       end;
@@ -3818,11 +3818,11 @@ begin
                                                   // шапка блока
                                                   bBlockDataExists:=True; // флаг для вывода итоговых данных текущего блока услуг
                                                   bAutoBlockExists:=True;
-                                                  sHTML:=sHTML+'        <TR>'+#13#10;
+                                                  sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                   sHTML:=sHTML+
                                                     '          <TD COLSPAN="11" STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Обслуживаемые автоинформатором</TD>'
-                                                    +#13#10;
-                                                  sHTML:=sHTML+'        </TR>'+#13#10;
+                                                    +sLineBreak;
+                                                  sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                   for iRowCounter:=0 to iRowQuantity-1 do
                                                     if bError then
                                                       Break
@@ -3837,30 +3837,30 @@ begin
                                                           begin
                                                             LogThis('Операция получения очередной строки выборки ('+IntToStr(iRowCounter)+') прошла успешно.', lmtDebug);
                                                             // тело блока
-                                                            sHTML:=sHTML+'        <TR>'+#13#10;
+                                                            sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
+                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+#13#10;
-                                                            sHTML:=sHTML+'        </TR>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                           end;
                                                       end;
                                                 end;
@@ -3930,24 +3930,24 @@ begin
                                                             else
                                                               begin
                                                                 LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+
-                                                                  '</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                               end;
                                                           end;
                                                       end;
@@ -4024,19 +4024,19 @@ begin
                                                         else
                                                           begin
                                                             LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                            sHTML:=sHTML+'        <TR>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Всего:</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[6])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[7])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[8])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[9])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'        </TR>'+#13#10;
+                                                            sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Всего:</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[6])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[7])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[8])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[9])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                           end;
                                                       end;
                                                   end;
@@ -4055,61 +4055,61 @@ begin
 
                       if not bError then
                         begin
-                          sHTML:=sHTML+'        <TR VALIGN="BOTTOM" STYLE="height: 1.2cm;">'+#13#10;
+                          sHTML:=sHTML+'        <TR VALIGN="BOTTOM" STYLE="height: 1.2cm;">'+sLineBreak;
                           sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="padding: 0px; text-align: left; font-size: 6pt; border-color: #FFFFFF; border-style: solid; border-width: 0px;">'+
-                            '<I>Примечания:</I><BR>*: общая длительность звонков в секундах, делённая на 60'+'<BR>**: сумма длительностей звонков, округлённых до полных минут</TD>'+#13#10;
-                          sHTML:=sHTML+'        </TR>'+#13#10;
-                          sHTML:=sHTML+'      </TBODY>'+#13#10;
-                          sHTML:=sHTML+'    </TABLE>'+#13#10;
-                          sHTML:=sHTML+'    </CENTER>'+#13#10;
+                            '<I>Примечания:</I><BR>*: общая длительность звонков в секундах, делённая на 60'+'<BR>**: сумма длительностей звонков, округлённых до полных минут</TD>'+sLineBreak;
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
+                          sHTML:=sHTML+'      </TBODY>'+sLineBreak;
+                          sHTML:=sHTML+'    </TABLE>'+sLineBreak;
+                          sHTML:=sHTML+'    </CENTER>'+sLineBreak;
                         end;
 
                       // третий блок голосовых услуг
                       if not bError then
                         begin
-                          sHTML:=sHTML+'    <CENTER STYLE="page-break-before: always;">'+#13#10;
+                          sHTML:=sHTML+'    <CENTER STYLE="page-break-before: always;">'+sLineBreak;
                           sHTML:=sHTML+
-                            '    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="1000" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+#13#10;
+                            '    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="1000" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+sLineBreak;
                           // border-spacing: 0px;
-                          sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+#13#10;
-                          sHTML:=sHTML+'        <TR>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="70px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="86px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="136px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="86px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="136px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                          sHTML:=sHTML+'        </TR>'+#13#10;
-                          sHTML:=sHTML+'        <TR>'+#13#10;
+                          sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+sLineBreak;
+                          sHTML:=sHTML+'        <TR>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="70px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="86px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="136px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="86px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="81px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="136px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
+                          sHTML:=sHTML+'        <TR>'+sLineBreak;
                           sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 10pt; font-weight: bold; padding: 66px 0px 3px 0px;">' //
-                            +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'&nbsp;(лист&nbsp;№&nbsp;3&nbsp;из&nbsp;3)</TD>'+#13#10; //
-                          sHTML:=sHTML+'        </TR>'+#13#10;
-                          sHTML:=sHTML+'        <TR>'+#13#10;
-                          sHTML:=sHTML+'          <TD ROWSPAN="3" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Получило ответ оператора (обслужено телефонистами)</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">С длительностью от трёх секунд или выдан номер</TD>'+#13#10;
-                          sHTML:=sHTML+'        </TR>'+#13#10;
-                          sHTML:=sHTML+'        <TR>'+#13#10;
-                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество звонков, штук</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD COLSPAN="3" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Длительность звонков</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Средняя длительность звонка, секунд</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество звонков, штук</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD COLSPAN="3" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Длительность звонков</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Средняя длительность звонка, секунд</TD>'+#13#10;
-                          sHTML:=sHTML+'        </TR>'+#13#10;
-                          sHTML:=sHTML+'        <TR>'+#13#10;
-                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">секунд</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут*</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут**</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">секунд</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут*</TD>'+#13#10;
-                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут**</TD>'+#13#10;
-                          sHTML:=sHTML+'        </TR>'+#13#10;
+                            +'Статистика&nbsp;звонков'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'&nbsp;(лист&nbsp;№&nbsp;3&nbsp;из&nbsp;3)</TD>'+sLineBreak; //
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
+                          sHTML:=sHTML+'        <TR>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD ROWSPAN="3" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Получило ответ оператора (обслужено телефонистами)</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD COLSPAN="5" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">С длительностью от трёх секунд или выдан номер</TD>'+sLineBreak;
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
+                          sHTML:=sHTML+'        <TR>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество звонков, штук</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD COLSPAN="3" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Длительность звонков</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Средняя длительность звонка, секунд</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество звонков, штук</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD COLSPAN="3" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Длительность звонков</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Средняя длительность звонка, секунд</TD>'+sLineBreak;
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
+                          sHTML:=sHTML+'        <TR>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">секунд</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут*</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут**</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">секунд</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут*</TD>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">минут**</TD>'+sLineBreak;
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
 
                           bBlockDataExists:=False;
                           LogThis('>> Выполняется операция получения данных из временной таблицы '+Configuration.StatServer.sMySQLDatabase_IRDA_Location+'.tmp_09_4...', lmtDebug);
@@ -4164,11 +4164,11 @@ begin
                                                   // шапка блока
                                                   bBlockDataExists:=True; // флаг для вывода итоговых данных текущего блока услуг
                                                   bVoiceBlockExists:=True;
-                                                  sHTML:=sHTML+'        <TR>'+#13#10;
+                                                  sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                   sHTML:=sHTML+
                                                     '          <TD COLSPAN="11" STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Обслуживаемые телефонистами</TD>'
-                                                    +#13#10;
-                                                  sHTML:=sHTML+'        </TR>'+#13#10;
+                                                    +sLineBreak;
+                                                  sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                   for iRowCounter:=0 to iRowQuantity-1 do
                                                     if bError then
                                                       Break
@@ -4183,30 +4183,30 @@ begin
                                                           begin
                                                             LogThis('Операция получения очередной строки выборки ('+IntToStr(iRowCounter)+') прошла успешно.', lmtDebug);
                                                             // тело блока
-                                                            sHTML:=sHTML+'        <TR>'+#13#10;
+                                                            sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
+                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[7])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[7])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[8])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[8])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[9])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[9])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[10])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'        </TR>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[10])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                           end;
                                                       end;
                                                 end;
@@ -4281,29 +4281,29 @@ begin
                                                             else
                                                               begin
                                                                 LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[6])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[7])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[8])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[9])+
-                                                                  '</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                               end;
                                                           end;
                                                       end;
@@ -4377,11 +4377,11 @@ begin
                                                   // шапка блока
                                                   bBlockDataExists:=True; // флаг для вывода итоговых данных текущего блока услуг
                                                   bAutoBlockExists:=True;
-                                                  sHTML:=sHTML+'        <TR>'+#13#10;
+                                                  sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                   sHTML:=sHTML+
                                                     '          <TD COLSPAN="11" STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Обслуживаемые автоинформатором</TD>'
-                                                    +#13#10;
-                                                  sHTML:=sHTML+'        </TR>'+#13#10;
+                                                    +sLineBreak;
+                                                  sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                   for iRowCounter:=0 to iRowQuantity-1 do
                                                     if bError then
                                                       Break
@@ -4396,30 +4396,30 @@ begin
                                                           begin
                                                             LogThis('Операция получения очередной строки выборки ('+IntToStr(iRowCounter)+') прошла успешно.', lmtDebug);
                                                             // тело блока
-                                                            sHTML:=sHTML+'        <TR>'+#13#10;
+                                                            sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
+                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                            sHTML:=sHTML+'        </TR>'+#13#10;
+                                                              'px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                           end;
                                                       end;
                                                 end;
@@ -4494,19 +4494,19 @@ begin
                                                             else
                                                               begin
                                                                 LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                               end;
                                                           end;
                                                       end;
@@ -4583,19 +4583,19 @@ begin
                                                         else
                                                           begin
                                                             LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                            sHTML:=sHTML+'        <TR>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Всего:</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[6])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[7])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[8])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[9])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'        </TR>'+#13#10;
+                                                            sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Всего:</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[6])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[7])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[8])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[9])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                           end;
                                                       end;
                                                   end;
@@ -4614,59 +4614,59 @@ begin
 
                       if not bError then
                         begin
-                          sHTML:=sHTML+'        <TR VALIGN="BOTTOM" STYLE="height: 1.2cm;">'+#13#10;
+                          sHTML:=sHTML+'        <TR VALIGN="BOTTOM" STYLE="height: 1.2cm;">'+sLineBreak;
                           sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="padding: 0px; text-align: left; font-size: 6pt; border-color: #FFFFFF; border-style: solid; border-width: 0px;">'+
-                            '<I>Примечания:</I><BR>*: общая длительность звонков в секундах, делённая на 60'+'<BR>**: сумма длительностей звонков, округлённых до полных минут</TD>'+#13#10;
-                          sHTML:=sHTML+'        </TR>'+#13#10;
-                          sHTML:=sHTML+'      </TBODY>'+#13#10;
-                          sHTML:=sHTML+'    </TABLE>'+#13#10;
-                          sHTML:=sHTML+'    </CENTER>'+#13#10;
+                            '<I>Примечания:</I><BR>*: общая длительность звонков в секундах, делённая на 60'+'<BR>**: сумма длительностей звонков, округлённых до полных минут</TD>'+sLineBreak;
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
+                          sHTML:=sHTML+'      </TBODY>'+sLineBreak;
+                          sHTML:=sHTML+'    </TABLE>'+sLineBreak;
+                          sHTML:=sHTML+'    </CENTER>'+sLineBreak;
                         end;
                     end; // конец формирования полного отчёта
 
                   if not bError then
                     begin // начало формирования отчёта по отказам
-                      sHTML:=sHTML+'    <CENTER STYLE="page-break-before: always;">'+#13#10;
-                      sHTML:=sHTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="1000" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+#13#10;
+                      sHTML:=sHTML+'    <CENTER STYLE="page-break-before: always;">'+sLineBreak;
+                      sHTML:=sHTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="1000" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+sLineBreak;
                       // border-spacing: 0px;
-                      sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="90px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
+                      sHTML:=sHTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="90px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD HEIGHT="1px" WIDTH="91px" STYLE="border-color: white; border-width: 0;"></TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
                       sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 10pt; font-weight: bold; padding: 20px 0px 3px 0px;">' //
-                        +'Статистика&nbsp;отказов&nbsp;по&nbsp;звонкам'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'</TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
-                      sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD COLSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Этап получения ответа СТ-платформы</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD COLSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Этап запуска автоинформатора</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD COLSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Этап распределения на рабочее место</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD COLSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Этап подтверждения соединения</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD COLSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Итого:</TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
-                      sHTML:=sHTML+'        <TR>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Процент</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Процент</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Процент</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Процент</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество</TD>'+#13#10;
-                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Процент</TD>'+#13#10;
-                      sHTML:=sHTML+'        </TR>'+#13#10;
+                        +'Статистика&nbsp;отказов&nbsp;по&nbsp;звонкам'+aNets[NetIndex].sHTMLAbonentsName+'&nbsp;на&nbsp;услуги&nbsp;СИЦ<BR>за&nbsp;'+sReportPeriod+'</TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD ROWSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Номер услуги</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD COLSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Этап получения ответа СТ-платформы</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD COLSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Этап запуска автоинформатора</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD COLSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Этап распределения на рабочее место</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD COLSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Этап подтверждения соединения</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD COLSPAN="2" STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Итого:</TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
+                      sHTML:=sHTML+'        <TR>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Процент</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Процент</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Процент</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Процент</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Количество</TD>'+sLineBreak;
+                      sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">Процент</TD>'+sLineBreak;
+                      sHTML:=sHTML+'        </TR>'+sLineBreak;
 
                       // блок голосовых услуг
                       if not bError then
@@ -4724,11 +4724,11 @@ begin
                                                   // шапка блока
                                                   bBlockDataExists:=True; // флаг для вывода итоговых данных текущего блока услуг
                                                   bVoiceBlockExists:=True;
-                                                  sHTML:=sHTML+'        <TR>'+#13#10;
+                                                  sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                   sHTML:=sHTML+
                                                     '          <TD COLSPAN="11" STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Обслуживаемые телефонистами</TD>'
-                                                    +#13#10;
-                                                  sHTML:=sHTML+'        </TR>'+#13#10;
+                                                    +sLineBreak;
+                                                  sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                   for iRowCounter:=0 to iRowQuantity-1 do
                                                     if bError then
                                                       Break
@@ -4743,30 +4743,30 @@ begin
                                                           begin
                                                             LogThis('Операция получения очередной строки выборки ('+IntToStr(iRowCounter)+') прошла успешно.', lmtDebug);
                                                             // тело блока
-                                                            sHTML:=sHTML+'        <TR>'+#13#10;
+                                                            sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
+                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[7])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[7])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[8])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[8])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[9])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[9])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[10])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'        </TR>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[10])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                           end;
                                                       end;
                                                 end;
@@ -4841,29 +4841,29 @@ begin
                                                             else
                                                               begin
                                                                 LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[6])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[7])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[8])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[9])+
-                                                                  '</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                               end;
                                                           end;
                                                       end;
@@ -4933,11 +4933,11 @@ begin
                                                   // шапка блока
                                                   bBlockDataExists:=True; // флаг для вывода итоговых данных текущего блока услуг
                                                   bAutoBlockExists:=True;
-                                                  sHTML:=sHTML+'        <TR>'+#13#10;
+                                                  sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                   sHTML:=sHTML+
                                                     '          <TD COLSPAN="11" STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Обслуживаемые автоинформатором</TD>'
-                                                    +#13#10;
-                                                  sHTML:=sHTML+'        </TR>'+#13#10;
+                                                    +sLineBreak;
+                                                  sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                   for iRowCounter:=0 to iRowQuantity-1 do
                                                     if bError then
                                                       Break
@@ -4952,30 +4952,30 @@ begin
                                                           begin
                                                             LogThis('Операция получения очередной строки выборки ('+IntToStr(iRowCounter)+') прошла успешно.', lmtDebug);
                                                             // тело блока
-                                                            sHTML:=sHTML+'        <TR>'+#13#10;
+                                                            sHTML:=sHTML+'        <TR>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
+                                                              'px 2px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[4])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">-</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[5])+'</TD>'+sLineBreak;
                                                             sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px '+Routines_GetConditionalMessage(iRowCounter=(iRowQuantity-1), '2', '1')+
-                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'        </TR>'+#13#10;
+                                                              'px 0px; border-color: black; padding: 2px;">'+string(ResultRow[6])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                           end;
                                                       end;
                                                 end;
@@ -5046,25 +5046,25 @@ begin
                                                             else
                                                               begin
                                                                 LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                                sHTML:=sHTML+'        <TR>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+#13#10;
+                                                                sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">Итого:</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+
-                                                                  '</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
-                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">-</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+
-                                                                  '</TD>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
                                                                 sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-style: italic; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+
-                                                                  '</TD>'+#13#10;
-                                                                sHTML:=sHTML+'        </TR>'+#13#10;
+                                                                  '</TD>'+sLineBreak;
+                                                                sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                               end;
                                                           end;
                                                       end;
@@ -5141,19 +5141,19 @@ begin
                                                         else
                                                           begin
                                                             LogThis('Операция получения данных строки выборки прошла успешно.', lmtDebug);
-                                                            sHTML:=sHTML+'        <TR>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Всего:</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[6])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[7])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[8])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[9])+'</TD>'+#13#10;
-                                                            sHTML:=sHTML+'        </TR>'+#13#10;
+                                                            sHTML:=sHTML+'        <TR>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-weight: bold; padding: 2px;">Всего:</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[0])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[1])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[2])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[3])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[4])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[5])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[6])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[7])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[8])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'          <TD STYLE="text-align: right; border-width: 0px 2px 2px 0px; border-color: black; font-weight: bold; padding: 2px;">'+string(ResultRow[9])+'</TD>'+sLineBreak;
+                                                            sHTML:=sHTML+'        </TR>'+sLineBreak;
                                                           end;
                                                       end;
                                                   end;
@@ -5172,31 +5172,31 @@ begin
 
                       if not bError then
                         begin
-                          sHTML:=sHTML+'        <TR>'+#13#10;
+                          sHTML:=sHTML+'        <TR>'+sLineBreak;
                           sHTML:=sHTML+'          <TD COLSPAN="11" STYLE="text-align: left; font-size: 7pt; border-color: white; border-width: 0; padding-top: 30px;">'+'Исполнитель:<BR>'+CurrentUser.sPosition+'<BR>'+CurrentUser.sFullName+'<BR>'+
-                            CurrentUser.sContactPhone+'</TD>'+#13#10;
-                          sHTML:=sHTML+'        </TR>'+#13#10;
-                          sHTML:=sHTML+'        <TR>'+#13#10;
-                          sHTML:=sHTML+'          <TD COLSPAN="11" HEIGHT="20" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;"></TD>'+#13#10;
-                          sHTML:=sHTML+'        </TR>'+#13#10;
-                          sHTML:=sHTML+'        <TR>'+#13#10;
+                            CurrentUser.sContactPhone+'</TD>'+sLineBreak;
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
+                          sHTML:=sHTML+'        <TR>'+sLineBreak;
+                          sHTML:=sHTML+'          <TD COLSPAN="11" HEIGHT="20" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;"></TD>'+sLineBreak;
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
+                          sHTML:=sHTML+'        <TR>'+sLineBreak;
                           dtNow:=Now;
                           sHTML:=sHTML+'           <TD COLSPAN="11" STYLE="text-align: center; font-size: 5pt; border-bottom-color: white; border-top-color: #CCCCCC; border-left-color: white; ' //
                             +'border-right-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;">' //
                             +'Отчёт подготовлен '+IntToStr(DayOf(dtNow))+' '+saMonths2[MonthOf(dtNow)]+' '+IntToStr(YearOf(dtNow))+' года в '+FormatDateTime('hh:nn:ss', dtNow) //
-                            +' при помощи программного комплекса &laquo;OVERSEER&raquo;, &copy;&nbsp;2009-2010&nbsp;by&nbsp;Vlad&nbsp;Ivanov</TD>'+#13#10; //
-                          sHTML:=sHTML+'        </TR>'+#13#10;
-                          sHTML:=sHTML+'      </TBODY>'+#13#10;
-                          sHTML:=sHTML+'    </TABLE>'+#13#10;
-                          sHTML:=sHTML+'    </CENTER>'+#13#10;
+                            +' при помощи программного комплекса &laquo;OVERSEER&raquo;, &copy;&nbsp;2009-2010&nbsp;by&nbsp;Vlad&nbsp;Ivanov</TD>'+sLineBreak; //
+                          sHTML:=sHTML+'        </TR>'+sLineBreak;
+                          sHTML:=sHTML+'      </TBODY>'+sLineBreak;
+                          sHTML:=sHTML+'    </TABLE>'+sLineBreak;
+                          sHTML:=sHTML+'    </CENTER>'+sLineBreak;
                         end;
                     end; // конец формирования отчёта по отказам
                 end;
 
               if not bError then
                 begin
-                  sHTML:=sHTML+'  </BODY>'+#13#10;
-                  sHTML:=sHTML+'</HTML>'+#13#10;
+                  sHTML:=sHTML+'  </BODY>'+sLineBreak;
+                  sHTML:=sHTML+'</HTML>'+sLineBreak;
                   // _LogThis(sHTML, lmtDebug);
                 end;
 
