@@ -355,9 +355,9 @@ var
 begin
   s:=UpperCase(StringReplace(ExtractFileName(Application.ExeName), ExtractFileExt(Application.ExeName), '', [rfIgnoreCase]));
   if bSignalingActive then
-    s:=s+#10#13+'Сигналы активированы.'
+    s:=s+sLineBreak+'Сигналы активированы.'
   else
-    s:=s+#10#13+'Сигналы деактивированы.';
+    s:=s+sLineBreak+'Сигналы деактивированы.';
   if ListView1.Items.Count>0 then
     begin
       b:=False;
@@ -366,10 +366,10 @@ begin
           b:=True;
       if b then
         begin
-          s:=s+#10#13#10#13+'Список активных сигналов (всего: '+IntToStr(ListView1.Items.Count)+'):';
+          s:=s+sLineBreak+sLineBreak+'Список активных сигналов (всего: '+IntToStr(ListView1.Items.Count)+'):';
           for i:=0 to ListView1.Items.Count-1 do
             if ListView1.Items[i].Checked then
-              s:=s+#10#13+IntToStr(i+1)+'. '+ListView1.Items[i].Caption+' - '+ListView1.Items[i].SubItems[0];
+              s:=s+sLineBreak+IntToStr(i+1)+'. '+ListView1.Items[i].Caption+' - '+ListView1.Items[i].SubItems[0];
         end;
     end;
   // TrayIcon1.Hint:=s;
