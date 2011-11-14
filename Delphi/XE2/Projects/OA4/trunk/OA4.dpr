@@ -46,7 +46,7 @@ begin
     end
   else
     begin
-      MessageBox(Application.Handle, PChar('Файл исполняемого модуля лог-клиента, требующийся для работы программы, не обнаружен!'+#13#10+'Обратитесь к администратору!'), PChar('Ошибка при запуске программы!'), MB_OK+MB_ICONERROR);
+      MessageBox(Application.Handle, PChar('Файл исполняемого модуля лог-клиента, требующийся для работы программы, не обнаружен!'+sLineBreak+'Обратитесь к администратору!'), PChar('Ошибка при запуске программы!'), MB_OK+MB_ICONERROR);
       Application.Terminate;
     end;
 end.

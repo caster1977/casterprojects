@@ -213,6 +213,10 @@ object OptionsForm: TOptionsForm
       object TabSheet1: TTabSheet
         Caption = #1048#1085#1090#1077#1088#1092#1077#1081#1089
         TabVisible = False
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object ScrollBox1: TScrollBox
           Left = 0
           Top = 0

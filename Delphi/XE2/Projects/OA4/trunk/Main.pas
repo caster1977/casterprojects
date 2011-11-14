@@ -1907,7 +1907,7 @@ begin
 
                                                           Update_GetMessagesTimerState;
                                                           // end
-                                                          // else s:='В данный момент Вы не можете подключиться к базе данных,'+#13#10+'поскольку она используется в монопольном режиме другим пользователем!'+#13#10+'Данный запрет введён во избежание ошибок при обслуживании базы данных.'+#13#10+'За информацией обратитесь к администратору!';
+                                                          // else s:='В данный момент Вы не можете подключиться к базе данных,'+sLineBreak+'поскольку она используется в монопольном режиме другим пользователем!'+sLineBreak+'Данный запрет введён во избежание ошибок при обслуживании базы данных.'+sLineBreak+'За информацией обратитесь к администратору!';
                                                           // end
                                                           // else s:='Не удалось получить результирующую выборку по последнему SQL-запросу!';
                                                           // end
@@ -3106,7 +3106,7 @@ begin
             if lvOrg.Selected.ImageIndex=DELETEDICON_ID then
               begin
                 LogThis('Восстанавливаемое мероприятие принадлежит удалённой организации!', LogGroupGUID, lmtWarning);
-                b:=MessageBox(Handle, PChar('Вы пытаетесь воостановить мероприятие помеченной на удаление организации.'+#13#10+'Данная операция невозможна без восстановления самой организации.'+#13#10+
+                b:=MessageBox(Handle, PChar('Вы пытаетесь воостановить мероприятие помеченной на удаление организации.'+sLineBreak+'Данная операция невозможна без восстановления самой организации.'+sLineBreak+
                       'Вы желаете восстановить организацию, к которой относится мероприятие?'), PChar('OA4 - Подтверждение восстановления'), MB_YESNO+MB_ICONEXCLAMATION+MB_DEFBUTTON2)=IDYES;
                 if b then
                   begin
@@ -4228,19 +4228,19 @@ begin
     edbxSearchName.Text>'', GetConditionalMessage(not Configuration.bShowSearchAddressOtherEditBox, 'Поиск по всем полям: ', 'Поиск по типу и наименованию: ')+edbxSearchName.Text, '');
   if Configuration.bShowSearchAddressOtherEditBox then // если видны все три поля поиска
     begin
-      sExternalLog_Names:=sExternalLog_Names+GetConditionalMessage((sExternalLog_Names>'')and(edbxSearchAddress.Text>''), #13#10, ''); // добавляем символ перевода строки если есть первое поле и второе
+      sExternalLog_Names:=sExternalLog_Names+GetConditionalMessage((sExternalLog_Names>'')and(edbxSearchAddress.Text>''), sLineBreak, ''); // добавляем символ перевода строки если есть первое поле и второе
       sExternalLog_Names:=sExternalLog_Names+GetConditionalMessage(edbxSearchAddress.Text>'', 'Поиск по местоположению: '+edbxSearchAddress.Text, ''); // добавляем второе поле если оно не пустое
-      sExternalLog_Names:=sExternalLog_Names+GetConditionalMessage((sExternalLog_Names>'')and(edbxSearchOther.Text>''), #13#10, ''); // добавляем символ перевода строки если есть одно из первых полей и третье
+      sExternalLog_Names:=sExternalLog_Names+GetConditionalMessage((sExternalLog_Names>'')and(edbxSearchOther.Text>''), sLineBreak, ''); // добавляем символ перевода строки если есть одно из первых полей и третье
       sExternalLog_Names:=sExternalLog_Names+GetConditionalMessage(edbxSearchOther.Text>'', 'Поиск по "прочим данным" и наименованию: '+edbxSearchOther.Text, ''); // добавляем третье поле если оно не пустое
     end;
 
   sExternalLog_All:=sExternalLog_Names;
-  sExternalLog_All:=sExternalLog_All+GetConditionalMessage((sExternalLog_All>'')and(sExternalLog_Dates>''), #13#10, '');
+  sExternalLog_All:=sExternalLog_All+GetConditionalMessage((sExternalLog_All>'')and(sExternalLog_Dates>''), sLineBreak, '');
   sExternalLog_All:=sExternalLog_All+GetConditionalMessage(sExternalLog_Dates>'', sExternalLog_Dates, '');
-  sExternalLog_All:=sExternalLog_All+GetConditionalMessage((sExternalLog_All>'')and(sExternalLog_Types>''), #13#10, '');
+  sExternalLog_All:=sExternalLog_All+GetConditionalMessage((sExternalLog_All>'')and(sExternalLog_Types>''), sLineBreak, '');
   sExternalLog_All:=sExternalLog_All+GetConditionalMessage(sExternalLog_Types>'', sExternalLog_Types, '');
 
-  sExternalLog_All:=sExternalLog_All+GetConditionalMessage(sExternalLog_All>'', #13#10, '');
+  sExternalLog_All:=sExternalLog_All+GetConditionalMessage(sExternalLog_All>'', sLineBreak, '');
   sExternalLog_All:=sExternalLog_All+'Найдено организаций: '+IntToStr(lvOrg.Items.Count);
 
   Send_DataToExternalProcess(IntToStr(INFO_GET_QUERY_STRING)+': ОиР '+sExternalLog_All);
@@ -4375,7 +4375,7 @@ begin
                               sMsrProducer:=string(ResultRow[3]);
                               sMsrPerformer:=string(ResultRow[4]);
                               sMsrOrganizer:=string(ResultRow[5]);
-                              sMsrTicketPrice:=StringReplace(string(ResultRow[15]), '<BR>', #13#10, [rfReplaceAll]);
+                              sMsrTicketPrice:=StringReplace(string(ResultRow[15]), '<BR>', sLineBreak, [rfReplaceAll]);
                               bMsrIsPremier:=string(ResultRow[10])='1';
                               bMsrIsTour:=string(ResultRow[11])='1';
                               bMsrForChildren:=string(ResultRow[12])='1';
@@ -6604,9 +6604,9 @@ var
       begin
         reMsrOtherInfo.SelStart:=0;
         reMsrOtherInfo.SelLength:=0;
-        reMsrOtherInfo.Lines.Insert(0, 'Телефоны мероприятия:'+#13#10+sPhones);
+        reMsrOtherInfo.Lines.Insert(0, 'Телефоны мероприятия:'+sLineBreak+sPhones);
 
-        iSelLenght:=Length('Телефоны мероприятия:'+#13#10+sPhones);
+        iSelLenght:=Length('Телефоны мероприятия:'+sLineBreak+sPhones);
         reMsrOtherInfo.SelStart:=0;
         reMsrOtherInfo.SelLength:=iSelLenght;
         reMsrOtherInfo.SelAttributes.Color:=clBlack;
@@ -7097,7 +7097,7 @@ begin
                                               bMsrForTeenagers:=string(ResultRow[20])='1';
                                               bMsrForAdultsOnly:=string(ResultRow[21])='1';
                                               bMsrUnknownDuration:=string(ResultRow[22])='1';
-                                              sMsrTicketPrice:=StringReplace(string(ResultRow[23]), '<BR>', #13#10, [rfReplaceAll]);
+                                              sMsrTicketPrice:=StringReplace(string(ResultRow[23]), '<BR>', sLineBreak, [rfReplaceAll]);
                                               sMsrCreation:=string(ResultRow[27])+', '+string(ResultRow[26]);
                                               sMsrModification:=string(ResultRow[29])+', '+string(ResultRow[28]);
 
@@ -7258,7 +7258,7 @@ begin
                                             begin
                                               // добавление нового телефона к значению переменной sPnones;
                                               if (sPhones>'')and(Trim(''+string(ResultRow[30])+string(ResultRow[31])+string(ResultRow[32]))>'') then
-                                                sPhones:=sPhones+#13#10;
+                                                sPhones:=sPhones+sLineBreak;
                                               sPhones:=sPhones+string(ResultRow[30])+#09+string(ResultRow[31])+#09+string(ResultRow[32]);
                                             end;
                                           if j=(i-1) then
@@ -7534,8 +7534,8 @@ begin
                                 begin
                                   reOrgOtherInfo.SelStart:=0;
                                   reOrgOtherInfo.SelLength:=0;
-                                  reOrgOtherInfo.Lines.Insert(0, 'Время работы:'+#13#10+sOrgWorkTime);
-                                  iSelLenght:=Length('Время работы:'+#13#10+sOrgWorkTime);
+                                  reOrgOtherInfo.Lines.Insert(0, 'Время работы:'+sLineBreak+sOrgWorkTime);
+                                  iSelLenght:=Length('Время работы:'+sLineBreak+sOrgWorkTime);
                                   reOrgOtherInfo.SelStart:=0;
                                   reOrgOtherInfo.SelLength:=iSelLenght;
                                   reOrgOtherInfo.SelAttributes.Color:=clBlack;
@@ -7544,7 +7544,7 @@ begin
                                   reOrgOtherInfo.SelAttributes.name:='Lucida Console';
 
                                   iSelLenght:=Length(sOrgWorkTime);
-                                  reOrgOtherInfo.SelStart:=Length('Время работы:'+#13#10)-1;
+                                  reOrgOtherInfo.SelStart:=Length('Время работы:'+sLineBreak)-1;
                                   reOrgOtherInfo.SelLength:=iSelLenght;
                                   reOrgOtherInfo.SelAttributes.name:='Lucida Console';
 
@@ -7558,8 +7558,8 @@ begin
                                 begin
                                   reOrgOtherInfo.SelStart:=0;
                                   reOrgOtherInfo.SelLength:=0;
-                                  reOrgOtherInfo.Lines.Insert(0, 'Как добраться / Местоположение:'+#13#10+sOrgHowToReach);
-                                  iSelLenght:=Length('Как добраться / Местоположение:'+#13#10+sOrgHowToReach);
+                                  reOrgOtherInfo.Lines.Insert(0, 'Как добраться / Местоположение:'+sLineBreak+sOrgHowToReach);
+                                  iSelLenght:=Length('Как добраться / Местоположение:'+sLineBreak+sOrgHowToReach);
                                   reOrgOtherInfo.SelStart:=0;
                                   reOrgOtherInfo.SelLength:=iSelLenght;
                                   reOrgOtherInfo.SelAttributes.Color:=clBlack;
@@ -7568,7 +7568,7 @@ begin
                                   reOrgOtherInfo.SelAttributes.name:='Lucida Console';
 
                                   iSelLenght:=Length(sOrgWorkTime);
-                                  reOrgOtherInfo.SelStart:=Length('Как добраться / Местоположение:'+#13#10)-1;
+                                  reOrgOtherInfo.SelStart:=Length('Как добраться / Местоположение:'+sLineBreak)-1;
                                   reOrgOtherInfo.SelLength:=iSelLenght;
                                   reOrgOtherInfo.SelAttributes.name:='Lucida Console';
 
@@ -7626,8 +7626,8 @@ begin
                                 begin
                                   reOrgOtherInfo.SelStart:=0;
                                   reOrgOtherInfo.SelLength:=0;
-                                  reOrgOtherInfo.Lines.Insert(0, 'Адрес организации:'+#13#10+s1);
-                                  iSelLenght:=Length('Адрес организации:'+#13#10+s1);
+                                  reOrgOtherInfo.Lines.Insert(0, 'Адрес организации:'+sLineBreak+s1);
+                                  iSelLenght:=Length('Адрес организации:'+sLineBreak+s1);
                                   reOrgOtherInfo.SelStart:=0;
                                   reOrgOtherInfo.SelLength:=iSelLenght;
                                   reOrgOtherInfo.SelAttributes.Color:=clBlack;
@@ -7636,7 +7636,7 @@ begin
                                   reOrgOtherInfo.SelAttributes.name:='Lucida Console';
 
                                   iSelLenght:=Length(sOrgWorkTime);
-                                  reOrgOtherInfo.SelStart:=Length('Адрес организации:'+#13#10)-1;
+                                  reOrgOtherInfo.SelStart:=Length('Адрес организации:'+sLineBreak)-1;
                                   reOrgOtherInfo.SelLength:=iSelLenght;
                                   reOrgOtherInfo.SelAttributes.name:='Lucida Console';
 
@@ -7651,8 +7651,8 @@ begin
                                 begin
                                   reOrgOtherInfo.SelStart:=0;
                                   reOrgOtherInfo.SelLength:=0;
-                                  reOrgOtherInfo.Lines.Insert(0, 'Наименование организации:'+#13#10+sOrgName);
-                                  iSelLenght:=Length('Наименование организации:'+#13#10+sOrgName);
+                                  reOrgOtherInfo.Lines.Insert(0, 'Наименование организации:'+sLineBreak+sOrgName);
+                                  iSelLenght:=Length('Наименование организации:'+sLineBreak+sOrgName);
                                   reOrgOtherInfo.SelStart:=0;
                                   reOrgOtherInfo.SelLength:=iSelLenght;
                                   reOrgOtherInfo.SelAttributes.Color:=clBlack;
@@ -7661,7 +7661,7 @@ begin
                                   reOrgOtherInfo.SelAttributes.name:='Lucida Console';
 
                                   iSelLenght:=Length(sOrgWorkTime);
-                                  reOrgOtherInfo.SelStart:=Length('Наименование организации:'+#13#10)-1;
+                                  reOrgOtherInfo.SelStart:=Length('Наименование организации:'+sLineBreak)-1;
                                   reOrgOtherInfo.SelLength:=iSelLenght;
                                   reOrgOtherInfo.SelAttributes.name:='Lucida Console';
 
@@ -7675,8 +7675,8 @@ begin
                                 begin
                                   reOrgOtherInfo.SelStart:=0;
                                   reOrgOtherInfo.SelLength:=0;
-                                  reOrgOtherInfo.Lines.Insert(0, 'Тип организации:'+#13#10+sOrgType);
-                                  iSelLenght:=Length('Тип организации:'+#13#10+sOrgType);
+                                  reOrgOtherInfo.Lines.Insert(0, 'Тип организации:'+sLineBreak+sOrgType);
+                                  iSelLenght:=Length('Тип организации:'+sLineBreak+sOrgType);
                                   reOrgOtherInfo.SelStart:=0;
                                   reOrgOtherInfo.SelLength:=iSelLenght;
                                   reOrgOtherInfo.SelAttributes.Color:=clBlack;
@@ -7685,7 +7685,7 @@ begin
                                   reOrgOtherInfo.SelAttributes.name:='Lucida Console';
 
                                   iSelLenght:=Length(sOrgWorkTime);
-                                  reOrgOtherInfo.SelStart:=Length('Тип организации:'+#13#10)-1;
+                                  reOrgOtherInfo.SelStart:=Length('Тип организации:'+sLineBreak)-1;
                                   reOrgOtherInfo.SelLength:=iSelLenght;
                                   reOrgOtherInfo.SelAttributes.name:='Lucida Console';
 
@@ -9492,37 +9492,37 @@ begin
                 sStartDate:=DateToStr(EncodeDate(StrToInt(cmbbxSelectedYear.Items[cmbbxSelectedYear.ItemIndex]), 1, 1));
                 sStopDate:=DateToStr(EncodeDate(StrToInt(cmbbxSelectedYear.Items[cmbbxSelectedYear.ItemIndex]), 12, 31));
               end;
-            HTML:='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">'+#13#10;
-            HTML:=HTML+'<HTML>'+#13#10;
-            HTML:=HTML+'  <HEAD>'+#13#10;
-            HTML:=HTML+'    <TITLE>Статистика по работе пользователей АРМ услуги "Отдых и развлечения" за период с '+sStartDate+' по '+sStopDate+'</TITLE>'+#13#10;
-            HTML:=HTML+'    <META CONTENT="no-cache" HTTP-EQUIV="pragma">'+#13#10;
-            HTML:=HTML+'    <META CONTENT="no-cache" HTTP-EQUIV="cache-control">'+#13#10;
-            HTML:=HTML+'    <META CONTENT=Dynamic NAME=Document-state>'+#13#10;
-            HTML:=HTML+'    <META content="text/html; charset=Windows-1251" http-equiv=Content-Type>'+#13#10;
-            HTML:=HTML+'    <STYLE MEDIA="screen, print" TYPE="text/css">'+#13#10;
-            HTML:=HTML+'      * {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt; padding: 0; margin: 0; border-color: transparent; border-width: 0;}'+#13#10;
-            HTML:=HTML+'      TABLE, TD {border-style: solid;}'+#13#10;
-            HTML:=HTML+'    </STYLE>'+#13#10;
-            HTML:=HTML+'  </HEAD>'+#13#10;
-            HTML:=HTML+'  <BODY>'+#13#10;
-            HTML:=HTML+'    <CENTER>'+#13#10;
-            HTML:=HTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="656" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+#13#10;
-            HTML:=HTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+#13#10;
+            HTML:='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">'+sLineBreak;
+            HTML:=HTML+'<HTML>'+sLineBreak;
+            HTML:=HTML+'  <HEAD>'+sLineBreak;
+            HTML:=HTML+'    <TITLE>Статистика по работе пользователей АРМ услуги "Отдых и развлечения" за период с '+sStartDate+' по '+sStopDate+'</TITLE>'+sLineBreak;
+            HTML:=HTML+'    <META CONTENT="no-cache" HTTP-EQUIV="pragma">'+sLineBreak;
+            HTML:=HTML+'    <META CONTENT="no-cache" HTTP-EQUIV="cache-control">'+sLineBreak;
+            HTML:=HTML+'    <META CONTENT=Dynamic NAME=Document-state>'+sLineBreak;
+            HTML:=HTML+'    <META content="text/html; charset=Windows-1251" http-equiv=Content-Type>'+sLineBreak;
+            HTML:=HTML+'    <STYLE MEDIA="screen, print" TYPE="text/css">'+sLineBreak;
+            HTML:=HTML+'      * {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt; padding: 0; margin: 0; border-color: transparent; border-width: 0;}'+sLineBreak;
+            HTML:=HTML+'      TABLE, TD {border-style: solid;}'+sLineBreak;
+            HTML:=HTML+'    </STYLE>'+sLineBreak;
+            HTML:=HTML+'  </HEAD>'+sLineBreak;
+            HTML:=HTML+'  <BODY>'+sLineBreak;
+            HTML:=HTML+'    <CENTER>'+sLineBreak;
+            HTML:=HTML+'    <TABLE ALIGN="CENTER" BORDER="1" BGCOLOR="WHITE" WIDTH="656" STYLE="border-color: white; border-width: 0; table-layout: fixed; empty-cells: show; float: none; clear: both; border-collapse: collapse;">'+sLineBreak;
+            HTML:=HTML+'      <TBODY VALIGN="MIDDLE" STYLE="border-color: white; border-width: 0;">'+sLineBreak;
             // определение параметров создаваемого отчёта
             if chkbxDetailed.Checked then
               begin
                 // подробный отчёт
-                HTML:=HTML+'        <TR>'+#13#10;
-                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="80px"></TD>'+#13#10;
-                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="70px"></TD>'+#13#10;
-                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="120px"></TD>'+#13#10;
-                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="386px"></TD>'+#13#10;
-                HTML:=HTML+'        </TR>'+#13#10;
+                HTML:=HTML+'        <TR>'+sLineBreak;
+                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="80px"></TD>'+sLineBreak;
+                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="70px"></TD>'+sLineBreak;
+                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="120px"></TD>'+sLineBreak;
+                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="386px"></TD>'+sLineBreak;
+                HTML:=HTML+'        </TR>'+sLineBreak;
                 HTML:=HTML+'        <TR><TD COLSPAN="4" STYLE="border-bottom-color: #CCCCCC; border-top-color: white; border-left-color: white; border-right-color: white; border-width: 0px 0px 1px 0px; font-size: 7pt; text-align: right;">';
-                HTML:=HTML+'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD></TR>'+#13#10;
+                HTML:=HTML+'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD></TR>'+sLineBreak;
                 HTML:=HTML+'        <TR><TD COLSPAN="4" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 13pt; font-weight: bold; padding: 20px 0px 3px 0px;">';
-                HTML:=HTML+'Статистика&nbsp;по&nbsp;работе&nbsp;пользователей АРМ&nbsp;&laquo;Отдых&nbsp;и&nbsp;развлечения&raquo; за период с '+sStartDate+' по '+sStopDate+'<BR></TD></TR>'+#13#10;
+                HTML:=HTML+'Статистика&nbsp;по&nbsp;работе&nbsp;пользователей АРМ&nbsp;&laquo;Отдых&nbsp;и&nbsp;развлечения&raquo; за период с '+sStartDate+' по '+sStopDate+'<BR></TD></TR>'+sLineBreak;
                 // перебираем список отмеченых пользователей
                 for k:=0 to chklbxUsers.Count-1 do
                   begin
@@ -9547,21 +9547,21 @@ begin
                                   begin
                                     LogThis('Количество строк выборки равно '+IntToStr(i)+'.', LogGroupGUID, lmtInfo);
                                     ProgressBar1.Max:=i;
-                                    HTML:=HTML+'        <TR>'+#13#10;
-                                    HTML:=HTML+'          <TD VALIGN="TOP" COLSPAN="4" STYLE="text-align: left; font-size: 12pt; font-weight: bold; border-color: white; border-width: 0; padding: 20px 2px 2px 0px;">'+s+'</TD>'+#13#10;
-                                    HTML:=HTML+'        </TR>'+#13#10;
+                                    HTML:=HTML+'        <TR>'+sLineBreak;
+                                    HTML:=HTML+'          <TD VALIGN="TOP" COLSPAN="4" STYLE="text-align: left; font-size: 12pt; font-weight: bold; border-color: white; border-width: 0; padding: 20px 2px 2px 0px;">'+s+'</TD>'+sLineBreak;
+                                    HTML:=HTML+'        </TR>'+sLineBreak;
                                     if i>0 then
                                       begin
-                                        HTML:=HTML+'        <TR>'+#13#10;
-                                        HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Дата</TD>'+#13#10;
-                                        HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Время</TD>'+#13#10;
+                                        HTML:=HTML+'        <TR>'+sLineBreak;
+                                        HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Дата</TD>'+sLineBreak;
+                                        HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Время</TD>'+sLineBreak;
                                         HTML:=HTML+'          <TD ';
                                         if not chkbxShowSQLQuery.Checked then
                                           HTML:=HTML+'COLSPAN="2" ';
-                                        HTML:=HTML+'STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Действие</TD>'+#13#10;
+                                        HTML:=HTML+'STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Действие</TD>'+sLineBreak;
                                         if chkbxShowSQLQuery.Checked then
-                                          HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Текст&nbsp;SQL-запроса</TD>'+#13#10;
-                                        HTML:=HTML+'        </TR>'+#13#10;
+                                          HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Текст&nbsp;SQL-запроса</TD>'+sLineBreak;
+                                        HTML:=HTML+'        </TR>'+sLineBreak;
                                         for j:=0 to i-1 do
                                           begin
                                             LogThis('Получение очередной строки выборки ('+IntToStr(j)+').', LogGroupGUID, lmtInfo);
@@ -9569,11 +9569,11 @@ begin
                                             if ResultRow<>nil then
                                               begin
                                                 LogThis('Операция получения очередной строки выборки ('+IntToStr(j)+') прошла успешно.', LogGroupGUID, lmtInfo);
-                                                HTML:=HTML+'        <TR>'+#13#10;
+                                                HTML:=HTML+'        <TR>'+sLineBreak;
                                                 HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((i-1)-j)=0))+'px 2px; border-color: black; font-size: 8pt; padding: 2px;">'+string
-                                                  (Copy(ResultRow[0], 9, 2))+'.'+string(Copy(ResultRow[0], 6, 2))+'.'+string(Copy(ResultRow[0], 0, 4))+'</TD>'+#13#10;
+                                                  (Copy(ResultRow[0], 9, 2))+'.'+string(Copy(ResultRow[0], 6, 2))+'.'+string(Copy(ResultRow[0], 0, 4))+'</TD>'+sLineBreak;
                                                 HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((i-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+string(ResultRow[1])
-                                                  +'</TD>'+#13#10;
+                                                  +'</TD>'+sLineBreak;
 
                                                 q:=string(ResultRow[2]);
                                                 if q='INS' then
@@ -9597,11 +9597,11 @@ begin
                                                 HTML:=HTML+'          <TD ';
                                                 if not chkbxShowSQLQuery.Checked then
                                                   HTML:=HTML+'COLSPAN="2" ';
-                                                HTML:=HTML+'STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((i-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+q+'</TD>'+#13#10;
+                                                HTML:=HTML+'STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((i-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+q+'</TD>'+sLineBreak;
                                                 if chkbxShowSQLQuery.Checked then
                                                   HTML:=HTML+'          <TD STYLE="text-align: left; border-width: 0px 2px '+IntToStr(1+integer(((i-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px 2px 2px 5px;">'+string
-                                                    (ResultRow[5])+'</TD>'+#13#10;
-                                                HTML:=HTML+'        </TR>'+#13#10;
+                                                    (ResultRow[5])+'</TD>'+sLineBreak;
+                                                HTML:=HTML+'        </TR>'+sLineBreak;
                                               end
                                             else
                                               GenerateError('Возникла ошибка при загрузке данных строки выборки (порядковый номер строки равен '+IntToStr(j)+')!', s, bError);
@@ -9610,10 +9610,10 @@ begin
                                       end
                                     else
                                       begin
-                                        HTML:=HTML+'        <TR>'+#13#10;
+                                        HTML:=HTML+'        <TR>'+sLineBreak;
                                         HTML:=HTML+'          <TD COLSPAN="4" STYLE="text-align: left; border-width: 0px; border-color: white; font-size: 8pt; padding: 2px 2px 2px 0px;">Данные по работе указанного пользователя отсутствуют.</TD>'+
-                                          #13#10;
-                                        HTML:=HTML+'        </TR>'+#13#10;
+                                          sLineBreak;
+                                        HTML:=HTML+'        </TR>'+sLineBreak;
                                       end;
                                   end
                                 else
@@ -9636,28 +9636,28 @@ begin
                         ProgressBar1.Position:=ProgressBar1.Min;
                       end;
                   end;
-                HTML:=HTML+'        <TR>'+#13#10;
-                HTML:=HTML+'          <TD COLSPAN="4" HEIGHT="20" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;"></TD>'+#13#10;
-                HTML:=HTML+'        </TR>'+#13#10;
-                HTML:=HTML+'        <TR>'+#13#10;
+                HTML:=HTML+'        <TR>'+sLineBreak;
+                HTML:=HTML+'          <TD COLSPAN="4" HEIGHT="20" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;"></TD>'+sLineBreak;
+                HTML:=HTML+'        </TR>'+sLineBreak;
+                HTML:=HTML+'        <TR>'+sLineBreak;
                 HTML:=HTML+'          <TD COLSPAN="4" STYLE="text-align: center; font-size: 5pt; border-bottom-color: white; border-top-color: #CCCCCC; border-left-color: white; border-right-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;">Отчёт подготовлен '+DateToStr(EncodeDate(Year, Month, Day))+' в '+TimeToStr
-                  (EncodeTime(Hour, Min, Sec, MSec))+' при помощи АРМ услуги &laquo;Отдых и развлечения&raquo;, &copy;&nbsp;2008&nbsp;by&nbsp;Vlad&nbsp;Ivanov</TD>'+#13#10;
-                HTML:=HTML+'        </TR>'+#13#10;
+                  (EncodeTime(Hour, Min, Sec, MSec))+' при помощи АРМ услуги &laquo;Отдых и развлечения&raquo;, &copy;&nbsp;2008&nbsp;by&nbsp;Vlad&nbsp;Ivanov</TD>'+sLineBreak;
+                HTML:=HTML+'        </TR>'+sLineBreak;
               end
             else
               begin
                 // свёрнутый отчёт
-                HTML:=HTML+'        <TR>'+#13#10;
-                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="80px"></TD>'+#13#10;
-                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+#13#10;
-                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+#13#10;
-                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+#13#10;
-                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+#13#10;
-                HTML:=HTML+'        </TR>'+#13#10;
+                HTML:=HTML+'        <TR>'+sLineBreak;
+                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="80px"></TD>'+sLineBreak;
+                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+sLineBreak;
+                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+sLineBreak;
+                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+sLineBreak;
+                HTML:=HTML+'          <TD HEIGHT="1px" STYLE="border-color: white; border-width: 0;" WIDTH="144px"></TD>'+sLineBreak;
+                HTML:=HTML+'        </TR>'+sLineBreak;
                 HTML:=HTML+'        <TR><TD COLSPAN="5" STYLE="border-bottom-color: #CCCCCC; border-top-color: white; border-left-color: white; border-right-color: white; border-width: 0px 0px 1px 0px; font-size: 7pt; text-align: right;">';
-                HTML:=HTML+'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD></TR>'+#13#10;
+                HTML:=HTML+'Справочно-информационный цех<BR>филиала &laquo;Минская городская телефонная сеть&raquo;<BR>РУП &laquo;Белтелеком&raquo;</TD></TR>'+sLineBreak;
                 HTML:=HTML+'        <TR><TD COLSPAN="5" STYLE="border-color: white; border-width: 0; text-align: center; font-size: 13pt; font-weight: bold; padding: 20px 0px 3px 0px;">';
-                HTML:=HTML+'Статистика&nbsp;по&nbsp;работе&nbsp;пользователей АРМ&nbsp;&laquo;Отдых&nbsp;и&nbsp;развлечения&raquo; за период с '+sStartDate+' по '+sStopDate+'<BR></TD></TR>'+#13#10;
+                HTML:=HTML+'Статистика&nbsp;по&nbsp;работе&nbsp;пользователей АРМ&nbsp;&laquo;Отдых&nbsp;и&nbsp;развлечения&raquo; за период с '+sStartDate+' по '+sStopDate+'<BR></TD></TR>'+sLineBreak;
                 // перебираем список отмеченых пользователей
                 for k:=0 to chklbxUsers.Count-1 do
                   begin
@@ -9721,18 +9721,18 @@ begin
                           // перебираем полученный список дат и делаем выборки по типам действий для каждой из дат
                         else
                           begin
-                            HTML:=HTML+'        <TR>'+#13#10;
-                            HTML:=HTML+'          <TD VALIGN="TOP" COLSPAN="5" STYLE="text-align: left; font-size: 12pt; font-weight: bold; border-color: white; border-width: 0; padding: 20px 2px 2px 0px;">'+s+'</TD>'+#13#10;
-                            HTML:=HTML+'        </TR>'+#13#10;
+                            HTML:=HTML+'        <TR>'+sLineBreak;
+                            HTML:=HTML+'          <TD VALIGN="TOP" COLSPAN="5" STYLE="text-align: left; font-size: 12pt; font-weight: bold; border-color: white; border-width: 0; padding: 20px 2px 2px 0px;">'+s+'</TD>'+sLineBreak;
+                            HTML:=HTML+'        </TR>'+sLineBreak;
                             if i>0 then
                               begin
-                                HTML:=HTML+'        <TR>'+#13#10;
-                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Дата</TD>'+#13#10;
-                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Создано</TD>'+#13#10;
-                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Исправлено</TD>'+#13#10;
-                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Удалено</TD>'+#13#10;
-                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Восстановлено</TD>'+#13#10;
-                                HTML:=HTML+'        </TR>'+#13#10;
+                                HTML:=HTML+'        <TR>'+sLineBreak;
+                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 2px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Дата</TD>'+sLineBreak;
+                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Создано</TD>'+sLineBreak;
+                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Исправлено</TD>'+sLineBreak;
+                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Удалено</TD>'+sLineBreak;
+                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 2px 2px 2px 0px; border-color: black; font-weight: bold; font-size: 8pt; padding: 2px;">Восстановлено</TD>'+sLineBreak;
+                                HTML:=HTML+'        </TR>'+sLineBreak;
                                 ProgressBar1.Max:=slTemp.Count;
                                 for j:=0 to slTemp.Count-1 do
                                   begin
@@ -9899,48 +9899,48 @@ begin
                                     else
                                       GenerateError('Возникла ошибка при выполнении запроса!', s, bError);
                                     // вывод результатов
-                                    HTML:=HTML+'        <TR>'+#13#10;
+                                    HTML:=HTML+'        <TR>'+sLineBreak;
                                     HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 2px; border-color: black; font-size: 8pt; padding: 2px;">'+Copy(slTemp[j], 9, 2)+'.'+Copy
-                                      (slTemp[j], 6, 2)+'.'+Copy(slTemp[j], 0, 4)+'</TD>'+#13#10;
-                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sIns+'</TD>'+#13#10;
-                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sMod+'</TD>'+#13#10;
-                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sDel+'</TD>'+#13#10;
-                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sRec+'</TD>'+#13#10;
-                                    HTML:=HTML+'        </TR>'+#13#10;
+                                      (slTemp[j], 6, 2)+'.'+Copy(slTemp[j], 0, 4)+'</TD>'+sLineBreak;
+                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sIns+'</TD>'+sLineBreak;
+                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sMod+'</TD>'+sLineBreak;
+                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sDel+'</TD>'+sLineBreak;
+                                    HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px '+IntToStr(1+integer(((slTemp.Count-1)-j)=0))+'px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+sRec+'</TD>'+sLineBreak;
+                                    HTML:=HTML+'        </TR>'+sLineBreak;
                                     ProgressBar1.StepIt;
                                   end;
                                 // итого
-                                HTML:=HTML+'        <TR>'+#13#10;
-                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-size: 8pt; padding: 2px;">Итого:</TD>'+#13#10;
-                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumIns)+'</TD>'+#13#10;
-                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumMod)+'</TD>'+#13#10;
-                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumDel)+'</TD>'+#13#10;
-                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumRec)+'</TD>'+#13#10;
-                                HTML:=HTML+'        </TR>'+#13#10;
+                                HTML:=HTML+'        <TR>'+sLineBreak;
+                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 2px; border-color: black; font-size: 8pt; padding: 2px;">Итого:</TD>'+sLineBreak;
+                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumIns)+'</TD>'+sLineBreak;
+                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumMod)+'</TD>'+sLineBreak;
+                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumDel)+'</TD>'+sLineBreak;
+                                HTML:=HTML+'          <TD STYLE="text-align: center; border-width: 0px 2px 2px 0px; border-color: black; font-size: 8pt; padding: 2px;">'+IntToStr(iSumRec)+'</TD>'+sLineBreak;
+                                HTML:=HTML+'        </TR>'+sLineBreak;
                                 ProgressBar1.Position:=ProgressBar1.Min;
                               end
                             else
                               begin
-                                HTML:=HTML+'        <TR>'+#13#10;
-                                HTML:=HTML+'          <TD COLSPAN="5" STYLE="text-align: left; border-width: 0px; border-color: white; font-size: 8pt; padding: 2px 2px 2px 0px;">Данные по работе указанного пользователя отсутствуют.</TD>'+#13#10;
-                                HTML:=HTML+'        </TR>'+#13#10;
+                                HTML:=HTML+'        <TR>'+sLineBreak;
+                                HTML:=HTML+'          <TD COLSPAN="5" STYLE="text-align: left; border-width: 0px; border-color: white; font-size: 8pt; padding: 2px 2px 2px 0px;">Данные по работе указанного пользователя отсутствуют.</TD>'+sLineBreak;
+                                HTML:=HTML+'        </TR>'+sLineBreak;
                               end;
                           end;
                       end;
                   end;
-                HTML:=HTML+'        <TR>'+#13#10;
-                HTML:=HTML+'          <TD COLSPAN="5" HEIGHT="20" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;"></TD>'+#13#10;
-                HTML:=HTML+'        </TR>'+#13#10;
-                HTML:=HTML+'        <TR>'+#13#10;
+                HTML:=HTML+'        <TR>'+sLineBreak;
+                HTML:=HTML+'          <TD COLSPAN="5" HEIGHT="20" STYLE="text-align: left; color: #EEEEEE; font-size: 5pt; border-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;"></TD>'+sLineBreak;
+                HTML:=HTML+'        </TR>'+sLineBreak;
+                HTML:=HTML+'        <TR>'+sLineBreak;
                 HTML:=HTML+'          <TD COLSPAN="5" STYLE="text-align: center; font-size: 5pt; border-bottom-color: white; border-top-color: #CCCCCC; border-left-color: white; border-right-color: white; border-width: 1px 0px 0px 0px; padding-top: 1px;">Отчёт подготовлен '+DateToStr(EncodeDate(Year, Month, Day))+' в '+TimeToStr
-                  (EncodeTime(Hour, Min, Sec, MSec))+' при помощи АРМ услуги &laquo;Отдых и развлечения&raquo;, &copy;&nbsp;2008&nbsp;by&nbsp;Vlad&nbsp;Ivanov</TD>'+#13#10;
-                HTML:=HTML+'        </TR>'+#13#10;
+                  (EncodeTime(Hour, Min, Sec, MSec))+' при помощи АРМ услуги &laquo;Отдых и развлечения&raquo;, &copy;&nbsp;2008&nbsp;by&nbsp;Vlad&nbsp;Ivanov</TD>'+sLineBreak;
+                HTML:=HTML+'        </TR>'+sLineBreak;
               end;
-            HTML:=HTML+'      </TBODY>'+#13#10;
-            HTML:=HTML+'    </TABLE>'+#13#10;
-            HTML:=HTML+'    </CENTER>'+#13#10;
-            HTML:=HTML+'  </BODY>'+#13#10;
-            HTML:=HTML+'</HTML>'+#13#10;
+            HTML:=HTML+'      </TBODY>'+sLineBreak;
+            HTML:=HTML+'    </TABLE>'+sLineBreak;
+            HTML:=HTML+'    </CENTER>'+sLineBreak;
+            HTML:=HTML+'  </BODY>'+sLineBreak;
+            HTML:=HTML+'</HTML>'+sLineBreak;
 
             with TStringList.Create do
               try
@@ -10848,15 +10848,15 @@ begin
                 begin
                   sExternalLog_All:='Был произведён запрос списка телефонов по следующей организации:';
                   if sExternalLog_Type>'' then
-                    sExternalLog_All:=sExternalLog_All+#13#10+' - тип организации: '+sExternalLog_Type;
+                    sExternalLog_All:=sExternalLog_All+sLineBreak+' - тип организации: '+sExternalLog_Type;
                   if sExternalLog_Name>'' then
-                    sExternalLog_All:=sExternalLog_All+#13#10+' - название организации: '+sExternalLog_Name;
+                    sExternalLog_All:=sExternalLog_All+sLineBreak+' - название организации: '+sExternalLog_Name;
                   if sExternalLog_Address>'' then
-                    sExternalLog_All:=sExternalLog_All+#13#10+' - адрес организации: '+sExternalLog_Address;
+                    sExternalLog_All:=sExternalLog_All+sLineBreak+' - адрес организации: '+sExternalLog_Address;
                   if sExternalLog_NumberOfPhones>'' then
-                    sExternalLog_All:=sExternalLog_All+#13#10+' - количество телефонов организации: '+sExternalLog_NumberOfPhones;
+                    sExternalLog_All:=sExternalLog_All+sLineBreak+' - количество телефонов организации: '+sExternalLog_NumberOfPhones;
                   if sExternalLog_PhonesList>'' then
-                    sExternalLog_All:=sExternalLog_All+#13#10+' - список телефонов организации: '+sExternalLog_PhonesList;
+                    sExternalLog_All:=sExternalLog_All+sLineBreak+' - список телефонов организации: '+sExternalLog_PhonesList;
                 end;
             end;
         end
@@ -10942,7 +10942,7 @@ begin
       // LogThis('Произведена отправка программе лог-клиента строки данных: ['+m+']',LogGroupGUID,lmtInfo);
     end
   else
-    MessageBox(Handle, PChar('Не удалось отправить сообщение программе лог-клиента, так как не было найдено окно программы лог-клиента!'+#13#10+'Обратитесь к администратору!'), PChar('OA4 - Ошибка!'), MB_OK+MB_ICONERROR);
+    MessageBox(Handle, PChar('Не удалось отправить сообщение программе лог-клиента, так как не было найдено окно программы лог-клиента!'+sLineBreak+'Обратитесь к администратору!'), PChar('OA4 - Ошибка!'), MB_OK+MB_ICONERROR);
 end;
 
 procedure TMainForm.Send_DataToExternalProcess(aData: string);
