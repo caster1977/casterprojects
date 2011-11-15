@@ -65,8 +65,11 @@ type
     iBusyCounter: integer;
     bAboutWindowExist: boolean;
     WM_SERVER, WM_CLIENT: cardinal;
-    RetranslatorThread: TRetranslatorThread;
-    ClientHandle: THandle;
+    ConnectionThread: TRetranslatorThread;
+    bClientFounded: boolean;
+    hClientHandle: THandle;
+    hSharedMemory: THandle;
+    PMapView: pointer;
     procedure ProcedureHeader;
     procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
     procedure ProcedureFooter;
@@ -81,6 +84,10 @@ type
     procedure Do_Configuration;
 
     function Do_RegisterWindowMessages: boolean;
+    function Do_CreateSharedFile: boolean;
+    function Do_CloseSharedFile: boolean;
+    function Do_MapSharedFile: boolean;
+    function Do_UnMapSharedFile: boolean;
   public
     Configuration: TConfiguration;
     procedure Inc_BusyState;
@@ -306,19 +313,87 @@ begin
 end;
 
 function TMainForm.Do_RegisterWindowMessages: boolean;
-resourcestring
-  TEXT_REGISTERWINDOWMESSAGEERROR='Не удалось выполнить операцию регистрации оконного сообщения! Код ошибки: ';
 begin
   ProcedureHeader;
   Result:=False;
   try
     WM_SERVER:=RegisterWindowMessage(PWideChar(TEXT_WM_SM_SERVER));
     if WM_SERVER=0 then
-      raise Exception.Create(TEXT_REGISTERWINDOWMESSAGEERROR+IntToStr(GetLastError));
+      raise Exception.Create(TEXT_REGISTERWINDOWMESSAGEERROR+TEXT_ERRORCODE+IntToStr(GetLastError));
     WM_CLIENT:=RegisterWindowMessage(PWideChar(TEXT_WM_SM_CLIENT));
     if WM_CLIENT=0 then
-      raise Exception.Create(TEXT_REGISTERWINDOWMESSAGEERROR+IntToStr(GetLastError));
+      raise Exception.Create(TEXT_REGISTERWINDOWMESSAGEERROR+TEXT_ERRORCODE+IntToStr(GetLastError));
     Result:=True;
+  except
+    on E: Exception do
+      ShowErrorBox(Handle, E.Message);
+  end;
+  ProcedureFooter;
+end;
+
+function TMainForm.Do_CreateSharedFile: boolean;
+begin
+  ProcedureHeader;
+  Result:=False;
+//  hSharedMemory:=CreateFileMapping(INVALID_HANDLE_VALUE, nil, PAGE_READWRITE, 0, Configuration.DataBlockSize, PWideChar(Configuration.SharedMemoryName));
+  hSharedMemory:=CreateFileMapping(INVALID_HANDLE_VALUE, nil, PAGE_READWRITE, 0, Configuration.DataBlockSize, PWideChar(WideString('{B72BE7F9-4D0A-412F-A4FE-D6C47C35E9C9}')));
+  try
+    if hSharedMemory=NULL then
+      raise Exception.Create(TEXT_ERROR_CREATEFILEMAPPING+TEXT_ERRORCODE+IntToStr(GetLastError))
+    else
+      if GetLastError=ERROR_ALREADY_EXISTS then
+        raise Exception.Create(TEXT_ERROR_CREATEFILEMAPPING_ALREADYEXISTS+TEXT_ERRORCODE+IntToStr(GetLastError))
+      else
+        Result:=True;
+  except
+    on E: Exception do
+      ShowErrorBox(Handle, E.Message);
+  end;
+  ProcedureFooter;
+end;
+
+function TMainForm.Do_CloseSharedFile: boolean;
+begin
+  ProcedureHeader;
+  Result:=False;
+  try
+    if not CloseHandle(hSharedMemory) then
+      raise Exception.Create(TEXT_ERROR_CLOSE_FILEMAPPING_HANDLE+TEXT_ERRORCODE+IntToStr(GetLastError))
+    else
+      Result:=True;
+  except
+    on E: Exception do
+      ShowErrorBox(Handle, E.Message);
+  end;
+  ProcedureFooter;
+end;
+
+function TMainForm.Do_MapSharedFile: boolean;
+begin
+  ProcedureHeader;
+  Result:=False;
+  try
+    PMapView:=MapViewOfFile(hSharedMemory, FILE_MAP_WRITE, 0, 0, 0);
+    if not Assigned(PMapView) then
+      raise Exception.Create(TEXT_ERROR_MAPVIEWOFFILE+TEXT_ERRORCODE+IntToStr(GetLastError))
+    else
+      Result:=True;
+  except
+    on E: Exception do
+      ShowErrorBox(Handle, E.Message);
+  end;
+  ProcedureFooter;
+end;
+
+function TMainForm.Do_UnMapSharedFile: boolean;
+begin
+  ProcedureHeader;
+  Result:=False;
+  try
+    if UnmapViewOfFile(PMapView) then
+      raise Exception.Create(TEXT_ERROR_UNMAPVIEWOFFILE+TEXT_ERRORCODE+IntToStr(GetLastError))
+    else
+      Result:=True;
   except
     on E: Exception do
       ShowErrorBox(Handle, E.Message);
@@ -334,11 +409,6 @@ begin
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
-// var
-// ffile: THandle;
-// ffileMapObj: THandle;
-// lpBaseAdd: PChar;
-// str: string;
 var
   PanelRect: TRect;
 
@@ -358,6 +428,7 @@ var
 
 begin
   bFirstRun:=True;
+  bClientFounded:=False;
   Caption:=TEXT_MAINFORM_CAPTION;
   // создание и инициализщация объекта конфигурации
   Configuration:=TConfiguration.Create;
@@ -368,34 +439,14 @@ begin
   // загрузка настроек из файла
   Do_LoadConfiguration;
 
+  if not Do_CreateSharedFile then
+    Application.Terminate;
   { TODO : дописать }
-
-  // // ffile := CreateFile('C:\ffile.txt', GENERIC_ALL, FILE_SHARE_WRITE, nil, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, 0);
-  // ffile:=CreateFile('ffile.txt', GENERIC_ALL, 0, nil, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-  // if (ffile=INVALID_HANDLE_VALUE) then
-  // ShowMessage('C:\pzdc!');
-  // Edit1.Text:=IntToStr(ffile);
-  // Edit2.Text:=IntToStr(DWORD(-1)); // посмотрел код ошибки
-  // ffileMapObj:=CreateFileMapping(ffile, // Ссылка на файл
-  // nil, // указатель на запись типа TSecurityAttributes
-  // PAGE_READWRITE, // способ совместного использования создаваемого объекта
-  // 0, // старший разряд 64-битного значения размера выделяемого объема памяти для совместного доступа
-  // 1, // размер файла подкачки
-  // 'MySharedValue' // имя объекта файлового отображения
-  // );
-  // if (ffileMapObj<>0) then
-  // ShowMessage('Операция создания Swap-файла удалась');
-  // lpBaseAdd:=MapViewOfFile(ffileMapObj, FILE_MAP_WRITE, 0, 0, 0);
-  // if (lpBaseAdd=nil) then
-  // ShowMessage('Не могу подключить FileMapping!');
-  // SetLength(Str, 12);
-  // CopyMemory(Pointer(Str), lbBaseAdd, 12);
-  // Memo1.Lines.Add(str); // по идее тут я в мемо должен получить кусок своего текстового файла
-  // этого не происходит
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
+  Do_CloseSharedFile;
   Configuration.Free;
 end;
 
@@ -407,10 +458,21 @@ begin
     begin
       iBusyCounter:=0;
       bFirstRun:=False;
-      Do_About(False); // отображение окна "О программе"
+      // Do_About(False); // отображение окна "О программе"
 
+      // регистрация оконных сообщений
       if not Do_RegisterWindowMessages then
         Application.Terminate;
+
+      // запуск потока, рассылающего широковещательное сообщение клиентам
+      ConnectionThread:=TRetranslatorThread.Create(WM_SERVER, WPARAM_SERVER_SENDS_HANDLE, Handle);
+      try
+        ConnectionThread.Start;
+      except
+        on E: Exception do
+          ShowErrorBox(Handle, E.Message);
+      end;
+
       { TODO : дописать }
     end;
   Refresh_BusyState;
@@ -445,25 +507,41 @@ begin
 end;
 
 procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
-var
-  lpData: Pointer;
-  lLineSize, ltemp: Integer;
-  lpBuffer: array of Byte;
+// var
+// lpData: Pointer;
+// lLineSize, ltemp: Integer;
+// lpBuffer: array of Byte;
+// FileName: WideString;
 begin
   Handled:=False;
   if Msg.message=WM_CLIENT then
     case Msg.wParam of
       WPARAM_CLIENT_SENDS_HANDLE: // сигнал серверу о том, что в LPARAM находится handle клиента
         begin
-          ClientHandle:=Msg.lParam;
-          { TODO : дописать }
+          // если клиент был найден и не был найден ранее
+          if not bClientFounded then
+            begin
+              bClientFounded:=True;
+              // останов поиска
+              if ConnectionThread<>nil then
+                ConnectionThread.Terminate;
+              // получаем хэндл клиента
+              hClientHandle:=Msg.lParam;
+              // отправляем сигнал о том, что сервер готов к получению файла и указываем размер блока общей мапяти для передачи данных
+              PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_READY, Configuration.DataBlockSize);
+              { TODO : дописать }
+            end;
           Handled:=True;
         end;
-      WPARAM_CLIENT_SENDS_FILENAME: // сигнал серверу о том, что в LPARAM находится указатель на имя передаваемого файла
+      WPARAM_CLIENT_SENDS_FILENAME: // сигнал серверу о том, что клиент записал имя файла в блок памяти и что в LPARAM находится длина имени файла в символах
         begin
-          // получаем имя передаваемого файла
-          // создаём файл на диске
-          { TODO : дописать }
+          // если клиент был найден
+          if not bClientFounded then
+            begin
+              // получаем имя передаваемого файла
+              // создаём файл на диске
+              { TODO : дописать }
+            end;
           Handled:=True;
         end;
       WPARAM_CLIENT_SENDS_DATA: // сигнал серверу о том, что клиент начинает записывать данные в блок памяти и в LPARAM находится номер передаваемой части
@@ -475,7 +553,6 @@ begin
         end;
       WPARAM_CLIENT_SENDS_SIZE: // сигнал серверу о том, что клиент окончил записывать данные затребованного чанка в блок памяти и данные готовы для чтения и в LPARAM находится размер записанного в память блока данных в байтах
         begin
-          PostMessage(ClientHandle, WM_SERVER, WPARAM_SERVER_READING, 0);
           { TODO : дописать }
           Handled:=True;
         end;
@@ -493,4 +570,37 @@ begin
     end;
 end;
 
+{
+  // var
+  // ffile: THandle;
+  // ffileMapObj: THandle;
+  // lpBaseAdd: PChar;
+  // str: string;
+
+  // ffile := CreateFile('C:\ffile.txt', GENERIC_ALL, FILE_SHARE_WRITE, nil, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, 0);
+  ffile:=CreateFile('ffile.txt', GENERIC_ALL, 0, nil, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+  if (ffile=INVALID_HANDLE_VALUE) then
+  ShowMessage('C:\pzdc!');
+  Edit1.Text:=IntToStr(ffile);
+  Edit2.Text:=IntToStr(DWORD(-1)); // посмотрел код ошибки
+
+  ffileMapObj:=CreateFileMapping(ffile, // Ссылка на файл
+  nil, // указатель на запись типа TSecurityAttributes
+  PAGE_READWRITE, // способ совместного использования создаваемого объекта
+  0, // старший разряд 64-битного значения размера выделяемого объема памяти для совместного доступа
+  1, // размер файла подкачки
+  'MySharedValue' // имя объекта файлового отображения
+  );
+
+  if (ffileMapObj<>0) then
+  ShowMessage('Операция создания Swap-файла удалась');
+
+  lpBaseAdd:=MapViewOfFile(ffileMapObj, FILE_MAP_WRITE, 0, 0, 0);
+
+  if (lpBaseAdd=nil) then
+  ShowMessage('Не могу подключить FileMapping!');
+  SetLength(Str, 12);
+  CopyMemory(Pointer(Str), lbBaseAdd, 12);
+  Memo1.Lines.Add(str); // по идее тут я в мемо должен получить кусок своего текстового файла, но этого не происходит
+}
 end.

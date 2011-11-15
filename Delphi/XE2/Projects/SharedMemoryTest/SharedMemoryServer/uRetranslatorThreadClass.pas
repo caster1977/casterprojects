@@ -4,7 +4,8 @@ interface
 
 uses
   System.Classes,
-  Winapi.Windows;
+  Winapi.Windows,
+  uCommon;
 
 type
   TRetranslatorThread=class(TThread)
@@ -16,20 +17,17 @@ type
   protected
     procedure Execute; override;
   public
-    constructor Create(const Msg: cardinal; const wParam: WPARAM; const lParam: LPARAM; const Pause: integer);
+    constructor Create(const Msg: cardinal; const wParam: WPARAM; const lParam: LPARAM; const Pause: integer = CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
   end;
 
 implementation
 
 { TRetranslatorThread }
 
-uses
-  uCommon;
-
 var
   Recipients: DWORD=BSM_APPLICATIONS;
 
-constructor TRetranslatorThread.Create(const Msg: cardinal; const wParam: WPARAM; const lParam: LPARAM; const Pause: integer);
+constructor TRetranslatorThread.Create(const Msg: cardinal; const wParam: WPARAM; const lParam: LPARAM; const Pause: integer = CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
 begin
   inherited Create(True);
   Priority:=tpLower;

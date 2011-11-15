@@ -36,7 +36,7 @@ type
     procedure Timer2Timer(Sender: TObject);
     procedure lblEMailAddressClick(Sender: TObject);
   strict private
-    procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
+    procedure ProcedureHeader;
     procedure ProcedureFooter;
     procedure Do_Close;
   end;
@@ -66,6 +66,7 @@ end;
 procedure TAboutForm.FormCreate(Sender: TObject);
 begin
   // процедура-обработчик события создания окна
+  ProcedureHeader;
   gsFileVersionInfo1.Filename:=Application.ExeName;
   Action_Close.Visible:=False;
   ProcedureFooter;
@@ -74,6 +75,7 @@ end;
 procedure TAboutForm.FormShow(Sender: TObject);
 begin
   // процедура-обработчик события отображения окна
+  ProcedureHeader;
   if Action_Close.Visible then
     begin
       Timer1.Enabled:=False;
@@ -95,6 +97,7 @@ end;
 procedure TAboutForm.Action_CloseExecute(Sender: TObject);
 begin
   // процедура-обработчик действия Action_Close
+  ProcedureHeader;
   Do_Close;
   ProcedureFooter;
 end;
@@ -102,6 +105,7 @@ end;
 procedure TAboutForm.Do_Close;
 begin
   // процедура закрытия модального окна с результатом mrClose
+  ProcedureHeader;
   ModalResult:=mrClose;
   ProcedureFooter;
 end;
@@ -109,6 +113,7 @@ end;
 procedure TAboutForm.Timer1Timer(Sender: TObject);
 begin
   // процедура закрытия окна по истечению счётчика таймера
+  ProcedureHeader;
   Do_Close;
   ProcedureFooter;
 end;
@@ -123,6 +128,7 @@ end;
 procedure TAboutForm.lblEMailAddressClick(Sender: TObject);
 begin
   // процедура-обработчик щелчка по метке адреса электронной почты
+  ProcedureHeader;
   ShellExecute(Application.Handle, 'open', PWideChar('mailto:caster@mgts.by'), nil, nil, SW_MAXIMIZE);
   ProcedureFooter;
 end;
