@@ -13,12 +13,13 @@ const
   CONST_DEFAULTVALUE_DATABLOCKSIZE = 1024;
   CONST_DEFAULTVALUE_RETRANSLATORPAUSE = 1000;
 
-  WPARAM_SERVER_READY = 1; // сигнал клиентам о том, что сервер готов к установке соединения, в LPARAM находится размер буфера для передачи данных в байтах
-  WPARAM_SERVER_READING = 2; // сигнал клиенту о том, что сервер начинает считывать данные в блок памяти и клиенту нужно ждать, пока не прийдёт сообщение о запросе очередного блока данных
-  WPARAM_SERVER_WAITING_FOR_DATA = 3; // сигнал клиенту о том, что сервер ждёт данные блока для чтения и в LPARAM находится номер блока, который ждёт сервер
+  WPARAM_SERVER_SENDS_HANDLE = 1; // сигнал клиенту о том, что в LPARAM находится handle сервера
+  WPARAM_SERVER_READY = 2; // сигнал клиентам о том, что сервер готов к установке соединения, в LPARAM находится размер буфера для передачи данных в байтах
+  WPARAM_SERVER_READING = 3; // сигнал клиенту о том, что сервер начинает считывать данные в блок памяти и клиенту нужно ждать, пока не прийдёт сообщение о запросе очередного блока данных
+  WPARAM_SERVER_WAITING_FOR_DATA = 4; // сигнал клиенту о том, что сервер ждёт данные блока для чтения и в LPARAM находится номер блока, который ждёт сервер
 
   WPARAM_CLIENT_SENDS_HANDLE = 1; // сигнал серверу о том, что в LPARAM находится handle клиента
-  WPARAM_CLIENT_SENDS_FILENAME = 2; // сигнал серверу о том, что в LPARAM находится указатель на имя передаваемого файла
+  WPARAM_CLIENT_SENDS_FILENAME = 2; // сигал серверу о том, что в LPARAM находится длина имени передаваемого файла в символах
   WPARAM_CLIENT_SENDS_DATA = 3; // сигнал серверу о том, что клиент начинает записывать данные в блок памяти и в LPARAM находится номер передаваемой части
   WPARAM_CLIENT_SENDS_SIZE = 4; // сигнал серверу о том, что клиент окончил записывать данные затребованного чанка в блок памяти и данные готовы для чтения и в LPARAM находится размер записанного в память блока данных в байтах
   WPARAM_CLIENT_SENDS_CRC32 = 5; // сигнал серверу о том, что в LPARAM находится контрольная сумма записанной части
@@ -34,11 +35,19 @@ resourcestring
   TEXT_ERROR_RELEASE_MUTEX='Не удалось удалить флаг управления процессом чтения/записи!';
   TEXT_ERROR_CLOSE_MUTEX_HANDLE='Не удалось закрыть идентификатор флага управления процессом чтения/записи!';
 
+  TEXT_ERRORCODE = ' Код ошибки: ';
+  TEXT_REGISTERWINDOWMESSAGEERROR='Не удалось выполнить операцию регистрации оконного сообщения!';
+  TEXT_ERROR_CREATEFILEMAPPING='Не удалось создать блок общей памяти!';
+  TEXT_ERROR_CREATEFILEMAPPING_ALREADYEXISTS='Блок общей памяти с таким именем уже существует!';
+  TEXT_ERROR_MAPVIEWOFFILE='Не удалось подключиться к блоку общей памяти!';
+  TEXT_ERROR_UNMAPVIEWOFFILE='Не удалось отключиться от блока общей памяти!';
+  TEXT_ERROR_CLOSE_FILEMAPPING_HANDLE='Не удалось закрыть идентификатор блока общей памяти!';
+
 type
   TCommonFunctions=class
   public
-    class function Do_LockMappedFile(var MutexHandle: THandle; const TimeOut: cardinal): Boolean; static;
-    class function Do_UnlockMappedFile(const MutexHandle: THandle): boolean; static;
+//    class function Do_LockMappedFile(var MutexHandle: THandle; const TimeOut: cardinal): Boolean; static;
+//    class function Do_UnlockMappedFile(const MutexHandle: THandle): boolean; static;
     class procedure GenerateError(const aMessage: string; out aErrorMessage: string; out aErrorFlag: boolean); static;
     class function GetConditionalString(const Condition: Boolean; TrueString, FalseString: string): string; static;
   end;
@@ -51,6 +60,7 @@ uses
 
 { CommonFunctions }
 
+{
 class function TCommonFunctions.Do_LockMappedFile(var MutexHandle: THandle; const TimeOut: cardinal): Boolean;
 begin
   Result:=False;
@@ -75,6 +85,7 @@ begin
     else
       Result:=True;
 end;
+}
 
 class procedure TCommonFunctions.GenerateError(const aMessage: string; out aErrorMessage: string; out aErrorFlag: boolean);
 begin

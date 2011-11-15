@@ -12,6 +12,7 @@ object MainForm: TMainForm
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object StatusBar1: TStatusBar
@@ -21,11 +22,20 @@ object MainForm: TMainForm
     Height = 19
     Panels = <>
   end
+  object Button1: TButton
+    Left = 376
+    Top = 104
+    Width = 75
+    Height = 25
+    Caption = 'Button1'
+    TabOrder = 1
+    OnClick = Button1Click
+  end
   object ImageList1: TImageList
     Left = 144
     Top = 72
     Bitmap = {
-      494C010103000800280010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000800400010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -213,5 +223,10 @@ object MainForm: TMainForm
         Action = Action_About
       end
     end
+  end
+  object ApplicationEvents1: TApplicationEvents
+    OnMessage = ApplicationEvents1Message
+    Left = 176
+    Top = 72
   end
 end
