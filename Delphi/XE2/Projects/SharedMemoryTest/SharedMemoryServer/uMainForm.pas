@@ -66,7 +66,7 @@ type
     bAboutWindowExist: boolean;
     WM_SERVER, WM_CLIENT: cardinal;
     ConnectionThread: TRetranslatorThread;
-    bClientFounded: boolean;
+    bClientConnected: boolean;
     hClientHandle: THandle;
     hSharedMemory: THandle;
     PMapView: pointer;
@@ -335,7 +335,7 @@ function TMainForm.Do_CreateSharedFile: boolean;
 begin
   ProcedureHeader;
   Result:=False;
-//  hSharedMemory:=CreateFileMapping(INVALID_HANDLE_VALUE, nil, PAGE_READWRITE, 0, Configuration.DataBlockSize, PWideChar(Configuration.SharedMemoryName));
+  // hSharedMemory:=CreateFileMapping(INVALID_HANDLE_VALUE, nil, PAGE_READWRITE, 0, Configuration.DataBlockSize, PWideChar(Configuration.SharedMemoryName));
   hSharedMemory:=CreateFileMapping(INVALID_HANDLE_VALUE, nil, PAGE_READWRITE, 0, Configuration.DataBlockSize, PWideChar(WideString('{B72BE7F9-4D0A-412F-A4FE-D6C47C35E9C9}')));
   try
     if hSharedMemory=NULL then
@@ -428,7 +428,7 @@ var
 
 begin
   bFirstRun:=True;
-  bClientFounded:=False;
+  bClientConnected:=False;
   Caption:=TEXT_MAINFORM_CAPTION;
   // создание и инициализщация объекта конфигурации
   Configuration:=TConfiguration.Create;
@@ -507,70 +507,70 @@ begin
 end;
 
 procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
+begin
+//  1. Сервер при помощи вспомогательного потока начинает рассылать всем клиентам сообщение со своим хендлом (приглашение) WPARAM_SERVER_SENDS_HANDLE.
+//  2. Клиент, получив данное сообщение, отправляет серверу свой хэндл WPARAM_CLIENT_SENDS_HANDLE.
+//  3. Сервер принимает хэндл клиента, запоминает его и останавливает рассылку сообщения (приглашения) клиентам, а так же отправляет клиенту сообщение о том, что он готов принимать данные WPARAM_SERVER_READY.
+// 4. Клиент записывает в общую память имя файла, который будет передаваться и размер имени файла в символах WPARAM_CLIENT_SENDS_BLOCKS_QUANTITY.
+// 5, Сервер считывает имя файла, создаёт файл на диске и отправляет клиенту уведомление о том, что имя успешно считано WPARAM_SERVER_RECEIVES_FILENAME.
+// 6. Клиент отправляет серверу размер файла в блоках данных.
+// 7. Сервер запрашивает у клиента очередной блок данных (указанного номера).
+// 8. Клиент записывает в общую память данные указанного блока файла.
+// 9. Сервер
+
+
+  Handled:=False;
+  if Msg.message=WM_CLIENT then
+    if Msg.wParam=WPARAM_CLIENT_SENDS_HANDLE then // / сигнал серверу о том, что в LPARAM находится handle клиента
+      begin
+        // если клиент был подключён
+        if not bClientConnected then
+          begin
+            bClientConnected:=True;
+            // останов поиска
+            if ConnectionThread<>nil then
+              ConnectionThread.Terminate;
+            // получаем хэндл клиента
+            hClientHandle:=Msg.lParam;
+            // отправляем сигнал о том, что сервер готов к получению файла и указываем размер блока общей мапяти для передачи данных
+            PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_READY, Configuration.DataBlockSize);
+            { TODO : дописать }
+          end;
+        Handled:=True;
+      end
+    else
+      // если клиент был найден
+      if bClientConnected then
+        case Msg.wParam of
+          WPARAM_CLIENT_SENDS_FILENAME: // сигнал серверу о том, что клиент записал имя файла в блок памяти и что в LPARAM находится длина имени файла в символах
+            begin
+              // получаем имя передаваемого файла
+              // создаём файл на диске
+              { TODO : дописать }
+              Handled:=True;
+            end;
+          WPARAM_CLIENT_SENDS_DATA: // сигнал серверу о том, что клиент начинает записывать данные в блок памяти и в LPARAM находится размер записанного в память блока данных в байтах
+            begin
+              // ждём, пока клиент записывает чанк в общую память
+              { TODO : возможно, стоит добавить вывод номера части, которую записываеит клиент? }
+              { TODO : дописать }
+              Handled:=True;
+            end;
+          WPARAM_CLIENT_SENDS_CRC32: // сигнал серверу о том, что клиент окончил записывать данные в блок пямти и в LPARAM находится контрольная сумма записанной части
+            begin
+              { TODO : дописать }
+              Handled:=True;
+            end;
+        end;
+end;
+
+{
 // var
 // lpData: Pointer;
 // lLineSize, ltemp: Integer;
 // lpBuffer: array of Byte;
 // FileName: WideString;
-begin
-  Handled:=False;
-  if Msg.message=WM_CLIENT then
-    case Msg.wParam of
-      WPARAM_CLIENT_SENDS_HANDLE: // сигнал серверу о том, что в LPARAM находится handle клиента
-        begin
-          // если клиент был найден и не был найден ранее
-          if not bClientFounded then
-            begin
-              bClientFounded:=True;
-              // останов поиска
-              if ConnectionThread<>nil then
-                ConnectionThread.Terminate;
-              // получаем хэндл клиента
-              hClientHandle:=Msg.lParam;
-              // отправляем сигнал о том, что сервер готов к получению файла и указываем размер блока общей мапяти для передачи данных
-              PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_READY, Configuration.DataBlockSize);
-              { TODO : дописать }
-            end;
-          Handled:=True;
-        end;
-      WPARAM_CLIENT_SENDS_FILENAME: // сигнал серверу о том, что клиент записал имя файла в блок памяти и что в LPARAM находится длина имени файла в символах
-        begin
-          // если клиент был найден
-          if not bClientFounded then
-            begin
-              // получаем имя передаваемого файла
-              // создаём файл на диске
-              { TODO : дописать }
-            end;
-          Handled:=True;
-        end;
-      WPARAM_CLIENT_SENDS_DATA: // сигнал серверу о том, что клиент начинает записывать данные в блок памяти и в LPARAM находится номер передаваемой части
-        begin
-          // ждём, пока клиент записывает чанк в общую память
-          { TODO : возможно, стоит добавить вывод номера части, которую записываеит клиент? }
-          { TODO : дописать }
-          Handled:=True;
-        end;
-      WPARAM_CLIENT_SENDS_SIZE: // сигнал серверу о том, что клиент окончил записывать данные затребованного чанка в блок памяти и данные готовы для чтения и в LPARAM находится размер записанного в память блока данных в байтах
-        begin
-          { TODO : дописать }
-          Handled:=True;
-        end;
-      WPARAM_CLIENT_SENDS_CRC32: // сигнал серверу о том, что в LPARAM находится контрольная сумма записанной части
-        begin
-          { TODO : дописать }
-          Handled:=True;
-        end;
-      WPARAM_CLIENT_SENDS_EOF: // сигнал серверу о том, что был достигнут конец файла и можно "закрыть" файл
-        begin
-          CloseFile(FDataFile);
-          { TODO : дописать }
-          Handled:=True;
-        end;
-    end;
-end;
 
-{
   // var
   // ffile: THandle;
   // ffileMapObj: THandle;
