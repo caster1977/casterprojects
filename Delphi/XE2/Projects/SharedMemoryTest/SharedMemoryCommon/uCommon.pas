@@ -13,17 +13,23 @@ const
   CONST_DEFAULTVALUE_DATABLOCKSIZE = 1024;
   CONST_DEFAULTVALUE_RETRANSLATORPAUSE = 1000;
 
-  WPARAM_SERVER_SENDS_HANDLE = 1; // сигнал клиенту о том, что в LPARAM находится handle сервера
-  WPARAM_SERVER_READY = 2; // сигнал клиентам о том, что сервер готов к установке соединения, в LPARAM находится размер буфера для передачи данных в байтах
-  WPARAM_SERVER_READING = 3; // сигнал клиенту о том, что сервер начинает считывать данные в блок памяти и клиенту нужно ждать, пока не прийдёт сообщение о запросе очередного блока данных
-  WPARAM_SERVER_WAITING_FOR_DATA = 4; // сигнал клиенту о том, что сервер ждёт данные блока для чтения и в LPARAM находится номер блока, который ждёт сервер
+  WPARAM_SERVER_WANNA_HANDLE = 1; // сервер хочет handle клиента (LPARAM = handle сервера)
+  WPARAM_CLIENT_SENDS_HANDLE = 2; // клиент отправляет свой handle (LPARAM = handle клиента)
 
-  WPARAM_CLIENT_SENDS_HANDLE = 1; // сигнал серверу о том, что в LPARAM находится handle клиента
-  WPARAM_CLIENT_SENDS_FILENAME = 2; // сигал серверу о том, что в LPARAM находится длина имени передаваемого файла в символах
-  WPARAM_CLIENT_SENDS_DATA = 3; // сигнал серверу о том, что клиент начинает записывать данные в блок памяти и в LPARAM находится номер передаваемой части
-  WPARAM_CLIENT_SENDS_SIZE = 4; // сигнал серверу о том, что клиент окончил записывать данные затребованного чанка в блок памяти и данные готовы для чтения и в LPARAM находится размер записанного в память блока данных в байтах
-  WPARAM_CLIENT_SENDS_CRC32 = 5; // сигнал серверу о том, что в LPARAM находится контрольная сумма записанной части
-  WPARAM_CLIENT_SENDS_EOF = 6; // сигнал серверу о том, что был достигнут конец файла и можно "закрыть" файл
+  WPARAM_CLIENT_WANNA_SEND_FILE = 3; // клиент хочет послать очередной файл
+  WPARAM_SERVER_SENDS_BUFFER_SIZE = 4; // сервер отправляет размер буфера общей памяти (LPARAM = размер буфера в байтах)
+
+  WPARAM_SERVER_WANNA_FILENAME = 5; // сервер хочет имя файла
+  WPARAM_CLIENT_SENDS_FILENAME = 6; // клиент отправляет имя файла (LPARAM = размер имени файла в символах)
+  WPARAM_SERVER_WANNA_BLOCKS_QUANTITY = 7; // сервер хочет количество блоков в файле
+  WPARAM_CLIENT_SENDS_BLOCKS_QUANTITY = 8; // клиент отправляет количество блоков в файле (LPARAM = количество блоков в файле)
+  WPARAM_SERVER_WANNA_DATA = 9; // сервер хочет указанный блок данных (LPARAM = порядковый номер запрашиваемого блока данных)
+  WPARAM_CLIENT_SENDS_DATA = 10; // клиент отправляет указанный блок данных (LPARAM = размер переданных данных в байтах)
+  WPARAM_SERVER_WANNA_CRC32 = 11; // сервер хочет контрольную сумму указанного блока данных (LPARAM = порядковый номер запрашиваемого блока данных)
+  WPARAM_CLIENT_SENDS_CRC32 = 12; // клиент отправляет контрольную сумму указанного блока данных (LPARAM = размер строки СКС32 в байтах)
+
+  WPARAM_CLIENT_SHUTDOWN = 13; // клиент сообщает о своём отключении от сервера
+  WPARAM_SERVER_SHUTDOWN = 14; // сервер сообщает клиенту о своём выключении
 
 resourcestring
   TEXT_WM_SM_SERVER = 'WM_SM_SERVER';
