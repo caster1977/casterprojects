@@ -1,9 +1,9 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
-			<ProjectGuid>{616C11E0-3A76-4E6B-AAE1-0772397A5D5B}</ProjectGuid>
+			<ProjectGuid>{7EBA5D0F-B567-4C8D-AABF-21B4A419F29C}</ProjectGuid>
 			<ProjectVersion>13.4</ProjectVersion>
 			<FrameworkType>VCL</FrameworkType>
-			<MainSource>SharedMemoryCOMApplication.dpr</MainSource>
+			<MainSource>SharedMemoryCOM.dpr</MainSource>
 			<Base>True</Base>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -40,12 +40,8 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
-			<DCC_UnitSearchPath>..\SharedMemoryCommon;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-			<Manifest_File>None</Manifest_File>
-			<VerInfo_Locale>1049</VerInfo_Locale>
 			<DCC_UsePackage>bindcompfmx;fmx;rtl;fmxase;bindcomp;inet;fmxobj;xmlrtl;inetdbxpress;fmxdae;IndyProtocols;bindengine;$(DCC_UsePackage)</DCC_UsePackage>
-			<Icon_MainIcon>c:\program files\embarcadero\rad studio\9.0\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
+			<Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
 			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
 			<DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
 			<DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
@@ -59,7 +55,7 @@
 			<DCC_UsePackage>bindcompvcl;vclie;vcltouch;VclSmp;vcl;vclx;vclimg;vclactnband;$(DCC_UsePackage)</DCC_UsePackage>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
-			<DCC_UsePackage>bindcompvcl;MyComponents;vclie;vcltouch;VclSmp;vcl;CodeSiteExpressPkg;inetdbbde;vclx;svnui;svn;vclimg;fmi;vclactnband;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_UsePackage>bindcompvcl;vclie;vcltouch;CastersPackage;VclSmp;vcl;CodeSiteExpressPkg;inetdbbde;SharedMemoryCommon;vclx;svnui;svn;vclimg;fmi;vclactnband;$(DCC_UsePackage)</DCC_UsePackage>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 			<VerInfo_Locale>1033</VerInfo_Locale>
@@ -74,9 +70,6 @@
 			<DCC_RemoteDebug>true</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-			<Icon_MainIcon>c:\program files\embarcadero\rad studio\9.0\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
-			<VerInfo_Locale>1033</VerInfo_Locale>
 			<DCC_RemoteDebug>false</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -89,6 +82,10 @@
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
+			<DCCReference Include="uMainForm.pas">
+				<Form>MainForm</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
@@ -134,7 +131,7 @@
 						<VersionInfoKeys Name="Comments"/>
 					</VersionInfoKeys>
 					<Source>
-						<Source Name="MainSource">SharedMemoryCOMApplication.dpr</Source>
+						<Source Name="MainSource">SharedMemoryCOM.dpr</Source>
 					</Source>
 				</Delphi.Personality>
 				<Deployment/>
