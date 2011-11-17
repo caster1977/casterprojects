@@ -9,19 +9,19 @@
 			<Projects Include="SharedMemoryClient\SharedMemoryClient.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="..\OA5\OA5.dproj">
+			<Projects Include="SharedMemoryCOM\SharedMemoryCOM.dproj">
 				<Dependencies/>
 			</Projects>
 			<Projects Include="SharedMemoryCommon\SharedMemoryCommon.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="..\OA5\OA5.dproj">
 				<Dependencies/>
 			</Projects>
 			<Projects Include="..\Overseer\Overseer.dproj">
 				<Dependencies/>
 			</Projects>
 			<Projects Include="..\LogKeeper5\LogKeeper5.dproj">
-				<Dependencies/>
-			</Projects>
-			<Projects Include="SharedMemoryCOM\SharedMemoryCOM.dproj">
 				<Dependencies/>
 			</Projects>
 		</ItemGroup>
@@ -50,14 +50,14 @@
 		<Target Name="SharedMemoryClient:Make">
 			<MSBuild Projects="SharedMemoryClient\SharedMemoryClient.dproj" Targets="Make"/>
 		</Target>
-		<Target Name="OA5">
-			<MSBuild Projects="..\OA5\OA5.dproj"/>
+		<Target Name="SharedMemoryCOM">
+			<MSBuild Projects="SharedMemoryCOM\SharedMemoryCOM.dproj"/>
 		</Target>
-		<Target Name="OA5:Clean">
-			<MSBuild Projects="..\OA5\OA5.dproj" Targets="Clean"/>
+		<Target Name="SharedMemoryCOM:Clean">
+			<MSBuild Projects="SharedMemoryCOM\SharedMemoryCOM.dproj" Targets="Clean"/>
 		</Target>
-		<Target Name="OA5:Make">
-			<MSBuild Projects="..\OA5\OA5.dproj" Targets="Make"/>
+		<Target Name="SharedMemoryCOM:Make">
+			<MSBuild Projects="SharedMemoryCOM\SharedMemoryCOM.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="SharedMemoryCommon">
 			<MSBuild Projects="SharedMemoryCommon\SharedMemoryCommon.dproj"/>
@@ -67,6 +67,15 @@
 		</Target>
 		<Target Name="SharedMemoryCommon:Make">
 			<MSBuild Projects="SharedMemoryCommon\SharedMemoryCommon.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="OA5">
+			<MSBuild Projects="..\OA5\OA5.dproj"/>
+		</Target>
+		<Target Name="OA5:Clean">
+			<MSBuild Projects="..\OA5\OA5.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="OA5:Make">
+			<MSBuild Projects="..\OA5\OA5.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="Overseer">
 			<MSBuild Projects="..\Overseer\Overseer.dproj"/>
@@ -86,23 +95,14 @@
 		<Target Name="LogKeeper5:Make">
 			<MSBuild Projects="..\LogKeeper5\LogKeeper5.dproj" Targets="Make"/>
 		</Target>
-		<Target Name="SharedMemoryCOM">
-			<MSBuild Projects="SharedMemoryCOM\SharedMemoryCOM.dproj"/>
-		</Target>
-		<Target Name="SharedMemoryCOM:Clean">
-			<MSBuild Projects="SharedMemoryCOM\SharedMemoryCOM.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="SharedMemoryCOM:Make">
-			<MSBuild Projects="SharedMemoryCOM\SharedMemoryCOM.dproj" Targets="Make"/>
-		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="SharedMemoryServer;SharedMemoryClient;OA5;SharedMemoryCommon;Overseer;LogKeeper5;SharedMemoryCOM"/>
+			<CallTarget Targets="SharedMemoryServer;SharedMemoryClient;SharedMemoryCOM;SharedMemoryCommon;OA5;Overseer;LogKeeper5"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="SharedMemoryServer:Clean;SharedMemoryClient:Clean;OA5:Clean;SharedMemoryCommon:Clean;Overseer:Clean;LogKeeper5:Clean;SharedMemoryCOM:Clean"/>
+			<CallTarget Targets="SharedMemoryServer:Clean;SharedMemoryClient:Clean;SharedMemoryCOM:Clean;SharedMemoryCommon:Clean;OA5:Clean;Overseer:Clean;LogKeeper5:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="SharedMemoryServer:Make;SharedMemoryClient:Make;OA5:Make;SharedMemoryCommon:Make;Overseer:Make;LogKeeper5:Make;SharedMemoryCOM:Make"/>
+			<CallTarget Targets="SharedMemoryServer:Make;SharedMemoryClient:Make;SharedMemoryCOM:Make;SharedMemoryCommon:Make;OA5:Make;Overseer:Make;LogKeeper5:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>

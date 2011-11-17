@@ -12,11 +12,13 @@ type
     FDataBlockSize: cardinal;
     FSharedMemoryName: WideString;
     FRetranslatorPause: integer;
+    FDestinationFolder: string;
   private
     procedure SetDataBlockSize(const Value: cardinal);
     procedure SetIniFileName(const Value: string);
     procedure SetSharedMemoryName(const Value: WideString);
     procedure SetRetranslatorPause(const Value: integer);
+    procedure SetDestinationFolder(const Value: string);
   public
     constructor Create;
     procedure Load;
@@ -25,6 +27,7 @@ type
     property DataBlockSize: cardinal read FDataBlockSize write SetDataBlockSize default CONST_DEFAULTVALUE_DATABLOCKSIZE;
     property RetranslatorPause: integer read FRetranslatorPause write SetRetranslatorPause default CONST_DEFAULTVALUE_RETRANSLATORPAUSE;
     property SharedMemoryName: WideString read FSharedMemoryName write SetSharedMemoryName stored False;
+    property DestinationFolder: string read FDestinationFolder write SetDestinationFolder stored False;
   end;
 
 implementation
@@ -40,6 +43,8 @@ resourcestring
   TEXT_WRONGRETRANSLATORPAUSE='Пауза между циклами трансляции сообщения не должна быть менее нуля секунд!';
   TEXT_WRONGINIFILENAME='Имя файла конфигурации не должно быть пустым!';
   TEXT_INIFILESAVEERROR='Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
+  TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME='Имя каталога для сохранения переданных файлов не должно быть пустым!';
+  TEXT_WRONGDESTINATIONFOLDER_NONEXISTS='Каталог для сохранения переданных файлов не существует!';
 
   { TConfiguration }
 
@@ -92,6 +97,22 @@ begin
   else
     if FDataBlockSize<>Value then
       FDataBlockSize:=Value;
+end;
+
+procedure TConfiguration.SetDestinationFolder(const Value: string);
+begin
+  if FDestinationFolder<>Value then
+    if Trim(Value)<>'' then
+      if DirectoryExists(Trim(Value)) then
+        begin
+          FDestinationFolder:=Trim(Value);
+          if FDestinationFolder[Length(FDestinationFolder)]<>'\' then
+            FDestinationFolder:=FDestinationFolder+'\';
+        end
+      else
+        raise Exception.Create(TEXT_WRONGDESTINATIONFOLDER_NONEXISTS)
+    else
+      raise Exception.Create(TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME);
 end;
 
 procedure TConfiguration.SetIniFileName(const Value: string);
