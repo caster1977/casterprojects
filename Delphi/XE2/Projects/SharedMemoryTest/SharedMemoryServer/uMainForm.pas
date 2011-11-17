@@ -84,6 +84,7 @@ type
     procedure Do_Configuration;
 
     function Do_RegisterWindowMessages: boolean;
+    function Do_ConnectionThreadStart: boolean;
     function Do_CreateSharedFile: boolean;
     function Do_CloseSharedFile: boolean;
     function Do_MapSharedFile: boolean;
@@ -312,6 +313,25 @@ begin
   ProcedureFooter;
 end;
 
+function TMainForm.Do_ConnectionThreadStart: boolean;
+begin
+  ProcedureHeader;
+  Result:=False;
+  // запуск потока, рассылающего широковещательное сообщение клиентам
+  if not Assigned(ConnectionThread) then
+    begin
+      ConnectionThread:=TRetranslatorThread.Create(WM_SERVER, WPARAM_SERVER_WANNA_HANDLE, Handle);
+      try
+        ConnectionThread.Start;
+        Result:=True;
+      except
+        on E: Exception do
+          ShowErrorBox(Handle, E.Message);
+      end;
+    end;
+  ProcedureFooter;
+end;
+
 function TMainForm.Do_RegisterWindowMessages: boolean;
 begin
   ProcedureHeader;
@@ -464,14 +484,8 @@ begin
       if not Do_RegisterWindowMessages then
         Application.Terminate;
 
-      // запуск потока, рассылающего широковещательное сообщение клиентам
-      ConnectionThread:=TRetranslatorThread.Create(WM_SERVER, WPARAM_SERVER_SENDS_HANDLE, Handle);
-      try
-        ConnectionThread.Start;
-      except
-        on E: Exception do
-          ShowErrorBox(Handle, E.Message);
-      end;
+      if not Do_ConnectionThreadStart then
+        Application.Terminate;
 
       { TODO : дописать }
     end;
@@ -508,68 +522,63 @@ end;
 
 procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
 begin
-//  1. Сервер при помощи вспомогательного потока начинает рассылать всем клиентам сообщение со своим хендлом (приглашение) WPARAM_SERVER_SENDS_HANDLE.
-//  2. Клиент, получив данное сообщение, отправляет серверу свой хэндл WPARAM_CLIENT_SENDS_HANDLE.
-//  3. Сервер принимает хэндл клиента, запоминает его и останавливает рассылку сообщения (приглашения) клиентам, а так же отправляет клиенту сообщение о том, что он готов принимать данные WPARAM_SERVER_READY.
-// 4. Клиент записывает в общую память имя файла, который будет передаваться и размер имени файла в символах WPARAM_CLIENT_SENDS_BLOCKS_QUANTITY.
-// 5, Сервер считывает имя файла, создаёт файл на диске и отправляет клиенту уведомление о том, что имя успешно считано WPARAM_SERVER_RECEIVES_FILENAME.
-// 6. Клиент отправляет серверу размер файла в блоках данных.
-// 7. Сервер запрашивает у клиента очередной блок данных (указанного номера).
-// 8. Клиент записывает в общую память данные указанного блока файла.
-// 9. Сервер
-
-
   Handled:=False;
   if Msg.message=WM_CLIENT then
-    if Msg.wParam=WPARAM_CLIENT_SENDS_HANDLE then // / сигнал серверу о том, что в LPARAM находится handle клиента
+    if Msg.wParam=WPARAM_CLIENT_SHUTDOWN then // клиент сообщает о своём отключении от сервера
       begin
-        // если клиент был подключён
-        if not bClientConnected then
-          begin
-            bClientConnected:=True;
-            // останов поиска
-            if ConnectionThread<>nil then
-              ConnectionThread.Terminate;
-            // получаем хэндл клиента
-            hClientHandle:=Msg.lParam;
-            // отправляем сигнал о том, что сервер готов к получению файла и указываем размер блока общей мапяти для передачи данных
-            PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_READY, Configuration.DataBlockSize);
-            { TODO : дописать }
-          end;
+        bClientConnected:=False; // убираем флаш соединения
+        if not Do_ConnectionThreadStart then // запуск потока рассылки хэндла сервера
+          Application.Terminate;
+        { TODO : дописать }
         Handled:=True;
       end
     else
-      // если клиент был найден
       if bClientConnected then
         case Msg.wParam of
-          WPARAM_CLIENT_SENDS_FILENAME: // сигнал серверу о том, что клиент записал имя файла в блок памяти и что в LPARAM находится длина имени файла в символах
-            begin
-              // получаем имя передаваемого файла
-              // создаём файл на диске
-              { TODO : дописать }
-              Handled:=True;
-            end;
-          WPARAM_CLIENT_SENDS_DATA: // сигнал серверу о том, что клиент начинает записывать данные в блок памяти и в LPARAM находится размер записанного в память блока данных в байтах
-            begin
-              // ждём, пока клиент записывает чанк в общую память
-              { TODO : возможно, стоит добавить вывод номера части, которую записываеит клиент? }
-              { TODO : дописать }
-              Handled:=True;
-            end;
-          WPARAM_CLIENT_SENDS_CRC32: // сигнал серверу о том, что клиент окончил записывать данные в блок пямти и в LPARAM находится контрольная сумма записанной части
+          WPARAM_CLIENT_WANNA_SEND_FILE: // клиент хочет послать очередной файл
             begin
               { TODO : дописать }
               Handled:=True;
             end;
-        end;
+          WPARAM_CLIENT_SENDS_FILENAME: // клиент отправляет имя файла (LPARAM = размер имени файла в символах)
+            begin
+              { TODO : дописать }
+              Handled:=True;
+            end;
+          WPARAM_CLIENT_SENDS_BLOCKS_QUANTITY: // клиент отправляет количество блоков в файле (LPARAM = количество блоков в файле)
+            begin
+              { TODO : дописать }
+              Handled:=True;
+            end;
+          WPARAM_CLIENT_SENDS_DATA: // клиент отправляет указанный блок данных (LPARAM = размер переданных данных в байтах)
+            begin
+              { TODO : дописать }
+              Handled:=True;
+            end;
+          WPARAM_CLIENT_SENDS_CRC32: // клиент отправляет контрольную сумму указанного блока данных (LPARAM = размер строки СКС32 в байтах)
+            begin
+              { TODO : дописать }
+              Handled:=True;
+            end;
+        end
+      else
+        if Msg.wParam=WPARAM_CLIENT_SENDS_HANDLE then // клиент отправляет свой handle (LPARAM = handle клиента)
+          begin
+            if Assigned(ConnectionThread) then // останов потока, рассылающего хэндл сервера
+              ConnectionThread.Terminate;
+            hClientHandle:=Msg.lParam; // получаем хэндл клиента
+            bClientConnected:=True; // устанавливаем флаш соединения
+            { TODO : дописать }
+            Handled:=True;
+          end;
 end;
 
 {
-// var
-// lpData: Pointer;
-// lLineSize, ltemp: Integer;
-// lpBuffer: array of Byte;
-// FileName: WideString;
+  // var
+  // lpData: Pointer;
+  // lLineSize, ltemp: Integer;
+  // lpBuffer: array of Byte;
+  // FileName: WideString;
 
   // var
   // ffile: THandle;
