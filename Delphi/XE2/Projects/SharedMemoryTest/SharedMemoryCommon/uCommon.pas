@@ -20,7 +20,7 @@ const
   WPARAM_SERVER_SENDS_BUFFER_SIZE = 4; // сервер отправляет размер буфера общей памяти (LPARAM = размер буфера в байтах)
 
   WPARAM_SERVER_WANNA_FILENAME = 5; // сервер хочет имя файла
-  WPARAM_CLIENT_SENDS_FILENAME = 6; // клиент отправляет имя файла (LPARAM = размер имени файла в символах)
+  WPARAM_CLIENT_SENDS_FILENAME = 6; // клиент отправляет имя файла (LPARAM = размер имени файла в байтах)
   WPARAM_SERVER_WANNA_BLOCKS_QUANTITY = 7; // сервер хочет количество блоков в файле
   WPARAM_CLIENT_SENDS_BLOCKS_QUANTITY = 8; // клиент отправляет количество блоков в файле (LPARAM = количество блоков в файле)
   WPARAM_SERVER_WANNA_DATA = 9; // сервер хочет указанный блок данных (LPARAM = порядковый номер запрашиваемого блока данных)
@@ -48,6 +48,8 @@ resourcestring
   TEXT_ERROR_MAPVIEWOFFILE='Не удалось подключиться к блоку общей памяти!';
   TEXT_ERROR_UNMAPVIEWOFFILE='Не удалось отключиться от блока общей памяти!';
   TEXT_ERROR_CLOSE_FILEMAPPING_HANDLE='Не удалось закрыть идентификатор блока общей памяти!';
+  TEXT_ERROR_CREATEFILE='Не удалось создать файл на диске!';
+
 
 type
   TCommonFunctions=class
