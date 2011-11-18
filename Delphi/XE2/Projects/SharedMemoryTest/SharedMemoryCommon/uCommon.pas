@@ -31,6 +31,8 @@ const
   WPARAM_CLIENT_SHUTDOWN = 13; // клиент сообщает о своём отключении от сервера
   WPARAM_SERVER_SHUTDOWN = 14; // сервер сообщает клиенту о своём выключении
 
+  WPARAM_CLIENT_WANNA_CANCEL_SENDING = 15; // клиент хочет прекратить передачу файла
+
 resourcestring
   TEXT_WM_SM_SERVER = 'WM_SM_SERVER';
   TEXT_WM_SM_CLIENT = 'WM_SM_CLIENT';
