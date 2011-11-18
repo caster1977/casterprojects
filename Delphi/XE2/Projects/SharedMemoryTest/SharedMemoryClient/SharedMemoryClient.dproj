@@ -39,11 +39,19 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+			<Cfg_2_Win32>true</Cfg_2_Win32>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
 			<DCC_BplOutput>.\$(Platform)\$(Config)\Package</DCC_BplOutput>
 			<DCC_DcpOutput>.\$(Platform)\$(Config)\DCP</DCC_DcpOutput>
 			<DCC_UnitSearchPath>..\SharedMemoryCommon;..\..\casterspackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=(C)opyright 2011 by Vlad Ivanov;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<Manifest_File>None</Manifest_File>
 			<VerInfo_Locale>1049</VerInfo_Locale>
 			<DCC_UsePackage>bindcompfmx;fmx;rtl;fmxase;bindcomp;inet;fmxobj;xmlrtl;inetdbxpress;fmxdae;IndyProtocols;bindengine;$(DCC_UsePackage)</DCC_UsePackage>
@@ -63,12 +71,13 @@
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
 			<DCC_Define>Platform32bit;$(DCC_Define)</DCC_Define>
 			<DCC_UsePackage>bindcompvcl;MyComponents;vclie;vcltouch;VclSmp;vcl;CodeSiteExpressPkg;inetdbbde;vclx;svnui;svn;vclimg;fmi;vclactnband;$(DCC_UsePackage)</DCC_UsePackage>
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<VerInfo_Debug>true</VerInfo_Debug>
+			<VerInfo_Locale>1033</VerInfo_Locale>
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 			<DCC_Optimize>false</DCC_Optimize>
 			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
@@ -77,15 +86,17 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-			<VerInfo_Locale>1033</VerInfo_Locale>
 			<DCC_RemoteDebug>false</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<VerInfo_Locale>1033</VerInfo_Locale>
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
 			<DCC_DebugInformation>false</DCC_DebugInformation>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<ItemGroup>
 			<DelphiCompile Include="$(MainSource)">
@@ -96,8 +107,12 @@
 				<FormType>dfm</FormType>
 			</DCCReference>
 			<DCCReference Include="uConfigurationForm.pas">
-				<Form>Form1</Form>
+				<Form>ConfigurationForm</Form>
 			</DCCReference>
+			<DCCReference Include="uAboutForm.pas">
+				<Form>AboutForm</Form>
+			</DCCReference>
+			<DCCReference Include="uConfigurationClass.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

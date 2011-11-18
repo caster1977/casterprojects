@@ -46,12 +46,14 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
 			<DCC_BplOutput>.\$(Platform)\$(Config)\Package</DCC_BplOutput>
 			<DCC_DcpOutput>.\$(Platform)\$(Config)\DCP</DCC_DcpOutput>
 			<DCC_UnitSearchPath>..\SharedMemoryCommon;..\..\CastersPackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=(C)opyright 2011 by Vlad Ivanov;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<Manifest_File>None</Manifest_File>
-			<VerInfo_Locale>1049</VerInfo_Locale>
+			<VerInfo_Locale>1033</VerInfo_Locale>
 			<DCC_UsePackage>bindcompfmx;fmx;rtl;fmxase;bindcomp;inet;fmxobj;xmlrtl;inetdbxpress;fmxdae;IndyProtocols;bindengine;$(DCC_UsePackage)</DCC_UsePackage>
 			<Icon_MainIcon>c:\program files\embarcadero\rad studio\9.0\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
 			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
@@ -69,12 +71,11 @@
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
 			<DCC_Define>Platform32bit;$(DCC_Define)</DCC_Define>
 			<DCC_UsePackage>bindcompvcl;MyComponents;vclie;vcltouch;VclSmp;vcl;CodeSiteExpressPkg;inetdbbde;vclx;svnui;svn;vclimg;fmi;vclactnband;$(DCC_UsePackage)</DCC_UsePackage>
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
-			<VerInfo_Locale>1033</VerInfo_Locale>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<VerInfo_Debug>true</VerInfo_Debug>
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 			<DCC_Optimize>false</DCC_Optimize>
 			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
@@ -82,12 +83,7 @@
 			<DCC_RemoteDebug>true</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-			<VerInfo_Debug>true</VerInfo_Debug>
-			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=(C)opyright 2011 by Vlad Ivanov;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-			<VerInfo_Locale>1033</VerInfo_Locale>
 			<DCC_RemoteDebug>false</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -97,9 +93,7 @@
 			<DCC_DebugInformation>false</DCC_DebugInformation>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
 		<ItemGroup>
 			<DelphiCompile Include="$(MainSource)">
@@ -165,6 +159,9 @@
 					<Source>
 						<Source Name="MainSource">SharedMemoryServer.dpr</Source>
 					</Source>
+					<Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\MyComponents.bpl">File C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\MyComponents.bpl not found</Excluded_Packages>
+					</Excluded_Packages>
 				</Delphi.Personality>
 				<Deployment/>
 				<Platforms>
