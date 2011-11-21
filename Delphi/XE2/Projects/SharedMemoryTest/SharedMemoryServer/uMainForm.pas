@@ -29,7 +29,35 @@ resourcestring
   TEXT_ABOUTFORM_CAPTION='About "Shared Memory Server"...';
 
 type
+  Taob=array of Byte;
+
   THackControl=class(TControl);
+
+  TFileProperties=class
+  strict private
+    FFileName: string;
+    FDataBlocksQuantity: cardinal;
+    FFileStream: TFileStream;
+    FCurrentDataBlockNumber: cardinal;
+    FCurrentDataBlockSize: cardinal;
+    FCurrentDataBlockData: Taob;
+    procedure SetCurrentDataBlockData(const Value: Taob);
+    procedure SetCurrentDataBlockNumber(const Value: cardinal);
+    procedure SetCurrentDataBlockSize(const Value: cardinal);
+    procedure SetFDataBlocksQuantity(const Value: cardinal);
+    procedure SetFileName(const Value: string);
+    procedure SetFileStream(const Value: TFileStream);
+  protected
+    property FileName: string read FFileName write SetFileName stored False;
+    property DataBlocksQuantity: cardinal read FDataBlocksQuantity write SetFDataBlocksQuantity stored False;
+    property FileStream: TFileStream read FFileStream write SetFileStream stored False;
+    property CurrentDataBlockNumber: cardinal read FCurrentDataBlockNumber write SetCurrentDataBlockNumber stored False;
+    property CurrentDataBlockSize: cardinal read FCurrentDataBlockSize write SetCurrentDataBlockSize stored False;
+    property CurrentDataBlockData: Taob read FCurrentDataBlockData write SetCurrentDataBlockData stored False;
+  public
+    constructor Create(const sFileName: string='');
+    destructor Destroy; override;
+  end;
 
   TMainForm=class(TForm)
     MainMenu1: TMainMenu;
@@ -60,8 +88,8 @@ type
     procedure ApplicationEvents1Hint(Sender: TObject);
     procedure Action_AboutExecute(Sender: TObject);
   strict private
-    FDestinationFile: TFileStream;
     FConfiguration: TConfiguration;
+    FFileProperties: TFileProperties;
     bFirstRun: boolean;
     iBusyCounter: integer;
     bAboutWindowExist: boolean;
@@ -72,13 +100,7 @@ type
     hClientHandle: THandle;
     hSharedMemory: THandle;
     PMapView: pointer;
-    wsFileName: string;
     bCanceling: boolean;
-
-    dwDataBlocksQuantity: cardinal;
-    dwCurrentDataBlockNumber: cardinal;
-    dwCurrentDataBlockSize: cardinal;
-    aobCurrentDataBlockData: array of Byte;
 
     FDataFile: file of byte;
     procedure ProcedureHeader;
@@ -101,10 +123,11 @@ type
     function Do_MapSharedFile: boolean;
     function Do_UnMapSharedFile: boolean;
     procedure SetConfiguration(const Value: TConfiguration);
-    procedure SetCurrentFile(const Value: TFileStream);
-  strict protected
-    property CurrentFile: TFileStream read FDestinationFile write SetCurrentFile stored False;
+    procedure SetFileProperties(const Value: TFileProperties);
+    procedure Do_TerminateConnectionThread;
+  protected
     property Configuration: TConfiguration read FConfiguration write SetConfiguration stored False;
+    property CurrentFileProperties: TFileProperties read FFileProperties write SetFileProperties stored False;
   public
     procedure Inc_BusyState;
     procedure Dec_BusyState;
@@ -123,6 +146,65 @@ uses
   uCommon,
   uAboutForm,
   uConfigurationForm;
+
+{ TFileProperties }
+
+constructor TFileProperties.Create(const sFileName: string='');
+begin
+  inherited Create;
+  FFileName:=Trim(sFileName);
+  FDataBlocksQuantity:=0;
+  FFileStream:=nil;
+  FCurrentDataBlockNumber:=0;
+  FCurrentDataBlockSize:=0;
+  FCurrentDataBlockData:=nil;
+end;
+
+destructor TFileProperties.Destroy;
+begin
+  FreeAndNil(FFileStream);
+  if Assigned(FCurrentDataBlockData) then
+    SetLength(FCurrentDataBlockData, 0);
+  FreeAndNil(FCurrentDataBlockData);
+  inherited;
+end;
+
+procedure TFileProperties.SetCurrentDataBlockData(const Value: Taob);
+begin
+  if FCurrentDataBlockData<>Value then
+
+    FCurrentDataBlockData:=Value;
+end;
+
+procedure TFileProperties.SetCurrentDataBlockNumber(const Value: cardinal);
+begin
+  if FCurrentDataBlockNumber<>Value then
+    FCurrentDataBlockNumber:=Value;
+end;
+
+procedure TFileProperties.SetCurrentDataBlockSize(const Value: cardinal);
+begin
+  if FCurrentDataBlockSize<>Value then
+    FCurrentDataBlockSize:=Value;
+end;
+
+procedure TFileProperties.SetFDataBlocksQuantity(const Value: cardinal);
+begin
+  if FDataBlocksQuantity<>Value then
+    FDataBlocksQuantity:=Value;
+end;
+
+procedure TFileProperties.SetFileName(const Value: string);
+begin
+  if FFileName<>Value then
+    FFileName:=Value;
+end;
+
+procedure TFileProperties.SetFileStream(const Value: TFileStream);
+begin
+  if FFileStream<>Value then
+    FFileStream:=Value;
+end;
 
 procedure TMainForm.ProcedureHeader;
 begin
@@ -199,12 +281,14 @@ end;
 
 procedure TMainForm.SetConfiguration(const Value: TConfiguration);
 begin
-  FConfiguration:=Value;
+  if FConfiguration<>Value then
+    FConfiguration:=Value;
 end;
 
-procedure TMainForm.SetCurrentFile(const Value: TFileStream);
+procedure TMainForm.SetFileProperties(const Value: TFileProperties);
 begin
-  FDestinationFile:=Value;
+  if FFileProperties<>Value then
+    FFileProperties:=Value;
 end;
 
 procedure TMainForm.ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
@@ -290,6 +374,12 @@ begin
 
   PreFooter(Handle, bError, sErrorMessage);
   ProcedureFooter;
+end;
+
+procedure TMainForm.Do_TerminateConnectionThread;
+begin
+  if Assigned(ConnectionThread) then
+    ConnectionThread.Terminate;
 end;
 
 procedure TMainForm.Do_About(const aButtonVisible: boolean);
@@ -478,6 +568,8 @@ begin
   Caption:=TEXT_MAINFORM_CAPTION;
   // создание и инициализщация объекта конфигурации
   FConfiguration:=TConfiguration.Create;
+  // обновление переменной текущего открытого файла
+  FFileProperties:=TFileProperties.Create;
   // привязка прогрессбара к позиции на строке статуса
   BindMainProgressBarToStatusBar;
   // привязка иконки готовности к позиции на строке статуса
@@ -495,8 +587,10 @@ begin
 {$I-}
   CloseFile(FDataFile);
 {$I+}
+  Do_TerminateConnectionThread;
   Do_CloseSharedFile;
-  Configuration.Free;
+  FreeAndNil(FFileProperties);
+  FreeAndNil(FConfiguration);
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
@@ -550,119 +644,141 @@ begin
 end;
 
 procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
-var
-  l: LPARAM;
+
+  procedure Do_WPARAM_CLIENT_SENDS_HANDLE(const Handle: THandle);
+  begin
+    Do_TerminateConnectionThread; // останов потока, рассылающего хэндл сервера
+    hClientHandle:=Handle; // получаем хэндл клиента
+    bClientConnected:=True; // устанавливаем флаш соединения
+    { TODO : дописать }
+  end;
+
+  procedure Do_WPARAM_CLIENT_SHUTDOWN;
+  begin
+    bClientConnected:=False; // убираем флаш соединения
+    if not Do_ConnectionThreadStart then // запуск потока рассылки хэндла сервера
+      Application.Terminate;
+    { TODO : дописать }
+  end;
+
+  procedure Do_WPARAM_CLIENT_WANNA_SEND_FILE;
+  begin
+    bCanceling:=False;
+    PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_SENDS_BUFFER_SIZE, Configuration.DataBlockSize); // отправляем клиенту размер блока общей памяти для обмена данными
+    PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILENAME, 0); // требуем от клиента имя файла
+    { TODO : дописать }
+  end;
+
+  procedure Do_WPARAM_CLIENT_WANNA_CANCEL_SENDING;
+  begin
+    bCanceling:=True;
+    { TODO : дописать }
+  end;
+
+  procedure Do_WPARAM_CLIENT_SENDS_BLOCKS_QUANTITY(const dwDataBlocksQuantity: cardinal);
+  begin
+    // сохраняем количество блоков в файле
+    CurrentFileProperties.DataBlocksQuantity:=dwDataBlocksQuantity;
+    // требуем первый блок данных файла
+    CurrentFileProperties.CurrentDataBlockNumber:=1;
+    PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, CurrentFileProperties.CurrentDataBlockNumber); // требуем от клиента указанный блок файла
+    { TODO : дописать }
+  end;
+
+  procedure Do_WPARAM_CLIENT_SENDS_FILENAME(const dwSize: cardinal);
+  var
+    s: string;
+  begin
+    // пролучаем строку имени файла
+    SetLength(s, dwSize);
+    CopyMemory(@s, PMapView, dwSize);
+    CurrentFileProperties.FileName:=s;
+    // создаём файл на диске в указанной в настройках программы папке
+    AssignFile(FDataFile, Configuration.DestinationFolder+CurrentFileProperties.FileName);
+    try
+      Rewrite(FDataFile);
+      // запрашиваем количество блоков в файле
+      PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_BLOCKS_QUANTITY, 0); // требуем от клиента количество блоков в файле
+    except
+      on E: EInOutError do
+        begin
+          CloseFile(FDataFile);
+          ShowErrorBox(Handle, TEXT_ERROR_CREATEFILE+TEXT_ERRORCODE+IntToStr(GetLastError) { +E.Message } );
+        end;
+    end;
+    { TODO : дописать }
+  end;
+
+  procedure Do_WPARAM_CLIENT_SENDS_DATA(const dwSize: cardinal);
+  var
+    ab: Taob;
+  begin
+    // сохраняем размер переданных данных в байтах
+    CurrentFileProperties.CurrentDataBlockSize:=dwSize;
+    // копируем данные блока в массив
+    SetLength(ab, CurrentFileProperties.CurrentDataBlockSize);
+    CopyMemory(@ab[0], PMapView, CurrentFileProperties.CurrentDataBlockSize);
+    CurrentFileProperties.CurrentDataBlockData:=ab;
+    // требуем CRC32 переданного блока данных
+    PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_CRC32, CurrentFileProperties.CurrentDataBlockNumber); // требуем от клиента CRC32 указанного блока файла
+    { TODO : дописать }
+  end;
+
+  procedure Do_WPARAM_CLIENT_SENDS_CRC32(const dwSize: cardinal);
+  begin
+    // получаем CRC32 указаного блока данных файла
+    // производим сверку CRC32
+    // если проверка прошла успешно, записываем данные в файл
+    try
+      BlockWrite(FDataFile, CurrentFileProperties.CurrentDataBlockData, CurrentFileProperties.CurrentDataBlockSize);
+      // требуем от клиента следующий блок данных
+      CurrentFileProperties.CurrentDataBlockNumber:=CurrentFileProperties.CurrentDataBlockNumber+1;
+      if not bCanceling then // прерываем цикл передачи файла
+        PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, CurrentFileProperties.CurrentDataBlockNumber)
+      else
+        begin
+          bCanceling:=False;
+          CurrentFileProperties.FileName:='';
+          CloseFile(FDataFile);
+          { TODO : добавить удаление недописанного файла с диска }
+        end;
+    except
+      on E: EInOutError do
+        begin
+          CloseFile(FDataFile);
+          ShowErrorBox(Handle, TEXT_ERROR_CREATEFILE+TEXT_ERRORCODE+IntToStr(GetLastError) { +E.Message } );
+        end;
+    end;
+    { TODO : дописать }
+  end;
+
 begin
   Handled:=False;
   if Msg.message=WM_CLIENT then
-    if Msg.wParam=WPARAM_CLIENT_SHUTDOWN then // клиент сообщает о своём отключении от сервера
-      begin
-        bClientConnected:=False; // убираем флаш соединения
-        if not Do_ConnectionThreadStart then // запуск потока рассылки хэндла сервера
-          Application.Terminate;
-        { TODO : дописать }
-        Handled:=True;
-      end
-    else
-      if bClientConnected then
-        case Msg.wParam of
-          WPARAM_CLIENT_WANNA_SEND_FILE: // клиент хочет послать очередной файл
-            begin
-              bCanceling:=False;
-              PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_SENDS_BUFFER_SIZE, Configuration.DataBlockSize); // отправляем клиенту размер блока общей памяти для обмена данными
-              PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILENAME, 0); // требуем от клиента имя файла
-              { TODO : дописать }
-              Handled:=True;
-            end;
-          WPARAM_CLIENT_WANNA_CANCEL_SENDING: // клиент хочет прекратить передачу файла
-            begin
-              bCanceling:=True;
-              { TODO : дописать }
-              Handled:=True;
-            end;
-          WPARAM_CLIENT_SENDS_FILENAME: // клиент отправляет имя файла (LPARAM = размер имени файла в байтах)
-            begin
-              // пролучаем строку имени файла
-              l:=Msg.lParam;
-              SetLength(wsFileName, l);
-              CopyMemory(@wsFileName, PMapView, l*SizeOf(Char));
-              // создаём файл на диске в указанной в настройках программы папке
-              AssignFile(FDataFile, Configuration.DestinationFolder+wsFileName);
-              try
-                Rewrite(FDataFile);
-                // запрашиваем количество блоков в файле
-                PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_BLOCKS_QUANTITY, 0); // требуем от клиента количество блоков в файле
-              except
-                on E: EInOutError do
-                  begin
-                    CloseFile(FDataFile);
-                    ShowErrorBox(Handle, TEXT_ERROR_CREATEFILE+TEXT_ERRORCODE+IntToStr(GetLastError) { +E.Message } );
-                  end;
-              end;
-              { TODO : дописать }
-              Handled:=True;
-            end;
-          WPARAM_CLIENT_SENDS_BLOCKS_QUANTITY: // клиент отправляет количество блоков в файле (LPARAM = количество блоков в файле)
-            begin
-              // сохраняем количество блоков в файле
-              dwDataBlocksQuantity:=Msg.lParam;
-              // требуем первый блок данных файла
-              dwCurrentDataBlockNumber:=1;
-              PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, dwCurrentDataBlockNumber); // требуем от клиента указанный блок файла
-              { TODO : дописать }
-              Handled:=True;
-            end;
-          WPARAM_CLIENT_SENDS_DATA: // клиент отправляет указанный блок данных (LPARAM = размер переданных данных в байтах)
-            begin
-              // сохраняем размер переданных данных в байтах
-              dwCurrentDataBlockSize:=Msg.lParam;
-              // копируем данные блока в массив
-              SetLength(aobCurrentDataBlockData, dwCurrentDataBlockSize);
-              CopyMemory(@aobCurrentDataBlockData[0], PMapView, dwCurrentDataBlockSize);
-              // требуем CRC32 переданного блока данных
-              PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_CRC32, dwCurrentDataBlockNumber); // требуем от клиента CRC32 указанного блока файла
-              { TODO : дописать }
-              Handled:=True;
-            end;
-          WPARAM_CLIENT_SENDS_CRC32: // клиент отправляет контрольную сумму указанного блока данных (LPARAM = размер строки СКС32 в байтах)
-            begin
-              // получаем CRC32 указаного блока данных файла
-              // производим сверку CRC32
-              // если проверка прошла успешно, записываем данные в файл
-              try
-                BlockWrite(FDataFile, aobCurrentDataBlockData, dwCurrentDataBlockSize);
-                // требуем от клиента следующий блок данных
-                Inc(dwCurrentDataBlockNumber);
-                if not bCanceling then // прерываем цикл передачи файла
-                  PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, dwCurrentDataBlockNumber)
-                else
-                  begin
-                    bCanceling:=False;
-                    wsFileName:='';
-                    CloseFile(FDataFile);
-                    { TODO : добавить удаление недописанного файла с диска }
-                  end;
-              except
-                on E: EInOutError do
-                  begin
-                    CloseFile(FDataFile);
-                    ShowErrorBox(Handle, TEXT_ERROR_CREATEFILE+TEXT_ERRORCODE+IntToStr(GetLastError) { +E.Message } );
-                  end;
-              end;
-              { TODO : дописать }
-              Handled:=True;
-            end;
-        end
+    begin
+      if Msg.wParam=WPARAM_CLIENT_SHUTDOWN then // клиент сообщает о своём отключении от сервера
+        Do_WPARAM_CLIENT_SHUTDOWN
       else
-        if Msg.wParam=WPARAM_CLIENT_SENDS_HANDLE then // клиент отправляет свой handle (LPARAM = handle клиента)
-          begin
-            if Assigned(ConnectionThread) then // останов потока, рассылающего хэндл сервера
-              ConnectionThread.Terminate;
-            hClientHandle:=Msg.lParam; // получаем хэндл клиента
-            bClientConnected:=True; // устанавливаем флаш соединения
-            { TODO : дописать }
-            Handled:=True;
-          end;
+        if bClientConnected then
+          case Msg.wParam of
+            WPARAM_CLIENT_WANNA_SEND_FILE: // клиент хочет послать очередной файл
+              Do_WPARAM_CLIENT_WANNA_SEND_FILE;
+            WPARAM_CLIENT_WANNA_CANCEL_SENDING: // клиент хочет прекратить передачу файла
+              Do_WPARAM_CLIENT_WANNA_CANCEL_SENDING;
+            WPARAM_CLIENT_SENDS_FILENAME: // клиент отправляет имя файла (LPARAM = размер имени файла в байтах)
+              Do_WPARAM_CLIENT_SENDS_FILENAME(Msg.lParam);
+            WPARAM_CLIENT_SENDS_BLOCKS_QUANTITY: // клиент отправляет количество блоков в файле (LPARAM = количество блоков в файле)
+              Do_WPARAM_CLIENT_SENDS_BLOCKS_QUANTITY(Msg.lParam);
+            WPARAM_CLIENT_SENDS_DATA: // клиент отправляет указанный блок данных (LPARAM = размер переданных данных в байтах)
+              Do_WPARAM_CLIENT_SENDS_DATA(Msg.lParam);
+            WPARAM_CLIENT_SENDS_CRC32: // клиент отправляет контрольную сумму указанного блока данных (LPARAM = размер строки СКС32 в байтах)
+              Do_WPARAM_CLIENT_SENDS_CRC32(Msg.lParam);
+          end
+        else
+          if Msg.wParam=WPARAM_CLIENT_SENDS_HANDLE then // клиент отправляет свой handle (LPARAM = handle клиента)
+            Do_WPARAM_CLIENT_SENDS_HANDLE(Msg.lParam);
+      Handled:=True;
+    end;
 end;
 
 {
