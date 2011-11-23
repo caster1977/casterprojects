@@ -22,42 +22,16 @@ uses
   Vcl.ExtCtrls,
   Vcl.AppEvnts,
   uConfigurationClass,
-  uRetranslatorThreadClass;
+  uRetranslatorThreadClass,
+  uReceiverClass,
+  uSharedFileClass;
 
 resourcestring
   TEXT_MAINFORM_CAPTION='Shared Memory Server';
   TEXT_ABOUTFORM_CAPTION='About "Shared Memory Server"...';
 
 type
-  Taob=array of Byte;
-
   THackControl=class(TControl);
-
-  TFileProperties=class
-  strict private
-    FFileName: string;
-    FDataBlocksQuantity: cardinal;
-    FFileStream: TFileStream;
-    FCurrentDataBlockNumber: cardinal;
-    FCurrentDataBlockSize: cardinal;
-    FCurrentDataBlockData: Taob;
-    procedure SetCurrentDataBlockData(const Value: Taob);
-    procedure SetCurrentDataBlockNumber(const Value: cardinal);
-    procedure SetCurrentDataBlockSize(const Value: cardinal);
-    procedure SetFDataBlocksQuantity(const Value: cardinal);
-    procedure SetFileName(const Value: string);
-    procedure SetFileStream(const Value: TFileStream);
-  protected
-    property FileName: string read FFileName write SetFileName stored False;
-    property DataBlocksQuantity: cardinal read FDataBlocksQuantity write SetFDataBlocksQuantity stored False;
-    property FileStream: TFileStream read FFileStream write SetFileStream stored False;
-    property CurrentDataBlockNumber: cardinal read FCurrentDataBlockNumber write SetCurrentDataBlockNumber stored False;
-    property CurrentDataBlockSize: cardinal read FCurrentDataBlockSize write SetCurrentDataBlockSize stored False;
-    property CurrentDataBlockData: Taob read FCurrentDataBlockData write SetCurrentDataBlockData stored False;
-  public
-    constructor Create(const sFileName: string='');
-    destructor Destroy; override;
-  end;
 
   TMainForm=class(TForm)
     MainMenu1: TMainMenu;
@@ -88,21 +62,18 @@ type
     procedure ApplicationEvents1Hint(Sender: TObject);
     procedure Action_AboutExecute(Sender: TObject);
   strict private
-    FConfiguration: TConfiguration;
-    FFileProperties: TFileProperties;
+    FConfiguration: TConfigurationClass;
     bFirstRun: boolean;
     iBusyCounter: integer;
     bAboutWindowExist: boolean;
 
     WM_SERVER, WM_CLIENT: cardinal;
-    ConnectionThread: TRetranslatorThread;
+    ConnectionThread: TRetranslatorThreadClass;
     bClientConnected: boolean;
     hClientHandle: THandle;
-    hSharedMemory: THandle;
-    PMapView: pointer;
+    SharedFile: TSharedFileClass;
     bCanceling: boolean;
 
-    FDataFile: file of byte;
     procedure ProcedureHeader;
     procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
     procedure ProcedureFooter;
@@ -118,16 +89,10 @@ type
 
     function Do_RegisterWindowMessages: boolean;
     function Do_ConnectionThreadStart: boolean;
-    function Do_CreateSharedFile: boolean;
-    function Do_CloseSharedFile: boolean;
-    function Do_MapSharedFile: boolean;
-    function Do_UnMapSharedFile: boolean;
-    procedure SetConfiguration(const Value: TConfiguration);
-    procedure SetFileProperties(const Value: TFileProperties);
+    procedure SetConfiguration(const Value: TConfigurationClass);
     procedure Do_TerminateConnectionThread;
   protected
-    property Configuration: TConfiguration read FConfiguration write SetConfiguration stored False;
-    property CurrentFileProperties: TFileProperties read FFileProperties write SetFileProperties stored False;
+    property Configuration: TConfigurationClass read FConfiguration write SetConfiguration stored False;
   public
     procedure Inc_BusyState;
     procedure Dec_BusyState;
@@ -146,65 +111,6 @@ uses
   uCommon,
   uAboutForm,
   uConfigurationForm;
-
-{ TFileProperties }
-
-constructor TFileProperties.Create(const sFileName: string='');
-begin
-  inherited Create;
-  FFileName:=Trim(sFileName);
-  FDataBlocksQuantity:=0;
-  FFileStream:=nil;
-  FCurrentDataBlockNumber:=0;
-  FCurrentDataBlockSize:=0;
-  FCurrentDataBlockData:=nil;
-end;
-
-destructor TFileProperties.Destroy;
-begin
-  FreeAndNil(FFileStream);
-  if Assigned(FCurrentDataBlockData) then
-    SetLength(FCurrentDataBlockData, 0);
-  FreeAndNil(FCurrentDataBlockData);
-  inherited;
-end;
-
-procedure TFileProperties.SetCurrentDataBlockData(const Value: Taob);
-begin
-  if FCurrentDataBlockData<>Value then
-
-    FCurrentDataBlockData:=Value;
-end;
-
-procedure TFileProperties.SetCurrentDataBlockNumber(const Value: cardinal);
-begin
-  if FCurrentDataBlockNumber<>Value then
-    FCurrentDataBlockNumber:=Value;
-end;
-
-procedure TFileProperties.SetCurrentDataBlockSize(const Value: cardinal);
-begin
-  if FCurrentDataBlockSize<>Value then
-    FCurrentDataBlockSize:=Value;
-end;
-
-procedure TFileProperties.SetFDataBlocksQuantity(const Value: cardinal);
-begin
-  if FDataBlocksQuantity<>Value then
-    FDataBlocksQuantity:=Value;
-end;
-
-procedure TFileProperties.SetFileName(const Value: string);
-begin
-  if FFileName<>Value then
-    FFileName:=Value;
-end;
-
-procedure TFileProperties.SetFileStream(const Value: TFileStream);
-begin
-  if FFileStream<>Value then
-    FFileStream:=Value;
-end;
 
 procedure TMainForm.ProcedureHeader;
 begin
@@ -279,16 +185,10 @@ begin
   Application.ProcessMessages;
 end;
 
-procedure TMainForm.SetConfiguration(const Value: TConfiguration);
+procedure TMainForm.SetConfiguration(const Value: TConfigurationClass);
 begin
   if FConfiguration<>Value then
     FConfiguration:=Value;
-end;
-
-procedure TMainForm.SetFileProperties(const Value: TFileProperties);
-begin
-  if FFileProperties<>Value then
-    FFileProperties:=Value;
 end;
 
 procedure TMainForm.ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
@@ -435,7 +335,7 @@ begin
   // запуск потока, рассылающего широковещательное сообщение клиентам
   if not Assigned(ConnectionThread) then
     begin
-      ConnectionThread:=TRetranslatorThread.Create(WM_SERVER, WPARAM_SERVER_WANNA_HANDLE, Handle);
+      ConnectionThread:=TRetranslatorThreadClass.Create(WM_SERVER, WPARAM_SERVER_WANNA_HANDLE, Handle);
       try
         ConnectionThread.Start;
         Result:=True;
@@ -459,76 +359,6 @@ begin
     if WM_CLIENT=0 then
       raise Exception.Create(TEXT_REGISTERWINDOWMESSAGEERROR+TEXT_ERRORCODE+IntToStr(GetLastError));
     Result:=True;
-  except
-    on E: Exception do
-      ShowErrorBox(Handle, E.Message);
-  end;
-  ProcedureFooter;
-end;
-
-function TMainForm.Do_CreateSharedFile: boolean;
-begin
-  ProcedureHeader;
-  Result:=False;
-  // hSharedMemory:=CreateFileMapping(INVALID_HANDLE_VALUE, nil, PAGE_READWRITE, 0, Configuration.DataBlockSize, PWideChar(Configuration.SharedMemoryName));
-  hSharedMemory:=CreateFileMapping(INVALID_HANDLE_VALUE, nil, PAGE_READWRITE, 0, Configuration.DataBlockSize, PWideChar(WideString('{B72BE7F9-4D0A-412F-A4FE-D6C47C35E9C9}')));
-  try
-    if hSharedMemory=NULL then
-      raise Exception.Create(TEXT_ERROR_CREATEFILEMAPPING+TEXT_ERRORCODE+IntToStr(GetLastError))
-    else
-      if GetLastError=ERROR_ALREADY_EXISTS then
-        raise Exception.Create(TEXT_ERROR_CREATEFILEMAPPING_ALREADYEXISTS+TEXT_ERRORCODE+IntToStr(GetLastError))
-      else
-        Result:=True;
-  except
-    on E: Exception do
-      ShowErrorBox(Handle, E.Message);
-  end;
-  ProcedureFooter;
-end;
-
-function TMainForm.Do_CloseSharedFile: boolean;
-begin
-  ProcedureHeader;
-  Result:=False;
-  try
-    if not CloseHandle(hSharedMemory) then
-      raise Exception.Create(TEXT_ERROR_CLOSE_FILEMAPPING_HANDLE+TEXT_ERRORCODE+IntToStr(GetLastError))
-    else
-      Result:=True;
-  except
-    on E: Exception do
-      ShowErrorBox(Handle, E.Message);
-  end;
-  ProcedureFooter;
-end;
-
-function TMainForm.Do_MapSharedFile: boolean;
-begin
-  ProcedureHeader;
-  Result:=False;
-  try
-    PMapView:=MapViewOfFile(hSharedMemory, FILE_MAP_WRITE, 0, 0, 0);
-    if not Assigned(PMapView) then
-      raise Exception.Create(TEXT_ERROR_MAPVIEWOFFILE+TEXT_ERRORCODE+IntToStr(GetLastError))
-    else
-      Result:=True;
-  except
-    on E: Exception do
-      ShowErrorBox(Handle, E.Message);
-  end;
-  ProcedureFooter;
-end;
-
-function TMainForm.Do_UnMapSharedFile: boolean;
-begin
-  ProcedureHeader;
-  Result:=False;
-  try
-    if UnmapViewOfFile(PMapView) then
-      raise Exception.Create(TEXT_ERROR_UNMAPVIEWOFFILE+TEXT_ERRORCODE+IntToStr(GetLastError))
-    else
-      Result:=True;
   except
     on E: Exception do
       ShowErrorBox(Handle, E.Message);
@@ -567,9 +397,7 @@ begin
   bCanceling:=False;
   Caption:=TEXT_MAINFORM_CAPTION;
   // создание и инициализщация объекта конфигурации
-  FConfiguration:=TConfiguration.Create;
-  // обновление переменной текущего открытого файла
-  FFileProperties:=TFileProperties.Create;
+  FConfiguration:=TConfigurationClass.Create;
   // привязка прогрессбара к позиции на строке статуса
   BindMainProgressBarToStatusBar;
   // привязка иконки готовности к позиции на строке статуса
@@ -577,19 +405,29 @@ begin
   // загрузка настроек из файла
   Do_LoadConfiguration;
 
-  if not Do_CreateSharedFile then
-    Application.Terminate;
+  try
+    SharedFile:=TSharedFileClass.Create;
+    SharedFile.Mapped:=True;
+  except
+    on E: Exception do
+      begin
+        ShowErrorBox(Handle, E.Message);
+        Application.Terminate;
+      end;
+  end;
+
   { TODO : дописать }
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
-{$I-}
-  CloseFile(FDataFile);
-{$I+}
+  if Assigned(SharedFile) then
+    SharedFile.Free;
+//{$I-}
+//  CloseFile(FDataFile);
+//{$I+}
   Do_TerminateConnectionThread;
-  Do_CloseSharedFile;
-  FreeAndNil(FFileProperties);
+  {Do_CloseSharedFile;}
   FreeAndNil(FConfiguration);
 end;
 
@@ -677,18 +515,23 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
 
   procedure Do_WPARAM_CLIENT_SENDS_BLOCKS_QUANTITY(const dwDataBlocksQuantity: cardinal);
   begin
+    {
     // сохраняем количество блоков в файле
     CurrentFileProperties.DataBlocksQuantity:=dwDataBlocksQuantity;
     // требуем первый блок данных файла
     CurrentFileProperties.CurrentDataBlockNumber:=1;
     PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, CurrentFileProperties.CurrentDataBlockNumber); // требуем от клиента указанный блок файла
+    }
     { TODO : дописать }
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_FILENAME(const dwSize: cardinal);
+  {
   var
     s: string;
+  }
   begin
+    (*
     // пролучаем строку имени файла
     SetLength(s, dwSize);
     CopyMemory(@s, PMapView, dwSize);
@@ -706,13 +549,17 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
           ShowErrorBox(Handle, TEXT_ERROR_CREATEFILE+TEXT_ERRORCODE+IntToStr(GetLastError) { +E.Message } );
         end;
     end;
+    *)
     { TODO : дописать }
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_DATA(const dwSize: cardinal);
+  {
   var
     ab: Taob;
+  }
   begin
+    {
     // сохраняем размер переданных данных в байтах
     CurrentFileProperties.CurrentDataBlockSize:=dwSize;
     // копируем данные блока в массив
@@ -721,11 +568,13 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     CurrentFileProperties.CurrentDataBlockData:=ab;
     // требуем CRC32 переданного блока данных
     PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_CRC32, CurrentFileProperties.CurrentDataBlockNumber); // требуем от клиента CRC32 указанного блока файла
+    }
     { TODO : дописать }
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_CRC32(const dwSize: cardinal);
   begin
+    (*
     // получаем CRC32 указаного блока данных файла
     // производим сверку CRC32
     // если проверка прошла успешно, записываем данные в файл
@@ -749,6 +598,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
           ShowErrorBox(Handle, TEXT_ERROR_CREATEFILE+TEXT_ERRORCODE+IntToStr(GetLastError) { +E.Message } );
         end;
     end;
+    *)
     { TODO : дописать }
   end;
 

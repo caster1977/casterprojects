@@ -107,11 +107,13 @@
 				<Form>ConfigurationForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
-			<DCCReference Include="uConfigurationClass.pas"/>
-			<DCCReference Include="uRetranslatorThreadClass.pas"/>
 			<DCCReference Include="uAboutForm.pas">
 				<Form>AboutForm</Form>
 			</DCCReference>
+			<DCCReference Include="uConfigurationClass.pas"/>
+			<DCCReference Include="uRetranslatorThreadClass.pas"/>
+			<DCCReference Include="uReceiverClass.pas"/>
+			<DCCReference Include="uSharedFileClass.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
