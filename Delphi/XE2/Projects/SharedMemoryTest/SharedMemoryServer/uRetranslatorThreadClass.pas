@@ -8,7 +8,7 @@ uses
   uCommon;
 
 type
-  TRetranslatorThread=class(TThread)
+  TRetranslatorThreadClass=class(TThread)
   strict private
     FPause: integer;
     FMessage: cardinal;
@@ -17,17 +17,15 @@ type
   protected
     procedure Execute; override;
   public
-    constructor Create(const Msg: cardinal; const wParam: WPARAM; const lParam: LPARAM; const Pause: integer = CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+    constructor Create(const Msg: cardinal; const wParam: WPARAM; const lParam: LPARAM; const Pause: integer=CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
   end;
 
 implementation
 
-{ TRetranslatorThread }
-
 var
   Recipients: DWORD=BSM_APPLICATIONS;
 
-constructor TRetranslatorThread.Create(const Msg: cardinal; const wParam: WPARAM; const lParam: LPARAM; const Pause: integer = CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+constructor TRetranslatorThreadClass.Create(const Msg: cardinal; const wParam: WPARAM; const lParam: LPARAM; const Pause: integer=CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
 begin
   inherited Create(True);
   Priority:=tpLower;
@@ -38,12 +36,11 @@ begin
   FLParam:=lParam;
 end;
 
-procedure TRetranslatorThread.Execute;
+procedure TRetranslatorThreadClass.Execute;
 begin
   while not Terminated do
     begin
-      BroadcastSystemMessage(BSF_IGNORECURRENTTASK or BSF_POSTMESSAGE, @Recipients, FMessage, FWParam, FLParam);
-      // PostMessage(HWND_BROADCAST, FMessage, FWParam, FLParam);
+      BroadcastSystemMessage(BSF_IGNORECURRENTTASK or BSF_POSTMESSAGE, @Recipients, FMessage, FWParam, FLParam); // PostMessage(HWND_BROADCAST, FMessage, FWParam, FLParam);
       Sleep(FPause);
     end;
 end;

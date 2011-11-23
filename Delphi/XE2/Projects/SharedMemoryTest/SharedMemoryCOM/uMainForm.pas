@@ -26,7 +26,7 @@ implementation
 {
   function GetSharedMemoryName: WideString;
   begin
-  Result:=TPath.GetGUIDFileName(False);
+  Result:=TPath.GetGUIDFileName(True);
   // Result:=TPath.GetRandomFileName;
   // Result:=TPath.GetTempFileName;
   end;

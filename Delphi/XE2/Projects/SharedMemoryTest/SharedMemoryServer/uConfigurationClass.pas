@@ -6,7 +6,7 @@ uses
   uCommon;
 
 type
-  TConfiguration=class
+  TConfigurationClass=class
   strict private
     FIniFileName: string;
     FDataBlockSize: cardinal;
@@ -38,7 +38,6 @@ uses
   System.IniFiles;
 
 resourcestring
-  TEXT_WRONGBUFFERSIZE='Размер буфера для передачи данных не должен быть менее одного байта!';
   TEXT_WRONGSHAREDMEMORYNAME='Имя общей области памяти не должно быть пустым!';
   TEXT_WRONGRETRANSLATORPAUSE='Пауза между циклами трансляции сообщения не должна быть менее нуля секунд!';
   TEXT_WRONGINIFILENAME='Имя файла конфигурации не должно быть пустым!';
@@ -46,9 +45,7 @@ resourcestring
   TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME='Имя каталога для сохранения переданных файлов не должно быть пустым!';
   TEXT_WRONGDESTINATIONFOLDER_NONEXISTS='Каталог для сохранения переданных файлов не существует!';
 
-  { TConfiguration }
-
-constructor TConfiguration.Create;
+constructor TConfigurationClass.Create;
 begin
   inherited;
   FIniFileName:=ExtractFilePath(ExpandFileName(Application.ExeName))+StringReplace(ExtractFileName(Application.ExeName), '.exe', '.ini', [rfIgnoreCase]);
@@ -57,7 +54,7 @@ begin
   FSharedMemoryName:='';
 end;
 
-procedure TConfiguration.Load;
+procedure TConfigurationClass.Load;
 begin
   if IniFileName>'' then
     with TIniFile.Create(IniFileName) do
@@ -71,7 +68,7 @@ begin
     raise Exception.Create(TEXT_WRONGINIFILENAME);
 end;
 
-procedure TConfiguration.Save;
+procedure TConfigurationClass.Save;
 begin
   if IniFileName>'' then
     with TIniFile.Create(IniFileName) do
@@ -90,7 +87,7 @@ begin
     raise Exception.Create(TEXT_WRONGINIFILENAME);
 end;
 
-procedure TConfiguration.SetDataBlockSize(const Value: cardinal);
+procedure TConfigurationClass.SetDataBlockSize(const Value: cardinal);
 begin
   if Value<=0 then
     raise Exception.Create(TEXT_WRONGBUFFERSIZE)
@@ -99,7 +96,7 @@ begin
       FDataBlockSize:=Value;
 end;
 
-procedure TConfiguration.SetDestinationFolder(const Value: string);
+procedure TConfigurationClass.SetDestinationFolder(const Value: string);
 begin
   if FDestinationFolder<>Value then
     if Trim(Value)<>'' then
@@ -115,7 +112,7 @@ begin
       raise Exception.Create(TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME);
 end;
 
-procedure TConfiguration.SetIniFileName(const Value: string);
+procedure TConfigurationClass.SetIniFileName(const Value: string);
 begin
   if FIniFileName<>Value then
     if Trim(Value)<>'' then
@@ -124,7 +121,7 @@ begin
       raise Exception.Create(TEXT_WRONGINIFILENAME);
 end;
 
-procedure TConfiguration.SetRetranslatorPause(const Value: integer);
+procedure TConfigurationClass.SetRetranslatorPause(const Value: integer);
 begin
   if Value<0 then
     raise Exception.Create(TEXT_WRONGRETRANSLATORPAUSE)
@@ -133,7 +130,7 @@ begin
       FRetranslatorPause:=Value;
 end;
 
-procedure TConfiguration.SetSharedMemoryName(const Value: WideString);
+procedure TConfigurationClass.SetSharedMemoryName(const Value: WideString);
 begin
   if FSharedMemoryName<>Value then
     if Trim(Value)<>'' then
