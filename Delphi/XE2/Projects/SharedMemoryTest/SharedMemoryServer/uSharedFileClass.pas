@@ -3,10 +3,10 @@ unit uSharedFileClass;
 interface
 
 type
-  ///	<summary>
-  ///	  Класс-обёртка для обеспечения работ по созданию, маппингу и уничтожению
-  ///	  объекта общей памяти.
-  ///	</summary>
+  /// <summary>
+  /// Класс-обёртка для обеспечения работ по созданию, маппингу и уничтожению
+  /// объекта общей памяти.
+  /// </summary>
   TSharedFileClass=class
   strict private
     FName: WideString;
@@ -27,114 +27,114 @@ type
     procedure SetMapped(const Value: boolean);
     procedure SetOpened(const Value: boolean);
   strict protected
-    ///	<summary>
-    ///	  Отвечает за механизм создания и уничтожения объекта общей памяти.
-    ///	</summary>
-    ///	<value>
-    ///	  При установке значения <b>True</b> проводится создание блока общей
-    ///	  памяти, при <b>False</b> -уничтожение.
-    ///	</value>
-    ///	<remarks>
-    ///	  Автоматически устанавливается в <b>True</b> при создании экземпляра
-    ///	  класса.
-    ///	</remarks>
+    /// <summary>
+    /// Отвечает за механизм создания и уничтожения объекта общей памяти.
+    /// </summary>
+    /// <value>
+    /// При установке значения <b>True</b> проводится создание блока общей
+    /// памяти, при <b>False</b> -уничтожение.
+    /// </value>
+    /// <remarks>
+    /// Автоматически устанавливается в <b>True</b> при создании экземпляра
+    /// класса.
+    /// </remarks>
     property Opened: boolean read FOpened write SetOpened stored False;
-    ///	<summary>
-    ///	  Handle создаваемого при помощи функции <b>CreateFileMapping</b>
-    ///	  объекта общей памяти.
-    ///	</summary>
-    ///	<remarks>
-    ///	  <b>Только для чтения.</b>
-    ///	</remarks>
+    /// <summary>
+    /// Handle создаваемого при помощи функции <b>CreateFileMapping</b>
+    /// объекта общей памяти.
+    /// </summary>
+    /// <remarks>
+    /// <b>Только для чтения.</b>
+    /// </remarks>
     property Handle: THandle read FHandle stored False;
-    ///	<summary>
-    ///	  Handle создаваемого при помощи функции <b>CreateMutex</b> объекта
-    ///	  типа мьютекс, предназначенного для организации последовательного
-    ///	  доступа (чтени/запись) к объекту общей записи.
-    ///	</summary>
-    ///	<remarks>
-    ///	  <b>Только для чтения.</b>
-    ///	</remarks>
+    /// <summary>
+    /// Handle создаваемого при помощи функции <b>CreateMutex</b> объекта
+    /// типа мьютекс, предназначенного для организации последовательного
+    /// доступа (чтени/запись) к объекту общей записи.
+    /// </summary>
+    /// <remarks>
+    /// <b>Только для чтения.</b>
+    /// </remarks>
     property MutexHandle: THandle read FMutexHandle stored False;
-    ///	<summary>
-    ///	  Имя создаваемого при помощи функции <b>CreateMutex</b> объекта типа
-    ///	  мьютекс, предназначенного для организации последовательного доступа
-    ///	  (чтени/запись) к объекту общей записи.
-    ///	</summary>
-    ///	<remarks>
-    ///	  <b>Только для чтения.</b>
-    ///	</remarks>
+    /// <summary>
+    /// Имя создаваемого при помощи функции <b>CreateMutex</b> объекта типа
+    /// мьютекс, предназначенного для организации последовательного доступа
+    /// (чтени/запись) к объекту общей записи.
+    /// </summary>
+    /// <remarks>
+    /// <b>Только для чтения.</b>
+    /// </remarks>
     property MutexName: WideString read FMutexName stored False;
   public
-    ///	<summary>
-    ///	  Конструктор класса.
-    ///	</summary>
-    ///	<param name="CustomName">
-    ///	  <b>Необязательный параметр.</b> Нменование объекта общей памяти. По
-    ///	  умолчанию происходит генерация уникального имени(GUID).
-    ///	</param>
-    ///	<param name="CustomSize">
-    ///	  <b>Необязательный параметр</b>. Размер блока общей памяти в байтах.
-    ///	  По умолчанию равен 1024 (1Kb).
-    ///	  <b>Значение должно быть больше нуля!</b>
-    ///	</param>
-    ///	<param name="TimeOut">
-    ///	  <para>
-    ///	    <b>Необязательный параметр</b>. Время ожидания (в милисекундах)
-    ///	    получения доступа к мьютексу, обеспечивающему последовательный
-    ///	    доступ (чтение/запись) к одноименному  объекту общей памяти.
-    ///	  </para>
-    ///	  <para>
-    ///	    Значение по умолчанию равно 5000 (5 секунд).
-    ///	  </para>
-    ///	</param>
-    ///	<remarks>
-    ///	  Инициализирует поля экземпляра объекта и создаёт объект общей памяти.
-    ///	  Для дальнейшей работы с общей памятью необходимо включить маппинг
-    ///	  объекта при помощи изменения значения свойства <b>Mapped</b>.
-    ///	</remarks>
+    /// <summary>
+    /// Конструктор класса.
+    /// </summary>
+    /// <param name="CustomName">
+    /// <b>Необязательный параметр.</b> Нменование объекта общей памяти. По
+    /// умолчанию происходит генерация уникального имени(GUID).
+    /// </param>
+    /// <param name="CustomSize">
+    /// <b>Необязательный параметр</b>. Размер блока общей памяти в байтах.
+    /// По умолчанию равен 1024 (1Kb).
+    /// <b>Значение должно быть больше нуля!</b>
+    /// </param>
+    /// <param name="TimeOut">
+    /// <para>
+    /// <b>Необязательный параметр</b>. Время ожидания (в милисекундах)
+    /// получения доступа к мьютексу, обеспечивающему последовательный
+    /// доступ (чтение/запись) к одноименному  объекту общей памяти.
+    /// </para>
+    /// <para>
+    /// Значение по умолчанию равно 5000 (5 секунд).
+    /// </para>
+    /// </param>
+    /// <remarks>
+    /// Инициализирует поля экземпляра объекта и создаёт объект общей памяти.
+    /// Для дальнейшей работы с общей памятью необходимо включить маппинг
+    /// объекта при помощи изменения значения свойства <b>Mapped</b>.
+    /// </remarks>
     constructor Create(const CustomName: WideString=''; const CustomSize: cardinal=1024; const TimeOut: cardinal=5000);
-    ///	<summary>
-    ///	  Деструктор объекта.
-    ///	</summary>
-    ///	<remarks>
-    ///	  При необходимости выключает маппинг и уничтожает имеющийся объект
-    ///	  общей памяти.
-    ///	</remarks>
+    /// <summary>
+    /// Деструктор объекта.
+    /// </summary>
+    /// <remarks>
+    /// При необходимости выключает маппинг и уничтожает имеющийся объект
+    /// общей памяти.
+    /// </remarks>
     destructor Destroy; override;
-    ///	<summary>
-    ///	  Свойство, предоставляющее доступ к имени объекта общей памяти.
-    ///	</summary>
-    ///	<remarks>
-    ///	  <b>Только для чтения.</b>
-    ///	</remarks>
-    property Name: WideString read FName stored False;
-    ///	<summary>
-    ///	  Свойство, предоставляющее доступ к размеру объекта общей памяти.
-    ///	</summary>
-    ///	<remarks>
-    ///	  <b>Только для чтения.</b>
-    ///	</remarks>
+    /// <summary>
+    /// Свойство, предоставляющее доступ к имени объекта общей памяти.
+    /// </summary>
+    /// <remarks>
+    /// <b>Только для чтения.</b>
+    /// </remarks>
+    property name: WideString read FName stored False;
+    /// <summary>
+    /// Свойство, предоставляющее доступ к размеру объекта общей памяти.
+    /// </summary>
+    /// <remarks>
+    /// <b>Только для чтения.</b>
+    /// </remarks>
     property Size: cardinal read FSize stored False;
-    ///	<summary>
-    ///	  Отвечает за механизм обеспечения эксключивного доступа к объекту
-    ///	  общей памяти.
-    ///	</summary>
-    ///	<value>
-    ///	  При установке значения <b>True</b> проводится включение маппинга
-    ///	  блока общей памяти, при <b>False</b> -отключение.
-    ///	</value>
-    ///	<remarks>
-    ///	  При создании объекта маппинг выключен (<b>False</b>).
-    ///	</remarks>
+    /// <summary>
+    /// Отвечает за механизм обеспечения эксключивного доступа к объекту
+    /// общей памяти.
+    /// </summary>
+    /// <value>
+    /// При установке значения <b>True</b> проводится включение маппинга
+    /// блока общей памяти, при <b>False</b> -отключение.
+    /// </value>
+    /// <remarks>
+    /// При создании объекта маппинг выключен (<b>False</b>).
+    /// </remarks>
     property Mapped: boolean read FMapped write SetMapped stored False;
-    ///	<summary>
-    ///	  Указатель на начало области памяти при маппинге части блока общей
-    ///	  памяти.
-    ///	</summary>
-    ///	<remarks>
-    ///	  <b>Только для чтения.</b>
-    ///	</remarks>
+    /// <summary>
+    /// Указатель на начало области памяти при маппинге части блока общей
+    /// памяти.
+    /// </summary>
+    /// <remarks>
+    /// <b>Только для чтения.</b>
+    /// </remarks>
     property Map: pointer read FMap stored False;
   end;
 
@@ -153,7 +153,7 @@ resourcestring
   TEXT_ERROR_RELEASE_MUTEX='Не удалось удалить флаг управления процессом чтения/записи!';
   TEXT_ERROR_CLOSE_MUTEX_HANDLE='Не удалось закрыть идентификатор флага управления процессом чтения/записи!';
   TEXT_ERROR_CANT_MAP_CLOSED_FILE='Для выполнения маппинга вначале необходимо создать блок общей памяти!';
-  TEXT_MUTEX_NAMESUFFIX = '_MUTEX';
+  TEXT_MUTEX_NAMESUFFIX='_MUTEX';
 
 constructor TSharedFileClass.Create(const CustomName: WideString=''; const CustomSize: cardinal=1024; const TimeOut: cardinal=5000);
 begin
@@ -183,21 +183,19 @@ end;
 procedure TSharedFileClass.SetMapped(const Value: boolean);
 begin
   if FMapped<>Value then
-    begin
-      if not Opened then
-        raise Exception.Create(TEXT_ERROR_CANT_MAP_CLOSED_FILE)
-      else
-        if Value then
-          begin
-            if _LockMap then
-              if _Map then
-                FMapped:=Value;
-          end
-        else
-          if _UnlockMap then
-            if _Unmap then
+    if not Opened then
+      raise Exception.Create(TEXT_ERROR_CANT_MAP_CLOSED_FILE)
+    else
+      if Value then
+        begin
+          if _LockMap then
+            if _Map then
               FMapped:=Value;
-    end
+        end
+      else
+        if _UnlockMap then
+          if _Unmap then
+            FMapped:=Value;
 end;
 
 procedure TSharedFileClass.SetOpened(const Value: boolean);

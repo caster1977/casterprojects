@@ -8,6 +8,11 @@ uses
   uCommon;
 
 type
+  ///	<summary>
+  ///	  Класс, наследник <b>TThread</b>, обеспечивающий трансляцию указанного
+  ///	  при создании экземпляра класса оконного сообщения при помощи функции
+  ///	  <b>BroadcastSystemMessage</b>.
+  ///	</summary>
   TRetranslatorThreadClass=class(TThread)
   strict private
     FPause: integer;
@@ -17,7 +22,26 @@ type
   protected
     procedure Execute; override;
   public
-    constructor Create(const Msg: cardinal; const wParam: WPARAM; const lParam: LPARAM; const Pause: integer=CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+    ///	<summary>
+    ///	  Конструктор класса.
+    ///	</summary>
+    ///	<param name="Msg">
+    ///	  Идентификатор оконного сообщения (значение, возвращённое функцией
+    ///	  <b>RegisterWindowMessage</b>). 
+    ///	</param>
+    ///	<param name="wParam">
+    ///	  <b>Необязательный параметр.</b> Первый агрумент сообщения. По
+    ///	  умолчанию равен 0.
+    ///	</param>
+    ///	<param name="lParam">
+    ///	  <b>Необязательный параметр.</b> Второй аргумент сообщения. По
+    ///	  умолчанию равен 0.
+    ///	</param>
+    ///	<param name="Pause">
+    ///	  <b>Необязательный параметр.</b> Время задержки в милисекундах между
+    ///	  циклами передачи сообщения. По умолчанию равен 1000 (1 сек.)
+    ///	</param>
+    constructor Create(const Msg: cardinal; const wParam: WPARAM = 0; const lParam: LPARAM = 0; const Pause: integer=CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
   end;
 
 implementation
@@ -25,7 +49,7 @@ implementation
 var
   Recipients: DWORD=BSM_APPLICATIONS;
 
-constructor TRetranslatorThreadClass.Create(const Msg: cardinal; const wParam: WPARAM; const lParam: LPARAM; const Pause: integer=CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+constructor TRetranslatorThreadClass.Create(const Msg: cardinal; const wParam: WPARAM = 0; const lParam: LPARAM = 0; const Pause: integer=CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
 begin
   inherited Create(True);
   Priority:=tpLower;

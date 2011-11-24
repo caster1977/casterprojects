@@ -405,6 +405,7 @@ begin
   // загрузка настроек из файла
   Do_LoadConfiguration;
 
+  {
   try
     SharedFile:=TSharedFileClass.Create;
     SharedFile.Mapped:=True;
@@ -415,14 +416,17 @@ begin
         Application.Terminate;
       end;
   end;
+  }
 
   { TODO : дописать }
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
+  {
   if Assigned(SharedFile) then
     SharedFile.Free;
+  }
 //{$I-}
 //  CloseFile(FDataFile);
 //{$I+}
