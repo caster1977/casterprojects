@@ -1,30 +1,96 @@
+/// <summary>
+/// Модуль-обёртка класса TSharedFileClass
+/// </summary>
+/// <remarks>
+/// (C)opyright 2011 by Vlad Ivanov aka Caster
+/// </remarks>
 unit uSharedFileClass;
 
 interface
 
 type
   /// <summary>
-  /// Класс-обёртка для обеспечения работ по созданию, маппингу и уничтожению
+  /// Класс, обеспечивающий работы по созданию, маппингу и уничтожению
   /// объекта общей памяти.
   /// </summary>
   TSharedFileClass=class
   strict private
+    /// <summary>
+    /// Наименование объекта общей памяти.
+    /// </summary>
     FName: WideString;
+    /// <summary>
+    /// Размер объекта общей памяти в байтах.
+    /// </summary>
     FSize: cardinal;
+    /// <summary>
+    ///
+    /// </summary>
     FTimeOut: cardinal;
+    /// <summary>
+    /// Флаг, сигнализирующий о текущем состоянии объекта общей памяти
+    /// </summary>
+    /// <value>
+    /// Значение <b>True</b> означает, что объект общей памяти создан
+    /// и готов к маппингу, <b>False</b> - объект общей памяти ещё не
+    /// создан либо уже уничтожен.
+    /// </value>
     FOpened: boolean;
+    /// <summary>
+    /// Флаг, сигнализирующий о текущем состоянии маппинга объекта общей памяти
+    /// </summary>
+    /// <value>
+    /// Значение <b>True</b> означает, что маппинг объекта общей памяти включён
+    /// и готов к чтению/записи, <b>False</b> - маппинг не выполнен.
+    /// </value>
     FMapped: boolean;
+    /// <summary>
+    /// Handle объекта общей памяти.
+    /// </summary>
     FHandle: THandle;
+    /// <summary>
+    /// Указатель на начало блока общей памяти.
+    /// </summary>
     FMap: pointer;
+    /// <summary>
+    /// Имя мьютекса, отвечающего за последовательный доступ к одноимённому объекту памяти.
+    /// </summary>
     FMutexName: WideString;
+    /// <summary>
+    /// Handle мьютекса, отвечающего за последовательный доступ к одноимённому объекту памяти.
+    /// </summary>
     FMutexHandle: THandle;
+    /// <summary>
+    /// Метод, выполняющий создание объекта общей памяти.
+    /// </summary>
     function _Open: boolean;
+    /// <summary>
+    /// Метод, выполняющий уничтожение объекта общей памяти.
+    /// </summary>
     function _Close: boolean;
+    /// <summary>
+    /// Метод, подключающий маппинг к объекту общей памяти.
+    /// </summary>
     function _Map: boolean;
+    /// <summary>
+    /// Метод, отключающий маппинг к объекту общей памяти.
+    /// </summary>
     function _Unmap: boolean;
+    /// <summary>
+    /// Метод, блокирующий доступ к объекту общей памяти прочим копиям класса.
+    /// </summary>
     function _LockMap: boolean;
+    /// <summary>
+    /// Метод, разрешающий доступ к объекту общей памяти прочим копиям класса.
+    /// </summary>
     function _UnlockMap: boolean;
+    /// <summary>
+    /// Метод, контролирующий устанавку значения свойства Mapped в зависимости от текущих условий.
+    /// </summary>
     procedure SetMapped(const Value: boolean);
+    /// <summary>
+    /// Метод, контролирующий устанавку значения свойства Opened в зависимости от текущих условий.
+    /// </summary>
     procedure SetOpened(const Value: boolean);
   strict protected
     /// <summary>
