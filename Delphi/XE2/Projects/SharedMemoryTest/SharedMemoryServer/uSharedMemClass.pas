@@ -1,10 +1,10 @@
 /// <summary>
-/// Модуль-обёртка класса TSharedFileClass
+/// Модуль-обёртка класса TSharedMemClass
 /// </summary>
 /// <remarks>
 /// (C)opyright 2011 by Vlad Ivanov aka Caster
 /// </remarks>
-unit uSharedFileClass;
+unit uSharedMemClass;
 
 interface
 
@@ -13,7 +13,7 @@ type
   /// Класс, обеспечивающий работы по созданию, маппингу и уничтожению
   /// объекта общей памяти.
   /// </summary>
-  TSharedFileClass=class
+  TSharedMemClass=class
   strict private
     /// <summary>
     /// Наименование объекта общей памяти.
@@ -221,7 +221,7 @@ resourcestring
   TEXT_ERROR_CANT_MAP_CLOSED_FILE='Для выполнения маппинга вначале необходимо создать блок общей памяти!';
   TEXT_MUTEX_NAMESUFFIX='_MUTEX';
 
-constructor TSharedFileClass.Create(const CustomName: WideString=''; const CustomSize: cardinal=1024; const TimeOut: cardinal=5000);
+constructor TSharedMemClass.Create(const CustomName: WideString=''; const CustomSize: cardinal=1024; const TimeOut: cardinal=5000);
 begin
   if Trim(CustomName)='' then
     FName:=TPath.GetGUIDFileName(True)
@@ -239,14 +239,14 @@ begin
   Opened:=True;
 end;
 
-destructor TSharedFileClass.Destroy;
+destructor TSharedMemClass.Destroy;
 begin
   Mapped:=False;
   Opened:=False;
   inherited;
 end;
 
-procedure TSharedFileClass.SetMapped(const Value: boolean);
+procedure TSharedMemClass.SetMapped(const Value: boolean);
 begin
   if FMapped<>Value then
     if not Opened then
@@ -264,22 +264,20 @@ begin
             FMapped:=Value;
 end;
 
-procedure TSharedFileClass.SetOpened(const Value: boolean);
+procedure TSharedMemClass.SetOpened(const Value: boolean);
 begin
   if FOpened<>Value then
-    begin
-      if Value then
-        begin
-          if _Open then
-            FOpened:=Value;
-        end
-      else
-        if _Close then
+    if Value then
+      begin
+        if _Open then
           FOpened:=Value;
-    end;
+      end
+    else
+      if _Close then
+        FOpened:=Value;
 end;
 
-function TSharedFileClass._Open: boolean;
+function TSharedMemClass._Open: boolean;
 begin
   FHandle:=CreateFileMapping(INVALID_HANDLE_VALUE, nil, PAGE_READWRITE, 0, FSize, PWideChar(FName));
   Result:=FHandle<>NULL;
@@ -291,14 +289,14 @@ begin
     raise Exception.Create(TEXT_ERROR_CREATEFILEMAPPING_ALREADYEXISTS+TEXT_ERRORCODE+IntToStr(GetLastError))
 end;
 
-function TSharedFileClass._Close: boolean;
+function TSharedMemClass._Close: boolean;
 begin
   Result:=CloseHandle(FHandle);
   if not Result then
     raise Exception.Create(TEXT_ERROR_CLOSE_FILEMAPPING_HANDLE+TEXT_ERRORCODE+IntToStr(GetLastError))
 end;
 
-function TSharedFileClass._Map: boolean;
+function TSharedMemClass._Map: boolean;
 begin
   FMap:=MapViewOfFile(FHandle, FILE_MAP_WRITE, 0, 0, 0);
   Result:=Assigned(FMap);
@@ -306,14 +304,14 @@ begin
     raise Exception.Create(TEXT_ERROR_MAPVIEWOFFILE+TEXT_ERRORCODE+IntToStr(GetLastError));
 end;
 
-function TSharedFileClass._Unmap: boolean;
+function TSharedMemClass._Unmap: boolean;
 begin
   Result:=UnmapViewOfFile(FMap);
   if not Result then
     raise Exception.Create(TEXT_ERROR_UNMAPVIEWOFFILE+TEXT_ERRORCODE+IntToStr(GetLastError));
 end;
 
-function TSharedFileClass._LockMap: boolean;
+function TSharedMemClass._LockMap: boolean;
 begin
   FMutexHandle:=CreateMutex(nil, False, PWideChar(FMutexName));
   Result:=FMutexHandle<>0;
@@ -327,7 +325,7 @@ begin
     end;
 end;
 
-function TSharedFileClass._UnlockMap: boolean;
+function TSharedMemClass._UnlockMap: boolean;
 begin
   Result:=ReleaseMutex(FMutexHandle);
   if not Result then

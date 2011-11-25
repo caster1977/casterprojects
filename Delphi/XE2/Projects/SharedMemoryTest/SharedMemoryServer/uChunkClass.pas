@@ -27,8 +27,17 @@ type
     /// ћассив с данными фрагмента
     /// </summary>
     FData: TArray<byte>;
+    /// <summary>
+    /// ћетод, контролирующий устанавку значени€ свойства <b>CRC32</b> в зависимости от текущих условий.
+    /// </summary>
     procedure SetCRC32(const Value: string);
+    /// <summary>
+    /// ћетод, контролирующий устанавку значени€ свойства <b>Size</b> в зависимости от текущих условий.
+    /// </summary>
     procedure SetSize(const Value: cardinal);
+    /// <summary>
+    /// ћетод, контролирующий устанавку значени€ свойства <b>Data</b> в зависимости от текущих условий.
+    /// </summary>
     procedure SetData(const Value: TArray<byte>);
   public
     /// <summary>

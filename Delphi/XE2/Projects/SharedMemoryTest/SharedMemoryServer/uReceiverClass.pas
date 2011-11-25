@@ -3,35 +3,12 @@ unit uReceiverClass;
 interface
 
 uses
-  uSharedFileClass,
+//  System.Classes,
+  uSharedMemClass,
   uChunkClass;
-
 type
+
   {
-    FFileProperties: TFileProperties;
-    property CurrentFileProperties: TFileProperties read FFileProperties write SetFileProperties stored False;
-    Taob=array of Byte;
-    procedure SetFileProperties(const Value: TFileProperties);
-    обновление переменной текущего открытого файла
-    FFileProperties:=TFileProperties.Create;
-    FreeAndNil(FFileProperties);
-
-    TFileProperties=class
-    strict private
-    FFileName: string;
-    FDataBlocksQuantity: cardinal;
-    FFileStream: TFileStream;
-    FCurrentDataBlockNumber: cardinal;
-    FCurrentDataBlockSize: cardinal;
-    FCurrentDataBlockData: Taob;
-    protected
-    property FileName: string read FFileName write SetFileName stored False;
-    property DataBlocksQuantity: cardinal read FDataBlocksQuantity write SetFDataBlocksQuantity stored False;
-    property FileStream: TFileStream read FFileStream write SetFileStream stored False;
-    property CurrentDataBlockNumber: cardinal read FCurrentDataBlockNumber write SetCurrentDataBlockNumber stored False;
-    property CurrentDataBlockSize: cardinal read FCurrentDataBlockSize write SetCurrentDataBlockSize stored False;
-    property CurrentDataBlockData: Taob read FCurrentDataBlockData write SetCurrentDataBlockData stored False;
-
     constructor TFileProperties.Create(const sFileName: string='');
     begin
     inherited Create;
@@ -51,7 +28,6 @@ type
     FreeAndNil(FCurrentDataBlockData);
     inherited;
     end;
-
   }
 
   /// <summary>
@@ -63,53 +39,16 @@ type
     /// <summary>
     /// Объект для доступа к общей памяти
     /// </summary>
-    FSharedFile: TSharedFileClass;
+    FSharedMem: TSharedMemClass;
     /// <summary>
     /// Объект для манипуляций с фрагментом данных
     /// </summary>
     FChunk: TChunkClass;
-    /// <summary>
-    /// Имя каталога для сохранения получаемых файлов
-    /// </summary>
-    FPath: string;
-    /// <summary>
-    /// Имя дискового файла, в который сохраняются полученные и проверенные данные
-    /// </summary>
-    FFileName: string;
-    /// <summary>
-    /// Файл, в который сохраняются полученные и проверенные данные
-    /// </summary>
-    FFile: file of byte;
-    /// <summary>
-    /// Байтовый массив для получения через общую память очередного блока данных
-    /// </summary>
-    FChunkData: TArray<byte>;
-    /// <summary>
-    /// Размер последнего полученного через общую память блока данных
-    /// </summary>
-    FChunkSize: cardinal;
+  protected
     /// <summary>
     /// Контрольная сумма CRC32 последнего полученного через общую память блока данных
     /// </summary>
-    FChunkCRC32: string;
-    /// <summary>
-    /// Метод, обеспечивающий расчёт контрольной суммы (CRC32) для последнего
-    /// полученного блока данных получаемого файла и сверку его с полученной
-    /// контрольной суммой.
-    /// </summary>
-    /// <returns>
-    /// Возращает <b>True</b>, если сверка котрольных сумм прошла успешно,
-    /// <b>False</b> в случае ошибки.
-    /// </returns>
-    function _CheckDataByCRC32: boolean;
-    procedure SetPath(const Value: string);
-    procedure SetChunkCRC32(const Value: string);
-    procedure SetFileName(const Value: string);
-  protected
-    property _Path: string read FPath write SetPath stored False;
-    property _FileName: string read FFileName write SetFileName stored False;
-
-    property _ChunkCRC32: string read FChunkCRC32 write SetChunkCRC32 stored False;
+    property SharedMem: TSharedMemClass read FSharedMem stored False;
   public
     /// <summary>
     /// Конструктор класса
@@ -117,7 +56,7 @@ type
     /// <remarks>
     /// Создаёт объект для доступа к блоку общей памяти.
     /// </remarks>
-    constructor Create(const Path: string);
+    constructor Create(const DestinationPath: string; const SharedMemName: WideString; const SharedMemSize: cardinal);
     /// <summary>
     /// Деструктор класса.
     /// </summary>
@@ -174,87 +113,28 @@ type
     /// Возращает <b>True</b>, если удалось выполнить операцию сверки и
     /// записи в файл, <b>False</b> в случае ошибки.
     /// </returns>
-    function SaveChank: boolean;
-    property SharedFile: TSharedFileClass read FSharedFile stored False;
+    function SaveChunk: boolean;
   end;
 
 implementation
 
 uses
   System.Variants,
-  System.IOUtils,
   System.SysUtils,
   Winapi.Windows,
   uCommon;
 
-resourcestring
-  TEXT_WRONGDESTINATIONFOLDER_NONEXISTS='Каталог для сохранения переданных файлов не существует!';
-
-constructor TReceiverClass.Create(const Path: string);
+constructor TReceiverClass.Create(const DestinationPath: string; const SharedMemName: WideString; const SharedMemSize: cardinal);
 begin
   inherited Create;
-  FSharedFile:=TSharedFileClass.Create;
-  _Path:=Path;
+  FSharedMem:=TSharedMemClass.Create;
+  Path:=DestinationPath;
 end;
 
 destructor TReceiverClass.Destroy;
 begin
-  FreeAndNil(FSharedFile);
+  FreeAndNil(FSharedMem);
   inherited;
-end;
-
-function TReceiverClass.GetChunk(const Size: cardinal): boolean;
-begin
-
-end;
-
-function TReceiverClass.GetCRC32(const Size: cardinal): boolean;
-begin
-
-end;
-
-function TReceiverClass.GetFileName(const Size: cardinal): boolean;
-begin
-
-end;
-
-function TReceiverClass.SaveChank: boolean;
-begin
-
-end;
-
-procedure TReceiverClass.SetChunkCRC32(const Value: string);
-begin
-  FChunkCRC32 := Value;
-end;
-
-procedure TReceiverClass.SetFileName(const Value: string);
-begin
-  FFileName := Value;
-end;
-
-procedure TReceiverClass.SetPath(const Value: string);
-var
-  s: string;
-begin
-  s:=Trim(Value);
-  if FPath<>s then
-    if s<>'' then
-      if DirectoryExists(s) then
-        begin
-          if s[Length(s)]<>'\' then
-            s:=s+'\';
-          FPath:=s;
-        end
-      else
-        raise Exception.Create(TEXT_WRONGDESTINATIONFOLDER_NONEXISTS)
-    else
-      FPath:=s;
-end;
-
-function TReceiverClass._CheckDataByCRC32: boolean;
-begin
-
 end;
 
 end.
