@@ -24,7 +24,7 @@ uses
   uConfigurationClass,
   uRetranslatorThreadClass,
   uReceiverClass,
-  uSharedFileClass;
+  uSharedMemClass;
 
 resourcestring
   TEXT_MAINFORM_CAPTION='Shared Memory Server';
