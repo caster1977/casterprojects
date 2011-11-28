@@ -14,6 +14,7 @@ uses
   uCommon;
 
 type
+
   /// <summary>
   /// Класс, наследник <b>TThread</b>, обеспечивающий трансляцию указанного
   /// при создании экземпляра класса оконного сообщения при помощи функции
@@ -21,28 +22,34 @@ type
   /// </summary>
   TRetranslatorThreadClass=class(TThread)
   strict private
+
     /// <summary>
     /// Время задержки в милисекундах между циклами передачи сообщения.
     /// </summary>
     FPause: integer;
+
     /// <summary>
     /// Идентификатор оконного сообщения (значение, возвращённое функцией
     /// </summary>
     FMessage: cardinal;
+
     /// <summary>
     /// Первый агрумент сообщения
     /// </summary>
     FWParam: WPARAM;
+
     /// <summary>
     /// Второй агрумент сообщения
     /// </summary>
     FLParam: LPARAM;
   protected
+
     /// <summary>
     /// Главный цикл потока
     /// </summary>
     procedure Execute; override;
   public
+
     /// <summary>
     /// Конструктор класса.
     /// </summary>

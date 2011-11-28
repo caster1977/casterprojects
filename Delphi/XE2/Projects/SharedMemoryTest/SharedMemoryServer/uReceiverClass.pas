@@ -3,9 +3,10 @@ unit uReceiverClass;
 interface
 
 uses
-//  System.Classes,
   uSharedMemClass,
-  uChunkClass;
+  uChunkClass,
+  uChunkedFileClass;
+
 type
 
   {
@@ -36,20 +37,39 @@ type
   /// </summary>
   TReceiverClass=class
   strict private
+
     /// <summary>
     /// Объект для доступа к общей памяти
     /// </summary>
     FSharedMem: TSharedMemClass;
+
     /// <summary>
     /// Объект для манипуляций с фрагментом данных
     /// </summary>
     FChunk: TChunkClass;
-  protected
+
     /// <summary>
-    /// Контрольная сумма CRC32 последнего полученного через общую память блока данных
+    /// Объект для манипуляций с "порционным" файлом данных
+    /// </summary>
+    FChunkedFile: TChunkedFileClass;
+  protected
+
+    /// <summary>
+    /// Объект для доступа к общей памяти
     /// </summary>
     property SharedMem: TSharedMemClass read FSharedMem stored False;
+
+    /// <summary>
+    /// Объект для манипуляций с фрагментом данных
+    /// </summary>
+    property Chunk: TChunkClass read FChunk stored False;
+
+    /// <summary>
+    /// Объект для манипуляций с "порционным" файлом данных
+    /// </summary>
+    property ChunkedFile: TChunkedFileClass read FChunkedFile stored False;
   public
+
     /// <summary>
     /// Конструктор класса
     /// </summary>
@@ -57,6 +77,7 @@ type
     /// Создаёт объект для доступа к блоку общей памяти.
     /// </remarks>
     constructor Create(const DestinationPath: string; const SharedMemName: WideString; const SharedMemSize: cardinal);
+
     /// <summary>
     /// Деструктор класса.
     /// </summary>
@@ -64,6 +85,7 @@ type
     /// При необходимости удаляет объект доступа к общей памяти.
     /// </remarks>
     destructor Destroy; override;
+
     /// <summary>
     /// Метод, обеспечивающий получение через общую память имени получаемого
     /// файла.
@@ -80,6 +102,7 @@ type
     /// при помощи свойства <b>FileName</b>.
     /// </remarks>
     function GetFileName(const Size: cardinal): boolean;
+
     /// <summary>
     /// Метод, обеспечивающий получение через общую память блока данных
     /// получаемого файла и сохранения его в байтовом массиве для дальнейшей
@@ -93,6 +116,7 @@ type
     /// файла, <b>False</b> в случае ошибки.
     /// </returns>
     function GetChunk(const Size: cardinal): boolean;
+
     /// <summary>
     /// Метод, обеспечивающий получение через общую память контрольную сумму
     /// (CRC32) блока данных получаемого файла.
@@ -105,15 +129,6 @@ type
     /// <b>False</b> в случае ошибки.
     /// </returns>
     function GetCRC32(const Size: cardinal): boolean;
-    /// <summary>
-    /// Метод, обеспечивающий сверку контрольной суммы полученного блока
-    /// данных и дозапись его в файл на диске.
-    /// </summary>
-    /// <returns>
-    /// Возращает <b>True</b>, если удалось выполнить операцию сверки и
-    /// записи в файл, <b>False</b> в случае ошибки.
-    /// </returns>
-    function SaveChunk: boolean;
   end;
 
 implementation
@@ -128,13 +143,28 @@ constructor TReceiverClass.Create(const DestinationPath: string; const SharedMem
 begin
   inherited Create;
   FSharedMem:=TSharedMemClass.Create;
-  Path:=DestinationPath;
+  // Path:=DestinationPath;
 end;
 
 destructor TReceiverClass.Destroy;
 begin
   FreeAndNil(FSharedMem);
   inherited;
+end;
+
+function TReceiverClass.GetChunk(const Size: cardinal): boolean;
+begin
+
+end;
+
+function TReceiverClass.GetCRC32(const Size: cardinal): boolean;
+begin
+
+end;
+
+function TReceiverClass.GetFileName(const Size: cardinal): boolean;
+begin
+
 end;
 
 end.

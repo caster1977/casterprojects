@@ -1,3 +1,9 @@
+/// <summary>
+/// Модуль-обёртка класса TConfigurationClass
+/// </summary>
+/// <remarks>
+/// (C)opyright 2011 by Vlad Ivanov aka Caster
+/// </remarks>
 unit uConfigurationClass;
 
 interface
@@ -15,15 +21,15 @@ type
     FDestinationFolder: string;
   private
     procedure SetDataBlockSize(const Value: cardinal);
-    procedure SetIniFileName(const Value: string);
+    {procedure SetIniFileName(const Value: string);}
     procedure SetSharedMemoryName(const Value: WideString);
     procedure SetRetranslatorPause(const Value: integer);
     procedure SetDestinationFolder(const Value: string);
   public
-    constructor Create;
+    constructor Create(const IniFileName: string='');
     procedure Load;
     procedure Save;
-    property IniFileName: string read FIniFileName write SetIniFileName stored False;
+    { property IniFileName: string read FIniFileName write SetIniFileName stored False; }
     property DataBlockSize: cardinal read FDataBlockSize write SetDataBlockSize default CONST_DEFAULTVALUE_DATABLOCKSIZE;
     property RetranslatorPause: integer read FRetranslatorPause write SetRetranslatorPause default CONST_DEFAULTVALUE_RETRANSLATORPAUSE;
     property SharedMemoryName: WideString read FSharedMemoryName write SetSharedMemoryName stored False;
@@ -45,10 +51,13 @@ resourcestring
   TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME='Имя каталога для сохранения переданных файлов не должно быть пустым!';
   TEXT_WRONGDESTINATIONFOLDER_NONEXISTS='Каталог для сохранения переданных файлов не существует!';
 
-constructor TConfigurationClass.Create;
+constructor TConfigurationClass.Create(const IniFileName: string='');
 begin
-  inherited;
-  FIniFileName:=ExtractFilePath(ExpandFileName(Application.ExeName))+StringReplace(ExtractFileName(Application.ExeName), '.exe', '.ini', [rfIgnoreCase]);
+  inherited Create;
+  if Trim(IniFileName)='' then
+    FIniFileName:=ExtractFilePath(ExpandFileName(Application.ExeName))+StringReplace(ExtractFileName(Application.ExeName), '.exe', '.ini', [rfIgnoreCase])
+  else
+    FIniFileName:=Trim(IniFileName);
   FDataBlockSize:=CONST_DEFAULTVALUE_DATABLOCKSIZE;
   RetranslatorPause:=CONST_DEFAULTVALUE_RETRANSLATORPAUSE;
   FSharedMemoryName:='';
@@ -56,8 +65,8 @@ end;
 
 procedure TConfigurationClass.Load;
 begin
-  if IniFileName>'' then
-    with TIniFile.Create(IniFileName) do
+  if FIniFileName>'' then
+    with TIniFile.Create(FIniFileName) do
       try
         DataBlockSize:=cardinal(ReadInteger('Общие', 'iDataBlockSize', CONST_DEFAULTVALUE_DATABLOCKSIZE));
         RetranslatorPause:=ReadInteger('Общие', 'iRetranslatorPause', CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
@@ -70,8 +79,8 @@ end;
 
 procedure TConfigurationClass.Save;
 begin
-  if IniFileName>'' then
-    with TIniFile.Create(IniFileName) do
+  if FIniFileName>'' then
+    with TIniFile.Create(FIniFileName) do
       try
         try
           WriteInteger('Общие', 'iDataBlockSize', DataBlockSize);
@@ -112,14 +121,16 @@ begin
       raise Exception.Create(TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME);
 end;
 
-procedure TConfigurationClass.SetIniFileName(const Value: string);
-begin
+{
+  procedure TConfigurationClass.SetIniFileName(const Value: string);
+  begin
   if FIniFileName<>Value then
-    if Trim(Value)<>'' then
-      FIniFileName:=Trim(Value)
-    else
-      raise Exception.Create(TEXT_WRONGINIFILENAME);
-end;
+  if Trim(Value)<>'' then
+  FIniFileName:=Trim(Value)
+  else
+  raise Exception.Create(TEXT_WRONGINIFILENAME);
+  end;
+}
 
 procedure TConfigurationClass.SetRetranslatorPause(const Value: integer);
 begin

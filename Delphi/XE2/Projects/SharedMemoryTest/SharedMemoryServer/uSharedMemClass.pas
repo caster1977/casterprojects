@@ -174,7 +174,7 @@ type
     /// <remarks>
     /// <b>Только для чтения.</b>
     /// </remarks>
-    property name: WideString read FName stored False;
+    property Name: WideString read FName stored False;
     /// <summary>
     /// Свойство, предоставляющее доступ к размеру объекта общей памяти.
     /// </summary>
@@ -202,6 +202,29 @@ type
     /// <b>Только для чтения.</b>
     /// </remarks>
     property Map: pointer read FMap stored False;
+    ///	<summary>
+    ///	  Метод, обеспечивающий чтение порции данных из общей памяти.
+    ///	</summary>
+    ///	<param name="SharedMem">
+    ///	  Объект общей памяти, из которого необходимо считать порцию данных
+    ///	</param>
+    ///	<returns>
+    ///	  Возращает <b>True</b>, если операция прошла успешно, <b>False</b> в
+    ///	  случае ошибки.
+    ///	</returns>
+//    function ReadFromSharedMem(out SharedMem: TSharedMemClass): boolean;
+
+    ///	<summary>
+    ///	  Метод, обеспечивающий запись порции данных в общую память.
+    ///	</summary>
+    ///	<param name="SharedMem">
+    ///	  Объект общей памяти, в который необходимо записать порцию данных
+    ///	</param>
+    ///	<returns>
+    ///	  Возращает <b>True</b>, если операция прошла успешно, <b>False</b> в
+    ///	  случае ошибки.
+    ///	</returns>
+//    function WriteToSharedMem(const SharedMem: TSharedMemClass): boolean;
   end;
 
 implementation

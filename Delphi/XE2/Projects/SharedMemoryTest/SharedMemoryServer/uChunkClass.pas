@@ -9,57 +9,60 @@ unit uChunkClass;
 interface
 
 type
-  /// <summary>
-  /// Класс, хранящий данные текущего полученного через общую память блока
-  /// файла.
-  /// </summary>
+
+  ///	<summary>
+  ///	  Класс, хранящий порцию данных, их размер в байтах и контрольную сумму
+  ///	  (CRC32).
+  ///	</summary>
   TChunkClass=class
   strict private
+
     /// <summary>
     /// Размер фрагмента данных в байтах
     /// </summary>
     FSize: cardinal;
-    /// <summary>
-    /// Контрольная сумма фрагмента данных
-    /// </summary>
-    FCRC32: string;
+
     /// <summary>
     /// Массив с данными фрагмента
     /// </summary>
     FData: TArray<byte>;
-    /// <summary>
-    /// Метод, контролирующий устанавку значения свойства <b>CRC32</b> в зависимости от текущих условий.
-    /// </summary>
-    procedure SetCRC32(const Value: string);
+
     /// <summary>
     /// Метод, контролирующий устанавку значения свойства <b>Size</b> в зависимости от текущих условий.
     /// </summary>
     procedure SetSize(const Value: cardinal);
+
     /// <summary>
     /// Метод, контролирующий устанавку значения свойства <b>Data</b> в зависимости от текущих условий.
     /// </summary>
     procedure SetData(const Value: TArray<byte>);
+
+    /// <summary>
+    /// Метод, контролирующий получение значения свойства <b>CRC32</b> в зависимости от текущих условий.
+    /// </summary>
+    function GetCRC32: cardinal;
   public
+
     /// <summary>
     /// Конструктор класса.
     /// </summary>
     constructor Create;
+
     /// <summary>
     /// Деструктор класса.
     /// </summary>
     destructor Destroy; override;
-    /// <summary>
-    /// Метод, сверяющий контрольную сумму данных по алгоритму CRC32.
-    /// </summary>
-    function Check: boolean;
+
     /// <summary>
     /// Размер фрагмента данных в байтах
     /// </summary>
     property Size: cardinal read FSize write SetSize stored False;
+
     /// <summary>
     /// Контрольная сумма фрагмента данных
     /// </summary>
-    property CRC32: string read FCRC32 write SetCRC32 stored False;
+    property CRC32: cardinal read GetCRC32 stored False;
+
     /// <summary>
     /// Массив с данными фрагмента
     /// </summary>
@@ -69,42 +72,33 @@ type
 implementation
 
 uses
-  Winapi.Windows,
-  System.TypInfo,
-  System.SysUtils;
-
-function TChunkClass.Check: boolean;
-begin
-  Result:=False;
-end;
+  uCommon;
 
 constructor TChunkClass.Create;
 begin
   inherited Create;
-  FSize:=0;
-  FCRC32:='';
-  SetLength(FData, FSize);
+  Size:=0;
 end;
 
 destructor TChunkClass.Destroy;
 begin
-  SetLength(FData, 0);
+  Size:=0;
   inherited;
 end;
 
-procedure TChunkClass.SetCRC32(const Value: string);
-var
-  s: string;
+function TChunkClass.GetCRC32: cardinal;
 begin
-  s:=Trim(Value);
-  if FCRC32<>s then
-    FCRC32:=s;
+  Result:=CommonFunctions.CRC32OfByteArray(Data);
 end;
 
 procedure TChunkClass.SetData(const Value: TArray<byte>);
 begin
   if FData<>Value then
-    FData:=Copy(Value, 0, FSize); // CopyMemory(FData, Value, FSize);
+    begin
+      SetLength(FData, 0);
+      FSize:=Length(Value);
+      FData:=Copy(Value, 0, FSize); // CopyMemory(FData, Value, FSize);
+    end;
 end;
 
 procedure TChunkClass.SetSize(const Value: cardinal);
