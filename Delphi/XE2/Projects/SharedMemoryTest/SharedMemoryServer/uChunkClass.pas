@@ -8,6 +8,9 @@ unit uChunkClass;
 
 interface
 
+resourcestring
+  TEXT_ERROR_WRONG_CHUNK_OBJECT='”казан несуществующий объект порции данных!';
+
 type
 
   ///	<summary>
@@ -95,8 +98,7 @@ procedure TChunkClass.SetData(const Value: TArray<byte>);
 begin
   if FData<>Value then
     begin
-      SetLength(FData, 0);
-      FSize:=Length(Value);
+      Size:=Length(Value);
       FData:=Copy(Value, 0, FSize); // CopyMemory(FData, Value, FSize);
     end;
 end;

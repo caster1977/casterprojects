@@ -19,12 +19,18 @@ type
     FSharedMemoryName: WideString;
     FRetranslatorPause: integer;
     FDestinationFolder: string;
+    FScrollLogToBottom: boolean;
+    FShowStatusbar: boolean;
   private
+    FKeepLogTypes: TLogMessagesTypes;
     procedure SetDataBlockSize(const Value: cardinal);
-    {procedure SetIniFileName(const Value: string);}
+    { procedure SetIniFileName(const Value: string); }
     procedure SetSharedMemoryName(const Value: WideString);
     procedure SetRetranslatorPause(const Value: integer);
     procedure SetDestinationFolder(const Value: string);
+    procedure SetScrollLogToBottom(const Value: boolean);
+    procedure SetKeepLogTypes(const Value: TLogMessagesTypes);
+    procedure SetShowStatusbar(const Value: boolean);
   public
     constructor Create(const IniFileName: string='');
     procedure Load;
@@ -34,6 +40,9 @@ type
     property RetranslatorPause: integer read FRetranslatorPause write SetRetranslatorPause default CONST_DEFAULTVALUE_RETRANSLATORPAUSE;
     property SharedMemoryName: WideString read FSharedMemoryName write SetSharedMemoryName stored False;
     property DestinationFolder: string read FDestinationFolder write SetDestinationFolder stored False;
+    property ScrollLogToBottom: boolean read FScrollLogToBottom write SetScrollLogToBottom stored False;
+    property KeepLogTypes: TLogMessagesTypes read FKeepLogTypes write SetKeepLogTypes default [lmtError, lmtWarning, lmtInfo];
+    property ShowStatusbar: boolean read FShowStatusbar write SetShowStatusbar default True;
   end;
 
 implementation
@@ -61,6 +70,9 @@ begin
   FDataBlockSize:=CONST_DEFAULTVALUE_DATABLOCKSIZE;
   RetranslatorPause:=CONST_DEFAULTVALUE_RETRANSLATORPAUSE;
   FSharedMemoryName:='';
+  FScrollLogToBottom:=False;
+  FKeepLogTypes:=CONST_DEFAULTVALUE_KEEPLOGTYPES;
+  FShowStatusbar:=CONST_DEFAULTVALUE_SHOWSTATUSBAR;
 end;
 
 procedure TConfigurationClass.Load;
@@ -70,6 +82,24 @@ begin
       try
         DataBlockSize:=cardinal(ReadInteger('Общие', 'iDataBlockSize', CONST_DEFAULTVALUE_DATABLOCKSIZE));
         RetranslatorPause:=ReadInteger('Общие', 'iRetranslatorPause', CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+        ScrollLogToBottom:=ReadBool('Интерфейс', 'bScrollLogToBottom', CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM);
+        ShowStatusbar:=ReadBool('Интерфейс', 'bShowStatusbar', CONST_DEFAULTVALUE_SHOWSTATUSBAR);
+        if ReadBool('Протоколирование', 'bKeepErrorLog', lmtError in CONST_DEFAULTVALUE_KEEPLOGTYPES) then
+          KeepLogTypes:=KeepLogTypes+[lmtError]
+        else
+          KeepLogTypes:=KeepLogTypes-[lmtError];
+        if ReadBool('Протоколирование', 'bKeepWarningLog', lmtWarning in CONST_DEFAULTVALUE_KEEPLOGTYPES) then
+          KeepLogTypes:=KeepLogTypes+[lmtWarning]
+        else
+          KeepLogTypes:=KeepLogTypes-[lmtWarning];
+        if ReadBool('Протоколирование', 'bKeepInfoLog', lmtInfo in CONST_DEFAULTVALUE_KEEPLOGTYPES) then
+          KeepLogTypes:=KeepLogTypes+[lmtInfo]
+        else
+          KeepLogTypes:=KeepLogTypes-[lmtInfo];
+        if ReadBool('Протоколирование', 'bKeepDebugLog', lmtDebug in CONST_DEFAULTVALUE_KEEPLOGTYPES) then
+          KeepLogTypes:=KeepLogTypes+[lmtDebug]
+        else
+          KeepLogTypes:=KeepLogTypes-[lmtDebug];
       finally
         Free;
       end
@@ -85,6 +115,12 @@ begin
         try
           WriteInteger('Общие', 'iDataBlockSize', DataBlockSize);
           WriteInteger('Общие', 'iRetranslatorPause', RetranslatorPause);
+          WriteBool('Интерфейс', 'bScrollLogToBottom', ScrollLogToBottom);
+          WriteBool('Интерфейс', 'bShowStatusbar', ShowStatusbar);
+          WriteBool('Протоколирование', 'bKeepErrorLog', lmtError in KeepLogTypes);
+          WriteBool('Протоколирование', 'bKeepWarningLog', lmtWarning in KeepLogTypes);
+          WriteBool('Протоколирование', 'bKeepInfoLog', lmtInfo in KeepLogTypes);
+          WriteBool('Протоколирование', 'bKeepDebugLog', lmtDebug in KeepLogTypes);
         except
           on EIniFileException do
             raise EIniFileException.Create(TEXT_INIFILESAVEERROR);
@@ -121,6 +157,12 @@ begin
       raise Exception.Create(TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME);
 end;
 
+procedure TConfigurationClass.SetKeepLogTypes(const Value: TLogMessagesTypes);
+begin
+  if FKeepLogTypes<>Value then
+    FKeepLogTypes:=Value;
+end;
+
 {
   procedure TConfigurationClass.SetIniFileName(const Value: string);
   begin
@@ -141,6 +183,12 @@ begin
       FRetranslatorPause:=Value;
 end;
 
+procedure TConfigurationClass.SetScrollLogToBottom(const Value: boolean);
+begin
+  if FScrollLogToBottom<>Value then
+    FScrollLogToBottom:=Value;
+end;
+
 procedure TConfigurationClass.SetSharedMemoryName(const Value: WideString);
 begin
   if FSharedMemoryName<>Value then
@@ -148,6 +196,12 @@ begin
       FSharedMemoryName:=Trim(Value)
     else
       raise Exception.Create(TEXT_WRONGSHAREDMEMORYNAME);
+end;
+
+procedure TConfigurationClass.SetShowStatusbar(const Value: boolean);
+begin
+  if FShowStatusbar<>Value then
+    FShowStatusbar:=Value;
 end;
 
 end.

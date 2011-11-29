@@ -8,25 +8,33 @@ unit uSharedMemClass;
 
 interface
 
+uses
+  uChunkClass;
+
 type
+
   /// <summary>
   /// Класс, обеспечивающий работы по созданию, маппингу и уничтожению
   /// объекта общей памяти.
   /// </summary>
   TSharedMemClass=class
   strict private
+
     /// <summary>
     /// Наименование объекта общей памяти.
     /// </summary>
     FName: WideString;
+
     /// <summary>
     /// Размер объекта общей памяти в байтах.
     /// </summary>
     FSize: cardinal;
+
     /// <summary>
     ///
     /// </summary>
     FTimeOut: cardinal;
+
     /// <summary>
     /// Флаг, сигнализирующий о текущем состоянии объекта общей памяти
     /// </summary>
@@ -36,6 +44,7 @@ type
     /// создан либо уже уничтожен.
     /// </value>
     FOpened: boolean;
+
     /// <summary>
     /// Флаг, сигнализирующий о текущем состоянии маппинга объекта общей памяти
     /// </summary>
@@ -44,55 +53,68 @@ type
     /// и готов к чтению/записи, <b>False</b> - маппинг не выполнен.
     /// </value>
     FMapped: boolean;
+
     /// <summary>
     /// Handle объекта общей памяти.
     /// </summary>
     FHandle: THandle;
+
     /// <summary>
     /// Указатель на начало блока общей памяти.
     /// </summary>
     FMap: pointer;
+
     /// <summary>
     /// Имя мьютекса, отвечающего за последовательный доступ к одноимённому объекту памяти.
     /// </summary>
     FMutexName: WideString;
+
     /// <summary>
     /// Handle мьютекса, отвечающего за последовательный доступ к одноимённому объекту памяти.
     /// </summary>
     FMutexHandle: THandle;
+
     /// <summary>
     /// Метод, выполняющий создание объекта общей памяти.
     /// </summary>
     function _Open: boolean;
+
     /// <summary>
     /// Метод, выполняющий уничтожение объекта общей памяти.
     /// </summary>
     function _Close: boolean;
+
     /// <summary>
     /// Метод, подключающий маппинг к объекту общей памяти.
     /// </summary>
     function _Map: boolean;
+
     /// <summary>
     /// Метод, отключающий маппинг к объекту общей памяти.
     /// </summary>
     function _Unmap: boolean;
+
     /// <summary>
     /// Метод, блокирующий доступ к объекту общей памяти прочим копиям класса.
     /// </summary>
     function _LockMap: boolean;
+
     /// <summary>
     /// Метод, разрешающий доступ к объекту общей памяти прочим копиям класса.
     /// </summary>
     function _UnlockMap: boolean;
+
     /// <summary>
     /// Метод, контролирующий устанавку значения свойства Mapped в зависимости от текущих условий.
     /// </summary>
     procedure SetMapped(const Value: boolean);
+
     /// <summary>
     /// Метод, контролирующий устанавку значения свойства Opened в зависимости от текущих условий.
     /// </summary>
     procedure SetOpened(const Value: boolean);
   strict protected
+
     /// <summary>
     /// Отвечает за механизм создания и уничтожения объекта общей памяти.
     /// </summary>
@@ -105,6 +127,7 @@ type
     /// класса.
     /// </remarks>
     property Opened: boolean read FOpened write SetOpened stored False;
+
     /// <summary>
     /// Handle создаваемого при помощи функции <b>CreateFileMapping</b>
     /// объекта общей памяти.
@@ -113,6 +136,7 @@ type
     /// <b>Только для чтения.</b>
     /// </remarks>
     property Handle: THandle read FHandle stored False;
+
     /// <summary>
     /// Handle создаваемого при помощи функции <b>CreateMutex</b> объекта
     /// типа мьютекс, предназначенного для организации последовательного
@@ -122,6 +146,7 @@ type
     /// <b>Только для чтения.</b>
     /// </remarks>
     property MutexHandle: THandle read FMutexHandle stored False;
+
     /// <summary>
     /// Имя создаваемого при помощи функции <b>CreateMutex</b> объекта типа
     /// мьютекс, предназначенного для организации последовательного доступа
@@ -132,6 +157,7 @@ type
     /// </remarks>
     property MutexName: WideString read FMutexName stored False;
   public
+
     /// <summary>
     /// Конструктор класса.
     /// </summary>
@@ -160,6 +186,7 @@ type
     /// объекта при помощи изменения значения свойства <b>Mapped</b>.
     /// </remarks>
     constructor Create(const CustomName: WideString=''; const CustomSize: cardinal=1024; const TimeOut: cardinal=5000);
+
     /// <summary>
     /// Деструктор объекта.
     /// </summary>
@@ -168,13 +195,43 @@ type
     /// общей памяти.
     /// </remarks>
     destructor Destroy; override;
+
+    /// <summary>
+    /// Метод, обеспечивающий чтение очередной порции данных из общей памяти.
+    /// </summary>
+    /// <param name="Len">
+    /// Размер порции считываемых данных в байтах
+    /// </param>
+    /// <param name="Chunk">
+    /// Объект порции данных, в который будет помещена считанная из общей
+    /// памяти порция данных
+    /// </param>
+    /// <returns>
+    /// Возращает <b>True</b>, если операция прошла успешно, <b>False</b> в
+    /// случае ошибки.
+    /// </returns>
+    function Read(const Len: cardinal; out Chunk: TChunkClass): boolean;
+
+    /// <summary>
+    /// Метод, обеспечивающий запись очередной порции данных в общую память.
+    /// </summary>
+    /// <param name="Chunk">
+    /// Объект порции данных, данные которого будут записаны в общую память
+    /// </param>
+    /// <returns>
+    /// Возращает <b>True</b>, если операция прошла успешно, <b>False</b> в
+    /// случае ошибки.
+    /// </returns>
+    function Write(const Chunk: TChunkClass): boolean;
+
     /// <summary>
     /// Свойство, предоставляющее доступ к имени объекта общей памяти.
     /// </summary>
     /// <remarks>
     /// <b>Только для чтения.</b>
     /// </remarks>
-    property Name: WideString read FName stored False;
+    property name: WideString read FName stored False;
+
     /// <summary>
     /// Свойство, предоставляющее доступ к размеру объекта общей памяти.
     /// </summary>
@@ -182,6 +239,7 @@ type
     /// <b>Только для чтения.</b>
     /// </remarks>
     property Size: cardinal read FSize stored False;
+
     /// <summary>
     /// Отвечает за механизм обеспечения эксключивного доступа к объекту
     /// общей памяти.
@@ -194,6 +252,7 @@ type
     /// При создании объекта маппинг выключен (<b>False</b>).
     /// </remarks>
     property Mapped: boolean read FMapped write SetMapped stored False;
+
     /// <summary>
     /// Указатель на начало области памяти при маппинге части блока общей
     /// памяти.
@@ -202,29 +261,6 @@ type
     /// <b>Только для чтения.</b>
     /// </remarks>
     property Map: pointer read FMap stored False;
-    ///	<summary>
-    ///	  Метод, обеспечивающий чтение порции данных из общей памяти.
-    ///	</summary>
-    ///	<param name="SharedMem">
-    ///	  Объект общей памяти, из которого необходимо считать порцию данных
-    ///	</param>
-    ///	<returns>
-    ///	  Возращает <b>True</b>, если операция прошла успешно, <b>False</b> в
-    ///	  случае ошибки.
-    ///	</returns>
-//    function ReadFromSharedMem(out SharedMem: TSharedMemClass): boolean;
-
-    ///	<summary>
-    ///	  Метод, обеспечивающий запись порции данных в общую память.
-    ///	</summary>
-    ///	<param name="SharedMem">
-    ///	  Объект общей памяти, в который необходимо записать порцию данных
-    ///	</param>
-    ///	<returns>
-    ///	  Возращает <b>True</b>, если операция прошла успешно, <b>False</b> в
-    ///	  случае ошибки.
-    ///	</returns>
-//    function WriteToSharedMem(const SharedMem: TSharedMemClass): boolean;
   end;
 
 implementation
@@ -243,6 +279,9 @@ resourcestring
   TEXT_ERROR_CLOSE_MUTEX_HANDLE='Не удалось закрыть идентификатор флага управления процессом чтения/записи!';
   TEXT_ERROR_CANT_MAP_CLOSED_FILE='Для выполнения маппинга вначале необходимо создать блок общей памяти!';
   TEXT_MUTEX_NAMESUFFIX='_MUTEX';
+  TEXT_ERROR_INVALID_MAP_POINTER='Неверный указатель на область общей памяти!';
+  TEXT_ERROR_MUST_MAPPED_FIRST='Сначала необходимо выполнить маппинг общей памяти!';
+  TEXT_ERROR_INVALID_CHUNK_SIZE='Размер данных объекта порции памяти превышает размер общей памяти!';
 
 constructor TSharedMemClass.Create(const CustomName: WideString=''; const CustomSize: cardinal=1024; const TimeOut: cardinal=5000);
 begin
@@ -258,6 +297,7 @@ begin
     raise Exception.Create(TEXT_WRONGSHAREDMEMORYSIZE);
 
   FTimeOut:=TimeOut;
+  FMap:=nil;
 
   Opened:=True;
 end;
@@ -330,6 +370,7 @@ end;
 function TSharedMemClass._Unmap: boolean;
 begin
   Result:=UnmapViewOfFile(FMap);
+  FMap:=nil;
   if not Result then
     raise Exception.Create(TEXT_ERROR_UNMAPVIEWOFFILE+TEXT_ERRORCODE+IntToStr(GetLastError));
 end;
@@ -359,6 +400,47 @@ begin
       if not Result then
         raise Exception.Create(TEXT_ERROR_CLOSE_MUTEX_HANDLE+TEXT_ERRORCODE+IntToStr(GetLastError));
     end;
+end;
+
+function TSharedMemClass.Read(const Len: cardinal; out Chunk: TChunkClass): boolean;
+begin
+//  Result:=False;
+  if not Assigned(Chunk) then
+    Chunk:=TChunkClass.Create;
+  if Mapped then
+    if Assigned(FMap) then
+      if Chunk.Size<=Size then
+        begin
+          Chunk.Size:=Len;
+          CopyMemory(Chunk.Data, Map, Chunk.Size);
+          Result:=Chunk.CRC32=CommonFunctions.CRC32OfBuffer(Map, Chunk.Size);
+        end
+      else
+        raise Exception.Create(TEXT_ERROR_INVALID_CHUNK_SIZE)
+    else
+      raise Exception.Create(TEXT_ERROR_INVALID_MAP_POINTER)
+  else
+    raise Exception.Create(TEXT_ERROR_MUST_MAPPED_FIRST);
+end;
+
+function TSharedMemClass.Write(const Chunk: TChunkClass): boolean;
+begin
+//  Result:=False;
+  if not Assigned(Chunk) then
+    raise Exception.Create(TEXT_ERROR_WRONG_CHUNK_OBJECT);
+  if Mapped then
+    if Assigned(FMap) then
+      if Chunk.Size<=Size then
+        begin
+          CopyMemory(Map, Chunk.Data, Chunk.Size);
+          Result:=Chunk.CRC32=CommonFunctions.CRC32OfBuffer(Map, Chunk.Size);
+        end
+      else
+        raise Exception.Create(TEXT_ERROR_INVALID_CHUNK_SIZE)
+    else
+      raise Exception.Create(TEXT_ERROR_INVALID_MAP_POINTER)
+  else
+    raise Exception.Create(TEXT_ERROR_MUST_MAPPED_FIRST);
 end;
 
 end.

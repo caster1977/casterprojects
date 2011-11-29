@@ -49,7 +49,8 @@ uses
   Winapi.Windows,
   System.SysUtils,
   Winapi.ShellAPI,
-  uMainForm;
+  uMainForm,
+  uCommon;
 
 procedure TAboutForm.ProcedureHeader;
 begin
@@ -91,6 +92,7 @@ begin
   btnClose.Default:=Action_Close.Visible;
   lblVersion.Caption:=Format('Версия %s билд %s', [copy(gsFileVersionInfo1.FileVersion, 1, LastDelimiter('.', gsFileVersionInfo1.FileVersion)-1), gsFileVersionInfo1.GetBuildOnly]);
   lblLegalCopyright.Caption:=gsFileVersionInfo1.LegalCopyright;
+  MainForm.LogInfo('Отображено окно "'+TEXT_ABOUTFORM_SUFFIX+'".');
   ProcedureFooter;
 end;
 
@@ -107,6 +109,7 @@ begin
   // процедура закрытия модального окна с результатом mrClose
   ProcedureHeader;
   ModalResult:=mrClose;
+  MainForm.LogInfo('Окно "'+TEXT_ABOUTFORM_SUFFIX+'" закрыто.');
   ProcedureFooter;
 end;
 

@@ -2,16 +2,23 @@ unit uCommon;
 
 interface
 
-const
-  ICON_BUSY=0;
-  ICON_READY=1;
+type
+  TLogMessagesType=(lmtError, lmtWarning, lmtInfo, lmtDebug);
+  TLogMessagesTypes=set of TLogMessagesType;
 
+const
   STATUSBAR_STATE_PANEL_NUMBER: integer=0;
   STATUSBAR_PROGRESS_PANEL_NUMBER: integer=1;
   STATUSBAR_HINT_PANEL_NUMBER: integer=2;
 
+  TEXT_CONFIGURATIONFORM_SUFFIX = 'настроек программы';
+  TEXT_ABOUTFORM_SUFFIX = '"О программе..."';
+
   CONST_DEFAULTVALUE_DATABLOCKSIZE=1024;
   CONST_DEFAULTVALUE_RETRANSLATORPAUSE=1000;
+  CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM: boolean=False;
+  CONST_DEFAULTVALUE_KEEPLOGTYPES: TLogMessagesTypes=[lmtError, lmtWarning, lmtInfo];
+  CONST_DEFAULTVALUE_SHOWSTATUSBAR: boolean=True;
 
   WPARAM_SERVER_WANNA_HANDLE=1; // сервер хочет handle клиента (LPARAM = handle сервера)
   WPARAM_CLIENT_SENDS_HANDLE=2; // клиент отправляет свой handle (LPARAM = handle клиента)
@@ -26,7 +33,7 @@ const
   WPARAM_SERVER_WANNA_DATA=9; // сервер хочет указанный блок данных (LPARAM = порядковый номер запрашиваемого блока данных)
   WPARAM_CLIENT_SENDS_DATA=10; // клиент отправляет указанный блок данных (LPARAM = размер переданных данных в байтах)
   WPARAM_SERVER_WANNA_CRC32=11; // сервер хочет контрольную сумму указанного блока данных (LPARAM = порядковый номер запрашиваемого блока данных)
-  WPARAM_CLIENT_SENDS_CRC32=12; // клиент отправляет контрольную сумму указанного блока данных (LPARAM = размер строки СКС32 в байтах)
+  WPARAM_CLIENT_SENDS_CRC32=12; // клиент отправляет контрольную сумму указанного блока данных (LPARAM = СКС32)
 
   WPARAM_CLIENT_SHUTDOWN=13; // клиент сообщает о своём отключении от сервера
   WPARAM_SERVER_SHUTDOWN=14; // сервер сообщает клиенту о своём выключении
@@ -60,6 +67,7 @@ type
     class function GetConditionalString(const Condition: Boolean; TrueString, FalseString: string): string; static;
     class function CRC32OfFile(const FileName: string): cardinal;
     class function CRC32OfByteArray(const ByteArray: TArray<byte>): cardinal;
+    class function CRC32OfBuffer(const Buffer: pointer; const Len: integer): cardinal;
   end;
 
 implementation
@@ -74,6 +82,13 @@ const
 
 var
   CRC32table: array [0..255] of cardinal;
+
+class function CommonFunctions.CRC32OfBuffer(const Buffer: pointer; const Len: integer): cardinal;
+begin
+  Result:=CRC32INIT;
+  UpdateCrc32(Buffer, Len, Result);
+  Result:=not Result;
+end;
 
 class function CommonFunctions.CRC32OfByteArray(const ByteArray: TArray<byte>): cardinal;
 begin

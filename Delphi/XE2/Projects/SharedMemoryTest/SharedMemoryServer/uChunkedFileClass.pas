@@ -122,7 +122,6 @@ uses
 resourcestring
   TEXT_ERROR_WRONG_CHUNK_SIZE='Размер порции данных не должен быть менее одного байта!';
   TEXT_ERROR_WRONG_CHUNK_QUANTITY='Количество порций создаваемого файла не должно быть менее одной!';
-  TEXT_ERROR_WRONG_CHUNK_OBJECT='Указан несуществующий объект порции данных!';
   TEXT_ERROR_WRONG_FILE_STREAM_OBJECT='Не удалось создать объект файлового потока!';
   TEXT_ERROR_WRITING_CHUNK_TO_FILE='Не удалось записать порцию данных в файл!';
 
