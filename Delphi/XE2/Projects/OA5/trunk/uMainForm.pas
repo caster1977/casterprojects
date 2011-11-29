@@ -490,7 +490,7 @@ begin
       Screen.Cursor:=crHourGlass;
       Configuration.Load;
       if not bFirstRun then
-        Log.SendInfo('Чтение настроек программы в файл прошло успешно.');
+        Log.SendInfo('Чтение настроек программы из файла прошло успешно.');
     finally
       Screen.Cursor:=crDefault;
     end;

@@ -1091,7 +1091,7 @@ end;
 procedure TConfigurationForm.FormShow(Sender: TObject);
 begin
   ProcedureHeader('Процедура-обработчик события отображения окна', '{3D3256A6-E8E3-4709-A3B3-B7A6E90A75BF}');
-  Log.SendInfo('Отображено окно изменения настроек программы.');
+  Log.SendInfo('Отображено окно настроек программы.');
   ProcedureFooter;
 end;
 
