@@ -24,11 +24,7 @@ uses
   uConfigurationClass,
   uRetranslatorThreadClass,
   uReceiverClass,
-  uSharedMemClass;
-
-resourcestring
-  TEXT_MAINFORM_CAPTION='Shared Memory Server';
-  TEXT_ABOUTFORM_CAPTION='About "Shared Memory Server"...';
+  uCommon;
 
 type
   THackControl=class(TControl);
@@ -36,7 +32,7 @@ type
   TMainForm=class(TForm)
     MainMenu1: TMainMenu;
     ActionManager1: TActionManager;
-    ImageList1: TImageList;
+    ilMainFormSmallImages: TImageList;
     Action_Quit: TAction;
     Action_About: TAction;
     Action_Configuration: TAction;
@@ -47,11 +43,16 @@ type
     N5: TMenuItem;
     N6: TMenuItem;
     StatusBar1: TStatusBar;
-    Memo1: TMemo;
     pbMain: TProgressBar;
     imState: TImage;
     ilMainFormStateIcons: TImageList;
     ApplicationEvents1: TApplicationEvents;
+    ilLog: TImageList;
+    N7: TMenuItem;
+    miStatusBar: TMenuItem;
+    Panel1: TPanel;
+    chkbxScrollLogToBottom: TCheckBox;
+    lvLog: TListView;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Action_ConfigurationExecute(Sender: TObject);
@@ -61,8 +62,11 @@ type
     procedure ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
     procedure ApplicationEvents1Hint(Sender: TObject);
     procedure Action_AboutExecute(Sender: TObject);
+    procedure chkbxScrollLogToBottomClick(Sender: TObject);
+    procedure miStatusBarClick(Sender: TObject);
   strict private
     FConfiguration: TConfigurationClass;
+    Receiver: TReceiverClass;
     bFirstRun: boolean;
     iBusyCounter: integer;
     bAboutWindowExist: boolean;
@@ -71,7 +75,6 @@ type
     ConnectionThread: TRetranslatorThreadClass;
     bClientConnected: boolean;
     hClientHandle: THandle;
-//    SharedMem: TSharedMemClass;
     bCanceling: boolean;
 
     procedure ProcedureHeader;
@@ -84,6 +87,7 @@ type
 
     procedure Do_LoadConfiguration;
     procedure Do_SaveConfiguration;
+    procedure Do_ApplyConfiguration;
     procedure Do_About(const aButtonVisible: boolean);
     procedure Do_Configuration;
 
@@ -91,11 +95,16 @@ type
     function Do_ConnectionThreadStart: boolean;
     procedure SetConfiguration(const Value: TConfigurationClass);
     procedure Do_TerminateConnectionThread;
+    procedure Log(const aMessage: string; aMessageType: TLogMessagesType);
   protected
     property Configuration: TConfigurationClass read FConfiguration write SetConfiguration stored False;
   public
     procedure Inc_BusyState;
     procedure Dec_BusyState;
+    procedure LogError(const aMessage: string);
+    procedure LogWarning(const aMessage: string);
+    procedure LogInfo(const aMessage: string);
+    procedure LogDebug(const aMessage: string);
   end;
 
 var
@@ -108,9 +117,21 @@ implementation
 uses
   System.IniFiles,
   Winapi.CommCtrl,
-  uCommon,
   uAboutForm,
   uConfigurationForm;
+
+resourcestring
+  TEXT_MAINFORM_CAPTION='Shared Memory Server';
+  TEXT_ABOUTFORM_CAPTION='About "Shared Memory Server"...';
+
+const
+  ICON_BUSY=0;
+  ICON_READY=1;
+
+  ICON_ERROR=0;
+  ICON_WARNING=1;
+  ICON_INFO=2;
+  ICON_DEBUG=3;
 
 procedure TMainForm.ProcedureHeader;
 begin
@@ -161,6 +182,67 @@ begin
     end;
 end;
 
+procedure TMainForm.LogDebug(const aMessage: string);
+begin
+  if lmtDebug in Configuration.KeepLogTypes then
+    Log(aMessage, lmtDebug);
+end;
+
+procedure TMainForm.LogError(const aMessage: string);
+begin
+  if lmtError in Configuration.KeepLogTypes then
+    Log(aMessage, lmtError);
+end;
+
+procedure TMainForm.LogInfo(const aMessage: string);
+begin
+  if lmtInfo in Configuration.KeepLogTypes then
+    Log(aMessage, lmtInfo);
+end;
+
+procedure TMainForm.LogWarning(const aMessage: string);
+begin
+  if lmtWarning in Configuration.KeepLogTypes then
+    Log(aMessage, lmtWarning);
+end;
+
+procedure TMainForm.Log(const aMessage: string; aMessageType: TLogMessagesType);
+var
+  i: integer;
+  ListItem: TListItem;
+begin
+  i:=-1;
+  if (((lmtError in Configuration.KeepLogTypes)and(aMessageType=lmtError))or((lmtWarning in Configuration.KeepLogTypes)and(aMessageType=lmtWarning))or((lmtInfo in Configuration.KeepLogTypes)and(aMessageType=lmtInfo))or
+    ((lmtDebug in Configuration.KeepLogTypes)and(aMessageType=lmtDebug))) then
+    begin
+      case aMessageType of
+        lmtError:
+          i:=ICON_ERROR;
+        lmtWarning:
+          i:=ICON_WARNING;
+        lmtInfo:
+          i:=ICON_INFO;
+        lmtDebug:
+          i:=ICON_DEBUG;
+      end;
+      ListItem:=lvLog.Items.Add;
+      ListItem.ImageIndex:=i; // тип сообщения
+      ListItem.Caption:=FormatDateTime('dd.mm.yyyy hh:nn:ss', Now);
+      ListItem.SubItems.Add(aMessage); // текст сообщения
+      if Configuration.ScrollLogToBottom then
+        SendMessage(lvLog.Handle, LVM_ENSUREVISIBLE, lvLog.Items.Count-1, 0);
+    end;
+end;
+
+procedure TMainForm.miStatusBarClick(Sender: TObject);
+begin
+  ProcedureHeader;
+  StatusBar1.Visible:=miStatusbar.Checked;
+  Configuration.ShowStatusbar:=StatusBar1.Visible;
+  LogInfo('Панель статуса '+CommonFunctions.GetConditionalString(StatusBar1.Visible, 'в', 'от')+'ключена.');
+  ProcedureFooter;
+end;
+
 procedure TMainForm.Dec_BusyState;
 begin
   with MainForm do
@@ -180,7 +262,8 @@ begin
         ilMainFormStateIcons.GetIcon(ICON_BUSY, imState.Picture.Icon)
       else
         ilMainFormStateIcons.GetIcon(ICON_READY, imState.Picture.Icon);
-      StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=CommonFunctions.GetConditionalString(iBusyCounter>0, 'Пожалуйста, подождите...', 'Готово');
+      if Configuration.ShowStatusbar then
+        StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=CommonFunctions.GetConditionalString(iBusyCounter>0, 'Пожалуйста, подождите...', 'Готово');
     end;
   Application.ProcessMessages;
 end;
@@ -216,11 +299,13 @@ begin
     begin
       ProcedureHeader;
       bError:=False;
+      LogInfo('Производится попытка чтения настроек программы из файла...');
     end;
   try
     try
       Screen.Cursor:=crHourGlass;
       Configuration.Load;
+      LogInfo('Чтение настроек программы из файла прошло успешно.');
     finally
       Screen.Cursor:=crDefault;
     end;
@@ -248,6 +333,7 @@ begin
     try
       Screen.Cursor:=crHourGlass;
       Configuration.Save;
+      LogInfo('Запись настроек программы в файл прошла успешно.');
     finally
       Screen.Cursor:=crDefault;
     end;
@@ -260,6 +346,7 @@ begin
             Screen.Cursor:=crHourGlass;
             try
               Configuration.Save;
+              LogInfo('Запись настроек программы в файл прошла успешно.');
             except
               on E: EIniFileException do
                 CommonFunctions.GenerateError(E.Message, sErrorMessage, bError);
@@ -307,6 +394,19 @@ begin
           bAboutWindowExist:=False;
         end;
     end;
+  ProcedureFooter;
+end;
+
+procedure TMainForm.Do_ApplyConfiguration;
+begin
+  ProcedureHeader;
+  // установка видимости панели статуса в соответствии с настройками программы
+  miStatusbar.Checked:=Configuration.ShowStatusbar;
+  StatusBar1.Visible:=Configuration.ShowStatusbar;
+
+  chkbxScrollLogToBottom.Checked:=chkbxScrollLogToBottom.Enabled and Configuration.ScrollLogToBottom;
+  chkbxScrollLogToBottom.OnClick:=chkbxScrollLogToBottomClick;
+
   ProcedureFooter;
 end;
 
@@ -374,6 +474,8 @@ begin
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
+const
+  ICON_MAIN=3;
 var
   PanelRect: TRect;
 
@@ -396,6 +498,7 @@ begin
   bClientConnected:=False;
   bCanceling:=False;
   Caption:=TEXT_MAINFORM_CAPTION;
+  ilMainFormSmallImages.GetIcon(ICON_MAIN, Icon);
   // создание и инициализщация объекта конфигурации
   FConfiguration:=TConfigurationClass.Create;
   // привязка прогрессбара к позиции на строке статуса
@@ -404,34 +507,14 @@ begin
   BindStateImageToStatusBar;
   // загрузка настроек из файла
   Do_LoadConfiguration;
-
-  {
-  try
-    SharedFile:=TSharedFileClass.Create;
-    SharedFile.Mapped:=True;
-  except
-    on E: Exception do
-      begin
-        ShowErrorBox(Handle, E.Message);
-        Application.Terminate;
-      end;
-  end;
-  }
-
+  // применение настроек к интерфейсу
+  Do_ApplyConfiguration;
   { TODO : дописать }
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
-  {
-  if Assigned(SharedFile) then
-    SharedFile.Free;
-  }
-//{$I-}
-//  CloseFile(FDataFile);
-//{$I+}
   Do_TerminateConnectionThread;
-  {Do_CloseSharedFile;}
   FreeAndNil(FConfiguration);
 end;
 
@@ -482,14 +565,15 @@ end;
 
 procedure TMainForm.ApplicationEvents1Hint(Sender: TObject);
 begin
-  StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=GetLongHint(Application.Hint);
+  if Configuration.ShowStatusbar then
+    StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=GetLongHint(Application.Hint);
 end;
 
 procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
 
   procedure Do_WPARAM_CLIENT_SENDS_HANDLE(const Handle: THandle);
   begin
-    Do_TerminateConnectionThread; // останов потока, рассылающего хэндл сервера
+    Do_TerminateConnectionThread; // останавливаем поток, рассылающий хэндл сервера
     hClientHandle:=Handle; // получаем хэндл клиента
     bClientConnected:=True; // устанавливаем флаш соединения
     { TODO : дописать }
@@ -498,7 +582,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_WPARAM_CLIENT_SHUTDOWN;
   begin
     bClientConnected:=False; // убираем флаш соединения
-    if not Do_ConnectionThreadStart then // запуск потока рассылки хэндла сервера
+    if not Do_ConnectionThreadStart then // запускаем поток рассылки хэндла сервера
       Application.Terminate;
     { TODO : дописать }
   end;
@@ -520,58 +604,58 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_WPARAM_CLIENT_SENDS_BLOCKS_QUANTITY(const dwDataBlocksQuantity: cardinal);
   begin
     {
-    // сохраняем количество блоков в файле
-    CurrentFileProperties.DataBlocksQuantity:=dwDataBlocksQuantity;
-    // требуем первый блок данных файла
-    CurrentFileProperties.CurrentDataBlockNumber:=1;
-    PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, CurrentFileProperties.CurrentDataBlockNumber); // требуем от клиента указанный блок файла
+      // сохраняем количество блоков в файле
+      CurrentFileProperties.DataBlocksQuantity:=dwDataBlocksQuantity;
+      // требуем первый блок данных файла
+      CurrentFileProperties.CurrentDataBlockNumber:=1;
+      PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, CurrentFileProperties.CurrentDataBlockNumber); // требуем от клиента указанный блок файла
     }
     { TODO : дописать }
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_FILENAME(const dwSize: cardinal);
   {
-  var
+    var
     s: string;
   }
   begin
     (*
-    // пролучаем строку имени файла
-    SetLength(s, dwSize);
-    CopyMemory(@s, PMapView, dwSize);
-    CurrentFileProperties.FileName:=s;
-    // создаём файл на диске в указанной в настройках программы папке
-    AssignFile(FDataFile, Configuration.DestinationFolder+CurrentFileProperties.FileName);
-    try
+      // пролучаем строку имени файла
+      SetLength(s, dwSize);
+      CopyMemory(@s, PMapView, dwSize);
+      CurrentFileProperties.FileName:=s;
+      // создаём файл на диске в указанной в настройках программы папке
+      AssignFile(FDataFile, Configuration.DestinationFolder+CurrentFileProperties.FileName);
+      try
       Rewrite(FDataFile);
       // запрашиваем количество блоков в файле
       PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_BLOCKS_QUANTITY, 0); // требуем от клиента количество блоков в файле
-    except
+      except
       on E: EInOutError do
-        begin
-          CloseFile(FDataFile);
-          ShowErrorBox(Handle, TEXT_ERROR_CREATEFILE+TEXT_ERRORCODE+IntToStr(GetLastError) { +E.Message } );
-        end;
-    end;
+      begin
+      CloseFile(FDataFile);
+      ShowErrorBox(Handle, TEXT_ERROR_CREATEFILE+TEXT_ERRORCODE+IntToStr(GetLastError) { +E.Message } );
+      end;
+      end;
     *)
     { TODO : дописать }
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_DATA(const dwSize: cardinal);
   {
-  var
+    var
     ab: Taob;
   }
   begin
     {
-    // сохраняем размер переданных данных в байтах
-    CurrentFileProperties.CurrentDataBlockSize:=dwSize;
-    // копируем данные блока в массив
-    SetLength(ab, CurrentFileProperties.CurrentDataBlockSize);
-    CopyMemory(@ab[0], PMapView, CurrentFileProperties.CurrentDataBlockSize);
-    CurrentFileProperties.CurrentDataBlockData:=ab;
-    // требуем CRC32 переданного блока данных
-    PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_CRC32, CurrentFileProperties.CurrentDataBlockNumber); // требуем от клиента CRC32 указанного блока файла
+      // сохраняем размер переданных данных в байтах
+      CurrentFileProperties.CurrentDataBlockSize:=dwSize;
+      // копируем данные блока в массив
+      SetLength(ab, CurrentFileProperties.CurrentDataBlockSize);
+      CopyMemory(@ab[0], PMapView, CurrentFileProperties.CurrentDataBlockSize);
+      CurrentFileProperties.CurrentDataBlockData:=ab;
+      // требуем CRC32 переданного блока данных
+      PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_CRC32, CurrentFileProperties.CurrentDataBlockNumber); // требуем от клиента CRC32 указанного блока файла
     }
     { TODO : дописать }
   end;
@@ -579,29 +663,29 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_WPARAM_CLIENT_SENDS_CRC32(const dwSize: cardinal);
   begin
     (*
-    // получаем CRC32 указаного блока данных файла
-    // производим сверку CRC32
-    // если проверка прошла успешно, записываем данные в файл
-    try
+      // получаем CRC32 указаного блока данных файла
+      // производим сверку CRC32
+      // если проверка прошла успешно, записываем данные в файл
+      try
       BlockWrite(FDataFile, CurrentFileProperties.CurrentDataBlockData, CurrentFileProperties.CurrentDataBlockSize);
       // требуем от клиента следующий блок данных
       CurrentFileProperties.CurrentDataBlockNumber:=CurrentFileProperties.CurrentDataBlockNumber+1;
       if not bCanceling then // прерываем цикл передачи файла
-        PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, CurrentFileProperties.CurrentDataBlockNumber)
+      PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, CurrentFileProperties.CurrentDataBlockNumber)
       else
-        begin
-          bCanceling:=False;
-          CurrentFileProperties.FileName:='';
-          CloseFile(FDataFile);
-          { TODO : добавить удаление недописанного файла с диска }
-        end;
-    except
+      begin
+      bCanceling:=False;
+      CurrentFileProperties.FileName:='';
+      CloseFile(FDataFile);
+      { TODO : добавить удаление недописанного файла с диска }
+      end;
+      except
       on E: EInOutError do
-        begin
-          CloseFile(FDataFile);
-          ShowErrorBox(Handle, TEXT_ERROR_CREATEFILE+TEXT_ERRORCODE+IntToStr(GetLastError) { +E.Message } );
-        end;
-    end;
+      begin
+      CloseFile(FDataFile);
+      ShowErrorBox(Handle, TEXT_ERROR_CREATEFILE+TEXT_ERRORCODE+IntToStr(GetLastError) { +E.Message } );
+      end;
+      end;
     *)
     { TODO : дописать }
   end;
@@ -625,7 +709,7 @@ begin
               Do_WPARAM_CLIENT_SENDS_BLOCKS_QUANTITY(Msg.lParam);
             WPARAM_CLIENT_SENDS_DATA: // клиент отправляет указанный блок данных (LPARAM = размер переданных данных в байтах)
               Do_WPARAM_CLIENT_SENDS_DATA(Msg.lParam);
-            WPARAM_CLIENT_SENDS_CRC32: // клиент отправляет контрольную сумму указанного блока данных (LPARAM = размер строки СКС32 в байтах)
+            WPARAM_CLIENT_SENDS_CRC32: // клиент отправляет контрольную сумму указанного блока данных (LPARAM = СКС32)
               Do_WPARAM_CLIENT_SENDS_CRC32(Msg.lParam);
           end
         else
@@ -633,6 +717,12 @@ begin
             Do_WPARAM_CLIENT_SENDS_HANDLE(Msg.lParam);
       Handled:=True;
     end;
+end;
+
+procedure TMainForm.chkbxScrollLogToBottomClick(Sender: TObject);
+begin
+  Configuration.ScrollLogToBottom:=chkbxScrollLogToBottom.Enabled and chkbxScrollLogToBottom.Checked;
+  LogInfo('Прокурутка к последнему сообщению протокола '+CommonFunctions.GetConditionalString(Configuration.ScrollLogToBottom, 'в', 'от')+'ключена.');
 end;
 
 {

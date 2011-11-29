@@ -76,7 +76,7 @@ type
     /// <remarks>
     /// Создаёт объект для доступа к блоку общей памяти.
     /// </remarks>
-    constructor Create(const DestinationPath: string; const SharedMemName: WideString; const SharedMemSize: cardinal);
+    constructor Create(const FileName: string; const SharedMemName: WideString; const SharedMemSize: cardinal);
 
     /// <summary>
     /// Деструктор класса.
@@ -101,7 +101,7 @@ type
     /// При успешном выполнении функции, можно получить имя получаемого файла
     /// при помощи свойства <b>FileName</b>.
     /// </remarks>
-    function GetFileName(const Size: cardinal): boolean;
+//    function GetFileName(const Size: cardinal): boolean;
 
     /// <summary>
     /// Метод, обеспечивающий получение через общую память блока данных
@@ -115,20 +115,8 @@ type
     /// Возращает <b>True</b>, если удалось получить блок данных получаемого
     /// файла, <b>False</b> в случае ошибки.
     /// </returns>
-    function GetChunk(const Size: cardinal): boolean;
+//    function GetChunk(const Size: cardinal): boolean;
 
-    /// <summary>
-    /// Метод, обеспечивающий получение через общую память контрольную сумму
-    /// (CRC32) блока данных получаемого файла.
-    /// </summary>
-    /// <param name="Size">
-    /// Длина получаемой строки CRC32 в байтах
-    /// </param>
-    /// <returns>
-    /// Возращает <b>True</b>, если удалось получить CRC32 получаемого файла,
-    /// <b>False</b> в случае ошибки.
-    /// </returns>
-    function GetCRC32(const Size: cardinal): boolean;
   end;
 
 implementation
@@ -139,32 +127,16 @@ uses
   Winapi.Windows,
   uCommon;
 
-constructor TReceiverClass.Create(const DestinationPath: string; const SharedMemName: WideString; const SharedMemSize: cardinal);
+constructor TReceiverClass.Create(const FileName: string; const SharedMemName: WideString; const SharedMemSize: cardinal);
 begin
   inherited Create;
   FSharedMem:=TSharedMemClass.Create;
-  // Path:=DestinationPath;
 end;
 
 destructor TReceiverClass.Destroy;
 begin
   FreeAndNil(FSharedMem);
   inherited;
-end;
-
-function TReceiverClass.GetChunk(const Size: cardinal): boolean;
-begin
-
-end;
-
-function TReceiverClass.GetCRC32(const Size: cardinal): boolean;
-begin
-
-end;
-
-function TReceiverClass.GetFileName(const Size: cardinal): boolean;
-begin
-
 end;
 
 end.

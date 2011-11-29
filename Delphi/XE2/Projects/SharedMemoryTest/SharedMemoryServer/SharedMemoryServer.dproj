@@ -83,6 +83,7 @@
 			<DCC_RemoteDebug>true</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<Icon_MainIcon>SharedMemoryServer_Icon1.ico</Icon_MainIcon>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<DCC_RemoteDebug>false</DCC_RemoteDebug>
 		</PropertyGroup>
@@ -163,9 +164,7 @@
 					<Source>
 						<Source Name="MainSource">SharedMemoryServer.dpr</Source>
 					</Source>
-					<Excluded_Packages>
-						<Excluded_Packages Name="C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\MyComponents.bpl">File C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\MyComponents.bpl not found</Excluded_Packages>
-					</Excluded_Packages>
+					<Excluded_Packages/>
 				</Delphi.Personality>
 				<Deployment/>
 				<Platforms>
