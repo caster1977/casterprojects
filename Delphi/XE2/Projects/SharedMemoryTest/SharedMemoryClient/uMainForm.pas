@@ -23,10 +23,6 @@ uses
   uConfigurationClass,
   Vcl.ExtCtrls;
 
-resourcestring
-  TEXT_MAINFORM_CAPTION='Shared Memory Client';
-  TEXT_ABOUTFORM_CAPTION='About "Shared Memory Client"...';
-
 type
   THackControl=class(TControl);
 
@@ -119,6 +115,14 @@ uses
   System.IOUtils;
 
 
+resourcestring
+  TEXT_MAINFORM_CAPTION='Shared Memory Client';
+  TEXT_ABOUTFORM_CAPTION='About "Shared Memory Client"...';
+
+const
+  ICON_BUSY=0;
+  ICON_READY=1;
+
 var
   Recipients: DWORD=BSM_APPLICATIONS;
 
@@ -198,7 +202,7 @@ begin
     end;
   except
     if not bFirstRun then
-      TCommonFunctions.GenerateError('Произошла ошибка при попытке чтения настроек программы из файла!', sErrorMessage, bError);
+      CommonFunctions.GenerateError('Произошла ошибка при попытке чтения настроек программы из файла!', sErrorMessage, bError);
     Application.HandleException(Self);
   end;
   if not bFirstRun then
@@ -245,7 +249,7 @@ begin
   except
     on E: EIniFileException do
       begin
-        TCommonFunctions.GenerateError(E.Message, sErrorMessage, bError);
+        CommonFunctions.GenerateError(E.Message, sErrorMessage, bError);
         if MessageBox(Handle, PWideChar('Вы желаете повторить попытку записи настроек программы в файл?'), PWideChar(MainForm.Caption+' - Предупреждение'), MB_OKCANCEL+MB_ICONWARNING+MB_DEFBUTTON1)=IDOK then
           try
             Screen.Cursor:=crHourGlass;
@@ -253,7 +257,7 @@ begin
               Configuration.Save;
             except
               on E: EIniFileException do
-                TCommonFunctions.GenerateError(E.Message, sErrorMessage, bError);
+                CommonFunctions.GenerateError(E.Message, sErrorMessage, bError);
             end;
           finally
             Screen.Cursor:=crDefault;
@@ -271,6 +275,8 @@ procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   ProcedureHeader;
   Do_SaveConfiguration; // запись конфигурации
+  if bConnectedToServer then // если соединение с сервером установлено, отправляем серверу уведомление о завершении работы клиента
+    PostMessage(hServerHandle, WM_CLIENT, WPARAM_CLIENT_SHUTDOWN, 0);
   ProcedureFooter;
 end;
 
@@ -388,7 +394,7 @@ begin
         ilMainFormStateIcons.GetIcon(ICON_BUSY, imState.Picture.Icon)
       else
         ilMainFormStateIcons.GetIcon(ICON_READY, imState.Picture.Icon);
-      StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=TCommonFunctions.GetConditionalString(iBusyCounter>0, 'Пожалуйста, подождите...', 'Готово');
+      StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=CommonFunctions.GetConditionalString(iBusyCounter>0, 'Пожалуйста, подождите...', 'Готово');
     end;
   Application.ProcessMessages;
 end;

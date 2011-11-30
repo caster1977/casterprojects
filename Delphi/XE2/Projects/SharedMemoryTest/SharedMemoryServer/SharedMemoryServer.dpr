@@ -7,7 +7,6 @@ uses
   uAboutForm in 'uAboutForm.pas' {AboutForm},
   uConfigurationClass in 'uConfigurationClass.pas',
   uRetranslatorThreadClass in 'uRetranslatorThreadClass.pas',
-  uReceiverClass in 'uReceiverClass.pas',
   uSharedMemClass in 'uSharedMemClass.pas',
   uChunkClass in 'uChunkClass.pas',
   uChunkedFileClass in 'uChunkedFileClass.pas';

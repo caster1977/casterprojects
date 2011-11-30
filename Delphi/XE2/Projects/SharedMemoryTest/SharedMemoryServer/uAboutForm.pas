@@ -36,8 +36,6 @@ type
     procedure Timer2Timer(Sender: TObject);
     procedure lblEMailAddressClick(Sender: TObject);
   strict private
-    procedure ProcedureHeader;
-    procedure ProcedureFooter;
     procedure Do_Close;
   end;
 
@@ -52,31 +50,16 @@ uses
   uMainForm,
   uCommon;
 
-procedure TAboutForm.ProcedureHeader;
-begin
-  MainForm.Inc_BusyState;
-  Application.ProcessMessages;
-end;
-
-procedure TAboutForm.ProcedureFooter;
-begin
-  MainForm.Dec_BusyState;
-  Application.ProcessMessages;
-end;
-
 procedure TAboutForm.FormCreate(Sender: TObject);
 begin
   // процедура-обработчик события создания окна
-  ProcedureHeader;
   gsFileVersionInfo1.Filename:=Application.ExeName;
   Action_Close.Visible:=False;
-  ProcedureFooter;
 end;
 
 procedure TAboutForm.FormShow(Sender: TObject);
 begin
   // процедура-обработчик события отображения окна
-  ProcedureHeader;
   if Action_Close.Visible then
     begin
       Timer1.Enabled:=False;
@@ -93,32 +76,25 @@ begin
   lblVersion.Caption:=Format('Версия %s билд %s', [copy(gsFileVersionInfo1.FileVersion, 1, LastDelimiter('.', gsFileVersionInfo1.FileVersion)-1), gsFileVersionInfo1.GetBuildOnly]);
   lblLegalCopyright.Caption:=gsFileVersionInfo1.LegalCopyright;
   MainForm.LogInfo('Отображено окно "'+TEXT_ABOUTFORM_SUFFIX+'".');
-  ProcedureFooter;
 end;
 
 procedure TAboutForm.Action_CloseExecute(Sender: TObject);
 begin
   // процедура-обработчик действия Action_Close
-  ProcedureHeader;
   Do_Close;
-  ProcedureFooter;
 end;
 
 procedure TAboutForm.Do_Close;
 begin
   // процедура закрытия модального окна с результатом mrClose
-  ProcedureHeader;
   ModalResult:=mrClose;
   MainForm.LogInfo('Окно "'+TEXT_ABOUTFORM_SUFFIX+'" закрыто.');
-  ProcedureFooter;
 end;
 
 procedure TAboutForm.Timer1Timer(Sender: TObject);
 begin
   // процедура закрытия окна по истечению счётчика таймера
-  ProcedureHeader;
   Do_Close;
-  ProcedureFooter;
 end;
 
 procedure TAboutForm.Timer2Timer(Sender: TObject);
@@ -131,9 +107,7 @@ end;
 procedure TAboutForm.lblEMailAddressClick(Sender: TObject);
 begin
   // процедура-обработчик щелчка по метке адреса электронной почты
-  ProcedureHeader;
   ShellExecute(Application.Handle, 'open', PWideChar('mailto:caster@mgts.by'), nil, nil, SW_MAXIMIZE);
-  ProcedureFooter;
 end;
 
 end.
