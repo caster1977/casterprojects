@@ -21,6 +21,7 @@ type
     FDestinationFolder: string;
     FScrollLogToBottom: boolean;
     FShowStatusbar: boolean;
+    FShowSplashAtStart: boolean;
   private
     FKeepLogTypes: TLogMessagesTypes;
     procedure SetDataBlockSize(const Value: cardinal);
@@ -31,6 +32,7 @@ type
     procedure SetScrollLogToBottom(const Value: boolean);
     procedure SetKeepLogTypes(const Value: TLogMessagesTypes);
     procedure SetShowStatusbar(const Value: boolean);
+    procedure SetShowSplashAtStart(const Value: boolean);
   public
     constructor Create(const IniFileName: string='');
     procedure Load;
@@ -43,6 +45,7 @@ type
     property ScrollLogToBottom: boolean read FScrollLogToBottom write SetScrollLogToBottom stored False;
     property KeepLogTypes: TLogMessagesTypes read FKeepLogTypes write SetKeepLogTypes default [lmtError, lmtWarning, lmtInfo];
     property ShowStatusbar: boolean read FShowStatusbar write SetShowStatusbar default True;
+    property ShowSplashAtStart: boolean read FShowSplashAtStart write SetShowSplashAtStart default True;
   end;
 
 implementation
@@ -84,6 +87,7 @@ begin
         RetranslatorPause:=ReadInteger('Общие', 'iRetranslatorPause', CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
         ScrollLogToBottom:=ReadBool('Интерфейс', 'bScrollLogToBottom', CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM);
         ShowStatusbar:=ReadBool('Интерфейс', 'bShowStatusbar', CONST_DEFAULTVALUE_SHOWSTATUSBAR);
+        ShowSplashAtStart:=ReadBool('Интерфейс', 'bShowSplashAtStart', CONST_DEFAULTVALUE_SHOWSPLASHATSTART);
         if ReadBool('Протоколирование', 'bKeepErrorLog', lmtError in CONST_DEFAULTVALUE_KEEPLOGTYPES) then
           KeepLogTypes:=KeepLogTypes+[lmtError]
         else
@@ -117,6 +121,7 @@ begin
           WriteInteger('Общие', 'iRetranslatorPause', RetranslatorPause);
           WriteBool('Интерфейс', 'bScrollLogToBottom', ScrollLogToBottom);
           WriteBool('Интерфейс', 'bShowStatusbar', ShowStatusbar);
+          WriteBool('Интерфейс', 'bShowSplashAtStart', ShowSplashAtStart);
           WriteBool('Протоколирование', 'bKeepErrorLog', lmtError in KeepLogTypes);
           WriteBool('Протоколирование', 'bKeepWarningLog', lmtWarning in KeepLogTypes);
           WriteBool('Протоколирование', 'bKeepInfoLog', lmtInfo in KeepLogTypes);
@@ -196,6 +201,12 @@ begin
       FSharedMemoryName:=Trim(Value)
     else
       raise Exception.Create(TEXT_WRONGSHAREDMEMORYNAME);
+end;
+
+procedure TConfigurationClass.SetShowSplashAtStart(const Value: boolean);
+begin
+  if FShowSplashAtStart<>Value then
+    FShowSplashAtStart:=Value;
 end;
 
 procedure TConfigurationClass.SetShowStatusbar(const Value: boolean);

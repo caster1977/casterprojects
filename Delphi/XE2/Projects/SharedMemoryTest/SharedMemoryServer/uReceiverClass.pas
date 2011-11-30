@@ -9,28 +9,6 @@ uses
 
 type
 
-  {
-    constructor TFileProperties.Create(const sFileName: string='');
-    begin
-    inherited Create;
-    FFileName:=Trim(sFileName);
-    FDataBlocksQuantity:=0;
-    FFileStream:=nil;
-    FCurrentDataBlockNumber:=0;
-    FCurrentDataBlockSize:=0;
-    FCurrentDataBlockData:=nil;
-    end;
-
-    destructor TFileProperties.Destroy;
-    begin
-    FreeAndNil(FFileStream);
-    if Assigned(FCurrentDataBlockData) then
-    SetLength(FCurrentDataBlockData, 0);
-    FreeAndNil(FCurrentDataBlockData);
-    inherited;
-    end;
-  }
-
   /// <summary>
   /// Класс, обеспечивающий получение данных о передаваемом через общую
   /// память файле, их проверку и запись в файл на диске.
@@ -76,7 +54,7 @@ type
     /// <remarks>
     /// Создаёт объект для доступа к блоку общей памяти.
     /// </remarks>
-    constructor Create(const FileName: string; const SharedMemName: WideString; const SharedMemSize: cardinal);
+    constructor Create(const Path: string; const SharedMemName: WideString; const SharedMemSize: cardinal);
 
     /// <summary>
     /// Деструктор класса.
@@ -101,7 +79,7 @@ type
     /// При успешном выполнении функции, можно получить имя получаемого файла
     /// при помощи свойства <b>FileName</b>.
     /// </remarks>
-//    function GetFileName(const Size: cardinal): boolean;
+    function GetFileName(const Size: cardinal): boolean;
 
     /// <summary>
     /// Метод, обеспечивающий получение через общую память блока данных
@@ -116,7 +94,6 @@ type
     /// файла, <b>False</b> в случае ошибки.
     /// </returns>
 //    function GetChunk(const Size: cardinal): boolean;
-
   end;
 
 implementation
@@ -127,16 +104,40 @@ uses
   Winapi.Windows,
   uCommon;
 
-constructor TReceiverClass.Create(const FileName: string; const SharedMemName: WideString; const SharedMemSize: cardinal);
+constructor TReceiverClass.Create(const Path: string; const SharedMemName: WideString; const SharedMemSize: cardinal);
 begin
   inherited Create;
-  FSharedMem:=TSharedMemClass.Create;
+  FSharedMem:=TSharedMemClass.Create(SharedMemName, SharedMemSize);
 end;
 
 destructor TReceiverClass.Destroy;
 begin
   FreeAndNil(FSharedMem);
   inherited;
+end;
+
+function TReceiverClass.GetFileName(const Size: cardinal): boolean;
+begin
+  // создаём объект чанка для получения в него данных имени файла из общей памяти
+  {
+  try
+    if not Assigned(FChunk) then
+      FChunk:=TChunkClass.Create;
+    try
+      FSharedMem.Mapped:=True;
+      FSharedMem.Read(Size,FChunk);
+      FChunk.Data
+
+      FChunkedFile:=TChunkedFileClass.Create();
+
+
+    finally
+      FSharedMem.Mapped:=False;
+    end;
+  finally
+    FreeAndNil(FChunk);
+  end;
+  }
 end;
 
 end.

@@ -19,6 +19,7 @@ const
   CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM: boolean=False;
   CONST_DEFAULTVALUE_KEEPLOGTYPES: TLogMessagesTypes=[lmtError, lmtWarning, lmtInfo];
   CONST_DEFAULTVALUE_SHOWSTATUSBAR: boolean=True;
+  CONST_DEFAULTVALUE_SHOWSPLASHATSTART: boolean=True;
 
   WPARAM_SERVER_WANNA_HANDLE=1; // сервер хочет handle клиента (LPARAM = handle сервера)
   WPARAM_CLIENT_SENDS_HANDLE=2; // клиент отправляет свой handle (LPARAM = handle клиента)
@@ -28,18 +29,18 @@ const
 
   WPARAM_SERVER_WANNA_FILENAME=5; // сервер хочет имя файла
   WPARAM_CLIENT_SENDS_FILENAME=6; // клиент отправляет имя файла (LPARAM = размер имени файла в байтах)
-  WPARAM_SERVER_WANNA_BLOCKS_QUANTITY=7; // сервер хочет количество блоков в файле
-  WPARAM_CLIENT_SENDS_BLOCKS_QUANTITY=8; // клиент отправляет количество блоков в файле (LPARAM = количество блоков в файле)
+  WPARAM_SERVER_WANNA_CHUNKS_QUANTITY=7; // сервер хочет количество порций данных в файле
+  WPARAM_CLIENT_SENDS_CHUNKS_QUANTITY=8; // клиент отправляет количество порций данных в файле (LPARAM = количество порций данных в файле)
   WPARAM_SERVER_WANNA_DATA=9; // сервер хочет указанный блок данных (LPARAM = порядковый номер запрашиваемого блока данных)
   WPARAM_CLIENT_SENDS_DATA=10; // клиент отправляет указанный блок данных (LPARAM = размер переданных данных в байтах)
   WPARAM_SERVER_WANNA_CRC32=11; // сервер хочет контрольную сумму указанного блока данных (LPARAM = порядковый номер запрашиваемого блока данных)
   WPARAM_CLIENT_SENDS_CRC32=12; // клиент отправляет контрольную сумму указанного блока данных (LPARAM = СКС32)
+  WPARAM_SERVER_TRANSFER_COMPLETE=13; // сервер сообщает что получил файл полностью
 
-  WPARAM_CLIENT_SHUTDOWN=13; // клиент сообщает о своём отключении от сервера
-  WPARAM_SERVER_SHUTDOWN=14; // сервер сообщает клиенту о своём выключении
+  WPARAM_CLIENT_WANNA_CANCEL_SENDING=14; // клиент хочет прекратить передачу файла
+  WPARAM_CLIENT_SHUTDOWN=15; // клиент сообщает о своём отключении от сервера
+  WPARAM_SERVER_SHUTDOWN=16; // сервер сообщает клиенту о своём выключении
 
-  WPARAM_CLIENT_WANNA_CANCEL_SENDING=15; // клиент хочет прекратить передачу файла
-  WPARAM_SERVER_TRANSFER_COMPLETE=16; // сервер сообщает что получил файл полностью
 
 resourcestring
   TEXT_WM_SM_SERVER='WM_SM_SERVER';
