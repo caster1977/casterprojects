@@ -6,28 +6,32 @@ uses
   uCommon;
 
 type
-  TConfiguration=class
+  TConfigurationClass=class
   strict private
     FIniFileName: string;
     FDataBlockSize: cardinal;
     FSharedMemoryName: WideString;
-    FRetranslatorPause: integer;
-    FDestinationFolder: string;
-  private
+    FKeepLogTypes: TLogMessagesTypes;
+    FShowStatusbar: boolean;
+    FScrollLogToBottom: boolean;
+    FShowSplashAtStart: boolean;
     procedure SetDataBlockSize(const Value: cardinal);
-    procedure SetIniFileName(const Value: string);
     procedure SetSharedMemoryName(const Value: WideString);
-    procedure SetRetranslatorPause(const Value: integer);
-    procedure SetDestinationFolder(const Value: string);
+    procedure SetKeepLogTypes(const Value: TLogMessagesTypes);
+    procedure SetShowStatusbar(const Value: boolean);
+    procedure SetScrollLogToBottom(const Value: boolean);
+  private
+    procedure SetShowSplashAtStart(const Value: boolean);
   public
-    constructor Create;
+    constructor Create(const IniFileName: string='');
     procedure Load;
     procedure Save;
-    property IniFileName: string read FIniFileName write SetIniFileName stored False;
     property DataBlockSize: cardinal read FDataBlockSize write SetDataBlockSize default CONST_DEFAULTVALUE_DATABLOCKSIZE;
-    property RetranslatorPause: integer read FRetranslatorPause write SetRetranslatorPause default CONST_DEFAULTVALUE_RETRANSLATORPAUSE;
     property SharedMemoryName: WideString read FSharedMemoryName write SetSharedMemoryName stored False;
-    property DestinationFolder: string read FDestinationFolder write SetDestinationFolder stored False;
+    property KeepLogTypes: TLogMessagesTypes read FKeepLogTypes write SetKeepLogTypes default [lmtError, lmtWarning, lmtInfo];
+    property ShowStatusbar: boolean read FShowStatusbar write SetShowStatusbar default True;
+    property ScrollLogToBottom: boolean read FScrollLogToBottom write SetScrollLogToBottom stored False;
+    property ShowSplashAtStart: boolean read FShowSplashAtStart write SetShowSplashAtStart default True;
   end;
 
 implementation
@@ -46,24 +50,45 @@ resourcestring
   TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME='Имя каталога для сохранения переданных файлов не должно быть пустым!';
   TEXT_WRONGDESTINATIONFOLDER_NONEXISTS='Каталог для сохранения переданных файлов не существует!';
 
-  { TConfiguration }
-
-constructor TConfiguration.Create;
+constructor TConfigurationClass.Create(const IniFileName: string='');
 begin
-  inherited;
-  FIniFileName:=ExtractFilePath(ExpandFileName(Application.ExeName))+StringReplace(ExtractFileName(Application.ExeName), '.exe', '.ini', [rfIgnoreCase]);
+  inherited Create;
+  if Trim(IniFileName)='' then
+    FIniFileName:=ExtractFilePath(ExpandFileName(Application.ExeName))+StringReplace(ExtractFileName(Application.ExeName), '.exe', '.ini', [rfIgnoreCase])
+  else
+    FIniFileName:=Trim(IniFileName);
   FDataBlockSize:=CONST_DEFAULTVALUE_DATABLOCKSIZE;
-  RetranslatorPause:=CONST_DEFAULTVALUE_RETRANSLATORPAUSE;
   FSharedMemoryName:='';
+  FKeepLogTypes:=CONST_DEFAULTVALUE_KEEPLOGTYPES;
+  FShowStatusbar:=CONST_DEFAULTVALUE_SHOWSTATUSBAR;
+  FScrollLogToBottom:=False;
 end;
 
-procedure TConfiguration.Load;
+procedure TConfigurationClass.Load;
 begin
-  if IniFileName>'' then
-    with TIniFile.Create(IniFileName) do
+  if FIniFileName>'' then
+    with TIniFile.Create(FIniFileName) do
       try
         DataBlockSize:=cardinal(ReadInteger('Общие', 'iDataBlockSize', CONST_DEFAULTVALUE_DATABLOCKSIZE));
-        RetranslatorPause:=ReadInteger('Общие', 'iRetranslatorPause', CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+        ScrollLogToBottom:=ReadBool('Интерфейс', 'bScrollLogToBottom', CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM);
+        ShowStatusbar:=ReadBool('Интерфейс', 'bShowStatusbar', CONST_DEFAULTVALUE_SHOWSTATUSBAR);
+        ShowSplashAtStart:=ReadBool('Интерфейс', 'bShowSplashAtStart', CONST_DEFAULTVALUE_SHOWSPLASHATSTART);
+        if ReadBool('Протоколирование', 'bKeepErrorLog', lmtError in CONST_DEFAULTVALUE_KEEPLOGTYPES) then
+          KeepLogTypes:=KeepLogTypes+[lmtError]
+        else
+          KeepLogTypes:=KeepLogTypes-[lmtError];
+        if ReadBool('Протоколирование', 'bKeepWarningLog', lmtWarning in CONST_DEFAULTVALUE_KEEPLOGTYPES) then
+          KeepLogTypes:=KeepLogTypes+[lmtWarning]
+        else
+          KeepLogTypes:=KeepLogTypes-[lmtWarning];
+        if ReadBool('Протоколирование', 'bKeepInfoLog', lmtInfo in CONST_DEFAULTVALUE_KEEPLOGTYPES) then
+          KeepLogTypes:=KeepLogTypes+[lmtInfo]
+        else
+          KeepLogTypes:=KeepLogTypes-[lmtInfo];
+        if ReadBool('Протоколирование', 'bKeepDebugLog', lmtDebug in CONST_DEFAULTVALUE_KEEPLOGTYPES) then
+          KeepLogTypes:=KeepLogTypes+[lmtDebug]
+        else
+          KeepLogTypes:=KeepLogTypes-[lmtDebug];
       finally
         Free;
       end
@@ -71,14 +96,20 @@ begin
     raise Exception.Create(TEXT_WRONGINIFILENAME);
 end;
 
-procedure TConfiguration.Save;
+procedure TConfigurationClass.Save;
 begin
-  if IniFileName>'' then
-    with TIniFile.Create(IniFileName) do
+  if FIniFileName>'' then
+    with TIniFile.Create(FIniFileName) do
       try
         try
           WriteInteger('Общие', 'iDataBlockSize', DataBlockSize);
-          WriteInteger('Общие', 'iRetranslatorPause', RetranslatorPause);
+          WriteBool('Интерфейс', 'bScrollLogToBottom', ScrollLogToBottom);
+          WriteBool('Интерфейс', 'bShowStatusbar', ShowStatusbar);
+          WriteBool('Интерфейс', 'bShowSplashAtStart', ShowSplashAtStart);
+          WriteBool('Протоколирование', 'bKeepErrorLog', lmtError in KeepLogTypes);
+          WriteBool('Протоколирование', 'bKeepWarningLog', lmtWarning in KeepLogTypes);
+          WriteBool('Протоколирование', 'bKeepInfoLog', lmtInfo in KeepLogTypes);
+          WriteBool('Протоколирование', 'bKeepDebugLog', lmtDebug in KeepLogTypes);
         except
           on EIniFileException do
             raise EIniFileException.Create(TEXT_INIFILESAVEERROR);
@@ -90,7 +121,7 @@ begin
     raise Exception.Create(TEXT_WRONGINIFILENAME);
 end;
 
-procedure TConfiguration.SetDataBlockSize(const Value: cardinal);
+procedure TConfigurationClass.SetDataBlockSize(const Value: cardinal);
 begin
   if Value<=0 then
     raise Exception.Create(TEXT_WRONGBUFFERSIZE)
@@ -99,23 +130,14 @@ begin
       FDataBlockSize:=Value;
 end;
 
-procedure TConfiguration.SetDestinationFolder(const Value: string);
+procedure TConfigurationClass.SetKeepLogTypes(const Value: TLogMessagesTypes);
 begin
-  if FDestinationFolder<>Value then
-    if Trim(Value)<>'' then
-      if DirectoryExists(Trim(Value)) then
-        begin
-          FDestinationFolder:=Trim(Value);
-          if FDestinationFolder[Length(FDestinationFolder)]<>'\' then
-            FDestinationFolder:=FDestinationFolder+'\';
-        end
-      else
-        raise Exception.Create(TEXT_WRONGDESTINATIONFOLDER_NONEXISTS)
-    else
-      raise Exception.Create(TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME);
+  if FKeepLogTypes<>Value then
+    FKeepLogTypes:=Value;
 end;
 
-procedure TConfiguration.SetIniFileName(const Value: string);
+{
+procedure TConfigurationClass.SetIniFileName(const Value: string);
 begin
   if FIniFileName<>Value then
     if Trim(Value)<>'' then
@@ -123,23 +145,33 @@ begin
     else
       raise Exception.Create(TEXT_WRONGINIFILENAME);
 end;
+}
 
-procedure TConfiguration.SetRetranslatorPause(const Value: integer);
+procedure TConfigurationClass.SetScrollLogToBottom(const Value: boolean);
 begin
-  if Value<0 then
-    raise Exception.Create(TEXT_WRONGRETRANSLATORPAUSE)
-  else
-    if FRetranslatorPause<>Value then
-      FRetranslatorPause:=Value;
+  if FScrollLogToBottom<>Value then
+    FScrollLogToBottom:=Value;
 end;
 
-procedure TConfiguration.SetSharedMemoryName(const Value: WideString);
+procedure TConfigurationClass.SetSharedMemoryName(const Value: WideString);
 begin
   if FSharedMemoryName<>Value then
     if Trim(Value)<>'' then
       FSharedMemoryName:=Trim(Value)
     else
       raise Exception.Create(TEXT_WRONGSHAREDMEMORYNAME);
+end;
+
+procedure TConfigurationClass.SetShowSplashAtStart(const Value: boolean);
+begin
+  if FShowSplashAtStart<>Value then
+    FShowSplashAtStart:=Value;
+end;
+
+procedure TConfigurationClass.SetShowStatusbar(const Value: boolean);
+begin
+  if FShowStatusbar<>Value then
+    FShowStatusbar:=Value;
 end;
 
 end.

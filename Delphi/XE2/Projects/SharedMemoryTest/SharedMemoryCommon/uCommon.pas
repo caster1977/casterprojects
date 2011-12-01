@@ -16,6 +16,7 @@ const
 
   CONST_DEFAULTVALUE_DATABLOCKSIZE=1024;
   CONST_DEFAULTVALUE_RETRANSLATORPAUSE=1000;
+  CONST_DEFAULTVALUE_DESTINATIONFOLDER: string = '';
   CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM: boolean=False;
   CONST_DEFAULTVALUE_KEEPLOGTYPES: TLogMessagesTypes=[lmtError, lmtWarning, lmtInfo];
   CONST_DEFAULTVALUE_SHOWSTATUSBAR: boolean=True;
@@ -23,9 +24,10 @@ const
 
   WPARAM_SERVER_WANNA_HANDLE=1; // сервер хочет handle клиента (LPARAM = handle сервера)
   WPARAM_CLIENT_SENDS_HANDLE=2; // клиент отправляет свой handle (LPARAM = handle клиента)
+  WPARAM_SERVER_ACCEPT_CLIENT=17; // сервер подтверждает соединение с данным клиентом
 
   WPARAM_CLIENT_WANNA_SEND_FILE=3; // клиент хочет послать очередной файл
-  WPARAM_SERVER_SENDS_BUFFER_SIZE=4; // сервер отправляет размер буфера общей памяти (LPARAM = размер буфера в байтах)
+  WPARAM_SERVER_SENDS_SHAREDMEM_SIZE=4; // сервер отправляет размер блока общей памяти (LPARAM = размер буфера в байтах)
 
   WPARAM_SERVER_WANNA_FILENAME=5; // сервер хочет имя файла
   WPARAM_CLIENT_SENDS_FILENAME=6; // клиент отправляет имя файла (LPARAM = размер имени файла в байтах)
