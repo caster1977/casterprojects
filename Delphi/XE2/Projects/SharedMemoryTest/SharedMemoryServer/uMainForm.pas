@@ -32,44 +32,45 @@ type
   THackControl=class(TControl);
 
   TMainForm=class(TForm)
-    MainMenu1: TMainMenu;
-    ActionManager1: TActionManager;
     ilMainFormSmallImages: TImageList;
-    Action_Quit: TAction;
-    Action_About: TAction;
-    Action_Configuration: TAction;
+    MainMenu1: TMainMenu;
     N1: TMenuItem;
     N2: TMenuItem;
     N3: TMenuItem;
     N4: TMenuItem;
     N5: TMenuItem;
     N6: TMenuItem;
+    N7: TMenuItem;
+    N8: TMenuItem;
+    N9: TMenuItem;
+    miStatusBar: TMenuItem;
+    ActionManager1: TActionManager;
+    Action_Quit: TAction;
+    Action_About: TAction;
+    Action_Configuration: TAction;
+    Action_OpenDestinationFolder: TAction;
     StatusBar1: TStatusBar;
     pbMain: TProgressBar;
-    imState: TImage;
+    imConnectionState: TImage;
     ilMainFormStateIcons: TImageList;
     ApplicationEvents1: TApplicationEvents;
     ilLog: TImageList;
-    N7: TMenuItem;
-    miStatusBar: TMenuItem;
     Panel1: TPanel;
     chkbxScrollLogToBottom: TCheckBox;
     lvLog: TListView;
-    Action_OpenDestinationFolder: TAction;
-    N8: TMenuItem;
-    N9: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Action_ConfigurationExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure Action_QuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
     procedure ApplicationEvents1Hint(Sender: TObject);
-    procedure Action_AboutExecute(Sender: TObject);
     procedure chkbxScrollLogToBottomClick(Sender: TObject);
     procedure miStatusBarClick(Sender: TObject);
     procedure lvLogResize(Sender: TObject);
+    procedure Action_QuitExecute(Sender: TObject);
+    procedure Action_AboutExecute(Sender: TObject);
+    procedure Action_OpenDestinationFolderExecute(Sender: TObject);
   strict private
 
     /// <summary>
@@ -102,15 +103,16 @@ type
     FClientHandle: THandle;
     FCanceling: boolean;
 
-    procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+    procedure ProcessErrors(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
     procedure Refresh_ConnectionState;
-    procedure ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
+    procedure ShowErrorBox(const aHandle: THandle; const aErrorMessage: string);
 
     procedure Do_LoadConfiguration;
     procedure Do_SaveConfiguration;
     procedure Do_ApplyConfiguration;
     procedure Do_About(const aButtonVisible: boolean);
     procedure Do_Configuration;
+    procedure Do_OpenDestinationFolder;
 
     function Do_RegisterWindowMessages: boolean;
     function Do_ConnectionThreadStart: boolean;
@@ -136,6 +138,7 @@ implementation
 uses
   System.IniFiles,
   Winapi.CommCtrl,
+  Winapi.ShellAPI,
   uAboutForm,
   uConfigurationForm;
 
@@ -155,11 +158,14 @@ const
 var
   WM_SERVER, WM_CLIENT: cardinal;
 
-procedure TMainForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+procedure TMainForm.ProcessErrors(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
 begin
   if aError then
-    MainForm.ShowErrorBox(aHandle, aErrorMessage);
-  MainForm.pbMain.Position:=MainForm.pbMain.Min;
+    begin
+      LogError(aErrorMessage);
+      ShowErrorBox(aHandle, aErrorMessage);
+    end;
+  pbMain.Position:=pbMain.Min;
 end;
 
 procedure TMainForm.LogDebug(const aMessage: string);
@@ -244,9 +250,9 @@ end;
 procedure TMainForm.Refresh_ConnectionState;
 begin
   if FClientConnected then
-    ilMainFormStateIcons.GetIcon(ICON_READY, imState.Picture.Icon)
+    ilMainFormStateIcons.GetIcon(ICON_READY, imConnectionState.Picture.Icon)
   else
-    ilMainFormStateIcons.GetIcon(ICON_BUSY, imState.Picture.Icon);
+    ilMainFormStateIcons.GetIcon(ICON_BUSY, imConnectionState.Picture.Icon);
   LogDebug('Соединение '+CommonFunctions.GetConditionalString(FClientConnected, 'в', 'от')+'ключено.');
   Application.ProcessMessages;
 end;
@@ -257,7 +263,7 @@ begin
     FConfiguration:=Value;
 end;
 
-procedure TMainForm.ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
+procedure TMainForm.ShowErrorBox(const aHandle: THandle; const aErrorMessage: string);
 begin
   MessageBox(aHandle, PWideChar(aErrorMessage), PWideChar(TEXT_MAINFORM_CAPTION+' - Ошибка!'), MB_OK+MB_ICONERROR+MB_DEFBUTTON1);
   Application.ProcessMessages;
@@ -287,7 +293,24 @@ begin
     Application.HandleException(Self);
   end;
   if not FFirstRun then
-    PreFooter(Handle, bError, sErrorMessage);
+    ProcessErrors(Handle, bError, sErrorMessage);
+end;
+
+procedure TMainForm.Do_OpenDestinationFolder;
+var
+  sErrorMessage: string;
+  bError: boolean;
+begin
+  bError:=False;
+  LogDebug('Производится попытка открытия папки приёма файлов...');
+  if DirectoryExists(Configuration.DestinationFolder) then
+    begin
+      ShellExecute(Application.Handle, 'open', PWideChar(Configuration.DestinationFolder), nil, nil, SW_MAXIMIZE);
+      LogInfo('Открыта папка приёма файлов.');
+    end
+  else
+    CommonFunctions.GenerateError('Папка приёма файлов не существует! Проверьте правильность указанного в настройках пути ['+Configuration.DestinationFolder+']!', sErrorMessage, bError);
+  ProcessErrors(Handle, bError, sErrorMessage);
 end;
 
 procedure TMainForm.Do_SaveConfiguration;
@@ -327,7 +350,7 @@ begin
       Application.HandleException(Self);
   end;
 
-  PreFooter(Handle, bError, sErrorMessage);
+  ProcessErrors(Handle, bError, sErrorMessage);
 end;
 
 procedure TMainForm.Do_TerminateConnectionThread;
@@ -346,7 +369,6 @@ end;
 procedure TMainForm.Do_About(const aButtonVisible: boolean);
 var
   AboutForm: TAboutForm;
-  iBusy: integer;
 begin
   AboutForm:=TAboutForm.Create(Self);
   with AboutForm do
@@ -375,7 +397,6 @@ end;
 procedure TMainForm.Do_Configuration;
 var
   ConfigurationForm: TConfigurationForm;
-  iBusy: integer;
 begin
   ConfigurationForm:=TConfigurationForm.Create(Self);
   with ConfigurationForm do
@@ -423,7 +444,9 @@ end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  Do_SaveConfiguration;
+  Do_SaveConfiguration; // запись конфигурации
+  if FClientConnected then // если соединение с клиентом установлено, отправляем клиенту уведомление о завершении работы сервера
+    PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_SHUTDOWN, 0);
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -441,9 +464,9 @@ var
 
   procedure BindStateImageToStatusBar;
   begin
-    THackControl(imState).SetParent(StatusBar1);
+    THackControl(imConnectionState).SetParent(StatusBar1);
     SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
-    imState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
+    imConnectionState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
   end;
 
 begin
@@ -475,13 +498,10 @@ begin
   if FFirstRun then
     begin
       FFirstRun:=False;
-
       if Configuration.ShowSplashAtStart then
         Do_About(False);
-
       if not Do_RegisterWindowMessages then
         Application.Terminate;
-
       if not Do_ConnectionThreadStart then
         Application.Terminate;
     end;
@@ -495,6 +515,11 @@ end;
 procedure TMainForm.Action_ConfigurationExecute(Sender: TObject);
 begin
   Do_Configuration;
+end;
+
+procedure TMainForm.Action_OpenDestinationFolderExecute(Sender: TObject);
+begin
+  Do_OpenDestinationFolder;
 end;
 
 procedure TMainForm.Action_QuitExecute(Sender: TObject);
@@ -518,6 +543,8 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     FClientHandle:=Handle; // получаем хэндл клиента
     LogDebug('Получен Handle окна клиентского приложения ['+IntToStr(Handle)+'].');
     FClientConnected:=True; // устанавливаем флаш соединения
+    PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_ACCEPT_CLIENT, 0); // отправляет клиенту подтверждение подключения
+    LogDebug('Сервер отправил клиенту уведомление об успешном подключении.');
     Refresh_ConnectionState;
   end;
 
@@ -541,7 +568,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
 
     FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, Configuration.DataBlockSize);
     LogDebug('Создан объект доступа к общей памяти.');
-    PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_SENDS_BUFFER_SIZE, Configuration.DataBlockSize); // отправляем клиенту размер блока общей памяти для обмена данными
+    PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_SENDS_SHAREDMEM_SIZE, Configuration.DataBlockSize); // отправляем клиенту размер блока общей памяти для обмена данными
     LogDebug('Сервер отправил клиенту размер порции для передачи данных файла ['+IntToStr(Int64(Configuration.DataBlockSize))+'].');
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILENAME, 0); // требуем от клиента имя файла
     LogDebug('Сервер отправил клиенту запрос на имя передаваемого файла.');
@@ -559,7 +586,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   begin
     LogInfo('Сервер получил количество порций днных в передаваемом клиентом файле.');
     LogDebug('Получено количество порций данных ['+IntToStr(Int64(dwDataBlocksQuantity))+'].');
-   {
+    {
       // сохраняем количество блоков в файле
       CurrentFileProperties.DataBlocksQuantity:=dwDataBlocksQuantity;
       // требуем первый блок данных файла
@@ -623,7 +650,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_WPARAM_CLIENT_SENDS_CRC32(const dwCRC32: cardinal);
   begin
     LogInfo('Сервер получил контрольную сумму переданной клиентом порции данных файла.');
-    LogDebug('Получена контрольная сумма переданной клиентом порции данных файла ['+IntToHex(dwCRC32,8)+'].');
+    LogDebug('Получена контрольная сумма переданной клиентом порции данных файла ['+IntToHex(dwCRC32, 8)+'].');
     (*
       // получаем CRC32 указаного блока данных файла
       // производим сверку CRC32
