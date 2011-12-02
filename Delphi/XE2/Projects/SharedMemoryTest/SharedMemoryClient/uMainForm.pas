@@ -74,6 +74,7 @@ type
     procedure ApplicationEvents1Hint(Sender: TObject);
     procedure miStatusBarClick(Sender: TObject);
     procedure chkbxScrollLogToBottomClick(Sender: TObject);
+    procedure Action_SekectFileExecute(Sender: TObject);
   strict private
     FDataBufferSize: cardinal;
     FFirstRun: boolean;
@@ -212,7 +213,7 @@ begin
     try
       Screen.Cursor:=crHourGlass;
       Configuration.Load;
-      LogInfo('Чтение настроек программы из файла прошло успешно.');
+      LogInfo('Чтение настроек программы из файла конфигурации прошло успешно.');
     finally
       Screen.Cursor:=crDefault;
     end;
@@ -324,6 +325,7 @@ var
 begin
   FFirstRun:=True; // режим начала запуска программы включен
   FConnectedToServer:=False; // изначально клиент не подлючен
+  FServerHandle:=0; // хэндл сервера обнулён
   FCanceling:=False; // режим отмены передачи выключен
   Caption:=TEXT_MAINFORM_CAPTION; // установка заголовка окна
   ilMainFormSmallImages.GetIcon(ICON_MAIN, Icon); // установка иконки окна
@@ -421,7 +423,7 @@ begin
     ilMainFormStateIcons.GetIcon(ICON_READY, imConnectionState.Picture.Icon)
   else
     ilMainFormStateIcons.GetIcon(ICON_BUSY, imConnectionState.Picture.Icon);
-  LogDebug('Соединение '+CommonFunctions.GetConditionalString(FConnectedToServer, 'в', 'от')+'ключено.');
+  LogDebug('Индикатор соединения в'+CommonFunctions.GetConditionalString(FConnectedToServer, '', 'ы')+'ключен.');
   Application.ProcessMessages;
 end;
 
@@ -451,8 +453,80 @@ begin
   StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=GetLongHint(Application.Hint);
 end;
 
+procedure TMainForm.Action_SekectFileExecute(Sender: TObject);
+begin
+  with TOpenDialog.Create(Self) do
+    tr y
+      Filter:='Файл HTML-справки (*.chm)|*.chm|Файл справки (*.hlp)|*.hlp';
+      DefaultExt:='chm';
+      Title:='Выберите файл справки к данной программе...';
+      FilterIndex:=1;
+      Options:=[ofReadOnly, ofFileMustExist];
+      if Execute then
+        if FileName='' then
+          MessageDlg('Не выбран файл справки!', mtError, [mbOk], 0)
+        else
+          begin
+            if FileExists(FileName) then
+              edbxCustomHelpFile.Text:=FileName;
+          end;
+    finally
+      Free;
+    end;
+//
+{
+var
+  s, sPath: string;
+  sErrorMessage: string;
+  bError: boolean;
+  iOldBusyCounter: integer;
+begin
+  ProcedureHeader('Процедура выбора папки для сохранения отчётов', LogGroupGUID);
+  bError:=False;
+
+  with MainForm do
+    begin
+      iOldBusyCounter:=iBusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
+      iBusyCounter:=0; // обнуление счётчика перед открытием модального окна
+      Refresh_BusyState(LogGroupGUID); // обновление состояния индикатора
+    end;
+
+  s:=edbxSelectedFolder.Text;
+
+  if SelectDirectory('Выберите папку', '', s, [sdNewFolder, sdNewUI], Self) then
+    if (s<>'') then
+      begin
+        sPath:=s;
+        if (sPath[Length(sPath)]<>'\') then
+          sPath:=sPath+'\';
+        if SysUtils.DirectoryExists(sPath) then
+          begin
+            edbxSelectedFolder.Text:=sPath;
+            LogThis('В качестве папки для сохранения отчётов выбрана папка "'+sPath+'".', LogGroupGUID, lmtDebug);
+          end
+        else
+          begin
+            edbxSelectedFolder.Text:='';
+            Routines_GenerateError('Возникла ошибка при выборе папки - указанная папка не существует!', sErrorMessage, bError);
+          end;
+      end;
+
+  with MainForm do
+    begin
+      iBusyCounter:=iOldBusyCounter; // возвращение старого значения счётчика
+      Refresh_BusyState(LogGroupGUID); // обновление состояния индикатора
+      Application.ProcessMessages;
+    end;
+
+  PreFooter(Handle, bError, sErrorMessage, LogGroupGUID);
+  ProcedureFooter(LogGroupGUID);
+end;
+}
+end;
+
 procedure TMainForm.Action_SendExecute(Sender: TObject);
 begin
+  LogInfo('Пользователь запустил процедуру отправки файла на сервер.');
   btnSend_btnCancel.Action:=Action_Cancel;
   Action_Send.Visible:=False;
   Action_Send.Enabled:=False;
@@ -464,6 +538,7 @@ end;
 
 procedure TMainForm.Action_CancelExecute(Sender: TObject);
 begin
+  LogWarning('Отпрака файла на сервер отменена пользователем.');
   btnSend_btnCancel.Action:=Action_Send;
   Action_Cancel.Visible:=False;
   Action_Cancel.Enabled:=False;
@@ -475,7 +550,7 @@ end;
 
 procedure TMainForm.SetConfiguration(const Value: TConfigurationClass);
 begin
-  FConfiguration := Value;
+  FConfiguration:=Value;
 end;
 
 procedure TMainForm.SetDataBufferSize(const Value: cardinal);
@@ -486,72 +561,106 @@ begin
 end;
 
 procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
+
+  procedure Do_WPARAM_SERVER_SHUTDOWN;
+  begin
+    LogWarning('Получено уведомление о завершении работы сервера.');
+
+    FConnectedToServer:=False; // убираем флаш соединения
+    FServerHandle:=0; // обнуляем хэндл сервера
+    LogDebug('Handle окна серверного приложения обнулён.');
+    // FreeAndNil(FSharedMem); // удаляем объект доступа к общей памяти
+    Refresh_ConnectionState;
+
+    LogInfo('Соединение с сервером прервано.');
+  end;
+
+  procedure Do_WPARAM_SERVER_WANNA_HANDLE(const dwHandle: THandle);
+  begin
+    if FServerHandle<>dwHandle then
+      begin
+        LogInfo('Получен идентификатор доступного сервера.');
+        LogDebug('Handle сервера - ['+IntToStr(Handle)+'].');
+        FServerHandle:=dwHandle; // сохранение хэндла окна сервера
+        PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_HANDLE, Handle); // отправка хэндла окна клиента серверу
+        LogInfo('Отправлен запрос на подключение к серверу.');
+        LogDebug('Отправлеен Handle клиента: '+IntToStr(Handle)+'.');
+      end;
+  end;
+
+  procedure Do_WPARAM_SERVER_ACCEPT_CLIENT;
+  begin
+    LogInfo('Получено подтверждение об успешном подключении к серверу.');
+
+    FConnectedToServer:=True; // ставим флаш соединения
+    Refresh_ConnectionState;
+
+    LogInfo('Соединение с сервером установлено.');
+  end;
+
+  procedure Do_WPARAM_SERVER_SENDS_SHAREDMEM_SIZE(const dwSize: cardinal);
+  begin
+    LogInfo('Получен размер буфера общей памяти.');
+    DataBufferSize:=dwSize; // устанавливаем размер буфера общей памяти
+  end;
+
+  procedure Do_WPARAM_SERVER_WANNA_FILENAME;
+  begin
+    LogInfo('Получен запрос имени файла.');
+
+    LogDebug('Отправлено имя передаваемого файла.');
+  end;
+
+  procedure Do_WPARAM_SERVER_WANNA_FILESIZE;
+  begin
+    LogInfo('Получен запрос размера файла в байтах.');
+
+    LogDebug('Отправлен размер передаваемого файла в байтах.');
+  end;
+
+  procedure Do_WPARAM_SERVER_WANNA_DATA(const dwBlockNumber: cardinal);
+  begin
+    LogInfo('Получен запрос на передачу порции данных файла.');
+
+    LogDebug('Отправлена порция данных передаваемого файла.');
+  end;
+
+  procedure Do_WPARAM_SERVER_WANNA_CRC32(const dwBlockNumber: cardinal);
+  begin
+    LogInfo('Получен запрос на передачу контрольной суммы порции данных файла.');
+
+    LogDebug('Отправлена контрольную сумму порции данных передаваемого файла.');
+  end;
+
 begin
   Handled:=False;
   if Msg.message=WM_SERVER then
-    if Msg.wParam=WPARAM_SERVER_SHUTDOWN then // сервер сообщает клиенту о своём отключении
-      begin
-        LogWarning('Клиент получил уведомление о завершении работы сервера.');
-        LogInfo('Соединение с сервером прервано.');
-        FConnectedToServer:=False; // убираем флаш соединения
-        FServerHandle:=0; // обнуляем хэндл сервера
-        LogDebug('Handle окна серверного приложения обнулён.');
-//        FreeAndNil(FSharedMem); // удаляем объект доступа к общей памяти
-        { TODO : дописать }
-        Refresh_ConnectionState;
-        Handled:=True;
-      end
-    else
-      if FConnectedToServer then
-        case Msg.wParam of
-          WPARAM_SERVER_SENDS_SHAREDMEM_SIZE: // сервер прислал размер буфера общей памяти
-            begin
-              DataBufferSize:=Msg.lParam; // устанавливаем размер буфера общей памяти
-              { TODO : дописать }
-              Handled:=True;
-            end;
-          WPARAM_SERVER_WANNA_FILENAME: // сервер хочет имя файла
-            begin
-              { TODO : дописать }
-              Handled:=True;
-            end;
-          WPARAM_SERVER_WANNA_CHUNKS_QUANTITY: // сервер хочет количество блоков в файле
-            begin
-              { TODO : дописать }
-              Handled:=True;
-            end;
-          WPARAM_SERVER_WANNA_DATA: // сервер хочет блок данных
-            begin
-              { TODO : дописать }
-              Handled:=True;
-            end;
-          WPARAM_SERVER_WANNA_CRC32: // сервер хочет CRC32
-            begin
-              { TODO : дописать }
-              Handled:=True;
-            end;
-        end
+    begin
+      if Msg.wParam=WPARAM_SERVER_SHUTDOWN then // сервер сообщает клиенту о своём отключении
+        Do_WPARAM_SERVER_SHUTDOWN
       else
-        case Msg.wParam of
-        WPARAM_SERVER_WANNA_HANDLE: // сервер хочет хэндл окна клиента
-          if FServerHandle<>THandle(Msg.lParam) then
-            begin
-              FServerHandle:=Msg.lParam; // сохранение хэндла окна сервера
-              // отправка хэндла окна клиента серверу
-              PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_HANDLE, Handle);
-              { TODO : дописать }
-              Handled:=True;
-            end;
-        WPARAM_SERVER_ACCEPT_CLIENT: // сервер подтверждает соединение с данным клиентом
-          begin
-            LogDebug('Сервер прислал подтверждение попытки поключения.');
-            FConnectedToServer:=True; // ставим флаш соединения
-            LogInfo('Соединение с сервером установлено.');
-            Refresh_ConnectionState;
-            { TODO : дописать }
-            Handled:=True;
+        if FConnectedToServer then
+          case Msg.wParam of
+            WPARAM_SERVER_SENDS_SHAREDMEM_SIZE: // сервер прислал размер буфера общей памяти
+              Do_WPARAM_SERVER_SENDS_SHAREDMEM_SIZE(Msg.lParam);
+            WPARAM_SERVER_WANNA_FILENAME: // сервер хочет имя файла
+              Do_WPARAM_SERVER_WANNA_FILENAME;
+            WPARAM_SERVER_WANNA_FILESIZE: // сервер хочет количество блоков в файле
+              Do_WPARAM_SERVER_WANNA_FILESIZE;
+            WPARAM_SERVER_WANNA_DATA: // сервер хочет блок данных
+              Do_WPARAM_SERVER_WANNA_DATA(Msg.lParam);
+            WPARAM_SERVER_WANNA_CRC32: // сервер хочет CRC32
+              Do_WPARAM_SERVER_WANNA_CRC32(Msg.lParam);
+          end
+        else
+          case Msg.wParam of
+            WPARAM_SERVER_WANNA_HANDLE: // сервер прислал свой хендл и хочет получить хэндл окна клиента
+              Do_WPARAM_SERVER_WANNA_HANDLE(Msg.lParam);
+            WPARAM_SERVER_ACCEPT_CLIENT: // сервер подтверждает соединение с данным клиентом
+              Do_WPARAM_SERVER_ACCEPT_CLIENT;
           end;
-        end;
+      Handled:=True;
+    end;
 end;
 
 procedure TMainForm.chkbxScrollLogToBottomClick(Sender: TObject);

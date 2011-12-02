@@ -253,7 +253,7 @@ begin
     ilMainFormStateIcons.GetIcon(ICON_READY, imConnectionState.Picture.Icon)
   else
     ilMainFormStateIcons.GetIcon(ICON_BUSY, imConnectionState.Picture.Icon);
-  LogDebug('Соединение '+CommonFunctions.GetConditionalString(FClientConnected, 'в', 'от')+'ключено.');
+  LogDebug('Индикатор соединения в'+CommonFunctions.GetConditionalString(FClientConnected, '', 'ы')+'ключен.');
   Application.ProcessMessages;
 end;
 
@@ -283,7 +283,7 @@ begin
     try
       Screen.Cursor:=crHourGlass;
       Configuration.Load;
-      LogInfo('Чтение настроек программы из файла прошло успешно.');
+      LogInfo('Чтение настроек программы из файла конфигурации прошло успешно.');
     finally
       Screen.Cursor:=crDefault;
     end;
@@ -537,21 +537,22 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
 
   procedure Do_WPARAM_CLIENT_SENDS_HANDLE(const Handle: THandle);
   begin
-    LogWarning('Сервер получил ответ на широковещательное сообщение от клиента.');
+    LogInfo('Получен ответ клиента на широковещательное сообщение.');
+
     LogInfo('Соединение с клиентом установлено.');
     Do_TerminateConnectionThread; // останавливаем поток, рассылающий хэндл сервера
     FClientHandle:=Handle; // получаем хэндл клиента
-    LogDebug('Получен Handle окна клиентского приложения ['+IntToStr(Handle)+'].');
+    LogDebug('Получен Handle окна клиентского приложения: '+IntToStr(Handle)+'.');
     FClientConnected:=True; // устанавливаем флаш соединения
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_ACCEPT_CLIENT, 0); // отправляет клиенту подтверждение подключения
-    LogDebug('Сервер отправил клиенту уведомление об успешном подключении.');
+    LogDebug('Отправлено уведомление об успешном подключении.');
     Refresh_ConnectionState;
   end;
 
   procedure Do_WPARAM_CLIENT_SHUTDOWN;
   begin
-    LogWarning('Сервер получил уведомление о завершении работы клиента.');
-    LogInfo('Соединение с клиентом прервано.');
+    LogWarning('Получено уведомление о завершении работы клиента.');
+
     FClientConnected:=False; // убираем флаш соединения
     FClientHandle:=0; // обнуляем хэндл клиента
     LogDebug('Handle окна клиентского приложения обнулён.');
@@ -559,33 +560,36 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     if not Do_ConnectionThreadStart then // запускаем поток рассылки хэндла сервера
       Application.Terminate;
     Refresh_ConnectionState;
+    LogInfo('Соединение с клиентом прервано.');
   end;
 
   procedure Do_WPARAM_CLIENT_WANNA_SEND_FILE;
   begin
-    LogInfo('Сервер получил уведомление о попытке передачи файла клиентом.');
-    FCanceling:=False;
+    LogInfo('Получено уведомление о попытке передачи файла клиентом.');
 
+    FCanceling:=False;
     FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, Configuration.DataBlockSize);
     LogDebug('Создан объект доступа к общей памяти.');
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_SENDS_SHAREDMEM_SIZE, Configuration.DataBlockSize); // отправляем клиенту размер блока общей памяти для обмена данными
-    LogDebug('Сервер отправил клиенту размер порции для передачи данных файла ['+IntToStr(Int64(Configuration.DataBlockSize))+'].');
+    LogDebug('Отправлен размер порции для передачи данных файла: '+IntToStr(Int64(Configuration.DataBlockSize))+'.');
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILENAME, 0); // требуем от клиента имя файла
-    LogDebug('Сервер отправил клиенту запрос на имя передаваемого файла.');
+    LogDebug('Отправлен запрос на имя передаваемого файла.');
   end;
 
   procedure Do_WPARAM_CLIENT_WANNA_CANCEL_SENDING;
   begin
-    LogWarning('Сервер получил уведомление об отмене передачи файла клиентом.');
+    LogWarning('Получено уведомление об отмене передачи файла клиентом.');
+
     FCanceling:=True;
     FreeAndNil(FSharedMem); // удаляем текущий объект доступа к общей памяти
     LogDebug('Уничтожен объект доступа к общей памяти.');
   end;
 
-  procedure Do_WPARAM_CLIENT_SENDS_CHUNKS_QUANTITY(const dwDataBlocksQuantity: cardinal);
+  procedure Do_WPARAM_CLIENT_SENDS_FILESIZE(const dwSize: cardinal);
   begin
-    LogInfo('Сервер получил количество порций днных в передаваемом клиентом файле.');
-    LogDebug('Получено количество порций данных ['+IntToStr(Int64(dwDataBlocksQuantity))+'].');
+    LogInfo('Получен размер передаваемого клиентом файла в байтах.');
+
+    LogDebug('Hазмер файла в байтах: '+IntToStr(Int64(dwSize))+'.');
     {
       // сохраняем количество блоков в файле
       CurrentFileProperties.DataBlocksQuantity:=dwDataBlocksQuantity;
@@ -602,8 +606,9 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     s: string;
   }
   begin
-    LogInfo('Сервер получил имя передаваемого клиентом файла.');
-    LogDebug('Получен размер имени передаваемого клиентом файла в байтах ['+IntToStr(Int64(dwSize))+'].');
+    LogInfo('Получено имя передаваемого клиентом файла.');
+
+    LogDebug('Размер имени передаваемого клиентом файла в байтах: '+IntToStr(Int64(dwSize))+'.');
     (*
       // пролучаем строку имени файла
       SetLength(s, dwSize);
@@ -632,8 +637,9 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     ab: Taob;
   }
   begin
-    LogInfo('Сервер получил уведомление о передаче клиентом порции данных файла.');
-    LogDebug('Получен размер порции данных передаваемого клиентом файла в байтах ['+IntToStr(Int64(dwSize))+'].');
+    LogInfo('Получено уведомление о передаче клиентом порции данных файла.');
+
+    LogDebug('Размер порции данных передаваемого клиентом файла в байтах: '+IntToStr(Int64(dwSize))+'.');
     {
       // сохраняем размер переданных данных в байтах
       CurrentFileProperties.CurrentDataBlockSize:=dwSize;
@@ -649,8 +655,9 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
 
   procedure Do_WPARAM_CLIENT_SENDS_CRC32(const dwCRC32: cardinal);
   begin
-    LogInfo('Сервер получил контрольную сумму переданной клиентом порции данных файла.');
-    LogDebug('Получена контрольная сумма переданной клиентом порции данных файла ['+IntToHex(dwCRC32, 8)+'].');
+    LogInfo('Получена контрольная сумма переданной клиентом порции данных файла.');
+
+    LogDebug('Контрольная сумма переданной клиентом порции данных файла: '+IntToHex(dwCRC32, 8)+'.');
     (*
       // получаем CRC32 указаного блока данных файла
       // производим сверку CRC32
@@ -692,8 +699,8 @@ begin
               Do_WPARAM_CLIENT_WANNA_SEND_FILE;
             WPARAM_CLIENT_SENDS_FILENAME: // клиент отправляет имя файла (LPARAM = размер имени файла в байтах)
               Do_WPARAM_CLIENT_SENDS_FILENAME(Msg.lParam);
-            WPARAM_CLIENT_SENDS_CHUNKS_QUANTITY: // клиент отправляет количество порций данных в файле (LPARAM = количество порций данных в файле)
-              Do_WPARAM_CLIENT_SENDS_CHUNKS_QUANTITY(Msg.lParam);
+            WPARAM_CLIENT_SENDS_FILESIZE: // клиент отправляет размер файла (LPARAM = размер файла в байтах)
+              Do_WPARAM_CLIENT_SENDS_FILESIZE(Msg.lParam);
             WPARAM_CLIENT_SENDS_DATA: // клиент отправляет указанный блок данных (LPARAM = размер переданных данных в байтах)
               Do_WPARAM_CLIENT_SENDS_DATA(Msg.lParam);
             WPARAM_CLIENT_SENDS_CRC32: // клиент отправляет контрольную сумму указанного блока данных (LPARAM = СКС32)

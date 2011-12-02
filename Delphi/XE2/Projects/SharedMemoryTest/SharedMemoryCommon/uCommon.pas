@@ -31,8 +31,8 @@ const
 
   WPARAM_SERVER_WANNA_FILENAME=5; // сервер хочет имя файла
   WPARAM_CLIENT_SENDS_FILENAME=6; // клиент отправляет имя файла (LPARAM = размер имени файла в байтах)
-  WPARAM_SERVER_WANNA_CHUNKS_QUANTITY=7; // сервер хочет количество порций данных в файле
-  WPARAM_CLIENT_SENDS_CHUNKS_QUANTITY=8; // клиент отправляет количество порций данных в файле (LPARAM = количество порций данных в файле)
+  WPARAM_SERVER_WANNA_FILESIZE=7; // сервер хочет размер файла в байтах
+  WPARAM_CLIENT_SENDS_FILESIZE=8; // клиент отправляет размер файла в байтах (LPARAM = размер файла в байтах)
   WPARAM_SERVER_WANNA_DATA=9; // сервер хочет указанный блок данных (LPARAM = порядковый номер запрашиваемого блока данных)
   WPARAM_CLIENT_SENDS_DATA=10; // клиент отправляет указанный блок данных (LPARAM = размер переданных данных в байтах)
   WPARAM_SERVER_WANNA_CRC32=11; // сервер хочет контрольную сумму указанного блока данных (LPARAM = порядковый номер запрашиваемого блока данных)
