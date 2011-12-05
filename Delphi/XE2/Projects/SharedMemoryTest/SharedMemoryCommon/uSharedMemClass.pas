@@ -345,11 +345,12 @@ begin
   FHandle:=CreateFileMapping(INVALID_HANDLE_VALUE, nil, PAGE_READWRITE, 0, FSize, PWideChar(FName));
   Result:=FHandle<>NULL;
   if not Result then
-    raise Exception.Create(TEXT_ERROR_CREATEFILEMAPPING+TEXT_ERRORCODE+IntToStr(GetLastError))
-  else
-    Result:=GetLastError<>ERROR_ALREADY_EXISTS;
-  if not Result then
-    raise Exception.Create(TEXT_ERROR_CREATEFILEMAPPING_ALREADYEXISTS+TEXT_ERRORCODE+IntToStr(GetLastError))
+    raise Exception.Create(TEXT_ERROR_CREATEFILEMAPPING+TEXT_ERRORCODE+IntToStr(GetLastError));
+  // чтобы получить доступ к уже существующему блоку памяти с указнным именем - нужно убрать следующий код
+//  else
+//    Result:=GetLastError<>ERROR_ALREADY_EXISTS;
+//  if not Result then
+//    raise Exception.Create(TEXT_ERROR_CREATEFILEMAPPING_ALREADYEXISTS+TEXT_ERRORCODE+IntToStr(GetLastError))
 end;
 
 function TSharedMemClass._Close: boolean;

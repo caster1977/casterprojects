@@ -79,6 +79,7 @@ type
     procedure chkbxScrollLogToBottomClick(Sender: TObject);
     procedure Action_SekectFileExecute(Sender: TObject);
     procedure lvLogResize(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   strict private
     FDataBufferSize: cardinal;
     FFirstRun: boolean;
@@ -91,6 +92,16 @@ type
     /// Объект для доступа к общей памяти
     /// </summary>
     FSharedMem: TSharedMemClass;
+
+    /// <summary>
+    /// Объект для манипуляций с фрагментом данных
+    /// </summary>
+    FChunk: TChunkClass;
+
+    /// <summary>
+    /// Объект для манипуляций с "порционным" файлом данных
+    /// </summary>
+    FChunkedFile: TChunkedFileClass;
 
     /// <summary>
     /// Объект для хранения настроек программы
@@ -332,6 +343,14 @@ begin
   Do_LoadConfiguration; // загрузка настроек из файла
   Do_ApplyConfiguration; // применение настроек к интерфейсу
   Configuration.SharedMemoryName:='{6579B61D-DA05-480A-A29B-B0998A354860}';
+end;
+
+procedure TMainForm.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(FChunk);
+  FreeAndNil(FChunkedFile);
+  FreeAndNil(FSharedMem);
+  FreeAndNil(FConfiguration);
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
@@ -592,17 +611,43 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_FILENAME;
+  var
+    s: WideString;
+    a: TArray<byte>;
+    i: integer;
   begin
     LogInfo('Получен запрос имени файла.');
-
-    LogDebug('Отправлено имя передаваемого файла.');
+    if not Assigned(FChunk) then
+      FChunk:=TChunkClass.Create;
+    try
+      SetLength(a,Length(FFilename));
+      for i:=0 to Length(FFilename) do
+        a[i]:=Byte(FFilename[i+1]);
+      FChunk.Size:=Length(a);
+      FChunk.Data:=Copy(a,0,FChunk.Size);
+      FSharedMem.Mapped:=True;
+      FSharedMem.Write(FChunk);
+      FSharedMem.Mapped:=False;
+      PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_FILENAME, FChunk.Size); // отправка хэндла окна клиента серверу (LPARAM = размер имени файла в байтах)
+      LogDebug('Отправлено имя передаваемого файла.');
+    finally
+      FreeAndNil(FChunk);
+    end;
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_FILESIZE;
   begin
     LogInfo('Получен запрос размера файла в байтах.');
-
-    LogDebug('Отправлен размер передаваемого файла в байтах.');
+    if not Assigned(FChunkedFile) then
+      begin
+        FChunkedFile:=TChunkedFileClass.Create(FFilename,DataBufferSize);
+        LogDebug('Создан объект доступа к порционному файлу.');
+        PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_FILESIZE, FChunkedFile.Size); // отправка хэндла окна клиента серверу (LPARAM = размер имени файла в байтах)
+        LogDebug('Отправлено имя передаваемого файла.');
+        LogDebug('Отправлен размер передаваемого файла в байтах.');
+      end
+    else
+      raise Exception.Create('Объект порционного файла уже был ранее создан!');
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_DATA(const dwBlockNumber: cardinal);

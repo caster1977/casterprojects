@@ -83,6 +83,7 @@
 			<DCC_RemoteDebug>true</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<DCC_UnitSearchPath>..\SharedMemoryCommon\Win32\Debug;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<Icon_MainIcon>SharedMemoryServer_Icon1.ico</Icon_MainIcon>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<DCC_RemoteDebug>false</DCC_RemoteDebug>
@@ -94,6 +95,7 @@
 			<DCC_DebugInformation>false</DCC_DebugInformation>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<DCC_UnitSearchPath>..\SharedMemoryCommon\Win32\Release;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<ItemGroup>
