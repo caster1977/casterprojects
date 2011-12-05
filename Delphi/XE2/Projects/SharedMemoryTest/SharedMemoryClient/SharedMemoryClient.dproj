@@ -50,7 +50,7 @@
 			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
 			<DCC_BplOutput>.\$(Platform)\$(Config)\Package</DCC_BplOutput>
 			<DCC_DcpOutput>.\$(Platform)\$(Config)\DCP</DCC_DcpOutput>
-			<DCC_UnitSearchPath>..\SharedMemoryCommon;..\..\casterspackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_UnitSearchPath>..\SharedMemoryCommon;..\..\CastersPackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=(C)opyright 2011 by Vlad Ivanov;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<Manifest_File>None</Manifest_File>
 			<VerInfo_Locale>1049</VerInfo_Locale>
