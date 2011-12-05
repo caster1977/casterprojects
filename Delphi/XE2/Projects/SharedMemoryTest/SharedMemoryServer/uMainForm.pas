@@ -557,6 +557,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     FClientHandle:=0; // обнуляем хэндл клиента
     LogDebug('Handle окна клиентского приложения обнулён.');
     FreeAndNil(FSharedMem); // удаляем объект доступа к общей памяти
+    LogDebug('Объект доступа к общей памяти уничтоден.');
     if not Do_ConnectionThreadStart then // запускаем поток рассылки хэндла сервера
       Application.Terminate;
     Refresh_ConnectionState;
@@ -579,10 +580,9 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_WPARAM_CLIENT_WANNA_CANCEL_SENDING;
   begin
     LogWarning('Получено уведомление об отмене передачи файла клиентом.');
-
     FCanceling:=True;
     FreeAndNil(FSharedMem); // удаляем текущий объект доступа к общей памяти
-    LogDebug('Уничтожен объект доступа к общей памяти.');
+    LogDebug('Объект доступа к общей памяти уничтоден.');
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_FILESIZE(const dwSize: cardinal);

@@ -112,10 +112,6 @@
 				<Form>AboutForm</Form>
 			</DCCReference>
 			<DCCReference Include="uConfigurationClass.pas"/>
-			<DCCReference Include="uRetranslatorThreadClass.pas"/>
-			<DCCReference Include="uSharedMemClass.pas"/>
-			<DCCReference Include="uChunkClass.pas"/>
-			<DCCReference Include="uChunkedFileClass.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
