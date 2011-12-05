@@ -31,6 +31,11 @@ requires
   rtl;
 
 contains
-  uCommon in 'uCommon.pas';
+  uChunkClass in 'uChunkClass.pas',
+  uChunkedFileClass in 'uChunkedFileClass.pas',
+  uCommon in 'uCommon.pas',
+  uReceiverClass in 'uReceiverClass.pas',
+  uRetranslatorThreadClass in 'uRetranslatorThreadClass.pas',
+  uSharedMemClass in 'uSharedMemClass.pas';
 
 end.

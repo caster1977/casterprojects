@@ -31,6 +31,11 @@ type
     FStream: TFileStream;
 
     /// <summary>
+    /// Размер файла в байтах
+    /// </summary>
+    FSize: cardinal;
+
+    /// <summary>
     /// Размер порции данных
     /// </summary>
     FChunkSize: cardinal;
@@ -92,6 +97,11 @@ type
     property Name: string read FName stored False;
 
     /// <summary>
+    /// Размер файла в байтах
+    /// </summary>
+    property Size: cardinal read FSize stored False;
+
+    /// <summary>
     /// Размер порций данных
     /// </summary>
     property ChunkSize: cardinal read FChunkSize stored False;
@@ -145,11 +155,13 @@ begin
     if FileExists(FName)and(QuantityOfChunks=0) then
       begin
         FStream:=TFile.OpenRead(FName);
+        FSize:=FStream.Size;
         FCount:=FStream.Size div SizeOfChunk;
       end
     else // если нет и не указано количество чанков в файле и размер чанка
       begin
         FStream:=TFile.Create(FName);
+        FSize:=0;
         FCount:=QuantityOfChunks;
       end;
   except

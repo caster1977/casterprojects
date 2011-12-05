@@ -575,6 +575,8 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     LogDebug('Отправлен размер порции для передачи данных файла: '+IntToStr(Int64(Configuration.DataBlockSize))+'.');
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILENAME, 0); // требуем от клиента имя файла
     LogDebug('Отправлен запрос на имя передаваемого файла.');
+    PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILESIZE, 0); // требуем от клиента размер файла
+    LogDebug('Отправлен запрос на размер передаваемого файла.');
   end;
 
   procedure Do_WPARAM_CLIENT_WANNA_CANCEL_SENDING;
@@ -588,8 +590,8 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_WPARAM_CLIENT_SENDS_FILESIZE(const dwSize: cardinal);
   begin
     LogInfo('Получен размер передаваемого клиентом файла в байтах.');
-
     LogDebug('Hазмер файла в байтах: '+IntToStr(Int64(dwSize))+'.');
+
     {
       // сохраняем количество блоков в файле
       CurrentFileProperties.DataBlocksQuantity:=dwDataBlocksQuantity;
