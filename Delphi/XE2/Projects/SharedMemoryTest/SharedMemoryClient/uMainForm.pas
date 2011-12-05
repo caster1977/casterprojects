@@ -22,6 +22,9 @@ uses
   Vcl.AppEvnts,
   Vcl.ExtCtrls,
   uConfigurationClass,
+  uSharedMemClass,
+  uChunkClass,
+  uChunkedFileClass,
   uCommon;
 
 type
@@ -75,12 +78,19 @@ type
     procedure miStatusBarClick(Sender: TObject);
     procedure chkbxScrollLogToBottomClick(Sender: TObject);
     procedure Action_SekectFileExecute(Sender: TObject);
+    procedure lvLogResize(Sender: TObject);
   strict private
     FDataBufferSize: cardinal;
     FFirstRun: boolean;
     FServerHandle: THandle;
     FConnectedToServer: boolean;
     FCanceling: boolean;
+    FFilename: string;
+
+    /// <summary>
+    /// Объект для доступа к общей памяти
+    /// </summary>
+    FSharedMem: TSharedMemClass;
 
     /// <summary>
     /// Объект для хранения настроек программы
@@ -103,6 +113,7 @@ type
     procedure SetConfiguration(const Value: TConfigurationClass);
     procedure Log(const aMessage: string; aMessageType: TLogMessagesType);
     procedure Do_UpdateColumnWidth;
+    procedure Do_UpdateAcrions;
   protected
     property DataBufferSize: cardinal read FDataBufferSize write SetDataBufferSize stored False;
   public
@@ -159,7 +170,6 @@ end;
 procedure TMainForm.Do_About(const aButtonVisible: boolean);
 var
   AboutForm: TAboutForm;
-  iBusy: integer;
 begin
   AboutForm:=TAboutForm.Create(Self);
   with AboutForm do
@@ -188,7 +198,6 @@ end;
 procedure TMainForm.Do_Configuration;
 var
   ConfigurationForm: TConfigurationForm;
-  iBusy: integer;
 begin
   ConfigurationForm:=TConfigurationForm.Create(Self);
   with ConfigurationForm do
@@ -281,20 +290,6 @@ begin
   PreFooter(Handle, bError, sErrorMessage);
 end;
 
-procedure TMainForm.Do_UpdateColumnWidth;
-var
-  h: THandle;
-begin
-  lvLog.Column[0].Width:=130;
-  h:=lvLog.Handle;
-  if (GetWindowLong(h, GWL_STYLE)and WS_VSCROLL)=WS_VSCROLL then
-    lvLog.Column[1].Width:=lvLog.Width-(lvLog.BevelWidth*2)-2-GetSystemMetrics(SM_CXVSCROLL)-lvLog.Column[0].Width
-  else
-    lvLog.Column[1].Width:=lvLog.Width-(lvLog.BevelWidth*2)-2-lvLog.Column[0].Width;
-  lvLog.FlatScrollBars:=False;
-  lvLog.FlatScrollBars:=True;
-end;
-
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   Do_SaveConfiguration; // запись конфигурации
@@ -327,6 +322,7 @@ begin
   FConnectedToServer:=False; // изначально клиент не подлючен
   FServerHandle:=0; // хэндл сервера обнулён
   FCanceling:=False; // режим отмены передачи выключен
+  FFilename:='';
   Caption:=TEXT_MAINFORM_CAPTION; // установка заголовка окна
   ilMainFormSmallImages.GetIcon(ICON_MAIN, Icon); // установка иконки окна
   FConfiguration:=TConfigurationClass.Create; // создание и инициализщация объекта конфигурации
@@ -348,6 +344,7 @@ begin
       if not Do_RegisterWindowMessages then
         Application.Terminate;
     end;
+  Do_UpdateAcrions;
 end;
 
 procedure TMainForm.Log(const aMessage: string; aMessageType: TLogMessagesType);
@@ -403,6 +400,33 @@ begin
     Log(aMessage, lmtWarning);
 end;
 
+procedure TMainForm.lvLogResize(Sender: TObject);
+begin
+  Do_UpdateColumnWidth;
+end;
+
+procedure TMainForm.Do_UpdateAcrions;
+begin
+  Action_Send.Enabled:=FConnectedToServer and FileExists(FFileName);
+  LogDebug('Действие "'+Action_Send.Caption+'" '+CommonFunctions.GetConditionalString(Action_Send.Enabled, 'в', 'от')+'ключено.');
+  Action_Cancel.Enabled:=Action_Send.Enabled;
+  LogDebug('Действие "'+Action_Cancel.Caption+'" '+CommonFunctions.GetConditionalString(Action_Cancel.Enabled, 'в', 'от')+'ключено.');
+end;
+
+procedure TMainForm.Do_UpdateColumnWidth;
+var
+  h: THandle;
+begin
+  lvLog.Column[0].Width:=130;
+  h:=lvLog.Handle;
+  if (GetWindowLong(h, GWL_STYLE)and WS_VSCROLL)=WS_VSCROLL then
+    lvLog.Column[1].Width:=lvLog.Width-(lvLog.BevelWidth*2)-2-GetSystemMetrics(SM_CXVSCROLL)-lvLog.Column[0].Width
+  else
+    lvLog.Column[1].Width:=lvLog.Width-(lvLog.BevelWidth*2)-2-lvLog.Column[0].Width;
+  lvLog.FlatScrollBars:=False;
+  lvLog.FlatScrollBars:=True;
+end;
+
 procedure TMainForm.miStatusBarClick(Sender: TObject);
 begin
   StatusBar1.Visible:=miStatusbar.Checked;
@@ -454,74 +478,37 @@ begin
 end;
 
 procedure TMainForm.Action_SekectFileExecute(Sender: TObject);
+var
+  sErrorMessage: string;
+  bError: boolean;
 begin
+  bError:=False;
   with TOpenDialog.Create(Self) do
-    tr y
-      Filter:='Файл HTML-справки (*.chm)|*.chm|Файл справки (*.hlp)|*.hlp';
-      DefaultExt:='chm';
-      Title:='Выберите файл справки к данной программе...';
+    try
+      Filter:='Все файлы (*.*)|*.*';
+      Title:='Выберите файл для передачи на сервер...';
       FilterIndex:=1;
       Options:=[ofReadOnly, ofFileMustExist];
       if Execute then
         if FileName='' then
-          MessageDlg('Не выбран файл справки!', mtError, [mbOk], 0)
+          ShowErrorBox(Handle, 'Не выбран файл для передачи на сервер!')
         else
           begin
             if FileExists(FileName) then
-              edbxCustomHelpFile.Text:=FileName;
+              begin
+                FFilename:=FileName;
+                ebSelectFile.Text:=FFileName;
+                LogInfo('Файл для передачи на сервер выбран успешно.');
+                LogDebug('Имя файла для передачи на сервер: ['+FFileName+'].');
+              end
+            else
+              CommonFunctions.GenerateError('Выбранный файл не существует!', sErrorMessage, bError);
           end;
     finally
       Free;
+      Do_UpdateAcrions;
     end;
-//
-{
-var
-  s, sPath: string;
-  sErrorMessage: string;
-  bError: boolean;
-  iOldBusyCounter: integer;
-begin
-  ProcedureHeader('Процедура выбора папки для сохранения отчётов', LogGroupGUID);
-  bError:=False;
-
-  with MainForm do
-    begin
-      iOldBusyCounter:=iBusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
-      iBusyCounter:=0; // обнуление счётчика перед открытием модального окна
-      Refresh_BusyState(LogGroupGUID); // обновление состояния индикатора
-    end;
-
-  s:=edbxSelectedFolder.Text;
-
-  if SelectDirectory('Выберите папку', '', s, [sdNewFolder, sdNewUI], Self) then
-    if (s<>'') then
-      begin
-        sPath:=s;
-        if (sPath[Length(sPath)]<>'\') then
-          sPath:=sPath+'\';
-        if SysUtils.DirectoryExists(sPath) then
-          begin
-            edbxSelectedFolder.Text:=sPath;
-            LogThis('В качестве папки для сохранения отчётов выбрана папка "'+sPath+'".', LogGroupGUID, lmtDebug);
-          end
-        else
-          begin
-            edbxSelectedFolder.Text:='';
-            Routines_GenerateError('Возникла ошибка при выборе папки - указанная папка не существует!', sErrorMessage, bError);
-          end;
-      end;
-
-  with MainForm do
-    begin
-      iBusyCounter:=iOldBusyCounter; // возвращение старого значения счётчика
-      Refresh_BusyState(LogGroupGUID); // обновление состояния индикатора
-      Application.ProcessMessages;
-    end;
-
-  PreFooter(Handle, bError, sErrorMessage, LogGroupGUID);
-  ProcedureFooter(LogGroupGUID);
-end;
-}
+  PreFooter(Handle, bError, sErrorMessage);
 end;
 
 procedure TMainForm.Action_SendExecute(Sender: TObject);
@@ -529,9 +516,7 @@ begin
   LogInfo('Пользователь запустил процедуру отправки файла на сервер.');
   btnSend_btnCancel.Action:=Action_Cancel;
   Action_Send.Visible:=False;
-  Action_Send.Enabled:=False;
   Action_Cancel.Visible:=True;
-  Action_Cancel.Enabled:=True;
   if FConnectedToServer then
     PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_WANNA_SEND_FILE, 0); // отправляем сигнал серверу о желании начать передачу файла
 end;
@@ -541,9 +526,7 @@ begin
   LogWarning('Отпрака файла на сервер отменена пользователем.');
   btnSend_btnCancel.Action:=Action_Send;
   Action_Cancel.Visible:=False;
-  Action_Cancel.Enabled:=False;
   Action_Send.Visible:=True;
-  Action_Send.Enabled:=True;
   if FConnectedToServer then
     PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_WANNA_CANCEL_SENDING, 0); // отправляем сигнал серверу об отмене передачи файла
 end;
@@ -565,13 +548,14 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_WPARAM_SERVER_SHUTDOWN;
   begin
     LogWarning('Получено уведомление о завершении работы сервера.');
-
     FConnectedToServer:=False; // убираем флаш соединения
     FServerHandle:=0; // обнуляем хэндл сервера
     LogDebug('Handle окна серверного приложения обнулён.');
-    // FreeAndNil(FSharedMem); // удаляем объект доступа к общей памяти
+    FreeAndNil(FSharedMem); // удаляем объект доступа к общей памяти
+    LogDebug('Объект доступа к общей памяти уничтоден.');
     Refresh_ConnectionState;
-
+    btnSend_btnCancel.Action:=Action_Send;
+    Do_UpdateAcrions;
     LogInfo('Соединение с сервером прервано.');
   end;
 
@@ -580,7 +564,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     if FServerHandle<>dwHandle then
       begin
         LogInfo('Получен идентификатор доступного сервера.');
-        LogDebug('Handle сервера - ['+IntToStr(Handle)+'].');
+        LogDebug('Handle окна доступного сервера: '+IntToStr(dwHandle)+'.');
         FServerHandle:=dwHandle; // сохранение хэндла окна сервера
         PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_HANDLE, Handle); // отправка хэндла окна клиента серверу
         LogInfo('Отправлен запрос на подключение к серверу.');
@@ -591,17 +575,20 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_WPARAM_SERVER_ACCEPT_CLIENT;
   begin
     LogInfo('Получено подтверждение об успешном подключении к серверу.');
-
     FConnectedToServer:=True; // ставим флаш соединения
     Refresh_ConnectionState;
-
+    Do_UpdateAcrions;
     LogInfo('Соединение с сервером установлено.');
   end;
 
   procedure Do_WPARAM_SERVER_SENDS_SHAREDMEM_SIZE(const dwSize: cardinal);
   begin
-    LogInfo('Получен размер буфера общей памяти.');
-    DataBufferSize:=dwSize; // устанавливаем размер буфера общей памяти
+    LogInfo('Получен размер буфера общей памяти в байтах.');
+    DataBufferSize:=dwSize; // устанавливаем размер буфера в общей памяти
+    LogDebug('Размер буфера общей памяти в байтах: '+IntToStr(Int64(dwSize))+'.');
+    // создание буфера в общей памяти
+    FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, Configuration.DataBlockSize);
+    LogDebug('Создан объект доступа к общей памяти.');
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_FILENAME;
@@ -632,6 +619,16 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     LogDebug('Отправлена контрольную сумму порции данных передаваемого файла.');
   end;
 
+  procedure Do_WPARAM_SERVER_TRANSFER_COMPLETE;
+  begin
+    LogInfo('Получено подтверждение об успешной передаче файла.');
+    FreeAndNil(FSharedMem); // удаляем объект доступа к общей памяти
+    LogDebug('Объект доступа к общей памяти уничтоден.');
+    btnSend_btnCancel.Action:=Action_Send;
+    Do_UpdateAcrions;
+    LogInfo('Передача файла завершена.');
+  end;
+
 begin
   Handled:=False;
   if Msg.message=WM_SERVER then
@@ -651,6 +648,8 @@ begin
               Do_WPARAM_SERVER_WANNA_DATA(Msg.lParam);
             WPARAM_SERVER_WANNA_CRC32: // сервер хочет CRC32
               Do_WPARAM_SERVER_WANNA_CRC32(Msg.lParam);
+            WPARAM_SERVER_TRANSFER_COMPLETE: // сервер сообщает что получил файл полностью
+              Do_WPARAM_SERVER_TRANSFER_COMPLETE;
           end
         else
           case Msg.wParam of
