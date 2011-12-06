@@ -9,13 +9,13 @@ type
   TConfigurationClass=class
   strict private
     FIniFileName: string;
-    FDataBlockSize: cardinal;
+    FSharedMemSize: cardinal;
     FSharedMemoryName: WideString;
     FKeepLogTypes: TLogMessagesTypes;
     FShowStatusbar: boolean;
     FScrollLogToBottom: boolean;
     FShowSplashAtStart: boolean;
-    procedure SetDataBlockSize(const Value: cardinal);
+    procedure SetSharedMemSize(const Value: cardinal);
     procedure SetSharedMemoryName(const Value: WideString);
     procedure SetKeepLogTypes(const Value: TLogMessagesTypes);
     procedure SetShowStatusbar(const Value: boolean);
@@ -26,7 +26,7 @@ type
     constructor Create(const IniFileName: string='');
     procedure Load;
     procedure Save;
-    property DataBlockSize: cardinal read FDataBlockSize write SetDataBlockSize default CONST_DEFAULTVALUE_DATABLOCKSIZE;
+    property SharedMemSize: cardinal read FSharedMemSize write SetSharedMemSize default CONST_DEFAULTVALUE_SHAREDMEMSIZE;
     property SharedMemoryName: WideString read FSharedMemoryName write SetSharedMemoryName stored False;
     property KeepLogTypes: TLogMessagesTypes read FKeepLogTypes write SetKeepLogTypes default [lmtError, lmtWarning, lmtInfo];
     property ShowStatusbar: boolean read FShowStatusbar write SetShowStatusbar default True;
@@ -57,7 +57,7 @@ begin
     FIniFileName:=ExtractFilePath(ExpandFileName(Application.ExeName))+StringReplace(ExtractFileName(Application.ExeName), '.exe', '.ini', [rfIgnoreCase])
   else
     FIniFileName:=Trim(IniFileName);
-  FDataBlockSize:=CONST_DEFAULTVALUE_DATABLOCKSIZE;
+  FSharedMemSize:=CONST_DEFAULTVALUE_SHAREDMEMSIZE;
   FSharedMemoryName:='';
   FKeepLogTypes:=CONST_DEFAULTVALUE_KEEPLOGTYPES;
   FShowStatusbar:=CONST_DEFAULTVALUE_SHOWSTATUSBAR;
@@ -69,7 +69,7 @@ begin
   if FIniFileName>'' then
     with TIniFile.Create(FIniFileName) do
       try
-        DataBlockSize:=cardinal(ReadInteger('Общие', 'iDataBlockSize', CONST_DEFAULTVALUE_DATABLOCKSIZE));
+        SharedMemSize:=cardinal(ReadInteger('Общие', 'iSharedMemSize', CONST_DEFAULTVALUE_SHAREDMEMSIZE));
         ScrollLogToBottom:=ReadBool('Интерфейс', 'bScrollLogToBottom', CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM);
         ShowStatusbar:=ReadBool('Интерфейс', 'bShowStatusbar', CONST_DEFAULTVALUE_SHOWSTATUSBAR);
         ShowSplashAtStart:=ReadBool('Интерфейс', 'bShowSplashAtStart', CONST_DEFAULTVALUE_SHOWSPLASHATSTART);
@@ -102,7 +102,7 @@ begin
     with TIniFile.Create(FIniFileName) do
       try
         try
-          WriteInteger('Общие', 'iDataBlockSize', DataBlockSize);
+          WriteInteger('Общие', 'iSharedMemSize', SharedMemSize);
           WriteBool('Интерфейс', 'bScrollLogToBottom', ScrollLogToBottom);
           WriteBool('Интерфейс', 'bShowStatusbar', ShowStatusbar);
           WriteBool('Интерфейс', 'bShowSplashAtStart', ShowSplashAtStart);
@@ -121,13 +121,13 @@ begin
     raise Exception.Create(TEXT_WRONGINIFILENAME);
 end;
 
-procedure TConfigurationClass.SetDataBlockSize(const Value: cardinal);
+procedure TConfigurationClass.SetSharedMemSize(const Value: cardinal);
 begin
   if Value<=0 then
     raise Exception.Create(TEXT_WRONGBUFFERSIZE)
   else
-    if FDataBlockSize<>Value then
-      FDataBlockSize:=Value;
+    if FSharedMemSize<>Value then
+      FSharedMemSize:=Value;
 end;
 
 procedure TConfigurationClass.SetKeepLogTypes(const Value: TLogMessagesTypes);

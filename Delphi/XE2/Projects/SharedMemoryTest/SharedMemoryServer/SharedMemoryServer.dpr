@@ -5,7 +5,12 @@ uses
   uMainForm in 'uMainForm.pas' {MainForm},
   uConfigurationForm in 'uConfigurationForm.pas' {ConfigurationForm},
   uAboutForm in 'uAboutForm.pas' {AboutForm},
-  uConfigurationClass in 'uConfigurationClass.pas';
+  uConfigurationClass in 'uConfigurationClass.pas',
+  uChunkClass in '..\SharedMemoryCommon\uChunkClass.pas',
+  uChunkedFileClass in '..\SharedMemoryCommon\uChunkedFileClass.pas',
+  uCommon in '..\SharedMemoryCommon\uCommon.pas',
+  uRetranslatorThreadClass in '..\SharedMemoryCommon\uRetranslatorThreadClass.pas',
+  uSharedMemClass in '..\SharedMemoryCommon\uSharedMemClass.pas';
 
 {$R *.res}
 

@@ -41,43 +41,48 @@ type
     FChunkSize: cardinal;
 
     /// <summary>
-    /// Количество порций данных указанного размера в дисковом файле
+    /// Контрольная сумма порционного файла
     /// </summary>
-    FCount: cardinal;
+    FCRC32: cardinal;
 
     /// <summary>
-    /// Номер текущей порции данных
+    /// Номер текущей порции файла, с которой ведётся работа
     /// </summary>
     FIndex: cardinal;
 
     /// <summary>
-    /// Контрольная сумма порционного файла
+    /// Флаг успешного завершения работы с файлом
     /// </summary>
-    FCRC32: cardinal;
+    FComplete: boolean;
+  private
+    function GetCount: cardinal;
   public
 
     /// <summary>
     /// Конструктор класса
     /// </summary>
-    constructor Create(const FileName: string; const SizeOfChunk: cardinal; const QuantityOfChunks: cardinal=0);
+    constructor Create(const FileName: string; const SizeOfChunk: cardinal; const FileSize: cardinal=0);
 
     /// <summary>
     /// Деструктор класса.
     /// </summary>
     destructor Destroy; override;
 
-    /// <summary>
-    /// Метод, обеспечивающий чтение очередной порции данных из файла.
-    /// </summary>
-    /// <param name="Chunk">
-    /// Объект порции данных, в который будет помещена считанная из файла
-    /// порция данных
-    /// </param>
-    /// <returns>
-    /// Возращает <b>True</b>, если операция прошла успешно, <b>False</b> в
-    /// случае ошибки.
-    /// </returns>
-    function Read(out Chunk: TChunkClass): boolean;
+    ///	<summary>
+    ///	  Метод, обеспечивающий чтение очередной порции данных из файла.
+    ///	</summary>
+    ///	<param name="Index">
+    ///	  Номер порции данных в файле, начиная с нуля
+    ///	</param>
+    ///	<param name="Chunk">
+    ///	  Объект порции данных, в который будет помещена считанная из файла
+    ///	  порция данных
+    ///	</param>
+    ///	<returns>
+    ///	  Возращает <b>True</b>, если операция прошла успешно, <b>False</b> в
+    ///	  случае ошибки.
+    ///	</returns>
+    function Read(const Index: cardinal; out Chunk: TChunkClass): boolean;
 
     /// <summary>
     /// Метод, обеспечивающий запись очередной порции данных в файл.
@@ -109,17 +114,22 @@ type
     /// <summary>
     /// Количество порций данных указанного размера в дисковом файле
     /// </summary>
-    property Count: cardinal read FCount stored False;
-
-    /// <summary>
-    /// Номер текущей порции данных
-    /// </summary>
-    property Index: cardinal read FIndex stored False;
+    property Count: cardinal read GetCount stored False;
 
     /// <summary>
     /// Контрольная сумма "порционного" файла
     /// </summary>
     property СКС32: cardinal read FCRC32 stored False;
+
+    /// <summary>
+    /// Номер текущей порции файла, с которой ведётся работа
+    /// </summary>
+    property Index: cardinal read FIndex write FIndex stored False;
+
+    /// <summary>
+    /// Флаг успешного завершения работы с файлом
+    /// </summary>
+    property Complete: boolean write FComplete stored False;
   end;
 
 implementation
@@ -131,14 +141,15 @@ uses
 
 resourcestring
   TEXT_ERROR_WRONG_CHUNK_SIZE='Размер порции данных не должен быть менее одного байта!';
-  TEXT_ERROR_WRONG_CHUNK_QUANTITY='Количество порций создаваемого файла не должно быть менее одной!';
   TEXT_ERROR_WRONG_FILE_STREAM_OBJECT='Не удалось создать объект файлового потока!';
   TEXT_ERROR_WRITING_CHUNK_TO_FILE='Не удалось записать порцию данных в файл!';
 
-constructor TChunkedFileClass.Create(const FileName: string; const SizeOfChunk: cardinal; const QuantityOfChunks: cardinal=0);
+constructor TChunkedFileClass.Create(const FileName: string; const SizeOfChunk: cardinal; const FileSize: cardinal=0);
 begin
   inherited Create;
+  FIndex:=0;
   FName:=Trim(FileName);
+//  FComplete:=True;
 
   // если размер порции менее одного байта
   if SizeOfChunk<1 then
@@ -146,40 +157,40 @@ begin
   else
     FChunkSize:=SizeOfChunk;
 
-  // если указанного файла не существует и не было задано количество порций в файле
-  if (not FileExists(FName))and(QuantityOfChunks=0) then
-    raise Exception.Create(TEXT_ERROR_WRONG_CHUNK_QUANTITY);
-
-  // если файл с данным именем существует, а так же не указано количество чанков в файле, будем открывать имеющийся файл для чтения
+  // если файл с данным именем существует, а так же не указан размер файла в байтах, будем открывать имеющийся файл для чтения
   try
-    if FileExists(FName)and(QuantityOfChunks=0) then
+    if FileExists(FName)and(FileSize=0) then
       begin
         FStream:=TFile.OpenRead(FName);
         FSize:=FStream.Size;
-        FCount:=FStream.Size div SizeOfChunk;
+        FComplete:=True;
       end
     else // если нет и не указано количество чанков в файле и размер чанка
       begin
         FStream:=TFile.Create(FName);
         FSize:=0;
-        FCount:=QuantityOfChunks;
+        FComplete:=False;
       end;
   except
     if not Assigned(FStream) then
       raise Exception.Create(TEXT_ERROR_WRONG_FILE_STREAM_OBJECT);
   end;
-
-  // инициализируем счётчик порций
-  FIndex:=0;
 end;
 
 destructor TChunkedFileClass.Destroy;
 begin
   FreeAndNil(FStream);
+  if not FComplete then
+    TFile.Delete(FName);
   inherited;
 end;
 
-function TChunkedFileClass.Read(out Chunk: TChunkClass): boolean;
+function TChunkedFileClass.GetCount: cardinal;
+begin
+  Result:=(Size div ChunkSize)+1;
+end;
+
+function TChunkedFileClass.Read(const Index: cardinal; out Chunk: TChunkClass): boolean;
 var
   Data: TArray<byte>;
 begin
@@ -188,7 +199,9 @@ begin
     Chunk:=TChunkClass.Create;
   if Assigned(FStream) then
     begin
-      Chunk.Size:=FStream.Read(Data, ChunkSize);
+      FStream.Seek(ChunkSize*Index, soFromBeginning);
+      SetLength(Data, ChunkSize);
+      Chunk.Size:=FStream.Read(Data[0], ChunkSize);
       SetLength(Data, Chunk.Size);
       Chunk.Data:=Data;
       if Chunk.Size>0 then
@@ -203,7 +216,7 @@ begin
     raise Exception.Create(TEXT_ERROR_WRONG_CHUNK_OBJECT);
   if Assigned(FStream) then
     try
-      FStream.WriteBuffer(Chunk.Data,Chunk.Size);
+      FStream.WriteBuffer(Chunk.Data, Chunk.Size);
       Result:=True;
     except
       on EWriteError do
