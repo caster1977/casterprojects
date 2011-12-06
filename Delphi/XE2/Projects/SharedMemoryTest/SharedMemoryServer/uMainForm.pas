@@ -102,6 +102,7 @@ type
     FClientConnected: boolean;
     FClientHandle: THandle;
     FCanceling: boolean;
+    FFileName: string;
 
     procedure ProcessErrors(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
     procedure Refresh_ConnectionState;
@@ -145,15 +146,6 @@ uses
 resourcestring
   TEXT_MAINFORM_CAPTION='Shared Memory Server';
   TEXT_ABOUTFORM_CAPTION='About "Shared Memory Server"...';
-
-const
-  ICON_BUSY=0;
-  ICON_READY=1;
-
-  ICON_ERROR=0;
-  ICON_WARNING=1;
-  ICON_INFO=2;
-  ICON_DEBUG=3;
 
 var
   WM_SERVER, WM_CLIENT: cardinal;
@@ -212,6 +204,11 @@ begin
 end;
 
 procedure TMainForm.Log(const aMessage: string; aMessageType: TLogMessagesType);
+const
+  ICON_ERROR=0;
+  ICON_WARNING=1;
+  ICON_INFO=2;
+  ICON_DEBUG=3;
 var
   i: integer;
   ListItem: TListItem;
@@ -248,6 +245,9 @@ begin
 end;
 
 procedure TMainForm.Refresh_ConnectionState;
+const
+  ICON_BUSY=0;
+  ICON_READY=1;
 begin
   if FClientConnected then
     ilMainFormStateIcons.GetIcon(ICON_READY, imConnectionState.Picture.Icon)
@@ -556,6 +556,8 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     FClientConnected:=False; // убираем флаш соединения
     FClientHandle:=0; // обнуляем хэндл клиента
     LogDebug('Handle окна клиентского приложения обнулён.');
+    FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
+    LogDebug('Объект доступа к порционному файлу уничтоден.');
     FreeAndNil(FSharedMem); // удаляем объект доступа к общей памяти
     LogDebug('Объект доступа к общей памяти уничтоден.');
     if not Do_ConnectionThreadStart then // запускаем поток рассылки хэндла сервера
@@ -569,90 +571,87 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     LogInfo('Получено уведомление о попытке передачи файла клиентом.');
 
     FCanceling:=False;
-    FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, Configuration.DataBlockSize);
+    FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, Configuration.SharedMemSize);
+
     LogDebug('Создан объект доступа к общей памяти.');
-    PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_SENDS_SHAREDMEM_SIZE, Configuration.DataBlockSize); // отправляем клиенту размер блока общей памяти для обмена данными
-    LogDebug('Отправлен размер порции для передачи данных файла: '+IntToStr(Int64(Configuration.DataBlockSize))+'.');
+    PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_SENDS_SHAREDMEM_SIZE, Configuration.SharedMemSize); // отправляем клиенту размер блока общей памяти для обмена данными
+    LogDebug('Отправлен размер порции для передачи данных файла: '+IntToStr(Int64(Configuration.SharedMemSize))+'.');
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILENAME, 0); // требуем от клиента имя файла
     LogDebug('Отправлен запрос на имя передаваемого файла.');
-    PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILESIZE, 0); // требуем от клиента размер файла
-    LogDebug('Отправлен запрос на размер передаваемого файла.');
   end;
 
   procedure Do_WPARAM_CLIENT_WANNA_CANCEL_SENDING;
   begin
     LogWarning('Получено уведомление об отмене передачи файла клиентом.');
     FCanceling:=True;
+    FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
+    LogDebug('Объект доступа к порционному файлу уничтоден.');
     FreeAndNil(FSharedMem); // удаляем текущий объект доступа к общей памяти
     LogDebug('Объект доступа к общей памяти уничтоден.');
+  end;
+
+  procedure Do_WPARAM_CLIENT_SENDS_FILENAME(const dwSize: cardinal);
+  var
+    i: integer;
+  begin
+    LogInfo('Получено имя передаваемого клиентом файла.');
+
+    LogDebug('Размер имени передаваемого клиентом файла в байтах: '+IntToStr(Int64(dwSize))+'.');
+    if not Assigned(FChunk) then
+      begin
+        FChunk:=TChunkClass.Create;
+        LogDebug('Создан объект порции данных.');
+      end;
+    try
+      FSharedMem.Mapped:=True;
+      FSharedMem.Read(dwSize, FChunk);
+      FSharedMem.Mapped:=False;
+      SetLength(FFileName, FChunk.Size);
+      for i:=0 to FChunk.Size-1 do
+        FFileName[i+1]:=Char(FChunk.Data[i]);
+    finally
+      FreeAndNil(FChunk);
+      LogDebug('Объект порции данных уничтожен.');
+    end;
+    LogDebug('Имя передаваемого клиентом файла: ['+FFileName+']');
+
+    PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILESIZE, 0); // требуем от клиента размер файла
+    LogDebug('Отправлен запрос на размер передаваемого файла.');
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_FILESIZE(const dwSize: cardinal);
   begin
     LogInfo('Получен размер передаваемого клиентом файла в байтах.');
-    LogDebug('Hазмер файла в байтах: '+IntToStr(Int64(dwSize))+'.');
+    LogDebug('Размер файла в байтах: '+IntToStr(Int64(dwSize))+'.');
 
-    {
-      // сохраняем количество блоков в файле
-      CurrentFileProperties.DataBlocksQuantity:=dwDataBlocksQuantity;
-      // требуем первый блок данных файла
-      CurrentFileProperties.CurrentDataBlockNumber:=1;
-      PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, CurrentFileProperties.CurrentDataBlockNumber); // требуем от клиента указанный блок файла
-    }
-    { TODO : дописать }
-  end;
-
-  procedure Do_WPARAM_CLIENT_SENDS_FILENAME(const dwSize: cardinal);
-  {
-    var
-    s: string;
-  }
-  begin
-    LogInfo('Получено имя передаваемого клиентом файла.');
-
-    LogDebug('Размер имени передаваемого клиентом файла в байтах: '+IntToStr(Int64(dwSize))+'.');
-    (*
-      // пролучаем строку имени файла
-      SetLength(s, dwSize);
-      CopyMemory(@s, PMapView, dwSize);
-      CurrentFileProperties.FileName:=s;
-      // создаём файл на диске в указанной в настройках программы папке
-      AssignFile(FDataFile, Configuration.DestinationFolder+CurrentFileProperties.FileName);
-      try
-      Rewrite(FDataFile);
-      // запрашиваем количество блоков в файле
-      PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_BLOCKS_QUANTITY, 0); // требуем от клиента количество блоков в файле
-      except
-      on E: EInOutError do
+    if not Assigned(FChunkedFile) then
       begin
-      CloseFile(FDataFile);
-      ShowErrorBox(Handle, TEXT_ERROR_CREATEFILE+TEXT_ERRORCODE+IntToStr(GetLastError) { +E.Message } );
-      end;
-      end;
-    *)
-    { TODO : дописать }
+        FChunkedFile:=TChunkedFileClass.Create(Configuration.DestinationFolder+FFilename, Configuration.SharedMemSize, dwSize);
+        LogDebug('Создан объект доступа к порционному файлу.');
+        PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, FChunkedFile.Index); // требуем от клиента указанный блок файла
+        LogDebug('Отправлен запрос на получение очередной порции данных.');
+      end
+    else
+      raise Exception.Create('Объект порционного файла уже был ранее создан!');
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_DATA(const dwSize: cardinal);
-  {
-    var
-    ab: Taob;
-  }
   begin
     LogInfo('Получено уведомление о передаче клиентом порции данных файла.');
 
     LogDebug('Размер порции данных передаваемого клиентом файла в байтах: '+IntToStr(Int64(dwSize))+'.');
-    {
-      // сохраняем размер переданных данных в байтах
-      CurrentFileProperties.CurrentDataBlockSize:=dwSize;
-      // копируем данные блока в массив
-      SetLength(ab, CurrentFileProperties.CurrentDataBlockSize);
-      CopyMemory(@ab[0], PMapView, CurrentFileProperties.CurrentDataBlockSize);
-      CurrentFileProperties.CurrentDataBlockData:=ab;
-      // требуем CRC32 переданного блока данных
-      PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_CRC32, CurrentFileProperties.CurrentDataBlockNumber); // требуем от клиента CRC32 указанного блока файла
-    }
-    { TODO : дописать }
+    if not Assigned(FChunk) then
+      begin
+        FChunk:=TChunkClass.Create;
+        LogDebug('Создан объект порции данных.');
+      end;
+    FSharedMem.Mapped:=True;
+    FSharedMem.Read(dwSize, FChunk);
+    FSharedMem.Mapped:=False;
+    // данные остались в объекте порции данных
+    // теперь требуем CRC32 блока
+    PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_CRC32, FChunkedFile.Index); // требуем от клиента CRC32 указанной порции данных файла
+    LogDebug('Отправлен запрос на получение контрольной суммы очередной порции данных.');
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_CRC32(const dwCRC32: cardinal);
@@ -660,32 +659,38 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     LogInfo('Получена контрольная сумма переданной клиентом порции данных файла.');
 
     LogDebug('Контрольная сумма переданной клиентом порции данных файла: '+IntToHex(dwCRC32, 8)+'.');
-    (*
-      // получаем CRC32 указаного блока данных файла
-      // производим сверку CRC32
-      // если проверка прошла успешно, записываем данные в файл
-      try
-      BlockWrite(FDataFile, CurrentFileProperties.CurrentDataBlockData, CurrentFileProperties.CurrentDataBlockSize);
-      // требуем от клиента следующий блок данных
-      CurrentFileProperties.CurrentDataBlockNumber:=CurrentFileProperties.CurrentDataBlockNumber+1;
-      if not bCanceling then // прерываем цикл передачи файла
-      PostMessage(hClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, CurrentFileProperties.CurrentDataBlockNumber)
-      else
+    // проводим сверку полученной контрольной суммы и контрольной суммы ранее полученной порции данных файла
+    if FChunk.CRC32=dwCRC32 then
       begin
-      bCanceling:=False;
-      CurrentFileProperties.FileName:='';
-      CloseFile(FDataFile);
-      { TODO : добавить удаление недописанного файла с диска }
-      end;
-      except
-      on E: EInOutError do
+        // контрольная сумма совпала, можно записывать данные в файл
+        FChunkedFile.Write(FChunk);
+        // проверка, была ли получена последняя порция данных файла
+        if FChunkedFile.Index=FChunkedFile.Count then
+          begin
+            // последняя порция данных, можно уведомить клиент об успешной передаче данных и закрыть файл
+            FChunkedFile.Complete:=True;
+            FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
+            LogDebug('Объект доступа к порционному файлу уничтоден.');
+            PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_TRANSFER_COMPLETE, 0); // уведомляем клиент об успешном окончании передачи файла
+            LogDebug('Отправлено уведомление об успешной передаче файла.');
+            LogInfo('Файл успешно принят.');
+          end
+        else
+          begin
+            // нужно запросить следующую порцию данных
+            FChunkedFile.Index:=FChunkedFile.Index+1;
+            PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, FChunkedFile.Index); // требуем от клиента указанный блок файла
+            LogDebug('Отправлен запрос на получение очередной порции данных.');
+          end;
+      end
+    else
       begin
-      CloseFile(FDataFile);
-      ShowErrorBox(Handle, TEXT_ERROR_CREATEFILE+TEXT_ERRORCODE+IntToStr(GetLastError) { +E.Message } );
+        // контрольная сумма не совпала, требуется повторно получить порцию данных файла
+        LogError('Контрольная сумма порции данных не совпала!');
+        LogInfo('Проводим повторное получение порции данных.');
+        PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, FChunkedFile.Index); // требуем от клиента указанный блок файла
+        LogDebug('Отправлен запрос на повторное получение порции данных.');
       end;
-      end;
-    *)
-    { TODO : дописать }
   end;
 
 begin

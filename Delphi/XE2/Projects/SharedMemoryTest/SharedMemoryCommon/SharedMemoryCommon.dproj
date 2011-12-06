@@ -92,7 +92,6 @@
 			<DCCReference Include="uChunkClass.pas"/>
 			<DCCReference Include="uChunkedFileClass.pas"/>
 			<DCCReference Include="uCommon.pas"/>
-			<DCCReference Include="uReceiverClass.pas"/>
 			<DCCReference Include="uRetranslatorThreadClass.pas"/>
 			<DCCReference Include="uSharedMemClass.pas"/>
 			<BuildConfiguration Include="Release">

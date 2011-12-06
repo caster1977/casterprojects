@@ -81,7 +81,7 @@ type
     procedure lvLogResize(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   strict private
-    FDataBufferSize: cardinal;
+    FSharedMemSize: cardinal;
     FFirstRun: boolean;
     FServerHandle: THandle;
     FConnectedToServer: boolean;
@@ -120,13 +120,13 @@ type
     procedure Do_Configuration;
 
     function Do_RegisterWindowMessages: boolean;
-    procedure SetDataBufferSize(const Value: cardinal);
+    procedure SetSharedMemSize(const Value: cardinal);
     procedure SetConfiguration(const Value: TConfigurationClass);
     procedure Log(const aMessage: string; aMessageType: TLogMessagesType);
     procedure Do_UpdateColumnWidth;
     procedure Do_UpdateAcrions;
   protected
-    property DataBufferSize: cardinal read FDataBufferSize write SetDataBufferSize stored False;
+    property SharedMemSize: cardinal read FSharedMemSize write SetSharedMemSize stored False;
   public
     procedure LogError(const aMessage: string);
     procedure LogWarning(const aMessage: string);
@@ -153,19 +153,8 @@ resourcestring
   TEXT_MAINFORM_CAPTION='Shared Memory Client';
   TEXT_ABOUTFORM_CAPTION='About "Shared Memory Client"...';
 
-const
-  ICON_BUSY=0;
-  ICON_READY=1;
-
-  ICON_ERROR=0;
-  ICON_WARNING=1;
-  ICON_INFO=2;
-  ICON_DEBUG=3;
-
 var
   WM_SERVER, WM_CLIENT: cardinal;
-
-var
   Recipients: DWORD=BSM_APPLICATIONS;
 
 procedure TMainForm.ProcessErrors(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
@@ -367,6 +356,11 @@ begin
 end;
 
 procedure TMainForm.Log(const aMessage: string; aMessageType: TLogMessagesType);
+const
+  ICON_ERROR=0;
+  ICON_WARNING=1;
+  ICON_INFO=2;
+  ICON_DEBUG=3;
 var
   i: integer;
   ListItem: TListItem;
@@ -461,6 +455,9 @@ begin
 end;
 
 procedure TMainForm.Refresh_ConnectionState;
+const
+  ICON_BUSY=0;
+  ICON_READY=1;
 begin
   if FConnectedToServer then
     ilMainFormStateIcons.GetIcon(ICON_READY, imConnectionState.Picture.Icon)
@@ -537,7 +534,10 @@ begin
   Action_Send.Visible:=False;
   Action_Cancel.Visible:=True;
   if FConnectedToServer then
-    PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_WANNA_SEND_FILE, 0); // отправляем сигнал серверу о желании начать передачу файла
+    begin
+      PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_WANNA_SEND_FILE, 0); // отправляем сигнал серверу о желании начать передачу файла
+      LogInfo('Отправлено уведомление о попытке передачи файла на сервер.');
+    end;
 end;
 
 procedure TMainForm.Action_CancelExecute(Sender: TObject);
@@ -546,8 +546,13 @@ begin
   btnSend_btnCancel.Action:=Action_Send;
   Action_Cancel.Visible:=False;
   Action_Send.Visible:=True;
+  FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
+  LogDebug('Объект доступа к порционному файлу уничтоден.');
   if FConnectedToServer then
-    PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_WANNA_CANCEL_SENDING, 0); // отправляем сигнал серверу об отмене передачи файла
+    begin
+      PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_WANNA_CANCEL_SENDING, 0); // отправляем сигнал серверу об отмене передачи файла
+      LogInfo('Отправлено уведомление об отмене передачи файла на сервер.');
+    end;
 end;
 
 procedure TMainForm.SetConfiguration(const Value: TConfigurationClass);
@@ -555,11 +560,17 @@ begin
   FConfiguration:=Value;
 end;
 
-procedure TMainForm.SetDataBufferSize(const Value: cardinal);
+procedure TMainForm.SetSharedMemSize(const Value: cardinal);
 begin
-  { TODO : добавить проверку на развер буфера в байтах (имя файла должно помещаться, как минимум) }
-  if FDataBufferSize<>Value then
-    FDataBufferSize:=Value;
+  { TODO : добавить проверку на размер буфера в байтах (имя файла должно помещаться, как минимум) }
+  if FSharedMemSize<>Value then
+    FSharedMemSize:=Value;
+end;
+
+procedure TMainForm.chkbxScrollLogToBottomClick(Sender: TObject);
+begin
+  Configuration.ScrollLogToBottom:=chkbxScrollLogToBottom.Enabled and chkbxScrollLogToBottom.Checked;
+  LogInfo('Прокурутка к последнему сообщению протокола '+CommonFunctions.GetConditionalString(Configuration.ScrollLogToBottom, 'в', 'от')+'ключена.');
 end;
 
 procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
@@ -570,6 +581,8 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     FConnectedToServer:=False; // убираем флаш соединения
     FServerHandle:=0; // обнуляем хэндл сервера
     LogDebug('Handle окна серверного приложения обнулён.');
+    FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
+    LogDebug('Объект доступа к порционному файлу уничтоден.');
     FreeAndNil(FSharedMem); // удаляем объект доступа к общей памяти
     LogDebug('Объект доступа к общей памяти уничтоден.');
     Refresh_ConnectionState;
@@ -603,26 +616,30 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_WPARAM_SERVER_SENDS_SHAREDMEM_SIZE(const dwSize: cardinal);
   begin
     LogInfo('Получен размер буфера общей памяти в байтах.');
-    DataBufferSize:=dwSize; // устанавливаем размер буфера в общей памяти
+    SharedMemSize:=dwSize; // устанавливаем размер буфера в общей памяти
     LogDebug('Размер буфера общей памяти в байтах: '+IntToStr(Int64(dwSize))+'.');
     // создание буфера в общей памяти
-    FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, Configuration.DataBlockSize);
+    FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, Configuration.SharedMemSize);
     LogDebug('Создан объект доступа к общей памяти.');
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_FILENAME;
   var
-    s: WideString;
     a: TArray<byte>;
     i: integer;
+    s: string;
   begin
     LogInfo('Получен запрос имени файла.');
     if not Assigned(FChunk) then
-      FChunk:=TChunkClass.Create;
+      begin
+        FChunk:=TChunkClass.Create;
+        LogDebug('Создан объект порции данных.');
+      end;
     try
-      SetLength(a,Length(FFilename));
-      for i:=0 to Length(FFilename) do
-        a[i]:=Byte(FFilename[i+1]);
+      s:=ExtractFileName(FFilename);
+      SetLength(a,Length(s));
+      for i:=0 to Length(s) do
+        a[i]:=Byte(s[i+1]);
       FChunk.Size:=Length(a);
       FChunk.Data:=Copy(a,0,FChunk.Size);
       FSharedMem.Mapped:=True;
@@ -632,6 +649,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
       LogDebug('Отправлено имя передаваемого файла.');
     finally
       FreeAndNil(FChunk);
+      LogDebug('Объект порции данных уничтожен.');
     end;
   end;
 
@@ -640,10 +658,9 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     LogInfo('Получен запрос размера файла в байтах.');
     if not Assigned(FChunkedFile) then
       begin
-        FChunkedFile:=TChunkedFileClass.Create(FFilename,DataBufferSize);
+        FChunkedFile:=TChunkedFileClass.Create(FFilename,SharedMemSize);
         LogDebug('Создан объект доступа к порционному файлу.');
         PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_FILESIZE, FChunkedFile.Size); // отправка хэндла окна клиента серверу (LPARAM = размер имени файла в байтах)
-        LogDebug('Отправлено имя передаваемого файла.');
         LogDebug('Отправлен размер передаваемого файла в байтах.');
       end
     else
@@ -653,7 +670,20 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_WPARAM_SERVER_WANNA_DATA(const dwBlockNumber: cardinal);
   begin
     LogInfo('Получен запрос на передачу порции данных файла.');
+    // считываем чанк данных из файла для передачи серверу
+    if not Assigned(FChunk) then
+      begin
+        FChunk:=TChunkClass.Create;
+        LogDebug('Создан объект порции данных.');
+      end;
 
+    FChunkedFile.Read(dwBlockNumber, FChunk);
+    LogDebug('Считаны данные из порционного файла.');
+    FSharedMem.Mapped:=True;
+    FSharedMem.Write(FChunk);
+    FSharedMem.Mapped:=False;
+    LogDebug('Данные записаны в общую память.');
+    PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_DATA, FChunk.Size); // отправка уведомления серверу о передаче порции данных (LPARAM = размер переданных данных в байтах)
     LogDebug('Отправлена порция данных передаваемого файла.');
   end;
 
@@ -667,6 +697,8 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_WPARAM_SERVER_TRANSFER_COMPLETE;
   begin
     LogInfo('Получено подтверждение об успешной передаче файла.');
+    FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
+    LogDebug('Объект доступа к порционному файлу уничтоден.');
     FreeAndNil(FSharedMem); // удаляем объект доступа к общей памяти
     LogDebug('Объект доступа к общей памяти уничтоден.');
     btnSend_btnCancel.Action:=Action_Send;
@@ -705,12 +737,6 @@ begin
           end;
       Handled:=True;
     end;
-end;
-
-procedure TMainForm.chkbxScrollLogToBottomClick(Sender: TObject);
-begin
-  Configuration.ScrollLogToBottom:=chkbxScrollLogToBottom.Enabled and chkbxScrollLogToBottom.Checked;
-  LogInfo('Прокурутка к последнему сообщению протокола '+CommonFunctions.GetConditionalString(Configuration.ScrollLogToBottom, 'в', 'от')+'ключена.');
 end;
 
 end.
