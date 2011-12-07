@@ -662,10 +662,11 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     // проводим сверку полученной контрольной суммы и контрольной суммы ранее полученной порции данных файла
     if FChunk.CRC32=dwCRC32 then
       begin
+        LogDebug(' онтрольна€ сумма порции данных совпала.');
         // контрольна€ сумма совпала, можно записывать данные в файл
         FChunkedFile.Write(FChunk);
         // проверка, была ли получена последн€€ порци€ данных файла
-        if FChunkedFile.Index=FChunkedFile.Count then
+        if FChunkedFile.Index<FChunkedFile.Count then
           begin
             // последн€€ порци€ данных, можно уведомить клиент об успешной передаче данных и закрыть файл
             FChunkedFile.Complete:=True;

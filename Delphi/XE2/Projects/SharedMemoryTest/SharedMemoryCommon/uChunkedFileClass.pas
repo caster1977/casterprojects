@@ -216,7 +216,7 @@ begin
     raise Exception.Create(TEXT_ERROR_WRONG_CHUNK_OBJECT);
   if Assigned(FStream) then
     try
-      FStream.WriteBuffer(Chunk.Data, Chunk.Size);
+      FStream.WriteBuffer(Chunk.Data[0], Chunk.Size);
       Result:=True;
     except
       on EWriteError do

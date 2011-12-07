@@ -421,8 +421,11 @@ end;
 procedure TMainForm.Do_UpdateAcrions;
 begin
   Action_Send.Enabled:=FConnectedToServer and FileExists(FFileName);
+  Action_Send.Visible:=btnSend_btnCancel.Action=Action_Send;
   LogDebug('Действие "'+Action_Send.Caption+'" '+CommonFunctions.GetConditionalString(Action_Send.Enabled, 'в', 'от')+'ключено.');
+
   Action_Cancel.Enabled:=Action_Send.Enabled;
+  Action_Cancel.Visible:=btnSend_btnCancel.Action=Action_Cancel;
   LogDebug('Действие "'+Action_Cancel.Caption+'" '+CommonFunctions.GetConditionalString(Action_Cancel.Enabled, 'в', 'от')+'ключено.');
 end;
 
@@ -574,10 +577,8 @@ begin
 end;
 
 procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
-
-  procedure Do_WPARAM_SERVER_SHUTDOWN;
+  procedure Do_D isconnect;
   begin
-    LogWarning('Получено уведомление о завершении работы сервера.');
     FConnectedToServer:=False; // убираем флаш соединения
     FServerHandle:=0; // обнуляем хэндл сервера
     LogDebug('Handle окна серверного приложения обнулён.');
@@ -589,6 +590,18 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     btnSend_btnCancel.Action:=Action_Send;
     Do_UpdateAcrions;
     LogInfo('Соединение с сервером прервано.');
+  end;
+
+  procedure Do_ServerLost;
+  begin
+    LogError('Произошла непредвиденная потеря соединения с сервером!');
+    Do_Disconnect;
+  end;
+
+  procedure Do_WPARAM_SERVER_SHUTDOWN;
+  begin
+    LogWarning('Получено уведомление о завершении работы сервера.');
+    Do_Disconnect;
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_HANDLE(const dwHandle: THandle);
@@ -670,28 +683,42 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_WPARAM_SERVER_WANNA_DATA(const dwBlockNumber: cardinal);
   begin
     LogInfo('Получен запрос на передачу порции данных файла.');
-    // считываем чанк данных из файла для передачи серверу
+    // считываем порцию данных из файла для передачи серверу
     if not Assigned(FChunk) then
       begin
         FChunk:=TChunkClass.Create;
         LogDebug('Создан объект порции данных.');
       end;
-
-    FChunkedFile.Read(dwBlockNumber, FChunk);
-    LogDebug('Считаны данные из порционного файла.');
-    FSharedMem.Mapped:=True;
-    FSharedMem.Write(FChunk);
-    FSharedMem.Mapped:=False;
-    LogDebug('Данные записаны в общую память.');
-    PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_DATA, FChunk.Size); // отправка уведомления серверу о передаче порции данных (LPARAM = размер переданных данных в байтах)
-    LogDebug('Отправлена порция данных передаваемого файла.');
+    try
+      FChunkedFile.Read(dwBlockNumber, FChunk);
+      LogDebug('Считаны данные из порционного файла.');
+      FSharedMem.Mapped:=True;
+      FSharedMem.Write(FChunk);
+      FSharedMem.Mapped:=False;
+      LogDebug('Данные записаны в общую память.');
+      PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_DATA, FChunk.Size); // отправка уведомления серверу о передаче порции данных (LPARAM = размер переданных данных в байтах)
+      LogDebug('Отправлена порция данных передаваемого файла.');
+    finally
+      FreeAndNil(FChunk);
+    end;
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_CRC32(const dwBlockNumber: cardinal);
   begin
     LogInfo('Получен запрос на передачу контрольной суммы порции данных файла.');
-
-    LogDebug('Отправлена контрольную сумму порции данных передаваемого файла.');
+    if not Assigned(FChunk) then
+      begin
+        FChunk:=TChunkClass.Create;
+        LogDebug('Создан объект порции данных.');
+      end;
+    try
+      FChunkedFile.Read(dwBlockNumber, FChunk);
+      LogDebug('Считаны данные из порционного файла.');
+      PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_CRC32, FChunk.CRC32); // отправка контрольной суммы указанной порции данных серверу (LPARAM = CRC32 указанной порции файла)
+      LogDebug('Отправлена контрольная сумма порции данных передаваемого файла.');
+    finally
+      FreeAndNil(FChunk);
+    end;
   end;
 
   procedure Do_WPARAM_SERVER_TRANSFER_COMPLETE;
@@ -714,19 +741,24 @@ begin
         Do_WPARAM_SERVER_SHUTDOWN
       else
         if FConnectedToServer then
-          case Msg.wParam of
-            WPARAM_SERVER_SENDS_SHAREDMEM_SIZE: // сервер прислал размер буфера общей памяти
-              Do_WPARAM_SERVER_SENDS_SHAREDMEM_SIZE(Msg.lParam);
-            WPARAM_SERVER_WANNA_FILENAME: // сервер хочет имя файла
-              Do_WPARAM_SERVER_WANNA_FILENAME;
-            WPARAM_SERVER_WANNA_FILESIZE: // сервер хочет количество блоков в файле
-              Do_WPARAM_SERVER_WANNA_FILESIZE;
-            WPARAM_SERVER_WANNA_DATA: // сервер хочет блок данных
-              Do_WPARAM_SERVER_WANNA_DATA(Msg.lParam);
-            WPARAM_SERVER_WANNA_CRC32: // сервер хочет CRC32
-              Do_WPARAM_SERVER_WANNA_CRC32(Msg.lParam);
-            WPARAM_SERVER_TRANSFER_COMPLETE: // сервер сообщает что получил файл полностью
-              Do_WPARAM_SERVER_TRANSFER_COMPLETE;
+          begin
+            if not IsWindow(FServerHandle) then
+              Do_ServerLost
+            else
+              case Msg.wParam of
+                WPARAM_SERVER_SENDS_SHAREDMEM_SIZE: // сервер прислал размер буфера общей памяти
+                  Do_WPARAM_SERVER_SENDS_SHAREDMEM_SIZE(Msg.lParam);
+                WPARAM_SERVER_WANNA_FILENAME: // сервер хочет имя файла
+                  Do_WPARAM_SERVER_WANNA_FILENAME;
+                WPARAM_SERVER_WANNA_FILESIZE: // сервер хочет количество блоков в файле
+                  Do_WPARAM_SERVER_WANNA_FILESIZE;
+                WPARAM_SERVER_WANNA_DATA: // сервер хочет блок данных
+                  Do_WPARAM_SERVER_WANNA_DATA(Msg.lParam);
+                WPARAM_SERVER_WANNA_CRC32: // сервер хочет CRC32
+                  Do_WPARAM_SERVER_WANNA_CRC32(Msg.lParam);
+                WPARAM_SERVER_TRANSFER_COMPLETE: // сервер сообщает что получил файл полностью
+                  Do_WPARAM_SERVER_TRANSFER_COMPLETE;
+              end;
           end
         else
           case Msg.wParam of
