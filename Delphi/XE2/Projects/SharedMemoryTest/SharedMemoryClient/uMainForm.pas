@@ -25,6 +25,7 @@ uses
   uSharedMemClass,
   uChunkClass,
   uChunkedFileClass,
+  uWatchThreadClass,
   uCommon;
 
 type
@@ -108,6 +109,8 @@ type
     /// </summary>
     FConfiguration: TConfigurationClass;
 
+    FWatchThread: TWatchThreadClass;
+
     procedure PreFooter(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
     procedure Refresh_ConnectionState;
     procedure ProcessErrors(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
@@ -120,6 +123,8 @@ type
     procedure Do_Configuration;
 
     function Do_RegisterWindowMessages: boolean;
+    function Do_WatchThreadStart: boolean;
+    procedure Do_TerminateWatchThread;
     procedure SetSharedMemSize(const Value: cardinal);
     procedure SetConfiguration(const Value: TConfigurationClass);
     procedure Log(const aMessage: string; aMessageType: TLogMessagesType);
@@ -576,8 +581,39 @@ begin
   LogInfo('Прокурутка к последнему сообщению протокола '+CommonFunctions.GetConditionalString(Configuration.ScrollLogToBottom, 'в', 'от')+'ключена.');
 end;
 
+function TMainForm.Do_WatchThreadStart: boolean;
+begin
+  Result:=False;
+  if not Assigned(FWatchThread) then
+    begin
+      FWatchThread:=TWatchThreadClass.Create(FServerHandle, Handle, WM_SERVER, WPARAM_SERVER_LOST);
+      try
+        FWatchThread.Start;
+        LogDebug('Поток наблюдения за наличием соединения с сервером запущен.');
+        Result:=True;
+      except
+        on E: Exception do
+          ShowErrorBox(Handle, E.Message);
+      end;
+    end;
+end;
+
+procedure TMainForm.Do_TerminateWatchThread;
+var
+  Thread: TWatchThreadClass;
+begin
+  Thread:=FWatchThread;
+  FWatchThread:=nil;
+  if Assigned(Thread) then
+    begin
+      Thread.Terminate;
+      LogDebug('Поток наблюдения за наличием соединения с сервером остановлен.');
+    end;
+end;
+
 procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
-  procedure Do_D isconnect;
+
+  procedure Do_Disconnect;
   begin
     FConnectedToServer:=False; // убираем флаш соединения
     FServerHandle:=0; // обнуляем хэндл сервера
@@ -592,7 +628,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     LogInfo('Соединение с сервером прервано.');
   end;
 
-  procedure Do_ServerLost;
+  procedure Do_WPARAM_SERVER_LOST;
   begin
     LogError('Произошла непредвиденная потеря соединения с сервером!');
     Do_Disconnect;
@@ -650,11 +686,11 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
       end;
     try
       s:=ExtractFileName(FFilename);
-      SetLength(a,Length(s));
+      SetLength(a, Length(s));
       for i:=0 to Length(s) do
         a[i]:=Byte(s[i+1]);
       FChunk.Size:=Length(a);
-      FChunk.Data:=Copy(a,0,FChunk.Size);
+      FChunk.Data:=Copy(a, 0, FChunk.Size);
       FSharedMem.Mapped:=True;
       FSharedMem.Write(FChunk);
       FSharedMem.Mapped:=False;
@@ -671,7 +707,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     LogInfo('Получен запрос размера файла в байтах.');
     if not Assigned(FChunkedFile) then
       begin
-        FChunkedFile:=TChunkedFileClass.Create(FFilename,SharedMemSize);
+        FChunkedFile:=TChunkedFileClass.Create(FFilename, SharedMemSize);
         LogDebug('Создан объект доступа к порционному файлу.');
         PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_FILESIZE, FChunkedFile.Size); // отправка хэндла окна клиента серверу (LPARAM = размер имени файла в байтах)
         LogDebug('Отправлен размер передаваемого файла в байтах.');
@@ -741,24 +777,21 @@ begin
         Do_WPARAM_SERVER_SHUTDOWN
       else
         if FConnectedToServer then
-          begin
-            if not IsWindow(FServerHandle) then
-              Do_ServerLost
-            else
-              case Msg.wParam of
-                WPARAM_SERVER_SENDS_SHAREDMEM_SIZE: // сервер прислал размер буфера общей памяти
-                  Do_WPARAM_SERVER_SENDS_SHAREDMEM_SIZE(Msg.lParam);
-                WPARAM_SERVER_WANNA_FILENAME: // сервер хочет имя файла
-                  Do_WPARAM_SERVER_WANNA_FILENAME;
-                WPARAM_SERVER_WANNA_FILESIZE: // сервер хочет количество блоков в файле
-                  Do_WPARAM_SERVER_WANNA_FILESIZE;
-                WPARAM_SERVER_WANNA_DATA: // сервер хочет блок данных
-                  Do_WPARAM_SERVER_WANNA_DATA(Msg.lParam);
-                WPARAM_SERVER_WANNA_CRC32: // сервер хочет CRC32
-                  Do_WPARAM_SERVER_WANNA_CRC32(Msg.lParam);
-                WPARAM_SERVER_TRANSFER_COMPLETE: // сервер сообщает что получил файл полностью
-                  Do_WPARAM_SERVER_TRANSFER_COMPLETE;
-              end;
+          case Msg.wParam of
+            WPARAM_SERVER_SENDS_SHAREDMEM_SIZE: // сервер прислал размер буфера общей памяти
+              Do_WPARAM_SERVER_SENDS_SHAREDMEM_SIZE(Msg.lParam);
+            WPARAM_SERVER_WANNA_FILENAME: // сервер хочет имя файла
+              Do_WPARAM_SERVER_WANNA_FILENAME;
+            WPARAM_SERVER_WANNA_FILESIZE: // сервер хочет количество блоков в файле
+              Do_WPARAM_SERVER_WANNA_FILESIZE;
+            WPARAM_SERVER_WANNA_DATA: // сервер хочет блок данных
+              Do_WPARAM_SERVER_WANNA_DATA(Msg.lParam);
+            WPARAM_SERVER_WANNA_CRC32: // сервер хочет CRC32
+              Do_WPARAM_SERVER_WANNA_CRC32(Msg.lParam);
+            WPARAM_SERVER_TRANSFER_COMPLETE: // сервер сообщает что получил файл полностью
+              Do_WPARAM_SERVER_TRANSFER_COMPLETE;
+            WPARAM_SERVER_LOST: // поток-сторож сообщает о том, что окно сервера неожиданно пропало
+              Do_WPARAM_SERVER_LOST;
           end
         else
           case Msg.wParam of
