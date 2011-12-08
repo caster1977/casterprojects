@@ -9,7 +9,8 @@ uses
   uChunkClass in '..\SharedMemoryCommon\uChunkClass.pas',
   uChunkedFileClass in '..\SharedMemoryCommon\uChunkedFileClass.pas',
   uCommon in '..\SharedMemoryCommon\uCommon.pas',
-  uSharedMemClass in '..\SharedMemoryCommon\uSharedMemClass.pas';
+  uSharedMemClass in '..\SharedMemoryCommon\uSharedMemClass.pas',
+  uWatchThreadClass in '..\SharedMemoryCommon\uWatchThreadClass.pas';
 
 {$R *.res}
 

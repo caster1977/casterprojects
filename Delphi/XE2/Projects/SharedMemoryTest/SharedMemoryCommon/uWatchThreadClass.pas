@@ -1,10 +1,10 @@
 /// <summary>
-/// Модуль-обёртка класса TRetranslatorThreadClass
+/// Модуль-обёртка класса TWatchThreadClass
 /// </summary>
 /// <remarks>
 /// (C)opyright 2011 by Vlad Ivanov aka Caster
 /// </remarks>
-unit uRetranslatorThreadClass;
+unit uWatchThreadClass;
 
 interface
 
@@ -16,17 +16,20 @@ uses
 type
 
   /// <summary>
-  /// Класс, наследник <b>TThread</b>, обеспечивающий трансляцию указанного
-  /// при создании экземпляра класса оконного сообщения при помощи функции
-  /// <b>BroadcastSystemMessage</b>.
+  /// Класс, наследник <b>TThread</b>, обеспечивающий проверку существования окна с указанным
+  /// при создании экземпляра класса значением Handle.
   /// </summary>
-  TRetranslatorThreadClass=class(TThread)
+  TWatchThreadClass=class(TThread)
   strict private
+    /// <summary>
+    /// Handle окна, за существованием которого необходимо следить
+    /// </summary>
+    FWatchHandle: Thandle;
 
     /// <summary>
-    /// Время задержки в милисекундах между циклами передачи сообщения.
+    /// Handle окна, в которое необходимо отправить сообщение о пропадании окна
     /// </summary>
-    FPause: integer;
+    FListenerHandle: Thandle;
 
     /// <summary>
     /// Идентификатор оконного сообщения (значение, возвращённое функцией
@@ -43,6 +46,11 @@ type
     /// Второй агрумент сообщения
     /// </summary>
     FLParam: LPARAM;
+
+    /// <summary>
+    /// Время задержки в милисекундах между циклами тестирования Handle
+    /// </summary>
+    FPause: integer;
   protected
 
     /// <summary>
@@ -54,6 +62,13 @@ type
     /// <summary>
     /// Конструктор класса.
     /// </summary>
+    /// <param name="WatchHandle">
+    /// <b>Handle</b> окна, за существованием которого необходимо следить
+    /// </param>
+    /// <param name="ListenerHandle">
+    /// <b>Handle</b> окна, в которое необходимо отправить сообщение о
+    /// пропадании окна
+    /// </param>
     /// <param name="Msg">
     /// Идентификатор оконного сообщения (значение, возвращённое функцией
     /// <b>RegisterWindowMessage</b>).
@@ -70,34 +85,31 @@ type
     /// <b>Необязательный параметр.</b> Время задержки в милисекундах между
     /// циклами передачи сообщения. По умолчанию равен 1000 (1 сек.)
     /// </param>
-    constructor Create(const Msg: cardinal; const wParam: WPARAM=0; const lParam: LPARAM=0; const Pause: integer=CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+    constructor Create(const WatchHandle, ListenerHandle: THandle; const Msg: cardinal; const wParam: WPARAM=0; const lParam: LPARAM=0; const Pause: integer=CONST_DEFAULTVALUE_WATCHPAUSE);
   end;
 
 implementation
 
-var
-  /// <summary>
-  /// Тип получателей сообщения (изначальное значение - только приложения)
-  /// </summary>
-  Recipients: DWORD=BSM_APPLICATIONS;
-
-constructor TRetranslatorThreadClass.Create(const Msg: cardinal; const wParam: WPARAM=0; const lParam: LPARAM=0; const Pause: integer=CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+constructor TWatchThreadClass.Create(const WatchHandle, ListenerHandle: THandle; const Msg: cardinal; const wParam: WPARAM=0; const lParam: LPARAM=0; const Pause: integer=CONST_DEFAULTVALUE_WATCHPAUSE);
 begin
   inherited Create(True);
   Priority:=tpLower;
   FreeOnTerminate:=True;
-  FPause:=Pause;
+  FWatchHandle:=WatchHandle;
+  FListenerHandle:=ListenerHandle;
   FMessage:=Msg;
   FWParam:=wParam;
   FLParam:=lParam;
+  FPause:=Pause;
 end;
 
-procedure TRetranslatorThreadClass.Execute;
+procedure TWatchThreadClass.Execute;
 begin
   inherited;
   while not Terminated do
     begin
-      BroadcastSystemMessage(BSF_IGNORECURRENTTASK or BSF_POSTMESSAGE, @Recipients, FMessage, FWParam, FLParam); // PostMessage(HWND_BROADCAST, FMessage, FWParam, FLParam);
+      if not IsWindow(FWatchHandle) then
+        PostMessage(FListenerHandle, FMessage, FWParam, FLParam);
       Sleep(FPause);
     end;
 end;

@@ -16,6 +16,7 @@ const
 
   CONST_DEFAULTVALUE_SHAREDMEMSIZE=1024;
   CONST_DEFAULTVALUE_RETRANSLATORPAUSE=1000;
+  CONST_DEFAULTVALUE_WATCHPAUSE=1000;
   CONST_DEFAULTVALUE_DESTINATIONFOLDER: string = '';
   CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM: boolean=False;
   CONST_DEFAULTVALUE_KEEPLOGTYPES: TLogMessagesTypes=[lmtError, lmtWarning, lmtInfo];
@@ -42,6 +43,8 @@ const
   WPARAM_CLIENT_WANNA_CANCEL_SENDING=14; // клиент хочет прекратить передачу файла
   WPARAM_CLIENT_SHUTDOWN=15; // клиент сообщает о своём отключении от сервера
   WPARAM_SERVER_SHUTDOWN=16; // сервер сообщает клиенту о своём выключении
+  WPARAM_SERVER_LOST=18; // окно сервера более не существует
+  WPARAM_CLIENT_LOST=19; // окно клиента более не существует
 
 
 resourcestring

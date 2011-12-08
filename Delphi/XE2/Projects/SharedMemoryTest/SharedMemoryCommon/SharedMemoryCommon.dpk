@@ -35,6 +35,7 @@ contains
   uChunkedFileClass in 'uChunkedFileClass.pas',
   uCommon in 'uCommon.pas',
   uRetranslatorThreadClass in 'uRetranslatorThreadClass.pas',
-  uSharedMemClass in 'uSharedMemClass.pas';
+  uSharedMemClass in 'uSharedMemClass.pas',
+  uWatchThreadClass in 'uWatchThreadClass.pas';
 
 end.
