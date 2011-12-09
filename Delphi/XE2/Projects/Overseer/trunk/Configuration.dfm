@@ -119,7 +119,6 @@ object ConfigurationForm: TConfigurationForm
         Height = 22
         Cursor = crHandPoint
         Action = Action_NextPage
-        Images = MainForm.ImageList1
         ParentShowHint = False
         ShowHint = True
         TabOrder = 2
@@ -131,7 +130,6 @@ object ConfigurationForm: TConfigurationForm
         Height = 22
         Cursor = crHandPoint
         Action = Action_PreviousPage
-        Images = MainForm.ImageList1
         ParentShowHint = False
         ShowHint = True
         TabOrder = 1
@@ -406,6 +404,10 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' MySQL-'#1089#1077#1088#1074#1077#1088#1091' OVERSEERSERVER'
           ImageIndex = 1
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object vleOVERSEERSERVER: TValueListEditor
             Left = 0
             Top = 0
@@ -557,7 +559,6 @@ object ConfigurationForm: TConfigurationForm
     end
   end
   object ActionManager1: TActionManager
-    Images = MainForm.ImageList1
     Left = 160
     Top = 208
     StyleName = 'Platform Default'
