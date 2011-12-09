@@ -337,9 +337,7 @@ begin
   if SelectDirectory('Выберите папку', '', s, [sdNewFolder, sdNewUI], Self) then
     if (s<>'') then
       begin
-        sPath:=s;
-        if (sPath[Length(sPath)]<>'\') then
-          sPath:=sPath+'\';
+        sPath:=IncludeTrailingPathDelimiter(sPath);
         if SysUtils.DirectoryExists(sPath) then
           begin
             edbxSelectedFolder.Text:=sPath;
