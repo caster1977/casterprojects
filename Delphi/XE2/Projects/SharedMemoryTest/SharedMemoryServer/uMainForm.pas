@@ -26,6 +26,7 @@ uses
   uSharedMemClass,
   uChunkClass,
   uChunkedFileClass,
+  uWatchThreadClass,
   uCommon;
 
 type
@@ -98,6 +99,8 @@ type
     /// </summary>
     FConnectionThread: TRetranslatorThreadClass;
 
+    FWatchThread: TWatchThreadClass;
+
     FFirstRun: boolean;
     FClientConnected: boolean;
     FClientHandle: THandle;
@@ -117,8 +120,10 @@ type
 
     function Do_RegisterWindowMessages: boolean;
     function Do_ConnectionThreadStart: boolean;
+    procedure Do_ConnectionThreadTerminate;
+    function Do_WatchThreadStart: boolean;
+    procedure Do_WatchThreadTerminate;
     procedure SetConfiguration(const Value: TConfigurationClass);
-    procedure Do_TerminateConnectionThread;
     procedure Log(const aMessage: string; aMessageType: TLogMessagesType);
     procedure Do_UpdateColumnWidth;
   public
@@ -353,7 +358,7 @@ begin
   ProcessErrors(Handle, bError, sErrorMessage);
 end;
 
-procedure TMainForm.Do_TerminateConnectionThread;
+procedure TMainForm.Do_ConnectionThreadTerminate;
 var
   Thread: TRetranslatorThreadClass;
 begin
@@ -363,6 +368,36 @@ begin
     begin
       Thread.Terminate;
       LogDebug('Поток поиска клиентов остановлен.');
+    end;
+end;
+
+function TMainForm.Do_WatchThreadStart: boolean;
+begin
+  Result:=False;
+  if not Assigned(FWatchThread) then
+    begin
+      FWatchThread:=TWatchThreadClass.Create(FClientHandle, Handle, WM_CLIENT, WPARAM_CLIENT_LOST);
+      try
+        FWatchThread.Start;
+        LogDebug('Поток наблюдения за наличием соединения с клиентом запущен.');
+        Result:=True;
+      except
+        on E: Exception do
+          ShowErrorBox(Handle, E.Message);
+      end;
+    end;
+end;
+
+procedure TMainForm.Do_WatchThreadTerminate;
+var
+  Thread: TWatchThreadClass;
+begin
+  Thread:=FWatchThread;
+  FWatchThread:=nil;
+  if Assigned(Thread) then
+    begin
+      Thread.Terminate;
+      LogDebug('Поток наблюдения за наличием соединения с клиентом остановлен.');
     end;
 end;
 
@@ -486,7 +521,7 @@ end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
-  Do_TerminateConnectionThread;
+  Do_ConnectionThreadTerminate;
   FreeAndNil(FChunk);
   FreeAndNil(FChunkedFile);
   FreeAndNil(FSharedMem);
@@ -535,24 +570,9 @@ end;
 
 procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
 
-  procedure Do_WPARAM_CLIENT_SENDS_HANDLE(const Handle: THandle);
+  procedure Do_Disconnect;
   begin
-    LogInfo('Получен ответ клиента на широковещательное сообщение.');
-
-    LogInfo('Соединение с клиентом установлено.');
-    Do_TerminateConnectionThread; // останавливаем поток, рассылающий хэндл сервера
-    FClientHandle:=Handle; // получаем хэндл клиента
-    LogDebug('Получен Handle окна клиентского приложения: '+IntToStr(Handle)+'.');
-    FClientConnected:=True; // устанавливаем флаш соединения
-    PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_ACCEPT_CLIENT, 0); // отправляет клиенту подтверждение подключения
-    LogDebug('Отправлено уведомление об успешном подключении.');
-    Refresh_ConnectionState;
-  end;
-
-  procedure Do_WPARAM_CLIENT_SHUTDOWN;
-  begin
-    LogWarning('Получено уведомление о завершении работы клиента.');
-
+    Do_WatchThreadTerminate;
     FClientConnected:=False; // убираем флаш соединения
     FClientHandle:=0; // обнуляем хэндл клиента
     LogDebug('Handle окна клиентского приложения обнулён.');
@@ -564,6 +584,34 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
       Application.Terminate;
     Refresh_ConnectionState;
     LogInfo('Соединение с клиентом прервано.');
+  end;
+
+  procedure Do_WPARAM_CLIENT_SHUTDOWN;
+  begin
+    LogWarning('Получено уведомление о завершении работы клиента.');
+    Do_Disconnect;
+  end;
+
+  procedure Do_WPARAM_CLIENT_LOST;
+  begin
+    LogError('Произошла непредвиденная потеря соединения с сервером!');
+    Do_Disconnect;
+  end;
+
+  procedure Do_WPARAM_CLIENT_SENDS_HANDLE(const Handle: THandle);
+  begin
+    LogInfo('Получен ответ клиента на широковещательное сообщение.');
+
+    LogInfo('Соединение с клиентом установлено.');
+    Do_ConnectionThreadTerminate; // останавливаем поток, рассылающий хэндл сервера
+    FClientHandle:=Handle; // получаем хэндл клиента
+    LogDebug('Получен Handle окна клиентского приложения: '+IntToStr(Handle)+'.');
+    FClientConnected:=True; // устанавливаем флаш соединения
+    PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_ACCEPT_CLIENT, 0); // отправляет клиенту подтверждение подключения
+    LogDebug('Отправлено уведомление об успешном подключении.');
+    if not Do_WatchThreadStart then
+      Application.Terminate;
+    Refresh_ConnectionState;
   end;
 
   procedure Do_WPARAM_CLIENT_WANNA_SEND_FILE;
@@ -591,8 +639,6 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_FILENAME(const dwSize: cardinal);
-  var
-    i: integer;
   begin
     LogInfo('Получено имя передаваемого клиентом файла.');
 
@@ -606,9 +652,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
       FSharedMem.Mapped:=True;
       FSharedMem.Read(dwSize, FChunk);
       FSharedMem.Mapped:=False;
-      SetLength(FFileName, FChunk.Size);
-      for i:=0 to FChunk.Size-1 do
-        FFileName[i+1]:=Char(FChunk.Data[i]);
+      FFilename:=StringOf(FChunk.Data);
     finally
       FreeAndNil(FChunk);
       LogDebug('Объект порции данных уничтожен.');
@@ -666,7 +710,14 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
         // контрольная сумма совпала, можно записывать данные в файл
         FChunkedFile.Write(FChunk);
         // проверка, была ли получена последняя порция данных файла
+        FChunkedFile.Index:=FChunkedFile.Index+1;
         if FChunkedFile.Index<FChunkedFile.Count then
+          begin
+            // нужно запросить следующую порцию данных
+            PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, FChunkedFile.Index); // требуем от клиента указанный блок файла
+            LogDebug('Отправлен запрос на получение очередной порции данных.');
+          end
+        else
           begin
             // последняя порция данных, можно уведомить клиент об успешной передаче данных и закрыть файл
             FChunkedFile.Complete:=True;
@@ -675,13 +726,6 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
             PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_TRANSFER_COMPLETE, 0); // уведомляем клиент об успешном окончании передачи файла
             LogDebug('Отправлено уведомление об успешной передаче файла.');
             LogInfo('Файл успешно принят.');
-          end
-        else
-          begin
-            // нужно запросить следующую порцию данных
-            FChunkedFile.Index:=FChunkedFile.Index+1;
-            PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, FChunkedFile.Index); // требуем от клиента указанный блок файла
-            LogDebug('Отправлен запрос на получение очередной порции данных.');
           end;
       end
     else
@@ -715,6 +759,8 @@ begin
               Do_WPARAM_CLIENT_SENDS_CRC32(Msg.lParam);
             WPARAM_CLIENT_WANNA_CANCEL_SENDING: // клиент хочет прекратить передачу файла
               Do_WPARAM_CLIENT_WANNA_CANCEL_SENDING;
+            WPARAM_CLIENT_LOST: // поток-сторож сообщает о том, что окно клиента неожиданно пропало
+              Do_WPARAM_CLIENT_LOST;
           end
         else
           if Msg.wParam=WPARAM_CLIENT_SENDS_HANDLE then // клиент отправляет свой handle (LPARAM = handle клиента)

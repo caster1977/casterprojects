@@ -160,11 +160,7 @@ begin
   if FDestinationFolder<>Value then
     if Trim(Value)<>'' then
       if DirectoryExists(Trim(Value)) then
-        begin
-          FDestinationFolder:=Trim(Value);
-          if FDestinationFolder[Length(FDestinationFolder)]<>'\' then
-            FDestinationFolder:=FDestinationFolder+'\';
-        end
+        FDestinationFolder:=IncludeTrailingPathDelimiter(Trim(Value))
       else
         raise Exception.Create(TEXT_WRONGDESTINATIONFOLDER_NONEXISTS)
     else
