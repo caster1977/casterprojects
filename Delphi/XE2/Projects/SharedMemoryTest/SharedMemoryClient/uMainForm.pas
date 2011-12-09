@@ -124,7 +124,7 @@ type
 
     function Do_RegisterWindowMessages: boolean;
     function Do_WatchThreadStart: boolean;
-    procedure Do_TerminateWatchThread;
+    procedure Do_WatchThreadTerminate;
     procedure SetSharedMemSize(const Value: cardinal);
     procedure SetConfiguration(const Value: TConfigurationClass);
     procedure Log(const aMessage: string; aMessageType: TLogMessagesType);
@@ -598,7 +598,7 @@ begin
     end;
 end;
 
-procedure TMainForm.Do_TerminateWatchThread;
+procedure TMainForm.Do_WatchThreadTerminate;
 var
   Thread: TWatchThreadClass;
 begin
@@ -615,6 +615,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
 
   procedure Do_Disconnect;
   begin
+    Do_WatchThreadTerminate;
     FConnectedToServer:=False; // убираем флаш соединения
     FServerHandle:=0; // обнуляем хэндл сервера
     LogDebug('Handle окна серверного приложения обнулён.');
@@ -657,6 +658,8 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   begin
     LogInfo('Получено подтверждение об успешном подключении к серверу.');
     FConnectedToServer:=True; // ставим флаш соединения
+    if not Do_WatchThreadStart then
+      Application.Terminate;
     Refresh_ConnectionState;
     Do_UpdateAcrions;
     LogInfo('Соединение с сервером установлено.');
@@ -668,15 +671,13 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     SharedMemSize:=dwSize; // устанавливаем размер буфера в общей памяти
     LogDebug('Размер буфера общей памяти в байтах: '+IntToStr(Int64(dwSize))+'.');
     // создание буфера в общей памяти
-    FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, Configuration.SharedMemSize);
+    FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, SharedMemSize);
     LogDebug('Создан объект доступа к общей памяти.');
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_FILENAME;
   var
     a: TArray<byte>;
-    i: integer;
-    s: string;
   begin
     LogInfo('Получен запрос имени файла.');
     if not Assigned(FChunk) then
@@ -685,10 +686,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
         LogDebug('Создан объект порции данных.');
       end;
     try
-      s:=ExtractFileName(FFilename);
-      SetLength(a, Length(s));
-      for i:=0 to Length(s) do
-        a[i]:=Byte(s[i+1]);
+      a:=BytesOf(ExtractFileName(FFilename));
       FChunk.Size:=Length(a);
       FChunk.Data:=Copy(a, 0, FChunk.Size);
       FSharedMem.Mapped:=True;

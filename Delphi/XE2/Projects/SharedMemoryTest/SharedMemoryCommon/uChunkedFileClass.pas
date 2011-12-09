@@ -168,7 +168,7 @@ begin
     else // если нет и не указано количество чанков в файле и размер чанка
       begin
         FStream:=TFile.Create(FName);
-        FSize:=0;
+        FSize:=FileSize;
         FComplete:=False;
       end;
   except
