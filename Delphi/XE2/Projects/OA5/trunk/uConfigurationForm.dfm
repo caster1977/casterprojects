@@ -1450,6 +1450,10 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1075#1083#1072#1074#1085#1086#1075#1086' '#1086#1082#1085#1072
           ImageIndex = 9
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object lblMainFormPosition: TLabel
             Left = 11
             Top = 3
@@ -1737,7 +1741,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 304
     Top = 296
     Bitmap = {
-      494C010106000800FC0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800040310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
