@@ -77,7 +77,7 @@ end;
 
 procedure TCommonConfigurationClass.SetSharedMemSize(const Value: cardinal);
 begin
-  if Value<=CONST_DEFAULTVALUE_MINSHAREDMEMSIZE then
+  if Value<CONST_DEFAULTVALUE_MINSHAREDMEMSIZE then
     raise Exception.Create(TEXT_WRONGBUFFERSIZE)
   else
     if FSharedMemSize<>Value then
