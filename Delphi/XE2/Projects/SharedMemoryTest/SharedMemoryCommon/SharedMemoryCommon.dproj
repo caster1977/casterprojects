@@ -95,6 +95,7 @@
 			<DCCReference Include="uRetranslatorThreadClass.pas"/>
 			<DCCReference Include="uSharedMemClass.pas"/>
 			<DCCReference Include="uWatchThreadClass.pas"/>
+			<DCCReference Include="uCommonConfigurationClass.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

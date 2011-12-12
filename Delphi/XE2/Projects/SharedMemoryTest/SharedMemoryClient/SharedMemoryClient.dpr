@@ -10,7 +10,8 @@ uses
   uChunkedFileClass in '..\SharedMemoryCommon\uChunkedFileClass.pas',
   uCommon in '..\SharedMemoryCommon\uCommon.pas',
   uSharedMemClass in '..\SharedMemoryCommon\uSharedMemClass.pas',
-  uWatchThreadClass in '..\SharedMemoryCommon\uWatchThreadClass.pas';
+  uWatchThreadClass in '..\SharedMemoryCommon\uWatchThreadClass.pas',
+  uCommonConfigurationClass in '..\SharedMemoryCommon\uCommonConfigurationClass.pas';
 
 {$R *.res}
 
