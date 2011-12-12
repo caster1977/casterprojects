@@ -36,6 +36,7 @@ contains
   uCommon in 'uCommon.pas',
   uRetranslatorThreadClass in 'uRetranslatorThreadClass.pas',
   uSharedMemClass in 'uSharedMemClass.pas',
-  uWatchThreadClass in 'uWatchThreadClass.pas';
+  uWatchThreadClass in 'uWatchThreadClass.pas',
+  uCommonConfigurationClass in 'uCommonConfigurationClass.pas';
 
 end.

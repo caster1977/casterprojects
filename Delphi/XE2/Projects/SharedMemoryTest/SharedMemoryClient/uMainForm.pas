@@ -82,7 +82,6 @@ type
     procedure lvLogResize(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   strict private
-    FSharedMemSize: cardinal;
     FFirstRun: boolean;
     FServerHandle: THandle;
     FConnectedToServer: boolean;
@@ -125,13 +124,10 @@ type
     function Do_RegisterWindowMessages: boolean;
     function Do_WatchThreadStart: boolean;
     procedure Do_WatchThreadTerminate;
-    procedure SetSharedMemSize(const Value: cardinal);
     procedure SetConfiguration(const Value: TConfigurationClass);
     procedure Log(const aMessage: string; aMessageType: TLogMessagesType);
     procedure Do_UpdateColumnWidth;
     procedure Do_UpdateAcrions;
-  protected
-    property SharedMemSize: cardinal read FSharedMemSize write SetSharedMemSize stored False;
   public
     procedure LogError(const aMessage: string);
     procedure LogWarning(const aMessage: string);
@@ -568,13 +564,6 @@ begin
   FConfiguration:=Value;
 end;
 
-procedure TMainForm.SetSharedMemSize(const Value: cardinal);
-begin
-  { TODO : добавить проверку на размер буфера в байтах (имя файла должно помещаться, как минимум) }
-  if FSharedMemSize<>Value then
-    FSharedMemSize:=Value;
-end;
-
 procedure TMainForm.chkbxScrollLogToBottomClick(Sender: TObject);
 begin
   Configuration.ScrollLogToBottom:=chkbxScrollLogToBottom.Enabled and chkbxScrollLogToBottom.Checked;
@@ -668,10 +657,10 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_WPARAM_SERVER_SENDS_SHAREDMEM_SIZE(const dwSize: cardinal);
   begin
     LogInfo('Получен размер буфера общей памяти в байтах.');
-    SharedMemSize:=dwSize; // устанавливаем размер буфера в общей памяти
+    Configuration.SharedMemSize:=dwSize; // устанавливаем размер буфера в общей памяти
     LogDebug('Размер буфера общей памяти в байтах: '+IntToStr(Int64(dwSize))+'.');
     // создание буфера в общей памяти
-    FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, SharedMemSize);
+    FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, Configuration.SharedMemSize);
     LogDebug('Создан объект доступа к общей памяти.');
   end;
 
@@ -705,7 +694,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     LogInfo('Получен запрос размера файла в байтах.');
     if not Assigned(FChunkedFile) then
       begin
-        FChunkedFile:=TChunkedFileClass.Create(FFilename, SharedMemSize);
+        FChunkedFile:=TChunkedFileClass.Create(FFilename, Configuration.SharedMemSize);
         LogDebug('Создан объект доступа к порционному файлу.');
         PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_FILESIZE, FChunkedFile.Size); // отправка хэндла окна клиента серверу (LPARAM = размер имени файла в байтах)
         LogDebug('Отправлен размер передаваемого файла в байтах.');

@@ -119,6 +119,7 @@
 			<DCCReference Include="..\SharedMemoryCommon\uCommon.pas"/>
 			<DCCReference Include="..\SharedMemoryCommon\uRetranslatorThreadClass.pas"/>
 			<DCCReference Include="..\SharedMemoryCommon\uSharedMemClass.pas"/>
+			<DCCReference Include="..\SharedMemoryCommon\uCommonConfigurationClass.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
