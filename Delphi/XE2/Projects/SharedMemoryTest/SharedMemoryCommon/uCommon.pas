@@ -11,39 +11,31 @@ const
   STATUSBAR_PROGRESS_PANEL_NUMBER: integer=1;
   STATUSBAR_HINT_PANEL_NUMBER: integer=2;
 
-  TEXT_CONFIGURATIONFORM_SUFFIX = 'настроек программы';
-  TEXT_ABOUTFORM_SUFFIX = '"О программе..."';
+  CONST_MINVALUE_SHAREDMEMSIZE=1024;
+  CONST_MINVALUE_RETRANSLATORPAUSE=100;
+  CONST_MINVALUE_WATCHPAUSE=100;
 
-  CONST_DEFAULTVALUE_MINSHAREDMEMSIZE=1024;
-  CONST_DEFAULTVALUE_SHAREDMEMSIZE=32768;
   CONST_DEFAULTVALUE_RETRANSLATORPAUSE=1000;
   CONST_DEFAULTVALUE_WATCHPAUSE=1000;
-  CONST_DEFAULTVALUE_DESTINATIONFOLDER: string = '';
-  CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM: boolean=False;
-  CONST_DEFAULTVALUE_KEEPLOGTYPES: TLogMessagesTypes=[lmtError, lmtWarning, lmtInfo];
-  CONST_DEFAULTVALUE_SHOWSTATUSBAR: boolean=True;
-  CONST_DEFAULTVALUE_SHOWSPLASHATSTART: boolean=True;
+
 
   WPARAM_SERVER_WANNA_HANDLE=1; // сервер хочет handle клиента (LPARAM = handle сервера)
   WPARAM_CLIENT_SENDS_HANDLE=2; // клиент отправляет свой handle (LPARAM = handle клиента)
-  WPARAM_SERVER_ACCEPT_CLIENT=17; // сервер подтверждает соединение с данным клиентом
-
-  WPARAM_CLIENT_WANNA_SEND_FILE=3; // клиент хочет послать очередной файл
-  WPARAM_SERVER_SENDS_SHAREDMEM_SIZE=4; // сервер отправляет размер блока общей памяти (LPARAM = размер буфера в байтах)
-
-  WPARAM_SERVER_WANNA_FILENAME=5; // сервер хочет имя файла
-  WPARAM_CLIENT_SENDS_FILENAME=6; // клиент отправляет имя файла (LPARAM = размер имени файла в байтах)
-  WPARAM_SERVER_WANNA_FILESIZE=7; // сервер хочет размер файла в байтах
-  WPARAM_CLIENT_SENDS_FILESIZE=8; // клиент отправляет размер файла в байтах (LPARAM = размер файла в байтах)
-  WPARAM_SERVER_WANNA_DATA=9; // сервер хочет указанный блок данных (LPARAM = порядковый номер запрашиваемого блока данных)
-  WPARAM_CLIENT_SENDS_DATA=10; // клиент отправляет указанный блок данных (LPARAM = размер переданных данных в байтах)
-  WPARAM_SERVER_WANNA_CRC32=11; // сервер хочет контрольную сумму указанного блока данных (LPARAM = порядковый номер запрашиваемого блока данных)
-  WPARAM_CLIENT_SENDS_CRC32=12; // клиент отправляет контрольную сумму указанного блока данных (LPARAM = СКС32)
-  WPARAM_SERVER_TRANSFER_COMPLETE=13; // сервер сообщает что получил файл полностью
-
-  WPARAM_CLIENT_WANNA_CANCEL_SENDING=14; // клиент хочет прекратить передачу файла
-  WPARAM_CLIENT_SHUTDOWN=15; // клиент сообщает о своём отключении от сервера
-  WPARAM_SERVER_SHUTDOWN=16; // сервер сообщает клиенту о своём выключении
+  WPARAM_SERVER_ACCEPT_CLIENT=3; // сервер подтверждает соединение с данным клиентом
+  WPARAM_CLIENT_WANNA_SEND_FILE=4; // клиент хочет послать очередной файл
+  WPARAM_SERVER_SENDS_SHAREDMEM_SIZE=5; // сервер отправляет размер блока общей памяти (LPARAM = размер буфера в байтах)
+  WPARAM_SERVER_WANNA_FILENAME=6; // сервер хочет имя файла
+  WPARAM_CLIENT_SENDS_FILENAME=7; // клиент отправляет имя файла (LPARAM = размер имени файла в байтах)
+  WPARAM_SERVER_WANNA_FILESIZE=8; // сервер хочет размер файла в байтах
+  WPARAM_CLIENT_SENDS_FILESIZE=9; // клиент отправляет размер файла в байтах (LPARAM = размер файла в байтах)
+  WPARAM_SERVER_WANNA_DATA=10; // сервер хочет указанный блок данных (LPARAM = порядковый номер запрашиваемого блока данных)
+  WPARAM_CLIENT_SENDS_DATA=11; // клиент отправляет указанный блок данных (LPARAM = размер переданных данных в байтах)
+  WPARAM_SERVER_WANNA_CRC32=12; // сервер хочет контрольную сумму указанного блока данных (LPARAM = порядковый номер запрашиваемого блока данных)
+  WPARAM_CLIENT_SENDS_CRC32=13; // клиент отправляет контрольную сумму указанного блока данных (LPARAM = СКС32)
+  WPARAM_SERVER_TRANSFER_COMPLETE=14; // сервер сообщает что получил файл полностью
+  WPARAM_CLIENT_WANNA_CANCEL_SENDING=15; // клиент хочет прекратить передачу файла
+  WPARAM_CLIENT_SHUTDOWN=16; // клиент сообщает о своём отключении от сервера
+  WPARAM_SERVER_SHUTDOWN=17; // сервер сообщает клиенту о своём выключении
   WPARAM_SERVER_LOST=18; // окно сервера более не существует
   WPARAM_CLIENT_LOST=19; // окно клиента более не существует
 
@@ -51,18 +43,10 @@ const
 resourcestring
   TEXT_WM_SM_SERVER='WM_SM_SERVER';
   TEXT_WM_SM_CLIENT='WM_SM_CLIENT';
-
   TEXT_ERRORCODE=' Код ошибки: ';
   TEXT_REGISTERWINDOWMESSAGEERROR='Не удалось выполнить операцию регистрации оконного сообщения!';
-  TEXT_ERROR_CREATEFILEMAPPING='Не удалось создать блок общей памяти!';
-  TEXT_ERROR_CREATEFILEMAPPING_ALREADYEXISTS='Блок общей памяти с таким именем уже существует!';
-  TEXT_ERROR_MAPVIEWOFFILE='Не удалось подключиться к блоку общей памяти!';
-  TEXT_ERROR_UNMAPVIEWOFFILE='Не удалось отключиться от блока общей памяти!';
-  TEXT_ERROR_CLOSE_FILEMAPPING_HANDLE='Не удалось закрыть идентификатор блока общей памяти!';
-  TEXT_ERROR_CREATEFILE='Не удалось создать файл на диске!';
-
-  TEXT_WRONGBUFFERSIZE='Размер буфера для передачи данных не должен быть менее одного байта!';
-  TEXT_WRONGSHAREDMEMORYSIZE='Размер блока общей памяти не должен быть менее одного байта!';
+  TEXT_CONFIGURATIONFORM_SUFFIX = 'настроек программы';
+  TEXT_ABOUTFORM_SUFFIX = '"О программе..."';
 
 type
   CommonFunctions=class
@@ -105,6 +89,9 @@ begin
 end;
 
 class function CommonFunctions.CRC32OfFile(const FileName: string): cardinal;
+resourcestring
+  TEXT_OUTOFMEMORY ='Не удалось выделить блок динамической памяти для буфера чтения из файла!';
+  TEXT_FILEERROR='При обработке файла [%s] возникла oшибка [%s]!';
 var
   InFile: TFileStream;
   Readed: Integer;
@@ -128,9 +115,9 @@ begin
       end;
     except
       on EOutOfMemory do
-        raise Exception.Create('Не удалось выделить блок динамической памяти для буфера чтения из файла!');
+        raise Exception.Create(TEXT_OUTOFMEMORY);
       on E: Exception do
-        raise Exception.Create(Format('При обработке файла [%s] возникла oшибка [%s]!', [FileName, E.Message]));
+        raise Exception.Create(Format(TEXT_FILEERROR, [FileName, E.Message]));
     end;
   finally
     if Assigned(ByteArray) then
