@@ -89,6 +89,7 @@
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
 			<DCCReference Include="rtl.dcp"/>
+			<DCCReference Include="vcl.dcp"/>
 			<DCCReference Include="uChunkClass.pas"/>
 			<DCCReference Include="uChunkedFileClass.pas"/>
 			<DCCReference Include="uCommon.pas"/>

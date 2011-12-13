@@ -28,7 +28,8 @@ package SharedMemoryCommon;
 {$IMPLICITBUILD ON}
 
 requires
-  rtl;
+  rtl,
+  vcl;
 
 contains
   uChunkClass in 'uChunkClass.pas',

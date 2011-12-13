@@ -282,6 +282,12 @@ resourcestring
   TEXT_ERROR_INVALID_MAP_POINTER='Неверный указатель на область общей памяти!';
   TEXT_ERROR_MUST_MAPPED_FIRST='Сначала необходимо выполнить маппинг общей памяти!';
   TEXT_ERROR_INVALID_CHUNK_SIZE='Размер данных объекта порции памяти превышает размер общей памяти!';
+  TEXT_WRONGSHAREDMEMORYSIZE='Размер блока общей памяти не должен быть менее одного байта!';
+  TEXT_ERROR_CREATEFILEMAPPING='Не удалось создать блок общей памяти!';
+  TEXT_ERROR_CLOSE_FILEMAPPING_HANDLE='Не удалось закрыть идентификатор блока общей памяти!';
+  TEXT_ERROR_MAPVIEWOFFILE='Не удалось подключиться к блоку общей памяти!';
+  TEXT_ERROR_UNMAPVIEWOFFILE='Не удалось отключиться от блока общей памяти!';
+
 
 constructor TSharedMemClass.Create(const CustomName: WideString=''; const CustomSize: cardinal=1024; const TimeOut: cardinal=5000);
 begin
@@ -341,6 +347,8 @@ begin
 end;
 
 function TSharedMemClass._Open: boolean;
+//resourcestring
+//  TEXT_ERROR_CREATEFILEMAPPING_ALREADYEXISTS='Блок общей памяти с таким именем уже существует!';
 begin
   FHandle:=CreateFileMapping(INVALID_HANDLE_VALUE, nil, PAGE_READWRITE, 0, FSize, PWideChar(FName));
   Result:=FHandle<>NULL;

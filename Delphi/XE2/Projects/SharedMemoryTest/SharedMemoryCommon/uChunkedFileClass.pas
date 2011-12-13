@@ -165,7 +165,7 @@ begin
         FSize:=FStream.Size;
         FComplete:=True;
       end
-    else // если нет и не указано количество чанков в файле и размер чанка
+    else // если нет - создаём и открываем на запись
       begin
         FStream:=TFile.Create(FName);
         FSize:=FileSize;

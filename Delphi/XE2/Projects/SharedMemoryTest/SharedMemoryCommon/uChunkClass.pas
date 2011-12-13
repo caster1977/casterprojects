@@ -99,7 +99,7 @@ begin
   if FData<>Value then
     begin
       Size:=Length(Value);
-      FData:=Copy(Value, 0, FSize); // CopyMemory(FData, Value, FSize);
+      FData:=Copy(Value, 0, FSize);
     end;
 end;
 
