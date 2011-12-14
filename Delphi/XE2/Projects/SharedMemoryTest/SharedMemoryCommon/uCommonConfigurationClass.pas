@@ -25,6 +25,11 @@ resourcestring
   TEXT_SECTION_LOG='Протоколирование';
 
 type
+  TFormPosition=record
+    Centered: boolean;
+    Left, Top: integer;
+  end;
+
   TCommonConfigurationClass=class
   strict private
     FSharedMemSize: cardinal;
@@ -34,6 +39,7 @@ type
     FScrollLogToBottom: boolean;
     FShowSplashAtStart: boolean;
     FWatchPause: cardinal;
+    FConfigurationFormPosition: TFormPosition;
     procedure SetSharedMemSize(const Value: cardinal);
     procedure SetSharedMemoryName(const Value: WideString);
     procedure SetKeepLogTypes(const Value: TLogMessagesTypes);
@@ -41,7 +47,9 @@ type
     procedure SetScrollLogToBottom(const Value: boolean);
     procedure SetShowSplashAtStart(const Value: boolean);
     procedure SetWatchPause(const Value: cardinal);
-  strict protected
+  strict private
+    procedure SetConfigurationFormPosition(const Value: TFormPosition);
+  protected
     FIniFileName: string;
     procedure Loading(const IniFile: TIniFile); virtual;
     procedure Saving(const IniFile: TIniFile); virtual;
@@ -52,6 +60,7 @@ type
     property SharedMemoryName: WideString read FSharedMemoryName write SetSharedMemoryName stored False;
     property SharedMemSize: cardinal read FSharedMemSize write SetSharedMemSize default CONST_DEFAULTVALUE_SHAREDMEMSIZE;
     property WatchPause: cardinal read FWatchPause write SetWatchPause default CONST_DEFAULTVALUE_WATCHPAUSE;
+    property ConfigurationFormPosition: TFormPosition read FConfigurationFormPosition write SetConfigurationFormPosition stored False;
   public
     constructor Create(const IniFileName: string='');
     procedure Load;
@@ -63,6 +72,11 @@ implementation
 uses
   Vcl.Forms,
   System.SysUtils;
+
+const
+  CONST_DEFAULTVALUE_FORMPOSITION_CENTERED: boolean = True;
+  CONST_DEFAULTVALUE_FORMPOSITION_LEFT: integer = 0;
+  CONST_DEFAULTVALUE_FORMPOSITION_TOP: integer = 0;
 
 resourcestring
   TEXT_WRONGBUFFERSIZE='Размер буфера для передачи данных не должен быть менее килобайта!';
@@ -76,6 +90,8 @@ resourcestring
   TEXT_WRONG_INIFILE_NAME='Имя файла конфигурации не должно быть пустым!';
   TEXT_ERROR_SAVE_INIFILE='Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
 
+  TEXT_SECTION_FORMPOSITION='Положение окон';
+
   TEXT_VARNAME_SCROLLLOGTOBOTTOM='bScrollLogToBottom';
   TEXT_VARNAME_SHOWSTATUSBAR='bShowStatusbar';
   TEXT_VARNAME_SHOWSPASHATSTART='bShowSplashAtStart';
@@ -84,6 +100,9 @@ resourcestring
   TEXT_VARNAME_KEEPINFOLOG='bKeepInfoLog';
   TEXT_VARNAME_KEEPDEBUGLOG='bKeepDebugLog';
   TEXT_VARNAME_WATCHPAUSE='iWatchPause';
+  TEXT_VARNAME_CONFIRURATIONFORMPOSITION_CENTERED='ConfigurationFormPosition.bCentered';
+  TEXT_VARNAME_CONFIRURATIONFORMPOSITION_LEFT='ConfigurationFormPosition.iLeft';
+  TEXT_VARNAME_CONFIRURATIONFORMPOSITION_TOP='ConfigurationFormPosition.iTop';
 
 constructor TCommonConfigurationClass.Create(const IniFileName: string='');
 begin
@@ -128,6 +147,8 @@ begin
 end;
 
 procedure TCommonConfigurationClass.Loading(const IniFile: TIniFile);
+var
+  FormPosition: TFormPosition;
 begin
   with IniFile do
     begin
@@ -151,6 +172,11 @@ begin
       else
         KeepLogTypes:=KeepLogTypes-[lmtDebug];
       WatchPause:=ReadInteger(TEXT_SECTION_COMMON, TEXT_VARNAME_WATCHPAUSE, CONST_DEFAULTVALUE_WATCHPAUSE);
+
+      FormPosition.Centered:=ReadBool(TEXT_SECTION_FORMPOSITION, TEXT_VARNAME_CONFIRURATIONFORMPOSITION_CENTERED, CONST_DEFAULTVALUE_FORMPOSITION_CENTERED);
+      FormPosition.Left:=ReadInteger(TEXT_SECTION_FORMPOSITION, TEXT_VARNAME_CONFIRURATIONFORMPOSITION_LEFT, CONST_DEFAULTVALUE_FORMPOSITION_LEFT);
+      FormPosition.Top:=ReadInteger(TEXT_SECTION_FORMPOSITION, TEXT_VARNAME_CONFIRURATIONFORMPOSITION_TOP, CONST_DEFAULTVALUE_FORMPOSITION_TOP);
+      ConfigurationFormPosition:=FormPosition;
     end;
 end;
 
@@ -188,7 +214,17 @@ begin
       WriteBool(TEXT_SECTION_LOG, TEXT_VARNAME_KEEPINFOLOG, lmtInfo in KeepLogTypes);
       WriteBool(TEXT_SECTION_LOG, TEXT_VARNAME_KEEPDEBUGLOG, lmtDebug in KeepLogTypes);
       WriteInteger(TEXT_SECTION_COMMON, TEXT_VARNAME_WATCHPAUSE, WatchPause);
+
+      WriteBool(TEXT_SECTION_FORMPOSITION, TEXT_VARNAME_CONFIRURATIONFORMPOSITION_CENTERED, ConfigurationFormPosition.Centered);
+      WriteInteger(TEXT_SECTION_FORMPOSITION, TEXT_VARNAME_CONFIRURATIONFORMPOSITION_LEFT, ConfigurationFormPosition.Left);
+      WriteInteger(TEXT_SECTION_FORMPOSITION, TEXT_VARNAME_CONFIRURATIONFORMPOSITION_TOP, ConfigurationFormPosition.Top);
     end;
+end;
+
+procedure TCommonConfigurationClass.SetConfigurationFormPosition(const Value: TFormPosition);
+begin
+  if ((FConfigurationFormPosition.Centered<>Value.Centered)or(FConfigurationFormPosition.Top<>Value.Top)or(FConfigurationFormPosition.Left<>Value.Left)) then
+    FConfigurationFormPosition:=Value;
 end;
 
 procedure TCommonConfigurationClass.SetKeepLogTypes(const Value: TLogMessagesTypes);

@@ -438,6 +438,8 @@ begin
     try
       ShowModal;
     finally
+      if ModalResult=mrOk then
+        Do_ApplyConfiguration;
       Free;
     end;
 end;
@@ -572,6 +574,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
 
   procedure Do_Disconnect;
   begin
+    pbMain.Visible:=False;
     Do_WatchThreadTerminate;
     FClientConnected:=False; // убираем флаш соединения
     FClientHandle:=0; // обнуляем хэндл клиента
@@ -632,6 +635,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   begin
     LogWarning('Получено уведомление об отмене передачи файла клиентом.');
     FCanceling:=True;
+    pbMain.Visible:=False;
     FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
     LogDebug('Объект доступа к порционному файлу уничтоден.');
     FreeAndNil(FSharedMem); // удаляем текущий объект доступа к общей памяти
@@ -640,7 +644,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
 
   procedure Do_WPARAM_CLIENT_SENDS_FILENAME(const dwSize: cardinal);
   begin
-    LogInfo('Получено имя передаваемого клиентом файла.');
+    LogDebug('Получено уведомление о передаче клиентом имени файла.');
 
     LogDebug('Размер имени передаваемого клиентом файла в байтах: '+IntToStr(Int64(dwSize))+'.');
     if not Assigned(FChunk) then
@@ -657,7 +661,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
       FreeAndNil(FChunk);
       LogDebug('Объект порции данных уничтожен.');
     end;
-    LogDebug('Имя передаваемого клиентом файла: ['+FFileName+']');
+    LogInfo('Получено имя передаваемого клиентом файла: ['+FFileName+']');
 
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILESIZE, 0); // требуем от клиента размер файла
     LogDebug('Отправлен запрос на размер передаваемого файла.');
@@ -665,12 +669,15 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
 
   procedure Do_WPARAM_CLIENT_SENDS_FILESIZE(const dwSize: cardinal);
   begin
-    LogInfo('Получен размер передаваемого клиентом файла в байтах.');
+    LogInfo('Получен размер передаваемого клиентом файла в байтах: ['+IntToStr(Int64(dwSize))+'].');
     LogDebug('Размер файла в байтах: '+IntToStr(Int64(dwSize))+'.');
 
     if not Assigned(FChunkedFile) then
       begin
         FChunkedFile:=TChunkedFileClass.Create(Configuration.DestinationFolder+FFilename, Configuration.SharedMemSize, dwSize);
+        pbMain.Max:=FChunkedFile.Count;
+        pbMain.Position:=pbMain.Min;
+        pbMain.Visible:=True;
         LogDebug('Создан объект доступа к порционному файлу.');
         PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, FChunkedFile.Index); // требуем от клиента указанный блок файла
         LogDebug('Отправлен запрос на получение очередной порции данных.');
@@ -681,7 +688,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
 
   procedure Do_WPARAM_CLIENT_SENDS_DATA(const dwSize: cardinal);
   begin
-    LogInfo('Получено уведомление о передаче клиентом порции данных файла.');
+    LogDebug('Получено уведомление о передаче клиентом порции данных файла.');
 
     LogDebug('Размер порции данных передаваемого клиентом файла в байтах: '+IntToStr(Int64(dwSize))+'.');
     if not Assigned(FChunk) then
@@ -700,7 +707,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
 
   procedure Do_WPARAM_CLIENT_SENDS_CRC32(const dwCRC32: cardinal);
   begin
-    LogInfo('Получена контрольная сумма переданной клиентом порции данных файла.');
+    LogDebug('Получена контрольная сумма переданной клиентом порции данных файла.');
 
     LogDebug('Контрольная сумма переданной клиентом порции данных файла: '+IntToHex(dwCRC32, 8)+'.');
     // проводим сверку полученной контрольной суммы и контрольной суммы ранее полученной порции данных файла
@@ -713,6 +720,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
         FChunkedFile.Index:=FChunkedFile.Index+1;
         if FChunkedFile.Index<FChunkedFile.Count then
           begin
+            pbMain.StepBy(1);
             // нужно запросить следующую порцию данных
             PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, FChunkedFile.Index); // требуем от клиента указанный блок файла
             LogDebug('Отправлен запрос на получение очередной порции данных.');
@@ -721,6 +729,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
           begin
             // последняя порция данных, можно уведомить клиент об успешной передаче данных и закрыть файл
             FChunkedFile.Complete:=True;
+            pbMain.Visible:=False;
             FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
             LogDebug('Объект доступа к порционному файлу уничтоден.');
             PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_TRANSFER_COMPLETE, 0); // уведомляем клиент об успешном окончании передачи файла
