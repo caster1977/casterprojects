@@ -34,6 +34,7 @@ type
     property ShowSplashAtStart;
     property WatchPause;
     property ConfigurationFormPosition;
+    property MainFormPosition;
     property RetranslatorPause: integer read FRetranslatorPause write SetRetranslatorPause default CONST_DEFAULTVALUE_RETRANSLATORPAUSE;
     property DestinationFolder: string read GetDestinationFolder write SetDestinationFolder stored False;
   end;
