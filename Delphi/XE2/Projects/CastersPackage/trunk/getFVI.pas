@@ -69,8 +69,6 @@ begin
   RegisterComponents('CasterComponents', [TgsFileVersionInfo]);
 end;
 
-{ TgsFileVersionInfo }
-
 procedure TgsFileVersionInfo.ClearAll;
 begin
   FVersionInfoSize:=0;
