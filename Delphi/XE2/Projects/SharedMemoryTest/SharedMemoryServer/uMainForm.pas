@@ -146,6 +146,7 @@ uses
   Winapi.CommCtrl,
   Winapi.ShellAPI,
   uAboutForm,
+  uCommonConfigurationClass,
   uConfigurationForm;
 
 resourcestring
@@ -418,13 +419,38 @@ begin
 end;
 
 procedure TMainForm.Do_ApplyConfiguration;
+var
+  FormPosition: TFormPosition;
 begin
-  // применение настроек к панели статуса
-  miStatusbar.Checked:=Configuration.ShowStatusbar;
-  StatusBar1.Visible:=Configuration.ShowStatusbar;
   // применение настроек к прокрутке сообщений протокола
   chkbxScrollLogToBottom.Checked:=chkbxScrollLogToBottom.Enabled and Configuration.ScrollLogToBottom;
   chkbxScrollLogToBottom.OnClick:=chkbxScrollLogToBottomClick;
+  // применение настроек к панели статуса
+  miStatusbar.Checked:=Configuration.ShowStatusbar;
+  StatusBar1.Visible:=Configuration.ShowStatusbar;
+
+  // установка позиции и размеров главного окна в соответсвии с параметрами конфигурации
+  WindowState:=wsNormal;
+  Position:=poDesigned;
+  Left:=Configuration.MainFormPosition.Left;
+  Top:=Configuration.MainFormPosition.Top;
+  Width:=Configuration.MainFormPosition.Width;
+  Height:=Configuration.MainFormPosition.Height;
+  if Configuration.MainFormPosition.Maximized then
+    WindowState:=wsMaximized
+  else
+    if Configuration.MainFormPosition.Centered then
+      begin
+        Position:=poScreenCenter;
+
+        FormPosition.Centered:=False;
+        FormPosition.Maximized:=Configuration.MainFormPosition.Maximized;
+        FormPosition.Left:=Configuration.MainFormPosition.Left;
+        FormPosition.Top:=Configuration.MainFormPosition.Top;
+        FormPosition.Width:=Configuration.MainFormPosition.Width;
+        FormPosition.Height:=Configuration.MainFormPosition.Height;
+        Configuration.MainFormPosition:=FormPosition;
+      end;
 
   LogInfo('Применение настроек программы прошло успешно.');
 end;
@@ -480,7 +506,18 @@ begin
 end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+var
+  FormPosition: TFormPosition;
 begin
+  // применение текущих настроек главного окна к конфигурации
+  FormPosition.Left:=Left;
+  FormPosition.Top:=Top;
+  FormPosition.Width:=Width;
+  FormPosition.Height:=Height;
+  FormPosition.Centered:=False;
+  FormPosition.Maximized:=WindowState=wsMaximized;
+  Configuration.MainFormPosition:=FormPosition;
+
   Do_SaveConfiguration; // запись конфигурации
   if FClientConnected then // если соединение с клиентом установлено, отправляем клиенту уведомление о завершении работы сервера
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_SHUTDOWN, 0);
