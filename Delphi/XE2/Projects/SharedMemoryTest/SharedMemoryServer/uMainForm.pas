@@ -107,7 +107,6 @@ type
     FCanceling: boolean;
     FFileName: string;
 
-    procedure ProcessErrors(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
     procedure Refresh_ConnectionState;
     procedure ShowErrorBox(const aHandle: THandle; const aErrorMessage: string);
 
@@ -127,6 +126,7 @@ type
     procedure Log(const aMessage: string; aMessageType: TLogMessagesType);
     procedure Do_UpdateColumnWidth;
   public
+    procedure ProcessErrors(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
     procedure LogError(const aMessage: string);
     procedure LogWarning(const aMessage: string);
     procedure LogInfo(const aMessage: string);

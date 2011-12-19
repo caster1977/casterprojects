@@ -18,6 +18,7 @@ const
   CONST_DEFAULTVALUE_SHOWSTATUSBAR=True;
   CONST_DEFAULTVALUE_SHOWSPLASHATSTART=True;
   CONST_DEFAULTVALUE_KEEPLOGTYPES=[lmtError, lmtWarning, lmtInfo];
+  CONST_DEFAULTVALUE_CONFIGURATIONFORMPAGE = 0;
 
 resourcestring
   TEXT_SECTION_COMMON='Общие';
@@ -41,6 +42,7 @@ type
     FWatchPause: cardinal;
     FConfigurationFormPosition: TFormPosition;
     FMainFormPosition: TFormPosition;
+    FConfigurationFormPage: integer;
     procedure SetSharedMemSize(const Value: cardinal);
     procedure SetSharedMemoryName(const Value: WideString);
     procedure SetKeepLogTypes(const Value: TLogMessagesTypes);
@@ -65,6 +67,7 @@ type
     property WatchPause: cardinal read FWatchPause write SetWatchPause default CONST_DEFAULTVALUE_WATCHPAUSE;
     property ConfigurationFormPosition: TFormPosition read FConfigurationFormPosition write SetConfigurationFormPosition stored False;
     property MainFormPosition: TFormPosition read FMainFormPosition write SetMainFormPosition stored False;
+    property ConfigurationFormPage: integer read FConfigurationFormPage write FConfigurationFormPage default CONST_DEFAULTVALUE_CONFIGURATIONFORMPAGE;
   public
     constructor Create(const IniFileName: string='');
     procedure Load;
@@ -137,6 +140,7 @@ begin
   FScrollLogToBottom:=CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM;
   FShowSplashAtStart:=CONST_DEFAULTVALUE_SHOWSPLASHATSTART;
   FKeepLogTypes:=CONST_DEFAULTVALUE_KEEPLOGTYPES;
+  FConfigurationFormPage:=CONST_DEFAULTVALUE_CONFIGURATIONFORMPAGE;
 end;
 
 procedure TCommonConfigurationClass.SetSharedMemSize(const Value: cardinal);

@@ -35,6 +35,7 @@ type
     property WatchPause;
     property ConfigurationFormPosition;
     property MainFormPosition;
+    property ConfigurationFormPage;
     property RetranslatorPause: integer read FRetranslatorPause write SetRetranslatorPause default CONST_DEFAULTVALUE_RETRANSLATORPAUSE;
     property DestinationFolder: string read GetDestinationFolder write SetDestinationFolder stored False;
   end;
