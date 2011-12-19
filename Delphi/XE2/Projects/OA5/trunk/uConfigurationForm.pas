@@ -908,83 +908,86 @@ begin
     end;
 
   // вкладка "настройки положения диалоговых окон"
-  chkbxLoginFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
-  edbxLoginFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
-  edbxLoginFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
-  edbxLoginFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
-  edbxLoginFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+  if PageControl1.ActivePage.Caption=' положения диалоговых окон' then
+    begin
+      chkbxLoginFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+      edbxLoginFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+      edbxLoginFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+      edbxLoginFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+      edbxLoginFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
-  chkbxConfigurationFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
-  edbxConfigurationFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
-  edbxConfigurationFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
-  edbxConfigurationFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
-  edbxConfigurationFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+      chkbxConfigurationFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+      edbxConfigurationFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+      edbxConfigurationFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+      edbxConfigurationFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+      edbxConfigurationFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
-  chkbxUsersFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
-  edbxUsersFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
-  edbxUsersFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
-  edbxUsersFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
-  edbxUsersFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+      chkbxUsersFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+      edbxUsersFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+      edbxUsersFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+      edbxUsersFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+      edbxUsersFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
-  chkbxSetPasswordFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
-  edbxSetPasswordFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
-  edbxSetPasswordFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
-  edbxSetPasswordFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
-  edbxSetPasswordFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+      chkbxSetPasswordFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+      edbxSetPasswordFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+      edbxSetPasswordFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+      edbxSetPasswordFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+      edbxSetPasswordFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
-  chkbxReportFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
-  edbxReportFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
-  edbxReportFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
-  edbxReportFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
-  edbxReportFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+      chkbxReportFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+      edbxReportFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+      edbxReportFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+      edbxReportFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+      edbxReportFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
-  chkbxMaintenanceFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
-  edbxMaintenanceFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
-  edbxMaintenanceFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
-  edbxMaintenanceFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
-  edbxMaintenanceFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+      chkbxMaintenanceFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+      edbxMaintenanceFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+      edbxMaintenanceFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+      edbxMaintenanceFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+      edbxMaintenanceFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
-  chkbxClearingFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
-  edbxClearingFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
-  edbxClearingFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
-  edbxClearingFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
-  edbxClearingFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+      chkbxClearingFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+      edbxClearingFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+      edbxClearingFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+      edbxClearingFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+      edbxClearingFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
-  chkbxViewPostListFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
-  edbxViewPostListFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
-  edbxViewPostListFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
-  edbxViewPostListFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
-  edbxViewPostListFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+      chkbxViewPostListFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+      edbxViewPostListFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+      edbxViewPostListFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+      edbxViewPostListFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+      edbxViewPostListFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
-  chkbxCreateViewPostFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
-  edbxCreateViewPostFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
-  edbxCreateViewPostFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
-  edbxCreateViewPostFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
-  edbxCreateViewPostFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+      chkbxCreateViewPostFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+      edbxCreateViewPostFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+      edbxCreateViewPostFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+      edbxCreateViewPostFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+      edbxCreateViewPostFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
-  chkbxPhonesFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
-  edbxPhonesFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
-  edbxPhonesFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
-  edbxPhonesFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
-  edbxPhonesFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+      chkbxPhonesFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+      edbxPhonesFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+      edbxPhonesFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+      edbxPhonesFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+      edbxPhonesFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
-  chkbxAddEditPhoneFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
-  edbxAddEditPhoneFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
-  edbxAddEditPhoneFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
-  edbxAddEditPhoneFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
-  edbxAddEditPhoneFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+      chkbxAddEditPhoneFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+      edbxAddEditPhoneFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+      edbxAddEditPhoneFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+      edbxAddEditPhoneFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+      edbxAddEditPhoneFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
-  chkbxAddMassMsrFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
-  edbxAddMassMsrFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
-  edbxAddMassMsrFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
-  edbxAddMassMsrFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
-  edbxAddMassMsrFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+      chkbxAddMassMsrFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+      edbxAddMassMsrFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+      edbxAddMassMsrFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+      edbxAddMassMsrFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+      edbxAddMassMsrFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
-  chkbxPermissionsFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
-  edbxPermissionsFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
-  edbxPermissionsFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
-  edbxPermissionsFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
-  edbxPermissionsFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+      chkbxPermissionsFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+      edbxPermissionsFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+      edbxPermissionsFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+      edbxPermissionsFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+      edbxPermissionsFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+    end;
 
   // вкладка "настройки процедуры логирования"
   if PageControl1.ActivePage.Caption=' процедуры логирования' then

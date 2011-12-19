@@ -119,14 +119,16 @@ object ConfigurationForm: TConfigurationForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
+      DesignSize = (
+        624
+        45)
       object cbPage: TComboBox
         Left = 9
         Top = 15
         Width = 550
         Height = 21
         Style = csDropDownList
-        DoubleBuffered = True
-        ParentDoubleBuffered = False
+        Anchors = [akLeft, akTop, akRight]
         TabOrder = 0
         OnSelect = cbPageSelect
         Items.Strings = (
@@ -148,6 +150,7 @@ object ConfigurationForm: TConfigurationForm
         Height = 22
         Cursor = crHandPoint
         Action = Action_NextPage
+        Anchors = [akTop, akRight]
         Images = ilConfigurationFormSmallImages
         ParentShowHint = False
         ShowHint = True
@@ -160,6 +163,7 @@ object ConfigurationForm: TConfigurationForm
         Height = 22
         Cursor = crHandPoint
         Action = Action_PreviousPage
+        Anchors = [akTop, akRight]
         Images = ilConfigurationFormSmallImages
         ParentShowHint = False
         ShowHint = True
@@ -194,7 +198,7 @@ object ConfigurationForm: TConfigurationForm
         Top = 3
         Width = 614
         Height = 223
-        ActivePage = ts10
+        ActivePage = ts8
         Align = alCustom
         Style = tsButtons
         TabOrder = 0
@@ -202,10 +206,6 @@ object ConfigurationForm: TConfigurationForm
         object ts1: TTabSheet
           Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object chkbxShowAboutWindowAtLaunch: TCheckBox
             Left = 0
             Top = 0
@@ -275,10 +275,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1074#1077#1076#1077#1085#1080#1103' '#1087#1088#1086#1090#1086#1082#1086#1083#1072' '#1088#1072#1073#1086#1090#1099
           ImageIndex = 1
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Bevel4: TBevel
             Left = 0
             Top = 25
@@ -458,10 +454,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1086#1083#1086#1078#1077#1085#1080#1103' '#1076#1080#1072#1083#1086#1075#1086#1074#1099#1093' '#1086#1082#1086#1085
           ImageIndex = 8
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object ScrollBox1: TScrollBox
             Left = 0
             Top = 0
@@ -499,9 +491,9 @@ object ConfigurationForm: TConfigurationForm
             object lblConfigurationFormPosition: TLabel
               Left = 0
               Top = 30
-              Width = 102
+              Width = 76
               Height = 13
-              Caption = #1054#1082#1085#1086' '#1082#1086#1085#1092#1080#1075#1091#1088#1072#1094#1080#1080
+              Caption = #1054#1082#1085#1086' '#1085#1072#1089#1090#1088#1086#1077#1082
             end
             object lblConfigurationFormPositionX: TLabel
               Left = 340
@@ -1157,10 +1149,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1088#1086#1094#1077#1076#1091#1088#1099' '#1083#1086#1075#1080#1088#1086#1074#1072#1085#1080#1103
           ImageIndex = 7
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object chkbxStoreLastLogin: TCheckBox
             Left = 0
             Top = 0
@@ -1196,10 +1184,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1073#1072#1079#1099' '#1076#1072#1085#1085#1099#1093' '#1091#1089#1083#1091#1075#1080
           ImageIndex = 1
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object vleRNE4SERVER: TValueListEditor
             Left = 0
             Top = 0
@@ -1225,10 +1209,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091' '#1089#1080#1089#1090#1077#1084#1099' '#1086#1073#1084#1077#1085#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1103#1084#1080
           ImageIndex = 4
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object vleRNE4MESSAGESSERVER: TValueListEditor
             Left = 0
             Top = 0
@@ -1254,10 +1234,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1092#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1103' '#1086#1090#1095#1105#1090#1086#1074
           ImageIndex = 3
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Bevel3: TBevel
             Left = 0
             Top = 0
@@ -1333,18 +1309,16 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1089#1087#1080#1089#1082#1072' '#1072#1074#1090#1086#1079#1072#1084#1077#1085#1099
           ImageIndex = 5
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object lblAutoReplaceSorry: TLabel
             Left = 0
             Top = 0
-            Width = 3
-            Height = 13
+            Width = 606
+            Height = 213
             Align = alClient
             Alignment = taCenter
             Layout = tlCenter
+            ExplicitWidth = 3
+            ExplicitHeight = 13
           end
           object sgAutoReplaceList: TStringGrid
             Left = 0
@@ -1371,10 +1345,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1088#1086#1095#1080#1077
           ImageIndex = 6
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object lblAutoGetMessagesCycleDuration: TLabel
             Left = 376
             Top = 55
@@ -1450,10 +1420,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1075#1083#1072#1074#1085#1086#1075#1086' '#1086#1082#1085#1072
           ImageIndex = 9
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object lblMainFormPosition: TLabel
             Left = 11
             Top = 3
@@ -1560,10 +1526,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1080
           ImageIndex = 10
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object lbOrganizationPanelHeight: TLabel
             Left = 11
             Top = 3
@@ -1657,8 +1619,8 @@ object ConfigurationForm: TConfigurationForm
   end
   object ActionManager1: TActionManager
     Images = ilConfigurationFormSmallImages
-    Left = 336
-    Top = 296
+    Left = 240
+    Top = 144
     StyleName = 'Platform Default'
     object Action_Defaults: TAction
       Caption = '&'#1057#1073#1088#1086#1089
@@ -1738,10 +1700,10 @@ object ConfigurationForm: TConfigurationForm
   end
   object ilConfigurationFormSmallImages: TImageList
     AllocBy = 6
-    Left = 304
-    Top = 296
+    Left = 368
+    Top = 216
     Bitmap = {
-      494C010106000800040310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800080310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2016,7 +1978,7 @@ object ConfigurationForm: TConfigurationForm
     LogFile.Enabled = True
     LogFile.FileNameSuffix = 'OA5_ConfigurationForm'
     LogClient.Enabled = True
-    Left = 272
-    Top = 296
+    Left = 240
+    Top = 208
   end
 end
