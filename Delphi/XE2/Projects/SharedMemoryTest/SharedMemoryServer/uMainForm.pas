@@ -509,18 +509,33 @@ procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
   FormPosition: TFormPosition;
 begin
-  // применение текущих настроек главного окна к конфигурации
-  FormPosition.Left:=Left;
-  FormPosition.Top:=Top;
-  FormPosition.Width:=Width;
-  FormPosition.Height:=Height;
-  FormPosition.Centered:=False;
-  FormPosition.Maximized:=WindowState=wsMaximized;
-  Configuration.MainFormPosition:=FormPosition;
 
-  Do_SaveConfiguration; // запись конфигурации
-  if FClientConnected then // если соединение с клиентом установлено, отправл€ем клиенту уведомление о завершении работы сервера
-    PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_SHUTDOWN, 0);
+  CanClose:=False;
+
+  if Configuration.ShowConfirmationOnQuit then
+    CanClose:=MessageBox(Handle, PWideChar('¬ы действительно хотите завершить работу программы?'), PWideChar(TEXT_MAINFORM_CAPTION+' - ѕодтверждение выхода'), MB_OKCANCEL+MB_ICONQUESTION+MB_DEFBUTTON2)=IDOK
+  else
+    CanClose:=True;
+  Application.ProcessMessages;
+
+  if CanClose then
+    begin
+      LogInfo('«авершение работы приложени€ было подтверждено.');
+      // применение текущих настроек главного окна к конфигурации
+      FormPosition.Left:=Left;
+      FormPosition.Top:=Top;
+      FormPosition.Width:=Width;
+      FormPosition.Height:=Height;
+      FormPosition.Centered:=False;
+      FormPosition.Maximized:=WindowState=wsMaximized;
+      Configuration.MainFormPosition:=FormPosition;
+
+      Do_SaveConfiguration; // запись конфигурации
+      if FClientConnected then // если соединение с клиентом установлено, отправл€ем клиенту уведомление о завершении работы сервера
+        PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_SHUTDOWN, 0);
+    end
+  else
+    LogInfo('«авершение работы приложени€ было отменено пользователем.');
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);

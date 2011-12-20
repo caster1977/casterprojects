@@ -18,7 +18,6 @@ const
   CONST_DEFAULTVALUE_RETRANSLATORPAUSE=1000;
   CONST_DEFAULTVALUE_WATCHPAUSE=1000;
 
-
   WPARAM_SERVER_WANNA_HANDLE=1; // сервер хочет handle клиента (LPARAM = handle сервера)
   WPARAM_CLIENT_SENDS_HANDLE=2; // клиент отправляет свой handle (LPARAM = handle клиента)
   WPARAM_SERVER_ACCEPT_CLIENT=3; // сервер подтверждает соединение с данным клиентом

@@ -17,8 +17,21 @@ const
   CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM=True;
   CONST_DEFAULTVALUE_SHOWSTATUSBAR=True;
   CONST_DEFAULTVALUE_SHOWSPLASHATSTART=True;
+  CONST_DEFAULTVALUE_SHOWCONFIRMATIONONQUIT=True;
+  CONST_DEFAULTVALUE_PLAYSOUNDONCOMPLETE=True;
   CONST_DEFAULTVALUE_KEEPLOGTYPES=[lmtError, lmtWarning, lmtInfo];
-  CONST_DEFAULTVALUE_CONFIGURATIONFORMPAGE = 0;
+  CONST_DEFAULTVALUE_CONFIGURATIONFORMPAGE=0;
+
+  CONST_DEFAULTVALUE_FORMPOSITION_CENTERED: boolean=True;
+  CONST_DEFAULTVALUE_FORMPOSITION_LEFT: integer=0;
+  CONST_DEFAULTVALUE_FORMPOSITION_TOP: integer=0;
+
+  CONST_DEFAULTVALUE_MAINFORM_CENTERED: boolean=True;
+  CONST_DEFAULTVALUE_MAINFORM_MAXIMIZED: boolean=False;
+  CONST_DEFAULTVALUE_MAINFORM_LEFT: integer=0;
+  CONST_DEFAULTVALUE_MAINFORM_TOP: integer=0;
+  CONST_DEFAULTVALUE_MAINFORM_WIDTH: integer=800;
+  CONST_DEFAULTVALUE_MAINFORM_HEIGHT: integer=600;
 
 resourcestring
   TEXT_SECTION_COMMON='Общие';
@@ -39,7 +52,9 @@ type
     FShowStatusbar: boolean;
     FScrollLogToBottom: boolean;
     FShowSplashAtStart: boolean;
+    FShowConfirmationOnQuit: boolean;
     FWatchPause: cardinal;
+    FPlaySoundOnComplete: boolean;
     FConfigurationFormPosition: TFormPosition;
     FMainFormPosition: TFormPosition;
     FConfigurationFormPage: integer;
@@ -54,6 +69,8 @@ type
     procedure SetConfigurationFormPosition(const Value: TFormPosition);
   private
     procedure SetMainFormPosition(const Value: TFormPosition);
+    procedure SetShowConfirmationOnQuit(const Value: boolean);
+    procedure SetPlaySoundOnComplete(const Value: boolean);
   protected
     FIniFileName: string;
     procedure Loading(const IniFile: TIniFile); virtual;
@@ -62,9 +79,11 @@ type
     property ShowStatusbar: boolean read FShowStatusbar write SetShowStatusbar default CONST_DEFAULTVALUE_SHOWSTATUSBAR;
     property ScrollLogToBottom: boolean read FScrollLogToBottom write SetScrollLogToBottom default CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM;
     property ShowSplashAtStart: boolean read FShowSplashAtStart write SetShowSplashAtStart default CONST_DEFAULTVALUE_SHOWSPLASHATSTART;
+    property ShowConfirmationOnQuit: boolean read FShowConfirmationOnQuit write SetShowConfirmationOnQuit default CONST_DEFAULTVALUE_SHOWCONFIRMATIONONQUIT;
     property SharedMemoryName: WideString read FSharedMemoryName write SetSharedMemoryName stored False;
     property SharedMemSize: cardinal read FSharedMemSize write SetSharedMemSize default CONST_DEFAULTVALUE_SHAREDMEMSIZE;
     property WatchPause: cardinal read FWatchPause write SetWatchPause default CONST_DEFAULTVALUE_WATCHPAUSE;
+    property PlaySoundOnComplete: boolean read FPlaySoundOnComplete write SetPlaySoundOnComplete default CONST_DEFAULTVALUE_PLAYSOUNDONCOMPLETE;
     property ConfigurationFormPosition: TFormPosition read FConfigurationFormPosition write SetConfigurationFormPosition stored False;
     property MainFormPosition: TFormPosition read FMainFormPosition write SetMainFormPosition stored False;
     property ConfigurationFormPage: integer read FConfigurationFormPage write FConfigurationFormPage default CONST_DEFAULTVALUE_CONFIGURATIONFORMPAGE;
@@ -79,18 +98,6 @@ implementation
 uses
   Vcl.Forms,
   System.SysUtils;
-
-const
-  CONST_DEFAULTVALUE_FORMPOSITION_CENTERED: boolean=True;
-  CONST_DEFAULTVALUE_FORMPOSITION_LEFT: integer=0;
-  CONST_DEFAULTVALUE_FORMPOSITION_TOP: integer=0;
-
-  CONST_DEFAULTVALUE_MAINFORM_CENTERED: boolean=True;
-  CONST_DEFAULTVALUE_MAINFORM_MAXIMIZED: boolean=False;
-  CONST_DEFAULTVALUE_MAINFORM_LEFT: integer=0;
-  CONST_DEFAULTVALUE_MAINFORM_TOP: integer=0;
-  CONST_DEFAULTVALUE_MAINFORM_WIDTH: integer=800;
-  CONST_DEFAULTVALUE_MAINFORM_HEIGHT: integer=600;
 
 resourcestring
   TEXT_WRONGBUFFERSIZE='Размер буфера для передачи данных не должен быть менее килобайта!';
@@ -109,11 +116,13 @@ resourcestring
   TEXT_VARNAME_SCROLLLOGTOBOTTOM='bScrollLogToBottom';
   TEXT_VARNAME_SHOWSTATUSBAR='bShowStatusbar';
   TEXT_VARNAME_SHOWSPASHATSTART='bShowSplashAtStart';
+  TEXT_VARNAME_SHOWCONFIRMATIONONQUIT='bShowConfirmationOnQuit';
   TEXT_VARNAME_KEEPERRORLOG='bKeepErrorLog';
   TEXT_VARNAME_KEEPWARNINGLOG='bKeepWarningLog';
   TEXT_VARNAME_KEEPINFOLOG='bKeepInfoLog';
   TEXT_VARNAME_KEEPDEBUGLOG='bKeepDebugLog';
   TEXT_VARNAME_WATCHPAUSE='iWatchPause';
+  TEXT_VARNAME_PLAYSOUNDONCOMPLETE = 'bPlaySoundOnComplete';
 
   TEXT_VARNAME_CONFIRURATIONFORMPOSITION_CENTERED='ConfigurationFormPosition.bCentered';
   TEXT_VARNAME_CONFIRURATIONFORMPOSITION_LEFT='ConfigurationFormPosition.iLeft';
@@ -134,11 +143,13 @@ begin
   else
     FIniFileName:=Trim(IniFileName);
   FWatchPause:=CONST_DEFAULTVALUE_WATCHPAUSE;
+  FPlaySoundOnComplete:=CONST_DEFAULTVALUE_PLAYSOUNDONCOMPLETE;
   FSharedMemoryName:='';
   FSharedMemSize:=CONST_DEFAULTVALUE_SHAREDMEMSIZE;
   FShowStatusbar:=CONST_DEFAULTVALUE_SHOWSTATUSBAR;
   FScrollLogToBottom:=CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM;
   FShowSplashAtStart:=CONST_DEFAULTVALUE_SHOWSPLASHATSTART;
+  FShowConfirmationOnQuit:=CONST_DEFAULTVALUE_SHOWCONFIRMATIONONQUIT;
   FKeepLogTypes:=CONST_DEFAULTVALUE_KEEPLOGTYPES;
   FConfigurationFormPage:=CONST_DEFAULTVALUE_CONFIGURATIONFORMPAGE;
 end;
@@ -178,6 +189,7 @@ begin
       ScrollLogToBottom:=ReadBool(TEXT_SECTION_INTERFACE, TEXT_VARNAME_SCROLLLOGTOBOTTOM, CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM);
       ShowStatusbar:=ReadBool(TEXT_SECTION_INTERFACE, TEXT_VARNAME_SHOWSTATUSBAR, CONST_DEFAULTVALUE_SHOWSTATUSBAR);
       ShowSplashAtStart:=ReadBool(TEXT_SECTION_INTERFACE, TEXT_VARNAME_SHOWSPASHATSTART, CONST_DEFAULTVALUE_SHOWSPLASHATSTART);
+      ShowConfirmationOnQuit:=ReadBool(TEXT_SECTION_INTERFACE, TEXT_VARNAME_SHOWCONFIRMATIONONQUIT, CONST_DEFAULTVALUE_SHOWCONFIRMATIONONQUIT);
       if ReadBool(TEXT_SECTION_LOG, TEXT_VARNAME_KEEPERRORLOG, lmtError in CONST_DEFAULTVALUE_KEEPLOGTYPES) then
         KeepLogTypes:=KeepLogTypes+[lmtError]
       else
@@ -195,6 +207,7 @@ begin
       else
         KeepLogTypes:=KeepLogTypes-[lmtDebug];
       WatchPause:=ReadInteger(TEXT_SECTION_COMMON, TEXT_VARNAME_WATCHPAUSE, CONST_DEFAULTVALUE_WATCHPAUSE);
+      PlaySoundOnComplete:=ReadBool(TEXT_SECTION_COMMON, TEXT_VARNAME_PLAYSOUNDONCOMPLETE, CONST_DEFAULTVALUE_PLAYSOUNDONCOMPLETE);
 
       FormPosition.Centered:=ReadBool(TEXT_SECTION_FORMPOSITION, TEXT_VARNAME_CONFIRURATIONFORMPOSITION_CENTERED, CONST_DEFAULTVALUE_FORMPOSITION_CENTERED);
       FormPosition.Left:=ReadInteger(TEXT_SECTION_FORMPOSITION, TEXT_VARNAME_CONFIRURATIONFORMPOSITION_LEFT, CONST_DEFAULTVALUE_FORMPOSITION_LEFT);
@@ -240,11 +253,13 @@ begin
       WriteBool(TEXT_SECTION_INTERFACE, TEXT_VARNAME_SCROLLLOGTOBOTTOM, ScrollLogToBottom);
       WriteBool(TEXT_SECTION_INTERFACE, TEXT_VARNAME_SHOWSTATUSBAR, ShowStatusbar);
       WriteBool(TEXT_SECTION_INTERFACE, TEXT_VARNAME_SHOWSPASHATSTART, ShowSplashAtStart);
+      WriteBool(TEXT_SECTION_INTERFACE, TEXT_VARNAME_SHOWCONFIRMATIONONQUIT, ShowConfirmationOnQuit);
       WriteBool(TEXT_SECTION_LOG, TEXT_VARNAME_KEEPERRORLOG, lmtError in KeepLogTypes);
       WriteBool(TEXT_SECTION_LOG, TEXT_VARNAME_KEEPWARNINGLOG, lmtWarning in KeepLogTypes);
       WriteBool(TEXT_SECTION_LOG, TEXT_VARNAME_KEEPINFOLOG, lmtInfo in KeepLogTypes);
       WriteBool(TEXT_SECTION_LOG, TEXT_VARNAME_KEEPDEBUGLOG, lmtDebug in KeepLogTypes);
       WriteInteger(TEXT_SECTION_COMMON, TEXT_VARNAME_WATCHPAUSE, WatchPause);
+      WriteBool(TEXT_SECTION_COMMON, TEXT_VARNAME_PLAYSOUNDONCOMPLETE, PlaySoundOnComplete);
 
       WriteBool(TEXT_SECTION_FORMPOSITION, TEXT_VARNAME_CONFIRURATIONFORMPOSITION_CENTERED, ConfigurationFormPosition.Centered);
       WriteInteger(TEXT_SECTION_FORMPOSITION, TEXT_VARNAME_CONFIRURATIONFORMPOSITION_LEFT, ConfigurationFormPosition.Left);
@@ -278,6 +293,12 @@ begin
     FMainFormPosition:=Value;
 end;
 
+procedure TCommonConfigurationClass.SetPlaySoundOnComplete(const Value: boolean);
+begin
+  if FPlaySoundOnComplete<>Value then
+    FPlaySoundOnComplete:=Value;
+end;
+
 procedure TCommonConfigurationClass.SetScrollLogToBottom(const Value: boolean);
 begin
   if FScrollLogToBottom<>Value then
@@ -291,6 +312,12 @@ begin
       FSharedMemoryName:=Trim(Value)
     else
       raise Exception.Create(TEXT_WRONGSHAREDMEMORYNAME);
+end;
+
+procedure TCommonConfigurationClass.SetShowConfirmationOnQuit(const Value: boolean);
+begin
+  if FShowConfirmationOnQuit<>Value then
+    FShowConfirmationOnQuit:=Value;
 end;
 
 procedure TCommonConfigurationClass.SetShowSplashAtStart(const Value: boolean);
