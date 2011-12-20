@@ -13,6 +13,9 @@ uses
   uCommon,
   uCommonConfigurationClass;
 
+const
+  CONST_DEFAULTVALUE_DESTINATIONFOLDER: string = '';
+
 type
   TConfigurationClass=class(TCommonConfigurationClass)
   strict private
@@ -27,15 +30,17 @@ type
   public
     constructor Create(const IniFileName: string='');
     property SharedMemoryName;
-    property SharedMemSize;
     property KeepLogTypes;
     property ShowStatusbar;
     property ScrollLogToBottom;
     property ShowSplashAtStart;
+    property ShowConfirmationOnQuit;
     property WatchPause;
+    property PlaySoundOnComplete;
+    property ConfigurationFormPage;
     property ConfigurationFormPosition;
     property MainFormPosition;
-    property ConfigurationFormPage;
+    property SharedMemSize;
     property RetranslatorPause: integer read FRetranslatorPause write SetRetranslatorPause default CONST_DEFAULTVALUE_RETRANSLATORPAUSE;
     property DestinationFolder: string read GetDestinationFolder write SetDestinationFolder stored False;
   end;
@@ -45,9 +50,6 @@ implementation
 uses
   Vcl.Forms,
   System.SysUtils;
-
-const
-  CONST_DEFAULTVALUE_DESTINATIONFOLDER: string = '';
 
 resourcestring
   TEXT_WRONGSHAREDMEMORYNAME='Имя общей области памяти не должно быть пустым!';

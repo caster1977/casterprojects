@@ -1,3 +1,5 @@
+{$WARN UNIT_PLATFORM OFF}
+{$WARN SYMBOL_PLATFORM OFF}
 unit uConfigurationForm;
 
 interface
@@ -17,7 +19,8 @@ uses
   Vcl.ActnList,
   Vcl.PlatformDefaultStyleActnCtrls,
   Vcl.ActnMan,
-  Vcl.ImgList, Vcl.ComCtrls;
+  Vcl.ImgList,
+  Vcl.ComCtrls;
 
 type
   TConfigurationForm=class(TForm)
@@ -47,14 +50,14 @@ type
     Action_PreviousPage: TAction;
     Action_NextPage: TAction;
     ts2: TTabSheet;
-    chkbxShowAboutWindowAtLaunch: TCheckBox;
+    chkbxShowSplashAtStart: TCheckBox;
     chkbxShowStatusbar: TCheckBox;
-    chkbxShowConfirmationAtQuit: TCheckBox;
-    CheckBox1: TCheckBox;
-    lbOrganizationPanelHeight: TLabel;
-    edbxOrganizationPanelHeightValue: TEdit;
-    Edit1: TEdit;
-    Label1: TLabel;
+    chkbxShowConfirmationOnQuit: TCheckBox;
+    chkbxScrollLogToBottom: TCheckBox;
+    lblWatchPause: TLabel;
+    edbxWatchPauseValue: TEdit;
+    ebbxRetranslatorPauseValue: TEdit;
+    lblRetranslatorPause: TLabel;
     edbxDestinationFolderValue: TEdit;
     btnDestinationFolder: TButton;
     lblDestinationFolder: TLabel;
@@ -63,24 +66,24 @@ type
     chkbxKeepWarningLog: TCheckBox;
     chkbxKeepErrorLog: TCheckBox;
     chkbxKeepDebugLog: TCheckBox;
-    Label3: TLabel;
-    Label4: TLabel;
+    lblMainForm: TLabel;
+    lblConfigurationForm: TLabel;
     Bevel1: TBevel;
-    lblMainFormPositionX: TLabel;
-    edbxMainFormPositionX: TEdit;
-    lblMainFormPositionY: TLabel;
-    edbxMainFormPositionY: TEdit;
-    chkbxMainFormPositionByCenter: TCheckBox;
+    lblMainFormLeft: TLabel;
+    edbxMainFormLeftValue: TEdit;
+    lblMainFormTop: TLabel;
+    edbxMainFormTopValue: TEdit;
+    chkbxMainFormCentered: TCheckBox;
     lblMainFormWidth: TLabel;
     lblMainFormHeight: TLabel;
-    edbxMainFormWidth: TEdit;
-    edbxMainFormHeight: TEdit;
-    chkbxFullScreenAtLaunch: TCheckBox;
-    lblConfigurationFormPositionX: TLabel;
-    edbxConfigurationFormPositionX: TEdit;
-    lblConfigurationFormPositionY: TLabel;
-    edbxConfigurationFormPositionY: TEdit;
-    chkbxConfigurationFormPositionByCenter: TCheckBox;
+    edbxMainFormWidthValue: TEdit;
+    edbxMainFormHeightValue: TEdit;
+    chkbxMainFormMaximized: TCheckBox;
+    lblConfigurationFormLeft: TLabel;
+    edbxConfigurationFormLeftValue: TEdit;
+    lblConfigurationFormTop: TLabel;
+    edbxConfigurationFormTopValue: TEdit;
+    chkbxConfigurationFormCentered: TCheckBox;
     Action_ChooseDestinationFolder: TAction;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -93,6 +96,10 @@ type
     procedure Action_DefaultsExecute(Sender: TObject);
     procedure cbPageSelect(Sender: TObject);
     procedure Action_ChooseDestinationFolderExecute(Sender: TObject);
+    procedure edbxNumericFieldKeyPress(Sender: TObject; var Key: Char);
+    procedure chkbxConfigurationFormCenteredClick(Sender: TObject);
+    procedure chkbxMainFormCenteredClick(Sender: TObject);
+    procedure chkbxMainFormMaximizedClick(Sender: TObject);
   strict private
     procedure Do_PageSelect;
     procedure Do_Help;
@@ -102,6 +109,7 @@ type
     procedure Do_NextPage;
     procedure Do_PreviousPage;
     procedure Do_ChooseDestinationFolder;
+    procedure Do_UpdateActions;
   end;
 
 implementation
@@ -111,6 +119,8 @@ implementation
 uses
   uMainForm,
   uCommon,
+  uCommonConfigurationClass,
+  uConfigurationClass,
   Vcl.FileCtrl;
 
 procedure TConfigurationForm.Action_ApplyExecute(Sender: TObject);
@@ -153,6 +163,60 @@ begin
   Do_PageSelect;
 end;
 
+procedure TConfigurationForm.chkbxConfigurationFormCenteredClick(
+  Sender: TObject);
+var
+  b: boolean;
+begin
+  b:=chkbxConfigurationFormCentered.Enabled and chkbxConfigurationFormCentered.Checked;
+  edbxConfigurationFormLeftValue.Enabled:=not b;
+  edbxConfigurationFormTopValue.Enabled:=not b;
+  if b then
+    begin
+      edbxConfigurationFormLeftValue.Text:='';
+      edbxConfigurationFormTopValue.Text:='';
+    end
+  else
+    begin
+      edbxConfigurationFormLeftValue.Text:=IntToStr((Screen.WorkAreaWidth-Width)div 2);
+      edbxConfigurationFormTopValue.Text:=IntToStr((Screen.WorkAreaHeight-Height)div 2);
+    end;
+  MainForm.LogDebug('Флажок "'+chkbxConfigurationFormCentered.Caption+'"'+CommonFunctions.GetConditionalString(b, 'в', 'от')+'ключен.');
+end;
+
+procedure TConfigurationForm.chkbxMainFormCenteredClick(Sender: TObject);
+var
+  bMainFormCentered: boolean;
+begin
+  bMainFormCentered:=chkbxMainFormCentered.Checked and chkbxMainFormCentered.Enabled;
+  edbxMainFormLeftValue.Enabled:=not bMainFormCentered;
+  edbxMainFormTopValue.Enabled:=not bMainFormCentered;
+  edbxMainFormLeftValue.Text:=CommonFunctions.GetConditionalString(edbxMainFormLeftValue.Enabled, IntToStr(MainForm.Configuration.MainFormPosition.Left), '');
+  edbxMainFormTopValue.Text:=CommonFunctions.GetConditionalString(edbxMainFormTopValue.Enabled, IntToStr(MainForm.Configuration.MainFormPosition.Top), '');
+
+  MainForm.LogDebug('Флажок "'+chkbxMainFormCentered.Caption+'"'+CommonFunctions.GetConditionalString(bMainFormCentered, 'в', 'от')+'ключен.');
+end;
+
+procedure TConfigurationForm.chkbxMainFormMaximizedClick(Sender: TObject);
+var
+  bMainFormMaximized: boolean;
+begin
+  bMainFormMaximized:=chkbxMainFormMaximized.Checked and chkbxMainFormMaximized.Enabled;
+  chkbxMainFormCentered.Enabled:=not bMainFormMaximized;
+  chkbxMainFormCentered.Checked:=chkbxMainFormCentered.Checked and(not bMainFormMaximized);
+  edbxMainFormLeftValue.Enabled:=(not bMainFormMaximized)and(not chkbxMainFormCentered.Checked);
+  edbxMainFormTopValue.Enabled:=(not bMainFormMaximized)and(not chkbxMainFormCentered.Checked);
+  edbxMainFormWidthValue.Enabled:=not bMainFormMaximized;
+  edbxMainFormHeightValue.Enabled:=not bMainFormMaximized;
+
+  edbxMainFormLeftValue.Text:=CommonFunctions.GetConditionalString(edbxMainFormLeftValue.Enabled, IntToStr(MainForm.Configuration.MainFormPosition.Left), '');
+  edbxMainFormTopValue.Text:=CommonFunctions.GetConditionalString(edbxMainFormTopValue.Enabled, IntToStr(MainForm.Configuration.MainFormPosition.Top), '');
+  edbxMainFormWidthValue.Text:=CommonFunctions.GetConditionalString(not bMainFormMaximized, IntToStr(MainForm.Configuration.MainFormPosition.Width), '');
+  edbxMainFormHeightValue.Text:=CommonFunctions.GetConditionalString(not bMainFormMaximized, IntToStr(MainForm.Configuration.MainFormPosition.Height), '');
+
+  MainForm.LogDebug('Флажок "'+chkbxMainFormCentered.Caption+'"'+CommonFunctions.GetConditionalString(bMainFormMaximized, 'в', 'от')+'ключен.');
+end;
+
 procedure TConfigurationForm.Do_Apply;
 begin
   ModalResult:=mrOk;
@@ -160,7 +224,7 @@ begin
 
   with MainForm.Configuration do
     begin
-
+      sdf
     end;
 
   MainForm.LogInfo('Окно изменения настроек программы закрыто.');
@@ -168,29 +232,43 @@ end;
 
 procedure TConfigurationForm.Do_ChooseDestinationFolder;
 var
-  s, sPath: string;
+  sPath: string;
   sErrorMessage: string;
   bError: boolean;
 begin
   bError:=False;
 
-  s:=edbxDestinationFolderValue.Text;
+  sPath:=edbxDestinationFolderValue.Text;
 
-  if SelectDirectory('Выберите папку', '', s, [sdNewFolder, sdNewUI], Self) then
-    if (s<>'') then
-      begin
-        sPath:=IncludeTrailingPathDelimiter(sPath);
-        if System.SysUtils.DirectoryExists(sPath) then
-          begin
-            edbxDestinationFolderValue.Text:=sPath;
-            MainForm.LogDebug('В качестве папки для сохранения отчётов выбрана папка "'+sPath+'".');
-          end
-        else
-          begin
-            edbxDestinationFolderValue.Text:='';
-            CommonFunctions.GenerateError('Возникла ошибка при выборе папки - указанная папка не существует!', sErrorMessage, bError);
-          end;
-      end;
+  if Win32MajorVersion>=6 then // для Vista и выше
+    with TFileOpenDialog.Create(Self) do
+      try
+        Title:='Выберите папку';
+        DefaultFolder:=sPath;
+        FileName:=sPath;
+        Options:=[fdoPickFolders, fdoPathMustExist, fdoForceFileSystem];
+        if Execute then
+          edbxDestinationFolderValue.Text:=IncludeTrailingPathDelimiter(FileName);
+      finally
+        Free;
+      end
+  else // для XP и ниже
+    if SelectDirectory('Выберите папку', '', sPath, [sdNewFolder, sdNewUI, sdShowEdit, sdShowShares], Self) then
+      if (sPath<>'') then
+        begin
+          sPath:=IncludeTrailingPathDelimiter(sPath);
+          if System.SysUtils.DirectoryExists(sPath) then
+            begin
+              edbxDestinationFolderValue.Text:=sPath;
+              MainForm.LogDebug('В качестве папки для сохранения отчётов выбрана папка "'+sPath+'".');
+            end
+          else
+            begin
+              edbxDestinationFolderValue.Text:='';
+              CommonFunctions.GenerateError('Возникла ошибка при выборе папки - указанная папка не существует!', sErrorMessage, bError);
+            end;
+        end;
+  Do_UpdateActions;
 
   MainForm.ProcessErrors(Handle, bError, sErrorMessage);
 end;
@@ -207,12 +285,47 @@ begin
   // вкладка "настройки интерфейса"
   if PageControl1.ActivePage.Caption=' интерфейса' then
     begin
-
+      chkbxShowSplashAtStart.Checked:=CONST_DEFAULTVALUE_SHOWSPLASHATSTART;
+      chkbxShowStatusbar.Checked:=CONST_DEFAULTVALUE_SHOWSTATUSBAR;
+      chkbxScrollLogToBottom.Checked:=CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM;
+      chkbxShowConfirmationOnQuit.Checked:=CONST_DEFAULTVALUE_SHOWCONFIRMATIONONQUIT;
+    end;
+  // вкладка "настройки расположения файлов и папок"
+  if PageControl1.ActivePage.Caption=' расположения файлов и папок' then
+    begin
+      edbxDestinationFolderValue.Text:=CONST_DEFAULTVALUE_DESTINATIONFOLDER;
+      Do_UpdateActions;
     end;
   // вкладка "настройки ведения протокола работы"
   if PageControl1.ActivePage.Caption=' ведения протокола работы' then
     begin
+      chkbxKeepInfoLog.Checked:=lmtInfo in CONST_DEFAULTVALUE_KEEPLOGTYPES;
+      chkbxKeepWarningLog.Checked:=lmtWarning in CONST_DEFAULTVALUE_KEEPLOGTYPES;
+      chkbxKeepErrorLog.Checked:=lmtError in CONST_DEFAULTVALUE_KEEPLOGTYPES;
+      chkbxKeepDebugLog.Checked:=lmtDebug in CONST_DEFAULTVALUE_KEEPLOGTYPES;
+    end;
+  // вкладка "настройки положения и размеров окон"
+  if PageControl1.ActivePage.Caption=' положения и размеров окон' then
+    begin
+      chkbxMainFormMaximized.Checked:=CONST_DEFAULTVALUE_MAINFORM_MAXIMIZED;
+      chkbxMainFormCentered.Checked:=CONST_DEFAULTVALUE_MAINFORM_CENTERED and(not CONST_DEFAULTVALUE_MAINFORM_MAXIMIZED);
+      edbxMainFormLeftValue.Text:=CommonFunctions.GetConditionalString(not(CONST_DEFAULTVALUE_MAINFORM_CENTERED or CONST_DEFAULTVALUE_MAINFORM_MAXIMIZED), IntToStr(CONST_DEFAULTVALUE_MAINFORM_LEFT), '');
+      edbxMainFormTopValue.Text:=CommonFunctions.GetConditionalString(not(CONST_DEFAULTVALUE_MAINFORM_CENTERED or CONST_DEFAULTVALUE_MAINFORM_MAXIMIZED), IntToStr(CONST_DEFAULTVALUE_MAINFORM_TOP), '');
+      edbxMainFormWidthValue.Text:=CommonFunctions.GetConditionalString(CONST_DEFAULTVALUE_MAINFORM_MAXIMIZED, '', IntToStr(CONST_DEFAULTVALUE_MAINFORM_WIDTH));
+      edbxMainFormHeightValue.Text:=CommonFunctions.GetConditionalString(CONST_DEFAULTVALUE_MAINFORM_MAXIMIZED, '', IntToStr(CONST_DEFAULTVALUE_MAINFORM_HEIGHT));
 
+      chkbxConfigurationFormCentered.Checked:=CONST_DEFAULTVALUE_FORMPOSITION_CENTERED;
+      edbxConfigurationFormLeftValue.Text:=CommonFunctions.GetConditionalString(CONST_DEFAULTVALUE_FORMPOSITION_CENTERED, '', IntToStr(CONST_DEFAULTVALUE_FORMPOSITION_LEFT));
+      edbxConfigurationFormTopValue.Text:=CommonFunctions.GetConditionalString(CONST_DEFAULTVALUE_FORMPOSITION_CENTERED, '', IntToStr(CONST_DEFAULTVALUE_FORMPOSITION_TOP));
+      edbxConfigurationFormLeftValue.Enabled:=not CONST_DEFAULTVALUE_FORMPOSITION_CENTERED;
+      edbxConfigurationFormTopValue.Enabled:=not CONST_DEFAULTVALUE_FORMPOSITION_CENTERED;
+    end;
+  // вкладка "настройки прочие"
+  if PageControl1.ActivePage.Caption=' прочие' then
+    begin
+      chkbxPlaySoundOnComplete.Checked:=CONST_DEFAULTVALUE_PLAYSOUNDONCOMPLETE;
+      edbxWatchPauseValue.Text:=IntToStr(CONST_DEFAULTVALUE_WATCHPAUSE);
+      ebbxRetranslatorPauseValue.Text:=IntToStr(CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
     end;
   MainForm.LogInfo('Настройки '+PageControl1.ActivePage.Caption+' были сброшены пользователем в значения по умолчанию.');
 end;
@@ -265,8 +378,18 @@ begin
   Do_PageSelect;
 end;
 
-procedure TConfigurationForm.FormCloseQuery(Sender: TObject;
-  var CanClose: Boolean);
+procedure TConfigurationForm.Do_UpdateActions;
+begin
+  edbxDestinationFolderValue.Enabled:=edbxDestinationFolderValue.Text<>'';
+end;
+
+procedure TConfigurationForm.edbxNumericFieldKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not CharInSet(Key, ['0'..'9', #8, '-']) then
+    Key:=#0; // "погасить" все остальные клавиши
+end;
+
+procedure TConfigurationForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   MainForm.Configuration.ConfigurationFormPage:=cbPage.ItemIndex;
 end;
@@ -302,9 +425,14 @@ begin
             else
               Top:=ConfigurationFormPosition.Top;
         end;
+        dsd
+
+
+
     end;
   cbPage.ItemIndex:=MainForm.Configuration.ConfigurationFormPage;
   Do_PageSelect;
+  Do_UpdateActions;
 end;
 
 procedure TConfigurationForm.FormShow(Sender: TObject);
