@@ -29,8 +29,6 @@ uses
   uCommon;
 
 type
-  THackControl=class(TControl);
-
   TMainForm=class(TForm)
     ilMainFormSmallImages: TImageList;
     ActionManager1: TActionManager;
@@ -308,14 +306,16 @@ var
 
   procedure BindMainProgressBarToStatusBar;
   begin
-    THackControl(pbMain).SetParent(StatusBar1);
+    with pbMain as TControl do
+      SetParent(StatusBar1);
     SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
     pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right-PanelRect.Left, PanelRect.Bottom-PanelRect.Top-1);
   end;
 
   procedure BindStateImageToStatusBar;
   begin
-    THackControl(imConnectionState).SetParent(StatusBar1);
+    with imConnectionState as TControl do
+      SetParent(StatusBar1);
     SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
     imConnectionState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
   end;
@@ -670,7 +670,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   begin
     LogInfo('Получен размер буфера общей памяти в байтах: ['+IntToStr(Int64(dwSize))+'].');
     Configuration.SharedMemSize:=dwSize; // устанавливаем размер буфера в общей памяти
-//    LogDebug('Размер буфера общей памяти в байтах: '+IntToStr(Int64(dwSize))+'.');
+    // LogDebug('Размер буфера общей памяти в байтах: '+IntToStr(Int64(dwSize))+'.');
     // создание буфера в общей памяти
     FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, Configuration.SharedMemSize);
     LogDebug('Создан объект доступа к общей памяти.');

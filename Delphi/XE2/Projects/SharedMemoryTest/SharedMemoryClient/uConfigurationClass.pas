@@ -8,7 +8,6 @@ uses
 type
   TConfigurationClass=class(TCommonConfigurationClass)
   public
-    constructor Create(const IniFileName: string='');
     property SharedMemoryName;
     property KeepLogTypes;
     property SharedMemSize;
@@ -23,10 +22,5 @@ type
   end;
 
 implementation
-
-constructor TConfigurationClass.Create(const IniFileName: string='');
-begin
-  inherited Create(IniFileName);
-end;
 
 end.

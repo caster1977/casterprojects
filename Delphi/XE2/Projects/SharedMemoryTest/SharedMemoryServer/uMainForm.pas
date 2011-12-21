@@ -30,8 +30,6 @@ uses
   uCommon;
 
 type
-  THackControl=class(TControl);
-
   TMainForm=class(TForm)
     ilMainFormSmallImages: TImageList;
     MainMenu1: TMainMenu;
@@ -99,6 +97,9 @@ type
     /// </summary>
     FConnectionThread: TRetranslatorThreadClass;
 
+    /// <summary>
+    /// Объект для
+    /// </summary>
     FWatchThread: TWatchThreadClass;
 
     FFirstRun: boolean;
@@ -546,14 +547,16 @@ var
 
   procedure BindMainProgressBarToStatusBar;
   begin
-    THackControl(pbMain).SetParent(StatusBar1);
+    with pbMain as TControl do
+      SetParent(StatusBar1);
     SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
     pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right-PanelRect.Left, PanelRect.Bottom-PanelRect.Top-1);
   end;
 
   procedure BindStateImageToStatusBar;
   begin
-    THackControl(imConnectionState).SetParent(StatusBar1);
+    with imConnectionState as TControl do
+      SetParent(StatusBar1);
     SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
     imConnectionState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
   end;
@@ -751,6 +754,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     FSharedMem.Mapped:=True;
     FSharedMem.Read(dwSize, FChunk);
     FSharedMem.Mapped:=False;
+
     // данные остались в объекте порции данных
     // теперь требуем CRC32 блока
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_CRC32, FChunkedFile.Index); // требуем от клиента CRC32 указанной порции данных файла

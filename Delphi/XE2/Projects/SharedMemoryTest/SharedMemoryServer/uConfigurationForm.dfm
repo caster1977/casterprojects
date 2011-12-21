@@ -166,7 +166,7 @@ object ConfigurationForm: TConfigurationForm
         Top = 3
         Width = 543
         Height = 192
-        ActivePage = ts4
+        ActivePage = ts3
         Align = alCustom
         Anchors = [akLeft, akTop, akRight, akBottom]
         Style = tsButtons
@@ -464,7 +464,7 @@ object ConfigurationForm: TConfigurationForm
             TabOrder = 0
             OnKeyPress = edbxNumericFieldKeyPress
           end
-          object ebbxRetranslatorPauseValue: TEdit
+          object edbxRetranslatorPauseValue: TEdit
             Left = 432
             Top = 50
             Width = 103
@@ -492,7 +492,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 432
     Top = 192
     Bitmap = {
-      494C0101060008001C0310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800200310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
