@@ -56,7 +56,7 @@ type
     chkbxScrollLogToBottom: TCheckBox;
     lblWatchPause: TLabel;
     edbxWatchPauseValue: TEdit;
-    ebbxRetranslatorPauseValue: TEdit;
+    edbxRetranslatorPauseValue: TEdit;
     lblRetranslatorPause: TLabel;
     edbxDestinationFolderValue: TEdit;
     btnDestinationFolder: TButton;
@@ -163,8 +163,7 @@ begin
   Do_PageSelect;
 end;
 
-procedure TConfigurationForm.chkbxConfigurationFormCenteredClick(
-  Sender: TObject);
+procedure TConfigurationForm.chkbxConfigurationFormCenteredClick(Sender: TObject);
 var
   b: boolean;
 begin
@@ -218,13 +217,89 @@ begin
 end;
 
 procedure TConfigurationForm.Do_Apply;
+var
+  FormPosition: TFormPosition;
 begin
   ModalResult:=mrOk;
   MainForm.LogInfo('Попытка изменения настроек программы была подтверждена пользователем.');
 
   with MainForm.Configuration do
     begin
-      sdf
+      ShowSplashAtStart:=chkbxShowSplashAtStart.Enabled and chkbxShowSplashAtStart.Checked;
+      ShowStatusbar:=chkbxShowStatusbar.Enabled and chkbxShowStatusbar.Checked;
+      ScrollLogToBottom:=chkbxScrollLogToBottom.Enabled and chkbxScrollLogToBottom.Checked;
+      ShowConfirmationOnQuit:=chkbxShowConfirmationOnQuit.Enabled and chkbxShowConfirmationOnQuit.Checked;
+
+      if chkbxKeepErrorLog.Enabled and chkbxKeepErrorLog.Checked then
+        KeepLogTypes:=KeepLogTypes+[lmtError]
+      else
+        KeepLogTypes:=KeepLogTypes-[lmtError];
+      if chkbxKeepWarningLog.Enabled and chkbxKeepWarningLog.Checked then
+        KeepLogTypes:=KeepLogTypes+[lmtWarning]
+      else
+        KeepLogTypes:=KeepLogTypes-[lmtWarning];
+      if chkbxKeepInfoLog.Enabled and chkbxKeepInfoLog.Checked then
+        KeepLogTypes:=KeepLogTypes+[lmtInfo]
+      else
+        KeepLogTypes:=KeepLogTypes-[lmtInfo];
+      if chkbxKeepDebugLog.Enabled and chkbxKeepDebugLog.Checked then
+        KeepLogTypes:=KeepLogTypes+[lmtDebug]
+      else
+        KeepLogTypes:=KeepLogTypes-[lmtDebug];
+
+      FormPosition.Centered:=chkbxMainFormCentered.Enabled and chkbxMainFormCentered.Checked and(not(chkbxMainFormMaximized.Enabled and chkbxMainFormMaximized.Checked));
+      FormPosition.Maximized:=chkbxMainFormMaximized.Enabled and chkbxMainFormMaximized.Checked;
+      if chkbxMainFormMaximized.Enabled and chkbxMainFormMaximized.Checked then
+        begin
+          FormPosition.Left:=Screen.WorkAreaLeft;
+          FormPosition.Top:=Screen.WorkAreaTop;
+          FormPosition.Width:=Screen.WorkAreaWidth;
+          FormPosition.Height:=Screen.WorkAreaHeight;
+        end
+      else
+        if chkbxMainFormCentered.Enabled and chkbxMainFormCentered.Checked then
+          begin
+            if edbxMainFormWidthValue.Enabled then
+              FormPosition.Width:=StrToIntDef(Trim(edbxMainFormWidthValue.Text), CONST_DEFAULTVALUE_MAINFORM_WIDTH)
+            else
+              FormPosition.Width:=CONST_DEFAULTVALUE_MAINFORM_WIDTH;
+            if edbxMainFormHeightValue.Enabled then
+              FormPosition.Height:=StrToIntDef(Trim(edbxMainFormHeightValue.Text), CONST_DEFAULTVALUE_MAINFORM_HEIGHT)
+            else
+              FormPosition.Height:=CONST_DEFAULTVALUE_MAINFORM_HEIGHT;
+            FormPosition.Left:=(Screen.WorkAreaWidth-FormPosition.Width)div 2;
+            FormPosition.Top:=(Screen.WorkAreaHeight-FormPosition.Height)div 2;
+          end
+        else
+          begin
+            if edbxMainFormLeftValue.Enabled then
+              FormPosition.Left:=StrToIntDef(Trim(edbxMainFormLeftValue.Text), CONST_DEFAULTVALUE_MAINFORM_LEFT)
+            else
+              FormPosition.Left:=CONST_DEFAULTVALUE_MAINFORM_LEFT;
+            if edbxMainFormTopValue.Enabled then
+              FormPosition.Top:=StrToIntDef(Trim(edbxMainFormTopValue.Text), CONST_DEFAULTVALUE_MAINFORM_TOP)
+            else
+              FormPosition.Top:=CONST_DEFAULTVALUE_MAINFORM_TOP;
+            if edbxMainFormWidthValue.Enabled then
+              FormPosition.Width:=StrToIntDef(Trim(edbxMainFormWidthValue.Text), CONST_DEFAULTVALUE_MAINFORM_WIDTH)
+            else
+              FormPosition.Width:=CONST_DEFAULTVALUE_MAINFORM_WIDTH;
+            if edbxMainFormHeightValue.Enabled then
+              FormPosition.Height:=StrToIntDef(Trim(edbxMainFormHeightValue.Text), CONST_DEFAULTVALUE_MAINFORM_HEIGHT)
+            else
+              FormPosition.Height:=CONST_DEFAULTVALUE_MAINFORM_HEIGHT;
+          end;
+      MainFormPosition:=FormPosition;
+      FormPosition.Centered:=chkbxConfigurationFormCentered.Checked and chkbxConfigurationFormCentered.Enabled;
+      FormPosition.Left:=StrToIntDef(CommonFunctions.GetConditionalString(not FormPosition.Centered, Trim(edbxConfigurationFormLeftValue.Text), ''), CONST_DEFAULTVALUE_FORMPOSITION_LEFT);
+      FormPosition.Top:=StrToIntDef(CommonFunctions.GetConditionalString(not FormPosition.Centered, Trim(edbxConfigurationFormTopValue.Text), ''), CONST_DEFAULTVALUE_FORMPOSITION_TOP);
+      ConfigurationFormPosition:=FormPosition;
+
+      PlaySoundOnComplete:=chkbxPlaySoundOnComplete.Enabled and chkbxPlaySoundOnComplete.Checked;
+      WatchPause:=StrToIntDef(Trim(edbxWatchPauseValue.Text), CONST_DEFAULTVALUE_WATCHPAUSE);
+      RetranslatorPause:=StrToIntDef(Trim(edbxRetranslatorPauseValue.Text), CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+
+      DestinationFolder:=Trim(edbxDestinationFolderValue.Text);
     end;
 
   MainForm.LogInfo('Окно изменения настроек программы закрыто.');
@@ -325,7 +400,7 @@ begin
     begin
       chkbxPlaySoundOnComplete.Checked:=CONST_DEFAULTVALUE_PLAYSOUNDONCOMPLETE;
       edbxWatchPauseValue.Text:=IntToStr(CONST_DEFAULTVALUE_WATCHPAUSE);
-      ebbxRetranslatorPauseValue.Text:=IntToStr(CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+      edbxRetranslatorPauseValue.Text:=IntToStr(CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
     end;
   MainForm.LogInfo('Настройки '+PageControl1.ActivePage.Caption+' были сброшены пользователем в значения по умолчанию.');
 end;
@@ -425,10 +500,35 @@ begin
             else
               Top:=ConfigurationFormPosition.Top;
         end;
-        dsd
 
+      chkbxShowSplashAtStart.Checked:=ShowSplashAtStart;
+      chkbxShowStatusbar.Checked:=ShowStatusbar;
+      chkbxScrollLogToBottom.Checked:=ScrollLogToBottom;
+      chkbxShowConfirmationOnQuit.Checked:=ShowConfirmationOnQuit;
 
+      chkbxKeepErrorLog.Checked:=lmtError in KeepLogTypes;
+      chkbxKeepWarningLog.Checked:=lmtWarning in KeepLogTypes;
+      chkbxKeepInfoLog.Checked:=lmtInfo in KeepLogTypes;
+      chkbxKeepDebugLog.Checked:=lmtDebug in KeepLogTypes;
 
+      edbxMainFormLeftValue.Text:=CommonFunctions.GetConditionalString(not(MainFormPosition.Centered or MainFormPosition.Maximized), IntToStr(MainFormPosition.Left), '');
+      edbxMainFormTopValue.Text:=CommonFunctions.GetConditionalString(not(MainFormPosition.Centered or MainFormPosition.Maximized), IntToStr(MainFormPosition.Top), '');
+      chkbxMainFormCentered.Checked:=MainFormPosition.Centered and(not MainFormPosition.Maximized);
+      edbxMainFormWidthValue.Text:=CommonFunctions.GetConditionalString(MainFormPosition.Maximized, '', IntToStr(MainFormPosition.Width));
+      edbxMainFormHeightValue.Text:=CommonFunctions.GetConditionalString(MainFormPosition.Maximized, '', IntToStr(MainFormPosition.Height));
+      chkbxMainFormMaximized.Checked:=MainFormPosition.Maximized;
+
+      chkbxConfigurationFormCentered.Checked:=ConfigurationFormPosition.Centered;
+      edbxConfigurationFormLeftValue.Text:=CommonFunctions.GetConditionalString(ConfigurationFormPosition.Centered, '', IntToStr(ConfigurationFormPosition.Left));
+      edbxConfigurationFormTopValue.Text:=CommonFunctions.GetConditionalString(ConfigurationFormPosition.Centered, '', IntToStr(ConfigurationFormPosition.Top));
+      edbxConfigurationFormLeftValue.Enabled:=not ConfigurationFormPosition.Centered;
+      edbxConfigurationFormTopValue.Enabled:=not ConfigurationFormPosition.Centered;
+
+      edbxDestinationFolderValue.Text:=DestinationFolder;
+
+      chkbxPlaySoundOnComplete.Checked:=PlaySoundOnComplete;
+      edbxWatchPauseValue.Text:=IntToStr(WatchPause);
+      edbxRetranslatorPauseValue.Text:=IntToStr(RetranslatorPause);
     end;
   cbPage.ItemIndex:=MainForm.Configuration.ConfigurationFormPage;
   Do_PageSelect;
