@@ -102,6 +102,9 @@
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
+			<RcCompile Include="..\SharedMemoryCommon\waves.rc">
+				<Form>waves.res</Form>
+			</RcCompile>
 			<DCCReference Include="uMainForm.pas">
 				<Form>MainForm</Form>
 				<FormType>dfm</FormType>

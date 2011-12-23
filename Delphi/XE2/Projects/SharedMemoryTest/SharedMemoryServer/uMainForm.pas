@@ -126,6 +126,7 @@ type
     procedure SetConfiguration(const Value: TConfigurationClass);
     procedure Log(const aMessage: string; aMessageType: TLogMessagesType);
     procedure Do_UpdateColumnWidth;
+    procedure Do_PlaySound;
   public
     procedure ProcessErrors(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
     procedure LogError(const aMessage: string);
@@ -146,9 +147,13 @@ uses
   System.IniFiles,
   Winapi.CommCtrl,
   Winapi.ShellAPI,
+  Winapi.MMSystem,
   uAboutForm,
   uCommonConfigurationClass,
   uConfigurationForm;
+
+type
+  THackControl = class(TControl);
 
 resourcestring
   TEXT_MAINFORM_CAPTION='Shared Memory Server';
@@ -318,6 +323,12 @@ begin
   else
     CommonFunctions.GenerateError('Папка приёма файлов не существует! Проверьте правильность указанного в настройках пути ['+Configuration.DestinationFolder+']!', sErrorMessage, bError);
   ProcessErrors(Handle, bError, sErrorMessage);
+end;
+
+procedure TMainForm.Do_PlaySound;
+begin
+  if Configuration.PlaySoundOnComplete then
+    PlaySound('WAVE_0', HInstance, SND_RESOURCE or SND_ASYNC);
 end;
 
 procedure TMainForm.Do_SaveConfiguration;
@@ -547,16 +558,14 @@ var
 
   procedure BindMainProgressBarToStatusBar;
   begin
-    with pbMain as TControl do
-      SetParent(StatusBar1);
+    THackControl(pbMain).SetParent(StatusBar1);
     SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
     pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right-PanelRect.Left, PanelRect.Bottom-PanelRect.Top-1);
   end;
 
   procedure BindStateImageToStatusBar;
   begin
-    with imConnectionState as TControl do
-      SetParent(StatusBar1);
+    THackControl(imConnectionState).SetParent(StatusBar1);
     SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
     imConnectionState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
   end;
@@ -791,6 +800,8 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
             PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_TRANSFER_COMPLETE, 0); // уведомляем клиент об успешном окончании передачи файла
             LogDebug('Отправлено уведомление об успешной передаче файла.');
             LogInfo('Файл успешно принят.');
+            if Configuration.PlaySoundOnComplete then
+              Do_PlaySound;
           end;
       end
     else

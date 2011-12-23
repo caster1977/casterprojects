@@ -1,5 +1,7 @@
 program SharedMemoryServer;
 
+{$R 'waves.res' '..\SharedMemoryCommon\waves.rc'}
+
 uses
   Vcl.Forms,
   uMainForm in 'uMainForm.pas' {MainForm},

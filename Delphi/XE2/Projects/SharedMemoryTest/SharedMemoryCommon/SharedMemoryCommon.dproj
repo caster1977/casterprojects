@@ -97,6 +97,9 @@
 			<DCCReference Include="uSharedMemClass.pas"/>
 			<DCCReference Include="uWatchThreadClass.pas"/>
 			<DCCReference Include="uCommonConfigurationClass.pas"/>
+			<RcCompile Include="waves.rc">
+				<Form>waves.res</Form>
+			</RcCompile>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
