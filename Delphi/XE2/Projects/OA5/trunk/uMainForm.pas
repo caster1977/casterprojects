@@ -141,6 +141,9 @@ uses
   OA5Consts,
   uRoutines;
 
+type
+  THackControl = class(TControl);
+
 resourcestring
   sAboutFormSuffix = '"О программе..."';
   sConfigurationFormSuffix = 'настроек программы';
@@ -350,16 +353,14 @@ var
 
   procedure BindMainProgressBarToStatusBar;
   begin
-    with pbMain as TControl do
-      SetParent(StatusBar1);
+    THackControl(pbMain).SetParent(StatusBar1);
     SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
     pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right-PanelRect.Left, PanelRect.Bottom-PanelRect.Top-1);
   end;
 
   procedure BindStateImageToStatusBar;
   begin
-    with imState as TControl do
-      SetParent(StatusBar1);
+    THackControl(imState).SetParent(StatusBar1);
     SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
     imState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
   end;
