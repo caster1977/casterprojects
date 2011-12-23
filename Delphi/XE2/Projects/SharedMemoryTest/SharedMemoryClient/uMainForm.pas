@@ -126,6 +126,7 @@ type
     procedure Log(const aMessage: string; aMessageType: TLogMessagesType);
     procedure Do_UpdateColumnWidth;
     procedure Do_UpdateAcrions;
+    procedure Do_PlaySound;
   public
     procedure LogError(const aMessage: string);
     procedure LogWarning(const aMessage: string);
@@ -144,9 +145,13 @@ implementation
 uses
   Winapi.CommCtrl,
   System.IniFiles,
+  Winapi.MMSystem,
   uAboutForm,
   uConfigurationForm,
   System.IOUtils;
+
+type
+  THackControl = class(TControl);
 
 resourcestring
   TEXT_MAINFORM_CAPTION='Shared Memory Client';
@@ -236,6 +241,12 @@ begin
     ProcessErrors(Handle, bError, sErrorMessage);
 end;
 
+procedure TMainForm.Do_PlaySound;
+begin
+  if Configuration.PlaySoundOnComplete then
+    PlaySound('WAVE_0', HInstance, SND_RESOURCE or SND_ASYNC);
+end;
+
 function TMainForm.Do_RegisterWindowMessages: boolean;
 begin
   Result:=False;
@@ -306,16 +317,14 @@ var
 
   procedure BindMainProgressBarToStatusBar;
   begin
-    with pbMain as TControl do
-      SetParent(StatusBar1);
+    THackControl(pbMain).SetParent(StatusBar1);
     SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
     pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right-PanelRect.Left, PanelRect.Bottom-PanelRect.Top-1);
   end;
 
   procedure BindStateImageToStatusBar;
   begin
-    with imConnectionState as TControl do
-      SetParent(StatusBar1);
+    THackControl(imConnectionState).SetParent(StatusBar1);
     SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
     imConnectionState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
   end;
