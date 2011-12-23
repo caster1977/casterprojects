@@ -199,7 +199,7 @@ begin
     Chunk:=TChunkClass.Create;
   if Assigned(FStream) then
     begin
-      FStream.Seek(ChunkSize*Index, soFromBeginning);
+      FStream.Position:=Int64(ChunkSize)*Int64(Index);
       SetLength(Data, ChunkSize);
       Chunk.Size:=FStream.Read(Data[0], ChunkSize);
       SetLength(Data, Chunk.Size);
