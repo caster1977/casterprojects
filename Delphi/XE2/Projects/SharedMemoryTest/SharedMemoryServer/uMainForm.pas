@@ -807,8 +807,8 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     else
       begin
         // контрольная сумма не совпала, требуется повторно получить порцию данных файла
-        LogError('Контрольная сумма порции данных не совпала!');
-        LogInfo('Проводим повторное получение порции данных.');
+        LogError('Контрольная сумма порции данных номер '+IntToStr(FChunkedFile.Index)+' не совпала!');
+        LogInfo('Проводим повторное получение порции данных номер '+IntToStr(FChunkedFile.Index)+'.');
         PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, FChunkedFile.Index); // требуем от клиента указанный блок файла
         LogDebug('Отправлен запрос на повторное получение порции данных.');
       end;
