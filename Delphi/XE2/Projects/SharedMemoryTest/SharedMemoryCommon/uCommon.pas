@@ -37,6 +37,7 @@ const
   WPARAM_SERVER_SHUTDOWN=17; // сервер сообщает клиенту о своём выключении
   WPARAM_SERVER_LOST=18; // окно сервера более не существует
   WPARAM_CLIENT_LOST=19; // окно клиента более не существует
+  WPARAM_SERVER_TRANSFER_ERROR=20; // сервер сообщает об ошибке при получении файла
 
 
 resourcestring

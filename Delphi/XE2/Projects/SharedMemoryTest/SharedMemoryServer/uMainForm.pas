@@ -153,7 +153,7 @@ uses
   uConfigurationForm;
 
 type
-  THackControl = class(TControl);
+  THackControl=class(TControl);
 
 resourcestring
   TEXT_MAINFORM_CAPTION='Shared Memory Server';
@@ -474,6 +474,8 @@ begin
   ConfigurationForm:=TConfigurationForm.Create(Self);
   with ConfigurationForm do
     try
+      lblSharedMemSize.Enabled:=not FReceiving;
+      edbxSharedMemSizeValue.Enabled:=not FReceiving;
       ShowModal;
     finally
       if ModalResult=mrOk then
@@ -793,15 +795,39 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
         else
           begin
             // последняя порция данных, можно уведомить клиент об успешной передаче данных и закрыть файл
-            FChunkedFile.Complete:=True;
-            pbMain.Visible:=False;
-            FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
-            LogDebug('Объект доступа к порционному файлу уничтоден.');
-            PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_TRANSFER_COMPLETE, 0); // уведомляем клиент об успешном окончании передачи файла
-            LogDebug('Отправлено уведомление об успешной передаче файла.');
-            LogInfo('Файл успешно принят.');
-            if Configuration.PlaySoundOnComplete then
-              Do_PlaySound;
+            try
+              try
+                FChunkedFile.Complete:=True;
+
+                PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_TRANSFER_COMPLETE, 0); // уведомляем клиент об успешном окончании передачи файла
+                LogDebug('Отправлено уведомление об успешной передаче файла.');
+
+                LogInfo('Файл успешно принят.');
+              except
+                on E: Exception do
+                  begin
+                    FCanceling:=True;
+
+                    PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_TRANSFER_ERROR, 0); // уведомляем клиент об ошибке при передаче файла
+                    LogDebug('Отправлено уведомление об ошибке при передаче файла.');
+
+                    LogError(E.Message);
+                    LogWarning('Файл не был принят!');
+                  end;
+              end;
+            finally
+              pbMain.Visible:=False;
+              Application.ProcessMessages;
+
+              FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
+              LogDebug('Объект доступа к порционному файлу уничтоден.');
+
+              FreeAndNil(FSharedMem); // удаляем текущий объект доступа к общей памяти
+              LogDebug('Объект доступа к общей памяти уничтоден.');
+
+              if Configuration.PlaySoundOnComplete then
+                Do_PlaySound;
+            end;
           end;
       end
     else

@@ -413,7 +413,6 @@ end;
 
 function TSharedMemClass.Read(const Len: cardinal; out Chunk: TChunkClass): boolean;
 begin
-//  Result:=False;
   if not Assigned(Chunk) then
     Chunk:=TChunkClass.Create;
   if Mapped then
@@ -434,7 +433,6 @@ end;
 
 function TSharedMemClass.Write(const Chunk: TChunkClass): boolean;
 begin
-//  Result:=False;
   if not Assigned(Chunk) then
     raise Exception.Create(TEXT_ERROR_WRONG_CHUNK_OBJECT);
   if Mapped then

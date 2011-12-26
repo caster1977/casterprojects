@@ -440,6 +440,7 @@ begin
   Action_Cancel.Enabled:=Action_Send.Enabled;
   Action_Cancel.Visible:=btnSend_btnCancel.Action=Action_Cancel;
   LogDebug('Действие "'+Action_Cancel.Caption+'" '+CommonFunctions.GetConditionalString(Action_Cancel.Enabled, 'в', 'от')+'ключено.');
+  Application.ProcessMessages;
 end;
 
 procedure TMainForm.Do_UpdateColumnWidth;
@@ -547,16 +548,15 @@ procedure TMainForm.Action_SendExecute(Sender: TObject);
 begin
   LogInfo('Пользователь запустил процедуру отправки файла на сервер.');
   FSending:=True;
+  Action_Send.Enabled:=False;
+  Action_Cancel.Enabled:=False;
   btnSend_btnCancel.Action:=Action_Cancel;
-  Action_Send.Visible:=False;
-  Action_Cancel.Visible:=True;
   Do_UpdateAcrions;
   if FConnectedToServer then
     begin
       PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_WANNA_SEND_FILE, 0); // отправляем сигнал серверу о желании начать передачу файла
       LogInfo('Отправлено уведомление о попытке передачи файла на сервер.');
     end;
-  Application.ProcessMessages;
 end;
 
 procedure TMainForm.Action_CancelExecute(Sender: TObject);
@@ -564,9 +564,9 @@ begin
   LogWarning('Отпрака файла на сервер отменена пользователем.');
   pbMain.Visible:=False;
   FSending:=False;
+  Action_Send.Enabled:=False;
+  Action_Cancel.Enabled:=False;
   btnSend_btnCancel.Action:=Action_Send;
-  Action_Cancel.Visible:=False;
-  Action_Send.Visible:=True;
   Do_UpdateAcrions;
   FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
   LogDebug('Объект доступа к порционному файлу уничтоден.');
@@ -575,7 +575,6 @@ begin
       PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_WANNA_CANCEL_SENDING, 0); // отправляем сигнал серверу об отмене передачи файла
       LogInfo('Отправлено уведомление об отмене передачи файла на сервер.');
     end;
-  Application.ProcessMessages;
 end;
 
 procedure TMainForm.SetConfiguration(const Value: TConfigurationClass);
@@ -715,16 +714,23 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     LogInfo('Получен запрос размера файла в байтах.');
     if not Assigned(FChunkedFile) then
       begin
-        FChunkedFile:=TChunkedFileClass.Create(FFilename, Configuration.SharedMemSize);
-        LogDebug('Создан объект доступа к порционному файлу.');
-        pbMain.Max:=FChunkedFile.Count;
-        pbMain.Position:=pbMain.Min;
-        pbMain.Visible:=True;
-        PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_FILESIZE, FChunkedFile.Size); // отправка хэндла окна клиента серверу (LPARAM = размер имени файла в байтах)
-        LogInfo('Отправлен размер передаваемого файла в байтах: ['+IntToStr(Int64(FChunkedFile.Size))+'].');
+        try
+          FChunkedFile:=TChunkedFileClass.Create(FFilename, Configuration.SharedMemSize);
+          LogDebug('Создан объект доступа к порционному файлу.');
+          pbMain.Max:=FChunkedFile.Count;
+          pbMain.Position:=pbMain.Min;
+          pbMain.Visible:=True;
+          PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_FILESIZE, FChunkedFile.Size); // отправка хэндла окна клиента серверу (LPARAM = размер имени файла в байтах)
+          LogInfo('Отправлен размер передаваемого файла в байтах: ['+IntToStr(Int64(FChunkedFile.Size))+'].');
+        except
+          on EInOutError do
+              LogError('Не удалось открыть для чтения указанный файл! Файл уже открыт другой программой либо недостаточно прав доступа.');
+          on E: Exception do
+            LogError(E.Message);
+        end;
       end
     else
-      raise Exception.Create('Объект порционного файла уже был ранее создан!');
+      raise Exception.Create('Объект порционного файла уже был создан ранее!');
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_DATA(const dwBlockNumber: cardinal);
@@ -783,6 +789,20 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     LogInfo('Передача файла успешно завершена.');
   end;
 
+  procedure Do_WPARAM_SERVER_TRANSFER_ERROR;
+  begin
+    LogError('Получено уведомление об ошибке при передаче файла!');
+    FSending:=False;
+    pbMain.Visible:=False;
+    FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
+    LogDebug('Объект доступа к порционному файлу уничтоден.');
+    FreeAndNil(FSharedMem); // удаляем объект доступа к общей памяти
+    LogDebug('Объект доступа к общей памяти уничтоден.');
+    btnSend_btnCancel.Action:=Action_Send;
+    Do_UpdateAcrions;
+    LogInfo('Передача файла закончилась неудачей!');
+  end;
+
 begin
   Handled:=False;
   if Msg.message=WM_SERVER then
@@ -806,6 +826,8 @@ begin
                 Do_WPARAM_SERVER_WANNA_CRC32(Msg.lParam);
             WPARAM_SERVER_TRANSFER_COMPLETE: // сервер сообщает что получил файл полностью
               Do_WPARAM_SERVER_TRANSFER_COMPLETE;
+            WPARAM_SERVER_TRANSFER_ERROR: // сервер сообщает что получил файл с ошибками
+              Do_WPARAM_SERVER_TRANSFER_ERROR;
             WPARAM_SERVER_LOST: // поток-сторож сообщает о том, что окно сервера неожиданно пропало
               Do_WPARAM_SERVER_LOST;
           end

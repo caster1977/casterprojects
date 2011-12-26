@@ -56,6 +56,7 @@ type
     FComplete: boolean;
   private
     function GetCount: cardinal;
+    procedure SetComplete(const Value: boolean);
   public
 
     /// <summary>
@@ -68,20 +69,20 @@ type
     /// </summary>
     destructor Destroy; override;
 
-    ///	<summary>
-    ///	  Метод, обеспечивающий чтение очередной порции данных из файла.
-    ///	</summary>
-    ///	<param name="Index">
-    ///	  Номер порции данных в файле, начиная с нуля
-    ///	</param>
-    ///	<param name="Chunk">
-    ///	  Объект порции данных, в который будет помещена считанная из файла
-    ///	  порция данных
-    ///	</param>
-    ///	<returns>
-    ///	  Возращает <b>True</b>, если операция прошла успешно, <b>False</b> в
-    ///	  случае ошибки.
-    ///	</returns>
+    /// <summary>
+    /// Метод, обеспечивающий чтение очередной порции данных из файла.
+    /// </summary>
+    /// <param name="Index">
+    /// Номер порции данных в файле, начиная с нуля
+    /// </param>
+    /// <param name="Chunk">
+    /// Объект порции данных, в который будет помещена считанная из файла
+    /// порция данных
+    /// </param>
+    /// <returns>
+    /// Возращает <b>True</b>, если операция прошла успешно, <b>False</b> в
+    /// случае ошибки.
+    /// </returns>
     function Read(const Index: cardinal; out Chunk: TChunkClass): boolean;
 
     /// <summary>
@@ -99,7 +100,7 @@ type
     /// <summary>
     /// Полное (с путями) имя рабочего файла
     /// </summary>
-    property Name: string read FName stored False;
+    property name: string read FName stored False;
 
     /// <summary>
     /// Размер файла в байтах
@@ -124,12 +125,12 @@ type
     /// <summary>
     /// Номер текущей порции файла, с которой ведётся работа
     /// </summary>
-    property Index: cardinal read FIndex write FIndex stored False;
+    property index: cardinal read FIndex write FIndex stored False;
 
     /// <summary>
     /// Флаг успешного завершения работы с файлом
     /// </summary>
-    property Complete: boolean write FComplete stored False;
+    property Complete: boolean write SetComplete stored False;
   end;
 
 implementation
@@ -141,6 +142,7 @@ uses
 
 resourcestring
   TEXT_ERROR_WRONG_CHUNK_SIZE='Размер порции данных не должен быть менее одного байта!';
+  TEXT_ERROR_WRONG_FILE_SIZE='Размер принятого сервером файла отличается от размера передаваемого клиентом!';
   TEXT_ERROR_WRONG_FILE_STREAM_OBJECT='Не удалось создать объект файлового потока!';
   TEXT_ERROR_WRITING_CHUNK_TO_FILE='Не удалось записать порцию данных в файл!';
 
@@ -149,7 +151,7 @@ begin
   inherited Create;
   FIndex:=0;
   FName:=Trim(FileName);
-//  FComplete:=True;
+  // FComplete:=True;
 
   // если размер порции менее одного байта
   if SizeOfChunk<1 then
@@ -172,8 +174,11 @@ begin
         FComplete:=False;
       end;
   except
-    if not Assigned(FStream) then
-      raise Exception.Create(TEXT_ERROR_WRONG_FILE_STREAM_OBJECT);
+    on EInOutError do
+      raise
+    else
+      if not Assigned(FStream) then
+        raise Exception.Create(TEXT_ERROR_WRONG_FILE_STREAM_OBJECT);
   end;
 end;
 
@@ -199,7 +204,7 @@ begin
     Chunk:=TChunkClass.Create;
   if Assigned(FStream) then
     begin
-      FStream.Position:=Int64(ChunkSize)*Int64(Index);
+      FStream.Position:=Int64(ChunkSize)*Int64(index);
       SetLength(Data, ChunkSize);
       Chunk.Size:=FStream.Read(Data[0], ChunkSize);
       SetLength(Data, Chunk.Size);
@@ -207,6 +212,19 @@ begin
       if Chunk.Size>0 then
         Result:=Chunk.CRC32=CommonFunctions.CRC32OfByteArray(Data);
     end;
+end;
+
+procedure TChunkedFileClass.SetComplete(const Value: boolean);
+begin
+  if Value<>FComplete then
+    if Value then
+      if Assigned(FStream) then
+        if Size=FStream.Size then
+          FComplete:=Value
+        else
+          raise Exception.Create(TEXT_ERROR_WRONG_FILE_SIZE)
+      else
+        raise Exception.Create(TEXT_ERROR_WRONG_FILE_STREAM_OBJECT);
 end;
 
 function TChunkedFileClass.Write(const Chunk: TChunkClass): boolean;
