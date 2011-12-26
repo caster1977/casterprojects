@@ -85,6 +85,8 @@ type
     edbxConfigurationFormTopValue: TEdit;
     chkbxConfigurationFormCentered: TCheckBox;
     Action_ChooseDestinationFolder: TAction;
+    lblSharedMemSize: TLabel;
+    edbxSharedMemSizeValue: TEdit;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -100,6 +102,7 @@ type
     procedure chkbxConfigurationFormCenteredClick(Sender: TObject);
     procedure chkbxMainFormCenteredClick(Sender: TObject);
     procedure chkbxMainFormMaximizedClick(Sender: TObject);
+    procedure edbxSharedMemSizeValueChange(Sender: TObject);
   strict private
     procedure Do_PageSelect;
     procedure Do_Help;
@@ -298,6 +301,7 @@ begin
       PlaySoundOnComplete:=chkbxPlaySoundOnComplete.Enabled and chkbxPlaySoundOnComplete.Checked;
       WatchPause:=StrToIntDef(Trim(edbxWatchPauseValue.Text), CONST_DEFAULTVALUE_WATCHPAUSE);
       RetranslatorPause:=StrToIntDef(Trim(edbxRetranslatorPauseValue.Text), CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+      SharedMemSize:=StrToIntDef(Trim(edbxSharedMemSizeValue.Text), CONST_DEFAULTVALUE_SHAREDMEMSIZE);
 
       DestinationFolder:=Trim(edbxDestinationFolderValue.Text);
     end;
@@ -401,6 +405,7 @@ begin
       chkbxPlaySoundOnComplete.Checked:=CONST_DEFAULTVALUE_PLAYSOUNDONCOMPLETE;
       edbxWatchPauseValue.Text:=IntToStr(CONST_DEFAULTVALUE_WATCHPAUSE);
       edbxRetranslatorPauseValue.Text:=IntToStr(CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+      edbxSharedMemSizeValue.Text:=IntToStr(CONST_DEFAULTVALUE_SHAREDMEMSIZE);
     end;
   MainForm.LogInfo('Настройки '+PageControl1.ActivePage.Caption+' были сброшены пользователем в значения по умолчанию.');
 end;
@@ -462,6 +467,18 @@ procedure TConfigurationForm.edbxNumericFieldKeyPress(Sender: TObject; var Key: 
 begin
   if not CharInSet(Key, ['0'..'9', #8, '-']) then
     Key:=#0; // "погасить" все остальные клавиши
+end;
+
+procedure TConfigurationForm.edbxSharedMemSizeValueChange(Sender: TObject);
+var
+  i: integer;
+begin
+  i:=StrToIntDef(edbxSharedMemSizeValue.Text, CONST_DEFAULTVALUE_SHAREDMEMSIZE);
+  if i>CONST_DEFAULTVALUE_SHAREDMEMSIZE then
+    edbxSharedMemSizeValue.Text:=IntToStr(CONST_DEFAULTVALUE_SHAREDMEMSIZE);
+//  else
+//    if i<CONST_MINVALUE_SHAREDMEMSIZE then
+//      edbxSharedMemSizeValue.Text:=IntToStr(CONST_MINVALUE_SHAREDMEMSIZE);
 end;
 
 procedure TConfigurationForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -529,6 +546,7 @@ begin
       chkbxPlaySoundOnComplete.Checked:=PlaySoundOnComplete;
       edbxWatchPauseValue.Text:=IntToStr(WatchPause);
       edbxRetranslatorPauseValue.Text:=IntToStr(RetranslatorPause);
+      edbxSharedMemSizeValue.Text:=IntToStr(SharedMemSize);
     end;
   cbPage.ItemIndex:=MainForm.Configuration.ConfigurationFormPage;
   Do_PageSelect;

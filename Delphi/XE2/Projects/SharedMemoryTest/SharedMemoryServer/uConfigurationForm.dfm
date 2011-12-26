@@ -455,12 +455,19 @@ object ConfigurationForm: TConfigurationForm
               #1055#1072#1091#1079#1072' '#1089' '#1084#1080#1083#1083#1080#1089#1077#1082#1091#1085#1076#1072#1093' '#1084#1077#1078#1076#1091' '#1094#1080#1082#1083#1072#1084#1080' '#1087#1086#1080#1089#1082#1072' '#1082#1083#1080#1077#1085#1090#1089#1082#1086#1075#1086' '#1087#1088#1080#1083#1086#1078#1077#1085#1080 +
               #1103
           end
+          object lblSharedMemSize: TLabel
+            Left = 0
+            Top = 80
+            Width = 208
+            Height = 13
+            Caption = #1056#1072#1079#1084#1077#1088' '#1073#1091#1092#1077#1088#1072' '#1074' '#1086#1073#1097#1077#1081' '#1087#1072#1084#1103#1090#1080' '#1074' '#1073#1072#1081#1090#1072#1093
+          end
           object edbxWatchPauseValue: TEdit
             Left = 432
             Top = 23
             Width = 103
             Height = 21
-            MaxLength = 4
+            MaxLength = 10
             TabOrder = 0
             OnKeyPress = edbxNumericFieldKeyPress
           end
@@ -469,7 +476,7 @@ object ConfigurationForm: TConfigurationForm
             Top = 50
             Width = 103
             Height = 21
-            MaxLength = 4
+            MaxLength = 10
             TabOrder = 1
             OnKeyPress = edbxNumericFieldKeyPress
           end
@@ -481,6 +488,16 @@ object ConfigurationForm: TConfigurationForm
             Caption = #1055#1086#1076#1072#1074#1072#1090#1100' '#1079#1074#1091#1082#1086#1074#1086#1081' '#1089#1080#1075#1085#1072#1083' '#1087#1088#1080' '#1079#1072#1074#1077#1088#1096#1077#1085#1080#1080' '#1087#1088#1080#1105#1084#1072'/'#1087#1077#1088#1077#1076#1072#1095#1080' '#1092#1072#1081#1083#1072
             TabOrder = 2
           end
+          object edbxSharedMemSizeValue: TEdit
+            Left = 432
+            Top = 77
+            Width = 103
+            Height = 21
+            MaxLength = 10
+            TabOrder = 3
+            OnChange = edbxSharedMemSizeValueChange
+            OnKeyPress = edbxNumericFieldKeyPress
+          end
         end
       end
     end
@@ -490,7 +507,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 432
     Top = 192
     Bitmap = {
-      494C010106000800240310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800280310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
