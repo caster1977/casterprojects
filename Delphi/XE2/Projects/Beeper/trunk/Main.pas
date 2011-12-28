@@ -126,9 +126,6 @@ uses
   MMSystem;
 
 procedure TMainForm.Action_AboutExecute(Sender: TObject);
-var
-  s: string;
-  p: integer;
 begin
   if bAboutWindowExist then
     SetForegroundWindow(FindWindow('TAboutForm', 'About "Beeper"...'))
@@ -141,10 +138,7 @@ begin
           Timer1.Enabled:=False;
           AlphaBlendValue:=222;
           Timer2.Enabled:=False;
-          s:=gsFileVersionInfo1.FileVersion;
-          p:=LastDelimiter('.', s);
-          s:=copy(s, 1, p-1);
-          Label2.Caption:=Format('Версия %s билд %s', [s, gsFileVersionInfo1.GetBuildOnly]);
+          Label2.Caption:=Format('Версия %d.%d Release %d Build %d', [gsFileVersionInfo1.ModuleVersion.Major, gsFileVersionInfo1.ModuleVersion.Minor, gsFileVersionInfo1.ModuleVersion.Release, gsFileVersionInfo1.ModuleVersion.Build]);
           Label3.Caption:=gsFileVersionInfo1.LegalCopyright;
           ShowModal;
         finally
@@ -671,9 +665,6 @@ begin
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
-var
-  s: string;
-  i: integer;
 begin
   bSignalingActive:=False;
   ToolTipForm:=TToolTipForm.Create(Self);
@@ -697,10 +688,7 @@ begin
       Timer1.Enabled:=True;
       AlphaBlendValue:=0;
       Timer2.Enabled:=True;
-      s:=gsFileVersionInfo1.FileVersion;
-      i:=LastDelimiter('.', s);
-      s:=copy(s, 1, i-1);
-      Label2.Caption:=Format('Версия %s билд %s', [s, gsFileVersionInfo1.GetBuildOnly]);
+      Label2.Caption:=Format('Версия %d.%d Release %d Build %d', [gsFileVersionInfo1.ModuleVersion.Major, gsFileVersionInfo1.ModuleVersion.Minor, gsFileVersionInfo1.ModuleVersion.Release, gsFileVersionInfo1.ModuleVersion.Build]);
       Label3.Caption:=gsFileVersionInfo1.LegalCopyright;
       ShowModal;
     finally
