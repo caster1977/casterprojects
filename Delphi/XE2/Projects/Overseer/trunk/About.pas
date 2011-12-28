@@ -132,7 +132,7 @@ begin
       Timer2.Enabled:=True;
     end;
   btnClose.default:=Action_Close.Visible;
-  lblVersion.Caption:=Format('Версия %s билд %s', [copy(gsFileVersionInfo1.FileVersion, 1, LastDelimiter('.', gsFileVersionInfo1.FileVersion)-1), gsFileVersionInfo1.GetBuildOnly]);
+  lblVersion.Caption:=Format('Версия %d.%d Release %d Build %d', [gsFileVersionInfo1.ModuleVersion.Major, gsFileVersionInfo1.ModuleVersion.Minor, gsFileVersionInfo1.ModuleVersion.Release, gsFileVersionInfo1.ModuleVersion.Build]);
   lblLegalCopyright.Caption:=gsFileVersionInfo1.LegalCopyright;
   LogThis('Отображено окно "О программе...".', LogGroupGUID, lmtInfo);
   ProcedureFooter(LogGroupGUID);
