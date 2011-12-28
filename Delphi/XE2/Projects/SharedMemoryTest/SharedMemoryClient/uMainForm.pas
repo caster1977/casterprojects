@@ -80,10 +80,10 @@ type
     procedure lvLogResize(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   strict private
-    FFirstRun: boolean;
+    FFirstRun: Boolean;
     FServerHandle: THandle;
-    FConnectedToServer: boolean;
-    FSending: boolean;
+    FConnectedToServer: Boolean;
+    FSending: Boolean;
     FFilename: string;
 
     /// <summary>
@@ -108,19 +108,19 @@ type
 
     FWatchThread: TWatchThreadClass;
 
-    procedure PreFooter(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
+    procedure PreFooter(const aHandle: THandle; const aError: Boolean; const aErrorMessage: string);
     procedure Refresh_ConnectionState;
-    procedure ProcessErrors(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
+    procedure ProcessErrors(const aHandle: THandle; const aError: Boolean; const aErrorMessage: string);
     procedure ShowErrorBox(const aHandle: THandle; const aErrorMessage: string);
 
     procedure Do_LoadConfiguration;
     procedure Do_SaveConfiguration;
     procedure Do_ApplyConfiguration;
-    procedure Do_About(const aButtonVisible: boolean);
+    procedure Do_About(const aButtonVisible: Boolean);
     procedure Do_Configuration;
 
-    function Do_RegisterWindowMessages: boolean;
-    function Do_WatchThreadStart: boolean;
+    function Do_RegisterWindowMessages: Boolean;
+    function Do_WatchThreadStart: Boolean;
     procedure Do_WatchThreadTerminate;
     procedure SetConfiguration(const Value: TConfigurationClass);
     procedure Log(const aMessage: string; aMessageType: TLogMessagesType);
@@ -151,7 +151,7 @@ uses
   System.IOUtils;
 
 type
-  THackControl = class(TControl);
+  THackControl=class(TControl);
 
 resourcestring
   TEXT_MAINFORM_CAPTION='Shared Memory Client';
@@ -161,7 +161,7 @@ var
   WM_SERVER, WM_CLIENT: cardinal;
   Recipients: DWORD=BSM_APPLICATIONS;
 
-procedure TMainForm.ProcessErrors(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
+procedure TMainForm.ProcessErrors(const aHandle: THandle; const aError: Boolean; const aErrorMessage: string);
 begin
   if aError then
     begin
@@ -171,7 +171,7 @@ begin
   pbMain.Position:=pbMain.Min;
 end;
 
-procedure TMainForm.Do_About(const aButtonVisible: boolean);
+procedure TMainForm.Do_About(const aButtonVisible: Boolean);
 var
   AboutForm: TAboutForm;
 begin
@@ -190,7 +190,7 @@ end;
 procedure TMainForm.Do_ApplyConfiguration;
 begin
   // применение настроек к панели статуса
-  miStatusbar.Checked:=Configuration.ShowStatusbar;
+  miStatusBar.Checked:=Configuration.ShowStatusbar;
   StatusBar1.Visible:=Configuration.ShowStatusbar;
   // применение настроек к прокрутке сообщений протокола
   chkbxScrollLogToBottom.Checked:=chkbxScrollLogToBottom.Enabled and Configuration.ScrollLogToBottom;
@@ -216,7 +216,7 @@ end;
 
 procedure TMainForm.Do_LoadConfiguration;
 var
-  bError: boolean;
+  bError: Boolean;
   sErrorMessage: string;
 begin
   if not FFirstRun then
@@ -247,7 +247,7 @@ begin
     PlaySound('WAVE_0', HInstance, SND_RESOURCE or SND_ASYNC);
 end;
 
-function TMainForm.Do_RegisterWindowMessages: boolean;
+function TMainForm.Do_RegisterWindowMessages: Boolean;
 begin
   Result:=False;
   try
@@ -266,7 +266,7 @@ end;
 
 procedure TMainForm.Do_SaveConfiguration;
 var
-  bError: boolean;
+  bError: Boolean;
   sErrorMessage: string;
 begin
   bError:=False;
@@ -305,7 +305,8 @@ end;
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   Do_SaveConfiguration; // запись конфигурации
-  if FConnectedToServer then // если соединение с сервером установлено, отправляем серверу уведомление о завершении работы клиента
+  if FConnectedToServer then
+    // если соединение с сервером установлено, отправляем серверу уведомление о завершении работы клиента
     PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SHUTDOWN, 0);
 end;
 
@@ -337,9 +338,12 @@ begin
   FFilename:='';
   Caption:=TEXT_MAINFORM_CAPTION; // установка заголовка окна
   ilMainFormSmallImages.GetIcon(ICON_MAIN, Icon); // установка иконки окна
-  FConfiguration:=TConfigurationClass.Create; // создание и инициализщация объекта конфигурации
-  BindMainProgressBarToStatusBar; // привязка прогрессбара к позиции на строке статуса
-  BindStateImageToStatusBar; // привязка иконки готовности к позиции на строке статуса
+  FConfiguration:=TConfigurationClass.Create;
+  // создание и инициализщация объекта конфигурации
+  BindMainProgressBarToStatusBar;
+  // привязка прогрессбара к позиции на строке статуса
+  BindStateImageToStatusBar;
+  // привязка иконки готовности к позиции на строке статуса
   Refresh_ConnectionState;
   Do_LoadConfiguration; // загрузка настроек из файла
   Do_ApplyConfiguration; // применение настроек к интерфейсу
@@ -374,7 +378,7 @@ const
   ICON_INFO=2;
   ICON_DEBUG=3;
 var
-  i: integer;
+  i: Integer;
   ListItem: TListItem;
 begin
   i:=-1;
@@ -433,7 +437,7 @@ end;
 procedure TMainForm.Do_UpdateAcrions;
 begin
   Action_SekectFile.Enabled:=not FSending;
-  Action_Send.Enabled:=FConnectedToServer and FileExists(FFileName);
+  Action_Send.Enabled:=FConnectedToServer and FileExists(FFilename);
   Action_Send.Visible:=btnSend_btnCancel.Action=Action_Send;
   LogDebug('Действие "'+Action_Send.Caption+'" '+CommonFunctions.GetConditionalString(Action_Send.Enabled, 'в', 'от')+'ключено.');
 
@@ -445,11 +449,11 @@ end;
 
 procedure TMainForm.Do_UpdateColumnWidth;
 var
-  h: THandle;
+  H: THandle;
 begin
   lvLog.Column[0].Width:=130;
-  h:=lvLog.Handle;
-  if (GetWindowLong(h, GWL_STYLE)and WS_VSCROLL)=WS_VSCROLL then
+  H:=lvLog.Handle;
+  if (GetWindowLong(H, GWL_STYLE)and WS_VSCROLL)=WS_VSCROLL then
     lvLog.Column[1].Width:=lvLog.Width-(lvLog.BevelWidth*2)-2-GetSystemMetrics(SM_CXVSCROLL)-lvLog.Column[0].Width
   else
     lvLog.Column[1].Width:=lvLog.Width-(lvLog.BevelWidth*2)-2-lvLog.Column[0].Width;
@@ -459,12 +463,12 @@ end;
 
 procedure TMainForm.miStatusBarClick(Sender: TObject);
 begin
-  StatusBar1.Visible:=miStatusbar.Checked;
+  StatusBar1.Visible:=miStatusBar.Checked;
   Configuration.ShowStatusbar:=StatusBar1.Visible;
   LogInfo('Панель статуса '+CommonFunctions.GetConditionalString(StatusBar1.Visible, 'в', 'от')+'ключена.');
 end;
 
-procedure TMainForm.PreFooter(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
+procedure TMainForm.PreFooter(const aHandle: THandle; const aError: Boolean; const aErrorMessage: string);
 begin
   if aError then
     MainForm.ShowErrorBox(aHandle, aErrorMessage);
@@ -513,7 +517,7 @@ end;
 procedure TMainForm.Action_SekectFileExecute(Sender: TObject);
 var
   sErrorMessage: string;
-  bError: boolean;
+  bError: Boolean;
 begin
   bError:=False;
   with TOpenDialog.Create(Self) do
@@ -530,9 +534,9 @@ begin
             if FileExists(FileName) then
               begin
                 FFilename:=FileName;
-                ebSelectFile.Text:=FFileName;
+                ebSelectFile.Text:=FFilename;
                 LogInfo('Файл для передачи на сервер выбран успешно: ['+FFilename+'].');
-                LogDebug('Имя файла для передачи на сервер: ['+FFileName+'].');
+                LogDebug('Имя файла для передачи на сервер: ['+FFilename+'].');
               end
             else
               CommonFunctions.GenerateError('Выбранный файл не существует!', sErrorMessage, bError);
@@ -554,7 +558,8 @@ begin
   Do_UpdateAcrions;
   if FConnectedToServer then
     begin
-      PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_WANNA_SEND_FILE, 0); // отправляем сигнал серверу о желании начать передачу файла
+      PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_WANNA_SEND_FILE, 0);
+      // отправляем сигнал серверу о желании начать передачу файла
       LogInfo('Отправлено уведомление о попытке передачи файла на сервер.');
     end;
 end;
@@ -588,7 +593,7 @@ begin
   LogInfo('Прокурутка к последнему сообщению протокола '+CommonFunctions.GetConditionalString(Configuration.ScrollLogToBottom, 'в', 'от')+'ключена.');
 end;
 
-function TMainForm.Do_WatchThreadStart: boolean;
+function TMainForm.Do_WatchThreadStart: Boolean;
 begin
   Result:=False;
   if not Assigned(FWatchThread) then
@@ -657,7 +662,8 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
         LogInfo('Получен идентификатор доступного сервера.');
         LogDebug('Handle окна доступного сервера: '+IntToStr(dwHandle)+'.');
         FServerHandle:=dwHandle; // сохранение хэндла окна сервера
-        PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_HANDLE, Handle); // отправка хэндла окна клиента серверу
+        PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_HANDLE, Handle);
+        // отправка хэндла окна клиента серверу
         LogInfo('Отправлен запрос на подключение к серверу.');
         LogDebug('Отправлеен Handle клиента: '+IntToStr(Handle)+'.');
       end;
@@ -677,7 +683,8 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_WPARAM_SERVER_SENDS_SHAREDMEM_SIZE(const dwSize: cardinal);
   begin
     LogInfo('Получен размер буфера общей памяти в байтах: ['+IntToStr(Int64(dwSize))+'].');
-    Configuration.SharedMemSize:=dwSize; // устанавливаем размер буфера в общей памяти
+    Configuration.SharedMemSize:=dwSize;
+    // устанавливаем размер буфера в общей памяти
     // LogDebug('Размер буфера общей памяти в байтах: '+IntToStr(Int64(dwSize))+'.');
     // создание буфера в общей памяти
     FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, Configuration.SharedMemSize);
@@ -701,7 +708,8 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
       FSharedMem.Mapped:=True;
       FSharedMem.Write(FChunk);
       FSharedMem.Mapped:=False;
-      PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_FILENAME, FChunk.Size); // отправка хэндла окна клиента серверу (LPARAM = размер имени файла в байтах)
+      PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_FILENAME, FChunk.Size);
+      // отправка хэндла окна клиента серверу (LPARAM = размер имени файла в байтах)
       LogInfo('Отправлено имя передаваемого файла: ['+ExtractFileName(FFilename)+'].');
     finally
       FreeAndNil(FChunk);
@@ -710,27 +718,47 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_FILESIZE;
+  var
+    a: TArray<byte>;
   begin
     LogInfo('Получен запрос размера файла в байтах.');
-    if not Assigned(FChunkedFile) then
+    if not Assigned(FChunk) then
       begin
-        try
-          FChunkedFile:=TChunkedFileClass.Create(FFilename, Configuration.SharedMemSize);
-          LogDebug('Создан объект доступа к порционному файлу.');
-          pbMain.Max:=FChunkedFile.Count;
-          pbMain.Position:=pbMain.Min;
-          pbMain.Visible:=True;
-          PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_FILESIZE, FChunkedFile.Size); // отправка хэндла окна клиента серверу (LPARAM = размер имени файла в байтах)
-          LogInfo('Отправлен размер передаваемого файла в байтах: ['+IntToStr(Int64(FChunkedFile.Size))+'].');
-        except
-          on EInOutError do
+        FChunk:=TChunkClass.Create;
+        LogDebug('Создан объект порции данных.');
+      end;
+    try
+      if not Assigned(FChunkedFile) then
+        begin
+          try
+            FChunkedFile:=TChunkedFileClass.Create(FFilename, Configuration.SharedMemSize);
+            LogDebug('Создан объект доступа к порционному файлу.');
+            pbMain.Max:=FChunkedFile.Count;
+            pbMain.Position:=pbMain.Min;
+            pbMain.Visible:=True;
+            // так как размер файла может превышать 4 гигабайта, размер требуется передавать в виде текстовой строки
+            a:=BytesOf(IntToStr(FChunkedFile.Size));
+            FChunk.Size:=Length(a);
+            FChunk.Data:=Copy(a, 0, FChunk.Size);
+            FSharedMem.Mapped:=True;
+            FSharedMem.Write(FChunk);
+            FSharedMem.Mapped:=False;
+            PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_FILESIZE, FChunk.Size);
+            // отправка хэндла окна клиента серверу (LPARAM = размер имени файла в байтах)
+            LogInfo('Отправлен размер передаваемого файла в байтах: ['+IntToStr(FChunkedFile.Size)+'].');
+          except
+            on EInOutError do
               LogError('Не удалось открыть для чтения указанный файл! Файл уже открыт другой программой либо недостаточно прав доступа.');
-          on E: Exception do
-            LogError(E.Message);
-        end;
-      end
-    else
-      raise Exception.Create('Объект порционного файла уже был создан ранее!');
+            on E: Exception do
+              LogError(E.Message);
+          end;
+        end
+      else
+        raise Exception.Create('Объект порционного файла уже был создан ранее!');
+    finally
+      FreeAndNil(FChunk);
+      LogDebug('Объект порции данных уничтожен.');
+    end;
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_DATA(const dwBlockNumber: cardinal);
@@ -749,7 +777,8 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
       FSharedMem.Write(FChunk);
       FSharedMem.Mapped:=False;
       LogDebug('Данные записаны в общую память.');
-      PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_DATA, FChunk.Size); // отправка уведомления серверу о передаче порции данных (LPARAM = размер переданных данных в байтах)
+      PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_DATA, FChunk.Size);
+      // отправка уведомления серверу о передаче порции данных (LPARAM = размер переданных данных в байтах)
       LogDebug('Отправлена порция данных передаваемого файла.');
     finally
       FreeAndNil(FChunk);
@@ -767,7 +796,8 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     try
       FChunkedFile.Read(dwBlockNumber, FChunk);
       LogDebug('Считаны данные из порционного файла.');
-      PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_CRC32, FChunk.CRC32); // отправка контрольной суммы указанной порции данных серверу (LPARAM = CRC32 указанной порции файла)
+      PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_CRC32, FChunk.CRC32);
+      // отправка контрольной суммы указанной порции данных серверу (LPARAM = CRC32 указанной порции файла)
       LogDebug('Отправлена контрольная сумма порции данных передаваемого файла.');
       pbMain.StepBy(1);
     finally
@@ -805,14 +835,16 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
 
 begin
   Handled:=False;
-  if Msg.message=WM_SERVER then
+  if Msg.Message=WM_SERVER then
     begin
-      if Msg.wParam=WPARAM_SERVER_SHUTDOWN then // сервер сообщает клиенту о своём отключении
+      if Msg.wParam=WPARAM_SERVER_SHUTDOWN then
+        // сервер сообщает клиенту о своём отключении
         Do_WPARAM_SERVER_SHUTDOWN
       else
         if FConnectedToServer then
           case Msg.wParam of
-            WPARAM_SERVER_SENDS_SHAREDMEM_SIZE: // сервер прислал размер буфера общей памяти
+            WPARAM_SERVER_SENDS_SHAREDMEM_SIZE:
+              // сервер прислал размер буфера общей памяти
               Do_WPARAM_SERVER_SENDS_SHAREDMEM_SIZE(Msg.lParam);
             WPARAM_SERVER_WANNA_FILENAME: // сервер хочет имя файла
               Do_WPARAM_SERVER_WANNA_FILENAME;
@@ -824,18 +856,23 @@ begin
             WPARAM_SERVER_WANNA_CRC32: // сервер хочет CRC32
               if FSending then
                 Do_WPARAM_SERVER_WANNA_CRC32(Msg.lParam);
-            WPARAM_SERVER_TRANSFER_COMPLETE: // сервер сообщает что получил файл полностью
+            WPARAM_SERVER_TRANSFER_COMPLETE:
+              // сервер сообщает что получил файл полностью
               Do_WPARAM_SERVER_TRANSFER_COMPLETE;
-            WPARAM_SERVER_TRANSFER_ERROR: // сервер сообщает что получил файл с ошибками
+            WPARAM_SERVER_TRANSFER_ERROR:
+              // сервер сообщает что получил файл с ошибками
               Do_WPARAM_SERVER_TRANSFER_ERROR;
-            WPARAM_SERVER_LOST: // поток-сторож сообщает о том, что окно сервера неожиданно пропало
+            WPARAM_SERVER_LOST:
+              // поток-сторож сообщает о том, что окно сервера неожиданно пропало
               Do_WPARAM_SERVER_LOST;
           end
         else
           case Msg.wParam of
-            WPARAM_SERVER_WANNA_HANDLE: // сервер прислал свой хендл и хочет получить хэндл окна клиента
+            WPARAM_SERVER_WANNA_HANDLE:
+              // сервер прислал свой хендл и хочет получить хэндл окна клиента
               Do_WPARAM_SERVER_WANNA_HANDLE(Msg.lParam);
-            WPARAM_SERVER_ACCEPT_CLIENT: // сервер подтверждает соединение с данным клиентом
+            WPARAM_SERVER_ACCEPT_CLIENT:
+              // сервер подтверждает соединение с данным клиентом
               Do_WPARAM_SERVER_ACCEPT_CLIENT;
           end;
       Handled:=True;

@@ -33,7 +33,7 @@ type
     /// <summary>
     /// Размер файла в байтах
     /// </summary>
-    FSize: cardinal;
+    FSize: Int64;
 
     /// <summary>
     /// Размер порции данных
@@ -62,7 +62,7 @@ type
     /// <summary>
     /// Конструктор класса
     /// </summary>
-    constructor Create(const FileName: string; const SizeOfChunk: cardinal; const FileSize: cardinal=0);
+    constructor Create(const FileName: string; const SizeOfChunk: cardinal; const FileSize: Int64=0);
 
     /// <summary>
     /// Деструктор класса.
@@ -105,7 +105,7 @@ type
     /// <summary>
     /// Размер файла в байтах
     /// </summary>
-    property Size: cardinal read FSize stored False;
+    property Size: Int64 read FSize stored False;
 
     /// <summary>
     /// Размер порций данных
@@ -146,7 +146,7 @@ resourcestring
   TEXT_ERROR_WRONG_FILE_STREAM_OBJECT='Не удалось создать объект файлового потока!';
   TEXT_ERROR_WRITING_CHUNK_TO_FILE='Не удалось записать порцию данных в файл!';
 
-constructor TChunkedFileClass.Create(const FileName: string; const SizeOfChunk: cardinal; const FileSize: cardinal=0);
+constructor TChunkedFileClass.Create(const FileName: string; const SizeOfChunk: cardinal; const FileSize: Int64=0);
 begin
   inherited Create;
   FIndex:=0;
