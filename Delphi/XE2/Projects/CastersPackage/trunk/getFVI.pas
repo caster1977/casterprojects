@@ -19,8 +19,12 @@ uses
   Classes;
 
 type
+  ModuleVersionInfo = record
+    Major, Minor, Release, Build: word;
+  end;
+
   TgsFileVersionInfo=class(TComponent)
-  private
+  strict private
     FFilename: TFilename;
     FVersionInfoSize: cardinal;
     FFileVersion: string;
@@ -34,13 +38,15 @@ type
     FLanguageInfo: string;
     FComments: string;
     procedure SetFilename(const Value: TFilename);
+    function GetModuleVersion: ModuleVersionInfo;
+    procedure GetModuleVersionInfo(out Major, Minor, Release, Build: word);
   protected
     property VersionInfoSize: cardinal read FVersionInfoSize;
     procedure LoadFromFile;
     procedure ClearAll;
     procedure Loaded; override;
-  public
     function GetBuildOnly: string;
+  public
     constructor Create(AOwner: TComponent); override;
     property LanguageInfo: string read FLanguageInfo stored False;
     property CompanyName: string read FCompanyName stored False;
@@ -52,6 +58,7 @@ type
     property ProductName: string read FProductName stored False;
     property ProductVersion: string read FProductVersion stored False;
     property Comments: string read FComments stored False;
+    property ModuleVersion: ModuleVersionInfo read GetModuleVersion stored False;
   published
     property Filename: TFilename read FFilename write SetFilename;
   end;
@@ -67,6 +74,30 @@ uses
 procedure register;
 begin
   RegisterComponents('CasterComponents', [TgsFileVersionInfo]);
+end;
+
+function TgsFileVersionInfo.GetModuleVersion: ModuleVersionInfo;
+begin
+  GetModuleVersionInfo(Result.Major, Result.Minor, Result.Release, Result.Build);
+end;
+
+procedure TgsFileVersionInfo.GetModuleVersionInfo(out Major, Minor, Release, Build: word);
+type
+  TV=array [0..3] of smallint;
+var
+  HR: HRSRC;
+  H: THandle;
+  C: ^TV;
+begin
+  HR:=FindResource(MainInstance, '#1', rt_Version);
+  H:=LoadResource(MainInstance, HR);
+  Integer(C):=Integer(LockResource(H))+48;
+  Major:=word(C[1]);
+  Minor:=word(C[0]);
+  Release:=word(C[3]);
+  Build:=word(C[2]);
+  UnlockResource(H);
+  FreeResource(H);
 end;
 
 procedure TgsFileVersionInfo.ClearAll;
