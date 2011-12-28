@@ -105,7 +105,8 @@ type
     FFirstRun: boolean;
     FClientConnected: boolean;
     FClientHandle: THandle;
-    FCanceling: boolean;
+//    FCanceling: boolean;
+    FReceiving: boolean;
     FFileName: string;
 
     procedure Refresh_ConnectionState;
@@ -575,7 +576,7 @@ var
 begin
   FFirstRun:=True; // режим начала запуска программы включен
   FClientConnected:=False; // изначально клиент не подлючен
-  FCanceling:=False; // режим отмены передачи выключен
+  FReceiving:=False; // режим передачи данных выключен
   Caption:=TEXT_MAINFORM_CAPTION; // установка заголовка окна
   ilMainFormSmallImages.GetIcon(ICON_MAIN, Icon); // установка иконки окна
   FConfiguration:=TConfigurationClass.Create; // создание и инициализщация объекта конфигурации
@@ -589,6 +590,7 @@ end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
+  FReceiving:=False; // режим передачи данных выключен
   Do_ConnectionThreadTerminate;
   FreeAndNil(FChunk);
   FreeAndNil(FChunkedFile);
@@ -687,7 +689,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   begin
     LogInfo('Получено уведомление о попытке передачи файла клиентом.');
 
-    FCanceling:=False;
+    FReceiving:=True;
     FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, Configuration.SharedMemSize);
 
     LogDebug('Создан объект доступа к общей памяти.');
@@ -700,7 +702,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_WPARAM_CLIENT_WANNA_CANCEL_SENDING;
   begin
     LogWarning('Получено уведомление об отмене передачи файла клиентом.');
-    FCanceling:=True;
+    FReceiving:=False;
     pbMain.Visible:=False;
     FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
     LogDebug('Объект доступа к порционному файлу уничтоден.');
@@ -734,13 +736,33 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_FILESIZE(const dwSize: cardinal);
+  var
+    aSize: Int64;
+    s: string;
   begin
-    LogInfo('Получен размер передаваемого клиентом файла в байтах: ['+IntToStr(Int64(dwSize))+'].');
-    LogDebug('Размер файла в байтах: '+IntToStr(Int64(dwSize))+'.');
+    LogDebug('Получен размер строки передаваемого клиентом размера файла в байтах: ['+IntToStr(Int64(dwSize))+'].');
+
+    if not Assigned(FChunk) then
+      begin
+        FChunk:=TChunkClass.Create;
+        LogDebug('Создан объект порции данных.');
+      end;
+    try
+      FSharedMem.Mapped:=True;
+      FSharedMem.Read(dwSize, FChunk);
+      FSharedMem.Mapped:=False;
+      s:=StringOf(FChunk.Data);
+      LogDebug('Строка размера файла в байтах: '+s+'.');
+      aSize:=StrToInt64Def(s,-1);
+    finally
+      FreeAndNil(FChunk);
+      LogDebug('Объект порции данных уничтожен.');
+    end;
+    LogInfo('Размер файла в байтах: '+IntToStr(aSize)+'.');
 
     if not Assigned(FChunkedFile) then
       begin
-        FChunkedFile:=TChunkedFileClass.Create(Configuration.DestinationFolder+FFilename, Configuration.SharedMemSize, dwSize);
+        FChunkedFile:=TChunkedFileClass.Create(Configuration.DestinationFolder+FFilename, Configuration.SharedMemSize, aSize);
         pbMain.Max:=FChunkedFile.Count;
         pbMain.Position:=pbMain.Min;
         pbMain.Visible:=True;
@@ -806,7 +828,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
               except
                 on E: Exception do
                   begin
-                    FCanceling:=True;
+                    FReceiving:=False;
 
                     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_TRANSFER_ERROR, 0); // уведомляем клиент об ошибке при передаче файла
                     LogDebug('Отправлено уведомление об ошибке при передаче файла.');
@@ -853,7 +875,7 @@ begin
               Do_WPARAM_CLIENT_WANNA_SEND_FILE;
             WPARAM_CLIENT_SENDS_FILENAME: // клиент отправляет имя файла (LPARAM = размер имени файла в байтах)
               Do_WPARAM_CLIENT_SENDS_FILENAME(Msg.lParam);
-            WPARAM_CLIENT_SENDS_FILESIZE: // клиент отправляет размер файла (LPARAM = размер файла в байтах)
+            WPARAM_CLIENT_SENDS_FILESIZE: // клиент отправляет размер файла (LPARAM = размер символьного представления размера файла в байтах)
               Do_WPARAM_CLIENT_SENDS_FILESIZE(Msg.lParam);
             WPARAM_CLIENT_SENDS_DATA: // клиент отправляет указанный блок данных (LPARAM = размер переданных данных в байтах)
               Do_WPARAM_CLIENT_SENDS_DATA(Msg.lParam);
