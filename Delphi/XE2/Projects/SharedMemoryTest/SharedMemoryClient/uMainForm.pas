@@ -319,14 +319,14 @@ var
   procedure BindMainProgressBarToStatusBar;
   begin
     THackControl(pbMain).SetParent(StatusBar1);
-    SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
+    PostMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
     pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right-PanelRect.Left, PanelRect.Bottom-PanelRect.Top-1);
   end;
 
   procedure BindStateImageToStatusBar;
   begin
     THackControl(imConnectionState).SetParent(StatusBar1);
-    SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
+    PostMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
     imConnectionState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
   end;
 
@@ -401,7 +401,7 @@ begin
       ListItem.SubItems.Add(aMessage);
       Do_UpdateColumnWidth;
       if Configuration.ScrollLogToBottom then
-        SendMessage(lvLog.Handle, LVM_ENSUREVISIBLE, lvLog.Items.Count-1, 0);
+        PostMessage(lvLog.Handle, LVM_ENSUREVISIBLE, lvLog.Items.Count-1, 0);
     end;
 end;
 
@@ -628,6 +628,8 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   procedure Do_Disconnect;
   begin
     pbMain.Visible:=False;
+    if FSending then
+      LogWarning('Отпрака файла на сервер отменена.');
     FSending:=False;
     Do_WatchThreadTerminate;
     FConnectedToServer:=False; // убираем флаш соединения
@@ -647,12 +649,14 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   begin
     LogError('Произошла непредвиденная потеря соединения с сервером!');
     Do_Disconnect;
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_SERVER_SHUTDOWN;
   begin
     LogWarning('Получено уведомление о завершении работы сервера.');
     Do_Disconnect;
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_HANDLE(const dwHandle: THandle);
@@ -662,11 +666,12 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
         LogInfo('Получен идентификатор доступного сервера.');
         LogDebug('Handle окна доступного сервера: '+IntToStr(dwHandle)+'.');
         FServerHandle:=dwHandle; // сохранение хэндла окна сервера
-        PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_HANDLE, Handle);
+        PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SENDS_HANDLE, { Application. } Handle);
         // отправка хэндла окна клиента серверу
         LogInfo('Отправлен запрос на подключение к серверу.');
         LogDebug('Отправлеен Handle клиента: '+IntToStr(Handle)+'.');
       end;
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_SERVER_ACCEPT_CLIENT;
@@ -678,6 +683,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     Refresh_ConnectionState;
     Do_UpdateAcrions;
     LogInfo('Соединение с сервером установлено.');
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_SERVER_SENDS_SHAREDMEM_SIZE(const dwSize: cardinal);
@@ -689,6 +695,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     // создание буфера в общей памяти
     FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, Configuration.SharedMemSize);
     LogDebug('Создан объект доступа к общей памяти.');
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_FILENAME;
@@ -715,6 +722,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
       FreeAndNil(FChunk);
       LogDebug('Объект порции данных уничтожен.');
     end;
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_FILESIZE;
@@ -759,6 +767,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
       FreeAndNil(FChunk);
       LogDebug('Объект порции данных уничтожен.');
     end;
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_DATA(const dwBlockNumber: cardinal);
@@ -783,6 +792,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     finally
       FreeAndNil(FChunk);
     end;
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_SERVER_WANNA_CRC32(const dwBlockNumber: cardinal);
@@ -803,6 +813,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     finally
       FreeAndNil(FChunk);
     end;
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_SERVER_TRANSFER_COMPLETE;
@@ -817,6 +828,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     btnSend_btnCancel.Action:=Action_Send;
     Do_UpdateAcrions;
     LogInfo('Передача файла успешно завершена.');
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_SERVER_TRANSFER_ERROR;
@@ -831,6 +843,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     btnSend_btnCancel.Action:=Action_Send;
     Do_UpdateAcrions;
     LogInfo('Передача файла закончилась неудачей!');
+    Handled:=True;
   end;
 
 begin
@@ -875,7 +888,6 @@ begin
               // сервер подтверждает соединение с данным клиентом
               Do_WPARAM_SERVER_ACCEPT_CLIENT;
           end;
-      Handled:=True;
     end;
 end;
 
