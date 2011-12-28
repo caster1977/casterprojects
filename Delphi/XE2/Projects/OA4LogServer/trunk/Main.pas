@@ -283,9 +283,6 @@ begin
 end;
 
 procedure TMainForm.Action_AboutExecute(Sender: TObject);
-var
-  s: string;
-  p: integer;
 begin
   if bAboutWindowExist then
     SetForegroundWindow(FindWindow('TAboutForm', 'About "OA4 Log Server"...'))
@@ -298,10 +295,7 @@ begin
           Timer1.Enabled:=False;
           AlphaBlendValue:=222;
           Timer2.Enabled:=False;
-          s:=gsFileVersionInfo1.FileVersion;
-          p:=LastDelimiter('.', s);
-          s:=copy(s, 1, p-1);
-          Label2.Caption:=Format('Версия %s билд %s', [s, gsFileVersionInfo1.GetBuildOnly]);
+          Label2.Caption:=Format('Версия %d.%d Release %d Build %d', [gsFileVersionInfo1.ModuleVersion.Major, gsFileVersionInfo1.ModuleVersion.Minor, gsFileVersionInfo1.ModuleVersion.Release, gsFileVersionInfo1.ModuleVersion.Build]);
           Label3.Caption:=gsFileVersionInfo1.LegalCopyright;
           ShowModal;
         finally
