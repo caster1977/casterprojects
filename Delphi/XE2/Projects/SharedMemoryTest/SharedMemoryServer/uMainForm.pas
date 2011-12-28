@@ -105,7 +105,7 @@ type
     FFirstRun: boolean;
     FClientConnected: boolean;
     FClientHandle: THandle;
-//    FCanceling: boolean;
+    // FCanceling: boolean;
     FReceiving: boolean;
     FFileName: string;
 
@@ -246,7 +246,7 @@ begin
       ListItem.SubItems.Add(aMessage);
       Do_UpdateColumnWidth;
       if Configuration.ScrollLogToBottom then
-        SendMessage(lvLog.Handle, LVM_ENSUREVISIBLE, lvLog.Items.Count-1, 0);
+        PostMessage(lvLog.Handle, LVM_ENSUREVISIBLE, lvLog.Items.Count-1, 0);
     end;
 end;
 
@@ -490,7 +490,7 @@ begin
   Result:=False;
   if not Assigned(FConnectionThread) then
     begin
-      FConnectionThread:=TRetranslatorThreadClass.Create(WM_SERVER, WPARAM_SERVER_WANNA_HANDLE, Handle);
+      FConnectionThread:=TRetranslatorThreadClass.Create(WM_SERVER, WPARAM_SERVER_WANNA_HANDLE, { Application. } Handle);
       try
         FConnectionThread.Start;
         LogDebug('Поток поиска клиентов запущен.');
@@ -562,14 +562,14 @@ var
   procedure BindMainProgressBarToStatusBar;
   begin
     THackControl(pbMain).SetParent(StatusBar1);
-    SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
+    PostMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
     pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right-PanelRect.Left, PanelRect.Bottom-PanelRect.Top-1);
   end;
 
   procedure BindStateImageToStatusBar;
   begin
     THackControl(imConnectionState).SetParent(StatusBar1);
-    SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
+    PostMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
     imConnectionState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
   end;
 
@@ -661,12 +661,14 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   begin
     LogWarning('Получено уведомление о завершении работы клиента.');
     Do_Disconnect;
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_LOST;
   begin
     LogError('Произошла непредвиденная потеря соединения с сервером!');
     Do_Disconnect;
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_HANDLE(const Handle: THandle);
@@ -683,6 +685,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     if not Do_WatchThreadStart then
       Application.Terminate;
     Refresh_ConnectionState;
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_WANNA_SEND_FILE;
@@ -697,6 +700,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     LogDebug('Отправлен размер порции для передачи данных файла: '+IntToStr(Int64(Configuration.SharedMemSize))+'.');
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILENAME, 0); // требуем от клиента имя файла
     LogDebug('Отправлен запрос на имя передаваемого файла.');
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_WANNA_CANCEL_SENDING;
@@ -708,6 +712,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     LogDebug('Объект доступа к порционному файлу уничтоден.');
     FreeAndNil(FSharedMem); // удаляем текущий объект доступа к общей памяти
     LogDebug('Объект доступа к общей памяти уничтоден.');
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_FILENAME(const dwSize: cardinal);
@@ -733,6 +738,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
 
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILESIZE, 0); // требуем от клиента размер файла
     LogDebug('Отправлен запрос на размер передаваемого файла.');
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_FILESIZE(const dwSize: cardinal);
@@ -753,7 +759,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
       FSharedMem.Mapped:=False;
       s:=StringOf(FChunk.Data);
       LogDebug('Строка размера файла в байтах: '+s+'.');
-      aSize:=StrToInt64Def(s,-1);
+      aSize:=StrToInt64Def(s, -1);
     finally
       FreeAndNil(FChunk);
       LogDebug('Объект порции данных уничтожен.');
@@ -772,6 +778,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
       end
     else
       raise Exception.Create('Объект порционного файла уже был ранее создан!');
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_DATA(const dwSize: cardinal);
@@ -792,6 +799,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     // теперь требуем CRC32 блока
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_CRC32, FChunkedFile.Index); // требуем от клиента CRC32 указанной порции данных файла
     LogDebug('Отправлен запрос на получение контрольной суммы очередной порции данных.');
+    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_CRC32(const dwCRC32: cardinal);
@@ -860,6 +868,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
         PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, FChunkedFile.Index); // требуем от клиента указанный блок файла
         LogDebug('Отправлен запрос на повторное получение порции данных.');
       end;
+    Handled:=True;
   end;
 
 begin
@@ -889,7 +898,6 @@ begin
         else
           if Msg.wParam=WPARAM_CLIENT_SENDS_HANDLE then // клиент отправляет свой handle (LPARAM = handle клиента)
             Do_WPARAM_CLIENT_SENDS_HANDLE(Msg.lParam);
-      Handled:=True;
     end;
 end;
 

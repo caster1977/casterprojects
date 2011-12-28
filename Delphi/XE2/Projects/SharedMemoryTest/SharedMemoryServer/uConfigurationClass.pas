@@ -14,7 +14,7 @@ uses
   uCommonConfigurationClass;
 
 const
-  CONST_DEFAULTVALUE_DESTINATIONFOLDER: string = '';
+  CONST_DEFAULTVALUE_DESTINATIONFOLDER: string='';
 
 type
   TConfigurationClass=class(TCommonConfigurationClass)
@@ -56,13 +56,12 @@ resourcestring
   TEXT_WRONGRETRANSLATORPAUSE='Пауза между циклами трансляции сообщения не должна быть менее нуля секунд!';
   TEXT_WRONGINIFILENAME='Имя файла конфигурации не должно быть пустым!';
   TEXT_INIFILESAVEERROR='Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
-  TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME='Имя каталога для сохранения переданных файлов не должно быть пустым!';
+  // TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME='Имя каталога для сохранения переданных файлов не должно быть пустым!';
   TEXT_WRONGDESTINATIONFOLDER_NONEXISTS='Каталог для сохранения переданных файлов не существует!';
 
   TEXT_VARNAME_DESTINATIONFOLDER='sDestinationFolder';
   TEXT_VARNAME_SHAREDMEMSIZE='iSharedMemSize';
   TEXT_VARNAME_RETRANSLATORPAUSE='iRetranslatorPause';
-
 
 constructor TConfigurationClass.Create(const IniFileName: string='');
 begin
@@ -110,7 +109,8 @@ begin
       else
         raise Exception.Create(TEXT_WRONGDESTINATIONFOLDER_NONEXISTS)
     else
-      raise Exception.Create(TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME);
+      FDestinationFolder:=ExtractFilePath(ExpandFileName(Application.ExeName));
+  // raise Exception.Create(TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME);
 end;
 
 procedure TConfigurationClass.SetRetranslatorPause(const Value: integer);
