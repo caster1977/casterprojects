@@ -128,7 +128,7 @@ object AboutForm: TAboutForm
   end
   object Label2: TLabel
     Left = 0
-    Top = 105
+    Top = 129
     Width = 347
     Height = 16
     Alignment = taCenter
@@ -144,7 +144,7 @@ object AboutForm: TAboutForm
   end
   object Label3: TLabel
     Left = 0
-    Top = 120
+    Top = 144
     Width = 347
     Height = 16
     Alignment = taCenter
@@ -159,7 +159,7 @@ object AboutForm: TAboutForm
   end
   object Label5: TLabel
     Left = 140
-    Top = 135
+    Top = 159
     Width = 207
     Height = 16
     Cursor = crHandPoint
@@ -176,7 +176,7 @@ object AboutForm: TAboutForm
   end
   object Label4: TLabel
     Left = 104
-    Top = 136
+    Top = 160
     Width = 32
     Height = 13
     Alignment = taRightJustify
