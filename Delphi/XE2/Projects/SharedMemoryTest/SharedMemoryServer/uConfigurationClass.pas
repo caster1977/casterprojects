@@ -19,30 +19,30 @@ const
 type
   TConfigurationClass=class(TCommonConfigurationClass)
   strict private
-    FRetranslatorPause: integer;
     FDestinationFolder: string;
-    procedure SetRetranslatorPause(const Value: integer);
+    FRetranslatorPause: integer;
     function GetDestinationFolder: string;
     procedure SetDestinationFolder(const Value: string);
+    procedure SetRetranslatorPause(const Value: integer);
   strict protected
     procedure Loading(const IniFile: TIniFile); override;
     procedure Saving(const IniFile: TIniFile); override;
   public
     constructor Create(const IniFileName: string='');
-    property SharedMemoryName;
-    property KeepLogTypes;
-    property ShowStatusbar;
-    property ScrollLogToBottom;
-    property ShowSplashAtStart;
-    property ShowConfirmationOnQuit;
-    property WatchPause;
-    property PlaySoundOnComplete;
     property ConfigurationFormPage;
     property ConfigurationFormPosition;
-    property MainFormPosition;
-    property SharedMemSize;
-    property RetranslatorPause: integer read FRetranslatorPause write SetRetranslatorPause default CONST_DEFAULTVALUE_RETRANSLATORPAUSE;
     property DestinationFolder: string read GetDestinationFolder write SetDestinationFolder stored False;
+    property KeepLogTypes;
+    property MainFormPosition;
+    property PlaySoundOnComplete;
+    property RetranslatorPause: integer read FRetranslatorPause write SetRetranslatorPause default CONST_DEFAULTVALUE_RETRANSLATORPAUSE;
+    property ScrollLogToBottom;
+    property SharedMemoryName;
+    property SharedMemSize;
+    property ShowConfirmationOnQuit;
+    property ShowSplashAtStart;
+    property ShowStatusbar;
+    property WatchPause;
   end;
 
 implementation
@@ -56,7 +56,6 @@ resourcestring
   TEXT_WRONGRETRANSLATORPAUSE='Пауза между циклами трансляции сообщения не должна быть менее нуля секунд!';
   TEXT_WRONGINIFILENAME='Имя файла конфигурации не должно быть пустым!';
   TEXT_INIFILESAVEERROR='Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
-  // TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME='Имя каталога для сохранения переданных файлов не должно быть пустым!';
   TEXT_WRONGDESTINATIONFOLDER_NONEXISTS='Каталог для сохранения переданных файлов не существует!';
 
   TEXT_VARNAME_DESTINATIONFOLDER='sDestinationFolder';
@@ -110,7 +109,6 @@ begin
         raise Exception.Create(TEXT_WRONGDESTINATIONFOLDER_NONEXISTS)
     else
       FDestinationFolder:=ExtractFilePath(ExpandFileName(Application.ExeName));
-  // raise Exception.Create(TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME);
 end;
 
 procedure TConfigurationClass.SetRetranslatorPause(const Value: integer);

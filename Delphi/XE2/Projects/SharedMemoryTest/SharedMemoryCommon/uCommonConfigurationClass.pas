@@ -13,25 +13,23 @@ uses
   uCommon;
 
 const
-  CONST_DEFAULTVALUE_SHAREDMEMSIZE=65536;
-  CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM=True;
-  CONST_DEFAULTVALUE_SHOWSTATUSBAR=True;
-  CONST_DEFAULTVALUE_SHOWSPLASHATSTART=True;
-  CONST_DEFAULTVALUE_SHOWCONFIRMATIONONQUIT=True;
-  CONST_DEFAULTVALUE_PLAYSOUNDONCOMPLETE=True;
-  CONST_DEFAULTVALUE_KEEPLOGTYPES=[lmtError, lmtWarning, lmtInfo];
   CONST_DEFAULTVALUE_CONFIGURATIONFORMPAGE=0;
-
   CONST_DEFAULTVALUE_FORMPOSITION_CENTERED: boolean=True;
   CONST_DEFAULTVALUE_FORMPOSITION_LEFT: integer=0;
   CONST_DEFAULTVALUE_FORMPOSITION_TOP: integer=0;
-
+  CONST_DEFAULTVALUE_KEEPLOGTYPES=[lmtError, lmtWarning, lmtInfo];
   CONST_DEFAULTVALUE_MAINFORM_CENTERED: boolean=True;
-  CONST_DEFAULTVALUE_MAINFORM_MAXIMIZED: boolean=False;
+  CONST_DEFAULTVALUE_MAINFORM_HEIGHT: integer=600;
   CONST_DEFAULTVALUE_MAINFORM_LEFT: integer=0;
+  CONST_DEFAULTVALUE_MAINFORM_MAXIMIZED: boolean=False;
   CONST_DEFAULTVALUE_MAINFORM_TOP: integer=0;
   CONST_DEFAULTVALUE_MAINFORM_WIDTH: integer=800;
-  CONST_DEFAULTVALUE_MAINFORM_HEIGHT: integer=600;
+  CONST_DEFAULTVALUE_PLAYSOUNDONCOMPLETE=True;
+  CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM=True;
+  CONST_DEFAULTVALUE_SHAREDMEMSIZE=65536;
+  CONST_DEFAULTVALUE_SHOWCONFIRMATIONONQUIT=True;
+  CONST_DEFAULTVALUE_SHOWSPLASHATSTART=True;
+  CONST_DEFAULTVALUE_SHOWSTATUSBAR=True;
 
 resourcestring
   TEXT_SECTION_COMMON='Общие';
@@ -46,47 +44,45 @@ type
 
   TCommonConfigurationClass=class
   strict private
-    FSharedMemSize: cardinal;
-    FSharedMemoryName: WideString;
-    FKeepLogTypes: TLogMessagesTypes;
-    FShowStatusbar: boolean;
-    FScrollLogToBottom: boolean;
-    FShowSplashAtStart: boolean;
-    FShowConfirmationOnQuit: boolean;
-    FWatchPause: cardinal;
-    FPlaySoundOnComplete: boolean;
-    FConfigurationFormPosition: TFormPosition;
-    FMainFormPosition: TFormPosition;
     FConfigurationFormPage: integer;
-    procedure SetSharedMemSize(const Value: cardinal);
-    procedure SetSharedMemoryName(const Value: WideString);
-    procedure SetKeepLogTypes(const Value: TLogMessagesTypes);
-    procedure SetShowStatusbar(const Value: boolean);
-    procedure SetScrollLogToBottom(const Value: boolean);
-    procedure SetShowSplashAtStart(const Value: boolean);
-    procedure SetWatchPause(const Value: cardinal);
-  strict private
+    FConfigurationFormPosition: TFormPosition;
+    FKeepLogTypes: TLogMessagesTypes;
+    FMainFormPosition: TFormPosition;
+    FPlaySoundOnComplete: boolean;
+    FScrollLogToBottom: boolean;
+    FSharedMemoryName: WideString;
+    FSharedMemSize: cardinal;
+    FShowConfirmationOnQuit: boolean;
+    FShowSplashAtStart: boolean;
+    FShowStatusbar: boolean;
+    FWatchPause: cardinal;
     procedure SetConfigurationFormPosition(const Value: TFormPosition);
-  private
+    procedure SetKeepLogTypes(const Value: TLogMessagesTypes);
     procedure SetMainFormPosition(const Value: TFormPosition);
-    procedure SetShowConfirmationOnQuit(const Value: boolean);
     procedure SetPlaySoundOnComplete(const Value: boolean);
+    procedure SetScrollLogToBottom(const Value: boolean);
+    procedure SetSharedMemoryName(const Value: WideString);
+    procedure SetSharedMemSize(const Value: cardinal);
+    procedure SetShowConfirmationOnQuit(const Value: boolean);
+    procedure SetShowSplashAtStart(const Value: boolean);
+    procedure SetShowStatusbar(const Value: boolean);
+    procedure SetWatchPause(const Value: cardinal);
   protected
     FIniFileName: string;
     procedure Loading(const IniFile: TIniFile); virtual;
     procedure Saving(const IniFile: TIniFile); virtual;
+    property ConfigurationFormPage: integer read FConfigurationFormPage write FConfigurationFormPage default CONST_DEFAULTVALUE_CONFIGURATIONFORMPAGE;
+    property ConfigurationFormPosition: TFormPosition read FConfigurationFormPosition write SetConfigurationFormPosition stored False;
     property KeepLogTypes: TLogMessagesTypes read FKeepLogTypes write SetKeepLogTypes default CONST_DEFAULTVALUE_KEEPLOGTYPES;
-    property ShowStatusbar: boolean read FShowStatusbar write SetShowStatusbar default CONST_DEFAULTVALUE_SHOWSTATUSBAR;
+    property MainFormPosition: TFormPosition read FMainFormPosition write SetMainFormPosition stored False;
+    property PlaySoundOnComplete: boolean read FPlaySoundOnComplete write SetPlaySoundOnComplete default CONST_DEFAULTVALUE_PLAYSOUNDONCOMPLETE;
     property ScrollLogToBottom: boolean read FScrollLogToBottom write SetScrollLogToBottom default CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM;
-    property ShowSplashAtStart: boolean read FShowSplashAtStart write SetShowSplashAtStart default CONST_DEFAULTVALUE_SHOWSPLASHATSTART;
-    property ShowConfirmationOnQuit: boolean read FShowConfirmationOnQuit write SetShowConfirmationOnQuit default CONST_DEFAULTVALUE_SHOWCONFIRMATIONONQUIT;
     property SharedMemoryName: WideString read FSharedMemoryName write SetSharedMemoryName stored False;
     property SharedMemSize: cardinal read FSharedMemSize write SetSharedMemSize default CONST_DEFAULTVALUE_SHAREDMEMSIZE;
+    property ShowConfirmationOnQuit: boolean read FShowConfirmationOnQuit write SetShowConfirmationOnQuit default CONST_DEFAULTVALUE_SHOWCONFIRMATIONONQUIT;
+    property ShowSplashAtStart: boolean read FShowSplashAtStart write SetShowSplashAtStart default CONST_DEFAULTVALUE_SHOWSPLASHATSTART;
+    property ShowStatusbar: boolean read FShowStatusbar write SetShowStatusbar default CONST_DEFAULTVALUE_SHOWSTATUSBAR;
     property WatchPause: cardinal read FWatchPause write SetWatchPause default CONST_DEFAULTVALUE_WATCHPAUSE;
-    property PlaySoundOnComplete: boolean read FPlaySoundOnComplete write SetPlaySoundOnComplete default CONST_DEFAULTVALUE_PLAYSOUNDONCOMPLETE;
-    property ConfigurationFormPosition: TFormPosition read FConfigurationFormPosition write SetConfigurationFormPosition stored False;
-    property MainFormPosition: TFormPosition read FMainFormPosition write SetMainFormPosition stored False;
-    property ConfigurationFormPage: integer read FConfigurationFormPage write FConfigurationFormPage default CONST_DEFAULTVALUE_CONFIGURATIONFORMPAGE;
   public
     constructor Create(const IniFileName: string='');
     procedure Load;
@@ -100,16 +96,16 @@ uses
   System.SysUtils;
 
 resourcestring
-  TEXT_WRONGBUFFERSIZE='Размер буфера для передачи данных не должен быть менее килобайта!';
-  TEXT_WRONGSHAREDMEMORYNAME='Имя общей области памяти не должно быть пустым!';
-  TEXT_WRONGRETRANSLATORPAUSE='Пауза между циклами трансляции сообщения не должна быть менее нуля секунд!';
-  TEXT_WRONGINIFILENAME='Имя файла конфигурации не должно быть пустым!';
+  TEXT_ERROR_SAVE_INIFILE='Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
   TEXT_INIFILESAVEERROR='Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
+  TEXT_WRONG_INIFILE_NAME='Имя файла конфигурации не должно быть пустым!';
+  TEXT_WRONGBUFFERSIZE='Размер буфера для передачи данных не должен быть менее килобайта!';
   TEXT_WRONGDESTINATIONFOLDER_EMPTYNAME='Имя каталога для сохранения переданных файлов не должно быть пустым!';
   TEXT_WRONGDESTINATIONFOLDER_NONEXISTS='Каталог для сохранения переданных файлов не существует!';
+  TEXT_WRONGINIFILENAME='Имя файла конфигурации не должно быть пустым!';
+  TEXT_WRONGRETRANSLATORPAUSE='Пауза между циклами трансляции сообщения не должна быть менее нуля секунд!';
+  TEXT_WRONGSHAREDMEMORYNAME='Имя общей области памяти не должно быть пустым!';
   TEXT_WRONGWATCHPAUSE='Пауза между циклами опроса состояния подключения не должна быть ниже минимального значения в 0,1 секунды!';
-  TEXT_WRONG_INIFILE_NAME='Имя файла конфигурации не должно быть пустым!';
-  TEXT_ERROR_SAVE_INIFILE='Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
 
   TEXT_SECTION_FORMPOSITION='Размеры и положение окон';
 
@@ -122,7 +118,7 @@ resourcestring
   TEXT_VARNAME_KEEPINFOLOG='bKeepInfoLog';
   TEXT_VARNAME_KEEPDEBUGLOG='bKeepDebugLog';
   TEXT_VARNAME_WATCHPAUSE='iWatchPause';
-  TEXT_VARNAME_PLAYSOUNDONCOMPLETE = 'bPlaySoundOnComplete';
+  TEXT_VARNAME_PLAYSOUNDONCOMPLETE='bPlaySoundOnComplete';
 
   TEXT_VARNAME_CONFIRURATIONFORMPOSITION_CENTERED='ConfigurationFormPosition.bCentered';
   TEXT_VARNAME_CONFIRURATIONFORMPOSITION_LEFT='ConfigurationFormPosition.iLeft';

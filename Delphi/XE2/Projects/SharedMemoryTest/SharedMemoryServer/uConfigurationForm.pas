@@ -35,12 +35,12 @@ type
     Action_Apply: TAction;
     Action_Close: TAction;
     Action_Help: TAction;
-    Panel3: TPanel;
+    pnlBrowse: TPanel;
     gbHeader: TGroupBox;
     cbPage: TComboBox;
     btnNextPage: TButton;
     btnPreviousPage: TButton;
-    Panel1: TPanel;
+    pnlPage: TPanel;
     gbPage: TGroupBox;
     PageControl1: TPageControl;
     ts1: TTabSheet;

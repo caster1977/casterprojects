@@ -30,7 +30,7 @@ object ConfigurationForm: TConfigurationForm
     BevelKind = bkTile
     BevelOuter = bvNone
     BorderWidth = 5
-    TabOrder = 0
+    TabOrder = 2
     object btnApply: TButton
       Left = 301
       Top = 5
@@ -70,7 +70,7 @@ object ConfigurationForm: TConfigurationForm
       TabOrder = 0
     end
   end
-  object Panel3: TPanel
+  object pnlBrowse: TPanel
     Left = 0
     Top = 0
     Width = 564
@@ -78,7 +78,7 @@ object ConfigurationForm: TConfigurationForm
     Align = alTop
     BevelOuter = bvNone
     BorderWidth = 5
-    TabOrder = 1
+    TabOrder = 0
     object gbHeader: TGroupBox
       Left = 5
       Top = 5
@@ -139,7 +139,7 @@ object ConfigurationForm: TConfigurationForm
       end
     end
   end
-  object Panel1: TPanel
+  object pnlPage: TPanel
     Left = 0
     Top = 55
     Width = 564
@@ -147,7 +147,7 @@ object ConfigurationForm: TConfigurationForm
     Align = alClient
     BevelOuter = bvNone
     BorderWidth = 5
-    TabOrder = 2
+    TabOrder = 1
     object gbPage: TGroupBox
       Left = 5
       Top = 5
@@ -166,7 +166,7 @@ object ConfigurationForm: TConfigurationForm
         Top = 3
         Width = 543
         Height = 192
-        ActivePage = ts5
+        ActivePage = ts1
         Align = alCustom
         Anchors = [akLeft, akTop, akRight, akBottom]
         Style = tsButtons
@@ -180,7 +180,7 @@ object ConfigurationForm: TConfigurationForm
             Top = 0
             Width = 535
             Height = 17
-            Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1086#1082#1085#1086' "'#1054' '#1087#1088#1086#1075#1088#1072#1084#1084#1077'..." '#1087#1088#1080' '#1079#1072#1087#1091#1089#1082#1077' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+            Caption = '&'#1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1086#1082#1085#1086' "'#1054' '#1087#1088#1086#1075#1088#1072#1084#1084#1077'..." '#1087#1088#1080' '#1079#1072#1087#1091#1089#1082#1077' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
             TabOrder = 0
           end
           object chkbxShowStatusbar: TCheckBox
@@ -188,7 +188,7 @@ object ConfigurationForm: TConfigurationForm
             Top = 23
             Width = 535
             Height = 17
-            Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1087#1072#1085#1077#1083#1100' '#1089#1090#1072#1090#1091#1089#1072
+            Caption = #1054'&'#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1087#1072#1085#1077#1083#1100' '#1089#1090#1072#1090#1091#1089#1072
             TabOrder = 1
           end
           object chkbxShowConfirmationOnQuit: TCheckBox
@@ -196,16 +196,16 @@ object ConfigurationForm: TConfigurationForm
             Top = 69
             Width = 535
             Height = 17
-            Caption = #1058#1088#1077#1073#1086#1074#1072#1090#1100' '#1087#1086#1076#1090#1074#1077#1088#1078#1076#1077#1085#1080#1077' '#1087#1088#1080' '#1074#1099#1093#1086#1076#1077' '#1080#1079' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
-            TabOrder = 2
+            Caption = '&'#1058#1088#1077#1073#1086#1074#1072#1090#1100' '#1087#1086#1076#1090#1074#1077#1088#1078#1076#1077#1085#1080#1077' '#1087#1088#1080' '#1074#1099#1093#1086#1076#1077' '#1080#1079' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+            TabOrder = 3
           end
           object chkbxScrollLogToBottom: TCheckBox
             Left = 0
             Top = 46
             Width = 535
             Height = 17
-            Caption = #1055#1088#1086#1082#1088#1091#1095#1080#1074#1072#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1089#1086#1086#1073#1097#1077#1085#1080#1081' '#1087#1088#1086#1090#1086#1082#1086#1083#1072' '#1082' '#1087#1086#1089#1083#1077#1076#1085#1077#1084#1091' '#1089#1086#1086#1073#1097#1077#1085#1080#1102
-            TabOrder = 3
+            Caption = #1055'&'#1088#1086#1082#1088#1091#1095#1080#1074#1072#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1089#1086#1086#1073#1097#1077#1085#1080#1081' '#1087#1088#1086#1090#1086#1082#1086#1083#1072' '#1082' '#1087#1086#1089#1083#1077#1076#1085#1077#1084#1091' '#1089#1086#1086#1073#1097#1077#1085#1080#1102
+            TabOrder = 2
           end
         end
         object ts2: TTabSheet
@@ -217,7 +217,7 @@ object ConfigurationForm: TConfigurationForm
             Top = 3
             Width = 232
             Height = 13
-            Caption = #1055#1072#1087#1082#1072' '#1087#1088#1080#1105#1084#1072' '#1087#1077#1088#1077#1076#1072#1085#1085#1099#1093' '#1082#1083#1080#1077#1085#1090#1086#1084' '#1092#1072#1081#1083#1086#1074':'
+            Caption = #1055'&'#1072#1087#1082#1072' '#1087#1088#1080#1105#1084#1072' '#1087#1077#1088#1077#1076#1072#1085#1085#1099#1093' '#1082#1083#1080#1077#1085#1090#1086#1084' '#1092#1072#1081#1083#1086#1074':'
             FocusControl = edbxDestinationFolderValue
           end
           object edbxDestinationFolderValue: TEdit
@@ -270,42 +270,48 @@ object ConfigurationForm: TConfigurationForm
             Top = 25
             Width = 29
             Height = 13
-            Caption = #1089#1083#1077#1074#1072
+            Caption = #1089'&'#1083#1077#1074#1072
+            FocusControl = edbxMainFormLeftValue
           end
           object lblMainFormTop: TLabel
             Left = 10
             Top = 52
             Width = 35
             Height = 13
-            Caption = #1089#1074#1077#1088#1093#1091
+            Caption = #1089#1074'&'#1077#1088#1093#1091
+            FocusControl = edbxMainFormTopValue
           end
           object lblMainFormWidth: TLabel
             Left = 10
             Top = 79
             Width = 38
             Height = 13
-            Caption = #1096#1080#1088#1080#1085#1072
+            Caption = '&'#1096#1080#1088#1080#1085#1072
+            FocusControl = edbxMainFormWidthValue
           end
           object lblMainFormHeight: TLabel
             Left = 10
             Top = 106
             Width = 37
             Height = 13
-            Caption = #1074#1099#1089#1086#1090#1072
+            Caption = '&'#1074#1099#1089#1086#1090#1072
+            FocusControl = edbxMainFormHeightValue
           end
           object lblConfigurationFormLeft: TLabel
             Left = 284
             Top = 25
             Width = 29
             Height = 13
-            Caption = #1089#1083#1077#1074#1072
+            Caption = #1089#1083#1077'&'#1074#1072
+            FocusControl = edbxConfigurationFormLeftValue
           end
           object lblConfigurationFormTop: TLabel
             Left = 284
             Top = 52
             Width = 35
             Height = 13
-            Caption = #1089#1074#1077#1088#1093#1091
+            Caption = #1089#1074#1077#1088'&'#1093#1091
+            FocusControl = edbxConfigurationFormTopValue
           end
           object edbxMainFormLeftValue: TEdit
             Left = 66
@@ -332,7 +338,7 @@ object ConfigurationForm: TConfigurationForm
             Top = 22
             Width = 116
             Height = 48
-            Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
+            Caption = #1087'&'#1086' '#1094#1077#1085#1090#1088#1091
             Enabled = False
             TabOrder = 2
             OnClick = chkbxMainFormCenteredClick
@@ -360,7 +366,7 @@ object ConfigurationForm: TConfigurationForm
             Top = 76
             Width = 116
             Height = 48
-            Caption = #1085#1072' '#1074#1077#1089#1100' '#1101#1082#1088#1072#1085
+            Caption = '&'#1085#1072' '#1074#1077#1089#1100' '#1101#1082#1088#1072#1085
             Checked = True
             State = cbChecked
             TabOrder = 5
@@ -391,7 +397,7 @@ object ConfigurationForm: TConfigurationForm
             Top = 22
             Width = 116
             Height = 48
-            Caption = #1087#1086' '#1094#1077#1085#1090#1088#1091
+            Caption = #1087#1086' &'#1094#1077#1085#1090#1088#1091
             Checked = True
             State = cbChecked
             TabOrder = 8
@@ -407,7 +413,7 @@ object ConfigurationForm: TConfigurationForm
             Top = 3
             Width = 535
             Height = 17
-            Caption = #1074#1099#1074#1086#1076#1080#1090#1100' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1086#1085#1085#1099#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
+            Caption = '&'#1074#1099#1074#1086#1076#1080#1090#1100' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1086#1085#1085#1099#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
             TabOrder = 0
           end
           object chkbxKeepWarningLog: TCheckBox
@@ -415,7 +421,7 @@ object ConfigurationForm: TConfigurationForm
             Top = 26
             Width = 535
             Height = 17
-            Caption = #1074#1099#1074#1086#1076#1080#1090#1100' '#1074#1072#1078#1085#1099#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
+            Caption = #1074'&'#1099#1074#1086#1076#1080#1090#1100' '#1074#1072#1078#1085#1099#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
             TabOrder = 1
           end
           object chkbxKeepErrorLog: TCheckBox
@@ -423,7 +429,7 @@ object ConfigurationForm: TConfigurationForm
             Top = 49
             Width = 535
             Height = 17
-            Caption = #1074#1099#1074#1086#1076#1080#1090#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1103' '#1086#1073' '#1086#1096#1080#1073#1082#1072#1093
+            Caption = #1074#1099#1074'&'#1086#1076#1080#1090#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1103' '#1086#1073' '#1086#1096#1080#1073#1082#1072#1093
             TabOrder = 2
           end
           object chkbxKeepDebugLog: TCheckBox
@@ -431,7 +437,7 @@ object ConfigurationForm: TConfigurationForm
             Top = 72
             Width = 535
             Height = 17
-            Caption = #1074#1099#1074#1086#1076#1080#1090#1100' '#1086#1090#1083#1072#1076#1086#1095#1085#1091#1102' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1102
+            Caption = #1074#1099#1074#1086'&'#1076#1080#1090#1100' '#1086#1090#1083#1072#1076#1086#1095#1085#1091#1102' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1102
             TabOrder = 3
           end
         end
@@ -442,9 +448,10 @@ object ConfigurationForm: TConfigurationForm
           object lblWatchPause: TLabel
             Left = 0
             Top = 26
-            Width = 359
+            Width = 356
             Height = 13
-            Caption = #1055#1072#1091#1079#1072' '#1089' '#1084#1080#1083#1083#1080#1089#1077#1082#1091#1085#1076#1072#1093' '#1084#1077#1078#1076#1091' '#1094#1080#1082#1083#1072#1084#1080' '#1086#1087#1088#1086#1089#1072'  '#1089#1086#1089#1090#1086#1103#1085#1080#1103' '#1089#1086#1077#1076#1080#1085#1077#1085#1080#1103
+            Caption = #1055'&'#1072#1091#1079#1072' '#1089' '#1084#1080#1083#1083#1080#1089#1077#1082#1091#1085#1076#1072#1093' '#1084#1077#1078#1076#1091' '#1094#1080#1082#1083#1072#1084#1080' '#1086#1087#1088#1086#1089#1072' '#1089#1086#1089#1090#1086#1103#1085#1080#1103' '#1089#1086#1077#1076#1080#1085#1077#1085#1080#1103
+            FocusControl = edbxWatchPauseValue
           end
           object lblRetranslatorPause: TLabel
             Left = 0
@@ -452,15 +459,17 @@ object ConfigurationForm: TConfigurationForm
             Width = 370
             Height = 13
             Caption = 
-              #1055#1072#1091#1079#1072' '#1089' '#1084#1080#1083#1083#1080#1089#1077#1082#1091#1085#1076#1072#1093' '#1084#1077#1078#1076#1091' '#1094#1080#1082#1083#1072#1084#1080' '#1087#1086#1080#1089#1082#1072' '#1082#1083#1080#1077#1085#1090#1089#1082#1086#1075#1086' '#1087#1088#1080#1083#1086#1078#1077#1085#1080 +
-              #1103
+              #1055#1072'&'#1091#1079#1072' '#1089' '#1084#1080#1083#1083#1080#1089#1077#1082#1091#1085#1076#1072#1093' '#1084#1077#1078#1076#1091' '#1094#1080#1082#1083#1072#1084#1080' '#1087#1086#1080#1089#1082#1072' '#1082#1083#1080#1077#1085#1090#1089#1082#1086#1075#1086' '#1087#1088#1080#1083#1086#1078#1077#1085 +
+              #1080#1103
+            FocusControl = edbxRetranslatorPauseValue
           end
           object lblSharedMemSize: TLabel
             Left = 0
             Top = 80
             Width = 208
             Height = 13
-            Caption = #1056#1072#1079#1084#1077#1088' '#1073#1091#1092#1077#1088#1072' '#1074' '#1086#1073#1097#1077#1081' '#1087#1072#1084#1103#1090#1080' '#1074' '#1073#1072#1081#1090#1072#1093
+            Caption = '&'#1056#1072#1079#1084#1077#1088' '#1073#1091#1092#1077#1088#1072' '#1074' '#1086#1073#1097#1077#1081' '#1087#1072#1084#1103#1090#1080' '#1074' '#1073#1072#1081#1090#1072#1093
+            FocusControl = edbxSharedMemSizeValue
           end
           object edbxWatchPauseValue: TEdit
             Left = 432
@@ -468,7 +477,7 @@ object ConfigurationForm: TConfigurationForm
             Width = 103
             Height = 21
             MaxLength = 10
-            TabOrder = 0
+            TabOrder = 1
             OnKeyPress = edbxNumericFieldKeyPress
           end
           object edbxRetranslatorPauseValue: TEdit
@@ -477,7 +486,7 @@ object ConfigurationForm: TConfigurationForm
             Width = 103
             Height = 21
             MaxLength = 10
-            TabOrder = 1
+            TabOrder = 2
             OnKeyPress = edbxNumericFieldKeyPress
           end
           object chkbxPlaySoundOnComplete: TCheckBox
@@ -485,8 +494,8 @@ object ConfigurationForm: TConfigurationForm
             Top = 0
             Width = 535
             Height = 17
-            Caption = #1055#1086#1076#1072#1074#1072#1090#1100' '#1079#1074#1091#1082#1086#1074#1086#1081' '#1089#1080#1075#1085#1072#1083' '#1087#1088#1080' '#1079#1072#1074#1077#1088#1096#1077#1085#1080#1080' '#1087#1088#1080#1105#1084#1072'/'#1087#1077#1088#1077#1076#1072#1095#1080' '#1092#1072#1081#1083#1072
-            TabOrder = 2
+            Caption = #1055'&'#1086#1076#1072#1074#1072#1090#1100' '#1079#1074#1091#1082#1086#1074#1086#1081' '#1089#1080#1075#1085#1072#1083' '#1087#1088#1080' '#1079#1072#1074#1077#1088#1096#1077#1085#1080#1080' '#1087#1088#1080#1105#1084#1072'/'#1087#1077#1088#1077#1076#1072#1095#1080' '#1092#1072#1081#1083#1072
+            TabOrder = 0
           end
           object edbxSharedMemSizeValue: TEdit
             Left = 432
@@ -507,7 +516,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 432
     Top = 192
     Bitmap = {
-      494C010106000800280310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800300310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

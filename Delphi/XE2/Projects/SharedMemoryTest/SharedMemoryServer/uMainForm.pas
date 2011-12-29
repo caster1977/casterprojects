@@ -52,7 +52,6 @@ type
     pbMain: TProgressBar;
     imConnectionState: TImage;
     ilMainFormStateIcons: TImageList;
-    ApplicationEvents1: TApplicationEvents;
     ilLog: TImageList;
     Panel1: TPanel;
     chkbxScrollLogToBottom: TCheckBox;
@@ -62,8 +61,6 @@ type
     procedure Action_ConfigurationExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
-    procedure ApplicationEvents1Hint(Sender: TObject);
     procedure chkbxScrollLogToBottomClick(Sender: TObject);
     procedure miStatusBarClick(Sender: TObject);
     procedure lvLogResize(Sender: TObject);
@@ -105,7 +102,6 @@ type
     FFirstRun: boolean;
     FClientConnected: boolean;
     FClientHandle: THandle;
-    // FCanceling: boolean;
     FReceiving: boolean;
     FFileName: string;
 
@@ -128,6 +124,9 @@ type
     procedure Log(const aMessage: string; aMessageType: TLogMessagesType);
     procedure Do_UpdateColumnWidth;
     procedure Do_PlaySound;
+    procedure ApplicationOnHint(Sender: TObject);
+  protected
+    procedure WndProc(var Message: TMessage); override;
   public
     procedure ProcessErrors(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
     procedure LogError(const aMessage: string);
@@ -153,12 +152,12 @@ uses
   uCommonConfigurationClass,
   uConfigurationForm;
 
-type
-  THackControl=class(TControl);
-
 resourcestring
   TEXT_MAINFORM_CAPTION='Shared Memory Server';
   TEXT_ABOUTFORM_CAPTION='About "Shared Memory Server"...';
+
+type
+  THackControl=class(TControl);
 
 var
   WM_SERVER, WM_CLIENT: cardinal;
@@ -169,8 +168,8 @@ begin
     begin
       LogError(aErrorMessage);
       ShowErrorBox(aHandle, aErrorMessage);
+      pbMain.Position:=pbMain.Min;
     end;
-  pbMain.Position:=pbMain.Min;
 end;
 
 procedure TMainForm.LogDebug(const aMessage: string);
@@ -246,7 +245,7 @@ begin
       ListItem.SubItems.Add(aMessage);
       Do_UpdateColumnWidth;
       if Configuration.ScrollLogToBottom then
-        PostMessage(lvLog.Handle, LVM_ENSUREVISIBLE, lvLog.Items.Count-1, 0);
+        SendMessage(lvLog.Handle, LVM_ENSUREVISIBLE, lvLog.Items.Count-1, 0);
     end;
 end;
 
@@ -490,7 +489,7 @@ begin
   Result:=False;
   if not Assigned(FConnectionThread) then
     begin
-      FConnectionThread:=TRetranslatorThreadClass.Create(WM_SERVER, WPARAM_SERVER_WANNA_HANDLE, { Application. } Handle);
+      FConnectionThread:=TRetranslatorThreadClass.Create(WM_SERVER, WPARAM_SERVER_WANNA_HANDLE, Handle);
       try
         FConnectionThread.Start;
         LogDebug('Поток поиска клиентов запущен.');
@@ -553,41 +552,6 @@ begin
     LogInfo('Завершение работы приложения было отменено пользователем.');
 end;
 
-procedure TMainForm.FormCreate(Sender: TObject);
-const
-  ICON_MAIN=3;
-var
-  PanelRect: TRect;
-
-  procedure BindMainProgressBarToStatusBar;
-  begin
-    THackControl(pbMain).SetParent(StatusBar1);
-    PostMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
-    pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right-PanelRect.Left, PanelRect.Bottom-PanelRect.Top-1);
-  end;
-
-  procedure BindStateImageToStatusBar;
-  begin
-    THackControl(imConnectionState).SetParent(StatusBar1);
-    PostMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
-    imConnectionState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
-  end;
-
-begin
-  FFirstRun:=True; // режим начала запуска программы включен
-  FClientConnected:=False; // изначально клиент не подлючен
-  FReceiving:=False; // режим передачи данных выключен
-  Caption:=TEXT_MAINFORM_CAPTION; // установка заголовка окна
-  ilMainFormSmallImages.GetIcon(ICON_MAIN, Icon); // установка иконки окна
-  FConfiguration:=TConfigurationClass.Create; // создание и инициализщация объекта конфигурации
-  BindMainProgressBarToStatusBar; // привязка прогрессбара к позиции на строке статуса
-  BindStateImageToStatusBar; // привязка иконки готовности к позиции на строке статуса
-  Refresh_ConnectionState;
-  Do_LoadConfiguration; // загрузка настроек из файла
-  Do_ApplyConfiguration; // применение настроек к интерфейсу
-  Configuration.SharedMemoryName:='{6579B61D-DA05-480A-A29B-B0998A354860}';
-end;
-
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
   FReceiving:=False; // режим передачи данных выключен
@@ -632,13 +596,13 @@ begin
   Close;
 end;
 
-procedure TMainForm.ApplicationEvents1Hint(Sender: TObject);
+procedure TMainForm.ApplicationOnHint(Sender: TObject);
 begin
   if Configuration.ShowStatusbar then
     StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=GetLongHint(Application.Hint);
 end;
 
-procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
+procedure TMainForm.WndProc(var Message: TMessage);
 
   procedure Do_Disconnect;
   begin
@@ -661,14 +625,12 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
   begin
     LogWarning('Получено уведомление о завершении работы клиента.');
     Do_Disconnect;
-    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_LOST;
   begin
     LogError('Произошла непредвиденная потеря соединения с сервером!');
     Do_Disconnect;
-    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_HANDLE(const Handle: THandle);
@@ -685,7 +647,6 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     if not Do_WatchThreadStart then
       Application.Terminate;
     Refresh_ConnectionState;
-    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_WANNA_SEND_FILE;
@@ -700,7 +661,6 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     LogDebug('Отправлен размер порции для передачи данных файла: '+IntToStr(Int64(Configuration.SharedMemSize))+'.');
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILENAME, 0); // требуем от клиента имя файла
     LogDebug('Отправлен запрос на имя передаваемого файла.');
-    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_WANNA_CANCEL_SENDING;
@@ -712,7 +672,6 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     LogDebug('Объект доступа к порционному файлу уничтоден.');
     FreeAndNil(FSharedMem); // удаляем текущий объект доступа к общей памяти
     LogDebug('Объект доступа к общей памяти уничтоден.');
-    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_FILENAME(const dwSize: cardinal);
@@ -738,7 +697,6 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
 
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILESIZE, 0); // требуем от клиента размер файла
     LogDebug('Отправлен запрос на размер передаваемого файла.');
-    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_FILESIZE(const dwSize: cardinal);
@@ -773,12 +731,12 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
         pbMain.Position:=pbMain.Min;
         pbMain.Visible:=True;
         LogDebug('Создан объект доступа к порционному файлу.');
+        LogInfo('Начат приём данных файла.');
         PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, FChunkedFile.Index); // требуем от клиента указанный блок файла
         LogDebug('Отправлен запрос на получение очередной порции данных.');
       end
     else
       raise Exception.Create('Объект порционного файла уже был ранее создан!');
-    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_DATA(const dwSize: cardinal);
@@ -799,7 +757,6 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
     // теперь требуем CRC32 блока
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_CRC32, FChunkedFile.Index); // требуем от клиента CRC32 указанной порции данных файла
     LogDebug('Отправлен запрос на получение контрольной суммы очередной порции данных.');
-    Handled:=True;
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_CRC32(const dwCRC32: cardinal);
@@ -827,6 +784,7 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
             // последняя порция данных, можно уведомить клиент об успешной передаче данных и закрыть файл
             try
               try
+                LogInfo('Окончен приём данных файла.');
                 FChunkedFile.Complete:=True;
 
                 PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_TRANSFER_COMPLETE, 0); // уведомляем клиент об успешном окончании передачи файла
@@ -868,36 +826,35 @@ procedure TMainForm.ApplicationEvents1Message(var Msg: tagMSG; var Handled: Bool
         PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, FChunkedFile.Index); // требуем от клиента указанный блок файла
         LogDebug('Отправлен запрос на повторное получение порции данных.');
       end;
-    Handled:=True;
   end;
 
 begin
-  Handled:=False;
-  if Msg.message=WM_CLIENT then
+  inherited;
+  if message.Msg=WM_CLIENT then
     begin
-      if Msg.wParam=WPARAM_CLIENT_SHUTDOWN then // клиент сообщает о своём отключении от сервера
+      if message.WParam=WPARAM_CLIENT_SHUTDOWN then // клиент сообщает о своём отключении от сервера
         Do_WPARAM_CLIENT_SHUTDOWN
       else
         if FClientConnected then
-          case Msg.wParam of
+          case message.WParam of
             WPARAM_CLIENT_WANNA_SEND_FILE: // клиент хочет послать очередной файл
               Do_WPARAM_CLIENT_WANNA_SEND_FILE;
             WPARAM_CLIENT_SENDS_FILENAME: // клиент отправляет имя файла (LPARAM = размер имени файла в байтах)
-              Do_WPARAM_CLIENT_SENDS_FILENAME(Msg.lParam);
+              Do_WPARAM_CLIENT_SENDS_FILENAME(message.LParam);
             WPARAM_CLIENT_SENDS_FILESIZE: // клиент отправляет размер файла (LPARAM = размер символьного представления размера файла в байтах)
-              Do_WPARAM_CLIENT_SENDS_FILESIZE(Msg.lParam);
+              Do_WPARAM_CLIENT_SENDS_FILESIZE(message.LParam);
             WPARAM_CLIENT_SENDS_DATA: // клиент отправляет указанный блок данных (LPARAM = размер переданных данных в байтах)
-              Do_WPARAM_CLIENT_SENDS_DATA(Msg.lParam);
+              Do_WPARAM_CLIENT_SENDS_DATA(message.LParam);
             WPARAM_CLIENT_SENDS_CRC32: // клиент отправляет контрольную сумму указанного блока данных (LPARAM = СКС32)
-              Do_WPARAM_CLIENT_SENDS_CRC32(Msg.lParam);
+              Do_WPARAM_CLIENT_SENDS_CRC32(message.LParam);
             WPARAM_CLIENT_WANNA_CANCEL_SENDING: // клиент хочет прекратить передачу файла
               Do_WPARAM_CLIENT_WANNA_CANCEL_SENDING;
             WPARAM_CLIENT_LOST: // поток-сторож сообщает о том, что окно клиента неожиданно пропало
               Do_WPARAM_CLIENT_LOST;
           end
         else
-          if Msg.wParam=WPARAM_CLIENT_SENDS_HANDLE then // клиент отправляет свой handle (LPARAM = handle клиента)
-            Do_WPARAM_CLIENT_SENDS_HANDLE(Msg.lParam);
+          if message.WParam=WPARAM_CLIENT_SENDS_HANDLE then // клиент отправляет свой handle (LPARAM = handle клиента)
+            Do_WPARAM_CLIENT_SENDS_HANDLE(message.LParam);
     end;
 end;
 
@@ -905,6 +862,42 @@ procedure TMainForm.chkbxScrollLogToBottomClick(Sender: TObject);
 begin
   Configuration.ScrollLogToBottom:=chkbxScrollLogToBottom.Enabled and chkbxScrollLogToBottom.Checked;
   LogInfo('Прокурутка к последнему сообщению протокола '+CommonFunctions.GetConditionalString(Configuration.ScrollLogToBottom, 'в', 'от')+'ключена.');
+end;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+const
+  ICON_MAIN=3;
+var
+  PanelRect: TRect;
+
+  procedure BindMainProgressBarToStatusBar;
+  begin
+    THackControl(pbMain).SetParent(StatusBar1);
+    SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
+    pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right-PanelRect.Left, PanelRect.Bottom-PanelRect.Top-1);
+  end;
+
+  procedure BindStateImageToStatusBar;
+  begin
+    THackControl(imConnectionState).SetParent(StatusBar1);
+    SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
+    imConnectionState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
+  end;
+
+begin
+  FFirstRun:=True; // режим начала запуска программы включен
+  FClientConnected:=False; // изначально клиент не подлючен
+  FReceiving:=False; // режим передачи данных выключен
+  Caption:=TEXT_MAINFORM_CAPTION; // установка заголовка окна
+  ilMainFormSmallImages.GetIcon(ICON_MAIN, Icon); // установка иконки окна
+  FConfiguration:=TConfigurationClass.Create; // создание и инициализщация объекта конфигурации
+  BindMainProgressBarToStatusBar;
+  BindStateImageToStatusBar;
+  Refresh_ConnectionState;
+  Application.OnHint:=ApplicationOnHint;
+  Do_LoadConfiguration; // загрузка настроек из файла
+  Do_ApplyConfiguration; // применение настроек к интерфейсу
+  Configuration.SharedMemoryName:='{6579B61D-DA05-480A-A29B-B0998A354860}';
 end;
 
 end.

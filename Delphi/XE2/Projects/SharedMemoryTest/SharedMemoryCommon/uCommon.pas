@@ -32,12 +32,12 @@ const
   WPARAM_SERVER_WANNA_CRC32=12; // сервер хочет контрольную сумму указанного блока данных (LPARAM = порядковый номер запрашиваемого блока данных)
   WPARAM_CLIENT_SENDS_CRC32=13; // клиент отправляет контрольную сумму указанного блока данных (LPARAM = СКС32)
   WPARAM_SERVER_TRANSFER_COMPLETE=14; // сервер сообщает что получил файл полностью
-  WPARAM_CLIENT_WANNA_CANCEL_SENDING=15; // клиент хочет прекратить передачу файла
-  WPARAM_CLIENT_SHUTDOWN=16; // клиент сообщает о своём отключении от сервера
-  WPARAM_SERVER_SHUTDOWN=17; // сервер сообщает клиенту о своём выключении
-  WPARAM_SERVER_LOST=18; // окно сервера более не существует
-  WPARAM_CLIENT_LOST=19; // окно клиента более не существует
-  WPARAM_SERVER_TRANSFER_ERROR=20; // сервер сообщает об ошибке при получении файла
+  WPARAM_SERVER_TRANSFER_ERROR=15; // сервер сообщает об ошибке при получении файла
+  WPARAM_CLIENT_WANNA_CANCEL_SENDING=16; // клиент хочет прекратить передачу файла
+  WPARAM_CLIENT_SHUTDOWN=17; // клиент сообщает о своём отключении от сервера
+  WPARAM_SERVER_SHUTDOWN=18; // сервер сообщает клиенту о своём выключении
+  WPARAM_SERVER_LOST=19; // окно сервера более не существует
+  WPARAM_CLIENT_LOST=20; // окно клиента более не существует
 
 
 resourcestring
