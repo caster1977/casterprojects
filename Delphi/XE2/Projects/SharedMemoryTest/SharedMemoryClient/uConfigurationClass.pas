@@ -1,3 +1,9 @@
+/// <summary>
+/// Модуль-обёртка класса TConfigurationClass
+/// </summary>
+/// <remarks>
+/// (C)opyright 2011 by Vlad Ivanov aka Caster
+/// </remarks>
 unit uConfigurationClass;
 
 interface
@@ -8,17 +14,18 @@ uses
 type
   TConfigurationClass=class(TCommonConfigurationClass)
   public
-    property SharedMemoryName;
-    property KeepLogTypes;
-    property SharedMemSize;
-    property ShowSplashAtStart;
-    property ShowStatusbar;
-    property ScrollLogToBottom;
-    property WatchPause;
-    property PlaySoundOnComplete;
     property ConfigurationFormPage;
     property ConfigurationFormPosition;
+    property KeepLogTypes;
     property MainFormPosition;
+    property PlaySoundOnComplete;
+    property ScrollLogToBottom;
+    property SharedMemoryName;
+    property SharedMemSize;
+    property ShowConfirmationOnQuit;
+    property ShowSplashAtStart;
+    property ShowStatusbar;
+    property WatchPause;
   end;
 
 implementation
