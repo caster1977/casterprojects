@@ -523,7 +523,6 @@ procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
   FormPosition: TFormPosition;
 begin
-
   CanClose:=False;
 
   if Configuration.ShowConfirmationOnQuit then
@@ -555,6 +554,7 @@ end;
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
   FReceiving:=False; // режим передачи данных выключен
+  Do_WatchThreadTerminate;
   Do_ConnectionThreadTerminate;
   FreeAndNil(FChunk);
   FreeAndNil(FChunkedFile);
