@@ -148,6 +148,7 @@ uses
   Winapi.MMSystem,
   uAboutForm,
   uConfigurationForm,
+  uCommonConfigurationClass,
   System.IOUtils;
 
 type
@@ -188,13 +189,38 @@ begin
 end;
 
 procedure TMainForm.Do_ApplyConfiguration;
+var
+  FormPosition: TFormPosition;
 begin
-  // применение настроек к панели статуса
-  miStatusBar.Checked:=Configuration.ShowStatusbar;
-  StatusBar1.Visible:=Configuration.ShowStatusbar;
   // применение настроек к прокрутке сообщений протокола
   chkbxScrollLogToBottom.Checked:=chkbxScrollLogToBottom.Enabled and Configuration.ScrollLogToBottom;
   chkbxScrollLogToBottom.OnClick:=chkbxScrollLogToBottomClick;
+  // применение настроек к панели статуса
+  miStatusBar.Checked:=Configuration.ShowStatusbar;
+  StatusBar1.Visible:=Configuration.ShowStatusbar;
+
+  // установка позиции и размеров главного окна в соответсвии с параметрами конфигурации
+  WindowState:=wsNormal;
+  Position:=poDesigned;
+  Left:=Configuration.MainFormPosition.Left;
+  Top:=Configuration.MainFormPosition.Top;
+  Width:=Configuration.MainFormPosition.Width;
+  Height:=Configuration.MainFormPosition.Height;
+  if Configuration.MainFormPosition.Maximized then
+    WindowState:=wsMaximized
+  else
+    if Configuration.MainFormPosition.Centered then
+      begin
+        Position:=poScreenCenter;
+
+        FormPosition.Centered:=False;
+        FormPosition.Maximized:=Configuration.MainFormPosition.Maximized;
+        FormPosition.Left:=Configuration.MainFormPosition.Left;
+        FormPosition.Top:=Configuration.MainFormPosition.Top;
+        FormPosition.Width:=Configuration.MainFormPosition.Width;
+        FormPosition.Height:=Configuration.MainFormPosition.Height;
+        Configuration.MainFormPosition:=FormPosition;
+      end;
 
   LogInfo('Применение настроек программы прошло успешно.');
 end;
@@ -303,15 +329,40 @@ begin
 end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+var
+  FormPosition: TFormPosition;
 begin
-  Do_SaveConfiguration; // запись конфигурации
-  if FConnectedToServer then
-    // если соединение с сервером установлено, отправляем серверу уведомление о завершении работы клиента
-    PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SHUTDOWN, 0);
+  CanClose:=False;
+
+  if Configuration.ShowConfirmationOnQuit then
+    CanClose:=MessageBox(Handle, PWideChar('Вы действительно хотите завершить работу программы?'), PWideChar(TEXT_MAINFORM_CAPTION+' - Подтверждение выхода'), MB_OKCANCEL+MB_ICONQUESTION+MB_DEFBUTTON2)=IDOK
+  else
+    CanClose:=True;
+  Application.ProcessMessages;
+
+  if CanClose then
+    begin
+      LogInfo('Завершение работы приложения было подтверждено.');
+      // применение текущих настроек главного окна к конфигурации
+      FormPosition.Left:=Left;
+      FormPosition.Top:=Top;
+      FormPosition.Width:=Width;
+      FormPosition.Height:=Height;
+      FormPosition.Centered:=False;
+      FormPosition.Maximized:=WindowState=wsMaximized;
+      Configuration.MainFormPosition:=FormPosition;
+
+      Do_SaveConfiguration; // запись конфигурации
+      if FConnectedToServer then // если соединение с сервером установлено, отправляем серверу уведомление о завершении работы клиента
+        PostMessage(FServerHandle, WM_CLIENT, WPARAM_CLIENT_SHUTDOWN, 0);
+    end
+  else
+    LogInfo('Завершение работы приложения было отменено пользователем.');
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
+  Do_WatchThreadTerminate;
   FreeAndNil(FChunk);
   FreeAndNil(FChunkedFile);
   FreeAndNil(FSharedMem);

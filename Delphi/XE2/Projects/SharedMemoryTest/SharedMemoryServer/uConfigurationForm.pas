@@ -528,12 +528,12 @@ begin
       chkbxKeepInfoLog.Checked:=lmtInfo in KeepLogTypes;
       chkbxKeepDebugLog.Checked:=lmtDebug in KeepLogTypes;
 
-      edbxMainFormLeftValue.Text:=CommonFunctions.GetConditionalString(not(MainFormPosition.Centered or MainFormPosition.Maximized), IntToStr(MainFormPosition.Left), '');
-      edbxMainFormTopValue.Text:=CommonFunctions.GetConditionalString(not(MainFormPosition.Centered or MainFormPosition.Maximized), IntToStr(MainFormPosition.Top), '');
-      chkbxMainFormCentered.Checked:=MainFormPosition.Centered and(not MainFormPosition.Maximized);
-      edbxMainFormWidthValue.Text:=CommonFunctions.GetConditionalString(MainFormPosition.Maximized, '', IntToStr(MainFormPosition.Width));
-      edbxMainFormHeightValue.Text:=CommonFunctions.GetConditionalString(MainFormPosition.Maximized, '', IntToStr(MainFormPosition.Height));
-      chkbxMainFormMaximized.Checked:=MainFormPosition.Maximized;
+      chkbxMainFormMaximized.Checked:=MainForm.WindowState=wsMaximized;
+      chkbxMainFormCentered.Checked:=MainForm.Position=poDesktopCenter;
+      edbxMainFormLeftValue.Text:=CommonFunctions.GetConditionalString(not((MainForm.Position=poDesktopCenter) or (MainForm.WindowState=wsMaximized)), IntToStr(MainForm.Left), '');
+      edbxMainFormTopValue.Text:=CommonFunctions.GetConditionalString(not((MainForm.Position=poDesktopCenter) or (MainForm.WindowState=wsMaximized)), IntToStr(MainForm.Top), '');
+      edbxMainFormWidthValue.Text:=CommonFunctions.GetConditionalString(MainForm.WindowState=wsMaximized, '', IntToStr(MainForm.Width));
+      edbxMainFormHeightValue.Text:=CommonFunctions.GetConditionalString(MainForm.WindowState=wsMaximized, '', IntToStr(MainForm.Height));
 
       chkbxConfigurationFormCentered.Checked:=ConfigurationFormPosition.Centered;
       edbxConfigurationFormLeftValue.Text:=CommonFunctions.GetConditionalString(ConfigurationFormPosition.Centered, '', IntToStr(ConfigurationFormPosition.Left));
