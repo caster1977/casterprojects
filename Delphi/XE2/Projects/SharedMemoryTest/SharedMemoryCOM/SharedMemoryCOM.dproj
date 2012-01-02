@@ -76,6 +76,7 @@
 			<DCC_RemoteDebug>true</DCC_RemoteDebug>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<Icon_MainIcon>SharedMemoryCOM_Icon.ico</Icon_MainIcon>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<VerInfo_Locale>1033</VerInfo_Locale>
@@ -142,15 +143,16 @@
 					<Source>
 						<Source Name="MainSource">SharedMemoryCOM.dpr</Source>
 					</Source>
-					<Excluded_Packages>
-						<Excluded_Packages Name="C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\MyComponents.bpl">File C:\Users\caster\Documents\RAD Studio\9.0\Projects\Packages\MyComponents.bpl not found</Excluded_Packages>
-					</Excluded_Packages>
+					<Excluded_Packages/>
 				</Delphi.Personality>
 				<Deployment/>
 				<Platforms>
 					<Platform value="Win64">False</Platform>
 					<Platform value="Win32">True</Platform>
 				</Platforms>
+				<ActiveXProjectInfo>
+					<version>1</version>
+				</ActiveXProjectInfo>
 			</BorlandProject>
 			<ProjectFileVersion>12</ProjectFileVersion>
 		</ProjectExtensions>

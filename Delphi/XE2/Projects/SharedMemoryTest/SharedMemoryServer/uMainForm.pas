@@ -150,7 +150,8 @@ uses
   Winapi.MMSystem,
   uAboutForm,
   uCommonConfigurationClass,
-  uConfigurationForm;
+  uConfigurationForm,
+  SharedMemoryCOM_TLB;
 
 resourcestring
   TEXT_MAINFORM_CAPTION='Shared Memory Server';
@@ -869,6 +870,7 @@ const
   ICON_MAIN=3;
 var
   PanelRect: TRect;
+  _IComTest: IComTest;
 
   procedure BindMainProgressBarToStatusBar;
   begin
@@ -897,7 +899,9 @@ begin
   Application.OnHint:=ApplicationOnHint;
   Do_LoadConfiguration; // загрузка настроек из файла
   Do_ApplyConfiguration; // применение настроек к интерфейсу
-  Configuration.SharedMemoryName:='{6579B61D-DA05-480A-A29B-B0998A354860}';
+//  Configuration.SharedMemoryName:='{6579B61D-DA05-480A-A29B-B0998A354860}';
+  _IComTest:=CoComTest.Create;
+  Configuration.SharedMemoryName:=_IComTest.GetSharedMemoryName;
 end;
 
 end.

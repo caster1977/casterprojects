@@ -39,14 +39,13 @@ const
   WPARAM_SERVER_LOST=19; // окно сервера более не существует
   WPARAM_CLIENT_LOST=20; // окно клиента более не существует
 
-
 resourcestring
   TEXT_WM_SM_SERVER='WM_SM_SERVER';
   TEXT_WM_SM_CLIENT='WM_SM_CLIENT';
   TEXT_ERRORCODE=' Код ошибки: ';
   TEXT_REGISTERWINDOWMESSAGEERROR='Не удалось выполнить операцию регистрации оконного сообщения!';
-  TEXT_CONFIGURATIONFORM_SUFFIX = 'настроек программы';
-  TEXT_ABOUTFORM_SUFFIX = '"О программе..."';
+  TEXT_CONFIGURATIONFORM_SUFFIX='настроек программы';
+  TEXT_ABOUTFORM_SUFFIX='"О программе..."';
 
 type
   CommonFunctions=class
@@ -65,7 +64,9 @@ implementation
 
 uses
   System.Classes,
-  System.SysUtils;
+  System.SysUtils,
+  System.Win.ComObj,
+  Winapi.Windows;
 
 const
   CRC32INIT=$FFFFFFFF;
@@ -90,7 +91,7 @@ end;
 
 class function CommonFunctions.CRC32OfFile(const FileName: string): cardinal;
 resourcestring
-  TEXT_OUTOFMEMORY ='Не удалось выделить блок динамической памяти для буфера чтения из файла!';
+  TEXT_OUTOFMEMORY='Не удалось выделить блок динамической памяти для буфера чтения из файла!';
   TEXT_FILEERROR='При обработке файла [%s] возникла oшибка [%s]!';
 var
   InFile: TFileStream;
@@ -104,11 +105,11 @@ begin
       try
         InFile:=TFileStream.Create(FileName, fmOpenRead);
         InFile.Position:=0;
-        Readed:=InFile.Read(ByteArray{[0]}, MaxBuffer);
+        Readed:=InFile.Read(ByteArray { [0] } , MaxBuffer);
         while Readed<>0 do
           begin
             UpdateCrc32(ByteArray, Readed, Result);
-            Readed:=InFile.Read(ByteArray{[0]}, MaxBuffer);
+            Readed:=InFile.Read(ByteArray { [0] } , MaxBuffer);
           end;
       finally
         FreeAndNil(InFile);
