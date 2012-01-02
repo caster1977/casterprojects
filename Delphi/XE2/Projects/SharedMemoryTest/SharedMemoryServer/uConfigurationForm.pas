@@ -317,8 +317,9 @@ var
 begin
   bError:=False;
 
-  sPath:=edbxDestinationFolderValue.Text;
-
+  sPath:=Trim(edbxDestinationFolderValue.Text);
+  if sPath='' then
+    sPath:=IncludeTrailingPathDelimiter(ExtractFilePath(ExpandFileName(Application.ExeName)));
   if Win32MajorVersion>=6 then // для Vista и выше
     with TFileOpenDialog.Create(Self) do
       try

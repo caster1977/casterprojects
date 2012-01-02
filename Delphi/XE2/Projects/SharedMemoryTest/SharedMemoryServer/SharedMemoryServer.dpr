@@ -13,7 +13,8 @@ uses
   uCommon in '..\SharedMemoryCommon\uCommon.pas',
   uRetranslatorThreadClass in '..\SharedMemoryCommon\uRetranslatorThreadClass.pas',
   uSharedMemClass in '..\SharedMemoryCommon\uSharedMemClass.pas',
-  uCommonConfigurationClass in '..\SharedMemoryCommon\uCommonConfigurationClass.pas';
+  uCommonConfigurationClass in '..\SharedMemoryCommon\uCommonConfigurationClass.pas',
+  SharedMemoryCOM_TLB in '..\SharedMemoryCOM\SharedMemoryCOM_TLB.pas';
 
 {$R *.res}
 
