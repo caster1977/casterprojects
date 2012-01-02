@@ -21,6 +21,8 @@ uses
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   Vcl.AppEvnts,
+//  System.Win.ComObj,
+//  Winapi.ActiveX,
   uConfigurationClass,
   uRetranslatorThreadClass,
   uSharedMemClass,
@@ -152,6 +154,7 @@ uses
   uCommonConfigurationClass,
   uConfigurationForm,
   SharedMemoryCOM_TLB;
+//  uCOMInitClass;
 
 resourcestring
   TEXT_MAINFORM_CAPTION='Shared Memory Server';
@@ -870,7 +873,6 @@ const
   ICON_MAIN=3;
 var
   PanelRect: TRect;
-  _IComTest: IComTest;
 
   procedure BindMainProgressBarToStatusBar;
   begin
@@ -886,6 +888,10 @@ var
     imConnectionState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
   end;
 
+var
+  s: WideString;
+    _ITest: ITest;
+
 begin
   FFirstRun:=True; // режим начала запуска программы включен
   FClientConnected:=False; // изначально клиент не подлючен
@@ -900,8 +906,11 @@ begin
   Do_LoadConfiguration; // загрузка настроек из файла
   Do_ApplyConfiguration; // применение настроек к интерфейсу
 //  Configuration.SharedMemoryName:='{6579B61D-DA05-480A-A29B-B0998A354860}';
-  _IComTest:=CoComTest.Create;
-  Configuration.SharedMemoryName:=_IComTest.GetSharedMemoryName;
+  _ITest:=CoTest.Create;
+  if Assigned(_ITest) then
+    Configuration.SharedMemoryName:=_ITest.GetSharedMemoryName;
 end;
 
+//initialization
+//  NewCOMInitClass();
 end.
