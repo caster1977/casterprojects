@@ -21,15 +21,16 @@ uses
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   Vcl.AppEvnts,
-//  System.Win.ComObj,
-//  Winapi.ActiveX,
+  System.Win.ComObj,
+  Winapi.ActiveX,
   uConfigurationClass,
   uRetranslatorThreadClass,
   uSharedMemClass,
   uChunkClass,
   uChunkedFileClass,
   uWatchThreadClass,
-  uCommon;
+  uCommon,
+  SharedMemoryCOM_TLB;
 
 type
   TMainForm=class(TForm)
@@ -70,6 +71,7 @@ type
     procedure Action_AboutExecute(Sender: TObject);
     procedure Action_OpenDestinationFolderExecute(Sender: TObject);
   strict private
+    _ITest: TTest;
 
     /// <summary>
     /// Объект для доступа к общей памяти
@@ -152,9 +154,7 @@ uses
   Winapi.MMSystem,
   uAboutForm,
   uCommonConfigurationClass,
-  uConfigurationForm,
-  SharedMemoryCOM_TLB;
-//  uCOMInitClass;
+  uConfigurationForm;
 
 resourcestring
   TEXT_MAINFORM_CAPTION='Shared Memory Server';
@@ -890,8 +890,6 @@ var
 
 var
   s: WideString;
-    _ITest: ITest;
-
 begin
   FFirstRun:=True; // режим начала запуска программы включен
   FClientConnected:=False; // изначально клиент не подлючен
@@ -905,12 +903,11 @@ begin
   Application.OnHint:=ApplicationOnHint;
   Do_LoadConfiguration; // загрузка настроек из файла
   Do_ApplyConfiguration; // применение настроек к интерфейсу
-//  Configuration.SharedMemoryName:='{6579B61D-DA05-480A-A29B-B0998A354860}';
+  // Configuration.SharedMemoryName:='{6579B61D-DA05-480A-A29B-B0998A354860}';
+  _ITest:=nil;
   _ITest:=CoTest.Create;
   if Assigned(_ITest) then
     Configuration.SharedMemoryName:=_ITest.GetSharedMemoryName;
 end;
 
-//initialization
-//  NewCOMInitClass();
 end.

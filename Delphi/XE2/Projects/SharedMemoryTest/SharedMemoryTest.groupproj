@@ -4,15 +4,12 @@
 		</PropertyGroup>
 		<ItemGroup>
 			<Projects Include="SharedMemoryServer\SharedMemoryServer.dproj">
-				<Dependencies>SharedMemoryCommon\SharedMemoryCommon.dproj</Dependencies>
+				<Dependencies/>
 			</Projects>
 			<Projects Include="SharedMemoryClient\SharedMemoryClient.dproj">
 				<Dependencies/>
 			</Projects>
 			<Projects Include="SharedMemoryCOM\SharedMemoryCOM.dproj">
-				<Dependencies/>
-			</Projects>
-			<Projects Include="SharedMemoryCommon\SharedMemoryCommon.dproj">
 				<Dependencies/>
 			</Projects>
 			<Projects Include="..\OA5\OA5.dproj">
@@ -35,13 +32,13 @@
 				<Default.Personality/>
 			</BorlandProject>
 		</ProjectExtensions>
-		<Target Name="SharedMemoryServer" DependsOnTargets="SharedMemoryCommon">
+		<Target Name="SharedMemoryServer">
 			<MSBuild Projects="SharedMemoryServer\SharedMemoryServer.dproj"/>
 		</Target>
-		<Target Name="SharedMemoryServer:Clean" DependsOnTargets="SharedMemoryCommon:Clean">
+		<Target Name="SharedMemoryServer:Clean">
 			<MSBuild Projects="SharedMemoryServer\SharedMemoryServer.dproj" Targets="Clean"/>
 		</Target>
-		<Target Name="SharedMemoryServer:Make" DependsOnTargets="SharedMemoryCommon:Make">
+		<Target Name="SharedMemoryServer:Make">
 			<MSBuild Projects="SharedMemoryServer\SharedMemoryServer.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="SharedMemoryClient">
@@ -61,15 +58,6 @@
 		</Target>
 		<Target Name="SharedMemoryCOM:Make">
 			<MSBuild Projects="SharedMemoryCOM\SharedMemoryCOM.dproj" Targets="Make"/>
-		</Target>
-		<Target Name="SharedMemoryCommon">
-			<MSBuild Projects="SharedMemoryCommon\SharedMemoryCommon.dproj"/>
-		</Target>
-		<Target Name="SharedMemoryCommon:Clean">
-			<MSBuild Projects="SharedMemoryCommon\SharedMemoryCommon.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="SharedMemoryCommon:Make">
-			<MSBuild Projects="SharedMemoryCommon\SharedMemoryCommon.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="OA5">
 			<MSBuild Projects="..\OA5\OA5.dproj"/>
@@ -108,13 +96,13 @@
 			<MSBuild Projects="..\CastersPackage\CastersPackage.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="SharedMemoryServer;SharedMemoryClient;SharedMemoryCOM;SharedMemoryCommon;OA5;Overseer;LogKeeper5;CastersPackage"/>
+			<CallTarget Targets="SharedMemoryServer;SharedMemoryClient;SharedMemoryCOM;OA5;Overseer;LogKeeper5;CastersPackage"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="SharedMemoryServer:Clean;SharedMemoryClient:Clean;SharedMemoryCOM:Clean;SharedMemoryCommon:Clean;OA5:Clean;Overseer:Clean;LogKeeper5:Clean;CastersPackage:Clean"/>
+			<CallTarget Targets="SharedMemoryServer:Clean;SharedMemoryClient:Clean;SharedMemoryCOM:Clean;OA5:Clean;Overseer:Clean;LogKeeper5:Clean;CastersPackage:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="SharedMemoryServer:Make;SharedMemoryClient:Make;SharedMemoryCOM:Make;SharedMemoryCommon:Make;OA5:Make;Overseer:Make;LogKeeper5:Make;CastersPackage:Make"/>
+			<CallTarget Targets="SharedMemoryServer:Make;SharedMemoryClient:Make;SharedMemoryCOM:Make;OA5:Make;Overseer:Make;LogKeeper5:Make;CastersPackage:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
