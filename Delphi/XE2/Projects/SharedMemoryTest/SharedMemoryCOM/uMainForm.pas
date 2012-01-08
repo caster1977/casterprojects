@@ -15,22 +15,24 @@ uses
   Vcl.StdCtrls,
   System.Win.ComObj,
   Winapi.ActiveX,
-  SharedMemoryCOM_TLB;
+  SharedMemoryCOMLibrary_TLB;
 
 type
+  TSharedMemoryCOMCoClass=class(TTypedComObject, ISharedMemoryCOMInterface)
+  protected
+    function GetSharedMemoryName(out vName: WideString): HResult; stdcall;
+  end;
+
   TMainForm=class(TForm)
     Button1: TButton;
     Label1: TLabel;
     Edit1: TEdit;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
   strict private
-    FITest: ITest;
+    FSharedMemoryName: WideString;
   private
-    procedure SetSharedMemoryName(const Value: WideString);
-  public
-    property SharedMemoryName: WideString write SetSharedMemoryName;
+    property SharedMemoryName: WideString read FSharedMemoryName;
   end;
 
 var
@@ -41,21 +43,18 @@ implementation
 {$R *.dfm}
 
 uses
-  Winapi.ShellAPI,
   System.IOUtils,
   System.Win.ComServ;
 
-type
-  TTest=class(TAutoObject, ITest)
-  strict private
-    FActiveX_ID: longint;
-    FSharedMemoryName: WideString;
-  protected
-    function GetSharedMemoryName: WideString; stdcall;
-  public
-    procedure Initialize; override;
-    destructor Destroy; override;
-  end;
+function TSharedMemoryCOMCoClass.GetSharedMemoryName(out vName: WideString): HResult;
+begin
+  if Assigned(MainForm) then
+    begin
+      vName:=MainForm.SharedMemoryName;
+      Result:=S_OK;
+    end
+  else Result:=S_FALSE;
+end;
 
 procedure TMainForm.Button1Click(Sender: TObject);
 begin
@@ -64,45 +63,13 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-  FITest:=nil;
-  FITest:=CreateOleObject('SharedMemoryCOM.Test') as ITest;
-  SharedMemoryName:=FITest.GetSharedMemoryName;
-end;
-
-procedure TMainForm.FormDestroy(Sender: TObject);
-begin
-  FITest:=nil;
-end;
-
-procedure TMainForm.SetSharedMemoryName(const Value: WideString);
-begin
-  if Edit1.Text<>Value then
-    Edit1.Text:=Value;
-end;
-
-{ TTest }
-
-function TTest.GetSharedMemoryName: WideString;
-begin
-  Result:=FSharedMemoryName;
-end;
-
-procedure TTest.Initialize;
-begin
-  inherited;
-  RegisterActiveObject(Self as Iunknown, CLASS_Test, ACTIVEOBJECT_WEAK, FActiveX_ID);
   FSharedMemoryName:=TPath.GetGUIDFileName(True);
-end;
-
-destructor TTest.Destroy;
-begin
-  RevokeActiveObject(FActiveX_ID, nil);
-  inherited;
+  Edit1.Text:=FSharedMemoryName;
 end;
 
 initialization
 
-TAutoObjectFactory.Create(ComServer, TTest, Class_Test, ciMultiInstance, tmApartment);
+TTypedComObjectFactory.Create(ComServer, TSharedMemoryCOMCoClass, Class_SharedMemoryCOMCoClass, ciMultiInstance, tmApartment);
 
 finalization
 

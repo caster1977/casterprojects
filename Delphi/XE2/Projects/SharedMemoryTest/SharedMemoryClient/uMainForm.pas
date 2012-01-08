@@ -26,6 +26,7 @@ uses
   uChunkClass,
   uChunkedFileClass,
   uWatchThreadClass,
+  SharedMemoryCOMLibrary_TLB,
   uCommon;
 
 type
@@ -77,6 +78,8 @@ type
     procedure lvLogResize(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   strict private
+    FSharedMemoryCOMInterface: ISharedMemoryCOMInterface;
+
     FFirstRun: Boolean;
     FServerHandle: THandle;
     FConnectedToServer: Boolean;
@@ -358,15 +361,6 @@ begin
     end
   else
     LogInfo('Завершение работы приложения было отменено пользователем.');
-end;
-
-procedure TMainForm.FormDestroy(Sender: TObject);
-begin
-  Do_WatchThreadTerminate;
-  FreeAndNil(FChunk);
-  FreeAndNil(FChunkedFile);
-  FreeAndNil(FSharedMem);
-  FreeAndNil(FConfiguration);
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
@@ -919,6 +913,8 @@ var
     imConnectionState.SetBounds(PanelRect.Left+2, PanelRect.Top+1, PanelRect.Right-PanelRect.Left-4, PanelRect.Bottom-PanelRect.Top-4);
   end;
 
+var
+  s: WideString;
 begin
   FFirstRun:=True; // режим начала запуска программы включен
   FConnectedToServer:=False; // изначально клиент не подлючен
@@ -934,7 +930,27 @@ begin
   Application.OnHint:=ApplicationOnHint;
   Do_LoadConfiguration; // загрузка настроек из файла
   Do_ApplyConfiguration; // применение настроек к интерфейсу
-  Configuration.SharedMemoryName:='{6579B61D-DA05-480A-A29B-B0998A354860}';
+  try
+    FSharedMemoryCOMInterface:=nil;
+    FSharedMemoryCOMInterface:=CoSharedMemoryCOMCoClass.Create;
+    FSharedMemoryCOMInterface.GetSharedMemoryName(s);
+    Configuration.SharedMemoryName:=s;
+    LogInfo('Получено имя объекта общей памяти: '+Configuration.SharedMemoryName+'.');
+  except
+    Configuration.SharedMemoryName:='{6579B61D-DA05-480A-A29B-B0998A354860}';
+    LogError('Не удалось получить имя объекта общей памяти!');
+    LogWarning('Будет использовано имя общей памяти по умолчанию: '+Configuration.SharedMemoryName+'.');
+  end;
+end;
+
+procedure TMainForm.FormDestroy(Sender: TObject);
+begin
+  FSharedMemoryCOMInterface:=nil;
+  Do_WatchThreadTerminate;
+  FreeAndNil(FChunk);
+  FreeAndNil(FChunkedFile);
+  FreeAndNil(FSharedMem);
+  FreeAndNil(FConfiguration);
 end;
 
 end.

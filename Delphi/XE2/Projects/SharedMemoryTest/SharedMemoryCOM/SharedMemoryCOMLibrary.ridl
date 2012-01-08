@@ -6,38 +6,38 @@
 // However, when applying changes via the Editor this file will be regenerated
 // and comments or formatting changes will be lost.
 // ************************************************************************ //
-// File generated on 06.01.2012 15:41:35 (- $Rev: 12980 $, 21987638).
+// File generated on 08.01.2012 23:48:41 (- $Rev: 12980 $, 6503171).
 
 [
-  uuid(EADAB23A-B96E-4DA0-930A-935B885E7960),
+  uuid(B700842C-690F-42BB-AC87-0F089F491CCA),
   version(1.0)
 
 ]
-library TestCOMServerLib
+library SharedMemoryCOMLibrary
 {
 
   importlib("stdole2.tlb");
 
-  interface ITestCOMServer;
-  coclass TestCOMServerCoClass;
+  interface ISharedMemoryCOMInterface;
+  coclass SharedMemoryCOMCoClass;
 
 
   [
-    uuid(A72A75D9-DBF5-4375-9E2B-26D6322836B9),
+    uuid(7BE80D96-AC20-4C37-B58B-B543058F4BA0),
     oleautomation
   ]
-  interface ITestCOMServer: IUnknown
+  interface ISharedMemoryCOMInterface: IUnknown
   {
     [id(0x00000065)]
-    HRESULT _stdcall GetOut([out] BSTR* vText);
+    HRESULT _stdcall GetSharedMemoryName([out] BSTR* vName);
   };
 
   [
-    uuid(5404E2B4-8BB6-4E1A-8945-858666A4C0FC)
+    uuid(06464D22-3E60-4F58-85BD-DE05CEB33CEC)
   ]
-  coclass TestCOMServerCoClass
+  coclass SharedMemoryCOMCoClass
   {
-    [default] interface ITestCOMServer;
+    [default] interface ISharedMemoryCOMInterface;
   };
 
 };

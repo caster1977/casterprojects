@@ -3,7 +3,7 @@ program SharedMemoryCOM;
 uses
   Vcl.Forms,
   uMainForm in 'uMainForm.pas' {MainForm},
-  SharedMemoryCOM_TLB in 'SharedMemoryCOM_TLB.pas';
+  SharedMemoryCOMLibrary_TLB in 'SharedMemoryCOMLibrary_TLB.pas';
 
 {$R *.TLB}
 

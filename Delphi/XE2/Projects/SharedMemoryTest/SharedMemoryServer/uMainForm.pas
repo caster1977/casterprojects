@@ -30,7 +30,7 @@ uses
   uChunkedFileClass,
   uWatchThreadClass,
   uCommon,
-  SharedMemoryCOM_TLB;
+  SharedMemoryCOMLibrary_TLB;
 
 type
   TMainForm=class(TForm)
@@ -71,7 +71,7 @@ type
     procedure Action_AboutExecute(Sender: TObject);
     procedure Action_OpenDestinationFolderExecute(Sender: TObject);
   strict private
-    _ITest: TTest;
+    FSharedMemoryCOMInterface: ISharedMemoryCOMInterface;
 
     /// <summary>
     /// Объект для доступа к общей памяти
@@ -555,17 +555,6 @@ begin
     LogInfo('Завершение работы приложения было отменено пользователем.');
 end;
 
-procedure TMainForm.FormDestroy(Sender: TObject);
-begin
-  FReceiving:=False; // режим передачи данных выключен
-  Do_WatchThreadTerminate;
-  Do_ConnectionThreadTerminate;
-  FreeAndNil(FChunk);
-  FreeAndNil(FChunkedFile);
-  FreeAndNil(FSharedMem);
-  FreeAndNil(FConfiguration);
-end;
-
 procedure TMainForm.FormShow(Sender: TObject);
 begin
   if FFirstRun then
@@ -903,11 +892,29 @@ begin
   Application.OnHint:=ApplicationOnHint;
   Do_LoadConfiguration; // загрузка настроек из файла
   Do_ApplyConfiguration; // применение настроек к интерфейсу
-  // Configuration.SharedMemoryName:='{6579B61D-DA05-480A-A29B-B0998A354860}';
-  _ITest:=nil;
-  _ITest:=CoTest.Create;
-  if Assigned(_ITest) then
-    Configuration.SharedMemoryName:=_ITest.GetSharedMemoryName;
+  try
+    FSharedMemoryCOMInterface:=nil;
+    FSharedMemoryCOMInterface:=CoSharedMemoryCOMCoClass.Create;
+    FSharedMemoryCOMInterface.GetSharedMemoryName(s);
+    Configuration.SharedMemoryName:=s;
+    LogInfo('Получено имя объекта общей памяти: '+Configuration.SharedMemoryName+'.');
+  except
+    Configuration.SharedMemoryName:='{6579B61D-DA05-480A-A29B-B0998A354860}';
+    LogError('Не удалось получить имя объекта общей памяти!');
+    LogWarning('Будет использовано имя общей памяти по умолчанию: '+Configuration.SharedMemoryName+'.');
+  end;
+end;
+
+procedure TMainForm.FormDestroy(Sender: TObject);
+begin
+  FSharedMemoryCOMInterface:=nil;
+  FReceiving:=False; // режим передачи данных выключен
+  Do_WatchThreadTerminate;
+  Do_ConnectionThreadTerminate;
+  FreeAndNil(FChunk);
+  FreeAndNil(FChunkedFile);
+  FreeAndNil(FSharedMem);
+  FreeAndNil(FConfiguration);
 end;
 
 end.
