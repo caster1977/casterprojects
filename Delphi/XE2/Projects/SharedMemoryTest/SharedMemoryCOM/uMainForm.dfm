@@ -16,6 +16,7 @@ object MainForm: TMainForm
   Position = poScreenCenter
   WindowState = wsMinimized
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -36,9 +37,9 @@ object MainForm: TMainForm
     TabOrder = 0
   end
   object Button1: TButton
-    Left = 192
+    Left = 176
     Top = 54
-    Width = 150
+    Width = 166
     Height = 25
     Caption = #1056#1077#1075#1080#1089#1090#1088#1072#1094#1080#1103' COM-'#1089#1077#1088#1074#1077#1088#1072
     TabOrder = 1
