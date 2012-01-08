@@ -1,4 +1,4 @@
-unit SharedMemoryCOM_TLB;
+unit SharedMemoryCOMLibrary_TLB;
 
 // ************************************************************************ //
 // WARNING
@@ -12,11 +12,11 @@ unit SharedMemoryCOM_TLB;
 // ************************************************************************ //
 
 // $Rev: 41960 $
-// File generated on 03.01.2012 1:59:22 from Type Library described below.
+// File generated on 08.01.2012 23:48:58 from Type Library described below.
 
 // ************************************************************************  //
-// Type Lib: C:\Users\caster\Documents\RAD Studio\9.0\Projects\SharedMemoryTest\SharedMemoryCOM\SharedMemoryCOM (1)
-// LIBID: {B683A7DE-924D-4206-B1B6-C54EA3609B21}
+// Type Lib: C:\Users\caster\Documents\RAD Studio\Projects\SharedMemoryTest\SharedMemoryCOM\SharedMemoryCOMLibrary (1)
+// LIBID: {B700842C-690F-42BB-AC87-0F089F491CCA}
 // LCID: 0
 // Helpfile:
 // HelpString:
@@ -49,58 +49,47 @@ uses
 // *********************************************************************//
 const
   // TypeLibrary Major and minor versions
-  SharedMemoryCOMMajorVersion=1;
-  SharedMemoryCOMMinorVersion=0;
+  SharedMemoryCOMLibraryMajorVersion=1;
+  SharedMemoryCOMLibraryMinorVersion=0;
 
-  LIBID_SharedMemoryCOM: TGUID='{B683A7DE-924D-4206-B1B6-C54EA3609B21}';
+  LIBID_SharedMemoryCOMLibrary: TGUID='{B700842C-690F-42BB-AC87-0F089F491CCA}';
 
-  IID_ITest: TGUID='{7B2536CC-0169-4299-8269-6137DC86F6EB}';
-  CLASS_Test: TGUID='{A0359679-AFD4-45A2-8D2D-E17FFA67317A}';
+  IID_ISharedMemoryCOMInterface: TGUID='{7BE80D96-AC20-4C37-B58B-B543058F4BA0}';
+  CLASS_SharedMemoryCOMCoClass: TGUID='{06464D22-3E60-4F58-85BD-DE05CEB33CEC}';
 
 type
 
   // *********************************************************************//
   // Forward declaration of types defined in TypeLibrary
   // *********************************************************************//
-  ITest=interface;
-  ITestDisp=dispinterface;
+  ISharedMemoryCOMInterface=interface;
 
   // *********************************************************************//
   // Declaration of CoClasses defined in Type Library
   // (NOTE: Here we map each CoClass to its Default Interface)
   // *********************************************************************//
-  Test=ITest;
+  SharedMemoryCOMCoClass=ISharedMemoryCOMInterface;
 
   // *********************************************************************//
-  // Interface: ITest
-  // Flags:     (4416) Dual OleAutomation Dispatchable
-  // GUID:      {7B2536CC-0169-4299-8269-6137DC86F6EB}
+  // Interface: ISharedMemoryCOMInterface
+  // Flags:     (256) OleAutomation
+  // GUID:      {7BE80D96-AC20-4C37-B58B-B543058F4BA0}
   // *********************************************************************//
-  ITest=interface(IDispatch)
-    ['{7B2536CC-0169-4299-8269-6137DC86F6EB}']
-    function GetSharedMemoryName: WideString; stdcall;
+  ISharedMemoryCOMInterface=interface(IUnknown)
+    ['{7BE80D96-AC20-4C37-B58B-B543058F4BA0}']
+    function GetSharedMemoryName(out vName: WideString): HResult; stdcall;
   end;
 
   // *********************************************************************//
-  // DispIntf:  ITestDisp
-  // Flags:     (4416) Dual OleAutomation Dispatchable
-  // GUID:      {7B2536CC-0169-4299-8269-6137DC86F6EB}
-  // *********************************************************************//
-  ITestDisp=dispinterface
-    ['{7B2536CC-0169-4299-8269-6137DC86F6EB}']
-    function GetSharedMemoryName: WideString; dispid 201;
-  end;
-
-  // *********************************************************************//
-  // The Class CoTest provides a Create and CreateRemote method to
-  // create instances of the default interface ITest exposed by
-  // the CoClass Test. The functions are intended to be used by
+  // The Class CoSharedMemoryCOMCoClass provides a Create and CreateRemote method to
+  // create instances of the default interface ISharedMemoryCOMInterface exposed by
+  // the CoClass SharedMemoryCOMCoClass. The functions are intended to be used by
   // clients wishing to automate the CoClass objects exposed by the
   // server of this typelibrary.
   // *********************************************************************//
-  CoTest=class
-    class function Create: ITest;
-    class function CreateRemote(const MachineName: string): ITest;
+  CoSharedMemoryCOMCoClass=class
+    class function Create: ISharedMemoryCOMInterface;
+    class function CreateRemote(const MachineName: string): ISharedMemoryCOMInterface;
   end;
 
 implementation
@@ -108,14 +97,14 @@ implementation
 uses
   ComObj;
 
-class function CoTest.Create: ITest;
+class function CoSharedMemoryCOMCoClass.Create: ISharedMemoryCOMInterface;
 begin
-  Result:=CreateComObject(CLASS_Test) as ITest;
+  Result:=CreateComObject(CLASS_SharedMemoryCOMCoClass) as ISharedMemoryCOMInterface;
 end;
 
-class function CoTest.CreateRemote(const MachineName: string): ITest;
+class function CoSharedMemoryCOMCoClass.CreateRemote(const MachineName: string): ISharedMemoryCOMInterface;
 begin
-  Result:=CreateRemoteComObject(MachineName, CLASS_Test) as ITest;
+  Result:=CreateRemoteComObject(MachineName, CLASS_SharedMemoryCOMCoClass) as ISharedMemoryCOMInterface;
 end;
 
 end.

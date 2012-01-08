@@ -14,7 +14,7 @@ uses
   uRetranslatorThreadClass in '..\SharedMemoryCommon\uRetranslatorThreadClass.pas',
   uSharedMemClass in '..\SharedMemoryCommon\uSharedMemClass.pas',
   uCommonConfigurationClass in '..\SharedMemoryCommon\uCommonConfigurationClass.pas',
-  SharedMemoryCOM_TLB in '..\SharedMemoryCOM\SharedMemoryCOM_TLB.pas';
+  SharedMemoryCOMLibrary_TLB in '..\SharedMemoryCOM\SharedMemoryCOMLibrary_TLB.pas';
 
 {$R *.res}
 
