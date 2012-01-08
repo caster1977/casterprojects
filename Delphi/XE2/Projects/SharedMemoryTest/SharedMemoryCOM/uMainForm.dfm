@@ -4,7 +4,7 @@ object MainForm: TMainForm
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Shared Memory COM-application'
-  ClientHeight = 87
+  ClientHeight = 120
   ClientWidth = 350
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,7 +14,6 @@ object MainForm: TMainForm
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
-  WindowState = wsMinimized
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
@@ -37,12 +36,21 @@ object MainForm: TMainForm
     TabOrder = 0
   end
   object Button1: TButton
-    Left = 176
+    Left = 8
     Top = 54
-    Width = 166
+    Width = 334
     Height = 25
-    Caption = #1056#1077#1075#1080#1089#1090#1088#1072#1094#1080#1103' COM-'#1089#1077#1088#1074#1077#1088#1072
+    Caption = #1047#1072#1088#1077#1075#1080#1089#1090#1088#1080#1088#1086#1074#1072#1090#1100' COM-'#1089#1077#1088#1074#1077#1088
     TabOrder = 1
     OnClick = Button1Click
+  end
+  object Button2: TButton
+    Left = 8
+    Top = 87
+    Width = 334
+    Height = 25
+    Caption = #1054#1090#1084#1077#1085#1080#1090#1100' '#1088#1077#1075#1080#1089#1090#1088#1072#1094#1080#1102' COM-'#1089#1077#1088#1074#1077#1088#1072
+    TabOrder = 2
+    OnClick = Button2Click
   end
 end
