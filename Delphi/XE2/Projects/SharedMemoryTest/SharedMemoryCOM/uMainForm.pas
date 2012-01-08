@@ -29,6 +29,7 @@ type
     Edit1: TEdit;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   strict private
     FSharedMemoryName: WideString;
   private
@@ -53,7 +54,8 @@ begin
       vName:=MainForm.SharedMemoryName;
       Result:=S_OK;
     end
-  else Result:=S_FALSE;
+  else
+    Result:=S_FALSE;
 end;
 
 procedure TMainForm.Button1Click(Sender: TObject);
@@ -65,6 +67,13 @@ procedure TMainForm.FormCreate(Sender: TObject);
 begin
   FSharedMemoryName:=TPath.GetGUIDFileName(True);
   Edit1.Text:=FSharedMemoryName;
+end;
+
+procedure TMainForm.FormShow(Sender: TObject);
+const
+  BCM_SETSHIELD: integer=$160C; // Для отображения кнопки со щитом
+begin
+  SendMessage(Button1.Handle, BCM_SETSHIELD, 0, $FFFFFFFF);
 end;
 
 initialization
