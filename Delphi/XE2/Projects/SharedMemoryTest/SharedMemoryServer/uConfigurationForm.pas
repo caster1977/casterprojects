@@ -183,7 +183,7 @@ begin
       edbxConfigurationFormLeftValue.Text:=IntToStr((Screen.WorkAreaWidth-Width)div 2);
       edbxConfigurationFormTopValue.Text:=IntToStr((Screen.WorkAreaHeight-Height)div 2);
     end;
-  MainForm.LogDebug('Флажок "'+chkbxConfigurationFormCentered.Caption+'"'+CommonFunctions.GetConditionalString(b, 'в', 'от')+'ключен.');
+  MainForm.LogDebug(Format(TEXT_CHECKBOX_SWITCHED, [chkbxConfigurationFormCentered.Caption, CommonFunctions.GetConditionalString(b, TEXT_CHECKBOX_ON, TEXT_CHECKBOX_OFF)]));
 end;
 
 procedure TConfigurationForm.chkbxMainFormCenteredClick(Sender: TObject);
@@ -196,7 +196,7 @@ begin
   edbxMainFormLeftValue.Text:=CommonFunctions.GetConditionalString(edbxMainFormLeftValue.Enabled, IntToStr(MainForm.Configuration.MainFormPosition.Left), '');
   edbxMainFormTopValue.Text:=CommonFunctions.GetConditionalString(edbxMainFormTopValue.Enabled, IntToStr(MainForm.Configuration.MainFormPosition.Top), '');
 
-  MainForm.LogDebug('Флажок "'+chkbxMainFormCentered.Caption+'"'+CommonFunctions.GetConditionalString(bMainFormCentered, 'в', 'от')+'ключен.');
+  MainForm.LogDebug(Format(TEXT_CHECKBOX_SWITCHED, [chkbxMainFormCentered.Caption, CommonFunctions.GetConditionalString(bMainFormCentered, TEXT_CHECKBOX_ON, TEXT_CHECKBOX_OFF)]));
 end;
 
 procedure TConfigurationForm.chkbxMainFormMaximizedClick(Sender: TObject);
@@ -216,7 +216,7 @@ begin
   edbxMainFormWidthValue.Text:=CommonFunctions.GetConditionalString(not bMainFormMaximized, IntToStr(MainForm.Configuration.MainFormPosition.Width), '');
   edbxMainFormHeightValue.Text:=CommonFunctions.GetConditionalString(not bMainFormMaximized, IntToStr(MainForm.Configuration.MainFormPosition.Height), '');
 
-  MainForm.LogDebug('Флажок "'+chkbxMainFormCentered.Caption+'"'+CommonFunctions.GetConditionalString(bMainFormMaximized, 'в', 'от')+'ключен.');
+  MainForm.LogDebug(Format(TEXT_CHECKBOX_SWITCHED, [chkbxMainFormCentered.Caption, CommonFunctions.GetConditionalString(bMainFormMaximized, TEXT_CHECKBOX_ON, TEXT_CHECKBOX_OFF)]));
 end;
 
 procedure TConfigurationForm.Do_Apply;
@@ -224,7 +224,7 @@ var
   FormPosition: TFormPosition;
 begin
   ModalResult:=mrOk;
-  MainForm.LogInfo('Попытка изменения настроек программы была подтверждена пользователем.');
+  MainForm.LogInfo(TEXT_CONFIGURATION_SAVING_CONFIRMED_BY_USER);
 
   with MainForm.Configuration do
     begin
@@ -306,10 +306,14 @@ begin
       DestinationFolder:=Trim(edbxDestinationFolderValue.Text);
     end;
 
-  MainForm.LogInfo('Окно изменения настроек программы закрыто.');
+  MainForm.LogInfo(TEXT_CONFIGURATION_WINDOW_CLOSED);
 end;
 
 procedure TConfigurationForm.Do_ChooseDestinationFolder;
+resourcestring
+  TEXT_CHOOSE_FOLDER='Выберите папку';
+  TEXT_SELECTED_FOLDER='В качестве папки для сохранения отчётов выбрана папка "%s".';
+  TEXT_SELECTED_FOLDER_ERROR='Возникла ошибка при выборе папки - указанная папка не существует!';
 var
   sPath: string;
   sErrorMessage: string;
@@ -323,7 +327,7 @@ begin
   if Win32MajorVersion>=6 then // для Vista и выше
     with TFileOpenDialog.Create(Self) do
       try
-        Title:='Выберите папку';
+        Title:=TEXT_CHOOSE_FOLDER;
         DefaultFolder:=sPath;
         FileName:=sPath;
         Options:=[fdoPickFolders, fdoPathMustExist, fdoForceFileSystem];
@@ -333,19 +337,19 @@ begin
         Free;
       end
   else // для XP и ниже
-    if SelectDirectory('Выберите папку', '', sPath, [sdNewFolder, sdNewUI, sdShowEdit, sdShowShares], Self) then
+    if SelectDirectory(TEXT_CHOOSE_FOLDER, '', sPath, [sdNewFolder, sdNewUI, sdShowEdit, sdShowShares], Self) then
       if (sPath<>'') then
         begin
           sPath:=IncludeTrailingPathDelimiter(sPath);
           if System.SysUtils.DirectoryExists(sPath) then
             begin
               edbxDestinationFolderValue.Text:=sPath;
-              MainForm.LogDebug('В качестве папки для сохранения отчётов выбрана папка "'+sPath+'".');
+              MainForm.LogDebug(Format(TEXT_SELECTED_FOLDER, [sPath]));
             end
           else
             begin
               edbxDestinationFolderValue.Text:='';
-              CommonFunctions.GenerateError('Возникла ошибка при выборе папки - указанная папка не существует!', sErrorMessage, bError);
+              CommonFunctions.GenerateError(TEXT_SELECTED_FOLDER_ERROR, sErrorMessage, bError);
             end;
         end;
   Do_UpdateActions;
@@ -356,14 +360,14 @@ end;
 procedure TConfigurationForm.Do_Close;
 begin
   ModalResult:=mrClose;
-  MainForm.LogInfo('Попытка изменения настроек программы была отменена пользователем.');
-  MainForm.LogInfo('Окно изменения настроек программы закрыто.');
+  MainForm.LogInfo(TEXT_CONFIGURATION_SAVING_ABORTED_BY_USER);
+  MainForm.LogInfo(TEXT_CONFIGURATION_WINDOW_CLOSED);
 end;
 
 procedure TConfigurationForm.Do_Defaults;
 begin
   // вкладка "настройки интерфейса"
-  if PageControl1.ActivePage.Caption=' интерфейса' then
+  if PageControl1.ActivePage.Caption=TEXT_CONFIGURATION_PAGE_INTERFACE then
     begin
       chkbxShowSplashAtStart.Checked:=CONST_DEFAULTVALUE_SHOWSPLASHATSTART;
       chkbxShowStatusbar.Checked:=CONST_DEFAULTVALUE_SHOWSTATUSBAR;
@@ -371,13 +375,13 @@ begin
       chkbxShowConfirmationOnQuit.Checked:=CONST_DEFAULTVALUE_SHOWCONFIRMATIONONQUIT;
     end;
   // вкладка "настройки расположения файлов и папок"
-  if PageControl1.ActivePage.Caption=' расположения файлов и папок' then
+  if PageControl1.ActivePage.Caption=TEXT_CONFIGURATION_PAGE_LOCATION then
     begin
       edbxDestinationFolderValue.Text:=CONST_DEFAULTVALUE_DESTINATIONFOLDER;
       Do_UpdateActions;
     end;
   // вкладка "настройки ведения протокола работы"
-  if PageControl1.ActivePage.Caption=' ведения протокола работы' then
+  if PageControl1.ActivePage.Caption=TEXT_CONFIGURATION_PAGE_LOG then
     begin
       chkbxKeepInfoLog.Checked:=lmtInfo in CONST_DEFAULTVALUE_KEEPLOGTYPES;
       chkbxKeepWarningLog.Checked:=lmtWarning in CONST_DEFAULTVALUE_KEEPLOGTYPES;
@@ -385,7 +389,7 @@ begin
       chkbxKeepDebugLog.Checked:=lmtDebug in CONST_DEFAULTVALUE_KEEPLOGTYPES;
     end;
   // вкладка "настройки положения и размеров окон"
-  if PageControl1.ActivePage.Caption=' положения и размеров окон' then
+  if PageControl1.ActivePage.Caption=TEXT_CONFIGURATION_PAGE_WINDOW_SIZES then
     begin
       chkbxMainFormMaximized.Checked:=CONST_DEFAULTVALUE_MAINFORM_MAXIMIZED;
       chkbxMainFormCentered.Checked:=CONST_DEFAULTVALUE_MAINFORM_CENTERED and(not CONST_DEFAULTVALUE_MAINFORM_MAXIMIZED);
@@ -401,14 +405,14 @@ begin
       edbxConfigurationFormTopValue.Enabled:=not CONST_DEFAULTVALUE_FORMPOSITION_CENTERED;
     end;
   // вкладка "настройки прочие"
-  if PageControl1.ActivePage.Caption=' прочие' then
+  if PageControl1.ActivePage.Caption=TEXT_CONFIGURATION_PAGE_OTHER then
     begin
       chkbxPlaySoundOnComplete.Checked:=CONST_DEFAULTVALUE_PLAYSOUNDONCOMPLETE;
       edbxWatchPauseValue.Text:=IntToStr(CONST_DEFAULTVALUE_WATCHPAUSE);
       edbxRetranslatorPauseValue.Text:=IntToStr(CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
       edbxSharedMemSizeValue.Text:=IntToStr(CONST_DEFAULTVALUE_SHAREDMEMSIZE);
     end;
-  MainForm.LogInfo('Настройки '+PageControl1.ActivePage.Caption+' были сброшены пользователем в значения по умолчанию.');
+  MainForm.LogInfo(Format(TEXT_CONFIGURATION_VALUES_SETTED_TO_DEFAULTS, [PageControl1.ActivePage.Caption]));
 end;
 
 procedure TConfigurationForm.Do_Help;
@@ -418,11 +422,11 @@ var
 begin
   bError:=False;
 
-  MainForm.LogInfo('Производится попытка открытия справочного файла программы...');
+  MainForm.LogInfo(TEXT_HELP_FILE_OPENING);
   if (FileExists(ExpandFileName(Application.HelpFile))) then
     Application.HelpContext(HelpContext)
   else
-    CommonFunctions.GenerateError('Извините, справочный файл к данной программе не найден.', sErrorMessage, bError);
+    CommonFunctions.GenerateError(TEXT_HELP_FILE_NOT_FOUND, sErrorMessage, bError);
 
   MainForm.ProcessErrors(Handle, bError, sErrorMessage);
 end;
@@ -442,7 +446,6 @@ procedure TConfigurationForm.Do_PageSelect;
 var
   i: integer;
 begin
-  // поиск и открытие нужной страницы в компоненте
   for i:=0 to PageControl1.PageCount-1 do
     if PageControl1.Pages[i].Caption=cbPage.Items[cbPage.ItemIndex] then
       PageControl1.ActivePageIndex:=i;
@@ -467,7 +470,7 @@ end;
 procedure TConfigurationForm.edbxNumericFieldKeyPress(Sender: TObject; var Key: Char);
 begin
   if not CharInSet(Key, ['0'..'9', #8, '-']) then
-    Key:=#0; // "погасить" все остальные клавиши
+    Key:=#0;
 end;
 
 procedure TConfigurationForm.edbxSharedMemSizeValueChange(Sender: TObject);
@@ -477,9 +480,6 @@ begin
   i:=StrToIntDef(edbxSharedMemSizeValue.Text, CONST_DEFAULTVALUE_SHAREDMEMSIZE);
   if i>CONST_DEFAULTVALUE_SHAREDMEMSIZE then
     edbxSharedMemSizeValue.Text:=IntToStr(CONST_DEFAULTVALUE_SHAREDMEMSIZE);
-//  else
-//    if i<CONST_MINVALUE_SHAREDMEMSIZE then
-//      edbxSharedMemSizeValue.Text:=IntToStr(CONST_MINVALUE_SHAREDMEMSIZE);
 end;
 
 procedure TConfigurationForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -492,12 +492,25 @@ const
   ICON_CONFIGURATION=3;
 begin
   ilConfigurationFormSmallImages.GetIcon(ICON_CONFIGURATION, Icon);
+
+  with cbPage do
+    begin
+      Clear;
+      with Items do
+        begin
+          Append(TEXT_CONFIGURATION_PAGE_INTERFACE);
+          Append(TEXT_CONFIGURATION_PAGE_LOCATION);
+          Append(TEXT_CONFIGURATION_PAGE_LOG);
+          Append(TEXT_CONFIGURATION_PAGE_WINDOW_SIZES);
+          Append(TEXT_CONFIGURATION_PAGE_OTHER);
+        end;
+    end;
+
   Action_Help.Enabled:=Application.HelpFile<>'';
-  MainForm.LogDebug('Действие "'+Action_Help.Caption+'" '+CommonFunctions.GetConditionalString(Action_Help.Enabled, 'в', 'от')+'ключено.');
+  MainForm.LogDebug(Format(TEXT_ACTION_SWITCHED, [Action_Help.Caption, CommonFunctions.GetConditionalString(Action_Help.Enabled, TEXT_ACTION_ON, TEXT_ACTION_OFF)]));
 
   with MainForm.Configuration do
     begin
-      // установка положения окна конфигурации в соответсвии со значениями конфигурации программы
       if ConfigurationFormPosition.Centered then
         Position:=poScreenCenter
       else
@@ -531,8 +544,8 @@ begin
 
       chkbxMainFormMaximized.Checked:=MainForm.WindowState=wsMaximized;
       chkbxMainFormCentered.Checked:=MainForm.Position=poDesktopCenter;
-      edbxMainFormLeftValue.Text:=CommonFunctions.GetConditionalString(not((MainForm.Position=poDesktopCenter) or (MainForm.WindowState=wsMaximized)), IntToStr(MainForm.Left), '');
-      edbxMainFormTopValue.Text:=CommonFunctions.GetConditionalString(not((MainForm.Position=poDesktopCenter) or (MainForm.WindowState=wsMaximized)), IntToStr(MainForm.Top), '');
+      edbxMainFormLeftValue.Text:=CommonFunctions.GetConditionalString(not((MainForm.Position=poDesktopCenter)or(MainForm.WindowState=wsMaximized)), IntToStr(MainForm.Left), '');
+      edbxMainFormTopValue.Text:=CommonFunctions.GetConditionalString(not((MainForm.Position=poDesktopCenter)or(MainForm.WindowState=wsMaximized)), IntToStr(MainForm.Top), '');
       edbxMainFormWidthValue.Text:=CommonFunctions.GetConditionalString(MainForm.WindowState=wsMaximized, '', IntToStr(MainForm.Width));
       edbxMainFormHeightValue.Text:=CommonFunctions.GetConditionalString(MainForm.WindowState=wsMaximized, '', IntToStr(MainForm.Height));
 
@@ -556,7 +569,7 @@ end;
 
 procedure TConfigurationForm.FormShow(Sender: TObject);
 begin
-  MainForm.LogInfo('Отображено окно настроек программы.');
+  MainForm.LogInfo(TEXT_CONFIGURATION_WINDOW_SHOWED);
 end;
 
 end.

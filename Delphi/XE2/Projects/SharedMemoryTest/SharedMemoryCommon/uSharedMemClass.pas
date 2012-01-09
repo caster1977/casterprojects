@@ -31,7 +31,9 @@ type
     FSize: cardinal;
 
     /// <summary>
-    ///
+    /// Время ожидания (в милисекундах) получения доступа к мьютексу,
+    /// обеспечивающему последовательный доступ (чтение/запись) к
+    /// одноименному  объекту общей памяти.
     /// </summary>
     FTimeOut: cardinal;
 
@@ -347,18 +349,11 @@ begin
 end;
 
 function TSharedMemClass._Open: boolean;
-//resourcestring
-//  TEXT_ERROR_CREATEFILEMAPPING_ALREADYEXISTS='Блок общей памяти с таким именем уже существует!';
 begin
   FHandle:=CreateFileMapping(INVALID_HANDLE_VALUE, nil, PAGE_READWRITE, 0, FSize, PWideChar(FName));
   Result:=FHandle<>NULL;
   if not Result then
     raise Exception.Create(TEXT_ERROR_CREATEFILEMAPPING+TEXT_ERRORCODE+IntToStr(GetLastError));
-  // чтобы получить доступ к уже существующему блоку памяти с указнным именем - нужно убрать следующий код
-//  else
-//    Result:=GetLastError<>ERROR_ALREADY_EXISTS;
-//  if not Result then
-//    raise Exception.Create(TEXT_ERROR_CREATEFILEMAPPING_ALREADYEXISTS+TEXT_ERRORCODE+IntToStr(GetLastError))
 end;
 
 function TSharedMemClass._Close: boolean;

@@ -12,18 +12,6 @@
 			<Projects Include="SharedMemoryCOM\SharedMemoryCOM.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="..\OA5\OA5.dproj">
-				<Dependencies/>
-			</Projects>
-			<Projects Include="..\Overseer\Overseer.dproj">
-				<Dependencies/>
-			</Projects>
-			<Projects Include="..\LogKeeper5\LogKeeper5.dproj">
-				<Dependencies/>
-			</Projects>
-			<Projects Include="..\CastersPackage\CastersPackage.dproj">
-				<Dependencies/>
-			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -59,50 +47,14 @@
 		<Target Name="SharedMemoryCOM:Make">
 			<MSBuild Projects="SharedMemoryCOM\SharedMemoryCOM.dproj" Targets="Make"/>
 		</Target>
-		<Target Name="OA5">
-			<MSBuild Projects="..\OA5\OA5.dproj"/>
-		</Target>
-		<Target Name="OA5:Clean">
-			<MSBuild Projects="..\OA5\OA5.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="OA5:Make">
-			<MSBuild Projects="..\OA5\OA5.dproj" Targets="Make"/>
-		</Target>
-		<Target Name="Overseer">
-			<MSBuild Projects="..\Overseer\Overseer.dproj"/>
-		</Target>
-		<Target Name="Overseer:Clean">
-			<MSBuild Projects="..\Overseer\Overseer.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="Overseer:Make">
-			<MSBuild Projects="..\Overseer\Overseer.dproj" Targets="Make"/>
-		</Target>
-		<Target Name="LogKeeper5">
-			<MSBuild Projects="..\LogKeeper5\LogKeeper5.dproj"/>
-		</Target>
-		<Target Name="LogKeeper5:Clean">
-			<MSBuild Projects="..\LogKeeper5\LogKeeper5.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="LogKeeper5:Make">
-			<MSBuild Projects="..\LogKeeper5\LogKeeper5.dproj" Targets="Make"/>
-		</Target>
-		<Target Name="CastersPackage">
-			<MSBuild Projects="..\CastersPackage\CastersPackage.dproj"/>
-		</Target>
-		<Target Name="CastersPackage:Clean">
-			<MSBuild Projects="..\CastersPackage\CastersPackage.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="CastersPackage:Make">
-			<MSBuild Projects="..\CastersPackage\CastersPackage.dproj" Targets="Make"/>
-		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="SharedMemoryServer;SharedMemoryClient;SharedMemoryCOM;OA5;Overseer;LogKeeper5;CastersPackage"/>
+			<CallTarget Targets="SharedMemoryServer;SharedMemoryClient;SharedMemoryCOM"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="SharedMemoryServer:Clean;SharedMemoryClient:Clean;SharedMemoryCOM:Clean;OA5:Clean;Overseer:Clean;LogKeeper5:Clean;CastersPackage:Clean"/>
+			<CallTarget Targets="SharedMemoryServer:Clean;SharedMemoryClient:Clean;SharedMemoryCOM:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="SharedMemoryServer:Make;SharedMemoryClient:Make;SharedMemoryCOM:Make;OA5:Make;Overseer:Make;LogKeeper5:Make;CastersPackage:Make"/>
+			<CallTarget Targets="SharedMemoryServer:Make;SharedMemoryClient:Make;SharedMemoryCOM:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
