@@ -739,7 +739,7 @@ resourcestring
   procedure Do_WPARAM_SERVER_WANNA_FILESIZE;
   resourcestring
     TEXT_RECEIVED_FILESIZE_QUERY='Получен запрос размера файла в байтах.';
-    TEXT_POSTED_FILESIZE='Отправлен размер передаваемого файла в байтах: [%s].';
+    TEXT_POSTED_FILESIZE='Отправлен размер передаваемого файла в байтах: %s.';
     TEXT_ERROR_READING_FILE='Не удалось открыть для чтения указанный файл! Файл уже открыт другой программой либо недостаточно прав доступа.';
     TEXT_SENDING_STARTED='Начата передача данных файла.';
   var
