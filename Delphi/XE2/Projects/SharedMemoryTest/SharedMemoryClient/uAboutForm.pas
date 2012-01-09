@@ -47,7 +47,8 @@ uses
   Winapi.Windows,
   System.SysUtils,
   Winapi.ShellAPI,
-  uMainForm;
+  uMainForm,
+  uCommon;
 
 procedure TAboutForm.FormCreate(Sender: TObject);
 begin
@@ -72,8 +73,9 @@ begin
       Timer2.Enabled:=True;
     end;
   btnClose.Default:=Action_Close.Visible;
-  lblVersion.Caption:=Format('Версия %d.%d Release %d Build %d', [gsFileVersionInfo1.ModuleVersion.Major, gsFileVersionInfo1.ModuleVersion.Minor, gsFileVersionInfo1.ModuleVersion.Release, gsFileVersionInfo1.ModuleVersion.Build]);
+  lblVersion.Caption:=Format(TEXT_APPLICATION_VERSION, [gsFileVersionInfo1.ModuleVersion.Major, gsFileVersionInfo1.ModuleVersion.Minor, gsFileVersionInfo1.ModuleVersion.Release, gsFileVersionInfo1.ModuleVersion.Build]);
   lblLegalCopyright.Caption:=gsFileVersionInfo1.LegalCopyright;
+  MainForm.LogInfo(Format(TEXT_WINDOW_SHOWED, [TEXT_ABOUTFORM_SUFFIX]));
 end;
 
 procedure TAboutForm.Action_CloseExecute(Sender: TObject);
@@ -86,6 +88,7 @@ procedure TAboutForm.Do_Close;
 begin
   // процедура закрытия модального окна с результатом mrClose
   ModalResult:=mrClose;
+  MainForm.LogInfo(Format(TEXT_WINDOW_CLOSED, [TEXT_ABOUTFORM_SUFFIX]));
 end;
 
 procedure TAboutForm.Timer1Timer(Sender: TObject);

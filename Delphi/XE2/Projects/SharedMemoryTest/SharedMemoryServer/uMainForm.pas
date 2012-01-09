@@ -71,6 +71,10 @@ type
     procedure Action_AboutExecute(Sender: TObject);
     procedure Action_OpenDestinationFolderExecute(Sender: TObject);
   strict private
+
+    /// <summary>
+    /// Интерфейс для доступа к COM-объекту, раздающему имя общей памяти
+    /// </summary>
     FSharedMemoryCOMInterface: ISharedMemoryCOMInterface;
 
     /// <summary>
@@ -94,49 +98,67 @@ type
     FConfiguration: TConfigurationClass;
 
     /// <summary>
-    /// Объект для рассылки широковещательного сообщения клиентским прилодениям
+    /// Объект нити для рассылки широковещательного сообщения клиентским прилодениям
     /// </summary>
     FConnectionThread: TRetranslatorThreadClass;
 
     /// <summary>
-    /// Объект для
+    /// Объект нити для опроса состояния соединения
     /// </summary>
     FWatchThread: TWatchThreadClass;
 
-    FFirstRun: boolean;
-    FClientConnected: boolean;
-    FClientHandle: THandle;
+    /// <summary>
+    /// Флаг состояния получения данных
+    /// </summary>
     FReceiving: boolean;
+
+    /// <summary>
+    /// Флаг состояния первичного запуска прилодения
+    /// </summary>
+    FFirstRun: boolean;
+
+    /// <summary>
+    /// Флаг состояния соединения с клиентом
+    /// </summary>
+    FClientConnected: boolean;
+
+    /// <summary>
+    /// Handle окна клиентского приложения
+    /// </summary>
+    FClientHandle: THandle;
+
+    /// <summary>
+    /// Имя файла для получения
+    /// </summary>
     FFileName: string;
 
-    procedure Refresh_ConnectionState;
     procedure ShowErrorBox(const aHandle: THandle; const aErrorMessage: string);
+    procedure ApplicationOnHint(Sender: TObject);
+    procedure SetConfiguration(const Value: TConfigurationClass);
+    procedure Log(const aMessage: string; aMessageType: TLogMessagesType);
 
+    procedure Do_RefreshConnectionState;
     procedure Do_LoadConfiguration;
     procedure Do_SaveConfiguration;
     procedure Do_ApplyConfiguration;
     procedure Do_About(const aButtonVisible: boolean);
     procedure Do_Configuration;
     procedure Do_OpenDestinationFolder;
-
-    function Do_RegisterWindowMessages: boolean;
-    function Do_ConnectionThreadStart: boolean;
     procedure Do_ConnectionThreadTerminate;
-    function Do_WatchThreadStart: boolean;
     procedure Do_WatchThreadTerminate;
-    procedure SetConfiguration(const Value: TConfigurationClass);
-    procedure Log(const aMessage: string; aMessageType: TLogMessagesType);
     procedure Do_UpdateColumnWidth;
     procedure Do_PlaySound;
-    procedure ApplicationOnHint(Sender: TObject);
+    function Do_RegisterWindowMessages: boolean;
+    function Do_ConnectionThreadStart: boolean;
+    function Do_WatchThreadStart: boolean;
   protected
     procedure WndProc(var Message: TMessage); override;
   public
-    procedure ProcessErrors(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
     procedure LogError(const aMessage: string);
     procedure LogWarning(const aMessage: string);
     procedure LogInfo(const aMessage: string);
     procedure LogDebug(const aMessage: string);
+    procedure ProcessErrors(const aHandle: THandle; const aError: boolean; const aErrorMessage: string);
     property Configuration: TConfigurationClass read FConfiguration write SetConfiguration stored False;
   end;
 
@@ -245,7 +267,7 @@ begin
       end;
       ListItem:=lvLog.Items.Add;
       ListItem.ImageIndex:=i;
-      ListItem.Caption:=FormatDateTime('dd.mm.yyyy hh:nn:ss', Now);
+      ListItem.Caption:=FormatDateTime(TEXT_DATETIME_FORMAT, Now);
       ListItem.SubItems.Add(aMessage);
       Do_UpdateColumnWidth;
       if Configuration.ScrollLogToBottom then
@@ -257,10 +279,10 @@ procedure TMainForm.miStatusBarClick(Sender: TObject);
 begin
   StatusBar1.Visible:=miStatusbar.Checked;
   Configuration.ShowStatusbar:=StatusBar1.Visible;
-  LogInfo('Панель статуса '+CommonFunctions.GetConditionalString(StatusBar1.Visible, 'в', 'от')+'ключена.');
+  LogInfo(Format(TEXT_STATUSBAR_SWITCHED, [CommonFunctions.GetConditionalString(StatusBar1.Visible, TEXT_STATUSBAR_ON, TEXT_STATUSBAR_OFF)]));
 end;
 
-procedure TMainForm.Refresh_ConnectionState;
+procedure TMainForm.Do_RefreshConnectionState;
 const
   ICON_BUSY=0;
   ICON_READY=1;
@@ -269,7 +291,7 @@ begin
     ilMainFormStateIcons.GetIcon(ICON_READY, imConnectionState.Picture.Icon)
   else
     ilMainFormStateIcons.GetIcon(ICON_BUSY, imConnectionState.Picture.Icon);
-  LogDebug('Индикатор соединения в'+CommonFunctions.GetConditionalString(FClientConnected, '', 'ы')+'ключен.');
+  LogDebug(Format(TEXT_CONNECTION_SWITCHED, [CommonFunctions.GetConditionalString(FClientConnected, TEXT_CONNECTION_ON, TEXT_CONNECTION_OFF)]));
   Application.ProcessMessages;
 end;
 
@@ -281,7 +303,7 @@ end;
 
 procedure TMainForm.ShowErrorBox(const aHandle: THandle; const aErrorMessage: string);
 begin
-  MessageBox(aHandle, PWideChar(aErrorMessage), PWideChar(TEXT_MAINFORM_CAPTION+' - Ошибка!'), MB_OK+MB_ICONERROR+MB_DEFBUTTON1);
+  MessageBox(aHandle, PWideChar(aErrorMessage), PWideChar(Format(TEXT_ERROR, [TEXT_MAINFORM_CAPTION])), MB_OK+MB_ICONERROR+MB_DEFBUTTON1);
   Application.ProcessMessages;
 end;
 
@@ -293,19 +315,19 @@ begin
   if not FFirstRun then
     begin
       bError:=False;
-      LogDebug('Производится попытка чтения настроек программы из файла...');
+      LogDebug(TEXT_CONFIGURATION_TRYING_TO_READ);
     end;
   try
     try
       Screen.Cursor:=crHourGlass;
       Configuration.Load;
-      LogInfo('Чтение настроек программы из файла конфигурации прошло успешно.');
+      LogInfo(TEXT_CONFIGURATION_SUCCESSFULLY_READED);
     finally
       Screen.Cursor:=crDefault;
     end;
   except
     if not FFirstRun then
-      CommonFunctions.GenerateError('Произошла ошибка при попытке чтения настроек программы из файла!', sErrorMessage, bError);
+      CommonFunctions.GenerateError(TEXT_CONFIGURATION_READ_ERROR, sErrorMessage, bError);
     Application.HandleException(Self);
   end;
   if not FFirstRun then
@@ -313,19 +335,23 @@ begin
 end;
 
 procedure TMainForm.Do_OpenDestinationFolder;
+resourcestring
+  TEXT_TRYING_TO_OPEN_DESTINATION_FOLDER='Производится попытка открытия папки приёма файлов...';
+  TEXT_DESTINATION_FOLDER_OPENED='Открыта папка приёма файлов.';
+  TEXT_DESTINATION_FOLDER_NOT_EXISTS='Папка приёма файлов не существует! Проверьте правильность указанного в настройках пути [%s]!';
 var
   sErrorMessage: string;
   bError: boolean;
 begin
   bError:=False;
-  LogDebug('Производится попытка открытия папки приёма файлов...');
+  LogDebug(TEXT_TRYING_TO_OPEN_DESTINATION_FOLDER);
   if DirectoryExists(Configuration.DestinationFolder) then
     begin
       ShellExecute(Application.Handle, 'open', PWideChar(Configuration.DestinationFolder), nil, nil, SW_MAXIMIZE);
-      LogInfo('Открыта папка приёма файлов.');
+      LogInfo(TEXT_DESTINATION_FOLDER_OPENED);
     end
   else
-    CommonFunctions.GenerateError('Папка приёма файлов не существует! Проверьте правильность указанного в настройках пути ['+Configuration.DestinationFolder+']!', sErrorMessage, bError);
+    CommonFunctions.GenerateError(Format(TEXT_DESTINATION_FOLDER_NOT_EXISTS, [Configuration.DestinationFolder]), sErrorMessage, bError);
   ProcessErrors(Handle, bError, sErrorMessage);
 end;
 
@@ -346,7 +372,7 @@ begin
     try
       Screen.Cursor:=crHourGlass;
       Configuration.Save;
-      LogInfo('Запись настроек программы в файл прошла успешно.');
+      LogInfo(TEXT_CONFIGURATION_SUCCESSFULLY_WRITTEN);
     finally
       Screen.Cursor:=crDefault;
     end;
@@ -354,12 +380,12 @@ begin
     on E: EIniFileException do
       begin
         CommonFunctions.GenerateError(E.Message, sErrorMessage, bError);
-        if MessageBox(Handle, PWideChar('Вы желаете повторить попытку записи настроек программы в файл?'), PWideChar(MainForm.Caption+' - Предупреждение'), MB_OKCANCEL+MB_ICONWARNING+MB_DEFBUTTON1)=IDOK then
+        if MessageBox(Handle, PWideChar(TEXT_DO_YOU_WANNA_RETRY_CONFIGURATION_SAVING), PWideChar(Format(TEXT_WARNING, [MainForm.Caption])), MB_OKCANCEL+MB_ICONWARNING+MB_DEFBUTTON1)=IDOK then
           try
             Screen.Cursor:=crHourGlass;
             try
               Configuration.Save;
-              LogInfo('Запись настроек программы в файл прошла успешно.');
+              LogInfo(TEXT_CONFIGURATION_SUCCESSFULLY_WRITTEN);
             except
               on E: EIniFileException do
                 CommonFunctions.GenerateError(E.Message, sErrorMessage, bError);
@@ -376,6 +402,8 @@ begin
 end;
 
 procedure TMainForm.Do_ConnectionThreadTerminate;
+resourcestring
+  TEXT_CONNECTION_THREAD_STOPPED='Поток поиска клиентов остановлен.';
 var
   Thread: TRetranslatorThreadClass;
 begin
@@ -384,7 +412,7 @@ begin
   if Assigned(Thread) then
     begin
       Thread.Terminate;
-      LogDebug('Поток поиска клиентов остановлен.');
+      LogDebug(TEXT_CONNECTION_THREAD_STOPPED);
     end;
 end;
 
@@ -396,7 +424,7 @@ begin
       FWatchThread:=TWatchThreadClass.Create(FClientHandle, Handle, WM_CLIENT, WPARAM_CLIENT_LOST);
       try
         FWatchThread.Start;
-        LogDebug('Поток наблюдения за наличием соединения с клиентом запущен.');
+        LogDebug(TEXT_WATCH_THREAD_STARTED);
         Result:=True;
       except
         on E: Exception do
@@ -414,7 +442,7 @@ begin
   if Assigned(Thread) then
     begin
       Thread.Terminate;
-      LogDebug('Поток наблюдения за наличием соединения с клиентом остановлен.');
+      LogDebug(TEXT_WATCH_THREAD_STOPPED);
     end;
 end;
 
@@ -468,7 +496,7 @@ begin
         Configuration.MainFormPosition:=FormPosition;
       end;
 
-  LogInfo('Применение настроек программы прошло успешно.');
+  LogInfo(TEXT_CONFIGURATION_SUCCESSFULLY_APPLIED);
 end;
 
 procedure TMainForm.Do_Configuration;
@@ -489,6 +517,8 @@ begin
 end;
 
 function TMainForm.Do_ConnectionThreadStart: boolean;
+resourcestring
+  TEXT_CONNECTION_THREAD_STARTED='Поток поиска клиентов запущен.';
 begin
   Result:=False;
   if not Assigned(FConnectionThread) then
@@ -496,7 +526,7 @@ begin
       FConnectionThread:=TRetranslatorThreadClass.Create(WM_SERVER, WPARAM_SERVER_WANNA_HANDLE, Handle);
       try
         FConnectionThread.Start;
-        LogDebug('Поток поиска клиентов запущен.');
+        LogDebug(TEXT_CONNECTION_THREAD_STARTED);
         Result:=True;
       except
         on E: Exception do
@@ -515,7 +545,7 @@ begin
     WM_CLIENT:=RegisterWindowMessage(PWideChar(TEXT_WM_SM_CLIENT));
     if WM_CLIENT=0 then
       raise Exception.Create(TEXT_REGISTERWINDOWMESSAGEERROR+TEXT_ERRORCODE+IntToStr(GetLastError));
-    LogDebug('Регистрация оконных сообщений выполнена успешно.');
+    LogDebug(TEXT_MESSAGE_REGISTRATION_COMPLETED_SUCCESSFULLY);
     Result:=True;
   except
     on E: Exception do
@@ -530,14 +560,14 @@ begin
   CanClose:=False;
 
   if Configuration.ShowConfirmationOnQuit then
-    CanClose:=MessageBox(Handle, PWideChar('Вы действительно хотите завершить работу программы?'), PWideChar(TEXT_MAINFORM_CAPTION+' - Подтверждение выхода'), MB_OKCANCEL+MB_ICONQUESTION+MB_DEFBUTTON2)=IDOK
+    CanClose:=MessageBox(Handle, PWideChar(TEXT_ARE_YOU_SURE_YOU_WANNA_QUIT), PWideChar(Format(TEXT_QIUT_CONFIRMATION, [TEXT_MAINFORM_CAPTION])), MB_OKCANCEL+MB_ICONQUESTION+MB_DEFBUTTON2)=IDOK
   else
     CanClose:=True;
   Application.ProcessMessages;
 
   if CanClose then
     begin
-      LogInfo('Завершение работы приложения было подтверждено.');
+      LogInfo(TEXT_QIUT_CONFIRMED);
       // применение текущих настроек главного окна к конфигурации
       FormPosition.Left:=Left;
       FormPosition.Top:=Top;
@@ -552,7 +582,7 @@ begin
         PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_SHUTDOWN, 0);
     end
   else
-    LogInfo('Завершение работы приложения было отменено пользователем.');
+    LogInfo(TEXT_QIUT_ABORTED_BY_USER);
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
@@ -598,84 +628,107 @@ end;
 procedure TMainForm.WndProc(var Message: TMessage);
 
   procedure Do_Disconnect;
+  resourcestring
+    TEXT_DISCONNECTED_FROM_CLIENT='Соединение с клиентом прервано.';
+    TEXT_CLIENT_HANDLE_CLEARED='Handle окна клиентского приложения обнулён.';
   begin
     pbMain.Visible:=False;
     Do_WatchThreadTerminate;
     FClientConnected:=False; // убираем флаш соединения
     FClientHandle:=0; // обнуляем хэндл клиента
-    LogDebug('Handle окна клиентского приложения обнулён.');
+    LogDebug(TEXT_CLIENT_HANDLE_CLEARED);
     FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
-    LogDebug('Объект доступа к порционному файлу уничтоден.');
+    LogDebug(TEXT_CHUNKEDFILE_OBJECT_DESTROYED);
     FreeAndNil(FSharedMem); // удаляем объект доступа к общей памяти
-    LogDebug('Объект доступа к общей памяти уничтоден.');
+    LogDebug(TEXT_SHARED_MEMORY_OBJECT_DESTROYED);
     if not Do_ConnectionThreadStart then // запускаем поток рассылки хэндла сервера
       Application.Terminate;
-    Refresh_ConnectionState;
-    LogInfo('Соединение с клиентом прервано.');
+    Do_RefreshConnectionState;
+    LogInfo(TEXT_DISCONNECTED_FROM_CLIENT);
   end;
 
   procedure Do_WPARAM_CLIENT_SHUTDOWN;
+  resourcestring
+    TEXT_CLIENT_SHUTDOWN='Получено уведомление о завершении работы клиента.';
   begin
-    LogWarning('Получено уведомление о завершении работы клиента.');
+    LogWarning(TEXT_CLIENT_SHUTDOWN);
     Do_Disconnect;
   end;
 
   procedure Do_WPARAM_CLIENT_LOST;
+  resourcestring
+    TEXT_CLIENT_LOST='Произошла непредвиденная потеря соединения с сервером!';
   begin
-    LogError('Произошла непредвиденная потеря соединения с сервером!');
+    LogError(TEXT_CLIENT_LOST);
     Do_Disconnect;
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_HANDLE(const Handle: THandle);
+  resourcestring
+    TEXT_CLIENT_SENDS_ANSWER_ON_BROADCAST='Получен ответ клиента на широковещательное сообщение.';
+    TEXT_CONNECTION_WITH_CLIENT_ESTABLISHED='Соединение с клиентом установлено.';
+    TEXT_RECEIVED_CLIENTS_HANDLE='Получен Handle окна клиентского приложения: %s.';
+    TEXT_POSTED_SUCCESSFUL_CONNECTION_NOTIFICATION='Отправлено уведомление об успешном подключении.';
   begin
-    LogInfo('Получен ответ клиента на широковещательное сообщение.');
+    LogInfo(TEXT_CLIENT_SENDS_ANSWER_ON_BROADCAST);
 
-    LogInfo('Соединение с клиентом установлено.');
+    LogInfo(TEXT_CONNECTION_WITH_CLIENT_ESTABLISHED);
     Do_ConnectionThreadTerminate; // останавливаем поток, рассылающий хэндл сервера
     FClientHandle:=Handle; // получаем хэндл клиента
-    LogDebug('Получен Handle окна клиентского приложения: '+IntToStr(Handle)+'.');
+    LogDebug(Format(TEXT_RECEIVED_CLIENTS_HANDLE, [IntToStr(Handle)]));
     FClientConnected:=True; // устанавливаем флаш соединения
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_ACCEPT_CLIENT, 0); // отправляет клиенту подтверждение подключения
-    LogDebug('Отправлено уведомление об успешном подключении.');
+    LogDebug(TEXT_POSTED_SUCCESSFUL_CONNECTION_NOTIFICATION);
     if not Do_WatchThreadStart then
       Application.Terminate;
-    Refresh_ConnectionState;
+    Do_RefreshConnectionState;
   end;
 
   procedure Do_WPARAM_CLIENT_WANNA_SEND_FILE;
+  resourcestring
+    TEXT_RECEIVED_CLIENT_WANNA_SEND_FILE_NOTIFICATION='Получено уведомление о попытке передачи файла клиентом.';
+    TEXT_SENDED_CHUNK_SIZE='Отправлен размер порции для передачи данных файла: %s.';
+    TEXT_SENDED_FILENAME_QUERY='Отправлен запрос на имя передаваемого файла.';
   begin
-    LogInfo('Получено уведомление о попытке передачи файла клиентом.');
+    LogInfo(TEXT_RECEIVED_CLIENT_WANNA_SEND_FILE_NOTIFICATION);
 
     FReceiving:=True;
     FSharedMem:=TSharedMemClass.Create(Configuration.SharedMemoryName, Configuration.SharedMemSize);
 
-    LogDebug('Создан объект доступа к общей памяти.');
+    LogDebug(TEXT_SHARED_MEMORY_OBJECT_CREATED);
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_SENDS_SHAREDMEM_SIZE, Configuration.SharedMemSize); // отправляем клиенту размер блока общей памяти для обмена данными
-    LogDebug('Отправлен размер порции для передачи данных файла: '+IntToStr(Int64(Configuration.SharedMemSize))+'.');
+    LogDebug(Format(TEXT_SENDED_CHUNK_SIZE, [IntToStr(Int64(Configuration.SharedMemSize))]));
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILENAME, 0); // требуем от клиента имя файла
-    LogDebug('Отправлен запрос на имя передаваемого файла.');
+    LogDebug(TEXT_SENDED_FILENAME_QUERY);
   end;
 
   procedure Do_WPARAM_CLIENT_WANNA_CANCEL_SENDING;
+  resourcestring
+    TEXT_CLIENT_WANNA_CANCEL_SENDING='Получено уведомление об отмене передачи файла клиентом.';
   begin
-    LogWarning('Получено уведомление об отмене передачи файла клиентом.');
+    LogWarning(TEXT_CLIENT_WANNA_CANCEL_SENDING);
     FReceiving:=False;
     pbMain.Visible:=False;
     FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
-    LogDebug('Объект доступа к порционному файлу уничтоден.');
+    LogDebug(TEXT_CHUNKEDFILE_OBJECT_DESTROYED);
     FreeAndNil(FSharedMem); // удаляем текущий объект доступа к общей памяти
-    LogDebug('Объект доступа к общей памяти уничтоден.');
+    LogDebug(TEXT_SHARED_MEMORY_OBJECT_DESTROYED);
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_FILENAME(const dwSize: cardinal);
+  resourcestring
+    TEXT_RECEIVED_CLIENT_SENDS_FILENAME_NOTIFICATION='Получено уведомление о передаче клиентом имени файла.';
+    TEXT_RECEIVED_FILENAME_SIZE='Размер имени передаваемого клиентом файла в байтах: %s.';
+    TEXT_RECEIVED_FILENAME='Получено имя передаваемого клиентом файла: [%s].';
+    TEXT_POSTED_FILESIZE_QUERY='Отправлен запрос на размер передаваемого файла.';
   begin
-    LogDebug('Получено уведомление о передаче клиентом имени файла.');
+    LogDebug(TEXT_RECEIVED_CLIENT_SENDS_FILENAME_NOTIFICATION);
 
-    LogDebug('Размер имени передаваемого клиентом файла в байтах: '+IntToStr(Int64(dwSize))+'.');
+    LogDebug(Format(TEXT_RECEIVED_FILENAME_SIZE, [IntToStr(Int64(dwSize))]));
     if not Assigned(FChunk) then
       begin
         FChunk:=TChunkClass.Create;
-        LogDebug('Создан объект порции данных.');
+        LogDebug(TEXT_CHUNK_OBJECT_CREATED);
       end;
     try
       FSharedMem.Mapped:=True;
@@ -684,38 +737,44 @@ procedure TMainForm.WndProc(var Message: TMessage);
       FFilename:=StringOf(FChunk.Data);
     finally
       FreeAndNil(FChunk);
-      LogDebug('Объект порции данных уничтожен.');
+      LogDebug(TEXT_CHUNK_OBJECT_DESTROYED);
     end;
-    LogInfo('Получено имя передаваемого клиентом файла: ['+FFileName+']');
+    LogInfo(Format(TEXT_RECEIVED_FILENAME, [FFileName]));
 
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_FILESIZE, 0); // требуем от клиента размер файла
-    LogDebug('Отправлен запрос на размер передаваемого файла.');
+    LogDebug(TEXT_POSTED_FILESIZE_QUERY);
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_FILESIZE(const dwSize: cardinal);
+  resourcestring
+    TEXT_RECEIVED_FILESIZE_STRING_NOTIFICATION='Получен размер строки передаваемого клиентом размера файла в байтах: %s.';
+    TEXT_FILESIZE_STRING='Строка размера файла в байтах: %s.';
+    TEXT_FILESIZE='Размер файла в байтах: %s.';
+    TEXT_RECEIVING_STARTED='Начат приём данных файла.';
+    TEXT_SENDED_CHUNK_DATA_QUERY='Отправлен запрос на получение очередной порции данных.';
   var
     aSize: Int64;
     s: string;
   begin
-    LogDebug('Получен размер строки передаваемого клиентом размера файла в байтах: ['+IntToStr(Int64(dwSize))+'].');
+    LogDebug(Format(TEXT_RECEIVED_FILESIZE_STRING_NOTIFICATION, [IntToStr(Int64(dwSize))]));
 
     if not Assigned(FChunk) then
       begin
         FChunk:=TChunkClass.Create;
-        LogDebug('Создан объект порции данных.');
+        LogDebug(TEXT_CHUNK_OBJECT_CREATED);
       end;
     try
       FSharedMem.Mapped:=True;
       FSharedMem.Read(dwSize, FChunk);
       FSharedMem.Mapped:=False;
       s:=StringOf(FChunk.Data);
-      LogDebug('Строка размера файла в байтах: '+s+'.');
+      LogDebug(Format(TEXT_FILESIZE_STRING, [s]));
       aSize:=StrToInt64Def(s, -1);
     finally
       FreeAndNil(FChunk);
-      LogDebug('Объект порции данных уничтожен.');
+      LogDebug(TEXT_CHUNK_OBJECT_DESTROYED);
     end;
-    LogInfo('Размер файла в байтах: '+IntToStr(aSize)+'.');
+    LogInfo(Format(TEXT_FILESIZE, [IntToStr(aSize)]));
 
     if not Assigned(FChunkedFile) then
       begin
@@ -723,24 +782,28 @@ procedure TMainForm.WndProc(var Message: TMessage);
         pbMain.Max:=FChunkedFile.Count;
         pbMain.Position:=pbMain.Min;
         pbMain.Visible:=True;
-        LogDebug('Создан объект доступа к порционному файлу.');
-        LogInfo('Начат приём данных файла.');
+        LogDebug(TEXT_CHUNKEDFILE_OBJECT_CREATED);
+        LogInfo(TEXT_RECEIVING_STARTED);
         PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, FChunkedFile.Index); // требуем от клиента указанный блок файла
-        LogDebug('Отправлен запрос на получение очередной порции данных.');
+        LogDebug(TEXT_SENDED_CHUNK_DATA_QUERY);
       end
     else
-      raise Exception.Create('Объект порционного файла уже был ранее создан!');
+      raise Exception.Create(TEXT_CHUNKEDFILE_OBJECT_CREATION_ERROR);
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_DATA(const dwSize: cardinal);
+  resourcestring
+    TEXT_RECEIVED_CLIENT_SENDS_DATA_NOTIFICATION='Получено уведомление о передаче клиентом порции данных файла.';
+    TEXT_CHUNK_SIZE='Размер порции данных передаваемого клиентом файла в байтах: %s.';
+    TEXT_CRC32_OF_CHUNK_QUERY='Отправлен запрос на получение контрольной суммы очередной порции данных.';
   begin
-    LogDebug('Получено уведомление о передаче клиентом порции данных файла.');
+    LogDebug(TEXT_RECEIVED_CLIENT_SENDS_DATA_NOTIFICATION);
 
-    LogDebug('Размер порции данных передаваемого клиентом файла в байтах: '+IntToStr(Int64(dwSize))+'.');
+    LogDebug(Format(TEXT_CHUNK_SIZE, [IntToStr(Int64(dwSize))]));
     if not Assigned(FChunk) then
       begin
         FChunk:=TChunkClass.Create;
-        LogDebug('Создан объект порции данных.');
+        LogDebug(TEXT_CHUNK_OBJECT_CREATED);
       end;
     FSharedMem.Mapped:=True;
     FSharedMem.Read(dwSize, FChunk);
@@ -749,18 +812,31 @@ procedure TMainForm.WndProc(var Message: TMessage);
     // данные остались в объекте порции данных
     // теперь требуем CRC32 блока
     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_CRC32, FChunkedFile.Index); // требуем от клиента CRC32 указанной порции данных файла
-    LogDebug('Отправлен запрос на получение контрольной суммы очередной порции данных.');
+    LogDebug(TEXT_CRC32_OF_CHUNK_QUERY);
   end;
 
   procedure Do_WPARAM_CLIENT_SENDS_CRC32(const dwCRC32: cardinal);
+  resourcestring
+    TEXT_RECEIVED_CRC32_OF_CHUNK='Получена контрольная сумма переданной клиентом порции данных файла.';
+    TEXT_CRC32_OF_CHUNK='Контрольная сумма переданной клиентом порции данных файла: %s.';
+    TEXT_CRC32_OF_CHUNK_IS_LEGAL='Контрольная сумма порции данных совпала.';
+    TEXT_SENDED_CHUNK_QUERY='Отправлен запрос на получение очередной порции данных.';
+    TEXT_FILE_TRANSFER_COMPLETE='Окончен приём данных файла.';
+    TEXT_FILE_TRANSFER_COMPLETE_SUCCESSFULLY_NOTIFICATION='Отправлено уведомление об успешной передаче файла.';
+    TEXT_FILE_TRANSFER_COMPLETE_SUCCESSFULLY='Файл успешно принят.';
+    TEXT_FILE_TRANSFER_COMPLETE_ERROR_NOTIFICATION='Отправлено уведомление об ошибке при передаче файла.';
+    TEXT_FILE_TRANSFER_COMPLETE_ERROR='Файл не был принят!';
+    TEXT_WRONG_CRC32_OF_CHUNK='Контрольная сумма порции данных номер %s не совпала!';
+    TEXT_REPEAT_RECEIVING_OF_CHUNK='Проводим повторное получение порции данных номер %s.';
+    TEXT_SENDED_REPEAT_RECEIVING_OF_CHUNK_QUERY='Отправлен запрос на повторное получение порции данных.';
   begin
-    LogDebug('Получена контрольная сумма переданной клиентом порции данных файла.');
+    LogDebug(TEXT_RECEIVED_CRC32_OF_CHUNK);
 
-    LogDebug('Контрольная сумма переданной клиентом порции данных файла: '+IntToHex(dwCRC32, 8)+'.');
+    LogDebug(Format(TEXT_CRC32_OF_CHUNK, [IntToHex(dwCRC32, 8)]));
     // проводим сверку полученной контрольной суммы и контрольной суммы ранее полученной порции данных файла
     if FChunk.CRC32=dwCRC32 then
       begin
-        LogDebug('Контрольная сумма порции данных совпала.');
+        LogDebug(TEXT_CRC32_OF_CHUNK_IS_LEGAL);
         // контрольная сумма совпала, можно записывать данные в файл
         FChunkedFile.Write(FChunk);
         // проверка, была ли получена последняя порция данных файла
@@ -770,30 +846,30 @@ procedure TMainForm.WndProc(var Message: TMessage);
             pbMain.StepBy(1);
             // нужно запросить следующую порцию данных
             PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, FChunkedFile.Index); // требуем от клиента указанный блок файла
-            LogDebug('Отправлен запрос на получение очередной порции данных.');
+            LogDebug(TEXT_SENDED_CHUNK_QUERY);
           end
         else
           begin
             // последняя порция данных, можно уведомить клиент об успешной передаче данных и закрыть файл
             try
               try
-                LogInfo('Окончен приём данных файла.');
+                LogInfo(TEXT_FILE_TRANSFER_COMPLETE);
                 FChunkedFile.Complete:=True;
 
                 PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_TRANSFER_COMPLETE, 0); // уведомляем клиент об успешном окончании передачи файла
-                LogDebug('Отправлено уведомление об успешной передаче файла.');
+                LogDebug(TEXT_FILE_TRANSFER_COMPLETE_SUCCESSFULLY_NOTIFICATION);
 
-                LogInfo('Файл успешно принят.');
+                LogInfo(TEXT_FILE_TRANSFER_COMPLETE_SUCCESSFULLY);
               except
                 on E: Exception do
                   begin
                     FReceiving:=False;
 
                     PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_TRANSFER_ERROR, 0); // уведомляем клиент об ошибке при передаче файла
-                    LogDebug('Отправлено уведомление об ошибке при передаче файла.');
+                    LogDebug(TEXT_FILE_TRANSFER_COMPLETE_ERROR_NOTIFICATION);
 
                     LogError(E.Message);
-                    LogWarning('Файл не был принят!');
+                    LogWarning(TEXT_FILE_TRANSFER_COMPLETE_ERROR);
                   end;
               end;
             finally
@@ -801,10 +877,10 @@ procedure TMainForm.WndProc(var Message: TMessage);
               Application.ProcessMessages;
 
               FreeAndNil(FChunkedFile); // удаляем объект доступа к порционному файлу
-              LogDebug('Объект доступа к порционному файлу уничтоден.');
+              LogDebug(TEXT_CHUNKEDFILE_OBJECT_DESTROYED);
 
               FreeAndNil(FSharedMem); // удаляем текущий объект доступа к общей памяти
-              LogDebug('Объект доступа к общей памяти уничтоден.');
+              LogDebug(TEXT_SHARED_MEMORY_OBJECT_DESTROYED);
 
               if Configuration.PlaySoundOnComplete then
                 Do_PlaySound;
@@ -814,10 +890,10 @@ procedure TMainForm.WndProc(var Message: TMessage);
     else
       begin
         // контрольная сумма не совпала, требуется повторно получить порцию данных файла
-        LogError('Контрольная сумма порции данных номер '+IntToStr(FChunkedFile.Index)+' не совпала!');
-        LogInfo('Проводим повторное получение порции данных номер '+IntToStr(FChunkedFile.Index)+'.');
+        LogError(Format(TEXT_WRONG_CRC32_OF_CHUNK, [IntToStr(FChunkedFile.Index)]));
+        LogInfo(Format(TEXT_REPEAT_RECEIVING_OF_CHUNK, [IntToStr(FChunkedFile.Index)]));
         PostMessage(FClientHandle, WM_SERVER, WPARAM_SERVER_WANNA_DATA, FChunkedFile.Index); // требуем от клиента указанный блок файла
-        LogDebug('Отправлен запрос на повторное получение порции данных.');
+        LogDebug(TEXT_SENDED_REPEAT_RECEIVING_OF_CHUNK_QUERY);
       end;
   end;
 
@@ -854,7 +930,7 @@ end;
 procedure TMainForm.chkbxScrollLogToBottomClick(Sender: TObject);
 begin
   Configuration.ScrollLogToBottom:=chkbxScrollLogToBottom.Enabled and chkbxScrollLogToBottom.Checked;
-  LogInfo('Прокурутка к последнему сообщению протокола '+CommonFunctions.GetConditionalString(Configuration.ScrollLogToBottom, 'в', 'от')+'ключена.');
+  LogInfo(Format(TEXT_SCROLLLOG_SWITCHED, [CommonFunctions.GetConditionalString(Configuration.ScrollLogToBottom, TEXT_SCROLLLOG_ON, TEXT_SCROLLLOG_OFF)]));
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -888,7 +964,7 @@ begin
   FConfiguration:=TConfigurationClass.Create; // создание и инициализщация объекта конфигурации
   BindMainProgressBarToStatusBar;
   BindStateImageToStatusBar;
-  Refresh_ConnectionState;
+  Do_RefreshConnectionState;
   Application.OnHint:=ApplicationOnHint;
   Do_LoadConfiguration; // загрузка настроек из файла
   Do_ApplyConfiguration; // применение настроек к интерфейсу
@@ -897,11 +973,11 @@ begin
     FSharedMemoryCOMInterface:=CoSharedMemoryCOMCoClass.Create;
     FSharedMemoryCOMInterface.GetSharedMemoryName(s);
     Configuration.SharedMemoryName:=s;
-    LogInfo('Получено имя объекта общей памяти: '+Configuration.SharedMemoryName+'.');
+    LogInfo(Format(TEXT_SHARED_MEMORY_NAME_GETTING_SUCCESSFULLY, [Configuration.SharedMemoryName]));
   except
-    Configuration.SharedMemoryName:='{6579B61D-DA05-480A-A29B-B0998A354860}';
-    LogError('Не удалось получить имя объекта общей памяти!');
-    LogWarning('Будет использовано имя общей памяти по умолчанию: '+Configuration.SharedMemoryName+'.');
+    Configuration.SharedMemoryName:=TEXT_DEFAULT_SHARED_MEMORY_NAME;
+    LogError(TEXT_SHARED_MEMORY_NAME_GETTING_ERROR);
+    LogWarning(Format(TEXT_SHARED_MEMORY_NAME_USED_DEFAULT, [Configuration.SharedMemoryName]));
   end;
 end;
 

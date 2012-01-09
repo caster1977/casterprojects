@@ -15,7 +15,10 @@ uses
   Vcl.StdCtrls,
   System.Win.ComObj,
   Winapi.ActiveX,
-  SharedMemoryCOMLibrary_TLB;
+  SharedMemoryCOMLibrary_TLB,
+  Vcl.ActnList,
+  Vcl.PlatformDefaultStyleActnCtrls,
+  Vcl.ActnMan;
 
 type
   TSharedMemoryCOMCoClass=class(TTypedComObject, ISharedMemoryCOMInterface)
@@ -24,16 +27,23 @@ type
   end;
 
   TMainForm=class(TForm)
-    Button1: TButton;
-    Label1: TLabel;
-    Edit1: TEdit;
-    Button2: TButton;
-    procedure Button1Click(Sender: TObject);
+    btnRegisterCOMServer: TButton;
+    lblSharedMemoryName: TLabel;
+    edbxSharedMemoryName: TEdit;
+    btnUnregisterCOMServer: TButton;
+    ActionManager1: TActionManager;
+    Action_Register: TAction;
+    Action_Unregister: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
+    procedure Action_UnregisterExecute(Sender: TObject);
+    procedure Action_RegisterExecute(Sender: TObject);
   strict private
     FSharedMemoryName: WideString;
+    procedure Do_RegisterCOMServer;
+    procedure Do_UnregisterCOMServer;
+    function Do_IsRegistered: boolean;
+    procedure Do_UpdateActions;
   private
     property SharedMemoryName: WideString read FSharedMemoryName;
   end;
@@ -61,7 +71,26 @@ begin
     Result:=S_FALSE;
 end;
 
-procedure TMainForm.Button1Click(Sender: TObject);
+procedure TMainForm.Action_RegisterExecute(Sender: TObject);
+begin
+  Do_RegisterCOMServer;
+end;
+
+procedure TMainForm.Action_UnregisterExecute(Sender: TObject);
+begin
+  Do_UnregisterCOMServer;
+end;
+
+function TMainForm.Do_IsRegistered: boolean;
+var
+  i: integer;
+begin
+  Result:=False;
+  if RegQueryValue(HKEY_CLASSES_ROOT, PWideChar(Format('CLSID\%s\TypeLib', [GUIDToString(CLASS_SharedMemoryCOMCoClass)])), PWideChar(GUIDToString(LIBID_SharedMemoryCOMLibrary)), i)=ERROR_SUCCESS then
+    Result:=True;
+end;
+
+procedure TMainForm.Do_RegisterCOMServer;
 var
   ShellExecuteInfo: TShellExecuteInfo;
 begin
@@ -75,10 +104,11 @@ begin
   ShellExecuteInfo.lpDirectory:=nil;
   ShellExecuteInfo.nShow:=SW_NORMAL;
   ShellExecuteEx(@ShellExecuteInfo);
+  Sleep(1000);
   Show;
 end;
 
-procedure TMainForm.Button2Click(Sender: TObject);
+procedure TMainForm.Do_UnregisterCOMServer;
 var
   ShellExecuteInfo: TShellExecuteInfo;
 begin
@@ -92,41 +122,32 @@ begin
   ShellExecuteInfo.lpDirectory:=nil;
   ShellExecuteInfo.nShow:=SW_NORMAL;
   ShellExecuteEx(@ShellExecuteInfo);
+  Sleep(1000);
   Show;
 end;
 
-procedure TMainForm.FormCreate(Sender: TObject);
+procedure TMainForm.Do_UpdateActions;
 var
-  s: string;
-  i: integer;
+  b: boolean;
+begin
+  b:=Do_IsRegistered;
+  Action_Register.Enabled:=not b;
+  Action_Unregister.Enabled:=b;
+end;
+
+procedure TMainForm.FormCreate(Sender: TObject);
 begin
   FSharedMemoryName:=TPath.GetGUIDFileName(True);
-  Edit1.Text:=FSharedMemoryName;
-  (*
-    if ParamCount>0 then
-    for i:=1 to ParamCount do
-    begin
-    s:=UpperCase(ParamStr(i));
-    if ((s='/REGSERVER')or(s='-REGSERVER')or(s='/REGSERVERPERUSER')or(s='-REGSERVERPERUSER')) then
-    begin
-    MessageBox(Handle, PWideChar('Регистрация выполнена.'), PWideChar(Caption+' - Информация'), MB_OK+MB_ICONINFORMATION+MB_DEFBUTTON1);
-    Application.Terminate;
-    end;
-    if ((s='/UNREGSERVER')or(s='-UNREGSERVER')or(s='/UNREGSERVERPERUSER')or(s='-UNREGSERVERPERUSER')) then
-    begin
-    MessageBox(Handle, PWideChar('Отмена регистрации выполнена.'), PWideChar(Caption+' - Информация'), MB_OK+MB_ICONINFORMATION+MB_DEFBUTTON1);
-    Application.Terminate;
-    end;
-    end;
-  *)
+  edbxSharedMemoryName.Text:=FSharedMemoryName;
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
 const
   BCM_SETSHIELD: integer=$160C; // Для отображения кнопки со щитом
 begin
-  SendMessage(Button1.Handle, BCM_SETSHIELD, 0, $FFFFFFFF);
-  SendMessage(Button2.Handle, BCM_SETSHIELD, 0, $FFFFFFFF);
+  Do_UpdateActions;
+  SendMessage(btnRegisterCOMServer.Handle, BCM_SETSHIELD, 0, LPARAM($FFFFFFFF));
+  SendMessage(btnUnregisterCOMServer.Handle, BCM_SETSHIELD, 0, LPARAM($FFFFFFFF));
 end;
 
 initialization

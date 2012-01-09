@@ -54,8 +54,15 @@ type
     /// Флаг успешного завершения работы с файлом
     /// </summary>
     FComplete: boolean;
-  private
+
+    /// <summary>
+    /// Метод, контролирующий получение значения свойства <b>Count</b> в зависимости от текущих условий.
+    /// </summary>
     function GetCount: cardinal;
+
+    /// <summary>
+    /// Метод, контролирующий устанавку значения свойства <b>Complete</b> в зависимости от текущих условий.
+    /// </summary>
     procedure SetComplete(const Value: boolean);
   public
 
@@ -151,7 +158,6 @@ begin
   inherited Create;
   FIndex:=0;
   FName:=Trim(FileName);
-  // FComplete:=True;
 
   // если размер порции менее одного байта
   if SizeOfChunk<1 then
