@@ -19,7 +19,7 @@ type
 
 const
   // вкладка "настройки интерфейса"
-  DefaultValue_ShowAboutWindowAtLaunch: boolean=True;
+  DefaultValue_ShowSplashAtStart: boolean=True;
   DefaultValue_ShowToolbar: boolean=True;
   DefaultValue_ShowStatusbar: boolean=True;
   DefaultValue_ShowEditboxHints: boolean=True;
@@ -109,7 +109,7 @@ type
     FLastPassword: string;
 
     // вкладка "настройки интерфейса"
-    FShowAboutWindowAtLaunch: boolean; // Отображать окно "О программе..." при запуске
+    FShowSplashAtStart: boolean; // Отображать окно "О программе..." при запуске
     FShowToolbar: boolean; // Отображать панель кнопок
     FShowStatusbar: boolean; // Отображать панель статуса
     FShowEditboxHints: boolean; // Отображать всплывающие подсказки для полей ввода
@@ -237,7 +237,7 @@ type
     procedure SetRNE4Server(const Value: TMySQLConnection);
     procedure SetCustomReportFolderValue(const Value: string);
     procedure SetSetPasswordFormPosition(const Value: TFormPosition);
-    procedure SetShowAboutWindowAtLaunch(const Value: boolean);
+    procedure SetShowSplashAtStart(const Value: boolean);
     procedure SetShowCommonSearchEditbox(const Value: boolean);
     procedure SetShowConfirmationAtQuit(const Value: boolean);
     procedure SetShowDataInOtherInfoPanel(const Value: boolean);
@@ -298,7 +298,7 @@ type
     property LastPassword: string read FLastPassword stored False;
 
     // вкладка "настройки интерфейса"
-    property ShowAboutWindowAtLaunch: boolean read FShowAboutWindowAtLaunch write SetShowAboutWindowAtLaunch default True;
+    property ShowSplashAtStart: boolean read FShowSplashAtStart write SetShowSplashAtStart default True;
     property ShowToolbar: boolean read FShowToolbar write SetShowToolbar default True;
     property ShowStatusbar: boolean read FShowStatusbar write SetShowStatusbar default True;
     property ShowEditboxHints: boolean read FShowEditboxHints write SetShowEditboxHints default True;
@@ -406,7 +406,7 @@ begin
     with TIniFile.Create(FileName) do
       try
         // вкладка "настройки интерфейса"
-        ShowAboutWindowAtLaunch:=ReadBool('Интерфейс', 'bShowAboutWindowAtLaunch', DefaultValue_ShowAboutWindowAtLaunch);
+        ShowSplashAtStart:=ReadBool('Интерфейс', 'bShowSplashAtStart', DefaultValue_ShowSplashAtStart);
         ShowToolbar:=ReadBool('Интерфейс', 'bShowToolbar', DefaultValue_ShowToolbar);
         ShowStatusbar:=ReadBool('Интерфейс', 'bShowStatusbar', DefaultValue_ShowStatusbar);
         ShowEditboxHints:=ReadBool('Интерфейс', 'bShowEditboxHints', DefaultValue_ShowEditboxHints);
@@ -608,7 +608,7 @@ begin
         try
           try
             // вкладка "настройки интерфейса"
-            WriteBool('Интерфейс', 'bShowAboutWindowAtLaunch', ShowAboutWindowAtLaunch);
+            WriteBool('Интерфейс', 'bShowSplashAtStart', ShowSplashAtStart);
             WriteBool('Интерфейс', 'bShowToolbar', ShowToolbar);
             WriteBool('Интерфейс', 'bShowStatusbar', ShowStatusbar);
             WriteBool('Интерфейс', 'bShowEditboxHints', ShowEditboxHints);
@@ -853,10 +853,10 @@ begin
     FSetPasswordFormPosition:=Value;
 end;
 
-procedure TConfiguration.SetShowAboutWindowAtLaunch(const Value: boolean);
+procedure TConfiguration.SetShowSplashAtStart(const Value: boolean);
 begin
-  if FShowAboutWindowAtLaunch<>Value then
-    FShowAboutWindowAtLaunch:=Value;
+  if FShowSplashAtStart<>Value then
+    FShowSplashAtStart:=Value;
 end;
 
 procedure TConfiguration.SetShowCommonSearchEditbox(const Value: boolean);
@@ -1183,7 +1183,7 @@ begin
   FLastPassword:='';
 
   // вкладка "настройки интерфейса"
-  FShowAboutWindowAtLaunch:=DefaultValue_ShowAboutWindowAtLaunch;
+  FShowSplashAtStart:=DefaultValue_ShowSplashAtStart;
   FShowToolbar:=DefaultValue_ShowToolbar;
   FShowStatusbar:=DefaultValue_ShowStatusbar;
   FShowEditboxHints:=DefaultValue_ShowEditboxHints;

@@ -96,7 +96,6 @@ type
     procedure Button1Click(Sender: TObject);
   strict private
     bFirstRun: boolean;
-    bAboutWindowExist: boolean;
     procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
     procedure PreShowModal(const aWindowName: string; var aOldBusyState: integer);
@@ -130,6 +129,7 @@ implementation
 {$R *.dfm}
 
 uses
+  System.IOUtils,
   CommCtrl,
   uAboutForm,
   uConfigurationForm,
@@ -142,13 +142,13 @@ uses
   uRoutines;
 
 type
-  THackControl = class(TControl);
+  THackControl=class(TControl);
 
 resourcestring
-  sAboutFormSuffix = '"О программе..."';
-  sConfigurationFormSuffix = 'настроек программы';
-  sReportFormSuffix = 'формирования статистических отчётов по работе пользователей';
-  sMultiBufferFormSuffix = 'мультибуфера';
+  sAboutFormSuffix='"О программе..."';
+  sConfigurationFormSuffix='настроек программы';
+  sReportFormSuffix='формирования статистических отчётов по работе пользователей';
+  sMultiBufferFormSuffix='мультибуфера';
 
 procedure TMainForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
 begin
@@ -274,22 +274,15 @@ var
 begin
   ProcedureHeader('Процедура отображения окна '+sAboutFormSuffix, '{754C2801-ED59-4595-AC3E-20DBF98F6779}');
 
-  if bAboutWindowExist then
-    SetForegroundWindow(FindWindow('TAboutForm', 'About "OVERSEER"...'))
-  else
-    begin
-      AboutForm:=TAboutForm.Create(Self);
-      with AboutForm do
-        try
-          bAboutWindowExist:=True;
-          Action_Close.Visible:=aButtonVisible;
-          PreShowModal(sAboutFormSuffix, iBusy);
-          ShowModal;
-        finally
-          PostShowModal(sAboutFormSuffix, iBusy);
-          Free;
-          bAboutWindowExist:=False;
-        end;
+  AboutForm:=TAboutForm.Create(Self);
+  with AboutForm do
+    try
+      Action_Close.Visible:=aButtonVisible;
+      PreShowModal(sAboutFormSuffix, iBusy);
+      ShowModal;
+    finally
+      PostShowModal(sAboutFormSuffix, iBusy);
+      Free;
     end;
 
   ProcedureFooter;
@@ -399,6 +392,8 @@ begin
     begin
       iBusyCounter:=0;
       bFirstRun:=False;
+      if Configuration.ShowSplashAtStart then
+        Do_About(False);
     end;
   Refresh_BusyState;
 
@@ -621,15 +616,8 @@ begin
         begin
           aListItem:=lvBuffer.Items.Add;
           aListItem.Caption:=IntToStr(i);
-          aListItem.SubItems.Add(
-            MeasuresMultiBuffer[i]._Type+'|'+
-            MeasuresMultiBuffer[i]._Name+'|'+
-            MeasuresMultiBuffer[i]._Author+'|'+
-            MeasuresMultiBuffer[i]._Producer+'|'+
-            MeasuresMultiBuffer[i]._Performer+'|'+
-            MeasuresMultiBuffer[i]._Organizer+'|'+
-            MeasuresMultiBuffer[i]._TicketPrice+'|'+
-            string(MeasuresMultiBuffer[i]._OtherInfoPlane));
+          aListItem.SubItems.Add(MeasuresMultiBuffer[i]._Type+'|'+MeasuresMultiBuffer[i]._Name+'|'+MeasuresMultiBuffer[i]._Author+'|'+MeasuresMultiBuffer[i]._Producer+'|'+MeasuresMultiBuffer[i]._Performer+'|'+MeasuresMultiBuffer[i]._Organizer+'|'+
+            MeasuresMultiBuffer[i]._TicketPrice+'|'+string(MeasuresMultiBuffer[i]._OtherInfoPlane));
         end;
       PreShowModal(sMultiBufferFormSuffix, iBusy);
       ShowModal;

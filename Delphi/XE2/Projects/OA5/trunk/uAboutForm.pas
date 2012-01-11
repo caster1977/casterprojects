@@ -53,6 +53,13 @@ uses
   ShellAPI,
   uMainForm;
 
+resourcestring
+  TEXT_ERROR_CREATE_MUTEX='Не удалось создать мьютекс!';
+  TEXT_ERROR_WAITFOR_MUTEX='Не удалось считать состояние мьютекса!';
+  TEXT_ERROR_RELEASE_MUTEX='Не удалось удалить мьютекс!';
+  TEXT_ERROR_CLOSE_MUTEX_HANDLE='Не удалось закрыть идентификатор мьютекса!';
+  TEXT_ERRORCODE=' Код ошибки: ';
+
 procedure TAboutForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
   Log.EnterMethod(aTitle, aLogGroupGUID);

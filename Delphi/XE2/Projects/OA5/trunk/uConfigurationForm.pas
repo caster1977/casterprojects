@@ -197,7 +197,7 @@ type
     edbxCustomHelpFileValue: TEdit;
     btnChooseCustomHelpFile: TButton;
     chkbxLaunchAtStartup: TCheckBox;
-    chkbxShowAboutWindowAtLaunch: TCheckBox;
+    chkbxShowSplashAtStart: TCheckBox;
     chkbxShowToolbar: TCheckBox;
     chkbxShowStatusbar: TCheckBox;
     chkbxShowEditboxHints: TCheckBox;
@@ -390,7 +390,7 @@ begin
   with MainForm.Configuration do
     begin
       // вкладка "настройки интерфейса"
-      ShowAboutWindowAtLaunch:=chkbxShowAboutWindowAtLaunch.Enabled and chkbxShowAboutWindowAtLaunch.Checked;
+      ShowSplashAtStart:=chkbxShowSplashAtStart.Enabled and chkbxShowSplashAtStart.Checked;
       ShowToolbar:=chkbxShowToolbar.Enabled and chkbxShowToolbar.Checked;
       ShowStatusbar:=chkbxShowStatusbar.Enabled and chkbxShowStatusbar.Checked;
       ShowEditboxHints:=chkbxShowEditboxHints.Enabled and chkbxShowEditboxHints.Checked;
@@ -861,7 +861,7 @@ begin
   if PageControl1.ActivePage.Caption=' интерфейса' then
     begin
       // выставление значений по умолчанию для контролов
-      chkbxShowAboutWindowAtLaunch.Checked:=DefaultValue_ShowAboutWindowAtLaunch;
+      chkbxShowSplashAtStart.Checked:=DefaultValue_ShowSplashAtStart;
       chkbxShowToolbar.Checked:=DefaultValue_ShowToolbar;
       chkbxShowStatusbar.Checked:=DefaultValue_ShowStatusbar;
       chkbxShowEditboxHints.Checked:=DefaultValue_ShowEditboxHints;
@@ -1286,7 +1286,7 @@ begin
         end;
 
       // вкладка "настройки интерфейса"
-      chkbxShowAboutWindowAtLaunch.Checked:=ShowAboutWindowAtLaunch;
+      chkbxShowSplashAtStart.Checked:=ShowSplashAtStart;
       chkbxShowToolbar.Checked:=ShowToolbar;
       chkbxShowStatusbar.Checked:=ShowStatusbar;
       chkbxShowEditboxHints.Checked:=ShowEditboxHints;
@@ -1466,12 +1466,12 @@ begin
       Log.SendDebug('Действие "'+Action_ChooseCustomHelpFile.Caption+'" '+Routines.GetConditionalString(Action_ChooseCustomHelpFile.Enabled, 'в', 'от')+'ключено.');
 
       // вкладка "настройки главного окна"
-      edbxMainFormPositionX.Text:=Routines.GetConditionalString(not(MainFormPositionByCenter or FullScreenAtLaunch), IntToStr(MainFormLeft), '');
-      edbxMainFormPositionY.Text:=Routines.GetConditionalString(not(MainFormPositionByCenter or FullScreenAtLaunch), IntToStr(MainFormTop), '');
-      chkbxMainFormPositionByCenter.Checked:=MainFormPositionByCenter and(not FullScreenAtLaunch);
-      edbxMainFormWidth.Text:=Routines.GetConditionalString(FullScreenAtLaunch, '', IntToStr(MainFormWidth));
-      edbxMainFormHeight.Text:=Routines.GetConditionalString(FullScreenAtLaunch, '', IntToStr(MainFormHeight));
-      chkbxFullScreenAtLaunch.Checked:=FullScreenAtLaunch;
+      chkbxFullScreenAtLaunch.Checked:=MainForm.WindowState=wsMaximized;
+      chkbxMainFormPositionByCenter.Checked:=MainForm.Position=poScreenCenter;
+      edbxMainFormPositionX.Text:=Routines.GetConditionalString(not((MainForm.Position=poScreenCenter) or (MainForm.WindowState=wsMaximized)), IntToStr(MainForm.Left), '');
+      edbxMainFormPositionY.Text:=Routines.GetConditionalString(not((MainForm.Position=poScreenCenter) or (MainForm.WindowState=wsMaximized)), IntToStr(MainForm.Top), '');
+      edbxMainFormWidth.Text:=Routines.GetConditionalString(MainForm.WindowState=wsMaximized, '', IntToStr(MainForm.Width));
+      edbxMainFormHeight.Text:=Routines.GetConditionalString(MainForm.WindowState=wsMaximized, '', IntToStr(MainForm.Height));
 
       // вкладка "настройки отображения информации"
       edbxOrganizationPanelHeightValue.Text:=Routines.GetConditionalString(OrganizationPanelHalfHeight, '', IntToStr(OrganizationPanelHeightValue));
