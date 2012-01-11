@@ -169,6 +169,10 @@ object ConfigurationForm: TConfigurationForm
         object ts1: TTabSheet
           Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object chkbxShowSplashAtStart: TCheckBox
             Left = 0
             Top = 0
@@ -206,6 +210,10 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1088#1072#1089#1087#1086#1083#1086#1078#1077#1085#1080#1103' '#1092#1072#1081#1083#1086#1074' '#1080' '#1087#1072#1087#1086#1082
           ImageIndex = 4
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object lblDestinationFolder: TLabel
             Left = 0
             Top = 3
@@ -236,6 +244,10 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1086#1083#1086#1078#1077#1085#1080#1103' '#1080' '#1088#1072#1079#1084#1077#1088#1086#1074' '#1086#1082#1086#1085
           ImageIndex = 8
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Bevel1: TBevel
             Left = 0
             Top = 0
@@ -402,6 +414,10 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1074#1077#1076#1077#1085#1080#1103' '#1087#1088#1086#1090#1086#1082#1086#1083#1072' '#1088#1072#1073#1086#1090#1099
           ImageIndex = 1
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object chkbxKeepInfoLog: TCheckBox
             Left = 0
             Top = 3
@@ -439,6 +455,10 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1087#1088#1086#1095#1080#1077
           ImageIndex = 6
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object lblWatchPause: TLabel
             Left = 0
             Top = 26
@@ -510,7 +530,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 432
     Top = 192
     Bitmap = {
-      494C0101060008003C0310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800400310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
