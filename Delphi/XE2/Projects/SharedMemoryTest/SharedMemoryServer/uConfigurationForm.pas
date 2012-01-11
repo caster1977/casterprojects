@@ -543,9 +543,9 @@ begin
       chkbxKeepDebugLog.Checked:=lmtDebug in KeepLogTypes;
 
       chkbxMainFormMaximized.Checked:=MainForm.WindowState=wsMaximized;
-      chkbxMainFormCentered.Checked:=MainForm.Position=poDesktopCenter;
-      edbxMainFormLeftValue.Text:=CommonFunctions.GetConditionalString(not((MainForm.Position=poDesktopCenter)or(MainForm.WindowState=wsMaximized)), IntToStr(MainForm.Left), '');
-      edbxMainFormTopValue.Text:=CommonFunctions.GetConditionalString(not((MainForm.Position=poDesktopCenter)or(MainForm.WindowState=wsMaximized)), IntToStr(MainForm.Top), '');
+      chkbxMainFormCentered.Checked:=MainForm.Position=poScreenCenter;
+      edbxMainFormLeftValue.Text:=CommonFunctions.GetConditionalString(not((MainForm.Position=poScreenCenter)or(MainForm.WindowState=wsMaximized)), IntToStr(MainForm.Left), '');
+      edbxMainFormTopValue.Text:=CommonFunctions.GetConditionalString(not((MainForm.Position=poScreenCenter)or(MainForm.WindowState=wsMaximized)), IntToStr(MainForm.Top), '');
       edbxMainFormWidthValue.Text:=CommonFunctions.GetConditionalString(MainForm.WindowState=wsMaximized, '', IntToStr(MainForm.Width));
       edbxMainFormHeightValue.Text:=CommonFunctions.GetConditionalString(MainForm.WindowState=wsMaximized, '', IntToStr(MainForm.Height));
 

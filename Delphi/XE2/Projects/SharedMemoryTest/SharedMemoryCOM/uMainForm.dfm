@@ -39,7 +39,6 @@ object MainForm: TMainForm
     ParentColor = True
     ReadOnly = True
     TabOrder = 0
-    ExplicitWidth = 334
   end
   object btnRegisterCOMServer: TButton
     Left = 8
@@ -50,7 +49,6 @@ object MainForm: TMainForm
     Action = Action_Register
     Anchors = [akLeft, akRight, akBottom]
     TabOrder = 1
-    ExplicitWidth = 334
   end
   object btnUnregisterCOMServer: TButton
     Left = 8
@@ -61,7 +59,6 @@ object MainForm: TMainForm
     Action = Action_Unregister
     Anchors = [akLeft, akRight, akBottom]
     TabOrder = 2
-    ExplicitWidth = 334
   end
   object ActionManager1: TActionManager
     Left = 32
