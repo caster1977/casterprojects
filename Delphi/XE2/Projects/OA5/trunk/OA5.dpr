@@ -17,7 +17,9 @@ uses
   uMultiBufferForm in 'uMultiBufferForm.pas' {MultiBufferForm},
   uTypes in 'uTypes.pas',
   uMultiBufferClass in 'uMultiBufferClass.pas',
-  uMeasureDataClass in 'uMeasureDataClass.pas';
+  uMeasureDataClass in 'uMeasureDataClass.pas',
+  Vcl.Themes,
+  Vcl.Styles;
 
 {$R *.res}
 
