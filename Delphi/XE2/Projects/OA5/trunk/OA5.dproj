@@ -120,16 +120,15 @@
 			<DCCReference Include="uLoginForm.pas">
 				<Form>LoginForm</Form>
 			</DCCReference>
-			<DCCReference Include="uConsts.pas"/>
+			<DCCReference Include="OA5.uConsts.pas"/>
 			<DCCReference Include="uAboutForm.pas">
 				<Form>AboutForm</Form>
 			</DCCReference>
 			<DCCReference Include="uConfigurationForm.pas">
 				<Form>ConfigurationForm</Form>
 			</DCCReference>
-			<DCCReference Include="uConfigurationClass.pas"/>
-			<DCCReference Include="uMySQLConnectionClass.pas"/>
-			<DCCReference Include="uUserClass.pas"/>
+			<DCCReference Include="OA5.uConfigurationClass.pas"/>
+			<DCCReference Include="OA5.uUserClass.pas"/>
 			<DCCReference Include="uAddMassMsrForm.pas">
 				<Form>AddMassMsrForm</Form>
 			</DCCReference>
@@ -147,9 +146,9 @@
 				<Form>MultiBufferForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
-			<DCCReference Include="uTypes.pas"/>
-			<DCCReference Include="uMultiBufferClass.pas"/>
-			<DCCReference Include="uMeasureDataClass.pas"/>
+			<DCCReference Include="OA5.uTypes.pas"/>
+			<DCCReference Include="OA5.uMultiBufferClass.pas"/>
+			<DCCReference Include="OA5.uMeasureDataClass.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

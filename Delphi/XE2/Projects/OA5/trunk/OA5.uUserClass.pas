@@ -1,4 +1,4 @@
-﻿unit uUserClass;
+﻿unit OA5.uUserClass;
 
 interface
 
@@ -35,7 +35,7 @@ type
 implementation
 
 uses
-  SysUtils;
+  System.SysUtils;
 
 constructor TUser.Create;
 begin

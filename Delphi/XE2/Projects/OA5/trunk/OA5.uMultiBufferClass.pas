@@ -1,10 +1,10 @@
-unit uMultiBufferClass;
+unit OA5.uMultiBufferClass;
 
 interface
 
 uses
   System.Generics.Collections,
-  uMeasureDataClass;
+  OA5.uMeasureDataClass;
 
 resourcestring
   SMultiBufferIndexError='Задан неверный индекс элемента буфера!';
@@ -50,6 +50,7 @@ end;
 constructor TMultiBufferClass.Create;
 begin
   inherited;
+  FItems:=nil;
 end;
 
 procedure TMultiBufferClass._Delete(const Index: integer);
