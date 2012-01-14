@@ -104,7 +104,7 @@ begin
   ShellExecuteInfo.lpDirectory:=nil;
   ShellExecuteInfo.nShow:=SW_NORMAL;
   ShellExecuteEx(@ShellExecuteInfo);
-  Sleep(1000);
+  Sleep(2000);
   Show;
 end;
 
@@ -122,7 +122,7 @@ begin
   ShellExecuteInfo.lpDirectory:=nil;
   ShellExecuteInfo.nShow:=SW_NORMAL;
   ShellExecuteEx(@ShellExecuteInfo);
-  Sleep(1000);
+  Sleep(2000);
   Show;
 end;
 
