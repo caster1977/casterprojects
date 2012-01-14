@@ -1,5 +1,5 @@
 ﻿{$WARNINGS OFF}
-unit uSingleton;
+unit CastersPackage.uSingleton;
 
 interface
 

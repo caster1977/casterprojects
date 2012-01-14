@@ -1,12 +1,12 @@
-﻿unit uLogClasses;
+﻿unit CastersPackage.uLogClasses;
 
 interface
 
 uses
-  Windows,
-  LogKeeperData,
-  Classes,
-  Generics.Collections;
+  Winapi.Windows,
+  CastersPackage.LogKeeperData,
+  System.Classes,
+  System.Generics.Collections;
 
 type
   TLogDestination=class;
@@ -102,12 +102,12 @@ type
 implementation
 
 uses
-  uCOMInitClass,
-  uLogProvider,
-  XMLDoc,
-  XMLIntf,
-  SysUtils,
-  Forms;
+  CastersPackage.uCOMInitClass,
+  CastersPackage.uLogProvider,
+  Xml.XMLDoc,
+  Xml.XMLIntf,
+  System.SysUtils,
+  Vcl.Forms;
 
 const
   DEFAULT_FILENAME_SUFFIX: string='';

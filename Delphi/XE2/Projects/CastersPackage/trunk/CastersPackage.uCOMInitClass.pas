@@ -1,4 +1,4 @@
-﻿unit uCOMInitClass;
+﻿unit CastersPackage.uCOMInitClass;
 
 interface
 

@@ -1,7 +1,7 @@
 package CastersPackage;
 
 {$R *.res}
-{$R 'fisSysMenu.dcr'}
+{$R 'CastersPackage.fisSysMenu.dcr'}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -35,17 +35,17 @@ requires
   xmlrtl;
 
 contains
-  getFVI in 'getFVI.pas',
-  SysMenu in 'SysMenu.pas',
-  fisSysMenu in 'fisSysMenu.pas',
-  ListViewEx in 'ListViewEx.pas',
-  uLogProvider in 'uLogProvider.pas',
-  LogKeeperData in 'LogKeeperData.pas',
-  uCOMInitClass in 'uCOMInitClass.pas',
-  uLogClasses in 'uLogClasses.pas',
-  uRoutines in 'uRoutines.pas',
-  mysql in 'mysql.pas',
-  uSingleton in 'uSingleton.pas',
-  uTypes in 'uTypes.pas';
+  CastersPackage.getFVI in 'CastersPackage.getFVI.pas',
+  CastersPackage.SysMenu in 'CastersPackage.SysMenu.pas',
+  CastersPackage.fisSysMenu in 'CastersPackage.fisSysMenu.pas',
+  CastersPackage.ListViewEx in 'CastersPackage.ListViewEx.pas',
+  CastersPackage.uLogProvider in 'CastersPackage.uLogProvider.pas',
+  CastersPackage.LogKeeperData in 'CastersPackage.LogKeeperData.pas',
+  CastersPackage.uCOMInitClass in 'CastersPackage.uCOMInitClass.pas',
+  CastersPackage.uLogClasses in 'CastersPackage.uLogClasses.pas',
+  CastersPackage.uRoutines in 'CastersPackage.uRoutines.pas',
+  CastersPackage.mysql in 'CastersPackage.mysql.pas',
+  CastersPackage.uSingleton in 'CastersPackage.uSingleton.pas',
+  CastersPackage.uTypes in 'CastersPackage.uTypes.pas';
 
 end.

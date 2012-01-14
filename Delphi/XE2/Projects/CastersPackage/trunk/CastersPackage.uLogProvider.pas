@@ -1,15 +1,15 @@
-﻿unit uLogProvider;
+﻿unit CastersPackage.uLogProvider;
 
 interface
 
 uses
-  Windows,
-  Messages,
-  Classes,
-  Generics.Collections,
-  Forms,
-  uLogClasses,
-  LogKeeperData;
+  Winapi.Windows,
+  Winapi.Messages,
+  System.Classes,
+  System.Generics.Collections,
+  Vcl.Forms,
+  CastersPackage.uLogClasses,
+  CastersPackage.LogKeeperData;
 
 type
   TLogProvider=class(TComponent)
@@ -70,11 +70,11 @@ procedure register;
 implementation
 
 uses
-  XMLDoc,
-  XMLIntf,
-  WinSock,
-  Controls,
-  SysUtils;
+  Xml.XMLDoc,
+  Xml.XMLIntf,
+  Winapi.WinSock,
+  Vcl.Controls,
+  System.SysUtils;
 
 procedure register;
 begin
