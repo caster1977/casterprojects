@@ -15,7 +15,7 @@ uses
   ValEdit,
   Grids,
   ComCtrls,
-  uLogProvider,
+  CastersPackage.uLogProvider,
   ImgList,
   PlatformDefaultStyleActnCtrls;
 
@@ -280,7 +280,7 @@ uses
   Dialogs,
   SysUtils,
   Messages,
-  LogKeeperData,
+  CastersPackage.LogKeeperData,
   FileCtrl,
   uMainForm,
   uLoginForm,
@@ -289,7 +289,7 @@ uses
   uSetPasswordForm,
   uPermissionsForm,
   uReportForm,
-  uRoutines,
+  CastersPackage.uRoutines,
   OA5.uConfigurationClass;
 
 procedure TConfigurationForm.ProcedureHeader(aTitle, aLogGroupGUID: string);

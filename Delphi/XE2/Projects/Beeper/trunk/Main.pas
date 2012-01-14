@@ -24,7 +24,7 @@ uses
   ExtCtrls,
   XPMan,
   ImgList,
-  getFVI,
+  CastersPackage.getFVI,
   AppEvnts,
   IniFiles,
   ToolTip;

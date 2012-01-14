@@ -15,7 +15,7 @@ uses
   Vcl.ActnList,
   Vcl.PlatformDefaultStyleActnCtrls,
   Vcl.ActnMan,
-  uLogProvider,
+  CastersPackage.uLogProvider,
   Vcl.ImgList,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
@@ -67,7 +67,7 @@ implementation
 uses
   uTypes,
   uMainForm,
-  uRoutines;
+  CastersPackage.uRoutines;
 
 procedure TMultiBufferForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin

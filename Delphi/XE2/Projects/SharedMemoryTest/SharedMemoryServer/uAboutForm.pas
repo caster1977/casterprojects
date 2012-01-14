@@ -7,7 +7,7 @@ uses
   ActnList,
   ActnMan,
   ExtCtrls,
-  getFVI,
+  CastersPackage.getFVI,
   StdCtrls,
   Classes,
   PlatformDefaultStyleActnCtrls,

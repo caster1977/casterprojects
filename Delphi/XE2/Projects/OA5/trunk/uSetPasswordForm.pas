@@ -12,7 +12,7 @@ uses
   Vcl.ImgList,
   Vcl.Mask,
   Vcl.StdCtrls,
-  uLogProvider,
+  CastersPackage.uLogProvider,
   Winapi.Windows,
   Vcl.PlatformDefaultStyleActnCtrls;
 
@@ -58,7 +58,7 @@ implementation
 uses
   SysUtils,
   uMainForm,
-  uRoutines;
+  CastersPackage.uRoutines;
 
 procedure TSetPasswordForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin

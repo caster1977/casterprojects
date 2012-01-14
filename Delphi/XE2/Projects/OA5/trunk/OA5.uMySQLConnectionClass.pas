@@ -3,10 +3,10 @@
 interface
 
 uses
-  uLogProvider,
+  CastersPackage.uLogProvider,
   System.SysUtils,
   System.Classes,
-  mysql;
+  CastersPackage.mysql;
 
 type
   EMySQLException=class(Exception);

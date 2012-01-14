@@ -23,7 +23,7 @@ uses
   OA5.uConfigurationClass,
   ExtCtrls,
   CodeSiteLogging,
-  uLogProvider,
+  CastersPackage.uLogProvider,
   StdCtrls,
   Sockets,
   IdTCPConnection,
@@ -138,8 +138,8 @@ uses
   OA5.uMeasureDataClass,
   uAddMassMsrForm,
   uLoginForm,
-  OA5Consts,
-  uRoutines;
+  OA5.uConsts,
+  CastersPackage.uRoutines;
 
 type
   THackControl=class(TControl);

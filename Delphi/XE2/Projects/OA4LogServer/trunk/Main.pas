@@ -12,7 +12,7 @@ uses
   Controls,
   Forms,
   Dialogs,
-  getFVI,
+  CastersPackage.getFVI,
   ComCtrls,
   ExtCtrls,
   ImgList,
