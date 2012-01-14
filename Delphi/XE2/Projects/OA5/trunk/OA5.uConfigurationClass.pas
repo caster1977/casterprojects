@@ -1,11 +1,11 @@
-﻿unit uConfigurationClass;
+﻿unit OA5.uConfigurationClass;
 
 interface
 
 uses
-  uMySQLConnectionClass,
+  OA5.uMySQLConnectionClass,
   LogKeeperData,
-  Types,
+  System.Types,
   mysql,
   uSingleton;
 

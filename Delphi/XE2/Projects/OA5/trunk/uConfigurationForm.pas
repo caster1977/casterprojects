@@ -290,7 +290,7 @@ uses
   uPermissionsForm,
   uReportForm,
   uRoutines,
-  uConfigurationClass;
+  OA5.uConfigurationClass;
 
 procedure TConfigurationForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin

@@ -19,8 +19,8 @@ uses
   ActnList,
   ActnMan,
   ImgList,
-  uUserClass,
-  uConfigurationClass,
+  OA5.uUserClass,
+  OA5.uConfigurationClass,
   ExtCtrls,
   CodeSiteLogging,
   uLogProvider,
@@ -38,7 +38,7 @@ uses
   XMLDoc,
   Vcl.AppEvnts,
   System.IniFiles,
-  uMultiBufferClass;
+  OA5.uMultiBufferClass;
 
 type
   TMainForm=class(TForm)
@@ -135,7 +135,7 @@ uses
   uConfigurationForm,
   uReportForm,
   uMultiBufferForm,
-  uMeasureDataClass,
+  OA5.uMeasureDataClass,
   uAddMassMsrForm,
   uLoginForm,
   OA5Consts,

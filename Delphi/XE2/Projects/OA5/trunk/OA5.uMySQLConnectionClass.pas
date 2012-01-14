@@ -1,15 +1,15 @@
-﻿unit uMySQLConnectionClass;
+﻿unit OA5.uMySQLConnectionClass;
 
 interface
 
 uses
   uLogProvider,
-  SysUtils,
-  Classes,
+  System.SysUtils,
+  System.Classes,
   mysql;
 
 type
-  MySQLException=class(Exception);
+  EMySQLException=class(Exception);
 
   TMySQLConnection=class
   strict private
@@ -38,7 +38,7 @@ type
     procedure SendWarning(Value: string);
     procedure SendInfo(Value: string);
     procedure SendSQL(Value: string);
-    procedure RaiseMySQLException(Value: string);
+    procedure RaiseEMySQLException(Value: string);
   protected
     function GetLastErrorInfo: string;
     class function PrepareStringValueForQuery(const Source: string; AddCommas, ReturnNull: boolean): string; static;
@@ -99,11 +99,11 @@ begin
     end;
 end;
 
-procedure TMySQLConnection.RaiseMySQLException(Value: string);
+procedure TMySQLConnection.RaiseEMySQLException(Value: string);
 begin
   if Assigned(FLogProvider) then
     FLogProvider.SendError(Value);
-  raise MySQLException.Create(Value);
+  raise EMySQLException.Create(Value);
 end;
 
 procedure TMySQLConnection.SendDebug(Value: string);
@@ -197,15 +197,15 @@ begin
   SendDebug('Операция по выполнению SQL-запроса не возвращающего результирующую выборку запущена...');
   try
     if not Connected then
-      RaiseMySQLException('Для выполнения операции необходимо подключение к серверу MySQL!')
+      RaiseEMySQLException('Для выполнения операции необходимо подключение к серверу MySQL!')
     else
       if mysql_ping(Connection)<>0 then
-        RaiseMySQLException('Возникла ошибка при попытке проверки подключения к серверу MySQL!')
+        RaiseEMySQLException('Возникла ошибка при попытке проверки подключения к серверу MySQL!')
       else
         begin
           SendSQL(SQL);
           if mysql_real_query(Connection, PAnsiChar(AnsiString(SQL)), Length(SQL))<>0 then
-            RaiseMySQLException('Возникла ошибка при выполнении SQL-запроса!')
+            RaiseEMySQLException('Возникла ошибка при выполнении SQL-запроса!')
           else
             begin
               Result:=0;
@@ -223,28 +223,28 @@ begin
   SendDebug('Операция по выполнению SQL-запроса запущена...');
   try
     if not Connected then
-      RaiseMySQLException('Для выполнения операции необходимо подключение к серверу MySQL!')
+      RaiseEMySQLException('Для выполнения операции необходимо подключение к серверу MySQL!')
     else
       if mysql_ping(Connection)<>0 then
-        RaiseMySQLException('Возникла ошибка при попытке проверки подключения к серверу MySQL!')
+        RaiseEMySQLException('Возникла ошибка при попытке проверки подключения к серверу MySQL!')
       else
         begin
           SendSQL(SQL);
           if mysql_real_query(Connection, PAnsiChar(AnsiString(SQL)), Length(SQL))<>0 then
-            RaiseMySQLException('Возникла ошибка при выполнении SQL-запроса!')
+            RaiseEMySQLException('Возникла ошибка при выполнении SQL-запроса!')
           else
             begin
               SendDebug('SQL-запрос выполнен успешно.');
               ResultSet:=mysql_store_result(Connection);
               if ResultSet=nil then
-                RaiseMySQLException('Не удалось получить результирующую выборку по SQL-запросу!')
+                RaiseEMySQLException('Не удалось получить результирующую выборку по SQL-запросу!')
               else
                 begin
                   SendDebug('Результирующая выборка получена успешно.');
                   Result:=mysql_num_rows(ResultSet);
                   SendDebug('Количество строк выборки равно '+IntToStr(Result)+'.');
                   if Result<0 then
-                    RaiseMySQLException('Возникла ошибка при получении количества срок результирующей выборки!')
+                    RaiseEMySQLException('Возникла ошибка при получении количества срок результирующей выборки!')
                   else
                     SendDebug('Операция по выполнению SQL-запроса выполнена успешно.');
                 end;
@@ -269,7 +269,7 @@ begin
       begin
         ResultRow:=mysql_fetch_row(ResultSet);
         if not Assigned(ResultRow) then
-          RaiseMySQLException('Возникла ошибка при получении данных очередной строки выборки!')
+          RaiseEMySQLException('Возникла ошибка при получении данных очередной строки выборки!')
         else
           begin
             num_fields:=mysql_num_fields(ResultSet);
@@ -297,23 +297,23 @@ begin
   SendDebug('Операция по обновления данных таблицы базы данных ...');
   try
     if not Connected then
-      RaiseMySQLException('Для выполнения операции необходимо подключение к MySQL-серверу!')
+      RaiseEMySQLException('Для выполнения операции необходимо подключение к MySQL-серверу!')
     else
       begin
         if mysql_ping(Connection)<>0 then
-          RaiseMySQLException('Возникла ошибка при попытке проверки подключения к MySQL-серверу!')
+          RaiseEMySQLException('Возникла ошибка при попытке проверки подключения к MySQL-серверу!')
         else
           begin
             SendSQL(SQL);
             if mysql_real_query(Connection, PAnsiChar(AnsiString(SQL)), Length(SQL))<>0 then
-              RaiseMySQLException('Возникла ошибка при выполнении SQL-запроса!')
+              RaiseEMySQLException('Возникла ошибка при выполнении SQL-запроса!')
             else
               begin
                 SendDebug('SQL-запрос выполнен успешно.');
                 Result:=mysql_affected_rows(Connection);
                 SendDebug('Количество обновлённых строк равно '+IntToStr(Result)+'.');
                 if Result<0 then
-                  RaiseMySQLException('Количество обновлённых строк ('+IntToStr(Result)+') не соответствует требуемому (>=0)!')
+                  RaiseEMySQLException('Количество обновлённых строк ('+IntToStr(Result)+') не соответствует требуемому (>=0)!')
                 else
                   SendDebug('Операция по обновлению данных таблицы базы данных выполнена успешно.');
               end;
@@ -331,12 +331,12 @@ begin
       SendDebug('Выполняется операция подключения к MySQL-серверу '+Host+':'+IntToStr(Port)+'...');
       Connection:=mysql_init(nil);
       if Connection=nil then
-        RaiseMySQLException('Возникла ошибка при инициализации объекта соединения с MySQL-сервером '+Host+':'+IntToStr(Port)+'!')
+        RaiseEMySQLException('Возникла ошибка при инициализации объекта соединения с MySQL-сервером '+Host+':'+IntToStr(Port)+'!')
       else
         begin
           SendDebug('Инициализация объекта соединения с MySQL-сервером '+Host+':'+IntToStr(Port)+' выполнена успешно.');
           if Connection<>mysql_real_connect(Connection, PAnsiChar(AnsiString(Host)), PAnsiChar(AnsiString(Login)), PAnsiChar(AnsiString(Password)), PAnsiChar(AnsiString(Database)), Port, nil, integer(Compression)*CLIENT_COMPRESS) then
-            RaiseMySQLException('Возникла ошибка при при попытке подключения к MySQL-серверу '+Host+':'+IntToStr(Port)+'!')
+            RaiseEMySQLException('Возникла ошибка при при попытке подключения к MySQL-серверу '+Host+':'+IntToStr(Port)+'!')
           else
             begin
               FConnected:=True;
