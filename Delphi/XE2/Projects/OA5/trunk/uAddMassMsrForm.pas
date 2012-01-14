@@ -9,7 +9,7 @@ uses
   ExtCtrls,
   StdCtrls,
   ComCtrls,
-  uLogProvider,
+  CastersPackage.uLogProvider,
   ActnList,
   ActnMan,
   ImgList,
@@ -76,7 +76,7 @@ implementation
 
 uses
   SysUtils,
-  uRoutines,
+  CastersPackage.uRoutines,
   uMainForm;
 
 function Validate_TimeString(const aString: string): string;

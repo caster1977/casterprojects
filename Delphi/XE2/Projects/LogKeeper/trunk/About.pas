@@ -15,7 +15,7 @@ uses
   ExtCtrls,
   StdCtrls,
   ShellAPI,
-  getFVI,
+  CastersPackage.getFVI,
   ActnList,
   PlatformDefaultStyleActnCtrls,
   ActnMan,

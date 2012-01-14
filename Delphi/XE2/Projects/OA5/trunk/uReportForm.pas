@@ -14,7 +14,7 @@ uses
   ImgList,
   PlatformDefaultStyleActnCtrls,
   StdCtrls,
-  uLogProvider,
+  CastersPackage.uLogProvider,
   Windows;
 
 type
@@ -106,7 +106,7 @@ implementation
 uses
   SysUtils,
   DateUtils,
-  uRoutines,
+  CastersPackage.uRoutines,
   uMainForm;
 
 procedure TReportForm.ProcedureHeader(aTitle, aLogGroupGUID: string);

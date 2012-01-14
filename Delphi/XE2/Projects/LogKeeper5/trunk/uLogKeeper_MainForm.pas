@@ -12,7 +12,7 @@ uses
   Controls,
   Forms,
   Dialogs,
-  uLogProvider,
+  CastersPackage.uLogProvider,
   ExtCtrls,
   ComCtrls,
   ImgList,
@@ -52,7 +52,7 @@ implementation
 
 uses
   uLogKeeper_Consts,
-  uRoutines;
+  CastersPackage.uRoutines;
 
 procedure TMainForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin

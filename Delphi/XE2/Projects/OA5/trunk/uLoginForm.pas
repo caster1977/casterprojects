@@ -15,7 +15,7 @@ uses
   Graphics,
   Classes,
   ImgList,
-  uLogProvider;
+  CastersPackage.uLogProvider;
 
 type
   TLoginForm=class(TForm)
@@ -56,7 +56,7 @@ implementation
 uses
   SysUtils,
   uMainForm,
-  uRoutines;
+  CastersPackage.uRoutines;
 
 procedure TLoginForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin

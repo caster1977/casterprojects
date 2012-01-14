@@ -15,7 +15,7 @@ uses
   Vcl.PlatformDefaultStyleActnCtrls,
   Vcl.ImgList,
   Vcl.CheckLst,
-  uLogProvider;
+  CastersPackage.uLogProvider;
 
 type
   TPermissionsForm=class(TForm)
@@ -60,7 +60,7 @@ implementation
 
 uses
   uMainForm,
-  uRoutines;
+  CastersPackage.uRoutines;
 
 procedure TPermissionsForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin

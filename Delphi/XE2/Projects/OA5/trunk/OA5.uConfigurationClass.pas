@@ -4,10 +4,10 @@ interface
 
 uses
   OA5.uMySQLConnectionClass,
-  LogKeeperData,
+  CastersPackage.LogKeeperData,
   System.Types,
-  mysql,
-  uSingleton;
+  CastersPackage.mysql,
+  CastersPackage.uSingleton;
 
 type
   TReportFolders=(rfTempFolder, rfApplicationFolder, rfCustomFolder);
