@@ -1,9 +1,9 @@
-﻿unit uRoutines;
+﻿unit CastersPackage.uRoutines;
 
 interface
 
 uses
-  Classes;
+  System.Classes;
 
 type
   Routines=class
@@ -59,13 +59,13 @@ type
 implementation
 
 uses
-  Windows,
-  WinSock,
-  mysql,
+  Winapi.Windows,
+  Winapi.WinSock,
+  CastersPackage.mysql,
   System.AnsiStrings,
   System.SysUtils,
-  Clipbrd,
-  Registry;
+  Vcl.Clipbrd,
+  System.Win.Registry;
 
 class function Routines.GetLocalIP: string;
 const
