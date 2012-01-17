@@ -4,13 +4,13 @@
 /// <remarks>
 /// (C)opyright 2011 by Vlad Ivanov aka Caster
 /// </remarks>
-unit uCommonConfigurationClass;
+unit SharedMemoryCommon.uCommonConfigurationClass;
 
 interface
 
 uses
   System.IniFiles,
-  uCommon;
+  SharedMemoryCommon.uCommon;
 
 const
   CONST_DEFAULTVALUE_CONFIGURATIONFORMPAGE=0;

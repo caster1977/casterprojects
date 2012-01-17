@@ -1,4 +1,4 @@
-unit uCommon;
+unit SharedMemoryCommon.uCommon;
 
 interface
 

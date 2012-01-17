@@ -4,7 +4,7 @@
 /// <remarks>
 /// (C)opyright 2011 by Vlad Ivanov aka Caster
 /// </remarks>
-unit uChunkClass;
+unit SharedMemoryCommon.uChunkClass;
 
 interface
 
@@ -75,7 +75,7 @@ type
 implementation
 
 uses
-  uCommon;
+  SharedMemoryCommon.uCommon;
 
 constructor TChunkClass.Create;
 begin

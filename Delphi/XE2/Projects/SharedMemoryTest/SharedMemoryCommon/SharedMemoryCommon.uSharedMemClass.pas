@@ -4,12 +4,12 @@
 /// <remarks>
 /// (C)opyright 2011 by Vlad Ivanov aka Caster
 /// </remarks>
-unit uSharedMemClass;
+unit SharedMemoryCommon.uSharedMemClass;
 
 interface
 
 uses
-  uChunkClass;
+  SharedMemoryCommon.uChunkClass;
 
 type
 
@@ -272,7 +272,7 @@ uses
   System.IOUtils,
   System.SysUtils,
   Winapi.Windows,
-  uCommon;
+  SharedMemoryCommon.uCommon;
 
 resourcestring
   TEXT_ERROR_CREATE_MUTEX='Не удалось создать флаг управления процессом чтения/записи!';

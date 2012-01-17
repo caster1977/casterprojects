@@ -1,4 +1,4 @@
-unit uMainForm;
+unit SharedMemoryClient.uMainForm;
 
 interface
 
@@ -21,13 +21,13 @@ uses
   Vcl.StdCtrls,
   Vcl.AppEvnts,
   Vcl.ExtCtrls,
-  uConfigurationClass,
-  uSharedMemClass,
-  uChunkClass,
-  uChunkedFileClass,
-  uWatchThreadClass,
-  uCommon,
-  SharedMemoryCOMLibrary_TLB;
+  SharedMemoryClient.uConfigurationClass,
+  SharedMemoryCommon.uSharedMemClass,
+  SharedMemoryCommon.uChunkClass,
+  SharedMemoryCommon.uChunkedFileClass,
+  SharedMemoryCommon.uWatchThreadClass,
+  SharedMemoryCommon.uCommon,
+  SharedMemoryCommon.SharedMemoryCOMLibrary_TLB;
 
 type
   TMainForm=class(TForm)
@@ -173,9 +173,9 @@ uses
   Winapi.CommCtrl,
   System.IniFiles,
   Winapi.MMSystem,
-  uAboutForm,
-  uConfigurationForm,
-  uCommonConfigurationClass,
+  SharedMemoryClient.uAboutForm,
+  SharedMemoryClient.uConfigurationForm,
+  SharedMemoryCommon.uCommonConfigurationClass,
   System.IOUtils;
 
 type

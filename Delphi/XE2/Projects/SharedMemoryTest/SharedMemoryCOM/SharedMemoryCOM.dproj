@@ -103,11 +103,11 @@
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
-			<DCCReference Include="uMainForm.pas">
+			<DCCReference Include="SharedMemoryCOM.uMainForm.pas">
 				<Form>MainForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
-			<DCCReference Include="SharedMemoryCOMLibrary_TLB.pas"/>
+			<DCCReference Include="..\SharedMemoryCommon\SharedMemoryCommon.SharedMemoryCOMLibrary_TLB.pas"/>
 			<RidlCompile Include="SharedMemoryCOMLibrary.ridl"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
