@@ -6,7 +6,7 @@ uses
   CastersPackage.uLogProvider,
   System.SysUtils,
   System.Classes,
-  CastersPackage.mysql;
+  CastersPackage.uMysql;
 
 type
   EMySQLException=class(Exception);

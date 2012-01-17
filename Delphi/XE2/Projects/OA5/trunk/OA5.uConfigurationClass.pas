@@ -4,9 +4,9 @@ interface
 
 uses
   OA5.uMySQLConnectionClass,
-  CastersPackage.LogKeeperData,
+  CastersPackage.uLogKeeperData,
   System.Types,
-  CastersPackage.mysql,
+  CastersPackage.uMysql,
   CastersPackage.uSingleton;
 
 type
