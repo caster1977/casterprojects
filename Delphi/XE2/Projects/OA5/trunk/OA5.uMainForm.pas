@@ -1,9 +1,9 @@
-﻿unit uMainForm;
+﻿unit OA5.uMainForm;
 
 interface
 
 uses
-  uTypes,
+  OA5.uTypes,
   Windows,
   Messages,
   SysUtils,
@@ -131,13 +131,13 @@ implementation
 uses
   System.IOUtils,
   CommCtrl,
-  uAboutForm,
-  uConfigurationForm,
-  uReportForm,
-  uMultiBufferForm,
+  OA5.uAboutForm,
+  OA5.uConfigurationForm,
+  OA5.uReportForm,
+  OA5.uMultiBufferForm,
   OA5.uMeasureDataClass,
-  uAddMassMsrForm,
-  uLoginForm,
+  OA5.uAddMassMsrForm,
+  OA5.uLoginForm,
   OA5.uConsts,
   CastersPackage.uRoutines;
 

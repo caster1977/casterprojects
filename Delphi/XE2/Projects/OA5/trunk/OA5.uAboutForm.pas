@@ -1,4 +1,4 @@
-unit uAboutForm;
+unit OA5.uAboutForm;
 
 interface
 
@@ -51,7 +51,7 @@ uses
   Windows,
   SysUtils,
   ShellAPI,
-  uMainForm;
+  OA5.uMainForm;
 
 resourcestring
   TEXT_ERROR_CREATE_MUTEX='Не удалось создать мьютекс!';

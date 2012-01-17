@@ -1,4 +1,4 @@
-unit uAddMassMsrForm;
+unit OA5.uAddMassMsrForm;
 
 interface
 
@@ -77,7 +77,7 @@ implementation
 uses
   SysUtils,
   CastersPackage.uRoutines,
-  uMainForm;
+  OA5.uMainForm;
 
 function Validate_TimeString(const aString: string): string;
 var

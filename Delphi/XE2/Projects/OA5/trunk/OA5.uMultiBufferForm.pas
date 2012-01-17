@@ -1,4 +1,4 @@
-unit uMultiBufferForm;
+unit OA5.uMultiBufferForm;
 
 interface
 
@@ -65,8 +65,8 @@ implementation
 {$R *.dfm}
 
 uses
-  uTypes,
-  uMainForm,
+  OA5.uTypes,
+  OA5.uMainForm,
   CastersPackage.uRoutines;
 
 procedure TMultiBufferForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
