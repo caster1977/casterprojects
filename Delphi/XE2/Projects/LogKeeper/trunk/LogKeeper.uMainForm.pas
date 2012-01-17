@@ -1,4 +1,4 @@
-﻿unit Main;
+﻿unit LogKeeper.uMainForm;
 
 interface
 
@@ -25,9 +25,9 @@ uses
   CommCtrl,
   ToolWin,
   ActnCtrls,
-  mysql,
-  LogKeeperConsts,
-  LogKeeperTypes;
+  LogKeeper.uMysql,
+  LogKeeper.uConsts,
+  LogKeeper.uTypes;
 
 type
   THackControl= class(TControl);
@@ -203,13 +203,13 @@ implementation
 {$R *.dfm}
 
 uses
-  About,
-  Configuration,
-  FindGIUD,
+  LogKeeper.uAboutForm,
+  LogKeeper.uConfigurationForm,
+  LogKeeper.uFindGIUDForm,
   ShellAPI,
   IniFiles,
-  SendDataToMySQLServer,
-  LogKeeperRoutines;
+  LogKeeper.uSendDataToMySQLServer,
+  LogKeeper.uRoutines;
 
 var
   Recipients: DWORD=BSM_APPLICATIONS;

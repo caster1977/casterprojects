@@ -1,4 +1,4 @@
-﻿unit LogKeeperConsts;
+﻿unit LogKeeper.uConsts;
 
 interface
 

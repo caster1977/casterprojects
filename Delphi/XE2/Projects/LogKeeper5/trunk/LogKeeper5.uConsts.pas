@@ -1,4 +1,4 @@
-unit uLogKeeper_Consts;
+unit LogKeeper5.uConsts;
 
 interface
 

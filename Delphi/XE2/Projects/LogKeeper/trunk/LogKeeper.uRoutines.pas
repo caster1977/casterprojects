@@ -1,9 +1,9 @@
-﻿unit LogKeeperRoutines;
+﻿unit LogKeeper.uRoutines;
 
 interface
 
 uses
-  LogKeeperTypes,
+  LogKeeper.uTypes,
   Classes;
 
 procedure Routines_GenerateError(const aMessage: string; var aErrorMessage: string; var aErrorFlag: boolean);
@@ -17,7 +17,7 @@ function Routines_NormalizeStringForQuery(const Source: string; AddCommas, Retur
 implementation
 
 uses
-  mysql,
+  LogKeeper.uMysql,
   SysUtils,
   Clipbrd,
   WinSock;

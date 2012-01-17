@@ -1,9 +1,9 @@
-﻿unit LogKeeperTypes;
+﻿unit LogKeeper.uTypes;
 
 interface
 
 uses
-  mysql;
+  LogKeeper.uMysql;
 
 type
   TLogMessagesType=(lmtError, lmtWarning, lmtInfo, lmtSQL, lmtDebug); // типы сообщений передаваемых в лог
