@@ -1,10 +1,10 @@
-﻿unit SendDataToMySQLServer;
+﻿unit LogKeeper.uSendDataToMySQLServer;
 
 interface
 
 uses
   Classes,
-  LogKeeperTypes;
+  LogKeeper.uTypes;
 
 type
   TSendDataToMySQLServerThread = class(TThread)
@@ -27,14 +27,14 @@ type
 implementation
 
 uses
-  Main,
-  mysql,
+  LogKeeper.uMainForm,
+  LogKeeper.uMysql,
   Windows,
   SysUtils,
   ExtCtrls,
   Messages,
-  LogKeeperConsts,
-  LogKeeperRoutines;
+  LogKeeper.uConsts,
+  LogKeeper.uRoutines;
 
 constructor TSendDataToMySQLServerThread.Create(const aLogGroupGUID: string; aConfiguration: TConfigurationRec);
 begin

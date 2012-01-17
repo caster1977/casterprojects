@@ -1,4 +1,4 @@
-﻿unit About;
+﻿unit LogKeeper.uAboutForm;
 
 interface
 
@@ -20,7 +20,7 @@ uses
   PlatformDefaultStyleActnCtrls,
   ActnMan,
   jpeg,
-  LogKeeperTypes;
+  LogKeeper.uTypes;
 
 type
   TAboutForm=class(TForm)
@@ -59,8 +59,8 @@ implementation
 {$R *.dfm}
 
 uses
-  Main,
-  LogKeeperConsts;
+  LogKeeper.uMainForm,
+  LogKeeper.uConsts;
 
 procedure TAboutForm.LogThis(const aMessage, aLogGroupGUID: string; aMessageType: TLogMessagesType);
 var

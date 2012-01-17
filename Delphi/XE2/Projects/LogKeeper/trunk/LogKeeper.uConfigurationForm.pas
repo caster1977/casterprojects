@@ -1,14 +1,27 @@
-﻿unit Configuration;
+﻿unit LogKeeper.uConfigurationForm;
 
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, Main, ActnList, PlatformDefaultStyleActnCtrls,
-  ActnMan, ComCtrls;
+  Windows,
+  Messages,
+  SysUtils,
+  Variants,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  StdCtrls,
+  ExtCtrls,
+  LogKeeper.uMainForm,
+  ActnList,
+  PlatformDefaultStyleActnCtrls,
+  ActnMan,
+  ComCtrls;
 
 type
-  TConfigurationForm = class(TForm)
+  TConfigurationForm=class(TForm)
     pnlButtons: TPanel;
     btnApply: TButton;
     btnClose: TButton;
@@ -87,7 +100,8 @@ implementation
 
 {$R *.dfm}
 
-uses mysql;
+uses
+  LogKeeper.uMysql;
 
 procedure TConfigurationForm.Action_NextPageExecute(Sender: TObject);
 var
@@ -119,7 +133,7 @@ begin
       DefaultExt:='chm';
       Title:='Выберите файл справки к данной программе...';
       FilterIndex:=1;
-      Options:=[ofReadOnly,ofFileMustExist];
+      Options:=[ofReadOnly, ofFileMustExist];
       if Execute then
         if FileName='' then
           MessageDlg('Не выбран файл справки!', mtError, [mbOk], 0)
@@ -185,7 +199,8 @@ begin
     end;
   if PageControl1.ActivePage.Caption=' параметров подключения к базе данных MySQL' then
     btnDefaults.Enabled:=edbxMySQLHost.Enabled
-  else btnDefaults.Enabled:=True;
+  else
+    btnDefaults.Enabled:=True;
 end;
 
 procedure TConfigurationForm.chkbxCustomHelpFileClick(Sender: TObject);
@@ -196,17 +211,18 @@ begin
     edbxCustomHelpFile.Clear;
 end;
 
-procedure TConfigurationForm.chkbxFlushLogOnStringsQuantityClick(
-  Sender: TObject);
+procedure TConfigurationForm.chkbxFlushLogOnStringsQuantityClick(Sender: TObject);
 begin
   edbxFlushLogOnStringsQuantity.Enabled:=chkbxFlushLogOnStringsQuantity.Checked;
   if edbxFlushLogOnStringsQuantity.Enabled then
     begin
       if MainForm.Configuration.iFlushLogOnStringsQuantity>0 then
         edbxFlushLogOnStringsQuantity.Text:=IntToStr(MainForm.Configuration.iFlushLogOnStringsQuantity)
-      else edbxFlushLogOnStringsQuantity.Text:='10000';
+      else
+        edbxFlushLogOnStringsQuantity.Text:='10000';
     end
-  else edbxFlushLogOnStringsQuantity.Text:='';
+  else
+    edbxFlushLogOnStringsQuantity.Text:='';
 end;
 
 procedure TConfigurationForm.chkbxFullScreenClick(Sender: TObject);
@@ -214,20 +230,20 @@ begin
   edbxMainFormHeight.Enabled:=not chkbxFullScreen.Checked;
   if edbxMainFormHeight.Enabled then
     edbxMainFormHeight.Text:=IntToStr(MainForm.Configuration.iMainFormHeight)
-  else edbxMainFormHeight.Text:='';
+  else
+    edbxMainFormHeight.Text:='';
 end;
 
-procedure TConfigurationForm.edbxMainFormHeightKeyPress(Sender: TObject;
-  var Key: Char);
+procedure TConfigurationForm.edbxMainFormHeightKeyPress(Sender: TObject; var Key: Char);
 begin
-  if not CharInSet(Key,['0'..'9', #8, '-']) then
-    Key:=#0; //"погасить" все остальные клавиши
+  if not CharInSet(Key, ['0'..'9', #8, '-']) then
+    Key:=#0; // "погасить" все остальные клавиши
 end;
 
 procedure TConfigurationForm.edbxFlushLogOnStringsQuantityKeyPress(Sender: TObject; var Key: Char);
 begin
-  if not CharInSet(Key,['0'..'9', #8, '-']) then
-    Key:=#0; //"погасить" все остальные клавиши
+  if not CharInSet(Key, ['0'..'9', #8, '-']) then
+    Key:=#0; // "погасить" все остальные клавиши
 end;
 
 procedure TConfigurationForm.FormCreate(Sender: TObject);

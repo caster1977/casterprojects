@@ -1,4 +1,4 @@
-unit uLogKeeper_MainForm;
+unit LogKeeper5.uMainForm;
 
 interface
 
@@ -51,7 +51,7 @@ implementation
 {$R *.dfm}
 
 uses
-  uLogKeeper_Consts,
+  LogKeeper5.uConsts,
   CastersPackage.uRoutines;
 
 procedure TMainForm.ProcedureHeader(aTitle, aLogGroupGUID: string);

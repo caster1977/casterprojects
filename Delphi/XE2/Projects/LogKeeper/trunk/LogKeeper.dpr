@@ -3,15 +3,15 @@ program LogKeeper;
 uses
   Forms,
   Windows,
-  Main in 'Main.pas' {MainForm},
-  About in 'About.pas' {AboutForm},
-  mysql in 'mysql.pas',
-  SendDataToMySQLServer in 'SendDataToMySQLServer.pas',
-  Configuration in 'Configuration.pas' {ConfigurationForm},
-  FindGIUD in 'FindGIUD.pas' {FindGUIDForm},
-  LogKeeperTypes in 'LogKeeperTypes.pas',
-  LogKeeperConsts in 'LogKeeperConsts.pas',
-  LogKeeperRoutines in 'LogKeeperRoutines.pas';
+  LogKeeper.uMainForm in 'LogKeeper.uMainForm.pas' {MainForm},
+  LogKeeper.uAboutForm in 'LogKeeper.uAboutForm.pas' {AboutForm},
+  LogKeeper.uMysql in 'LogKeeper.uMysql.pas',
+  LogKeeper.uSendDataToMySQLServer in 'LogKeeper.uSendDataToMySQLServer.pas',
+  LogKeeper.uConfigurationForm in 'LogKeeper.uConfigurationForm.pas' {ConfigurationForm},
+  LogKeeper.uFindGIUDForm in 'LogKeeper.uFindGIUDForm.pas' {FindGUIDForm},
+  LogKeeper.uTypes in 'LogKeeper.uTypes.pas',
+  LogKeeper.uConsts in 'LogKeeper.uConsts.pas',
+  LogKeeper.uRoutines in 'LogKeeper.uRoutines.pas';
 
 {$R *.res}
 

@@ -1,4 +1,4 @@
-﻿unit FindGIUD;
+﻿unit LogKeeper.uFindGIUDForm;
 
 interface
 
@@ -17,7 +17,7 @@ uses
   ActnList,
   PlatformDefaultStyleActnCtrls,
   ActnMan,
-  LogKeeperTypes;
+  LogKeeper.uTypes;
 
 type
   TFindGUIDForm= class(TForm)
@@ -61,9 +61,9 @@ implementation
 {$R *.dfm}
 
 uses
-  Main,
-  LogKeeperRoutines,
-  LogKeeperConsts;
+  LogKeeper.uMainForm,
+  LogKeeper.uRoutines,
+  LogKeeper.uConsts;
 
 procedure TFindGUIDForm.LogThis(const aMessage, aLogGroupGUID: string; aMessageType: TLogMessagesType);
 var
