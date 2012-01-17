@@ -1,4 +1,4 @@
-unit Tooltip;
+unit Beeper.uTooltipForm;
 
 interface
 
@@ -15,14 +15,7 @@ uses
 
 type
   TToolTipForm=class(TForm)
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
-
-var
-  ToolTipForm: TToolTipForm;
 
 implementation
 

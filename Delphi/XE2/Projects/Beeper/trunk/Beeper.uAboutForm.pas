@@ -1,4 +1,4 @@
-unit About;
+unit Beeper.uAboutForm;
 
 interface
 
@@ -16,7 +16,7 @@ uses
   StdCtrls,
   ShellAPI,
   CastersPackage.getFVI,
-  Main;
+  Beeper.uMainForm;
 
 type
   TAboutForm=class(TForm)
@@ -34,14 +34,7 @@ type
     procedure Timer2Timer(Sender: TObject);
     procedure Label5Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
-
-var
-  AboutForm: TAboutForm;
 
 implementation
 

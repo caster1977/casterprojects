@@ -1,4 +1,4 @@
-unit Signal;
+unit Beeper.uSignalForm;
 
 interface
 
@@ -40,9 +40,6 @@ type
     procedure UpdateOkButtonState;
     procedure UpdatePlayButtonState;
   end;
-
-var
-  SignalForm: TSignalForm;
 
 implementation
 

@@ -1,14 +1,14 @@
 program Beeper;
 
-{$R 'waves.res' 'waves.rc'}
+{$R 'Beeper.Waves.res' 'Beeper.Waves.rc'}
 
 uses
   Forms,
-  Main in 'Main.pas' {MainForm},
-  About in 'About.pas' {AboutForm},
-  Signal in 'Signal.pas' {SignalForm},
-  Configuration in 'Configuration.pas' {ConfigurationForm},
-  Tooltip in 'Tooltip.pas' {ToolTipForm},
+  Beeper.uMainForm in 'Beeper.uMainForm.pas' {MainForm},
+  Beeper.uAboutForm in 'Beeper.uAboutForm.pas' {AboutForm},
+  Beeper.uSignalForm in 'Beeper.uSignalForm.pas' {SignalForm},
+  Beeper.uConfigurationForm in 'Beeper.uConfigurationForm.pas' {ConfigurationForm},
+  Beeper.uTooltipForm in 'Beeper.uTooltipForm.pas' {ToolTipForm},
   Vcl.Themes,
   Vcl.Styles;
 
