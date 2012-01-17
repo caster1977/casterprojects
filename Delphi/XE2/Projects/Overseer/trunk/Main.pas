@@ -22,7 +22,7 @@ uses
   ActnMan,
   ImgList,
   Menus,
-  getFVI,
+  CastersPackage.getFVI,
   XPStyleActnCtrls,
   mysql,
   StdCtrls,
@@ -36,7 +36,7 @@ uses
   OverseerConsts,
   OverseerTypes,
   OverseerRoutines,
-  ListViewEx;
+  CastersPackage.ListViewEx;
 
 type
   THackControl=class(TControl);
