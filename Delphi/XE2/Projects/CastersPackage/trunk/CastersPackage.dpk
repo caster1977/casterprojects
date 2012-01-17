@@ -36,15 +36,15 @@ requires
 
 contains
   CastersPackage.getFVI in 'CastersPackage.getFVI.pas',
-  CastersPackage.SysMenu in 'CastersPackage.SysMenu.pas',
+  CastersPackage.uSysMenu in 'CastersPackage.uSysMenu.pas',
   CastersPackage.fisSysMenu in 'CastersPackage.fisSysMenu.pas',
-  CastersPackage.ListViewEx in 'CastersPackage.ListViewEx.pas',
+  CastersPackage.uListViewEx in 'CastersPackage.uListViewEx.pas',
   CastersPackage.uLogProvider in 'CastersPackage.uLogProvider.pas',
-  CastersPackage.LogKeeperData in 'CastersPackage.LogKeeperData.pas',
+  CastersPackage.uLogKeeperData in 'CastersPackage.uLogKeeperData.pas',
   CastersPackage.uCOMInitClass in 'CastersPackage.uCOMInitClass.pas',
   CastersPackage.uLogClasses in 'CastersPackage.uLogClasses.pas',
   CastersPackage.uRoutines in 'CastersPackage.uRoutines.pas',
-  CastersPackage.mysql in 'CastersPackage.mysql.pas',
+  CastersPackage.uMysql in 'CastersPackage.uMysql.pas',
   CastersPackage.uSingleton in 'CastersPackage.uSingleton.pas',
   CastersPackage.uTypes in 'CastersPackage.uTypes.pas';
 

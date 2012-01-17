@@ -61,7 +61,7 @@ implementation
 uses
   Winapi.Windows,
   Winapi.WinSock,
-  CastersPackage.mysql,
+  CastersPackage.uMysql,
   System.AnsiStrings,
   System.SysUtils,
   Vcl.Clipbrd,

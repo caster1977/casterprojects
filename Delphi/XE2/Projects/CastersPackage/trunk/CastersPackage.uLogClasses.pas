@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows,
-  CastersPackage.LogKeeperData,
+  CastersPackage.uLogKeeperData,
   System.Classes,
   System.Generics.Collections;
 

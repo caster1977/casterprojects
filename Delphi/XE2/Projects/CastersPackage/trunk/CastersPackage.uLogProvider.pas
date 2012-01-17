@@ -9,7 +9,7 @@ uses
   System.Generics.Collections,
   Vcl.Forms,
   CastersPackage.uLogClasses,
-  CastersPackage.LogKeeperData;
+  CastersPackage.uLogKeeperData;
 
 type
   TLogProvider=class(TComponent)

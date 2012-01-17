@@ -62,7 +62,7 @@
 // This unit is provided "as is". Use it at your own risk.
 // -----------------------------------------------------------------------------------------------
 
-unit CastersPackage.mysql;
+unit CastersPackage.uMysql;
 
 // -----------------------------------------------------------------------------------------------
 interface
