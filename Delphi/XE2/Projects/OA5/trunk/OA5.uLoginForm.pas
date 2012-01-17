@@ -1,4 +1,4 @@
-unit uLoginForm;
+unit OA5.uLoginForm;
 
 interface
 
@@ -55,7 +55,7 @@ implementation
 
 uses
   SysUtils,
-  uMainForm,
+  OA5.uMainForm,
   CastersPackage.uRoutines;
 
 procedure TLoginForm.ProcedureHeader(aTitle, aLogGroupGUID: string);

@@ -1,5 +1,5 @@
 {$WARN UNIT_PLATFORM OFF}
-unit uConfigurationForm;
+unit OA5.uConfigurationForm;
 
 interface
 
@@ -282,13 +282,13 @@ uses
   Messages,
   CastersPackage.LogKeeperData,
   FileCtrl,
-  uMainForm,
-  uLoginForm,
-  uAboutForm,
-  uAddMassMsrForm,
-  uSetPasswordForm,
-  uPermissionsForm,
-  uReportForm,
+  OA5.uMainForm,
+  OA5.uLoginForm,
+  OA5.uAboutForm,
+  OA5.uAddMassMsrForm,
+  OA5.uSetPasswordForm,
+  OA5.uPermissionsForm,
+  OA5.uReportForm,
   CastersPackage.uRoutines,
   OA5.uConfigurationClass;
 

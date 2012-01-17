@@ -1,11 +1,11 @@
-object LoginForm: TLoginForm
+object SetPasswordForm: TSetPasswordForm
   Left = 0
   Top = 0
-  Hint = #1054#1082#1085#1086' '#1080#1076#1077#1085#1090#1080#1092#1080#1082#1072#1094#1080#1080' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
+  Hint = #1054#1082#1085#1086' '#1080#1079#1084#1077#1085#1077#1085#1080#1103' '#1087#1072#1088#1086#1083#1103' '#1091#1095#1105#1090#1085#1086#1081' '#1079#1072#1087#1080#1089#1080
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  Caption = #1059#1095#1105#1090#1085#1072#1103' '#1079#1072#1087#1080#1089#1100
-  ClientHeight = 103
+  Caption = #1048#1079#1084#1077#1085#1077#1085#1080#1077' '#1087#1072#1088#1086#1083#1103' '#1091#1095#1105#1090#1085#1086#1081' '#1079#1072#1087#1080#1089#1080
+  ClientHeight = 121
   ClientWidth = 294
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,12 +19,28 @@ object LoginForm: TLoginForm
   OnShow = FormShow
   DesignSize = (
     294
-    103)
+    121)
   PixelsPerInch = 96
   TextHeight = 13
+  object lblPassword: TLabel
+    Left = 8
+    Top = 11
+    Width = 76
+    Height = 13
+    Caption = '&'#1053#1086#1074#1099#1081' '#1087#1072#1088#1086#1083#1100':'
+    FocusControl = mePassword
+  end
+  object lblConfirmation: TLabel
+    Left = 8
+    Top = 38
+    Width = 87
+    Height = 13
+    Caption = '&'#1055#1086#1076#1090#1074#1077#1088#1078#1076#1077#1085#1080#1077':'
+    FocusControl = meConfirmation
+  end
   object Bevel2: TBevel
     Left = 0
-    Top = 62
+    Top = 80
     Width = 294
     Height = 41
     Align = alBottom
@@ -32,69 +48,52 @@ object LoginForm: TLoginForm
     ExplicitTop = 56
     ExplicitWidth = 212
   end
-  object lblLogin: TLabel
-    Left = 8
-    Top = 11
-    Width = 34
-    Height = 13
-    Caption = '&'#1051#1086#1075#1080#1085':'
-    FocusControl = edbxLogin
-  end
-  object lblPassword: TLabel
-    Left = 8
-    Top = 38
-    Width = 41
-    Height = 13
-    Caption = '&'#1055#1072#1088#1086#1083#1100':'
-    FocusControl = mePassword
-  end
-  object btnOk: TButton
-    Left = 118
-    Top = 70
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Ok
-    Anchors = [akLeft, akBottom]
-    TabOrder = 2
-  end
-  object btnClose: TButton
-    Left = 205
-    Top = 70
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Close
-    Anchors = [akRight, akBottom]
-    Cancel = True
-    Default = True
-    TabOrder = 3
-  end
-  object edbxLogin: TEdit
-    Left = 64
-    Top = 8
-    Width = 222
+  object meConfirmation: TMaskEdit
+    Left = 101
+    Top = 35
+    Width = 185
     Height = 21
-    Hint = #1042#1074#1077#1076#1080#1090#1077' '#1042#1072#1096' '#1083#1086#1075#1080#1085
+    Hint = #1055#1086#1074#1090#1086#1088#1085#1086' '#1074#1074#1077#1076#1080#1090#1077' '#1085#1086#1074#1099#1081' '#1087#1072#1088#1086#1083#1100
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
-    TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1083#1086#1075#1080#1085' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
+    TextHint = #1055#1086#1074#1090#1086#1088#1085#1086' '#1074#1074#1077#1076#1080#1090#1077' '#1085#1086#1074#1099#1081' '#1087#1072#1088#1086#1083#1100
     OnChange = FieldsChange
   end
   object mePassword: TMaskEdit
-    Left = 64
-    Top = 35
-    Width = 222
+    Left = 101
+    Top = 8
+    Width = 185
     Height = 21
-    Hint = #1042#1074#1077#1076#1080#1090#1077' '#1042#1072#1096' '#1087#1072#1088#1086#1083#1100
+    Hint = #1042#1074#1077#1076#1080#1090#1077' '#1085#1086#1074#1099#1081' '#1087#1072#1088#1086#1083#1100
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 1
-    TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1087#1072#1088#1086#1083#1100' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
+    TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1085#1086#1074#1099#1081' '#1087#1072#1088#1086#1083#1100
     OnChange = FieldsChange
+  end
+  object chkbxShowPassword: TCheckBox
+    Left = 8
+    Top = 57
+    Width = 278
+    Height = 17
+    Hint = #1055#1086#1089#1090#1072#1074#1100#1090#1077' '#1092#1083#1072#1078#1086#1082' '#1076#1083#1103' '#1087#1088#1086#1089#1084#1086#1090#1088#1072' '#1074#1074#1077#1076#1105#1085#1085#1086#1075#1086' '#1087#1072#1088#1086#1083#1103
+    Anchors = [akLeft, akTop, akRight]
+    Caption = '&'#1086#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1087#1072#1088#1086#1083#1100
+    TabOrder = 2
+    OnClick = chkbxShowPasswordClick
+  end
+  object btnApply: TButton
+    Left = 118
+    Top = 88
+    Width = 81
+    Height = 25
+    Cursor = crHandPoint
+    Action = Action_Apply
+    Anchors = [akRight, akBottom]
+    TabOrder = 3
   end
   object btnHelp: TButton
     Left = 8
-    Top = 70
+    Top = 88
     Width = 81
     Height = 25
     Cursor = crHandPoint
@@ -102,20 +101,42 @@ object LoginForm: TLoginForm
     Anchors = [akLeft, akBottom]
     TabOrder = 4
   end
+  object btnClose: TButton
+    Left = 205
+    Top = 88
+    Width = 81
+    Height = 25
+    Cursor = crHandPoint
+    Action = Action_Close
+    Anchors = [akRight, akBottom]
+    Cancel = True
+    Default = True
+    TabOrder = 5
+  end
+  object Log: TLogProvider
+    LogFile.Enabled = True
+    LogFile.FileNameSuffix = 'OA5_SetPasswordForm'
+    LogClient.Enabled = True
+    Left = 200
+    Top = 56
+  end
   object ActionManager1: TActionManager
-    Images = ilLoginFormSmallImages
-    Left = 208
+    Images = ilSetPasswordFormSmallImages
+    Left = 168
+    Top = 56
     StyleName = 'Platform Default'
-    object Action_Ok: TAction
-      Caption = '&'#1054#1082
-      Hint = #1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1087#1099#1090#1082#1080' '#1074#1093#1086#1076#1072' '#1074' '#1089#1080#1089#1090#1077#1084#1091' '#1087#1086#1076' '#1091#1082#1072#1079#1072#1085#1085#1099#1084' '#1080#1084#1077#1085#1077#1084
-      OnExecute = Action_OkExecute
+    object Action_Apply: TAction
+      Caption = '&'#1055#1088#1080#1084#1077#1085#1080#1090#1100
+      Hint = 
+        #1055#1088#1080#1084#1077#1085#1080#1090#1100' '#1080#1079#1084#1077#1085#1077#1085#1080#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1088#1080#1084#1077#1085#1077#1085#1080#1103' '#1085#1086#1074#1086#1075#1086' '#1087#1072#1088#1086#1083#1103' '#1080' '#1079#1072#1082#1088#1099 +
+        #1090#1080#1103' '#1086#1082#1085#1072
+      OnExecute = Action_ApplyExecute
     end
     object Action_Close: TAction
       Caption = '&'#1047#1072#1082#1088#1099#1090#1100
       Hint = 
-        #1047#1072#1082#1088#1099#1090#1100' '#1086#1082#1085#1086'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1084#1077#1085#1099' '#1087#1088#1086#1094#1077#1076#1091#1088#1099' '#1080#1076#1077#1085#1090#1080#1092#1080#1082#1072#1094#1080#1080' '#1087#1086#1083#1100#1079#1086#1074#1072 +
-        #1090#1077#1083#1103' '#1080' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072
+        #1047#1072#1082#1088#1099#1090#1100' '#1086#1082#1085#1086'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1084#1077#1085#1099' '#1074#1089#1077#1093' '#1074#1085#1077#1089#1105#1085#1085#1099#1093' '#1080#1079#1084#1077#1085#1077#1085#1080#1081' '#1080' '#1079#1072#1082#1088#1099 +
+        #1090#1080#1103' '#1086#1082#1085#1072
       OnExecute = Action_CloseExecute
     end
     object Action_Help: TAction
@@ -125,17 +146,12 @@ object LoginForm: TLoginForm
       OnExecute = Action_HelpExecute
     end
   end
-  object Log: TLogProvider
-    LogFile.Enabled = True
-    LogFile.FileNameSuffix = 'OA5_LoginForm'
-    LogClient.Enabled = True
-    Left = 176
-  end
-  object ilLoginFormSmallImages: TImageList
+  object ilSetPasswordFormSmallImages: TImageList
     AllocBy = 2
-    Left = 240
+    Left = 232
+    Top = 56
     Bitmap = {
-      494C010102000400340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101020004003C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000005346450053464500534645005346450053464500534645000000

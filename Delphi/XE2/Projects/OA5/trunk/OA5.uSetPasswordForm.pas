@@ -1,4 +1,4 @@
-﻿unit uSetPasswordForm;
+﻿unit OA5.uSetPasswordForm;
 
 interface
 
@@ -57,7 +57,7 @@ implementation
 
 uses
   SysUtils,
-  uMainForm,
+  OA5.uMainForm,
   CastersPackage.uRoutines;
 
 procedure TSetPasswordForm.ProcedureHeader(aTitle, aLogGroupGUID: string);

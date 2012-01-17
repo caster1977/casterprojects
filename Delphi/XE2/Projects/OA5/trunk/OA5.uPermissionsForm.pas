@@ -1,4 +1,4 @@
-unit uPermissionsForm;
+unit OA5.uPermissionsForm;
 
 interface
 
@@ -59,7 +59,7 @@ implementation
 {$R *.dfm}
 
 uses
-  uMainForm,
+  OA5.uMainForm,
   CastersPackage.uRoutines;
 
 procedure TPermissionsForm.ProcedureHeader(aTitle, aLogGroupGUID: string);

@@ -1,4 +1,4 @@
-unit uReportForm;
+unit OA5.uReportForm;
 
 interface
 
@@ -107,7 +107,7 @@ uses
   SysUtils,
   DateUtils,
   CastersPackage.uRoutines,
-  uMainForm;
+  OA5.uMainForm;
 
 procedure TReportForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
 begin
