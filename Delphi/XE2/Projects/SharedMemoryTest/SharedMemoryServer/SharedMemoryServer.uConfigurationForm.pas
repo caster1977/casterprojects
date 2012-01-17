@@ -1,105 +1,118 @@
 {$WARN UNIT_PLATFORM OFF}
 {$WARN SYMBOL_PLATFORM OFF}
-unit uConfigurationForm;
+unit SharedMemoryServer.uConfigurationForm;
 
 interface
 
 uses
-  System.Classes,
+  Winapi.Windows,
+  Winapi.Messages,
   System.SysUtils,
   System.Variants,
-  Vcl.ActnList,
-  Vcl.ActnMan,
-  Vcl.ComCtrls,
-  Vcl.Controls,
-  Vcl.Dialogs,
-  Vcl.ExtCtrls,
-  Vcl.Forms,
+  System.Classes,
   Vcl.Graphics,
-  Vcl.ImgList,
-  Vcl.PlatformDefaultStyleActnCtrls,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
   Vcl.StdCtrls,
-  Winapi.Messages,
-  Winapi.Windows;
+  Vcl.ExtCtrls,
+  Vcl.ActnList,
+  Vcl.PlatformDefaultStyleActnCtrls,
+  Vcl.ActnMan,
+  Vcl.ImgList,
+  Vcl.ComCtrls;
 
 type
   TConfigurationForm=class(TForm)
-    Action_Apply: TAction;
-    Action_Close: TAction;
-    Action_Defaults: TAction;
-    Action_Help: TAction;
-    Action_NextPage: TAction;
-    Action_PreviousPage: TAction;
-    ActionManager1: TActionManager;
-    Bevel1: TBevel;
+    pnlButtons: TPanel;
     btnApply: TButton;
     btnClose: TButton;
-    btnDefaults: TButton;
     btnHelp: TButton;
+    btnDefaults: TButton;
+    ilConfigurationFormSmallImages: TImageList;
+    ActionManager1: TActionManager;
+    Action_Defaults: TAction;
+    Action_Apply: TAction;
+    Action_Close: TAction;
+    Action_Help: TAction;
+    pnlBrowse: TPanel;
+    gbHeader: TGroupBox;
+    cbPage: TComboBox;
     btnNextPage: TButton;
     btnPreviousPage: TButton;
-    cbPage: TComboBox;
-    chkbxConfigurationFormCentered: TCheckBox;
-    chkbxKeepDebugLog: TCheckBox;
-    chkbxKeepErrorLog: TCheckBox;
-    chkbxKeepInfoLog: TCheckBox;
-    chkbxKeepWarningLog: TCheckBox;
-    chkbxMainFormCentered: TCheckBox;
-    chkbxMainFormMaximized: TCheckBox;
-    chkbxPlaySoundOnComplete: TCheckBox;
-    chkbxScrollLogToBottom: TCheckBox;
-    chkbxShowConfirmationOnQuit: TCheckBox;
-    chkbxShowSplashAtStart: TCheckBox;
-    chkbxShowStatusbar: TCheckBox;
-    edbxConfigurationFormLeftValue: TEdit;
-    edbxConfigurationFormTopValue: TEdit;
-    edbxMainFormHeightValue: TEdit;
-    edbxMainFormLeftValue: TEdit;
-    edbxMainFormTopValue: TEdit;
-    edbxMainFormWidthValue: TEdit;
-    edbxWatchPauseValue: TEdit;
-    gbHeader: TGroupBox;
-    gbPage: TGroupBox;
-    ilConfigurationFormSmallImages: TImageList;
-    lblConfigurationForm: TLabel;
-    lblConfigurationFormLeft: TLabel;
-    lblConfigurationFormTop: TLabel;
-    lblMainForm: TLabel;
-    lblMainFormHeight: TLabel;
-    lblMainFormLeft: TLabel;
-    lblMainFormTop: TLabel;
-    lblMainFormWidth: TLabel;
-    lblWatchPause: TLabel;
-    PageControl1: TPageControl;
-    pnlBrowse: TPanel;
-    pnlButtons: TPanel;
     pnlPage: TPanel;
+    gbPage: TGroupBox;
+    PageControl1: TPageControl;
     ts1: TTabSheet;
     ts3: TTabSheet;
     ts4: TTabSheet;
     ts5: TTabSheet;
+    Action_PreviousPage: TAction;
+    Action_NextPage: TAction;
+    ts2: TTabSheet;
+    chkbxShowSplashAtStart: TCheckBox;
+    chkbxShowStatusbar: TCheckBox;
+    chkbxShowConfirmationOnQuit: TCheckBox;
+    chkbxScrollLogToBottom: TCheckBox;
+    lblWatchPause: TLabel;
+    edbxWatchPauseValue: TEdit;
+    edbxRetranslatorPauseValue: TEdit;
+    lblRetranslatorPause: TLabel;
+    edbxDestinationFolderValue: TEdit;
+    btnDestinationFolder: TButton;
+    lblDestinationFolder: TLabel;
+    chkbxPlaySoundOnComplete: TCheckBox;
+    chkbxKeepInfoLog: TCheckBox;
+    chkbxKeepWarningLog: TCheckBox;
+    chkbxKeepErrorLog: TCheckBox;
+    chkbxKeepDebugLog: TCheckBox;
+    lblMainForm: TLabel;
+    lblConfigurationForm: TLabel;
+    Bevel1: TBevel;
+    lblMainFormLeft: TLabel;
+    edbxMainFormLeftValue: TEdit;
+    lblMainFormTop: TLabel;
+    edbxMainFormTopValue: TEdit;
+    chkbxMainFormCentered: TCheckBox;
+    lblMainFormWidth: TLabel;
+    lblMainFormHeight: TLabel;
+    edbxMainFormWidthValue: TEdit;
+    edbxMainFormHeightValue: TEdit;
+    chkbxMainFormMaximized: TCheckBox;
+    lblConfigurationFormLeft: TLabel;
+    edbxConfigurationFormLeftValue: TEdit;
+    lblConfigurationFormTop: TLabel;
+    edbxConfigurationFormTopValue: TEdit;
+    chkbxConfigurationFormCentered: TCheckBox;
+    Action_ChooseDestinationFolder: TAction;
+    lblSharedMemSize: TLabel;
+    edbxSharedMemSizeValue: TEdit;
+    procedure FormShow(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure Action_ApplyExecute(Sender: TObject);
     procedure Action_CloseExecute(Sender: TObject);
-    procedure Action_DefaultsExecute(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
-    procedure Action_NextPageExecute(Sender: TObject);
     procedure Action_PreviousPageExecute(Sender: TObject);
+    procedure Action_NextPageExecute(Sender: TObject);
+    procedure Action_DefaultsExecute(Sender: TObject);
     procedure cbPageSelect(Sender: TObject);
+    procedure Action_ChooseDestinationFolderExecute(Sender: TObject);
+    procedure edbxNumericFieldKeyPress(Sender: TObject; var Key: Char);
     procedure chkbxConfigurationFormCenteredClick(Sender: TObject);
     procedure chkbxMainFormCenteredClick(Sender: TObject);
     procedure chkbxMainFormMaximizedClick(Sender: TObject);
-    procedure edbxNumericFieldKeyPress(Sender: TObject; var Key: Char);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure FormCreate(Sender: TObject);
-    procedure FormShow(Sender: TObject);
+    procedure edbxSharedMemSizeValueChange(Sender: TObject);
   strict private
-    procedure Do_Apply;
+    procedure Do_PageSelect;
+    procedure Do_Help;
     procedure Do_Close;
     procedure Do_Defaults;
-    procedure Do_Help;
+    procedure Do_Apply;
     procedure Do_NextPage;
-    procedure Do_PageSelect;
     procedure Do_PreviousPage;
+    procedure Do_ChooseDestinationFolder;
+    procedure Do_UpdateActions;
   end;
 
 implementation
@@ -107,15 +120,20 @@ implementation
 {$R *.dfm}
 
 uses
-  Vcl.FileCtrl,
-  uCommon,
-  uCommonConfigurationClass,
-  uConfigurationClass,
-  uMainForm;
+  SharedMemoryServer.uMainForm,
+  SharedMemoryCommon.uCommon,
+  SharedMemoryCommon.uCommonConfigurationClass,
+  SharedMemoryServer.uConfigurationClass,
+  Vcl.FileCtrl;
 
 procedure TConfigurationForm.Action_ApplyExecute(Sender: TObject);
 begin
   Do_Apply;
+end;
+
+procedure TConfigurationForm.Action_ChooseDestinationFolderExecute(Sender: TObject);
+begin
+  Do_ChooseDestinationFolder;
 end;
 
 procedure TConfigurationForm.Action_CloseExecute(Sender: TObject);
@@ -282,9 +300,61 @@ begin
 
       PlaySoundOnComplete:=chkbxPlaySoundOnComplete.Enabled and chkbxPlaySoundOnComplete.Checked;
       WatchPause:=StrToIntDef(Trim(edbxWatchPauseValue.Text), CONST_DEFAULTVALUE_WATCHPAUSE);
+      RetranslatorPause:=StrToIntDef(Trim(edbxRetranslatorPauseValue.Text), CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+      SharedMemSize:=StrToIntDef(Trim(edbxSharedMemSizeValue.Text), CONST_DEFAULTVALUE_SHAREDMEMSIZE);
+
+      DestinationFolder:=Trim(edbxDestinationFolderValue.Text);
     end;
 
   MainForm.LogInfo(TEXT_CONFIGURATION_WINDOW_CLOSED);
+end;
+
+procedure TConfigurationForm.Do_ChooseDestinationFolder;
+resourcestring
+  TEXT_CHOOSE_FOLDER='Выберите папку';
+  TEXT_SELECTED_FOLDER='В качестве папки для сохранения отчётов выбрана папка "%s".';
+  TEXT_SELECTED_FOLDER_ERROR='Возникла ошибка при выборе папки - указанная папка не существует!';
+var
+  sPath: string;
+  sErrorMessage: string;
+  bError: boolean;
+begin
+  bError:=False;
+
+  sPath:=Trim(edbxDestinationFolderValue.Text);
+  if sPath='' then
+    sPath:=IncludeTrailingPathDelimiter(ExtractFilePath(ExpandFileName(Application.ExeName)));
+  if Win32MajorVersion>=6 then // для Vista и выше
+    with TFileOpenDialog.Create(Self) do
+      try
+        Title:=TEXT_CHOOSE_FOLDER;
+        DefaultFolder:=sPath;
+        FileName:=sPath;
+        Options:=[fdoPickFolders, fdoPathMustExist, fdoForceFileSystem];
+        if Execute then
+          edbxDestinationFolderValue.Text:=IncludeTrailingPathDelimiter(FileName);
+      finally
+        Free;
+      end
+  else // для XP и ниже
+    if SelectDirectory(TEXT_CHOOSE_FOLDER, '', sPath, [sdNewFolder, sdNewUI, sdShowEdit, sdShowShares], Self) then
+      if (sPath<>'') then
+        begin
+          sPath:=IncludeTrailingPathDelimiter(sPath);
+          if System.SysUtils.DirectoryExists(sPath) then
+            begin
+              edbxDestinationFolderValue.Text:=sPath;
+              MainForm.LogDebug(Format(TEXT_SELECTED_FOLDER, [sPath]));
+            end
+          else
+            begin
+              edbxDestinationFolderValue.Text:='';
+              CommonFunctions.GenerateError(TEXT_SELECTED_FOLDER_ERROR, sErrorMessage, bError);
+            end;
+        end;
+  Do_UpdateActions;
+
+  MainForm.ProcessErrors(Handle, bError, sErrorMessage);
 end;
 
 procedure TConfigurationForm.Do_Close;
@@ -303,6 +373,12 @@ begin
       chkbxShowStatusbar.Checked:=CONST_DEFAULTVALUE_SHOWSTATUSBAR;
       chkbxScrollLogToBottom.Checked:=CONST_DEFAULTVALUE_SCROLLLOGTOBOTTOM;
       chkbxShowConfirmationOnQuit.Checked:=CONST_DEFAULTVALUE_SHOWCONFIRMATIONONQUIT;
+    end;
+  // вкладка "настройки расположения файлов и папок"
+  if PageControl1.ActivePage.Caption=TEXT_CONFIGURATION_PAGE_LOCATION then
+    begin
+      edbxDestinationFolderValue.Text:=CONST_DEFAULTVALUE_DESTINATIONFOLDER;
+      Do_UpdateActions;
     end;
   // вкладка "настройки ведения протокола работы"
   if PageControl1.ActivePage.Caption=TEXT_CONFIGURATION_PAGE_LOG then
@@ -333,6 +409,8 @@ begin
     begin
       chkbxPlaySoundOnComplete.Checked:=CONST_DEFAULTVALUE_PLAYSOUNDONCOMPLETE;
       edbxWatchPauseValue.Text:=IntToStr(CONST_DEFAULTVALUE_WATCHPAUSE);
+      edbxRetranslatorPauseValue.Text:=IntToStr(CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+      edbxSharedMemSizeValue.Text:=IntToStr(CONST_DEFAULTVALUE_SHAREDMEMSIZE);
     end;
   MainForm.LogInfo(Format(TEXT_CONFIGURATION_VALUES_SETTED_TO_DEFAULTS, [PageControl1.ActivePage.Caption]));
 end;
@@ -384,10 +462,24 @@ begin
   Do_PageSelect;
 end;
 
+procedure TConfigurationForm.Do_UpdateActions;
+begin
+  edbxDestinationFolderValue.Enabled:=edbxDestinationFolderValue.Text<>'';
+end;
+
 procedure TConfigurationForm.edbxNumericFieldKeyPress(Sender: TObject; var Key: Char);
 begin
   if not CharInSet(Key, ['0'..'9', #8, '-']) then
     Key:=#0;
+end;
+
+procedure TConfigurationForm.edbxSharedMemSizeValueChange(Sender: TObject);
+var
+  i: integer;
+begin
+  i:=StrToIntDef(edbxSharedMemSizeValue.Text, CONST_DEFAULTVALUE_SHAREDMEMSIZE);
+  if i>CONST_DEFAULTVALUE_SHAREDMEMSIZE then
+    edbxSharedMemSizeValue.Text:=IntToStr(CONST_DEFAULTVALUE_SHAREDMEMSIZE);
 end;
 
 procedure TConfigurationForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -407,6 +499,7 @@ begin
       with Items do
         begin
           Append(TEXT_CONFIGURATION_PAGE_INTERFACE);
+          Append(TEXT_CONFIGURATION_PAGE_LOCATION);
           Append(TEXT_CONFIGURATION_PAGE_LOG);
           Append(TEXT_CONFIGURATION_PAGE_WINDOW_SIZES);
           Append(TEXT_CONFIGURATION_PAGE_OTHER);
@@ -462,11 +555,16 @@ begin
       edbxConfigurationFormLeftValue.Enabled:=not ConfigurationFormPosition.Centered;
       edbxConfigurationFormTopValue.Enabled:=not ConfigurationFormPosition.Centered;
 
+      edbxDestinationFolderValue.Text:=DestinationFolder;
+
       chkbxPlaySoundOnComplete.Checked:=PlaySoundOnComplete;
       edbxWatchPauseValue.Text:=IntToStr(WatchPause);
+      edbxRetranslatorPauseValue.Text:=IntToStr(RetranslatorPause);
+      edbxSharedMemSizeValue.Text:=IntToStr(SharedMemSize);
     end;
   cbPage.ItemIndex:=MainForm.Configuration.ConfigurationFormPage;
   Do_PageSelect;
+  Do_UpdateActions;
 end;
 
 procedure TConfigurationForm.FormShow(Sender: TObject);

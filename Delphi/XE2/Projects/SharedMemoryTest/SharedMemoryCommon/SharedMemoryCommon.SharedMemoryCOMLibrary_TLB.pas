@@ -1,4 +1,4 @@
-unit SharedMemoryCOMLibrary_TLB;
+unit SharedMemoryCommon.SharedMemoryCOMLibrary_TLB;
 
 // ************************************************************************ //
 // WARNING

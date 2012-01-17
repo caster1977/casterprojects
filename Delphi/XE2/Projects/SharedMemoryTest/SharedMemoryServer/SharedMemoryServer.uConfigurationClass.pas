@@ -4,14 +4,14 @@
 /// <remarks>
 /// (C)opyright 2011 by Vlad Ivanov aka Caster
 /// </remarks>
-unit uConfigurationClass;
+unit SharedMemoryServer.uConfigurationClass;
 
 interface
 
 uses
   System.IniFiles,
-  uCommon,
-  uCommonConfigurationClass;
+  SharedMemoryCommon.uCommon,
+  SharedMemoryCommon.uCommonConfigurationClass;
 
 const
   CONST_DEFAULTVALUE_DESTINATIONFOLDER: string='';

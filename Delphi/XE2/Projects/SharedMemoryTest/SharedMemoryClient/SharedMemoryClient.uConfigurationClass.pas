@@ -4,12 +4,12 @@
 /// <remarks>
 /// (C)opyright 2011 by Vlad Ivanov aka Caster
 /// </remarks>
-unit uConfigurationClass;
+unit SharedMemoryClient.uConfigurationClass;
 
 interface
 
 uses
-  uCommonConfigurationClass;
+  SharedMemoryCommon.uCommonConfigurationClass;
 
 type
   TConfigurationClass=class(TCommonConfigurationClass)

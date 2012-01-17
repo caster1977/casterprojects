@@ -1,4 +1,4 @@
-unit uAboutForm;
+unit SharedMemoryClient.uAboutForm;
 
 interface
 
@@ -47,8 +47,8 @@ uses
   Winapi.Windows,
   System.SysUtils,
   Winapi.ShellAPI,
-  uMainForm,
-  uCommon;
+  SharedMemoryClient.uMainForm,
+  SharedMemoryCommon.uCommon;
 
 procedure TAboutForm.FormCreate(Sender: TObject);
 begin

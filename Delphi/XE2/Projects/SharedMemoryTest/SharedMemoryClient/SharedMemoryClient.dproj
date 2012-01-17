@@ -101,27 +101,27 @@
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
-			<RcCompile Include="..\SharedMemoryCommon\waves.rc">
-				<Form>waves.res</Form>
+			<RcCompile Include="..\SharedMemoryCommon\SharedMemoryCommon.Waves.rc">
+				<Form>SharedMemoryCommon.Waves.res</Form>
 			</RcCompile>
-			<DCCReference Include="uMainForm.pas">
+			<DCCReference Include="SharedMemoryClient.uMainForm.pas">
 				<Form>MainForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
-			<DCCReference Include="uConfigurationForm.pas">
+			<DCCReference Include="SharedMemoryClient.uConfigurationForm.pas">
 				<Form>ConfigurationForm</Form>
 			</DCCReference>
-			<DCCReference Include="uAboutForm.pas">
+			<DCCReference Include="SharedMemoryClient.uAboutForm.pas">
 				<Form>AboutForm</Form>
 			</DCCReference>
-			<DCCReference Include="uConfigurationClass.pas"/>
-			<DCCReference Include="..\SharedMemoryCommon\uChunkClass.pas"/>
-			<DCCReference Include="..\SharedMemoryCommon\uChunkedFileClass.pas"/>
-			<DCCReference Include="..\SharedMemoryCommon\uCommon.pas"/>
-			<DCCReference Include="..\SharedMemoryCommon\uSharedMemClass.pas"/>
-			<DCCReference Include="..\SharedMemoryCommon\uWatchThreadClass.pas"/>
-			<DCCReference Include="..\SharedMemoryCommon\uCommonConfigurationClass.pas"/>
-			<DCCReference Include="..\SharedMemoryCOM\SharedMemoryCOMLibrary_TLB.pas"/>
+			<DCCReference Include="SharedMemoryClient.uConfigurationClass.pas"/>
+			<DCCReference Include="..\SharedMemoryCommon\SharedMemoryCommon.uChunkClass.pas"/>
+			<DCCReference Include="..\SharedMemoryCommon\SharedMemoryCommon.uChunkedFileClass.pas"/>
+			<DCCReference Include="..\SharedMemoryCommon\SharedMemoryCommon.uCommon.pas"/>
+			<DCCReference Include="..\SharedMemoryCommon\SharedMemoryCommon.uSharedMemClass.pas"/>
+			<DCCReference Include="..\SharedMemoryCommon\SharedMemoryCommon.uWatchThreadClass.pas"/>
+			<DCCReference Include="..\SharedMemoryCommon\SharedMemoryCommon.uCommonConfigurationClass.pas"/>
+			<DCCReference Include="..\SharedMemoryCommon\SharedMemoryCommon.SharedMemoryCOMLibrary_TLB.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

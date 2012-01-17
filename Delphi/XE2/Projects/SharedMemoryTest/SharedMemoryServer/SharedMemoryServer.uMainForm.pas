@@ -1,4 +1,4 @@
-unit uMainForm;
+unit SharedMemoryServer.uMainForm;
 
 interface
 
@@ -23,14 +23,14 @@ uses
   Vcl.AppEvnts,
   System.Win.ComObj,
   Winapi.ActiveX,
-  uConfigurationClass,
-  uRetranslatorThreadClass,
-  uSharedMemClass,
-  uChunkClass,
-  uChunkedFileClass,
-  uWatchThreadClass,
-  uCommon,
-  SharedMemoryCOMLibrary_TLB;
+  SharedMemoryServer.uConfigurationClass,
+  SharedMemoryCommon.uRetranslatorThreadClass,
+  SharedMemoryCommon.uSharedMemClass,
+  SharedMemoryCommon.uChunkClass,
+  SharedMemoryCommon.uChunkedFileClass,
+  SharedMemoryCommon.uWatchThreadClass,
+  SharedMemoryCommon.uCommon,
+  SharedMemoryCommon.SharedMemoryCOMLibrary_TLB;
 
 type
   TMainForm=class(TForm)
@@ -174,9 +174,9 @@ uses
   Winapi.CommCtrl,
   Winapi.ShellAPI,
   Winapi.MMSystem,
-  uAboutForm,
-  uCommonConfigurationClass,
-  uConfigurationForm;
+  SharedMemoryServer.uAboutForm,
+  SharedMemoryCommon.uCommonConfigurationClass,
+  SharedMemoryServer.uConfigurationForm;
 
 resourcestring
   TEXT_MAINFORM_CAPTION='Shared Memory Server';

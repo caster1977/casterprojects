@@ -4,13 +4,13 @@
 /// <remarks>
 /// (C)opyright 2011 by Vlad Ivanov aka Caster
 /// </remarks>
-unit uChunkedFileClass;
+unit SharedMemoryCommon.uChunkedFileClass;
 
 interface
 
 uses
   System.Classes,
-  uChunkClass;
+  SharedMemoryCommon.uChunkClass;
 
 type
 
@@ -145,7 +145,7 @@ implementation
 uses
   System.SysUtils,
   System.IOUtils,
-  uCommon;
+  SharedMemoryCommon.uCommon;
 
 resourcestring
   TEXT_ERROR_WRONG_CHUNK_SIZE='Размер порции данных не должен быть менее одного байта!';

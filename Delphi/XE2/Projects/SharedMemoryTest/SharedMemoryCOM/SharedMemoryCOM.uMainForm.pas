@@ -1,4 +1,4 @@
-unit uMainForm;
+unit SharedMemoryCOM.uMainForm;
 
 interface
 
@@ -15,7 +15,7 @@ uses
   Vcl.StdCtrls,
   System.Win.ComObj,
   Winapi.ActiveX,
-  SharedMemoryCOMLibrary_TLB,
+  SharedMemoryCommon.SharedMemoryCOMLibrary_TLB,
   Vcl.ActnList,
   Vcl.PlatformDefaultStyleActnCtrls,
   Vcl.ActnMan;

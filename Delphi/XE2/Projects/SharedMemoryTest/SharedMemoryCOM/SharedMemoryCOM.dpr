@@ -2,8 +2,8 @@ program SharedMemoryCOM;
 
 uses
   Vcl.Forms,
-  uMainForm in 'uMainForm.pas' {MainForm},
-  SharedMemoryCOMLibrary_TLB in 'SharedMemoryCOMLibrary_TLB.pas';
+  SharedMemoryCOM.uMainForm in 'SharedMemoryCOM.uMainForm.pas' {MainForm},
+  SharedMemoryCommon.SharedMemoryCOMLibrary_TLB in '..\SharedMemoryCommon\SharedMemoryCommon.SharedMemoryCOMLibrary_TLB.pas';
 
 {$R *.TLB}
 
