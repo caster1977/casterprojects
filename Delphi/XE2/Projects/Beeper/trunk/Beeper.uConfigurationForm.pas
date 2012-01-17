@@ -1,4 +1,4 @@
-unit Configuration;
+unit Beeper.uConfigurationForm;
 
 interface
 
@@ -35,14 +35,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure CheckBox1Click(Sender: TObject);
   private
-    { Private declarations }
     procedure UpdateButtonState;
-  public
-    { Public declarations }
   end;
-
-var
-  ConfigurationForm: TConfigurationForm;
 
 implementation
 

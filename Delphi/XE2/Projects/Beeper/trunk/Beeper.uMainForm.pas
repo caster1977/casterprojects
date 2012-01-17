@@ -1,4 +1,4 @@
-unit Main;
+unit Beeper.uMainForm;
 
 interface
 
@@ -27,7 +27,7 @@ uses
   CastersPackage.getFVI,
   AppEvnts,
   IniFiles,
-  ToolTip;
+  Beeper.uToolTipForm;
 
 type
   TMainForm=class(TForm)
@@ -119,9 +119,9 @@ implementation
 {$R *.dfm}
 
 uses
-  About,
-  Signal,
-  Configuration,
+  Beeper.uAboutForm,
+  Beeper.uSignalForm,
+  Beeper.uConfigurationForm,
   StdCtrls,
   MMSystem;
 
