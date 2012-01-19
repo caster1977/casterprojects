@@ -86,8 +86,8 @@ type
     dtLastYearStart, dtLastYearStop: TDate;
     wLastYear: word;
 
-    procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
-    procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+    procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
+    procedure PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
     procedure ProcedureFooter;
     procedure Do_Create;
     procedure Do_Close;
@@ -109,14 +109,14 @@ uses
   CastersPackage.uRoutines,
   OA5.uMainForm;
 
-procedure TReportForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
+procedure TReportForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
 begin
   Log.EnterMethod(aTitle, aLogGroupGUID);
   MainForm.Inc_BusyState;
   Application.ProcessMessages;
 end;
 
-procedure TReportForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+procedure TReportForm.PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
 begin
   if aError then
     MainForm.ShowErrorBox(aHandle, aErrorMessage)

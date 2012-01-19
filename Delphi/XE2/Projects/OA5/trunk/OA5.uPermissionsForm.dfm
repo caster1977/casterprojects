@@ -5,9 +5,13 @@ object PermissionsForm: TPermissionsForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = #1059#1087#1088#1072#1074#1083#1077#1085#1080#1077' '#1087#1088#1072#1074#1072#1084#1080' '#1076#1086#1089#1090#1091#1087#1072' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
-  ClientHeight = 310
+  ClientHeight = 332
   ClientWidth = 634
   Color = clBtnFace
+  Constraints.MaxHeight = 360
+  Constraints.MaxWidth = 640
+  Constraints.MinHeight = 360
+  Constraints.MinWidth = 640
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -18,12 +22,12 @@ object PermissionsForm: TPermissionsForm
   OnShow = FormShow
   DesignSize = (
     634
-    310)
+    332)
   PixelsPerInch = 96
   TextHeight = 13
   object Bevel2: TBevel
     Left = 0
-    Top = 269
+    Top = 291
     Width = 634
     Height = 41
     Align = alBottom
@@ -33,17 +37,18 @@ object PermissionsForm: TPermissionsForm
   end
   object btnHelp: TButton
     Left = 545
-    Top = 277
+    Top = 299
     Width = 81
     Height = 25
     Cursor = crHandPoint
     Action = Action_Help
     Anchors = [akRight, akBottom]
     TabOrder = 5
+    ExplicitTop = 277
   end
   object btnApply: TButton
     Left = 371
-    Top = 277
+    Top = 299
     Width = 81
     Height = 25
     Cursor = crHandPoint
@@ -51,10 +56,11 @@ object PermissionsForm: TPermissionsForm
     Anchors = [akRight, akBottom]
     Default = True
     TabOrder = 3
+    ExplicitTop = 277
   end
   object btnClose: TButton
     Left = 458
-    Top = 277
+    Top = 299
     Width = 81
     Height = 25
     Cursor = crHandPoint
@@ -62,10 +68,11 @@ object PermissionsForm: TPermissionsForm
     Anchors = [akRight, akBottom]
     Cancel = True
     TabOrder = 4
+    ExplicitTop = 277
   end
   object btnSelectNone: TButton
     Left = 36
-    Top = 279
+    Top = 301
     Width = 22
     Height = 22
     Cursor = crHandPoint
@@ -81,10 +88,11 @@ object PermissionsForm: TPermissionsForm
     ParentShowHint = False
     ShowHint = True
     TabOrder = 2
+    ExplicitTop = 279
   end
   object btnSelectAll: TButton
     Left = 8
-    Top = 279
+    Top = 301
     Width = 22
     Height = 22
     Cursor = crHandPoint
@@ -100,17 +108,19 @@ object PermissionsForm: TPermissionsForm
     ParentShowHint = False
     ShowHint = True
     TabOrder = 1
+    ExplicitTop = 279
   end
   object chklbxPermissions: TCheckListBox
     Left = 8
     Top = 8
     Width = 618
-    Height = 255
+    Height = 277
     OnClickCheck = chklbxPermissionsClickCheck
     Align = alCustom
     Anchors = [akLeft, akTop, akRight, akBottom]
     ItemHeight = 13
     TabOrder = 0
+    ExplicitHeight = 255
   end
   object Log: TLogProvider
     LogFile.Enabled = True
@@ -124,7 +134,7 @@ object PermissionsForm: TPermissionsForm
     Left = 368
     Top = 120
     Bitmap = {
-      494C010104002000D80110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104002000DC0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

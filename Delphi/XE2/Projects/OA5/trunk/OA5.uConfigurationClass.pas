@@ -101,7 +101,7 @@ const
 
 type
 
-  TConfiguration=class(TSingleton)
+  TConfiguration=class //(TSingleton)
   strict private
     FFileName: string;
     FConfigurationFormPage: integer;
@@ -138,7 +138,8 @@ type
     FMaintenanceFormPosition: TFormPosition;
     FClearingFormPosition: TFormPosition;
     FViewPostListFormPosition: TFormPosition;
-    FCreateViewPostFormPosition: TFormPosition;
+    FCreateMessageFormPosition: TFormPosition;
+    FViewMessageFormPosition: TFormPosition;
     FPhonesFormPosition: TFormPosition;
     FAddEditPhoneFormPosition: TFormPosition;
     FAddMassMsrFormPosition: TFormPosition;
@@ -206,7 +207,6 @@ type
     procedure SetAskForFileName(const Value: boolean);
     procedure SetAutoGetMessagesCycleDurationValue(const Value: integer);
     procedure SetClearingFormPosition(const Value: TFormPosition);
-    procedure SetCreateViewPostFormPosition(const Value: TFormPosition);
     procedure SetCustomHelpFile(const Value: boolean);
     procedure SetCustomHelpFileValue(const Value: string);
     procedure SetCustomLogClientFile(const Value: boolean);
@@ -250,11 +250,12 @@ type
     procedure SetUseMultibuffer(const Value: boolean);
     procedure SetUsersFormPosition(const Value: TFormPosition);
     procedure SetViewPostListFormPosition(const Value: TFormPosition);
-  private
     procedure SetMainFormHeight(const Value: integer);
     procedure SetMainFormLeft(const Value: integer);
     procedure SetMainFormTop(const Value: integer);
     procedure SetMainFormWidth(const Value: integer);
+    procedure SetCreateMessageFormPosition(const Value: TFormPosition);
+    procedure SetViewMessageFormPosition(const Value: TFormPosition);
   public
     // sDefaultAction: string;
     // bImmediatelyQuit: boolean;
@@ -267,7 +268,7 @@ type
     /// Инициализирует значения переменных класса и создаёт вложенные объекты
     /// подключений к mysql-серверу.
     /// </remarks>
-    constructor Create; override;
+    constructor Create; //override;
 
     /// <summary>
     /// Процедура загрузки значений переменных класса (конфигурации) из
@@ -327,7 +328,8 @@ type
     property MaintenanceFormPosition: TFormPosition read FMaintenanceFormPosition write SetMaintenanceFormPosition stored False;
     property ClearingFormPosition: TFormPosition read FClearingFormPosition write SetClearingFormPosition stored False;
     property ViewPostListFormPosition: TFormPosition read FViewPostListFormPosition write SetViewPostListFormPosition stored False;
-    property CreateViewPostFormPosition: TFormPosition read FCreateViewPostFormPosition write SetCreateViewPostFormPosition stored False;
+    property CreateMessageFormPosition: TFormPosition read FCreateMessageFormPosition write SetCreateMessageFormPosition stored False;
+    property ViewMessageFormPosition: TFormPosition read FViewMessageFormPosition write SetViewMessageFormPosition stored False;
     property PhonesFormPosition: TFormPosition read FPhonesFormPosition write SetPhonesFormPosition stored False;
     property AddEditPhoneFormPosition: TFormPosition read FAddEditPhoneFormPosition write SetAddEditPhoneFormPosition stored False;
     property AddMassMsrFormPosition: TFormPosition read FAddMassMsrFormPosition write SetAddMassMsrFormPosition stored False;
@@ -488,10 +490,15 @@ begin
             y:=ReadInteger('Положение диалоговых окон', 'ViewPostListFormPosition.iy', DefaultValue_FormPosition_y);
             ViewPostListFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'CreateViewPostFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'CreateViewPostFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'CreateViewPostFormPosition.iy', DefaultValue_FormPosition_y);
-            CreateViewPostFormPosition:=FormPosition;
+            bCenter:=ReadBool('Положение диалоговых окон', 'CreateMessageFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'CreateMessageFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'CreateMessageFormPosition.iy', DefaultValue_FormPosition_y);
+            CreateMessageFormPosition:=FormPosition;
+
+            bCenter:=ReadBool('Положение диалоговых окон', 'ViewMessageFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'ViewMessageFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'ViewMessageFormPosition.iy', DefaultValue_FormPosition_y);
+            ViewMessageFormPosition:=FormPosition;
 
             bCenter:=ReadBool('Положение диалоговых окон', 'PhonesFormPosition.bCenter', DefaultValue_FormPosition_Center);
             x:=ReadInteger('Положение диалоговых окон', 'PhonesFormPosition.ix', DefaultValue_FormPosition_x);
@@ -642,7 +649,8 @@ begin
             WriteFormPosition(IniFile, MaintenanceFormPosition, 'MaintenanceFormPosition');
             WriteFormPosition(IniFile, ClearingFormPosition, 'ClearingFormPosition');
             WriteFormPosition(IniFile, ViewPostListFormPosition, 'ViewPostListFormPosition');
-            WriteFormPosition(IniFile, CreateViewPostFormPosition, 'CreateViewPostFormPosition');
+            WriteFormPosition(IniFile, CreateMessageFormPosition, 'CreateMessageFormPosition');
+            WriteFormPosition(IniFile, ViewMessageFormPosition, 'ViewMessageFormPosition');
             WriteFormPosition(IniFile, PhonesFormPosition, 'PhonesFormPosition');
             WriteFormPosition(IniFile, AddEditPhoneFormPosition, 'AddEditPhoneFormPosition');
             WriteFormPosition(IniFile, AddMassMsrFormPosition, 'AddMassMsrFormPosition');
@@ -925,6 +933,12 @@ begin
     FUsersFormPosition:=Value;
 end;
 
+procedure TConfiguration.SetViewMessageFormPosition(const Value: TFormPosition);
+begin
+  if ((FViewMessageFormPosition.bCenter<>Value.bCenter)or(FViewMessageFormPosition.x<>Value.x)or(FViewMessageFormPosition.y<>Value.y)) then
+    FViewMessageFormPosition:=Value;
+end;
+
 procedure TConfiguration.SetViewPostListFormPosition(const Value: TFormPosition);
 begin
   if ((FViewPostListFormPosition.bCenter<>Value.bCenter)or(FViewPostListFormPosition.x<>Value.x)or(FViewPostListFormPosition.y<>Value.y)) then
@@ -1069,10 +1083,11 @@ begin
     FClearingFormPosition:=Value;
 end;
 
-procedure TConfiguration.SetCreateViewPostFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetCreateMessageFormPosition(
+  const Value: TFormPosition);
 begin
-  if ((FCreateViewPostFormPosition.bCenter<>Value.bCenter)or(FCreateViewPostFormPosition.x<>Value.x)or(FCreateViewPostFormPosition.y<>Value.y)) then
-    FCreateViewPostFormPosition:=Value;
+  if ((FCreateMessageFormPosition.bCenter<>Value.bCenter)or(FCreateMessageFormPosition.x<>Value.x)or(FCreateMessageFormPosition.y<>Value.y)) then
+    FCreateMessageFormPosition:=Value;
 end;
 
 procedure TConfiguration.SetCustomHelpFileValue(const Value: string);
@@ -1260,7 +1275,14 @@ begin
       y:=DefaultValue_FormPosition_y;
     end;
 
-  with FCreateViewPostFormPosition do
+  with FCreateMessageFormPosition do
+    begin
+      bCenter:=DefaultValue_FormPosition_Center;
+      x:=DefaultValue_FormPosition_x;
+      y:=DefaultValue_FormPosition_y;
+    end;
+
+  with FViewMessageFormPosition do
     begin
       bCenter:=DefaultValue_FormPosition_Center;
       x:=DefaultValue_FormPosition_x;

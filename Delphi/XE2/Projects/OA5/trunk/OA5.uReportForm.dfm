@@ -6,7 +6,7 @@ object ReportForm: TReportForm
   BorderStyle = bsSingle
   Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1089#1090#1072#1090#1080#1089#1090#1080#1095#1077#1089#1082#1080#1093' '#1086#1090#1095#1105#1090#1086#1074' '#1087#1086' '#1088#1072#1073#1086#1090#1077' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1077#1081
   ClientHeight = 359
-  ClientWidth = 680
+  ClientWidth = 664
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -22,12 +22,15 @@ object ReportForm: TReportForm
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 285
+    Width = 265
     Height = 359
     Align = alLeft
     BevelOuter = bvNone
     BorderWidth = 6
     TabOrder = 0
+    DesignSize = (
+      265
+      359)
     object lbChooseUsers: TLabel
       Left = 6
       Top = 7
@@ -40,7 +43,7 @@ object ReportForm: TReportForm
     object chklbxUsers: TCheckListBox
       Left = 6
       Top = 36
-      Width = 273
+      Width = 253
       Height = 317
       OnClickCheck = chklbxUsersClickCheck
       Align = alBottom
@@ -49,30 +52,32 @@ object ReportForm: TReportForm
       TabOrder = 2
     end
     object btnSelectNone: TButton
-      Left = 257
+      Left = 237
       Top = 8
       Width = 22
       Height = 22
       Cursor = crHandPoint
       Action = Action_SelectNone
+      Anchors = [akTop, akRight]
       Images = ilStatisticFormSmallImages
       TabOrder = 1
     end
     object btnSelectAll: TButton
-      Left = 229
+      Left = 209
       Top = 8
       Width = 22
       Height = 22
       Cursor = crHandPoint
       Action = Action_SelectAll
+      Anchors = [akTop, akRight]
       Images = ilStatisticFormSmallImages
       TabOrder = 0
     end
   end
   object Panel2: TPanel
-    Left = 285
+    Left = 265
     Top = 0
-    Width = 395
+    Width = 399
     Height = 359
     Align = alClient
     BevelEdges = [beLeft]
@@ -80,20 +85,21 @@ object ReportForm: TReportForm
     BevelOuter = bvNone
     TabOrder = 1
     DesignSize = (
-      393
+      397
       359)
     object Bevel1: TBevel
       Left = 0
       Top = 320
-      Width = 393
+      Width = 397
       Height = 39
       Align = alBottom
       Shape = bsTopLine
-      ExplicitTop = 272
-      ExplicitWidth = 357
+      ExplicitLeft = -2
+      ExplicitTop = 322
+      ExplicitWidth = 393
     end
     object btnClose: TButton
-      Left = 220
+      Left = 224
       Top = 328
       Width = 81
       Height = 25
@@ -105,7 +111,7 @@ object ReportForm: TReportForm
       TabOrder = 4
     end
     object btnHelp: TButton
-      Left = 307
+      Left = 311
       Top = 328
       Width = 81
       Height = 25
@@ -127,14 +133,14 @@ object ReportForm: TReportForm
     object GroupBox1: TGroupBox
       Left = 4
       Top = 0
-      Width = 384
+      Width = 388
       Height = 132
       Align = alCustom
       Anchors = [akLeft, akTop, akRight]
       Caption = '2. '#1042#1099#1073#1077#1088#1080#1090#1077' '#1087#1077#1088#1080#1086#1076' '#1074#1088#1077#1084#1077#1085#1080':'
       TabOrder = 0
       DesignSize = (
-        384
+        388
         132)
       object rbChoisenDate: TRadioButton
         Left = 7
@@ -177,7 +183,7 @@ object ReportForm: TReportForm
         TabOrder = 10
       end
       object cbChoisenMonth_Month: TComboBox
-        Left = 187
+        Left = 191
         Top = 37
         Width = 92
         Height = 21
@@ -200,7 +206,7 @@ object ReportForm: TReportForm
           #1076#1077#1082#1072#1073#1088#1100)
       end
       object cbChoisenMonth_Year: TComboBox
-        Left = 285
+        Left = 289
         Top = 37
         Width = 92
         Height = 21
@@ -210,7 +216,7 @@ object ReportForm: TReportForm
         TabOrder = 4
       end
       object dtpChoisenDate: TDateTimePicker
-        Left = 285
+        Left = 289
         Top = 14
         Width = 92
         Height = 21
@@ -220,7 +226,7 @@ object ReportForm: TReportForm
         TabOrder = 1
       end
       object cbChoisenQuarter_Quarter: TComboBox
-        Left = 187
+        Left = 191
         Top = 60
         Width = 92
         Height = 21
@@ -235,7 +241,7 @@ object ReportForm: TReportForm
           'IV')
       end
       object cbChoisenQuarter_Year: TComboBox
-        Left = 285
+        Left = 289
         Top = 60
         Width = 92
         Height = 21
@@ -245,7 +251,7 @@ object ReportForm: TReportForm
         TabOrder = 7
       end
       object cbChoisenYear: TComboBox
-        Left = 285
+        Left = 289
         Top = 83
         Width = 92
         Height = 21
@@ -255,7 +261,7 @@ object ReportForm: TReportForm
         TabOrder = 9
       end
       object dtpChoisenPeriod_Start: TDateTimePicker
-        Left = 187
+        Left = 191
         Top = 106
         Width = 92
         Height = 21
@@ -265,7 +271,7 @@ object ReportForm: TReportForm
         TabOrder = 11
       end
       object dtpChoisenPeriod_Stop: TDateTimePicker
-        Left = 285
+        Left = 289
         Top = 106
         Width = 92
         Height = 21
@@ -278,7 +284,7 @@ object ReportForm: TReportForm
     object GroupBox2: TGroupBox
       Left = 4
       Top = 138
-      Width = 384
+      Width = 388
       Height = 63
       Anchors = [akLeft, akTop, akRight]
       Caption = '3. '#1042#1099#1073#1077#1088#1080#1090#1077' '#1087#1072#1088#1072#1084#1077#1090#1088#1099' '#1075#1088#1091#1087#1087#1080#1088#1086#1074#1082#1080' '#1076#1072#1085#1085#1099#1093':'
@@ -335,18 +341,18 @@ object ReportForm: TReportForm
     object GroupBox3: TGroupBox
       Left = 4
       Top = 207
-      Width = 384
+      Width = 388
       Height = 109
       Anchors = [akLeft, akTop, akRight]
       Caption = '4. '#1042#1099#1073#1077#1088#1080#1090#1077' '#1076#1086#1087#1086#1083#1085#1080#1090#1077#1083#1100#1085#1099#1077' '#1087#1072#1088#1072#1084#1077#1090#1088#1099' '#1086#1090#1095#1105#1090#1072':'
       TabOrder = 2
       DesignSize = (
-        384
+        388
         109)
       object chkbxDetailed: TCheckBox
         Left = 7
         Top = 16
-        Width = 370
+        Width = 374
         Height = 17
         Anchors = [akLeft, akTop, akRight]
         Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1090#1100' '#1087#1086#1076#1088#1086#1073#1085#1099#1081' '#1086#1090#1095#1105#1090
@@ -356,7 +362,7 @@ object ReportForm: TReportForm
       object chkbxShowSQLQueries: TCheckBox
         Left = 7
         Top = 39
-        Width = 370
+        Width = 374
         Height = 17
         Anchors = [akLeft, akTop, akRight]
         Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1090#1077#1082#1089#1090' SQL-'#1079#1072#1087#1088#1086#1089#1086#1074
@@ -365,7 +371,7 @@ object ReportForm: TReportForm
       object chkbxShowIdleUsers: TCheckBox
         Left = 7
         Top = 62
-        Width = 370
+        Width = 374
         Height = 17
         Anchors = [akLeft, akTop, akRight]
         Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1077#1081', '#1085#1077' '#1080#1079#1084#1077#1085#1103#1074#1096#1080#1093' '#1041#1044' '#1074' '#1091#1082#1072#1079#1072#1085#1085#1099#1081' '#1087#1077#1088#1080#1086#1076
@@ -374,7 +380,7 @@ object ReportForm: TReportForm
       object chkbxWeekStartsFromDayOfBeginning: TCheckBox
         Left = 7
         Top = 85
-        Width = 370
+        Width = 374
         Height = 17
         Anchors = [akLeft, akTop, akRight]
         Caption = #1054#1090#1089#1095#1080#1090#1099#1074#1072#1090#1100' '#1085#1077#1076#1077#1083#1102' '#1086#1090' '#1076#1085#1103' '#1085#1077#1076#1077#1083#1080' '#1085#1072#1095#1072#1083#1072' '#1088#1072#1089#1095#1105#1090#1085#1086#1075#1086' '#1087#1077#1088#1080#1086#1076#1072
@@ -386,7 +392,7 @@ object ReportForm: TReportForm
     Left = 176
     Top = 288
     Bitmap = {
-      494C0101040008009C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800A40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

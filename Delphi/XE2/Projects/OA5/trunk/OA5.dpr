@@ -18,7 +18,8 @@ uses
   OA5.uMultiBufferClass in 'OA5.uMultiBufferClass.pas',
   OA5.uMeasureDataClass in 'OA5.uMeasureDataClass.pas',
   Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles,
+  OA5.uCreateMessageForm in 'OA5.uCreateMessageForm.pas' {CreateMessageForm};
 
 {$R *.res}
 

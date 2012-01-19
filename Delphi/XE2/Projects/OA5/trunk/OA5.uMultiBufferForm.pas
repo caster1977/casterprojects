@@ -47,9 +47,9 @@ type
     procedure Action_PasteExecute(Sender: TObject);
     procedure Action_ClearExecute(Sender: TObject);
   strict private
-    procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
+    procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
-    procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+    procedure PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
     procedure Do_Help;
     procedure Do_Close;
     procedure Do_UpdateActions;
@@ -69,7 +69,7 @@ uses
   OA5.uMainForm,
   CastersPackage.uRoutines;
 
-procedure TMultiBufferForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
+procedure TMultiBufferForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
 begin
   Log.EnterMethod(aTitle, aLogGroupGUID);
   MainForm.Inc_BusyState;
@@ -83,7 +83,7 @@ begin
   Application.ProcessMessages;
 end;
 
-procedure TMultiBufferForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+procedure TMultiBufferForm.PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
 begin
   if aError then
     MainForm.ShowErrorBox(aHandle, aErrorMessage)
@@ -170,8 +170,8 @@ procedure TMultiBufferForm.Do_UpdateActions;
 begin
   ProcedureHeader('Процедура обновления состояния действий', '{75BE1246-C69A-4BB0-A6D9-1DB7FA775D81}');
 
-//  Action_Paste.Enabled:=lvBuffer.Items.Count>0;
-//  Log.SendDebug('Действие "'+Action_Paste.Caption+'" '+Routines.GetConditionalString(Action_Paste.Enabled, 'в', 'от')+'ключено.');
+  Action_Paste.Enabled:=lvBuffer.Items.Count>0;
+  Log.SendDebug('Действие "'+Action_Paste.Caption+'" '+Routines.GetConditionalString(Action_Paste.Enabled, 'в', 'от')+'ключено.');
   Action_Delete.Enabled:=lvBuffer.Selected<>nil;
   Log.SendDebug('Действие "'+Action_Delete.Caption+'" '+Routines.GetConditionalString(Action_Delete.Enabled, 'в', 'от')+'ключено.');
   Action_Clear.Enabled:=lvBuffer.Items.Count>0;
@@ -269,7 +269,7 @@ begin
   ProcedureHeader('Процедура очистки списка элементов', '{2E8AC92F-B5AF-47CA-B6D7-2063421BCC77}');
 
   lvBuffer.Clear;
-  MainForm.MeasuresMultiBuffer._Clear;
+  MainForm.MeasuresMultiBuffer.Clear;
 
   Do_UpdateActions;
   Do_UpdateListViewScrollBarVisibility;
@@ -285,7 +285,7 @@ begin
     begin
       if StrToIntDef(lvBuffer.Selected.Caption, -1)>-1 then
         begin
-          MainForm.MeasuresMultiBuffer._Delete(lvBuffer.Selected.Index);
+          MainForm.MeasuresMultiBuffer.Delete(lvBuffer.Selected.Index);
           lvBuffer.Selected.Delete;
         end;
     end;

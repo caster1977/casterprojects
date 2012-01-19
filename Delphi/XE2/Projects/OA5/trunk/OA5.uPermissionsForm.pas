@@ -43,9 +43,9 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   strict private
-    procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
+    procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
-    procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+    procedure PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
     procedure Do_Help;
     procedure Do_Apply;
     procedure Do_Close;
@@ -62,7 +62,7 @@ uses
   OA5.uMainForm,
   CastersPackage.uRoutines;
 
-procedure TPermissionsForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
+procedure TPermissionsForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
 begin
   Log.EnterMethod(aTitle, aLogGroupGUID);
   MainForm.Inc_BusyState;
@@ -76,7 +76,7 @@ begin
   Application.ProcessMessages;
 end;
 
-procedure TPermissionsForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+procedure TPermissionsForm.PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
 begin
   if aError then
     MainForm.ShowErrorBox(aHandle, aErrorMessage)

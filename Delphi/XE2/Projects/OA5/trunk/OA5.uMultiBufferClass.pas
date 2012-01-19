@@ -15,17 +15,17 @@ type
   strict private
     FItems: TList<TMeasureDataClass>;
   private
-    function _GetCount: integer;
-    function _GetItem(Index: Integer): TMeasureDataClass;
+    function GetCount: integer;
+    function GetItem(Index: Integer): TMeasureDataClass;
   public
     constructor Create;
     destructor Destroy; override;
-    procedure _Append(Item: TMeasureDataClass);
-    procedure _Insert(const Index: integer; Item: TMeasureDataClass);
-    procedure _Delete(const Index: integer);
-    procedure _Clear;
-    property _Count: integer read _GetCount;
-    property _Items[index: Integer]: TMeasureDataClass read _GetItem; default;
+    procedure Append(Item: TMeasureDataClass);
+    procedure Insert(const Index: integer; Item: TMeasureDataClass);
+    procedure Delete(const Index: integer);
+    procedure Clear;
+    property Count: integer read GetCount;
+    property Items[index: Integer]: TMeasureDataClass read GetItem; default;
   end;
 
 implementation
@@ -33,17 +33,17 @@ implementation
 uses
   System.SysUtils;
 
-procedure TMultiBufferClass._Append(Item: TMeasureDataClass);
+procedure TMultiBufferClass.Append(Item: TMeasureDataClass);
 begin
-  _Insert(_Count, Item);
+  Insert(Count, Item);
 end;
 
-procedure TMultiBufferClass._Clear;
+procedure TMultiBufferClass.Clear;
 var
   i: Integer;
 begin
-  for i:=_Count-1 downto 0 do
-    _Items[i].Free;
+  for i:=Count-1 downto 0 do
+    Items[i].Free;
   FItems.Clear;
 end;
 
@@ -53,9 +53,9 @@ begin
   FItems:=nil;
 end;
 
-procedure TMultiBufferClass._Delete(const Index: integer);
+procedure TMultiBufferClass.Delete(const Index: integer);
 begin
-  if (index<0)or(FItems=nil)or(index>=_Count) then
+  if (index<0)or(FItems=nil)or(index>=Count) then
     raise Exception.Create(SMultiBufferIndexError);
   FItems[index].Free;
   FItems.Delete(index);
@@ -65,13 +65,13 @@ destructor TMultiBufferClass.Destroy;
 var
   i: integer;
 begin
-  for i:=_Count-1 downto 0 do
-    _Items[i].Free;
+  for i:=Count-1 downto 0 do
+    Items[i].Free;
   FreeAndNil(FItems);
   inherited;
 end;
 
-function TMultiBufferClass._GetCount: integer;
+function TMultiBufferClass.GetCount: integer;
 begin
   if Assigned(FItems) then
     Result:=TList<TMeasureDataClass>(FItems).Count
@@ -79,20 +79,20 @@ begin
     Result:=0;
 end;
 
-function TMultiBufferClass._GetItem(Index: Integer): TMeasureDataClass;
+function TMultiBufferClass.GetItem(Index: Integer): TMeasureDataClass;
 begin
   if not Assigned(FItems) then
     raise Exception.Create(SMultiBufferIndexError);
   Result:=TMeasureDataClass(FItems[index]);
 end;
 
-procedure TMultiBufferClass._Insert(const Index: integer; Item: TMeasureDataClass);
+procedure TMultiBufferClass.Insert(const Index: integer; Item: TMeasureDataClass);
 begin
   if not Assigned(FItems) then
     FItems:=TList<TMeasureDataClass>.Create;
   FItems.Insert(index, Item);
 end;
 
-{ TODO : Протестировать работу класса }
+{ DONE : Протестировать работу класса }
 
 end.

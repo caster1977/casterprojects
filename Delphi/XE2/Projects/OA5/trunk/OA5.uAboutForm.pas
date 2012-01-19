@@ -38,7 +38,7 @@ type
     procedure Timer2Timer(Sender: TObject);
     procedure lblEMailAddressClick(Sender: TObject);
   strict private
-    procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
+    procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
     procedure Do_Close;
   end;
@@ -60,7 +60,7 @@ resourcestring
   TEXT_ERROR_CLOSE_MUTEX_HANDLE='Не удалось закрыть идентификатор мьютекса!';
   TEXT_ERRORCODE=' Код ошибки: ';
 
-procedure TAboutForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
+procedure TAboutForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
 begin
   Log.EnterMethod(aTitle, aLogGroupGUID);
   MainForm.Inc_BusyState;
