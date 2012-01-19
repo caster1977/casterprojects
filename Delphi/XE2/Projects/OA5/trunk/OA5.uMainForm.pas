@@ -76,11 +76,16 @@ type
     imState: TImage;
     ilMainFormStateIcons: TImageList;
     Log: TLogProvider;
-    ApplicationEvents1: TApplicationEvents;
     Action_Multibuffer: TAction;
     N16: TMenuItem;
     N17: TMenuItem;
-    Button1: TButton;
+    miToolBar: TMenuItem;
+    Action_CreateMessage: TAction;
+    Action_ViewMessages: TAction;
+    N18: TMenuItem;
+    N19: TMenuItem;
+    N20: TMenuItem;
+    N21: TMenuItem;
     procedure Action_QuitExecute(Sender: TObject);
     procedure Action_AboutExecute(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
@@ -91,16 +96,18 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure Action_ReportExecute(Sender: TObject);
     procedure miStatusBarClick(Sender: TObject);
-    procedure ApplicationEvents1Hint(Sender: TObject);
     procedure Action_MultibufferExecute(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure Action_CreateMessageExecute(Sender: TObject);
+    procedure N21Click(Sender: TObject);
   strict private
     bFirstRun: boolean;
     procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
     procedure PreShowModal(const aWindowName: string; var aOldBusyState: integer);
     procedure PostShowModal(const aWindowName: string; var aOldBusyState: integer);
-    procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+    procedure PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+    procedure ApplicationOnHint(Sender: TObject);
 
     procedure Do_UpdateActions;
     procedure Do_About(const aButtonVisible: boolean);
@@ -139,6 +146,7 @@ uses
   OA5.uAddMassMsrForm,
   OA5.uLoginForm,
   OA5.uConsts,
+  OA5.uCreateMessageForm,
   CastersPackage.uRoutines;
 
 type
@@ -149,6 +157,7 @@ resourcestring
   sConfigurationFormSuffix='настроек программы';
   sReportFormSuffix='формирования статистических отчётов по работе пользователей';
   sMultiBufferFormSuffix='мультибуфера';
+  sCreateMessageFormSuffix = 'создания нового сообщения';
 
 procedure TMainForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
 begin
@@ -185,7 +194,7 @@ begin
   Log.SendDebug('Окно '+aWindowName+' скрыто.');
 end;
 
-procedure TMainForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+procedure TMainForm.PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
 begin
   if aError then
     MainForm.ShowErrorBox(aHandle, aErrorMessage)
@@ -309,12 +318,6 @@ begin
   ProcedureFooter;
 end;
 
-procedure TMainForm.ApplicationEvents1Hint(Sender: TObject);
-begin
-  if Configuration.ShowStatusbar then
-    StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=GetLongHint(Application.Hint);
-end;
-
 procedure TMainForm.Do_Help;
 var
   bError: boolean;
@@ -373,6 +376,8 @@ begin
   // привязка иконки готовности к позиции на строке статуса
   BindStateImageToStatusBar;
 
+  Application.OnHint:=ApplicationOnHint;
+
   // загрузка настроек из файла
   Do_LoadConfiguration;
 
@@ -382,6 +387,12 @@ begin
   { TODO : добавить отображение окна "о программе" }
 
   Do_UpdateActions;
+end;
+
+procedure TMainForm.ApplicationOnHint(Sender: TObject);
+begin
+  if Configuration.ShowStatusbar then
+    StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text:=GetLongHint(Application.Hint);
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
@@ -612,7 +623,7 @@ begin
   MultiBufferForm:=TMultiBufferForm.Create(Self);
   with MultiBufferForm do
     try
-      for i:=0 to MeasuresMultiBuffer._Count-1 do
+      for i:=0 to MeasuresMultiBuffer.Count-1 do
         begin
           aListItem:=lvBuffer.Items.Add;
           aListItem.Caption:=IntToStr(i);
@@ -632,6 +643,29 @@ begin
   ProcedureFooter;
 end;
 
+procedure TMainForm.Action_CreateMessageExecute(Sender: TObject);
+var
+  CreateMessageForm: TCreateMessageForm;
+  iBusy: integer;
+begin
+  ProcedureHeader('Процедура отображения окна '+sCreateMessageFormSuffix, '{F356F5DA-5FF7-4F78-A80E-1C563B96AF6D}');
+
+  CreateMessageForm:=TCreateMessageForm.Create(Self);
+  with CreateMessageForm do
+    try
+      PreShowModal(sCreateMessageFormSuffix, iBusy);
+      ShowModal;
+    finally
+      PostShowModal(sCreateMessageFormSuffix, iBusy);
+      { TODO : дописать! }
+      // if ModalResult=mrOk then
+      // Do_ApplyConfiguration;
+      Free;
+    end;
+
+  ProcedureFooter;
+end;
+
 procedure TMainForm.Button1Click(Sender: TObject);
 var
   c: TMeasureDataClass;
@@ -641,7 +675,19 @@ begin
   c._Type:='1';
   c._Name:='2';
   c.Normalize;
-  MeasuresMultiBuffer._Append(c);
+  MeasuresMultiBuffer.Append(c);
+end;
+
+procedure TMainForm.N21Click(Sender: TObject);
+var
+  c: TMeasureDataClass;
+begin
+  c:=TMeasureDataClass.Create;
+  c._OrganizationID:=1;
+  c._Type:='1';
+  c._Name:='2';
+  c.Normalize;
+  MeasuresMultiBuffer.Append(c);
 end;
 
 end.

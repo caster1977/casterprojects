@@ -40,9 +40,9 @@ type
     procedure FormCreate(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
   strict private
-    procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
+    procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
-    procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+    procedure PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
     procedure Do_UpdateActions;
     procedure Do_Ok;
     procedure Do_Help;
@@ -58,7 +58,7 @@ uses
   OA5.uMainForm,
   CastersPackage.uRoutines;
 
-procedure TLoginForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
+procedure TLoginForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
 begin
   Log.EnterMethod(aTitle, aLogGroupGUID);
   MainForm.Inc_BusyState;
@@ -72,7 +72,7 @@ begin
   Application.ProcessMessages;
 end;
 
-procedure TLoginForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+procedure TLoginForm.PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
 begin
   if aError then
     MainForm.ShowErrorBox(aHandle, aErrorMessage)

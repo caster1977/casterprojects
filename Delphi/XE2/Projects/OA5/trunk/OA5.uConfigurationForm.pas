@@ -144,12 +144,12 @@ type
     edbxViewPostListFormPositionX: TEdit;
     edbxViewPostListFormPositionY: TEdit;
     chkbxViewPostListFormPositionByCenter: TCheckBox;
-    lblCreateViewPostFormPosition: TLabel;
-    lblCreateViewPostFormPositionX: TLabel;
-    lblCreateViewPostFormPositionY: TLabel;
-    edbxCreateViewPostFormPositionX: TEdit;
-    edbxCreateViewPostFormPositionY: TEdit;
-    chkbxCreateViewPostFormPositionByCenter: TCheckBox;
+    lblViewMessageFormPosition: TLabel;
+    lblViewMessageFormPositionX: TLabel;
+    lblViewMessageFormPositionY: TLabel;
+    edbxViewMessageFormPositionX: TEdit;
+    edbxViewMessageFormPositionY: TEdit;
+    chkbxViewMessageFormPositionByCenter: TCheckBox;
     lblPhonesFormPosition: TLabel;
     lblPhonesFormPositionX: TLabel;
     lblPhonesFormPositionY: TLabel;
@@ -213,6 +213,12 @@ type
     lblPermissionsFormPositionY: TLabel;
     edbxPermissionsFormPositionY: TEdit;
     chkbxPermissionsFormPositionByCenter: TCheckBox;
+    lblCreateMessageFormPosition: TLabel;
+    lblCreateMessageFormPositionX: TLabel;
+    lblCreateMessageFormPositionY: TLabel;
+    edbxCreateMessageFormPositionX: TEdit;
+    edbxCreateMessageFormPositionY: TEdit;
+    chkbxCreateMessageFormPositionByCenter: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure Action_ApplyExecute(Sender: TObject);
     procedure Action_DefaultsExecute(Sender: TObject);
@@ -249,17 +255,18 @@ type
     procedure chkbxMaintenanceFormPositionByCenterClick(Sender: TObject);
     procedure chkbxClearingFormPositionByCenterClick(Sender: TObject);
     procedure chkbxViewPostListFormPositionByCenterClick(Sender: TObject);
-    procedure chkbxCreateViewPostFormPositionByCenterClick(Sender: TObject);
+    procedure chkbxCreateMessageFormPositionByCenterClick(Sender: TObject);
     procedure chkbxPhonesFormPositionByCenterClick(Sender: TObject);
     procedure chkbxAddEditPhoneFormPositionByCenterClick(Sender: TObject);
     procedure chkbxAddMassMsrFormPositionByCenterClick(Sender: TObject);
     procedure chkbxPermissionsFormPositionByCenterClick(Sender: TObject);
     procedure edbxNumericFieldKeyPress(Sender: TObject; var Key: Char);
+    procedure chkbxViewMessageFormPositionByCenterClick(Sender: TObject);
   strict private
     slBooleanValues: TStringList;
-    procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
+    procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
-    procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+    procedure PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
     procedure Do_Help;
     procedure Do_Defaults;
     procedure Do_Close;
@@ -292,7 +299,7 @@ uses
   CastersPackage.uRoutines,
   OA5.uConfigurationClass;
 
-procedure TConfigurationForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
+procedure TConfigurationForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
 begin
   Log.EnterMethod(aTitle, aLogGroupGUID);
   MainForm.Inc_BusyState;
@@ -306,7 +313,7 @@ begin
   Application.ProcessMessages;
 end;
 
-procedure TConfigurationForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+procedure TConfigurationForm.PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
 begin
   if aError then
     MainForm.ShowErrorBox(aHandle, aErrorMessage)
@@ -478,10 +485,15 @@ begin
       FormPosition.y:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxViewPostListFormPositionY.Text), ''), DefaultValue_FormPosition_y);
       ViewPostListFormPosition:=FormPosition;
 
-      FormPosition.bCenter:=chkbxCreateViewPostFormPositionByCenter.Checked and chkbxCreateViewPostFormPositionByCenter.Enabled;
-      FormPosition.x:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxCreateViewPostFormPositionX.Text), ''), DefaultValue_FormPosition_x);
-      FormPosition.y:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxCreateViewPostFormPositionY.Text), ''), DefaultValue_FormPosition_y);
-      CreateViewPostFormPosition:=FormPosition;
+      FormPosition.bCenter:=chkbxCreateMessageFormPositionByCenter.Checked and chkbxCreateMessageFormPositionByCenter.Enabled;
+      FormPosition.x:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxCreateMessageFormPositionX.Text), ''), DefaultValue_FormPosition_x);
+      FormPosition.y:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxCreateMessageFormPositionY.Text), ''), DefaultValue_FormPosition_y);
+      CreateMessageFormPosition:=FormPosition;
+
+      FormPosition.bCenter:=chkbxViewMessageFormPositionByCenter.Checked and chkbxViewMessageFormPositionByCenter.Enabled;
+      FormPosition.x:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxViewMessageFormPositionX.Text), ''), DefaultValue_FormPosition_x);
+      FormPosition.y:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxViewMessageFormPositionY.Text), ''), DefaultValue_FormPosition_y);
+      ViewMessageFormPosition:=FormPosition;
 
       FormPosition.bCenter:=chkbxPhonesFormPositionByCenter.Checked and chkbxPhonesFormPositionByCenter.Enabled;
       FormPosition.x:=StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter, Trim(edbxPhonesFormPositionX.Text), ''), DefaultValue_FormPosition_x);
@@ -958,11 +970,17 @@ begin
       edbxViewPostListFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
       edbxViewPostListFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
-      chkbxCreateViewPostFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
-      edbxCreateViewPostFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
-      edbxCreateViewPostFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
-      edbxCreateViewPostFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
-      edbxCreateViewPostFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+      chkbxCreateMessageFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+      edbxCreateMessageFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+      edbxCreateMessageFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+      edbxCreateMessageFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+      edbxCreateMessageFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
+
+      chkbxViewMessageFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
+      edbxViewMessageFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
+      edbxViewMessageFormPositionY.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_y));
+      edbxViewMessageFormPositionX.Enabled:=not DefaultValue_FormPosition_Center;
+      edbxViewMessageFormPositionY.Enabled:=not DefaultValue_FormPosition_Center;
 
       chkbxPhonesFormPositionByCenter.Checked:=DefaultValue_FormPosition_Center;
       edbxPhonesFormPositionX.Text:=Routines.GetConditionalString(DefaultValue_FormPosition_Center, '', IntToStr(DefaultValue_FormPosition_x));
@@ -1377,11 +1395,17 @@ begin
       edbxViewPostListFormPositionX.Enabled:=not ViewPostListFormPosition.bCenter;
       edbxViewPostListFormPositionY.Enabled:=not ViewPostListFormPosition.bCenter;
 
-      chkbxCreateViewPostFormPositionByCenter.Checked:=CreateViewPostFormPosition.bCenter;
-      edbxCreateViewPostFormPositionX.Text:=Routines.GetConditionalString(CreateViewPostFormPosition.bCenter, '', IntToStr(CreateViewPostFormPosition.x));
-      edbxCreateViewPostFormPositionY.Text:=Routines.GetConditionalString(CreateViewPostFormPosition.bCenter, '', IntToStr(CreateViewPostFormPosition.y));
-      edbxCreateViewPostFormPositionX.Enabled:=not CreateViewPostFormPosition.bCenter;
-      edbxCreateViewPostFormPositionY.Enabled:=not CreateViewPostFormPosition.bCenter;
+      chkbxCreateMessageFormPositionByCenter.Checked:=CreateMessageFormPosition.bCenter;
+      edbxCreateMessageFormPositionX.Text:=Routines.GetConditionalString(CreateMessageFormPosition.bCenter, '', IntToStr(CreateMessageFormPosition.x));
+      edbxCreateMessageFormPositionY.Text:=Routines.GetConditionalString(CreateMessageFormPosition.bCenter, '', IntToStr(CreateMessageFormPosition.y));
+      edbxCreateMessageFormPositionX.Enabled:=not CreateMessageFormPosition.bCenter;
+      edbxCreateMessageFormPositionY.Enabled:=not CreateMessageFormPosition.bCenter;
+
+      chkbxViewMessageFormPositionByCenter.Checked:=ViewMessageFormPosition.bCenter;
+      edbxViewMessageFormPositionX.Text:=Routines.GetConditionalString(ViewMessageFormPosition.bCenter, '', IntToStr(ViewMessageFormPosition.x));
+      edbxViewMessageFormPositionY.Text:=Routines.GetConditionalString(ViewMessageFormPosition.bCenter, '', IntToStr(ViewMessageFormPosition.y));
+      edbxViewMessageFormPositionX.Enabled:=not ViewMessageFormPosition.bCenter;
+      edbxViewMessageFormPositionY.Enabled:=not ViewMessageFormPosition.bCenter;
 
       chkbxPhonesFormPositionByCenter.Checked:=PhonesFormPosition.bCenter;
       edbxPhonesFormPositionX.Text:=Routines.GetConditionalString(PhonesFormPosition.bCenter, '', IntToStr(PhonesFormPosition.x));
@@ -1665,6 +1689,37 @@ begin
   ProcedureFooter;
 end;
 
+procedure TConfigurationForm.chkbxViewMessageFormPositionByCenterClick(
+  Sender: TObject);
+var
+  b: boolean;
+//  ViewMessageForm: TViewMessageForm;
+begin
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxViewMessageFormPositionByCenter.Caption+'"', '{34DEEAA1-C7A1-4C63-8384-D28CBB8CEBF3}');
+
+  b:=chkbxViewMessageFormPositionByCenter.Enabled and chkbxViewMessageFormPositionByCenter.Checked;
+  edbxViewMessageFormPositionX.Enabled:=not b;
+  edbxViewMessageFormPositionY.Enabled:=not b;
+  if b then
+    begin
+      edbxViewMessageFormPositionX.Text:='';
+      edbxViewMessageFormPositionY.Text:='';
+    end
+  else
+    begin
+      // ViewMessageForm:=TViewMessageForm.Create(Self);
+      // try
+      // edbxViewMessageFormPositionX.Text:=IntToStr((Screen.WorkAreaWidth-ViewMessageForm.Width)div 2);
+      // edbxViewMessageFormPositionY.Text:=IntToStr((Screen.WorkAreaHeight-ViewMessageForm.Height)div 2);
+      // finally
+      // ViewMessageForm.Free;
+      // end;
+    end;
+  Log.SendDebug('Флажок "'+chkbxViewMessageFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+
+  ProcedureFooter;
+end;
+
 procedure TConfigurationForm.chkbxViewPostListFormPositionByCenterClick(Sender: TObject);
 var
   b: boolean;
@@ -1826,32 +1881,32 @@ begin
   ProcedureFooter;
 end;
 
-procedure TConfigurationForm.chkbxCreateViewPostFormPositionByCenterClick(Sender: TObject);
+procedure TConfigurationForm.chkbxCreateMessageFormPositionByCenterClick(Sender: TObject);
 var
   b: boolean;
-  // CreateViewPostForm: TCreateViewPostForm;
+  // CreateMessageForm: TCreateMessageForm;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxCreateViewPostFormPositionByCenter.Caption+'"', '{E4C4C710-0120-4391-8B8B-3A3DF1D7F95B}');
+  ProcedureHeader('Процедура отклика на щелчок на флажке "'+chkbxCreateMessageFormPositionByCenter.Caption+'"', '{E4C4C710-0120-4391-8B8B-3A3DF1D7F95B}');
 
-  b:=chkbxCreateViewPostFormPositionByCenter.Enabled and chkbxCreateViewPostFormPositionByCenter.Checked;
-  edbxCreateViewPostFormPositionX.Enabled:=not b;
-  edbxCreateViewPostFormPositionY.Enabled:=not b;
+  b:=chkbxCreateMessageFormPositionByCenter.Enabled and chkbxCreateMessageFormPositionByCenter.Checked;
+  edbxCreateMessageFormPositionX.Enabled:=not b;
+  edbxCreateMessageFormPositionY.Enabled:=not b;
   if b then
     begin
-      edbxCreateViewPostFormPositionX.Text:='';
-      edbxCreateViewPostFormPositionY.Text:='';
+      edbxCreateMessageFormPositionX.Text:='';
+      edbxCreateMessageFormPositionY.Text:='';
     end
   else
     begin
-      // CreateViewPostForm:=TCreateViewPostForm.Create(Self);
+      // CreateMessageForm:=TCreateViewPostForm.Create(Self);
       // try
-      // edbxCreateViewPostFormPositionX.Text:=IntToStr((Screen.WorkAreaWidth-CreateViewPostForm.Width)div 2);
-      // edbxCreateViewPostFormPositionY.Text:=IntToStr((Screen.WorkAreaHeight-CreateViewPostForm.Height)div 2);
+      // edbxCreateMessageFormPositionX.Text:=IntToStr((Screen.WorkAreaWidth-CreateMessageForm.Width)div 2);
+      // edbxCreateMessageFormPositionY.Text:=IntToStr((Screen.WorkAreaHeight-CreateMessageForm.Height)div 2);
       // finally
-      // CreateViewPostForm.Free;
+      // CreateMessageForm.Free;
       // end;
     end;
-  Log.SendDebug('Флажок "'+chkbxCreateViewPostFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
+  Log.SendDebug('Флажок "'+chkbxCreateMessageFormPositionByCenter.Caption+'"'+Routines.GetConditionalString(b, 'в', 'от')+'ключен.');
 
   ProcedureFooter;
 end;

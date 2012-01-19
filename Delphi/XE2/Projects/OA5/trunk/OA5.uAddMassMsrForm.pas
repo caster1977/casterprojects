@@ -56,8 +56,8 @@ type
     procedure lvMsrDateTimeListCompare(Sender: TObject; Item1, Item2: TListItem; Data: Integer; var Compare: Integer);
     procedure FormShow(Sender: TObject);
   strict private
-    procedure ProcedureHeader(aTitle, aLogGroupGUID: string);
-    procedure PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+    procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
+    procedure PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
     procedure ProcedureFooter;
     procedure Do_Confirm;
     procedure Do_Clear;
@@ -140,14 +140,14 @@ begin
   Result:=b;
 end;
 
-procedure TAddMassMsrForm.ProcedureHeader(aTitle, aLogGroupGUID: string);
+procedure TAddMassMsrForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
 begin
   Log.EnterMethod(aTitle, aLogGroupGUID);
   MainForm.Inc_BusyState;
   Application.ProcessMessages;
 end;
 
-procedure TAddMassMsrForm.PreFooter(aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+procedure TAddMassMsrForm.PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
 begin
   if aError then
     MainForm.ShowErrorBox(aHandle, aErrorMessage)
