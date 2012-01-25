@@ -19,14 +19,123 @@ object CreateMessageForm: TCreateMessageForm
   OldCreateOrder = False
   Position = poDesigned
   OnCreate = FormCreate
+  OnShow = FormShow
+  DesignSize = (
+    634
+    332)
   PixelsPerInch = 96
   TextHeight = 13
+  object Bevel2: TBevel
+    Left = 0
+    Top = 291
+    Width = 634
+    Height = 41
+    Align = alBottom
+    Shape = bsTopLine
+    ExplicitTop = 264
+    ExplicitWidth = 645
+  end
+  object Label1: TLabel
+    Left = 8
+    Top = 11
+    Width = 29
+    Height = 13
+    Caption = #1050#1086#1084#1091':'
+  end
+  object btnClose: TButton
+    Left = 458
+    Top = 299
+    Width = 81
+    Height = 25
+    Cursor = crHandPoint
+    Action = Action_Close
+    Anchors = [akRight, akBottom]
+    Cancel = True
+    TabOrder = 0
+  end
+  object btnHelp: TButton
+    Left = 545
+    Top = 299
+    Width = 81
+    Height = 25
+    Cursor = crHandPoint
+    Action = Action_Help
+    Anchors = [akRight, akBottom]
+    TabOrder = 1
+  end
+  object reMessage: TRichEdit
+    Left = 8
+    Top = 62
+    Width = 618
+    Height = 221
+    Hint = #1042#1074#1077#1076#1080#1090#1077' '#1090#1077#1082#1089#1090' '#1089#1086#1086#1073#1097#1077#1085#1080#1103'...'
+    Align = alCustom
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 2
+    WantTabs = True
+    OnChange = Do_OnChange
+    OnKeyUp = Do_OnKeyUp
+  end
+  object leTheme: TLabeledEdit
+    Left = 40
+    Top = 35
+    Width = 586
+    Height = 21
+    Hint = #1042#1074#1077#1076#1080#1090#1077' '#1090#1077#1084#1091' '#1089#1086#1086#1073#1097#1077#1085#1080#1103'...'
+    EditLabel.Width = 28
+    EditLabel.Height = 13
+    EditLabel.Caption = #1058#1077#1084#1072':'
+    LabelPosition = lpLeft
+    TabOrder = 3
+    TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1090#1077#1084#1091' '#1089#1086#1086#1073#1097#1077#1085#1080#1103'...'
+    OnChange = Do_OnChange
+  end
+  object cmbbxTo: TComboBox
+    Left = 40
+    Top = 8
+    Width = 586
+    Height = 21
+    Hint = #1042#1099#1073#1077#1088#1080#1090#1077' '#1072#1076#1088#1077#1089#1072#1090#1072' '#1080#1079' '#1089#1087#1080#1089#1082#1072'...'
+    Style = csDropDownList
+    TabOrder = 4
+    TextHint = #1042#1099#1073#1077#1088#1080#1090#1077' '#1072#1076#1088#1077#1089#1072#1090#1072' '#1080#1079' '#1089#1087#1080#1089#1082#1072'...'
+    OnChange = Do_OnChange
+    Items.Strings = (
+      '1'
+      '2')
+  end
+  object btnSend: TButton
+    Left = 371
+    Top = 299
+    Width = 81
+    Height = 25
+    Cursor = crHandPoint
+    Action = Action_Send
+    Anchors = [akRight, akBottom]
+    TabOrder = 5
+  end
+  object btnClear: TButton
+    Left = 8
+    Top = 299
+    Width = 81
+    Height = 25
+    Cursor = crHandPoint
+    Action = Action_Clear
+    Anchors = [akRight, akBottom]
+    TabOrder = 6
+  end
   object ilCreateMessageFormSmallImages: TImageList
     AllocBy = 2
     Left = 368
     Top = 120
     Bitmap = {
-      494C0101020020001C0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102002000200210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000005346450053464500534645005346450053464500534645000000
@@ -177,16 +286,26 @@ object CreateMessageForm: TCreateMessageForm
     Left = 336
     Top = 120
     StyleName = 'Platform Default'
-    object Action_Help: TAction
-      Caption = '&'#1057#1087#1088#1072#1074#1082#1072
-      Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1087#1088#1072#1074#1082#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1089#1087#1088#1072#1074#1086#1095#1085#1086#1075#1086' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
-      ImageIndex = 0
-      OnExecute = Action_HelpExecute
+    object Action_Clear: TAction
+      Caption = '&'#1054#1095#1080#1089#1090#1080#1090#1100
+      Hint = #1054#1095#1080#1089#1090#1080#1090#1100' '#1087#1086#1083#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1095#1080#1089#1090#1082#1080' '#1087#1086#1083#1077#1081' '#1092#1086#1088#1084#1099
+      OnExecute = Action_ClearExecute
+    end
+    object Action_Send: TAction
+      Caption = #1054'&'#1090#1087#1088#1072#1074#1080#1090#1100
+      Hint = #1054#1090#1087#1088#1072#1074#1080#1090#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1087#1088#1072#1074#1082#1080' '#1089#1086#1086#1073#1097#1077#1085#1080#1103' '#1072#1076#1088#1077#1089#1072#1090#1091
+      OnExecute = Action_SendExecute
     end
     object Action_Close: TAction
       Caption = '&'#1047#1072#1082#1088#1099#1090#1100
       Hint = #1047#1072#1082#1088#1099#1090#1100' '#1086#1082#1085#1086'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072
       OnExecute = Action_CloseExecute
+    end
+    object Action_Help: TAction
+      Caption = '&'#1057#1087#1088#1072#1074#1082#1072
+      Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1087#1088#1072#1074#1082#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1089#1087#1088#1072#1074#1086#1095#1085#1086#1075#1086' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+      ImageIndex = 0
+      OnExecute = Action_HelpExecute
     end
   end
 end
