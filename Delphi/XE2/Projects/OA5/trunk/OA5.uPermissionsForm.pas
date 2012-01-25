@@ -207,8 +207,12 @@ begin
         b:=True;
         Break;
       end;
-  Action_SelectAll.Enabled:=(chklbxPermissions.Items.Count>0)and b;
-  Log.SendDebug('Действие "'+Action_SelectAll.Caption+'" '+Routines.GetConditionalString(Action_SelectAll.Enabled, 'в', 'от')+'ключено.');
+  b:=(chklbxPermissions.Items.Count>0)and b;
+  if Action_SelectAll.Enabled<>b then
+    begin
+      Action_SelectAll.Enabled:=b;
+      Log.SendDebug('Действие "'+Action_SelectAll.Caption+'" '+Routines.GetConditionalString(Action_SelectAll.Enabled, 'в', 'от')+'ключено.');
+    end;
 
   b:=False;
   for i:=0 to chklbxPermissions.Items.Count-1 do
@@ -217,8 +221,12 @@ begin
         b:=True;
         Break;
       end;
-  Action_SelectNone.Enabled:=(chklbxPermissions.Items.Count>0)and b;
-  Log.SendDebug('Действие "'+Action_SelectNone.Caption+'" '+Routines.GetConditionalString(Action_SelectNone.Enabled, 'в', 'от')+'ключено.');
+  b:=(chklbxPermissions.Items.Count>0)and b;
+  if Action_SelectNone.Enabled<>b then
+    begin
+      Action_SelectNone.Enabled:=b;
+      Log.SendDebug('Действие "'+Action_SelectNone.Caption+'" '+Routines.GetConditionalString(Action_SelectNone.Enabled, 'в', 'от')+'ключено.');
+    end;
 
   ProcedureFooter;
 end;

@@ -44,7 +44,6 @@ object PermissionsForm: TPermissionsForm
     Action = Action_Help
     Anchors = [akRight, akBottom]
     TabOrder = 5
-    ExplicitTop = 277
   end
   object btnApply: TButton
     Left = 371
@@ -56,7 +55,6 @@ object PermissionsForm: TPermissionsForm
     Anchors = [akRight, akBottom]
     Default = True
     TabOrder = 3
-    ExplicitTop = 277
   end
   object btnClose: TButton
     Left = 458
@@ -68,7 +66,6 @@ object PermissionsForm: TPermissionsForm
     Anchors = [akRight, akBottom]
     Cancel = True
     TabOrder = 4
-    ExplicitTop = 277
   end
   object btnSelectNone: TButton
     Left = 36
@@ -88,7 +85,6 @@ object PermissionsForm: TPermissionsForm
     ParentShowHint = False
     ShowHint = True
     TabOrder = 2
-    ExplicitTop = 279
   end
   object btnSelectAll: TButton
     Left = 8
@@ -108,19 +104,17 @@ object PermissionsForm: TPermissionsForm
     ParentShowHint = False
     ShowHint = True
     TabOrder = 1
-    ExplicitTop = 279
   end
   object chklbxPermissions: TCheckListBox
     Left = 8
     Top = 8
     Width = 618
-    Height = 277
+    Height = 275
     OnClickCheck = chklbxPermissionsClickCheck
     Align = alCustom
     Anchors = [akLeft, akTop, akRight, akBottom]
     ItemHeight = 13
     TabOrder = 0
-    ExplicitHeight = 255
   end
   object Log: TLogProvider
     LogFile.Enabled = True
@@ -134,7 +128,7 @@ object PermissionsForm: TPermissionsForm
     Left = 368
     Top = 120
     Bitmap = {
-      494C010104002000DC0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104002000E00110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
