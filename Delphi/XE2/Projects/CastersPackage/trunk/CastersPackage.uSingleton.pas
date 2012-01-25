@@ -28,7 +28,8 @@ type
 implementation
 
 uses
-  Contnrs;
+  System.Classes,
+  System.Contnrs;
 
 var
   SingletonList: TObjectList;
