@@ -170,7 +170,7 @@ begin
       Log.AllowedTypes:=KeepLogTypes;
       Log.Enabled:=EnableLog;
 
-      // установка положения окна конфигурации в соответсвии со значениями конфигурации программы
+      // установка положения окна в соответсвии со значениями конфигурации программы
       if SetPasswordFormPosition.bCenter then
         Position:=poScreenCenter
       else

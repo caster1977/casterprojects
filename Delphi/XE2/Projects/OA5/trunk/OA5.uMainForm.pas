@@ -86,6 +86,8 @@ type
     N19: TMenuItem;
     N20: TMenuItem;
     N21: TMenuItem;
+    Action_ViewMessage: TAction;
+    N22: TMenuItem;
     procedure Action_QuitExecute(Sender: TObject);
     procedure Action_AboutExecute(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
@@ -100,6 +102,8 @@ type
     procedure Button1Click(Sender: TObject);
     procedure Action_CreateMessageExecute(Sender: TObject);
     procedure N21Click(Sender: TObject);
+    procedure Action_ViewMessageExecute(Sender: TObject);
+    procedure miToolBarClick(Sender: TObject);
   strict private
     bFirstRun: boolean;
     procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
@@ -147,6 +151,7 @@ uses
   OA5.uLoginForm,
   OA5.uConsts,
   OA5.uCreateMessageForm,
+  OA5.uViewMessageForm,
   CastersPackage.uRoutines;
 
 type
@@ -158,6 +163,7 @@ resourcestring
   sReportFormSuffix='формирования статистических отчётов по работе пользователей';
   sMultiBufferFormSuffix='мультибуфера';
   sCreateMessageFormSuffix = 'создания нового сообщения';
+  sViewMessageFormSuffix = 'просмотра полученного сообщения';
 
 procedure TMainForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
 begin
@@ -254,6 +260,17 @@ begin
   StatusBar1.Visible:=miStatusbar.Checked;
   Configuration.ShowStatusbar:=StatusBar1.Visible;
   Log.SendInfo('Панель статуса '+Routines.GetConditionalString(StatusBar1.Visible, 'в', 'от')+'ключена.');
+
+  ProcedureFooter;
+end;
+
+procedure TMainForm.miToolBarClick(Sender: TObject);
+begin
+  ProcedureHeader('Процедура включения/отключения отображения панели кнопок', '{786D709B-0201-41AE-923C-BC307AE26A6B}');
+
+//  StatusBar1.Visible:=miStatusbar.Checked;
+//  Configuration.ShowToolbar:=StatusBar1.Visible;
+//  Log.SendInfo('Панель кнопок '+Routines.GetConditionalString(StatusBar1.Visible, 'в', 'от')+'ключена.');
 
   ProcedureFooter;
 end;
@@ -634,6 +651,29 @@ begin
       ShowModal;
     finally
       PostShowModal(sMultiBufferFormSuffix, iBusy);
+      { TODO : дописать! }
+      // if ModalResult=mrOk then
+      // Do_ApplyConfiguration;
+      Free;
+    end;
+
+  ProcedureFooter;
+end;
+
+procedure TMainForm.Action_ViewMessageExecute(Sender: TObject);
+var
+  ViewMessageForm: TViewMessageForm;
+  iBusy: integer;
+begin
+  ProcedureHeader('Процедура отображения окна '+sViewMessageFormSuffix, '{347244A6-22DF-44DF-873B-2B55FC5112B9}');
+
+  ViewMessageForm:=TViewMessageForm.Create(Self);
+  with ViewMessageForm do
+    try
+      PreShowModal(sViewMessageFormSuffix, iBusy);
+      ShowModal;
+    finally
+      PostShowModal(sViewMessageFormSuffix, iBusy);
       { TODO : дописать! }
       // if ModalResult=mrOk then
       // Do_ApplyConfiguration;
