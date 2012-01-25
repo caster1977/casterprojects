@@ -19,7 +19,8 @@ uses
   OA5.uMeasureDataClass in 'OA5.uMeasureDataClass.pas',
   Vcl.Themes,
   Vcl.Styles,
-  OA5.uCreateMessageForm in 'OA5.uCreateMessageForm.pas' {CreateMessageForm};
+  OA5.uCreateMessageForm in 'OA5.uCreateMessageForm.pas' {CreateMessageForm},
+  OA5.uViewMessageForm in 'OA5.uViewMessageForm.pas' {ViewMessageForm};
 
 {$R *.res}
 
