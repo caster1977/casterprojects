@@ -32,13 +32,14 @@ type
     btnClose: TButton;
     btnHelp: TButton;
     reMessage: TRichEdit;
-    leTheme: TLabeledEdit;
     cmbbxTo: TComboBox;
-    Label1: TLabel;
+    lblTo: TLabel;
     btnSend: TButton;
     Action_Send: TAction;
     btnClear: TButton;
     Action_Clear: TAction;
+    edbxTheme: TEdit;
+    lblTheme: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
     procedure Action_CloseExecute(Sender: TObject);
@@ -46,7 +47,6 @@ type
     procedure FormShow(Sender: TObject);
     procedure Do_OnChange(Sender: TObject);
     procedure Action_SendExecute(Sender: TObject);
-    procedure Do_OnKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
   strict private
     procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
@@ -78,17 +78,6 @@ begin
   Log.EnterMethod(aTitle, aLogGroupGUID);
   MainForm.Inc_BusyState;
   Application.ProcessMessages;
-end;
-
-procedure TCreateMessageForm.Do_OnKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-  case Key of
-    VK_ESCAPE:
-      Do_Close;
-    VK_RETURN:
-      if ssCtrl in Shift then
-        Do_Send;
-  end;
 end;
 
 procedure TCreateMessageForm.Do_Send;
@@ -149,7 +138,7 @@ begin
   ProcedureHeader('Процедура очистки полей ввода окна создания сообщения', '{CC3CBEB8-842A-44C8-A6A0-92FE911F5A4D}');
 
   cmbbxTo.ItemIndex:=-1;
-  leTheme.Clear;
+  edbxTheme.Clear;
   reMessage.Clear;
   ActiveControl:=cmbbxTo;
   Log.SendInfo('Поля ввода очищены пользователем.');
@@ -191,14 +180,14 @@ var
 begin
   ProcedureHeader('Процедура обновления состояния действий', '{3F56424B-5AAE-4F72-AC97-57075F825F88}');
 
-  b:=(cmbbxTo.ItemIndex>-1)or(leTheme.Text<>'')or(reMessage.Text<>'');
+  b:=(cmbbxTo.ItemIndex>-1)or(edbxTheme.Text<>'')or(reMessage.Text<>'');
   if Action_Clear.Enabled<>b then
     begin
       Action_Clear.Enabled:=b;
       Log.SendDebug('Действие "'+Action_Clear.Caption+'" '+Routines.GetConditionalString(Action_Clear.Enabled, 'в', 'от')+'ключено.');
     end;
 
-  b:=(cmbbxTo.ItemIndex>-1)and(leTheme.Text<>'')and(reMessage.Text<>'');
+  b:=(cmbbxTo.ItemIndex>-1)and(edbxTheme.Text<>'')and(reMessage.Text<>'');
   if Action_Send.Enabled<>b then
     begin
       Action_Send.Enabled:=b;

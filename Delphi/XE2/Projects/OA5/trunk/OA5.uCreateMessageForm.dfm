@@ -35,13 +35,21 @@ object CreateMessageForm: TCreateMessageForm
     ExplicitTop = 264
     ExplicitWidth = 645
   end
-  object Label1: TLabel
+  object lblTo: TLabel
     Left = 8
     Top = 38
     Width = 29
     Height = 13
     Caption = #1050#1086#1084#1091':'
     FocusControl = cmbbxTo
+  end
+  object lblTheme: TLabel
+    Left = 8
+    Top = 11
+    Width = 28
+    Height = 13
+    Caption = '&'#1058#1077#1084#1072':'
+    FocusControl = edbxTheme
   end
   object btnClose: TButton
     Left = 458
@@ -52,7 +60,7 @@ object CreateMessageForm: TCreateMessageForm
     Action = Action_Close
     Anchors = [akRight, akBottom]
     Cancel = True
-    TabOrder = 5
+    TabOrder = 4
   end
   object btnHelp: TButton
     Left = 545
@@ -62,7 +70,7 @@ object CreateMessageForm: TCreateMessageForm
     Cursor = crHandPoint
     Action = Action_Help
     Anchors = [akRight, akBottom]
-    TabOrder = 6
+    TabOrder = 5
   end
   object reMessage: TRichEdit
     Left = 8
@@ -78,24 +86,9 @@ object CreateMessageForm: TCreateMessageForm
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 2
+    TabOrder = 1
     WantTabs = True
-    OnChange = Do_OnChange
-    OnKeyUp = Do_OnKeyUp
-  end
-  object leTheme: TLabeledEdit
-    Left = 40
-    Top = 8
-    Width = 586
-    Height = 21
-    Hint = #1042#1074#1077#1076#1080#1090#1077' '#1090#1077#1084#1091' '#1089#1086#1086#1073#1097#1077#1085#1080#1103'...'
-    EditLabel.Width = 28
-    EditLabel.Height = 13
-    EditLabel.Caption = #1058#1077#1084#1072':'
-    LabelPosition = lpLeft
-    LabelSpacing = 5
-    TabOrder = 0
-    TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1090#1077#1084#1091' '#1089#1086#1086#1073#1097#1077#1085#1080#1103'...'
+    WantReturns = False
     OnChange = Do_OnChange
   end
   object cmbbxTo: TComboBox
@@ -105,7 +98,7 @@ object CreateMessageForm: TCreateMessageForm
     Height = 21
     Hint = #1042#1099#1073#1077#1088#1080#1090#1077' '#1072#1076#1088#1077#1089#1072#1090#1072' '#1080#1079' '#1089#1087#1080#1089#1082#1072'...'
     Style = csDropDownList
-    TabOrder = 1
+    TabOrder = 0
     TextHint = #1042#1099#1073#1077#1088#1080#1090#1077' '#1072#1076#1088#1077#1089#1072#1090#1072' '#1080#1079' '#1089#1087#1080#1089#1082#1072'...'
     OnChange = Do_OnChange
   end
@@ -117,7 +110,7 @@ object CreateMessageForm: TCreateMessageForm
     Cursor = crHandPoint
     Action = Action_Send
     Anchors = [akRight, akBottom]
-    TabOrder = 4
+    TabOrder = 3
   end
   object btnClear: TButton
     Left = 8
@@ -127,14 +120,23 @@ object CreateMessageForm: TCreateMessageForm
     Cursor = crHandPoint
     Action = Action_Clear
     Anchors = [akRight, akBottom]
-    TabOrder = 3
+    TabOrder = 2
+  end
+  object edbxTheme: TEdit
+    Left = 40
+    Top = 8
+    Width = 586
+    Height = 21
+    Hint = #1042#1074#1077#1076#1080#1090#1077' '#1090#1077#1084#1091' '#1089#1086#1086#1073#1097#1077#1085#1080#1103'...'
+    TabOrder = 6
+    TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1090#1077#1084#1091' '#1089#1086#1086#1073#1097#1077#1085#1080#1103'...'
   end
   object ilCreateMessageFormSmallImages: TImageList
     AllocBy = 2
     Left = 336
     Top = 216
     Bitmap = {
-      494C010102002000300210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102002000340210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000005346450053464500534645005346450053464500534645000000

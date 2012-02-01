@@ -14,7 +14,7 @@ uses
   Vcl.Dialogs,
   Vcl.ImgList,
   CastersPackage.uLogProvider, Vcl.ActnList, Vcl.PlatformDefaultStyleActnCtrls,
-  Vcl.ActnMan;
+  Vcl.ActnMan, Vcl.StdCtrls, Vcl.ComCtrls, Vcl.ExtCtrls;
 
 type
   TViewMessageForm=class(TForm)
@@ -23,16 +23,40 @@ type
     ActionManager1: TActionManager;
     Action_Help: TAction;
     Action_Close: TAction;
+    reMessage: TRichEdit;
+    Bevel2: TBevel;
+    btnClose: TButton;
+    btnHelp: TButton;
+    btnProcess: TButton;
+    btnDelete: TButton;
+    btnPrevious: TButton;
+    btnNext: TButton;
+    Action_Delete: TAction;
+    Action_Previous: TAction;
+    Action_Next: TAction;
+    Action_Process: TAction;
+    edbxFrom: TEdit;
+    lblFrom: TLabel;
+    edbxTheme: TEdit;
+    lblTheme: TLabel;
     procedure FormShow(Sender: TObject);
     procedure Action_CloseExecute(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure Action_DeleteExecute(Sender: TObject);
+    procedure Action_PreviousExecute(Sender: TObject);
+    procedure Action_NextExecute(Sender: TObject);
+    procedure Action_ProcessExecute(Sender: TObject);
   strict private
     procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
     procedure PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
     procedure Do_Help;
     procedure Do_Close;
+    procedure Do_Delete;
+    procedure Do_Next;
+    procedure Do_Previous;
+    procedure Do_Process;
     procedure Do_UpdateActions;
   end;
 
@@ -125,10 +149,38 @@ begin
   ProcedureFooter;
 end;
 
+procedure TViewMessageForm.Action_DeleteExecute(Sender: TObject);
+begin
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Delete.Caption+'"', '{2E33FC92-7CA7-429D-B729-AACB73242320}');
+  Do_Delete;
+  ProcedureFooter;
+end;
+
 procedure TViewMessageForm.Action_HelpExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Help.Caption+'"', '{F63639D0-EE85-4695-B7F7-C8DDF5DA9E52}');
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Help.Caption+'"', '{C6AC5679-39E1-4FD7-81E4-79CBE93831A5}');
   Do_Help;
+  ProcedureFooter;
+end;
+
+procedure TViewMessageForm.Action_NextExecute(Sender: TObject);
+begin
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Next.Caption+'"', '{646509D5-B6E4-4BA8-ACB1-D3FC3E7D6909}');
+  Do_Next;
+  ProcedureFooter;
+end;
+
+procedure TViewMessageForm.Action_PreviousExecute(Sender: TObject);
+begin
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Previous.Caption+'"', '{F1B8E1BE-3D35-4D60-A962-1C33B0E2140E}');
+  Do_Previous;
+  ProcedureFooter;
+end;
+
+procedure TViewMessageForm.Action_ProcessExecute(Sender: TObject);
+begin
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Process.Caption+'"', '{DE989347-B026-45D2-B6BA-21A502C1F8F9}');
+  Do_Process;
   ProcedureFooter;
 end;
 
@@ -138,6 +190,15 @@ begin
 
   ModalResult:=mrClose;
   Log.SendInfo('Окно просмотра полученного сообщения закрыто пользователем.');
+
+  ProcedureFooter;
+end;
+
+procedure TViewMessageForm.Do_Delete;
+begin
+  ProcedureHeader('Процедура удаления текущего сообщения', '{876CA1BB-200F-4922-9D2D-59FBCB5A2506}');
+
+  { TODO : дописать }
 
   ProcedureFooter;
 end;
@@ -157,6 +218,33 @@ begin
     Routines.GenerateError('Извините, справочный файл к данной программе не найден.', sErrorMessage, bError);
 
   PreFooter(Handle, bError, sErrorMessage);
+  ProcedureFooter;
+end;
+
+procedure TViewMessageForm.Do_Next;
+begin
+  ProcedureHeader('Процедура  сообщения', '{CEC95D15-EAE9-4A73-850C-62F7230F1813}');
+
+  { TODO : дописать }
+
+  ProcedureFooter;
+end;
+
+procedure TViewMessageForm.Do_Previous;
+begin
+  ProcedureHeader('Процедура  сообщения', '{493DAAC0-4DF7-479A-84AB-7E4D79758C31}');
+
+  { TODO : дописать }
+
+  ProcedureFooter;
+end;
+
+procedure TViewMessageForm.Do_Process;
+begin
+  ProcedureHeader('Процедура пометки сообщения как прочитанного', '{DAA1A662-2261-4B3A-B4F7-04A1BCEAEE09}');
+
+  { TODO : дописать }
+
   ProcedureFooter;
 end;
 
