@@ -135,7 +135,7 @@ constructor TCommonConfigurationClass.Create(const IniFileName: string='');
 begin
   inherited Create;
   if Trim(IniFileName)='' then
-    FIniFileName:=ExtractFilePath(ExpandFileName(Application.ExeName))+StringReplace(ExtractFileName(Application.ExeName), '.exe', '.ini', [rfIgnoreCase])
+    FIniFileName:=ChangeFileExt(ExpandFileName(Application.ExeName), '.ini')
   else
     FIniFileName:=Trim(IniFileName);
   FWatchPause:=CONST_DEFAULTVALUE_WATCHPAUSE;
