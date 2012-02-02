@@ -380,7 +380,7 @@ var
   s: string;
   i: integer;
 begin
-  s:=ExtractFilePath(Application.ExeName)+StringReplace(ExtractFileName(Application.ExeName), ExtractFileExt(Application.ExeName), '.ini', [rfIgnoreCase]);
+  s:=ChangeFileExt(ExpandFileName(Application.ExeName), '.ini');
   IniFile:=TIniFile.Create(s);
   with IniFile do
     try
@@ -426,7 +426,7 @@ var
   Node: TListItem;
   b: boolean;
 begin
-  s:=ExtractFilePath(Application.ExeName)+StringReplace(ExtractFileName(Application.ExeName), ExtractFileExt(Application.ExeName), '.ini', [rfIgnoreCase]);
+  s:=ChangeFileExt(ExpandFileName(Application.ExeName), '.ini');
   IniFile:=TIniFile.Create(s);
   with IniFile do
     try
