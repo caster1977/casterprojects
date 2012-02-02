@@ -5734,7 +5734,7 @@ var
 begin
   ProcedureHeader('Процедура чтения конфигурации из файла *.ini', LogGroupGUID, False, False);
 
-  IniFile:=TIniFile.Create(ExtractFilePath(ExpandFileName(Application.ExeName))+'OA4.ini');
+  IniFile:=TIniFile.Create(ChangeFileExt(ExpandFileName(Application.ExeName), '.ini'));
   with IniFile do
     try
       Configuration.bStoreLastLogin:=ReadBool('Интерфейс', 'bStoreLastLogin', False);
@@ -5854,7 +5854,7 @@ var
 begin
   ProcedureHeader('Процедура сохранения конфигурации в файл *.ini', LogGroupGUID, False, False);
 
-  IniFile:=TIniFile.Create(ExtractFilePath(ExpandFileName(Application.ExeName))+'OA4.ini');
+  IniFile:=TIniFile.Create(ChangeFileExt(ExpandFileName(Application.ExeName), '.ini'));
   LogThis('Путь и имя файла конфигурации: ['+IniFile.FileName+'].', LogGroupGUID, lmtInfo);
   with IniFile do
     try

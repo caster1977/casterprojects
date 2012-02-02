@@ -2,10 +2,28 @@
 
 interface
 
-uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs, ComCtrls, ExtCtrls, StdCtrls, CheckLst, Buttons, mysql, Main, Grids, ImgList;
+uses
+  Windows,
+  Messages,
+  SysUtils,
+  Variants,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  ComCtrls,
+  ExtCtrls,
+  StdCtrls,
+  CheckLst,
+  Buttons,
+  mysql,
+  Main,
+  Grids,
+  ImgList;
 
 type
-  TViewPostListForm= class(TForm)
+  TViewPostListForm=class(TForm)
     pnlButtons: TPanel;
     btnCreate: TButton;
     btnClose: TButton;
@@ -34,9 +52,12 @@ implementation
 
 {$R *.dfm}
 
-uses CreateViewPost;
+uses
+  CreateViewPost;
 
 procedure TViewPostListForm.btnCreateClick(Sender: TObject);
+const
+  GroupGUID: string='{C95816A0-63F7-41D3-B844-EBFB321799BE}';
 var
   mr: TModalResult;
   s, q: string;
@@ -47,9 +68,7 @@ var
   TSL: TStringList;
   RTFStream: TMemoryStream;
   pacCaption, pacText: PAnsiChar;
-  GroupGUID: string;
 begin
-  GroupGUID:='{C95816A0-63F7-41D3-B844-EBFB321799BE}';
   bError:=False;
   ResultSet:=nil;
   pacCaption:=nil;
@@ -272,8 +291,8 @@ begin
                         begin
                           // добавление сообщения
                           MainForm.LogThis('Добавление нового сообщения...', GroupGUID, lmtInfo);
-                          q:='INSERT INTO '+MainForm.Configuration.sMySQLDatabase+'._msg (msg_id, msg_erased, msg_processed, msg_for_user_id, '+'msg_caption, msg_text, msg_created_at, msg_created_by_user_id) VALUES '+'(NULL, "0", "0", '+TSL.Strings
-                            [j]+', "'+string(pacCaption)+'", "'+string(pacText)+'", Now(), '+MainForm.CurrentUser.sID+');';
+                          q:='INSERT INTO '+MainForm.Configuration.sMySQLDatabase+'._msg (msg_id, msg_erased, msg_processed, msg_for_user_id, '+'msg_caption, msg_text, msg_created_at, msg_created_by_user_id) VALUES '+'(NULL, "0", "0", '+
+                            TSL.Strings[j]+', "'+string(pacCaption)+'", "'+string(pacText)+'", Now(), '+MainForm.CurrentUser.sID+');';
                           MainForm.LogThis(q, GroupGUID, lmtSQL);
                           i:=mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)), Length(q));
                           if i=0 then
@@ -352,13 +371,13 @@ begin
 end;
 
 procedure TViewPostListForm.btnEraseClick(Sender: TObject);
+const
+  GroupGUID: string='{BB095F24-C157-4D43-8062-5178B5C31CDB}';
 var
   s, s_msg_id, q: string;
   b, bError: boolean;
   i: integer;
-  GroupGUID: string;
 begin
-  GroupGUID:='{BB095F24-C157-4D43-8062-5178B5C31CDB}';
   bError:=False;
   MainForm.LogThis('Попытка удаления сообщения...', GroupGUID, lmtInfo);
   b:=MessageBox(Handle, PChar('Вы действительно хотите удалить выделенное сообщение?'), PChar('OA4 - Подтверждение удаления'), MB_OKCANCEL+MB_ICONQUESTION+MB_DEFBUTTON2)=IDOK;
@@ -442,6 +461,8 @@ begin
 end;
 
 procedure TViewPostListForm.btnViewClick(Sender: TObject);
+const
+  GroupGUID: string='{A7A88547-1E24-443E-A15D-A40C837214C7}';
 var
   mr: TModalResult;
   s, q: string;
@@ -449,9 +470,7 @@ var
   i: integer;
   ResultSet: PMYSQL_RES;
   ResultRow: PMYSQL_ROW;
-  GroupGUID: string;
 begin
-  GroupGUID:='{A7A88547-1E24-443E-A15D-A40C837214C7}';
   bError:=False;
   ResultSet:=nil;
   MainForm.LogThis('Попытка открытия окна просмотра сообщения...', GroupGUID, lmtInfo);
@@ -481,8 +500,8 @@ begin
       // получение ID выделенного сообщения
       s:=lvMessages.Selected.SubItems[2];
       MainForm.LogThis('Открытие сообщения...', GroupGUID, lmtInfo);
-      q:='SELECT msg_id, msg_processed, msg_caption, msg_text, msg_created_at, usr_fullname FROM '+MainForm.Configuration.sMySQLDatabase+'._msg LEFT JOIN '+MainForm.Configuration.sMySQLDatabase+'._usr ON usr_id=msg_created_by_user_id WHERE msg_id='+
-        s+';';
+      q:='SELECT msg_id, msg_processed, msg_caption, msg_text, msg_created_at, usr_fullname FROM '+MainForm.Configuration.sMySQLDatabase+'._msg LEFT JOIN '+MainForm.Configuration.sMySQLDatabase+
+        '._usr ON usr_id=msg_created_by_user_id WHERE msg_id='+s+';';
       MainForm.LogThis(q, GroupGUID, lmtSQL);
       i:=mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)), Length(q));
       if i=0 then
