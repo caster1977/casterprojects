@@ -1359,7 +1359,7 @@ var
 begin
   ProcedureHeader('Процедура загрузки конфигурации программы из файла INI', LogGroupGUID);
 
-  with TIniFile.Create(ExtractFilePath(ExpandFileName(Application.ExeName))+'overseer.ini') do
+  with TIniFile.Create(ChangeFileExt(ExpandFileName(Application.ExeName), '.ini')) do
     try
       // секция "Интерфейс"
       Configuration.bAlwaysShowTrayIcon:=ReadBool('Интерфейс', 'bAlwaysShowTrayIcon', False);
@@ -1485,7 +1485,7 @@ const
 begin
   ProcedureHeader('Процедура сохранения конфигурации программы в файл INI', LogGroupGUID);
 
-  with TIniFile.Create(ExtractFilePath(ExpandFileName(Application.ExeName))+'overseer.ini') do
+  with TIniFile.Create(ChangeFileExt(ExpandFileName(Application.ExeName), '.ini')) do
     try
       try
         // секция "Интерфейс"
