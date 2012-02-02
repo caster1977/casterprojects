@@ -435,7 +435,7 @@ procedure TMainForm.Load_ConfigIni;
 var
   IniFile: TIniFile;
 begin
-  IniFile:=TIniFile.Create(ExtractFilePath(ExpandFileName(Application.ExeName))+'OA4LogServer.ini');
+  IniFile:=TIniFile.Create(ChangeFileExt(ExpandFileName(Application.ExeName), '.ini'));
   with IniFile do
     try
       Configuration.sLocalHost:=GetLocalIP;
@@ -460,7 +460,7 @@ procedure TMainForm.Save_ConfigIni;
 var
   IniFile: TIniFile;
 begin
-  IniFile:=TIniFile.Create(ExtractFilePath(ExpandFileName(Application.ExeName))+'OA4LogServer.ini');
+  IniFile:=TIniFile.Create(ChangeFileExt(ExpandFileName(Application.ExeName), '.ini'));
   with IniFile do
     try
       WriteString('Сервер и база данных', 'sMySQLHost', string(Configuration.sMySQLHost));
