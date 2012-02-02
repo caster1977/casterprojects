@@ -1192,7 +1192,7 @@ begin
   MessagesServer:=TMySQLConnection.Create;
 
   // инициализация пеерменных класса
-  FFileName:=ExtractFilePath(ExpandFileName(Application.ExeName))+StringReplace(ExtractFileName(Application.ExeName), '.exe', '.ini', [rfIgnoreCase]);
+  FFileName:=ChangeFileExt(ExpandFileName(Application.ExeName), '.ini');
   FConfigurationFormPage:=0;
   FLastLogin:='';
   FLastPassword:='';
