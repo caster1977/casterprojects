@@ -1296,7 +1296,7 @@ const
 begin
   ProcedureHeader('Процедура загрузки конфигурации программы из файла INI', LogGroupGUID);
 
-  with TIniFile.Create(ExtractFilePath(ExpandFileName(Application.ExeName))+'LogKeeper.ini') do
+  with TIniFile.Create(ChangeFileExt(ExpandFileName(Application.ExeName), '.ini')) do
     try
       // секция "Сервер и база данных"
       Configuration.LogServer.sMySQLHost:=ReadString('Сервер и база данных', 'sMySQLHost', '');
@@ -1336,7 +1336,7 @@ const
 begin
   ProcedureHeader('Процедура сохранения конфигурации программы в файл INI', LogGroupGUID);
 
-  with TIniFile.Create(ExtractFilePath(ExpandFileName(Application.ExeName))+'LogKeeper.ini') do
+  with TIniFile.Create(ChangeFileExt(ExpandFileName(Application.ExeName), '.ini')) do
     try
       try
         // секция "Сервер и база данных"
