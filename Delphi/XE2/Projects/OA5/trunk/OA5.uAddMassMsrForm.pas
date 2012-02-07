@@ -290,17 +290,38 @@ begin
 end;
 
 procedure TAddMassMsrForm.Do_UpdateActions;
+var
+  b: boolean;
 begin
   ProcedureHeader('Процедура обновления состояния действий', '{E82D3684-F61B-4852-B94D-10AE52F902CF}');
 
-  Action_Add.Enabled:=IsStringIsTime(edbxTime.Text);
-  Log.SendDebug('Действие "'+Action_Add.Caption+'" '+Routines.GetConditionalString(Action_Add.Enabled, 'в', 'от')+'ключено.');
-  Action_Delete.Enabled:=lvMsrDateTimeList.Selected<>nil;
-  Log.SendDebug('Действие "'+Action_Delete.Caption+'" '+Routines.GetConditionalString(Action_Delete.Enabled, 'в', 'от')+'ключено.');
-  Action_Clear.Enabled:=lvMsrDateTimeList.Items.Count>0;
-  Log.SendDebug('Действие "'+Action_Clear.Caption+'" '+Routines.GetConditionalString(Action_Clear.Enabled, 'в', 'от')+'ключено.');
-  Action_Confirm.Enabled:=lvMsrDateTimeList.Items.Count>0;
-  Log.SendDebug('Действие "'+Action_Confirm.Caption+'" '+Routines.GetConditionalString(Action_Confirm.Enabled, 'в', 'от')+'ключено.');
+  b:=IsStringIsTime(edbxTime.Text);
+  if Action_Add.Enabled<>b then
+    begin
+      Action_Add.Enabled:=b;
+      Log.SendDebug('Действие "'+Action_Add.Caption+'" '+Routines.GetConditionalString(Action_Add.Enabled, 'в', 'от')+'ключено.');
+    end;
+
+  b:=lvMsrDateTimeList.Selected<>nil;
+  if Action_Delete.Enabled<>b then
+    begin
+      Action_Delete.Enabled:=b;
+      Log.SendDebug('Действие "'+Action_Delete.Caption+'" '+Routines.GetConditionalString(Action_Delete.Enabled, 'в', 'от')+'ключено.');
+    end;
+
+  b:=lvMsrDateTimeList.Items.Count>0;
+  if Action_Clear.Enabled<>b then
+    begin
+      Action_Clear.Enabled:=b;
+      Log.SendDebug('Действие "'+Action_Clear.Caption+'" '+Routines.GetConditionalString(Action_Clear.Enabled, 'в', 'от')+'ключено.');
+    end;
+
+  b:=lvMsrDateTimeList.Items.Count>0;
+  if Action_Confirm.Enabled<>b then
+    begin
+      Action_Confirm.Enabled:=b;
+      Log.SendDebug('Действие "'+Action_Confirm.Caption+'" '+Routines.GetConditionalString(Action_Confirm.Enabled, 'в', 'от')+'ключено.');
+    end;
 
   ProcedureFooter;
 end;

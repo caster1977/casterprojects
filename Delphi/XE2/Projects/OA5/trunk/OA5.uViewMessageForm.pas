@@ -256,26 +256,8 @@ begin
 end;
 
 procedure TViewMessageForm.Do_UpdateActions;
-// var
-// b: boolean;
 begin
   ProcedureHeader('Процедура обновления состояния действий', '{E046A30F-9B2A-4787-87B1-C186769154AA}');
-
-  // b:=(cmbbxTo.ItemIndex>-1)or(leTheme.Text<>'')or(reMessage.Text<>'');
-  // if Action_Clear.Enabled<>b then
-  // begin
-  // Action_Clear.Enabled:=b;
-  // Log.SendDebug('Действие "'+Action_Clear.Caption+'" '+Routines.GetConditionalString(Action_Clear.Enabled, 'в', 'от')+'ключено.');
-  // end;
-  //
-  // b:=(cmbbxTo.ItemIndex>-1)and(leTheme.Text<>'')and(reMessage.Text<>'');
-  // if Action_Send.Enabled<>b then
-  // begin
-  // Action_Send.Enabled:=b;
-  // Log.SendDebug('Действие "'+Action_Send.Caption+'" '+Routines.GetConditionalString(Action_Send.Enabled, 'в', 'от')+'ключено.');
-  // btnSend.Default:=b;
-  // btnClose.Default:=not b;
-  // end;
 
   ProcedureFooter;
 end;

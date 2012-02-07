@@ -124,13 +124,25 @@ begin
 end;
 
 procedure TSetPasswordForm.Do_UpdateActions;
+var
+  b: boolean;
 begin
   ProcedureHeader('Процедура обновления состояния действий', '{3ED4C156-FDB8-4F56-9E52-B3F393FE249D}');
 
-  Action_Apply.Enabled:=mePassword.Text=meConfirmation.Text;
-  Log.SendDebug('Действие "'+Action_Apply.Caption+'" '+Routines.GetConditionalString(Action_Apply.Enabled, 'в', 'от')+'ключено.');
-  btnApply.Default:=Action_Apply.Enabled;
-  btnClose.Default:=not Action_Apply.Enabled;
+  b:=mePassword.Text=meConfirmation.Text;
+  if Action_Apply.Enabled<>b then
+    begin
+      Action_Apply.Enabled:=b;
+      Log.SendDebug('Действие "'+Action_Apply.Caption+'" '+Routines.GetConditionalString(Action_Apply.Enabled, 'в', 'от')+'ключено.');
+    end;
+
+  b:=Action_Apply.Enabled;
+  if btnApply.Default<>b then
+    btnApply.Default:=b;
+
+  b:=not Action_Apply.Enabled;
+  if btnClose.Default<>b then
+    btnClose.Default:=b;
 
   ProcedureFooter;
 end;

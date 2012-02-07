@@ -412,11 +412,21 @@ begin
   b:=False;
   for i:=0 to chklbxUsers.Count-1 do
     b:=b or chklbxUsers.Checked[i];
-  Action_Create.Enabled:=(rbChoisenDate.Checked or rbChoisenMonth.Checked or rbChoisenQuarter.Checked or rbChoisenYear.Checked or rbChoisenPeriod.Checked)and
+  b:=(rbChoisenDate.Checked or rbChoisenMonth.Checked or rbChoisenQuarter.Checked or rbChoisenYear.Checked or rbChoisenPeriod.Checked)and
     (rbGroupByHours.Checked or rbGroupByDays.Checked or rbGroupByWeeks.Checked or rbGroupByMonths.Checked or rbGroupByQuarters.Checked or rbGroupByYears.Checked)and b;
-  Log.SendDebug('Действие "'+Action_Create.Caption+'" '+Routines.GetConditionalString(Action_Create.Enabled, 'в', 'от')+'ключено.');
-  btnClose.Default:=not Action_Create.Enabled;
-  btnCreate.Default:=Action_Create.Enabled;
+  if Action_Create.Enabled<>b then
+    begin
+      Action_Create.Enabled:=b;
+      Log.SendDebug('Действие "'+Action_Create.Caption+'" '+Routines.GetConditionalString(Action_Create.Enabled, 'в', 'от')+'ключено.');
+    end;
+
+  b:=not Action_Create.Enabled;
+  if btnClose.Default<>b then
+    btnClose.Default:=not Action_Create.Enabled;
+
+  b:=Action_Create.Enabled;
+  if btnCreate.Default<>b then
+    btnCreate.Default:=b;
 
   ProcedureFooter;
 end;
