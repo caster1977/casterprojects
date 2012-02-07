@@ -21,7 +21,8 @@ uses
   Vcl.Styles,
   OA5.uCreateMessageForm in 'OA5.uCreateMessageForm.pas' {CreateMessageForm},
   OA5.uViewMessageForm in 'OA5.uViewMessageForm.pas' {ViewMessageForm},
-  OA5.uViewMessagesForm in 'OA5.uViewMessagesForm.pas' {ViewMessagesForm};
+  OA5.uViewMessagesForm in 'OA5.uViewMessagesForm.pas' {ViewMessagesForm},
+  OA5.uAddEditPhoneForm in 'OA5.uAddEditPhoneForm.pas' {AddEditPhoneForm};
 
 {$R *.res}
 

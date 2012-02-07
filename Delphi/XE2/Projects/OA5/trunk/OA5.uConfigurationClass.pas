@@ -137,7 +137,7 @@ type
     FReportFormPosition: TFormPosition;
     FMaintenanceFormPosition: TFormPosition;
     FClearingFormPosition: TFormPosition;
-    FViewPostListFormPosition: TFormPosition;
+    FViewMessagesFormPosition: TFormPosition;
     FCreateMessageFormPosition: TFormPosition;
     FViewMessageFormPosition: TFormPosition;
     FPhonesFormPosition: TFormPosition;
@@ -249,7 +249,7 @@ type
     procedure SetReportFormPosition(const Value: TFormPosition);
     procedure SetUseMultibuffer(const Value: boolean);
     procedure SetUsersFormPosition(const Value: TFormPosition);
-    procedure SetViewPostListFormPosition(const Value: TFormPosition);
+    procedure SetViewMessagesFormPosition(const Value: TFormPosition);
     procedure SetMainFormHeight(const Value: integer);
     procedure SetMainFormLeft(const Value: integer);
     procedure SetMainFormTop(const Value: integer);
@@ -327,7 +327,7 @@ type
     property ReportFormPosition: TFormPosition read FReportFormPosition write SetReportFormPosition stored False;
     property MaintenanceFormPosition: TFormPosition read FMaintenanceFormPosition write SetMaintenanceFormPosition stored False;
     property ClearingFormPosition: TFormPosition read FClearingFormPosition write SetClearingFormPosition stored False;
-    property ViewPostListFormPosition: TFormPosition read FViewPostListFormPosition write SetViewPostListFormPosition stored False;
+    property ViewMessagesFormPosition: TFormPosition read FViewMessagesFormPosition write SetViewMessagesFormPosition stored False;
     property CreateMessageFormPosition: TFormPosition read FCreateMessageFormPosition write SetCreateMessageFormPosition stored False;
     property ViewMessageFormPosition: TFormPosition read FViewMessageFormPosition write SetViewMessageFormPosition stored False;
     property PhonesFormPosition: TFormPosition read FPhonesFormPosition write SetPhonesFormPosition stored False;
@@ -485,10 +485,10 @@ begin
             y:=ReadInteger('Положение диалоговых окон', 'ClearingFormPosition.iy', DefaultValue_FormPosition_y);
             ClearingFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'ViewPostListFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'ViewPostListFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'ViewPostListFormPosition.iy', DefaultValue_FormPosition_y);
-            ViewPostListFormPosition:=FormPosition;
+            bCenter:=ReadBool('Положение диалоговых окон', 'ViewMessagesFormPosition.bCenter', DefaultValue_FormPosition_Center);
+            x:=ReadInteger('Положение диалоговых окон', 'ViewMessagesFormPosition.ix', DefaultValue_FormPosition_x);
+            y:=ReadInteger('Положение диалоговых окон', 'ViewMessagesFormPosition.iy', DefaultValue_FormPosition_y);
+            ViewMessagesFormPosition:=FormPosition;
 
             bCenter:=ReadBool('Положение диалоговых окон', 'CreateMessageFormPosition.bCenter', DefaultValue_FormPosition_Center);
             x:=ReadInteger('Положение диалоговых окон', 'CreateMessageFormPosition.ix', DefaultValue_FormPosition_x);
@@ -648,7 +648,7 @@ begin
             WriteFormPosition(IniFile, ReportFormPosition, 'ReportFormPosition');
             WriteFormPosition(IniFile, MaintenanceFormPosition, 'MaintenanceFormPosition');
             WriteFormPosition(IniFile, ClearingFormPosition, 'ClearingFormPosition');
-            WriteFormPosition(IniFile, ViewPostListFormPosition, 'ViewPostListFormPosition');
+            WriteFormPosition(IniFile, ViewMessagesFormPosition, 'ViewMessagesFormPosition');
             WriteFormPosition(IniFile, CreateMessageFormPosition, 'CreateMessageFormPosition');
             WriteFormPosition(IniFile, ViewMessageFormPosition, 'ViewMessageFormPosition');
             WriteFormPosition(IniFile, PhonesFormPosition, 'PhonesFormPosition');
@@ -939,10 +939,10 @@ begin
     FViewMessageFormPosition:=Value;
 end;
 
-procedure TConfiguration.SetViewPostListFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetViewMessagesFormPosition(const Value: TFormPosition);
 begin
-  if ((FViewPostListFormPosition.bCenter<>Value.bCenter)or(FViewPostListFormPosition.x<>Value.x)or(FViewPostListFormPosition.y<>Value.y)) then
-    FViewPostListFormPosition:=Value;
+  if ((FViewMessagesFormPosition.bCenter<>Value.bCenter)or(FViewMessagesFormPosition.x<>Value.x)or(FViewMessagesFormPosition.y<>Value.y)) then
+    FViewMessagesFormPosition:=Value;
 end;
 
 procedure TConfiguration.SetStoreLastLogin(const Value: boolean);
@@ -1268,7 +1268,7 @@ begin
       y:=DefaultValue_FormPosition_y;
     end;
 
-  with FViewPostListFormPosition do
+  with FViewMessagesFormPosition do
     begin
       bCenter:=DefaultValue_FormPosition_Center;
       x:=DefaultValue_FormPosition_x;

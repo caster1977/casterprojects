@@ -167,15 +167,31 @@ begin
 end;
 
 procedure TMultiBufferForm.Do_UpdateActions;
+var
+  b: boolean;
 begin
   ProcedureHeader('Процедура обновления состояния действий', '{75BE1246-C69A-4BB0-A6D9-1DB7FA775D81}');
 
-  Action_Paste.Enabled:=lvBuffer.Items.Count>0;
-  Log.SendDebug('Действие "'+Action_Paste.Caption+'" '+Routines.GetConditionalString(Action_Paste.Enabled, 'в', 'от')+'ключено.');
-  Action_Delete.Enabled:=lvBuffer.Selected<>nil;
-  Log.SendDebug('Действие "'+Action_Delete.Caption+'" '+Routines.GetConditionalString(Action_Delete.Enabled, 'в', 'от')+'ключено.');
-  Action_Clear.Enabled:=lvBuffer.Items.Count>0;
-  Log.SendDebug('Действие "'+Action_Clear.Caption+'" '+Routines.GetConditionalString(Action_Clear.Enabled, 'в', 'от')+'ключено.');
+  b:=lvBuffer.Items.Count>0;
+  if Action_Paste.Enabled<>b then
+    begin
+      Action_Paste.Enabled:=b;
+      Log.SendDebug('Действие "'+Action_Paste.Caption+'" '+Routines.GetConditionalString(Action_Paste.Enabled, 'в', 'от')+'ключено.');
+    end;
+
+  b:=lvBuffer.Selected<>nil;
+  if Action_Delete.Enabled<>b then
+    begin
+      Action_Delete.Enabled:=b;
+      Log.SendDebug('Действие "'+Action_Delete.Caption+'" '+Routines.GetConditionalString(Action_Delete.Enabled, 'в', 'от')+'ключено.');
+    end;
+
+  b:=lvBuffer.Items.Count>0;
+  if Action_Clear.Enabled<>b then
+    begin
+      Action_Clear.Enabled:=b;
+      Log.SendDebug('Действие "'+Action_Clear.Caption+'" '+Routines.GetConditionalString(Action_Clear.Enabled, 'в', 'от')+'ключено.');
+    end;
 
   ProcedureFooter;
 end;
