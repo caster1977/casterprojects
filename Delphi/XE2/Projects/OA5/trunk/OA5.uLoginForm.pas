@@ -82,12 +82,24 @@ begin
 end;
 
 procedure TLoginForm.Do_UpdateActions;
+var
+  b: boolean;
 begin
   ProcedureHeader('Процедура обновления состояния действий', '{348CBBCC-9845-40ED-9C35-39F5D58F4EAA}');
-  Action_Ok.Enabled:=edbxLogin.Text<>'';
-  Log.SendDebug('Действие "'+Action_Ok.Caption+'" '+Routines.GetConditionalString(Action_Ok.Enabled, 'в', 'от')+'ключено.');
-  btnOk.Default:=Action_Ok.Enabled;
-  btnClose.Default:=not Action_Ok.Enabled;
+
+  b:=edbxLogin.Text<>'';
+  if Action_Ok.Enabled<>b then
+    begin
+      Action_Ok.Enabled:=b;
+      Log.SendDebug('Действие "'+Action_Ok.Caption+'" '+Routines.GetConditionalString(Action_Ok.Enabled, 'в', 'от')+'ключено.');
+    end;
+
+  if btnOk.Default<>Action_Ok.Enabled then
+    btnOk.Default:=Action_Ok.Enabled;
+
+  if btnClose.Default<>not Action_Ok.Enabled then
+    btnClose.Default:=not Action_Ok.Enabled;
+
   ProcedureFooter;
 end;
 
