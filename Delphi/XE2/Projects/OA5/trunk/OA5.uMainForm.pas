@@ -88,6 +88,12 @@ type
     N21: TMenuItem;
     Action_ViewMessage: TAction;
     N22: TMenuItem;
+    Action_AddPhone: TAction;
+    N23: TMenuItem;
+    Action_EditPhone: TAction;
+    N24: TMenuItem;
+    N25: TMenuItem;
+    N26: TMenuItem;
     procedure Action_QuitExecute(Sender: TObject);
     procedure Action_AboutExecute(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
@@ -104,6 +110,8 @@ type
     procedure N21Click(Sender: TObject);
     procedure Action_ViewMessageExecute(Sender: TObject);
     procedure miToolBarClick(Sender: TObject);
+    procedure Action_AddPhoneExecute(Sender: TObject);
+    procedure Action_EditPhoneExecute(Sender: TObject);
   strict private
     bFirstRun: boolean;
     procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
@@ -152,6 +160,8 @@ uses
   OA5.uConsts,
   OA5.uCreateMessageForm,
   OA5.uViewMessageForm,
+  OA5.uViewMessagesForm,
+  OA5.uAddEditPhoneForm,
   CastersPackage.uRoutines;
 
 type
@@ -164,6 +174,10 @@ resourcestring
   sMultiBufferFormSuffix='мультибуфера';
   sCreateMessageFormSuffix = 'создания нового сообщения';
   sViewMessageFormSuffix = 'просмотра полученного сообщения';
+  sViewMessagesFormSuffix = 'просмотра полученных сообщений';
+  sAddPhoneFormSuffix = 'добавления номера телефона';
+  sEditPhoneFormSuffix = 'исправления номера телефона';
+
 
 procedure TMainForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
 begin
@@ -728,6 +742,54 @@ begin
   c._Name:='2';
   c.Normalize;
   MeasuresMultiBuffer.Append(c);
+end;
+
+procedure TMainForm.Action_AddPhoneExecute(Sender: TObject);
+var
+  AddPhoneForm: TAddEditPhoneForm;
+  iBusy: integer;
+begin
+  ProcedureHeader('Процедура отображения окна '+sAddPhoneFormSuffix, '{83D61BCA-0CB5-4542-9D0A-9137AE9C733C}');
+
+  AddPhoneForm:=TAddEditPhoneForm.Create(Self);
+  with AddPhoneForm do
+    try
+      Caption:='Добавление номера телефона';
+      PreShowModal(sAddPhoneFormSuffix, iBusy);
+      ShowModal;
+    finally
+      PostShowModal(sAddPhoneFormSuffix, iBusy);
+      { TODO : дописать! }
+      // if ModalResult=mrOk then
+      // Do_ApplyConfiguration;
+      Free;
+    end;
+
+  ProcedureFooter;
+end;
+
+procedure TMainForm.Action_EditPhoneExecute(Sender: TObject);
+var
+  EditPhoneForm: TAddEditPhoneForm;
+  iBusy: integer;
+begin
+  ProcedureHeader('Процедура отображения окна '+sEditPhoneFormSuffix, '{36EA36F5-EDE2-4A3A-A7DE-BB9790D3F50F}');
+
+  EditPhoneForm:=TAddEditPhoneForm.Create(Self);
+  with EditPhoneForm do
+    try
+      Caption:='Исправление номера телефона';
+      PreShowModal(sEditPhoneFormSuffix, iBusy);
+      ShowModal;
+    finally
+      PostShowModal(sEditPhoneFormSuffix, iBusy);
+      { TODO : дописать! }
+      // if ModalResult=mrOk then
+      // Do_ApplyConfiguration;
+      Free;
+    end;
+
+  ProcedureFooter;
 end;
 
 end.

@@ -615,21 +615,21 @@ object ConfigurationForm: TConfigurationForm
               Height = 13
               Caption = 'y'
             end
-            object lblViewPostListFormPosition: TLabel
+            object lblViewMessagesFormPosition: TLabel
               Left = 0
               Top = 58
               Width = 122
               Height = 13
               Caption = #1054#1082#1085#1086' '#1089#1087#1080#1089#1082#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1081
             end
-            object lblViewPostListFormPositionX: TLabel
+            object lblViewMessagesFormPositionX: TLabel
               Left = 340
               Top = 58
               Width = 6
               Height = 13
               Caption = 'x'
             end
-            object lblViewPostListFormPositionY: TLabel
+            object lblViewMessagesFormPositionY: TLabel
               Left = 427
               Top = 58
               Width = 6
@@ -979,7 +979,7 @@ object ConfigurationForm: TConfigurationForm
               TabOrder = 20
               OnClick = chkbxClearingFormPositionByCenterClick
             end
-            object edbxViewPostListFormPositionX: TEdit
+            object edbxViewMessagesFormPositionX: TEdit
               Left = 352
               Top = 55
               Width = 69
@@ -989,7 +989,7 @@ object ConfigurationForm: TConfigurationForm
               TabOrder = 21
               OnKeyPress = edbxNumericFieldKeyPress
             end
-            object edbxViewPostListFormPositionY: TEdit
+            object edbxViewMessagesFormPositionY: TEdit
               Left = 439
               Top = 55
               Width = 69
@@ -999,7 +999,7 @@ object ConfigurationForm: TConfigurationForm
               TabOrder = 22
               OnKeyPress = edbxNumericFieldKeyPress
             end
-            object chkbxViewPostListFormPositionByCenter: TCheckBox
+            object chkbxViewMessagesFormPositionByCenter: TCheckBox
               Left = 514
               Top = 57
               Width = 74
@@ -1008,7 +1008,7 @@ object ConfigurationForm: TConfigurationForm
               Checked = True
               State = cbChecked
               TabOrder = 23
-              OnClick = chkbxViewPostListFormPositionByCenterClick
+              OnClick = chkbxViewMessagesFormPositionByCenterClick
             end
             object edbxViewMessageFormPositionX: TEdit
               Left = 352
@@ -1756,7 +1756,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 368
     Top = 216
     Bitmap = {
-      494C0101060008002C0310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800380310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

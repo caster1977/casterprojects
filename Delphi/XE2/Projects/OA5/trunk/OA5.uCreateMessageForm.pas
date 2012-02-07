@@ -140,7 +140,8 @@ begin
   cmbbxTo.ItemIndex:=-1;
   edbxTheme.Clear;
   reMessage.Clear;
-  ActiveControl:=cmbbxTo;
+  Do_UpdateActions;
+  ActiveControl:=edbxTheme;
   Log.SendInfo('Поля ввода очищены пользователем.');
 
   ProcedureFooter;
