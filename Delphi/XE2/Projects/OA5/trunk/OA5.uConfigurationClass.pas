@@ -7,7 +7,8 @@ uses
   CastersPackage.uLogKeeperData,
   System.Types,
   CastersPackage.uMysql,
-  CastersPackage.uSingleton;
+  System.IniFiles,
+  CastersPackage.uCustomConfiguration;
 
 type
   TReportFolders=(rfTempFolder, rfApplicationFolder, rfCustomFolder);
@@ -100,8 +101,7 @@ const
   DefaultValue_PutTownAtTheEnd: boolean=False;
 
 type
-
-  TConfiguration=class //(TSingleton)
+  TConfiguration=class(TCustomConfiguration)
   strict private
     FFileName: string;
     FConfigurationFormPage: integer;
@@ -191,6 +191,10 @@ type
     FMarkSearchedStrings: boolean; // В режиме просмотра выделять искомые фрагменты строк
     FPutTownAtTheEnd: boolean; // Поместить название города в конец строки адреса
 
+    FIniFileName: string;
+    procedure Loading(const IniFile: TIniFile);
+    procedure Saving(const IniFile: TIniFile);
+
     procedure SetUseLog(const Value: boolean);
     procedure SetStoreLastLogin(const Value: boolean);
     procedure SetStoreLastPassword(const Value: boolean);
@@ -261,6 +265,7 @@ type
     // bImmediatelyQuit: boolean;
     // iOrgSortColumn: integer;
     // iMsrSortColumn: integer;
+
     /// <summary>
     /// Конструктор класса.
     /// </summary>
@@ -268,7 +273,7 @@ type
     /// Инициализирует значения переменных класса и создаёт вложенные объекты
     /// подключений к mysql-серверу.
     /// </remarks>
-    constructor Create; //override;
+    constructor Create(const IniFileName: string='');
 
     /// <summary>
     /// Процедура загрузки значений переменных класса (конфигурации) из
@@ -397,8 +402,7 @@ uses
   Controls,
   SysUtils,
   Windows,
-  Forms,
-  IniFiles;
+  Forms;
 
 procedure TConfiguration.Load;
 var
@@ -1183,7 +1187,7 @@ begin
     FFullScreenAtLaunch:=Value;
 end;
 
-constructor TConfiguration.Create;
+constructor TConfiguration.Create(const IniFileName: string='');
 begin
   inherited;
 

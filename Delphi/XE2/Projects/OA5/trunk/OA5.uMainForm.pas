@@ -19,7 +19,7 @@ uses
   ActnList,
   ActnMan,
   ImgList,
-  OA5.uUserClass,
+  OA5.uAccountClass,
   OA5.uConfigurationClass,
   ExtCtrls,
   CodeSiteLogging,
@@ -131,7 +131,7 @@ type
     procedure Do_SaveConfiguration;
   public
     Configuration: TConfiguration;
-    CurrentUser: TUser;
+    CurrentUser: IAccount;
     iBusyCounter: integer;
     MeasuresMultiBuffer: TMultiBufferClass;
     procedure ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
@@ -371,7 +371,7 @@ procedure TMainForm.FormDestroy(Sender: TObject);
 begin
   MeasuresMultiBuffer.Free;
   Configuration.Free;
-  CurrentUser.Free;
+  CurrentUser:=nil;
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -396,7 +396,7 @@ begin
   // переменная правдива с момента запуска программы до момента отображения главного окна
   bFirstRun:=True;
   // создание и инициализщация объекта текущего пользователя
-  CurrentUser:=TUser.Create;
+  CurrentUser:=TAccount.Create;
   // создание и инициализщация объекта конфигурации
   Configuration:=TConfiguration.Create;
   // создание и инициализщация объекта мультибуфера

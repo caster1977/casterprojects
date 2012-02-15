@@ -3,7 +3,7 @@
 interface
 
 uses
-  Grids;
+  Vcl.Grids;
 
 type
   TReportFolders=(rfTempFolder, rfApplicationFolder, rfCustomFolder);

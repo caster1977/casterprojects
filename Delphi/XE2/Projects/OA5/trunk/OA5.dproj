@@ -127,7 +127,7 @@
 				<Form>ConfigurationForm</Form>
 			</DCCReference>
 			<DCCReference Include="OA5.uConfigurationClass.pas"/>
-			<DCCReference Include="OA5.uUserClass.pas"/>
+			<DCCReference Include="OA5.uAccountClass.pas"/>
 			<DCCReference Include="OA5.uAddMassMsrForm.pas">
 				<Form>AddMassMsrForm</Form>
 			</DCCReference>
@@ -164,6 +164,7 @@
 				<Form>AddEditPhoneForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
+			<DCCReference Include="OA5.uMySQLConnectionClass.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

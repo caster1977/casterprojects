@@ -46,6 +46,7 @@ contains
   CastersPackage.uRoutines in 'CastersPackage.uRoutines.pas',
   CastersPackage.uMysql in 'CastersPackage.uMysql.pas',
   CastersPackage.uSingleton in 'CastersPackage.uSingleton.pas',
-  CastersPackage.uTypes in 'CastersPackage.uTypes.pas';
+  CastersPackage.uTypes in 'CastersPackage.uTypes.pas',
+  CastersPackage.uCustomConfigurationClass in 'CastersPackage.uCustomConfigurationClass.pas';
 
 end.
