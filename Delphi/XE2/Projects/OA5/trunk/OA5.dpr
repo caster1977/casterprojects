@@ -8,7 +8,7 @@ uses
   OA5.uAboutForm in 'OA5.uAboutForm.pas' {AboutForm},
   OA5.uConfigurationForm in 'OA5.uConfigurationForm.pas' {ConfigurationForm},
   OA5.uConfigurationClass in 'OA5.uConfigurationClass.pas',
-  OA5.uUserClass in 'OA5.uUserClass.pas',
+  OA5.uAccountClass in 'OA5.uAccountClass.pas',
   OA5.uAddMassMsrForm in 'OA5.uAddMassMsrForm.pas' {AddMassMsrForm},
   OA5.uReportForm in 'OA5.uReportForm.pas' {ReportForm},
   OA5.uSetPasswordForm in 'OA5.uSetPasswordForm.pas' {SetPasswordForm},
@@ -22,7 +22,8 @@ uses
   OA5.uCreateMessageForm in 'OA5.uCreateMessageForm.pas' {CreateMessageForm},
   OA5.uViewMessageForm in 'OA5.uViewMessageForm.pas' {ViewMessageForm},
   OA5.uViewMessagesForm in 'OA5.uViewMessagesForm.pas' {ViewMessagesForm},
-  OA5.uAddEditPhoneForm in 'OA5.uAddEditPhoneForm.pas' {AddEditPhoneForm};
+  OA5.uAddEditPhoneForm in 'OA5.uAddEditPhoneForm.pas' {AddEditPhoneForm},
+  OA5.uMySQLConnectionClass in 'OA5.uMySQLConnectionClass.pas';
 
 {$R *.res}
 
