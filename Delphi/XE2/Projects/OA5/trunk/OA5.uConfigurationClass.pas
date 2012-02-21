@@ -8,7 +8,8 @@ uses
   System.Types,
   CastersPackage.uMysql,
   System.IniFiles,
-  CastersPackage.uCustomConfiguration;
+  System.Generics.Collections,
+  CastersPackage.uCustomConfigurationClass;
 
 type
   TReportFolders=(rfTempFolder, rfApplicationFolder, rfCustomFolder);
@@ -101,6 +102,52 @@ const
   DefaultValue_PutTownAtTheEnd: boolean=False;
 
 type
+  ISection=interface(IInterface)
+    ['{552F9449-FAC4-4256-8398-AE5CC1389C23}']
+    function GetName: string;
+    procedure SetName(const Value: string);
+//    procedure Load;
+//    procedure Save;
+    procedure Loading(const IniFile: TIniFile);
+    procedure Saving(const IniFile: TIniFile);
+    property Name: string read GetName write Setname;
+  end;
+
+  TSection=class(TInterfacedObject, ISection)
+  strict private
+    FName: string;
+    function GetName: string;
+    procedure SetName(const Value: string);
+  public
+    constructor Create(const aName: string); virtual;
+    procedure Loading(const IniFile: TIniFile); virtual; abstract;
+    procedure Saving(const IniFile: TIniFile); virtual; abstract;
+    property Name: string read GetName write Setname nodefault;
+  end;
+
+
+  TSection_Interface=class(TSection) // вкладка "настройки интерфейса"
+  public
+    constructor Create(const aName: string); override;
+    property Name;
+  end;
+
+  TSection_Other=class(TSection) // вкладка "настройки интерфейса"
+  public
+    constructor Create(const aName: string); override;
+    property Name;
+  end;
+
+  TConfiguration2=class(TCustomConfiguration)
+  strict protected
+    FSections: TList<ISection>;
+    procedure Loading(const IniFile: TIniFile); override;
+    procedure Saving(const IniFile: TIniFile); override;
+  public
+    constructor Create(const IniFileName: string='');
+    destructor Destroy; override;
+  end;
+
   TConfiguration=class(TCustomConfiguration)
   strict private
     FFileName: string;
@@ -191,10 +238,6 @@ type
     FMarkSearchedStrings: boolean; // В режиме просмотра выделять искомые фрагменты строк
     FPutTownAtTheEnd: boolean; // Поместить название города в конец строки адреса
 
-    FIniFileName: string;
-    procedure Loading(const IniFile: TIniFile);
-    procedure Saving(const IniFile: TIniFile);
-
     procedure SetUseLog(const Value: boolean);
     procedure SetStoreLastLogin(const Value: boolean);
     procedure SetStoreLastPassword(const Value: boolean);
@@ -260,42 +303,16 @@ type
     procedure SetMainFormWidth(const Value: integer);
     procedure SetCreateMessageFormPosition(const Value: TFormPosition);
     procedure SetViewMessageFormPosition(const Value: TFormPosition);
+  strict protected
+    procedure Loading(const IniFile: TIniFile); override;
+    procedure Saving(const IniFile: TIniFile); override;
   public
     // sDefaultAction: string;
     // bImmediatelyQuit: boolean;
     // iOrgSortColumn: integer;
     // iMsrSortColumn: integer;
 
-    /// <summary>
-    /// Конструктор класса.
-    /// </summary>
-    /// <remarks>
-    /// Инициализирует значения переменных класса и создаёт вложенные объекты
-    /// подключений к mysql-серверу.
-    /// </remarks>
     constructor Create(const IniFileName: string='');
-
-    /// <summary>
-    /// Процедура загрузки значений переменных класса (конфигурации) из
-    /// INI-файла.
-    /// </summary>
-    /// <remarks>
-    /// Если необходимые значения не были найдены в INI-файле конфигурации,
-    /// переменные класса будут инициализированы значениями по умолчанию.
-    /// </remarks>
-    procedure Load;
-
-    /// <summary>
-    /// Процедура записи значений переменных класса (конфигурации) в INI-файл.
-    /// </summary>
-    procedure Save;
-
-    /// <summary>
-    /// Деструктор объекта.
-    /// </summary>
-    /// <remarks>
-    /// Освобождает вложенные объекты подключений к mysql-серверу.
-    /// </remarks>
     destructor Destroy; override;
 
     property FileName: string read FFileName write SetFileName stored False;
@@ -347,19 +364,9 @@ type
     property AutoLogon: boolean read FAutoLogon write SetAutoLogon default False; // нужно ли выполнять автологирование
 
     // вкладка "настройки подключения к серверу базы данных услуги"
-
-    /// <summary>
-    /// Вложенный объект подлючения к mysql-серверу, где хранятся данные
-    /// услуги "Отдых и развлечения".
-    /// </summary>
     property RNE4Server: TMySQLConnection read FRNE4Server write SetRNE4Server stored False;
 
     // вкладка "настройки подключения к серверу системы обмена сообщениями"
-
-    /// <summary>
-    /// Вложенный объект подлючения к mysql-серверу, где хранится переписка
-    /// пользователей услуги "Отдых и развлечения".
-    /// </summary>
     property MessagesServer: TMySQLConnection read FMessagesServer write SetMessagesServer stored False;
 
     // вкладка "настройки формирования отчётов"
@@ -404,333 +411,329 @@ uses
   Windows,
   Forms;
 
-procedure TConfiguration.Load;
+resourcestring
+  TEXT_INIFILESECTION_INTERFACE='Интерфейс';
+  TEXT_INIFILESECTION_LOGS='Протоколирование';
+  TEXT_INIFILESECTION_DIALOGS_POSITION='Положение диалоговых окон';
+  TEXT_INIFILESECTION_IDENTIFICATION='Идентификация';
+  TEXT_INIFILESECTION_SERVERS='Сервера и базы данных';
+  TEXT_INIFILESECTION_REPORTS='Формирование отчётов';
+  TEXT_INIFILESECTION_OTHER='Прочие';
+  TEXT_INIFILESECTION_MAINFORM='Главное окно';
+  TEXT_INIFILESECTION_INFO='Отображение информации';
+
+procedure TConfiguration.Loading(const IniFile: TIniFile);
 var
   FormPosition: TFormPosition;
 begin
-  if FileName>'' then
-    with TIniFile.Create(FileName) do
-      try
-        // вкладка "настройки интерфейса"
-        ShowSplashAtStart:=ReadBool('Интерфейс', 'bShowSplashAtStart', DefaultValue_ShowSplashAtStart);
-        ShowToolbar:=ReadBool('Интерфейс', 'bShowToolbar', DefaultValue_ShowToolbar);
-        ShowStatusbar:=ReadBool('Интерфейс', 'bShowStatusbar', DefaultValue_ShowStatusbar);
-        ShowEditboxHints:=ReadBool('Интерфейс', 'bShowEditboxHints', DefaultValue_ShowEditboxHints);
-        ShowCommonSearchEditbox:=ReadBool('Интерфейс', 'bShowCommonSearchEditbox', DefaultValue_ShowCommonSearchEditbox);
-        ShowID:=ReadBool('Интерфейс', 'bShowID', DefaultValue_ShowID);
-        UseMultibuffer:=ReadBool('Интерфейс', 'bUseMultibuffer', DefaultValue_UseMultibuffer);
-        ShowConfirmationAtQuit:=ReadBool('Интерфейс', 'bShowConfirmationAtQuit', DefaultValue_ShowConfirmationAtQuit);
+  inherited;
+  with IniFile do
+    begin
+      // вкладка "настройки интерфейса"
+      ShowSplashAtStart:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowSplashAtStart', DefaultValue_ShowSplashAtStart);
+      ShowToolbar:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowToolbar', DefaultValue_ShowToolbar);
+      ShowStatusbar:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowStatusbar', DefaultValue_ShowStatusbar);
+      ShowEditboxHints:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowEditboxHints', DefaultValue_ShowEditboxHints);
+      ShowCommonSearchEditbox:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowCommonSearchEditbox', DefaultValue_ShowCommonSearchEditbox);
+      ShowID:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowID', DefaultValue_ShowID);
+      UseMultibuffer:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bUseMultibuffer', DefaultValue_UseMultibuffer);
+      ShowConfirmationAtQuit:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowConfirmationAtQuit', DefaultValue_ShowConfirmationAtQuit);
 
-        // вкладка "настройки ведения протокола работы"
-        EnableLog:=ReadBool('Протоколирование', 'bEnableLog', DefaultValue_EnableLog);
-        FlushLogOnExit:=ReadBool('Протоколирование', 'bFlushLogOnExit', DefaultValue_FlushLogOnExit);
-        FlushLogOnStringsQuantity:=ReadBool('Протоколирование', 'bFlushLogOnStringsQuantity', DefaultValue_FlushLogOnStringsQuantity);
-        FlushLogOnStringsQuantityValue:=ReadInteger('Протоколирование', 'iFlushLogOnStringsQuantityValue', DefaultValue_FlushLogOnStringsQuantityValue);
-        FlushLogOnClearingLog:=ReadBool('Протоколирование', 'bFlushLogOnClearingLog', DefaultValue_FlushLogOnClearingLog);
-        FlushLogOnApply:=ReadBool('Протоколирование', 'bFlushLogOnApply', DefaultValue_FlushLogOnApply);
-        CustomLogClientFile:=ReadBool('Протоколирование', 'bCustomLogClientFile', DefaultValue_CustomLogClientFile);
-        CustomLogClientFileValue:=ReadString('Протоколирование', 'sCustomLogClientFileValue', DefaultValue_CustomLogClientFileValue);
-        if ReadBool('Протоколирование', 'bKeepErrorLog', lmtError in DefaultValue_KeepLogTypes) then
-          KeepLogTypes:=KeepLogTypes+[lmtError]
-        else
-          KeepLogTypes:=KeepLogTypes-[lmtError];
-        if ReadBool('Протоколирование', 'bKeepWarningLog', lmtWarning in DefaultValue_KeepLogTypes) then
-          KeepLogTypes:=KeepLogTypes+[lmtWarning]
-        else
-          KeepLogTypes:=KeepLogTypes-[lmtWarning];
-        if ReadBool('Протоколирование', 'bKeepInfoLog', lmtInfo in DefaultValue_KeepLogTypes) then
-          KeepLogTypes:=KeepLogTypes+[lmtInfo]
-        else
-          KeepLogTypes:=KeepLogTypes-[lmtInfo];
-        if ReadBool('Протоколирование', 'bKeepSQLLog', lmtSQL in DefaultValue_KeepLogTypes) then
-          KeepLogTypes:=KeepLogTypes+[lmtSQL]
-        else
-          KeepLogTypes:=KeepLogTypes-[lmtSQL];
-        if ReadBool('Протоколирование', 'bKeepDebugLog', lmtDebug in DefaultValue_KeepLogTypes) then
-          KeepLogTypes:=KeepLogTypes+[lmtDebug]
-        else
-          KeepLogTypes:=KeepLogTypes-[lmtDebug];
+      // вкладка "настройки ведения протокола работы"
+      EnableLog:=ReadBool(TEXT_INIFILESECTION_LOGS, 'bEnableLog', DefaultValue_EnableLog);
+      FlushLogOnExit:=ReadBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnExit', DefaultValue_FlushLogOnExit);
+      FlushLogOnStringsQuantity:=ReadBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnStringsQuantity', DefaultValue_FlushLogOnStringsQuantity);
+      FlushLogOnStringsQuantityValue:=ReadInteger(TEXT_INIFILESECTION_LOGS, 'iFlushLogOnStringsQuantityValue', DefaultValue_FlushLogOnStringsQuantityValue);
+      FlushLogOnClearingLog:=ReadBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnClearingLog', DefaultValue_FlushLogOnClearingLog);
+      FlushLogOnApply:=ReadBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnApply', DefaultValue_FlushLogOnApply);
+      CustomLogClientFile:=ReadBool(TEXT_INIFILESECTION_LOGS, 'bCustomLogClientFile', DefaultValue_CustomLogClientFile);
+      CustomLogClientFileValue:=ReadString(TEXT_INIFILESECTION_LOGS, 'sCustomLogClientFileValue', DefaultValue_CustomLogClientFileValue);
+      if ReadBool(TEXT_INIFILESECTION_LOGS, 'bKeepErrorLog', lmtError in DefaultValue_KeepLogTypes) then
+        KeepLogTypes:=KeepLogTypes+[lmtError]
+      else
+        KeepLogTypes:=KeepLogTypes-[lmtError];
+      if ReadBool(TEXT_INIFILESECTION_LOGS, 'bKeepWarningLog', lmtWarning in DefaultValue_KeepLogTypes) then
+        KeepLogTypes:=KeepLogTypes+[lmtWarning]
+      else
+        KeepLogTypes:=KeepLogTypes-[lmtWarning];
+      if ReadBool(TEXT_INIFILESECTION_LOGS, 'bKeepInfoLog', lmtInfo in DefaultValue_KeepLogTypes) then
+        KeepLogTypes:=KeepLogTypes+[lmtInfo]
+      else
+        KeepLogTypes:=KeepLogTypes-[lmtInfo];
+      if ReadBool(TEXT_INIFILESECTION_LOGS, 'bKeepSQLLog', lmtSQL in DefaultValue_KeepLogTypes) then
+        KeepLogTypes:=KeepLogTypes+[lmtSQL]
+      else
+        KeepLogTypes:=KeepLogTypes-[lmtSQL];
+      if ReadBool(TEXT_INIFILESECTION_LOGS, 'bKeepDebugLog', lmtDebug in DefaultValue_KeepLogTypes) then
+        KeepLogTypes:=KeepLogTypes+[lmtDebug]
+      else
+        KeepLogTypes:=KeepLogTypes-[lmtDebug];
 
-        // вкладка "настройки положения диалоговых окон"
-        with FormPosition do
-          begin
-            bCenter:=ReadBool('Положение диалоговых окон', 'LoginFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'LoginFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'LoginFormPosition.iy', DefaultValue_FormPosition_y);
-            LoginFormPosition:=FormPosition;
+      // вкладка "настройки положения диалоговых окон"
+      with FormPosition do
+        begin
+          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'LoginFormPosition.bCenter', DefaultValue_FormPosition_Center);
+          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'LoginFormPosition.ix', DefaultValue_FormPosition_x);
+          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'LoginFormPosition.iy', DefaultValue_FormPosition_y);
+          LoginFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'ConfigurationFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'ConfigurationFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'ConfigurationFormPosition.iy', DefaultValue_FormPosition_y);
-            ConfigurationFormPosition:=FormPosition;
+          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ConfigurationFormPosition.bCenter', DefaultValue_FormPosition_Center);
+          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ConfigurationFormPosition.ix', DefaultValue_FormPosition_x);
+          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ConfigurationFormPosition.iy', DefaultValue_FormPosition_y);
+          ConfigurationFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'UsersFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'UsersFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'UsersFormPosition.iy', DefaultValue_FormPosition_y);
-            UsersFormPosition:=FormPosition;
+          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'UsersFormPosition.bCenter', DefaultValue_FormPosition_Center);
+          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'UsersFormPosition.ix', DefaultValue_FormPosition_x);
+          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'UsersFormPosition.iy', DefaultValue_FormPosition_y);
+          UsersFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'SetPasswordFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'SetPasswordFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'SetPasswordFormPosition.iy', DefaultValue_FormPosition_y);
-            SetPasswordFormPosition:=FormPosition;
+          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'SetPasswordFormPosition.bCenter', DefaultValue_FormPosition_Center);
+          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'SetPasswordFormPosition.ix', DefaultValue_FormPosition_x);
+          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'SetPasswordFormPosition.iy', DefaultValue_FormPosition_y);
+          SetPasswordFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'ReportFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'ReportFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'ReportFormPosition.iy', DefaultValue_FormPosition_y);
-            ReportFormPosition:=FormPosition;
+          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ReportFormPosition.bCenter', DefaultValue_FormPosition_Center);
+          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ReportFormPosition.ix', DefaultValue_FormPosition_x);
+          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ReportFormPosition.iy', DefaultValue_FormPosition_y);
+          ReportFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'MaintenanceFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'MaintenanceFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'MaintenanceFormPosition.iy', DefaultValue_FormPosition_y);
-            MaintenanceFormPosition:=FormPosition;
+          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MaintenanceFormPosition.bCenter', DefaultValue_FormPosition_Center);
+          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MaintenanceFormPosition.ix', DefaultValue_FormPosition_x);
+          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MaintenanceFormPosition.iy', DefaultValue_FormPosition_y);
+          MaintenanceFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'ClearingFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'ClearingFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'ClearingFormPosition.iy', DefaultValue_FormPosition_y);
-            ClearingFormPosition:=FormPosition;
+          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ClearingFormPosition.bCenter', DefaultValue_FormPosition_Center);
+          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ClearingFormPosition.ix', DefaultValue_FormPosition_x);
+          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ClearingFormPosition.iy', DefaultValue_FormPosition_y);
+          ClearingFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'ViewMessagesFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'ViewMessagesFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'ViewMessagesFormPosition.iy', DefaultValue_FormPosition_y);
-            ViewMessagesFormPosition:=FormPosition;
+          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessagesFormPosition.bCenter', DefaultValue_FormPosition_Center);
+          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessagesFormPosition.ix', DefaultValue_FormPosition_x);
+          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessagesFormPosition.iy', DefaultValue_FormPosition_y);
+          ViewMessagesFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'CreateMessageFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'CreateMessageFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'CreateMessageFormPosition.iy', DefaultValue_FormPosition_y);
-            CreateMessageFormPosition:=FormPosition;
+          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'CreateMessageFormPosition.bCenter', DefaultValue_FormPosition_Center);
+          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'CreateMessageFormPosition.ix', DefaultValue_FormPosition_x);
+          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'CreateMessageFormPosition.iy', DefaultValue_FormPosition_y);
+          CreateMessageFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'ViewMessageFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'ViewMessageFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'ViewMessageFormPosition.iy', DefaultValue_FormPosition_y);
-            ViewMessageFormPosition:=FormPosition;
+          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessageFormPosition.bCenter', DefaultValue_FormPosition_Center);
+          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessageFormPosition.ix', DefaultValue_FormPosition_x);
+          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessageFormPosition.iy', DefaultValue_FormPosition_y);
+          ViewMessageFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'PhonesFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'PhonesFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'PhonesFormPosition.iy', DefaultValue_FormPosition_y);
-            PhonesFormPosition:=FormPosition;
+          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PhonesFormPosition.bCenter', DefaultValue_FormPosition_Center);
+          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PhonesFormPosition.ix', DefaultValue_FormPosition_x);
+          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PhonesFormPosition.iy', DefaultValue_FormPosition_y);
+          PhonesFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'AddEditPhoneFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'AddEditPhoneFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'AddEditPhoneFormPosition.iy', DefaultValue_FormPosition_y);
-            AddEditPhoneFormPosition:=FormPosition;
+          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddEditPhoneFormPosition.bCenter', DefaultValue_FormPosition_Center);
+          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddEditPhoneFormPosition.ix', DefaultValue_FormPosition_x);
+          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddEditPhoneFormPosition.iy', DefaultValue_FormPosition_y);
+          AddEditPhoneFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'AddMassMsrFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'AddMassMsrFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'AddMassMsrFormPosition.iy', DefaultValue_FormPosition_y);
-            AddMassMsrFormPosition:=FormPosition;
+          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddMassMsrFormPosition.bCenter', DefaultValue_FormPosition_Center);
+          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddMassMsrFormPosition.ix', DefaultValue_FormPosition_x);
+          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddMassMsrFormPosition.iy', DefaultValue_FormPosition_y);
+          AddMassMsrFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'PermissionsFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'PermissionsFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'PermissionsFormPosition.iy', DefaultValue_FormPosition_y);
-            PermissionsFormPosition:=FormPosition;
+          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PermissionsFormPosition.bCenter', DefaultValue_FormPosition_Center);
+          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PermissionsFormPosition.ix', DefaultValue_FormPosition_x);
+          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PermissionsFormPosition.iy', DefaultValue_FormPosition_y);
+          PermissionsFormPosition:=FormPosition;
 
-            bCenter:=ReadBool('Положение диалоговых окон', 'MultibufferFormPosition.bCenter', DefaultValue_FormPosition_Center);
-            x:=ReadInteger('Положение диалоговых окон', 'MultibufferFormPosition.ix', DefaultValue_FormPosition_x);
-            y:=ReadInteger('Положение диалоговых окон', 'MultibufferFormPosition.iy', DefaultValue_FormPosition_y);
-            MultibufferFormPosition:=FormPosition;
-          end;
+          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MultibufferFormPosition.bCenter', DefaultValue_FormPosition_Center);
+          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MultibufferFormPosition.ix', DefaultValue_FormPosition_x);
+          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MultibufferFormPosition.iy', DefaultValue_FormPosition_y);
+          MultibufferFormPosition:=FormPosition;
+        end;
 
-        // вкладка "настройки процедуры логирования"
-        StoreLastLogin:=ReadBool('Идентификация', 'bStoreLastLogin', DefaultValue_StoreLastLogin);
-        StoreLastPassword:=ReadBool('Идентификация', 'bStoreLastPassword', DefaultValue_StoreLastPassword);
-        AutoLogon:=ReadBool('Идентификация', 'bAutoLogon', DefaultValue_AutoLogon);
+      // вкладка "настройки процедуры логирования"
+      StoreLastLogin:=ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStoreLastLogin', DefaultValue_StoreLastLogin);
+      StoreLastPassword:=ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStoreLastPassword', DefaultValue_StoreLastPassword);
+      AutoLogon:=ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bAutoLogon', DefaultValue_AutoLogon);
 
-        // вкладка "подключения к серверу базы данных услуги"
-        with RNE4Server do
-          begin
-            Host:=ReadString('Сервер и база данных', 'RNE4Server.sHost', DefaultValue_RNE4Server_Host);
-            Port:=ReadInteger('Сервер и база данных', 'RNE4Server.iPort', DefaultValue_RNE4Server_Port);
-            Timeout:=ReadInteger('Сервер и база данных', 'RNE4Server.iTimeout', DefaultValue_RNE4Server_Timeout);
-            Compression:=ReadBool('Сервер и база данных', 'RNE4Server.bCompression', DefaultValue_RNE4Server_Compression);
-            Login:=ReadString('Сервер и база данных', 'RNE4Server.sLogin', DefaultValue_RNE4Server_Login);
-            Password:=ReadString('Сервер и база данных', 'RNE4Server.sPassword', DefaultValue_RNE4Server_Password);
-            Database:=ReadString('Сервер и база данных', 'RNE4Server.sDatabase', DefaultValue_RNE4Server_Database);
-          end;
+      // вкладка "подключения к серверу базы данных услуги"
+      with RNE4Server do
+        begin
+          Host:=ReadString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sHost', DefaultValue_RNE4Server_Host);
+          Port:=ReadInteger(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.iPort', DefaultValue_RNE4Server_Port);
+          Timeout:=ReadInteger(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.iTimeout', DefaultValue_RNE4Server_Timeout);
+          Compression:=ReadBool(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.bCompression', DefaultValue_RNE4Server_Compression);
+          Login:=ReadString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sLogin', DefaultValue_RNE4Server_Login);
+          Password:=ReadString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sPassword', DefaultValue_RNE4Server_Password);
+          Database:=ReadString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sDatabase', DefaultValue_RNE4Server_Database);
+        end;
 
-        // вкладка "подключения к серверу системы обмена сообщениями"
-        with MessagesServer do
-          begin
-            Host:=ReadString('Сервер и база данных', 'MessagesServer.sHost', DefaultValue_MessagesServer_Host);
-            Port:=ReadInteger('Сервер и база данных', 'MessagesServer.iPort', DefaultValue_MessagesServer_Port);
-            Timeout:=ReadInteger('Сервер и база данных', 'MessagesServer.iTimeout', DefaultValue_MessagesServer_Timeout);
-            Compression:=ReadBool('Сервер и база данных', 'MessagesServer.bCompression', DefaultValue_MessagesServer_Compression);
-            Login:=ReadString('Сервер и база данных', 'MessagesServer.sLogin', DefaultValue_MessagesServer_Login);
-            Password:=ReadString('Сервер и база данных', 'MessagesServer.sPassword', DefaultValue_MessagesServer_Password);
-            Database:=ReadString('Сервер и база данных', 'MessagesServer.sDatabase', DefaultValue_MessagesServer_Database);
-          end;
+      // вкладка "подключения к серверу системы обмена сообщениями"
+      with MessagesServer do
+        begin
+          Host:=ReadString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sHost', DefaultValue_MessagesServer_Host);
+          Port:=ReadInteger(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.iPort', DefaultValue_MessagesServer_Port);
+          Timeout:=ReadInteger(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.iTimeout', DefaultValue_MessagesServer_Timeout);
+          Compression:=ReadBool(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.bCompression', DefaultValue_MessagesServer_Compression);
+          Login:=ReadString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sLogin', DefaultValue_MessagesServer_Login);
+          Password:=ReadString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sPassword', DefaultValue_MessagesServer_Password);
+          Database:=ReadString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sDatabase', DefaultValue_MessagesServer_Database);
+        end;
 
-        // вкладка "настройки формирования отчётов"
-        ReportFolder:=TReportFolders(ReadInteger('Формирование отчётов', 'iReportFolder', integer(rfApplicationFolder)));
-        CustomReportFolderValue:=ReadString('Формирование отчётов', 'sCustomReportFolderValue', '');
-        DontDemandOverwriteConfirmation:=ReadBool('Формирование отчётов', 'bDontDemandOverwriteConfirmation', False);
-        AskForFileName:=ReadBool('Формирование отчётов', 'bAskForFileName', True);
+      // вкладка "настройки формирования отчётов"
+      ReportFolder:=TReportFolders(ReadInteger(TEXT_INIFILESECTION_REPORTS, 'iReportFolder', integer(rfApplicationFolder)));
+      CustomReportFolderValue:=ReadString(TEXT_INIFILESECTION_REPORTS, 'sCustomReportFolderValue', '');
+      DontDemandOverwriteConfirmation:=ReadBool(TEXT_INIFILESECTION_REPORTS, 'bDontDemandOverwriteConfirmation', False);
+      AskForFileName:=ReadBool(TEXT_INIFILESECTION_REPORTS, 'bAskForFileName', True);
 
-        // вкладка "настройки прочие"
-        LaunchAtStartup:=ReadBool('Прочие', 'bLaunchAtStartup', DefaultValue_LaunchAtStartup);
-        PlaySoundOnComplete:=ReadBool('Прочие', 'bPlaySoundOnComplete', DefaultValue_PlaySoundOnComplete);
-        EnableAutoGetMessages:=ReadBool('Прочие', 'bEnableAutoGetMessages', DefaultValue_EnableAutoGetMessages);
-        AutoGetMessagesCycleDurationValue:=ReadInteger('Протоколирование', 'iAutoGetMessagesCycleDurationValue', DefaultValue_AutoGetMessagesCycleDurationValue);
-        CustomHelpFile:=ReadBool('Прочие', 'bCustomHelpFile', DefaultValue_CustomHelpFile);
-        CustomHelpFileValue:=ReadString('Прочие', 'sCustomHelpFileValue', DefaultValue_CustomHelpFileValue);
+      // вкладка "настройки прочие"
+      LaunchAtStartup:=ReadBool(TEXT_INIFILESECTION_OTHER, 'bLaunchAtStartup', DefaultValue_LaunchAtStartup);
+      PlaySoundOnComplete:=ReadBool(TEXT_INIFILESECTION_OTHER, 'bPlaySoundOnComplete', DefaultValue_PlaySoundOnComplete);
+      EnableAutoGetMessages:=ReadBool(TEXT_INIFILESECTION_OTHER, 'bEnableAutoGetMessages', DefaultValue_EnableAutoGetMessages);
+      AutoGetMessagesCycleDurationValue:=ReadInteger(TEXT_INIFILESECTION_OTHER, 'iAutoGetMessagesCycleDurationValue', DefaultValue_AutoGetMessagesCycleDurationValue);
+      CustomHelpFile:=ReadBool(TEXT_INIFILESECTION_OTHER, 'bCustomHelpFile', DefaultValue_CustomHelpFile);
+      CustomHelpFileValue:=ReadString(TEXT_INIFILESECTION_OTHER, 'sCustomHelpFileValue', DefaultValue_CustomHelpFileValue);
 
-        // вкладка "настройки главного окна"
-        MainFormLeft:=ReadInteger('Главное окно', 'iMainFormLeft', DefaultValue_MainFormLeft);
-        MainFormTop:=ReadInteger('Главное окно', 'iMainFormTop', DefaultValue_MainFormTop);
-        MainFormWidth:=ReadInteger('Главное окно', 'iMainFormWidth', DefaultValue_MainFormWidth);
-        MainFormHeight:=ReadInteger('Главное окно', 'iMainFormHeight', DefaultValue_MainFormHeight);
-        MainFormPositionByCenter:=ReadBool('Главное окно', 'bMainFormPositionByCenter', DefaultValue_MainFormPositionByCenter);
-        FullScreenAtLaunch:=ReadBool('Главное окно', 'bFullScreenAtLaunch', DefaultValue_FullScreenAtLaunch);
+      // вкладка "настройки главного окна"
+      MainFormLeft:=ReadInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormLeft', DefaultValue_MainFormLeft);
+      MainFormTop:=ReadInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormTop', DefaultValue_MainFormTop);
+      MainFormWidth:=ReadInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormWidth', DefaultValue_MainFormWidth);
+      MainFormHeight:=ReadInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormHeight', DefaultValue_MainFormHeight);
+      MainFormPositionByCenter:=ReadBool(TEXT_INIFILESECTION_MAINFORM, 'bMainFormPositionByCenter', DefaultValue_MainFormPositionByCenter);
+      FullScreenAtLaunch:=ReadBool(TEXT_INIFILESECTION_MAINFORM, 'bFullScreenAtLaunch', DefaultValue_FullScreenAtLaunch);
 
-        // вкладка "настройки отображения информации"
-        OrganizationPanelHeightValue:=ReadInteger('Отображение информации', 'iOrganizationPanelHeightValue', DefaultValue_OrganizationPanelHeightValue);
-        OrganizationPanelHalfHeight:=ReadBool('Отображение информации', 'bOrganizationPanelHalfHeight', DefaultValue_OrganizationPanelHalfHeight);
-        DataPanelWidthValue:=ReadInteger('Отображение информации', 'iDataPanelWidthValue', DefaultValue_DataPanelWidthValue);
-        DataPanelHalfWidth:=ReadBool('Отображение информации', 'bOrganizationPanelHalfHeight', DefaultValue_DataPanelHalfWidth);
-        ShowDataInOtherInfoPanel:=ReadBool('Отображение информации', 'bShowDataInOtherInfoPanel', DefaultValue_ShowDataInOtherInfoPanel);
-        ShowMeasuresListAsRichEdit:=ReadBool('Отображение информации', 'bShowMeasuresListAsRichEdit', DefaultValue_ShowMeasuresListAsRichEdit);
-        MarkSearchedStrings:=ReadBool('Отображение информации', 'bMarkSearchedStrings', DefaultValue_MarkSearchedStrings);
-        PutTownAtTheEnd:=ReadBool('Отображение информации', 'bPutTownAtTheEnd', DefaultValue_PutTownAtTheEnd);
-      finally
-        Free;
-      end
-  else
-    raise Exception.Create('Имя файла конфигурации не должно быть пустым!');
+      // вкладка "настройки отображения информации"
+      OrganizationPanelHeightValue:=ReadInteger(TEXT_INIFILESECTION_INFO, 'iOrganizationPanelHeightValue', DefaultValue_OrganizationPanelHeightValue);
+      OrganizationPanelHalfHeight:=ReadBool(TEXT_INIFILESECTION_INFO, 'bOrganizationPanelHalfHeight', DefaultValue_OrganizationPanelHalfHeight);
+      DataPanelWidthValue:=ReadInteger(TEXT_INIFILESECTION_INFO, 'iDataPanelWidthValue', DefaultValue_DataPanelWidthValue);
+      DataPanelHalfWidth:=ReadBool(TEXT_INIFILESECTION_INFO, 'bOrganizationPanelHalfHeight', DefaultValue_DataPanelHalfWidth);
+      ShowDataInOtherInfoPanel:=ReadBool(TEXT_INIFILESECTION_INFO, 'bShowDataInOtherInfoPanel', DefaultValue_ShowDataInOtherInfoPanel);
+      ShowMeasuresListAsRichEdit:=ReadBool(TEXT_INIFILESECTION_INFO, 'bShowMeasuresListAsRichEdit', DefaultValue_ShowMeasuresListAsRichEdit);
+      MarkSearchedStrings:=ReadBool(TEXT_INIFILESECTION_INFO, 'bMarkSearchedStrings', DefaultValue_MarkSearchedStrings);
+      PutTownAtTheEnd:=ReadBool(TEXT_INIFILESECTION_INFO, 'bPutTownAtTheEnd', DefaultValue_PutTownAtTheEnd);
+    end;
 end;
 
-procedure TConfiguration.Save;
-var
-  IniFile: TIniFile;
+procedure TConfiguration.Saving(const IniFile: TIniFile);
 
   procedure WriteFormPosition(IniFile: TIniFile; FormPosition: TFormPosition; const FormPositionName: string);
   begin
     with IniFile do
       begin
-        WriteBool('Положение диалоговых окон', FormPositionName+'.bCenter', FormPosition.bCenter);
-        WriteInteger('Положение диалоговых окон', FormPositionName+'.ix', FormPosition.x);
-        WriteInteger('Положение диалоговых окон', FormPositionName+'.iy', FormPosition.y);
+        WriteBool(TEXT_INIFILESECTION_DIALOGS_POSITION, FormPositionName+'.bCenter', FormPosition.bCenter);
+        WriteInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, FormPositionName+'.ix', FormPosition.x);
+        WriteInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, FormPositionName+'.iy', FormPosition.y);
       end;
   end;
 
 begin
-  if FileName>'' then
-    begin
-      IniFile:=TIniFile.Create(FileName);
-      with IniFile do
-        try
-          try
-            // вкладка "настройки интерфейса"
-            WriteBool('Интерфейс', 'bShowSplashAtStart', ShowSplashAtStart);
-            WriteBool('Интерфейс', 'bShowToolbar', ShowToolbar);
-            WriteBool('Интерфейс', 'bShowStatusbar', ShowStatusbar);
-            WriteBool('Интерфейс', 'bShowEditboxHints', ShowEditboxHints);
-            WriteBool('Интерфейс', 'bShowCommonSearchEditbox', ShowCommonSearchEditbox);
-            WriteBool('Интерфейс', 'bShowID', ShowID);
-            WriteBool('Интерфейс', 'bUseMultibuffer', UseMultibuffer);
-            WriteBool('Интерфейс', 'bShowConfirmationAtQuit', ShowConfirmationAtQuit);
+  inherited;
+  with IniFile do
+    try
+      // вкладка "настройки интерфейса"
+      WriteBool(TEXT_INIFILESECTION_INTERFACE, 'bShowSplashAtStart', ShowSplashAtStart);
+      WriteBool(TEXT_INIFILESECTION_INTERFACE, 'bShowToolbar', ShowToolbar);
+      WriteBool(TEXT_INIFILESECTION_INTERFACE, 'bShowStatusbar', ShowStatusbar);
+      WriteBool(TEXT_INIFILESECTION_INTERFACE, 'bShowEditboxHints', ShowEditboxHints);
+      WriteBool(TEXT_INIFILESECTION_INTERFACE, 'bShowCommonSearchEditbox', ShowCommonSearchEditbox);
+      WriteBool(TEXT_INIFILESECTION_INTERFACE, 'bShowID', ShowID);
+      WriteBool(TEXT_INIFILESECTION_INTERFACE, 'bUseMultibuffer', UseMultibuffer);
+      WriteBool(TEXT_INIFILESECTION_INTERFACE, 'bShowConfirmationAtQuit', ShowConfirmationAtQuit);
 
-            // вкладка "настройки ведения протокола работы"
-            WriteBool('Протоколирование', 'bEnableLog', EnableLog);
-            WriteBool('Протоколирование', 'bFlushLogOnExit', FlushLogOnExit);
-            WriteBool('Протоколирование', 'bFlushLogOnStringsQuantity', FlushLogOnStringsQuantity);
-            WriteInteger('Протоколирование', 'iFlushLogOnStringsQuantityValue', FlushLogOnStringsQuantityValue);
-            WriteBool('Протоколирование', 'bFlushLogOnClearingLog', FlushLogOnClearingLog);
-            WriteBool('Протоколирование', 'bFlushLogOnApply', FlushLogOnApply);
-            WriteBool('Протоколирование', 'bCustomLogClientFile', CustomLogClientFile);
-            WriteString('Протоколирование', 'sCustomLogClientFileValue', CustomLogClientFileValue);
+      // вкладка "настройки ведения протокола работы"
+      WriteBool(TEXT_INIFILESECTION_LOGS, 'bEnableLog', EnableLog);
+      WriteBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnExit', FlushLogOnExit);
+      WriteBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnStringsQuantity', FlushLogOnStringsQuantity);
+      WriteInteger(TEXT_INIFILESECTION_LOGS, 'iFlushLogOnStringsQuantityValue', FlushLogOnStringsQuantityValue);
+      WriteBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnClearingLog', FlushLogOnClearingLog);
+      WriteBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnApply', FlushLogOnApply);
+      WriteBool(TEXT_INIFILESECTION_LOGS, 'bCustomLogClientFile', CustomLogClientFile);
+      WriteString(TEXT_INIFILESECTION_LOGS, 'sCustomLogClientFileValue', CustomLogClientFileValue);
 
-            WriteBool('Протоколирование', 'bKeepErrorLog', lmtError in KeepLogTypes);
-            WriteBool('Протоколирование', 'bKeepWarningLog', lmtWarning in KeepLogTypes);
-            WriteBool('Протоколирование', 'bKeepInfoLog', lmtInfo in KeepLogTypes);
-            WriteBool('Протоколирование', 'bKeepSQLLog', lmtSQL in KeepLogTypes);
-            WriteBool('Протоколирование', 'bKeepDebugLog', lmtDebug in KeepLogTypes);
+      WriteBool(TEXT_INIFILESECTION_LOGS, 'bKeepErrorLog', lmtError in KeepLogTypes);
+      WriteBool(TEXT_INIFILESECTION_LOGS, 'bKeepWarningLog', lmtWarning in KeepLogTypes);
+      WriteBool(TEXT_INIFILESECTION_LOGS, 'bKeepInfoLog', lmtInfo in KeepLogTypes);
+      WriteBool(TEXT_INIFILESECTION_LOGS, 'bKeepSQLLog', lmtSQL in KeepLogTypes);
+      WriteBool(TEXT_INIFILESECTION_LOGS, 'bKeepDebugLog', lmtDebug in KeepLogTypes);
 
-            // вкладка "настройки положения диалоговых окон"
-            WriteFormPosition(IniFile, LoginFormPosition, 'LoginFormPosition');
-            WriteFormPosition(IniFile, ConfigurationFormPosition, 'ConfigurationFormPosition');
-            WriteFormPosition(IniFile, UsersFormPosition, 'UsersFormPosition');
-            WriteFormPosition(IniFile, SetPasswordFormPosition, 'SetPasswordFormPosition');
-            WriteFormPosition(IniFile, ReportFormPosition, 'ReportFormPosition');
-            WriteFormPosition(IniFile, MaintenanceFormPosition, 'MaintenanceFormPosition');
-            WriteFormPosition(IniFile, ClearingFormPosition, 'ClearingFormPosition');
-            WriteFormPosition(IniFile, ViewMessagesFormPosition, 'ViewMessagesFormPosition');
-            WriteFormPosition(IniFile, CreateMessageFormPosition, 'CreateMessageFormPosition');
-            WriteFormPosition(IniFile, ViewMessageFormPosition, 'ViewMessageFormPosition');
-            WriteFormPosition(IniFile, PhonesFormPosition, 'PhonesFormPosition');
-            WriteFormPosition(IniFile, AddEditPhoneFormPosition, 'AddEditPhoneFormPosition');
-            WriteFormPosition(IniFile, AddMassMsrFormPosition, 'AddMassMsrFormPosition');
-            WriteFormPosition(IniFile, PermissionsFormPosition, 'PermissionsFormPosition');
-            WriteFormPosition(IniFile, MultibufferFormPosition, 'MultibufferFormPosition');
+      // вкладка "настройки положения диалоговых окон"
+      WriteFormPosition(IniFile, LoginFormPosition, 'LoginFormPosition');
+      WriteFormPosition(IniFile, ConfigurationFormPosition, 'ConfigurationFormPosition');
+      WriteFormPosition(IniFile, UsersFormPosition, 'UsersFormPosition');
+      WriteFormPosition(IniFile, SetPasswordFormPosition, 'SetPasswordFormPosition');
+      WriteFormPosition(IniFile, ReportFormPosition, 'ReportFormPosition');
+      WriteFormPosition(IniFile, MaintenanceFormPosition, 'MaintenanceFormPosition');
+      WriteFormPosition(IniFile, ClearingFormPosition, 'ClearingFormPosition');
+      WriteFormPosition(IniFile, ViewMessagesFormPosition, 'ViewMessagesFormPosition');
+      WriteFormPosition(IniFile, CreateMessageFormPosition, 'CreateMessageFormPosition');
+      WriteFormPosition(IniFile, ViewMessageFormPosition, 'ViewMessageFormPosition');
+      WriteFormPosition(IniFile, PhonesFormPosition, 'PhonesFormPosition');
+      WriteFormPosition(IniFile, AddEditPhoneFormPosition, 'AddEditPhoneFormPosition');
+      WriteFormPosition(IniFile, AddMassMsrFormPosition, 'AddMassMsrFormPosition');
+      WriteFormPosition(IniFile, PermissionsFormPosition, 'PermissionsFormPosition');
+      WriteFormPosition(IniFile, MultibufferFormPosition, 'MultibufferFormPosition');
 
-            // вкладка "настройки процедуры логирования"
-            WriteBool('Идентификация', 'bStoreLastLogin', StoreLastLogin);
-            WriteBool('Идентификация', 'bStoreLastPassword', StoreLastPassword);
-            WriteBool('Идентификация', 'bAutoLogon', AutoLogon);
+      // вкладка "настройки процедуры логирования"
+      WriteBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStoreLastLogin', StoreLastLogin);
+      WriteBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStoreLastPassword', StoreLastPassword);
+      WriteBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bAutoLogon', AutoLogon);
 
-            // вкладка "подключения к серверу базы данных услуги"
-            with RNE4Server do
-              begin
-                WriteString('Сервер и база данных', 'RNE4Server.sHost', Host);
-                WriteInteger('Сервер и база данных', 'RNE4Server.iPort', Port);
-                WriteInteger('Сервер и база данных', 'RNE4Server.iTimeout', Timeout);
-                WriteBool('Сервер и база данных', 'RNE4Server.bCompression', Compression);
-                // WriteString('Сервер и база данных', 'RNE4Server.sLogin', Login);
-                // WriteString('Сервер и база данных', 'RNE4Server.sPassword', Password);
-                WriteString('Сервер и база данных', 'RNE4Server.sDatabase', Database);
-              end;
+      // вкладка "подключения к серверу базы данных услуги"
+      with RNE4Server do
+        begin
+          WriteString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sHost', Host);
+          WriteInteger(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.iPort', Port);
+          WriteInteger(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.iTimeout', Timeout);
+          WriteBool(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.bCompression', Compression);
+          // WriteString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sLogin', Login);
+          // WriteString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sPassword', Password);
+          WriteString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sDatabase', Database);
+        end;
 
-            // вкладка "подключения к серверу системы обмена сообщениями"
-            with MessagesServer do
-              begin
-                WriteString('Сервер и база данных', 'MessagesServer.sHost', Host);
-                WriteInteger('Сервер и база данных', 'MessagesServer.iPort', Port);
-                WriteInteger('Сервер и база данных', 'MessagesServer.iTimeout', Timeout);
-                WriteBool('Сервер и база данных', 'MessagesServer.bCompression', Compression);
-                // WriteString('Сервер и база данных', 'MessagesServer.sLogin', Login);
-                // WriteString('Сервер и база данных', 'MessagesServer.sPassword', Password);
-                WriteString('Сервер и база данных', 'MessagesServer.sDatabase', Database);
-              end;
+      // вкладка "подключения к серверу системы обмена сообщениями"
+      with MessagesServer do
+        begin
+          WriteString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sHost', Host);
+          WriteInteger(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.iPort', Port);
+          WriteInteger(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.iTimeout', Timeout);
+          WriteBool(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.bCompression', Compression);
+          // WriteString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sLogin', Login);
+          // WriteString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sPassword', Password);
+          WriteString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sDatabase', Database);
+        end;
 
-            // вкладка "настройки формирования отчётов"
-            WriteInteger('Формирование отчётов', 'iReportFolder', integer(ReportFolder));
-            WriteString('Формирование отчётов', 'sCustomReportFolderValue', CustomReportFolderValue);
-            WriteBool('Формирование отчётов', 'bDontDemandOverwriteConfirmation', DontDemandOverwriteConfirmation);
-            WriteBool('Формирование отчётов', 'bAskForFileName', AskForFileName);
+      // вкладка "настройки формирования отчётов"
+      WriteInteger(TEXT_INIFILESECTION_REPORTS, 'iReportFolder', integer(ReportFolder));
+      WriteString(TEXT_INIFILESECTION_REPORTS, 'sCustomReportFolderValue', CustomReportFolderValue);
+      WriteBool(TEXT_INIFILESECTION_REPORTS, 'bDontDemandOverwriteConfirmation', DontDemandOverwriteConfirmation);
+      WriteBool(TEXT_INIFILESECTION_REPORTS, 'bAskForFileName', AskForFileName);
 
-            // вкладка "настройки прочие"
-            WriteBool('Прочие', 'bLaunchAtStartup', LaunchAtStartup);
-            WriteBool('Прочие', 'bPlaySoundOnComplete', PlaySoundOnComplete);
-            WriteBool('Прочие', 'bEnableAutoGetMessages', EnableAutoGetMessages);
-            WriteInteger('Прочие', 'iAutoGetMessagesCycleDurationValue', AutoGetMessagesCycleDurationValue);
-            WriteBool('Прочие', 'bCustomHelpFile', CustomHelpFile);
-            WriteString('Прочие', 'bCustomHelpFileValue', CustomHelpFileValue);
+      // вкладка "настройки прочие"
+      WriteBool(TEXT_INIFILESECTION_OTHER, 'bLaunchAtStartup', LaunchAtStartup);
+      WriteBool(TEXT_INIFILESECTION_OTHER, 'bPlaySoundOnComplete', PlaySoundOnComplete);
+      WriteBool(TEXT_INIFILESECTION_OTHER, 'bEnableAutoGetMessages', EnableAutoGetMessages);
+      WriteInteger(TEXT_INIFILESECTION_OTHER, 'iAutoGetMessagesCycleDurationValue', AutoGetMessagesCycleDurationValue);
+      WriteBool(TEXT_INIFILESECTION_OTHER, 'bCustomHelpFile', CustomHelpFile);
+      WriteString(TEXT_INIFILESECTION_OTHER, 'bCustomHelpFileValue', CustomHelpFileValue);
 
-            // вкладка "настройки главного окна"
-            WriteInteger('Главное окно', 'iMainFormLeft', MainFormLeft);
-            WriteInteger('Главное окно', 'iMainFormTop', MainFormTop);
-            WriteInteger('Главное окно', 'iMainFormWidth', MainFormWidth);
-            WriteInteger('Главное окно', 'iMainFormHeight', MainFormHeight);
-            WriteBool('Главное окно', 'bMainFormPositionByCenter', MainFormPositionByCenter);
-            WriteBool('Главное окно', 'bFullScreenAtLaunch', FullScreenAtLaunch);
+      // вкладка "настройки главного окна"
+      WriteInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormLeft', MainFormLeft);
+      WriteInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormTop', MainFormTop);
+      WriteInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormWidth', MainFormWidth);
+      WriteInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormHeight', MainFormHeight);
+      WriteBool(TEXT_INIFILESECTION_MAINFORM, 'bMainFormPositionByCenter', MainFormPositionByCenter);
+      WriteBool(TEXT_INIFILESECTION_MAINFORM, 'bFullScreenAtLaunch', FullScreenAtLaunch);
 
-            // вкладка "настройки отображения информации"
-            WriteInteger('Отображение информации', 'iOrganizationPanelHeightValue', OrganizationPanelHeightValue);
-            WriteBool('Отображение информации', 'bOrganizationPanelHalfHeight', OrganizationPanelHalfHeight);
-            WriteInteger('Отображение информации', 'iDataPanelWidthValue', DataPanelWidthValue);
-            WriteBool('Отображение информации', 'bOrganizationPanelHalfHeight', OrganizationPanelHalfHeight);
-            WriteBool('Отображение информации', 'bShowDataInOtherInfoPanel', ShowDataInOtherInfoPanel);
-            WriteBool('Отображение информации', 'bShowMeasuresListAsRichEdit', ShowMeasuresListAsRichEdit);
-            WriteBool('Отображение информации', 'bMarkSearchedStrings', MarkSearchedStrings);
-            WriteBool('Отображение информации', 'bPutTownAtTheEnd', PutTownAtTheEnd);
-          except
-            on EIniFileException do
-              raise EIniFileException.Create('Произошла ошибка при попытке записи настроек программы в файл конфигурации!');
-          end;
-        finally
-          IniFile.Free;
-        end
-    end
-  else
-    raise Exception.Create('Имя файла конфигурации не должно быть пустым!');
+      // вкладка "настройки отображения информации"
+      WriteInteger(TEXT_INIFILESECTION_INFO, 'iOrganizationPanelHeightValue', OrganizationPanelHeightValue);
+      WriteBool(TEXT_INIFILESECTION_INFO, 'bOrganizationPanelHalfHeight', OrganizationPanelHalfHeight);
+      WriteInteger(TEXT_INIFILESECTION_INFO, 'iDataPanelWidthValue', DataPanelWidthValue);
+      WriteBool(TEXT_INIFILESECTION_INFO, 'bOrganizationPanelHalfHeight', OrganizationPanelHalfHeight);
+      WriteBool(TEXT_INIFILESECTION_INFO, 'bShowDataInOtherInfoPanel', ShowDataInOtherInfoPanel);
+      WriteBool(TEXT_INIFILESECTION_INFO, 'bShowMeasuresListAsRichEdit', ShowMeasuresListAsRichEdit);
+      WriteBool(TEXT_INIFILESECTION_INFO, 'bMarkSearchedStrings', MarkSearchedStrings);
+      WriteBool(TEXT_INIFILESECTION_INFO, 'bPutTownAtTheEnd', PutTownAtTheEnd);
+    except
+      on EIniFileException do
+        raise EIniFileException.Create('Произошла ошибка при попытке записи настроек программы в файл конфигурации!');
+    end;
 end;
 
 procedure TConfiguration.SetKeepLogTypes(const Value: TLogMessagesTypes);
@@ -1087,8 +1090,7 @@ begin
     FClearingFormPosition:=Value;
 end;
 
-procedure TConfiguration.SetCreateMessageFormPosition(
-  const Value: TFormPosition);
+procedure TConfiguration.SetCreateMessageFormPosition(const Value: TFormPosition);
 begin
   if ((FCreateMessageFormPosition.bCenter<>Value.bCenter)or(FCreateMessageFormPosition.x<>Value.x)or(FCreateMessageFormPosition.y<>Value.y)) then
     FCreateMessageFormPosition:=Value;
@@ -1394,6 +1396,74 @@ begin
   FShowMeasuresListAsRichEdit:=DefaultValue_ShowMeasuresListAsRichEdit;
   FMarkSearchedStrings:=DefaultValue_MarkSearchedStrings;
   FPutTownAtTheEnd:=DefaultValue_PutTownAtTheEnd;
+end;
+
+{ TSection }
+
+constructor TSection.Create(const aName: string);
+begin
+  inherited Create;
+end;
+
+function TSection.GetName: string;
+begin
+
+end;
+
+procedure TSection.SetName(const Value: string);
+begin
+
+end;
+
+{ TConfiguration2 }
+
+constructor TConfiguration2.Create(const IniFileName: string);
+begin
+  inherited Create;
+  FSections.Create;
+
+  if FSections.Add(TSection_Interface.Create(TEXT_INIFILESECTION_INTERFACE))<0 then
+    EConfiguration.Create('Не удалось создать объект секции "'+TEXT_INIFILESECTION_INTERFACE+'"');
+
+end;
+
+destructor TConfiguration2.Destroy;
+var
+  i: integer;
+begin
+  if Assigned(FSections) then
+    with FSections do
+      for i:=Count-1 downto 0 do
+        Items[i]:=nil;
+  inherited;
+end;
+
+procedure TConfiguration2.Loading(const IniFile: TIniFile);
+begin
+  inherited;
+
+end;
+
+procedure TConfiguration2.Saving(const IniFile: TIniFile);
+begin
+  inherited;
+
+end;
+
+{ TSection_Interface }
+
+constructor TSection_Interface.Create(const aName: string);
+begin
+  inherited Create(aName);
+
+end;
+
+{ TSection_Other }
+
+constructor TSection_Other.Create(const aName: string);
+begin
+  inherited Create(aName);
+
 end;
 
 end.
