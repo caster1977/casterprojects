@@ -165,6 +165,8 @@
 				<FormType>dfm</FormType>
 			</DCCReference>
 			<DCCReference Include="OA5.uMySQLConnectionClass.pas"/>
+			<DCCReference Include="OA5.uTestConfiguration.pas"/>
+			<DCCReference Include="OA5.uConfigurationClass2.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
