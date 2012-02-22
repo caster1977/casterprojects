@@ -23,7 +23,9 @@ uses
   OA5.uViewMessageForm in 'OA5.uViewMessageForm.pas' {ViewMessageForm},
   OA5.uViewMessagesForm in 'OA5.uViewMessagesForm.pas' {ViewMessagesForm},
   OA5.uAddEditPhoneForm in 'OA5.uAddEditPhoneForm.pas' {AddEditPhoneForm},
-  OA5.uMySQLConnectionClass in 'OA5.uMySQLConnectionClass.pas';
+  OA5.uMySQLConnectionClass in 'OA5.uMySQLConnectionClass.pas',
+  OA5.uTestConfiguration in 'OA5.uTestConfiguration.pas',
+  OA5.uConfigurationClass2 in 'OA5.uConfigurationClass2.pas';
 
 {$R *.res}
 

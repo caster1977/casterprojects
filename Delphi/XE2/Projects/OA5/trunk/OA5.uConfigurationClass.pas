@@ -8,7 +8,6 @@ uses
   System.Types,
   CastersPackage.uMysql,
   System.IniFiles,
-  System.Generics.Collections,
   CastersPackage.uCustomConfigurationClass;
 
 type
@@ -102,52 +101,6 @@ const
   DefaultValue_PutTownAtTheEnd: boolean=False;
 
 type
-  ISection=interface(IInterface)
-    ['{552F9449-FAC4-4256-8398-AE5CC1389C23}']
-    function GetName: string;
-    procedure SetName(const Value: string);
-//    procedure Load;
-//    procedure Save;
-    procedure Loading(const IniFile: TIniFile);
-    procedure Saving(const IniFile: TIniFile);
-    property Name: string read GetName write Setname;
-  end;
-
-  TSection=class(TInterfacedObject, ISection)
-  strict private
-    FName: string;
-    function GetName: string;
-    procedure SetName(const Value: string);
-  public
-    constructor Create(const aName: string); virtual;
-    procedure Loading(const IniFile: TIniFile); virtual; abstract;
-    procedure Saving(const IniFile: TIniFile); virtual; abstract;
-    property Name: string read GetName write Setname nodefault;
-  end;
-
-
-  TSection_Interface=class(TSection) // вкладка "настройки интерфейса"
-  public
-    constructor Create(const aName: string); override;
-    property Name;
-  end;
-
-  TSection_Other=class(TSection) // вкладка "настройки интерфейса"
-  public
-    constructor Create(const aName: string); override;
-    property Name;
-  end;
-
-  TConfiguration2=class(TCustomConfiguration)
-  strict protected
-    FSections: TList<ISection>;
-    procedure Loading(const IniFile: TIniFile); override;
-    procedure Saving(const IniFile: TIniFile); override;
-  public
-    constructor Create(const IniFileName: string='');
-    destructor Destroy; override;
-  end;
-
   TConfiguration=class(TCustomConfiguration)
   strict private
     FFileName: string;
@@ -1396,74 +1349,6 @@ begin
   FShowMeasuresListAsRichEdit:=DefaultValue_ShowMeasuresListAsRichEdit;
   FMarkSearchedStrings:=DefaultValue_MarkSearchedStrings;
   FPutTownAtTheEnd:=DefaultValue_PutTownAtTheEnd;
-end;
-
-{ TSection }
-
-constructor TSection.Create(const aName: string);
-begin
-  inherited Create;
-end;
-
-function TSection.GetName: string;
-begin
-
-end;
-
-procedure TSection.SetName(const Value: string);
-begin
-
-end;
-
-{ TConfiguration2 }
-
-constructor TConfiguration2.Create(const IniFileName: string);
-begin
-  inherited Create;
-  FSections.Create;
-
-  if FSections.Add(TSection_Interface.Create(TEXT_INIFILESECTION_INTERFACE))<0 then
-    EConfiguration.Create('Не удалось создать объект секции "'+TEXT_INIFILESECTION_INTERFACE+'"');
-
-end;
-
-destructor TConfiguration2.Destroy;
-var
-  i: integer;
-begin
-  if Assigned(FSections) then
-    with FSections do
-      for i:=Count-1 downto 0 do
-        Items[i]:=nil;
-  inherited;
-end;
-
-procedure TConfiguration2.Loading(const IniFile: TIniFile);
-begin
-  inherited;
-
-end;
-
-procedure TConfiguration2.Saving(const IniFile: TIniFile);
-begin
-  inherited;
-
-end;
-
-{ TSection_Interface }
-
-constructor TSection_Interface.Create(const aName: string);
-begin
-  inherited Create(aName);
-
-end;
-
-{ TSection_Other }
-
-constructor TSection_Other.Create(const aName: string);
-begin
-  inherited Create(aName);
-
 end;
 
 end.
