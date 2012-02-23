@@ -57,8 +57,10 @@ type
     procedure Save; override; final;
   end;
 
+  {
   TCustomXMLFileSection=class(TCustomSection)
   end;
+  }
 
   TInterfaceIniFileSection=class(TCustomIniFileSection)
   public

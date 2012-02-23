@@ -204,7 +204,7 @@ type
     chkbxShowCommonSearchEditbox: TCheckBox;
     chkbxShowID: TCheckBox;
     chkbxUseMultibuffer: TCheckBox;
-    chkbxShowConfirmationAtQuit: TCheckBox;
+    chkbxShowConfirmationOnQuit: TCheckBox;
     chkbxPlaySoundOnComplete: TCheckBox;
     Action_ChooseCustomHelpFile: TAction;
     lblPermissionsFormPosition: TLabel;
@@ -408,7 +408,7 @@ begin
       ShowCommonSearchEditbox:=chkbxShowCommonSearchEditbox.Enabled and chkbxShowCommonSearchEditbox.Checked;
       ShowID:=chkbxShowID.Enabled and chkbxShowID.Checked;
       UseMultibuffer:=chkbxUseMultibuffer.Enabled and chkbxUseMultibuffer.Checked;
-      ShowConfirmationAtQuit:=chkbxShowConfirmationAtQuit.Enabled and chkbxShowConfirmationAtQuit.Checked;
+      ShowConfirmationOnQuit:=chkbxShowConfirmationOnQuit.Enabled and chkbxShowConfirmationOnQuit.Checked;
 
       // вкладка "настройки ведени€ протокола работы"
       EnableLog:=chkbxEnableLog.Enabled and chkbxEnableLog.Checked;
@@ -884,7 +884,7 @@ begin
       chkbxShowCommonSearchEditbox.Checked:=DefaultValue_ShowCommonSearchEditbox;
       chkbxShowID.Checked:=DefaultValue_ShowID;
       chkbxUseMultibuffer.Checked:=DefaultValue_UseMultibuffer;
-      chkbxShowConfirmationAtQuit.Checked:=DefaultValue_ShowConfirmationAtQuit;
+      chkbxShowConfirmationOnQuit.Checked:=DefaultValue_ShowConfirmationOnQuit;
     end;
 
   // вкладка "настройки ведени€ протокола работы"
@@ -1315,7 +1315,7 @@ begin
       chkbxShowCommonSearchEditbox.Checked:=ShowCommonSearchEditbox;
       chkbxShowID.Checked:=ShowID;
       chkbxUseMultibuffer.Checked:=UseMultibuffer;
-      chkbxShowConfirmationAtQuit.Checked:=ShowConfirmationAtQuit;
+      chkbxShowConfirmationOnQuit.Checked:=ShowConfirmationOnQuit;
 
       // вкладка "настройки ведени€ протокола работы"
       chkbxEnableLog.Checked:=EnableLog;
