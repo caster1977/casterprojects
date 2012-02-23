@@ -3,12 +3,12 @@
 interface
 
 uses
-  OA5.uMySQLConnectionClass,
-  CastersPackage.uLogKeeperData,
   System.Types,
-  CastersPackage.uMysql,
   System.IniFiles,
-  CastersPackage.uCustomConfigurationClass;
+  CastersPackage.uLogKeeperData,
+  CastersPackage.uMysql,
+  CastersPackage.uCustomConfigurationClass,
+  OA5.uMySQLConnectionClass;
 
 type
   TReportFolders=(rfTempFolder, rfApplicationFolder, rfCustomFolder);
@@ -20,85 +20,85 @@ type
 
 const
   // вкладка "настройки интерфейса"
-  DefaultValue_ShowSplashAtStart: boolean=True;
-  DefaultValue_ShowToolbar: boolean=True;
-  DefaultValue_ShowStatusbar: boolean=True;
-  DefaultValue_ShowEditboxHints: boolean=True;
-  DefaultValue_ShowCommonSearchEditbox: boolean=True;
-  DefaultValue_ShowID: boolean=False;
-  DefaultValue_UseMultibuffer: boolean=True;
-  DefaultValue_ShowConfirmationAtQuit: boolean=True;
+  DefaultValue_ShowSplashAtStart=True;
+  DefaultValue_ShowToolbar=True;
+  DefaultValue_ShowStatusbar=True;
+  DefaultValue_ShowEditboxHints=True;
+  DefaultValue_ShowCommonSearchEditbox=True;
+  DefaultValue_ShowID=False;
+  DefaultValue_UseMultibuffer=True;
+  DefaultValue_ShowConfirmationOnQuit=True;
 
   // вкладка "настройки ведения протокола работы"
-  DefaultValue_EnableLog: boolean=True;
-  DefaultValue_KeepLogTypes: TLogMessagesTypes=[lmtError, lmtWarning, lmtInfo];
-  DefaultValue_FlushLogOnExit: boolean=True;
-  DefaultValue_FlushLogOnStringsQuantity: boolean=True;
-  DefaultValue_FlushLogOnStringsQuantityValue: integer=10000;
-  DefaultValue_FlushLogOnClearingLog: boolean=True;
-  DefaultValue_FlushLogOnApply: boolean=False;
-  DefaultValue_CustomLogClientFile: boolean=False;
-  DefaultValue_CustomLogClientFileValue: string='';
+  DefaultValue_EnableLog=True;
+  DefaultValue_KeepLogTypes=[lmtError, lmtWarning, lmtInfo];
+  DefaultValue_FlushLogOnExit=True;
+  DefaultValue_FlushLogOnStringsQuantity=True;
+  DefaultValue_FlushLogOnStringsQuantityValue=10000;
+  DefaultValue_FlushLogOnClearingLog=True;
+  DefaultValue_FlushLogOnApply=False;
+  DefaultValue_CustomLogClientFile=False;
+  DefaultValue_CustomLogClientFileValue='';
 
   // вкладка "настройки положения диалоговых окон"
-  DefaultValue_FormPosition_Center: boolean=True;
-  DefaultValue_FormPosition_x: integer=0;
-  DefaultValue_FormPosition_y: integer=0;
+  DefaultValue_FormPosition_Center=True;
+  DefaultValue_FormPosition_x=0;
+  DefaultValue_FormPosition_y=0;
 
   // вкладка "настройки процедуры логирования"
-  DefaultValue_StoreLastLogin: boolean=False;
-  DefaultValue_StoreLastPassword: boolean=False;
-  DefaultValue_AutoLogon: boolean=False;
+  DefaultValue_StoreLastLogin=False;
+  DefaultValue_StoreLastPassword=False;
+  DefaultValue_AutoLogon=False;
 
   // вкладка "подключения к серверу базы данных услуги"
-  DefaultValue_RNE4Server_Host: string='RNE4SERVER';
-  DefaultValue_RNE4Server_Port: integer=MYSQL_PORT;
-  DefaultValue_RNE4Server_Timeout: integer=30;
-  DefaultValue_RNE4Server_Compression: boolean=True;
-  DefaultValue_RNE4Server_Login: string='';
-  DefaultValue_RNE4Server_Password: string='';
-  DefaultValue_RNE4Server_Database: string='rne4';
+  DefaultValue_RNE4Server_Host='RNE4SERVER';
+  DefaultValue_RNE4Server_Port=MYSQL_PORT;
+  DefaultValue_RNE4Server_Timeout=30;
+  DefaultValue_RNE4Server_Compression=True;
+  DefaultValue_RNE4Server_Login='';
+  DefaultValue_RNE4Server_Password='';
+  DefaultValue_RNE4Server_Database='rne4';
 
   // вкладка "подключения к серверу системы обмена сообщениями"
-  DefaultValue_MessagesServer_Host: string='RNE4MESSAGESSERVER';
-  DefaultValue_MessagesServer_Port: integer=MYSQL_PORT;
-  DefaultValue_MessagesServer_Timeout: integer=30;
-  DefaultValue_MessagesServer_Compression: boolean=True;
-  DefaultValue_MessagesServer_Login: string='';
-  DefaultValue_MessagesServer_Password: string='';
-  DefaultValue_MessagesServer_Database: string='rne4messages';
+  DefaultValue_MessagesServer_Host='RNE4MESSAGESSERVER';
+  DefaultValue_MessagesServer_Port=MYSQL_PORT;
+  DefaultValue_MessagesServer_Timeout=30;
+  DefaultValue_MessagesServer_Compression=True;
+  DefaultValue_MessagesServer_Login='';
+  DefaultValue_MessagesServer_Password='';
+  DefaultValue_MessagesServer_Database='rne4messages';
 
   // вкладка "настройки формирования отчётов"
-  DefaultValue_ReportFolder: TReportFolders=rfApplicationFolder;
-  DefaultValue_CustomReportFolderValue: string='';
-  DefaultValue_DontDemandOverwriteConfirmation: boolean=False;
-  DefaultValue_AskForFileName: boolean=True;
+  DefaultValue_ReportFolder=rfApplicationFolder;
+  DefaultValue_CustomReportFolderValue='';
+  DefaultValue_DontDemandOverwriteConfirmation=False;
+  DefaultValue_AskForFileName=True;
 
   // вкладка "настройки прочие"
-  DefaultValue_LaunchAtStartup: boolean=False;
-  DefaultValue_PlaySoundOnComplete: boolean=True;
-  DefaultValue_EnableAutoGetMessages: boolean=True;
-  DefaultValue_AutoGetMessagesCycleDurationValue: integer=5;
-  DefaultValue_CustomHelpFile: boolean=False;
-  DefaultValue_CustomHelpFileValue: string='';
+  DefaultValue_LaunchAtStartup=False;
+  DefaultValue_PlaySoundOnComplete=True;
+  DefaultValue_EnableAutoGetMessages=True;
+  DefaultValue_AutoGetMessagesCycleDurationValue=5;
+  DefaultValue_CustomHelpFile=False;
+  DefaultValue_CustomHelpFileValue='';
 
   // вкладка "настройки главного окна"
-  DefaultValue_MainFormLeft: integer=0;
-  DefaultValue_MainFormTop: integer=0;
-  DefaultValue_MainFormWidth: integer=800;
-  DefaultValue_MainFormHeight: integer=600;
-  DefaultValue_MainFormPositionByCenter: boolean=True;
-  DefaultValue_FullScreenAtLaunch: boolean=False;
+  DefaultValue_MainFormLeft=0;
+  DefaultValue_MainFormTop=0;
+  DefaultValue_MainFormWidth=800;
+  DefaultValue_MainFormHeight=600;
+  DefaultValue_MainFormPositionByCenter=True;
+  DefaultValue_FullScreenAtLaunch=False;
 
   // вкладка "настройки отображения информации"
-  DefaultValue_OrganizationPanelHeightValue: integer=100;
-  DefaultValue_OrganizationPanelHalfHeight: boolean=True;
-  DefaultValue_DataPanelWidthValue: integer=340;
-  DefaultValue_DataPanelHalfWidth: boolean=False;
-  DefaultValue_ShowDataInOtherInfoPanel: boolean=True;
-  DefaultValue_ShowMeasuresListAsRichEdit: boolean=True;
-  DefaultValue_MarkSearchedStrings: boolean=True;
-  DefaultValue_PutTownAtTheEnd: boolean=False;
+  DefaultValue_OrganizationPanelHeightValue=100;
+  DefaultValue_OrganizationPanelHalfHeight=True;
+  DefaultValue_DataPanelWidthValue=340;
+  DefaultValue_DataPanelHalfWidth=False;
+  DefaultValue_ShowDataInOtherInfoPanel=True;
+  DefaultValue_ShowMeasuresListAsRichEdit=True;
+  DefaultValue_MarkSearchedStrings=True;
+  DefaultValue_PutTownAtTheEnd=False;
 
 type
   TConfiguration=class(TCustomConfiguration)
@@ -116,7 +116,7 @@ type
     FShowCommonSearchEditbox: boolean; // Отображать единое поле ввода для поиска данных
     FShowID: boolean; // Отображать поле ID записей базы данных при работе программы
     FUseMultibuffer: boolean; // Использовать мультибуфер для операций копирования мероприятий
-    FShowConfirmationAtQuit: boolean; // Требовать подтверждение при выходе из программы
+    FShowConfirmationOnQuit: boolean; // Требовать подтверждение при выходе из программы
 
     // вкладка "настройки ведения протокола работы"
     FEnableLog: boolean; // Вести лог работы программы
@@ -239,7 +239,7 @@ type
     procedure SetSetPasswordFormPosition(const Value: TFormPosition);
     procedure SetShowSplashAtStart(const Value: boolean);
     procedure SetShowCommonSearchEditbox(const Value: boolean);
-    procedure SetShowConfirmationAtQuit(const Value: boolean);
+    procedure SetShowConfirmationOnQuit(const Value: boolean);
     procedure SetShowDataInOtherInfoPanel(const Value: boolean);
     procedure SetShowEditboxHints(const Value: boolean);
     procedure SetShowID(const Value: boolean);
@@ -274,24 +274,24 @@ type
     property LastPassword: string read FLastPassword stored False;
 
     // вкладка "настройки интерфейса"
-    property ShowSplashAtStart: boolean read FShowSplashAtStart write SetShowSplashAtStart default True;
-    property ShowToolbar: boolean read FShowToolbar write SetShowToolbar default True;
-    property ShowStatusbar: boolean read FShowStatusbar write SetShowStatusbar default True;
-    property ShowEditboxHints: boolean read FShowEditboxHints write SetShowEditboxHints default True;
-    property ShowCommonSearchEditbox: boolean read FShowCommonSearchEditbox write SetShowCommonSearchEditbox default True;
-    property ShowID: boolean read FShowID write SetShowID default False;
-    property UseMultibuffer: boolean read FUseMultibuffer write SetUseMultibuffer default True;
-    property ShowConfirmationAtQuit: boolean read FShowConfirmationAtQuit write SetShowConfirmationAtQuit default True;
+    property ShowSplashAtStart: boolean read FShowSplashAtStart write SetShowSplashAtStart default DefaultValue_ShowSplashAtStart;
+    property ShowToolbar: boolean read FShowToolbar write SetShowToolbar default DefaultValue_ShowToolbar;
+    property ShowStatusbar: boolean read FShowStatusbar write SetShowStatusbar default DefaultValue_ShowStatusbar;
+    property ShowEditboxHints: boolean read FShowEditboxHints write SetShowEditboxHints default DefaultValue_ShowEditboxHints;
+    property ShowCommonSearchEditbox: boolean read FShowCommonSearchEditbox write SetShowCommonSearchEditbox default DefaultValue_ShowCommonSearchEditbox;
+    property ShowID: boolean read FShowID write SetShowID default DefaultValue_ShowID;
+    property UseMultibuffer: boolean read FUseMultibuffer write SetUseMultibuffer default DefaultValue_UseMultibuffer;
+    property ShowConfirmationOnQuit: boolean read FShowConfirmationOnQuit write SetShowConfirmationOnQuit default DefaultValue_ShowConfirmationOnQuit;
 
     // вкладка "настройки ведения протокола работы"
-    property EnableLog: boolean read FEnableLog write SetUseLog default True;
-    property KeepLogTypes: TLogMessagesTypes read FKeepLogTypes write SetKeepLogTypes default [lmtError, lmtWarning, lmtInfo];
-    property FlushLogOnExit: boolean read FFlushLogOnExit write SetFlushLogOnExit default True;
-    property FlushLogOnStringsQuantity: boolean read FFlushLogOnStringsQuantity write SetFlushLogOnStringsQuantity default True;
-    property FlushLogOnStringsQuantityValue: integer read FFlushLogOnStringsQuantityValue write SetFlushLogOnStringsQuantityValue default -1;
-    property FlushLogOnClearingLog: boolean read FFlushLogOnClearingLog write SetFlushLogOnClearingLog default True;
-    property FlushLogOnApply: boolean read FFlushLogOnApply write SetFlushLogOnApply default False;
-    property CustomLogClientFile: boolean read FCustomLogClientFile write SetCustomLogClientFile default False;
+    property EnableLog: boolean read FEnableLog write SetUseLog default DefaultValue_EnableLog;
+    property KeepLogTypes: TLogMessagesTypes read FKeepLogTypes write SetKeepLogTypes default DefaultValue_KeepLogTypes;
+    property FlushLogOnExit: boolean read FFlushLogOnExit write SetFlushLogOnExit default DefaultValue_FlushLogOnExit;
+    property FlushLogOnStringsQuantity: boolean read FFlushLogOnStringsQuantity write SetFlushLogOnStringsQuantity default DefaultValue_FlushLogOnStringsQuantity;
+    property FlushLogOnStringsQuantityValue: integer read FFlushLogOnStringsQuantityValue write SetFlushLogOnStringsQuantityValue default DefaultValue_FlushLogOnStringsQuantityValue;
+    property FlushLogOnClearingLog: boolean read FFlushLogOnClearingLog write SetFlushLogOnClearingLog default DefaultValue_FlushLogOnClearingLog;
+    property FlushLogOnApply: boolean read FFlushLogOnApply write SetFlushLogOnApply default DefaultValue_FlushLogOnApply;
+    property CustomLogClientFile: boolean read FCustomLogClientFile write SetCustomLogClientFile default DefaultValue_CustomLogClientFile;
     property CustomLogClientFileValue: string read FCustomLogClientFileValue write SetCustomLogClientFileValue stored False;
 
     // вкладка "настройки положения диалоговых окон"
@@ -312,9 +312,9 @@ type
     property MultibufferFormPosition: TFormPosition read FMultibufferFormPosition write SetMultibufferFormPosition stored False;
 
     // вкладка "настройки процедуры логирования"
-    property StoreLastLogin: boolean read FStoreLastLogin write SetStoreLastLogin default False; // нужно ли хранить последний введённый логин
-    property StoreLastPassword: boolean read FStoreLastPassword write SetStoreLastPassword default False; // нужно ли хранить последний введённый пароль
-    property AutoLogon: boolean read FAutoLogon write SetAutoLogon default False; // нужно ли выполнять автологирование
+    property StoreLastLogin: boolean read FStoreLastLogin write SetStoreLastLogin default DefaultValue_StoreLastLogin; // нужно ли хранить последний введённый логин
+    property StoreLastPassword: boolean read FStoreLastPassword write SetStoreLastPassword default DefaultValue_StoreLastPassword; // нужно ли хранить последний введённый пароль
+    property AutoLogon: boolean read FAutoLogon write SetAutoLogon default DefaultValue_AutoLogon; // нужно ли выполнять автологирование
 
     // вкладка "настройки подключения к серверу базы данных услуги"
     property RNE4Server: TMySQLConnection read FRNE4Server write SetRNE4Server stored False;
@@ -323,37 +323,37 @@ type
     property MessagesServer: TMySQLConnection read FMessagesServer write SetMessagesServer stored False;
 
     // вкладка "настройки формирования отчётов"
-    property ReportFolder: TReportFolders read FReportFolder write SetReportFolder stored False;
+    property ReportFolder: TReportFolders read FReportFolder write SetReportFolder default DefaultValue_ReportFolder;
     property ReportFolderValue: string read GetReportFolderValue stored False;
     property CustomReportFolderValue: string read FCustomReportFolderValue write SetCustomReportFolderValue stored False;
-    property DontDemandOverwriteConfirmation: boolean read FDontDemandOverwriteConfirmation write SetDontDemandOverwriteConfirmation default False;
-    property AskForFileName: boolean read FAskForFileName write SetAskForFileName default True;
+    property DontDemandOverwriteConfirmation: boolean read FDontDemandOverwriteConfirmation write SetDontDemandOverwriteConfirmation default DefaultValue_DontDemandOverwriteConfirmation;
+    property AskForFileName: boolean read FAskForFileName write SetAskForFileName default DefaultValue_AskForFileName;
 
     // вкладка "настройки прочие"
-    property LaunchAtStartup: boolean read FLaunchAtStartup write SetLaunchAtStartup default False;
-    property PlaySoundOnComplete: boolean read FPlaySoundOnComplete write SetPlaySoundOnComplete default True;
-    property EnableAutoGetMessages: boolean read FEnableAutoGetMessages write SetEnableAutoGetMessages default True;
-    property AutoGetMessagesCycleDurationValue: integer read FAutoGetMessagesCycleDurationValue write SetAutoGetMessagesCycleDurationValue default 5;
-    property CustomHelpFile: boolean read FCustomHelpFile write SetCustomHelpFile default False;
+    property LaunchAtStartup: boolean read FLaunchAtStartup write SetLaunchAtStartup default DefaultValue_LaunchAtStartup;
+    property PlaySoundOnComplete: boolean read FPlaySoundOnComplete write SetPlaySoundOnComplete default DefaultValue_PlaySoundOnComplete;
+    property EnableAutoGetMessages: boolean read FEnableAutoGetMessages write SetEnableAutoGetMessages default DefaultValue_EnableAutoGetMessages;
+    property AutoGetMessagesCycleDurationValue: integer read FAutoGetMessagesCycleDurationValue write SetAutoGetMessagesCycleDurationValue default DefaultValue_AutoGetMessagesCycleDurationValue;
+    property CustomHelpFile: boolean read FCustomHelpFile write SetCustomHelpFile default DefaultValue_CustomHelpFile;
     property CustomHelpFileValue: string read FCustomHelpFileValue write SetCustomHelpFileValue stored False;
 
     // вкладка "настройки главного окна"
-    property MainFormLeft: integer read FMainFormLeft write SetMainFormLeft stored False;
-    property MainFormTop: integer read FMainFormTop write SetMainFormTop stored False;
-    property MainFormWidth: integer read FMainFormWidth write SetMainFormWidth stored False;
-    property MainFormHeight: integer read FMainFormHeight write SetMainFormHeight stored False;
-    property MainFormPositionByCenter: boolean read FMainFormPositionByCenter write SetMainFormPositionByCenter default True;
-    property FullScreenAtLaunch: boolean read FFullScreenAtLaunch write SetFullScreenAtLaunch default False;
+    property MainFormLeft: integer read FMainFormLeft write SetMainFormLeft default DefaultValue_MainFormLeft;
+    property MainFormTop: integer read FMainFormTop write SetMainFormTop default DefaultValue_MainFormTop;
+    property MainFormWidth: integer read FMainFormWidth write SetMainFormWidth default DefaultValue_MainFormWidth;
+    property MainFormHeight: integer read FMainFormHeight write SetMainFormHeight default DefaultValue_MainFormHeight;
+    property MainFormPositionByCenter: boolean read FMainFormPositionByCenter write SetMainFormPositionByCenter default DefaultValue_MainFormPositionByCenter;
+    property FullScreenAtLaunch: boolean read FFullScreenAtLaunch write SetFullScreenAtLaunch default DefaultValue_FullScreenAtLaunch;
 
     // вкладка "настройки отображения информации"
-    property OrganizationPanelHeightValue: integer read FOrganizationPanelHeightValue write SetOrganizationPanelHeightValue default 100;
-    property OrganizationPanelHalfHeight: boolean read FOrganizationPanelHalfHeight write SetOrganizationPanelHalfHeight default True;
-    property DataPanelWidthValue: integer read FDataPanelWidthValue write SetDataPanelWidthValue default 340;
-    property DataPanelHalfWidth: boolean read FDataPanelHalfWidth write SetDataPanelHalfWidth default False;
-    property ShowDataInOtherInfoPanel: boolean read FShowDataInOtherInfoPanel write SetShowDataInOtherInfoPanel default True;
-    property ShowMeasuresListAsRichEdit: boolean read FShowMeasuresListAsRichEdit write SetShowMeasuresListAsRichEdit default True;
-    property MarkSearchedStrings: boolean read FMarkSearchedStrings write SetMarkSearchedStrings default True;
-    property PutTownAtTheEnd: boolean read FPutTownAtTheEnd write SetPutTownAtTheEnd default False;
+    property OrganizationPanelHeightValue: integer read FOrganizationPanelHeightValue write SetOrganizationPanelHeightValue default DefaultValue_OrganizationPanelHeightValue;
+    property OrganizationPanelHalfHeight: boolean read FOrganizationPanelHalfHeight write SetOrganizationPanelHalfHeight default DefaultValue_OrganizationPanelHalfHeight;
+    property DataPanelWidthValue: integer read FDataPanelWidthValue write SetDataPanelWidthValue default DefaultValue_DataPanelWidthValue;
+    property DataPanelHalfWidth: boolean read FDataPanelHalfWidth write SetDataPanelHalfWidth default DefaultValue_DataPanelHalfWidth;
+    property ShowDataInOtherInfoPanel: boolean read FShowDataInOtherInfoPanel write SetShowDataInOtherInfoPanel default DefaultValue_ShowDataInOtherInfoPanel;
+    property ShowMeasuresListAsRichEdit: boolean read FShowMeasuresListAsRichEdit write SetShowMeasuresListAsRichEdit default DefaultValue_ShowMeasuresListAsRichEdit;
+    property MarkSearchedStrings: boolean read FMarkSearchedStrings write SetMarkSearchedStrings default DefaultValue_MarkSearchedStrings;
+    property PutTownAtTheEnd: boolean read FPutTownAtTheEnd write SetPutTownAtTheEnd default DefaultValue_PutTownAtTheEnd;
   end;
 
 implementation
@@ -390,7 +390,7 @@ begin
       ShowCommonSearchEditbox:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowCommonSearchEditbox', DefaultValue_ShowCommonSearchEditbox);
       ShowID:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowID', DefaultValue_ShowID);
       UseMultibuffer:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bUseMultibuffer', DefaultValue_UseMultibuffer);
-      ShowConfirmationAtQuit:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowConfirmationAtQuit', DefaultValue_ShowConfirmationAtQuit);
+      ShowConfirmationOnQuit:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowConfirmationOnQuit', DefaultValue_ShowConfirmationOnQuit);
 
       // вкладка "настройки ведения протокола работы"
       EnableLog:=ReadBool(TEXT_INIFILESECTION_LOGS, 'bEnableLog', DefaultValue_EnableLog);
@@ -588,7 +588,7 @@ begin
       WriteBool(TEXT_INIFILESECTION_INTERFACE, 'bShowCommonSearchEditbox', ShowCommonSearchEditbox);
       WriteBool(TEXT_INIFILESECTION_INTERFACE, 'bShowID', ShowID);
       WriteBool(TEXT_INIFILESECTION_INTERFACE, 'bUseMultibuffer', UseMultibuffer);
-      WriteBool(TEXT_INIFILESECTION_INTERFACE, 'bShowConfirmationAtQuit', ShowConfirmationAtQuit);
+      WriteBool(TEXT_INIFILESECTION_INTERFACE, 'bShowConfirmationOnQuit', ShowConfirmationOnQuit);
 
       // вкладка "настройки ведения протокола работы"
       WriteBool(TEXT_INIFILESECTION_LOGS, 'bEnableLog', EnableLog);
@@ -833,10 +833,10 @@ begin
     FShowCommonSearchEditbox:=Value;
 end;
 
-procedure TConfiguration.SetShowConfirmationAtQuit(const Value: boolean);
+procedure TConfiguration.SetShowConfirmationOnQuit(const Value: boolean);
 begin
-  if FShowConfirmationAtQuit<>Value then
-    FShowConfirmationAtQuit:=Value;
+  if FShowConfirmationOnQuit<>Value then
+    FShowConfirmationOnQuit:=Value;
 end;
 
 procedure TConfiguration.SetShowDataInOtherInfoPanel(const Value: boolean);
@@ -1164,7 +1164,7 @@ begin
   FShowCommonSearchEditbox:=DefaultValue_ShowCommonSearchEditbox;
   FShowID:=DefaultValue_ShowID;
   FUseMultibuffer:=DefaultValue_UseMultibuffer;
-  FShowConfirmationAtQuit:=DefaultValue_ShowConfirmationAtQuit;
+  FShowConfirmationOnQuit:=DefaultValue_ShowConfirmationOnQuit;
 
   // вкладка "настройки ведения протокола работы"
   FEnableLog:=DefaultValue_EnableLog;
