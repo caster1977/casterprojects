@@ -93,6 +93,4 @@ begin
   FItems.Insert(index, Item);
 end;
 
-{ DONE : Протестировать работу класса }
-
 end.

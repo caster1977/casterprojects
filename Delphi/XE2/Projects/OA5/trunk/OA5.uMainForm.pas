@@ -38,7 +38,8 @@ uses
   XMLDoc,
   Vcl.AppEvnts,
   System.IniFiles,
-  OA5.uMultiBufferClass;
+  OA5.uMultiBufferClass,
+  OA5.uInterfaces;
 
 type
   TMainForm=class(TForm)
@@ -98,9 +99,9 @@ type
     procedure Action_AboutExecute(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Action_ConfigurationExecute(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure Action_ReportExecute(Sender: TObject);
     procedure miStatusBarClick(Sender: TObject);
@@ -131,7 +132,7 @@ type
     procedure Do_SaveConfiguration;
   public
     Configuration: TConfiguration;
-    CurrentUser: IAccount;
+    CurrentUser: TAccount;
     iBusyCounter: integer;
     MeasuresMultiBuffer: TMultiBufferClass;
     procedure ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
@@ -369,9 +370,9 @@ end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
-  MeasuresMultiBuffer.Free;
-  Configuration.Free;
-  CurrentUser:=nil;
+  FreeAndNil(MeasuresMultiBuffer);
+  FreeAndNil(Configuration);
+  FreeAndNil(CurrentUser);
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -395,25 +396,14 @@ var
 begin
   // переменная правдива с момента запуска программы до момента отображения главного окна
   bFirstRun:=True;
-  // создание и инициализщация объекта текущего пользователя
-  CurrentUser:=TAccount.Create;
-  // создание и инициализщация объекта конфигурации
-  Configuration:=TConfiguration.Create;
-  // создание и инициализщация объекта мультибуфера
-  MeasuresMultiBuffer:=TMultiBufferClass.Create;
-
-  // привязка прогрессбара к позиции на строке статуса
-  BindMainProgressBarToStatusBar;
-  // привязка иконки готовности к позиции на строке статуса
-  BindStateImageToStatusBar;
-
+  CurrentUser:=TAccount.Create; // создание и инициализщация объекта текущего пользователя
+  Configuration:=TConfiguration.Create; // создание и инициализщация объекта конфигурации
+  MeasuresMultiBuffer:=TMultiBufferClass.Create; // создание и инициализщация объекта мультибуфера
+  BindMainProgressBarToStatusBar; // привязка прогрессбара к позиции на строке статуса
+  BindStateImageToStatusBar; // привязка иконки готовности к позиции на строке статуса
   Application.OnHint:=ApplicationOnHint;
-
-  // загрузка настроек из файла
-  Do_LoadConfiguration;
-
-  // применение настроек к интерфейсу
-  Do_ApplyConfiguration;
+  Do_LoadConfiguration; // загрузка настроек из файла
+  Do_ApplyConfiguration; // применение настроек к интерфейсу
 
   { TODO : добавить отображение окна "о программе" }
 

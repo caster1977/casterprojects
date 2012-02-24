@@ -76,11 +76,6 @@ type
     constructor Create(const AutoNormalizeData: boolean=False);
 
     /// <summary>
-    /// Деструктор класса
-    /// </summary>
-    destructor Destroy; override;
-
-    /// <summary>
     /// Функция валидации данных класса (только проверка значений)
     /// </summary>
     /// <returns>
@@ -269,11 +264,6 @@ begin
   FForTeenagers:=False;
   FForAdultsOnly:=False;
   FUnknownDuration:=True;
-end;
-
-destructor TMeasureDataClass.Destroy;
-begin
-  inherited;
 end;
 
 function TMeasureDataClass.Normalized: boolean;
