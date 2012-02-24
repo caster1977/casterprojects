@@ -939,8 +939,8 @@ end;
 
 destructor TConfiguration.Destroy;
 begin
-  MessagesServer.Free;
-  RNE4Server.Free;
+  FreeAndNil(FMessagesServer);
+  FreeAndNil(FRNE4Server);
   inherited;
 end;
 
@@ -1147,8 +1147,8 @@ begin
   inherited;
 
   // инициализация динамических членов класса
-  RNE4Server:=TMySQLConnection.Create;
-  MessagesServer:=TMySQLConnection.Create;
+  FRNE4Server:=TMySQLConnection.Create;
+  FMessagesServer:=TMySQLConnection.Create;
 
   // инициализация пеерменных класса
   FFileName:=ChangeFileExt(ExpandFileName(Application.ExeName), '.ini');

@@ -6,44 +6,31 @@ uses
   System.SysUtils;
 
 type
-  EAccountException=class(Exception);
+  EAccount=class(Exception);
 
-  TPrivilegies=record
-    Edit: boolean;
-    Clear: boolean;
-    Account: boolean;
-    Report: boolean;
+  TPrivilegies=class
+  strict private
+    FEdit: boolean;
+    FClear: boolean;
+    FAccount: boolean;
+    FReport: boolean;
+    function GetAccount: boolean;
+    function GetClear: boolean;
+    function GetEdit: boolean;
+    function GetReport: boolean;
+    procedure SetAccount(const Value: boolean);
+    procedure SetClear(const Value: boolean);
+    procedure SetEdit(const Value: boolean);
+    procedure SetReport(const Value: boolean);
+  public
+    constructor Create; virtual;
+    property Edit: boolean read GetEdit write SetEdit default False;
+    property Clear: boolean read GetClear write SetClear default False;
+    property Account: boolean read GetAccount write SetAccount default False;
+    property Report: boolean read GetReport write SetReport default False;
   end;
 
-  IAccount=interface(IInterface)
-    ['{1D74197E-59C0-4A84-AAA2-BFFD74A84FA3}']
-    function GetLogged: boolean;
-    procedure SetLogged(const Value: boolean);
-    function GetFullname: string;
-    function GetID: integer;
-    function GetLogin: string;
-    function GetPassword: string;
-    function GetPhone: string;
-    function GetPosition: string;
-    function GetPrivilegies: TPrivilegies;
-    procedure SetFullname(const Value: string);
-    procedure SetID(const Value: integer);
-    procedure SetLogin(const Value: string);
-    procedure SetPassword(const Value: string);
-    procedure SetPhone(const Value: string);
-    procedure SetPosition(const Value: string);
-    procedure SetPrivilegies(const Value: TPrivilegies);
-    property Logged: boolean read GetLogged write SetLogged;
-    property ID: integer read GetID write SetID;
-    property Login: string read GetLogin write SetLogin;
-    property Password: string read GetPassword write SetPassword;
-    property Fullname: string read GetFullname write SetFullname;
-    property Position: string read GetPosition write SetPosition;
-    property Phone: string read GetPhone write SetPhone;
-    property Privilegies: TPrivilegies read GetPrivilegies write SetPrivilegies;
-  end;
-
-  TAccount=class(TInterfacedObject, IAccount)
+  TAccount=class
   strict private
     FLogged: boolean;
     FID: integer;
@@ -70,7 +57,8 @@ type
     procedure SetPosition(const Value: string);
     procedure SetPrivilegies(const Value: TPrivilegies);
   public
-    constructor Create;
+    constructor Create; virtual;
+    destructor Destroy; override;
     property Logged: boolean read GetLogged write SetLogged default False;
     property ID: integer read GetID write SetID nodefault;
     property Login: string read GetLogin write SetLogin nodefault;
@@ -83,8 +71,6 @@ type
 
 implementation
 
-{ TAccount }
-
 constructor TAccount.Create;
 begin
   inherited;
@@ -95,6 +81,8 @@ begin
   FFullname:='';
   FPosition:='';
   FPhone:='';
+  if not Assigned(FPrivilegies) then
+    FPrivilegies:=TPrivilegies.Create;
   with FPrivilegies do
     begin
       Edit:=False;
@@ -102,6 +90,12 @@ begin
       Account:=False;
       Report:=False;
     end;
+end;
+
+destructor TAccount.Destroy;
+begin
+  FreeAndNil(FPrivilegies);
+  inherited;
 end;
 
 function TAccount.GetFullname: string;
@@ -158,7 +152,7 @@ resourcestring
   TEXT_ACCOUNT_ID_ERROR='Идентификатор учётной записи не может быть отрицательным!';
 begin
   if Value<0 then
-    raise EAccountException.Create(TEXT_ACCOUNT_ID_ERROR)
+    raise EAccount.Create(TEXT_ACCOUNT_ID_ERROR)
   else
     if FID<>Value then
       FID:=Value;
@@ -178,7 +172,7 @@ var
 begin
   s:=Trim(Value);
   if s='' then
-    raise EAccountException.Create(TEXT_ACCOUNT_LOGIN_ERROR)
+    raise EAccount.Create(TEXT_ACCOUNT_LOGIN_ERROR)
   else
     if FLogin<>s then
       FLogin:=s;
@@ -212,6 +206,61 @@ procedure TAccount.SetPrivilegies(const Value: TPrivilegies);
 begin
   if ((FPrivilegies.Edit<>Value.Edit)or(FPrivilegies.Clear<>Value.Clear)or(FPrivilegies.Account<>Value.Account)or(FPrivilegies.Report<>Value.Report)) then
     FPrivilegies:=Value;
+end;
+
+{ TPrivilegies }
+
+constructor TPrivilegies.Create;
+begin
+  inherited;
+  FAccount:=False;
+  FClear:=False;
+  FEdit:=False;
+  FReport:=False;
+end;
+
+function TPrivilegies.GetAccount: boolean;
+begin
+  Result:=FAccount;
+end;
+
+function TPrivilegies.GetClear: boolean;
+begin
+  Result:=FClear;
+end;
+
+function TPrivilegies.GetEdit: boolean;
+begin
+  Result:=FEdit;
+end;
+
+function TPrivilegies.GetReport: boolean;
+begin
+  Result:=FReport;
+end;
+
+procedure TPrivilegies.SetAccount(const Value: boolean);
+begin
+  if FAccount<>Value then
+    FAccount:=Value;
+end;
+
+procedure TPrivilegies.SetClear(const Value: boolean);
+begin
+  if FClear<>Value then
+    FClear:=Value;
+end;
+
+procedure TPrivilegies.SetEdit(const Value: boolean);
+begin
+  if FEdit<>Value then
+    FEdit:=Value;
+end;
+
+procedure TPrivilegies.SetReport(const Value: boolean);
+begin
+  if FReport<>Value then
+    FReport:=Value;
 end;
 
 end.

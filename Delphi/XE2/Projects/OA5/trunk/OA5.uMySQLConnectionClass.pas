@@ -33,12 +33,12 @@ type
     procedure SetPassword(const Value: string);
     procedure SetDatabase(const Value: string);
     procedure SetLogProvider(const Value: TLogProvider);
-    procedure SendDebug(Value: string);
-    procedure SendError(Value: string);
-    procedure SendWarning(Value: string);
-    procedure SendInfo(Value: string);
-    procedure SendSQL(Value: string);
-    procedure RaiseEMySQLException(Value: string);
+    procedure SendDebug(const Value: string);
+    procedure SendError(const Value: string);
+    procedure SendWarning(const Value: string);
+    procedure SendInfo(const Value: string);
+    procedure SendSQL(const Value: string);
+    procedure RaiseEMySQLException(const Value: string);
   protected
     function GetLastErrorInfo: string;
     class function PrepareStringValueForQuery(const Source: string; AddCommas, ReturnNull: boolean): string; static;
@@ -99,38 +99,38 @@ begin
     end;
 end;
 
-procedure TMySQLConnection.RaiseEMySQLException(Value: string);
+procedure TMySQLConnection.RaiseEMySQLException(const Value: string);
 begin
   if Assigned(FLogProvider) then
     FLogProvider.SendError(Value);
   raise EMySQLException.Create(Value);
 end;
 
-procedure TMySQLConnection.SendDebug(Value: string);
+procedure TMySQLConnection.SendDebug(const Value: string);
 begin
   if Assigned(FLogProvider) then
     FLogProvider.SendDebug(Value);
 end;
 
-procedure TMySQLConnection.SendError(Value: string);
+procedure TMySQLConnection.SendError(const Value: string);
 begin
   if Assigned(FLogProvider) then
     FLogProvider.SendError(Value);
 end;
 
-procedure TMySQLConnection.SendInfo(Value: string);
+procedure TMySQLConnection.SendInfo(const Value: string);
 begin
   if Assigned(FLogProvider) then
     FLogProvider.SendInfo(Value);
 end;
 
-procedure TMySQLConnection.SendSQL(Value: string);
+procedure TMySQLConnection.SendSQL(const Value: string);
 begin
   if Assigned(FLogProvider) then
     FLogProvider.SendSQL(Value);
 end;
 
-procedure TMySQLConnection.SendWarning(Value: string);
+procedure TMySQLConnection.SendWarning(const Value: string);
 begin
   if Assigned(FLogProvider) then
     FLogProvider.SendWarning(Value);
@@ -138,7 +138,8 @@ end;
 
 procedure TMySQLConnection.SetCompression(const Value: boolean);
 begin
-  FCompression:=Value;
+  if FCompression<>Value then
+    FCompression:=Value;
 end;
 
 procedure TMySQLConnection.SetConnected(const Value: boolean);
@@ -158,37 +159,44 @@ end;
 
 procedure TMySQLConnection.SetDatabase(const Value: string);
 begin
-  FDatabase:=Value;
+  if FDatabase<>Value then
+    FDatabase:=Value;
 end;
 
 procedure TMySQLConnection.SetHost(const Value: string);
 begin
-  FHost:=Value;
+  if FHost<>Value then
+    FHost:=Value;
 end;
 
 procedure TMySQLConnection.SetLogin(const Value: string);
 begin
-  FLogin:=Value;
+  if FLogin<>Value then
+    FLogin:=Value;
 end;
 
 procedure TMySQLConnection.SetLogProvider(const Value: TLogProvider);
 begin
-  FLogProvider:=Value;
+  if FLogProvider<>Value then
+    FLogProvider:=Value;
 end;
 
 procedure TMySQLConnection.SetPassword(const Value: string);
 begin
-  FPassword:=Value;
+  if FPassword<>Value then
+    FPassword:=Value;
 end;
 
 procedure TMySQLConnection.SetPort(const Value: integer);
 begin
-  FPort:=Value;
+  if FPort<>Value then
+    FPort:=Value;
 end;
 
 procedure TMySQLConnection.SetTimeout(const Value: integer);
 begin
-  FTimeout:=Value;
+  if FTimeout<>Value then
+    FTimeout:=Value;
 end;
 
 function TMySQLConnection.Query(const SQL: string): integer;
