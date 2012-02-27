@@ -34,8 +34,8 @@ type
     procedure SetDatabase(const Value: string);
     procedure SetLogProvider(const Value: TLogProvider);
     procedure SendDebug(const Value: string);
-    procedure SendError(const Value: string);
-    procedure SendWarning(const Value: string);
+//    procedure SendError(const Value: string);
+//    procedure SendWarning(const Value: string);
     procedure SendInfo(const Value: string);
     procedure SendSQL(const Value: string);
     procedure RaiseEMySQLException(const Value: string);
@@ -49,9 +49,11 @@ type
     function RowCount(const ResultSet: PMYSQL_RES): cardinal;
     procedure OpenConnection;
     procedure CloseConnection;
-  public
-    property Connected: boolean read FConnected write SetConnected stored False;
     property Connection: PMYSQL read FConnection write SetConnection stored False;
+  public
+    constructor Create; virtual;
+    destructor Destroy; override;
+    property Connected: boolean read FConnected write SetConnected stored False;
     property LogProvider: TLogProvider read FLogProvider write SetLogProvider stored False;
 
     property Host: string read FHost write SetHost stored False;
@@ -112,11 +114,13 @@ begin
     FLogProvider.SendDebug(Value);
 end;
 
+{
 procedure TMySQLConnection.SendError(const Value: string);
 begin
   if Assigned(FLogProvider) then
     FLogProvider.SendError(Value);
 end;
+}
 
 procedure TMySQLConnection.SendInfo(const Value: string);
 begin
@@ -130,11 +134,13 @@ begin
     FLogProvider.SendSQL(Value);
 end;
 
+{
 procedure TMySQLConnection.SendWarning(const Value: string);
 begin
   if Assigned(FLogProvider) then
     FLogProvider.SendWarning(Value);
 end;
+}
 
 procedure TMySQLConnection.SetCompression(const Value: boolean);
 begin
@@ -146,9 +152,9 @@ procedure TMySQLConnection.SetConnected(const Value: boolean);
 begin
   if FConnected<>Value then
     if Value then
-      CloseConnection
+      OpenConnection
     else
-      OpenConnection;
+      CloseConnection;
 end;
 
 procedure TMySQLConnection.SetConnection(const Value: PMYSQL);
@@ -261,6 +267,27 @@ begin
   finally
     SendDebug('Операция по выполнению SQL-запроса завершена.');
   end;
+end;
+
+constructor TMySQLConnection.Create;
+begin
+  inherited;
+  FConnected:=False;
+  FConnection:=nil;
+  FLogProvider:=nil;
+  FHost:='';
+  FPort:=MYSQL_PORT;
+  FTimeout:=30;
+  FCompression:=True;
+  FLogin:='';
+  FPassword:='';
+  FDatabase:='';
+end;
+
+destructor TMySQLConnection.Destroy;
+begin
+  Connected:=False;
+  inherited;
 end;
 
 function TMySQLConnection.FetchRow(const ResultSet: PMYSQL_RES): TStringList;

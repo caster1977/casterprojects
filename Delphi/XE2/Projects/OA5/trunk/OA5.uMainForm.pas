@@ -113,6 +113,8 @@ type
     procedure miToolBarClick(Sender: TObject);
     procedure Action_AddPhoneExecute(Sender: TObject);
     procedure Action_EditPhoneExecute(Sender: TObject);
+    procedure Action_LogonExecute(Sender: TObject);
+    procedure Action_LogoutExecute(Sender: TObject);
   strict private
     bFirstRun: boolean;
     procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
@@ -130,6 +132,8 @@ type
     procedure Do_LoadConfiguration;
     procedure Do_ApplyConfiguration;
     procedure Do_SaveConfiguration;
+    procedure Do_Logon;
+    procedure Do_Logout;
   public
     Configuration: TConfiguration;
     CurrentUser: TAccount;
@@ -173,12 +177,12 @@ resourcestring
   sConfigurationFormSuffix='настроек программы';
   sReportFormSuffix='формирования статистических отчётов по работе пользователей';
   sMultiBufferFormSuffix='мультибуфера';
-  sCreateMessageFormSuffix = 'создания нового сообщения';
-  sViewMessageFormSuffix = 'просмотра полученного сообщения';
-  sViewMessagesFormSuffix = 'просмотра полученных сообщений';
-  sAddPhoneFormSuffix = 'добавления номера телефона';
-  sEditPhoneFormSuffix = 'исправления номера телефона';
-
+  sCreateMessageFormSuffix='создания нового сообщения';
+  sViewMessageFormSuffix='просмотра полученного сообщения';
+  sViewMessagesFormSuffix='просмотра полученных сообщений';
+  sAddPhoneFormSuffix='добавления номера телефона';
+  sEditPhoneFormSuffix='исправления номера телефона';
+  sLoginFormSuffix='ввода учётной записи';
 
 procedure TMainForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
 begin
@@ -283,9 +287,9 @@ procedure TMainForm.miToolBarClick(Sender: TObject);
 begin
   ProcedureHeader('Процедура включения/отключения отображения панели кнопок', '{786D709B-0201-41AE-923C-BC307AE26A6B}');
 
-//  StatusBar1.Visible:=miStatusbar.Checked;
-//  Configuration.ShowToolbar:=StatusBar1.Visible;
-//  Log.SendInfo('Панель кнопок '+Routines.GetConditionalString(StatusBar1.Visible, 'в', 'от')+'ключена.');
+  // StatusBar1.Visible:=miStatusbar.Checked;
+  // Configuration.ShowToolbar:=StatusBar1.Visible;
+  // Log.SendInfo('Панель кнопок '+Routines.GetConditionalString(StatusBar1.Visible, 'в', 'от')+'ключена.');
 
   ProcedureFooter;
 end;
@@ -514,8 +518,8 @@ begin
       Log.SendInfo('Производится попытка чтения настроек программы из файла...');
     end;
   try
+    Screen.Cursor:=crHourGlass;
     try
-      Screen.Cursor:=crHourGlass;
       Configuration.Load;
       if not bFirstRun then
         Log.SendInfo('Чтение настроек программы из файла прошло успешно.');
@@ -544,8 +548,8 @@ begin
 
   Log.SendInfo('Производится попытка записи настроек программы в файл...');
   try
+    Screen.Cursor:=crHourGlass;
     try
-      Screen.Cursor:=crHourGlass;
       Configuration.Save;
       Log.SendInfo('Запись настроек программы в файл прошла успешно.');
     finally
@@ -780,6 +784,97 @@ begin
     end;
 
   ProcedureFooter;
+end;
+
+procedure TMainForm.Action_LogonExecute(Sender: TObject);
+begin
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Logon.Caption+'"', '{25B404A0-78C1-47D6-AFCE-33168CAF333A}');
+  Do_Logon;
+  ProcedureFooter;
+end;
+
+procedure TMainForm.Action_LogoutExecute(Sender: TObject);
+begin
+  ProcedureHeader('Процедура-обработчик действия "'+Action_Logout.Caption+'"', '{3A1F49AC-A9CF-4FC7-90AA-A6D2E5AE1619}');
+  Do_Logout;
+  ProcedureFooter;
+end;
+
+procedure TMainForm.Do_Logon;
+var
+  LoginForm: TLoginForm;
+  iBusy: integer;
+  bPassLoginForm: boolean;
+
+  procedure _Login;
+  resourcestring
+    TEXT_AOUTOLOGON_ERROR='Выполнить автоматический ыход не удалось - проверьте правильность сохраненных логина и пароля пользователя!';
+  begin
+    begin
+      Screen.Cursor:=crHourGlass;
+      try
+        { TODO : дописать! }
+        with Configuration.RNE4Server do
+          begin
+            Connected:=Tru;
+
+
+//            Connected:=False;
+          end;
+//        raise Exception.Create(TEXT_AOUTOLOGON_ERROR);
+      finally
+        Screen.Cursor:=crDefault;
+      end
+    end;
+  end;
+
+begin
+  ProcedureHeader('Процедура отображения окна '+sLoginFormSuffix, '{68883F7C-57C2-4E56-B2FB-AEDCB1EB25DC}');
+
+  bPassLoginForm:=Configuration.AutoLogon and Configuration.StoreLogin and Configuration.StorePassword and (Configuration.Login<>'');
+
+  if bPassLoginForm then
+    try
+      _Login;
+    except
+      on E: Exception do
+        begin
+          MainForm.ShowErrorBox(MainForm.Handle, E.Message);
+          bPassLoginForm:=False;
+        end;
+    end;
+
+  if not bPassLoginForm then
+    begin
+      LoginForm:=TLoginForm.Create(Self);
+      with LoginForm do
+        try
+          if Configuration.StoreLogin then
+            edbxLogin.Text:=Configuration.Login;
+          if Configuration.StorePassword then
+            mePassword.Text:=Configuration.Password;
+          PreShowModal(sLoginFormSuffix, iBusy);
+          ShowModal;
+        finally
+          PostShowModal(sLoginFormSuffix, iBusy);
+          if ModalResult=mrOk then
+            begin
+              if Configuration.StoreLogin then
+                Configuration.Login:=edbxLogin.Text;
+              if Configuration.StorePassword then
+                Configuration.Password:=mePassword.Text;
+              _Login;
+            end;
+          Free;
+        end;
+    end;
+
+  ProcedureFooter;
+end;
+
+procedure TMainForm.Do_Logout;
+begin
+
 end;
 
 end.
