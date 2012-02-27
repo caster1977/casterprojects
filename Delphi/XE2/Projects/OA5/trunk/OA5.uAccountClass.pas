@@ -71,6 +71,59 @@ type
 
 implementation
 
+constructor TPrivilegies.Create;
+begin
+  inherited;
+  FAccount:=False;
+  FClear:=False;
+  FEdit:=False;
+  FReport:=False;
+end;
+
+function TPrivilegies.GetAccount: boolean;
+begin
+  Result:=FAccount;
+end;
+
+function TPrivilegies.GetClear: boolean;
+begin
+  Result:=FClear;
+end;
+
+function TPrivilegies.GetEdit: boolean;
+begin
+  Result:=FEdit;
+end;
+
+function TPrivilegies.GetReport: boolean;
+begin
+  Result:=FReport;
+end;
+
+procedure TPrivilegies.SetAccount(const Value: boolean);
+begin
+  if FAccount<>Value then
+    FAccount:=Value;
+end;
+
+procedure TPrivilegies.SetClear(const Value: boolean);
+begin
+  if FClear<>Value then
+    FClear:=Value;
+end;
+
+procedure TPrivilegies.SetEdit(const Value: boolean);
+begin
+  if FEdit<>Value then
+    FEdit:=Value;
+end;
+
+procedure TPrivilegies.SetReport(const Value: boolean);
+begin
+  if FReport<>Value then
+    FReport:=Value;
+end;
+
 constructor TAccount.Create;
 begin
   inherited;
@@ -206,61 +259,6 @@ procedure TAccount.SetPrivilegies(const Value: TPrivilegies);
 begin
   if ((FPrivilegies.Edit<>Value.Edit)or(FPrivilegies.Clear<>Value.Clear)or(FPrivilegies.Account<>Value.Account)or(FPrivilegies.Report<>Value.Report)) then
     FPrivilegies:=Value;
-end;
-
-{ TPrivilegies }
-
-constructor TPrivilegies.Create;
-begin
-  inherited;
-  FAccount:=False;
-  FClear:=False;
-  FEdit:=False;
-  FReport:=False;
-end;
-
-function TPrivilegies.GetAccount: boolean;
-begin
-  Result:=FAccount;
-end;
-
-function TPrivilegies.GetClear: boolean;
-begin
-  Result:=FClear;
-end;
-
-function TPrivilegies.GetEdit: boolean;
-begin
-  Result:=FEdit;
-end;
-
-function TPrivilegies.GetReport: boolean;
-begin
-  Result:=FReport;
-end;
-
-procedure TPrivilegies.SetAccount(const Value: boolean);
-begin
-  if FAccount<>Value then
-    FAccount:=Value;
-end;
-
-procedure TPrivilegies.SetClear(const Value: boolean);
-begin
-  if FClear<>Value then
-    FClear:=Value;
-end;
-
-procedure TPrivilegies.SetEdit(const Value: boolean);
-begin
-  if FEdit<>Value then
-    FEdit:=Value;
-end;
-
-procedure TPrivilegies.SetReport(const Value: boolean);
-begin
-  if FReport<>Value then
-    FReport:=Value;
 end;
 
 end.

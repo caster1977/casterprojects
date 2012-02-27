@@ -87,6 +87,8 @@ var
 begin
   ProcedureHeader('Процедура обновления состояния действий', '{348CBBCC-9845-40ED-9C35-39F5D58F4EAA}');
 
+  Screen.Cursor:=crHourGlass;
+
   b:=edbxLogin.Text<>'';
   if Action_Ok.Enabled<>b then
     begin
@@ -99,6 +101,8 @@ begin
 
   if btnClose.Default<>not Action_Ok.Enabled then
     btnClose.Default:=not Action_Ok.Enabled;
+
+  Screen.Cursor:=crDefault;
 
   ProcedureFooter;
 end;

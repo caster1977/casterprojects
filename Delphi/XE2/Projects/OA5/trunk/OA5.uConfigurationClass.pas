@@ -46,8 +46,10 @@ const
   DefaultValue_FormPosition_y=0;
 
   // вкладка "настройки процедуры логирования"
-  DefaultValue_StoreLastLogin=False;
-  DefaultValue_StoreLastPassword=False;
+  DefaultValue_StoreLogin=False;
+  DefaultValue_StorePassword=False;
+  DefaultValue_Login='';
+  DefaultValue_Password='';
   DefaultValue_AutoLogon=False;
 
   // вкладка "подключения к серверу базы данных услуги"
@@ -55,8 +57,8 @@ const
   DefaultValue_RNE4Server_Port=MYSQL_PORT;
   DefaultValue_RNE4Server_Timeout=30;
   DefaultValue_RNE4Server_Compression=True;
-  DefaultValue_RNE4Server_Login='';
-  DefaultValue_RNE4Server_Password='';
+  DefaultValue_RNE4Server_Login='root';
+  DefaultValue_RNE4Server_Password='sqladmin';
   DefaultValue_RNE4Server_Database='rne4';
 
   // вкладка "подключения к серверу системы обмена сообщениями"
@@ -105,8 +107,8 @@ type
   strict private
     FFileName: string;
     FConfigurationFormPage: integer;
-    FLastLogin: string;
-    FLastPassword: string;
+    FLogin: string;
+    FPassword: string;
 
     // вкладка "настройки интерфейса"
     FShowSplashAtStart: boolean; // Отображать окно "О программе..." при запуске
@@ -147,8 +149,8 @@ type
     FMultibufferFormPosition: TFormPosition;
 
     // вкладка "настройки процедуры логирования"
-    FStoreLastLogin: boolean; // Сохранять логин последнего пользователя
-    FStoreLastPassword: boolean; // Сохранять пароль последнего пользователя
+    FStoreLogin: boolean; // Сохранять логин последнего пользователя
+    FStorePassword: boolean; // Сохранять пароль последнего пользователя
     FAutoLogon: boolean; // Выполнять автоматический вход, используя сохранённые логин и пароль пользователя
 
     // вкладка "настройки подключения к серверу базы данных услуги"
@@ -192,8 +194,8 @@ type
     FPutTownAtTheEnd: boolean; // Поместить название города в конец строки адреса
 
     procedure SetUseLog(const Value: boolean);
-    procedure SetStoreLastLogin(const Value: boolean);
-    procedure SetStoreLastPassword(const Value: boolean);
+    procedure SetStoreLogin(const Value: boolean);
+    procedure SetStorePassword(const Value: boolean);
     procedure SetAutoLogon(const Value: boolean);
     procedure SetKeepLogTypes(const Value: TLogMessagesTypes);
     function GetTempFolder: string;
@@ -256,7 +258,9 @@ type
     procedure SetMainFormWidth(const Value: integer);
     procedure SetCreateMessageFormPosition(const Value: TFormPosition);
     procedure SetViewMessageFormPosition(const Value: TFormPosition);
-  strict protected
+    procedure SetLogin(const Value: string);
+    procedure SetPassword(const Value: string);
+  protected
     procedure Loading(const IniFile: TIniFile); override;
     procedure Saving(const IniFile: TIniFile); override;
   public
@@ -270,8 +274,6 @@ type
 
     property FileName: string read FFileName write SetFileName stored False;
     property ConfigurationFormPage: integer read FConfigurationFormPage write FConfigurationFormPage default 0;
-    property LastLogin: string read FLastLogin stored False;
-    property LastPassword: string read FLastPassword stored False;
 
     // вкладка "настройки интерфейса"
     property ShowSplashAtStart: boolean read FShowSplashAtStart write SetShowSplashAtStart default DefaultValue_ShowSplashAtStart;
@@ -312,8 +314,10 @@ type
     property MultibufferFormPosition: TFormPosition read FMultibufferFormPosition write SetMultibufferFormPosition stored False;
 
     // вкладка "настройки процедуры логирования"
-    property StoreLastLogin: boolean read FStoreLastLogin write SetStoreLastLogin default DefaultValue_StoreLastLogin; // нужно ли хранить последний введённый логин
-    property StoreLastPassword: boolean read FStoreLastPassword write SetStoreLastPassword default DefaultValue_StoreLastPassword; // нужно ли хранить последний введённый пароль
+    property StoreLogin: boolean read FStoreLogin write SetStoreLogin default DefaultValue_StoreLogin; // нужно ли хранить последний введённый логин
+    property Login: string read FLogin write SetLogin stored False;
+    property StorePassword: boolean read FStorePassword write SetStorePassword default DefaultValue_StorePassword; // нужно ли хранить последний введённый пароль
+    property Password: string read FPassword write SetPassword stored False;
     property AutoLogon: boolean read FAutoLogon write SetAutoLogon default DefaultValue_AutoLogon; // нужно ли выполнять автологирование
 
     // вкладка "настройки подключения к серверу базы данных услуги"
@@ -502,8 +506,15 @@ begin
         end;
 
       // вкладка "настройки процедуры логирования"
-      StoreLastLogin:=ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStoreLastLogin', DefaultValue_StoreLastLogin);
-      StoreLastPassword:=ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStoreLastPassword', DefaultValue_StoreLastPassword);
+      StoreLogin:=ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStoreLogin', DefaultValue_StoreLogin);
+      if StoreLogin then
+        Login:=ReadString(TEXT_INIFILESECTION_IDENTIFICATION, 'sLogin', '')
+      else
+        Login:='';
+      StorePassword:=ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStorePassword', DefaultValue_StorePassword);
+      if StorePassword then
+        Password:=ReadString(TEXT_INIFILESECTION_IDENTIFICATION, 'sPassword', '')
+      else Password:='';
       AutoLogon:=ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bAutoLogon', DefaultValue_AutoLogon);
 
       // вкладка "подключения к серверу базы данных услуги"
@@ -624,8 +635,16 @@ begin
       WriteFormPosition(IniFile, MultibufferFormPosition, 'MultibufferFormPosition');
 
       // вкладка "настройки процедуры логирования"
-      WriteBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStoreLastLogin', StoreLastLogin);
-      WriteBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStoreLastPassword', StoreLastPassword);
+      WriteBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStoreLogin', StoreLogin);
+      WriteBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStorePassword', StorePassword);
+      if StoreLogin then
+        WriteString(TEXT_INIFILESECTION_IDENTIFICATION, 'sLogin', Login)
+      else
+        DeleteKey(TEXT_INIFILESECTION_IDENTIFICATION, 'sLogin');
+      if StorePassword then
+        WriteString(TEXT_INIFILESECTION_IDENTIFICATION, 'sPassword', Password)
+      else
+        DeleteKey(TEXT_INIFILESECTION_IDENTIFICATION, 'sPassword');
       WriteBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bAutoLogon', AutoLogon);
 
       // вкладка "подключения к серверу базы данных услуги"
@@ -905,26 +924,6 @@ begin
     FViewMessagesFormPosition:=Value;
 end;
 
-procedure TConfiguration.SetStoreLastLogin(const Value: boolean);
-begin
-  if FStoreLastLogin<>Value then
-    begin
-      FStoreLastLogin:=Value;
-      if not(Value and StoreLastPassword) then
-        AutoLogon:=False;
-    end;
-end;
-
-procedure TConfiguration.SetStoreLastPassword(const Value: boolean);
-begin
-  if FStoreLastPassword<>Value then
-    begin
-      FStoreLastPassword:=Value;
-      if not(Value and StoreLastLogin) then
-        AutoLogon:=False;
-    end;
-end;
-
 function TConfiguration.GetReportFolderValue: string;
 begin
   case FReportFolder of
@@ -1026,7 +1025,7 @@ procedure TConfiguration.SetAutoLogon(const Value: boolean);
 begin
   if Value then
     begin
-      if not(StoreLastLogin and StoreLastPassword) then
+      if not(StoreLogin and StorePassword) then
         raise Exception.Create('Для включения настройки автологирования необходимо сначала включить слхранение логина и пароля последнего пользователя!')
       else
         if FAutoLogon<>Value then
@@ -1153,8 +1152,8 @@ begin
   // инициализация пеерменных класса
   FFileName:=ChangeFileExt(ExpandFileName(Application.ExeName), '.ini');
   FConfigurationFormPage:=0;
-  FLastLogin:='';
-  FLastPassword:='';
+  FLogin:='';
+  FPassword:='';
 
   // вкладка "настройки интерфейса"
   FShowSplashAtStart:=DefaultValue_ShowSplashAtStart;
@@ -1284,15 +1283,16 @@ begin
     end;
 
   // вкладка "настройки процедуры логирования"
-  FStoreLastLogin:=DefaultValue_StoreLastLogin;
-  FStoreLastPassword:=DefaultValue_StoreLastPassword;
+  FStoreLogin:=DefaultValue_StoreLogin;
+  FStorePassword:=DefaultValue_StorePassword;
+  FLogin:=DefaultValue_Login;
+  FPassword:=DefaultValue_Password;
   FAutoLogon:=DefaultValue_AutoLogon;
 
   // вкладка "настройки подключения к серверу базы данных услуги"
   with FRNE4Server do
     begin
       Connected:=False;
-      Connection:=nil;
       LogProvider:=nil;
       Host:=DefaultValue_RNE4Server_Host;
       Port:=DefaultValue_RNE4Server_Port;
@@ -1307,7 +1307,6 @@ begin
   with FMessagesServer do
     begin
       Connected:=False;
-      Connection:=nil;
       LogProvider:=nil;
       Host:=DefaultValue_MessagesServer_Host;
       Port:=DefaultValue_MessagesServer_Port;
@@ -1349,6 +1348,56 @@ begin
   FShowMeasuresListAsRichEdit:=DefaultValue_ShowMeasuresListAsRichEdit;
   FMarkSearchedStrings:=DefaultValue_MarkSearchedStrings;
   FPutTownAtTheEnd:=DefaultValue_PutTownAtTheEnd;
+end;
+
+procedure TConfiguration.SetStoreLogin(const Value: boolean);
+begin
+  if FStoreLogin<>Value then
+    begin
+      FStoreLogin:=Value;
+      if not FStoreLogin then
+        begin
+          FLogin:='';
+          FPassword:='';
+          FStorePassword:=False;
+          FAutoLogon:=False;
+        end;
+    end
+end;
+
+procedure TConfiguration.SetStorePassword(const Value: boolean);
+begin
+  if FStorePassword<>Value then
+    begin
+      FStorePassword:=Value;
+      if not FStorePassword then
+        begin
+          FPassword:='';
+          FAutoLogon:=False;
+        end;
+    end;
+end;
+
+procedure TConfiguration.SetLogin(const Value: string);
+begin
+  if StoreLogin then
+    begin
+      if FLogin<>Value then
+        FLogin:=Value
+    end
+  else
+    FLogin:='';
+end;
+
+procedure TConfiguration.SetPassword(const Value: string);
+begin
+  if StorePassword then
+    begin
+      if FPassword<>Value then
+        FPassword:=Value
+    end
+  else
+    FPassword:='';
 end;
 
 end.

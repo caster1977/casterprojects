@@ -520,8 +520,8 @@ begin
       PermissionsFormPosition:=FormPosition;
 
       // вкладка "настройки процедуры логирования"
-      StoreLastLogin:=chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked;
-      StoreLastPassword:=chkbxStoreLastPassword.Enabled and chkbxStoreLastPassword.Checked;
+      StoreLogin:=chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked;
+      StorePassword:=chkbxStoreLastPassword.Enabled and chkbxStoreLastPassword.Checked;
       AutoLogon:=chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked and chkbxStoreLastPassword.Enabled and chkbxStoreLastPassword.Checked and chkbxAutoLogon.Enabled and chkbxAutoLogon.Checked;
 
       // вкладка "подключения к серверу базы данных услуги"
@@ -1015,11 +1015,11 @@ begin
   if PageControl1.ActivePage.Caption=' процедуры логирования' then
     begin
       // выставление значений по умолчанию для элементов интерфейса
-      chkbxStoreLastLogin.Checked:=DefaultValue_StoreLastLogin;
-      chkbxStoreLastPassword.Checked:=DefaultValue_StoreLastPassword;
-      chkbxAutoLogon.Checked:=DefaultValue_AutoLogon and DefaultValue_StoreLastLogin and DefaultValue_StoreLastPassword;
+      chkbxStoreLastLogin.Checked:=DefaultValue_StoreLogin;
+      chkbxStoreLastPassword.Checked:=DefaultValue_StorePassword;
+      chkbxAutoLogon.Checked:=DefaultValue_AutoLogon and DefaultValue_StoreLogin and DefaultValue_StorePassword;
       // выставление доступа к элементам интерфейса
-      chkbxAutoLogon.Enabled:=DefaultValue_StoreLastLogin and DefaultValue_StoreLastPassword;
+      chkbxAutoLogon.Enabled:=DefaultValue_StoreLogin and DefaultValue_StorePassword;
     end;
 
   // вкладка "подключения к серверу базы данных услуги"
@@ -1436,10 +1436,10 @@ begin
       edbxPermissionsFormPositionY.Enabled:=not PermissionsFormPosition.bCenter;
 
       // вкладка "настройки процедуры логирования"
-      chkbxStoreLastLogin.Checked:=StoreLastLogin;
-      chkbxStoreLastPassword.Checked:=StoreLastPassword;
-      chkbxAutoLogon.Checked:=AutoLogon and StoreLastLogin and StoreLastPassword;
-      chkbxAutoLogon.Enabled:=StoreLastLogin and StoreLastPassword;
+      chkbxStoreLastLogin.Checked:=StoreLogin;
+      chkbxStoreLastPassword.Checked:=StorePassword;
+      chkbxAutoLogon.Checked:=AutoLogon and StoreLogin and StorePassword;
+      chkbxAutoLogon.Enabled:=StoreLogin and StorePassword;
 
       // вкладка "подключения к серверу базы данных услуги"
       vleRNE4SERVER.Cells[1, 1]:=RNE4Server.Host;
