@@ -432,29 +432,34 @@ begin
         Do_About(False);
     end;
   Refresh_BusyState;
+  if bFirstRun then
+    begin
+      if Configuration.AutoLogon then
+        Do_Logon;
+    end;
 
   ProcedureFooter;
 end;
 
 procedure TMainForm.Do_UpdateActions;
+var
+  b: boolean;
 begin
   ProcedureHeader('Процедура обновления состояния действий', '{03351462-40CF-47ED-AE96-3F9E0D9EA148}');
 
-  { TODO : Убрать ремарки }
-  (*
-    Action_Logon.Enabled:=not CurrentUser.bLogged;
-    Action_Logon.Visible:=Action_Logon.Enabled;
-    Action_Logout.Enabled:=not Action_Logon.Enabled;
-    Action_Logout.Visible:=Action_Logout.Enabled;
-    LogThis(PWideChar('Действие "'+Action_Logon.Caption+'" '+Routines_GetConditionalMessage(Action_Logon.Enabled, 'включено', 'отключено')+', '+'действие "'+Action_Logout.Caption+'" '+Routines_GetConditionalMessage(Action_Logout.Enabled, 'включено',
-    'отключено')+'.'), LogGroupGUID, lmtDebug);
-    Action_Accounts.Enabled:=CurrentUser.bLogged and CurrentUser.bIsAdmin;
-    Action_Accounts.Visible:=Action_Accounts.Enabled;
-    Action_Process.Enabled:=CurrentUser.bLogged;
-    Action_Process.Visible:=Action_Process.Enabled;
-    miActions.Visible:=Action_Process.Visible or Action_Process.Visible;
-    Application.ProcessMessages;
-  *)
+  b:=CurrentUser.Logged;
+
+  Action_Logon.Enabled:=not b;
+//  Action_Logon.Visible:=not b;
+  Log.SendDebug('Действие "'+Action_Logon.Caption+'" '+Routines.GetConditionalString(Action_Logon.Enabled, 'включено', 'отключено')+'.');
+  Action_Logout.Enabled:=b;
+//  Action_Logout.Visible:=b;
+  Log.SendDebug('Действие "'+Action_Logout.Caption+'" '+Routines.GetConditionalString(Action_Logout.Enabled, 'включено', 'отключено')+'.');
+  b:=b and CurrentUser.Privilegies.Account;
+  Action_Accounts.Enabled:=b;
+//  Action_Accounts.Visible:=b;
+
+  Application.ProcessMessages;
 
   ProcedureFooter;
 end;
@@ -807,21 +812,22 @@ var
   bPassLoginForm: boolean;
 
   procedure _Login;
-  resourcestring
-    TEXT_AOUTOLOGON_ERROR='Выполнить автоматический ыход не удалось - проверьте правильность сохраненных логина и пароля пользователя!';
+  // resourcestring
+  // TEXT_AOUTOLOGON_ERROR='Выполнить автоматический ыход не удалось - проверьте правильность сохраненных логина и пароля пользователя!';
   begin
     begin
       Screen.Cursor:=crHourGlass;
       try
         { TODO : дописать! }
-        with Configuration.RNE4Server do
-          begin
-            Connected:=Tru;
+        Configuration.RNE4Server.Connected:=True;
+        Configuration.MessagesServer.Connected:=True;
+
+        дописать инициализацию данных пользователя
 
 
-//            Connected:=False;
-          end;
-//        raise Exception.Create(TEXT_AOUTOLOGON_ERROR);
+
+        Do_UpdateActions;
+        // raise Exception.Create(TEXT_AOUTOLOGON_ERROR);
       finally
         Screen.Cursor:=crDefault;
       end
@@ -831,7 +837,7 @@ var
 begin
   ProcedureHeader('Процедура отображения окна '+sLoginFormSuffix, '{68883F7C-57C2-4E56-B2FB-AEDCB1EB25DC}');
 
-  bPassLoginForm:=Configuration.AutoLogon and Configuration.StoreLogin and Configuration.StorePassword and (Configuration.Login<>'');
+  bPassLoginForm:=Configuration.AutoLogon and Configuration.StoreLogin and Configuration.StorePassword and(Configuration.Login<>'');
 
   if bPassLoginForm then
     try
