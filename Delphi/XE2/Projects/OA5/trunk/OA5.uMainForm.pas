@@ -155,6 +155,7 @@ implementation
 uses
   System.IOUtils,
   CommCtrl,
+  OA5.uMySQLConnectionClass,
   OA5.uAboutForm,
   OA5.uConfigurationForm,
   OA5.uReportForm,
@@ -167,7 +168,8 @@ uses
   OA5.uViewMessageForm,
   OA5.uViewMessagesForm,
   OA5.uAddEditPhoneForm,
-  CastersPackage.uRoutines;
+  CastersPackage.uRoutines,
+  CastersPackage.uMysql;
 
 type
   THackControl=class(TControl);
@@ -402,6 +404,8 @@ begin
   bFirstRun:=True;
   CurrentUser:=TAccount.Create; // создание и инициализщация объекта текущего пользователя
   Configuration:=TConfiguration.Create; // создание и инициализщация объекта конфигурации
+  Configuration.RNE4Server.LogProvider:=MainForm.Log;
+  Configuration.MessagesServer.LogProvider:=MainForm.Log;
   MeasuresMultiBuffer:=TMultiBufferClass.Create; // создание и инициализщация объекта мультибуфера
   BindMainProgressBarToStatusBar; // привязка прогрессбара к позиции на строке статуса
   BindStateImageToStatusBar; // привязка иконки готовности к позиции на строке статуса
@@ -430,13 +434,10 @@ begin
       bFirstRun:=False;
       if Configuration.ShowSplashAtStart then
         Do_About(False);
-    end;
-  Refresh_BusyState;
-  if bFirstRun then
-    begin
       if Configuration.AutoLogon then
         Do_Logon;
     end;
+  Refresh_BusyState;
 
   ProcedureFooter;
 end;
@@ -450,14 +451,14 @@ begin
   b:=CurrentUser.Logged;
 
   Action_Logon.Enabled:=not b;
-//  Action_Logon.Visible:=not b;
+  // Action_Logon.Visible:=not b;
   Log.SendDebug('Действие "'+Action_Logon.Caption+'" '+Routines.GetConditionalString(Action_Logon.Enabled, 'включено', 'отключено')+'.');
   Action_Logout.Enabled:=b;
-//  Action_Logout.Visible:=b;
+  // Action_Logout.Visible:=b;
   Log.SendDebug('Действие "'+Action_Logout.Caption+'" '+Routines.GetConditionalString(Action_Logout.Enabled, 'включено', 'отключено')+'.');
-  b:=b and CurrentUser.Privilegies.Account;
+  b:=b and CurrentUser.Privilegies.Accounting;
   Action_Accounts.Enabled:=b;
-//  Action_Accounts.Visible:=b;
+  // Action_Accounts.Visible:=b;
 
   Application.ProcessMessages;
 
@@ -507,6 +508,10 @@ begin
 
   // запись конфигурации
   Do_SaveConfiguration;
+
+  Configuration.RNE4Server.Connected:=False;
+  Configuration.MessagesServer.Connected:=False;
+  Do_UpdateActions;
 
   ProcedureFooter;
 end;
@@ -806,32 +811,59 @@ begin
 end;
 
 procedure TMainForm.Do_Logon;
+//resourcestring
+//  TEXT_AOUTOLOGON_ERROR='Выполнить автоматический ыход не удалось - проверьте правильность сохраненных логина и пароля пользователя!';
 var
   LoginForm: TLoginForm;
   iBusy: integer;
   bPassLoginForm: boolean;
 
   procedure _Login;
-  // resourcestring
-  // TEXT_AOUTOLOGON_ERROR='Выполнить автоматический ыход не удалось - проверьте правильность сохраненных логина и пароля пользователя!';
+  var
+    aResultSet: PMYSQL_RES;
+    iRowCount: integer;
+    slRow: TStringList;
   begin
-    begin
-      Screen.Cursor:=crHourGlass;
-      try
-        { TODO : дописать! }
-        Configuration.RNE4Server.Connected:=True;
-        Configuration.MessagesServer.Connected:=True;
-
-        дописать инициализацию данных пользователя
-
-
-
-        Do_UpdateActions;
-        // raise Exception.Create(TEXT_AOUTOLOGON_ERROR);
-      finally
-        Screen.Cursor:=crDefault;
-      end
-    end;
+    Screen.Cursor:=crHourGlass;
+    try
+      Configuration.MessagesServer.Connected:=True;
+      Configuration.RNE4Server.Connected:=True;
+      iRowCount:=Configuration.RNE4Server.Query('SELECT usr_id, usr_fullname, usr_position, usr_phone, usr_editing, usr_clearing, usr_accounting, usr_reporting FROM '+Configuration.RNE4Server.Database+'._usr_rne5 WHERE usr_login="'+
+        Configuration.Login+'" AND usr_password_md5=md5("'+Configuration.Password+'");', aResultSet);
+      if iRowCount>1 then
+        raise Exception.Create('В базе данных имеется более одного аккаунта с указанными логином и паролем! Обратитесь к администратору!')
+      else
+        if iRowCount<1 then
+          raise Exception.Create('В базе данных отсутствует аккаунт с указанными логином и паролем! Проверьте правильность ввода данных!')
+        else
+          begin
+            slRow:=Configuration.RNE4Server.FetchRow(aResultSet);
+            with CurrentUser do
+              begin
+                ID:=StrToIntDef(slRow[0], -1);
+                Login:=Configuration.Login;
+                Password:=Configuration.Password;
+                Fullname:=slRow[1];
+                Position:=slRow[2];
+                Phone:=slRow[3];
+                with Privilegies do
+                  begin
+                    Editing:=slRow[4]='1';
+                    Clearing:=slRow[5]='1';
+                    Accounting:=slRow[6]='1';
+                    Reporting:=slRow[7]='1';
+                  end;
+                if ID=-1 then
+                  raise Exception.Create('Неправильный идентификатор пользователя ('+IntToStr(ID)+')! Обратитесь к администратору!')
+                else
+                  Logged:=True;
+              end;
+          end;
+      Do_UpdateActions;
+    finally
+      FreeAndNil(slRow);
+      Screen.Cursor:=crDefault;
+    end
   end;
 
 begin
@@ -843,11 +875,13 @@ begin
     try
       _Login;
     except
-      on E: Exception do
+      on E: EMySQLException do
         begin
           MainForm.ShowErrorBox(MainForm.Handle, E.Message);
           bPassLoginForm:=False;
         end;
+//      else
+//        raise Exception.Create(TEXT_AOUTOLOGON_ERROR);
     end;
 
   if not bPassLoginForm then
@@ -869,7 +903,12 @@ begin
                 Configuration.Login:=edbxLogin.Text;
               if Configuration.StorePassword then
                 Configuration.Password:=mePassword.Text;
-              _Login;
+              try
+                _Login;
+              except
+                on E: Exception do
+                  MainForm.ShowErrorBox(MainForm.Handle, E.Message);
+              end;
             end;
           Free;
         end;
