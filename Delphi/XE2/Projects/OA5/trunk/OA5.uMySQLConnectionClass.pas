@@ -40,6 +40,13 @@ type
     procedure SendSQL(const Value: string);
     procedure RaiseEMySQLException(const Value: string);
   protected
+    procedure OpenConnection;
+    procedure CloseConnection;
+    property Connection: PMYSQL read FConnection write SetConnection stored False;
+  public
+    constructor Create; virtual;
+    destructor Destroy; override;
+
     function GetLastErrorInfo: string;
     class function PrepareStringValueForQuery(const Source: string; AddCommas, ReturnNull: boolean): string; static;
     function Query(const SQL: string): integer; overload;
@@ -47,15 +54,9 @@ type
     function UpdateQuery(const SQL: string): integer;
     function FetchRow(const ResultSet: PMYSQL_RES): TStringList;
     function RowCount(const ResultSet: PMYSQL_RES): cardinal;
-    procedure OpenConnection;
-    procedure CloseConnection;
-    property Connection: PMYSQL read FConnection write SetConnection stored False;
-  public
-    constructor Create; virtual;
-    destructor Destroy; override;
+
     property Connected: boolean read FConnected write SetConnected stored False;
     property LogProvider: TLogProvider read FLogProvider write SetLogProvider stored False;
-
     property Host: string read FHost write SetHost stored False;
     property Port: integer read FPort write SetPort default MYSQL_PORT;
     property Timeout: integer read FTimeout write SetTimeout default 30;
@@ -104,8 +105,8 @@ end;
 procedure TMySQLConnection.RaiseEMySQLException(const Value: string);
 begin
   if Assigned(FLogProvider) then
-    FLogProvider.SendError(Value);
-  raise EMySQLException.Create(Value);
+    FLogProvider.SendError(Value+GetLastErrorInfo);
+  raise EMySQLException.Create(Value+GetLastErrorInfo);
 end;
 
 procedure TMySQLConnection.SendDebug(const Value: string);

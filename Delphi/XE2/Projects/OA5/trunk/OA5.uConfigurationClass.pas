@@ -66,8 +66,8 @@ const
   DefaultValue_MessagesServer_Port=MYSQL_PORT;
   DefaultValue_MessagesServer_Timeout=30;
   DefaultValue_MessagesServer_Compression=True;
-  DefaultValue_MessagesServer_Login='';
-  DefaultValue_MessagesServer_Password='';
+  DefaultValue_MessagesServer_Login='root';
+  DefaultValue_MessagesServer_Password='sqladmin';
   DefaultValue_MessagesServer_Database='rne4messages';
 
   // вкладка "настройки формирования отчётов"

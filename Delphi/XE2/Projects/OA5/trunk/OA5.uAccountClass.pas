@@ -10,24 +10,24 @@ type
 
   TPrivilegies=class
   strict private
-    FEdit: boolean;
-    FClear: boolean;
-    FAccount: boolean;
-    FReport: boolean;
-    function GetAccount: boolean;
-    function GetClear: boolean;
-    function GetEdit: boolean;
-    function GetReport: boolean;
-    procedure SetAccount(const Value: boolean);
-    procedure SetClear(const Value: boolean);
-    procedure SetEdit(const Value: boolean);
-    procedure SetReport(const Value: boolean);
+    FEditing: boolean;
+    FClearing: boolean;
+    FAccounting: boolean;
+    FReporting: boolean;
+    function GetAccounting: boolean;
+    function GetClearing: boolean;
+    function GetEditing: boolean;
+    function GetReporting: boolean;
+    procedure SetAccounting(const Value: boolean);
+    procedure SetClearing(const Value: boolean);
+    procedure SetEditing(const Value: boolean);
+    procedure SetReporting(const Value: boolean);
   public
     constructor Create; virtual;
-    property Edit: boolean read GetEdit write SetEdit default False;
-    property Clear: boolean read GetClear write SetClear default False;
-    property Account: boolean read GetAccount write SetAccount default False;
-    property Report: boolean read GetReport write SetReport default False;
+    property Editing: boolean read GetEditing write SetEditing default False;
+    property Clearing: boolean read GetClearing write SetClearing default False;
+    property Accounting: boolean read GetAccounting write SetAccounting default False;
+    property Reporting: boolean read GetReporting write SetReporting default False;
   end;
 
   TAccount=class
@@ -74,54 +74,54 @@ implementation
 constructor TPrivilegies.Create;
 begin
   inherited;
-  FAccount:=False;
-  FClear:=False;
-  FEdit:=False;
-  FReport:=False;
+  FAccounting:=False;
+  FClearing:=False;
+  FEditing:=False;
+  FReporting:=False;
 end;
 
-function TPrivilegies.GetAccount: boolean;
+function TPrivilegies.GetAccounting: boolean;
 begin
-  Result:=FAccount;
+  Result:=FAccounting;
 end;
 
-function TPrivilegies.GetClear: boolean;
+function TPrivilegies.GetClearing: boolean;
 begin
-  Result:=FClear;
+  Result:=FClearing;
 end;
 
-function TPrivilegies.GetEdit: boolean;
+function TPrivilegies.GetEditing: boolean;
 begin
-  Result:=FEdit;
+  Result:=FEditing;
 end;
 
-function TPrivilegies.GetReport: boolean;
+function TPrivilegies.GetReporting: boolean;
 begin
-  Result:=FReport;
+  Result:=FReporting;
 end;
 
-procedure TPrivilegies.SetAccount(const Value: boolean);
+procedure TPrivilegies.SetAccounting(const Value: boolean);
 begin
-  if FAccount<>Value then
-    FAccount:=Value;
+  if FAccounting<>Value then
+    FAccounting:=Value;
 end;
 
-procedure TPrivilegies.SetClear(const Value: boolean);
+procedure TPrivilegies.SetClearing(const Value: boolean);
 begin
-  if FClear<>Value then
-    FClear:=Value;
+  if FClearing<>Value then
+    FClearing:=Value;
 end;
 
-procedure TPrivilegies.SetEdit(const Value: boolean);
+procedure TPrivilegies.SetEditing(const Value: boolean);
 begin
-  if FEdit<>Value then
-    FEdit:=Value;
+  if FEditing<>Value then
+    FEditing:=Value;
 end;
 
-procedure TPrivilegies.SetReport(const Value: boolean);
+procedure TPrivilegies.SetReporting(const Value: boolean);
 begin
-  if FReport<>Value then
-    FReport:=Value;
+  if FReporting<>Value then
+    FReporting:=Value;
 end;
 
 constructor TAccount.Create;
@@ -138,10 +138,10 @@ begin
     FPrivilegies:=TPrivilegies.Create;
   with FPrivilegies do
     begin
-      Edit:=False;
-      Clear:=False;
-      Account:=False;
-      Report:=False;
+      Editing:=False;
+      Clearing:=False;
+      Accounting:=False;
+      Reporting:=False;
     end;
 end;
 
@@ -257,7 +257,7 @@ end;
 
 procedure TAccount.SetPrivilegies(const Value: TPrivilegies);
 begin
-  if ((FPrivilegies.Edit<>Value.Edit)or(FPrivilegies.Clear<>Value.Clear)or(FPrivilegies.Account<>Value.Account)or(FPrivilegies.Report<>Value.Report)) then
+  if ((FPrivilegies.Editing<>Value.Editing)or(FPrivilegies.Clearing<>Value.Clearing)or(FPrivilegies.Accounting<>Value.Accounting)or(FPrivilegies.Reporting<>Value.Reporting)) then
     FPrivilegies:=Value;
 end;
 
