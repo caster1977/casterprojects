@@ -47,6 +47,7 @@ contains
   CastersPackage.uMysql in 'CastersPackage.uMysql.pas',
   CastersPackage.uSingleton in 'CastersPackage.uSingleton.pas',
   CastersPackage.uTypes in 'CastersPackage.uTypes.pas',
-  CastersPackage.uCustomConfigurationClass in 'CastersPackage.uCustomConfigurationClass.pas';
+  CastersPackage.uCustomConfigurationClass in 'CastersPackage.uCustomConfigurationClass.pas',
+  CastersPackage.uStringGridEx in 'CastersPackage.uStringGridEx.pas';
 
 end.
