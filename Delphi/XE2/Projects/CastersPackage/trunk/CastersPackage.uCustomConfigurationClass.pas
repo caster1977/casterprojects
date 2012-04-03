@@ -3,6 +3,7 @@ unit CastersPackage.uCustomConfigurationClass;
 interface
 
 uses
+  System.Classes,
   System.IniFiles,
   System.SysUtils;
 
@@ -17,7 +18,7 @@ type
 
   EConfiguration=class(Exception);
 
-  TCustomConfiguration=class(TInterfacedObject, IConfiguration)
+  TCustomConfiguration=class(TInterfacedPersistent, IConfiguration)
   strict protected
     FIniFileName: string;
     procedure Loading(const IniFile: TIniFile); virtual; abstract;
@@ -78,5 +79,9 @@ begin
     IniFile.Free;
   end
 end;
+
+initialization
+
+RegisterClass(TCustomConfiguration);
 
 end.
