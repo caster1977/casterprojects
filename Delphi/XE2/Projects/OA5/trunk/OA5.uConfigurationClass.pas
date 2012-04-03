@@ -363,10 +363,11 @@ type
 implementation
 
 uses
-  Controls,
-  SysUtils,
-  Windows,
-  Forms;
+  Vcl.Controls,
+  System.SysUtils,
+  System.Classes,
+  Winapi.Windows,
+  Vcl.Forms;
 
 resourcestring
   TEXT_INIFILESECTION_INTERFACE='Интерфейс';
@@ -514,7 +515,8 @@ begin
       StorePassword:=ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStorePassword', DefaultValue_StorePassword);
       if StorePassword then
         Password:=ReadString(TEXT_INIFILESECTION_IDENTIFICATION, 'sPassword', '')
-      else Password:='';
+      else
+        Password:='';
       AutoLogon:=ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bAutoLogon', DefaultValue_AutoLogon);
 
       // вкладка "подключения к серверу базы данных услуги"
@@ -1399,5 +1401,9 @@ begin
   else
     FPassword:='';
 end;
+
+initialization
+
+System.Classes.RegisterClass(TConfiguration);
 
 end.
