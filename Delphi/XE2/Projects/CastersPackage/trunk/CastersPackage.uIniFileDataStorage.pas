@@ -1,4 +1,4 @@
-unit CastersPackage.uCustomConfigurationClass;
+unit CastersPackage.uIniFileDataStorage;
 
 interface
 
@@ -8,25 +8,29 @@ uses
   System.SysUtils;
 
 type
-  IConfiguration=interface(IInterface)
-    ['{CF958C07-639A-4B2C-9032-01596F27A6F7}']
+  EIniFileDataStorage=class(Exception);
+
+  IIniFileDataStorage=interface(IInterface)
+    ['{C9872120-1001-47E3-B832-AC6BE58B52E0}']
+    procedure AfterLoad;
+    procedure BeforeSave;
     procedure Loading(const IniFile: TIniFile);
     procedure Saving(const IniFile: TIniFile);
     procedure Load;
     procedure Save;
   end;
 
-  EConfiguration=class(Exception);
-
-  TCustomConfiguration=class(TInterfacedPersistent, IConfiguration)
+  TIniFileDataStorage=class(TInterfacedPersistent, IIniFileDataStorage)
   strict protected
     FIniFileName: string;
+    procedure AfterLoad; virtual; abstract;
+    procedure BeforeSave; virtual; abstract;
     procedure Loading(const IniFile: TIniFile); virtual; abstract;
     procedure Saving(const IniFile: TIniFile); virtual; abstract;
   public
+    procedure Load; virtual; final;
+    procedure Save; virtual; final;
     constructor Create(const IniFileName: string='');
-    procedure Load;
-    procedure Save;
   end;
 
 implementation
@@ -36,37 +40,42 @@ uses
 
 resourcestring
   TEXT_WRONG_INIFILE_NAME='Имя файла конфигурации не должно быть пустым!';
-  TEXT_SAVE_INIFILE_ERROR='Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
+  TEXT_SAVE_INIFILE_ERROR='Произошла ошибка при попытке записи данных в файл конфигурации!';
 
-constructor TCustomConfiguration.Create(const IniFileName: string);
+constructor TIniFileDataStorage.Create(const IniFileName: string);
+var
+  s: string;
 begin
   inherited Create;
-  if Trim(IniFileName)='' then
+  s:=Trim(IniFileName);
+  if s=EmptyStr then
     FIniFileName:=ChangeFileExt(ExpandFileName(Application.ExeName), '.ini')
   else
-    FIniFileName:=Trim(IniFileName);
+    FIniFileName:=s;
 end;
 
-procedure TCustomConfiguration.Load;
+procedure TIniFileDataStorage.Load;
 var
   IniFile: TIniFile;
 begin
-  if FIniFileName='' then
-    raise EConfiguration.Create(TEXT_WRONG_INIFILE_NAME);
+  if FIniFileName=EmptyStr then
+    raise EIniFileDataStorage.Create(TEXT_WRONG_INIFILE_NAME);
   IniFile:=TIniFile.Create(FIniFileName);
   try
     Loading(IniFile);
   finally
     IniFile.Free;
-  end
+  end;
+  AfterLoad;
 end;
 
-procedure TCustomConfiguration.Save;
+procedure TIniFileDataStorage.Save;
 var
   IniFile: TIniFile;
 begin
-  if FIniFileName='' then
-    raise EConfiguration.Create(TEXT_WRONG_INIFILE_NAME);
+  BeforeSave;
+  if FIniFileName=EmptyStr then
+    raise EIniFileDataStorage.Create(TEXT_WRONG_INIFILE_NAME);
   IniFile:=TIniFile.Create(FIniFileName);
   try
     try
@@ -77,11 +86,11 @@ begin
     end;
   finally
     IniFile.Free;
-  end
+  end;
 end;
 
 initialization
 
-RegisterClass(TCustomConfiguration);
+RegisterClass(TIniFileDataStorage);
 
 end.
