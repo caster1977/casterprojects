@@ -7,7 +7,7 @@ uses
   System.IniFiles,
   CastersPackage.uLogKeeperData,
   CastersPackage.uMysql,
-  CastersPackage.uCustomConfigurationClass,
+  CastersPackage.uIniFileDataStorage,
   OA5.uMySQLConnectionClass;
 
 type
@@ -103,7 +103,7 @@ const
   DefaultValue_PutTownAtTheEnd=False;
 
 type
-  TConfiguration=class(TCustomConfiguration)
+  TConfiguration=class(TIniFileDataStorage)
   strict private
     FFileName: string;
     FConfigurationFormPage: integer;
@@ -263,6 +263,8 @@ type
   protected
     procedure Loading(const IniFile: TIniFile); override;
     procedure Saving(const IniFile: TIniFile); override;
+    procedure AfterLoad; override;
+    procedure BeforeSave; override;
   public
     // sDefaultAction: string;
     // bImmediatelyQuit: boolean;
@@ -1141,6 +1143,18 @@ procedure TConfiguration.SetFullScreenAtLaunch(const Value: boolean);
 begin
   if FFullScreenAtLaunch<>Value then
     FFullScreenAtLaunch:=Value;
+end;
+
+procedure TConfiguration.AfterLoad;
+begin
+  inherited;
+
+end;
+
+procedure TConfiguration.BeforeSave;
+begin
+  inherited;
+
 end;
 
 constructor TConfiguration.Create(const IniFileName: string='');
