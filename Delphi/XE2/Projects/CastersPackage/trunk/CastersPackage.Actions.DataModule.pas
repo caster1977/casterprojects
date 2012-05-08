@@ -6,7 +6,9 @@ uses
   System.SysUtils,
   System.Classes,
   Vcl.ImgList,
-  Vcl.Controls, CastersPackage.Actions.Classes, Vcl.ActnList;
+  Vcl.Controls,
+  Vcl.ActnList,
+  CastersPackage.Actions.Classes;
 
 type
   TDataModule1 = class(TDataModule)
@@ -17,14 +19,7 @@ type
     Action_Defaults: TAction_Defaults;
     Action_PreviousPage: TAction_PreviousPage;
     Action_NextPage: TAction_NextPage;
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
-
-var
-  DataModule1: TDataModule1;
 
 implementation
 
