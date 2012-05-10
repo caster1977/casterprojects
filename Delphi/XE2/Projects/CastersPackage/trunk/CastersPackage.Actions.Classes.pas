@@ -32,7 +32,7 @@ uses
 
 initialization
 
-RegisterActions('CastersPackage', [TAction_Close, TAction_Help, TAction_Apply, TAction_Defaults, TAction_PreviousPage, TAction_NextPage], TDataModule1);
+RegisterActions('CastersPackage', [TAction_Close, TAction_Help, TAction_Apply, TAction_Defaults, TAction_PreviousPage, TAction_NextPage], TActionsDataModule);
 
 finalization
 
