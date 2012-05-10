@@ -11,7 +11,7 @@ uses
   CastersPackage.Actions.Classes;
 
 type
-  TDataModule1 = class(TDataModule)
+  TActionsDataModule = class(TDataModule)
     ActionList1: TActionList;
     Action_Close: TAction_Close;
     Action_Help: TAction_Help;
