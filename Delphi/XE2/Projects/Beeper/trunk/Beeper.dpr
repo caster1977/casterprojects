@@ -10,7 +10,8 @@ uses
   Beeper.uConfigurationForm in 'Beeper.uConfigurationForm.pas' {ConfigurationForm},
   Beeper.uTooltipForm in 'Beeper.uTooltipForm.pas' {ToolTipForm},
   Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles,
+  Beeper.uSignalClass in 'Beeper.uSignalClass.pas';
 
 {$R *.res}
 
