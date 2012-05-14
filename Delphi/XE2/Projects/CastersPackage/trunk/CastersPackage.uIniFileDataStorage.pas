@@ -30,8 +30,10 @@ type
   public
     procedure Load; virtual; final;
     procedure Save; virtual; final;
-    constructor Create(const IniFileName: string='');
+    constructor Create(const IniFileName: string=''); virtual;
   end;
+
+  TIniFileDataStorageClass = class of TIniFileDataStorage;
 
 implementation
 
