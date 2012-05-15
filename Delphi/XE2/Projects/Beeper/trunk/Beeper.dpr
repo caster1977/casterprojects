@@ -11,7 +11,8 @@ uses
   Beeper.uTooltipForm in 'Beeper.uTooltipForm.pas' {ToolTipForm},
   Vcl.Themes,
   Vcl.Styles,
-  Beeper.uSignalClass in 'Beeper.uSignalClass.pas';
+  Beeper.uSignalClass in 'Beeper.uSignalClass.pas',
+  Beeper.uDataModule in 'Beeper.uDataModule.pas' {DataModule1: TDataModule};
 
 {$R *.res}
 
@@ -21,5 +22,6 @@ begin
   Application.HelpFile:='';
   Application.ShowMainForm:=False;
   Application.CreateForm(TMainForm, MainForm);
+  Application.CreateForm(TDataModule1, DataModule1);
   Application.Run;
 end.
