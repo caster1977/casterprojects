@@ -170,13 +170,13 @@ object MainForm: TMainForm
     Visible = True
     OnClick = TrayIcon1Click
     OnDblClick = TrayIcon1DblClick
-    Left = 200
+    Left = 312
     Top = 112
   end
   object MainMenu1: TMainMenu
     Images = ImageList2
-    Left = 72
-    Top = 112
+    Left = 312
+    Top = 224
     object N1: TMenuItem
       Caption = '&'#1060#1072#1081#1083
       object N18: TMenuItem
@@ -216,8 +216,8 @@ object MainForm: TMainForm
   end
   object PopupMenu1: TPopupMenu
     Images = ImageList2
-    Left = 72
-    Top = 56
+    Left = 216
+    Top = 120
     object N16: TMenuItem
       Action = Action_Restore
       Default = True
@@ -301,8 +301,8 @@ object MainForm: TMainForm
         ActionBar = ActionToolBar1
       end>
     Images = ImageList2
-    Left = 136
-    Top = 56
+    Left = 312
+    Top = 64
     StyleName = 'XP Style'
     object Action_Erase: TAction
       Category = 'Action'
@@ -378,10 +378,10 @@ object MainForm: TMainForm
   end
   object ImageList2: TImageList
     AllocBy = 9
-    Left = 136
-    Top = 112
+    Left = 312
+    Top = 168
     Bitmap = {
-      494C010109000E00480010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000E005C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -788,7 +788,7 @@ object MainForm: TMainForm
     OnHint = ApplicationEvents1Hint
     OnMessage = ApplicationEvents1Message
     OnMinimize = ApplicationEvents1Minimize
-    Left = 208
-    Top = 56
+    Left = 216
+    Top = 64
   end
 end
