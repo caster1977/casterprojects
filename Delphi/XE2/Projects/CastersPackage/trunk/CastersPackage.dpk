@@ -50,6 +50,6 @@ contains
   CastersPackage.uStringGridEx in 'CastersPackage.uStringGridEx.pas',
   CastersPackage.uIniFileDataStorage in 'CastersPackage.uIniFileDataStorage.pas',
   CastersPackage.Actions.Classes in 'CastersPackage.Actions.Classes.pas',
-  CastersPackage.Actions.DataModule in 'CastersPackage.Actions.DataModule.pas' {ActionsDataModule: TDataModule};
+  CastersPackage.Actions.DataModule in 'CastersPackage.Actions.DataModule.pas';
 
 end.
