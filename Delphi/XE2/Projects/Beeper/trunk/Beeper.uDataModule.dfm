@@ -6,17 +6,13 @@ object DataModule1: TDataModule1
     Left = 32
     Top = 24
   end
-  object ActionManager: TActionManager
-    Left = 192
-    Top = 96
-    StyleName = 'Platform Default'
-  end
   object ImageListSmall: TImageList
     Left = 32
     Top = 96
   end
   object TrayIcon: TTrayIcon
     PopupMenu = PopupMenu
+    OnClick = TrayIconClick
     Left = 192
     Top = 24
   end
@@ -34,8 +30,9 @@ object DataModule1: TDataModule1
     Left = 112
     Top = 96
   end
-  object gsFileVersionInfo: TgsFileVersionInfo
-    Left = 280
+  object ActionManager1: TActionManager
+    Left = 192
     Top = 96
+    StyleName = 'Platform Default'
   end
 end

@@ -27,7 +27,8 @@ uses
   CastersPackage.getFVI,
   AppEvnts,
   IniFiles,
-  Beeper.uToolTipForm;
+  Beeper.uToolTipForm,
+  CastersPackage.Actions.Classes, Vcl.StdActns;
 
 type
   TMainForm=class(TForm)
