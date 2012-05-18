@@ -7,7 +7,23 @@ uses
   System.Classes;
 
 type
-  TAction_Quit = class(TAction)
+  TAction_Quit = class(TCustomAction)
+  public
+    function HandlesTarget(Target: TObject): Boolean; override;
+    procedure ExecuteTarget(Target: TObject); override;
+  published
+    property Caption;
+    property Enabled;
+    property HelpContext;
+    property HelpKeyword;
+    property HelpType;
+    property Hint;
+    property ImageIndex;
+    property ShortCut;
+    property SecondaryShortCuts;
+    property Visible;
+    property OnHint;
+    property OnUpdate;
   end;
 
   TAction_Configuration = class(TAction)
@@ -49,19 +65,39 @@ type
   TAction_Report = class(TAction)
   end;
 
+procedure Register;
+
 implementation
 
 uses
+  VCL.Forms,
+  Winapi.Windows,
   CastersPackage.Actions.DataModule;
 
-initialization
+procedure register;
+begin
+  RegisterActions('Файл', [TAction_Quit, TAction_Configuration, TAction_Logon, TAction_Logoff], TActionsDataModule);
+  RegisterActions('Справка', [TAction_Help, TAction_About], TActionsDataModule);
+  RegisterActions('Окно', [TAction_Restore], TActionsDataModule);
+  RegisterActions('Действие', [TAction_Close, TAction_Apply, TAction_Defaults, TAction_PreviousPage, TAction_NextPage, TAction_Accounts,
+    TAction_Report], TActionsDataModule);
+end;
 
-RegisterActions('CastersPackage', [TAction_Quit, TAction_Configuration, TAction_Close, TAction_Help, TAction_About, TAction_Apply, TAction_Defaults,
-  TAction_PreviousPage, TAction_NextPage, TAction_Restore, TAction_Logon, TAction_Logoff, TAction_Accounts, TAction_Report], TActionsDataModule);
+{ TAction_Quit }
 
-finalization
+procedure TAction_Quit.ExecuteTarget(Target: TObject);
+begin
+  inherited;
+  if Assigned(Application.MainForm) then
+    begin
+      Application.HelpCommand(HELP_QUIT, 0);
+      Application.MainForm.Close;
+    end;
+end;
 
-UnRegisterActions([TAction_Quit, TAction_Configuration, TAction_Close, TAction_Help, TAction_About, TAction_Apply, TAction_Defaults,
-  TAction_PreviousPage, TAction_NextPage, TAction_Restore, TAction_Logon, TAction_Logoff, TAction_Accounts, TAction_Report]);
+function TAction_Quit.HandlesTarget(Target: TObject): Boolean;
+begin
+  Result := True;
+end;
 
 end.
