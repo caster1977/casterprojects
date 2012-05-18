@@ -116,7 +116,6 @@
 			<DCCReference Include="Beeper.uSignalClass.pas"/>
 			<DCCReference Include="Beeper.uDataModule.pas">
 				<Form>DataModule1</Form>
-				<FormType>dfm</FormType>
 				<DesignClass>TDataModule</DesignClass>
 			</DCCReference>
 			<BuildConfiguration Include="Debug">
@@ -149,7 +148,7 @@
 						<VersionInfo Name="MajorVer">1</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">79</VersionInfo>
+						<VersionInfo Name="Build">85</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -161,7 +160,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">1.1.0.79</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">1.1.0.85</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright">(C)opyright 2008-2010 by Vlad DraCooLa</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks"/>
