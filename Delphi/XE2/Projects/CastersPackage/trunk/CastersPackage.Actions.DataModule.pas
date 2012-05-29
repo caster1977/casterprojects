@@ -8,7 +8,7 @@ uses
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.ActnList,
-  CastersPackage.Actions.Classes;
+  CastersPackage.Actions.Classes, Vcl.StdActns;
 
 type
   TActionsDataModule = class(TDataModule)
