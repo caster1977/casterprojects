@@ -27,6 +27,9 @@ type
     Action_Logoff: TAction_Logoff;
     Action_Accounts: TAction_Accounts;
     Action_Report: TAction_Report;
+    ImageListLarge: TImageList;
+    ImageListSmall1: TImageList;
+    ImageListSmall2: TImageList;
   end;
 
 implementation
