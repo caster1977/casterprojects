@@ -37,7 +37,7 @@ type
   TAction_Help = class(TAction)
   end;
 
-  TAction_About = class(TCustomAction)
+  TAction_About = class(TAction) {(TCustomAction)
   strict private
     FFormClass: TForm; // Class;
     function GetFormClass: TFormClass;
@@ -63,7 +63,7 @@ type
     property Visible;
     property OnHint;
     property OnUpdate;
-    property FormClass: TForm read FFormClass write FFormClass; //Class read GetFormClass write SetFormClass;
+    property FormClass: TForm read FFormClass write FFormClass; //Class read GetFormClass write SetFormClass;}
   end;
 
   TAction_Apply = class(TAction)
@@ -127,7 +127,7 @@ begin
   Result := True;
 end;
 
-{ TAction_About }
+{ TAction_About
 
 constructor TAction_About.Create(AOwner: TComponent);
 begin
@@ -185,6 +185,6 @@ end;
 procedure TAction_About.UpdateTarget(Target: TObject);
 begin
   Enabled := True; // GetForm(Target).ActiveMDIChild <> nil;
-end;
+end;}
 
 end.

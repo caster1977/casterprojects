@@ -297,7 +297,7 @@ uses
   OA5.uSetPasswordForm,
   OA5.uPermissionsForm,
   OA5.uReportForm,
-  OA5.uConfigurationClass,
+  OA5.uTConfiguration,
   OA5.uCreateMessageForm,
   OA5.uViewMessageForm,
   OA5.uViewMessagesForm,

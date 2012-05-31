@@ -48,8 +48,9 @@ contains
   CastersPackage.uSingleton in 'CastersPackage.uSingleton.pas',
   CastersPackage.uTypes in 'CastersPackage.uTypes.pas',
   CastersPackage.uStringGridEx in 'CastersPackage.uStringGridEx.pas',
-  CastersPackage.uIniFileDataStorage in 'CastersPackage.uIniFileDataStorage.pas',
+  CastersPackage.uTIniFileDataStorage in 'CastersPackage.uTIniFileDataStorage.pas',
   CastersPackage.Actions.Classes in 'CastersPackage.Actions.Classes.pas',
-  CastersPackage.Actions.DataModule in 'CastersPackage.Actions.DataModule.pas';
+  CastersPackage.Actions.DataModule in 'CastersPackage.Actions.DataModule.pas',
+  CastersPackage.uIIniFileDataStorage in 'CastersPackage.uIIniFileDataStorage.pas';
 
 end.

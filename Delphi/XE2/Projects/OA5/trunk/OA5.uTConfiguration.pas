@@ -1,4 +1,4 @@
-﻿unit OA5.uConfigurationClass;
+﻿unit OA5.uTConfiguration;
 
 interface
 
@@ -7,8 +7,8 @@ uses
   System.IniFiles,
   CastersPackage.uLogKeeperData,
   CastersPackage.uMysql,
-  CastersPackage.uIniFileDataStorage,
-  OA5.uMySQLConnectionClass;
+  CastersPackage.uTIniFileDataStorage,
+  OA5.uTMySQLConnection;
 
 type
   TReportFolders=(rfTempFolder, rfApplicationFolder, rfCustomFolder);
@@ -271,7 +271,7 @@ type
     // iOrgSortColumn: integer;
     // iMsrSortColumn: integer;
 
-    constructor Create(const IniFileName: string='');
+    constructor Create(const IniFileName: string=''); override;
     destructor Destroy; override;
 
     property FileName: string read FFileName write SetFileName stored False;

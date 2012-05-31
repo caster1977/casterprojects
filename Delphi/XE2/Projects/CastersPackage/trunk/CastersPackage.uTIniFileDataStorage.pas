@@ -1,24 +1,15 @@
-unit CastersPackage.uIniFileDataStorage;
+unit CastersPackage.uTIniFileDataStorage;
 
 interface
 
 uses
   System.Classes,
   System.IniFiles,
-  System.SysUtils;
+  System.SysUtils,
+  CastersPackage.uIIniFileDataStorage;
 
 type
   EIniFileDataStorage=class(Exception);
-
-  IIniFileDataStorage=interface(IInterface)
-    ['{C9872120-1001-47E3-B832-AC6BE58B52E0}']
-    procedure AfterLoad;
-    procedure BeforeSave;
-    procedure Loading(const IniFile: TIniFile);
-    procedure Saving(const IniFile: TIniFile);
-    procedure Load;
-    procedure Save;
-  end;
 
   TIniFileDataStorage=class(TInterfacedPersistent, IIniFileDataStorage)
   strict protected
