@@ -7,7 +7,7 @@ uses
   OA5.uConsts in 'OA5.uConsts.pas',
   OA5.uAboutForm in 'OA5.uAboutForm.pas' {AboutForm},
   OA5.uConfigurationForm in 'OA5.uConfigurationForm.pas' {ConfigurationForm},
-  OA5.uConfigurationClass in 'OA5.uConfigurationClass.pas',
+  OA5.uTConfiguration in 'OA5.uTConfiguration.pas',
   OA5.uAccountClass in 'OA5.uAccountClass.pas',
   OA5.uAddMassMsrForm in 'OA5.uAddMassMsrForm.pas' {AddMassMsrForm},
   OA5.uReportForm in 'OA5.uReportForm.pas' {ReportForm},
@@ -15,15 +15,18 @@ uses
   OA5.uPermissionsForm in 'OA5.uPermissionsForm.pas' {PermissionsForm},
   OA5.uMultiBufferForm in 'OA5.uMultiBufferForm.pas' {MultiBufferForm},
   OA5.uTypes in 'OA5.uTypes.pas',
-  OA5.uMultiBufferClass in 'OA5.uMultiBufferClass.pas',
-  OA5.uMeasureDataClass in 'OA5.uMeasureDataClass.pas',
+  OA5.uTMultiBuffer in 'OA5.uTMultiBuffer.pas',
+  OA5.uTMeasure in 'OA5.uTMeasure.pas',
   Vcl.Themes,
   Vcl.Styles,
   OA5.uCreateMessageForm in 'OA5.uCreateMessageForm.pas' {CreateMessageForm},
   OA5.uViewMessageForm in 'OA5.uViewMessageForm.pas' {ViewMessageForm},
   OA5.uViewMessagesForm in 'OA5.uViewMessagesForm.pas' {ViewMessagesForm},
   OA5.uAddEditPhoneForm in 'OA5.uAddEditPhoneForm.pas' {AddEditPhoneForm},
-  OA5.uMySQLConnectionClass in 'OA5.uMySQLConnectionClass.pas';
+  OA5.uTMySQLConnection in 'OA5.uTMySQLConnection.pas',
+  OA5.uINormalized in 'OA5.uINormalized.pas',
+  OA5.uIMeasure in 'OA5.uIMeasure.pas',
+  OA5.uIMeasureList in 'OA5.uIMeasureList.pas';
 
 {$R *.res}
 
