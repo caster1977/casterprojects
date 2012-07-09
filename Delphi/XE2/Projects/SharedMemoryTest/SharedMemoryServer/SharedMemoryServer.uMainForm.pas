@@ -318,8 +318,8 @@ begin
       LogDebug(TEXT_CONFIGURATION_TRYING_TO_READ);
     end;
   try
+    Screen.Cursor:=crHourGlass;
     try
-      Screen.Cursor:=crHourGlass;
       Configuration.Load;
       LogInfo(TEXT_CONFIGURATION_SUCCESSFULLY_READED);
     finally
@@ -369,8 +369,8 @@ begin
   bError:=False;
 
   try
+    Screen.Cursor:=crHourGlass;
     try
-      Screen.Cursor:=crHourGlass;
       Configuration.Save;
       LogInfo(TEXT_CONFIGURATION_SUCCESSFULLY_WRITTEN);
     finally

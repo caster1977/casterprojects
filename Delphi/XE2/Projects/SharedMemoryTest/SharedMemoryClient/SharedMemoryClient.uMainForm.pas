@@ -43,7 +43,7 @@ type
     N6: TMenuItem;
     N2: TMenuItem;
     N3: TMenuItem;
-    Action_SekectFile: TAction;
+    Action_SelectFile: TAction;
     Action_Send: TAction;
     N7: TMenuItem;
     N8: TMenuItem;
@@ -74,7 +74,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure miStatusBarClick(Sender: TObject);
     procedure chkbxScrollLogToBottomClick(Sender: TObject);
-    procedure Action_SekectFileExecute(Sender: TObject);
+    procedure Action_SelectFileExecute(Sender: TObject);
     procedure lvLogResize(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   strict private
@@ -278,8 +278,8 @@ begin
       LogDebug(TEXT_CONFIGURATION_TRYING_TO_READ);
     end;
   try
+    Screen.Cursor:=crHourGlass;
     try
-      Screen.Cursor:=crHourGlass;
       Configuration.Load;
       LogInfo(TEXT_CONFIGURATION_SUCCESSFULLY_READED);
     finally
@@ -326,8 +326,8 @@ begin
   bError:=False;
 
   try
+    Screen.Cursor:=crHourGlass;
     try
-      Screen.Cursor:=crHourGlass;
       Configuration.Save;
       LogInfo(TEXT_CONFIGURATION_SUCCESSFULLY_WRITTEN);
     finally
@@ -468,7 +468,7 @@ end;
 
 procedure TMainForm.Do_UpdateAcrions;
 begin
-  Action_SekectFile.Enabled:=not FSending;
+  Action_SelectFile.Enabled:=not FSending;
   Action_Send.Enabled:=FConnectedToServer and FileExists(FFilename);
   Action_Send.Visible:=btnSend_btnCancel.Action=Action_Send;
   LogDebug(Format(TEXT_ACTION_SWITCHED, [Action_Send.Caption, CommonFunctions.GetConditionalString(Action_Send.Enabled, TEXT_ACTION_ON, TEXT_ACTION_OFF)]));
@@ -918,7 +918,7 @@ begin
     end;
 end;
 
-procedure TMainForm.Action_SekectFileExecute(Sender: TObject);
+procedure TMainForm.Action_SelectFileExecute(Sender: TObject);
 resourcestring
   TEXT_ALL_FILES='Все файлы';
   TEXT_SELECT_FILE_QUERY='Выберите файл для передачи на сервер...';

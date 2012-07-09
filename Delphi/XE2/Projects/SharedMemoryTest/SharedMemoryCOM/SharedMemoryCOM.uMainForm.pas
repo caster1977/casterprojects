@@ -38,12 +38,14 @@ type
     procedure FormShow(Sender: TObject);
     procedure Action_UnregisterExecute(Sender: TObject);
     procedure Action_RegisterExecute(Sender: TObject);
+    procedure Action_RegisterUpdate(Sender: TObject);
+    procedure Action_UnregisterUpdate(Sender: TObject);
   strict private
     FSharedMemoryName: WideString;
     procedure Do_RegisterCOMServer;
     procedure Do_UnregisterCOMServer;
     function Do_IsRegistered: boolean;
-    procedure Do_UpdateActions;
+    {procedure Do_UpdateActions;}
   private
     property SharedMemoryName: WideString read FSharedMemoryName;
   end;
@@ -76,18 +78,26 @@ begin
   Do_RegisterCOMServer;
 end;
 
+procedure TMainForm.Action_RegisterUpdate(Sender: TObject);
+begin
+  Action_Register.Enabled:=not Do_IsRegistered;
+end;
+
 procedure TMainForm.Action_UnregisterExecute(Sender: TObject);
 begin
   Do_UnregisterCOMServer;
+end;
+
+procedure TMainForm.Action_UnregisterUpdate(Sender: TObject);
+begin
+  Action_Unregister.Enabled:=Do_IsRegistered;
 end;
 
 function TMainForm.Do_IsRegistered: boolean;
 var
   i: integer;
 begin
-  Result:=False;
-  if RegQueryValue(HKEY_CLASSES_ROOT, PWideChar(Format('CLSID\%s\TypeLib', [GUIDToString(CLASS_SharedMemoryCOMCoClass)])), PWideChar(GUIDToString(LIBID_SharedMemoryCOMLibrary)), i)=ERROR_SUCCESS then
-    Result:=True;
+  Result:=RegQueryValue(HKEY_CLASSES_ROOT, PWideChar(Format('CLSID\%s\TypeLib', [GUIDToString(CLASS_SharedMemoryCOMCoClass)])), PWideChar(GUIDToString(LIBID_SharedMemoryCOMLibrary)), i)=ERROR_SUCCESS;
 end;
 
 procedure TMainForm.Do_RegisterCOMServer;
@@ -126,14 +136,14 @@ begin
   Show;
 end;
 
-procedure TMainForm.Do_UpdateActions;
+{procedure TMainForm.Do_UpdateActions;
 var
   b: boolean;
 begin
   b:=Do_IsRegistered;
   Action_Register.Enabled:=not b;
   Action_Unregister.Enabled:=b;
-end;
+end;}
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
@@ -145,7 +155,7 @@ procedure TMainForm.FormShow(Sender: TObject);
 const
   BCM_SETSHIELD: integer=$160C; // Для отображения кнопки со щитом
 begin
-  Do_UpdateActions;
+  {Do_UpdateActions;}
   SendMessage(btnRegisterCOMServer.Handle, BCM_SETSHIELD, 0, LPARAM($FFFFFFFF));
   SendMessage(btnUnregisterCOMServer.Handle, BCM_SETSHIELD, 0, LPARAM($FFFFFFFF));
 end;
