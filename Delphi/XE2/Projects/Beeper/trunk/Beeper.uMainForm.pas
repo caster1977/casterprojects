@@ -71,6 +71,7 @@ type
     Action_Configuration: TAction;
     N17: TMenuItem;
     N18: TMenuItem;
+    WindowCloseAction1: TWindowCloseAction;
     procedure ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
     procedure Action_ConfigurationExecute(Sender: TObject);
     procedure Action_StopExecute(Sender: TObject);

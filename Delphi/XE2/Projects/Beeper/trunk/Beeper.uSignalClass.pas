@@ -4,7 +4,8 @@ interface
 
 uses
   System.IniFiles,
-  CastersPackage.uIniFileDataStorage;
+  CastersPackage.uIIniFileDataStorage,
+  CastersPackage.uTIniFileDataStorage;
 
 type
   TPeriodType = (rtSeconds, rtMinutes, rtHours, rtDays, rtWeeks, rtMonths, rtYears);
