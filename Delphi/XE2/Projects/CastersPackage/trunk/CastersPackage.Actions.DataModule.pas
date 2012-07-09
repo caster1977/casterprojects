@@ -13,7 +13,6 @@ uses
 type
   TActionsDataModule = class(TDataModule)
     ActionList: TActionList;
-    Action_Close: TAction_Close;
     Action_Help: TAction_Help;
     Action_Apply: TAction_Apply;
     Action_Defaults: TAction_Defaults;
@@ -21,7 +20,6 @@ type
     Action_NextPage: TAction_NextPage;
     Action_Restore: TAction_Restore;
     Action_About: TAction_About;
-    Action_Quit: TAction_Quit;
     Action_Configuration: TAction_Configuration;
     Action_Logon: TAction_Logon;
     Action_Logoff: TAction_Logoff;
@@ -30,6 +28,8 @@ type
     ImageListLarge: TImageList;
     ImageListSmall1: TImageList;
     ImageListSmall2: TImageList;
+    QuitAction: TQuitAction;
+    WindowCloseAction: TWindowCloseAction;
   end;
 
 implementation

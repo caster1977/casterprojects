@@ -9,7 +9,26 @@ uses
   Vcl.StdActns;
 
 type
-  TAction_Quit = class(TCustomAction)
+  TQuitAction = class(TCustomAction)
+  public
+    function HandlesTarget(Target: TObject): Boolean; override;
+    procedure ExecuteTarget(Target: TObject); override;
+  published
+    property Caption;
+    property Enabled;
+    property HelpContext;
+    property HelpKeyword;
+    property HelpType;
+    property Hint;
+    property ImageIndex;
+    property ShortCut;
+    property SecondaryShortCuts;
+    property Visible;
+    property OnHint;
+    property OnUpdate;
+  end;
+
+  TWindowCloseAction = class(TCustomAction)
   public
     function HandlesTarget(Target: TObject): Boolean; override;
     procedure ExecuteTarget(Target: TObject); override;
@@ -29,9 +48,6 @@ type
   end;
 
   TAction_Configuration = class(TAction)
-  end;
-
-  TAction_Close = class(TWindowAction)
   end;
 
   TAction_Help = class(TAction)
@@ -103,28 +119,11 @@ uses
 
 procedure register;
 begin
-  RegisterActions('Файл', [TAction_Quit, TAction_Configuration, TAction_Logon, TAction_Logoff], TActionsDataModule);
+  RegisterActions('Файл', [TQuitAction, TAction_Configuration, TAction_Logon, TAction_Logoff], TActionsDataModule);
   RegisterActions('Справка', [TAction_Help, TAction_About], TActionsDataModule);
   RegisterActions('Окно', [TAction_Restore], TActionsDataModule);
-  RegisterActions('Действие', [TAction_Close, TAction_Apply, TAction_Defaults, TAction_PreviousPage, TAction_NextPage, TAction_Accounts,
+  RegisterActions('Действие', [TWindowCloseAction, TAction_Apply, TAction_Defaults, TAction_PreviousPage, TAction_NextPage, TAction_Accounts,
     TAction_Report], TActionsDataModule);
-end;
-
-{ TAction_Quit }
-
-procedure TAction_Quit.ExecuteTarget(Target: TObject);
-begin
-  inherited;
-  if Assigned(Application.MainForm) then
-    begin
-      Application.HelpCommand(HELP_QUIT, 0);
-      Application.MainForm.Close;
-    end;
-end;
-
-function TAction_Quit.HandlesTarget(Target: TObject): Boolean;
-begin
-  Result := True;
 end;
 
 { TAction_About
@@ -186,5 +185,35 @@ procedure TAction_About.UpdateTarget(Target: TObject);
 begin
   Enabled := True; // GetForm(Target).ActiveMDIChild <> nil;
 end;}
+
+{ TQuitAction }
+
+procedure TQuitAction.ExecuteTarget(Target: TObject);
+begin
+  inherited;
+  if Assigned(Application.MainForm) then
+    begin
+      Application.HelpCommand(HELP_QUIT, 0);
+      Application.MainForm.Close;
+    end;
+end;
+
+function TQuitAction.HandlesTarget(Target: TObject): Boolean;
+begin
+  Result := True;
+end;
+
+{ TWindowCloseAction }
+
+procedure TWindowCloseAction.ExecuteTarget(Target: TObject);
+begin
+  if Assigned(Owner) then
+    (Owner as TCustomForm).Close;
+end;
+
+function TWindowCloseAction.HandlesTarget(Target: TObject): Boolean;
+begin
+  Result:=True;
+end;
 
 end.
