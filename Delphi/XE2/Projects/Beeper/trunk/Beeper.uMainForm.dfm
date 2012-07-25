@@ -107,7 +107,7 @@ object MainForm: TMainForm
     Height = 26
     Cursor = crHandPoint
     Hint = #1055#1072#1085#1077#1083#1100' '#1082#1085#1086#1087#1086#1082
-    ActionManager = ActionManager1
+    ActionManager = ActionManager
     Caption = 'ActionToolBar1'
     ColorMap.HighlightColor = clWhite
     ColorMap.BtnSelectedColor = clBtnFace
@@ -120,7 +120,7 @@ object MainForm: TMainForm
     ParentFont = False
     Spacing = 0
   end
-  object TrayIcon1: TTrayIcon
+  object TrayIcon: TTrayIcon
     Icon.Data = {
       0000010001001010080000000000680500001600000028000000100000002000
       0000010008000000000000010000000000000000000000000000000000000000
@@ -166,10 +166,10 @@ object MainForm: TMainForm
       0000000000004A525BA44900000000000000000000004952529B00000000F0FF
       0000E07F0000E07F0000E07F0000F07F0000FE7F0000FE7F0000FE7F0000FE7F
       0000FE7F0000FE7F0000FE7B0000FE630000FE030000FE030000FE0F0000}
-    PopupMenu = PopupMenu1
+    PopupMenu = pmTray
     Visible = True
-    OnClick = TrayIcon1Click
-    OnDblClick = TrayIcon1DblClick
+    OnClick = TrayIconClick
+    OnDblClick = TrayIconDblClick
     Left = 312
     Top = 112
   end
@@ -214,7 +214,7 @@ object MainForm: TMainForm
       end
     end
   end
-  object PopupMenu1: TPopupMenu
+  object pmTray: TPopupMenu
     Images = ImageList2
     Left = 216
     Top = 120
@@ -244,7 +244,7 @@ object MainForm: TMainForm
       Action = Action_Quit
     end
   end
-  object ActionManager1: TActionManager
+  object ActionManager: TActionManager
     ActionBars = <
       item
         Items.CaptionOptions = coNone
@@ -387,7 +387,7 @@ object MainForm: TMainForm
     Left = 312
     Top = 168
     Bitmap = {
-      494C01010C000E00940010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010C000E00980010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -922,10 +922,10 @@ object MainForm: TMainForm
       0000C007E00FFFFF8001F01FF83FFFFF00000000000000000000000000000000
       000000000000}
   end
-  object ApplicationEvents1: TApplicationEvents
-    OnHint = ApplicationEvents1Hint
-    OnMessage = ApplicationEvents1Message
-    OnMinimize = ApplicationEvents1Minimize
+  object ApplicationEvents: TApplicationEvents
+    OnHint = ApplicationEventsHint
+    OnMessage = ApplicationEventsMessage
+    OnMinimize = ApplicationEventsMinimize
     Left = 216
     Top = 64
   end
