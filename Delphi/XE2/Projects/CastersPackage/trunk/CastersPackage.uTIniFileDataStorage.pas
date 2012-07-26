@@ -14,14 +14,15 @@ type
   TIniFileDataStorage=class(TInterfacedPersistent, IIniFileDataStorage)
   strict protected
     FIniFileName: string;
+    procedure Initialize; virtual; abstract;
+    procedure Loading(const AIniFile: TIniFile); virtual; abstract;
     procedure AfterLoad; virtual; abstract;
     procedure BeforeSave; virtual; abstract;
-    procedure Loading(const IniFile: TIniFile); virtual; abstract;
-    procedure Saving(const IniFile: TIniFile); virtual; abstract;
+    procedure Saving(const AIniFile: TIniFile); virtual; abstract;
   public
     procedure Load; virtual; final;
     procedure Save; virtual; final;
-    constructor Create(const IniFileName: string=''); virtual;
+    constructor Create(const AIniFileName: string=''); virtual;
   end;
 
   TIniFileDataStorageClass = class of TIniFileDataStorage;
@@ -35,16 +36,17 @@ resourcestring
   TEXT_WRONG_INIFILE_NAME='Имя файла конфигурации не должно быть пустым!';
   TEXT_SAVE_INIFILE_ERROR='Произошла ошибка при попытке записи данных в файл конфигурации!';
 
-constructor TIniFileDataStorage.Create(const IniFileName: string);
+constructor TIniFileDataStorage.Create(const AIniFileName: string);
 var
   s: string;
 begin
   inherited Create;
-  s:=Trim(IniFileName);
+  s:=Trim(AIniFileName);
   if s=EmptyStr then
     FIniFileName:=ChangeFileExt(ExpandFileName(Application.ExeName), '.ini')
   else
     FIniFileName:=s;
+  Initialize;
 end;
 
 procedure TIniFileDataStorage.Load;
