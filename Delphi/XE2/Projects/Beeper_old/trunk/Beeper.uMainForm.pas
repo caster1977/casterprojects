@@ -141,8 +141,7 @@ begin
         Timer1.Enabled := False;
         AlphaBlendValue := 222;
         Timer2.Enabled := False;
-        Label2.Caption := Format('Версия %d.%d Release %d Build %d',
-          [gsFileVersionInfo1.ModuleVersion.Major, gsFileVersionInfo1.ModuleVersion.Minor,
+        Label2.Caption := Format('Версия %d.%d Release %d Build %d', [gsFileVersionInfo1.ModuleVersion.Major, gsFileVersionInfo1.ModuleVersion.Minor,
           gsFileVersionInfo1.ModuleVersion.Release, gsFileVersionInfo1.ModuleVersion.Build]);
         Label3.Caption := gsFileVersionInfo1.LegalCopyright;
         ShowModal;
@@ -158,8 +157,8 @@ begin
   if (FileExists(ExpandFileName(Application.HelpFile))) then
     Application.HelpContext(0)
   else
-    MessageBox(Self.Handle, PChar('Извините, справочный файл к данной программе не найден.'),
-      PChar(Self.Caption + ' - ' + 'Ошибка!'), MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
+    MessageBox(Self.Handle, PChar('Извините, справочный файл к данной программе не найден.'), PChar(Self.Caption + ' - ' + 'Ошибка!'),
+      MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
 end;
 
 procedure TMainForm.Action_QuitExecute(Sender: TObject);
@@ -286,8 +285,8 @@ end;
 procedure TMainForm.Action_EraseExecute(Sender: TObject);
 begin
   if ListView1.Selected <> nil then
-    if MessageBox(Handle, PChar('Вы действительно хотите удалить данный сигнал?'),
-      PChar('Подтверждение удаления'), MB_OKCANCEL + MB_ICONQUESTION + MB_DEFBUTTON2) = IDOK then
+    if MessageBox(Handle, PChar('Вы действительно хотите удалить данный сигнал?'), PChar('Подтверждение удаления'),
+      MB_OKCANCEL + MB_ICONQUESTION + MB_DEFBUTTON2) = IDOK then
     begin
       ListView1.Selected.Delete;
       ListView1.ItemFocused := nil;
@@ -356,8 +355,7 @@ var
   i: Integer;
   b: Boolean;
 begin
-  s := UpperCase(StringReplace(ExtractFileName(Application.ExeName),
-    ExtractFileExt(Application.ExeName), '', [rfIgnoreCase]));
+  s := UpperCase(StringReplace(ExtractFileName(Application.ExeName), ExtractFileExt(Application.ExeName), '', [rfIgnoreCase]));
   if bSignalingActive then
     s := s + sLineBreak + 'Сигналы активированы.'
   else
@@ -370,12 +368,10 @@ begin
         b := True;
     if b then
     begin
-      s := s + sLineBreak + sLineBreak + 'Список активных сигналов (всего: ' +
-        IntToStr(ListView1.Items.Count) + '):';
+      s := s + sLineBreak + sLineBreak + 'Список активных сигналов (всего: ' + IntToStr(ListView1.Items.Count) + '):';
       for i := 0 to ListView1.Items.Count - 1 do
         if ListView1.Items[i].Checked then
-          s := s + sLineBreak + IntToStr(i + 1) + '. ' + ListView1.Items[i].Caption + ' - ' +
-            ListView1.Items[i].SubItems[0];
+          s := s + sLineBreak + IntToStr(i + 1) + '. ' + ListView1.Items[i].Caption + ' - ' + ListView1.Items[i].SubItems[0];
     end;
   end;
   // TrayIcon1.Hint:=s;
@@ -408,8 +404,7 @@ begin
       for i := 0 to ListView1.Items.Count - 1 do
       begin
         WriteString('Сигнал_' + IntToStr(i), 'Наименование', ListView1.Items[i].Caption);
-        WriteInteger('Сигнал_' + IntToStr(i), 'Периодичность',
-          StrToInt(ListView1.Items[i].SubItems[2]));
+        WriteInteger('Сигнал_' + IntToStr(i), 'Периодичность', StrToInt(ListView1.Items[i].SubItems[2]));
         WriteString('Сигнал_' + IntToStr(i), 'Файл', ListView1.Items[i].SubItems[1]);
         WriteBool('Сигнал_' + IntToStr(i), 'Включен', ListView1.Items[i].Checked);
       end;
@@ -447,8 +442,7 @@ begin
       FShowBaloonHints := ReadBool('Подсказки', 'В трее', True);
       FSoundEnabled := ReadBool('Звуки', 'Включены', True);
       iMod_On := ReadInteger('Горячие клавиши', 'Модификатор включения', MOD_SHIFT + MOD_ALT);
-      iMod_Off := ReadInteger('Горячие клавиши', 'Модификатор отключения',
-        MOD_CONTROL + MOD_ALT + MOD_SHIFT);
+      iMod_Off := ReadInteger('Горячие клавиши', 'Модификатор отключения', MOD_CONTROL + MOD_ALT + MOD_SHIFT);
       cVK_On := ReadInteger('Горячие клавиши', 'Клавиша включения', VK_F12);
       cVK_Off := ReadInteger('Горячие клавиши', 'Клавиша отключения', VK_F12);
       quantity := ReadInteger('Сигналы', 'Количество', 0);
@@ -550,8 +544,8 @@ begin
   begin
     s := Trim(ListView1.Items[TTimer(Sender).Tag].SubItems[1]);
     DecodeTime(Now, Hour, Min, Sec, MSec);
-    TrayIcon.BalloonHint := TimeToStr(EncodeTime(Hour, Min, Sec, MSec)) + ' - Сработал сигнал ' +
-      '"' + Trim(ListView1.Items[TTimer(Sender).Tag].Caption) + '"';
+    TrayIcon.BalloonHint := TimeToStr(EncodeTime(Hour, Min, Sec, MSec)) + ' - Сработал сигнал ' + '"' +
+      Trim(ListView1.Items[TTimer(Sender).Tag].Caption) + '"';
     TrayIcon.BalloonTitle := ''; // Внимание!
     TrayIcon.BalloonFlags := bfWarning;
     if FShowBaloonHints then
@@ -668,8 +662,8 @@ end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  CanClose := MessageBox(Handle, PChar('Вы действительно хотите завершить работу программы?'),
-    PChar('OA4 - Подтверждение выхода'), MB_OKCANCEL + MB_ICONQUESTION + MB_DEFBUTTON2) = IDOK;
+  CanClose := MessageBox(Handle, PChar('Вы действительно хотите завершить работу программы?'), PChar('BEEPER - Подтверждение выхода'),
+    MB_OKCANCEL + MB_ICONQUESTION + MB_DEFBUTTON2) = IDOK;
   if CanClose then
   begin
     ToolTipForm.Visible := False;
@@ -704,8 +698,7 @@ begin
       Timer1.Enabled := True;
       AlphaBlendValue := 0;
       Timer2.Enabled := True;
-      Label2.Caption := Format('Версия %d.%d Release %d Build %d',
-        [gsFileVersionInfo1.ModuleVersion.Major, gsFileVersionInfo1.ModuleVersion.Minor,
+      Label2.Caption := Format('Версия %d.%d Release %d Build %d', [gsFileVersionInfo1.ModuleVersion.Major, gsFileVersionInfo1.ModuleVersion.Minor,
         gsFileVersionInfo1.ModuleVersion.Release, gsFileVersionInfo1.ModuleVersion.Build]);
       Label3.Caption := gsFileVersionInfo1.LegalCopyright;
       ShowModal;
@@ -718,23 +711,21 @@ end;
 procedure TMainForm.AssignHotkeys;
 begin
   if not RegisterHotkey(Handle, 1, iMod_On, cVK_On) then
-    MessageBox(Handle, PChar('Не удалось назначить горячую клавишу для запуска сигналов.'),
-      PChar('BEEPER - Ошибка!'), MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
+    MessageBox(Handle, PChar('Не удалось назначить горячую клавишу для запуска сигналов.'), PChar('BEEPER - Ошибка!'),
+      MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
   if not RegisterHotkey(Handle, 2, iMod_Off, cVK_Off) then
-    MessageBox(Handle, PChar('Не удалось назначить горячую клавишу для останова сигналов.'),
-      PChar('BEEPER - Ошибка!'), MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
+    MessageBox(Handle, PChar('Не удалось назначить горячую клавишу для останова сигналов.'), PChar('BEEPER - Ошибка!'),
+      MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
 end;
 
 procedure TMainForm.RemoveHotkeys;
 begin
   if not UnRegisterHotkey(Handle, 2) then
-    MessageBox(Handle,
-      PChar('Не удалось освободить горячую клавишу предназначеную для останова сигналов.'),
-      PChar('BEEPER - Ошибка!'), MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
+    MessageBox(Handle, PChar('Не удалось освободить горячую клавишу предназначеную для останова сигналов.'), PChar('BEEPER - Ошибка!'),
+      MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
   if not UnRegisterHotkey(Handle, 1) then
-    MessageBox(Handle,
-      PChar('Не удалось освободить горячую клавишу предназначеную для запуска сигналов.'),
-      PChar('BEEPER - Ошибка!'), MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
+    MessageBox(Handle, PChar('Не удалось освободить горячую клавишу предназначеную для запуска сигналов.'), PChar('BEEPER - Ошибка!'),
+      MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
 end;
 
 procedure TMainForm.ApplicationEventsMessage(var Msg: tagMSG; var Handled: Boolean);

@@ -39,7 +39,6 @@ type
     FHint: string;
     FWaveFile: string;
   public
-    constructor Create(const IniFileName: string = ''); override;
     function PeriodToSeconds(const ASeconds: word; const AMinutes: word = 0; const AHours: word = 0; const ADays: word = 0; const AWeeks: word = 0;
       const AMonths: word = 0; const AYears: word = 0): Int64;
   published
@@ -70,24 +69,14 @@ implementation
 uses
   System.SysUtils;
 
-{ TSignal }
-
 procedure TSignal.AfterLoad;
 begin
   inherited;
-
 end;
 
 procedure TSignal.BeforeSave;
 begin
   inherited;
-
-end;
-
-constructor TSignal.Create(const IniFileName: string);
-begin
-  inherited;
-
 end;
 
 function TSignal.GetHint: string;
@@ -115,21 +104,9 @@ begin
   Result := FWaveFile;
 end;
 
-procedure TSignal.Loading(const IniFile: TIniFile);
-begin
-  inherited;
-
-end;
-
 function TSignal.PeriodToSeconds(const ASeconds, AMinutes, AHours, ADays, AWeeks, AMonths, AYears: word): Int64;
 begin
   Result := 0;
-end;
-
-procedure TSignal.Saving(const IniFile: TIniFile);
-begin
-  inherited;
-
 end;
 
 procedure TSignal.SetHint(const Value: string);
@@ -169,6 +146,18 @@ begin
   s := Trim(Value);
   if FWaveFile <> s then
     FWaveFile := s;
+end;
+
+procedure TSignal.Loading(const IniFile: TIniFile);
+begin
+  inherited;
+
+end;
+
+procedure TSignal.Saving(const IniFile: TIniFile);
+begin
+  inherited;
+
 end;
 
 end.
