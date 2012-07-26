@@ -50,7 +50,7 @@ type
   TAction_Configuration = class(TAction)
   end;
 
-  TAction_Help = class(TAction)
+  TAction_Help = class(THelpContents)
   end;
 
   TAction_About = class(TAction) {(TCustomAction)
@@ -109,6 +109,28 @@ type
   TAction_Report = class(TAction)
   end;
 
+  TMenuGroupAction = class(TCustomAction)
+  public
+    function HandlesTarget(Target: TObject): Boolean; override;
+  published
+    property Caption;
+    property Enabled;
+    property HelpContext;
+    property HelpKeyword;
+    property HelpType;
+    property Hint;
+    property ImageIndex;
+    property Visible;
+    property OnHint;
+    property OnUpdate;
+  end;
+
+  THelpContentsAction = class(THelpContents);
+
+  TFileMenuGroupAction = class(TMenuGroupAction);
+  TActionMenuGroupAction = class(TMenuGroupAction);
+  THelpMenuGroupAction = class(TMenuGroupAction);
+
 procedure Register;
 
 implementation
@@ -119,11 +141,11 @@ uses
 
 procedure register;
 begin
-  RegisterActions('Файл', [TQuitAction, TAction_Configuration, TAction_Logon, TAction_Logoff], TActionsDataModule);
-  RegisterActions('Справка', [TAction_Help, TAction_About], TActionsDataModule);
+  RegisterActions('Файл', [TQuitAction, TAction_Configuration, TAction_Logon, TAction_Logoff, TFileMenuGroupAction], TActionsDataModule);
+  RegisterActions('Справка', [TAction_Help, TAction_About, THelpContentsAction, THelpMenuGroupAction], TActionsDataModule);
   RegisterActions('Окно', [TAction_Restore], TActionsDataModule);
   RegisterActions('Действие', [TWindowCloseAction, TAction_Apply, TAction_Defaults, TAction_PreviousPage, TAction_NextPage, TAction_Accounts,
-    TAction_Report], TActionsDataModule);
+    TAction_Report, TActionMenuGroupAction], TActionsDataModule);
 end;
 
 { TAction_About
@@ -214,6 +236,13 @@ end;
 function TWindowCloseAction.HandlesTarget(Target: TObject): Boolean;
 begin
   Result:=True;
+end;
+
+{ TMenuGroupAction }
+
+function TMenuGroupAction.HandlesTarget(Target: TObject): Boolean;
+begin
+  Result := True;
 end;
 
 end.

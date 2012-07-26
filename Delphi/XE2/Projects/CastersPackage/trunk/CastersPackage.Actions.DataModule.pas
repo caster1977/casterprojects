@@ -30,6 +30,10 @@ type
     ImageListSmall2: TImageList;
     QuitAction: TQuitAction;
     WindowCloseAction: TWindowCloseAction;
+    FileMenuGroupAction: TFileMenuGroupAction;
+    HelpMenuGroupAction: THelpMenuGroupAction;
+    HelpContentsAction: THelpContentsAction;
+    ActionMenuGroupAction: TActionMenuGroupAction;
   end;
 
 implementation
