@@ -260,18 +260,18 @@ type
     procedure SetViewMessageFormPosition(const Value: TFormPosition);
     procedure SetLogin(const Value: string);
     procedure SetPassword(const Value: string);
-  protected
-    procedure Loading(const IniFile: TIniFile); override;
-    procedure Saving(const IniFile: TIniFile); override;
+  strict protected
+    procedure Loading(const AIniFile: TIniFile); override;
+    procedure Saving(const AIniFile: TIniFile); override;
     procedure AfterLoad; override;
     procedure BeforeSave; override;
+    procedure Initialize; override;
   public
     // sDefaultAction: string;
     // bImmediatelyQuit: boolean;
     // iOrgSortColumn: integer;
     // iMsrSortColumn: integer;
 
-    constructor Create(const IniFileName: string=''); override;
     destructor Destroy; override;
 
     property FileName: string read FFileName write SetFileName stored False;
@@ -382,12 +382,12 @@ resourcestring
   TEXT_INIFILESECTION_MAINFORM='Главное окно';
   TEXT_INIFILESECTION_INFO='Отображение информации';
 
-procedure TConfiguration.Loading(const IniFile: TIniFile);
+procedure TConfiguration.Loading(const AIniFile: TIniFile);
 var
   FormPosition: TFormPosition;
 begin
   inherited;
-  with IniFile do
+  with AIniFile do
     begin
       // вкладка "настройки интерфейса"
       ShowSplashAtStart:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowSplashAtStart', DefaultValue_ShowSplashAtStart);
@@ -579,7 +579,7 @@ begin
     end;
 end;
 
-procedure TConfiguration.Saving(const IniFile: TIniFile);
+procedure TConfiguration.Saving(const AIniFile: TIniFile);
 
   procedure WriteFormPosition(IniFile: TIniFile; FormPosition: TFormPosition; const FormPositionName: string);
   begin
@@ -593,7 +593,7 @@ procedure TConfiguration.Saving(const IniFile: TIniFile);
 
 begin
   inherited;
-  with IniFile do
+  with AIniFile do
     try
       // вкладка "настройки интерфейса"
       WriteBool(TEXT_INIFILESECTION_INTERFACE, 'bShowSplashAtStart', ShowSplashAtStart);
@@ -622,21 +622,21 @@ begin
       WriteBool(TEXT_INIFILESECTION_LOGS, 'bKeepDebugLog', lmtDebug in KeepLogTypes);
 
       // вкладка "настройки положения диалоговых окон"
-      WriteFormPosition(IniFile, LoginFormPosition, 'LoginFormPosition');
-      WriteFormPosition(IniFile, ConfigurationFormPosition, 'ConfigurationFormPosition');
-      WriteFormPosition(IniFile, UsersFormPosition, 'UsersFormPosition');
-      WriteFormPosition(IniFile, SetPasswordFormPosition, 'SetPasswordFormPosition');
-      WriteFormPosition(IniFile, ReportFormPosition, 'ReportFormPosition');
-      WriteFormPosition(IniFile, MaintenanceFormPosition, 'MaintenanceFormPosition');
-      WriteFormPosition(IniFile, ClearingFormPosition, 'ClearingFormPosition');
-      WriteFormPosition(IniFile, ViewMessagesFormPosition, 'ViewMessagesFormPosition');
-      WriteFormPosition(IniFile, CreateMessageFormPosition, 'CreateMessageFormPosition');
-      WriteFormPosition(IniFile, ViewMessageFormPosition, 'ViewMessageFormPosition');
-      WriteFormPosition(IniFile, PhonesFormPosition, 'PhonesFormPosition');
-      WriteFormPosition(IniFile, AddEditPhoneFormPosition, 'AddEditPhoneFormPosition');
-      WriteFormPosition(IniFile, AddMassMsrFormPosition, 'AddMassMsrFormPosition');
-      WriteFormPosition(IniFile, PermissionsFormPosition, 'PermissionsFormPosition');
-      WriteFormPosition(IniFile, MultibufferFormPosition, 'MultibufferFormPosition');
+      WriteFormPosition(AIniFile, LoginFormPosition, 'LoginFormPosition');
+      WriteFormPosition(AIniFile, ConfigurationFormPosition, 'ConfigurationFormPosition');
+      WriteFormPosition(AIniFile, UsersFormPosition, 'UsersFormPosition');
+      WriteFormPosition(AIniFile, SetPasswordFormPosition, 'SetPasswordFormPosition');
+      WriteFormPosition(AIniFile, ReportFormPosition, 'ReportFormPosition');
+      WriteFormPosition(AIniFile, MaintenanceFormPosition, 'MaintenanceFormPosition');
+      WriteFormPosition(AIniFile, ClearingFormPosition, 'ClearingFormPosition');
+      WriteFormPosition(AIniFile, ViewMessagesFormPosition, 'ViewMessagesFormPosition');
+      WriteFormPosition(AIniFile, CreateMessageFormPosition, 'CreateMessageFormPosition');
+      WriteFormPosition(AIniFile, ViewMessageFormPosition, 'ViewMessageFormPosition');
+      WriteFormPosition(AIniFile, PhonesFormPosition, 'PhonesFormPosition');
+      WriteFormPosition(AIniFile, AddEditPhoneFormPosition, 'AddEditPhoneFormPosition');
+      WriteFormPosition(AIniFile, AddMassMsrFormPosition, 'AddMassMsrFormPosition');
+      WriteFormPosition(AIniFile, PermissionsFormPosition, 'PermissionsFormPosition');
+      WriteFormPosition(AIniFile, MultibufferFormPosition, 'MultibufferFormPosition');
 
       // вкладка "настройки процедуры логирования"
       WriteBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStoreLogin', StoreLogin);
@@ -989,178 +989,9 @@ begin
   end;
 end;
 
-procedure TConfiguration.SetAddEditPhoneFormPosition(const Value: TFormPosition);
-begin
-  if ((FAddEditPhoneFormPosition.bCenter<>Value.bCenter)or(FAddEditPhoneFormPosition.x<>Value.x)or(FAddEditPhoneFormPosition.y<>Value.y)) then
-    FAddEditPhoneFormPosition:=Value;
-end;
-
-procedure TConfiguration.SetAddMassMsrFormPosition(const Value: TFormPosition);
-begin
-  if ((FAddMassMsrFormPosition.bCenter<>Value.bCenter)or(FAddMassMsrFormPosition.x<>Value.x)or(FAddMassMsrFormPosition.y<>Value.y)) then
-    FAddMassMsrFormPosition:=Value;
-end;
-
-procedure TConfiguration.SetPermissionsFormPosition(const Value: TFormPosition);
-begin
-  if ((FPermissionsFormPosition.bCenter<>Value.bCenter)or(FPermissionsFormPosition.x<>Value.x)or(FPermissionsFormPosition.y<>Value.y)) then
-    FPermissionsFormPosition:=Value;
-end;
-
-procedure TConfiguration.SetMultibufferFormPosition(const Value: TFormPosition);
-begin
-  if ((FMultibufferFormPosition.bCenter<>Value.bCenter)or(FMultibufferFormPosition.x<>Value.x)or(FMultibufferFormPosition.y<>Value.y)) then
-    FMultibufferFormPosition:=Value;
-end;
-
-procedure TConfiguration.SetAskForFileName(const Value: boolean);
-begin
-  if FAskForFileName<>Value then
-    FAskForFileName:=Value;
-end;
-
-procedure TConfiguration.SetAutoGetMessagesCycleDurationValue(const Value: integer);
-begin
-  if FAutoGetMessagesCycleDurationValue<>Value then
-    FAutoGetMessagesCycleDurationValue:=Value;
-end;
-
-procedure TConfiguration.SetAutoLogon(const Value: boolean);
-begin
-  if Value then
-    begin
-      if not(StoreLogin and StorePassword) then
-        raise Exception.Create('Для включения настройки автологирования необходимо сначала включить слхранение логина и пароля последнего пользователя!')
-      else
-        if FAutoLogon<>Value then
-          FAutoLogon:=Value;
-    end
-  else
-    if FAutoLogon<>Value then
-      FAutoLogon:=Value;
-end;
-
-procedure TConfiguration.SetClearingFormPosition(const Value: TFormPosition);
-begin
-  if ((FClearingFormPosition.bCenter<>Value.bCenter)or(FClearingFormPosition.x<>Value.x)or(FClearingFormPosition.y<>Value.y)) then
-    FClearingFormPosition:=Value;
-end;
-
-procedure TConfiguration.SetCreateMessageFormPosition(const Value: TFormPosition);
-begin
-  if ((FCreateMessageFormPosition.bCenter<>Value.bCenter)or(FCreateMessageFormPosition.x<>Value.x)or(FCreateMessageFormPosition.y<>Value.y)) then
-    FCreateMessageFormPosition:=Value;
-end;
-
-procedure TConfiguration.SetCustomHelpFileValue(const Value: string);
-begin
-  if FCustomHelpFileValue<>Value then
-    FCustomHelpFileValue:=Value;
-end;
-
-procedure TConfiguration.SetCustomLogClientFile(const Value: boolean);
-begin
-  if FCustomLogClientFile<>Value then
-    FCustomLogClientFile:=Value;
-end;
-
-procedure TConfiguration.SetCustomLogClientFileValue(const Value: string);
-begin
-  if FCustomLogClientFileValue<>Value then
-    FCustomLogClientFileValue:=Value;
-end;
-
-procedure TConfiguration.SetDataPanelHalfWidth(const Value: boolean);
-begin
-  if FDataPanelHalfWidth<>Value then
-    FDataPanelHalfWidth:=Value;
-end;
-
-procedure TConfiguration.SetDataPanelWidthValue(const Value: integer);
-begin
-  if FDataPanelWidthValue<>Value then
-    FDataPanelWidthValue:=Value;
-end;
-
-procedure TConfiguration.SetDontDemandOverwriteConfirmation(const Value: boolean);
-begin
-  if FDontDemandOverwriteConfirmation<>Value then
-    FDontDemandOverwriteConfirmation:=Value;
-end;
-
-procedure TConfiguration.SetEnableAutoGetMessages(const Value: boolean);
-begin
-  if FEnableAutoGetMessages<>Value then
-    FEnableAutoGetMessages:=Value;
-end;
-
-procedure TConfiguration.SetCustomHelpFile(const Value: boolean);
-begin
-  if FCustomHelpFile<>Value then
-    FCustomHelpFile:=Value;
-end;
-
-procedure TConfiguration.SetFileName(const Value: string);
-begin
-  if FFileName<>Value then
-    if Trim(Value)<>'' then
-      FFileName:=Trim(Value)
-    else
-      raise Exception.Create('Имя файла конфигурации не должно быть пустым!');
-end;
-
-procedure TConfiguration.SetFlushLogOnApply(const Value: boolean);
-begin
-  if FFlushLogOnApply<>Value then
-    FFlushLogOnApply:=Value;
-end;
-
-procedure TConfiguration.SetFlushLogOnClearingLog(const Value: boolean);
-begin
-  if FFlushLogOnClearingLog<>Value then
-    FFlushLogOnClearingLog:=Value;
-end;
-
-procedure TConfiguration.SetFlushLogOnExit(const Value: boolean);
-begin
-  if FFlushLogOnExit<>Value then
-    FFlushLogOnExit:=Value;
-end;
-
-procedure TConfiguration.SetFlushLogOnStringsQuantity(const Value: boolean);
-begin
-  if FFlushLogOnStringsQuantity<>Value then
-    FFlushLogOnStringsQuantity:=Value;
-end;
-
-procedure TConfiguration.SetFlushLogOnStringsQuantityValue(const Value: integer);
-begin
-  if FFlushLogOnStringsQuantityValue<>Value then
-    FFlushLogOnStringsQuantityValue:=Value;
-end;
-
-procedure TConfiguration.SetFullScreenAtLaunch(const Value: boolean);
-begin
-  if FFullScreenAtLaunch<>Value then
-    FFullScreenAtLaunch:=Value;
-end;
-
-procedure TConfiguration.AfterLoad;
+procedure TConfiguration.Initialize;
 begin
   inherited;
-
-end;
-
-procedure TConfiguration.BeforeSave;
-begin
-  inherited;
-
-end;
-
-constructor TConfiguration.Create(const IniFileName: string='');
-begin
-  inherited;
-
   // инициализация динамических членов класса
   FRNE4Server:=TMySQLConnection.Create;
   FMessagesServer:=TMySQLConnection.Create;
@@ -1364,6 +1195,170 @@ begin
   FShowMeasuresListAsRichEdit:=DefaultValue_ShowMeasuresListAsRichEdit;
   FMarkSearchedStrings:=DefaultValue_MarkSearchedStrings;
   FPutTownAtTheEnd:=DefaultValue_PutTownAtTheEnd;
+end;
+
+procedure TConfiguration.SetAddEditPhoneFormPosition(const Value: TFormPosition);
+begin
+  if ((FAddEditPhoneFormPosition.bCenter<>Value.bCenter)or(FAddEditPhoneFormPosition.x<>Value.x)or(FAddEditPhoneFormPosition.y<>Value.y)) then
+    FAddEditPhoneFormPosition:=Value;
+end;
+
+procedure TConfiguration.SetAddMassMsrFormPosition(const Value: TFormPosition);
+begin
+  if ((FAddMassMsrFormPosition.bCenter<>Value.bCenter)or(FAddMassMsrFormPosition.x<>Value.x)or(FAddMassMsrFormPosition.y<>Value.y)) then
+    FAddMassMsrFormPosition:=Value;
+end;
+
+procedure TConfiguration.SetPermissionsFormPosition(const Value: TFormPosition);
+begin
+  if ((FPermissionsFormPosition.bCenter<>Value.bCenter)or(FPermissionsFormPosition.x<>Value.x)or(FPermissionsFormPosition.y<>Value.y)) then
+    FPermissionsFormPosition:=Value;
+end;
+
+procedure TConfiguration.SetMultibufferFormPosition(const Value: TFormPosition);
+begin
+  if ((FMultibufferFormPosition.bCenter<>Value.bCenter)or(FMultibufferFormPosition.x<>Value.x)or(FMultibufferFormPosition.y<>Value.y)) then
+    FMultibufferFormPosition:=Value;
+end;
+
+procedure TConfiguration.SetAskForFileName(const Value: boolean);
+begin
+  if FAskForFileName<>Value then
+    FAskForFileName:=Value;
+end;
+
+procedure TConfiguration.SetAutoGetMessagesCycleDurationValue(const Value: integer);
+begin
+  if FAutoGetMessagesCycleDurationValue<>Value then
+    FAutoGetMessagesCycleDurationValue:=Value;
+end;
+
+procedure TConfiguration.SetAutoLogon(const Value: boolean);
+begin
+  if Value then
+    begin
+      if not(StoreLogin and StorePassword) then
+        raise Exception.Create('Для включения настройки автологирования необходимо сначала включить слхранение логина и пароля последнего пользователя!')
+      else
+        if FAutoLogon<>Value then
+          FAutoLogon:=Value;
+    end
+  else
+    if FAutoLogon<>Value then
+      FAutoLogon:=Value;
+end;
+
+procedure TConfiguration.SetClearingFormPosition(const Value: TFormPosition);
+begin
+  if ((FClearingFormPosition.bCenter<>Value.bCenter)or(FClearingFormPosition.x<>Value.x)or(FClearingFormPosition.y<>Value.y)) then
+    FClearingFormPosition:=Value;
+end;
+
+procedure TConfiguration.SetCreateMessageFormPosition(const Value: TFormPosition);
+begin
+  if ((FCreateMessageFormPosition.bCenter<>Value.bCenter)or(FCreateMessageFormPosition.x<>Value.x)or(FCreateMessageFormPosition.y<>Value.y)) then
+    FCreateMessageFormPosition:=Value;
+end;
+
+procedure TConfiguration.SetCustomHelpFileValue(const Value: string);
+begin
+  if FCustomHelpFileValue<>Value then
+    FCustomHelpFileValue:=Value;
+end;
+
+procedure TConfiguration.SetCustomLogClientFile(const Value: boolean);
+begin
+  if FCustomLogClientFile<>Value then
+    FCustomLogClientFile:=Value;
+end;
+
+procedure TConfiguration.SetCustomLogClientFileValue(const Value: string);
+begin
+  if FCustomLogClientFileValue<>Value then
+    FCustomLogClientFileValue:=Value;
+end;
+
+procedure TConfiguration.SetDataPanelHalfWidth(const Value: boolean);
+begin
+  if FDataPanelHalfWidth<>Value then
+    FDataPanelHalfWidth:=Value;
+end;
+
+procedure TConfiguration.SetDataPanelWidthValue(const Value: integer);
+begin
+  if FDataPanelWidthValue<>Value then
+    FDataPanelWidthValue:=Value;
+end;
+
+procedure TConfiguration.SetDontDemandOverwriteConfirmation(const Value: boolean);
+begin
+  if FDontDemandOverwriteConfirmation<>Value then
+    FDontDemandOverwriteConfirmation:=Value;
+end;
+
+procedure TConfiguration.SetEnableAutoGetMessages(const Value: boolean);
+begin
+  if FEnableAutoGetMessages<>Value then
+    FEnableAutoGetMessages:=Value;
+end;
+
+procedure TConfiguration.SetCustomHelpFile(const Value: boolean);
+begin
+  if FCustomHelpFile<>Value then
+    FCustomHelpFile:=Value;
+end;
+
+procedure TConfiguration.SetFileName(const Value: string);
+begin
+  if FFileName<>Value then
+    if Trim(Value)<>'' then
+      FFileName:=Trim(Value)
+    else
+      raise Exception.Create('Имя файла конфигурации не должно быть пустым!');
+end;
+
+procedure TConfiguration.SetFlushLogOnApply(const Value: boolean);
+begin
+  if FFlushLogOnApply<>Value then
+    FFlushLogOnApply:=Value;
+end;
+
+procedure TConfiguration.SetFlushLogOnClearingLog(const Value: boolean);
+begin
+  if FFlushLogOnClearingLog<>Value then
+    FFlushLogOnClearingLog:=Value;
+end;
+
+procedure TConfiguration.SetFlushLogOnExit(const Value: boolean);
+begin
+  if FFlushLogOnExit<>Value then
+    FFlushLogOnExit:=Value;
+end;
+
+procedure TConfiguration.SetFlushLogOnStringsQuantity(const Value: boolean);
+begin
+  if FFlushLogOnStringsQuantity<>Value then
+    FFlushLogOnStringsQuantity:=Value;
+end;
+
+procedure TConfiguration.SetFlushLogOnStringsQuantityValue(const Value: integer);
+begin
+  if FFlushLogOnStringsQuantityValue<>Value then
+    FFlushLogOnStringsQuantityValue:=Value;
+end;
+
+procedure TConfiguration.SetFullScreenAtLaunch(const Value: boolean);
+begin
+  if FFullScreenAtLaunch<>Value then
+    FFullScreenAtLaunch:=Value;
+end;
+
+procedure TConfiguration.AfterLoad;
+begin
+end;
+
+procedure TConfiguration.BeforeSave;
+begin
 end;
 
 procedure TConfiguration.SetStoreLogin(const Value: boolean);
