@@ -1,4 +1,4 @@
-program Beeper;
+program Beeper_old;
 
 {$R 'Beeper.Waves.res' 'Beeper.Waves.rc'}
 

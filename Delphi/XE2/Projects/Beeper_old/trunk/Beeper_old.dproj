@@ -1,7 +1,7 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
 			<ProjectGuid>{E8FD84CF-F2A6-432C-8387-73447F89BA4C}</ProjectGuid>
-			<MainSource>Beeper.dpr</MainSource>
+			<MainSource>Beeper_old.dpr</MainSource>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
 			<ProjectVersion>13.4</ProjectVersion>
@@ -133,7 +133,7 @@
 			<BorlandProject>
 				<Delphi.Personality>
 					<Source>
-						<Source Name="MainSource">Beeper.dpr</Source>
+						<Source Name="MainSource">Beeper_old.dpr</Source>
 					</Source>
 					<Parameters>
 						<Parameters Name="IncludeSystemVars">True</Parameters>
