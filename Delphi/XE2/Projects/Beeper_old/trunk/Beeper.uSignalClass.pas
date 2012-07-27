@@ -60,8 +60,8 @@ type
     property WaveFile: string read GetWaveFile write SetWaveFile;
     procedure AfterLoad; override;
     procedure BeforeSave; override;
-    procedure Loading(const IniFile: TIniFile); override;
-    procedure Saving(const IniFile: TIniFile); override;
+    procedure Loading(const AIniFile: TCustomIniFile); override;
+    procedure Saving(const AIniFile: TCustomIniFile); override;
   end;
 
 implementation
@@ -148,13 +148,13 @@ begin
     FWaveFile := s;
 end;
 
-procedure TSignal.Loading(const IniFile: TIniFile);
+procedure TSignal.Loading(const AIniFile: TCustomIniFile);
 begin
   inherited;
 
 end;
 
-procedure TSignal.Saving(const IniFile: TIniFile);
+procedure TSignal.Saving(const AIniFile: TCustomIniFile);
 begin
   inherited;
 

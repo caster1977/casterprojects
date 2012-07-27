@@ -261,8 +261,8 @@ type
     procedure SetLogin(const Value: string);
     procedure SetPassword(const Value: string);
   strict protected
-    procedure Loading(const AIniFile: TIniFile); override;
-    procedure Saving(const AIniFile: TIniFile); override;
+    procedure Loading(const AIniFile: TCustomIniFile); override;
+    procedure Saving(const AIniFile: TCustomIniFile); override;
     procedure AfterLoad; override;
     procedure BeforeSave; override;
     procedure Initialize; override;
@@ -382,7 +382,7 @@ resourcestring
   TEXT_INIFILESECTION_MAINFORM='Главное окно';
   TEXT_INIFILESECTION_INFO='Отображение информации';
 
-procedure TConfiguration.Loading(const AIniFile: TIniFile);
+procedure TConfiguration.Loading(const AIniFile: TCustomIniFile);
 var
   FormPosition: TFormPosition;
 begin
@@ -579,9 +579,9 @@ begin
     end;
 end;
 
-procedure TConfiguration.Saving(const AIniFile: TIniFile);
+procedure TConfiguration.Saving(const AIniFile: TCustomIniFile);
 
-  procedure WriteFormPosition(IniFile: TIniFile; FormPosition: TFormPosition; const FormPositionName: string);
+  procedure WriteFormPosition(IniFile: TCustomIniFile; FormPosition: TFormPosition; const FormPositionName: string);
   begin
     with IniFile do
       begin

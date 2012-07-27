@@ -15,10 +15,10 @@ type
   strict protected
     FIniFileName: string;
     procedure Initialize; virtual; abstract;
-    procedure Loading(const AIniFile: TIniFile); virtual; abstract;
+    procedure Loading(const AIniFile: TCustomIniFile); virtual; abstract;
     procedure AfterLoad; virtual; abstract;
     procedure BeforeSave; virtual; abstract;
-    procedure Saving(const AIniFile: TIniFile); virtual; abstract;
+    procedure Saving(const AIniFile: TCustomIniFile); virtual; abstract;
   public
     procedure Load; virtual; final;
     procedure Save; virtual; final;
@@ -51,36 +51,43 @@ end;
 
 procedure TIniFileDataStorage.Load;
 var
-  IniFile: TIniFile;
+  ini_file: TCustomIniFile;
 begin
   if FIniFileName=EmptyStr then
     raise EIniFileDataStorage.Create(TEXT_WRONG_INIFILE_NAME);
-  IniFile:=TIniFile.Create(FIniFileName);
+  ini_file:=TMemIniFile.Create(FIniFileName);
   try
-    Loading(IniFile);
+    Loading(ini_file);
+    if ini_file is TMemIniFile then
+      begin
+        (ini_file as TMemIniFile).Clear;
+        (ini_file as TMemIniFile).UpdateFile;
+      end;
   finally
-    IniFile.Free;
+    ini_file.Free;
   end;
   AfterLoad;
 end;
 
 procedure TIniFileDataStorage.Save;
 var
-  IniFile: TIniFile;
+  ini_file: TCustomIniFile;
 begin
   BeforeSave;
   if FIniFileName=EmptyStr then
     raise EIniFileDataStorage.Create(TEXT_WRONG_INIFILE_NAME);
-  IniFile:=TIniFile.Create(FIniFileName);
+  ini_file:=TMemIniFile.Create(FIniFileName);
   try
     try
-      Saving(IniFile);
+      Saving(ini_file);
+    if ini_file is TMemIniFile then
+        (ini_file as TMemIniFile).UpdateFile;
     except
       on EIniFileException do
         raise EIniFileException.Create(TEXT_SAVE_INIFILE_ERROR);
     end;
   finally
-    IniFile.Free;
+    ini_file.Free;
   end;
 end;
 

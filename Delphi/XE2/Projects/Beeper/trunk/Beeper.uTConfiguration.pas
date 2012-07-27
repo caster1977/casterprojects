@@ -20,25 +20,25 @@ type
     FVirtualKeyOn, FVirtualKeyOff: Cardinal;
     FSignalList: ISignalList;
     function GetShowBaloonHints: Boolean;
-    procedure SetShowBaloonHints(const Value: Boolean);
+    procedure SetShowBaloonHints(const AValue: Boolean);
     function GetSoundEnabled: Boolean;
-    procedure SetSoundEnabled(const Value: Boolean);
+    procedure SetSoundEnabled(const AValue: Boolean);
     function GetModifierOff: Integer;
-    procedure SetModifierOff(const Value: Integer);
+    procedure SetModifierOff(const AValue: Integer);
     function GetModifierOn: Integer;
-    procedure SetModifierOn(const Value: Integer);
+    procedure SetModifierOn(const AValue: Integer);
     function GetVirtualKeyOff: Cardinal;
-    procedure SetVirtualKeyOff(const Value: Cardinal);
+    procedure SetVirtualKeyOff(const AValue: Cardinal);
     function GetVirtualKeyOn: Cardinal;
-    procedure SetVirtualKeyOn(const Value: Cardinal);
+    procedure SetVirtualKeyOn(const AValue: Cardinal);
     function GetSignalList: ISignalList;
-    procedure SetSignalList(const Value: ISignalList);
+    procedure SetSignalList(const AValue: ISignalList);
   strict protected
     procedure Initialize; override;
-    procedure Loading(const AIniFile: TIniFile); override;
+    procedure Loading(const AIniFile: TCustomIniFile); override;
     procedure AfterLoad; override;
     procedure BeforeSave; override;
-    procedure Saving(const AIniFile: TIniFile); override;
+    procedure Saving(const AIniFile: TCustomIniFile); override;
   public
     property ShowBaloonHints: Boolean read GetShowBaloonHints write SetShowBaloonHints default DEFAULT_SHOW_BALOON_HINTS;
     property SoundEnabled: Boolean read GetSoundEnabled write SetSoundEnabled default DEFAULT_SOUND_ENABLED;
@@ -104,46 +104,46 @@ begin
   Result := FVirtualKeyOn;
 end;
 
-procedure TConfiguration.SetModifierOff(const Value: Integer);
+procedure TConfiguration.SetModifierOff(const AValue: Integer);
 begin
-  if FModifierOff <> Value then
-    FModifierOff := Value;
+  if FModifierOff <> AValue then
+    FModifierOff := AValue;
 end;
 
-procedure TConfiguration.SetModifierOn(const Value: Integer);
+procedure TConfiguration.SetModifierOn(const AValue: Integer);
 begin
-  if FModifierOn <> Value then
-    FModifierOn := Value;
+  if FModifierOn <> AValue then
+    FModifierOn := AValue;
 end;
 
-procedure TConfiguration.SetShowBaloonHints(const Value: Boolean);
+procedure TConfiguration.SetShowBaloonHints(const AValue: Boolean);
 begin
-  if FShowBaloonHints <> Value then
-    FShowBaloonHints := Value;
+  if FShowBaloonHints <> AValue then
+    FShowBaloonHints := AValue;
 end;
 
-procedure TConfiguration.SetSignalList(const Value: ISignalList);
+procedure TConfiguration.SetSignalList(const AValue: ISignalList);
 begin
-  if FSignalList <> Value then
-    FSignalList := Value;
+  if FSignalList <> AValue then
+    FSignalList := AValue;
 end;
 
-procedure TConfiguration.SetSoundEnabled(const Value: Boolean);
+procedure TConfiguration.SetSoundEnabled(const AValue: Boolean);
 begin
-  if FSoundEnabled <> Value then
-    FSoundEnabled := Value;
+  if FSoundEnabled <> AValue then
+    FSoundEnabled := AValue;
 end;
 
-procedure TConfiguration.SetVirtualKeyOff(const Value: Cardinal);
+procedure TConfiguration.SetVirtualKeyOff(const AValue: Cardinal);
 begin
-  if FVirtualKeyOff <> Value then
-    FVirtualKeyOff := Value;
+  if FVirtualKeyOff <> AValue then
+    FVirtualKeyOff := AValue;
 end;
 
-procedure TConfiguration.SetVirtualKeyOn(const Value: Cardinal);
+procedure TConfiguration.SetVirtualKeyOn(const AValue: Cardinal);
 begin
-  if FVirtualKeyOn <> Value then
-    FVirtualKeyOn := Value;
+  if FVirtualKeyOn <> AValue then
+    FVirtualKeyOn := AValue;
 end;
 
 procedure TConfiguration.Initialize;
@@ -158,7 +158,7 @@ begin
   FSignalList := TSignalList.Create;
 end;
 
-procedure TConfiguration.Loading(const AIniFile: TIniFile);
+procedure TConfiguration.Loading(const AIniFile: TCustomIniFile);
 var
   i, signal_count: Integer;
   signal: ISignal;
@@ -187,7 +187,7 @@ begin
   end;
 end;
 
-procedure TConfiguration.Saving(const AIniFile: TIniFile);
+procedure TConfiguration.Saving(const AIniFile: TCustomIniFile);
 var
   i: Integer;
 begin
@@ -200,6 +200,7 @@ begin
       WriteInteger(RsHotKeys, RsVirtualKeyOn, VirtualKeyOn);
       WriteInteger(RsHotKeys, RsModifierOff, ModifierOff);
       WriteInteger(RsHotKeys, RsVirtualKeyOff, VirtualKeyOff);
+      WriteInteger(RsSignals, RsQuantity, SignalList.Count);
       for i := 0 to SignalList.Count - 1 do
       begin
         WriteString(Format(RsSignal, [IntToStr(i)]), RsTitle, SignalList.Items[i].Title);
