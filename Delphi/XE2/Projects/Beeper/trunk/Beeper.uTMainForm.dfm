@@ -1,7 +1,6 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  Hint = #1054#1089#1085#1086#1074#1085#1086#1077' '#1086#1082#1085#1086' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   BorderWidth = 2
@@ -17,6 +16,7 @@ object MainForm: TMainForm
   Menu = MainMenu
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object StatusBar: TStatusBar
@@ -24,6 +24,7 @@ object MainForm: TMainForm
     Top = 325
     Width = 424
     Height = 19
+    Hint = #1055#1072#1085#1077#1083#1100' '#1089#1090#1072#1090#1091#1089#1072
     Panels = <>
     SimplePanel = True
   end
@@ -33,6 +34,7 @@ object MainForm: TMainForm
     Width = 424
     Height = 26
     Cursor = crHandPoint
+    Hint = #1055#1072#1085#1077#1083#1100' '#1080#1085#1089#1090#1088#1091#1084#1077#1085#1090#1086#1074
     ActionManager = ActionManager
     Caption = 'ActionToolBar'
     Color = clMenuBar
@@ -69,6 +71,7 @@ object MainForm: TMainForm
     RowSelect = True
     TabOrder = 2
     ViewStyle = vsReport
+    ExplicitTop = 20
   end
   object TrayIcon: TTrayIcon
     Icon.Data = {
@@ -126,7 +129,7 @@ object MainForm: TMainForm
     Left = 40
     Top = 144
     Bitmap = {
-      494C01010E008801CC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010E008801D00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       00000000000000000000000000000000000000000000FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
