@@ -6,7 +6,8 @@ uses
   Winapi.Windows,
   System.IniFiles,
   CastersPackage.uTIniFileDataStorage,
-  Beeper.uConsts;
+  Beeper.uConsts,
+  Beeper.uISignalList;
 
 type
   TConfiguration = class(TIniFileDataStorage)
@@ -16,6 +17,7 @@ type
     FModifierOn, FModifierOff: Integer;
     FVirtualKeyOn, FVirtualKeyOff: Cardinal;
     FSignalCount: Integer;
+    FSignalList: ISignalList;
     function GetShowBaloonHints: Boolean;
     function GetSoundEnabled: Boolean;
     procedure SetShowBaloonHints(const Value: Boolean);
@@ -52,6 +54,7 @@ var
 implementation
 
 uses
+  Beeper.uTSignalList,
   Beeper.uResourceStrings;
 
 procedure TConfiguration.AfterLoad;
@@ -151,6 +154,7 @@ begin
   FVirtualKeyOn := DEFAULT_VIRTUAL_KEY_ON;
   FVirtualKeyOff := DEFAULT_VIRTUAL_KEY_OFF;
   FSignalCount := DEFAULT_SIGNAL_COUNT;
+  FSignalList := TSignalList.Create;
 end;
 
 procedure TConfiguration.Loading(const AIniFile: TIniFile);
