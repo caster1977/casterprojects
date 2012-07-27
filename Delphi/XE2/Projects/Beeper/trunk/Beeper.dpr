@@ -11,7 +11,8 @@ uses
   Beeper.uISignal in 'Beeper.uISignal.pas',
   Beeper.uISignalList in 'Beeper.uISignalList.pas',
   Beeper.uTSignalList in 'Beeper.uTSignalList.pas',
-  Beeper.uIConfiguration in 'Beeper.uIConfiguration.pas';
+  Beeper.uIConfiguration in 'Beeper.uIConfiguration.pas',
+  Beeper.uTSignalForm in 'Beeper.uTSignalForm.pas' {SignalForm};
 
 {$R *.res}
 

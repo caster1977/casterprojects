@@ -105,6 +105,10 @@
 			<DCCReference Include="Beeper.uISignalList.pas"/>
 			<DCCReference Include="Beeper.uTSignalList.pas"/>
 			<DCCReference Include="Beeper.uIConfiguration.pas"/>
+			<DCCReference Include="Beeper.uTSignalForm.pas">
+				<Form>SignalForm</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
