@@ -25,7 +25,7 @@ const
   DEFAULT_WAVE_FILE = '';
   DEFAULT_ENABLED = True;
 
-  PERIODS: array [ptSeconds .. ptYears] of string = (RsSeconds, RsMinutes, RsHours, RsDays, RsWeeks, RsMonths, RsYears);
+  PERIODS: array [Low(TPeriodType) .. High(TPeriodType)] of string = (RsSeconds, RsMinutes, RsHours, RsDays, RsWeeks, RsMonths, RsYears);
 
 implementation
 
