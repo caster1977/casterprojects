@@ -3,6 +3,7 @@ unit Beeper.uTSignalList;
 interface
 
 uses
+  System.IniFiles,
   Beeper.uISignalList,
   Beeper.uISignal,
   System.Classes;
@@ -18,22 +19,49 @@ type
   public
     constructor Create; virtual;
     destructor Destroy; override;
+
+    procedure Initialize; virtual;
+    function IndexOf(const AItem: ISignal): Integer;
+
     function Add(const AItem: ISignal): Integer;
     procedure Append(const AItems: ISignalList);
     procedure Insert(const AIndex: Integer; const AItem: ISignal);
+
     procedure Delete(const AIndex: Integer);
     procedure Exchange(const AIndex1, AIndex2: Integer);
     function Remove(const AItem: ISignal; const ASkipIfNotFound: Boolean = False): Integer; overload;
     procedure Remove(const AItems: ISignalList; const ASkipIfNotFound: Boolean = False); overload;
     procedure Clear;
+
     function First: ISignal;
     function Last: ISignal;
-    function IndexOf(const AItem: ISignal): Integer;
+
     property Count: Integer read GetCount write SetCount;
     property Items[const AIndex: Integer]: ISignal read GetItem write PutItem; default;
   end;
 
 implementation
+
+uses
+  Beeper.uResourceStrings,
+  Beeper.uConsts;
+
+constructor TSignalList.Create;
+begin
+  inherited;
+  Initialize;
+end;
+
+procedure TSignalList.Initialize;
+begin
+  FList := TInterfaceList.Create;
+end;
+
+destructor TSignalList.Destroy;
+begin
+  Clear;
+  inherited;
+end;
 
 function TSignalList.Add(const AItem: ISignal): Integer;
 begin
@@ -53,21 +81,9 @@ begin
   FList.Clear;
 end;
 
-constructor TSignalList.Create;
-begin
-  inherited;
-  FList := TInterfaceList.Create;
-end;
-
 procedure TSignalList.Delete(const AIndex: Integer);
 begin
   FList.Delete(AIndex);
-end;
-
-destructor TSignalList.Destroy;
-begin
-  Clear;
-  inherited;
 end;
 
 procedure TSignalList.Exchange(const AIndex1, AIndex2: Integer);

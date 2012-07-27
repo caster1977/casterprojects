@@ -14,6 +14,7 @@ resourcestring
   RsSounds = 'Звуки';
   RsHotKeys = 'Горячие клавиши';
   RsSignals = 'Сигналы';
+  RsSignal = 'Сигнал %s';
 
   RsInTray = 'В трее';
   RsEnabled = 'Включены';
@@ -22,6 +23,11 @@ resourcestring
   RsModifierOff = 'Модификатор клавиши отключения';
   RsVirtualKeyOff = 'Клавиша отключения';
   RsQuantity = 'Количество';
+  RsTitle = 'Наименование';
+  RsPeriodType = 'Тип периода';
+  RsPeriod = 'Период';
+  RsHint = 'Подсказка';
+  RsWaveFile = 'Звуковой файл';
 
   RsIniFileSaveError = 'Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
 

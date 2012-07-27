@@ -17,7 +17,8 @@ uses
   Vcl.ImgList,
   Vcl.ToolWin,
   CastersPackage.Actions.Classes,
-  Vcl.StdActns;
+  Vcl.StdActns,
+  Beeper.uIConfiguration;
 
 type
   TMainForm = class(TForm)
@@ -48,10 +49,12 @@ type
     ActionMenuGroupAction: TActionMenuGroupAction;
     procedure EraseSignalActionUpdate(Sender: TObject);
     procedure EditSignalActionUpdate(Sender: TObject);
-    procedure CreateSignalActionExecute(Sender: TObject);
     procedure EditSignalActionExecute(Sender: TObject);
     procedure EraseSignalActionExecute(Sender: TObject);
-  private
+    procedure CreateSignalActionExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  strict private
+    FConfiguration: IConfiguration;
     procedure DisplayHint(Sender: TObject);
     procedure ShowErrorMessageBox(const AMessage: string);
     procedure RegisterHotKeys;
@@ -84,9 +87,9 @@ end;
 
 procedure TMainForm.RegisterHotKeys;
 begin
-  if not RegisterHotkey(Handle, 1, Configuration.ModifierOn, Configuration.VirtualKeyOn) then
+  if not RegisterHotkey(Handle, 1, FConfiguration.ModifierOn, FConfiguration.VirtualKeyOn) then
     ShowErrorMessageBox(RsErrorResisterStartHotKey);
-  if not RegisterHotkey(Handle, 2, Configuration.ModifierOff, Configuration.VirtualKeyOff) then
+  if not RegisterHotkey(Handle, 2, FConfiguration.ModifierOff, FConfiguration.VirtualKeyOff) then
     ShowErrorMessageBox(RsErrorResisterStopHotKey);
 end;
 
@@ -106,6 +109,12 @@ end;
 procedure TMainForm.EraseSignalActionUpdate(Sender: TObject);
 begin
   TAction(Sender).Enabled := ListView1.Selected <> nil;
+end;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+  FConfiguration := TConfiguration.Create;
+  Application.OnHint:=DisplayHint;
 end;
 
 procedure TMainForm.CreateSignalActionExecute(Sender: TObject);
