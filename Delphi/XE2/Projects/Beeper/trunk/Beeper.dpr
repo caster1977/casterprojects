@@ -9,7 +9,8 @@ uses
   Beeper.uTSignal in 'Beeper.uTSignal.pas',
   Beeper.uTPeriodType in 'Beeper.uTPeriodType.pas',
   Beeper.uISignal in 'Beeper.uISignal.pas',
-  Beeper.uISignalList in 'Beeper.uISignalList.pas';
+  Beeper.uISignalList in 'Beeper.uISignalList.pas',
+  Beeper.uTSignalList in 'Beeper.uTSignalList.pas';
 
 {$R *.res}
 
