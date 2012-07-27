@@ -3,7 +3,7 @@ unit Beeper.uTPeriodType;
 interface
 
 type
-  TPeriodType = (rtSeconds, rtMinutes, rtHours, rtDays, rtWeeks, rtMonths, rtYears);
+  TPeriodType = (ptSeconds, ptMinutes, ptHours, ptDays, ptWeeks, ptMonths, ptYears);
 
 implementation
 

@@ -13,25 +13,25 @@ type
     procedure Initialize;
 
     function GetSoundEnabled: Boolean;
-    procedure SetSoundEnabled(const Value: Boolean);
+    procedure SetSoundEnabled(const AValue: Boolean);
 
     function GetModifierOff: Integer;
-    procedure SetModifierOff(const Value: Integer);
+    procedure SetModifierOff(const AValue: Integer);
 
     function GetModifierOn: Integer;
-    procedure SetModifierOn(const Value: Integer);
+    procedure SetModifierOn(const AValue: Integer);
 
     function GetVirtualKeyOff: Cardinal;
-    procedure SetVirtualKeyOff(const Value: Cardinal);
+    procedure SetVirtualKeyOff(const AValue: Cardinal);
 
     function GetVirtualKeyOn: Cardinal;
-    procedure SetVirtualKeyOn(const Value: Cardinal);
+    procedure SetVirtualKeyOn(const AValue: Cardinal);
 
     function GetSignalList: ISignalList;
-    procedure SetSignalList(const Value: ISignalList);
+    procedure SetSignalList(const AValue: ISignalList);
 
     function GetShowBaloonHints: Boolean;
-    procedure SetShowBaloonHints(const Value: Boolean);
+    procedure SetShowBaloonHints(const AValue: Boolean);
 
     property ShowBaloonHints: Boolean read GetShowBaloonHints write SetShowBaloonHints;
     property SoundEnabled: Boolean read GetSoundEnabled write SetSoundEnabled;

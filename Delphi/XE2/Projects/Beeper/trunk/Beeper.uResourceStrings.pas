@@ -2,6 +2,9 @@ unit Beeper.uResourceStrings;
 
 interface
 
+uses
+  Beeper.uTPeriodType;
+
 resourcestring
   RsErrorMessageCaption = '%s - Ошибка!';
   RsErrorResisterStartHotKey = 'Не удалось назначить горячую клавишу для запуска сигналов.';
@@ -30,6 +33,17 @@ resourcestring
   RsWaveFile = 'Звуковой файл';
 
   RsIniFileSaveError = 'Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
+
+  RsSeconds = 'сек.';
+  RsMinutes = 'мин.';
+  RsHours = 'ч.';
+  RsDays = 'дн.';
+  RsWeeks = 'нед.';
+  RsMonths = 'мес.';
+  RsYears = 'г.';
+
+  RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
+  RsExitConfirmationCaption = '%s - Подтверждение выхода';
 
 implementation
 
