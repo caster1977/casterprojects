@@ -21,11 +21,18 @@ const
   DEFAULT_TITLE = '';
   DEFAULT_PERIOD = 0;
   DEFAULT_PERIOD_TYPE = ptSeconds;
-  DEFAULT_HINT = '';
+  DEFAULT_MESSAGE_ENABLED = False;
+  DEFAULT_MESSAGE = '';
+  DEFAULT_WAVE_FILE_ENABLED = False;
   DEFAULT_WAVE_FILE = '';
   DEFAULT_ENABLED = True;
 
   PERIODS: array [Low(TPeriodType) .. High(TPeriodType)] of string = (RsSeconds, RsMinutes, RsHours, RsDays, RsWeeks, RsMonths, RsYears);
+
+  WAVEFILE_EXTENTION = 'wav';
+
+  HOTKEY_ON = 1;
+  HOTKEY_OFF = 2;
 
 implementation
 

@@ -1,5 +1,7 @@
 program Beeper;
 
+{$R 'Beeper.Waves.res' 'Beeper.Waves.rc'}
+
 uses
   Vcl.Forms,
   Beeper.uTMainForm in 'Beeper.uTMainForm.pas' {MainForm},
@@ -12,13 +14,17 @@ uses
   Beeper.uISignalList in 'Beeper.uISignalList.pas',
   Beeper.uTSignalList in 'Beeper.uTSignalList.pas',
   Beeper.uIConfiguration in 'Beeper.uIConfiguration.pas',
-  Beeper.uTSignalForm in 'Beeper.uTSignalForm.pas' {SignalForm};
+  Beeper.uTSignalForm in 'Beeper.uTSignalForm.pas' {SignalForm},
+  Beeper.uTAboutForm in 'Beeper.uTAboutForm.pas' {AboutForm};
 
 {$R *.res}
 
 begin
   Application.Initialize;
-  Application.MainFormOnTaskbar := True;
+  Application.Title:='Beeper';
+  Application.HelpFile:='';
+  Application.ShowMainForm:=False;
+  //Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMainForm, MainForm);
   Application.Run;
 end.

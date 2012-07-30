@@ -21,8 +21,14 @@ type
     function GetPeriodType: TPeriodType;
     procedure SetPeriodType(const AValue: TPeriodType);
 
-    function GetHint: string;
-    procedure SetHint(const AValue: string);
+    function GetMessageEnabled: Boolean;
+    procedure SetMessageEnabled(const AValue: Boolean);
+
+    function GetMessage: string;
+    procedure SetMessage(const AValue: string);
+
+    function GetWaveFileEnabled: Boolean;
+    procedure SetWaveFileEnabled(const AValue: Boolean);
 
     function GetWaveFile: string;
     procedure SetWaveFile(const AValue: string);
@@ -33,7 +39,9 @@ type
     property Title: string read GetTitle write SetTitle;
     property Period: Int64 read GetPeriod write SetPeriod;
     property PeriodType: TPeriodType read GetPeriodType write SetPeriodType;
-    property Hint: string read GetHint write SetHint;
+    property MessageEnabled: boolean read GetMessageEnabled write SetMessageEnabled;
+    property Message: string read GetMessage write SetMessage;
+    property WaveFileEnabled: boolean read GetWaveFileEnabled write SetWaveFileEnabled;
     property WaveFile: string read GetWaveFile write SetWaveFile;
     property Enabled: Boolean read GetEnabled write SetEnabled;
   end;
