@@ -1,8 +1,9 @@
 object SignalForm: TSignalForm
   Left = 0
   Top = 0
-  Caption = 'SignalForm'
-  ClientHeight = 185
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsDialog
+  ClientHeight = 243
   ClientWidth = 250
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -11,13 +12,14 @@ object SignalForm: TSignalForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
   OnCreate = FormCreate
   DesignSize = (
     250
-    185)
+    243)
   PixelsPerInch = 96
   TextHeight = 13
-  object Label2: TLabel
+  object lblPeriod: TLabel
     Left = 8
     Top = 54
     Width = 126
@@ -33,6 +35,7 @@ object SignalForm: TSignalForm
     EditLabel.Height = 13
     EditLabel.Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1089#1080#1075#1085#1072#1083#1072
     TabOrder = 0
+    Text = #1053#1086#1074#1099#1081' '#1089#1080#1075#1085#1072#1083
   end
   object ledPeriod: TLabeledEdit
     Left = 37
@@ -54,69 +57,84 @@ object SignalForm: TSignalForm
     Style = csDropDownList
     TabOrder = 2
   end
-  object Button1: TButton
+  object btnCancel: TButton
     Left = 128
-    Top = 152
+    Top = 210
     Width = 114
     Height = 25
+    Cursor = crHandPoint
+    Action = actCancel
     Anchors = [akLeft, akBottom]
-    Caption = 'Button1'
-    TabOrder = 3
-    ExplicitTop = 153
+    Cancel = True
+    TabOrder = 9
   end
-  object Button2: TButton
+  object btnSave: TButton
     Left = 8
-    Top = 152
+    Top = 210
     Width = 114
     Height = 25
+    Cursor = crHandPoint
+    Action = actSave
     Anchors = [akLeft, akBottom]
-    Caption = 'Button1'
-    TabOrder = 4
-    ExplicitTop = 153
+    TabOrder = 8
   end
-  object ComboBox2: TComboBox
+  object cmbbxWaveFile: TComboBox
     Left = 8
     Top = 123
     Width = 171
     Height = 21
-    Anchors = [akLeft, akBottom]
-    TabOrder = 5
-    ExplicitTop = 119
+    TabOrder = 4
   end
-  object Button3: TButton
+  object btnSelectWaveFile: TButton
     Left = 185
     Top = 121
     Width = 26
     Height = 25
     Cursor = crHandPoint
-    Anchors = [akLeft, akBottom]
-    Caption = '...'
-    TabOrder = 6
-    ExplicitTop = 117
+    Action = actSelectWaveFile
+    TabOrder = 5
   end
-  object PlayButton: TBitBtn
-    Left = 217
-    Top = 121
-    Width = 25
-    Height = 25
-    Cursor = crHandPoint
-    Anchors = [akLeft, akBottom]
-    TabOrder = 7
-    ExplicitTop = 117
-  end
-  object CheckBox1: TCheckBox
+  object chkbxPlayWaveFile: TCheckBox
     Left = 8
     Top = 100
     Width = 234
     Height = 17
-    Caption = #1042#1086#1089#1087#1088#1086#1080#1079#1074#1077#1089#1090#1080' '#1079#1074#1091#1082#1086#1074#1086#1081' '#1092#1072#1081#1083':'
-    TabOrder = 8
+    Action = actEnablePlayWaveFile
+    TabOrder = 3
+  end
+  object chkbxShowMessage: TCheckBox
+    Left = 8
+    Top = 150
+    Width = 234
+    Height = 17
+    Action = actEnableShowMessage
+    TabOrder = 6
+  end
+  object cmbbxMessage: TComboBox
+    Left = 8
+    Top = 173
+    Width = 234
+    Height = 21
+    TabOrder = 7
+  end
+  object btnPlayWaveFile: TButton
+    Left = 216
+    Top = 121
+    Width = 26
+    Height = 25
+    Cursor = crHandPoint
+    Action = actPlayWaveFile
+    ImageAlignment = iaCenter
+    ImageMargins.Left = 2
+    ImageMargins.Top = 2
+    Images = ImageList
+    TabOrder = 10
   end
   object ImageList: TImageList
     Left = 207
-    Top = 24
+    Top = 8
     Bitmap = {
-      494C0101020004002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400380010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -256,7 +274,45 @@ object SignalForm: TSignalForm
       000000000000}
   end
   object ActionList: TActionList
+    Images = ImageList
     Left = 152
-    Top = 24
+    Top = 8
+    object actSave: TAction
+      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
+      Hint = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1089#1080#1075#1085#1072#1083'/'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1074#1085#1077#1089#1105#1085#1085#1099#1093' '#1080#1079#1084#1077#1085#1077#1085#1080#1081
+      OnExecute = actSaveExecute
+      OnUpdate = actSaveUpdate
+    end
+    object actCancel: TAction
+      Caption = #1054#1090#1084#1077#1085#1072
+      Hint = #1054#1090#1084#1077#1085#1080#1090#1100' '#1080#1079#1084#1077#1085#1077#1085#1080#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1084#1077#1085#1099' '#1074#1085#1077#1089#1105#1085#1085#1099#1093' '#1080#1079#1084#1077#1085#1077#1085#1080#1081
+      OnExecute = actCancelExecute
+    end
+    object actSelectWaveFile: TAction
+      Caption = '...'
+      Hint = 
+        #1042#1099#1073#1088#1072#1090#1100' '#1079#1074#1091#1082#1086#1074#1086#1081' '#1092#1072#1081#1083'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072' '#1074#1099#1073#1086#1088#1072' '#1079#1074#1091#1082#1086#1074#1086#1075#1086 +
+        ' '#1092#1072#1081#1083#1072
+      OnExecute = actSelectWaveFileExecute
+      OnUpdate = actSelectWaveFileUpdate
+    end
+    object actPlayWaveFile: TAction
+      Hint = 
+        #1055#1088#1086#1089#1083#1091#1096#1072#1090#1100' '#1079#1074#1091#1082#1086#1074#1086#1081' '#1092#1072#1081#1083'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1088#1086#1089#1083#1091#1096#1080#1074#1072#1085#1080#1103' '#1074#1099#1073#1088#1072#1085#1085#1086#1075#1086' '#1079#1074 +
+        #1091#1082#1086#1074#1086#1075#1086' '#1092#1072#1081#1083#1072
+      ImageIndex = 0
+      OnExecute = actPlayWaveFileExecute
+      OnUpdate = actPlayWaveFileUpdate
+    end
+    object actEnablePlayWaveFile: TAction
+      Caption = #1042#1086#1089#1087#1088#1086#1080#1079#1074#1077#1089#1090#1080' '#1079#1074#1091#1082#1086#1074#1086#1081' '#1092#1072#1081#1083':'
+      OnExecute = actEnablePlayWaveFileExecute
+      OnUpdate = actEnablePlayWaveFileUpdate
+    end
+    object actEnableShowMessage: TAction
+      Caption = #1042#1099#1074#1077#1089#1090#1080' '#1089#1086#1086#1073#1097#1077#1085#1080#1077
+      OnExecute = actEnableShowMessageExecute
+      OnUpdate = actEnableShowMessageUpdate
+    end
   end
 end

@@ -180,7 +180,9 @@ begin
       signal.Title := ReadString(Format(RsSignal, [IntToStr(i)]), RsTitle, DEFAULT_TITLE);
       signal.Period := ReadInteger(Format(RsSignal, [IntToStr(i)]), RsPeriod, DEFAULT_PERIOD);
       signal.PeriodType := TPeriodType(ReadInteger(Format(RsSignal, [IntToStr(i)]), RsPeriodType, Integer(DEFAULT_PERIOD_TYPE)));
-      signal.Hint := ReadString(Format(RsSignal, [IntToStr(i)]), RsHint, DEFAULT_HINT);
+      signal.MessageEnabled := ReadBool(Format(RsSignal, [IntToStr(i)]), RsMessageEnabled, DEFAULT_MESSAGE_ENABLED);
+      signal.Message := ReadString(Format(RsSignal, [IntToStr(i)]), RsMessage, DEFAULT_MESSAGE);
+      signal.WaveFileEnabled := ReadBool(Format(RsSignal, [IntToStr(i)]), RsWaveFileEnabled, DEFAULT_WAVE_FILE_ENABLED);
       signal.WaveFile := ReadString(Format(RsSignal, [IntToStr(i)]), RsWaveFile, DEFAULT_WAVE_FILE);
       SignalList.Add(signal);
     end;
@@ -206,7 +208,9 @@ begin
         WriteString(Format(RsSignal, [IntToStr(i)]), RsTitle, SignalList.Items[i].Title);
         WriteInteger(Format(RsSignal, [IntToStr(i)]), RsPeriod, SignalList.Items[i].Period);
         WriteInteger(Format(RsSignal, [IntToStr(i)]), RsPeriodType, Integer(SignalList.Items[i].PeriodType));
-        WriteString(Format(RsSignal, [IntToStr(i)]), RsHint, SignalList.Items[i].Hint);
+        WriteBool(Format(RsSignal, [IntToStr(i)]), RsMessageEnabled, SignalList.Items[i].MessageEnabled);
+        WriteString(Format(RsSignal, [IntToStr(i)]), RsMessage, SignalList.Items[i].Message);
+        WriteBool(Format(RsSignal, [IntToStr(i)]), RsWaveFileEnabled, SignalList.Items[i].WaveFileEnabled);
         WriteString(Format(RsSignal, [IntToStr(i)]), RsWaveFile, SignalList.Items[i].WaveFile);
       end;
     except

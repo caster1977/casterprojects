@@ -29,7 +29,9 @@ resourcestring
   RsTitle = 'Наименование';
   RsPeriodType = 'Тип периода';
   RsPeriod = 'Период';
-  RsHint = 'Подсказка';
+  RsMessageEnabled = 'Выводить сообщение';
+  RsMessage = 'Сообщение';
+  RsWaveFileEnabled = 'Проигрывать звуковой файл';
   RsWaveFile = 'Звуковой файл';
 
   RsIniFileSaveError = 'Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
@@ -44,6 +46,11 @@ resourcestring
 
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
   RsExitConfirmationCaption = '%s - Подтверждение выхода';
+
+  RsAddSignalCaption = 'Добавление сигнала';
+  RsEditSignalCaption = 'Редактирование сигнала';
+
+  RsSelectWaveFile = 'Выберите звуковой файл...';
 
 implementation
 

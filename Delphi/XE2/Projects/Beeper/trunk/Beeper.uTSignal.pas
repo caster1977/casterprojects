@@ -15,7 +15,9 @@ type
     FTitle: string;
     FPeriod: integer;
     FPeriodType: TPeriodType;
-    FHint: string;
+    FMessageEnabled: Boolean;
+    FMessage: string;
+    FWaveFileEnabled: Boolean;
     FWaveFile: string;
     FEnabled: Boolean;
     function PeriodToSeconds(const ASeconds: word; const AMinutes: word = 0; const AHours: word = 0; const ADays: word = 0; const AWeeks: word = 0;
@@ -30,8 +32,14 @@ type
     function GetPeriodType: TPeriodType;
     procedure SetPeriodType(const AValue: TPeriodType);
 
-    function GetHint: string;
-    procedure SetHint(const AValue: string);
+    function GetMessageEnabled: Boolean;
+    procedure SetMessageEnabled(const AValue: Boolean);
+
+    function GetMessage: string;
+    procedure SetMessage(const AValue: string);
+
+    function GetWaveFileEnabled: Boolean;
+    procedure SetWaveFileEnabled(const AValue: Boolean);
 
     function GetWaveFile: string;
     procedure SetWaveFile(const AValue: string);
@@ -45,7 +53,9 @@ type
     property Title: string read GetTitle write SetTitle nodefault;
     property PeriodType: TPeriodType read GetPeriodType write SetPeriodType default DEFAULT_PERIOD_TYPE;
     property Period: Int64 read GetPeriod write SetPeriod default DEFAULT_PERIOD;
-    property Hint: string read GetHint write SetHint nodefault;
+    property MessageEnabled: boolean read GetMessageEnabled write SetMessageEnabled;
+    property Message: string read GetMessage write SetMessage;
+    property WaveFileEnabled: boolean read GetWaveFileEnabled write SetWaveFileEnabled;
     property WaveFile: string read GetWaveFile write SetWaveFile nodefault;
     property Enabled: Boolean read GetEnabled write SetEnabled default DEFAULT_ENABLED;
   end;
@@ -66,9 +76,14 @@ begin
   Result := FEnabled;
 end;
 
-function TSignal.GetHint: string;
+function TSignal.GetMessage: string;
 begin
-  Result := FHint;
+  Result := FMessage;
+end;
+
+function TSignal.GetMessageEnabled: Boolean;
+begin
+  Result := FMessageEnabled;
 end;
 
 function TSignal.GetTitle: string;
@@ -91,19 +106,30 @@ begin
   Result := FWaveFile;
 end;
 
+function TSignal.GetWaveFileEnabled: Boolean;
+begin
+  Result := FWaveFileEnabled;
+end;
+
 procedure TSignal.SetEnabled(const AValue: Boolean);
 begin
   if FEnabled <> AValue then
     FEnabled := AValue;
 end;
 
-procedure TSignal.SetHint(const AValue: string);
+procedure TSignal.SetMessage(const AValue: string);
 var
   s: string;
 begin
   s := Trim(AValue);
-  if FHint <> s then
-    FHint := s;
+  if FMessage <> s then
+    FMessage := s;
+end;
+
+procedure TSignal.SetMessageEnabled(const AValue: Boolean);
+begin
+  if FMessageEnabled <> AValue then
+    FMessageEnabled := AValue;
 end;
 
 procedure TSignal.SetTitle(const AValue: string);
@@ -136,6 +162,12 @@ begin
     FWaveFile := s;
 end;
 
+procedure TSignal.SetWaveFileEnabled(const AValue: Boolean);
+begin
+  if FWaveFileEnabled <> AValue then
+    FWaveFileEnabled := AValue;
+end;
+
 function TSignal.PeriodToSeconds(const ASeconds, AMinutes, AHours, ADays, AWeeks, AMonths, AYears: word): Int64;
 begin
   Result := 0;
@@ -147,7 +179,9 @@ begin
   FTitle := DEFAULT_TITLE;
   FPeriod := DEFAULT_PERIOD;
   FPeriodType := DEFAULT_PERIOD_TYPE;
-  FHint := DEFAULT_HINT;
+  FMessageEnabled := DEFAULT_MESSAGE_ENABLED;
+  FMessage := DEFAULT_MESSAGE;
+  FWaveFileEnabled := DEFAULT_WAVE_FILE_ENABLED;
   FWaveFile := DEFAULT_WAVE_FILE;
 end;
 
