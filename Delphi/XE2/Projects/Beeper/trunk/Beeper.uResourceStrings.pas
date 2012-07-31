@@ -12,7 +12,6 @@ resourcestring
   RsErrorUnresisterStartHotKey = 'Не удалось освободить горячую клавишу предназначеную для останова сигналов.';
   RsErrorUnresisterStopHotKey = 'Не удалось освободить горячую клавишу предназначеную для запуска сигналов.';
 
-
   RsHints = 'Подсказки';
   RsSounds = 'Звуки';
   RsHotKeys = 'Горячие клавиши';
@@ -51,6 +50,15 @@ resourcestring
   RsEditSignalCaption = 'Редактирование сигнала';
 
   RsSelectWaveFile = 'Выберите звуковой файл...';
+
+  RsErrorCreateMutex = 'Не удалось создать объект мютекса';
+  RsErrorWaitForMutex = 'Не удалось считать состояние объекта мьютекса';
+  RsErrorReleaseMutex = 'Не удалось освободить объект мьютекса';
+  RsErrorCloseMutex = 'Не удалось закрыть ссылку на мьютекс';
+  RsErrorMutexAlreadyExists = 'Работа данной копии программы будет завершена, т.к. одна копия программы уже запущена.';
+  RsErrorCode = ' Код ошибки: %s';
+  RsWarningCaption = '%s - Предупреждение';
+  RsErrorRegisterWindowMessage = 'Не удалось выполнить операцию регистрации оконного сообщения!';
 
 implementation
 

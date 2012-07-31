@@ -91,7 +91,7 @@ object AboutForm: TAboutForm
   end
   object imgApplicationIcon: TImage
     Left = 157
-    Top = 30
+    Top = 47
     Width = 32
     Height = 32
     AutoSize = True

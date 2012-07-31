@@ -54,13 +54,15 @@ type
     actAbout: TAction_About;
     N11: TMenuItem;
     N12: TMenuItem;
-    actRestore: TAction_Restore;
-    N13: TMenuItem;
     N14: TMenuItem;
     N15: TMenuItem;
     N16: TMenuItem;
     N17: TMenuItem;
     N18: TMenuItem;
+    actShow: TAction;
+    actHide: TAction;
+    miShow: TMenuItem;
+    miHide: TMenuItem;
     procedure actEraseSignalUpdate(Sender: TObject);
     procedure actEditSignalUpdate(Sender: TObject);
     procedure actEditSignalExecute(Sender: TObject);
@@ -75,25 +77,33 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
     procedure TrayIconClick(Sender: TObject);
-    procedure TrayIconDblClick(Sender: TObject);
-    procedure actRestoreExecute(Sender: TObject);
+    procedure actQuitExecute(Sender: TObject);
+    procedure actShowExecute(Sender: TObject);
+    procedure actHideExecute(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   strict private
     FConfiguration: IConfiguration;
     FSignalingActive: Boolean;
     FAboutWindowExists: Boolean;
     FAboutWindowHandle: HWND;
     FWaveFileHistory, FMessageHistory: TStringList;
+    FWindowMessage: Cardinal;
+    FFirstRun: Boolean;
     procedure DisplayHint(Sender: TObject);
-    procedure Minimize(Sender: TObject); overload;
-    procedure Minimize; overload;
-    procedure Restore;
     procedure ShowErrorMessageBox(const AMessage: string);
     procedure RegisterHotKeys;
     procedure UnregisterHotKeys;
+    procedure RegisterWindowMessages;
     procedure RefreshSignals;
     procedure FillHistory;
     procedure ShowAboutWindow(const AShowCloseButton: Boolean);
+    procedure HideAboutWindow;
     procedure WMHotkey(var Msg: TWMHotkey); message WM_HOTKEY;
+    procedure Flash;
+    procedure UpdateVisibilityActions;
+  strict protected
+    procedure WndProc(var Message: TMessage); override;
+    procedure WMGetSysCommand(var message : TMessage); message WM_SYSCOMMAND;
   end;
 
 var
@@ -123,25 +133,25 @@ procedure TMainForm.ShowAboutWindow(const AShowCloseButton: Boolean);
 begin
   with TAboutForm.Create(Self, AShowCloseButton) do
     try
-      FAboutWindowHandle:=Handle;
+      FAboutWindowHandle := Handle;
       FAboutWindowExists := True;
       ShowModal;
     finally
       FAboutWindowExists := False;
-      FAboutWindowHandle:=0;
+      FAboutWindowHandle := 0;
       Free;
     end;
+end;
+
+procedure TMainForm.HideAboutWindow;
+begin
+  if FAboutWindowExists then
+    SendMessage(FAboutWindowHandle, WM_SYSCOMMAND, SC_CLOSE, 0);
 end;
 
 procedure TMainForm.ShowErrorMessageBox(const AMessage: string);
 begin
   MessageBox(Handle, PWideChar(AMessage), PWideChar(Format(RsErrorMessageCaption, [Application.Title])), MESSAGE_TYPE_ERROR);
-end;
-
-procedure TMainForm.TrayIconClick(Sender: TObject);
-begin
-  if Visible then
-    SetForegroundWindow(Handle);
 end;
 
 procedure TMainForm.RegisterHotKeys;
@@ -173,6 +183,11 @@ end;
 procedure TMainForm.actEraseSignalUpdate(Sender: TObject);
 begin
   TAction(Sender).Enabled := Assigned(ListView.Selected) and (not FSignalingActive);
+end;
+
+procedure TMainForm.actQuitExecute(Sender: TObject);
+begin
+  Close;
 end;
 
 procedure TMainForm.actClearSignalsUpdate(Sender: TObject);
@@ -325,37 +340,22 @@ begin
           end;
 end;
 
-procedure TMainForm.Minimize;
-begin
-  TrayIcon.Visible := True;
-  Visible := False;
-end;
-
-procedure TMainForm.TrayIconDblClick(Sender: TObject);
-begin
-  Restore;
-end;
-
-procedure TMainForm.actRestoreExecute(Sender: TObject);
-begin
-  Restore;
-end;
-
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   FConfiguration := TConfiguration.Create;
   FSignalingActive := False;
   FAboutWindowExists := False;
-  FAboutWindowHandle:=0;
+  FAboutWindowHandle := 0;
+  FFirstRun:=True;
   if Assigned(FConfiguration) then
     FConfiguration.Load;
   Caption := Application.Title;
   Application.OnHint := DisplayHint;
-  Application.OnMinimize := Minimize;
   RefreshSignals;
   FillHistory;
+  RegisterWindowMessages;
   RegisterHotKeys;
-  ShowAboutWindow(False);
+  UpdateVisibilityActions;
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
@@ -366,6 +366,15 @@ begin
     FConfiguration.Save;
   FreeAndNil(FMessageHistory);
   FreeAndNil(FWaveFileHistory);
+end;
+
+procedure TMainForm.FormShow(Sender: TObject);
+begin
+  if FFirstRun then
+    begin
+      FFirstRun:=False;
+      ShowAboutWindow(False);
+    end;
 end;
 
 procedure TMainForm.WMHotkey(var Msg: TWMHotkey);
@@ -380,30 +389,72 @@ begin
   end;
 end;
 
-procedure TMainForm.Minimize(Sender: TObject);
+procedure TMainForm.RegisterWindowMessages;
 begin
-  // Update_IconHint;
-  Minimize;
+  FWindowMessage := RegisterWindowMessage(PWideChar(APPLICATION_NAME));
+  if FWindowMessage = 0 then
+    ShowErrorMessageBox(RsErrorRegisterWindowMessage);
 end;
 
-procedure TMainForm.Restore;
+procedure TMainForm.Flash;
 var
   fwi: FLASHWINFO;
 begin
-  if FAboutWindowExists then
+  fwi.cbSize := SizeOf(FLASHWINFO);
+  fwi.HWND := Handle;
+  fwi.dwFlags := FLASHW_TRAY or FLASHW_TIMERNOFG;
+  fwi.uCount := 0;
+  fwi.dwTimeout := 0;
+  FlashWindowEx(fwi);
+end;
+
+procedure TMainForm.TrayIconClick(Sender: TObject);
+begin
+  if Visible then
+    actHide.Execute
+  else
+    actShow.Execute;
+end;
+
+procedure TMainForm.UpdateVisibilityActions;
+begin
+  actShow.Visible:=not Visible;
+  actHide.Visible:=Visible;
+  miShow.Default:=actShow.Visible;
+  miHide.Default:=actHide.Visible;
+end;
+
+procedure TMainForm.WndProc(var Message: TMessage);
+begin
+  inherited;
+  if message.Msg = FWindowMessage then
   begin
-    (* i.cbSize := sizeof(FLASHWINFO);
-      fwi.hwnd := Application.Handle;
-      fwi.dwFlags := FLASHW_TRAY or FLASHW_TIMERNOFG;
-      fwi.uCount := 0;
-      fwi.dwTimeout := 0;
-      FlashWindowEx(fwi); *)
-    SendMessage(FAboutWindowHandle, WM_SYSCOMMAND, SC_CLOSE, 0);
+    actShow.Execute;
+    Flash;
   end;
+end;
+
+procedure TMainForm.actHideExecute(Sender: TObject);
+begin
+  HideAboutWindow;
+  Visible := False;
+  UpdateVisibilityActions;
+end;
+
+procedure TMainForm.actShowExecute(Sender: TObject);
+begin
+  HideAboutWindow;
   Visible := True;
-  TrayIcon.Visible := False;
-  Application.Restore;
+  UpdateVisibilityActions;
   SetForegroundWindow(Handle);
+end;
+
+procedure TMainForm.WMGetSysCommand(var Message: TMessage);
+begin
+  if (Message.WParam = SC_MINIMIZE) then
+    actHide.Execute
+  else
+    inherited;
 end;
 
 end.

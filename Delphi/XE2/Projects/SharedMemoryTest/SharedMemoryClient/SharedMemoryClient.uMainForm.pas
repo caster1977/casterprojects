@@ -188,7 +188,6 @@ resourcestring
 
 var
   WM_SERVER, WM_CLIENT: cardinal;
-  Recipients: DWORD=BSM_APPLICATIONS;
 
 procedure TMainForm.ProcessErrors(const aHandle: THandle; const aError: Boolean; const aErrorMessage: string);
 begin
