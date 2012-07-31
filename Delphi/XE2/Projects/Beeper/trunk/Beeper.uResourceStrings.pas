@@ -19,7 +19,7 @@ resourcestring
   RsSignal = 'Сигнал %s';
 
   RsInTray = 'В трее';
-  RsEnabled = 'Включены';
+  RsEnabled = 'Включен(ы)';
   RsModifierOn = 'Модификатор клавиши включения';
   RsVirtualKeyOn = 'Клавиша включения';
   RsModifierOff = 'Модификатор клавиши отключения';

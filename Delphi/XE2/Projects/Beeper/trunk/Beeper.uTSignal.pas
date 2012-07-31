@@ -53,17 +53,24 @@ type
     property Title: string read GetTitle write SetTitle nodefault;
     property PeriodType: TPeriodType read GetPeriodType write SetPeriodType default DEFAULT_PERIOD_TYPE;
     property Period: Int64 read GetPeriod write SetPeriod default DEFAULT_PERIOD;
-    property MessageEnabled: boolean read GetMessageEnabled write SetMessageEnabled;
-    property Message: string read GetMessage write SetMessage;
-    property WaveFileEnabled: boolean read GetWaveFileEnabled write SetWaveFileEnabled;
+    property MessageEnabled: Boolean read GetMessageEnabled write SetMessageEnabled;
+    property message: string read GetMessage write SetMessage;
+    property WaveFileEnabled: Boolean read GetWaveFileEnabled write SetWaveFileEnabled;
     property WaveFile: string read GetWaveFile write SetWaveFile nodefault;
     property Enabled: Boolean read GetEnabled write SetEnabled default DEFAULT_ENABLED;
   end;
+
+function GetSignal: ISignal;
 
 implementation
 
 uses
   System.SysUtils;
+
+function GetSignal: ISignal;
+begin
+  Result := TSignal.Create;
+end;
 
 constructor TSignal.Create;
 begin
