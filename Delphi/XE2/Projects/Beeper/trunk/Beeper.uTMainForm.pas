@@ -103,7 +103,7 @@ type
     procedure UpdateVisibilityActions;
   strict protected
     procedure WndProc(var Message: TMessage); override;
-    procedure WMGetSysCommand(var message : TMessage); message WM_SYSCOMMAND;
+    procedure WMGetSysCommand(var Message: TMessage); message WM_SYSCOMMAND;
   end;
 
 var
@@ -131,16 +131,19 @@ end;
 
 procedure TMainForm.ShowAboutWindow(const AShowCloseButton: Boolean);
 begin
-  with TAboutForm.Create(Self, AShowCloseButton) do
-    try
-      FAboutWindowHandle := Handle;
-      FAboutWindowExists := True;
-      ShowModal;
-    finally
-      FAboutWindowExists := False;
-      FAboutWindowHandle := 0;
-      Free;
-    end;
+  if not FAboutWindowExists then
+    with TAboutForm.Create(Self, AShowCloseButton) do
+      try
+        FAboutWindowHandle := Handle;
+        FAboutWindowExists := True;
+        ShowModal;
+      finally
+        FAboutWindowExists := False;
+        FAboutWindowHandle := 0;
+        Free;
+      end
+  else
+    SetForegroundWindow(FAboutWindowHandle);
 end;
 
 procedure TMainForm.HideAboutWindow;
@@ -342,11 +345,11 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-  FConfiguration := TConfiguration.Create;
+  FConfiguration := GetConfiguration;
   FSignalingActive := False;
   FAboutWindowExists := False;
   FAboutWindowHandle := 0;
-  FFirstRun:=True;
+  FFirstRun := True;
   if Assigned(FConfiguration) then
     FConfiguration.Load;
   Caption := Application.Title;
@@ -371,10 +374,10 @@ end;
 procedure TMainForm.FormShow(Sender: TObject);
 begin
   if FFirstRun then
-    begin
-      FFirstRun:=False;
-      ShowAboutWindow(False);
-    end;
+  begin
+    FFirstRun := False;
+    ShowAboutWindow(False);
+  end;
 end;
 
 procedure TMainForm.WMHotkey(var Msg: TWMHotkey);
@@ -418,10 +421,10 @@ end;
 
 procedure TMainForm.UpdateVisibilityActions;
 begin
-  actShow.Visible:=not Visible;
-  actHide.Visible:=Visible;
-  miShow.Default:=actShow.Visible;
-  miHide.Default:=actHide.Visible;
+  actShow.Visible := not Visible;
+  actHide.Visible := Visible;
+  miShow.Default := actShow.Visible;
+  miHide.Default := actHide.Visible;
 end;
 
 procedure TMainForm.WndProc(var Message: TMessage);
@@ -451,7 +454,7 @@ end;
 
 procedure TMainForm.WMGetSysCommand(var Message: TMessage);
 begin
-  if (Message.WParam = SC_MINIMIZE) then
+  if (message.WParam = SC_MINIMIZE) then
     actHide.Execute
   else
     inherited;

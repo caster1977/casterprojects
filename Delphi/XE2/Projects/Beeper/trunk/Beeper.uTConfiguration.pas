@@ -49,6 +49,8 @@ type
     property SignalList: ISignalList read GetSignalList write SetSignalList;
   end;
 
+function GetConfiguration(const AIniFileName: string = ''): IConfiguration;
+
 implementation
 
 uses
@@ -58,6 +60,11 @@ uses
   Beeper.uISignal,
   Beeper.uTSignal,
   Beeper.uTPeriodType;
+
+function GetConfiguration(const AIniFileName: string): IConfiguration;
+begin
+  Result := TConfiguration.Create(AIniFileName);
+end;
 
 procedure TConfiguration.AfterLoad;
 begin
@@ -162,6 +169,7 @@ procedure TConfiguration.Loading(const AIniFile: TCustomIniFile);
 var
   i, signal_count: Integer;
   signal: ISignal;
+  s: string;
 begin
   inherited;
   with AIniFile do
@@ -176,14 +184,16 @@ begin
     SignalList.Clear;
     for i := 0 to signal_count - 1 do
     begin
-      signal := TSignal.Create;
-      signal.Title := ReadString(Format(RsSignal, [IntToStr(i)]), RsTitle, DEFAULT_TITLE);
-      signal.Period := ReadInteger(Format(RsSignal, [IntToStr(i)]), RsPeriod, DEFAULT_PERIOD);
-      signal.PeriodType := TPeriodType(ReadInteger(Format(RsSignal, [IntToStr(i)]), RsPeriodType, Integer(DEFAULT_PERIOD_TYPE)));
-      signal.MessageEnabled := ReadBool(Format(RsSignal, [IntToStr(i)]), RsMessageEnabled, DEFAULT_MESSAGE_ENABLED);
-      signal.Message := ReadString(Format(RsSignal, [IntToStr(i)]), RsMessage, DEFAULT_MESSAGE);
-      signal.WaveFileEnabled := ReadBool(Format(RsSignal, [IntToStr(i)]), RsWaveFileEnabled, DEFAULT_WAVE_FILE_ENABLED);
-      signal.WaveFile := ReadString(Format(RsSignal, [IntToStr(i)]), RsWaveFile, DEFAULT_WAVE_FILE);
+      s := Format(RsSignal, [IntToStr(i)]);
+      signal := GetSignal;
+      signal.Title := ReadString(s, RsTitle, DEFAULT_TITLE);
+      signal.Period := ReadInteger(s, RsPeriod, DEFAULT_PERIOD);
+      signal.PeriodType := TPeriodType(ReadInteger(s, RsPeriodType, Integer(DEFAULT_PERIOD_TYPE)));
+      signal.MessageEnabled := ReadBool(s, RsMessageEnabled, DEFAULT_MESSAGE_ENABLED);
+      signal.Message := ReadString(s, RsMessage, DEFAULT_MESSAGE);
+      signal.WaveFileEnabled := ReadBool(s, RsWaveFileEnabled, DEFAULT_WAVE_FILE_ENABLED);
+      signal.WaveFile := ReadString(s, RsWaveFile, DEFAULT_WAVE_FILE);
+      signal.Enabled := ReadBool(s, RsEnabled, DEFAULT_ENABLED);
       SignalList.Add(signal);
     end;
   end;
@@ -192,6 +202,7 @@ end;
 procedure TConfiguration.Saving(const AIniFile: TCustomIniFile);
 var
   i: Integer;
+  s: string;
 begin
   inherited;
   with AIniFile do
@@ -205,13 +216,15 @@ begin
       WriteInteger(RsSignals, RsQuantity, SignalList.Count);
       for i := 0 to SignalList.Count - 1 do
       begin
-        WriteString(Format(RsSignal, [IntToStr(i)]), RsTitle, SignalList.Items[i].Title);
-        WriteInteger(Format(RsSignal, [IntToStr(i)]), RsPeriod, SignalList.Items[i].Period);
-        WriteInteger(Format(RsSignal, [IntToStr(i)]), RsPeriodType, Integer(SignalList.Items[i].PeriodType));
-        WriteBool(Format(RsSignal, [IntToStr(i)]), RsMessageEnabled, SignalList.Items[i].MessageEnabled);
-        WriteString(Format(RsSignal, [IntToStr(i)]), RsMessage, SignalList.Items[i].Message);
-        WriteBool(Format(RsSignal, [IntToStr(i)]), RsWaveFileEnabled, SignalList.Items[i].WaveFileEnabled);
-        WriteString(Format(RsSignal, [IntToStr(i)]), RsWaveFile, SignalList.Items[i].WaveFile);
+        s := Format(RsSignal, [IntToStr(i)]);
+        WriteString(s, RsTitle, SignalList.Items[i].Title);
+        WriteInteger(s, RsPeriod, SignalList.Items[i].Period);
+        WriteInteger(s, RsPeriodType, Integer(SignalList.Items[i].PeriodType));
+        WriteBool(s, RsMessageEnabled, SignalList.Items[i].MessageEnabled);
+        WriteString(s, RsMessage, SignalList.Items[i].Message);
+        WriteBool(s, RsWaveFileEnabled, SignalList.Items[i].WaveFileEnabled);
+        WriteString(s, RsWaveFile, SignalList.Items[i].WaveFile);
+        WriteBool(s, RsEnabled, SignalList.Items[i].Enabled);
       end;
     except
       on EIniFileException do
