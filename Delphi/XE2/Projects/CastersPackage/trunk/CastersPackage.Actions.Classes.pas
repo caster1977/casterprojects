@@ -9,7 +9,7 @@ uses
   Vcl.StdActns;
 
 type
-  TQuitAction = class(TCustomAction)
+  TQuitAction = class(TAction); {class(TCustomAction)
   public
     function HandlesTarget(Target: TObject): Boolean; override;
     procedure ExecuteTarget(Target: TObject); override;
@@ -26,7 +26,7 @@ type
     property Visible;
     property OnHint;
     property OnUpdate;
-  end;
+  end;}
 
   TWindowCloseAction = class(TCustomAction)
   public
@@ -137,6 +137,7 @@ implementation
 
 uses
   Winapi.Windows,
+  Winapi.Messages,
   CastersPackage.Actions.DataModule;
 
 procedure register;
@@ -210,20 +211,21 @@ end;}
 
 { TQuitAction }
 
-procedure TQuitAction.ExecuteTarget(Target: TObject);
+{procedure TQuitAction.ExecuteTarget(Target: TObject);
 begin
   inherited;
   if Assigned(Application.MainForm) then
     begin
       Application.HelpCommand(HELP_QUIT, 0);
-      Application.MainForm.Close;
+      SendMessage(Application.MainForm.Handle, WM_SYSCOMMAND, SC_CLOSE, 0);
+      //Application.MainForm.Close;
     end;
 end;
 
 function TQuitAction.HandlesTarget(Target: TObject): Boolean;
 begin
   Result := True;
-end;
+end;}
 
 { TWindowCloseAction }
 

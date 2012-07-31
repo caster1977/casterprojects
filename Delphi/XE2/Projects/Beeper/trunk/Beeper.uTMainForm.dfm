@@ -20,6 +20,7 @@ object MainForm: TMainForm
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object StatusBar: TStatusBar
@@ -75,7 +76,6 @@ object MainForm: TMainForm
     TabOrder = 2
     ViewStyle = vsReport
     OnItemChecked = ListViewItemChecked
-    ExplicitTop = 20
   end
   object TrayIcon: TTrayIcon
     BalloonTimeout = 0
@@ -127,7 +127,6 @@ object MainForm: TMainForm
     PopupMenu = TrayPopupMenu
     Visible = True
     OnClick = TrayIconClick
-    OnDblClick = TrayIconDblClick
     Left = 40
     Top = 96
   end
@@ -136,7 +135,7 @@ object MainForm: TMainForm
     Left = 40
     Top = 144
     Bitmap = {
-      494C010110008801EC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010110008801080110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -859,6 +858,7 @@ object MainForm: TMainForm
       Hint = #1047#1072#1074#1077#1088#1096#1077#1085#1080#1077' '#1088#1072#1073#1086#1090#1099'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1079#1072#1074#1077#1088#1096#1077#1085#1080#1103' '#1088#1072#1073#1086#1090#1099' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
       ImageIndex = 12
       ShortCut = 32883
+      OnExecute = actQuitExecute
     end
     object actFileMenuGroup: TFileMenuGroupAction
       Category = #1060#1072#1081#1083
@@ -923,11 +923,21 @@ object MainForm: TMainForm
       ImageIndex = 15
       OnExecute = actAboutExecute
     end
-    object actRestore: TAction_Restore
+    object actShow: TAction
       Category = #1054#1082#1085#1086
-      Caption = #1042'&'#1086#1089#1089#1090#1072#1085#1086#1074#1080#1090#1100
-      Hint = #1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1075#1083#1072#1074#1085#1086#1075#1086' '#1086#1082#1085#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
-      OnExecute = actRestoreExecute
+      Caption = #1054#1090#1086#1073#1088#1072#1079#1080#1090#1100' '#1086#1082#1085#1086
+      Hint = 
+        #1054#1090#1086#1073#1088#1072#1079#1080#1090#1100' '#1086#1082#1085#1086' '#1087#1088#1086#1075#1088#1072#1084#1084#1099'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1075#1083#1072#1074#1085#1086#1075#1086' '#1086#1082#1085#1072' ' +
+        #1087#1088#1086#1075#1088#1072#1084#1084#1099
+      OnExecute = actShowExecute
+    end
+    object actHide: TAction
+      Category = #1054#1082#1085#1086
+      Caption = #1057#1082#1088#1099#1090#1100' '#1086#1082#1085#1086
+      Hint = 
+        #1057#1082#1088#1099#1090#1100' '#1086#1082#1085#1086' '#1087#1088#1086#1075#1088#1072#1084#1084#1099'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1089#1082#1088#1099#1090#1080#1103' '#1075#1083#1072#1074#1085#1086#1075#1086' '#1086#1082#1085#1072' '#1087#1088#1086#1075#1088#1072#1084#1084 +
+        #1099
+      OnExecute = actHideExecute
     end
   end
   object MainMenu: TMainMenu
@@ -974,9 +984,11 @@ object MainForm: TMainForm
   object TrayPopupMenu: TPopupMenu
     Left = 40
     Top = 56
-    object N13: TMenuItem
-      Action = actRestore
-      Default = True
+    object miShow: TMenuItem
+      Action = actShow
+    end
+    object miHide: TMenuItem
+      Action = actHide
     end
     object N14: TMenuItem
       Caption = '-'
