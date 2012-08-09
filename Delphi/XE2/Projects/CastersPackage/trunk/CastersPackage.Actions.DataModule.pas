@@ -34,6 +34,7 @@ type
     HelpMenuGroupAction: THelpMenuGroupAction;
     HelpContentsAction: THelpContentsAction;
     ActionMenuGroupAction: TActionMenuGroupAction;
+    Action_Cancel: TAction_Cancel;
   end;
 
 implementation

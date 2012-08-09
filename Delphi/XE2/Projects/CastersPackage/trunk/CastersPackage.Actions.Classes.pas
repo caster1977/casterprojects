@@ -50,6 +50,9 @@ type
   TAction_Configuration = class(TAction)
   end;
 
+  TAction_Cancel = class(TAction)
+  end;
+
   TAction_Help = class(THelpContents)
   end;
 
@@ -146,7 +149,7 @@ begin
   RegisterActions('Справка', [TAction_Help, TAction_About, THelpContentsAction, THelpMenuGroupAction], TActionsDataModule);
   RegisterActions('Окно', [TAction_Restore], TActionsDataModule);
   RegisterActions('Действие', [TWindowCloseAction, TAction_Apply, TAction_Defaults, TAction_PreviousPage, TAction_NextPage, TAction_Accounts,
-    TAction_Report, TActionMenuGroupAction], TActionsDataModule);
+    TAction_Report, TAction_Cancel, TActionMenuGroupAction], TActionsDataModule);
 end;
 
 { TAction_About
