@@ -4,7 +4,7 @@ program Beeper;
 
 uses
   Vcl.Forms,
-  Beeper.uTMainForm in 'Beeper.uTMainForm.pas' {MainForm} ,
+  Beeper.uTMainForm in 'Beeper.uTMainForm.pas' {MainForm},
   Beeper.uTConfiguration in 'Beeper.uTConfiguration.pas',
   Beeper.uResourceStrings in 'Beeper.uResourceStrings.pas',
   Beeper.uConsts in 'Beeper.uConsts.pas',
@@ -14,10 +14,11 @@ uses
   Beeper.uISignalList in 'Beeper.uISignalList.pas',
   Beeper.uTSignalList in 'Beeper.uTSignalList.pas',
   Beeper.uIConfiguration in 'Beeper.uIConfiguration.pas',
-  Beeper.uTSignalForm in 'Beeper.uTSignalForm.pas' {SignalForm} ,
-  Beeper.uTAboutForm in 'Beeper.uTAboutForm.pas' {AboutForm} ,
+  Beeper.uTSignalForm in 'Beeper.uTSignalForm.pas' {SignalForm},
+  Beeper.uTAboutForm in 'Beeper.uTAboutForm.pas' {AboutForm},
   Winapi.Windows,
-  System.SysUtils;
+  System.SysUtils,
+  Beeper.uTConfigurationForm in 'Beeper.uTConfigurationForm.pas' {ConfigurationForm};
 
 {$R *.res}
 
@@ -28,8 +29,9 @@ var
 
 procedure ShowErrorMessageBox(const AMessage: string);
 begin
-  MessageBox(Application.Handle, PWideChar(AMessage + sLineBreak + sLineBreak + Format(RsErrorCode, [IntToStr(GetLastError)])),
-    PWideChar(Format(RsErrorMessageCaption, [Application.Title])), MESSAGE_TYPE_ERROR);
+  MessageBox(Application.Handle, PWideChar(AMessage + sLineBreak + sLineBreak + Format(RsErrorCode,
+    [IntToStr(GetLastError)])), PWideChar(Format(RsErrorMessageCaption, [Application.Title])),
+    MESSAGE_TYPE_ERROR);
 end;
 
 function StartSession: Boolean;
@@ -84,19 +86,14 @@ begin
   if not StartSession then
   begin
     if GetLastError = ERROR_ALREADY_EXISTS then
-    begin
-      SendActivationSignal;
-      Application.Terminate;
-    end
+      SendActivationSignal
     else
-    begin
       ShowErrorMessageBox(Error);
-      Application.Terminate;
-    end;
+    Application.Terminate;
   end
   else
   begin
-    //Application.HelpFile := '';
+    Application.HelpFile := EmptyStr;
     Application.ShowMainForm := True;
     Application.MainFormOnTaskbar := True;
     Application.CreateForm(TMainForm, MainForm);

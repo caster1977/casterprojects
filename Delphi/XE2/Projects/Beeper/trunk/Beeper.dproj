@@ -46,6 +46,7 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<VerInfo_MajorVer>3</VerInfo_MajorVer>
 			<VerInfo_Locale>1049</VerInfo_Locale>
@@ -121,6 +122,10 @@
 			</DCCReference>
 			<DCCReference Include="Beeper.uTAboutForm.pas">
 				<Form>AboutForm</Form>
+			</DCCReference>
+			<DCCReference Include="Beeper.uTConfigurationForm.pas">
+				<Form>ConfigurationForm</Form>
+				<FormType>dfm</FormType>
 			</DCCReference>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>

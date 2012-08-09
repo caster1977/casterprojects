@@ -40,12 +40,17 @@ type
     procedure BeforeSave; override;
     procedure Saving(const AIniFile: TCustomIniFile); override;
   public
-    property ShowBaloonHints: Boolean read GetShowBaloonHints write SetShowBaloonHints default DEFAULT_SHOW_BALOON_HINTS;
-    property SoundEnabled: Boolean read GetSoundEnabled write SetSoundEnabled default DEFAULT_SOUND_ENABLED;
+    property ShowBaloonHints: Boolean read GetShowBaloonHints write SetShowBaloonHints
+      default DEFAULT_SHOW_BALOON_HINTS;
+    property SoundEnabled: Boolean read GetSoundEnabled write SetSoundEnabled
+      default DEFAULT_SOUND_ENABLED;
     property ModifierOn: Integer read GetModifierOn write SetModifierOn default DEFAULT_MODIFIER_ON;
-    property VirtualKeyOn: Cardinal read GetVirtualKeyOn write SetVirtualKeyOn default DEFAULT_VIRTUAL_KEY_ON;
-    property ModifierOff: Integer read GetModifierOff write SetModifierOff default DEFAULT_MODIFIER_OFF;
-    property VirtualKeyOff: Cardinal read GetVirtualKeyOff write SetVirtualKeyOff default DEFAULT_VIRTUAL_KEY_OFF;
+    property VirtualKeyOn: Cardinal read GetVirtualKeyOn write SetVirtualKeyOn
+      default DEFAULT_VIRTUAL_KEY_ON;
+    property ModifierOff: Integer read GetModifierOff write SetModifierOff
+      default DEFAULT_MODIFIER_OFF;
+    property VirtualKeyOff: Cardinal read GetVirtualKeyOff write SetVirtualKeyOff
+      default DEFAULT_VIRTUAL_KEY_OFF;
     property SignalList: ISignalList read GetSignalList write SetSignalList;
   end;
 
@@ -54,6 +59,7 @@ function GetConfiguration(const AIniFileName: string = ''): IConfiguration;
 implementation
 
 uses
+  System.Classes,
   System.SysUtils,
   Beeper.uTSignalList,
   Beeper.uResourceStrings,
@@ -230,6 +236,12 @@ begin
       on EIniFileException do
         raise EIniFileException.Create(RsIniFileSaveError);
     end;
+end;
+
+initialization
+
+begin
+  RegisterClass(TConfiguration);
 end;
 
 end.

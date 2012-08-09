@@ -17,7 +17,7 @@ uses
   Vcl.ActnList,
   Vcl.ExtCtrls,
   Vcl.ImgList,
-  Beeper.uISignal;
+  Beeper.uISignal, CastersPackage.Actions.Classes;
 
 type
   TSignalForm = class(TForm)
@@ -34,16 +34,15 @@ type
     chkbxPlayWaveFile: TCheckBox;
     chkbxShowMessage: TCheckBox;
     actSave: TAction;
-    actCancel: TAction;
     actSelectWaveFile: TAction;
     actEnablePlayWaveFile: TAction;
     actPlayWaveFile: TAction;
     actEnableShowMessage: TAction;
     cmbbxMessage: TComboBox;
     btnPlayWaveFile: TButton;
+    actCancel: TAction_Cancel;
     procedure ledPeriodKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
-    procedure actCancelExecute(Sender: TObject);
     procedure actSaveExecute(Sender: TObject);
     procedure actSaveUpdate(Sender: TObject);
     procedure actEnablePlayWaveFileUpdate(Sender: TObject);
@@ -54,6 +53,7 @@ type
     procedure actPlayWaveFileExecute(Sender: TObject);
     procedure actPlayWaveFileUpdate(Sender: TObject);
     procedure actSelectWaveFileUpdate(Sender: TObject);
+    procedure actCancelExecute(Sender: TObject);
   strict private
     FEnabled: Boolean;
     FNowPlaying: Boolean;
@@ -69,7 +69,8 @@ type
     constructor Create(AOwner: TComponent; const ANew: Boolean); reintroduce; virtual;
     property Signal: ISignal read GetSignal write SetSignal nodefault;
     property MessageHistory: TStringList read GetMessageHistory write SetMessageHistory nodefault;
-    property WaveFileHistory: TStringList read GetWaveFileHistory write SetWaveFileHistory nodefault;
+    property WaveFileHistory: TStringList read GetWaveFileHistory
+      write SetWaveFileHistory nodefault;
   end;
 
 implementation
@@ -82,6 +83,11 @@ uses
   Beeper.uConsts,
   Beeper.uResourceStrings,
   Beeper.uTSignal;
+
+procedure TSignalForm.actCancelExecute(Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
 
 procedure TSignalForm.actEnablePlayWaveFileExecute(Sender: TObject);
 begin
@@ -105,12 +111,8 @@ end;
 
 procedure TSignalForm.actPlayWaveFileUpdate(Sender: TObject);
 begin
-  actPlayWaveFile.Enabled := actEnablePlayWaveFile.Checked and FileExists(GetWaveFileName) and (not FNowPlaying);
-end;
-
-procedure TSignalForm.actCancelExecute(Sender: TObject);
-begin
-  ModalResult := mrCancel;
+  actPlayWaveFile.Enabled := actEnablePlayWaveFile.Checked and FileExists(GetWaveFileName) and
+    (not FNowPlaying);
 end;
 
 procedure TSignalForm.FormCreate(Sender: TObject);
@@ -209,9 +211,12 @@ end;
 
 procedure TSignalForm.actSaveUpdate(Sender: TObject);
 begin
-  TAction(Sender).Enabled := (cmbxPeriodType.ItemIndex > -1) and (Trim(ledPeriod.Text) <> EmptyStr) and (Trim(ledTitle.Text) <> EmptyStr) and
-    ((FileExists(GetWaveFileName) and actEnablePlayWaveFile.Checked) or (not actEnablePlayWaveFile.Checked)) and
-    ((not actEnableShowMessage.Checked) or (actEnableShowMessage.Checked and (Trim(cmbbxMessage.Text) <> EmptyStr)));
+  TAction(Sender).Enabled := (cmbxPeriodType.ItemIndex > -1) and (Trim(ledPeriod.Text) <> EmptyStr)
+    and (Trim(ledTitle.Text) <> EmptyStr) and
+    ((FileExists(GetWaveFileName) and actEnablePlayWaveFile.Checked) or
+    (not actEnablePlayWaveFile.Checked)) and
+    ((not actEnableShowMessage.Checked) or (actEnableShowMessage.Checked and
+    (Trim(cmbbxMessage.Text) <> EmptyStr)));
   btnSave.Default := TAction(Sender).Enabled;
   btnCancel.Default := not TAction(Sender).Enabled;
 end;
@@ -245,7 +250,8 @@ procedure TSignalForm.actSelectWaveFileExecute(Sender: TObject);
 begin
   with TOpenDialog.Create(Self) do
     try
-      Filter := RsWaveFile + ' ' + UpperCase(WAVEFILE_EXTENTION) + ' (*.' + WAVEFILE_EXTENTION + ')|*.' + WAVEFILE_EXTENTION;
+      Filter := RsWaveFile + ' ' + UpperCase(WAVEFILE_EXTENTION) + ' (*.' + WAVEFILE_EXTENTION +
+        ')|*.' + WAVEFILE_EXTENTION;
       DefaultExt := WAVEFILE_EXTENTION;
       Title := RsSelectWaveFile;
       FilterIndex := 1;

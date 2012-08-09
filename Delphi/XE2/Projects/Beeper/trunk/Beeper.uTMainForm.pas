@@ -63,6 +63,9 @@ type
     actHide: TAction;
     miShow: TMenuItem;
     miHide: TMenuItem;
+    actConfiguration: TAction_Configuration;
+    N13: TMenuItem;
+    N19: TMenuItem;
     procedure actEraseSignalUpdate(Sender: TObject);
     procedure actEditSignalUpdate(Sender: TObject);
     procedure actEditSignalExecute(Sender: TObject);
