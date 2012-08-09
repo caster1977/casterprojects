@@ -9,9 +9,9 @@ uses
   CastersPackage.uIIniFileDataStorage;
 
 type
-  EIniFileDataStorage=class(Exception);
+  EIniFileDataStorage = class(Exception);
 
-  TIniFileDataStorage=class(TInterfacedPersistent, IIniFileDataStorage)
+  TIniFileDataStorage = class(TInterfacedPersistent, IIniFileDataStorage)
   strict protected
     FIniFileName: string;
     procedure Initialize; virtual; abstract;
@@ -22,7 +22,7 @@ type
   public
     procedure Load; virtual; final;
     procedure Save; virtual; final;
-    constructor Create(const AIniFileName: string=''); virtual;
+    constructor Create(const AIniFileName: string = ''); virtual;
   end;
 
   TIniFileDataStorageClass = class of TIniFileDataStorage;
@@ -33,19 +33,19 @@ uses
   Vcl.Forms;
 
 resourcestring
-  TEXT_WRONG_INIFILE_NAME='Имя файла конфигурации не должно быть пустым!';
-  TEXT_SAVE_INIFILE_ERROR='Произошла ошибка при попытке записи данных в файл конфигурации!';
+  TEXT_WRONG_INIFILE_NAME = 'Имя файла конфигурации не должно быть пустым!';
+  TEXT_SAVE_INIFILE_ERROR = 'Произошла ошибка при попытке записи данных в файл конфигурации!';
 
 constructor TIniFileDataStorage.Create(const AIniFileName: string);
 var
   s: string;
 begin
   inherited Create;
-  s:=Trim(AIniFileName);
-  if s=EmptyStr then
-    FIniFileName:=ChangeFileExt(ExpandFileName(Application.ExeName), '.ini')
+  s := Trim(AIniFileName);
+  if s = EmptyStr then
+    FIniFileName := ChangeFileExt(ExpandFileName(Application.ExeName), '.ini')
   else
-    FIniFileName:=s;
+    FIniFileName := s;
   Initialize;
 end;
 
@@ -53,16 +53,16 @@ procedure TIniFileDataStorage.Load;
 var
   ini_file: TCustomIniFile;
 begin
-  if FIniFileName=EmptyStr then
+  if FIniFileName = EmptyStr then
     raise EIniFileDataStorage.Create(TEXT_WRONG_INIFILE_NAME);
-  ini_file:=TMemIniFile.Create(FIniFileName);
+  ini_file := TMemIniFile.Create(FIniFileName);
   try
     Loading(ini_file);
     if ini_file is TMemIniFile then
-      begin
-        (ini_file as TMemIniFile).Clear;
-        (ini_file as TMemIniFile).UpdateFile;
-      end;
+    begin
+      (ini_file as TMemIniFile).Clear;
+      (ini_file as TMemIniFile).UpdateFile;
+    end;
   finally
     ini_file.Free;
   end;
@@ -74,13 +74,13 @@ var
   ini_file: TCustomIniFile;
 begin
   BeforeSave;
-  if FIniFileName=EmptyStr then
+  if FIniFileName = EmptyStr then
     raise EIniFileDataStorage.Create(TEXT_WRONG_INIFILE_NAME);
-  ini_file:=TMemIniFile.Create(FIniFileName);
+  ini_file := TMemIniFile.Create(FIniFileName);
   try
     try
       Saving(ini_file);
-    if ini_file is TMemIniFile then
+      if ini_file is TMemIniFile then
         (ini_file as TMemIniFile).UpdateFile;
     except
       on EIniFileException do
@@ -93,6 +93,8 @@ end;
 
 initialization
 
-RegisterClass(TIniFileDataStorage);
+begin
+  RegisterClass(TIniFileDataStorage);
+end;
 
 end.
