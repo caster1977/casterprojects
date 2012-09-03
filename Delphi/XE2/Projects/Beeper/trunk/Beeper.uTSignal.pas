@@ -65,7 +65,8 @@ function GetSignal: ISignal;
 implementation
 
 uses
-  System.SysUtils;
+  System.SysUtils,
+  CastersPackage.uRoutines;
 
 function GetSignal: ISignal;
 begin
@@ -120,38 +121,27 @@ end;
 
 procedure TSignal.SetEnabled(const AValue: Boolean);
 begin
-  if FEnabled <> AValue then
-    FEnabled := AValue;
+  Routines.SetField(AValue, FEnabled);
 end;
 
 procedure TSignal.SetMessage(const AValue: string);
-var
-  s: string;
 begin
-  s := Trim(AValue);
-  if FMessage <> s then
-    FMessage := s;
+  Routines.SetField(AValue, FMessage);
 end;
 
 procedure TSignal.SetMessageEnabled(const AValue: Boolean);
 begin
-  if FMessageEnabled <> AValue then
-    FMessageEnabled := AValue;
+  Routines.SetField(AValue, FMessageEnabled);
 end;
 
 procedure TSignal.SetTitle(const AValue: string);
-var
-  s: string;
 begin
-  s := Trim(AValue);
-  if FTitle <> s then
-    FTitle := s;
+  Routines.SetField(AValue, FTitle);
 end;
 
 procedure TSignal.SetPeriod(const AValue: Int64);
 begin
-  if FPeriod <> AValue then
-    FPeriod := AValue;
+  Routines.SetField(AValue, FPeriod);
 end;
 
 procedure TSignal.SetPeriodType(const AValue: TPeriodType);
@@ -161,18 +151,13 @@ begin
 end;
 
 procedure TSignal.SetWaveFile(const AValue: string);
-var
-  s: string;
 begin
-  s := Trim(AValue);
-  if FWaveFile <> s then
-    FWaveFile := s;
+  Routines.SetField(AValue, FWaveFile);
 end;
 
 procedure TSignal.SetWaveFileEnabled(const AValue: Boolean);
 begin
-  if FWaveFileEnabled <> AValue then
-    FWaveFileEnabled := AValue;
+  Routines.SetField(AValue, FWaveFileEnabled);
 end;
 
 function TSignal.PeriodToSeconds(const ASeconds, AMinutes, AHours, ADays, AWeeks, AMonths, AYears: word): Int64;
