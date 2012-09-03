@@ -65,7 +65,8 @@ uses
   Beeper.uResourceStrings,
   Beeper.uISignal,
   Beeper.uTSignal,
-  Beeper.uTPeriodType;
+  Beeper.uTPeriodType,
+  CastersPackage.uRoutines;
 
 function GetConfiguration(const AIniFileName: string): IConfiguration;
 begin
@@ -119,20 +120,17 @@ end;
 
 procedure TConfiguration.SetModifierOff(const AValue: Integer);
 begin
-  if FModifierOff <> AValue then
-    FModifierOff := AValue;
+  Routines.SetField(AValue, FModifierOff);
 end;
 
 procedure TConfiguration.SetModifierOn(const AValue: Integer);
 begin
-  if FModifierOn <> AValue then
-    FModifierOn := AValue;
+  Routines.SetField(AValue, FModifierOn);
 end;
 
 procedure TConfiguration.SetShowBaloonHints(const AValue: Boolean);
 begin
-  if FShowBaloonHints <> AValue then
-    FShowBaloonHints := AValue;
+  Routines.SetField(AValue, FShowBaloonHints);
 end;
 
 procedure TConfiguration.SetSignalList(const AValue: ISignalList);
@@ -143,20 +141,17 @@ end;
 
 procedure TConfiguration.SetSoundEnabled(const AValue: Boolean);
 begin
-  if FSoundEnabled <> AValue then
-    FSoundEnabled := AValue;
+  Routines.SetField(AValue, FSoundEnabled);
 end;
 
 procedure TConfiguration.SetVirtualKeyOff(const AValue: Cardinal);
 begin
-  if FVirtualKeyOff <> AValue then
-    FVirtualKeyOff := AValue;
+  Routines.SetField(AValue, FVirtualKeyOff);
 end;
 
 procedure TConfiguration.SetVirtualKeyOn(const AValue: Cardinal);
 begin
-  if FVirtualKeyOn <> AValue then
-    FVirtualKeyOn := AValue;
+  Routines.SetField(AValue, FVirtualKeyOn);
 end;
 
 procedure TConfiguration.Initialize;
