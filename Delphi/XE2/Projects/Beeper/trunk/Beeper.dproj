@@ -108,7 +108,6 @@
 			</RcCompile>
 			<DCCReference Include="Beeper.uTMainForm.pas">
 				<Form>MainForm</Form>
-				<FormType>dfm</FormType>
 			</DCCReference>
 			<DCCReference Include="Beeper.uTConfiguration.pas"/>
 			<DCCReference Include="Beeper.uResourceStrings.pas"/>
@@ -121,16 +120,15 @@
 			<DCCReference Include="Beeper.uIConfiguration.pas"/>
 			<DCCReference Include="Beeper.uTSignalForm.pas">
 				<Form>SignalForm</Form>
-				<FormType>dfm</FormType>
 			</DCCReference>
 			<DCCReference Include="Beeper.uTAboutForm.pas">
 				<Form>AboutForm</Form>
 			</DCCReference>
 			<DCCReference Include="Beeper.uTConfigurationForm.pas">
 				<Form>ConfigurationForm</Form>
-				<FormType>dfm</FormType>
 			</DCCReference>
-			<None Include="Profiling\AQtimeModule2.aqt"/>
+			<DCCReference Include="Beeper.uTBeeper.pas"/>
+			<DCCReference Include="Beeper.uIBeeper.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

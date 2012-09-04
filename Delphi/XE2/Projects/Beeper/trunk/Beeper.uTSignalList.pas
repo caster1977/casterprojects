@@ -6,9 +6,12 @@ uses
   System.IniFiles,
   Beeper.uISignalList,
   Beeper.uISignal,
-  System.Classes;
+  System.Classes,
+  System.SysUtils;
 
 type
+  ESignalList = class(Exception);
+
   TSignalList = class(TInterfacedObject, ISignalList)
   strict private
     FList: IInterfaceList;
@@ -36,15 +39,22 @@ type
     function First: ISignal;
     function Last: ISignal;
 
-    property Count: Integer read GetCount write SetCount;
+    property Count: Integer read GetCount write SetCount nodefault;
     property Items[const AIndex: Integer]: ISignal read GetItem write PutItem; default;
   end;
 
+function GetISignalList: ISignalList;
+
 implementation
 
-uses
-  Beeper.uResourceStrings,
-  Beeper.uConsts;
+resourcestring
+  RsCantAddSignalToSignalList = 'Ќе удалось добавить сигнал в список сигналов!';
+  RsCantRemoveSignalFromSignalList = 'Ќе удалось удалить сигнал из списка сигналов!';
+
+function GetISignalList: ISignalList;
+begin
+  Result := TSignalList.Create;
+end;
 
 constructor TSignalList.Create;
 begin
@@ -65,7 +75,11 @@ end;
 
 function TSignalList.Add(const AItem: ISignal): Integer;
 begin
-  Result := FList.Add(AItem);
+  Result := -1;
+  if Assigned(FList) then
+  begin
+    Result := FList.Add(AItem);
+  end;
 end;
 
 procedure TSignalList.Append(const AItems: ISignalList);
@@ -73,22 +87,36 @@ var
   i: Integer;
 begin
   for i := 0 to AItems.Count - 1 do
-    Add(AItems[i]);
+  begin
+    if Add(AItems[i]) = -1 then
+    begin
+      raise ESignalList.Create(RsCantAddSignalToSignalList);
+    end;
+  end;
 end;
 
 procedure TSignalList.Clear;
 begin
-  FList.Clear;
+  if Assigned(FList) then
+  begin
+    FList.Clear;
+  end;
 end;
 
 procedure TSignalList.Delete(const AIndex: Integer);
 begin
-  FList.Delete(AIndex);
+  if Assigned(FList) then
+  begin
+    FList.Delete(AIndex);
+  end;
 end;
 
 procedure TSignalList.Exchange(const AIndex1, AIndex2: Integer);
 begin
-  FList.Exchange(AIndex1, AIndex2);
+  if Assigned(FList) then
+  begin
+    FList.Exchange(AIndex1, AIndex2);
+  end;
 end;
 
 function TSignalList.First: ISignal;
@@ -98,22 +126,36 @@ end;
 
 function TSignalList.GetCount: Integer;
 begin
-  Result := FList.Count;
+  Result := -1;
+  if Assigned(FList) then
+  begin
+    Result := FList.Count;
+  end;
 end;
 
 procedure TSignalList.SetCount(const ANewCount: Integer);
 begin
-  FList.Count := ANewCount;
+  if Assigned(FList) then
+  begin
+    FList.Count := ANewCount;
+  end;
 end;
 
 function TSignalList.IndexOf(const AItem: ISignal): Integer;
 begin
-  Result := FList.IndexOf(AItem);
+  Result := -1;
+  if Assigned(FList) then
+  begin
+    Result := FList.IndexOf(AItem);
+  end;
 end;
 
 procedure TSignalList.Insert(const AIndex: Integer; const AItem: ISignal);
 begin
-  FList.Insert(AIndex, AItem);
+  if Assigned(FList) then
+  begin
+    FList.Insert(AIndex, AItem);
+  end;
 end;
 
 function TSignalList.Last: ISignal;
@@ -126,29 +168,41 @@ var
   i: Integer;
 begin
   for i := 0 to AItems.Count - 1 do
-    Remove(AItems[i], ASkipIfNotFound);
+  begin
+    if Remove(AItems[i], ASkipIfNotFound) = -1 then
+    begin
+      raise ESignalList.Create(RsCantRemoveSignalFromSignalList);
+    end;
+  end;
 end;
 
 function TSignalList.Remove(const AItem: ISignal; const ASkipIfNotFound: Boolean): Integer;
-var
-  i: Integer;
 begin
   Result := -1;
-  i := IndexOf(AItem);
-  if (i = -1) and ASkipIfNotFound then
-    Exit;
-  Result := FList.Remove(AItem);
+  if Assigned(FList) and (not((IndexOf(AItem) = Result) and ASkipIfNotFound)) then
+  begin
+    Result := FList.Remove(AItem);
+  end;
 end;
 
 function TSignalList.GetItem(const AIndex: Integer): ISignal;
 begin
-  Result := FList[AIndex] as ISignal;
+  Result := nil;
+  if Assigned(FList) then
+  begin
+    Result := FList[AIndex] as ISignal;
+  end;
 end;
 
 procedure TSignalList.PutItem(const AIndex: Integer; const AItem: ISignal);
 begin
   if (AIndex >= 0) or (AIndex < Count) then
-    FList[AIndex] := AItem;
+  begin
+    if Assigned(FList) then
+    begin
+      FList[AIndex] := AItem;
+    end;
+  end;
 end;
 
 end.

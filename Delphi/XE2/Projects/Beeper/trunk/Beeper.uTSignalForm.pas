@@ -84,6 +84,11 @@ uses
   Beeper.uResourceStrings,
   Beeper.uTSignal;
 
+resourcestring
+  RsAddSignalCaption = 'Добавление сигнала';
+  RsEditSignalCaption = 'Редактирование сигнала';
+  RsSelectWaveFile = 'Выберите звуковой файл...';
+
 procedure TSignalForm.actCancelExecute(Sender: TObject);
 begin
   ModalResult := mrCancel;
