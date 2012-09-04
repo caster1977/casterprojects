@@ -15,7 +15,6 @@ uses
   OA5.uPermissionsForm in 'OA5.uPermissionsForm.pas' {PermissionsForm},
   OA5.uMultiBufferForm in 'OA5.uMultiBufferForm.pas' {MultiBufferForm},
   OA5.uTypes in 'OA5.uTypes.pas',
-  OA5.uTMultiBuffer in 'OA5.uTMultiBuffer.pas',
   OA5.uTMeasure in 'OA5.uTMeasure.pas',
   Vcl.Themes,
   Vcl.Styles,
@@ -26,7 +25,8 @@ uses
   OA5.uTMySQLConnection in 'OA5.uTMySQLConnection.pas',
   OA5.uINormalized in 'OA5.uINormalized.pas',
   OA5.uIMeasure in 'OA5.uIMeasure.pas',
-  OA5.uIMeasureList in 'OA5.uIMeasureList.pas';
+  OA5.uIMeasureList in 'OA5.uIMeasureList.pas',
+  OA5.uTMeasureList in 'OA5.uTMeasureList.pas';
 
 {$R *.res}
 

@@ -6,9 +6,9 @@ uses
   System.SysUtils;
 
 type
-  EAccount=class(Exception);
+  EAccount = class(Exception);
 
-  TPrivilegies=class
+  TPrivilegies = class
   strict private
     FEditing: boolean;
     FClearing: boolean;
@@ -30,7 +30,7 @@ type
     property Reporting: boolean read GetReporting write SetReporting default False;
   end;
 
-  TAccount=class
+  TAccount = class
   strict private
     FLogged: boolean;
     FID: integer;
@@ -74,75 +74,75 @@ implementation
 constructor TPrivilegies.Create;
 begin
   inherited;
-  FAccounting:=False;
-  FClearing:=False;
-  FEditing:=False;
-  FReporting:=False;
+  FAccounting := False;
+  FClearing := False;
+  FEditing := False;
+  FReporting := False;
 end;
 
 function TPrivilegies.GetAccounting: boolean;
 begin
-  Result:=FAccounting;
+  Result := FAccounting;
 end;
 
 function TPrivilegies.GetClearing: boolean;
 begin
-  Result:=FClearing;
+  Result := FClearing;
 end;
 
 function TPrivilegies.GetEditing: boolean;
 begin
-  Result:=FEditing;
+  Result := FEditing;
 end;
 
 function TPrivilegies.GetReporting: boolean;
 begin
-  Result:=FReporting;
+  Result := FReporting;
 end;
 
 procedure TPrivilegies.SetAccounting(const Value: boolean);
 begin
-  if FAccounting<>Value then
-    FAccounting:=Value;
+  if FAccounting <> Value then
+    FAccounting := Value;
 end;
 
 procedure TPrivilegies.SetClearing(const Value: boolean);
 begin
-  if FClearing<>Value then
-    FClearing:=Value;
+  if FClearing <> Value then
+    FClearing := Value;
 end;
 
 procedure TPrivilegies.SetEditing(const Value: boolean);
 begin
-  if FEditing<>Value then
-    FEditing:=Value;
+  if FEditing <> Value then
+    FEditing := Value;
 end;
 
 procedure TPrivilegies.SetReporting(const Value: boolean);
 begin
-  if FReporting<>Value then
-    FReporting:=Value;
+  if FReporting <> Value then
+    FReporting := Value;
 end;
 
 constructor TAccount.Create;
 begin
   inherited;
-  FLogged:=False;
-  FID:=0;
-  FLogin:='';
-  FPassword:='';
-  FFullname:='';
-  FPosition:='';
-  FPhone:='';
+  FLogged := False;
+  FID := 0;
+  FLogin := EmptyStr;
+  FPassword := EmptyStr;
+  FFullname := EmptyStr;
+  FPosition := EmptyStr;
+  FPhone := EmptyStr;
   if not Assigned(FPrivilegies) then
-    FPrivilegies:=TPrivilegies.Create;
+    FPrivilegies := TPrivilegies.Create;
   with FPrivilegies do
-    begin
-      Editing:=False;
-      Clearing:=False;
-      Accounting:=False;
-      Reporting:=False;
-    end;
+  begin
+    Editing := False;
+    Clearing := False;
+    Accounting := False;
+    Reporting := False;
+  end;
 end;
 
 destructor TAccount.Destroy;
@@ -153,112 +153,113 @@ end;
 
 function TAccount.GetFullname: string;
 begin
-  Result:=FFullname;
+  Result := FFullname;
 end;
 
 function TAccount.GetID: integer;
 begin
-  Result:=FID;
+  Result := FID;
 end;
 
 function TAccount.GetLogged: boolean;
 begin
-  Result:=FLogged;
+  Result := FLogged;
 end;
 
 function TAccount.GetLogin: string;
 begin
-  Result:=FLogin;
+  Result := FLogin;
 end;
 
 function TAccount.GetPassword: string;
 begin
-  Result:=FPassword;
+  Result := FPassword;
 end;
 
 function TAccount.GetPhone: string;
 begin
-  Result:=FPhone;
+  Result := FPhone;
 end;
 
 function TAccount.GetPosition: string;
 begin
-  Result:=FPosition;
+  Result := FPosition;
 end;
 
 function TAccount.GetPrivilegies: TPrivilegies;
 begin
-  Result:=FPrivilegies;
+  Result := FPrivilegies;
 end;
 
 procedure TAccount.SetFullname(const Value: string);
 var
   s: string;
 begin
-  s:=Trim(Value);
-  if FFullname<>s then
-    FFullname:=s;
+  s := Trim(Value);
+  if FFullname <> s then
+    FFullname := s;
 end;
 
 procedure TAccount.SetID(const Value: integer);
 resourcestring
-  TEXT_ACCOUNT_ID_ERROR='Идентификатор учётной записи не может быть отрицательным!';
+  TEXT_ACCOUNT_ID_ERROR = 'Идентификатор учётной записи не может быть отрицательным!';
 begin
-  if Value<0 then
+  if Value < 0 then
     raise EAccount.Create(TEXT_ACCOUNT_ID_ERROR)
   else
-    if FID<>Value then
-      FID:=Value;
+    if FID <> Value then
+      FID := Value;
 end;
 
 procedure TAccount.SetLogged(const Value: boolean);
 begin
-  if FLogged<>Value then
-    FLogged:=Value;
+  if FLogged <> Value then
+    FLogged := Value;
 end;
 
 procedure TAccount.SetLogin(const Value: string);
 resourcestring
-  TEXT_ACCOUNT_LOGIN_ERROR='Логин учётной записи не может быть пустым!';
+  TEXT_ACCOUNT_LOGIN_ERROR = 'Логин учётной записи не может быть пустым!';
 var
   s: string;
 begin
-  s:=Trim(Value);
-  if s='' then
+  s := Trim(Value);
+  if s = EmptyStr then
     raise EAccount.Create(TEXT_ACCOUNT_LOGIN_ERROR)
   else
-    if FLogin<>s then
-      FLogin:=s;
+    if FLogin <> s then
+      FLogin := s;
 end;
 
 procedure TAccount.SetPassword(const Value: string);
 begin
-  if FPassword<>Value then
-    FPassword:=Value;
+  if FPassword <> Value then
+    FPassword := Value;
 end;
 
 procedure TAccount.SetPhone(const Value: string);
 var
   s: string;
 begin
-  s:=Trim(Value);
-  if FPhone<>Value then
-    FPhone:=Value;
+  s := Trim(Value);
+  if FPhone <> Value then
+    FPhone := Value;
 end;
 
 procedure TAccount.SetPosition(const Value: string);
 var
   s: string;
 begin
-  s:=Trim(Value);
-  if FPosition<>Value then
-    FPosition:=Value;
+  s := Trim(Value);
+  if FPosition <> Value then
+    FPosition := Value;
 end;
 
 procedure TAccount.SetPrivilegies(const Value: TPrivilegies);
 begin
-  if ((FPrivilegies.Editing<>Value.Editing)or(FPrivilegies.Clearing<>Value.Clearing)or(FPrivilegies.Accounting<>Value.Accounting)or(FPrivilegies.Reporting<>Value.Reporting)) then
-    FPrivilegies:=Value;
+  if ((FPrivilegies.Editing <> Value.Editing) or (FPrivilegies.Clearing <> Value.Clearing) or
+    (FPrivilegies.Accounting <> Value.Accounting) or (FPrivilegies.Reporting <> Value.Reporting)) then
+    FPrivilegies := Value;
 end;
 
 end.

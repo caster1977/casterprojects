@@ -18,7 +18,7 @@ uses
   CastersPackage.uLogProvider;
 
 type
-  TLoginForm=class(TForm)
+  TLoginForm = class(TForm)
     Bevel2: TBevel;
     ActionManager1: TActionManager;
     Action_Ok: TAction;
@@ -78,7 +78,7 @@ begin
     MainForm.ShowErrorBox(aHandle, aErrorMessage)
   else
     Log.SendDebug('Процедура выполнена без ошибок.');
-  MainForm.pbMain.Position:=MainForm.pbMain.Min;
+  MainForm.pbMain.Position := MainForm.pbMain.Min;
 end;
 
 procedure TLoginForm.Do_UpdateActions;
@@ -87,22 +87,23 @@ var
 begin
   ProcedureHeader('Процедура обновления состояния действий', '{348CBBCC-9845-40ED-9C35-39F5D58F4EAA}');
 
-  Screen.Cursor:=crHourGlass;
+  Screen.Cursor := crHourGlass;
 
-  b:=edbxLogin.Text<>'';
-  if Action_Ok.Enabled<>b then
-    begin
-      Action_Ok.Enabled:=b;
-      Log.SendDebug('Действие "'+Action_Ok.Caption+'" '+Routines.GetConditionalString(Action_Ok.Enabled, 'в', 'от')+'ключено.');
-    end;
+  b := edbxLogin.Text <> '';
+  if Action_Ok.Enabled <> b then
+  begin
+    Action_Ok.Enabled := b;
+    Log.SendDebug('Действие "' + Action_Ok.Caption + '" ' + Routines.GetConditionalString(Action_Ok.Enabled, 'в', 'от')
+      + 'ключено.');
+  end;
 
-  if btnOk.Default<>Action_Ok.Enabled then
-    btnOk.Default:=Action_Ok.Enabled;
+  if btnOk.Default <> Action_Ok.Enabled then
+    btnOk.Default := Action_Ok.Enabled;
 
-  if btnClose.Default<>not Action_Ok.Enabled then
-    btnClose.Default:=not Action_Ok.Enabled;
+  if btnClose.Default <> not Action_Ok.Enabled then
+    btnClose.Default := not Action_Ok.Enabled;
 
-  Screen.Cursor:=crDefault;
+  Screen.Cursor := crDefault;
 
   ProcedureFooter;
 end;
@@ -111,7 +112,7 @@ procedure TLoginForm.Do_Ok;
 begin
   ProcedureHeader('Процедура закрытия модального окна с результатом mrOk', '{38630A3A-99DB-4D54-A9A4-42BBA7F6DC42}');
 
-  ModalResult:=mrOk;
+  ModalResult := mrOk;
   Log.SendInfo('Попытка авторизации была подтверждена пользователем.');
   Log.SendInfo('Окно авторизации закрыто.');
 
@@ -120,21 +121,24 @@ end;
 
 procedure TLoginForm.Action_OkExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Ok.Caption+'"', '{28FD25CC-0ED7-4CDC-8238-38B08A51AE9B}');
+  ProcedureHeader('Процедура-обработчик действия "' + Action_Ok.Caption + '"',
+    '{28FD25CC-0ED7-4CDC-8238-38B08A51AE9B}');
   Do_Ok;
   ProcedureFooter;
 end;
 
 procedure TLoginForm.Action_HelpExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Help.Caption+'"', '{394B4218-5393-4162-95FE-9740CEB2F2C9}');
+  ProcedureHeader('Процедура-обработчик действия "' + Action_Help.Caption + '"',
+    '{394B4218-5393-4162-95FE-9740CEB2F2C9}');
   Do_Help;
   ProcedureFooter;
 end;
 
 procedure TLoginForm.Action_CloseExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Close.Caption+'"', '{1DFD76E1-46A7-4ADA-A2F3-AAF70AC8060C}');
+  ProcedureHeader('Процедура-обработчик действия "' + Action_Close.Caption + '"',
+    '{1DFD76E1-46A7-4ADA-A2F3-AAF70AC8060C}');
   Do_Close;
   ProcedureFooter;
 end;
@@ -145,7 +149,7 @@ var
   sErrorMessage: string;
 begin
   ProcedureHeader('Процедура вызова контекстной справки', '{95536062-F76C-495C-B1F2-70E50F7A9FF0}');
-  bError:=False;
+  bError := False;
 
   Log.SendInfo('Производится попытка открытия справочного файла программы...');
   if (FileExists(ExpandFileName(Application.HelpFile))) then
@@ -161,7 +165,7 @@ procedure TLoginForm.Do_Close;
 begin
   ProcedureHeader('Процедура закрытия модального окна с результатом mrClose', '{AFC63B2A-379B-4A09-98F3-549C5570B3D2}');
 
-  ModalResult:=mrClose;
+  ModalResult := mrClose;
   Log.SendInfo('Попытка авторизации была отменена пользователем.');
   Log.SendInfo('Окно авторизации закрыто.');
 
@@ -177,43 +181,44 @@ end;
 
 procedure TLoginForm.FormCreate(Sender: TObject);
 const
-  ICON_LOGIN=1;
+  ICON_LOGIN = 1;
 begin
   ProcedureHeader('Процедура-обработчик события создания окна', '{B7B2C87E-2141-43CA-A41B-23FE0E874839}');
 
   ilLoginFormSmallImages.GetIcon(ICON_LOGIN, Icon);
-  Action_Help.Enabled:=Application.HelpFile<>'';
-  Log.SendDebug('Действие "'+Action_Help.Caption+'" '+Routines.GetConditionalString(Action_Help.Enabled, 'в', 'от')+'ключено.');
+  Action_Help.Enabled := Application.HelpFile <> '';
+  Log.SendDebug('Действие "' + Action_Help.Caption + '" ' + Routines.GetConditionalString(Action_Help.Enabled, 'в',
+    'от') + 'ключено.');
 
   with MainForm.Configuration do
-    begin
-      // установка параметров протоколирования в соответствии с настройками программы
-      Log.UserName:=MainForm.CurrentUser.Login;
-      Log.AllowedTypes:=KeepLogTypes;
-      Log.Enabled:=EnableLog;
+  begin
+    // установка параметров протоколирования в соответствии с настройками программы
+    Log.UserName := MainForm.CurrentUser.Login;
+    Log.AllowedTypes := KeepLogTypes;
+    Log.Enabled := EnableLog;
 
-      // установка положения окна конфигурации в соответсвии со значениями конфигурации программы
-      if LoginFormPosition.bCenter then
-        Position:=poScreenCenter
+    // установка положения окна конфигурации в соответсвии со значениями конфигурации программы
+    if LoginFormPosition.bCenter then
+      Position := poScreenCenter
+    else
+    begin
+      Position := poDesigned;
+      if LoginFormPosition.x < Screen.WorkAreaLeft then
+        Left := Screen.WorkAreaLeft
       else
-        begin
-          Position:=poDesigned;
-          if LoginFormPosition.x<Screen.WorkAreaLeft then
-            Left:=Screen.WorkAreaLeft
-          else
-            if LoginFormPosition.x>Screen.WorkAreaLeft+Screen.WorkAreaWidth then
-              Left:=Screen.WorkAreaLeft+Screen.WorkAreaWidth-Width
-            else
-              Left:=LoginFormPosition.x;
-          if LoginFormPosition.y<Screen.WorkAreaTop then
-            Top:=Screen.WorkAreaTop
-          else
-            if LoginFormPosition.y>Screen.WorkAreaTop+Screen.WorkAreaHeight then
-              Top:=Screen.WorkAreaTop+Screen.WorkAreaHeight-Height
-            else
-              Top:=LoginFormPosition.y;
-        end;
+        if LoginFormPosition.x > Screen.WorkAreaLeft + Screen.WorkAreaWidth then
+          Left := Screen.WorkAreaLeft + Screen.WorkAreaWidth - Width
+        else
+          Left := LoginFormPosition.x;
+      if LoginFormPosition.y < Screen.WorkAreaTop then
+        Top := Screen.WorkAreaTop
+      else
+        if LoginFormPosition.y > Screen.WorkAreaTop + Screen.WorkAreaHeight then
+          Top := Screen.WorkAreaTop + Screen.WorkAreaHeight - Height
+        else
+          Top := LoginFormPosition.y;
     end;
+  end;
 
   ProcedureFooter;
 end;

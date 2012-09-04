@@ -165,6 +165,13 @@ type
     /// Длительность мероприятия неизвестна?
     /// </summary>
     property _UnknownDuration: boolean read GetUnknownDuration write SetUnknownDuration;
+    /// <summary>
+    /// Процедура нормализации значений данных класса
+    /// </summary>
+    /// <remarks>
+    /// См. также функцию <b>Normalized</b>
+    /// </remarks>
+    procedure Normalize;
   end;
 
 implementation

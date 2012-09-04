@@ -31,7 +31,7 @@ uses
   System.SysUtils;
 
 resourcestring
-  SMultiBufferIndexError = 'Задан неверный индекс элемента буфера!';
+  RsMultiBufferIndexError = 'Задан неверный индекс элемента буфера!';
 
 procedure TMultiBuffer.Append(Item: TMeasure);
 begin
@@ -56,7 +56,7 @@ end;
 procedure TMultiBuffer.Delete(const Index: integer);
 begin
   if (index < 0) or (FItems = nil) or (index >= Count) then
-    raise Exception.Create(SMultiBufferIndexError);
+    raise Exception.Create(RsMultiBufferIndexError);
   FItems[index].Free;
   FItems.Delete(index);
 end;
@@ -82,7 +82,7 @@ end;
 function TMultiBuffer.GetItem(Index: Integer): TMeasure;
 begin
   if not Assigned(FItems) then
-    raise Exception.Create(SMultiBufferIndexError);
+    raise Exception.Create(RsMultiBufferIndexError);
   Result := TMeasure(FItems[index]);
 end;
 

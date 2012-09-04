@@ -255,7 +255,7 @@ object AboutForm: TAboutForm
     Left = 280
     Top = 208
   end
-  object gsFileVersionInfo1: TgsFileVersionInfo
+  object gsFileVersionInfo1: TGSFileVersionInfo
     Left = 248
     Top = 208
   end
