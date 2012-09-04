@@ -36,7 +36,6 @@ const
   HOTKEY_OFF = 2;
 
   APPLICATION_NAME = 'Beeper';
-  MUTEX_SUFFIX = '_MUTEX';
 
 implementation
 

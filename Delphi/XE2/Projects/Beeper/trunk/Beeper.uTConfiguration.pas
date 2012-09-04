@@ -32,7 +32,6 @@ type
     function GetVirtualKeyOn: Cardinal;
     procedure SetVirtualKeyOn(const AValue: Cardinal);
     function GetSignalList: ISignalList;
-    procedure SetSignalList(const AValue: ISignalList);
   strict protected
     procedure Initialize; override;
     procedure Loading(const AIniFile: TCustomIniFile); override;
@@ -42,19 +41,15 @@ type
   public
     property ShowBaloonHints: Boolean read GetShowBaloonHints write SetShowBaloonHints
       default DEFAULT_SHOW_BALOON_HINTS;
-    property SoundEnabled: Boolean read GetSoundEnabled write SetSoundEnabled
-      default DEFAULT_SOUND_ENABLED;
+    property SoundEnabled: Boolean read GetSoundEnabled write SetSoundEnabled default DEFAULT_SOUND_ENABLED;
     property ModifierOn: Integer read GetModifierOn write SetModifierOn default DEFAULT_MODIFIER_ON;
-    property VirtualKeyOn: Cardinal read GetVirtualKeyOn write SetVirtualKeyOn
-      default DEFAULT_VIRTUAL_KEY_ON;
-    property ModifierOff: Integer read GetModifierOff write SetModifierOff
-      default DEFAULT_MODIFIER_OFF;
-    property VirtualKeyOff: Cardinal read GetVirtualKeyOff write SetVirtualKeyOff
-      default DEFAULT_VIRTUAL_KEY_OFF;
-    property SignalList: ISignalList read GetSignalList write SetSignalList;
+    property VirtualKeyOn: Cardinal read GetVirtualKeyOn write SetVirtualKeyOn default DEFAULT_VIRTUAL_KEY_ON;
+    property ModifierOff: Integer read GetModifierOff write SetModifierOff default DEFAULT_MODIFIER_OFF;
+    property VirtualKeyOff: Cardinal read GetVirtualKeyOff write SetVirtualKeyOff default DEFAULT_VIRTUAL_KEY_OFF;
+    property SignalList: ISignalList read GetSignalList nodefault;
   end;
 
-function GetConfiguration(const AIniFileName: string = ''): IConfiguration;
+function GetIConfiguration(const AIniFileName: string = ''): IConfiguration;
 
 implementation
 
@@ -68,7 +63,29 @@ uses
   Beeper.uTPeriodType,
   CastersPackage.uRoutines;
 
-function GetConfiguration(const AIniFileName: string): IConfiguration;
+resourcestring
+  RsHints = 'Подсказки';
+  RsSounds = 'Звуки';
+  RsHotKeys = 'Горячие клавиши';
+  RsSignals = 'Сигналы';
+  RsSignal = 'Сигнал %s';
+
+  RsInTray = 'В трее';
+  RsEnabled = 'Включен(ы)';
+  RsModifierOn = 'Модификатор клавиши включения';
+  RsVirtualKeyOn = 'Клавиша включения';
+  RsModifierOff = 'Модификатор клавиши отключения';
+  RsVirtualKeyOff = 'Клавиша отключения';
+  RsQuantity = 'Количество';
+  RsTitle = 'Наименование';
+  RsPeriodType = 'Тип периода';
+  RsPeriod = 'Период';
+  RsMessageEnabled = 'Выводить сообщение';
+  RsMessage = 'Сообщение';
+  RsWaveFileEnabled = 'Проигрывать звуковой файл';
+  RsIniFileSaveError = 'Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
+
+function GetIConfiguration(const AIniFileName: string): IConfiguration;
 begin
   Result := TConfiguration.Create(AIniFileName);
 end;
@@ -100,6 +117,10 @@ end;
 
 function TConfiguration.GetSignalList: ISignalList;
 begin
+  if not Assigned(FSignalList) then
+    begin
+      FSignalList := GetISignalList;
+    end;
   Result := FSignalList;
 end;
 
@@ -133,12 +154,6 @@ begin
   Routines.SetField(AValue, FShowBaloonHints);
 end;
 
-procedure TConfiguration.SetSignalList(const AValue: ISignalList);
-begin
-  if FSignalList <> AValue then
-    FSignalList := AValue;
-end;
-
 procedure TConfiguration.SetSoundEnabled(const AValue: Boolean);
 begin
   Routines.SetField(AValue, FSoundEnabled);
@@ -163,12 +178,12 @@ begin
   FModifierOff := DEFAULT_MODIFIER_OFF;
   FVirtualKeyOn := DEFAULT_VIRTUAL_KEY_ON;
   FVirtualKeyOff := DEFAULT_VIRTUAL_KEY_OFF;
-  FSignalList := TSignalList.Create;
 end;
 
 procedure TConfiguration.Loading(const AIniFile: TCustomIniFile);
 var
-  i, signal_count: Integer;
+  i: Integer;
+  signal_count: Integer;
   signal: ISignal;
   s: string;
 begin
@@ -186,7 +201,7 @@ begin
     for i := 0 to signal_count - 1 do
     begin
       s := Format(RsSignal, [IntToStr(i)]);
-      signal := GetSignal;
+      signal := GetISignal;
       signal.Title := ReadString(s, RsTitle, DEFAULT_TITLE);
       signal.Period := ReadInteger(s, RsPeriod, DEFAULT_PERIOD);
       signal.PeriodType := TPeriodType(ReadInteger(s, RsPeriodType, Integer(DEFAULT_PERIOD_TYPE)));
@@ -195,6 +210,7 @@ begin
       signal.WaveFileEnabled := ReadBool(s, RsWaveFileEnabled, DEFAULT_WAVE_FILE_ENABLED);
       signal.WaveFile := ReadString(s, RsWaveFile, DEFAULT_WAVE_FILE);
       signal.Enabled := ReadBool(s, RsEnabled, DEFAULT_ENABLED);
+      signal.Timer.Enabled := False;
       SignalList.Add(signal);
     end;
   end;

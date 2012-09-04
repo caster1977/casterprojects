@@ -105,8 +105,8 @@ type
     procedure Flash;
     procedure UpdateVisibilityActions;
   strict protected
-    procedure WndProc(var Message: TMessage); override;
     procedure WMGetSysCommand(var Message: TMessage); message WM_SYSCOMMAND;
+    procedure WndProc(var Message: TMessage); override;
   end;
 
 var
@@ -127,6 +127,15 @@ uses
   Beeper.uTSignalForm,
   Beeper.uTAboutForm;
 
+resourcestring
+  RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
+  RsExitConfirmationCaption = '%s - Подтверждение выхода';
+  RsErrorRegisterWindowMessage = 'Не удалось выполнить операцию регистрации оконного сообщения!';
+  RsErrorResigterStartHotKey = 'Не удалось назначить горячую клавишу для запуска сигналов.';
+  RsErrorResigterStopHotKey = 'Не удалось назначить горячую клавишу для останова сигналов.';
+  RsErrorUnregisterStartHotKey = 'Не удалось освободить горячую клавишу предназначеную для останова сигналов.';
+  RsErrorUnregisterStopHotKey = 'Не удалось освободить горячую клавишу предназначеную для запуска сигналов.';
+
 procedure TMainForm.DisplayHint(Sender: TObject);
 begin
   StatusBar.SimpleText := GetLongHint(Application.Hint);
@@ -135,6 +144,7 @@ end;
 procedure TMainForm.ShowAboutWindow(const AShowCloseButton: Boolean);
 begin
   if not FAboutWindowExists then
+  begin
     with TAboutForm.Create(Self, AShowCloseButton) do
       try
         FAboutWindowHandle := Handle;
@@ -144,36 +154,53 @@ begin
         FAboutWindowExists := False;
         FAboutWindowHandle := 0;
         Free;
-      end
+      end;
+  end
   else
+  begin
     SetForegroundWindow(FAboutWindowHandle);
+  end;
 end;
 
 procedure TMainForm.HideAboutWindow;
 begin
   if FAboutWindowExists then
+  begin
     SendMessage(FAboutWindowHandle, WM_SYSCOMMAND, SC_CLOSE, 0);
+  end;
 end;
 
 procedure TMainForm.ShowErrorMessageBox(const AMessage: string);
 begin
-  MessageBox(Handle, PWideChar(AMessage), PWideChar(Format(RsErrorMessageCaption, [Application.Title])), MESSAGE_TYPE_ERROR);
+  MessageBox(Handle, PWideChar(AMessage), PWideChar(Format(RsErrorMessageCaption, [Application.Title])),
+    MESSAGE_TYPE_ERROR);
 end;
 
 procedure TMainForm.RegisterHotKeys;
 begin
-  if not RegisterHotkey(Handle, HOTKEY_ON, FConfiguration.ModifierOn, FConfiguration.VirtualKeyOn) then
-    ShowErrorMessageBox(RsErrorResisterStartHotKey);
-  if not RegisterHotkey(Handle, HOTKEY_OFF, FConfiguration.ModifierOff, FConfiguration.VirtualKeyOff) then
-    ShowErrorMessageBox(RsErrorResisterStopHotKey);
+  if Assigned(FConfiguration) then
+  begin
+    if not RegisterHotkey(Handle, HOTKEY_ON, FConfiguration.ModifierOn, FConfiguration.VirtualKeyOn) then
+    begin
+      ShowErrorMessageBox(RsErrorResigterStartHotKey);
+    end;
+    if not RegisterHotkey(Handle, HOTKEY_OFF, FConfiguration.ModifierOff, FConfiguration.VirtualKeyOff) then
+    begin
+      ShowErrorMessageBox(RsErrorResigterStopHotKey);
+    end;
+  end;
 end;
 
 procedure TMainForm.UnregisterHotKeys;
 begin
   if not UnRegisterHotkey(Handle, HOTKEY_OFF) then
-    ShowErrorMessageBox(RsErrorUnresisterStartHotKey);
+  begin
+    ShowErrorMessageBox(RsErrorUnregisterStartHotKey);
+  end;
   if not UnRegisterHotkey(Handle, HOTKEY_ON) then
-    ShowErrorMessageBox(RsErrorUnresisterStopHotKey);
+  begin
+    ShowErrorMessageBox(RsErrorUnregisterStopHotKey);
+  end;
 end;
 
 procedure TMainForm.actCreateSignalUpdate(Sender: TObject);
@@ -218,43 +245,64 @@ begin
     FMessageHistory.Duplicates := dupIgnore;
   end;
   if Assigned(FConfiguration) then
+  begin
     if Assigned(FConfiguration.SignalList) then
     begin
       for i := 0 to FConfiguration.SignalList.Count - 1 do
       begin
         if FConfiguration.SignalList.Items[i].WaveFile <> EmptyStr then
+        begin
           FWaveFileHistory.Append(FConfiguration.SignalList.Items[i].WaveFile);
+        end;
         if FConfiguration.SignalList.Items[i].Message <> EmptyStr then
+        begin
           FMessageHistory.Append(FConfiguration.SignalList.Items[i].Message);
+        end;
       end;
     end;
+  end;
 end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage), PWideChar(Format(RsExitConfirmationCaption, [Application.Title])),
-    MESSAGE_TYPE_CONFIRMATION) = IDOK;
+  CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
+    PWideChar(Format(RsExitConfirmationCaption, [Application.Title])), MESSAGE_TYPE_CONFIRMATION) = IDOK;
 end;
 
 procedure TMainForm.ListViewItemChecked(Sender: TObject; Item: TListItem);
 begin
   if ListView.Items.Count > 0 then
+  begin
     if Assigned(Item) then
+    begin
       if Assigned(Item.Data) then
+      begin
         if Assigned(FConfiguration) then
-          FConfiguration.SignalList.Items[FConfiguration.SignalList.IndexOf(ISignal(Item.Data))].Enabled := Item.Checked;
+        begin
+          FConfiguration.SignalList.Items[FConfiguration.SignalList.IndexOf(ISignal(Item.Data))].Enabled :=
+            Item.Checked;
+        end;
+      end;
+    end;
+  end;
 end;
 
 procedure TMainForm.actEraseSignalExecute(Sender: TObject);
 begin
   if Assigned(ListView.Selected) then
+  begin
     if Assigned(ListView.Selected.Data) then
+    begin
       if Assigned(FConfiguration) then
+      begin
         if Assigned(FConfiguration.SignalList) then
         begin
           FConfiguration.SignalList.Remove(ISignal(ListView.Selected.Data));
           RefreshSignals;
         end;
+      end;
+    end;
+  end;
 end;
 
 procedure TMainForm.actAboutExecute(Sender: TObject);
@@ -265,11 +313,13 @@ end;
 procedure TMainForm.actClearSignalsExecute(Sender: TObject);
 begin
   if Assigned(FConfiguration) then
+  begin
     if ListView.Items.Count > 0 then
     begin
       FConfiguration.SignalList.Clear;
       RefreshSignals;
     end;
+  end;
 end;
 
 procedure TMainForm.RefreshSignals;
@@ -282,13 +332,17 @@ begin
     ListView.Items.Clear;
     if Assigned(FConfiguration) then
     begin
-      for i := 0 to FConfiguration.SignalList.Count - 1 do
+      if Assigned(FConfiguration.SignalList) then
       begin
-        node := ListView.Items.Add;
-        node.Data := Pointer(FConfiguration.SignalList.Items[i]);
-        node.Caption := FConfiguration.SignalList.Items[i].Title;
-        node.SubItems.Add(IntToStr(FConfiguration.SignalList.Items[i].Period) + ' ' + PERIODS[FConfiguration.SignalList.Items[i].PeriodType]);
-        node.Checked := FConfiguration.SignalList.Items[i].Enabled;
+        for i := 0 to FConfiguration.SignalList.Count - 1 do
+        begin
+          node := ListView.Items.Add;
+          node.Data := Pointer(FConfiguration.SignalList.Items[i]);
+          node.Caption := FConfiguration.SignalList.Items[i].Title;
+          node.SubItems.Add(IntToStr(FConfiguration.SignalList.Items[i].Period) + ' ' +
+            PERIODS[FConfiguration.SignalList.Items[i].PeriodType]);
+          node.Checked := FConfiguration.SignalList.Items[i].Enabled;
+        end;
       end;
     end;
   finally
@@ -301,6 +355,7 @@ var
   i: Integer;
 begin
   if Assigned(FConfiguration) then
+  begin
     with TSignalForm.Create(Self, True) do
       try
         MessageHistory := FMessageHistory;
@@ -317,6 +372,7 @@ begin
       finally
         Free;
       end;
+  end;
 end;
 
 procedure TMainForm.actEditSignalExecute(Sender: TObject);
@@ -324,8 +380,11 @@ var
   i: Integer;
 begin
   if Assigned(FConfiguration) then
+  begin
     if Assigned(ListView.Selected) then
+    begin
       if Assigned(ListView.Selected.Data) then
+      begin
         with TSignalForm.Create(Self, False) do
           try
             MessageHistory := FMessageHistory;
@@ -334,7 +393,8 @@ begin
             ShowModal;
             if ModalResult = mrOk then
             begin
-              FConfiguration.SignalList.Items[FConfiguration.SignalList.IndexOf(ISignal(ListView.Selected.Data))] := Signal;
+              FConfiguration.SignalList.Items[FConfiguration.SignalList.IndexOf(ISignal(ListView.Selected.Data))]
+                := Signal;
               i := ListView.ItemIndex;
               RefreshSignals;
               ListView.ItemIndex := i;
@@ -344,17 +404,22 @@ begin
           finally
             Free;
           end;
+      end;
+    end;
+  end;
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-  FConfiguration := GetConfiguration;
+  FConfiguration := GetIConfiguration;
   FSignalingActive := False;
   FAboutWindowExists := False;
   FAboutWindowHandle := 0;
   FFirstRun := True;
   if Assigned(FConfiguration) then
+  begin
     FConfiguration.Load;
+  end;
   Caption := Application.Title;
   Application.OnHint := DisplayHint;
   RefreshSignals;
@@ -369,7 +434,9 @@ begin
   FSignalingActive := False;
   UnregisterHotKeys;
   if Assigned(FConfiguration) then
+  begin
     FConfiguration.Save;
+  end;
   FreeAndNil(FMessageHistory);
   FreeAndNil(FWaveFileHistory);
 end;
@@ -399,7 +466,9 @@ procedure TMainForm.RegisterWindowMessages;
 begin
   FWindowMessage := RegisterWindowMessage(PWideChar(APPLICATION_NAME));
   if FWindowMessage = 0 then
+  begin
     ShowErrorMessageBox(RsErrorRegisterWindowMessage);
+  end;
 end;
 
 procedure TMainForm.Flash;
@@ -417,9 +486,13 @@ end;
 procedure TMainForm.TrayIconClick(Sender: TObject);
 begin
   if Visible then
-    actHide.Execute
+  begin
+    actHide.Execute;
+  end
   else
+  begin
     actShow.Execute;
+  end;
 end;
 
 procedure TMainForm.UpdateVisibilityActions;
@@ -458,9 +531,13 @@ end;
 procedure TMainForm.WMGetSysCommand(var Message: TMessage);
 begin
   if (message.WParam = SC_MINIMIZE) then
-    actHide.Execute
+  begin
+    actHide.Execute;
+  end
   else
+  begin
     inherited;
+  end;
 end;
 
 end.

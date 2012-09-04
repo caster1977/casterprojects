@@ -5,6 +5,7 @@ interface
 uses
   System.IniFiles,
   System.Classes,
+  Vcl.ExtCtrls,
   Beeper.uTPeriodType,
   Beeper.uISignal,
   Beeper.uConsts;
@@ -20,8 +21,9 @@ type
     FWaveFileEnabled: Boolean;
     FWaveFile: string;
     FEnabled: Boolean;
-    function PeriodToSeconds(const ASeconds: word; const AMinutes: word = 0; const AHours: word = 0; const ADays: word = 0; const AWeeks: word = 0;
-      const AMonths: word = 0; const AYears: word = 0): Int64;
+    FTimer: TTimer;
+    function PeriodToSeconds(const ASeconds: word; const AMinutes: word = 0; const AHours: word = 0;
+      const ADays: word = 0; const AWeeks: word = 0; const AMonths: word = 0; const AYears: word = 0): Int64;
 
     function GetTitle: string;
     procedure SetTitle(const AValue: string);
@@ -46,21 +48,27 @@ type
 
     function GetEnabled: Boolean;
     procedure SetEnabled(const AValue: Boolean);
+
+    function GetTimer: TTimer;
   strict protected
     procedure Initialize; virtual;
+    procedure Finalize; virtual;
   public
     constructor Create; virtual; final;
+    destructor Destroy; override;
     property Title: string read GetTitle write SetTitle nodefault;
     property PeriodType: TPeriodType read GetPeriodType write SetPeriodType default DEFAULT_PERIOD_TYPE;
     property Period: Int64 read GetPeriod write SetPeriod default DEFAULT_PERIOD;
-    property MessageEnabled: Boolean read GetMessageEnabled write SetMessageEnabled;
-    property message: string read GetMessage write SetMessage;
-    property WaveFileEnabled: Boolean read GetWaveFileEnabled write SetWaveFileEnabled;
+    property MessageEnabled: Boolean read GetMessageEnabled write SetMessageEnabled default DEFAULT_MESSAGE_ENABLED;
+    property message: string read GetMessage write SetMessage nodefault;
+    property WaveFileEnabled: Boolean read GetWaveFileEnabled write SetWaveFileEnabled
+      default DEFAULT_WAVE_FILE_ENABLED;
     property WaveFile: string read GetWaveFile write SetWaveFile nodefault;
     property Enabled: Boolean read GetEnabled write SetEnabled default DEFAULT_ENABLED;
+    property Timer: TTimer read GetTimer nodefault;
   end;
 
-function GetSignal: ISignal;
+function GetISignal: ISignal;
 
 implementation
 
@@ -68,7 +76,7 @@ uses
   System.SysUtils,
   CastersPackage.uRoutines;
 
-function GetSignal: ISignal;
+function GetISignal: ISignal;
 begin
   Result := TSignal.Create;
 end;
@@ -77,6 +85,12 @@ constructor TSignal.Create;
 begin
   inherited;
   Initialize;
+end;
+
+destructor TSignal.Destroy;
+begin
+  Finalize;
+  inherited;
 end;
 
 function TSignal.GetEnabled: Boolean;
@@ -92,6 +106,15 @@ end;
 function TSignal.GetMessageEnabled: Boolean;
 begin
   Result := FMessageEnabled;
+end;
+
+function TSignal.GetTimer: TTimer;
+begin
+  if not Assigned(FTimer) then
+  begin
+    FTimer := TTimer.Create(nil);
+  end;
+  Result := FTimer;
 end;
 
 function TSignal.GetTitle: string;
@@ -147,7 +170,9 @@ end;
 procedure TSignal.SetPeriodType(const AValue: TPeriodType);
 begin
   if FPeriodType <> AValue then
+  begin
     FPeriodType := AValue;
+  end;
 end;
 
 procedure TSignal.SetWaveFile(const AValue: string);
@@ -168,6 +193,7 @@ end;
 procedure TSignal.Initialize;
 begin
   inherited;
+  FEnabled := DEFAULT_ENABLED;
   FTitle := DEFAULT_TITLE;
   FPeriod := DEFAULT_PERIOD;
   FPeriodType := DEFAULT_PERIOD_TYPE;
@@ -175,6 +201,11 @@ begin
   FMessage := DEFAULT_MESSAGE;
   FWaveFileEnabled := DEFAULT_WAVE_FILE_ENABLED;
   FWaveFile := DEFAULT_WAVE_FILE;
+end;
+
+procedure TSignal.Finalize;
+begin
+  FreeAndNil(FTimer);
 end;
 
 end.

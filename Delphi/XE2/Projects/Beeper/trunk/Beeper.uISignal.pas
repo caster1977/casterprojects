@@ -3,14 +3,17 @@ unit Beeper.uISignal;
 interface
 
 uses
+  Vcl.ExtCtrls,
   Beeper.uTPeriodType;
 
 type
   ISignal = interface
     ['{8FB4586E-5BBB-430D-AD29-EE5B9776088F}']
-    procedure Initialize;
     function PeriodToSeconds(const ASeconds: Word; const AMinutes: Word = 0; const AHours: Word = 0; const ADays: Word = 0; const AWeeks: Word = 0;
       const AMonths: Word = 0; const AYears: Word = 0): Int64;
+
+    procedure Initialize;
+    procedure Finalize;
 
     function GetTitle: string;
     procedure SetTitle(const AValue: string);
@@ -36,6 +39,8 @@ type
     function GetEnabled: Boolean;
     procedure SetEnabled(const AValue: Boolean);
 
+    function GetTimer: TTimer;
+
     property Title: string read GetTitle write SetTitle;
     property Period: Int64 read GetPeriod write SetPeriod;
     property PeriodType: TPeriodType read GetPeriodType write SetPeriodType;
@@ -44,6 +49,7 @@ type
     property WaveFileEnabled: boolean read GetWaveFileEnabled write SetWaveFileEnabled;
     property WaveFile: string read GetWaveFile write SetWaveFile;
     property Enabled: Boolean read GetEnabled write SetEnabled;
+    property Timer: TTimer read GetTimer;
   end;
 
 implementation

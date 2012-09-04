@@ -3,8 +3,8 @@ unit Beeper.uTAboutForm;
 interface
 
 uses
-  CastersPackage.getFVI,
   CastersPackage.Actions.Classes,
+  CastersPackage.uTGSFileVersionInfo,
   Vcl.Forms,
   Vcl.ExtCtrls,
   Vcl.Controls,
@@ -25,7 +25,7 @@ type
     lblVersion: TLabel;
     imgApplicationIcon: TImage;
     lblTitle: TLabel;
-    gsFileVersionInfo: TgsFileVersionInfo;
+    GSFileVersionInfo: TGSFileVersionInfo;
     ActionList: TActionList;
     actClose: TWindowCloseAction;
     procedure FormShow(Sender: TObject);
@@ -60,29 +60,32 @@ begin
     Timer2.Enabled := True;
   end;
   btnClose.Default := actClose.Visible;
-  lblTitle.Caption:=Application.Title;
+  lblTitle.Caption := Application.Title;
   imgApplicationIcon.Picture.Icon.Assign(Application.Icon);
-  lblVersion.Caption := Format('Версия %d.%d Release %d Build %d', [gsFileVersionInfo.ModuleVersion.Major, gsFileVersionInfo.ModuleVersion.Minor,
-    gsFileVersionInfo.ModuleVersion.Release, gsFileVersionInfo.ModuleVersion.Build]);
-  lblLegalCopyright.Caption := gsFileVersionInfo.LegalCopyright;
+  lblVersion.Caption := Format('Версия %d.%d Release %d Build %d', [GSFileVersionInfo.ModuleVersion.Major,
+    GSFileVersionInfo.ModuleVersion.Minor, GSFileVersionInfo.ModuleVersion.Release,
+    GSFileVersionInfo.ModuleVersion.Build]);
+  lblLegalCopyright.Caption := GSFileVersionInfo.LegalCopyright;
 end;
 
 constructor TAboutForm.Create(AOwner: TComponent; const AShowCloseButton: boolean);
 begin
   inherited Create(AOwner);
   actClose.Visible := AShowCloseButton;
-  gsFileVersionInfo.Filename := Application.ExeName;
+  GSFileVersionInfo.Filename := Application.ExeName;
 end;
 
 procedure TAboutForm.Timer1Timer(Sender: TObject);
 begin
-  ModalResult:=mrClose;
+  ModalResult := mrClose;
 end;
 
 procedure TAboutForm.Timer2Timer(Sender: TObject);
 begin
   if ((AlphaBlendValue + 17) <= 222) then
+  begin
     AlphaBlendValue := AlphaBlendValue + 17;
+  end;
 end;
 
 procedure TAboutForm.lblEMailAddressClick(Sender: TObject);
