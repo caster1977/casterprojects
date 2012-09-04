@@ -19,10 +19,11 @@ type
     procedure AfterLoad; virtual; abstract;
     procedure BeforeSave; virtual; abstract;
     procedure Saving(const AIniFile: TCustomIniFile); virtual; abstract;
+  protected
+    constructor Create(const AIniFileName: string = ''); virtual;
   public
     procedure Load; virtual; final;
     procedure Save; virtual; final;
-    constructor Create(const AIniFileName: string = ''); virtual;
   end;
 
   TIniFileDataStorageClass = class of TIniFileDataStorage;

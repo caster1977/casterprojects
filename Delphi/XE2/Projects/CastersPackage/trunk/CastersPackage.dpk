@@ -35,23 +35,24 @@ requires
   xmlrtl;
 
 contains
-  CastersPackage.getFVI in 'CastersPackage.getFVI.pas',
+  CastersPackage.uTGSFileVersionInfo in 'CastersPackage.uTGSFileVersionInfo.pas',
   CastersPackage.uSysMenu in 'CastersPackage.uSysMenu.pas',
   CastersPackage.fisSysMenu in 'CastersPackage.fisSysMenu.pas',
-  CastersPackage.uListViewEx in 'CastersPackage.uListViewEx.pas',
+  CastersPackage.uTListViewEx in 'CastersPackage.uTListViewEx.pas',
   CastersPackage.uLogProvider in 'CastersPackage.uLogProvider.pas',
   CastersPackage.uLogKeeperData in 'CastersPackage.uLogKeeperData.pas',
-  CastersPackage.uCOMInitClass in 'CastersPackage.uCOMInitClass.pas',
+  CastersPackage.uTCOMInitClass in 'CastersPackage.uTCOMInitClass.pas',
   CastersPackage.uLogClasses in 'CastersPackage.uLogClasses.pas',
   CastersPackage.uRoutines in 'CastersPackage.uRoutines.pas',
   CastersPackage.uMysql in 'CastersPackage.uMysql.pas',
-  CastersPackage.uSingleton in 'CastersPackage.uSingleton.pas',
+  CastersPackage.uTSingleton in 'CastersPackage.uTSingleton.pas',
   CastersPackage.uTypes in 'CastersPackage.uTypes.pas',
-  CastersPackage.uStringGridEx in 'CastersPackage.uStringGridEx.pas',
+  CastersPackage.uTStringGridEx in 'CastersPackage.uTStringGridEx.pas',
   CastersPackage.uTIniFileDataStorage in 'CastersPackage.uTIniFileDataStorage.pas',
   CastersPackage.Actions.Classes in 'CastersPackage.Actions.Classes.pas',
   CastersPackage.Actions.DataModule in 'CastersPackage.Actions.DataModule.pas',
   CastersPackage.uIIniFileDataStorage in 'CastersPackage.uIIniFileDataStorage.pas';
 
 end.
+
 
