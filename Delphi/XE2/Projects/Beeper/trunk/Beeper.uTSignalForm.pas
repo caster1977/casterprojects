@@ -135,7 +135,7 @@ function TSignalForm.GetSignal: ISignal;
 var
   pt: TPeriodType;
 begin
-  Result := TSignal.Create;
+  Result := GetISignal;
   Result.Title := Trim(ledTitle.Text);
   Result.Period := StrToIntDef(ledPeriod.Text, 0);
   for pt := low(TPeriodType) to high(TPeriodType) do

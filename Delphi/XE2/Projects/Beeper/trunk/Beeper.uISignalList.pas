@@ -3,8 +3,8 @@ unit Beeper.uISignalList;
 interface
 
 uses
-  Beeper.uISignal,
-  System.Classes;
+  System.Classes,
+  Beeper.uISignal;
 
 type
   ISignalList = interface

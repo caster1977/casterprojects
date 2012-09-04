@@ -3,11 +3,10 @@ unit Beeper.uTSignalList;
 interface
 
 uses
-  System.IniFiles,
-  Beeper.uISignalList,
-  Beeper.uISignal,
   System.Classes,
-  System.SysUtils;
+  System.SysUtils,
+  Beeper.uISignalList,
+  Beeper.uISignal;
 
 type
   ESignalList = class(Exception);
