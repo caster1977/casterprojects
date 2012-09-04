@@ -1,5 +1,5 @@
 ﻿{$WARNINGS OFF}
-unit CastersPackage.uSingleton;
+unit CastersPackage.uTSingleton;
 
 interface
 
@@ -12,13 +12,14 @@ type
   // Уничтожить экземпляр можно вручную, вызвав Free,
   // иначе он будет уничтожен автоматически перед
   // завершением приложения
-  TSingleton=class(TObject)
+  TSingleton = class(TObject)
   strict private
-    class procedure RegisterInstance(Instance: TSingleton);
+    class procedure RegisterInstance(AInstance: TSingleton);
     procedure UnRegisterInstance;
     class function FindInstance: TSingleton;
   protected
-    constructor Create; virtual; // Инициализацию производить только в этом конструкторе, а не в GetInstance! Не рекомендуется выносить этот конструктор из секции protected
+    constructor Create; virtual;
+    // Инициализацию производить только в этом конструкторе, а не в GetInstance! Не рекомендуется выносить этот конструктор из секции protected
   public
     class function NewInstance: TObject; override;
     procedure BeforeDestruction; override;
@@ -38,7 +39,7 @@ var
 
 procedure TSingleton.BeforeDestruction;
 begin
-  UnregisterInstance;
+  UnRegisterInstance;
   inherited;
 end;
 
@@ -51,13 +52,18 @@ class function TSingleton.FindInstance: TSingleton;
 var
   i: Integer;
 begin
-  Result:=nil;
-  for i:=0 to SingletonList.Count-1 do
-    if SingletonList[i].ClassType=Self then
+  Result := nil;
+  if Assigned(SingletonList) then
+  begin
+    for i := 0 to SingletonList.Count - 1 do
+    begin
+      if SingletonList[i].ClassType = Self then
       begin
-        Result:=TSingleton(SingletonList[i]);
+        Result := TSingleton(SingletonList[i]);
         Break;
       end;
+    end;
+  end;
 end;
 
 constructor TSingleton.GetInstance;
@@ -67,31 +73,40 @@ end;
 
 class function TSingleton.NewInstance: TObject;
 begin
-  Result:=FindInstance;
-  if Result=nil then
-    begin
-      Result:=inherited NewInstance;
-      TSingleton(Result).Create;
-      RegisterInstance(TSingleton(Result));
-    end;
+  Result := FindInstance;
+  if Result = nil then
+  begin
+    Result := inherited NewInstance;
+    Result.Create;
+    RegisterInstance(TSingleton(Result));
+  end;
 end;
 
-class procedure TSingleton.RegisterInstance(Instance: TSingleton);
+class procedure TSingleton.RegisterInstance(AInstance: TSingleton);
 begin
-  SingletonList.Add(Instance);
+  if Assigned(SingletonList) then
+  begin
+    SingletonList.Add(AInstance);
+  end;
 end;
 
 procedure TSingleton.UnRegisterInstance;
 begin
-  SingletonList.Extract(Self);
+  if Assigned(SingletonList) then
+  begin
+    SingletonList.Extract(Self);
+  end;
 end;
 
 initialization
 
-SingletonList:=TObjectList.Create(True);
+SingletonList := TObjectList.Create(True);
 
 finalization
 
-SingletonList.Free;
+if Assigned(SingletonList) then
+begin
+  SingletonList.Free;
+end;
 
 end.

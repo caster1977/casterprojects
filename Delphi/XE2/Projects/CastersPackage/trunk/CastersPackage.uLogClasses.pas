@@ -102,7 +102,7 @@ type
 implementation
 
 uses
-  CastersPackage.uCOMInitClass,
+  CastersPackage.uTCOMInitClass,
   CastersPackage.uLogProvider,
   Xml.XMLDoc,
   Xml.XMLIntf,

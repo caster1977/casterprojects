@@ -1,4 +1,4 @@
-unit CastersPackage.uStringGridEx;
+unit CastersPackage.uTStringGridEx;
 
 interface
 
@@ -6,7 +6,7 @@ uses
   Vcl.Grids;
 
 type
-  TStringGridEx=class(TStringGrid)
+  TStringGridEx = class(TStringGrid)
   public
     procedure MoveRow(FromIndex, ToIndex: Longint);
   end;

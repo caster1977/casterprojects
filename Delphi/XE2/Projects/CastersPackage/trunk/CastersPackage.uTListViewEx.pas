@@ -1,4 +1,4 @@
-﻿unit CastersPackage.uListViewEx;
+﻿unit CastersPackage.uTListViewEx;
 
 (*
 
@@ -34,10 +34,10 @@ uses
   Windows;
 
 type
-  TColumnResizeEvent=procedure(Sender: TCustomListview; columnIndex: Integer; columnWidth: Integer) of object;
-  TScrollEvent=procedure(Sender: TCustomListview) of object;
+  TColumnResizeEvent = procedure(Sender: TCustomListview; columnIndex: Integer; columnWidth: Integer) of object;
+  TScrollEvent = procedure(Sender: TCustomListview) of object;
 
-  TListViewEx=class(TListView)
+  TListViewEx = class(TListView)
   private
     fColumnResizeEvent: TColumnResizeEvent;
     fEndColumnResizeEvent: TColumnResizeEvent;
@@ -45,22 +45,22 @@ type
     fDividerDblClickEvent: TColumnResizeEvent;
     fOnScrollEvent: TScrollEvent;
   protected
-    procedure DoBeginColumnResize(columnIndex, columnWidth: integer); virtual;
-    procedure DoEndColumnResize(columnindex, columnwidth: integer); virtual;
-    procedure DoColumnResize(columnindex, columnwidth: integer); virtual;
-    procedure DoDividerDblClick(columnindex, columnwidth: integer); virtual;
+    procedure DoBeginColumnResize(columnIndex, columnWidth: Integer); virtual;
+    procedure DoEndColumnResize(columnIndex, columnWidth: Integer); virtual;
+    procedure DoColumnResize(columnIndex, columnWidth: Integer); virtual;
+    procedure DoDividerDblClick(columnIndex, columnWidth: Integer); virtual;
     procedure WMNotify(var msg: TWMNotify); message WM_NOTIFY;
-    procedure WM_HScroll(var Msg: TWMHScroll); message WM_HSCROLL;
-    procedure WM_VScroll(var Msg: TWMVScroll); message WM_VSCROLL;
-    function FindColumnIndex(pHeader: pNMHdr): integer;
-    function FindColumnWidth(pHeader: pNMHdr): integer;
+    procedure WM_HScroll(var msg: TWMHScroll); message WM_HScroll;
+    procedure WM_VScroll(var msg: TWMVScroll); message WM_VScroll;
+    function FindColumnIndex(pHeader: pNMHdr): Integer;
+    function FindColumnWidth(pHeader: pNMHdr): Integer;
     procedure CreateWnd; override;
   published
     property OnBeginColumnResize: TColumnResizeEvent read fBeginColumnResizeEvent write fBeginColumnResizeEvent;
     property OnEndColumnResize: TColumnResizeEvent read fEndColumnResizeEvent write fEndColumnResizeEvent;
     property OnColumnResize: TColumnResizeEvent read fColumnResizeEvent write fColumnResizeEvent;
     property OnDividerDblClick: TColumnResizeEvent read fDividerDblClickEvent write fDividerDblClickEvent;
-    property OnScroll: TScrollEvent read FOnScrollEvent write FOnScrollEvent;
+    property OnScroll: TScrollEvent read fOnScrollEvent write fOnScrollEvent;
     property OnMouseWheel;
     property OnMouseWheelDown;
     property OnMouseWheelUp;
@@ -82,82 +82,82 @@ var
   wnd: HWND;
 begin
   inherited;
-  wnd:=GetWindow(handle, GW_CHILD);
-  SetWindowLong(wnd, GWL_STYLE, GetWindowLong(wnd, GWL_STYLE)and not HDS_FULLDRAG);
+  wnd := GetWindow(handle, GW_CHILD);
+  SetWindowLong(wnd, GWL_STYLE, GetWindowLong(wnd, GWL_STYLE) and not HDS_FULLDRAG);
 end;
 
-procedure TListViewEx.WM_HScroll(var Msg: TWMHScroll);
+procedure TListViewEx.WM_HScroll(var msg: TWMHScroll);
 begin
   inherited;
   if Assigned(fOnScrollEvent) then
     fOnScrollEvent(Self);
 end;
 
-procedure TListViewEx.WM_VScroll(var Msg: TWMVScroll);
+procedure TListViewEx.WM_VScroll(var msg: TWMVScroll);
 begin
   inherited;
   if Assigned(fOnScrollEvent) then
     fOnScrollEvent(Self);
 end;
 
-procedure TListViewEx.DoBeginColumnResize(columnIndex, columnWidth: integer);
+procedure TListViewEx.DoBeginColumnResize(columnIndex, columnWidth: Integer);
 begin
   if Assigned(fBeginColumnResizeEvent) then
-    fBeginColumnResizeEvent(self, columnIndex, columnWidth);
+    fBeginColumnResizeEvent(Self, columnIndex, columnWidth);
 end;
 
-procedure TListViewEx.DoColumnResize(columnindex, columnwidth: integer);
+procedure TListViewEx.DoColumnResize(columnIndex, columnWidth: Integer);
 begin
   if Assigned(fColumnResizeEvent) then
-    fColumnResizeEvent(self, columnIndex, columnWidth);
+    fColumnResizeEvent(Self, columnIndex, columnWidth);
 end;
 
-procedure TListViewEx.DoDividerDblClick(columnindex, columnwidth: integer);
+procedure TListViewEx.DoDividerDblClick(columnIndex, columnWidth: Integer);
 begin
   if Assigned(fDividerDblClickEvent) then
-    fDividerDblClickEvent(self, columnIndex, columnWidth);
+    fDividerDblClickEvent(Self, columnIndex, columnWidth);
 end;
 
-procedure TListViewEx.DoEndColumnResize(columnindex, columnwidth: integer);
+procedure TListViewEx.DoEndColumnResize(columnIndex, columnWidth: Integer);
 begin
   if Assigned(fEndColumnResizeEvent) then
-    fEndColumnResizeEvent(self, columnIndex, columnWidth);
+    fEndColumnResizeEvent(Self, columnIndex, columnWidth);
 end;
 
-function TListViewEx.FindColumnIndex(pHeader: pNMHdr): integer;
+function TListViewEx.FindColumnIndex(pHeader: pNMHdr): Integer;
 var
   hwndHeader: HWND;
   iteminfo: THdItem;
   itemindex: Integer;
-  buf: array [0..128] of Char;
+  buf: array [0 .. 128] of Char;
 begin
-  Result:=-1;
-  hwndHeader:=pHeader^.hwndFrom;
-  itemindex:=pHDNotify(pHeader)^.Item;
+  Result := -1;
+  hwndHeader := pHeader^.hwndFrom;
+  itemindex := pHDNotify(pHeader)^.Item;
   FillChar(iteminfo, sizeof(iteminfo), 0);
 
-  iteminfo.Mask:=HDI_TEXT;
-  iteminfo.pszText:=buf;
-  iteminfo.cchTextMax:=sizeof(buf)-1;
+  iteminfo.Mask := HDI_TEXT;
+  iteminfo.pszText := buf;
+  iteminfo.cchTextMax := sizeof(buf) - 1;
 
   Header_GetItem(hwndHeader, itemindex, iteminfo);
 
-  if CompareStr(Columns[itemindex].Caption, iteminfo.pszText)=0 then
-    Result:=itemindex
+  if CompareStr(Columns[itemindex].Caption, iteminfo.pszText) = 0 then
+    Result := itemindex
   else
-    for itemindex:=0 to Columns.count-1 do
-      if CompareStr(Columns[itemindex].Caption, iteminfo.pszText)=0 then
-        begin
-          Result:=itemindex;
-          Break;
-        end;
+    for itemindex := 0 to Columns.count - 1 do
+      if CompareStr(Columns[itemindex].Caption, iteminfo.pszText) = 0 then
+      begin
+        Result := itemindex;
+        Break;
+      end;
 end;
 
-function TListViewEx.FindColumnWidth(pHeader: pNMHdr): integer;
+function TListViewEx.FindColumnWidth(pHeader: pNMHdr): Integer;
 begin
-  Result:=-1;
-  if Assigned(PHDNotify(pHeader)^.pItem)and((PHDNotify(pHeader)^.pItem^.mask and HDI_WIDTH)<>0) then
-    Result:=PHDNotify(pHeader)^.pItem^.cxy;
+  Result := -1;
+  if Assigned(pHDNotify(pHeader)^.pItem) and ((pHDNotify(pHeader)^.pItem^.Mask and HDI_WIDTH) <> 0) then
+    Result := pHDNotify(pHeader)^.pItem^.cxy;
 end;
 
 procedure TListViewEx.WMNotify(var msg: TWMNotify);
