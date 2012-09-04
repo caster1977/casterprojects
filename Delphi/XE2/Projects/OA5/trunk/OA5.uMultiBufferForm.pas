@@ -285,7 +285,7 @@ begin
   ProcedureHeader('Процедура очистки списка элементов', '{2E8AC92F-B5AF-47CA-B6D7-2063421BCC77}');
 
   lvBuffer.Clear;
-  MainForm.MeasuresMultiBuffer.Clear;
+  MainForm.MultiBuffer.Clear;
 
   Do_UpdateActions;
   Do_UpdateListViewScrollBarVisibility;
@@ -301,7 +301,7 @@ begin
     begin
       if StrToIntDef(lvBuffer.Selected.Caption, -1)>-1 then
         begin
-          MainForm.MeasuresMultiBuffer.Delete(lvBuffer.Selected.Index);
+          MainForm.MultiBuffer.Delete(lvBuffer.Selected.Index);
           lvBuffer.Selected.Delete;
         end;
     end;
