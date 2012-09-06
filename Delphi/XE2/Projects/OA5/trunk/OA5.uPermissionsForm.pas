@@ -3,55 +3,48 @@ unit OA5.uPermissionsForm;
 interface
 
 uses
-  Winapi.Windows,
+  CastersPackage.uTLogForm,
   System.Classes,
-  System.SysUtils,
-  Vcl.Controls,
-  Vcl.Forms,
   Vcl.ActnList,
-  Vcl.ActnMan,
-  Vcl.StdCtrls,
-  Vcl.ExtCtrls,
-  Vcl.PlatformDefaultStyleActnCtrls,
   Vcl.ImgList,
-  Vcl.CheckLst,
-  CastersPackage.uLogProvider;
+  Vcl.Controls,
+  Vcl.ExtCtrls,
+  Vcl.StdCtrls,
+  Vcl.CheckLst;
 
 type
-  TPermissionsForm=class(TForm)
-    ActionManager1: TActionManager;
-    Log: TLogProvider;
-    ilPermissionsFormSmallImages: TImageList;
+  TPermissionsForm = class(TLogForm)
+    ImageList: TImageList;
+    ActionList: TActionList;
+    actSelectAll: TAction;
+    actSelectNone: TAction;
+    actApply: TAction;
+    actClose: TAction;
+    actHelp: TAction;
     chklbxPermissions: TCheckListBox;
-    Bevel2: TBevel;
-    btnHelp: TButton;
+    pnlButtons: TPanel;
+    btnSelectAll: TButton;
+    btnSelectNone: TButton;
     btnApply: TButton;
     btnClose: TButton;
-    btnSelectNone: TButton;
-    btnSelectAll: TButton;
-    Action_Apply: TAction;
-    Action_Close: TAction;
-    Action_Help: TAction;
-    Action_SelectAll: TAction;
-    Action_SelectNone: TAction;
-    procedure Action_ApplyExecute(Sender: TObject);
-    procedure Action_HelpExecute(Sender: TObject);
-    procedure Action_CloseExecute(Sender: TObject);
-    procedure Action_SelectNoneExecute(Sender: TObject);
-    procedure Action_SelectAllExecute(Sender: TObject);
+    btnHelp: TButton;
+    procedure actApplyExecute(Sender: TObject);
+    procedure actHelpExecute(Sender: TObject);
+    procedure actCloseExecute(Sender: TObject);
+    procedure actSelectNoneExecute(Sender: TObject);
+    procedure actSelectAllExecute(Sender: TObject);
     procedure chklbxPermissionsClickCheck(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure actHelpUpdate(Sender: TObject);
+    procedure actSelectAllUpdate(Sender: TObject);
+    procedure actSelectNoneUpdate(Sender: TObject);
   strict private
-    procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
-    procedure ProcedureFooter;
-    procedure PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
-    procedure Do_Help;
-    procedure Do_Apply;
-    procedure Do_Close;
-    procedure Do_SelectAll;
-    procedure Do_SelectNone;
-    procedure Do_UpdateActions;
+    procedure _Help;
+    procedure _Apply;
+    procedure _Close;
+    procedure _SelectAll;
+    procedure _SelectNone;
   end;
 
 implementation
@@ -59,226 +52,254 @@ implementation
 {$R *.dfm}
 
 uses
-  OA5.uMainForm,
-  CastersPackage.uRoutines;
+  Vcl.Forms,
+  System.SysUtils,
+  OA5.uMainForm;
 
-procedure TPermissionsForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
-begin
-  Log.EnterMethod(aTitle, aLogGroupGUID);
-  MainForm.Inc_BusyState;
-  Application.ProcessMessages;
-end;
+const
+  ICON_PERMISSIONS = 3;
 
-procedure TPermissionsForm.ProcedureFooter;
-begin
-  MainForm.Dec_BusyState;
-  Log.ExitMethod;
-  Application.ProcessMessages;
-end;
+resourcestring
+  RsPermissionsForm = 'управления правами доступа пользователя';
+  RsSelectAllPermissionProcedure = 'Процедура выделения всех элементов списк' + 'а прав доступа';
+  RsSelectNonePermissionProcedure = 'Процедура снятия выделения со всех элем' + 'ентов списка прав доступа';
 
-procedure TPermissionsForm.PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
+procedure TPermissionsForm.actApplyExecute(Sender: TObject);
 begin
-  if aError then
-    MainForm.ShowErrorBox(aHandle, aErrorMessage)
-  else
-    Log.SendDebug('Процедура выполнена без ошибок.');
-  MainForm.pbMain.Position:=MainForm.pbMain.Min;
-end;
-
-procedure TPermissionsForm.Action_ApplyExecute(Sender: TObject);
-begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Apply.Caption+'"', '{5C75FA77-50A0-471B-B6DA-472A571E78A5}');
-  Do_Apply;
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actApply.Caption]), '{5C75FA77-50A0-471B-B6DA-472A571E78A5}');
+  _Apply;
   ProcedureFooter;
 end;
 
-procedure TPermissionsForm.Action_CloseExecute(Sender: TObject);
+procedure TPermissionsForm.actCloseExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Close.Caption+'"', '{0CD08097-3CBD-497C-A6E9-C334C2613D87}');
-  Do_Close;
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{0CD08097-3CBD-497C-A6E9-C334C2613D87}');
+  _Close;
   ProcedureFooter;
 end;
 
-procedure TPermissionsForm.Action_HelpExecute(Sender: TObject);
+procedure TPermissionsForm.actHelpExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_Help.Caption+'"', '{E39211E9-EC4D-452A-B3BF-267D5E516A22}');
-  Do_Help;
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{803148B5-8C37-4D3C-964F-ACC9A7FFD4BD}');
+  _Help;
   ProcedureFooter;
 end;
 
-procedure TPermissionsForm.Action_SelectAllExecute(Sender: TObject);
+procedure TPermissionsForm.actHelpUpdate(Sender: TObject);
+var
+  b: Boolean;
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_SelectAll.Caption+'"', '{14A91B39-D3D7-49C4-9F19-D253DE7AB611}');
-  Do_SelectAll;
+  b := Application.HelpFile <> EmptyStr;
+  if actHelp.Enabled <> b then
+  begin
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]), '{876209CD-9450-437C-BECD-39568ECD2FC0}');
+    actHelp.Enabled := b;
+    Log.SendDebug(GetActionUpdateLogMessage(actHelp));
+    ProcedureFooter;
+  end;
+end;
+
+procedure TPermissionsForm.actSelectAllExecute(Sender: TObject);
+begin
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectAll.Caption]),
+    '{14A91B39-D3D7-49C4-9F19-D253DE7AB611}');
+  _SelectAll;
   ProcedureFooter;
 end;
 
-procedure TPermissionsForm.Action_SelectNoneExecute(Sender: TObject);
+procedure TPermissionsForm.actSelectAllUpdate(Sender: TObject);
+var
+  b: Boolean;
+  i: Integer;
 begin
-  ProcedureHeader('Процедура-обработчик действия "'+Action_SelectNone.Caption+'"', '{2E28DFC0-7D3C-4E6E-B105-CFEC8B796E11}');
-  Do_SelectNone;
+  b := False;
+  for i := 0 to chklbxPermissions.Items.Count - 1 do
+  begin
+    if not chklbxPermissions.Checked[i] then
+    begin
+      b := True;
+      Break;
+    end;
+  end;
+  b := (chklbxPermissions.Items.Count > 0) and b;
+  if actSelectAll.Enabled <> b then
+  begin
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectAll.Caption]),
+      '{713F5389-E51C-45D3-9EA7-857AA2ADDAE5}');
+    actSelectAll.Enabled := b;
+    Log.SendDebug(GetActionUpdateLogMessage(actSelectAll));
+    ProcedureFooter;
+  end;
+end;
+
+procedure TPermissionsForm.actSelectNoneUpdate(Sender: TObject);
+var
+  b: Boolean;
+  i: Integer;
+begin
+  b := False;
+  for i := 0 to chklbxPermissions.Items.Count - 1 do
+  begin
+    if chklbxPermissions.Checked[i] then
+    begin
+      b := True;
+      Break;
+    end;
+  end;
+  b := (chklbxPermissions.Items.Count > 0) and b;
+  if actSelectNone.Enabled <> b then
+  begin
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectNone.Caption]),
+      '{6A789C2D-BE1B-4AE4-A348-DC0BAEC83549}');
+    actSelectNone.Enabled := b;
+    Log.SendDebug(GetActionUpdateLogMessage(actSelectNone));
+    ProcedureFooter;
+  end;
+end;
+
+procedure TPermissionsForm.actSelectNoneExecute(Sender: TObject);
+begin
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectNone.Caption]),
+    '{2E28DFC0-7D3C-4E6E-B105-CFEC8B796E11}');
+  _SelectNone;
   ProcedureFooter;
 end;
 
 procedure TPermissionsForm.chklbxPermissionsClickCheck(Sender: TObject);
 begin
-  ProcedureHeader('Процедура реакции на пеметку/снятие пометки чекбокса в списке прав доступа', '{FC7CC002-2ADC-4615-95D0-2F86AEC2E17B}');
-  Do_UpdateActions;
-  ProcedureFooter;
+  (* ProcedureHeader('Процедура реакции на пометку/снятие пометки чекбокса в списке прав доступа',
+    '{FC7CC002-2ADC-4615-95D0-2F86AEC2E17B}');
+    _UpdateActions;
+    ProcedureFooter; *)
 end;
 
-procedure TPermissionsForm.Do_Apply;
+procedure TPermissionsForm._Apply;
 begin
-  ProcedureHeader('Процедура закрытия модального окна с результатом mrOk', '{8C1D1934-43A0-4BD3-A063-95940EA9B73D}');
+  ProcedureHeader(Format(RsCloseModalWithOkProcedure, [RsPermissionsForm]), '{8C1D1934-43A0-4BD3-A063-95940EA9B73D}');
 
-  ModalResult:=mrOk;
-  Log.SendInfo('Попытка изменения пароля учётной записи была подтверждена пользователем.');
-  Log.SendInfo('Окно изменения пароля учётной записи закрыто.');
-
-  ProcedureFooter;
-end;
-
-procedure TPermissionsForm.Do_Close;
-begin
-  ProcedureHeader('Процедура закрытия модального окна с результатом mrClose', '{19DBBA6D-0E8E-4BBB-BF5B-D2C80E71A631}');
-
-  ModalResult:=mrClose;
-  Log.SendInfo('Попытка изменения пароля учётной записи была отменена пользователем.');
-  Log.SendInfo('Окно изменения пароля учётной записи закрыто.');
+  ModalResult := mrOk;
+  Log.SendInfo('Попытка изменения прав доступа пользователя была подтверждена пользователем.');
+  Log.SendInfo(Format(RsWindowClosedByUser, [RsPermissionsForm]));
 
   ProcedureFooter;
 end;
 
-procedure TPermissionsForm.Do_Help;
-var
-  bError: boolean;
-  sErrorMessage: string;
+procedure TPermissionsForm._Close;
 begin
-  ProcedureHeader('Процедура вызова контекстной справки', '{95536062-F76C-495C-B1F2-70E50F7A9FF0}');
-  bError:=False;
+  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsPermissionsForm]), '{19DBBA6D-0E8E-4BBB-BF5B-D2C80E71A631}');
 
-  Log.SendInfo('Производится попытка открытия справочного файла программы...');
+  ModalResult := mrCancel;
+  Log.SendInfo('Попытка изменения прав доступа пользователя была отменена пользователем.');
+  Log.SendInfo(Format(RsWindowClosedByUser, [RsPermissionsForm]));
+
+  ProcedureFooter;
+end;
+
+procedure TPermissionsForm._Help;
+begin
+  ProcedureHeader(RsContextHelpProcedure, '{9965AA17-93E4-445A-857B-CD0AB780CB8B}');
+
+  Log.SendInfo(RsTryingToOpenHelpFile);
   if (FileExists(ExpandFileName(Application.HelpFile))) then
-    Application.HelpContext(HelpContext)
+  begin
+    Application.HelpContext(HelpContext);
+  end
   else
-    Routines.GenerateError('Извините, справочный файл к данной программе не найден.', sErrorMessage, bError);
-
-  PreFooter(Handle, bError, sErrorMessage);
-  ProcedureFooter;
-end;
-
-procedure TPermissionsForm.Do_SelectAll;
-var
-  i: integer;
-begin
-  ProcedureHeader('Процедура выделения всех элементов списка прав доступа', '{40DE70C8-A47D-441A-93A4-A142CA28214E}');
-
-  for i:=0 to chklbxPermissions.Count-1 do
-    chklbxPermissions.Checked[i]:=True;
-  Do_UpdateActions;
+  begin
+    GenerateError(RsHelpFileNonFound);
+  end;
 
   ProcedureFooter;
 end;
 
-procedure TPermissionsForm.Do_SelectNone;
+procedure TPermissionsForm._SelectAll;
 var
-  i: integer;
+  i: Integer;
 begin
-  ProcedureHeader('Процедура снятия выделения со всех элементов списка прав доступа', '{40DE70C8-A47D-441A-93A4-A142CA28214E}');
+  ProcedureHeader(RsSelectAllPermissionProcedure, '{40DE70C8-A47D-441A-93A4-A142CA28214E}');
 
-  for i:=0 to chklbxPermissions.Count-1 do
-    chklbxPermissions.Checked[i]:=False;
-  Do_UpdateActions;
+  for i := 0 to chklbxPermissions.Count - 1 do
+  begin
+    chklbxPermissions.Checked[i] := True;
+  end;
 
   ProcedureFooter;
 end;
 
-procedure TPermissionsForm.Do_UpdateActions;
+procedure TPermissionsForm._SelectNone;
 var
-  b: boolean;
-  i: integer;
+  i: Integer;
 begin
-  ProcedureHeader('Процедура обновления состояния действий', '{1DE54128-029B-42D0-B94B-63F44B16C60A}');
+  ProcedureHeader(RsSelectNonePermissionProcedure, '{40DE70C8-A47D-441A-93A4-A142CA28214E}');
 
-  b:=False;
-  for i:=0 to chklbxPermissions.Items.Count-1 do
-    if not chklbxPermissions.Checked[i] then
-      begin
-        b:=True;
-        Break;
-      end;
-  b:=(chklbxPermissions.Items.Count>0)and b;
-  if Action_SelectAll.Enabled<>b then
-    begin
-      Action_SelectAll.Enabled:=b;
-      Log.SendDebug('Действие "'+Action_SelectAll.Caption+'" '+Routines.GetConditionalString(Action_SelectAll.Enabled, 'в', 'от')+'ключено.');
-    end;
-
-  b:=False;
-  for i:=0 to chklbxPermissions.Items.Count-1 do
-    if chklbxPermissions.Checked[i] then
-      begin
-        b:=True;
-        Break;
-      end;
-  b:=(chklbxPermissions.Items.Count>0)and b;
-  if Action_SelectNone.Enabled<>b then
-    begin
-      Action_SelectNone.Enabled:=b;
-      Log.SendDebug('Действие "'+Action_SelectNone.Caption+'" '+Routines.GetConditionalString(Action_SelectNone.Enabled, 'в', 'от')+'ключено.');
-    end;
+  for i := 0 to chklbxPermissions.Count - 1 do
+  begin
+    chklbxPermissions.Checked[i] := False;
+  end;
 
   ProcedureFooter;
 end;
 
 procedure TPermissionsForm.FormCreate(Sender: TObject);
-const
-  ICON_PERMISSIONS=3;
 begin
-  ProcedureHeader('Процедура-обработчик события создания окна', '{43E2DB1C-46EC-46FB-BE5F-69082FF4BDB0}');
+  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsPermissionsForm]), '{E6E569D5-7A13-4FB2-8364-E0B6605D87D8}');
 
-  ilPermissionsFormSmallImages.GetIcon(ICON_PERMISSIONS, Icon);
-  Action_Help.Enabled:=Application.HelpFile<>'';
-  Log.SendDebug('Действие "'+Action_Help.Caption+'" '+Routines.GetConditionalString(Action_Help.Enabled, 'в', 'от')+'ключено.');
-
+  ImageList.GetIcon(ICON_PERMISSIONS, Icon);
   with MainForm.Configuration do
-    begin
-      // установка параметров протоколирования в соответствии с настройками программы
-      Log.UserName:=MainForm.CurrentUser.Login;
-      Log.AllowedTypes:=KeepLogTypes;
-      Log.Enabled:=EnableLog;
+  begin
+    // установка параметров протоколирования в соответствии с настройками программы
+    Log.UserName := MainForm.CurrentUser.Login;
+    Log.AllowedTypes := KeepLogTypes;
+    Log.Enabled := EnableLog;
 
-      // установка положения окна конфигурации в соответсвии со значениями конфигурации программы
-      if SetPasswordFormPosition.bCenter then
-        Position:=poScreenCenter
+    // установка положения окна конфигурации в соответсвии со значениями конфигурации программы
+    if SetPasswordFormPosition.bCenter then
+    begin
+      Position := poScreenCenter;
+    end
+    else
+    begin
+      Position := poDesigned;
+      if PermissionsFormPosition.x < Screen.WorkAreaLeft then
+      begin
+        Left := Screen.WorkAreaLeft;
+      end
       else
+      begin
+        if PermissionsFormPosition.x > Screen.WorkAreaLeft + Screen.WorkAreaWidth then
         begin
-          Position:=poDesigned;
-          if PermissionsFormPosition.x<Screen.WorkAreaLeft then
-            Left:=Screen.WorkAreaLeft
-          else
-            if PermissionsFormPosition.x>Screen.WorkAreaLeft+Screen.WorkAreaWidth then
-              Left:=Screen.WorkAreaLeft+Screen.WorkAreaWidth-Width
-            else
-              Left:=PermissionsFormPosition.x;
-          if PermissionsFormPosition.y<Screen.WorkAreaTop then
-            Top:=Screen.WorkAreaTop
-          else
-            if PermissionsFormPosition.y>Screen.WorkAreaTop+Screen.WorkAreaHeight then
-              Top:=Screen.WorkAreaTop+Screen.WorkAreaHeight-Height
-            else
-              Top:=PermissionsFormPosition.y;
+          Left := Screen.WorkAreaLeft + Screen.WorkAreaWidth - Width;
+        end
+        else
+        begin
+          Left := PermissionsFormPosition.x;
         end;
+      end;
+      if PermissionsFormPosition.y < Screen.WorkAreaTop then
+      begin
+        Top := Screen.WorkAreaTop;
+      end
+      else
+      begin
+        if PermissionsFormPosition.y > Screen.WorkAreaTop + Screen.WorkAreaHeight then
+        begin
+          Top := Screen.WorkAreaTop + Screen.WorkAreaHeight - Height;
+        end
+        else
+        begin
+          Top := PermissionsFormPosition.y;
+        end;
+      end;
     end;
+  end;
 
   ProcedureFooter;
 end;
 
 procedure TPermissionsForm.FormShow(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик события отображения окна', '{109E2C60-29E7-4230-956B-848F6063FD69}');
-  Do_UpdateActions;
-  Log.SendInfo('Отображено окно управления правами доступа пользователя.');
+  ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsPermissionsForm]), '{37196BB1-FC40-4D57-839E-F76454FD74F3}');
+  Log.SendInfo(Format(RsWindowShowed, [RsPermissionsForm]));
   ProcedureFooter;
 end;
 

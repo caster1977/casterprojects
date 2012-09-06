@@ -4,9 +4,10 @@ object PermissionsForm: TPermissionsForm
   ActiveControl = chklbxPermissions
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
+  BorderWidth = 5
   Caption = #1059#1087#1088#1072#1074#1083#1077#1085#1080#1077' '#1087#1088#1072#1074#1072#1084#1080' '#1076#1086#1089#1090#1091#1087#1072' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
-  ClientHeight = 332
-  ClientWidth = 634
+  ClientHeight = 322
+  ClientWidth = 624
   Color = clBtnFace
   Constraints.MaxHeight = 360
   Constraints.MaxWidth = 640
@@ -20,115 +21,105 @@ object PermissionsForm: TPermissionsForm
   OldCreateOrder = False
   OnCreate = FormCreate
   OnShow = FormShow
-  DesignSize = (
-    634
-    332)
   PixelsPerInch = 96
   TextHeight = 13
-  object Bevel2: TBevel
-    Left = 0
-    Top = 291
-    Width = 634
-    Height = 41
-    Align = alBottom
-    Shape = bsTopLine
-    ExplicitTop = 264
-    ExplicitWidth = 645
-  end
-  object btnHelp: TButton
-    Left = 545
-    Top = 299
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Help
-    Anchors = [akRight, akBottom]
-    TabOrder = 5
-  end
-  object btnApply: TButton
-    Left = 371
-    Top = 299
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Apply
-    Anchors = [akRight, akBottom]
-    Default = True
-    TabOrder = 3
-  end
-  object btnClose: TButton
-    Left = 458
-    Top = 299
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Close
-    Anchors = [akRight, akBottom]
-    Cancel = True
-    TabOrder = 4
-  end
-  object btnSelectNone: TButton
-    Left = 36
-    Top = 301
-    Width = 22
-    Height = 22
-    Cursor = crHandPoint
-    Action = Action_SelectNone
-    Anchors = [akLeft, akBottom]
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    Images = ilPermissionsFormSmallImages
-    ParentFont = False
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 2
-  end
-  object btnSelectAll: TButton
-    Left = 8
-    Top = 301
-    Width = 22
-    Height = 22
-    Cursor = crHandPoint
-    Action = Action_SelectAll
-    Anchors = [akLeft, akBottom]
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    Images = ilPermissionsFormSmallImages
-    ParentFont = False
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 1
-  end
   object chklbxPermissions: TCheckListBox
-    Left = 8
-    Top = 8
-    Width = 618
-    Height = 275
+    Left = 0
+    Top = 0
+    Width = 624
+    Height = 284
     OnClickCheck = chklbxPermissionsClickCheck
-    Align = alCustom
-    Anchors = [akLeft, akTop, akRight, akBottom]
+    Align = alTop
     ItemHeight = 13
     TabOrder = 0
   end
-  object Log: TLogProvider
-    LogFile.Enabled = True
-    LogFile.FileNameSuffix = 'OA5_PermissionsForm'
-    LogClient.Enabled = True
-    Left = 304
-    Top = 120
+  object pnlButtons: TPanel
+    Left = 0
+    Top = 290
+    Width = 624
+    Height = 32
+    Align = alBottom
+    BevelEdges = [beTop]
+    BevelKind = bkTile
+    BevelOuter = bvNone
+    TabOrder = 1
+    DesignSize = (
+      624
+      30)
+    object btnApply: TButton
+      Left = 369
+      Top = 5
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actApply
+      Anchors = [akTop, akRight]
+      TabOrder = 2
+    end
+    object btnClose: TButton
+      Left = 456
+      Top = 5
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actClose
+      Anchors = [akTop, akRight]
+      Cancel = True
+      TabOrder = 3
+    end
+    object btnHelp: TButton
+      Left = 543
+      Top = 5
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actHelp
+      Anchors = [akTop, akRight]
+      TabOrder = 4
+    end
+    object btnSelectAll: TButton
+      Left = 0
+      Top = 7
+      Width = 22
+      Height = 22
+      Cursor = crHandPoint
+      Action = actSelectAll
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Images = ImageList
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 0
+    end
+    object btnSelectNone: TButton
+      Left = 28
+      Top = 7
+      Width = 22
+      Height = 22
+      Cursor = crHandPoint
+      Action = actSelectNone
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Images = ImageList
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 1
+    end
   end
-  object ilPermissionsFormSmallImages: TImageList
+  object ImageList: TImageList
     AllocBy = 3
-    Left = 368
-    Top = 120
+    Left = 424
+    Top = 128
     Bitmap = {
-      494C010104002000E00110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104002000F00110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -399,42 +390,44 @@ object PermissionsForm: TPermissionsForm
       E00F80018001401FF83FFFFFFFFF003F00000000000000000000000000000000
       000000000000}
   end
-  object ActionManager1: TActionManager
-    Images = ilPermissionsFormSmallImages
-    Left = 336
-    Top = 120
-    StyleName = 'Platform Default'
-    object Action_SelectAll: TAction
+  object ActionList: TActionList
+    Images = ImageList
+    Left = 360
+    Top = 128
+    object actSelectAll: TAction
       Hint = #1042#1099#1076#1077#1083#1080#1090#1100' '#1074#1089#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1074#1099#1076#1077#1083#1077#1085#1080#1103' '#1074#1089#1077#1093' '#1087#1088#1072#1074' '#1076#1086#1089#1090#1091#1087#1072
       ImageIndex = 1
-      OnExecute = Action_SelectAllExecute
+      OnExecute = actSelectAllExecute
+      OnUpdate = actSelectAllUpdate
     end
-    object Action_SelectNone: TAction
+    object actSelectNone: TAction
       Hint = 
         #1057#1085#1103#1090#1100' '#1074#1099#1076#1077#1083#1077#1085#1080#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1089#1085#1103#1090#1080#1103' '#1074#1099#1076#1077#1083#1077#1085#1080#1103' '#1089#1086' '#1074#1089#1077#1093' '#1087#1088#1072#1074' '#1076#1086#1089#1090#1091#1087 +
         #1072
       ImageIndex = 2
-      OnExecute = Action_SelectNoneExecute
+      OnExecute = actSelectNoneExecute
+      OnUpdate = actSelectNoneUpdate
     end
-    object Action_Apply: TAction
+    object actApply: TAction
       Caption = '&'#1055#1088#1080#1084#1077#1085#1080#1090#1100
       Hint = 
         #1055#1088#1080#1084#1077#1085#1080#1090#1100' '#1080#1079#1084#1077#1085#1077#1085#1080#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1088#1080#1084#1077#1085#1077#1085#1080#1103' '#1085#1086#1074#1086#1075#1086' '#1087#1072#1088#1086#1083#1103' '#1080' '#1079#1072#1082#1088#1099 +
         #1090#1080#1103' '#1086#1082#1085#1072
-      OnExecute = Action_ApplyExecute
+      OnExecute = actApplyExecute
     end
-    object Action_Close: TAction
+    object actClose: TAction
       Caption = '&'#1047#1072#1082#1088#1099#1090#1100
       Hint = 
         #1047#1072#1082#1088#1099#1090#1100' '#1086#1082#1085#1086'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1084#1077#1085#1099' '#1074#1089#1077#1093' '#1074#1085#1077#1089#1105#1085#1085#1099#1093' '#1080#1079#1084#1077#1085#1077#1085#1080#1081' '#1080' '#1079#1072#1082#1088#1099 +
         #1090#1080#1103' '#1086#1082#1085#1072
-      OnExecute = Action_CloseExecute
+      OnExecute = actCloseExecute
     end
-    object Action_Help: TAction
+    object actHelp: TAction
       Caption = '&'#1057#1087#1088#1072#1074#1082#1072
       Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1087#1088#1072#1074#1082#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1089#1087#1088#1072#1074#1086#1095#1085#1086#1075#1086' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
       ImageIndex = 0
-      OnExecute = Action_HelpExecute
+      OnExecute = actHelpExecute
+      OnUpdate = actHelpUpdate
     end
   end
 end

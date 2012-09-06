@@ -4,7 +4,6 @@ interface
 
 uses
   CastersPackage.uTLogForm,
-  Vcl.Forms,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
@@ -61,6 +60,7 @@ implementation
 {$R *.dfm}
 
 uses
+  Vcl.Forms,
   OA5.uMainForm,
   CastersPackage.uRoutines,
   System.SysUtils;
@@ -73,7 +73,7 @@ const
 
 procedure TViewMessageForm.FormCreate(Sender: TObject);
 begin
-  ProcedureHeader(RsEventHandlerOfFormCreation, '{6BC67F23-9F87-48D9-BEBC-C2C3EB02E4ED}');
+  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsViewMessageForm]), '{79ED6FCD-6B91-4FE9-8729-67067D3B5FA2}');
 
   ImageList.GetIcon(ICON_VIEWMESSAGE, Icon);
   with MainForm.Configuration do
@@ -164,7 +164,7 @@ begin
   begin
     ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]), '{ADE69D60-880D-463E-9776-5E197AD9212E}');
     actHelp.Enabled := b;
-    Log.SendDebug('Действие "' + actHelp.Caption + '" ' + Routines.GetConditionalString(b, 'в', 'от') + 'ключено.');
+    Log.SendDebug(GetActionUpdateLogMessage(actHelp));
     ProcedureFooter;
   end;
 end;
@@ -192,11 +192,9 @@ end;
 
 procedure TViewMessageForm._Close;
 begin
-  ProcedureHeader('Процедура закрытия модального окна с результатом mrClose', '{25E73E71-59EF-4E44-BCFE-482B953B7469}');
-
-  ModalResult := mrClose;
+  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsViewMessageForm]), '{25E73E71-59EF-4E44-BCFE-482B953B7469}');
+  ModalResult := mrCancel;
   Log.SendInfo(Format(RsWindowClosedByUser, [RsViewMessageForm]));
-
   ProcedureFooter;
 end;
 

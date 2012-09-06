@@ -141,7 +141,7 @@
 				<Form>PermissionsForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
-			<DCCReference Include="OA5.uMultiBufferForm.pas">
+			<DCCReference Include="OA5.uTMultiBufferForm.pas">
 				<Form>MultiBufferForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>

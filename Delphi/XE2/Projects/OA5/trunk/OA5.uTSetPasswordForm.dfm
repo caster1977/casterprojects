@@ -85,34 +85,33 @@ object SetPasswordForm: TSetPasswordForm
       30)
     object btnApply: TButton
       Left = 116
-      Top = 3
+      Top = 5
       Width = 81
       Height = 25
       Cursor = crHandPoint
       Action = actApply
-      Anchors = [akRight, akBottom]
+      Anchors = [akTop, akRight]
       TabOrder = 0
     end
     object btnClose: TButton
       Left = 203
-      Top = 3
+      Top = 5
       Width = 81
       Height = 25
       Cursor = crHandPoint
       Action = actClose
-      Anchors = [akRight, akBottom]
+      Anchors = [akTop, akRight]
       Cancel = True
       Default = True
       TabOrder = 1
     end
     object btnHelp: TButton
       Left = 0
-      Top = 3
+      Top = 5
       Width = 81
       Height = 25
       Cursor = crHandPoint
       Action = actHelp
-      Anchors = [akLeft, akBottom]
       TabOrder = 2
     end
   end
@@ -121,7 +120,7 @@ object SetPasswordForm: TSetPasswordForm
     Left = 240
     Top = 8
     Bitmap = {
-      494C010102000400480010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400540010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000005346450053464500534645005346450053464500534645000000
