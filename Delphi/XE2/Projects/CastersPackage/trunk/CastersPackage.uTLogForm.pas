@@ -13,7 +13,8 @@ uses
   Vcl.Controls,
   Vcl.Forms,
   Vcl.Dialogs,
-  Vcl.ComCtrls;
+  Vcl.ComCtrls,
+  Vcl.ActnList;
 
 type
   TBusyStateMethod = procedure of object;
@@ -35,6 +36,7 @@ type
     procedure ProcedureHeader(const ATitle, ALogGroupGUID: string);
     procedure ProcedureFooter;
     procedure GenerateError(const AMessage: string);
+    function GetActionUpdateLogMessage(AAction: TCustomAction): string;
   public
     constructor Create(AOwner: TComponent; ABusyCounter: PInteger = nil; AIncrease: TBusyStateMethod = nil;
       ADecrease: TBusyStateMethod = nil; ARefresh: TBusyStateMethod = nil; AProgressBar: TProgressBar = nil);
@@ -47,18 +49,28 @@ resourcestring
   RsEventHandlerOfFormCreation = 'Процедура-обработчик события создания окна %s';
   RsEventHandlerOfFormShowing = 'Процедура-обработчик события отображения окна %s';
   RsWindowShowed ='Отображено окно %s.';
+  RsWindowClosed = 'Окно %s закрыто.';
   RsWindowClosedByUser = 'Окно %s закрыто пользователем.';
   RsContextHelpProcedure = 'Процедура вызова контекстной справки';
   RsTryingToOpenHelpFile = 'Производится попытка открытия справочного файла программы...';
   RsHelpFileNonFound = 'Извините, справочный файл к данной программе не найден.';
+  RsCloseModalWithOkProcedure = 'Процедура закрытия модального окна %s с результатом mrOk';
+  RsCloseModalWithCancelProcedure = 'Процедура закрытия модального окна %s с результатом mrCancel';
+  RsCloseModalWithCloseProcedure = 'Процедура закрытия модального окна %s с результатом mrClose';
 
 implementation
+
+{$R *.dfm}
+uses
+  CastersPackage.uRoutines;
 
 resourcestring
   RsProcedureExecutesWithoutError = 'Процедура выполнена без ошибок.';
   RsShowErrorDialogCaption = '%s - Ошибка!';
+  RsActionStateChanged = 'Действие "%s" %s.';
+  RsActionOn = 'включено';
+  RsActionOff = 'отключено';
 
-{$R *.dfm}
 
 procedure TLogForm.ProcedureHeader(const ATitle, ALogGroupGUID: string);
 begin
@@ -83,6 +95,15 @@ procedure TLogForm.GenerateError(const AMessage: string);
 begin
   FErrorMessage:=AMessage;
   FError:=True;
+end;
+
+function TLogForm.GetActionUpdateLogMessage(AAction: TCustomAction): string;
+begin
+  Result:=EmptyStr;
+  if Assigned(AAction) then
+    begin
+      Result:=Format(RsActionStateChanged, [AAction.Caption, Routines.GetConditionalString(AAction.Enabled, RsActionOn, RsActionOff)]);
+    end;
 end;
 
 procedure TLogForm.RunBusy(ABusyStateMethod: TBusyStateMethod);
