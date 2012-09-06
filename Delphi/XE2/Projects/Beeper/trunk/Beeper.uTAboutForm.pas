@@ -15,25 +15,27 @@ uses
 
 type
   TAboutForm = class(TForm)
-    Shape1: TShape;
-    Timer1: TTimer;
-    Timer2: TTimer;
-    lblEMail: TLabel;
-    lblEMailAddress: TLabel;
-    btnClose: TButton;
-    lblLegalCopyright: TLabel;
-    lblVersion: TLabel;
-    imgApplicationIcon: TImage;
-    lblTitle: TLabel;
     GSFileVersionInfo: TGSFileVersionInfo;
     ActionList: TActionList;
     actClose: TWindowCloseAction;
+    CloseTimer: TTimer;
+    FadeTimer: TTimer;
+    Shape: TShape;
+    imgApplicationIcon: TImage;
+    lblTitle: TLabel;
+    lblVersion: TLabel;
+    lblLegalCopyright: TLabel;
+    lblEMail: TLabel;
+    lblEMailAddress: TLabel;
+    btnClose: TButton;
     procedure FormShow(Sender: TObject);
-    procedure Timer1Timer(Sender: TObject);
-    procedure Timer2Timer(Sender: TObject);
+    procedure CloseTimerTimer(Sender: TObject);
+    procedure FadeTimerTimer(Sender: TObject);
     procedure lblEMailAddressClick(Sender: TObject);
+  strict protected
+    FFirstShow: Boolean;
   public
-    constructor Create(AOwner: TComponent; const AShowCloseButton: boolean); reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const AShowCloseButton: Boolean); reintroduce; virtual;
   end;
 
 implementation
@@ -45,42 +47,49 @@ uses
   System.SysUtils,
   Winapi.ShellAPI;
 
-procedure TAboutForm.FormShow(Sender: TObject);
+resourcestring
+  RsVersionInfo = 'Версия %d.%d Release %d Build %d';
+
+constructor TAboutForm.Create(AOwner: TComponent; const AShowCloseButton: Boolean);
 begin
-  if actClose.Visible then
-  begin
-    Timer1.Enabled := False;
-    AlphaBlendValue := 222;
-    Timer2.Enabled := False;
-  end
-  else
-  begin
-    Timer1.Enabled := True;
-    AlphaBlendValue := 0;
-    Timer2.Enabled := True;
-  end;
-  btnClose.Default := actClose.Visible;
+  inherited Create(AOwner);
+  FFirstShow := True;
+  actClose.Visible := AShowCloseButton;
+  GSFileVersionInfo.Filename := Application.ExeName;
   lblTitle.Caption := Application.Title;
   imgApplicationIcon.Picture.Icon.Assign(Application.Icon);
-  lblVersion.Caption := Format('Версия %d.%d Release %d Build %d', [GSFileVersionInfo.ModuleVersion.Major,
+  lblVersion.Caption := Format(RsVersionInfo, [GSFileVersionInfo.ModuleVersion.Major,
     GSFileVersionInfo.ModuleVersion.Minor, GSFileVersionInfo.ModuleVersion.Release,
     GSFileVersionInfo.ModuleVersion.Build]);
   lblLegalCopyright.Caption := GSFileVersionInfo.LegalCopyright;
 end;
 
-constructor TAboutForm.Create(AOwner: TComponent; const AShowCloseButton: boolean);
+procedure TAboutForm.FormShow(Sender: TObject);
 begin
-  inherited Create(AOwner);
-  actClose.Visible := AShowCloseButton;
-  GSFileVersionInfo.Filename := Application.ExeName;
+  if FFirstShow then
+  begin
+    FFirstShow := False;
+    if actClose.Visible then
+    begin
+      CloseTimer.Enabled := False;
+      AlphaBlendValue := 222;
+      FadeTimer.Enabled := False;
+    end
+    else
+    begin
+      CloseTimer.Enabled := True;
+      AlphaBlendValue := 0;
+      FadeTimer.Enabled := True;
+    end;
+  end;
 end;
 
-procedure TAboutForm.Timer1Timer(Sender: TObject);
+procedure TAboutForm.CloseTimerTimer(Sender: TObject);
 begin
   ModalResult := mrClose;
 end;
 
-procedure TAboutForm.Timer2Timer(Sender: TObject);
+procedure TAboutForm.FadeTimerTimer(Sender: TObject);
 begin
   if ((AlphaBlendValue + 17) <= 222) then
   begin

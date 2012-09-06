@@ -22,7 +22,7 @@ object AboutForm: TAboutForm
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Shape1: TShape
+  object Shape: TShape
     Left = 0
     Top = 0
     Width = 347
@@ -224,19 +224,19 @@ object AboutForm: TAboutForm
     Default = True
     TabOrder = 0
   end
-  object Timer1: TTimer
+  object CloseTimer: TTimer
     Interval = 3000
-    OnTimer = Timer1Timer
+    OnTimer = CloseTimerTimer
     Left = 312
     Top = 208
   end
-  object Timer2: TTimer
+  object FadeTimer: TTimer
     Interval = 5
-    OnTimer = Timer2Timer
+    OnTimer = FadeTimerTimer
     Left = 312
     Top = 8
   end
-  object gsFileVersionInfo: TgsFileVersionInfo
+  object gsFileVersionInfo: TGSFileVersionInfo
     Left = 280
     Top = 208
   end
