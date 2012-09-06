@@ -3,9 +3,10 @@ object ViewMessageForm: TViewMessageForm
   Top = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
+  BorderWidth = 5
   Caption = #1055#1088#1086#1089#1084#1086#1090#1088' '#1087#1086#1083#1091#1095#1077#1085#1085#1086#1075#1086' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
-  ClientHeight = 332
-  ClientWidth = 634
+  ClientHeight = 322
+  ClientWidth = 624
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,161 +17,181 @@ object ViewMessageForm: TViewMessageForm
   Position = poDesigned
   OnCreate = FormCreate
   OnShow = FormShow
-  DesignSize = (
-    634
-    332)
   PixelsPerInch = 96
   TextHeight = 13
-  object Bevel2: TBevel
+  object pnlMain: TPanel
     Left = 0
-    Top = 291
-    Width = 634
-    Height = 41
-    Align = alBottom
-    Shape = bsTopLine
-    ExplicitTop = 264
-    ExplicitWidth = 645
-  end
-  object lblFrom: TLabel
-    Left = 8
-    Top = 38
-    Width = 44
-    Height = 13
-    Caption = '&'#1054#1090' '#1082#1086#1075#1086':'
-    FocusControl = edbxFrom
-  end
-  object lblTheme: TLabel
-    Left = 8
-    Top = 11
-    Width = 28
-    Height = 13
-    Caption = '&'#1058#1077#1084#1072':'
-    FocusControl = edbxTheme
-  end
-  object lblWhen: TLabel
-    Left = 311
-    Top = 38
-    Width = 66
-    Height = 13
-    Caption = '&'#1054#1090#1087#1088#1072#1074#1083#1077#1085#1086':'
-    FocusControl = edbxWhen
-  end
-  object reMessage: TRichEdit
-    Left = 8
-    Top = 62
-    Width = 618
-    Height = 221
-    Hint = #1058#1077#1082#1089#1090' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
-    Align = alCustom
+    Top = 0
+    Width = 624
+    Height = 283
+    Align = alTop
     Anchors = [akLeft, akTop, akRight, akBottom]
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    ReadOnly = True
-    TabOrder = 3
-    WantReturns = False
-  end
-  object btnClose: TButton
-    Left = 458
-    Top = 299
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Close
-    Anchors = [akRight, akBottom]
-    Cancel = True
-    Default = True
-    TabOrder = 8
-  end
-  object btnHelp: TButton
-    Left = 545
-    Top = 299
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Help
-    Anchors = [akRight, akBottom]
-    TabOrder = 9
-  end
-  object btnProcess: TButton
-    Left = 8
-    Top = 299
-    Width = 183
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Process
-    Anchors = [akRight, akBottom]
-    TabOrder = 4
-  end
-  object btnDelete: TButton
-    Left = 197
-    Top = 299
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Delete
-    Anchors = [akRight, akBottom]
-    TabOrder = 5
-  end
-  object btnPrevious: TButton
-    Left = 284
-    Top = 299
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Previous
-    Anchors = [akRight, akBottom]
-    TabOrder = 6
-  end
-  object btnNext: TButton
-    Left = 371
-    Top = 299
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Next
-    Anchors = [akRight, akBottom]
-    TabOrder = 7
-  end
-  object edbxFrom: TEdit
-    Left = 56
-    Top = 35
-    Width = 249
-    Height = 21
-    Hint = #1054#1090#1087#1088#1072#1074#1080#1090#1077#1083#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
-    ReadOnly = True
-    TabOrder = 1
-    Text = '<'#1055#1091#1089#1090#1086'>'
-  end
-  object edbxTheme: TEdit
-    Left = 56
-    Top = 8
-    Width = 570
-    Height = 21
-    Hint = #1058#1077#1084#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
-    ReadOnly = True
+    BevelOuter = bvNone
+    Caption = 'pnlMain'
     TabOrder = 0
-    Text = '<'#1055#1091#1089#1090#1086'>'
+    DesignSize = (
+      624
+      283)
+    object lblFrom: TLabel
+      Left = 0
+      Top = 30
+      Width = 44
+      Height = 13
+      Caption = '&'#1054#1090' '#1082#1086#1075#1086':'
+      FocusControl = edbxFrom
+    end
+    object lblTheme: TLabel
+      Left = 0
+      Top = 3
+      Width = 28
+      Height = 13
+      Caption = '&'#1058#1077#1084#1072':'
+      FocusControl = edbxTheme
+    end
+    object lblWhen: TLabel
+      Left = 311
+      Top = 30
+      Width = 66
+      Height = 13
+      Anchors = [akTop, akRight]
+      Caption = '&'#1054#1090#1087#1088#1072#1074#1083#1077#1085#1086':'
+      FocusControl = edbxWhen
+    end
+    object reMessage: TRichEdit
+      Left = 0
+      Top = 54
+      Width = 624
+      Height = 229
+      Hint = #1058#1077#1082#1089#1090' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
+      Align = alBottom
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 3
+      WantReturns = False
+    end
+    object edbxTheme: TEdit
+      Left = 50
+      Top = 0
+      Width = 574
+      Height = 21
+      Hint = #1058#1077#1084#1072' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
+      Anchors = [akLeft, akTop, akRight]
+      ReadOnly = True
+      TabOrder = 0
+      Text = '<'#1055#1091#1089#1090#1086'>'
+    end
+    object edbxFrom: TEdit
+      Left = 50
+      Top = 27
+      Width = 255
+      Height = 21
+      Hint = #1054#1090#1087#1088#1072#1074#1080#1090#1077#1083#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
+      Anchors = [akLeft, akTop, akRight]
+      ReadOnly = True
+      TabOrder = 1
+      Text = '<'#1055#1091#1089#1090#1086'>'
+    end
+    object edbxWhen: TEdit
+      Left = 383
+      Top = 27
+      Width = 243
+      Height = 21
+      Hint = #1054#1090#1087#1088#1072#1074#1080#1090#1077#1083#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
+      Anchors = [akTop, akRight]
+      ReadOnly = True
+      TabOrder = 2
+      Text = '<'#1055#1091#1089#1090#1086'>'
+    end
   end
-  object edbxWhen: TEdit
-    Left = 383
-    Top = 35
-    Width = 243
-    Height = 21
-    Hint = #1054#1090#1087#1088#1072#1074#1080#1090#1077#1083#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
-    ReadOnly = True
-    TabOrder = 2
-    Text = '<'#1055#1091#1089#1090#1086'>'
+  object pnlButtons: TPanel
+    Left = 0
+    Top = 290
+    Width = 624
+    Height = 32
+    Align = alBottom
+    BevelEdges = [beTop]
+    BevelKind = bkTile
+    BevelOuter = bvNone
+    Color = clHotLight
+    TabOrder = 1
+    DesignSize = (
+      624
+      30)
+    object btnProcess: TButton
+      Left = 0
+      Top = 5
+      Width = 179
+      Height = 25
+      Cursor = crHandPoint
+      Action = actProcess
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 0
+    end
+    object btnPrevious: TButton
+      Left = 274
+      Top = 5
+      Width = 83
+      Height = 25
+      Cursor = crHandPoint
+      Action = actPrevious
+      Anchors = [akTop, akRight]
+      TabOrder = 2
+    end
+    object btnNext: TButton
+      Left = 363
+      Top = 5
+      Width = 83
+      Height = 25
+      Cursor = crHandPoint
+      Action = actNext
+      Anchors = [akTop, akRight]
+      TabOrder = 3
+    end
+    object btnHelp: TButton
+      Left = 541
+      Top = 5
+      Width = 83
+      Height = 25
+      Cursor = crHandPoint
+      Action = actHelp
+      Anchors = [akTop, akRight]
+      TabOrder = 5
+    end
+    object btnDelete: TButton
+      Left = 185
+      Top = 5
+      Width = 83
+      Height = 25
+      Cursor = crHandPoint
+      Action = actDelete
+      Anchors = [akTop, akRight]
+      TabOrder = 1
+    end
+    object btnClose: TButton
+      Left = 452
+      Top = 5
+      Width = 83
+      Height = 25
+      Cursor = crHandPoint
+      Action = actClose
+      Anchors = [akTop, akRight]
+      Cancel = True
+      Default = True
+      TabOrder = 4
+    end
   end
-  object ilViewMessageFormSmallImages: TImageList
+  object ImageList: TImageList
     AllocBy = 2
-    Left = 368
-    Top = 120
+    Left = 248
+    Top = 128
     Bitmap = {
-      494C010102002000440210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102002000600210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000005346450053464500534645005346450053464500534645000000
@@ -309,54 +330,47 @@ object ViewMessageForm: TViewMessageForm
       E00FFC8700000000F83FFE0F0000000000000000000000000000000000000000
       000000000000}
   end
-  object Log: TLogProvider
-    LogFile.Enabled = True
-    LogFile.FileNameSuffix = 'OA5_ViewMessageForm'
-    LogClient.Enabled = True
-    Left = 368
-    Top = 168
-  end
-  object ActionManager1: TActionManager
-    Images = ilViewMessageFormSmallImages
-    Left = 368
+  object ActionList: TActionList
+    Images = ImageList
+    Left = 248
     Top = 80
-    StyleName = 'Platform Default'
-    object Action_Close: TAction
+    object actClose: TAction
       Caption = '&'#1047#1072#1082#1088#1099#1090#1100
       Hint = #1047#1072#1082#1088#1099#1090#1100' '#1086#1082#1085#1086'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072
-      OnExecute = Action_CloseExecute
+      OnExecute = actCloseExecute
     end
-    object Action_Help: TAction
+    object actHelp: TAction
       Caption = '&'#1057#1087#1088#1072#1074#1082#1072
       Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1087#1088#1072#1074#1082#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1089#1087#1088#1072#1074#1086#1095#1085#1086#1075#1086' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
       ImageIndex = 0
-      OnExecute = Action_HelpExecute
+      OnExecute = actHelpExecute
+      OnUpdate = actHelpUpdate
     end
-    object Action_Delete: TAction
+    object actDelete: TAction
       Caption = '&'#1059#1076#1072#1083#1080#1090#1100
       Hint = #1059#1076#1072#1083#1080#1090#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1076#1072#1085#1085#1086#1075#1086' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
-      OnExecute = Action_DeleteExecute
+      OnExecute = actDeleteExecute
     end
-    object Action_Previous: TAction
+    object actPrevious: TAction
       Caption = #1055'&'#1088#1077#1076#1099#1076#1091#1097#1077#1077
       Hint = 
         #1055#1088#1077#1076#1099#1076#1091#1097#1077#1077' '#1085#1077#1087#1088#1086#1095#1080#1090#1072#1085#1085#1086#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1077#1088#1077#1093#1086#1076#1072' '#1082' '#1087#1088#1077#1076#1099#1076 +
         #1091#1097#1077#1084#1091' '#1085#1077#1087#1088#1086#1095#1080#1090#1072#1085#1085#1086#1084#1091' '#1089#1086#1086#1073#1097#1077#1085#1080#1102
-      OnExecute = Action_PreviousExecute
+      OnExecute = actPreviousExecute
     end
-    object Action_Next: TAction
+    object actNext: TAction
       Caption = #1057'&'#1083#1077#1076#1091#1102#1097#1077#1077
       Hint = 
         #1057#1083#1077#1076#1091#1102#1097#1077#1077' '#1085#1077#1087#1088#1086#1095#1080#1090#1072#1085#1085#1086#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1077#1088#1077#1093#1086#1076#1072' '#1082' '#1089#1083#1077#1076#1091#1102#1097 +
         #1077#1084#1091' '#1085#1077#1087#1088#1086#1095#1080#1090#1072#1085#1085#1086#1084#1091' '#1089#1086#1086#1073#1097#1077#1085#1080#1102
-      OnExecute = Action_NextExecute
+      OnExecute = actNextExecute
     end
-    object Action_Process: TAction
+    object actProcess: TAction
       Caption = '&'#1055#1086#1084#1077#1090#1080#1090#1100' '#1082#1072#1082' '#1087#1088#1086#1095#1080#1090#1072#1085#1085#1086#1077
       Hint = 
         #1055#1086#1089#1090#1072#1074#1080#1090#1100' '#1087#1086#1084#1077#1090#1082#1091' '#1086' '#1087#1088#1086#1095#1090#1077#1085#1080#1080'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1084#1077#1090#1082#1080' '#1090#1077#1082#1091#1097#1077#1075#1086' '#1089#1086#1086#1073#1097 +
         #1077#1085#1080#1103', '#1082#1072#1082' '#1087#1088#1086#1095#1080#1090#1072#1085#1085#1086#1075#1086
-      OnExecute = Action_ProcessExecute
+      OnExecute = actProcessExecute
     end
   end
 end
