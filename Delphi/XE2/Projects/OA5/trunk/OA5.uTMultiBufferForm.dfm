@@ -1,6 +1,8 @@
 object MultiBufferForm: TMultiBufferForm
   Left = 0
   Top = 0
+  BorderStyle = bsSingle
+  BorderWidth = 5
   Caption = #1052#1091#1083#1100#1090#1080#1073#1091#1092#1077#1088
   ClientHeight = 322
   ClientWidth = 624
@@ -17,80 +19,15 @@ object MultiBufferForm: TMultiBufferForm
   OldCreateOrder = False
   OnCreate = FormCreate
   OnShow = FormShow
-  DesignSize = (
-    624
-    322)
   PixelsPerInch = 96
   TextHeight = 13
-  object Bevel2: TBevel
-    Left = 0
-    Top = 281
-    Width = 624
-    Height = 41
-    Align = alBottom
-    Shape = bsTopLine
-    ExplicitTop = 259
-    ExplicitWidth = 634
-  end
-  object btnClose: TButton
-    Left = 448
-    Top = 289
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Close
-    Anchors = [akRight, akBottom]
-    Cancel = True
-    Default = True
-    TabOrder = 0
-  end
-  object btnHelp: TButton
-    Left = 535
-    Top = 289
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Help
-    Anchors = [akRight, akBottom]
-    TabOrder = 1
-  end
-  object btnPaste: TButton
-    Left = 8
-    Top = 289
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Paste
-    Anchors = [akRight, akBottom]
-    TabOrder = 2
-  end
-  object btnDelete: TButton
-    Left = 95
-    Top = 289
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Delete
-    Anchors = [akRight, akBottom]
-    TabOrder = 3
-  end
-  object btnClear: TButton
-    Left = 182
-    Top = 289
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Clear
-    Anchors = [akRight, akBottom]
-    TabOrder = 4
-  end
   object lvBuffer: TListView
-    Left = 8
-    Top = 8
-    Width = 608
-    Height = 264
+    Left = 0
+    Top = 0
+    Width = 624
+    Height = 284
     Hint = #1057#1087#1080#1089#1086#1082' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1081' '#1089#1082#1086#1087#1080#1088#1086#1074#1072#1085#1085#1099#1093' '#1074' '#1073#1091#1092#1077#1088
-    Align = alCustom
+    Align = alTop
     Anchors = [akLeft, akTop, akRight, akBottom]
     Columns = <
       item
@@ -104,16 +41,80 @@ object MultiBufferForm: TMultiBufferForm
     ColumnClick = False
     ReadOnly = True
     RowSelect = True
-    TabOrder = 5
+    TabOrder = 0
     ViewStyle = vsReport
     OnSelectItem = lvBufferSelectItem
   end
-  object ilMultiBufferFormSmallImages: TImageList
+  object pnlButtons: TPanel
+    Left = 0
+    Top = 290
+    Width = 624
+    Height = 32
+    Align = alBottom
+    BevelEdges = [beTop]
+    BevelKind = bkTile
+    BevelOuter = bvNone
+    Color = clHotLight
+    TabOrder = 1
+    DesignSize = (
+      624
+      30)
+    object btnClear: TButton
+      Left = 174
+      Top = 5
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actClear
+      TabOrder = 2
+    end
+    object btnClose: TButton
+      Left = 456
+      Top = 5
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actClose
+      Anchors = [akTop, akRight]
+      Cancel = True
+      Default = True
+      TabOrder = 3
+    end
+    object btnDelete: TButton
+      Left = 87
+      Top = 5
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actDelete
+      TabOrder = 1
+    end
+    object btnHelp: TButton
+      Left = 543
+      Top = 5
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actHelp
+      Anchors = [akTop, akRight]
+      TabOrder = 4
+    end
+    object btnPaste: TButton
+      Left = 0
+      Top = 5
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actPaste
+      TabOrder = 0
+    end
+  end
+  object ImageList: TImageList
     AllocBy = 2
-    Left = 368
-    Top = 120
+    Left = 304
+    Top = 128
     Bitmap = {
-      494C010102002000180210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102002000380210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000005346450053464500534645005346450053464500534645000000
@@ -252,47 +253,43 @@ object MultiBufferForm: TMultiBufferForm
       E00FC00700000000F83FE00F0000000000000000000000000000000000000000
       000000000000}
   end
-  object Log: TLogProvider
-    LogFile.Enabled = True
-    LogFile.FileNameSuffix = 'OA5_MultiBufferForm'
-    LogClient.Enabled = True
-    Left = 304
-    Top = 120
-  end
-  object ActionManager1: TActionManager
-    Images = ilMultiBufferFormSmallImages
-    Left = 336
-    Top = 120
-    StyleName = 'Platform Default'
-    object Action_Help: TAction
+  object ActionList: TActionList
+    Images = ImageList
+    Left = 256
+    Top = 128
+    object actHelp: TAction
       Caption = '&'#1057#1087#1088#1072#1074#1082#1072
       Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1087#1088#1072#1074#1082#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1089#1087#1088#1072#1074#1086#1095#1085#1086#1075#1086' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
       ImageIndex = 0
-      OnExecute = Action_HelpExecute
+      OnExecute = actHelpExecute
+      OnUpdate = actHelpUpdate
     end
-    object Action_Close: TAction
+    object actClose: TAction
       Caption = '&'#1047#1072#1082#1088#1099#1090#1100
       Hint = #1047#1072#1082#1088#1099#1090#1100' '#1086#1082#1085#1086'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072
-      OnExecute = Action_CloseExecute
+      OnExecute = actCloseExecute
     end
-    object Action_Paste: TAction
+    object actPaste: TAction
       Caption = '&'#1042#1089#1090#1072#1074#1080#1090#1100
       Hint = 
         #1042#1089#1090#1072#1074#1080#1090#1100' '#1074#1099#1073#1088#1072#1085#1099#1081' '#1101#1083#1077#1084#1077#1085#1090' '#1074' '#1087#1086#1083#1103' '#1074#1074#1086#1076#1072'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1074#1089#1090#1072#1074#1082#1080' '#1074#1099#1073#1088#1072 +
         #1085#1085#1099#1093' '#1076#1072#1085#1085#1099#1093' '#1086' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1080' '#1074' '#1087#1086#1083#1103' '#1074#1074#1086#1076#1072
-      OnExecute = Action_PasteExecute
+      OnExecute = actPasteExecute
+      OnUpdate = actPasteUpdate
     end
-    object Action_Delete: TAction
+    object actDelete: TAction
       Caption = '&'#1059#1076#1072#1083#1080#1090#1100
       Hint = 
         #1059#1076#1072#1083#1080#1090#1100' '#1074#1099#1073#1088#1072#1085#1099#1081' '#1101#1083#1077#1084#1077#1085#1090'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1074#1099#1073#1088#1072#1085#1085#1099#1093' '#1076#1072#1085#1085#1099#1093' '#1080 +
         #1079' '#1073#1091#1092#1077#1088#1072
-      OnExecute = Action_DeleteExecute
+      OnExecute = actDeleteExecute
+      OnUpdate = actDeleteUpdate
     end
-    object Action_Clear: TAction
+    object actClear: TAction
       Caption = '&'#1054#1095#1080#1089#1090#1080#1090#1100
       Hint = #1054#1095#1080#1089#1090#1080#1090#1100' '#1089#1087#1080#1089#1086#1082'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1074#1089#1077#1093' '#1076#1072#1085#1085#1099#1093' '#1080#1079' '#1073#1091#1092#1077#1088#1072
-      OnExecute = Action_ClearExecute
+      OnExecute = actClearExecute
+      OnUpdate = actClearUpdate
     end
   end
 end

@@ -23,15 +23,14 @@ object ViewMessageForm: TViewMessageForm
     Left = 0
     Top = 0
     Width = 624
-    Height = 283
+    Height = 284
     Align = alTop
     Anchors = [akLeft, akTop, akRight, akBottom]
     BevelOuter = bvNone
-    Caption = 'pnlMain'
     TabOrder = 0
     DesignSize = (
       624
-      283)
+      284)
     object lblFrom: TLabel
       Left = 0
       Top = 30
@@ -61,7 +60,7 @@ object ViewMessageForm: TViewMessageForm
       Left = 0
       Top = 54
       Width = 624
-      Height = 229
+      Height = 230
       Hint = #1058#1077#1082#1089#1090' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
       Align = alBottom
       Anchors = [akLeft, akTop, akRight, akBottom]
@@ -74,6 +73,7 @@ object ViewMessageForm: TViewMessageForm
       ReadOnly = True
       TabOrder = 3
       WantReturns = False
+      ExplicitHeight = 229
     end
     object edbxTheme: TEdit
       Left = 50
@@ -191,7 +191,7 @@ object ViewMessageForm: TViewMessageForm
     Left = 248
     Top = 128
     Bitmap = {
-      494C010102002000600210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102002000740210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000005346450053464500534645005346450053464500534645000000

@@ -109,8 +109,8 @@ end;
 
 procedure TAboutForm._Close;
 begin
-  ProcedureHeader('Процедура закрытия модального окна с результатом mrClose', '{0C17F685-16BC-4D7F-B964-287B74A1CABF}');
-  ModalResult := mrClose;
+  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsAboutForm]), '{0C17F685-16BC-4D7F-B964-287B74A1CABF}');
+  ModalResult := mrCancel;
   Log.SendInfo(Format(RsWindowClosedByUser, [RsAboutForm]));
   ProcedureFooter;
 end;

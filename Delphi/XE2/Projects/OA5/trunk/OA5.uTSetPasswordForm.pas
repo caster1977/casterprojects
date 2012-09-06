@@ -57,55 +57,64 @@ uses
 const
   ICON_SETPASSWORD = 1;
 
+resourcestring
+  RsSetPasswordForm = 'изменения пароля учётной записи';
+
 procedure TSetPasswordForm._Apply;
 begin
-  ProcedureHeader('Процедура закрытия модального окна с результатом mrOk', '{8C1D1934-43A0-4BD3-A063-95940EA9B73D}');
+  ProcedureHeader(Format(RsCloseModalWithOkProcedure, [RsSetPasswordForm]), '{8C1D1934-43A0-4BD3-A063-95940EA9B73D}');
 
   ModalResult := mrOk;
   Log.SendInfo('Попытка изменения пароля учётной записи была подтверждена пользователем.');
-  Log.SendInfo('Окно изменения пароля учётной записи закрыто.');
+  Log.SendInfo(Format(RsWindowClosedByUser, [RsSetPasswordForm]));
 
   ProcedureFooter;
 end;
 
 procedure TSetPasswordForm._Close;
 begin
-  ProcedureHeader('Процедура закрытия модального окна с результатом mrClose', '{19DBBA6D-0E8E-4BBB-BF5B-D2C80E71A631}');
+  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsSetPasswordForm]),
+    '{19DBBA6D-0E8E-4BBB-BF5B-D2C80E71A631}');
 
-  ModalResult := mrClose;
+  ModalResult := mrCancel;
   Log.SendInfo('Попытка изменения пароля учётной записи была отменена пользователем.');
-  Log.SendInfo('Окно изменения пароля учётной записи закрыто.');
+  Log.SendInfo(Format(RsWindowClosed, [RsSetPasswordForm]));
 
   ProcedureFooter;
 end;
 
 procedure TSetPasswordForm._Help;
 begin
-  ProcedureHeader('Процедура вызова контекстной справки', '{95536062-F76C-495C-B1F2-70E50F7A9FF0}');
-
-  Log.SendInfo('Производится попытка открытия справочного файла программы...');
+  ProcedureHeader(RsContextHelpProcedure, '{ACC5A843-E8FF-4CD2-B210-EF7E1A5DB038}');
+  Log.SendInfo(RsTryingToOpenHelpFile);
   if (FileExists(ExpandFileName(Application.HelpFile))) then
-    Application.HelpContext(HelpContext)
+  begin
+    Application.HelpContext(HelpContext);
+  end
   else
-    GenerateError('Извините, справочный файл к данной программе не найден.');
-
+  begin
+    GenerateError(RsHelpFileNonFound);
+  end;
   ProcedureFooter;
 end;
 
 procedure TSetPasswordForm._SwitchPasswordVisibility;
+const
+  MASK_ON_CHAR = '*';
+  MASK_OFF_CHAR = #0;
 begin
   ProcedureHeader('Процедура реакции на переключение состояния флажка "' + chkbxShowPassword.Caption + '"',
     '{0219B9CF-B108-49C8-A390-22AF8B17C186}');
 
   if chkbxShowPassword.Checked then
   begin
-    mePassword.PasswordChar := #0;
-    meConfirmation.PasswordChar := #0;
+    mePassword.PasswordChar := MASK_OFF_CHAR;
+    meConfirmation.PasswordChar := MASK_OFF_CHAR;
   end
   else
   begin
-    mePassword.PasswordChar := '*';
-    meConfirmation.PasswordChar := '*';
+    mePassword.PasswordChar := MASK_ON_CHAR;
+    meConfirmation.PasswordChar := MASK_ON_CHAR;
   end;
 
   ProcedureFooter;
@@ -113,7 +122,7 @@ end;
 
 procedure TSetPasswordForm.FormCreate(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик события создания окна', '{43E2DB1C-46EC-46FB-BE5F-69082FF4BDB0}');
+  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsSetPasswordForm]), '{43E2DB1C-46EC-46FB-BE5F-69082FF4BDB0}');
 
   ImageList.GetIcon(ICON_SETPASSWORD, Icon);
   with MainForm.Configuration do
@@ -151,14 +160,14 @@ end;
 
 procedure TSetPasswordForm.FormShow(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик события отображения окна', '{109E2C60-29E7-4230-956B-848F6063FD69}');
-  Log.SendInfo('Отображено окно изменения пароля учётной записи.');
+  ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsSetPasswordForm]), '{109E2C60-29E7-4230-956B-848F6063FD69}');
+  Log.SendInfo(Format(RsWindowShowed, [RsSetPasswordForm]));
   ProcedureFooter;
 end;
 
 procedure TSetPasswordForm.actApplyExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + actApply.Caption + '"', '{D6F02F10-4334-4227-9C49-E2DB8B98CA70}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actApply.Caption]), '{D6F02F10-4334-4227-9C49-E2DB8B98CA70}');
   _Apply;
   ProcedureFooter;
 end;
@@ -170,11 +179,9 @@ begin
   b := mePassword.Text = meConfirmation.Text;
   if actApply.Enabled <> b then
   begin
-    ProcedureHeader('Процедура-обработчик обновления действия "' + actApply.Caption + '"',
-      '{C430F728-3AC7-4605-831B-F2AE12429BDA}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actApply.Caption]), '{C430F728-3AC7-4605-831B-F2AE12429BDA}');
     actApply.Enabled := b;
-    Log.SendDebug('Действие "' + actApply.Caption + '" ' + Routines.GetConditionalString(actApply.Enabled, 'в', 'от') +
-      'ключено.');
+    Log.SendDebug(GetActionUpdateLogMessage(actApply));
     ProcedureFooter;
   end;
   if btnApply.Default <> b then
@@ -189,14 +196,14 @@ end;
 
 procedure TSetPasswordForm.actCloseExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + actClose.Caption + '"', '{4569EB61-7A53-4A07-8D49-7D91C54D6FEF}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{4569EB61-7A53-4A07-8D49-7D91C54D6FEF}');
   _Close;
   ProcedureFooter;
 end;
 
 procedure TSetPasswordForm.actHelpExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + actHelp.Caption + '"', '{772E549E-6DD2-4921-B2F9-5C65F20976FE}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{772E549E-6DD2-4921-B2F9-5C65F20976FE}');
   _Help;
   ProcedureFooter;
 end;
@@ -208,10 +215,9 @@ begin
   b := Application.HelpFile <> EmptyStr;
   if actHelp.Enabled <> b then
   begin
-    ProcedureHeader('Процедура-обработчик обновления действия "' + actHelp.Caption + '"',
-      '{B92D0FEB-6E73-42D9-A684-68918F5F11A6}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]), '{B92D0FEB-6E73-42D9-A684-68918F5F11A6}');
     actHelp.Enabled := b;
-    Log.SendDebug('Действие "' + actHelp.Caption + '" ' + Routines.GetConditionalString(b, 'в', 'от') + 'ключено.');
+    Log.SendDebug(GetActionUpdateLogMessage(actHelp));
     ProcedureFooter;
   end;
 end;

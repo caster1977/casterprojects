@@ -141,7 +141,7 @@ uses
   OA5.uTAboutForm,
   OA5.uConfigurationForm,
   OA5.uReportForm,
-  OA5.uMultiBufferForm,
+  OA5.uTMultiBufferForm,
   OA5.uIMeasure,
   OA5.uTMeasure,
   OA5.uTMeasureList,

@@ -13,7 +13,7 @@ uses
   OA5.uReportForm in 'OA5.uReportForm.pas' {ReportForm},
   OA5.uTSetPasswordForm in 'OA5.uTSetPasswordForm.pas' {SetPasswordForm},
   OA5.uPermissionsForm in 'OA5.uPermissionsForm.pas' {PermissionsForm},
-  OA5.uMultiBufferForm in 'OA5.uMultiBufferForm.pas' {MultiBufferForm},
+  OA5.uTMultiBufferForm in 'OA5.uTMultiBufferForm.pas' {MultiBufferForm},
   OA5.uTypes in 'OA5.uTypes.pas',
   OA5.uTMeasure in 'OA5.uTMeasure.pas',
   Vcl.Themes,
