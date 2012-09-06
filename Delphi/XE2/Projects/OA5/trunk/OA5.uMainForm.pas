@@ -179,16 +179,16 @@ type
   THackControl = class(TControl);
 
 resourcestring
-  sAboutFormSuffix = '"О программе..."';
-  sConfigurationFormSuffix = 'настроек программы';
-  sReportFormSuffix = 'формирования статистических отчётов по работе пользователей';
-  sMultiBufferFormSuffix = 'мультибуфера';
-  sCreateMessageFormSuffix = 'создания нового сообщения';
-  sViewMessageFormSuffix = 'просмотра полученного сообщения';
-  sViewMessagesFormSuffix = 'просмотра полученных сообщений';
-  sAddPhoneFormSuffix = 'добавления номера телефона';
-  sEditPhoneFormSuffix = 'исправления номера телефона';
-  sLoginFormSuffix = 'ввода учётной записи';
+  RsAboutFormSuffix = '"О программе..."';
+  RsConfigurationFormSuffix = 'настроек программы';
+  RsReportFormSuffix = 'формирования статистических отчётов по работе пользователей';
+  RsMultiBufferFormSuffix = 'мультибуфера';
+  RsCreateMessageFormSuffix = 'создания нового сообщения';
+  RsViewMessageFormSuffix = 'просмотра полученного сообщения';
+  RsViewMessagesFormSuffix = 'просмотра полученных сообщений';
+  RsAddPhoneFormSuffix = 'добавления номера телефона';
+  RsEditPhoneFormSuffix = 'исправления номера телефона';
+  RsLoginFormSuffix = 'ввода учётной записи';
 
 procedure TMainForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
 begin
@@ -327,16 +327,16 @@ var
   AboutForm: TAboutForm;
   iBusy: integer;
 begin
-  ProcedureHeader('Процедура отображения окна ' + sAboutFormSuffix, '{754C2801-ED59-4595-AC3E-20DBF98F6779}');
+  ProcedureHeader('Процедура отображения окна ' + RsAboutFormSuffix, '{754C2801-ED59-4595-AC3E-20DBF98F6779}');
 
-  AboutForm := TAboutForm.Create(Self);
+  AboutForm := TAboutForm.Create(Self, Addr(MainForm.iBusyCounter), MainForm.Inc_BusyState, MainForm.Dec_BusyState, MainForm.Refresh_BusyState, pbMain);
   with AboutForm do
     try
-      Action_Close.Visible := aButtonVisible;
-      PreShowModal(sAboutFormSuffix, iBusy);
+      actClose.Visible := aButtonVisible;
+      PreShowModal(RsAboutFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(sAboutFormSuffix, iBusy);
+      PostShowModal(RsAboutFormSuffix, iBusy);
       Free;
     end;
 
@@ -416,12 +416,12 @@ begin
   bFirstRun := True;
   CurrentUser := TAccount.Create; // создание и инициализщация объекта текущего пользователя
   Configuration := TConfiguration.Create; // создание и инициализщация объекта конфигурации
-  Configuration.RNE4Server.LogProvider := MainForm.Log;
-  Configuration.MessagesServer.LogProvider := MainForm.Log;
+  (*Configuration.RNE4Server.LogProvider := MainForm.Log;
+  Configuration.MessagesServer.LogProvider := MainForm.Log;*)
   BindMainProgressBarToStatusBar; // привязка прогрессбара к позиции на строке статуса
   BindStateImageToStatusBar; // привязка иконки готовности к позиции на строке статуса
   Application.OnHint := ApplicationOnHint;
-  Do_LoadConfiguration; // загрузка настроек из файла
+  (*Do_LoadConfiguration; // загрузка настроек из файла*)
   Do_ApplyConfiguration; // применение настроек к интерфейсу
 
   { TODO : добавить отображение окна "о программе" }
@@ -445,8 +445,8 @@ begin
     bFirstRun := False;
     if Configuration.ShowSplashAtStart then
       Do_About(False);
-    if Configuration.AutoLogon then
-      Do_Logon;
+//    if Configuration.AutoLogon then
+//      Do_Logon;
   end;
   Refresh_BusyState;
 
@@ -500,15 +500,15 @@ var
   ConfigurationForm: TConfigurationForm;
   iBusy: integer;
 begin
-  ProcedureHeader('Процедура отображения окна ' + sConfigurationFormSuffix, '{886B460D-4C73-46BE-829E-E4421B7C4378}');
+  ProcedureHeader('Процедура отображения окна ' + RsConfigurationFormSuffix, '{886B460D-4C73-46BE-829E-E4421B7C4378}');
 
   ConfigurationForm := TConfigurationForm.Create(Self);
   with ConfigurationForm do
     try
-      PreShowModal(sConfigurationFormSuffix, iBusy);
+      PreShowModal(RsConfigurationFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(sConfigurationFormSuffix, iBusy);
+      PostShowModal(RsConfigurationFormSuffix, iBusy);
       if ModalResult = mrOk then
         Do_ApplyConfiguration;
       Free;
@@ -652,15 +652,15 @@ var
   ReportForm: TReportForm;
   iBusy: integer;
 begin
-  ProcedureHeader('Процедура отображения окна ' + sReportFormSuffix, '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
+  ProcedureHeader('Процедура отображения окна ' + RsReportFormSuffix, '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
 
   ReportForm := TReportForm.Create(Self);
   with ReportForm do
     try
-      PreShowModal(sReportFormSuffix, iBusy);
+      PreShowModal(RsReportFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(sReportFormSuffix, iBusy);
+      PostShowModal(RsReportFormSuffix, iBusy);
       { TODO : дописать! }
       // if ModalResult=mrOk then
       // Do_ApplyConfiguration;
@@ -677,7 +677,7 @@ var
   i: integer;
   aListItem: TListItem;
 begin
-  ProcedureHeader('Процедура отображения окна ' + sMultiBufferFormSuffix, '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
+  ProcedureHeader('Процедура отображения окна ' + RsMultiBufferFormSuffix, '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
 
   MultiBufferForm := TMultiBufferForm.Create(Self);
   with MultiBufferForm do
@@ -690,10 +690,10 @@ begin
           MultiBuffer[i]._Producer + '|' + MultiBuffer[i]._Performer + '|' + MultiBuffer[i]._Organizer + '|' +
           MultiBuffer[i]._TicketPrice + '|' + string(MultiBuffer[i]._OtherInfoPlane));
       end;
-      PreShowModal(sMultiBufferFormSuffix, iBusy);
+      PreShowModal(RsMultiBufferFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(sMultiBufferFormSuffix, iBusy);
+      PostShowModal(RsMultiBufferFormSuffix, iBusy);
       { TODO : дописать! }
       // if ModalResult=mrOk then
       // Do_ApplyConfiguration;
@@ -708,15 +708,15 @@ var
   ViewMessageForm: TViewMessageForm;
   iBusy: integer;
 begin
-  ProcedureHeader('Процедура отображения окна ' + sViewMessageFormSuffix, '{347244A6-22DF-44DF-873B-2B55FC5112B9}');
+  ProcedureHeader('Процедура отображения окна ' + RsViewMessageFormSuffix, '{347244A6-22DF-44DF-873B-2B55FC5112B9}');
 
   ViewMessageForm := TViewMessageForm.Create(Self);
   with ViewMessageForm do
     try
-      PreShowModal(sViewMessageFormSuffix, iBusy);
+      PreShowModal(RsViewMessageFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(sViewMessageFormSuffix, iBusy);
+      PostShowModal(RsViewMessageFormSuffix, iBusy);
       { TODO : дописать! }
       // if ModalResult=mrOk then
       // Do_ApplyConfiguration;
@@ -731,15 +731,15 @@ var
   CreateMessageForm: TCreateMessageForm;
   iBusy: integer;
 begin
-  ProcedureHeader('Процедура отображения окна ' + sCreateMessageFormSuffix, '{F356F5DA-5FF7-4F78-A80E-1C563B96AF6D}');
+  ProcedureHeader('Процедура отображения окна ' + RsCreateMessageFormSuffix, '{F356F5DA-5FF7-4F78-A80E-1C563B96AF6D}');
 
   CreateMessageForm := TCreateMessageForm.Create(Self);
   with CreateMessageForm do
     try
-      PreShowModal(sCreateMessageFormSuffix, iBusy);
+      PreShowModal(RsCreateMessageFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(sCreateMessageFormSuffix, iBusy);
+      PostShowModal(RsCreateMessageFormSuffix, iBusy);
       { TODO : дописать! }
       // if ModalResult=mrOk then
       // Do_ApplyConfiguration;
@@ -754,16 +754,16 @@ var
   AddPhoneForm: TAddEditPhoneForm;
   iBusy: integer;
 begin
-  ProcedureHeader('Процедура отображения окна ' + sAddPhoneFormSuffix, '{83D61BCA-0CB5-4542-9D0A-9137AE9C733C}');
+  ProcedureHeader('Процедура отображения окна ' + RsAddPhoneFormSuffix, '{83D61BCA-0CB5-4542-9D0A-9137AE9C733C}');
 
   AddPhoneForm := TAddEditPhoneForm.Create(Self);
   with AddPhoneForm do
     try
       Caption := 'Добавление номера телефона';
-      PreShowModal(sAddPhoneFormSuffix, iBusy);
+      PreShowModal(RsAddPhoneFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(sAddPhoneFormSuffix, iBusy);
+      PostShowModal(RsAddPhoneFormSuffix, iBusy);
       { TODO : дописать! }
       // if ModalResult=mrOk then
       // Do_ApplyConfiguration;
@@ -778,16 +778,16 @@ var
   EditPhoneForm: TAddEditPhoneForm;
   iBusy: integer;
 begin
-  ProcedureHeader('Процедура отображения окна ' + sEditPhoneFormSuffix, '{36EA36F5-EDE2-4A3A-A7DE-BB9790D3F50F}');
+  ProcedureHeader('Процедура отображения окна ' + RsEditPhoneFormSuffix, '{36EA36F5-EDE2-4A3A-A7DE-BB9790D3F50F}');
 
   EditPhoneForm := TAddEditPhoneForm.Create(Self);
   with EditPhoneForm do
     try
       Caption := 'Исправление номера телефона';
-      PreShowModal(sEditPhoneFormSuffix, iBusy);
+      PreShowModal(RsEditPhoneFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(sEditPhoneFormSuffix, iBusy);
+      PostShowModal(RsEditPhoneFormSuffix, iBusy);
       { TODO : дописать! }
       // if ModalResult=mrOk then
       // Do_ApplyConfiguration;
@@ -821,7 +821,7 @@ var
   iBusy: integer;
   bPassLoginForm: Boolean;
 
-  procedure _Login;
+  (*procedure _Login;
   var
     aResultSet: PMYSQL_RES;
     iRowCount: integer;
@@ -872,17 +872,17 @@ var
       FreeAndNil(slRow);
       Screen.Cursor := crDefault;
     end
-  end;
+  end;*)
 
 begin
-  ProcedureHeader('Процедура отображения окна ' + sLoginFormSuffix, '{68883F7C-57C2-4E56-B2FB-AEDCB1EB25DC}');
+  ProcedureHeader('Процедура отображения окна ' + RsLoginFormSuffix, '{68883F7C-57C2-4E56-B2FB-AEDCB1EB25DC}');
 
   bPassLoginForm := Configuration.AutoLogon and Configuration.StoreLogin and Configuration.StorePassword and
     (Configuration.Login <> '');
 
   if bPassLoginForm then
     try
-      _Login;
+      (*_Login;*)
     except
       on E: EMySQLException do
       begin
@@ -902,10 +902,10 @@ begin
           edbxLogin.Text := Configuration.Login;
         if Configuration.StorePassword then
           mePassword.Text := Configuration.Password;
-        PreShowModal(sLoginFormSuffix, iBusy);
+        PreShowModal(RsLoginFormSuffix, iBusy);
         ShowModal;
       finally
-        PostShowModal(sLoginFormSuffix, iBusy);
+        PostShowModal(RsLoginFormSuffix, iBusy);
         if ModalResult = mrOk then
         begin
           if Configuration.StoreLogin then
@@ -913,7 +913,7 @@ begin
           if Configuration.StorePassword then
             Configuration.Password := mePassword.Text;
           try
-            _Login;
+            (*_Login;*)
           except
             on E: Exception do
               MainForm.ShowErrorBox(MainForm.Handle, E.Message);

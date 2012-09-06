@@ -33,7 +33,7 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar:=True;
-  Application.Title := '';
+  Application.Title := 'OA5';
   Application.CreateForm(TMainForm, MainForm);
   Application.Run;
 end.

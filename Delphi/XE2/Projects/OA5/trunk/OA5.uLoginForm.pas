@@ -3,50 +3,42 @@ unit OA5.uLoginForm;
 interface
 
 uses
-  Windows,
-  Forms,
-  Mask,
-  StdCtrls,
-  ActnList,
-  ActnMan,
-  ExtCtrls,
-  PlatformDefaultStyleActnCtrls,
-  Controls,
-  Graphics,
-  Classes,
-  ImgList,
-  CastersPackage.uLogProvider;
+  CastersPackage.uTLogForm,
+  Winapi.Windows,
+  System.Classes,
+  Vcl.Forms,
+  Vcl.ActnList,
+  Vcl.ImgList,
+  Vcl.Controls,
+  Vcl.Mask,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls;
 
 type
-  TLoginForm = class(TForm)
-    Bevel2: TBevel;
-    ActionManager1: TActionManager;
-    Action_Ok: TAction;
-    Action_Close: TAction;
+  TLoginForm = class(TLogForm)
+    ImageList: TImageList;
+    ActionList: TActionList;
+    actHelp: TAction;
+    actOk: TAction;
+    actClose: TAction;
+    pnlButtons: TPanel;
+    btnHelp: TButton;
     btnOk: TButton;
     btnClose: TButton;
     lblLogin: TLabel;
-    lblPassword: TLabel;
     edbxLogin: TEdit;
+    lblPassword: TLabel;
     mePassword: TMaskEdit;
-    Log: TLogProvider;
-    ilLoginFormSmallImages: TImageList;
-    Action_Help: TAction;
-    btnHelp: TButton;
     procedure FormShow(Sender: TObject);
-    procedure Action_OkExecute(Sender: TObject);
-    procedure Action_CloseExecute(Sender: TObject);
-    procedure FieldsChange(Sender: TObject);
+    procedure actOkExecute(Sender: TObject);
+    procedure actCloseExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure Action_HelpExecute(Sender: TObject);
+    procedure actHelpExecute(Sender: TObject);
+    procedure actOkUpdate(Sender: TObject);
   strict private
-    procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
-    procedure ProcedureFooter;
-    procedure PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
-    procedure Do_UpdateActions;
-    procedure Do_Ok;
-    procedure Do_Help;
-    procedure Do_Close;
+    procedure _Ok;
+    procedure _Help;
+    procedure _Close;
   end;
 
 implementation
@@ -54,61 +46,11 @@ implementation
 {$R *.dfm}
 
 uses
-  SysUtils,
+  System.SysUtils,
   OA5.uMainForm,
   CastersPackage.uRoutines;
 
-procedure TLoginForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
-begin
-  Log.EnterMethod(aTitle, aLogGroupGUID);
-  MainForm.Inc_BusyState;
-  Application.ProcessMessages;
-end;
-
-procedure TLoginForm.ProcedureFooter;
-begin
-  MainForm.Dec_BusyState;
-  Log.ExitMethod;
-  Application.ProcessMessages;
-end;
-
-procedure TLoginForm.PreFooter(const aHandle: HWND; const aError: boolean; const aErrorMessage: string);
-begin
-  if aError then
-    MainForm.ShowErrorBox(aHandle, aErrorMessage)
-  else
-    Log.SendDebug('Процедура выполнена без ошибок.');
-  MainForm.pbMain.Position := MainForm.pbMain.Min;
-end;
-
-procedure TLoginForm.Do_UpdateActions;
-var
-  b: boolean;
-begin
-  ProcedureHeader('Процедура обновления состояния действий', '{348CBBCC-9845-40ED-9C35-39F5D58F4EAA}');
-
-  Screen.Cursor := crHourGlass;
-
-  b := edbxLogin.Text <> '';
-  if Action_Ok.Enabled <> b then
-  begin
-    Action_Ok.Enabled := b;
-    Log.SendDebug('Действие "' + Action_Ok.Caption + '" ' + Routines.GetConditionalString(Action_Ok.Enabled, 'в', 'от')
-      + 'ключено.');
-  end;
-
-  if btnOk.Default <> Action_Ok.Enabled then
-    btnOk.Default := Action_Ok.Enabled;
-
-  if btnClose.Default <> not Action_Ok.Enabled then
-    btnClose.Default := not Action_Ok.Enabled;
-
-  Screen.Cursor := crDefault;
-
-  ProcedureFooter;
-end;
-
-procedure TLoginForm.Do_Ok;
+procedure TLoginForm._Ok;
 begin
   ProcedureHeader('Процедура закрытия модального окна с результатом mrOk', '{38630A3A-99DB-4D54-A9A4-42BBA7F6DC42}');
 
@@ -119,49 +61,39 @@ begin
   ProcedureFooter;
 end;
 
-procedure TLoginForm.Action_OkExecute(Sender: TObject);
+procedure TLoginForm.actOkExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + Action_Ok.Caption + '"',
-    '{28FD25CC-0ED7-4CDC-8238-38B08A51AE9B}');
-  Do_Ok;
+  ProcedureHeader('Процедура-обработчик действия "' + actOk.Caption + '"', '{28FD25CC-0ED7-4CDC-8238-38B08A51AE9B}');
+  _Ok;
   ProcedureFooter;
 end;
 
-procedure TLoginForm.Action_HelpExecute(Sender: TObject);
+procedure TLoginForm.actHelpExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + Action_Help.Caption + '"',
-    '{394B4218-5393-4162-95FE-9740CEB2F2C9}');
-  Do_Help;
+  ProcedureHeader('Процедура-обработчик действия "' + actHelp.Caption + '"', '{394B4218-5393-4162-95FE-9740CEB2F2C9}');
+  _Help;
   ProcedureFooter;
 end;
 
-procedure TLoginForm.Action_CloseExecute(Sender: TObject);
+procedure TLoginForm.actCloseExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + Action_Close.Caption + '"',
-    '{1DFD76E1-46A7-4ADA-A2F3-AAF70AC8060C}');
-  Do_Close;
+  ProcedureHeader('Процедура-обработчик действия "' + actClose.Caption + '"', '{1DFD76E1-46A7-4ADA-A2F3-AAF70AC8060C}');
+  _Close;
   ProcedureFooter;
 end;
 
-procedure TLoginForm.Do_Help;
-var
-  bError: boolean;
-  sErrorMessage: string;
+procedure TLoginForm._Help;
 begin
   ProcedureHeader('Процедура вызова контекстной справки', '{95536062-F76C-495C-B1F2-70E50F7A9FF0}');
-  bError := False;
-
   Log.SendInfo('Производится попытка открытия справочного файла программы...');
   if (FileExists(ExpandFileName(Application.HelpFile))) then
     Application.HelpContext(HelpContext)
   else
-    Routines.GenerateError('Извините, справочный файл к данной программе не найден.', sErrorMessage, bError);
-
-  PreFooter(Handle, bError, sErrorMessage);
+    GenerateError('Извините, справочный файл к данной программе не найден.');
   ProcedureFooter;
 end;
 
-procedure TLoginForm.Do_Close;
+procedure TLoginForm._Close;
 begin
   ProcedureHeader('Процедура закрытия модального окна с результатом mrClose', '{AFC63B2A-379B-4A09-98F3-549C5570B3D2}');
 
@@ -172,23 +104,16 @@ begin
   ProcedureFooter;
 end;
 
-procedure TLoginForm.FieldsChange(Sender: TObject);
-begin
-  ProcedureHeader('Процедура-обработчик события изменения значения полей', '{93B9E5F4-4353-4053-A07E-DED31D7011F0}');
-  Do_UpdateActions;
-  ProcedureFooter;
-end;
-
 procedure TLoginForm.FormCreate(Sender: TObject);
 const
   ICON_LOGIN = 1;
 begin
   ProcedureHeader('Процедура-обработчик события создания окна', '{B7B2C87E-2141-43CA-A41B-23FE0E874839}');
 
-  ilLoginFormSmallImages.GetIcon(ICON_LOGIN, Icon);
-  Action_Help.Enabled := Application.HelpFile <> '';
-  Log.SendDebug('Действие "' + Action_Help.Caption + '" ' + Routines.GetConditionalString(Action_Help.Enabled, 'в',
-    'от') + 'ключено.');
+  ImageList.GetIcon(ICON_LOGIN, Icon);
+  actHelp.Enabled := Application.HelpFile <> '';
+  Log.SendDebug('Действие "' + actHelp.Caption + '" ' + Routines.GetConditionalString(actHelp.Enabled, 'в', 'от') +
+    'ключено.');
 
   with MainForm.Configuration do
   begin
@@ -227,8 +152,34 @@ procedure TLoginForm.FormShow(Sender: TObject);
 begin
   ProcedureHeader('Процедура-обработчик события отображения окна', '{96321487-1DC9-4591-AD46-BD64CDC4B64D}');
   Log.SendInfo('Отображено окно авторизации.');
-  Do_UpdateActions;
   ProcedureFooter;
+end;
+
+procedure TLoginForm.actOkUpdate(Sender: TObject);
+var
+  b: boolean;
+begin
+  inherited;
+  Screen.Cursor := crHourGlass;
+  try
+    b := edbxLogin.Text <> EmptyStr;
+    if actOk.Enabled <> b then
+    begin
+      actOk.Enabled := b;
+      Log.SendDebug('Действие "' + actOk.Caption + '" ' + Routines.GetConditionalString(actOk.Enabled, 'в', 'от') +
+        'ключено.');
+      if btnOk.Default <> b then
+      begin
+        btnOk.Default := b;
+      end;
+      if btnClose.Default <> (not b) then
+      begin
+        btnClose.Default := not b;
+      end;
+    end;
+  finally
+    Screen.Cursor := crDefault;
+  end;
 end;
 
 end.
