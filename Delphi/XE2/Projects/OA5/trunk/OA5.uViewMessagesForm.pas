@@ -3,40 +3,31 @@ unit OA5.uViewMessagesForm;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
-  System.Variants,
+  CastersPackage.uTLogForm,
   System.Classes,
-  Vcl.Graphics,
   Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.ImgList,
   Vcl.ExtCtrls,
   Vcl.StdCtrls,
-  CastersPackage.uLogProvider,
   Vcl.ActnList,
-  Vcl.PlatformDefaultStyleActnCtrls,
-  Vcl.ActnMan, Vcl.ComCtrls;
+  Vcl.ComCtrls;
 
 type
-  TViewMessagesForm=class(TForm)
+  TViewMessagesForm = class(TLogForm)
+    ImageList: TImageList;
+    ActionList: TActionList;
+    actClose: TAction;
+    actHelp: TAction;
+    actDelete: TAction;
+    actCreate: TAction;
+    actOpen: TAction;
+    ListView: TListView;
+    pnlButtons: TPanel;
     btnDelete: TButton;
     btnClose: TButton;
     btnHelp: TButton;
     btnCreate: TButton;
     btnView: TButton;
-    Bevel2: TBevel;
-    ilViewMessagesFormSmallImages: TImageList;
-    ActionManager1: TActionManager;
-    Action_Close: TAction;
-    Action_Help: TAction;
-    Action_Delete: TAction;
-    Log: TLogProvider;
-    Action_Create: TAction;
-    Action_Open: TAction;
-    ListView1: TListView;
   end;
 
 implementation

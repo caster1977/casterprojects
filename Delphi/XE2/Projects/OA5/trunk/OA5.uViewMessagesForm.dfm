@@ -13,75 +13,10 @@ object ViewMessagesForm: TViewMessagesForm
   Font.Style = []
   OldCreateOrder = False
   Position = poDesigned
-  DesignSize = (
-    624
-    322)
   PixelsPerInch = 96
   TextHeight = 13
-  object Bevel2: TBevel
-    Left = 0
-    Top = 281
-    Width = 624
-    Height = 41
-    Align = alBottom
-    Shape = bsTopLine
-    ExplicitLeft = -10
-    ExplicitWidth = 634
-  end
-  object btnDelete: TButton
-    Left = 182
-    Top = 289
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Delete
-    Anchors = [akRight, akBottom]
-    TabOrder = 0
-  end
-  object btnClose: TButton
-    Left = 450
-    Top = 289
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Close
-    Anchors = [akRight, akBottom]
-    Cancel = True
-    Default = True
-    TabOrder = 1
-  end
-  object btnHelp: TButton
-    Left = 535
-    Top = 289
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Help
-    Anchors = [akRight, akBottom]
-    TabOrder = 2
-  end
-  object btnCreate: TButton
-    Left = 8
-    Top = 289
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Create
-    Anchors = [akRight, akBottom]
-    TabOrder = 3
-  end
-  object btnView: TButton
-    Left = 95
-    Top = 289
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Open
-    Anchors = [akRight, akBottom]
-    TabOrder = 4
-  end
-  object ListView1: TListView
-    Left = 8
+  object ListView: TListView
+    Left = 7
     Top = 8
     Width = 609
     Height = 265
@@ -95,16 +30,79 @@ object ViewMessagesForm: TViewMessagesForm
       item
         Caption = #1058#1077#1084#1072
       end>
-    SmallImages = ilViewMessagesFormSmallImages
+    SmallImages = ImageList
     SortType = stText
-    TabOrder = 5
+    TabOrder = 0
     ViewStyle = vsReport
   end
-  object ilViewMessagesFormSmallImages: TImageList
+  object pnlButtons: TPanel
+    Left = 0
+    Top = 281
+    Width = 624
+    Height = 41
+    Align = alBottom
+    BevelEdges = [beTop]
+    BevelKind = bkTile
+    BevelOuter = bvNone
+    TabOrder = 1
+    DesignSize = (
+      624
+      39)
+    object btnCreate: TButton
+      Left = 7
+      Top = 8
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actCreate
+      TabOrder = 0
+    end
+    object btnView: TButton
+      Left = 94
+      Top = 8
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actOpen
+      TabOrder = 1
+    end
+    object btnHelp: TButton
+      Left = 535
+      Top = 8
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actHelp
+      Anchors = [akTop, akRight]
+      TabOrder = 2
+    end
+    object btnDelete: TButton
+      Left = 181
+      Top = 8
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actDelete
+      TabOrder = 3
+    end
+    object btnClose: TButton
+      Left = 448
+      Top = 8
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actClose
+      Anchors = [akTop, akRight]
+      Cancel = True
+      Default = True
+      TabOrder = 4
+    end
+  end
+  object ImageList: TImageList
     Left = 368
     Top = 128
     Bitmap = {
-      494C010104002000580210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101040020006C0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -375,38 +373,30 @@ object ViewMessagesForm: TViewMessagesForm
       E00F01FFFFFFE007F83F83FFFFFFE00700000000000000000000000000000000
       000000000000}
   end
-  object ActionManager1: TActionManager
-    Images = ilViewMessagesFormSmallImages
+  object ActionList: TActionList
+    Images = ImageList
     Left = 368
-    Top = 80
-    StyleName = 'Platform Default'
-    object Action_Close: TAction
+    Top = 72
+    object actClose: TAction
       Caption = '&'#1047#1072#1082#1088#1099#1090#1100
       Hint = #1047#1072#1082#1088#1099#1090#1100' '#1086#1082#1085#1086'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072
     end
-    object Action_Help: TAction
+    object actHelp: TAction
       Caption = '&'#1057#1087#1088#1072#1074#1082#1072
       Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1087#1088#1072#1074#1082#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1089#1087#1088#1072#1074#1086#1095#1085#1086#1075#1086' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
       ImageIndex = 0
     end
-    object Action_Delete: TAction
+    object actDelete: TAction
       Caption = '&'#1059#1076#1072#1083#1080#1090#1100
       Hint = #1059#1076#1072#1083#1080#1090#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1076#1072#1085#1085#1086#1075#1086' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
     end
-    object Action_Create: TAction
+    object actCreate: TAction
       Caption = #1057#1086#1079'&'#1076#1072#1090#1100
       Hint = #1057#1086#1079#1076#1072#1090#1100' '#1085#1086#1074#1086#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1089#1086#1079#1076#1072#1085#1080#1103' '#1085#1086#1074#1086#1075#1086' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
     end
-    object Action_Open: TAction
+    object actOpen: TAction
       Caption = '&'#1054#1090#1082#1088#1099#1090#1100
       Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1088#1086#1089#1084#1086#1090#1088#1072' '#1090#1077#1082#1091#1097#1077#1075#1086' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
     end
-  end
-  object Log: TLogProvider
-    LogFile.Enabled = True
-    LogFile.FileNameSuffix = 'OA5_ViewMessagesForm'
-    LogClient.Enabled = True
-    Left = 368
-    Top = 176
   end
 end

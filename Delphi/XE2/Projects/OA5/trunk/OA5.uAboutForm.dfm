@@ -221,19 +221,19 @@ object AboutForm: TAboutForm
     Width = 80
     Height = 25
     Cursor = crHandPoint
-    Action = Action_Close
+    Action = actClose
     Cancel = True
     Default = True
     TabOrder = 0
   end
-  object ActionManager1: TActionManager
+  object ActionManager: TActionManager
     Left = 8
     Top = 8
     StyleName = 'Platform Default'
-    object Action_Close: TAction
+    object actClose: TAction
       Caption = '&'#1047#1072#1082#1088#1099#1090#1100
       Hint = #1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1080' '#1086' '#1087#1088#1086#1075#1088#1072#1084#1084#1077
-      OnExecute = Action_CloseExecute
+      OnExecute = actCloseExecute
     end
   end
   object Timer1: TTimer
@@ -247,13 +247,6 @@ object AboutForm: TAboutForm
     OnTimer = Timer2Timer
     Left = 312
     Top = 8
-  end
-  object Log: TLogProvider
-    LogFile.Enabled = True
-    LogFile.FileNameSuffix = 'OA5_AboutForm'
-    LogClient.Enabled = True
-    Left = 280
-    Top = 208
   end
   object gsFileVersionInfo1: TGSFileVersionInfo
     Left = 248

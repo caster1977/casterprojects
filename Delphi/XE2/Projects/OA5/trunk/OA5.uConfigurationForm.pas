@@ -1558,7 +1558,7 @@ begin
   edbxLoginFormPositionY.Enabled:=not b;
   if b then
     begin
-      edbxLoginFormPositionX.Text:='';
+      edbxLoginFormPositionX.Text:=EmptyStr;
       edbxLoginFormPositionY.Text:='';
     end
   else

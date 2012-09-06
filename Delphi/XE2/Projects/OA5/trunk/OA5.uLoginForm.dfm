@@ -22,16 +22,6 @@ object LoginForm: TLoginForm
     103)
   PixelsPerInch = 96
   TextHeight = 13
-  object Bevel2: TBevel
-    Left = 0
-    Top = 62
-    Width = 294
-    Height = 41
-    Align = alBottom
-    Shape = bsTopLine
-    ExplicitTop = 56
-    ExplicitWidth = 212
-  end
   object lblLogin: TLabel
     Left = 8
     Top = 11
@@ -48,27 +38,50 @@ object LoginForm: TLoginForm
     Caption = '&'#1055#1072#1088#1086#1083#1100':'
     FocusControl = mePassword
   end
-  object btnOk: TButton
-    Left = 118
-    Top = 70
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Ok
-    Anchors = [akLeft, akBottom]
+  object pnlButtons: TPanel
+    Left = 0
+    Top = 62
+    Width = 294
+    Height = 41
+    Align = alBottom
+    BevelEdges = [beTop]
+    BevelKind = bkTile
+    BevelOuter = bvNone
     TabOrder = 2
-  end
-  object btnClose: TButton
-    Left = 205
-    Top = 70
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Close
-    Anchors = [akRight, akBottom]
-    Cancel = True
-    Default = True
-    TabOrder = 3
+    DesignSize = (
+      294
+      39)
+    object btnHelp: TButton
+      Left = 8
+      Top = 6
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actHelp
+      TabOrder = 0
+    end
+    object btnOk: TButton
+      Left = 118
+      Top = 6
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actOk
+      Anchors = [akTop, akRight]
+      TabOrder = 1
+    end
+    object btnClose: TButton
+      Left = 205
+      Top = 6
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actClose
+      Anchors = [akTop, akRight]
+      Cancel = True
+      Default = True
+      TabOrder = 2
+    end
   end
   object edbxLogin: TEdit
     Left = 64
@@ -79,7 +92,6 @@ object LoginForm: TLoginForm
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
     TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1083#1086#1075#1080#1085' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
-    OnChange = FieldsChange
   end
   object mePassword: TMaskEdit
     Left = 64
@@ -90,52 +102,13 @@ object LoginForm: TLoginForm
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 1
     TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1087#1072#1088#1086#1083#1100' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
-    OnChange = FieldsChange
   end
-  object btnHelp: TButton
-    Left = 8
-    Top = 70
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Help
-    Anchors = [akLeft, akBottom]
-    TabOrder = 4
-  end
-  object ActionManager1: TActionManager
-    Images = ilLoginFormSmallImages
-    Left = 208
-    StyleName = 'Platform Default'
-    object Action_Ok: TAction
-      Caption = '&'#1054#1082
-      Hint = #1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1087#1099#1090#1082#1080' '#1074#1093#1086#1076#1072' '#1074' '#1089#1080#1089#1090#1077#1084#1091' '#1087#1086#1076' '#1091#1082#1072#1079#1072#1085#1085#1099#1084' '#1080#1084#1077#1085#1077#1084
-      OnExecute = Action_OkExecute
-    end
-    object Action_Close: TAction
-      Caption = '&'#1047#1072#1082#1088#1099#1090#1100
-      Hint = 
-        #1047#1072#1082#1088#1099#1090#1100' '#1086#1082#1085#1086'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1084#1077#1085#1099' '#1087#1088#1086#1094#1077#1076#1091#1088#1099' '#1080#1076#1077#1085#1090#1080#1092#1080#1082#1072#1094#1080#1080' '#1087#1086#1083#1100#1079#1086#1074#1072 +
-        #1090#1077#1083#1103' '#1080' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072
-      OnExecute = Action_CloseExecute
-    end
-    object Action_Help: TAction
-      Caption = '&'#1057#1087#1088#1072#1074#1082#1072
-      Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1087#1088#1072#1074#1082#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1089#1087#1088#1072#1074#1086#1095#1085#1086#1075#1086' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
-      ImageIndex = 0
-      OnExecute = Action_HelpExecute
-    end
-  end
-  object Log: TLogProvider
-    LogFile.Enabled = True
-    LogFile.FileNameSuffix = 'OA5_LoginForm'
-    LogClient.Enabled = True
-    Left = 176
-  end
-  object ilLoginFormSmallImages: TImageList
+  object ImageList: TImageList
     AllocBy = 2
-    Left = 240
+    Left = 248
+    Top = 8
     Bitmap = {
-      494C010102000400400010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400540010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000005346450053464500534645005346450053464500534645000000
@@ -273,5 +246,29 @@ object LoginForm: TLoginForm
       40440007000000008281000700000000A00B000F00000000D837000F00000000
       E78F001F00000000F83F803F0000000000000000000000000000000000000000
       000000000000}
+  end
+  object ActionList: TActionList
+    Images = ImageList
+    Left = 200
+    Top = 8
+    object actOk: TAction
+      Caption = '&'#1054#1082
+      Hint = #1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1087#1099#1090#1082#1080' '#1074#1093#1086#1076#1072' '#1074' '#1089#1080#1089#1090#1077#1084#1091' '#1087#1086#1076' '#1091#1082#1072#1079#1072#1085#1085#1099#1084' '#1080#1084#1077#1085#1077#1084
+      OnExecute = actOkExecute
+      OnUpdate = actOkUpdate
+    end
+    object actClose: TAction
+      Caption = '&'#1047#1072#1082#1088#1099#1090#1100
+      Hint = 
+        #1047#1072#1082#1088#1099#1090#1100' '#1086#1082#1085#1086'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1084#1077#1085#1099' '#1087#1088#1086#1094#1077#1076#1091#1088#1099' '#1080#1076#1077#1085#1090#1080#1092#1080#1082#1072#1094#1080#1080' '#1087#1086#1083#1100#1079#1086#1074#1072 +
+        #1090#1077#1083#1103' '#1080' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072
+      OnExecute = actCloseExecute
+    end
+    object actHelp: TAction
+      Caption = '&'#1057#1087#1088#1072#1074#1082#1072
+      Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1087#1088#1072#1074#1082#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1089#1087#1088#1072#1074#1086#1095#1085#1086#1075#1086' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+      ImageIndex = 0
+      OnExecute = actHelpExecute
+    end
   end
 end
