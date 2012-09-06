@@ -41,8 +41,16 @@ type
       reintroduce; virtual;
   end;
 
-var
-  LogForm: TLogForm;
+resourcestring
+  RsEventHandlerOfActionExecute = 'Процедура-обработчик действия "%s"';
+  RsEventHandlerOfActionUpdate = 'Процедура-обработчик обновления действия "%s';
+  RsEventHandlerOfFormCreation = 'Процедура-обработчик события создания окна %s';
+  RsEventHandlerOfFormShowing = 'Процедура-обработчик события отображения окна %s';
+  RsWindowShowed ='Отображено окно %s.';
+  RsWindowClosedByUser = 'Окно %s закрыто пользователем.';
+  RsContextHelpProcedure = 'Процедура вызова контекстной справки';
+  RsTryingToOpenHelpFile = 'Производится попытка открытия справочного файла программы...';
+  RsHelpFileNonFound = 'Извините, справочный файл к данной программе не найден.';
 
 implementation
 
