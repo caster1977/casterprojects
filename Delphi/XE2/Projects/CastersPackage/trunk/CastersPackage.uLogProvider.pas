@@ -270,6 +270,7 @@ begin
       except
         Application.HandleException(Self);
       end;
+      Application.ProcessMessages;
     end;
 end;
 

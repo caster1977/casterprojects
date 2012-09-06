@@ -51,7 +51,8 @@ contains
   CastersPackage.uTIniFileDataStorage in 'CastersPackage.uTIniFileDataStorage.pas',
   CastersPackage.Actions.Classes in 'CastersPackage.Actions.Classes.pas',
   CastersPackage.Actions.DataModule in 'CastersPackage.Actions.DataModule.pas',
-  CastersPackage.uIIniFileDataStorage in 'CastersPackage.uIIniFileDataStorage.pas';
+  CastersPackage.uIIniFileDataStorage in 'CastersPackage.uIIniFileDataStorage.pas',
+  CastersPackage.uTLogForm in 'CastersPackage.uTLogForm.pas' {LogForm};
 
 end.
 
