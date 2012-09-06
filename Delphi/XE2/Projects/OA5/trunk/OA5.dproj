@@ -116,11 +116,11 @@
 			<DCCReference Include="OA5.uMainForm.pas">
 				<Form>MainForm</Form>
 			</DCCReference>
-			<DCCReference Include="OA5.uLoginForm.pas">
+			<DCCReference Include="OA5.uTLoginForm.pas">
 				<Form>LoginForm</Form>
 			</DCCReference>
 			<DCCReference Include="OA5.uConsts.pas"/>
-			<DCCReference Include="OA5.uAboutForm.pas">
+			<DCCReference Include="OA5.uTAboutForm.pas">
 				<Form>AboutForm</Form>
 			</DCCReference>
 			<DCCReference Include="OA5.uConfigurationForm.pas">
@@ -134,7 +134,7 @@
 			<DCCReference Include="OA5.uReportForm.pas">
 				<Form>ReportForm</Form>
 			</DCCReference>
-			<DCCReference Include="OA5.uSetPasswordForm.pas">
+			<DCCReference Include="OA5.uTSetPasswordForm.pas">
 				<Form>SetPasswordForm</Form>
 			</DCCReference>
 			<DCCReference Include="OA5.uPermissionsForm.pas">
@@ -151,11 +151,11 @@
 				<Form>CreateMessageForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
-			<DCCReference Include="OA5.uViewMessageForm.pas">
+			<DCCReference Include="OA5.uTViewMessageForm.pas">
 				<Form>ViewMessageForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
-			<DCCReference Include="OA5.uViewMessagesForm.pas">
+			<DCCReference Include="OA5.uTViewMessagesForm.pas">
 				<Form>ViewMessagesForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>

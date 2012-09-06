@@ -1,4 +1,4 @@
-unit OA5.uViewMessagesForm;
+unit OA5.uTViewMessagesForm;
 
 interface
 
@@ -23,11 +23,11 @@ type
     actOpen: TAction;
     ListView: TListView;
     pnlButtons: TPanel;
+    btnCreate: TButton;
+    btnView: TButton;
     btnDelete: TButton;
     btnClose: TButton;
     btnHelp: TButton;
-    btnCreate: TButton;
-    btnView: TButton;
   end;
 
 implementation

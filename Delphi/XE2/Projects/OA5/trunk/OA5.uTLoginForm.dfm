@@ -4,9 +4,10 @@ object LoginForm: TLoginForm
   Hint = #1054#1082#1085#1086' '#1080#1076#1077#1085#1090#1080#1092#1080#1082#1072#1094#1080#1080' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
+  BorderWidth = 5
   Caption = #1059#1095#1105#1090#1085#1072#1103' '#1079#1072#1087#1080#1089#1100
-  ClientHeight = 103
-  ClientWidth = 294
+  ClientHeight = 86
+  ClientWidth = 284
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,21 +19,21 @@ object LoginForm: TLoginForm
   OnCreate = FormCreate
   OnShow = FormShow
   DesignSize = (
-    294
-    103)
+    284
+    86)
   PixelsPerInch = 96
   TextHeight = 13
   object lblLogin: TLabel
-    Left = 8
-    Top = 11
+    Left = 0
+    Top = 3
     Width = 34
     Height = 13
     Caption = '&'#1051#1086#1075#1080#1085':'
     FocusControl = edbxLogin
   end
   object lblPassword: TLabel
-    Left = 8
-    Top = 38
+    Left = 0
+    Top = 30
     Width = 41
     Height = 13
     Caption = '&'#1055#1072#1088#1086#1083#1100':'
@@ -40,39 +41,39 @@ object LoginForm: TLoginForm
   end
   object pnlButtons: TPanel
     Left = 0
-    Top = 62
-    Width = 294
-    Height = 41
+    Top = 54
+    Width = 284
+    Height = 32
     Align = alBottom
     BevelEdges = [beTop]
     BevelKind = bkTile
     BevelOuter = bvNone
     TabOrder = 2
     DesignSize = (
-      294
-      39)
+      284
+      30)
     object btnHelp: TButton
-      Left = 8
-      Top = 6
+      Left = 0
+      Top = 5
       Width = 81
       Height = 25
       Cursor = crHandPoint
       Action = actHelp
       TabOrder = 0
     end
-    object btnOk: TButton
-      Left = 118
-      Top = 6
+    object btnEnter: TButton
+      Left = 116
+      Top = 5
       Width = 81
       Height = 25
       Cursor = crHandPoint
-      Action = actOk
+      Action = actEnter
       Anchors = [akTop, akRight]
       TabOrder = 1
     end
     object btnClose: TButton
-      Left = 205
-      Top = 6
+      Left = 203
+      Top = 5
       Width = 81
       Height = 25
       Cursor = crHandPoint
@@ -84,9 +85,9 @@ object LoginForm: TLoginForm
     end
   end
   object edbxLogin: TEdit
-    Left = 64
-    Top = 8
-    Width = 222
+    Left = 47
+    Top = 0
+    Width = 237
     Height = 21
     Hint = #1042#1074#1077#1076#1080#1090#1077' '#1042#1072#1096' '#1083#1086#1075#1080#1085
     Anchors = [akLeft, akTop, akRight]
@@ -94,9 +95,9 @@ object LoginForm: TLoginForm
     TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1083#1086#1075#1080#1085' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
   end
   object mePassword: TMaskEdit
-    Left = 64
-    Top = 35
-    Width = 222
+    Left = 47
+    Top = 27
+    Width = 237
     Height = 21
     Hint = #1042#1074#1077#1076#1080#1090#1077' '#1042#1072#1096' '#1087#1072#1088#1086#1083#1100
     Anchors = [akLeft, akTop, akRight]
@@ -108,7 +109,7 @@ object LoginForm: TLoginForm
     Left = 248
     Top = 8
     Bitmap = {
-      494C010102000400540010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400640010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000005346450053464500534645005346450053464500534645000000
@@ -251,11 +252,11 @@ object LoginForm: TLoginForm
     Images = ImageList
     Left = 200
     Top = 8
-    object actOk: TAction
-      Caption = '&'#1054#1082
+    object actEnter: TAction
+      Caption = '&'#1042#1086#1081#1090#1080
       Hint = #1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1087#1099#1090#1082#1080' '#1074#1093#1086#1076#1072' '#1074' '#1089#1080#1089#1090#1077#1084#1091' '#1087#1086#1076' '#1091#1082#1072#1079#1072#1085#1085#1099#1084' '#1080#1084#1077#1085#1077#1084
-      OnExecute = actOkExecute
-      OnUpdate = actOkUpdate
+      OnExecute = actEnterExecute
+      OnUpdate = actEnterUpdate
     end
     object actClose: TAction
       Caption = '&'#1047#1072#1082#1088#1099#1090#1100
@@ -269,6 +270,7 @@ object LoginForm: TLoginForm
       Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1087#1088#1072#1074#1082#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1089#1087#1088#1072#1074#1086#1095#1085#1086#1075#1086' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
       ImageIndex = 0
       OnExecute = actHelpExecute
+      OnUpdate = actHelpUpdate
     end
   end
 end

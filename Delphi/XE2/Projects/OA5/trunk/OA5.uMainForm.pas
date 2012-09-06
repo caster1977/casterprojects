@@ -4,46 +4,26 @@ interface
 
 uses
   OA5.uTypes,
-  Windows,
-  Messages,
-  SysUtils,
-  Variants,
-  System.Classes,
-  Graphics,
-  Controls,
-  Forms,
-  Dialogs,
-  Menus,
-  ComCtrls,
-  PlatformDefaultStyleActnCtrls,
-  ActnList,
-  ActnMan,
-  ImgList,
+  Winapi.Windows,
+  System.SysUtils,
+  Vcl.Forms,
   OA5.uAccountClass,
   OA5.uTConfiguration,
-  ExtCtrls,
-  CodeSiteLogging,
-  CastersPackage.uLogProvider,
-  StdCtrls,
-  Sockets,
-  IdTCPConnection,
-  IdTCPClient,
-  IdBaseComponent,
-  IdComponent,
-  IdUDPBase,
-  IdUDPClient,
-  xmldom,
-  XMLIntf,
-  msxmldom,
-  XMLDoc,
-  Vcl.AppEvnts,
   System.IniFiles,
   OA5.uIMeasureList,
-  OA5.uInterfaces;
+  OA5.uInterfaces,
+  System.Classes,
+  Vcl.ActnList,
+  CastersPackage.uLogProvider,
+  Vcl.ImgList,
+  Vcl.Controls,
+  Vcl.Menus,
+  Vcl.ComCtrls,
+  Vcl.ExtCtrls;
 
 type
   TMainForm = class(TForm)
-    MainMenu1: TMainMenu;
+    MainMenu: TMainMenu;
     N1: TMenuItem;
     N2: TMenuItem;
     N3: TMenuItem;
@@ -73,21 +53,20 @@ type
     N26: TMenuItem;
     miStatusBar: TMenuItem;
     miToolBar: TMenuItem;
-    ActionManager1: TActionManager;
-    Action_Quit: TAction;
-    Action_About: TAction;
-    Action_Help: TAction;
-    Action_Configuration: TAction;
-    Action_Accounts: TAction;
-    Action_Report: TAction;
-    Action_Logon: TAction;
-    Action_Logout: TAction;
-    Action_Multibuffer: TAction;
-    Action_CreateMessage: TAction;
-    Action_ViewMessages: TAction;
-    Action_ViewMessage: TAction;
-    Action_AddPhone: TAction;
-    Action_EditPhone: TAction;
+    actQuit: TAction;
+    actAbout: TAction;
+    actHelp: TAction;
+    actConfiguration: TAction;
+    actAccounts: TAction;
+    actReport: TAction;
+    actLogon: TAction;
+    actLogout: TAction;
+    actMultibuffer: TAction;
+    actCreateMessage: TAction;
+    actViewMessages: TAction;
+    actViewMessage: TAction;
+    actAddPhone: TAction;
+    actEditPhone: TAction;
     ilMainFormSmallImages: TImageList;
     ilMainFormBigImages: TImageList;
     ilMainFormStateIcons: TImageList;
@@ -95,26 +74,27 @@ type
     pbMain: TProgressBar;
     imState: TImage;
     Log: TLogProvider;
-    procedure Action_QuitExecute(Sender: TObject);
-    procedure Action_AboutExecute(Sender: TObject);
-    procedure Action_HelpExecute(Sender: TObject);
+    ActionList: TActionList;
+    procedure actQuitExecute(Sender: TObject);
+    procedure actAboutExecute(Sender: TObject);
+    procedure actHelpExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure Action_ConfigurationExecute(Sender: TObject);
+    procedure actConfigurationExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure Action_ReportExecute(Sender: TObject);
+    procedure actReportExecute(Sender: TObject);
     procedure miStatusBarClick(Sender: TObject);
-    procedure Action_MultibufferExecute(Sender: TObject);
+    procedure actMultibufferExecute(Sender: TObject);
     procedure Button1Click(Sender: TObject);
-    procedure Action_CreateMessageExecute(Sender: TObject);
+    procedure actCreateMessageExecute(Sender: TObject);
     procedure N21Click(Sender: TObject);
-    procedure Action_ViewMessageExecute(Sender: TObject);
+    procedure actViewMessageExecute(Sender: TObject);
     procedure miToolBarClick(Sender: TObject);
-    procedure Action_AddPhoneExecute(Sender: TObject);
-    procedure Action_EditPhoneExecute(Sender: TObject);
-    procedure Action_LogonExecute(Sender: TObject);
-    procedure Action_LogoutExecute(Sender: TObject);
+    procedure actAddPhoneExecute(Sender: TObject);
+    procedure actEditPhoneExecute(Sender: TObject);
+    procedure actLogonExecute(Sender: TObject);
+    procedure actLogoutExecute(Sender: TObject);
   strict private
     FMultiBuffer: IMeasureList;
     bFirstRun: Boolean;
@@ -158,7 +138,7 @@ uses
   System.IOUtils,
   CommCtrl,
   OA5.uTMySQLConnection,
-  OA5.uAboutForm,
+  OA5.uTAboutForm,
   OA5.uConfigurationForm,
   OA5.uReportForm,
   OA5.uMultiBufferForm,
@@ -166,11 +146,11 @@ uses
   OA5.uTMeasure,
   OA5.uTMeasureList,
   OA5.uAddMassMsrForm,
-  OA5.uLoginForm,
+  OA5.uTLoginForm,
   OA5.uConsts,
   OA5.uCreateMessageForm,
-  OA5.uViewMessageForm,
-  OA5.uViewMessagesForm,
+  OA5.uTViewMessageForm,
+  OA5.uTViewMessagesForm,
   OA5.uAddEditPhoneForm,
   CastersPackage.uRoutines,
   CastersPackage.uMysql;
@@ -314,10 +294,9 @@ begin
   end;
 end;
 
-procedure TMainForm.Action_AboutExecute(Sender: TObject);
+procedure TMainForm.actAboutExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + Action_About.Caption + '"',
-    '{90CC0AAB-ED7C-46FF-97FF-4431F18EBA1A}');
+  ProcedureHeader('Процедура-обработчик действия "' + actAbout.Caption + '"', '{90CC0AAB-ED7C-46FF-97FF-4431F18EBA1A}');
   Do_About(True);
   ProcedureFooter;
 end;
@@ -329,10 +308,10 @@ var
 begin
   ProcedureHeader('Процедура отображения окна ' + RsAboutFormSuffix, '{754C2801-ED59-4595-AC3E-20DBF98F6779}');
 
-  AboutForm := TAboutForm.Create(Self, Addr(MainForm.iBusyCounter), MainForm.Inc_BusyState, MainForm.Dec_BusyState, MainForm.Refresh_BusyState, pbMain);
+  AboutForm := TAboutForm.Create(Self, aButtonVisible, Addr(MainForm.iBusyCounter), MainForm.Inc_BusyState,
+    MainForm.Dec_BusyState, MainForm.Refresh_BusyState, pbMain);
   with AboutForm do
     try
-      actClose.Visible := aButtonVisible;
       PreShowModal(RsAboutFormSuffix, iBusy);
       ShowModal;
     finally
@@ -343,25 +322,23 @@ begin
   ProcedureFooter;
 end;
 
-procedure TMainForm.Action_HelpExecute(Sender: TObject);
+procedure TMainForm.actHelpExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + Action_Help.Caption + '"',
-    '{D066E67D-C195-440D-94C2-6757C427DCF6}');
+  ProcedureHeader('Процедура-обработчик действия "' + actHelp.Caption + '"', '{D066E67D-C195-440D-94C2-6757C427DCF6}');
   Do_Help;
   ProcedureFooter;
 end;
 
-procedure TMainForm.Action_QuitExecute(Sender: TObject);
+procedure TMainForm.actQuitExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + Action_Quit.Caption + '"',
-    '{5DB14721-5FC4-4B42-B0DB-4E7C323A2AA2}');
+  ProcedureHeader('Процедура-обработчик действия "' + actQuit.Caption + '"', '{5DB14721-5FC4-4B42-B0DB-4E7C323A2AA2}');
   Close;
   ProcedureFooter;
 end;
 
-procedure TMainForm.Action_ReportExecute(Sender: TObject);
+procedure TMainForm.actReportExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + Action_Report.Caption + '"',
+  ProcedureHeader('Процедура-обработчик действия "' + actReport.Caption + '"',
     '{90957E86-35D1-4C1B-9C1F-4C99CE5D2B56}');
   Do_Report;
   ProcedureFooter;
@@ -416,12 +393,12 @@ begin
   bFirstRun := True;
   CurrentUser := TAccount.Create; // создание и инициализщация объекта текущего пользователя
   Configuration := TConfiguration.Create; // создание и инициализщация объекта конфигурации
-  (*Configuration.RNE4Server.LogProvider := MainForm.Log;
-  Configuration.MessagesServer.LogProvider := MainForm.Log;*)
+  (* Configuration.RNE4Server.LogProvider := MainForm.Log;
+    Configuration.MessagesServer.LogProvider := MainForm.Log; *)
   BindMainProgressBarToStatusBar; // привязка прогрессбара к позиции на строке статуса
   BindStateImageToStatusBar; // привязка иконки готовности к позиции на строке статуса
   Application.OnHint := ApplicationOnHint;
-  (*Do_LoadConfiguration; // загрузка настроек из файла*)
+  (* Do_LoadConfiguration; // загрузка настроек из файла *)
   Do_ApplyConfiguration; // применение настроек к интерфейсу
 
   { TODO : добавить отображение окна "о программе" }
@@ -445,8 +422,8 @@ begin
     bFirstRun := False;
     if Configuration.ShowSplashAtStart then
       Do_About(False);
-//    if Configuration.AutoLogon then
-//      Do_Logon;
+    // if Configuration.AutoLogon then
+    // Do_Logon;
   end;
   Refresh_BusyState;
 
@@ -470,26 +447,26 @@ begin
 
   b := CurrentUser.Logged;
 
-  Action_Logon.Enabled := not b;
-  // Action_Logon.Visible:=not b;
-  Log.SendDebug('Действие "' + Action_Logon.Caption + '" ' + Routines.GetConditionalString(Action_Logon.Enabled,
-    'включено', 'отключено') + '.');
-  Action_Logout.Enabled := b;
-  // Action_Logout.Visible:=b;
-  Log.SendDebug('Действие "' + Action_Logout.Caption + '" ' + Routines.GetConditionalString(Action_Logout.Enabled,
-    'включено', 'отключено') + '.');
+  actLogon.Enabled := not b;
+  // actLogon.Visible:=not b;
+  Log.SendDebug('Действие "' + actLogon.Caption + '" ' + Routines.GetConditionalString(actLogon.Enabled, 'включено',
+    'отключено') + '.');
+  actLogout.Enabled := b;
+  // actLogout.Visible:=b;
+  Log.SendDebug('Действие "' + actLogout.Caption + '" ' + Routines.GetConditionalString(actLogout.Enabled, 'включено',
+    'отключено') + '.');
   b := b and CurrentUser.Privilegies.Accounting;
-  Action_Accounts.Enabled := b;
-  // Action_Accounts.Visible:=b;
+  actAccounts.Enabled := b;
+  // actAccounts.Visible:=b;
 
   Application.ProcessMessages;
 
   ProcedureFooter;
 end;
 
-procedure TMainForm.Action_ConfigurationExecute(Sender: TObject);
+procedure TMainForm.actConfigurationExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + Action_Configuration.Caption + '"',
+  ProcedureHeader('Процедура-обработчик действия "' + actConfiguration.Caption + '"',
     '{024B2718-8D00-49A1-9E1E-C02CB2696CE0}');
   Do_Configuration;
   ProcedureFooter;
@@ -670,7 +647,7 @@ begin
   ProcedureFooter;
 end;
 
-procedure TMainForm.Action_MultibufferExecute(Sender: TObject);
+procedure TMainForm.actMultibufferExecute(Sender: TObject);
 var
   MultiBufferForm: TMultiBufferForm;
   iBusy: integer;
@@ -703,7 +680,7 @@ begin
   ProcedureFooter;
 end;
 
-procedure TMainForm.Action_ViewMessageExecute(Sender: TObject);
+procedure TMainForm.actViewMessageExecute(Sender: TObject);
 var
   ViewMessageForm: TViewMessageForm;
   iBusy: integer;
@@ -726,7 +703,7 @@ begin
   ProcedureFooter;
 end;
 
-procedure TMainForm.Action_CreateMessageExecute(Sender: TObject);
+procedure TMainForm.actCreateMessageExecute(Sender: TObject);
 var
   CreateMessageForm: TCreateMessageForm;
   iBusy: integer;
@@ -749,7 +726,7 @@ begin
   ProcedureFooter;
 end;
 
-procedure TMainForm.Action_AddPhoneExecute(Sender: TObject);
+procedure TMainForm.actAddPhoneExecute(Sender: TObject);
 var
   AddPhoneForm: TAddEditPhoneForm;
   iBusy: integer;
@@ -773,7 +750,7 @@ begin
   ProcedureFooter;
 end;
 
-procedure TMainForm.Action_EditPhoneExecute(Sender: TObject);
+procedure TMainForm.actEditPhoneExecute(Sender: TObject);
 var
   EditPhoneForm: TAddEditPhoneForm;
   iBusy: integer;
@@ -797,17 +774,16 @@ begin
   ProcedureFooter;
 end;
 
-procedure TMainForm.Action_LogonExecute(Sender: TObject);
+procedure TMainForm.actLogonExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + Action_Logon.Caption + '"',
-    '{25B404A0-78C1-47D6-AFCE-33168CAF333A}');
+  ProcedureHeader('Процедура-обработчик действия "' + actLogon.Caption + '"', '{25B404A0-78C1-47D6-AFCE-33168CAF333A}');
   Do_Logon;
   ProcedureFooter;
 end;
 
-procedure TMainForm.Action_LogoutExecute(Sender: TObject);
+procedure TMainForm.actLogoutExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + Action_Logout.Caption + '"',
+  ProcedureHeader('Процедура-обработчик действия "' + actLogout.Caption + '"',
     '{3A1F49AC-A9CF-4FC7-90AA-A6D2E5AE1619}');
   Do_Logout;
   ProcedureFooter;
@@ -821,58 +797,58 @@ var
   iBusy: integer;
   bPassLoginForm: Boolean;
 
-  (*procedure _Login;
-  var
+  (* procedure _Login;
+    var
     aResultSet: PMYSQL_RES;
     iRowCount: integer;
     slRow: TStringList;
-  begin
+    begin
     Screen.Cursor := crHourGlass;
     try
-      Configuration.MessagesServer.Connected := True;
-      Configuration.RNE4Server.Connected := True;
-      iRowCount := Configuration.RNE4Server.Query
-        ('SELECT usr_id, usr_fullname, usr_position, usr_phone, usr_editing, usr_clearing, usr_accounting, usr_reporting FROM '
-        + Configuration.RNE4Server.Database + '._usr_rne5 WHERE usr_login="' + Configuration.Login +
-        '" AND usr_password_md5=md5("' + Configuration.Password + '");', aResultSet);
-      if iRowCount > 1 then
-        raise Exception.Create
-          ('В базе данных имеется более одного аккаунта с указанными логином и паролем! Обратитесь к администратору!')
-      else
-        if iRowCount < 1 then
-          raise Exception.Create
-            ('В базе данных отсутствует аккаунт с указанными логином и паролем! Проверьте правильность ввода данных!')
-        else
-        begin
-          slRow := Configuration.RNE4Server.FetchRow(aResultSet);
-          with CurrentUser do
-          begin
-            ID := StrToIntDef(slRow[0], -1);
-            Login := Configuration.Login;
-            Password := Configuration.Password;
-            Fullname := slRow[1];
-            Position := slRow[2];
-            Phone := slRow[3];
-            with Privilegies do
-            begin
-              Editing := slRow[4] = '1';
-              Clearing := slRow[5] = '1';
-              Accounting := slRow[6] = '1';
-              Reporting := slRow[7] = '1';
-            end;
-            if ID = -1 then
-              raise Exception.Create('Неправильный идентификатор пользователя (' + IntToStr(ID) +
-                ')! Обратитесь к администратору!')
-            else
-              Logged := True;
-          end;
-        end;
-      Do_UpdateActions;
+    Configuration.MessagesServer.Connected := True;
+    Configuration.RNE4Server.Connected := True;
+    iRowCount := Configuration.RNE4Server.Query
+    ('SELECT usr_id, usr_fullname, usr_position, usr_phone, usr_editing, usr_clearing, usr_accounting, usr_reporting FROM '
+    + Configuration.RNE4Server.Database + '._usr_rne5 WHERE usr_login="' + Configuration.Login +
+    '" AND usr_password_md5=md5("' + Configuration.Password + '");', aResultSet);
+    if iRowCount > 1 then
+    raise Exception.Create
+    ('В базе данных имеется более одного аккаунта с указанными логином и паролем! Обратитесь к администратору!')
+    else
+    if iRowCount < 1 then
+    raise Exception.Create
+    ('В базе данных отсутствует аккаунт с указанными логином и паролем! Проверьте правильность ввода данных!')
+    else
+    begin
+    slRow := Configuration.RNE4Server.FetchRow(aResultSet);
+    with CurrentUser do
+    begin
+    ID := StrToIntDef(slRow[0], -1);
+    Login := Configuration.Login;
+    Password := Configuration.Password;
+    Fullname := slRow[1];
+    Position := slRow[2];
+    Phone := slRow[3];
+    with Privilegies do
+    begin
+    Editing := slRow[4] = '1';
+    Clearing := slRow[5] = '1';
+    Accounting := slRow[6] = '1';
+    Reporting := slRow[7] = '1';
+    end;
+    if ID = -1 then
+    raise Exception.Create('Неправильный идентификатор пользователя (' + IntToStr(ID) +
+    ')! Обратитесь к администратору!')
+    else
+    Logged := True;
+    end;
+    end;
+    Do_UpdateActions;
     finally
-      FreeAndNil(slRow);
-      Screen.Cursor := crDefault;
+    FreeAndNil(slRow);
+    Screen.Cursor := crDefault;
     end
-  end;*)
+    end; *)
 
 begin
   ProcedureHeader('Процедура отображения окна ' + RsLoginFormSuffix, '{68883F7C-57C2-4E56-B2FB-AEDCB1EB25DC}');
@@ -882,7 +858,7 @@ begin
 
   if bPassLoginForm then
     try
-      (*_Login;*)
+      (* _Login; *)
     except
       on E: EMySQLException do
       begin
@@ -913,7 +889,7 @@ begin
           if Configuration.StorePassword then
             Configuration.Password := mePassword.Text;
           try
-            (*_Login;*)
+            (* _Login; *)
           except
             on E: Exception do
               MainForm.ShowErrorBox(MainForm.Handle, E.Message);
@@ -955,4 +931,9 @@ begin
     MultiBuffer.Append(c); }
 end;
 
+  // RsCreateMutexError = 'Не удалось создать мьютекс.';
+  // RsWaitForMutexError = 'Не удалось считать состояние мьютекса.';
+  // RsReleaseMutexError = 'Не удалось удалить мьютекс.';
+  // RsCloseMutexHandleError = 'Не удалось закрыть идентификатор мьютекса.';
+  // RsErrorCode = ' Код ошибки: %s';
 end.

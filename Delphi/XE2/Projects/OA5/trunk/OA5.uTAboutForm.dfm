@@ -23,7 +23,7 @@ object AboutForm: TAboutForm
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Shape1: TShape
+  object Shape: TShape
     Left = 0
     Top = 0
     Width = 347
@@ -226,30 +226,29 @@ object AboutForm: TAboutForm
     Default = True
     TabOrder = 0
   end
-  object ActionManager: TActionManager
-    Left = 8
+  object CloseTimer: TTimer
+    Interval = 3000
+    OnTimer = CloseTimerTimer
+    Left = 216
     Top = 8
-    StyleName = 'Platform Default'
+  end
+  object FadeTimer: TTimer
+    Interval = 5
+    OnTimer = FadeTimerTimer
+    Left = 88
+    Top = 8
+  end
+  object GSFileVersionInfo: TGSFileVersionInfo
+    Left = 288
+    Top = 8
+  end
+  object ActionList: TActionList
+    Left = 32
+    Top = 8
     object actClose: TAction
       Caption = '&'#1047#1072#1082#1088#1099#1090#1100
       Hint = #1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1080' '#1086' '#1087#1088#1086#1075#1088#1072#1084#1084#1077
       OnExecute = actCloseExecute
     end
-  end
-  object Timer1: TTimer
-    Interval = 3000
-    OnTimer = Timer1Timer
-    Left = 312
-    Top = 208
-  end
-  object Timer2: TTimer
-    Interval = 5
-    OnTimer = Timer2Timer
-    Left = 312
-    Top = 8
-  end
-  object gsFileVersionInfo1: TGSFileVersionInfo
-    Left = 248
-    Top = 208
   end
 end

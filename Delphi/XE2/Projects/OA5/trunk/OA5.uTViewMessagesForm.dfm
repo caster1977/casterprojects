@@ -2,6 +2,8 @@ object ViewMessagesForm: TViewMessagesForm
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  BorderWidth = 5
   Caption = #1055#1088#1086#1089#1084#1086#1090#1088' '#1087#1086#1083#1091#1095#1077#1085#1085#1099#1093' '#1089#1086#1086#1073#1097#1077#1085#1080#1081
   ClientHeight = 322
   ClientWidth = 624
@@ -16,10 +18,12 @@ object ViewMessagesForm: TViewMessagesForm
   PixelsPerInch = 96
   TextHeight = 13
   object ListView: TListView
-    Left = 7
-    Top = 8
-    Width = 609
-    Height = 265
+    Left = 0
+    Top = 0
+    Width = 624
+    Height = 284
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight, akBottom]
     Columns = <
       item
         Caption = #1057#1086#1079#1076#1072#1085#1086
@@ -37,20 +41,21 @@ object ViewMessagesForm: TViewMessagesForm
   end
   object pnlButtons: TPanel
     Left = 0
-    Top = 281
+    Top = 290
     Width = 624
-    Height = 41
+    Height = 32
     Align = alBottom
     BevelEdges = [beTop]
     BevelKind = bkTile
     BevelOuter = bvNone
+    Color = clHotLight
     TabOrder = 1
     DesignSize = (
       624
-      39)
+      30)
     object btnCreate: TButton
-      Left = 7
-      Top = 8
+      Left = 0
+      Top = 5
       Width = 81
       Height = 25
       Cursor = crHandPoint
@@ -58,8 +63,8 @@ object ViewMessagesForm: TViewMessagesForm
       TabOrder = 0
     end
     object btnView: TButton
-      Left = 94
-      Top = 8
+      Left = 87
+      Top = 5
       Width = 81
       Height = 25
       Cursor = crHandPoint
@@ -67,27 +72,27 @@ object ViewMessagesForm: TViewMessagesForm
       TabOrder = 1
     end
     object btnHelp: TButton
-      Left = 535
-      Top = 8
+      Left = 543
+      Top = 5
       Width = 81
       Height = 25
       Cursor = crHandPoint
       Action = actHelp
       Anchors = [akTop, akRight]
-      TabOrder = 2
+      TabOrder = 4
     end
     object btnDelete: TButton
-      Left = 181
-      Top = 8
+      Left = 174
+      Top = 5
       Width = 81
       Height = 25
       Cursor = crHandPoint
       Action = actDelete
-      TabOrder = 3
+      TabOrder = 2
     end
     object btnClose: TButton
-      Left = 448
-      Top = 8
+      Left = 456
+      Top = 5
       Width = 81
       Height = 25
       Cursor = crHandPoint
@@ -95,14 +100,14 @@ object ViewMessagesForm: TViewMessagesForm
       Anchors = [akTop, akRight]
       Cancel = True
       Default = True
-      TabOrder = 4
+      TabOrder = 3
     end
   end
   object ImageList: TImageList
     Left = 368
     Top = 128
     Bitmap = {
-      494C0101040020006C0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104002000780210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
