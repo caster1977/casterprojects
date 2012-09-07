@@ -145,13 +145,13 @@ uses
   OA5.uIMeasure,
   OA5.uTMeasure,
   OA5.uTMeasureList,
-  OA5.uAddMassMsrForm,
+  OA5.uTAddMassMsrForm,
   OA5.uTLoginForm,
   OA5.uConsts,
-  OA5.uCreateMessageForm,
+  OA5.uTCreateMessageForm,
   OA5.uTViewMessageForm,
   OA5.uTViewMessagesForm,
-  OA5.uAddEditPhoneForm,
+  OA5.uTAddEditPhoneForm,
   CastersPackage.uRoutines,
   CastersPackage.uMysql;
 
@@ -663,9 +663,9 @@ begin
       begin
         aListItem := lvBuffer.Items.Add;
         aListItem.Caption := IntToStr(i);
-        aListItem.SubItems.Add(MultiBuffer[i]._Type + '|' + MultiBuffer[i]._Name + '|' + MultiBuffer[i]._Author + '|' +
-          MultiBuffer[i]._Producer + '|' + MultiBuffer[i]._Performer + '|' + MultiBuffer[i]._Organizer + '|' +
-          MultiBuffer[i]._TicketPrice + '|' + string(MultiBuffer[i]._OtherInfoPlane));
+        aListItem.SubItems.Add(MultiBuffer[i].Type_ + '|' + MultiBuffer[i].Name + '|' + MultiBuffer[i].Author + '|' +
+          MultiBuffer[i].Producer + '|' + MultiBuffer[i].Performer + '|' + MultiBuffer[i].Organizer + '|' +
+          MultiBuffer[i].TicketPrice + '|' + string(MultiBuffer[i].OtherInfoPlane));
       end;
       PreShowModal(RsMultiBufferFormSuffix, iBusy);
       ShowModal;

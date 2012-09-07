@@ -128,7 +128,7 @@
 			</DCCReference>
 			<DCCReference Include="OA5.uTConfiguration.pas"/>
 			<DCCReference Include="OA5.uAccountClass.pas"/>
-			<DCCReference Include="OA5.uAddMassMsrForm.pas">
+			<DCCReference Include="OA5.uTAddMassMsrForm.pas">
 				<Form>AddMassMsrForm</Form>
 			</DCCReference>
 			<DCCReference Include="OA5.uReportForm.pas">
@@ -147,7 +147,7 @@
 			</DCCReference>
 			<DCCReference Include="OA5.uTypes.pas"/>
 			<DCCReference Include="OA5.uTMeasure.pas"/>
-			<DCCReference Include="OA5.uCreateMessageForm.pas">
+			<DCCReference Include="OA5.uTCreateMessageForm.pas">
 				<Form>CreateMessageForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
@@ -159,7 +159,7 @@
 				<Form>ViewMessagesForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>
-			<DCCReference Include="OA5.uAddEditPhoneForm.pas">
+			<DCCReference Include="OA5.uTAddEditPhoneForm.pas">
 				<Form>AddEditPhoneForm</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>

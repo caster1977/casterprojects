@@ -3,10 +3,19 @@ unit OA5.uINormalized;
 interface
 
 type
-  INormalized = interface(IUnknown)
+  INormalized = interface
   ['{AD602BB0-347C-4223-B729-4CE1CC8A1E0F}']
     function GetAutoNormalizeData: boolean;
     procedure SetAutoNormalizeData(const Value: boolean);
+    /// <summary>
+    /// Требуется ли при записи данных в поля автоматически проводить их
+    /// нормализацию?
+    /// </summary>
+    /// <remarks>
+    /// Так же исходное значение можно передать при создании объекта через
+    /// конструктор <b>Create(<i>значение</i>);</b>
+    /// </remarks>
+    property AutoNormalizeData: boolean read GetAutoNormalizeData write SetAutoNormalizeData;
     /// <summary>
     /// Функция валидации данных класса (только проверка значений)
     /// </summary>
@@ -25,7 +34,7 @@ type
     /// <remarks>
     /// См. также процедуру <b>Normalize</b>
     /// </remarks>
-    function Normalized: boolean;
+    function IsNormalized: boolean;
     /// <summary>
     /// Процедура нормализации значений данных класса
     /// </summary>
@@ -33,15 +42,6 @@ type
     /// См. также функцию <b>Normalized</b>
     /// </remarks>
     procedure Normalize;
-    /// <summary>
-    /// Требуется ли при записи данных в поля автоматически проводить их
-    /// нормализацию?
-    /// </summary>
-    /// <remarks>
-    /// Так же исходное значение можно передать при создании объекта через
-    /// конструктор <b>Create(<i>значение</i>);</b>
-    /// </remarks>
-    property _AutoNormalizeData: boolean read GetAutoNormalizeData write SetAutoNormalizeData;
   end;
 
 implementation

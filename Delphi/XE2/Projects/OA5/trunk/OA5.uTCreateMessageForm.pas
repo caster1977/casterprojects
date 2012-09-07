@@ -1,4 +1,4 @@
-unit OA5.uCreateMessageForm;
+unit OA5.uTCreateMessageForm;
 
 interface
 
@@ -36,9 +36,10 @@ type
     procedure actCloseExecute(Sender: TObject);
     procedure actClearExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure Do_OnChange(Sender: TObject);
     procedure actSendExecute(Sender: TObject);
     procedure actHelpUpdate(Sender: TObject);
+    procedure actClearUpdate(Sender: TObject);
+    procedure actSendUpdate(Sender: TObject);
   strict private
     procedure _Help;
     procedure _Close;
@@ -93,30 +94,11 @@ begin
   ProcedureFooter;
 end;
 
-procedure TCreateMessageForm.actHelpUpdate(Sender: TObject);
-var
-  b: Boolean;
-begin
-  b := Application.HelpFile <> EmptyStr;
-  if actHelp.Enabled <> b then
-  begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]), '{876209CD-9450-437C-BECD-39568ECD2FC0}');
-    actHelp.Enabled := b;
-    Log.SendDebug(GetActionUpdateLogMessage(actHelp));
-    ProcedureFooter;
-  end;
-end;
-
 procedure TCreateMessageForm.actSendExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSend.Caption]), '{09170DB8-FCE2-4EF4-BD59-4E149C5F8280}');
   _Send;
   ProcedureFooter;
-end;
-
-procedure TCreateMessageForm.Do_OnChange(Sender: TObject);
-begin
-  // _UpdateActions;
 end;
 
 procedure TCreateMessageForm._Clear;
@@ -126,7 +108,6 @@ begin
   cmbbxTo.ItemIndex := -1;
   edbxTheme.Clear;
   reMessage.Clear;
-//  _UpdateActions;
   ActiveControl := edbxTheme;
   Log.SendInfo('Поля ввода очищены пользователем.');
 
@@ -161,31 +142,6 @@ begin
   ProcedureFooter;
 end;
 
-procedure TCreateMessageForm._UpdateActions;
-var
-  b: Boolean;
-begin
-  ProcedureHeader('Процедура обновления состояния действий', '{3F56424B-5AAE-4F72-AC97-57075F825F88}');
-
-  b := (cmbbxTo.ItemIndex > -1) or (edbxTheme.Text <> EmptyStr) or (reMessage.Text <> EmptyStr);
-  if actClear.Enabled <> b then
-  begin
-    actClear.Enabled := b;
-    Log.SendDebug(GetActionUpdateLogMessage(actClear));
-  end;
-
-  b := (cmbbxTo.ItemIndex > -1) and (edbxTheme.Text <> EmptyStr) and (reMessage.Text <> EmptyStr);
-  if actSend.Enabled <> b then
-  begin
-    actSend.Enabled := b;
-    Log.SendDebug(GetActionUpdateLogMessage(actSend));
-    btnSend.Default := b;
-    btnClose.Default := not b;
-  end;
-
-  ProcedureFooter;
-end;
-
 procedure TCreateMessageForm.FormCreate(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsCreateMessageForm]),
@@ -201,24 +157,40 @@ begin
 
     // установка положения окна в соответсвии со значениями конфигурации программы
     if CreateMessageFormPosition.bCenter then
-      Position := poScreenCenter
+    begin
+      Position := poScreenCenter;
+    end
     else
     begin
       Position := poDesigned;
       if CreateMessageFormPosition.x < Screen.WorkAreaLeft then
-        Left := Screen.WorkAreaLeft
+      begin
+        Left := Screen.WorkAreaLeft;
+      end
       else
+      begin
         if CreateMessageFormPosition.x > Screen.WorkAreaLeft + Screen.WorkAreaWidth then
-          Left := Screen.WorkAreaLeft + Screen.WorkAreaWidth - Width
+        begin
+          Left := Screen.WorkAreaLeft + Screen.WorkAreaWidth - Width;
+        end
         else
+        begin
           Left := CreateMessageFormPosition.x;
+        end;
+      end;
       if CreateMessageFormPosition.y < Screen.WorkAreaTop then
-        Top := Screen.WorkAreaTop
+      begin
+        Top := Screen.WorkAreaTop;
+      end
       else
         if CreateMessageFormPosition.y > Screen.WorkAreaTop + Screen.WorkAreaHeight then
-          Top := Screen.WorkAreaTop + Screen.WorkAreaHeight - Height
+        begin
+          Top := Screen.WorkAreaTop + Screen.WorkAreaHeight - Height;
+        end
         else
+        begin
           Top := CreateMessageFormPosition.y;
+        end;
     end;
   end;
 
@@ -230,6 +202,50 @@ begin
   ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsCreateMessageForm]), '{C74EFD70-4CE5-4DF6-AFCD-D946EF325B07}');
   Log.SendInfo(Format(RsWindowShowed, [RsCreateMessageForm]));
   ProcedureFooter;
+end;
+
+procedure TCreateMessageForm.actSendUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := (cmbbxTo.ItemIndex > -1) and (edbxTheme.Text <> EmptyStr) and (reMessage.Text <> EmptyStr);
+  if actSend.Enabled <> b then
+  begin
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSend.Caption]), '{4FBC980F-4CAF-4B64-89D3-77F33D1EA9F3}');
+    actSend.Enabled := b;
+    Log.SendDebug(GetActionUpdateLogMessage(actSend));
+    btnSend.Default := b;
+    btnClose.Default := not b;
+    ProcedureFooter;
+  end;
+end;
+
+procedure TCreateMessageForm.actClearUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := (cmbbxTo.ItemIndex > -1) or (edbxTheme.Text <> EmptyStr) or (reMessage.Text <> EmptyStr);
+  if actClear.Enabled <> b then
+  begin
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actClear.Caption]), '{C0B63DD7-D5B5-4F12-A314-CB2826FBB521}');
+    actClear.Enabled := b;
+    Log.SendDebug(GetActionUpdateLogMessage(actClear));
+    ProcedureFooter;
+  end;
+end;
+
+procedure TCreateMessageForm.actHelpUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := Application.HelpFile <> EmptyStr;
+  if actHelp.Enabled <> b then
+  begin
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]), '{876209CD-9450-437C-BECD-39568ECD2FC0}');
+    actHelp.Enabled := b;
+    Log.SendDebug(GetActionUpdateLogMessage(actHelp));
+    ProcedureFooter;
+  end;
 end;
 
 end.
