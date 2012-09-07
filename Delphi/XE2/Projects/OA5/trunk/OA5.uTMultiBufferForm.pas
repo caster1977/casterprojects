@@ -256,8 +256,6 @@ end;
 procedure TMultiBufferForm.FormShow(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsMultiBufferForm]), '{AB96A9E3-8B37-427E-8826-8E1873A44D98}');
-  Log.SendInfo(Format(RsWindowShowed, [RsMultiBufferForm]));
-
   _UpdateListViewScrollBarVisibility;
 
   if lvBuffer.Items.Count > 0 then
@@ -268,6 +266,7 @@ begin
   begin
     ActiveControl := btnClose;
   end;
+  Log.SendInfo(Format(RsWindowShowed, [RsMultiBufferForm]));
 
   ProcedureFooter;
 end;

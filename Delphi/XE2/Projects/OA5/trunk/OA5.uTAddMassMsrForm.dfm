@@ -4,9 +4,10 @@ object AddMassMsrForm: TAddMassMsrForm
   Hint = #1054#1082#1085#1086' '#1084#1072#1089#1089#1086#1074#1086#1075#1086' '#1088#1072#1079#1084#1085#1086#1078#1077#1085#1080#1103' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1081
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
+  BorderWidth = 5
   Caption = #1052#1072#1089#1089#1086#1074#1086#1077' '#1088#1072#1079#1084#1085#1086#1078#1077#1085#1080#1077' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1081
-  ClientHeight = 292
-  ClientWidth = 354
+  ClientHeight = 282
+  ClientWidth = 344
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,66 +22,78 @@ object AddMassMsrForm: TAddMassMsrForm
   TextHeight = 13
   object pnlButtons: TPanel
     Left = 0
-    Top = 255
-    Width = 354
-    Height = 37
+    Top = 250
+    Width = 344
+    Height = 32
     Align = alBottom
     BevelEdges = [beTop]
     BevelKind = bkTile
     BevelOuter = bvNone
-    BorderWidth = 5
     TabOrder = 0
+    ExplicitTop = 245
+    DesignSize = (
+      344
+      30)
     object btnAccept: TButton
-      Left = 5
+      Left = 0
       Top = 5
       Width = 162
       Height = 25
       Cursor = crHandPoint
-      Action = Action_Confirm
+      Action = actConfirm
       TabOrder = 0
     end
     object btnClose: TButton
-      Left = 181
+      Left = 175
       Top = 5
       Width = 81
       Height = 25
       Cursor = crHandPoint
-      Action = Action_Close
+      Action = actClose
+      Anchors = [akTop, akRight]
       Cancel = True
       Default = True
       TabOrder = 1
     end
     object btnHelp: TButton
-      Left = 268
+      Left = 262
       Top = 5
-      Width = 81
+      Width = 82
       Height = 25
       Cursor = crHandPoint
-      Action = Action_Help
+      Action = actHelp
+      Anchors = [akTop, akRight]
       TabOrder = 2
     end
   end
-  object Panel1: TPanel
+  object pnlTop: TPanel
     Left = 0
     Top = 0
-    Width = 354
-    Height = 255
+    Width = 344
+    Height = 250
     Align = alClient
     BevelEdges = []
     BevelOuter = bvNone
-    BorderWidth = 5
     TabOrder = 1
-    object Panel3: TPanel
-      Left = 5
-      Top = 5
+    ExplicitWidth = 354
+    ExplicitHeight = 255
+    object pnlLeft: TPanel
+      Left = 0
+      Top = 0
       Width = 170
-      Height = 245
+      Height = 250
       Align = alLeft
       BevelEdges = [beRight]
       BevelKind = bkTile
       BevelOuter = bvNone
       TabOrder = 0
-      object Bevel1: TBevel
+      ExplicitLeft = 5
+      ExplicitTop = 5
+      ExplicitHeight = 245
+      DesignSize = (
+        168
+        250)
+      object Bevel: TBevel
         Left = 0
         Top = 0
         Width = 168
@@ -103,31 +116,16 @@ object AddMassMsrForm: TAddMassMsrForm
         Font.Style = [fsBold]
         ParentFont = False
       end
-      object Label1: TLabel
-        Left = 0
-        Top = 166
-        Width = 162
-        Height = 13
-        Alignment = taCenter
-        AutoSize = False
-        Caption = '-'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clRed
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object MonthCalendar1: TMonthCalendar
+      object MonthCalendar: TMonthCalendar
         Left = 0
         Top = 0
         Width = 162
         Height = 160
         MultiSelect = True
-        Date = 40739.547821168980000000
+        Date = 40739.475838333330000000
         EndDate = 40739.000000000000000000
         TabOrder = 0
-        OnClick = MonthCalendar1Click
+        OnClick = MonthCalendarClick
       end
       object edbxTime: TEdit
         Left = 0
@@ -135,32 +133,38 @@ object AddMassMsrForm: TAddMassMsrForm
         Width = 162
         Height = 21
         TabOrder = 1
-        OnChange = edbxTimeChange
       end
-      object Button1: TButton
+      object btnAdd: TButton
         Left = 81
         Top = 219
         Width = 81
         Height = 25
         Cursor = crHandPoint
-        Action = Action_Add
+        Action = actAdd
+        Anchors = [akTop, akRight]
         TabOrder = 2
       end
     end
-    object Panel2: TPanel
-      Left = 175
-      Top = 5
+    object pnlRight: TPanel
+      Left = 170
+      Top = 0
       Width = 174
-      Height = 245
+      Height = 250
       Align = alClient
       BevelEdges = []
       BevelOuter = bvNone
       BorderWidth = 5
       TabOrder = 1
+      ExplicitLeft = 175
+      ExplicitTop = 5
+      ExplicitHeight = 245
+      DesignSize = (
+        174
+        250)
       object lvMsrDateTimeList: TListView
-        Left = 6
+        Left = 5
         Top = 0
-        Width = 168
+        Width = 169
         Height = 213
         Columns = <
           item
@@ -179,85 +183,33 @@ object AddMassMsrForm: TAddMassMsrForm
         OnCompare = lvMsrDateTimeListCompare
         OnSelectItem = lvMsrDateTimeListSelectItem
       end
-      object Button2: TButton
-        Left = 6
+      object btnDelete: TButton
+        Left = 5
         Top = 219
         Width = 81
         Height = 25
         Cursor = crHandPoint
-        Action = Action_Delete
+        Action = actDelete
         TabOrder = 1
       end
-      object Button3: TButton
-        Left = 93
+      object btnClear: TButton
+        Left = 92
         Top = 219
-        Width = 81
+        Width = 82
         Height = 25
         Cursor = crHandPoint
-        Action = Action_Clear
+        Action = actClear
+        Anchors = [akTop, akRight]
         TabOrder = 2
       end
     end
   end
-  object ActionManager1: TActionManager
-    Images = ilAddMassMsrFormSmallImages
-    Left = 240
-    Top = 176
-    StyleName = 'Platform Default'
-    object Action_Help: TAction
-      Caption = '&'#1057#1087#1088#1072#1074#1082#1072
-      Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1087#1088#1072#1074#1082#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1089#1087#1088#1072#1074#1086#1095#1085#1086#1075#1086' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
-      ImageIndex = 0
-      OnExecute = Action_HelpExecute
-    end
-    object Action_Add: TAction
-      Caption = '&'#1044#1086#1073#1072#1074#1080#1090#1100
-      Hint = 
-        #1044#1086#1073#1072#1074#1080#1090#1100' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1076#1086#1073#1072#1074#1083#1077#1085#1080#1103' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1081' '#1085#1072' '#1091#1082#1072#1079#1072 +
-        #1085#1085#1099#1081' '#1087#1077#1088#1080#1086#1076' '#1080' '#1074#1088#1077#1084#1103
-      ImageIndex = 3
-      OnExecute = Action_AddExecute
-    end
-    object Action_Delete: TAction
-      Caption = '&'#1059#1076#1072#1083#1080#1090#1100
-      Hint = 
-        #1059#1076#1072#1083#1080#1090#1100' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1074#1099#1076#1077#1083#1077#1085#1085#1086#1075#1086' '#1101#1083#1077#1084#1077#1085#1090#1072' '#1089#1087 +
-        #1080#1089#1082#1072
-      ImageIndex = 1
-      OnExecute = Action_DeleteExecute
-    end
-    object Action_Clear: TAction
-      Caption = '&'#1054#1095#1080#1089#1090#1080#1090#1100
-      Hint = #1054#1095#1080#1089#1090#1080#1090#1100' '#1089#1087#1080#1089#1086#1082'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1085#1086#1081' '#1086#1095#1080#1089#1090#1082#1080' '#1089#1087#1080#1089#1082#1072
-      ImageIndex = 4
-      OnExecute = Action_ClearExecute
-    end
-    object Action_Close: TAction
-      Caption = '&'#1047#1072#1082#1088#1099#1090#1100
-      Hint = 
-        #1047#1072#1082#1088#1099#1090#1100' '#1086#1082#1085#1086'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1084#1077#1085#1099' '#1074#1089#1077#1093' '#1074#1085#1077#1089#1105#1085#1085#1099#1093' '#1080#1079#1084#1077#1085#1077#1085#1080#1081' '#1080' '#1079#1072#1082#1088#1099 +
-        #1090#1080#1103' '#1086#1082#1085#1072
-      OnExecute = Action_CloseExecute
-    end
-    object Action_Confirm: TAction
-      Caption = '&'#1055#1086#1076#1090#1074#1077#1088#1076#1080#1090#1100
-      Hint = 
-        #1055#1086#1076#1090#1074#1077#1088#1076#1080#1090#1100' '#1080#1079#1084#1077#1085#1077#1085#1080#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1076#1090#1074#1077#1088#1078#1076#1077#1085#1080#1103' '#1074#1085#1077#1089#1077#1085#1080#1103' '#1074' '#1073#1074#1079#1091' ' +
-        #1076#1072#1085#1085#1099#1093' '#1074#1089#1077#1093' '#1076#1086#1073#1072#1074#1083#1077#1085#1085#1099#1093' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1081' '#1080' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072
-      ImageIndex = 2
-      OnExecute = Action_ConfirmExecute
-    end
-  end
-  object Log: TLogProvider
-    Left = 272
-    Top = 176
-  end
-  object ilAddMassMsrFormSmallImages: TImageList
+  object ImageList: TImageList
     AllocBy = 6
-    Left = 208
-    Top = 176
+    Left = 200
+    Top = 104
     Bitmap = {
-      494C010106000800900010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800980010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -527,5 +479,58 @@ object AddMassMsrForm: TAddMassMsrForm
       4044FFFFFFF0FC3F8281FFFFFFFDFC3FA00BFFFFFFFFFC3FD837FFFFFFFFFC3F
       E78FFFFFFFFFFFFFF83FFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
+  end
+  object ActionList: TActionList
+    Images = ImageList
+    Left = 256
+    Top = 104
+    object actHelp: TAction
+      Caption = '&'#1057#1087#1088#1072#1074#1082#1072
+      Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1087#1088#1072#1074#1082#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1089#1087#1088#1072#1074#1086#1095#1085#1086#1075#1086' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+      ImageIndex = 0
+      OnExecute = actHelpExecute
+      OnUpdate = actHelpUpdate
+    end
+    object actAdd: TAction
+      Caption = '&'#1044#1086#1073#1072#1074#1080#1090#1100
+      Hint = 
+        #1044#1086#1073#1072#1074#1080#1090#1100' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1076#1086#1073#1072#1074#1083#1077#1085#1080#1103' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1081' '#1085#1072' '#1091#1082#1072#1079#1072 +
+        #1085#1085#1099#1081' '#1087#1077#1088#1080#1086#1076' '#1080' '#1074#1088#1077#1084#1103
+      ImageIndex = 3
+      OnExecute = actAddExecute
+      OnUpdate = actAddUpdate
+    end
+    object actDelete: TAction
+      Caption = '&'#1059#1076#1072#1083#1080#1090#1100
+      Hint = 
+        #1059#1076#1072#1083#1080#1090#1100' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1074#1099#1076#1077#1083#1077#1085#1085#1086#1075#1086' '#1101#1083#1077#1084#1077#1085#1090#1072' '#1089#1087 +
+        #1080#1089#1082#1072
+      ImageIndex = 1
+      OnExecute = actDeleteExecute
+      OnUpdate = actDeleteUpdate
+    end
+    object actClear: TAction
+      Caption = '&'#1054#1095#1080#1089#1090#1080#1090#1100
+      Hint = #1054#1095#1080#1089#1090#1080#1090#1100' '#1089#1087#1080#1089#1086#1082'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1085#1086#1081' '#1086#1095#1080#1089#1090#1082#1080' '#1089#1087#1080#1089#1082#1072
+      ImageIndex = 4
+      OnExecute = actClearExecute
+      OnUpdate = actClearUpdate
+    end
+    object actClose: TAction
+      Caption = '&'#1047#1072#1082#1088#1099#1090#1100
+      Hint = 
+        #1047#1072#1082#1088#1099#1090#1100' '#1086#1082#1085#1086'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1084#1077#1085#1099' '#1074#1089#1077#1093' '#1074#1085#1077#1089#1105#1085#1085#1099#1093' '#1080#1079#1084#1077#1085#1077#1085#1080#1081' '#1080' '#1079#1072#1082#1088#1099 +
+        #1090#1080#1103' '#1086#1082#1085#1072
+      OnExecute = actCloseExecute
+    end
+    object actConfirm: TAction
+      Caption = '&'#1055#1086#1076#1090#1074#1077#1088#1076#1080#1090#1100
+      Hint = 
+        #1055#1086#1076#1090#1074#1077#1088#1076#1080#1090#1100' '#1080#1079#1084#1077#1085#1077#1085#1080#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1076#1090#1074#1077#1088#1078#1076#1077#1085#1080#1103' '#1074#1085#1077#1089#1077#1085#1080#1103' '#1074' '#1073#1074#1079#1091' ' +
+        #1076#1072#1085#1085#1099#1093' '#1074#1089#1077#1093' '#1076#1086#1073#1072#1074#1083#1077#1085#1085#1099#1093' '#1084#1077#1088#1086#1087#1088#1080#1103#1090#1080#1081' '#1080' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072
+      ImageIndex = 2
+      OnExecute = actConfirmExecute
+      OnUpdate = actConfirmUpdate
+    end
   end
 end

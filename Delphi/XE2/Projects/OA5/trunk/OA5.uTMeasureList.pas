@@ -6,22 +6,30 @@ uses
   System.Classes,
   System.SysUtils,
   OA5.uIMeasureList,
-  OA5.uIMeasure;
+  OA5.uIMeasure,
+  OA5.uINormalized;
+
+const
+  DEFAULT_MEASURE_LIST_AUTO_NORMALIZE_DATA = False;
 
 type
   EMeasureList = class(Exception);
 
-  TMeasureList = class(TInterfacedObject, IMeasureList)
+  TMeasureList = class(TInterfacedObject, IMeasureList, INormalized)
   strict private
+    FAutoNormalizeData: Boolean;
     FList: IInterfaceList;
     function GetItem(const AIndex: Integer): IMeasure;
     procedure PutItem(const AIndex: Integer; const AItem: IMeasure);
     function GetCount: Integer;
     procedure SetCount(const ANewCount: Integer);
+    function GetAutoNormalizeData: Boolean;
+    procedure SetAutoNormalizeData(const AValue: Boolean);
   public
-    constructor Create; virtual;
+    constructor Create; reintroduce; virtual;
     destructor Destroy; override;
-    procedure Initialize; virtual;
+    procedure AfterCreate; virtual;
+    procedure BeforeDestroy; virtual;
     function IndexOf(const AItem: IMeasure): Integer;
 
     function Add(const AItem: IMeasure): Integer;
@@ -37,11 +45,17 @@ type
     function First: IMeasure;
     function Last: IMeasure;
 
+    function IsNormalized: Boolean;
+    procedure Normalize;
+
     property Count: Integer read GetCount write SetCount nodefault;
     property Items[const AIndex: Integer]: IMeasure read GetItem write PutItem; default;
+    property AutoNormalizeData: Boolean read GetAutoNormalizeData write SetAutoNormalizeData
+      default DEFAULT_MEASURE_LIST_AUTO_NORMALIZE_DATA;
   end;
 
 function GetIMeasureList: IMeasureList;
+function GetINormalized(const AMeasureList: IMeasureList): INormalized; overload;
 
 implementation
 
@@ -52,6 +66,18 @@ resourcestring
 function GetIMeasureList: IMeasureList;
 begin
   Result := TMeasureList.Create;
+end;
+
+function GetINormalized(const AMeasureList: IMeasureList): INormalized; overload;
+begin
+  Result := nil;
+  if Assigned(AMeasureList) then
+  begin
+    if Supports(AMeasureList, INormalized) then
+    begin
+      Result := AMeasureList as INormalized;
+    end;
+  end;
 end;
 
 function TMeasureList.Add(const AItem: IMeasure): Integer;
@@ -87,7 +113,23 @@ end;
 constructor TMeasureList.Create;
 begin
   inherited;
-  Initialize;
+  FList := TInterfaceList.Create;
+  AfterCreate;
+end;
+
+procedure TMeasureList.AfterCreate;
+begin
+end;
+
+destructor TMeasureList.Destroy;
+begin
+  BeforeDestroy;
+  Clear;
+  inherited;
+end;
+
+procedure TMeasureList.BeforeDestroy;
+begin
 end;
 
 procedure TMeasureList.Delete(const AIndex: Integer);
@@ -96,12 +138,6 @@ begin
   begin
     FList.Delete(AIndex);
   end;
-end;
-
-destructor TMeasureList.Destroy;
-begin
-  Clear;
-  inherited;
 end;
 
 procedure TMeasureList.Exchange(const AIndex1, AIndex2: Integer);
@@ -142,11 +178,6 @@ begin
   begin
     Result := FList.IndexOf(AItem);
   end;
-end;
-
-procedure TMeasureList.Initialize;
-begin
-  FList := TInterfaceList.Create;
 end;
 
 procedure TMeasureList.Insert(const AIndex: Integer; const AItem: IMeasure);
@@ -200,6 +231,50 @@ begin
   if Assigned(FList) then
   begin
     FList.Count := ANewCount;
+  end;
+end;
+
+function TMeasureList.GetAutoNormalizeData: Boolean;
+begin
+  Result := FAutoNormalizeData;
+end;
+
+procedure TMeasureList.SetAutoNormalizeData(const AValue: Boolean);
+begin
+  if FAutoNormalizeData <> AValue then
+  begin
+    FAutoNormalizeData := AValue;
+  end;
+end;
+
+function TMeasureList.IsNormalized: Boolean;
+var
+  i: Integer;
+begin
+  Result := True;
+  if Assigned(FList) then
+  begin
+    for i := 0 to Count - 1 do
+    begin
+      if not(FList.Items[i] as INormalized).IsNormalized then
+      begin
+        Exit;
+      end;
+    end;
+    Result := True;
+  end;
+end;
+
+procedure TMeasureList.Normalize;
+var
+  i: Integer;
+begin
+  if Assigned(FList) then
+  begin
+    for i := 0 to Count - 1 do
+    begin
+      (FList.Items[i] as INormalized).Normalize;
+    end;
   end;
 end;
 

@@ -293,15 +293,15 @@ uses
   OA5.uMainForm,
   OA5.uTLoginForm,
   OA5.uTAboutForm,
-  OA5.uAddMassMsrForm,
+  OA5.uTAddMassMsrForm,
   OA5.uTSetPasswordForm,
   OA5.uPermissionsForm,
   OA5.uReportForm,
   OA5.uTConfiguration,
-  OA5.uCreateMessageForm,
+  OA5.uTCreateMessageForm,
   OA5.uTViewMessageForm,
   OA5.uTViewMessagesForm,
-  OA5.uAddEditPhoneForm;
+  OA5.uTAddEditPhoneForm;
 
 procedure TConfigurationForm.actApplyExecute(Sender: TObject);
 begin

@@ -4,14 +4,42 @@ interface
 
 uses
   OA5.uINormalized,
-  OA5.uIMeasure;
+  OA5.uIMeasure,
+  System.SysUtils,
+  System.Classes;
+
+const
+  DEFAULT_MEASURE_AUTO_NORMALIZE_DATA = True;
+  DEFAULT_MEASURE_ORGANIZATION_ID = -1;
+  DEFAULT_MEASURE_TYPE: string = '';
+  DEFAULT_MEASURE_NAME: string = '';
+  DEFAULT_MEASURE_AUTHOR: string = '';
+  DEFAULT_MEASURE_PRODUCER: string = '';
+  DEFAULT_MEASURE_PERFORMER: string = '';
+  DEFAULT_MEASURE_ORGANIZER: string = '';
+  DEFAULT_MEASURE_TICKET_PRICE: string = '';
+  DEFAULT_MEASURE_OTHER_INFO_RTF: AnsiString = '';
+  DEFAULT_MEASURE_OTHER_INFO_PLANE: AnsiString = '';
+  DEFAULT_MEASURE_HAS_UNKNOWN_DURATION = True;
+  DEFAULT_MEASURE_HAS_START_DATETIME = False;
+  DEFAULT_MEASURE_HAS_STOP_DATETIME = False;
+  DEFAULT_MEASURE_START_DATETIME = 0;
+  DEFAULT_MEASURE_STOP_DATETIME = 0;
+  DEFAULT_MEASURE_DURATION_DAYS = 0;
+  DEFAULT_MEASURE_DURATION_HOURS = 0;
+  DEFAULT_MEASURE_DURATION_MINUTES = 0;
+  DEFAULT_MEASURE_IS_PREMIER = False;
+  DEFAULT_MEASURE_IS_TOUR = False;
+  DEFAULT_MEASURE_IS_SPORT = False;
+  DEFAULT_MEASURE_FOR_CHILDREN = False;
+  DEFAULT_MEASURE_FOR_TEENAGERS = False;
+  DEFAULT_MEASURE_FOR_ADULTS_ONLY = False;
 
 type
-
   /// <summary>
   /// Класс, предназначеный для хранения данных мероприятия
   /// </summary>
-  TMeasure = class(TInterfacedObject, IMeasure, INormalized)
+  TMeasure = class(TInterfacedPersistent, IMeasure, INormalized)
   strict private
     FAutoNormalizeData: Boolean;
     FOrganizationID: Integer;
@@ -24,6 +52,7 @@ type
     FTicketPrice: string;
     FOtherInfoRTF: AnsiString;
     FOtherInfoPlane: AnsiString;
+    FHasUnknownDuration: Boolean;
     FHasStartDateTime: Boolean;
     FHasStopDateTime: Boolean;
     FStartDateTime: TDateTime;
@@ -31,12 +60,67 @@ type
     FDurationDays: Integer;
     FDurationHours: Integer;
     FDurationMinutes: Integer;
-    FUnknownDuration: Boolean;
     FIsPremier: Boolean;
     FIsTour: Boolean;
+    FIsSport: Boolean;
     FForChildren: Boolean;
     FForTeenagers: Boolean;
     FForAdultsOnly: Boolean;
+    function GetAutoNormalizeData: Boolean;
+    procedure SetAutoNormalizeData(const AValue: Boolean);
+    function GetOrganizationID: Integer;
+    procedure SetOrganizationID(const AValue: Integer);
+    function GetType: string;
+    procedure SetType(const AValue: string);
+    function GetName: string;
+    procedure SetName(const AValue: string);
+    function GetAuthor: string;
+    procedure SetAuthor(const AValue: string);
+    function GetProducer: string;
+    procedure SetProducer(const AValue: string);
+    function GetPerformer: string;
+    procedure SetPerformer(const AValue: string);
+    function GetOrganizer: string;
+    procedure SetOrganizer(const AValue: string);
+    function GetTicketPrice: string;
+    procedure SetTicketPrice(const AValue: string);
+    function GetOtherInfoRTF: AnsiString;
+    procedure SetOtherInfoRTF(const AValue: AnsiString);
+    function GetOtherInfoPlane: AnsiString;
+    procedure SetOtherInfoPlane(const AValue: AnsiString);
+    function GetHasStartDateTime: Boolean;
+    procedure SetHasStartDateTime(const AValue: Boolean);
+    function GetHasStopDateTime: Boolean;
+    procedure SetHasStopDateTime(const AValue: Boolean);
+    function GetStartDateTime: TDateTime;
+    procedure SetStartDateTime(const AValue: TDateTime);
+    function GetStopDateTime: TDateTime;
+    procedure SetStopDateTime(const AValue: TDateTime);
+    function GetDurationDays: Integer;
+    procedure SetDurationDays(const AValue: Integer);
+    function GetDurationHours: Integer;
+    procedure SetDurationHours(const AValue: Integer);
+    function GetDurationMinutes: Integer;
+    procedure SetDurationMinutes(const AValue: Integer);
+    function GetHasUnknownDuration: Boolean;
+    procedure SetHasUnknownDuration(const AValue: Boolean);
+    function GetIsPremier: Boolean;
+    procedure SetIsPremier(const AValue: Boolean);
+    function GetIsTour: Boolean;
+    procedure SetIsTour(const AValue: Boolean);
+    function GetIsSport: Boolean;
+    procedure SetIsSport(const AValue: Boolean);
+    function GetForChildren: Boolean;
+    procedure SetForChildren(const AValue: Boolean);
+    function GetForTeenagers: Boolean;
+    procedure SetForTeenagers(const AValue: Boolean);
+    function GetForAdultsOnly: Boolean;
+    procedure SetForAdultsOnly(const AValue: Boolean);
+    class procedure SetField(const AValue: Integer; var AField: Integer); overload; static;
+    class procedure SetField(const AValue: Boolean; var AField: Boolean); overload; static;
+    class procedure SetField(const AValue: TDateTime; var AField: TDateTime); overload; static;
+    class procedure SetField(const AValue: AnsiString; var AField: AnsiString); overload; static;
+    procedure SetField(const AValue: string; var AField: string); overload;
   public
     /// <summary>
     /// Конструктор класса
@@ -47,7 +131,7 @@ type
     /// присвоении значений остальным свойствам объекта.
     /// </para>
     /// </param>
-    constructor Create(const AAutoNormalizeData: Boolean);
+    constructor Create(const AAutoNormalizeData: Boolean = True); virtual;
     /// <summary>
     /// Функция валидации данных класса (только проверка значений)
     /// </summary>
@@ -66,14 +150,15 @@ type
     /// <remarks>
     /// См. также процедуру <b>Normalize</b>
     /// </remarks>
-    function Normalized: Boolean;
+    function IsNormalized: Boolean; virtual;
     /// <summary>
     /// Процедура нормализации значений данных класса
     /// </summary>
     /// <remarks>
     /// См. также функцию <b>Normalized</b>
     /// </remarks>
-    procedure Normalize;
+    procedure Normalize; virtual;
+  published
     /// <summary>
     /// Требуется ли при записи данных в поля автоматически проводить их
     /// нормализацию?
@@ -82,253 +167,220 @@ type
     /// Так же исходное значение можно передать при создании объекта через
     /// конструктор <b>Create(<i>значение</i>);</b>
     /// </remarks>
-    function GetAutoNormalizeData: Boolean;
-    procedure SetAutoNormalizeData(const Value: Boolean);
-    /// <summary>
-    /// Идентификатор организации, которая проводит мероприятие
-    /// </summary>
-    function GetOrganizationID: Integer;
-    procedure SetOrganizationID(const Value: Integer);
-    /// <summary>
-    /// Тип мероприятия
-    /// </summary>
-    function GetType: string;
-    procedure SetType(const Value: string);
-    /// <summary>
-    /// Наименование мероприятия
-    /// </summary>
-    function GetName: string;
-    procedure SetName(const Value: string);
+    property AutoNormalizeData: Boolean read GetAutoNormalizeData write SetAutoNormalizeData default True;
     /// <summary>
     /// Автор мероприятия
     /// </summary>
-    function GetAuthor: string;
-    procedure SetAuthor(const Value: string);
-    /// <summary>
-    /// Режиссёр/продюссер мероприятия
-    /// </summary>
-    function GetProducer: string;
-    procedure SetProducer(const Value: string);
-    /// <summary>
-    /// Исполнитель(и) мероприятия
-    /// </summary>
-    function GetPerformer: string;
-    procedure SetPerformer(const Value: string);
-    /// <summary>
-    /// Организатор мероприятия
-    /// </summary>
-    function GetOrganizer: string;
-    procedure SetOrganizer(const Value: string);
-    /// <summary>
-    /// Стоимость билетов на мероприятие
-    /// </summary>
-    function GetTicketPrice: string;
-    procedure SetTicketPrice(const Value: string);
-    /// <summary>
-    /// Прочая информация о мероприятии в виде содержимого RTF-документа
-    /// </summary>
-    function GetOtherInfoRTF: AnsiString;
-    procedure SetOtherInfoRTF(const Value: AnsiString);
-    /// <summary>
-    /// Прочая информация о мероприятии в виде plain-текста
-    /// </summary>
-    function GetOtherInfoPlane: AnsiString;
-    procedure SetOtherInfoPlane(const Value: AnsiString);
-    /// <summary>
-    /// Есть ли у мероприятия дата/время начала
-    /// </summary>
-    function GetHasStartDateTime: Boolean;
-    procedure SetHasStartDateTime(const Value: Boolean);
-    /// <summary>
-    /// Есть ли у мероприятия дата/время окончания
-    /// </summary>
-    function GetHasStopDateTime: Boolean;
-    procedure SetHasStopDateTime(const Value: Boolean);
-    /// <summary>
-    /// Дата/время начала мероприятия
-    /// </summary>
-    function GetStartDateTime: TDateTime;
-    procedure SetStartDateTime(const Value: TDateTime);
-    /// <summary>
-    /// Дата/время окончания мероприятия
-    /// </summary>
-    function GetStopDateTime: TDateTime;
-    procedure SetStopDateTime(const Value: TDateTime);
+    property Author: string read GetAuthor write SetAuthor nodefault;
     /// <summary>
     /// Продолжительность мероприятия в сутках
     /// </summary>
-    function GetDurationDays: Integer;
-    procedure SetDurationDays(const Value: Integer);
+    property DurationDays: Integer read GetDurationDays write SetDurationDays default DEFAULT_MEASURE_DURATION_DAYS;
     /// <summary>
     /// Продолжительность мероприятия в часах
     /// </summary>
-    function GetDurationHours: Integer;
-    procedure SetDurationHours(const Value: Integer);
+    property DurationHours: Integer read GetDurationHours write SetDurationHours default DEFAULT_MEASURE_DURATION_HOURS;
     /// <summary>
     /// Продолжительность мероприятия в минутах
     /// </summary>
-    function GetDurationMinutes: Integer;
-    procedure SetDurationMinutes(const Value: Integer);
-    /// <summary>
-    /// Длительность мероприятия неизвестна?
-    /// </summary>
-    function GetUnknownDuration: Boolean;
-    procedure SetUnknownDuration(const Value: Boolean);
-    /// <summary>
-    /// Мероприятие является премьерным?
-    /// </summary>
-    function GetIsPremier: Boolean;
-    procedure SetIsPremier(const Value: Boolean);
-    /// <summary>
-    /// Мероприятие является гастрольным?
-    /// </summary>
-    function GetIsTour: Boolean;
-    procedure SetIsTour(const Value: Boolean);
-    /// <summary>
-    /// Мероприятие является детским?
-    /// </summary>
-    function GetForChildren: Boolean;
-    procedure SetForChildren(const Value: Boolean);
-    /// <summary>
-    /// Мероприятие является подростковым?
-    /// </summary>
-    function GetForTeenagers: Boolean;
-    procedure SetForTeenagers(const Value: Boolean);
+    property DurationMinutes: Integer read GetDurationMinutes write SetDurationMinutes
+      default DEFAULT_MEASURE_DURATION_MINUTES;
     /// <summary>
     /// Мероприятие "только для взрослых"?
     /// </summary>
-    function GetForAdultsOnly: Boolean;
-    procedure SetForAdultsOnly(const Value: Boolean);
-    property _AutoNormalizeData: Boolean read GetAutoNormalizeData write SetAutoNormalizeData;
-    property _Author: string read GetAuthor write SetAuthor;
-    property _DurationDays: Integer read GetDurationDays write SetDurationDays;
-    property _DurationHours: Integer read GetDurationHours write SetDurationHours;
-    property _DurationMinutes: Integer read GetDurationMinutes write SetDurationMinutes;
-    property _ForAdultsOnly: Boolean read GetForAdultsOnly write SetForAdultsOnly;
-    property _ForChildren: Boolean read GetForChildren write SetForChildren;
-    property _ForTeenagers: Boolean read GetForTeenagers write SetForTeenagers;
-    property _HasStartDateTime: Boolean read GetHasStartDateTime write SetHasStartDateTime;
-    property _HasStopDateTime: Boolean read GetHasStopDateTime write SetHasStopDateTime;
-    property _IsPremier: Boolean read GetIsPremier write SetIsPremier;
-    property _IsTour: Boolean read GetIsTour write SetIsTour;
-    property _Name: string read GetName write SetName;
-    property _OrganizationID: Integer read GetOrganizationID write SetOrganizationID;
-    property _Organizer: string read GetOrganizer write SetOrganizer;
-    property _OtherInfoPlane: AnsiString read GetOtherInfoPlane write SetOtherInfoPlane;
-    property _OtherInfoRTF: AnsiString read GetOtherInfoRTF write SetOtherInfoRTF;
-    property _Performer: string read GetPerformer write SetPerformer;
-    property _Producer: string read GetProducer write SetProducer;
-    property _StartDateTime: TDateTime read GetStartDateTime write SetStartDateTime;
-    property _StopDateTime: TDateTime read GetStopDateTime write SetStopDateTime;
-    property _TicketPrice: string read GetTicketPrice write SetTicketPrice;
-    property _Type: string read GetType write SetType;
-    property _UnknownDuration: Boolean read GetUnknownDuration write SetUnknownDuration;
+    property ForAdultsOnly: Boolean read GetForAdultsOnly write SetForAdultsOnly
+      default DEFAULT_MEASURE_FOR_ADULTS_ONLY;
+    /// <summary>
+    /// Мероприятие является детским?
+    /// </summary>
+    property ForChildren: Boolean read GetForChildren write SetForChildren default DEFAULT_MEASURE_FOR_CHILDREN;
+    /// <summary>
+    /// Мероприятие является подростковым?
+    /// </summary>
+    property ForTeenagers: Boolean read GetForTeenagers write SetForTeenagers default DEFAULT_MEASURE_FOR_TEENAGERS;
+    /// <summary>
+    /// Длительность мероприятия неизвестна?
+    /// </summary>
+    property HasUnknownDuration: Boolean read GetHasUnknownDuration write SetHasUnknownDuration
+      default DEFAULT_MEASURE_HAS_UNKNOWN_DURATION;
+    /// <summary>
+    /// Есть ли у мероприятия дата/время начала
+    /// </summary>
+    property HasStartDateTime: Boolean read GetHasStartDateTime write SetHasStartDateTime
+      default DEFAULT_MEASURE_HAS_START_DATETIME;
+    /// <summary>
+    /// Есть ли у мероприятия дата/время окончания
+    /// </summary>
+    property HasStopDateTime: Boolean read GetHasStopDateTime write SetHasStopDateTime
+      default DEFAULT_MEASURE_HAS_STOP_DATETIME;
+    /// <summary>
+    /// Мероприятие является премьерным?
+    /// </summary>
+    property IsPremier: Boolean read GetIsPremier write SetIsPremier default DEFAULT_MEASURE_IS_PREMIER;
+    /// <summary>
+    /// Мероприятие является гастрольным?
+    /// </summary>
+    property IsTour: Boolean read GetIsTour write SetIsTour default DEFAULT_MEASURE_IS_TOUR;
+    /// <summary>
+    /// Мероприятие является спортивным?
+    /// </summary>
+    property IsSport: Boolean read GetIsSport write SetIsSport default DEFAULT_MEASURE_IS_SPORT;
+    /// <summary>
+    /// Наименование мероприятия
+    /// </summary>
+    property Name: string read GetName write SetName nodefault;
+    /// <summary>
+    /// Идентификатор организации, которая проводит мероприятие
+    /// </summary>
+    property OrganizationID: Integer read GetOrganizationID write SetOrganizationID
+      default DEFAULT_MEASURE_ORGANIZATION_ID;
+    /// <summary>
+    /// Организатор мероприятия
+    /// </summary>
+    property Organizer: string read GetOrganizer write SetOrganizer nodefault;
+    /// <summary>
+    /// Прочая информация о мероприятии в виде plain-текста
+    /// </summary>
+    property OtherInfoPlane: AnsiString read GetOtherInfoPlane write SetOtherInfoPlane nodefault;
+    /// <summary>
+    /// Прочая информация о мероприятии в виде содержимого RTF-документа
+    /// </summary>
+    property OtherInfoRTF: AnsiString read GetOtherInfoRTF write SetOtherInfoRTF nodefault;
+    /// <summary>
+    /// Исполнитель(и) мероприятия
+    /// </summary>
+    property Performer: string read GetPerformer write SetPerformer nodefault;
+    /// <summary>
+    /// Режиссёр/продюссер мероприятия
+    /// </summary>
+    property Producer: string read GetProducer write SetProducer nodefault;
+    /// <summary>
+    /// Дата/время начала мероприятия
+    /// </summary>
+    property StartDateTime: TDateTime read GetStartDateTime write SetStartDateTime nodefault;
+    /// <summary>
+    /// Дата/время окончания мероприятия
+    /// </summary>
+    property StopDateTime: TDateTime read GetStopDateTime write SetStopDateTime nodefault;
+    /// <summary>
+    /// Стоимость билетов на мероприятие
+    /// </summary>
+    property TicketPrice: string read GetTicketPrice write SetTicketPrice nodefault;
+    /// <summary>
+    /// Тип мероприятия
+    /// </summary>
+    property Type_: string read GetType write SetType nodefault;
   end;
 
-function GetIMeasure(const AAutoNormalizeData: Boolean = False): IMeasure;
+function GetIMeasure(const AAutoNormalizeData: Boolean = DEFAULT_MEASURE_AUTO_NORMALIZE_DATA): IMeasure;
+function GetINormalized(const AMeasure: IMeasure): INormalized; overload;
 
 implementation
 
 uses
-  System.SysUtils,
   CastersPackage.uRoutines;
 
-function GetIMeasure(const AAutoNormalizeData: Boolean = False): IMeasure;
+const
+  MSECONDS_PER_SECOND = 1000;
+  MSECONDS_PER_MINUTE = MSECONDS_PER_SECOND * 60;
+  MSECONDS_PER_HOUR = MSECONDS_PER_MINUTE * 60;
+  MSECONDS_PER_DAY = MSECONDS_PER_HOUR * 24;
+
+function GetIMeasure(const AAutoNormalizeData: Boolean = DEFAULT_MEASURE_AUTO_NORMALIZE_DATA): IMeasure;
 begin
   Result := TMeasure.Create(AAutoNormalizeData);
+end;
+
+function GetINormalized(const AMeasure: IMeasure): INormalized;
+begin
+  Result := nil;
+  if Assigned(AMeasure) then
+  begin
+    if Supports(AMeasure, INormalized) then
+    begin
+      Result := AMeasure as INormalized;
+    end;
+  end;
 end;
 
 constructor TMeasure.Create(const AAutoNormalizeData: Boolean);
 begin
   inherited Create;
   FAutoNormalizeData := AAutoNormalizeData;
-  FOrganizationID := -1;
-  FType := '';
-  FName := '';
-  FAuthor := '';
-  FProducer := '';
-  FPerformer := '';
-  FOrganizer := '';
-  FTicketPrice := '';
-  FOtherInfoRTF := '';
-  FOtherInfoPlane := '';
-  FHasStartDateTime := False;
-  FHasStopDateTime := False;
-  FStartDateTime := EncodeDate(1900, 1, 1);
-  FStopDateTime := EncodeDate(1900, 1, 1);
-  FDurationDays := 0;
-  FDurationHours := 0;
-  FDurationMinutes := 0;
-  FIsPremier := False;
-  FIsTour := False;
-  FForChildren := False;
-  FForTeenagers := False;
-  FForAdultsOnly := False;
-  FUnknownDuration := True;
+  FOrganizationID := DEFAULT_MEASURE_ORGANIZATION_ID;
+  FType := DEFAULT_MEASURE_TYPE;
+  FName := DEFAULT_MEASURE_NAME;
+  FAuthor := DEFAULT_MEASURE_AUTHOR;
+  FProducer := DEFAULT_MEASURE_PRODUCER;
+  FPerformer := DEFAULT_MEASURE_PERFORMER;
+  FOrganizer := DEFAULT_MEASURE_ORGANIZER;
+  FTicketPrice := DEFAULT_MEASURE_TICKET_PRICE;
+  FOtherInfoRTF := DEFAULT_MEASURE_OTHER_INFO_RTF;
+  FOtherInfoPlane := DEFAULT_MEASURE_OTHER_INFO_PLANE;
+  FHasUnknownDuration := DEFAULT_MEASURE_HAS_UNKNOWN_DURATION;
+  FHasStartDateTime := DEFAULT_MEASURE_HAS_START_DATETIME;
+  FHasStopDateTime := DEFAULT_MEASURE_HAS_STOP_DATETIME;
+  FStartDateTime := DEFAULT_MEASURE_START_DATETIME;
+  FStopDateTime := DEFAULT_MEASURE_STOP_DATETIME;
+  FDurationDays := DEFAULT_MEASURE_DURATION_DAYS;
+  FDurationHours := DEFAULT_MEASURE_DURATION_HOURS;
+  FDurationMinutes := DEFAULT_MEASURE_DURATION_MINUTES;
+  FIsPremier := DEFAULT_MEASURE_IS_PREMIER;
+  FIsTour := DEFAULT_MEASURE_IS_TOUR;
+  FIsSport := DEFAULT_MEASURE_IS_SPORT;
+  FForChildren := DEFAULT_MEASURE_FOR_CHILDREN;
+  FForTeenagers := DEFAULT_MEASURE_FOR_TEENAGERS;
+  FForAdultsOnly := DEFAULT_MEASURE_FOR_ADULTS_ONLY;
 end;
 
-function TMeasure.Normalized: Boolean;
-var
-  a1: Comp;
-  a2: Int64 absolute a1;
-  t1, t2: TTimeStamp;
-  duration_days, duration_hours, duration_minutes: Integer;
+class procedure TMeasure.SetField(const AValue: Integer; var AField: Integer);
 begin
-  Result := False;
-  duration_days := 0;
-  duration_hours := 0;
-  duration_minutes := 0;
-  // проверяем значения полей на предмет совпадения с правилами нормализации
-  if _OrganizationID < 0 then
-    Exit;
-  if _HasStartDateTime and _HasStopDateTime then
+  if AField <> AValue then
   begin
-    // нужно провериить их по линии времени, если нужно поменять местами, выходим
-    if _StartDateTime > _StopDateTime then
-      Exit;
-    // если известна длительность - сравниваем длительность
-    if not _UnknownDuration then
+    AField := AValue;
+  end;
+end;
+
+class procedure TMeasure.SetField(const AValue: Boolean; var AField: Boolean);
+begin
+  if AField <> AValue then
+  begin
+    AField := AValue;
+  end;
+end;
+
+class procedure TMeasure.SetField(const AValue: TDateTime; var AField: TDateTime);
+begin
+  if AField <> AValue then
+  begin
+    AField := AValue;
+  end;
+end;
+
+class procedure TMeasure.SetField(const AValue: AnsiString; var AField: AnsiString);
+begin
+  if AField <> AValue then
+  begin
+    AField := AValue;
+  end;
+end;
+
+procedure TMeasure.SetField(const AValue: string; var AField: string);
+var
+  s: string;
+begin
+  s := Trim(AValue);
+  if AutoNormalizeData and (AField <> Routines.PrepareStringForRNE5(s)) then
+  begin
+    AField := Routines.PrepareStringForRNE5(s);
+  end
+  else
+  begin
+    if AField <> s then
     begin
-      // получаем дату начала, дату конца и высчитываем длителность мероприятия
-      t1 := DateTimeToTimeStamp(_StartDateTime);
-      t2 := DateTimeToTimeStamp(_StopDateTime);
-      a1 := TimeStampToMSecs(t2) - TimeStampToMSecs(t1);
-      // внимание! значение a2 в данном случае УЖЕ равно a1, т.к. переменная абсолютная!!!
-      if (a2 > 0) then
-      begin
-        duration_days := Int64(a2) div Int64(86400000);
-        a2 := Int64(a2) - Int64((Int64(_DurationDays) * Int64(86400000)));
-        duration_hours := a2 div 3600000;
-        a2 := a2 - FDurationHours * 3600000;
-        duration_minutes := a2 div 60000;
-      end;
-      if _DurationDays <> duration_days then
-        Exit;
-      if _DurationHours <> duration_hours then
-        Exit;
-      if _DurationMinutes <> duration_minutes then
-        Exit;
+      AField := s;
     end;
   end;
-  if _Type <> Routines.PrepareStringForRNE5(_Type) then
-    Exit;
-  if _Name <> Routines.PrepareStringForRNE5(_Name) then
-    Exit;
-  if _Author <> Routines.PrepareStringForRNE5(_Author) then
-    Exit;
-  if _Producer <> Routines.PrepareStringForRNE5(_Producer) then
-    Exit;
-  if _Performer <> Routines.PrepareStringForRNE5(_Performer) then
-    Exit;
-  if _Organizer <> Routines.PrepareStringForRNE5(_Organizer) then
-    Exit;
-  if _TicketPrice <> Routines.PrepareStringForRNE5(_TicketPrice) then
-    Exit;
-  if _OtherInfoPlane <> Routines.PrepareStringForRNE5(_OtherInfoPlane) then
-    Exit;
-  if (_ForChildren or _ForTeenagers) and _ForAdultsOnly then
-    Exit;
-  Result := True;
 end;
 
 function TMeasure.GetAuthor: string;
@@ -371,6 +423,11 @@ begin
   Result := FForTeenagers;
 end;
 
+function TMeasure.GetHasUnknownDuration: Boolean;
+begin
+  Result := FHasUnknownDuration;
+end;
+
 function TMeasure.GetHasStartDateTime: Boolean;
 begin
   Result := FHasStartDateTime;
@@ -384,6 +441,11 @@ end;
 function TMeasure.GetIsPremier: Boolean;
 begin
   Result := FIsPremier;
+end;
+
+function TMeasure.GetIsSport: Boolean;
+begin
+  Result := FIsSport;
 end;
 
 function TMeasure.GetIsTour: Boolean;
@@ -446,330 +508,320 @@ begin
   Result := FType;
 end;
 
-function TMeasure.GetUnknownDuration: Boolean;
+procedure TMeasure.SetAuthor(const AValue: string);
 begin
-  Result := FUnknownDuration;
+  SetField(AValue, FAuthor);
+end;
+
+procedure TMeasure.SetAutoNormalizeData(const AValue: Boolean);
+begin
+  SetField(AValue, FAutoNormalizeData);
+end;
+
+procedure TMeasure.SetForAdultsOnly(const AValue: Boolean);
+begin
+  if AutoNormalizeData and (ForChildren or ForTeenagers) then
+  begin
+    SetField(False, FForAdultsOnly);
+  end
+  else
+  begin
+    SetField(AValue, FForAdultsOnly);
+  end;
+end;
+
+procedure TMeasure.SetForChildren(const AValue: Boolean);
+begin
+  if AutoNormalizeData and ForChildren then
+  begin
+    SetField(False, FForChildren);
+  end
+  else
+  begin
+    SetField(AValue, FForChildren);
+  end;
+end;
+
+procedure TMeasure.SetForTeenagers(const AValue: Boolean);
+begin
+  if AutoNormalizeData and ForAdultsOnly then
+  begin
+    SetField(False, FForTeenagers);
+  end
+  else
+  begin
+    SetField(AValue, FForTeenagers);
+  end;
+end;
+
+procedure TMeasure.SetIsPremier(const AValue: Boolean);
+begin
+  SetField(AValue, FIsPremier);
+end;
+
+procedure TMeasure.SetIsSport(const AValue: Boolean);
+begin
+  SetField(AValue, FIsSport);
+end;
+
+procedure TMeasure.SetIsTour(const AValue: Boolean);
+begin
+  SetField(AValue, FIsTour);
+end;
+
+procedure TMeasure.SetName(const AValue: string);
+begin
+  SetField(AValue, FName);
+end;
+
+procedure TMeasure.SetOrganizationID(const AValue: Integer);
+begin
+  if AutoNormalizeData and (AValue < 0) then
+  begin
+    SetField(0, FOrganizationID);
+  end
+  else
+  begin
+    SetField(AValue, FOrganizationID);
+  end;
+end;
+
+procedure TMeasure.SetOrganizer(const AValue: string);
+begin
+  SetField(AValue, FOrganizer);
+end;
+
+procedure TMeasure.SetOtherInfoPlane(const AValue: AnsiString);
+begin
+  if AutoNormalizeData and (OtherInfoPlane <> Routines.PrepareStringForRNE5(AValue)) then
+  begin
+    SetField(Routines.PrepareStringForRNE5(AValue), FOtherInfoPlane);
+  end
+  else
+  begin
+    SetField(AValue, FOtherInfoPlane);
+  end;
+end;
+
+procedure TMeasure.SetOtherInfoRTF(const AValue: AnsiString);
+begin
+  SetField(AValue, FOtherInfoRTF);
+end;
+
+procedure TMeasure.SetPerformer(const AValue: string);
+begin
+  SetField(AValue, FPerformer);
+end;
+
+procedure TMeasure.SetProducer(const AValue: string);
+begin
+  SetField(AValue, FProducer);
+end;
+
+procedure TMeasure.SetTicketPrice(const AValue: string);
+begin
+  SetField(AValue, FTicketPrice);
+end;
+
+procedure TMeasure.SetType(const AValue: string);
+begin
+  SetField(AValue, FType);
+end;
+
+procedure TMeasure.SetDurationDays(const AValue: Integer);
+begin
+  SetField(AValue, FDurationDays);
+end;
+
+procedure TMeasure.SetDurationHours(const AValue: Integer);
+begin
+  SetField(AValue, FDurationHours);
+end;
+
+procedure TMeasure.SetDurationMinutes(const AValue: Integer);
+begin
+  SetField(AValue, FDurationMinutes);
+end;
+
+procedure TMeasure.SetHasUnknownDuration(const AValue: Boolean);
+begin
+  SetField(AValue, FHasUnknownDuration);
+end;
+
+procedure TMeasure.SetHasStartDateTime(const AValue: Boolean);
+begin
+  SetField(AValue, FHasStartDateTime);
+end;
+
+procedure TMeasure.SetHasStopDateTime(const AValue: Boolean);
+begin
+  SetField(AValue, FHasStopDateTime);
+end;
+
+procedure TMeasure.SetStartDateTime(const AValue: TDateTime);
+begin
+  SetField(AValue, FStartDateTime);
+end;
+
+procedure TMeasure.SetStopDateTime(const AValue: TDateTime);
+begin
+  SetField(AValue, FStopDateTime);
+end;
+
+{ TODO : Нужно переписать методы класса (нормализацию в зависимости от значения свойства AutoNormalizeData) }
+
+function TMeasure.IsNormalized: Boolean;
+var
+  a1: Comp;
+  a2: Int64 absolute a1;
+  a3: Int64;
+  a4: Int64;
+  duration_days: Integer;
+  duration_hours: Integer;
+  duration_minutes: Integer;
+  measure_type: string;
+  measure_name: string;
+  measure_author: string;
+  measure_producer: string;
+  measure_performer: string;
+  measure_organizer: string;
+  measure_ticket_price: string;
+  measure_other_info_plane: AnsiString;
+  start_date_time: TDateTime;
+  stop_date_time: TDateTime;
+begin
+  Result := False;
+  duration_days := 0;
+  duration_hours := 0;
+  duration_minutes := 0;
+  measure_type := Type_;
+  measure_name := Name;
+  measure_author := Author;
+  measure_producer := Producer;
+  measure_performer := Performer;
+  measure_organizer := Organizer;
+  measure_ticket_price := TicketPrice;
+  measure_other_info_plane := OtherInfoPlane;
+  start_date_time := StartDateTime;
+  stop_date_time := StopDateTime;
+
+  if (OrganizationID < 0) or (measure_type <> Routines.PrepareStringForRNE5(measure_type)) or
+    (measure_name <> Routines.PrepareStringForRNE5(measure_name)) or
+    (measure_author <> Routines.PrepareStringForRNE5(measure_author)) or
+    (measure_producer <> Routines.PrepareStringForRNE5(measure_producer)) or
+    (measure_performer <> Routines.PrepareStringForRNE5(measure_performer)) or
+    (measure_organizer <> Routines.PrepareStringForRNE5(measure_organizer)) or
+    (measure_ticket_price <> Routines.PrepareStringForRNE5(measure_ticket_price)) or
+    (measure_other_info_plane <> Routines.PrepareStringForRNE5(measure_other_info_plane)) or
+    ((ForChildren or ForTeenagers) and ForAdultsOnly) then
+  begin
+    Exit;
+  end;
+
+  if HasStartDateTime and HasStopDateTime then
+  begin
+    if start_date_time > stop_date_time then
+    begin
+      Exit;
+    end;
+
+    if not HasUnknownDuration then
+    begin
+      // получаем дату начала, дату конца и высчитываем длителность мероприятия в милисекундах
+      a1 := TimeStampToMSecs(DateTimeToTimeStamp(stop_date_time)) -
+        TimeStampToMSecs(DateTimeToTimeStamp(start_date_time));
+
+      // внимание! значение a2 в данном случае УЖЕ равно a1, т.к. переменная абсолютная!!!
+      if (a2 > 0) then
+      begin
+        duration_days := a2 div MSECONDS_PER_DAY;
+        a3 := a2 - Int64(DurationDays) * MSECONDS_PER_DAY;
+        duration_hours := a3 div MSECONDS_PER_HOUR;
+        a4 := a3 - Int64(FDurationHours) * MSECONDS_PER_HOUR;
+        duration_minutes := a4 div MSECONDS_PER_MINUTE;
+      end;
+
+      if (DurationDays <> duration_days) or (DurationHours <> duration_hours) or (DurationMinutes <> duration_minutes)
+      then
+      begin
+        Exit;
+      end;
+    end;
+  end;
+  Result := True;
 end;
 
 procedure TMeasure.Normalize;
 var
-  dt: TDateTime;
   a1: Comp;
   a2: Int64 absolute a1;
-  t1, t2: TTimeStamp;
+  a3: Int64;
+  a4: Int64;
+  start_date_time: TDateTime;
+  stop_date_time: TDateTime;
 begin
   // если данные уже нормализованы, выходим из процедуры
-  if Normalized then
+  if IsNormalized then
+  begin
     Exit;
+  end;
+
   // начинаем нормализацию
-  if _OrganizationID < 0 then
-    _OrganizationID := 0;
+  if OrganizationID < 0 then
+  begin
+    OrganizationID := 0;
+  end;
 
   // обнуляем длительности
-  _DurationDays := 0;
-  _DurationHours := 0;
-  _DurationMinutes := 0;
+  DurationDays := 0;
+  DurationHours := 0;
+  DurationMinutes := 0;
+
+  Type_ := Routines.PrepareStringForRNE5(Type_);
+  Name := Routines.PrepareStringForRNE5(Name);
+  Author := Routines.PrepareStringForRNE5(Author);
+  Producer := Routines.PrepareStringForRNE5(Producer);
+  Performer := Routines.PrepareStringForRNE5(Performer);
+  Organizer := Routines.PrepareStringForRNE5(Organizer);
+  TicketPrice := Routines.PrepareStringForRNE5(TicketPrice);
+  OtherInfoPlane := Routines.PrepareStringForRNE5(OtherInfoPlane);
+
+  if ForChildren or ForTeenagers then
+  begin
+    ForAdultsOnly := False;
+  end;
 
   // если есть и дата начала и дата конца
-  if _HasStartDateTime and _HasStopDateTime then
+  if HasStartDateTime and HasStopDateTime then
   begin
     // нужно провериить их по линии времени, поменять местами, если нужно
-    if _StartDateTime > _StopDateTime then
+    start_date_time := StartDateTime;
+    stop_date_time := StopDateTime;
+    if start_date_time > stop_date_time then
     begin
-      dt := _StartDateTime;
-      _StartDateTime := _StopDateTime;
-      _StopDateTime := dt;
+      StartDateTime := stop_date_time;
+      StopDateTime := start_date_time;
+      start_date_time := StartDateTime;
+      stop_date_time := StopDateTime;
     end;
     // если известна длительность - пересчитываем длительность
-    if not _UnknownDuration then
+    if not HasUnknownDuration then
     begin
-      // получаем дату начала, дату конца и высчитываем длителность мероприятия
-      t1 := DateTimeToTimeStamp(_StartDateTime);
-      t2 := DateTimeToTimeStamp(_StopDateTime);
-      a1 := TimeStampToMSecs(t2) - TimeStampToMSecs(t1);
+      // получаем дату начала, дату конца и высчитываем длительность мероприятия
+      a1 := TimeStampToMSecs(DateTimeToTimeStamp(stop_date_time)) -
+        TimeStampToMSecs(DateTimeToTimeStamp(start_date_time));
       // внимание! значение a2 в данном случае УЖЕ равно a1, т.к. переменная абсолютная!!!
       if (a2 > 0) then
       begin
-        _DurationDays := Int64(a2) div Int64(86400000);
-        a2 := Int64(a2) - Int64((Int64(_DurationDays) * Int64(86400000)));
-        _DurationHours := a2 div 3600000;
-        a2 := a2 - _DurationHours * 3600000;
-        _DurationMinutes := a2 div 60000;
+        DurationDays := a2 div MSECONDS_PER_DAY;
+        a3 := a2 - Int64(DurationDays) * MSECONDS_PER_DAY;
+        DurationHours := a3 div MSECONDS_PER_HOUR;
+        a4 := a3 - Int64(DurationHours) * MSECONDS_PER_HOUR;
+        DurationMinutes := a4 div MSECONDS_PER_MINUTE;
       end;
     end;
   end;
 
-  _Type := Routines.PrepareStringForRNE5(_Type);
-  _Name := Routines.PrepareStringForRNE5(_Name);
-  _Author := Routines.PrepareStringForRNE5(_Author);
-  _Producer := Routines.PrepareStringForRNE5(_Producer);
-  _Performer := Routines.PrepareStringForRNE5(_Performer);
-  _Organizer := Routines.PrepareStringForRNE5(_Organizer);
-  _TicketPrice := Routines.PrepareStringForRNE5(_TicketPrice);
-  _OtherInfoPlane := Routines.PrepareStringForRNE5(_OtherInfoPlane);
-
-  if _ForChildren or _ForTeenagers then
-    _ForAdultsOnly := False;
-end;
-
-procedure TMeasure.SetAuthor(const Value: string);
-var
-  s: string;
-begin
-  s := Trim(Value);
-  if _AutoNormalizeData then
-  begin
-    if FAuthor <> Routines.PrepareStringForRNE5(s) then
-      FAuthor := Routines.PrepareStringForRNE5(s);
-  end
-  else
-    if FAuthor <> s then
-      FAuthor := s;
-end;
-
-procedure TMeasure.SetAutoNormalizeData(const Value: Boolean);
-begin
-  if FAutoNormalizeData <> Value then
-    FAutoNormalizeData := Value;
-end;
-
-procedure TMeasure.SetForAdultsOnly(const Value: Boolean);
-begin
-  if _AutoNormalizeData then
-  begin
-    if FForChildren or FForTeenagers then
-    begin
-      if not FForAdultsOnly then
-        FForAdultsOnly := False
-    end
-    else
-      if FForAdultsOnly <> Value then
-        FForAdultsOnly := Value;
-  end
-  else
-    if FForAdultsOnly <> Value then
-      FForAdultsOnly := Value;
-end;
-
-procedure TMeasure.SetForChildren(const Value: Boolean);
-begin
-  if _AutoNormalizeData then
-  begin
-    if FForAdultsOnly then
-    begin
-      if not FForChildren then
-        FForChildren := False;
-    end
-    else
-      if FForChildren <> Value then
-        FForChildren := Value;
-  end
-  else
-    if FForChildren <> Value then
-      FForChildren := Value;
-end;
-
-procedure TMeasure.SetForTeenagers(const Value: Boolean);
-begin
-  if _AutoNormalizeData then
-  begin
-    if FForAdultsOnly then
-    begin
-      if not FForTeenagers then
-        FForTeenagers := False;
-    end
-    else
-      if FForTeenagers <> Value then
-        FForTeenagers := Value;
-  end
-  else
-    if FForTeenagers <> Value then
-      FForTeenagers := Value;
-end;
-
-procedure TMeasure.SetIsPremier(const Value: Boolean);
-begin
-  if FIsPremier <> Value then
-    FIsPremier := Value;
-end;
-
-procedure TMeasure.SetIsTour(const Value: Boolean);
-begin
-  if FIsTour <> Value then
-    FIsTour := Value;
-end;
-
-procedure TMeasure.SetName(const Value: string);
-var
-  s: string;
-begin
-  s := Trim(Value);
-  if _AutoNormalizeData then
-  begin
-    if FName <> Routines.PrepareStringForRNE5(s) then
-      FName := Routines.PrepareStringForRNE5(s);
-  end
-  else
-    if FName <> s then
-      FName := s;
-end;
-
-procedure TMeasure.SetOrganizationID(const Value: Integer);
-begin
-  if _AutoNormalizeData then
-  begin
-    if Value < 0 then
-      FOrganizationID := 0
-    else
-      if FOrganizationID <> Value then
-        FOrganizationID := Value;
-  end
-  else
-    if FOrganizationID <> Value then
-      FOrganizationID := Value;
-end;
-
-procedure TMeasure.SetOrganizer(const Value: string);
-var
-  s: string;
-begin
-  s := Trim(Value);
-  if _AutoNormalizeData then
-  begin
-    if FOrganizer <> Routines.PrepareStringForRNE5(s) then
-      FOrganizer := Routines.PrepareStringForRNE5(s);
-  end
-  else
-    if FOrganizer <> s then
-      FOrganizer := s;
-end;
-
-procedure TMeasure.SetOtherInfoPlane(const Value: AnsiString);
-begin
-  if _AutoNormalizeData then
-  begin
-    if FOtherInfoPlane <> Routines.PrepareStringForRNE5(Value) then
-      FOtherInfoPlane := Routines.PrepareStringForRNE5(Value);
-  end
-  else
-    if FOtherInfoPlane <> Value then
-      FOtherInfoPlane := Value;
-end;
-
-procedure TMeasure.SetOtherInfoRTF(const Value: AnsiString);
-begin
-  if FOtherInfoRTF <> Value then
-    FOtherInfoRTF := Value;
-end;
-
-procedure TMeasure.SetPerformer(const Value: string);
-var
-  s: string;
-begin
-  s := Trim(Value);
-  if _AutoNormalizeData then
-  begin
-    if FPerformer <> Routines.PrepareStringForRNE5(s) then
-      FPerformer := Routines.PrepareStringForRNE5(s);
-  end
-  else
-    if FPerformer <> s then
-      FPerformer := s;
-end;
-
-procedure TMeasure.SetProducer(const Value: string);
-var
-  s: string;
-begin
-  s := Trim(Value);
-  if _AutoNormalizeData then
-  begin
-    if FProducer <> Routines.PrepareStringForRNE5(s) then
-      FProducer := Routines.PrepareStringForRNE5(s);
-  end
-  else
-    if FProducer <> s then
-      FProducer := s;
-end;
-
-procedure TMeasure.SetTicketPrice(const Value: string);
-var
-  s: string;
-begin
-  s := Trim(Value);
-  if _AutoNormalizeData then
-  begin
-    if FTicketPrice <> Routines.PrepareStringForRNE5(s) then
-      FTicketPrice := Routines.PrepareStringForRNE5(s);
-  end
-  else
-    if FTicketPrice <> s then
-      FTicketPrice := s;
-end;
-
-procedure TMeasure.SetType(const Value: string);
-var
-  s: string;
-begin
-  s := Trim(Value);
-  if _AutoNormalizeData then
-  begin
-    if FType <> Routines.PrepareStringForRNE5(s) then
-      FType := Routines.PrepareStringForRNE5(s);
-  end
-  else
-    if FType <> s then
-      FType := s;
-end;
-
-{ TODO : Ниже нужно дописать методы класса (нормализацию в зависимости от значения переменной FAutoNormalizeData) }
-
-procedure TMeasure.SetDurationDays(const Value: Integer);
-begin
-  if FDurationDays <> Value then
-    FDurationDays := Value;
-end;
-
-procedure TMeasure.SetDurationHours(const Value: Integer);
-begin
-  if FDurationHours <> Value then
-    FDurationHours := Value;
-end;
-
-procedure TMeasure.SetDurationMinutes(const Value: Integer);
-begin
-  if FDurationMinutes <> Value then
-    FDurationMinutes := Value;
-end;
-
-procedure TMeasure.SetHasStartDateTime(const Value: Boolean);
-begin
-  if FHasStartDateTime <> Value then
-    FHasStartDateTime := Value;
-end;
-
-procedure TMeasure.SetHasStopDateTime(const Value: Boolean);
-begin
-  if FHasStopDateTime <> Value then
-    FHasStopDateTime := Value;
-end;
-
-procedure TMeasure.SetStartDateTime(const Value: TDateTime);
-begin
-  if FStartDateTime <> Value then
-    FStartDateTime := Value;
-end;
-
-procedure TMeasure.SetStopDateTime(const Value: TDateTime);
-begin
-  if FStopDateTime <> Value then
-    FStopDateTime := Value;
-end;
-
-procedure TMeasure.SetUnknownDuration(const Value: Boolean);
-begin
-  if FUnknownDuration <> Value then
-    FUnknownDuration := Value;
 end;
 
 end.

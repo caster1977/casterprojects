@@ -3,9 +3,10 @@ object AddEditPhoneForm: TAddEditPhoneForm
   Top = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
+  BorderWidth = 5
   Caption = #1044#1086#1073#1072#1074#1083#1077#1085#1080#1077'/'#1080#1079#1084#1077#1085#1077#1085#1080#1077' '#1085#1086#1084#1077#1088#1072' '#1090#1077#1083#1077#1092#1086#1085#1072
-  ClientHeight = 332
-  ClientWidth = 634
+  ClientHeight = 322
+  ClientWidth = 624
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,373 +17,248 @@ object AddEditPhoneForm: TAddEditPhoneForm
   Position = poDesigned
   OnCreate = FormCreate
   OnShow = FormShow
-  DesignSize = (
-    634
-    332)
   PixelsPerInch = 96
   TextHeight = 13
-  object Bevel2: TBevel
-    Left = 0
-    Top = 291
-    Width = 634
-    Height = 41
-    Align = alBottom
-    Shape = bsTopLine
-    ExplicitLeft = -10
-    ExplicitTop = 281
-  end
-  object btnClear: TButton
-    Left = 8
-    Top = 299
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Clear
-    Anchors = [akRight, akBottom]
-    TabOrder = 1
-  end
-  object btnClose: TButton
-    Left = 458
-    Top = 299
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Close
-    Anchors = [akRight, akBottom]
-    Cancel = True
-    Default = True
-    TabOrder = 3
-  end
-  object btnHelp: TButton
-    Left = 545
-    Top = 299
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Help
-    Anchors = [akRight, akBottom]
-    TabOrder = 4
-  end
-  object btnApply: TButton
-    Left = 371
-    Top = 299
-    Width = 81
-    Height = 25
-    Cursor = crHandPoint
-    Action = Action_Apply
-    TabOrder = 2
-  end
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 634
-    Height = 291
+    Width = 624
+    Height = 290
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    object Panel2: TPanel
-      Left = 0
-      Top = 272
-      Width = 634
-      Height = 19
-      Align = alBottom
-      BevelEdges = [beTop]
-      BevelOuter = bvNone
-      ParentBackground = False
-      ParentColor = True
-      TabOrder = 0
-      ExplicitTop = 271
-      object Label3: TLabel
-        Left = 8
-        Top = 240
-        Width = 111
-        Height = 13
-        Caption = #1050#1090#1086' '#1080' '#1082#1086#1075#1076#1072' '#1076#1086#1073#1072#1074#1080#1083':'
-      end
-      object Label4: TLabel
-        Left = 136
-        Top = 240
-        Width = 5
-        Height = 13
-        Caption = '?'
-      end
-      object Label1: TLabel
-        Left = 8
-        Top = 0
-        Width = 123
-        Height = 13
-        Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088' '#1079#1072#1087#1080#1089#1080':'
-      end
-      object Label2: TLabel
-        Left = 137
-        Top = 0
-        Width = 5
-        Height = 13
-        Caption = '?'
-        Enabled = False
-      end
-    end
-    object Panel3: TPanel
+    object pnlMain: TPanel
       Left = 0
       Top = 0
-      Width = 634
-      Height = 272
+      Width = 624
+      Height = 290
       Align = alClient
       BevelOuter = bvNone
-      TabOrder = 1
-      ExplicitHeight = 266
-      object Panel4: TPanel
-        Left = 0
-        Top = 247
-        Width = 634
-        Height = 25
-        Align = alBottom
-        BevelEdges = [beTop]
-        BevelKind = bkTile
-        BevelOuter = bvNone
-        ParentBackground = False
-        ParentColor = True
-        TabOrder = 0
-        ExplicitTop = 241
-        object Label5: TLabel
-          Left = 8
-          Top = 240
-          Width = 111
-          Height = 13
-          Caption = #1050#1090#1086' '#1080' '#1082#1086#1075#1076#1072' '#1076#1086#1073#1072#1074#1080#1083':'
-        end
-        object Label6: TLabel
-          Left = 136
-          Top = 240
-          Width = 5
-          Height = 13
-          Caption = '?'
-        end
-        object Label7: TLabel
-          Left = 8
-          Top = 6
-          Width = 111
-          Height = 13
-          Caption = #1050#1090#1086' '#1080' '#1082#1086#1075#1076#1072' '#1076#1086#1073#1072#1074#1080#1083':'
-        end
-        object Label8: TLabel
-          Left = 137
-          Top = 6
-          Width = 5
-          Height = 13
-          Caption = '?'
-          Enabled = False
-        end
+      Color = clHighlight
+      TabOrder = 0
+      object lblCheckDate: TLabel
+        Left = 338
+        Top = 0
+        Width = 121
+        Height = 13
+        Caption = #1057'&'#1074#1077#1088#1082#1072' '#1087#1088#1086#1080#1079#1074#1086#1076#1080#1083#1072#1089#1100':'
+        FocusControl = dtpCheckDate
       end
-      object Panel5: TPanel
+      object lblComments: TLabel
+        Left = 0
+        Top = 46
+        Width = 71
+        Height = 13
+        Caption = '&'#1050#1086#1084#1084#1077#1085#1090#1072#1088#1080#1080':'
+        FocusControl = meComments
+      end
+      object lblNumber: TLabel
         Left = 0
         Top = 0
-        Width = 634
-        Height = 247
-        Align = alClient
-        BevelOuter = bvNone
-        BorderWidth = 8
-        Color = clHighlight
+        Width = 88
+        Height = 13
+        Caption = '&'#1053#1086#1084#1077#1088' '#1090#1077#1083#1077#1092#1086#1085#1072':'
+        FocusControl = edbxNumber
+      end
+      object lblPriority: TLabel
+        Left = 484
+        Top = 0
+        Width = 101
+        Height = 13
+        Caption = #1055'&'#1088#1080#1086#1088#1080#1090#1077#1090' '#1074#1099#1076#1072#1095#1080':'
+        FocusControl = edbxPriority
+      end
+      object lblType: TLabel
+        Left = 166
+        Top = 0
+        Width = 75
+        Height = 13
+        Caption = '&'#1058#1080#1087' '#1090#1077#1083#1077#1092#1086#1085#1072':'
+        FocusControl = cmbexType
+      end
+      object cmbexType: TComboBoxEx
+        Left = 166
+        Top = 19
+        Width = 166
+        Height = 22
+        ItemsEx = <
+          item
+            Caption = '0'
+            ImageIndex = 0
+            SelectedImageIndex = 0
+          end
+          item
+            Caption = '1'
+            ImageIndex = 1
+            SelectedImageIndex = 1
+          end
+          item
+            Caption = '2'
+            ImageIndex = 2
+            SelectedImageIndex = 2
+          end
+          item
+            Caption = '3'
+            ImageIndex = 3
+            SelectedImageIndex = 3
+          end
+          item
+            Caption = '4'
+            ImageIndex = 4
+            SelectedImageIndex = 4
+          end
+          item
+            Caption = '5'
+            ImageIndex = 5
+            SelectedImageIndex = 5
+          end>
+        Style = csExDropDownList
+        TabOrder = 0
+        Images = ImageList
+        DropDownCount = 7
+      end
+      object dtpCheckDate: TDateTimePicker
+        Left = 338
+        Top = 19
+        Width = 140
+        Height = 21
+        Date = 2.000000000000000000
+        Time = 2.000000000000000000
         TabOrder = 1
-        ExplicitHeight = 241
+      end
+      object edbxNumber: TEdit
+        Left = 0
+        Top = 19
+        Width = 160
+        Height = 21
+        TabOrder = 2
+        TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1085#1086#1084#1077#1088' '#1090#1077#1083#1077#1092#1086#1085#1072'...'
+        OnKeyPress = edbxNumberKeyPress
+      end
+      object edbxPriority: TEdit
+        Left = 484
+        Top = 19
+        Width = 140
+        Height = 21
+        Alignment = taRightJustify
+        TabOrder = 3
+        TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1087#1088#1080#1086#1088#1080#1090#1077#1090'...'
+        OnChange = edbxPriorityChange
+        OnEnter = edbxPriorityEnter
+        OnExit = edbxPriorityExit
+        OnKeyPress = edbxPriorityKeyPress
+      end
+      object pnlCommentsCreated: TPanel
+        Left = 0
+        Top = 65
+        Width = 624
+        Height = 225
+        Align = alBottom
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        BevelOuter = bvNone
+        TabOrder = 4
         object meComments: TMemo
-          Left = 8
-          Top = 73
-          Width = 618
-          Height = 166
+          Left = 0
+          Top = 0
+          Width = 624
+          Height = 199
           Align = alClient
           OEMConvert = True
-          TabOrder = 1
-          WantReturns = False
-          OnChange = Do_OnChange
-          ExplicitTop = 96
-          ExplicitHeight = 112
-        end
-        object Panel6: TPanel
-          Left = 8
-          Top = 8
-          Width = 618
-          Height = 65
-          Align = alTop
-          BevelOuter = bvNone
-          Color = clDefault
           TabOrder = 0
-          object Label14: TLabel
-            Left = 8
-            Top = 240
+          WantReturns = False
+        end
+        object pnlCreatedBy: TPanel
+          Left = 0
+          Top = 199
+          Width = 624
+          Height = 26
+          Align = alBottom
+          BevelEdges = []
+          BevelOuter = bvNone
+          ParentBackground = False
+          ParentColor = True
+          TabOrder = 1
+          Visible = False
+          object lblCreatedBy: TLabel
+            Left = 0
+            Top = 6
             Width = 111
             Height = 13
             Caption = #1050#1090#1086' '#1080' '#1082#1086#1075#1076#1072' '#1076#1086#1073#1072#1074#1080#1083':'
           end
-          object Label15: TLabel
-            Left = 136
-            Top = 240
+          object lblCreateByValue: TLabel
+            Left = 137
+            Top = 6
             Width = 5
             Height = 13
             Caption = '?'
-          end
-          object Label13: TLabel
-            Left = 0
-            Top = 46
-            Width = 71
-            Height = 13
-            Caption = '&'#1050#1086#1084#1084#1077#1085#1090#1072#1088#1080#1080':'
-            FocusControl = meComments
-          end
-          object Label9: TLabel
-            Left = 0
-            Top = 0
-            Width = 88
-            Height = 13
-            Caption = '&'#1053#1086#1084#1077#1088' '#1090#1077#1083#1077#1092#1086#1085#1072':'
-            FocusControl = edbxPhoneNumber
-          end
-          object Label10: TLabel
-            Left = 166
-            Top = 0
-            Width = 75
-            Height = 13
-            Caption = '&'#1058#1080#1087' '#1090#1077#1083#1077#1092#1086#1085#1072':'
-            FocusControl = cmbbxexedbxPhoneType
-          end
-          object Label11: TLabel
-            Left = 332
-            Top = 0
-            Width = 121
-            Height = 13
-            Caption = #1057'&'#1074#1077#1088#1082#1072' '#1087#1088#1086#1080#1079#1074#1086#1076#1080#1083#1072#1089#1100':'
-            FocusControl = dtpCheckDate
-          end
-          object Label12: TLabel
-            Left = 478
-            Top = 0
-            Width = 101
-            Height = 13
-            Caption = #1055'&'#1088#1080#1086#1088#1080#1090#1077#1090' '#1074#1099#1076#1072#1095#1080':'
-            FocusControl = edbxPriority
-          end
-          object edbxPhoneNumber: TEdit
-            Left = 0
-            Top = 19
-            Width = 160
-            Height = 21
-            TabOrder = 0
-            TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1085#1086#1084#1077#1088' '#1090#1077#1083#1077#1092#1086#1085#1072'...'
-            OnChange = Do_OnChange
-            OnKeyPress = edbxPhoneNumberKeyPress
-          end
-          object cmbbxexedbxPhoneType: TComboBoxEx
-            Left = 166
-            Top = 19
-            Width = 160
-            Height = 22
-            ItemsEx = <
-              item
-                Caption = '0'
-                ImageIndex = 0
-                SelectedImageIndex = 0
-              end
-              item
-                Caption = '1'
-                ImageIndex = 1
-                SelectedImageIndex = 1
-              end
-              item
-                Caption = '2'
-                ImageIndex = 2
-                SelectedImageIndex = 2
-              end
-              item
-                Caption = '3'
-                ImageIndex = 3
-                SelectedImageIndex = 3
-              end
-              item
-                Caption = '4'
-                ImageIndex = 4
-                SelectedImageIndex = 4
-              end
-              item
-                Caption = '5'
-                ImageIndex = 5
-                SelectedImageIndex = 5
-              end>
-            Style = csExDropDownList
-            TabOrder = 1
-            OnChange = Do_OnChange
-            Images = ilAddEditPhoneFormSmallImages
-            DropDownCount = 7
-          end
-          object dtpCheckDate: TDateTimePicker
-            Left = 332
-            Top = 19
-            Width = 140
-            Height = 21
-            Date = 40945.498728611110000000
-            Time = 40945.498728611110000000
-            TabOrder = 2
-            OnChange = Do_OnChange
-          end
-          object edbxPriority: TEdit
-            Left = 478
-            Top = 19
-            Width = 140
-            Height = 21
-            Alignment = taRightJustify
-            TabOrder = 3
-            Text = '0'
-            TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1087#1088#1080#1086#1088#1080#1090#1077#1090'...'
-            OnChange = edbxPriorityChange
-            OnEnter = edbxPriorityEnter
-            OnExit = edbxPriorityExit
-            OnKeyPress = edbxPriorityKeyPress
+            Enabled = False
           end
         end
       end
     end
   end
-  object Log: TLogProvider
-    LogFile.Enabled = True
-    LogFile.FileNameSuffix = 'OA5_AddEditPhoneForm'
-    LogClient.Enabled = True
-    Left = 368
-    Top = 176
+  object pnlButtons: TPanel
+    Left = 0
+    Top = 290
+    Width = 624
+    Height = 32
+    Align = alBottom
+    BevelEdges = [beTop]
+    BevelKind = bkTile
+    BevelOuter = bvNone
+    TabOrder = 1
+    DesignSize = (
+      624
+      30)
+    object btnClear: TButton
+      Left = 0
+      Top = 5
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actClear
+      TabOrder = 0
+    end
+    object btnHelp: TButton
+      Left = 543
+      Top = 5
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actHelp
+      Anchors = [akTop, akRight]
+      TabOrder = 3
+    end
+    object btnApply: TButton
+      Left = 369
+      Top = 5
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actApply
+      Anchors = [akTop, akRight]
+      TabOrder = 1
+    end
+    object btnClose: TButton
+      Left = 456
+      Top = 5
+      Width = 81
+      Height = 25
+      Cursor = crHandPoint
+      Action = actClose
+      Anchors = [akTop, akRight]
+      Cancel = True
+      Default = True
+      TabOrder = 2
+    end
   end
-  object ActionManager1: TActionManager
-    Images = ilAddEditPhoneFormSmallImages
-    Left = 368
-    Top = 80
-    StyleName = 'Platform Default'
-    object Action_Apply: TAction
-      Caption = '&'#1055#1088#1080#1084#1077#1085#1080#1090#1100
-      Hint = 
-        #1055#1088#1080#1084#1077#1085#1080#1090#1100' '#1080#1079#1084#1077#1085#1077#1085#1080#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1088#1080#1084#1077#1085#1077#1085#1080#1103' '#1074#1089#1077#1093' '#1074#1085#1077#1089#1105#1085#1085#1099#1093' '#1080#1079#1084#1077#1085#1077 +
-        #1085#1080#1081' '#1080' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072
-      OnExecute = Action_ApplyExecute
-    end
-    object Action_Close: TAction
-      Caption = '&'#1047#1072#1082#1088#1099#1090#1100
-      Hint = #1047#1072#1082#1088#1099#1090#1100' '#1086#1082#1085#1086'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072
-      OnExecute = Action_CloseExecute
-    end
-    object Action_Help: TAction
-      Caption = '&'#1057#1087#1088#1072#1074#1082#1072
-      Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1087#1088#1072#1074#1082#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1089#1087#1088#1072#1074#1086#1095#1085#1086#1075#1086' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
-      ImageIndex = 0
-      OnExecute = Action_HelpExecute
-    end
-    object Action_Clear: TAction
-      Caption = '&'#1054#1095#1080#1089#1090#1080#1090#1100
-      Hint = #1054#1095#1080#1089#1090#1080#1090#1100' '#1087#1086#1083#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1095#1080#1089#1090#1082#1080' '#1087#1086#1083#1077#1081' '#1092#1086#1088#1084#1099
-      OnExecute = Action_ClearExecute
-    end
-  end
-  object ilAddEditPhoneFormSmallImages: TImageList
+  object ImageList: TImageList
     AllocBy = 7
-    Left = 368
+    Left = 304
     Top = 128
     Bitmap = {
-      494C0101070030007C0410001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010107003000880410001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000DBDBFF24CCCCFF33EDEDFF12000000000000
@@ -652,5 +528,35 @@ object AddEditPhoneForm: TAddEditPhoneForm
       40440007F80F80018281000FF80FC083A00B000FF80FE1C7D837000FF81FF7EF
       E78F801FFCFFFFFFF83FE03FFCFFFFFF00000000000000000000000000000000
       000000000000}
+  end
+  object ActionList: TActionList
+    Images = ImageList
+    Left = 392
+    Top = 128
+    object actApply: TAction
+      Caption = '&'#1055#1088#1080#1084#1077#1085#1080#1090#1100
+      Hint = 
+        #1055#1088#1080#1084#1077#1085#1080#1090#1100' '#1080#1079#1084#1077#1085#1077#1085#1080#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1088#1080#1084#1077#1085#1077#1085#1080#1103' '#1074#1089#1077#1093' '#1074#1085#1077#1089#1105#1085#1085#1099#1093' '#1080#1079#1084#1077#1085#1077 +
+        #1085#1080#1081' '#1080' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072
+      OnExecute = actApplyExecute
+    end
+    object actClose: TAction
+      Caption = '&'#1047#1072#1082#1088#1099#1090#1100
+      Hint = #1047#1072#1082#1088#1099#1090#1100' '#1086#1082#1085#1086'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072
+      OnExecute = actCloseExecute
+    end
+    object actHelp: TAction
+      Caption = '&'#1057#1087#1088#1072#1074#1082#1072
+      Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1087#1088#1072#1074#1082#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1089#1087#1088#1072#1074#1086#1095#1085#1086#1075#1086' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+      ImageIndex = 0
+      OnExecute = actHelpExecute
+      OnUpdate = actHelpUpdate
+    end
+    object actClear: TAction
+      Caption = '&'#1054#1095#1080#1089#1090#1080#1090#1100
+      Hint = #1054#1095#1080#1089#1090#1080#1090#1100' '#1087#1086#1083#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1095#1080#1089#1090#1082#1080' '#1087#1086#1083#1077#1081' '#1092#1086#1088#1084#1099
+      OnExecute = actClearExecute
+      OnUpdate = actClearUpdate
+    end
   end
 end
