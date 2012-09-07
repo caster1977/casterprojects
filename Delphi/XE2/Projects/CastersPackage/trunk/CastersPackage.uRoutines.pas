@@ -82,7 +82,7 @@ var
   P: PHostEnt;
   Buf: array [0 .. 127] of char;
 begin
-  Result := '';
+  Result := EmptyStr;
   if WSAStartup(WSVer, wsaData) = 0 then
   begin
     if GetHostName(@Buf, 128) = 0 then
@@ -181,12 +181,16 @@ begin
   b := True;
   s := Routines.ValidatePhoneString(aString);
 
-  if s = '' then // если строка пуста - возращаем "false"
+  if s = EmptyStr then // если строка пуста - возращаем "false"
     b := False;
   // проверка строки на наличие "лишних" символов
   for i := 1 to Length(s) - 1 do
+  begin
     if not CharInSet(s[i], ['0' .. '9', ' ', '%', '_']) then
+    begin
       b := False;
+    end;
+  end;
   aSL := TStringList.Create;
   try
     aSL.Duplicates := dupIgnore;
@@ -269,7 +273,7 @@ begin
   while Pos('  ', new_s) > 0 do
     new_s := StringReplace(new_s, '  ', ' ', [rfReplaceAll]);
   // удаление ограничивающих парных кавычек
-  if new_s > '' then
+  if new_s > EmptyStr then
     if (new_s[1] = '"') and (new_s[Length(new_s)] = '"') then
       new_s := Copy(new_s, 2, Length(new_s) - 2);
   // замена символов перевода строки и возврата каретки на пробелы
@@ -396,7 +400,7 @@ begin
   // финальное удаление двойных и граничных пробелов
   new_s := Trim(new_s);
   // добавление пробела в начале текстовой строки
-  if new_s > '' then
+  if new_s > EmptyStr then
     new_s := ' ' + new_s;
   Result := new_s;
 end;
@@ -420,7 +424,7 @@ begin
   while AnsiPos(AnsiString('  '), new_s) > 0 do
     new_s := AnsiReplaceStr(new_s, '  ', ' ');
   // удаление ограничивающих парных кавычек
-  if new_s > '' then
+  if Length(new_s) > 0 then
     if (new_s[1] = '"') and (new_s[Length(new_s)] = '"') then
       new_s := Copy(new_s, 2, Length(new_s) - 2);
   // замена символов перевода строки и возврата каретки на пробелы
@@ -547,7 +551,7 @@ begin
   // финальное удаление двойных и граничных пробелов
   new_s := Trim(new_s);
   // добавление пробела в начале текстовой строки
-  if new_s > '' then
+  if Length(new_s) > 0 then
     new_s := ' ' + new_s;
   Result := new_s;
 end;
