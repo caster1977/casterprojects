@@ -52,7 +52,13 @@ contains
   CastersPackage.Actions.Classes in 'CastersPackage.Actions.Classes.pas',
   CastersPackage.Actions.DataModule in 'CastersPackage.Actions.DataModule.pas',
   CastersPackage.uIIniFileDataStorage in 'CastersPackage.uIIniFileDataStorage.pas',
-  CastersPackage.uTLogForm in 'CastersPackage.uTLogForm.pas' {LogForm};
+  CastersPackage.uTLogForm in 'CastersPackage.uTLogForm.pas' {LogForm},
+  CastersPackage.uTDialogPosition in 'CastersPackage.uTDialogPosition.pas',
+  CastersPackage.uIPositionedDialog in 'CastersPackage.uIPositionedDialog.pas',
+  CastersPackage.uTPositionedLogForm in 'CastersPackage.uTPositionedLogForm.pas' {PositionedLogForm},
+  CastersPackage.uTLogMessagesType in 'CastersPackage.uTLogMessagesType.pas',
+  CastersPackage.uTLogMessagesTypes in 'CastersPackage.uTLogMessagesTypes.pas',
+  CastersPackage.uTReportFolder in 'CastersPackage.uTReportFolder.pas';
 
 end.
 

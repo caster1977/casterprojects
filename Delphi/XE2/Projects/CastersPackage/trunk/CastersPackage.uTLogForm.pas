@@ -14,7 +14,8 @@ uses
   Vcl.Forms,
   Vcl.Dialogs,
   Vcl.ComCtrls,
-  Vcl.ActnList;
+  Vcl.ActnList,
+  CastersPackage.uTDialogPosition;
 
 type
   TBusyStateMethod = procedure of object;
@@ -56,7 +57,6 @@ resourcestring
   RsHelpFileNonFound = 'Извините, справочный файл к данной программе не найден.';
   RsCloseModalWithOkProcedure = 'Процедура закрытия модального окна %s с результатом mrOk';
   RsCloseModalWithCancelProcedure = 'Процедура закрытия модального окна %s с результатом mrCancel';
-  RsCloseModalWithCloseProcedure = 'Процедура закрытия модального окна %s с результатом mrClose';
 
 implementation
 

@@ -117,6 +117,14 @@
 			<DCCReference Include="CastersPackage.uTLogForm.pas">
 				<Form>LogForm</Form>
 			</DCCReference>
+			<DCCReference Include="CastersPackage.uTDialogPosition.pas"/>
+			<DCCReference Include="CastersPackage.uIPositionedDialog.pas"/>
+			<DCCReference Include="CastersPackage.uTPositionedLogForm.pas">
+				<Form>PositionedLogForm</Form>
+			</DCCReference>
+			<DCCReference Include="CastersPackage.uTLogMessagesType.pas"/>
+			<DCCReference Include="CastersPackage.uTLogMessagesTypes.pas"/>
+			<DCCReference Include="CastersPackage.uTReportFolder.pas"/>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
