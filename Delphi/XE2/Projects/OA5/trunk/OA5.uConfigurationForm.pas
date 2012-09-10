@@ -4,12 +4,12 @@ unit OA5.uConfigurationForm;
 interface
 
 uses
-  CastersPackage.uLogProvider,
-  CastersPackage.uTLogForm,
+  CastersPackage.uTPositionedLogForm,
   Winapi.Windows,
   System.Types,
   System.Classes,
   Vcl.PlatformDefaultStyleActnCtrls,
+  CastersPackage.uTLogMessagesType,
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.ActnList,
@@ -22,7 +22,7 @@ uses
   Vcl.ComCtrls;
 
 type
-  TConfigurationForm = class(TLogForm)
+  TConfigurationForm = class(TPositionedLogForm)
     actHelp: TAction;
     actDefaults: TAction;
     actClose: TAction;
@@ -284,12 +284,16 @@ implementation
 {$R *.dfm}
 
 uses
+  OA5.uDefaultConsts,
+  CastersPackage.uTReportFolder,
   Vcl.Dialogs,
   System.SysUtils,
+  CastersPackage.uTLogForm,
   Winapi.Messages,
   Vcl.FileCtrl,
   CastersPackage.uLogKeeperData,
   CastersPackage.uRoutines,
+  CastersPackage.uTDialogPosition,
   OA5.uMainForm,
   OA5.uTLoginForm,
   OA5.uTAboutForm,
@@ -374,7 +378,7 @@ end;
 
 procedure TConfigurationForm.Do_Apply;
 var
-  FormPosition: TFormPosition;
+  dialog_position: TDialogPosition;
 begin
   ProcedureHeader('Процедура закрытия модального окна с результатом mrOk', '{55D9E5EB-97B6-47FC-B149-348070521077}');
 
@@ -446,121 +450,121 @@ begin
     FlushLogOnStringsQuantityValue :=
       StrToIntDef(Routines.GetConditionalString(chkbxFlushLogOnStringsQuantity.Enabled and
       chkbxFlushLogOnStringsQuantity.Checked and edbxFlushLogOnStringsQuantityValue.Enabled,
-      Trim(edbxFlushLogOnStringsQuantityValue.Text), EmptyStr), DefaultValue_FlushLogOnStringsQuantityValue);
+      Trim(edbxFlushLogOnStringsQuantityValue.Text), EmptyStr), DEFAULT_CONFIGURATION_FLUSH_LOG_ON_STRINGS_QUANTITY_VALUE);
     FlushLogOnClearingLog := chkbxFlushLogOnClearingLog.Enabled and chkbxFlushLogOnClearingLog.Checked;
     FlushLogOnApply := chkbxFlushLogOnApply.Enabled and chkbxFlushLogOnApply.Checked;
     CustomLogClientFile := chkbxCustomLogClientFile.Enabled and chkbxCustomLogClientFile.Checked;
     CustomLogClientFileValue := Routines.GetConditionalString(chkbxCustomLogClientFile.Enabled and
       chkbxCustomLogClientFile.Checked and chkbxEnableLog.Enabled and chkbxEnableLog.Checked and
       edbxCustomLogClientFileValue.Enabled, Trim(edbxCustomLogClientFileValue.Text),
-      DefaultValue_CustomLogClientFileValue);
+      DEFAULT_CONFIGURATION_CUSTOM_LOG_CLIENT_VALUE);
 
     // вкладка "настройки положения диалоговых окон"
-    FormPosition.bCenter := chkbxLoginFormPositionByCenter.Enabled and chkbxLoginFormPositionByCenter.Checked;
-    FormPosition.x := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxLoginFormPositionX.Text), EmptyStr), DefaultValue_FormPosition_x);
-    FormPosition.y := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxLoginFormPositionY.Text), EmptyStr), DefaultValue_FormPosition_y);
-    LoginFormPosition := FormPosition;
+    dialog_position.Centered := chkbxLoginFormPositionByCenter.Enabled and chkbxLoginFormPositionByCenter.Checked;
+    dialog_position.Left := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxLoginFormPositionX.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_LEFT);
+    dialog_position.Top := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxLoginFormPositionY.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_TOP);
+    LoginFormPosition.Assign(dialog_position);
 
-    FormPosition.bCenter := chkbxConfigurationFormPositionByCenter.Checked and
+    dialog_position.Centered := chkbxConfigurationFormPositionByCenter.Checked and
       chkbxConfigurationFormPositionByCenter.Enabled;
-    FormPosition.x := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxConfigurationFormPositionX.Text), EmptyStr), DefaultValue_FormPosition_x);
-    FormPosition.y := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxConfigurationFormPositionY.Text), EmptyStr), DefaultValue_FormPosition_y);
-    ConfigurationFormPosition := FormPosition;
+    dialog_position.Left := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxConfigurationFormPositionX.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_LEFT);
+    dialog_position.Top := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxConfigurationFormPositionY.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_TOP);
+    ConfigurationFormPosition.Assign(dialog_position);
 
-    FormPosition.bCenter := chkbxUsersFormPositionByCenter.Checked and chkbxUsersFormPositionByCenter.Enabled;
-    FormPosition.x := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxUsersFormPositionX.Text), EmptyStr), DefaultValue_FormPosition_x);
-    FormPosition.y := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxUsersFormPositionY.Text), EmptyStr), DefaultValue_FormPosition_y);
-    UsersFormPosition := FormPosition;
+    dialog_position.Centered := chkbxUsersFormPositionByCenter.Checked and chkbxUsersFormPositionByCenter.Enabled;
+    dialog_position.Left := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxUsersFormPositionX.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_LEFT);
+    dialog_position.Top := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxUsersFormPositionY.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_TOP);
+    UsersFormPosition.Assign(dialog_position);
 
-    FormPosition.bCenter := chkbxSetPasswordFormPositionByCenter.Checked and
+    dialog_position.Centered := chkbxSetPasswordFormPositionByCenter.Checked and
       chkbxSetPasswordFormPositionByCenter.Enabled;
-    FormPosition.x := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxSetPasswordFormPositionX.Text), EmptyStr), DefaultValue_FormPosition_x);
-    FormPosition.y := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxSetPasswordFormPositionY.Text), EmptyStr), DefaultValue_FormPosition_y);
-    SetPasswordFormPosition := FormPosition;
+    dialog_position.Left := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxSetPasswordFormPositionX.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_LEFT);
+    dialog_position.Top := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxSetPasswordFormPositionY.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_TOP);
+    SetPasswordFormPosition.Assign(dialog_position);
 
-    FormPosition.bCenter := chkbxReportFormPositionByCenter.Checked and chkbxReportFormPositionByCenter.Enabled;
-    FormPosition.x := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxReportFormPositionX.Text), EmptyStr), DefaultValue_FormPosition_x);
-    FormPosition.y := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxReportFormPositionY.Text), EmptyStr), DefaultValue_FormPosition_y);
-    ReportFormPosition := FormPosition;
+    dialog_position.Centered := chkbxReportFormPositionByCenter.Checked and chkbxReportFormPositionByCenter.Enabled;
+    dialog_position.Left := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxReportFormPositionX.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_LEFT);
+    dialog_position.Top := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxReportFormPositionY.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_TOP);
+    ReportFormPosition.Assign(dialog_position);
 
-    FormPosition.bCenter := chkbxMaintenanceFormPositionByCenter.Checked and
+    dialog_position.Centered := chkbxMaintenanceFormPositionByCenter.Checked and
       chkbxMaintenanceFormPositionByCenter.Enabled;
-    FormPosition.x := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxMaintenanceFormPositionX.Text), EmptyStr), DefaultValue_FormPosition_x);
-    FormPosition.y := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxMaintenanceFormPositionY.Text), EmptyStr), DefaultValue_FormPosition_y);
-    MaintenanceFormPosition := FormPosition;
+    dialog_position.Left := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxMaintenanceFormPositionX.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_LEFT);
+    dialog_position.Top := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxMaintenanceFormPositionY.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_TOP);
+    MaintenanceFormPosition.Assign(dialog_position);
 
-    FormPosition.bCenter := chkbxClearingFormPositionByCenter.Checked and chkbxClearingFormPositionByCenter.Enabled;
-    FormPosition.x := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxClearingFormPositionX.Text), EmptyStr), DefaultValue_FormPosition_x);
-    FormPosition.y := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxClearingFormPositionY.Text), EmptyStr), DefaultValue_FormPosition_y);
-    ClearingFormPosition := FormPosition;
+    dialog_position.Centered := chkbxClearingFormPositionByCenter.Checked and chkbxClearingFormPositionByCenter.Enabled;
+    dialog_position.Left := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxClearingFormPositionX.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_LEFT);
+    dialog_position.Top := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxClearingFormPositionY.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_TOP);
+    ClearingFormPosition.Assign(dialog_position);
 
-    FormPosition.bCenter := chkbxViewMessagesFormPositionByCenter.Checked and
+    dialog_position.Centered := chkbxViewMessagesFormPositionByCenter.Checked and
       chkbxViewMessagesFormPositionByCenter.Enabled;
-    FormPosition.x := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxViewMessagesFormPositionX.Text), EmptyStr), DefaultValue_FormPosition_x);
-    FormPosition.y := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxViewMessagesFormPositionY.Text), EmptyStr), DefaultValue_FormPosition_y);
-    ViewMessagesFormPosition := FormPosition;
+    dialog_position.Left := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxViewMessagesFormPositionX.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_LEFT);
+    dialog_position.Top := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxViewMessagesFormPositionY.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_TOP);
+    ViewMessagesFormPosition.Assign(dialog_position);
 
-    FormPosition.bCenter := chkbxCreateMessageFormPositionByCenter.Checked and
+    dialog_position.Centered := chkbxCreateMessageFormPositionByCenter.Checked and
       chkbxCreateMessageFormPositionByCenter.Enabled;
-    FormPosition.x := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxCreateMessageFormPositionX.Text), EmptyStr), DefaultValue_FormPosition_x);
-    FormPosition.y := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxCreateMessageFormPositionY.Text), EmptyStr), DefaultValue_FormPosition_y);
-    CreateMessageFormPosition := FormPosition;
+    dialog_position.Left := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxCreateMessageFormPositionX.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_LEFT);
+    dialog_position.Top := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxCreateMessageFormPositionY.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_TOP);
+    CreateMessageFormPosition.Assign(dialog_position);
 
-    FormPosition.bCenter := chkbxViewMessageFormPositionByCenter.Checked and
+    dialog_position.Centered := chkbxViewMessageFormPositionByCenter.Checked and
       chkbxViewMessageFormPositionByCenter.Enabled;
-    FormPosition.x := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxViewMessageFormPositionX.Text), EmptyStr), DefaultValue_FormPosition_x);
-    FormPosition.y := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxViewMessageFormPositionY.Text), EmptyStr), DefaultValue_FormPosition_y);
-    ViewMessageFormPosition := FormPosition;
+    dialog_position.Left := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxViewMessageFormPositionX.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_LEFT);
+    dialog_position.Top := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxViewMessageFormPositionY.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_TOP);
+    ViewMessageFormPosition.Assign(dialog_position);
 
-    FormPosition.bCenter := chkbxPhonesFormPositionByCenter.Checked and chkbxPhonesFormPositionByCenter.Enabled;
-    FormPosition.x := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxPhonesFormPositionX.Text), EmptyStr), DefaultValue_FormPosition_x);
-    FormPosition.y := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxPhonesFormPositionY.Text), EmptyStr), DefaultValue_FormPosition_y);
-    PhonesFormPosition := FormPosition;
+    dialog_position.Centered := chkbxPhonesFormPositionByCenter.Checked and chkbxPhonesFormPositionByCenter.Enabled;
+    dialog_position.Left := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxPhonesFormPositionX.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_LEFT);
+    dialog_position.Top := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxPhonesFormPositionY.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_TOP);
+    PhonesFormPosition.Assign(dialog_position);
 
-    FormPosition.bCenter := chkbxAddEditPhoneFormPositionByCenter.Checked and
+    dialog_position.Centered := chkbxAddEditPhoneFormPositionByCenter.Checked and
       chkbxAddEditPhoneFormPositionByCenter.Enabled;
-    FormPosition.x := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxAddEditPhoneFormPositionX.Text), EmptyStr), DefaultValue_FormPosition_x);
-    FormPosition.y := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxAddEditPhoneFormPositionY.Text), EmptyStr), DefaultValue_FormPosition_y);
-    AddEditPhoneFormPosition := FormPosition;
+    dialog_position.Left := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxAddEditPhoneFormPositionX.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_LEFT);
+    dialog_position.Top := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxAddEditPhoneFormPositionY.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_TOP);
+    AddEditPhoneFormPosition.Assign(dialog_position);
 
-    FormPosition.bCenter := chkbxAddMassMsrFormPositionByCenter.Checked and chkbxAddMassMsrFormPositionByCenter.Enabled;
-    FormPosition.x := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxAddMassMsrFormPositionX.Text), EmptyStr), DefaultValue_FormPosition_x);
-    FormPosition.y := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxAddMassMsrFormPositionY.Text), EmptyStr), DefaultValue_FormPosition_y);
-    AddMassMsrFormPosition := FormPosition;
+    dialog_position.Centered := chkbxAddMassMsrFormPositionByCenter.Checked and chkbxAddMassMsrFormPositionByCenter.Enabled;
+    dialog_position.Left := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxAddMassMsrFormPositionX.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_LEFT);
+    dialog_position.Top := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxAddMassMsrFormPositionY.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_TOP);
+    AddMassMsrFormPosition.Assign(dialog_position);
 
-    FormPosition.bCenter := chkbxPermissionsFormPositionByCenter.Checked and
+    dialog_position.Centered := chkbxPermissionsFormPositionByCenter.Checked and
       chkbxPermissionsFormPositionByCenter.Enabled;
-    FormPosition.x := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxPermissionsFormPositionX.Text), EmptyStr), DefaultValue_FormPosition_x);
-    FormPosition.y := StrToIntDef(Routines.GetConditionalString(not FormPosition.bCenter,
-      Trim(edbxPermissionsFormPositionY.Text), EmptyStr), DefaultValue_FormPosition_y);
-    PermissionsFormPosition := FormPosition;
+    dialog_position.Left := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxPermissionsFormPositionX.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_LEFT);
+    dialog_position.Top := StrToIntDef(Routines.GetConditionalString(not dialog_position.Centered,
+      Trim(edbxPermissionsFormPositionY.Text), EmptyStr), DEFAULT_CONFIGURATION_DIALOG_TOP);
+    PermissionsFormPosition.Assign(dialog_position);
 
     // вкладка "настройки процедуры логирования"
     StoreLogin := chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked;
@@ -574,8 +578,8 @@ begin
       with RNE4Server, vleRNE4SERVER do
       begin
         Host := Trim(Cells[1, 1]);
-        Port := StrToIntDef(Trim(Cells[1, 2]), DefaultValue_RNE4Server_Port);
-        Timeout := StrToIntDef(Trim(Cells[1, 3]), DefaultValue_RNE4Server_Timeout);
+        Port := StrToIntDef(Trim(Cells[1, 2]), DEFAULT_CONFIGURATION_RNE4SERVER_PORT);
+        Timeout := StrToIntDef(Trim(Cells[1, 3]), DEFAULT_CONFIGURATION_RNE4SERVER_TIMEOUT);
         Compression := Trim(Cells[1, 4]) = 'Да';
         Database := Trim(Cells[1, 5]);
       end;
@@ -587,8 +591,8 @@ begin
       with MessagesServer, vleRNE4MESSAGESSERVER do
       begin
         Host := Trim(Cells[1, 1]);
-        Port := StrToIntDef(Trim(Cells[1, 2]), DefaultValue_MessagesServer_Port);
-        Timeout := StrToIntDef(Trim(Cells[1, 3]), DefaultValue_MessagesServer_Timeout);
+        Port := StrToIntDef(Trim(Cells[1, 2]), DEFAULT_CONFIGURATION_MESSAGESERVER_PORT);
+        Timeout := StrToIntDef(Trim(Cells[1, 3]), DEFAULT_CONFIGURATION_MESSAGESERVER_TIMEOUT);
         Compression := Trim(Cells[1, 4]) = 'Да';
         Database := Trim(Cells[1, 5]);
       end;
@@ -609,7 +613,7 @@ begin
     end;
 
     CustomReportFolderValue := Routines.GetConditionalString(rbSaveIntoTheCustomFolder.Enabled and
-      rbSaveIntoTheCustomFolder.Checked, Trim(edbxCustomReportFolderValue.Text), DefaultValue_CustomReportFolderValue);
+      rbSaveIntoTheCustomFolder.Checked, Trim(edbxCustomReportFolderValue.Text), DEFAULT_CONFIGURATION_CUSTOM_REPORT_FOLDER_VALUE);
     DontDemandOverwriteConfirmation := chkbxDontDemandOverwriteConfirmation.Enabled and
       chkbxDontDemandOverwriteConfirmation.Checked;
     AskForFileName := chkbxAskForFileName.Enabled and chkbxAskForFileName.Checked;
@@ -623,11 +627,11 @@ begin
     AutoGetMessagesCycleDurationValue :=
       StrToIntDef(Routines.GetConditionalString(chkbxEnableAutoGetMessages.Enabled and
       chkbxEnableAutoGetMessages.Checked and edbxAutoGetMessagesCycleDurationValue.Enabled,
-      Trim(edbxAutoGetMessagesCycleDurationValue.Text), IntToStr(DefaultValue_AutoGetMessagesCycleDurationValue)),
-      DefaultValue_AutoGetMessagesCycleDurationValue);
+      Trim(edbxAutoGetMessagesCycleDurationValue.Text), IntToStr(DEFAULT_CONFIGURATION_AUTO_GET_MESSAGES_CYCLE_DURATION_VALUE)),
+      DEFAULT_CONFIGURATION_AUTO_GET_MESSAGES_CYCLE_DURATION_VALUE);
     CustomHelpFile := chkbxCustomHelpFile.Enabled and chkbxCustomHelpFile.Checked;
     CustomHelpFileValue := Routines.GetConditionalString(chkbxCustomHelpFile.Enabled and chkbxCustomHelpFile.Checked and
-      edbxCustomHelpFileValue.Enabled, Trim(edbxCustomHelpFileValue.Text), DefaultValue_CustomHelpFileValue);
+      edbxCustomHelpFileValue.Enabled, Trim(edbxCustomHelpFileValue.Text), DEFAULT_CONFIGURATION_CUSTOM_HELP_FILE_VALUE);
 
     // вкладка "настройки главного окна"
     MainFormPositionByCenter := chkbxMainFormPositionByCenter.Enabled and chkbxMainFormPositionByCenter.Checked and
@@ -645,20 +649,20 @@ begin
       begin
         if edbxMainFormWidth.Enabled then
         begin
-          MainFormWidth := StrToIntDef(Trim(edbxMainFormWidth.Text), DefaultValue_MainFormWidth);
+          MainFormWidth := StrToIntDef(Trim(edbxMainFormWidth.Text), DEFAULT_CONFIGURATION_MAIN_FORM_WIDTH);
         end
         else
         begin
-          MainFormWidth := DefaultValue_MainFormWidth;
+          MainFormWidth := DEFAULT_CONFIGURATION_MAIN_FORM_WIDTH;
         end;
 
         if edbxMainFormHeight.Enabled then
         begin
-          MainFormHeight := StrToIntDef(Trim(edbxMainFormHeight.Text), DefaultValue_MainFormHeight);
+          MainFormHeight := StrToIntDef(Trim(edbxMainFormHeight.Text), DEFAULT_CONFIGURATION_MAIN_FORM_HEIGHT);
         end
         else
         begin
-          MainFormHeight := DefaultValue_MainFormHeight;
+          MainFormHeight := DEFAULT_CONFIGURATION_MAIN_FORM_HEIGHT;
         end;
         MainFormLeft := (Screen.WorkAreaWidth - MainFormWidth) div 2;
         MainFormTop := (Screen.WorkAreaHeight - MainFormHeight) div 2;
@@ -667,38 +671,38 @@ begin
       begin
         if edbxMainFormPositionX.Enabled then
         begin
-          MainFormLeft := StrToIntDef(Trim(edbxMainFormPositionX.Text), DefaultValue_MainFormLeft);
+          MainFormLeft := StrToIntDef(Trim(edbxMainFormPositionX.Text), DEFAULT_CONFIGURATION_MAIN_FORM_LEFT);
         end
         else
         begin
-          MainFormLeft := DefaultValue_MainFormLeft;
+          MainFormLeft := DEFAULT_CONFIGURATION_MAIN_FORM_LEFT;
         end;
 
         if edbxMainFormPositionY.Enabled then
         begin
-          MainFormTop := StrToIntDef(Trim(edbxMainFormPositionY.Text), DefaultValue_MainFormTop);
+          MainFormTop := StrToIntDef(Trim(edbxMainFormPositionY.Text), DEFAULT_CONFIGURATION_MAIN_FORM_TOP);
         end
         else
         begin
-          MainFormTop := DefaultValue_MainFormTop;
+          MainFormTop := DEFAULT_CONFIGURATION_MAIN_FORM_TOP;
         end;
 
         if edbxMainFormWidth.Enabled then
         begin
-          MainFormWidth := StrToIntDef(Trim(edbxMainFormWidth.Text), DefaultValue_MainFormWidth);
+          MainFormWidth := StrToIntDef(Trim(edbxMainFormWidth.Text), DEFAULT_CONFIGURATION_MAIN_FORM_WIDTH);
         end
         else
         begin
-          MainFormWidth := DefaultValue_MainFormWidth;
+          MainFormWidth := DEFAULT_CONFIGURATION_MAIN_FORM_WIDTH;
         end;
 
         if edbxMainFormHeight.Enabled then
         begin
-          MainFormHeight := StrToIntDef(Trim(edbxMainFormHeight.Text), DefaultValue_MainFormHeight);
+          MainFormHeight := StrToIntDef(Trim(edbxMainFormHeight.Text), DEFAULT_CONFIGURATION_MAIN_FORM_HEIGHT);
         end
         else
         begin
-          MainFormHeight := DefaultValue_MainFormHeight;
+          MainFormHeight := DEFAULT_CONFIGURATION_MAIN_FORM_HEIGHT;
         end;
       end;
 
@@ -706,11 +710,11 @@ begin
     OrganizationPanelHeightValue :=
       StrToIntDef(Routines.GetConditionalString(chkbxOrganizationPanelHalfHeight.Enabled and
       chkbxOrganizationPanelHalfHeight.Checked, EmptyStr, Trim(edbxOrganizationPanelHeightValue.Text)),
-      DefaultValue_OrganizationPanelHeightValue);
+      DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_HEIGHT_VALUE);
     OrganizationPanelHalfHeight := chkbxOrganizationPanelHalfHeight.Enabled and
       chkbxOrganizationPanelHalfHeight.Checked;
     DataPanelWidthValue := StrToIntDef(Routines.GetConditionalString(chkbxDataPanelHalfWidth.Enabled and
-      chkbxDataPanelHalfWidth.Checked, EmptyStr, Trim(edbxDataPanelWidthValue.Text)), DefaultValue_DataPanelWidthValue);
+      chkbxDataPanelHalfWidth.Checked, EmptyStr, Trim(edbxDataPanelWidthValue.Text)), DEFAULT_CONFIGURATION_DATA_PANEL_WIDTH_VALUE);
     DataPanelHalfWidth := chkbxDataPanelHalfWidth.Enabled and chkbxDataPanelHalfWidth.Checked;
     ShowDataInOtherInfoPanel := chkbxShowDataInOtherInfoPanel.Enabled and chkbxShowDataInOtherInfoPanel.Checked;
     ShowMeasuresListAsRichEdit := chkbxShowMeasuresListAsRichEdit.Enabled and chkbxShowMeasuresListAsRichEdit.Checked;
@@ -967,51 +971,51 @@ begin
   if PageControl1.ActivePage.Caption = ' интерфейса' then
   begin
     // выставление значений по умолчанию для контролов
-    chkbxShowSplashAtStart.Checked := DefaultValue_ShowSplashAtStart;
-    chkbxShowToolbar.Checked := DefaultValue_ShowToolbar;
-    chkbxShowStatusbar.Checked := DefaultValue_ShowStatusbar;
-    chkbxShowEditboxHints.Checked := DefaultValue_ShowEditboxHints;
-    chkbxShowCommonSearchEditbox.Checked := DefaultValue_ShowCommonSearchEditbox;
-    chkbxShowID.Checked := DefaultValue_ShowID;
-    chkbxUseMultibuffer.Checked := DefaultValue_UseMultibuffer;
-    chkbxShowConfirmationOnQuit.Checked := DefaultValue_ShowConfirmationOnQuit;
+    chkbxShowSplashAtStart.Checked := DEFAULT_CONFIGURATION_ENABLE_SPLASH_AT_START;
+    chkbxShowToolbar.Checked := DEFAULT_CONFIGURATION_ENABLE_TOOLBAR;
+    chkbxShowStatusbar.Checked := DEFAULT_CONFIGURATION_ENABLE_STATUSBAR;
+    chkbxShowEditboxHints.Checked := DEFAULT_CONFIGURATION_ENABLE_EDITBOX_HINTS;
+    chkbxShowCommonSearchEditbox.Checked := DEFAULT_CONFIGURATION_ENABLE_COMMON_SEARCH_EDITBOX;
+    chkbxShowID.Checked := DEFAULT_CONFIGURATION_ENABLE_ID;
+    chkbxUseMultibuffer.Checked := DEFAULT_CONFIGURATION_ENABLE_MULTIBUFFER;
+    chkbxShowConfirmationOnQuit.Checked := DEFAULT_CONFIGURATION_ENABLE_QUIT_CONFIRMATION;
   end;
 
   // вкладка "настройки ведения протокола работы"
   if PageControl1.ActivePage.Caption = ' ведения протокола работы' then
   begin
     // выставление значений по умолчанию для элементов интерфейса
-    chkbxEnableLog.Checked := DefaultValue_EnableLog;
-    chkbxKeepErrorLog.Checked := (lmtError in DefaultValue_KeepLogTypes) and DefaultValue_EnableLog;
-    chkbxKeepWarningLog.Checked := (lmtWarning in DefaultValue_KeepLogTypes) and DefaultValue_EnableLog;
-    chkbxKeepInfoLog.Checked := (lmtInfo in DefaultValue_KeepLogTypes) and DefaultValue_EnableLog;
-    chkbxKeepSQLLog.Checked := (lmtSQL in DefaultValue_KeepLogTypes) and DefaultValue_EnableLog;
-    chkbxKeepDebugLog.Checked := (lmtDebug in DefaultValue_KeepLogTypes) and DefaultValue_EnableLog;
-    chkbxFlushLogOnExit.Checked := DefaultValue_FlushLogOnExit and DefaultValue_EnableLog;
-    chkbxFlushLogOnStringsQuantity.Checked := DefaultValue_FlushLogOnStringsQuantity and DefaultValue_EnableLog;
-    edbxFlushLogOnStringsQuantityValue.Text := Routines.GetConditionalString(DefaultValue_FlushLogOnStringsQuantity and
-      DefaultValue_EnableLog, IntToStr(DefaultValue_FlushLogOnStringsQuantityValue), EmptyStr);
-    chkbxFlushLogOnClearingLog.Checked := DefaultValue_FlushLogOnClearingLog and DefaultValue_EnableLog;
-    chkbxFlushLogOnApply.Checked := DefaultValue_FlushLogOnApply and DefaultValue_EnableLog;
-    chkbxCustomLogClientFile.Checked := DefaultValue_CustomLogClientFile and DefaultValue_EnableLog;
-    edbxCustomLogClientFileValue.Text := Routines.GetConditionalString(DefaultValue_CustomLogClientFile and
-      DefaultValue_EnableLog, DefaultValue_CustomLogClientFileValue, EmptyStr);
+    chkbxEnableLog.Checked := DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxKeepErrorLog.Checked := (lmtError in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) and DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxKeepWarningLog.Checked := (lmtWarning in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) and DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxKeepInfoLog.Checked := (lmtInfo in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) and DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxKeepSQLLog.Checked := (lmtSQL in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) and DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxKeepDebugLog.Checked := (lmtDebug in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) and DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxFlushLogOnExit.Checked := DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_EXIT and DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxFlushLogOnStringsQuantity.Checked := DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_STRINGS_QUANTITY and DEFAULT_CONFIGURATION_ENABLE_LOG;
+    edbxFlushLogOnStringsQuantityValue.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_STRINGS_QUANTITY and
+      DEFAULT_CONFIGURATION_ENABLE_LOG, IntToStr(DEFAULT_CONFIGURATION_FLUSH_LOG_ON_STRINGS_QUANTITY_VALUE), EmptyStr);
+    chkbxFlushLogOnClearingLog.Checked := DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_CLEARING_LOG and DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxFlushLogOnApply.Checked := DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_APPLY and DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxCustomLogClientFile.Checked := DEFAULT_CONFIGURATION_ENABLE_CUSTOM_LOG_CLIENT and DEFAULT_CONFIGURATION_ENABLE_LOG;
+    edbxCustomLogClientFileValue.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_CUSTOM_LOG_CLIENT and
+      DEFAULT_CONFIGURATION_ENABLE_LOG, DEFAULT_CONFIGURATION_CUSTOM_LOG_CLIENT_VALUE, EmptyStr);
     // выставление доступа к элементам интерфейса
-    lblShowData.Enabled := DefaultValue_EnableLog;
-    chkbxKeepErrorLog.Enabled := DefaultValue_EnableLog;
-    chkbxKeepWarningLog.Enabled := DefaultValue_EnableLog;
-    chkbxKeepInfoLog.Enabled := DefaultValue_EnableLog;
-    chkbxKeepSQLLog.Enabled := DefaultValue_EnableLog;
-    chkbxKeepDebugLog.Enabled := DefaultValue_EnableLog;
-    lblFlushLog.Enabled := DefaultValue_EnableLog;
-    chkbxFlushLogOnExit.Enabled := DefaultValue_EnableLog;
-    chkbxFlushLogOnStringsQuantity.Enabled := DefaultValue_EnableLog;
-    edbxFlushLogOnStringsQuantityValue.Enabled := DefaultValue_EnableLog;
-    chkbxFlushLogOnClearingLog.Enabled := DefaultValue_EnableLog;
-    chkbxFlushLogOnApply.Enabled := DefaultValue_EnableLog;
-    chkbxCustomLogClientFile.Enabled := DefaultValue_EnableLog;
-    edbxCustomLogClientFileValue.Enabled := DefaultValue_CustomLogClientFile and DefaultValue_EnableLog;
-    actChooseCustomLogClientFile.Enabled := DefaultValue_CustomLogClientFile and DefaultValue_EnableLog;
+    lblShowData.Enabled := DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxKeepErrorLog.Enabled := DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxKeepWarningLog.Enabled := DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxKeepInfoLog.Enabled := DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxKeepSQLLog.Enabled := DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxKeepDebugLog.Enabled := DEFAULT_CONFIGURATION_ENABLE_LOG;
+    lblFlushLog.Enabled := DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxFlushLogOnExit.Enabled := DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxFlushLogOnStringsQuantity.Enabled := DEFAULT_CONFIGURATION_ENABLE_LOG;
+    edbxFlushLogOnStringsQuantityValue.Enabled := DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxFlushLogOnClearingLog.Enabled := DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxFlushLogOnApply.Enabled := DEFAULT_CONFIGURATION_ENABLE_LOG;
+    chkbxCustomLogClientFile.Enabled := DEFAULT_CONFIGURATION_ENABLE_LOG;
+    edbxCustomLogClientFileValue.Enabled := DEFAULT_CONFIGURATION_ENABLE_CUSTOM_LOG_CLIENT and DEFAULT_CONFIGURATION_ENABLE_LOG;
+    actChooseCustomLogClientFile.Enabled := DEFAULT_CONFIGURATION_ENABLE_CUSTOM_LOG_CLIENT and DEFAULT_CONFIGURATION_ENABLE_LOG;
     Log.SendDebug('Действие "' + actChooseCustomLogClientFile.Caption + '" ' +
       Routines.GetConditionalString(actChooseCustomLogClientFile.Enabled, 'в', 'от') + 'ключено.');
   end;
@@ -1019,167 +1023,167 @@ begin
   // вкладка "настройки положения диалоговых окон"
   if PageControl1.ActivePage.Caption = ' положения диалоговых окон' then
   begin
-    chkbxLoginFormPositionByCenter.Checked := DefaultValue_FormPosition_Center;
-    edbxLoginFormPositionX.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_x));
-    edbxLoginFormPositionY.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_y));
-    edbxLoginFormPositionX.Enabled := not DefaultValue_FormPosition_Center;
-    edbxLoginFormPositionY.Enabled := not DefaultValue_FormPosition_Center;
+    chkbxLoginFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxLoginFormPositionX.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_LEFT));
+    edbxLoginFormPositionY.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_TOP));
+    edbxLoginFormPositionX.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxLoginFormPositionY.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
 
-    chkbxConfigurationFormPositionByCenter.Checked := DefaultValue_FormPosition_Center;
-    edbxConfigurationFormPositionX.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_x));
-    edbxConfigurationFormPositionY.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_y));
-    edbxConfigurationFormPositionX.Enabled := not DefaultValue_FormPosition_Center;
-    edbxConfigurationFormPositionY.Enabled := not DefaultValue_FormPosition_Center;
+    chkbxConfigurationFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxConfigurationFormPositionX.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_LEFT));
+    edbxConfigurationFormPositionY.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_TOP));
+    edbxConfigurationFormPositionX.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxConfigurationFormPositionY.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
 
-    chkbxUsersFormPositionByCenter.Checked := DefaultValue_FormPosition_Center;
-    edbxUsersFormPositionX.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_x));
-    edbxUsersFormPositionY.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_y));
-    edbxUsersFormPositionX.Enabled := not DefaultValue_FormPosition_Center;
-    edbxUsersFormPositionY.Enabled := not DefaultValue_FormPosition_Center;
+    chkbxUsersFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxUsersFormPositionX.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_LEFT));
+    edbxUsersFormPositionY.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_TOP));
+    edbxUsersFormPositionX.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxUsersFormPositionY.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
 
-    chkbxSetPasswordFormPositionByCenter.Checked := DefaultValue_FormPosition_Center;
-    edbxSetPasswordFormPositionX.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_x));
-    edbxSetPasswordFormPositionY.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_y));
-    edbxSetPasswordFormPositionX.Enabled := not DefaultValue_FormPosition_Center;
-    edbxSetPasswordFormPositionY.Enabled := not DefaultValue_FormPosition_Center;
+    chkbxSetPasswordFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxSetPasswordFormPositionX.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_LEFT));
+    edbxSetPasswordFormPositionY.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_TOP));
+    edbxSetPasswordFormPositionX.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxSetPasswordFormPositionY.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
 
-    chkbxReportFormPositionByCenter.Checked := DefaultValue_FormPosition_Center;
-    edbxReportFormPositionX.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_x));
-    edbxReportFormPositionY.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_y));
-    edbxReportFormPositionX.Enabled := not DefaultValue_FormPosition_Center;
-    edbxReportFormPositionY.Enabled := not DefaultValue_FormPosition_Center;
+    chkbxReportFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxReportFormPositionX.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_LEFT));
+    edbxReportFormPositionY.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_TOP));
+    edbxReportFormPositionX.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxReportFormPositionY.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
 
-    chkbxMaintenanceFormPositionByCenter.Checked := DefaultValue_FormPosition_Center;
-    edbxMaintenanceFormPositionX.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_x));
-    edbxMaintenanceFormPositionY.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_y));
-    edbxMaintenanceFormPositionX.Enabled := not DefaultValue_FormPosition_Center;
-    edbxMaintenanceFormPositionY.Enabled := not DefaultValue_FormPosition_Center;
+    chkbxMaintenanceFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxMaintenanceFormPositionX.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_LEFT));
+    edbxMaintenanceFormPositionY.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_TOP));
+    edbxMaintenanceFormPositionX.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxMaintenanceFormPositionY.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
 
-    chkbxClearingFormPositionByCenter.Checked := DefaultValue_FormPosition_Center;
-    edbxClearingFormPositionX.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_x));
-    edbxClearingFormPositionY.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_y));
-    edbxClearingFormPositionX.Enabled := not DefaultValue_FormPosition_Center;
-    edbxClearingFormPositionY.Enabled := not DefaultValue_FormPosition_Center;
+    chkbxClearingFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxClearingFormPositionX.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_LEFT));
+    edbxClearingFormPositionY.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_TOP));
+    edbxClearingFormPositionX.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxClearingFormPositionY.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
 
-    chkbxViewMessagesFormPositionByCenter.Checked := DefaultValue_FormPosition_Center;
-    edbxViewMessagesFormPositionX.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_x));
-    edbxViewMessagesFormPositionY.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_y));
-    edbxViewMessagesFormPositionX.Enabled := not DefaultValue_FormPosition_Center;
-    edbxViewMessagesFormPositionY.Enabled := not DefaultValue_FormPosition_Center;
+    chkbxViewMessagesFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxViewMessagesFormPositionX.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_LEFT));
+    edbxViewMessagesFormPositionY.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_TOP));
+    edbxViewMessagesFormPositionX.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxViewMessagesFormPositionY.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
 
-    chkbxCreateMessageFormPositionByCenter.Checked := DefaultValue_FormPosition_Center;
-    edbxCreateMessageFormPositionX.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_x));
-    edbxCreateMessageFormPositionY.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_y));
-    edbxCreateMessageFormPositionX.Enabled := not DefaultValue_FormPosition_Center;
-    edbxCreateMessageFormPositionY.Enabled := not DefaultValue_FormPosition_Center;
+    chkbxCreateMessageFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxCreateMessageFormPositionX.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_LEFT));
+    edbxCreateMessageFormPositionY.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_TOP));
+    edbxCreateMessageFormPositionX.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxCreateMessageFormPositionY.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
 
-    chkbxViewMessageFormPositionByCenter.Checked := DefaultValue_FormPosition_Center;
-    edbxViewMessageFormPositionX.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_x));
-    edbxViewMessageFormPositionY.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_y));
-    edbxViewMessageFormPositionX.Enabled := not DefaultValue_FormPosition_Center;
-    edbxViewMessageFormPositionY.Enabled := not DefaultValue_FormPosition_Center;
+    chkbxViewMessageFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxViewMessageFormPositionX.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_LEFT));
+    edbxViewMessageFormPositionY.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_TOP));
+    edbxViewMessageFormPositionX.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxViewMessageFormPositionY.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
 
-    chkbxPhonesFormPositionByCenter.Checked := DefaultValue_FormPosition_Center;
-    edbxPhonesFormPositionX.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_x));
-    edbxPhonesFormPositionY.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_y));
-    edbxPhonesFormPositionX.Enabled := not DefaultValue_FormPosition_Center;
-    edbxPhonesFormPositionY.Enabled := not DefaultValue_FormPosition_Center;
+    chkbxPhonesFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxPhonesFormPositionX.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_LEFT));
+    edbxPhonesFormPositionY.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_TOP));
+    edbxPhonesFormPositionX.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxPhonesFormPositionY.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
 
-    chkbxAddEditPhoneFormPositionByCenter.Checked := DefaultValue_FormPosition_Center;
-    edbxAddEditPhoneFormPositionX.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_x));
-    edbxAddEditPhoneFormPositionY.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_y));
-    edbxAddEditPhoneFormPositionX.Enabled := not DefaultValue_FormPosition_Center;
-    edbxAddEditPhoneFormPositionY.Enabled := not DefaultValue_FormPosition_Center;
+    chkbxAddEditPhoneFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxAddEditPhoneFormPositionX.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_LEFT));
+    edbxAddEditPhoneFormPositionY.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_TOP));
+    edbxAddEditPhoneFormPositionX.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxAddEditPhoneFormPositionY.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
 
-    chkbxAddMassMsrFormPositionByCenter.Checked := DefaultValue_FormPosition_Center;
-    edbxAddMassMsrFormPositionX.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_x));
-    edbxAddMassMsrFormPositionY.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_y));
-    edbxAddMassMsrFormPositionX.Enabled := not DefaultValue_FormPosition_Center;
-    edbxAddMassMsrFormPositionY.Enabled := not DefaultValue_FormPosition_Center;
+    chkbxAddMassMsrFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxAddMassMsrFormPositionX.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_LEFT));
+    edbxAddMassMsrFormPositionY.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_TOP));
+    edbxAddMassMsrFormPositionX.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxAddMassMsrFormPositionY.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
 
-    chkbxPermissionsFormPositionByCenter.Checked := DefaultValue_FormPosition_Center;
-    edbxPermissionsFormPositionX.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_x));
-    edbxPermissionsFormPositionY.Text := Routines.GetConditionalString(DefaultValue_FormPosition_Center, EmptyStr,
-      IntToStr(DefaultValue_FormPosition_y));
-    edbxPermissionsFormPositionX.Enabled := not DefaultValue_FormPosition_Center;
-    edbxPermissionsFormPositionY.Enabled := not DefaultValue_FormPosition_Center;
+    chkbxPermissionsFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxPermissionsFormPositionX.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_LEFT));
+    edbxPermissionsFormPositionY.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DIALOG_TOP));
+    edbxPermissionsFormPositionX.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    edbxPermissionsFormPositionY.Enabled := not DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
   end;
 
   // вкладка "настройки процедуры логирования"
   if PageControl1.ActivePage.Caption = ' процедуры логирования' then
   begin
     // выставление значений по умолчанию для элементов интерфейса
-    chkbxStoreLastLogin.Checked := DefaultValue_StoreLogin;
-    chkbxStoreLastPassword.Checked := DefaultValue_StorePassword;
-    chkbxAutoLogon.Checked := DefaultValue_AutoLogon and DefaultValue_StoreLogin and DefaultValue_StorePassword;
+    chkbxStoreLastLogin.Checked := DEFAULT_CONFIGURATION_ENABLE_STORE_LOGIN;
+    chkbxStoreLastPassword.Checked := DEFAULT_CONFIGURATION_ENABLE_STORE_PASSWORD;
+    chkbxAutoLogon.Checked := DEFAULT_CONFIGURATION_ENABLE_AUTO_LOGON and DEFAULT_CONFIGURATION_ENABLE_STORE_LOGIN and DEFAULT_CONFIGURATION_ENABLE_STORE_PASSWORD;
     // выставление доступа к элементам интерфейса
-    chkbxAutoLogon.Enabled := DefaultValue_StoreLogin and DefaultValue_StorePassword;
+    chkbxAutoLogon.Enabled := DEFAULT_CONFIGURATION_ENABLE_STORE_LOGIN and DEFAULT_CONFIGURATION_ENABLE_STORE_PASSWORD;
   end;
 
   // вкладка "подключения к серверу базы данных услуги"
   if PageControl1.ActivePage.Caption = ' подключения к серверу базы данных услуги' then
   begin
     // выставление значений по умолчанию для элементов интерфейса
-    vleRNE4SERVER.Cells[1, 1] := DefaultValue_RNE4Server_Host;
-    vleRNE4SERVER.Cells[1, 2] := IntToStr(DefaultValue_RNE4Server_Port);
-    vleRNE4SERVER.Cells[1, 3] := IntToStr(DefaultValue_RNE4Server_Timeout);
+    vleRNE4SERVER.Cells[1, 1] := DEFAULT_CONFIGURATION_RNE4SERVER_HOST;
+    vleRNE4SERVER.Cells[1, 2] := IntToStr(DEFAULT_CONFIGURATION_RNE4SERVER_PORT);
+    vleRNE4SERVER.Cells[1, 3] := IntToStr(DEFAULT_CONFIGURATION_RNE4SERVER_TIMEOUT);
     vleRNE4SERVER.Cells[1, 4] := vleRNE4SERVER.ItemProps[3].PickList.Strings
-      [integer(DefaultValue_RNE4Server_Compression)];
-    vleRNE4SERVER.Cells[1, 5] := DefaultValue_RNE4Server_Database;
+      [integer(DEFAULT_CONFIGURATION_RNE4SERVER_COMPRESSION)];
+    vleRNE4SERVER.Cells[1, 5] := DEFAULT_CONFIGURATION_RNE4SERVER_DATABESE;
   end;
 
   // вкладка "подключения к серверу системы обмена сообщениями"
   if PageControl1.ActivePage.Caption = ' подключения к серверу системы обмена сообщениями' then
   begin
     // выставление значений по умолчанию для элементов интерфейса
-    vleRNE4MESSAGESSERVER.Cells[1, 1] := DefaultValue_MessagesServer_Host;
-    vleRNE4MESSAGESSERVER.Cells[1, 2] := IntToStr(DefaultValue_MessagesServer_Port);
-    vleRNE4MESSAGESSERVER.Cells[1, 3] := IntToStr(DefaultValue_MessagesServer_Timeout);
+    vleRNE4MESSAGESSERVER.Cells[1, 1] := DEFAULT_CONFIGURATION_MESSAGESERVER_HOST;
+    vleRNE4MESSAGESSERVER.Cells[1, 2] := IntToStr(DEFAULT_CONFIGURATION_MESSAGESERVER_PORT);
+    vleRNE4MESSAGESSERVER.Cells[1, 3] := IntToStr(DEFAULT_CONFIGURATION_MESSAGESERVER_TIMEOUT);
     vleRNE4MESSAGESSERVER.Cells[1, 4] := vleRNE4MESSAGESSERVER.ItemProps[3].PickList.Strings
-      [integer(DefaultValue_MessagesServer_Compression)];
-    vleRNE4MESSAGESSERVER.Cells[1, 5] := DefaultValue_MessagesServer_Database;
+      [integer(DEFAULT_CONFIGURATION_MESSAGESERVER_COMPRESSION)];
+    vleRNE4MESSAGESSERVER.Cells[1, 5] := DEFAULT_CONFIGURATION_MESSAGESERVER_DATABASE;
   end;
 
   // вкладка "настройки формирования отчётов"
   if PageControl1.ActivePage.Caption = ' формирования отчётов' then
   begin
     // выставление значений по умолчанию для элементов интерфейса
-    rbSaveIntoTheTempFolder.Checked := DefaultValue_ReportFolder = rfTempFolder;
-    rbSaveIntoTheApplicationFolder.Checked := DefaultValue_ReportFolder = rfApplicationFolder;
-    rbSaveIntoTheCustomFolder.Checked := DefaultValue_ReportFolder = rfCustomFolder;
-    edbxCustomReportFolderValue.Text := DefaultValue_CustomReportFolderValue;
-    chkbxDontDemandOverwriteConfirmation.Checked := DefaultValue_DontDemandOverwriteConfirmation;
-    chkbxAskForFileName.Checked := DefaultValue_AskForFileName;
+    rbSaveIntoTheTempFolder.Checked := DEFAULT_CONFIGURATION_REPORT_FOLDER = rfTempFolder;
+    rbSaveIntoTheApplicationFolder.Checked := DEFAULT_CONFIGURATION_REPORT_FOLDER = rfApplicationFolder;
+    rbSaveIntoTheCustomFolder.Checked := DEFAULT_CONFIGURATION_REPORT_FOLDER = rfCustomFolder;
+    edbxCustomReportFolderValue.Text := DEFAULT_CONFIGURATION_CUSTOM_REPORT_FOLDER_VALUE;
+    chkbxDontDemandOverwriteConfirmation.Checked := DEFAULT_CONFIGURATION_ENABLE_OVERWRITE_CONFIRMATION;
+    chkbxAskForFileName.Checked := DEFAULT_CONFIGURATION_ENABLE_ASK_FOR_FILE_NAME;
     // выставление доступа к элементам интерфейса
-    edbxCustomReportFolderValue.Enabled := DefaultValue_ReportFolder = rfCustomFolder;
-    actChooseReportFolder.Enabled := DefaultValue_ReportFolder = rfCustomFolder;
+    edbxCustomReportFolderValue.Enabled := DEFAULT_CONFIGURATION_REPORT_FOLDER = rfCustomFolder;
+    actChooseReportFolder.Enabled := DEFAULT_CONFIGURATION_REPORT_FOLDER = rfCustomFolder;
     Log.SendDebug('Действие "' + actChooseReportFolder.Caption + '" ' + Routines.GetConditionalString
       (actChooseReportFolder.Enabled, 'в', 'от') + 'ключено.');
   end;
@@ -1188,18 +1192,18 @@ begin
   if PageControl1.ActivePage.Caption = ' прочие' then
   begin
     // выставление значений по умолчанию для элементов интерфейса
-    chkbxLaunchAtStartup.Checked := DefaultValue_LaunchAtStartup;
-    chkbxPlaySoundOnComplete.Checked := DefaultValue_PlaySoundOnComplete;
-    chkbxEnableAutoGetMessages.Checked := DefaultValue_EnableAutoGetMessages;
-    edbxAutoGetMessagesCycleDurationValue.Text := Routines.GetConditionalString(DefaultValue_EnableAutoGetMessages,
-      IntToStr(DefaultValue_AutoGetMessagesCycleDurationValue), EmptyStr);
-    chkbxCustomHelpFile.Checked := DefaultValue_CustomHelpFile;
-    edbxCustomHelpFileValue.Text := Routines.GetConditionalString(DefaultValue_CustomHelpFile,
-      DefaultValue_CustomHelpFileValue, EmptyStr);
+    chkbxLaunchAtStartup.Checked := DEFAULT_CONFIGURATION_ENABLE_LAUNCH_AT_STARTUP;
+    chkbxPlaySoundOnComplete.Checked := DEFAULT_CONFIGURATION_ENABLE_PLAY_SOUND_ON_COMPLETE;
+    chkbxEnableAutoGetMessages.Checked := DEFAULT_CONFIGURATION_ENABLE_AUTO_GET_MESSAGE;
+    edbxAutoGetMessagesCycleDurationValue.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_AUTO_GET_MESSAGE,
+      IntToStr(DEFAULT_CONFIGURATION_AUTO_GET_MESSAGES_CYCLE_DURATION_VALUE), EmptyStr);
+    chkbxCustomHelpFile.Checked := DEFAULT_CONFIGURATION_ENABLE_CUSTOM_HELP_FILE;
+    edbxCustomHelpFileValue.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_CUSTOM_HELP_FILE,
+      DEFAULT_CONFIGURATION_CUSTOM_HELP_FILE_VALUE, EmptyStr);
     // выставление доступа к элементам интерфейса
-    edbxAutoGetMessagesCycleDurationValue.Enabled := DefaultValue_EnableAutoGetMessages;
-    edbxCustomHelpFileValue.Enabled := DefaultValue_CustomHelpFile;
-    actChooseCustomHelpFile.Enabled := DefaultValue_CustomHelpFile;
+    edbxAutoGetMessagesCycleDurationValue.Enabled := DEFAULT_CONFIGURATION_ENABLE_AUTO_GET_MESSAGE;
+    edbxCustomHelpFileValue.Enabled := DEFAULT_CONFIGURATION_ENABLE_CUSTOM_HELP_FILE;
+    actChooseCustomHelpFile.Enabled := DEFAULT_CONFIGURATION_ENABLE_CUSTOM_HELP_FILE;
     Log.SendDebug('Действие "' + actChooseCustomHelpFile.Caption + '" ' + Routines.GetConditionalString
       (actChooseCustomHelpFile.Enabled, 'в', 'от') + 'ключено.');
   end;
@@ -1208,38 +1212,38 @@ begin
   if PageControl1.ActivePage.Caption = ' главного окна' then
   begin
     // выставление значений по умолчанию для элементов интерфейса
-    chkbxFullScreenAtLaunch.Checked := DefaultValue_FullScreenAtLaunch;
-    chkbxMainFormPositionByCenter.Checked := DefaultValue_MainFormPositionByCenter and
-      (not DefaultValue_FullScreenAtLaunch);
+    chkbxFullScreenAtLaunch.Checked := DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH;
+    chkbxMainFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_POSITION_BY_CENTER and
+      (not DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH);
     edbxMainFormPositionX.Text := Routines.GetConditionalString
-      (not(DefaultValue_MainFormPositionByCenter or DefaultValue_FullScreenAtLaunch),
-      IntToStr(DefaultValue_MainFormLeft), EmptyStr);
+      (not(DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_POSITION_BY_CENTER or DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH),
+      IntToStr(DEFAULT_CONFIGURATION_MAIN_FORM_LEFT), EmptyStr);
     edbxMainFormPositionY.Text := Routines.GetConditionalString
-      (not(DefaultValue_MainFormPositionByCenter or DefaultValue_FullScreenAtLaunch),
-      IntToStr(DefaultValue_MainFormTop), EmptyStr);
-    edbxMainFormWidth.Text := Routines.GetConditionalString(DefaultValue_FullScreenAtLaunch, EmptyStr,
-      IntToStr(DefaultValue_MainFormWidth));
-    edbxMainFormHeight.Text := Routines.GetConditionalString(DefaultValue_FullScreenAtLaunch, EmptyStr,
-      IntToStr(DefaultValue_MainFormHeight));
+      (not(DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_POSITION_BY_CENTER or DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH),
+      IntToStr(DEFAULT_CONFIGURATION_MAIN_FORM_TOP), EmptyStr);
+    edbxMainFormWidth.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_MAIN_FORM_WIDTH));
+    edbxMainFormHeight.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_MAIN_FORM_HEIGHT));
   end;
 
   // вкладка "настройки отображения информации"
   if PageControl1.ActivePage.Caption = ' отображения информации' then
   begin
     // выставление значений по умолчанию для элементов интерфейса
-    edbxOrganizationPanelHeightValue.Text := Routines.GetConditionalString(DefaultValue_OrganizationPanelHalfHeight,
-      EmptyStr, IntToStr(DefaultValue_OrganizationPanelHeightValue));
-    chkbxOrganizationPanelHalfHeight.Checked := DefaultValue_OrganizationPanelHalfHeight;
-    edbxDataPanelWidthValue.Text := Routines.GetConditionalString(DefaultValue_DataPanelHalfWidth, EmptyStr,
-      IntToStr(DefaultValue_DataPanelWidthValue));
-    chkbxDataPanelHalfWidth.Checked := DefaultValue_DataPanelHalfWidth;
-    chkbxShowDataInOtherInfoPanel.Checked := DefaultValue_ShowDataInOtherInfoPanel;
-    chkbxShowMeasuresListAsRichEdit.Checked := DefaultValue_ShowMeasuresListAsRichEdit;
-    chkbxMarkSearchedStrings.Checked := DefaultValue_MarkSearchedStrings;
-    chkbxPutTownAtTheEnd.Checked := DefaultValue_PutTownAtTheEnd;;
+    edbxOrganizationPanelHeightValue.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_ENABLE_HALF_HEIGHT,
+      EmptyStr, IntToStr(DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_HEIGHT_VALUE));
+    chkbxOrganizationPanelHalfHeight.Checked := DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_ENABLE_HALF_HEIGHT;
+    edbxDataPanelWidthValue.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_DATA_PANEL_ENABLE_HALF_WIDTH, EmptyStr,
+      IntToStr(DEFAULT_CONFIGURATION_DATA_PANEL_WIDTH_VALUE));
+    chkbxDataPanelHalfWidth.Checked := DEFAULT_CONFIGURATION_DATA_PANEL_ENABLE_HALF_WIDTH;
+    chkbxShowDataInOtherInfoPanel.Checked := DEFAULT_CONFIGURATION_ENABLE_DATA_IN_OTHER_INFO_PANEL;
+    chkbxShowMeasuresListAsRichEdit.Checked := DEFAULT_CONFIGURATION_ENABLE_MEASURE_LIST_AS_RICH_EDIT;
+    chkbxMarkSearchedStrings.Checked := DEFAULT_CONFIGURATION_ENABLE_MARK_SEARCHED_STRING;
+    chkbxPutTownAtTheEnd.Checked := DEFAULT_CONFIGURATION_ENABLE_PUT_TOWN_AT_THE_END;;
     // выставление доступа к элементам интерфейса
-    edbxOrganizationPanelHeightValue.Enabled := not DefaultValue_OrganizationPanelHalfHeight;
-    edbxDataPanelWidthValue.Enabled := not DefaultValue_DataPanelHalfWidth;
+    edbxOrganizationPanelHeightValue.Enabled := not DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_ENABLE_HALF_HEIGHT;
+    edbxDataPanelWidthValue.Enabled := not DEFAULT_CONFIGURATION_DATA_PANEL_ENABLE_HALF_WIDTH;
   end;
 
   Log.SendInfo('Настройки ' + PageControl1.ActivePage.Caption +
@@ -1300,7 +1304,7 @@ begin
   edbxFlushLogOnStringsQuantityValue.Text := Routines.GetConditionalString(edbxFlushLogOnStringsQuantityValue.Enabled,
     Routines.GetConditionalString(MainForm.Configuration.FlushLogOnStringsQuantityValue > 0,
     IntToStr(MainForm.Configuration.FlushLogOnStringsQuantityValue),
-    IntToStr(DefaultValue_FlushLogOnStringsQuantityValue)), EmptyStr);
+    IntToStr(DEFAULT_CONFIGURATION_FLUSH_LOG_ON_STRINGS_QUANTITY_VALUE)), EmptyStr);
 
   chkbxFlushLogOnClearingLog.Enabled := bUseLog;
   chkbxFlushLogOnClearingLog.Checked := chkbxFlushLogOnClearingLog.Checked and chkbxFlushLogOnClearingLog.Enabled;
@@ -1340,7 +1344,7 @@ begin
   edbxFlushLogOnStringsQuantityValue.Text := Routines.GetConditionalString(bFlushLogOnStringsQuantity,
     Routines.GetConditionalString(MainForm.Configuration.FlushLogOnStringsQuantityValue > 0,
     IntToStr(MainForm.Configuration.FlushLogOnStringsQuantityValue),
-    IntToStr(DefaultValue_FlushLogOnStringsQuantityValue)), EmptyStr);
+    IntToStr(DEFAULT_CONFIGURATION_FLUSH_LOG_ON_STRINGS_QUANTITY_VALUE)), EmptyStr);
 
   Log.SendDebug('Флажок "' + chkbxFlushLogOnStringsQuantity.Caption + '"' + Routines.GetConditionalString
     (bFlushLogOnStringsQuantity, 'в', 'от') + 'ключен.');
@@ -1446,46 +1450,6 @@ begin
     Log.AllowedTypes := KeepLogTypes;
     Log.Enabled := EnableLog;
 
-    // установка положения окна конфигурации в соответсвии со значениями конфигурации программы
-    if ConfigurationFormPosition.bCenter then
-    begin
-      Position := poScreenCenter;
-    end
-    else
-    begin
-      Position := poDesigned;
-      if ConfigurationFormPosition.x < Screen.WorkAreaLeft then
-      begin
-        Left := Screen.WorkAreaLeft;
-      end
-      else
-      begin
-        if ConfigurationFormPosition.x > Screen.WorkAreaLeft + Screen.WorkAreaWidth then
-        begin
-          Left := Screen.WorkAreaLeft + Screen.WorkAreaWidth - Width;
-        end
-        else
-        begin
-          Left := ConfigurationFormPosition.x;
-        end;
-      end;
-      if ConfigurationFormPosition.y < Screen.WorkAreaTop then
-      begin
-        Top := Screen.WorkAreaTop;
-      end
-      else
-      begin
-        if ConfigurationFormPosition.y > Screen.WorkAreaTop + Screen.WorkAreaHeight then
-        begin
-          Top := Screen.WorkAreaTop + Screen.WorkAreaHeight - Height;
-        end
-        else
-        begin
-          Top := ConfigurationFormPosition.y;
-        end;
-      end;
-    end;
-
     // вкладка "настройки интерфейса"
     chkbxShowSplashAtStart.Checked := ShowSplashAtStart;
     chkbxShowToolbar.Checked := ShowToolbar;
@@ -1533,117 +1497,117 @@ begin
     // вкладка "настройки положения диалоговых окон"
     ScrollBox1.VertScrollBar.Position := 0;
 
-    chkbxLoginFormPositionByCenter.Checked := LoginFormPosition.bCenter;
-    edbxLoginFormPositionX.Text := Routines.GetConditionalString(LoginFormPosition.bCenter, EmptyStr,
-      IntToStr(LoginFormPosition.x));
-    edbxLoginFormPositionY.Text := Routines.GetConditionalString(LoginFormPosition.bCenter, EmptyStr,
-      IntToStr(LoginFormPosition.y));
-    edbxLoginFormPositionX.Enabled := not LoginFormPosition.bCenter;
-    edbxLoginFormPositionY.Enabled := not LoginFormPosition.bCenter;
+    chkbxLoginFormPositionByCenter.Checked := LoginFormPosition.Centered;
+    edbxLoginFormPositionX.Text := Routines.GetConditionalString(LoginFormPosition.Centered, EmptyStr,
+      IntToStr(LoginFormPosition.Left));
+    edbxLoginFormPositionY.Text := Routines.GetConditionalString(LoginFormPosition.Centered, EmptyStr,
+      IntToStr(LoginFormPosition.Top));
+    edbxLoginFormPositionX.Enabled := not LoginFormPosition.Centered;
+    edbxLoginFormPositionY.Enabled := not LoginFormPosition.Centered;
 
-    chkbxConfigurationFormPositionByCenter.Checked := ConfigurationFormPosition.bCenter;
-    edbxConfigurationFormPositionX.Text := Routines.GetConditionalString(ConfigurationFormPosition.bCenter, EmptyStr,
-      IntToStr(ConfigurationFormPosition.x));
-    edbxConfigurationFormPositionY.Text := Routines.GetConditionalString(ConfigurationFormPosition.bCenter, EmptyStr,
-      IntToStr(ConfigurationFormPosition.y));
-    edbxConfigurationFormPositionX.Enabled := not ConfigurationFormPosition.bCenter;
-    edbxConfigurationFormPositionY.Enabled := not ConfigurationFormPosition.bCenter;
+    chkbxConfigurationFormPositionByCenter.Checked := ConfigurationFormPosition.Centered;
+    edbxConfigurationFormPositionX.Text := Routines.GetConditionalString(ConfigurationFormPosition.Centered, EmptyStr,
+      IntToStr(ConfigurationFormPosition.Left));
+    edbxConfigurationFormPositionY.Text := Routines.GetConditionalString(ConfigurationFormPosition.Centered, EmptyStr,
+      IntToStr(ConfigurationFormPosition.Top));
+    edbxConfigurationFormPositionX.Enabled := not ConfigurationFormPosition.Centered;
+    edbxConfigurationFormPositionY.Enabled := not ConfigurationFormPosition.Centered;
 
-    chkbxUsersFormPositionByCenter.Checked := UsersFormPosition.bCenter;
-    edbxUsersFormPositionX.Text := Routines.GetConditionalString(UsersFormPosition.bCenter, EmptyStr,
-      IntToStr(UsersFormPosition.x));
-    edbxUsersFormPositionY.Text := Routines.GetConditionalString(UsersFormPosition.bCenter, EmptyStr,
-      IntToStr(UsersFormPosition.y));
-    edbxUsersFormPositionX.Enabled := not UsersFormPosition.bCenter;
-    edbxUsersFormPositionY.Enabled := not UsersFormPosition.bCenter;
+    chkbxUsersFormPositionByCenter.Checked := UsersFormPosition.Centered;
+    edbxUsersFormPositionX.Text := Routines.GetConditionalString(UsersFormPosition.Centered, EmptyStr,
+      IntToStr(UsersFormPosition.Left));
+    edbxUsersFormPositionY.Text := Routines.GetConditionalString(UsersFormPosition.Centered, EmptyStr,
+      IntToStr(UsersFormPosition.Top));
+    edbxUsersFormPositionX.Enabled := not UsersFormPosition.Centered;
+    edbxUsersFormPositionY.Enabled := not UsersFormPosition.Centered;
 
-    chkbxSetPasswordFormPositionByCenter.Checked := SetPasswordFormPosition.bCenter;
-    edbxSetPasswordFormPositionX.Text := Routines.GetConditionalString(SetPasswordFormPosition.bCenter, EmptyStr,
-      IntToStr(SetPasswordFormPosition.x));
-    edbxSetPasswordFormPositionY.Text := Routines.GetConditionalString(SetPasswordFormPosition.bCenter, EmptyStr,
-      IntToStr(SetPasswordFormPosition.y));
-    edbxSetPasswordFormPositionX.Enabled := not SetPasswordFormPosition.bCenter;
-    edbxSetPasswordFormPositionY.Enabled := not SetPasswordFormPosition.bCenter;
+    chkbxSetPasswordFormPositionByCenter.Checked := SetPasswordFormPosition.Centered;
+    edbxSetPasswordFormPositionX.Text := Routines.GetConditionalString(SetPasswordFormPosition.Centered, EmptyStr,
+      IntToStr(SetPasswordFormPosition.Left));
+    edbxSetPasswordFormPositionY.Text := Routines.GetConditionalString(SetPasswordFormPosition.Centered, EmptyStr,
+      IntToStr(SetPasswordFormPosition.Top));
+    edbxSetPasswordFormPositionX.Enabled := not SetPasswordFormPosition.Centered;
+    edbxSetPasswordFormPositionY.Enabled := not SetPasswordFormPosition.Centered;
 
-    chkbxReportFormPositionByCenter.Checked := ReportFormPosition.bCenter;
-    edbxReportFormPositionX.Text := Routines.GetConditionalString(ReportFormPosition.bCenter, EmptyStr,
-      IntToStr(ReportFormPosition.x));
-    edbxReportFormPositionY.Text := Routines.GetConditionalString(ReportFormPosition.bCenter, EmptyStr,
-      IntToStr(ReportFormPosition.y));
-    edbxReportFormPositionX.Enabled := not ReportFormPosition.bCenter;
-    edbxReportFormPositionY.Enabled := not ReportFormPosition.bCenter;
+    chkbxReportFormPositionByCenter.Checked := ReportFormPosition.Centered;
+    edbxReportFormPositionX.Text := Routines.GetConditionalString(ReportFormPosition.Centered, EmptyStr,
+      IntToStr(ReportFormPosition.Left));
+    edbxReportFormPositionY.Text := Routines.GetConditionalString(ReportFormPosition.Centered, EmptyStr,
+      IntToStr(ReportFormPosition.Top));
+    edbxReportFormPositionX.Enabled := not ReportFormPosition.Centered;
+    edbxReportFormPositionY.Enabled := not ReportFormPosition.Centered;
 
-    chkbxMaintenanceFormPositionByCenter.Checked := MaintenanceFormPosition.bCenter;
-    edbxMaintenanceFormPositionX.Text := Routines.GetConditionalString(MaintenanceFormPosition.bCenter, EmptyStr,
-      IntToStr(MaintenanceFormPosition.x));
-    edbxMaintenanceFormPositionY.Text := Routines.GetConditionalString(MaintenanceFormPosition.bCenter, EmptyStr,
-      IntToStr(MaintenanceFormPosition.y));
-    edbxMaintenanceFormPositionX.Enabled := not MaintenanceFormPosition.bCenter;
-    edbxMaintenanceFormPositionY.Enabled := not MaintenanceFormPosition.bCenter;
+    chkbxMaintenanceFormPositionByCenter.Checked := MaintenanceFormPosition.Centered;
+    edbxMaintenanceFormPositionX.Text := Routines.GetConditionalString(MaintenanceFormPosition.Centered, EmptyStr,
+      IntToStr(MaintenanceFormPosition.Left));
+    edbxMaintenanceFormPositionY.Text := Routines.GetConditionalString(MaintenanceFormPosition.Centered, EmptyStr,
+      IntToStr(MaintenanceFormPosition.Top));
+    edbxMaintenanceFormPositionX.Enabled := not MaintenanceFormPosition.Centered;
+    edbxMaintenanceFormPositionY.Enabled := not MaintenanceFormPosition.Centered;
 
-    chkbxClearingFormPositionByCenter.Checked := ClearingFormPosition.bCenter;
-    edbxClearingFormPositionX.Text := Routines.GetConditionalString(ClearingFormPosition.bCenter, EmptyStr,
-      IntToStr(ClearingFormPosition.x));
-    edbxClearingFormPositionY.Text := Routines.GetConditionalString(ClearingFormPosition.bCenter, EmptyStr,
-      IntToStr(ClearingFormPosition.y));
-    edbxClearingFormPositionX.Enabled := not ClearingFormPosition.bCenter;
-    edbxClearingFormPositionY.Enabled := not ClearingFormPosition.bCenter;
+    chkbxClearingFormPositionByCenter.Checked := ClearingFormPosition.Centered;
+    edbxClearingFormPositionX.Text := Routines.GetConditionalString(ClearingFormPosition.Centered, EmptyStr,
+      IntToStr(ClearingFormPosition.Left));
+    edbxClearingFormPositionY.Text := Routines.GetConditionalString(ClearingFormPosition.Centered, EmptyStr,
+      IntToStr(ClearingFormPosition.Top));
+    edbxClearingFormPositionX.Enabled := not ClearingFormPosition.Centered;
+    edbxClearingFormPositionY.Enabled := not ClearingFormPosition.Centered;
 
-    chkbxViewMessagesFormPositionByCenter.Checked := ViewMessagesFormPosition.bCenter;
-    edbxViewMessagesFormPositionX.Text := Routines.GetConditionalString(ViewMessagesFormPosition.bCenter, EmptyStr,
-      IntToStr(ViewMessagesFormPosition.x));
-    edbxViewMessagesFormPositionY.Text := Routines.GetConditionalString(ViewMessagesFormPosition.bCenter, EmptyStr,
-      IntToStr(ViewMessagesFormPosition.y));
-    edbxViewMessagesFormPositionX.Enabled := not ViewMessagesFormPosition.bCenter;
-    edbxViewMessagesFormPositionY.Enabled := not ViewMessagesFormPosition.bCenter;
+    chkbxViewMessagesFormPositionByCenter.Checked := ViewMessagesFormPosition.Centered;
+    edbxViewMessagesFormPositionX.Text := Routines.GetConditionalString(ViewMessagesFormPosition.Centered, EmptyStr,
+      IntToStr(ViewMessagesFormPosition.Left));
+    edbxViewMessagesFormPositionY.Text := Routines.GetConditionalString(ViewMessagesFormPosition.Centered, EmptyStr,
+      IntToStr(ViewMessagesFormPosition.Top));
+    edbxViewMessagesFormPositionX.Enabled := not ViewMessagesFormPosition.Centered;
+    edbxViewMessagesFormPositionY.Enabled := not ViewMessagesFormPosition.Centered;
 
-    chkbxCreateMessageFormPositionByCenter.Checked := CreateMessageFormPosition.bCenter;
-    edbxCreateMessageFormPositionX.Text := Routines.GetConditionalString(CreateMessageFormPosition.bCenter, EmptyStr,
-      IntToStr(CreateMessageFormPosition.x));
-    edbxCreateMessageFormPositionY.Text := Routines.GetConditionalString(CreateMessageFormPosition.bCenter, EmptyStr,
-      IntToStr(CreateMessageFormPosition.y));
-    edbxCreateMessageFormPositionX.Enabled := not CreateMessageFormPosition.bCenter;
-    edbxCreateMessageFormPositionY.Enabled := not CreateMessageFormPosition.bCenter;
+    chkbxCreateMessageFormPositionByCenter.Checked := CreateMessageFormPosition.Centered;
+    edbxCreateMessageFormPositionX.Text := Routines.GetConditionalString(CreateMessageFormPosition.Centered, EmptyStr,
+      IntToStr(CreateMessageFormPosition.Left));
+    edbxCreateMessageFormPositionY.Text := Routines.GetConditionalString(CreateMessageFormPosition.Centered, EmptyStr,
+      IntToStr(CreateMessageFormPosition.Top));
+    edbxCreateMessageFormPositionX.Enabled := not CreateMessageFormPosition.Centered;
+    edbxCreateMessageFormPositionY.Enabled := not CreateMessageFormPosition.Centered;
 
-    chkbxViewMessageFormPositionByCenter.Checked := ViewMessageFormPosition.bCenter;
-    edbxViewMessageFormPositionX.Text := Routines.GetConditionalString(ViewMessageFormPosition.bCenter, EmptyStr,
-      IntToStr(ViewMessageFormPosition.x));
-    edbxViewMessageFormPositionY.Text := Routines.GetConditionalString(ViewMessageFormPosition.bCenter, EmptyStr,
-      IntToStr(ViewMessageFormPosition.y));
-    edbxViewMessageFormPositionX.Enabled := not ViewMessageFormPosition.bCenter;
-    edbxViewMessageFormPositionY.Enabled := not ViewMessageFormPosition.bCenter;
+    chkbxViewMessageFormPositionByCenter.Checked := ViewMessageFormPosition.Centered;
+    edbxViewMessageFormPositionX.Text := Routines.GetConditionalString(ViewMessageFormPosition.Centered, EmptyStr,
+      IntToStr(ViewMessageFormPosition.Left));
+    edbxViewMessageFormPositionY.Text := Routines.GetConditionalString(ViewMessageFormPosition.Centered, EmptyStr,
+      IntToStr(ViewMessageFormPosition.Top));
+    edbxViewMessageFormPositionX.Enabled := not ViewMessageFormPosition.Centered;
+    edbxViewMessageFormPositionY.Enabled := not ViewMessageFormPosition.Centered;
 
-    chkbxPhonesFormPositionByCenter.Checked := PhonesFormPosition.bCenter;
-    edbxPhonesFormPositionX.Text := Routines.GetConditionalString(PhonesFormPosition.bCenter, EmptyStr,
-      IntToStr(PhonesFormPosition.x));
-    edbxPhonesFormPositionY.Text := Routines.GetConditionalString(PhonesFormPosition.bCenter, EmptyStr,
-      IntToStr(PhonesFormPosition.y));
-    edbxPhonesFormPositionX.Enabled := not PhonesFormPosition.bCenter;
-    edbxPhonesFormPositionY.Enabled := not PhonesFormPosition.bCenter;
+    chkbxPhonesFormPositionByCenter.Checked := PhonesFormPosition.Centered;
+    edbxPhonesFormPositionX.Text := Routines.GetConditionalString(PhonesFormPosition.Centered, EmptyStr,
+      IntToStr(PhonesFormPosition.Left));
+    edbxPhonesFormPositionY.Text := Routines.GetConditionalString(PhonesFormPosition.Centered, EmptyStr,
+      IntToStr(PhonesFormPosition.Top));
+    edbxPhonesFormPositionX.Enabled := not PhonesFormPosition.Centered;
+    edbxPhonesFormPositionY.Enabled := not PhonesFormPosition.Centered;
 
-    chkbxAddEditPhoneFormPositionByCenter.Checked := AddEditPhoneFormPosition.bCenter;
-    edbxAddEditPhoneFormPositionX.Text := Routines.GetConditionalString(AddEditPhoneFormPosition.bCenter, EmptyStr,
-      IntToStr(AddEditPhoneFormPosition.x));
-    edbxAddEditPhoneFormPositionY.Text := Routines.GetConditionalString(AddEditPhoneFormPosition.bCenter, EmptyStr,
-      IntToStr(AddEditPhoneFormPosition.y));
-    edbxAddEditPhoneFormPositionX.Enabled := not AddEditPhoneFormPosition.bCenter;
-    edbxAddEditPhoneFormPositionY.Enabled := not AddEditPhoneFormPosition.bCenter;
+    chkbxAddEditPhoneFormPositionByCenter.Checked := AddEditPhoneFormPosition.Centered;
+    edbxAddEditPhoneFormPositionX.Text := Routines.GetConditionalString(AddEditPhoneFormPosition.Centered, EmptyStr,
+      IntToStr(AddEditPhoneFormPosition.Left));
+    edbxAddEditPhoneFormPositionY.Text := Routines.GetConditionalString(AddEditPhoneFormPosition.Centered, EmptyStr,
+      IntToStr(AddEditPhoneFormPosition.Top));
+    edbxAddEditPhoneFormPositionX.Enabled := not AddEditPhoneFormPosition.Centered;
+    edbxAddEditPhoneFormPositionY.Enabled := not AddEditPhoneFormPosition.Centered;
 
-    chkbxAddMassMsrFormPositionByCenter.Checked := AddMassMsrFormPosition.bCenter;
-    edbxAddMassMsrFormPositionX.Text := Routines.GetConditionalString(AddMassMsrFormPosition.bCenter, EmptyStr,
-      IntToStr(AddMassMsrFormPosition.x));
-    edbxAddMassMsrFormPositionY.Text := Routines.GetConditionalString(AddMassMsrFormPosition.bCenter, EmptyStr,
-      IntToStr(AddMassMsrFormPosition.y));
-    edbxAddMassMsrFormPositionX.Enabled := not AddMassMsrFormPosition.bCenter;
-    edbxAddMassMsrFormPositionY.Enabled := not AddMassMsrFormPosition.bCenter;
+    chkbxAddMassMsrFormPositionByCenter.Checked := AddMassMsrFormPosition.Centered;
+    edbxAddMassMsrFormPositionX.Text := Routines.GetConditionalString(AddMassMsrFormPosition.Centered, EmptyStr,
+      IntToStr(AddMassMsrFormPosition.Left));
+    edbxAddMassMsrFormPositionY.Text := Routines.GetConditionalString(AddMassMsrFormPosition.Centered, EmptyStr,
+      IntToStr(AddMassMsrFormPosition.Top));
+    edbxAddMassMsrFormPositionX.Enabled := not AddMassMsrFormPosition.Centered;
+    edbxAddMassMsrFormPositionY.Enabled := not AddMassMsrFormPosition.Centered;
 
-    chkbxPermissionsFormPositionByCenter.Checked := PermissionsFormPosition.bCenter;
-    edbxPermissionsFormPositionX.Text := Routines.GetConditionalString(PermissionsFormPosition.bCenter, EmptyStr,
-      IntToStr(PermissionsFormPosition.x));
-    edbxPermissionsFormPositionY.Text := Routines.GetConditionalString(PermissionsFormPosition.bCenter, EmptyStr,
-      IntToStr(PermissionsFormPosition.y));
-    edbxPermissionsFormPositionX.Enabled := not PermissionsFormPosition.bCenter;
-    edbxPermissionsFormPositionY.Enabled := not PermissionsFormPosition.bCenter;
+    chkbxPermissionsFormPositionByCenter.Checked := PermissionsFormPosition.Centered;
+    edbxPermissionsFormPositionX.Text := Routines.GetConditionalString(PermissionsFormPosition.Centered, EmptyStr,
+      IntToStr(PermissionsFormPosition.Left));
+    edbxPermissionsFormPositionY.Text := Routines.GetConditionalString(PermissionsFormPosition.Centered, EmptyStr,
+      IntToStr(PermissionsFormPosition.Top));
+    edbxPermissionsFormPositionX.Enabled := not PermissionsFormPosition.Centered;
+    edbxPermissionsFormPositionY.Enabled := not PermissionsFormPosition.Centered;
 
     // вкладка "настройки процедуры логирования"
     chkbxStoreLastLogin.Checked := StoreLogin;
@@ -1793,7 +1757,7 @@ begin
   end
   else
   begin
-    LoginForm := TLoginForm.Create(Self);
+    LoginForm := TLoginForm.Create(Self, MainForm.Configuration.LoginFormPosition);
     try
       edbxLoginFormPositionX.Text := IntToStr((Screen.WorkAreaWidth - LoginForm.Width) div 2);
       edbxLoginFormPositionY.Text := IntToStr((Screen.WorkAreaHeight - LoginForm.Height) div 2);
@@ -1825,7 +1789,7 @@ begin
   end
   else
   begin
-    SetPasswordForm := TSetPasswordForm.Create(Self);
+    SetPasswordForm := TSetPasswordForm.Create(Self, MainForm.Configuration.SetPasswordFormPosition);
     try
       edbxSetPasswordFormPositionX.Text := IntToStr((Screen.WorkAreaWidth - SetPasswordForm.Width) div 2);
       edbxSetPasswordFormPositionY.Text := IntToStr((Screen.WorkAreaHeight - SetPasswordForm.Height) div 2);
@@ -1857,7 +1821,7 @@ begin
   end
   else
   begin
-    ReportForm := TReportForm.Create(Self);
+    ReportForm := TReportForm.Create(Self, MainForm.Configuration.ReportFormPosition);
     try
       edbxReportFormPositionX.Text := IntToStr((Screen.WorkAreaWidth - ReportForm.Width) div 2);
       edbxReportFormPositionY.Text := IntToStr((Screen.WorkAreaHeight - ReportForm.Height) div 2);
@@ -1957,7 +1921,7 @@ begin
   end
   else
   begin
-    CreateMessageForm := TCreateMessageForm.Create(Self);
+    CreateMessageForm := TCreateMessageForm.Create(Self, MainForm.Configuration.CreateMessageFormPosition);
     try
       edbxCreateMessageFormPositionX.Text := IntToStr((Screen.WorkAreaWidth - CreateMessageForm.Width) div 2);
       edbxCreateMessageFormPositionY.Text := IntToStr((Screen.WorkAreaHeight - CreateMessageForm.Height) div 2);
@@ -1989,7 +1953,7 @@ begin
   end
   else
   begin
-    ViewMessageForm := TViewMessageForm.Create(Self);
+    ViewMessageForm := TViewMessageForm.Create(Self, MainForm.Configuration.ViewMessageFormPosition);
     try
       edbxViewMessageFormPositionX.Text := IntToStr((Screen.WorkAreaWidth - ViewMessageForm.Width) div 2);
       edbxViewMessageFormPositionY.Text := IntToStr((Screen.WorkAreaHeight - ViewMessageForm.Height) div 2);
@@ -2021,7 +1985,7 @@ begin
   end
   else
   begin
-    ViewMessagesForm := TViewMessagesForm.Create(Self);
+    ViewMessagesForm := TViewMessagesForm.Create(Self, MainForm.Configuration.ViewMessagesFormPosition);
     try
       edbxViewMessagesFormPositionX.Text := IntToStr((Screen.WorkAreaWidth - ViewMessagesForm.Width) div 2);
       edbxViewMessagesFormPositionY.Text := IntToStr((Screen.WorkAreaHeight - ViewMessagesForm.Height) div 2);
@@ -2068,7 +2032,7 @@ begin
   end
   else
   begin
-    AddEditPhoneForm := TAddEditPhoneForm.Create(Self);
+    AddEditPhoneForm := TAddEditPhoneForm.Create(Self, MainForm.Configuration.AddEditPhoneFormPosition);
     try
       edbxAddEditPhoneFormPositionX.Text := IntToStr((Screen.WorkAreaWidth - AddEditPhoneForm.Width) div 2);
       edbxAddEditPhoneFormPositionY.Text := IntToStr((Screen.WorkAreaHeight - AddEditPhoneForm.Height) div 2);
@@ -2100,7 +2064,7 @@ begin
   end
   else
   begin
-    AddMassMsrForm := TAddMassMsrForm.Create(Self);
+    AddMassMsrForm := TAddMassMsrForm.Create(Self, MainForm.Configuration.AddMassMsrFormPosition);
     try
       edbxAddMassMsrFormPositionX.Text := IntToStr((Screen.WorkAreaWidth - AddMassMsrForm.Width) div 2);
       edbxAddMassMsrFormPositionY.Text := IntToStr((Screen.WorkAreaHeight - AddMassMsrForm.Height) div 2);
@@ -2132,7 +2096,7 @@ begin
   end
   else
   begin
-    PermissionsForm := TPermissionsForm.Create(Self);
+    PermissionsForm := TPermissionsForm.Create(Self, MainForm.Configuration.PermissionsFormPosition);
     try
       edbxPermissionsFormPositionX.Text := IntToStr((Screen.WorkAreaWidth - PermissionsForm.Width) div 2);
       edbxPermissionsFormPositionY.Text := IntToStr((Screen.WorkAreaHeight - PermissionsForm.Height) div 2);
