@@ -3,7 +3,7 @@ unit OA5.uTAddMassMsrForm;
 interface
 
 uses
-  CastersPackage.uTLogForm,
+  CastersPackage.uTPositionedLogForm,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
@@ -13,7 +13,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-  TAddMassMsrForm = class(TLogForm)
+  TAddMassMsrForm = class(TPositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actAdd: TAction;
@@ -73,6 +73,7 @@ uses
   CastersPackage.uRoutines,
   OA5.uMainForm,
   Winapi.Windows,
+  CastersPackage.uTLogForm,
   VCL.Forms;
 
 resourcestring
@@ -432,46 +433,6 @@ begin
     Log.UserName := MainForm.CurrentUser.Login;
     Log.AllowedTypes := KeepLogTypes;
     Log.Enabled := EnableLog;
-
-    // установка положения окна конфигурации в соответсвии со значениями конфигурации программы
-    if AddMassMsrFormPosition.bCenter then
-    begin
-      Position := poScreenCenter;
-    end
-    else
-    begin
-      Position := poDesigned;
-      if AddMassMsrFormPosition.x < Screen.WorkAreaLeft then
-      begin
-        Left := Screen.WorkAreaLeft;
-      end
-      else
-      begin
-        if AddMassMsrFormPosition.x > Screen.WorkAreaLeft + Screen.WorkAreaWidth then
-        begin
-          Left := Screen.WorkAreaLeft + Screen.WorkAreaWidth - Width;
-        end
-        else
-        begin
-          Left := AddMassMsrFormPosition.x;
-        end;
-      end;
-      if AddMassMsrFormPosition.y < Screen.WorkAreaTop then
-      begin
-        Top := Screen.WorkAreaTop;
-      end
-      else
-      begin
-        if AddMassMsrFormPosition.y > Screen.WorkAreaTop + Screen.WorkAreaHeight then
-        begin
-          Top := Screen.WorkAreaTop + Screen.WorkAreaHeight - Height;
-        end
-        else
-        begin
-          Top := AddMassMsrFormPosition.y;
-        end;
-      end;
-    end;
   end;
 
   ProcedureFooter;
@@ -563,8 +524,8 @@ begin
   b := IsStringIsTime(edbxTime.Text);
   if actAdd.Enabled <> b then
   begin
-    actAdd.Enabled := b;
     ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actAdd.Caption]), '{335FB31A-4340-4CE6-870A-7998E8A66EED}');
+    actAdd.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actAdd));
     ProcedureFooter;
   end;
@@ -577,9 +538,9 @@ begin
   b := lvMsrDateTimeList.Selected <> nil;
   if actDelete.Enabled <> b then
   begin
-    actDelete.Enabled := b;
     ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actDelete.Caption]),
       '{748F40FE-3AAD-45AA-AFF6-BFAD901BC997}');
+    actDelete.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actDelete));
     ProcedureFooter;
   end;
@@ -592,8 +553,8 @@ begin
   b := lvMsrDateTimeList.Items.Count > 0;
   if actClear.Enabled <> b then
   begin
-    actClear.Enabled := b;
     ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actClear.Caption]), '{F520340E-0BE2-4EE6-9B3E-F8C3F3AF1D16}');
+    actClear.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actClear));
     ProcedureFooter;
   end;
@@ -606,9 +567,9 @@ begin
   b := lvMsrDateTimeList.Items.Count > 0;
   if actConfirm.Enabled <> b then
   begin
-    actConfirm.Enabled := b;
     ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actConfirm.Caption]),
       '{4ECF3B13-FB14-4A53-8B56-5DC90A501AB8}');
+    actConfirm.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actConfirm));
     ProcedureFooter;
   end;

@@ -13,8 +13,20 @@ const
   DEFAULT_MEASURE_LIST_AUTO_NORMALIZE_DATA = False;
 
 type
+  /// <summary>
+  /// Класс исключения для объектов типа <b>TMeasureList</b>.
+  /// </summary>
+  /// <remarks>
+  /// См. также описание класса <b>TMeasureList</b>.
+  /// </remarks>
   EMeasureList = class(Exception);
 
+  /// <summary>
+  /// Класс списка интерфейсов типа <b>IMeasure</b>.
+  /// </summary>
+  /// <remarks>
+  /// См. также описание интерфейса <b>IMeasure</b> и класса <b>TMeasure</b>.
+  /// </remarks>
   TMeasureList = class(TInterfacedObject, IMeasureList, INormalized)
   strict private
     FAutoNormalizeData: Boolean;
@@ -28,8 +40,8 @@ type
   public
     constructor Create; reintroduce; virtual;
     destructor Destroy; override;
-    procedure AfterCreate; virtual;
-    procedure BeforeDestroy; virtual;
+    procedure Initialize; virtual;
+    procedure Finalize; virtual;
     function IndexOf(const AItem: IMeasure): Integer;
 
     function Add(const AItem: IMeasure): Integer;
@@ -114,21 +126,21 @@ constructor TMeasureList.Create;
 begin
   inherited;
   FList := TInterfaceList.Create;
-  AfterCreate;
+  Initialize;
 end;
 
-procedure TMeasureList.AfterCreate;
+procedure TMeasureList.Initialize;
 begin
 end;
 
 destructor TMeasureList.Destroy;
 begin
-  BeforeDestroy;
+  Finalize;
   Clear;
   inherited;
 end;
 
-procedure TMeasureList.BeforeDestroy;
+procedure TMeasureList.Finalize;
 begin
 end;
 

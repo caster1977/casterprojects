@@ -3,7 +3,7 @@ unit OA5.uTViewMessagesForm;
 interface
 
 uses
-  CastersPackage.uTLogForm,
+  CastersPackage.uTPositionedLogForm,
   System.Classes,
   Vcl.Controls,
   Vcl.ImgList,
@@ -13,7 +13,7 @@ uses
   Vcl.ComCtrls;
 
 type
-  TViewMessagesForm = class(TLogForm)
+  TViewMessagesForm = class(TPositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actClose: TAction;
@@ -42,6 +42,7 @@ implementation
 
 uses
   Vcl.Forms,
+  CastersPackage.uTLogForm,
   CastersPackage.uRoutines,
   System.SysUtils;
 

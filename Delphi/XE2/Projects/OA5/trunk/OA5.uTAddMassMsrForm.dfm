@@ -30,7 +30,6 @@ object AddMassMsrForm: TAddMassMsrForm
     BevelKind = bkTile
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 245
     DesignSize = (
       344
       30)
@@ -75,8 +74,6 @@ object AddMassMsrForm: TAddMassMsrForm
     BevelEdges = []
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 354
-    ExplicitHeight = 255
     object pnlLeft: TPanel
       Left = 0
       Top = 0
@@ -87,9 +84,6 @@ object AddMassMsrForm: TAddMassMsrForm
       BevelKind = bkTile
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 5
-      ExplicitTop = 5
-      ExplicitHeight = 245
       DesignSize = (
         168
         250)
@@ -122,7 +116,7 @@ object AddMassMsrForm: TAddMassMsrForm
         Width = 162
         Height = 160
         MultiSelect = True
-        Date = 40739.475838333330000000
+        Date = 40739.611651944450000000
         EndDate = 40739.000000000000000000
         TabOrder = 0
         OnClick = MonthCalendarClick
@@ -135,7 +129,7 @@ object AddMassMsrForm: TAddMassMsrForm
         TabOrder = 1
       end
       object btnAdd: TButton
-        Left = 81
+        Left = 75
         Top = 219
         Width = 81
         Height = 25
@@ -143,6 +137,7 @@ object AddMassMsrForm: TAddMassMsrForm
         Action = actAdd
         Anchors = [akTop, akRight]
         TabOrder = 2
+        ExplicitLeft = 77
       end
     end
     object pnlRight: TPanel
@@ -155,9 +150,6 @@ object AddMassMsrForm: TAddMassMsrForm
       BevelOuter = bvNone
       BorderWidth = 5
       TabOrder = 1
-      ExplicitLeft = 175
-      ExplicitTop = 5
-      ExplicitHeight = 245
       DesignSize = (
         174
         250)
@@ -209,7 +201,7 @@ object AddMassMsrForm: TAddMassMsrForm
     Left = 200
     Top = 104
     Bitmap = {
-      494C010106000800980010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800A40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

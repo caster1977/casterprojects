@@ -3,7 +3,7 @@ unit OA5.uTCreateMessageForm;
 interface
 
 uses
-  CastersPackage.uTLogForm,
+  CastersPackage.uTPositionedLogForm,
   Vcl.ComCtrls,
   Vcl.Controls,
   Vcl.ExtCtrls,
@@ -13,7 +13,7 @@ uses
   Vcl.StdCtrls;
 
 type
-  TCreateMessageForm = class(TLogForm)
+  TCreateMessageForm = class(TPositionedLogForm)
     ImageList: TImageList;
     actHelp: TAction;
     actClose: TAction;
@@ -54,6 +54,7 @@ implementation
 uses
   System.SysUtils,
   Vcl.Forms,
+  CastersPackage.uTLogForm,
   OA5.uMainForm;
 
 const
@@ -154,44 +155,6 @@ begin
     Log.UserName := MainForm.CurrentUser.Login;
     Log.AllowedTypes := KeepLogTypes;
     Log.Enabled := EnableLog;
-
-    // установка положения окна в соответсвии со значениями конфигурации программы
-    if CreateMessageFormPosition.bCenter then
-    begin
-      Position := poScreenCenter;
-    end
-    else
-    begin
-      Position := poDesigned;
-      if CreateMessageFormPosition.x < Screen.WorkAreaLeft then
-      begin
-        Left := Screen.WorkAreaLeft;
-      end
-      else
-      begin
-        if CreateMessageFormPosition.x > Screen.WorkAreaLeft + Screen.WorkAreaWidth then
-        begin
-          Left := Screen.WorkAreaLeft + Screen.WorkAreaWidth - Width;
-        end
-        else
-        begin
-          Left := CreateMessageFormPosition.x;
-        end;
-      end;
-      if CreateMessageFormPosition.y < Screen.WorkAreaTop then
-      begin
-        Top := Screen.WorkAreaTop;
-      end
-      else
-        if CreateMessageFormPosition.y > Screen.WorkAreaTop + Screen.WorkAreaHeight then
-        begin
-          Top := Screen.WorkAreaTop + Screen.WorkAreaHeight - Height;
-        end
-        else
-        begin
-          Top := CreateMessageFormPosition.y;
-        end;
-    end;
   end;
 
   ProcedureFooter;

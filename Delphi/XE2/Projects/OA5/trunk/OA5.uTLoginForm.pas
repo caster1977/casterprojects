@@ -3,7 +3,7 @@ unit OA5.uTLoginForm;
 interface
 
 uses
-  CastersPackage.uTLogForm,
+  CastersPackage.uTPositionedLogForm,
   System.Classes,
   Vcl.Forms,
   Vcl.ActnList,
@@ -14,7 +14,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-  TLoginForm = class(TLogForm)
+  TLoginForm = class(TPositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actHelp: TAction;
@@ -48,6 +48,7 @@ implementation
 uses
   System.SysUtils,
   OA5.uMainForm,
+  CastersPackage.uTLogForm,
   CastersPackage.uRoutines;
 
 resourcestring
@@ -141,46 +142,6 @@ begin
     Log.UserName := MainForm.CurrentUser.Login;
     Log.AllowedTypes := KeepLogTypes;
     Log.Enabled := EnableLog;
-
-    // установка положения окна конфигурации в соответсвии со значениями конфигурации программы
-    if LoginFormPosition.bCenter then
-    begin
-      Position := poScreenCenter;
-    end
-    else
-    begin
-      Position := poDesigned;
-      if LoginFormPosition.x < Screen.WorkAreaLeft then
-      begin
-        Left := Screen.WorkAreaLeft;
-      end
-      else
-      begin
-        if LoginFormPosition.x > Screen.WorkAreaLeft + Screen.WorkAreaWidth then
-        begin
-          Left := Screen.WorkAreaLeft + Screen.WorkAreaWidth - Width;
-        end
-        else
-        begin
-          Left := LoginFormPosition.x;
-        end;
-      end;
-      if LoginFormPosition.y < Screen.WorkAreaTop then
-      begin
-        Top := Screen.WorkAreaTop;
-      end
-      else
-      begin
-        if LoginFormPosition.y > Screen.WorkAreaTop + Screen.WorkAreaHeight then
-        begin
-          Top := Screen.WorkAreaTop + Screen.WorkAreaHeight - Height;
-        end
-        else
-        begin
-          Top := LoginFormPosition.y;
-        end;
-      end;
-    end;
   end;
 
   ProcedureFooter;

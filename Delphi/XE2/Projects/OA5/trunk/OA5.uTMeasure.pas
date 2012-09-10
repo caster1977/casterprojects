@@ -126,12 +126,11 @@ type
     /// Конструктор класса
     /// </summary>
     /// <param name="AAutoNormalizeData">
-    /// <para>
     /// Нужно ли будет автоматически выполнять нормализацию данных при
-    /// присвоении значений остальным свойствам объекта.
-    /// </para>
+    /// присвоении значений остальным свойствам объекта. Значение по
+    /// умолчанию - <b>DEFAULT_MEASURE_AUTO_NORMALIZE_DATA</b>.
     /// </param>
-    constructor Create(const AAutoNormalizeData: Boolean = True); virtual;
+    constructor Create(const AAutoNormalizeData: Boolean = DEFAULT_MEASURE_AUTO_NORMALIZE_DATA); virtual;
     /// <summary>
     /// Функция валидации данных класса (только проверка значений)
     /// </summary>
@@ -228,7 +227,7 @@ type
     /// <summary>
     /// Наименование мероприятия
     /// </summary>
-    property Name: string read GetName write SetName nodefault;
+    property name: string read GetName write SetName nodefault;
     /// <summary>
     /// Идентификатор организации, которая проводит мероприятие
     /// </summary>
@@ -272,7 +271,33 @@ type
     property Type_: string read GetType write SetType nodefault;
   end;
 
+  /// <summary>
+  /// Функция для создания нового объекта типа <b>TMasure</b> и получения
+  /// интерфейсной ссылки на созданный объект.
+  /// </summary>
+  /// <param name="AAutoNormalizeData">
+  /// Нужно ли будет автоматически выполнять нормализацию данных при
+  /// присвоении значений остальным свойствам объекта. Значение по
+  /// умолчанию - <b>DEFAULT_MEASURE_AUTO_NORMALIZE_DATA</b>.
+  /// </param>
+  /// <returns>
+  /// Интерфейсная ссылка на созданный объект в случае успешного выполнения
+  /// функции, либо <b>nil</b> в случае ошибки.
+  /// </returns>
 function GetIMeasure(const AAutoNormalizeData: Boolean = DEFAULT_MEASURE_AUTO_NORMALIZE_DATA): IMeasure;
+
+/// <summary>
+/// Функция для получения интерфейсной ссылки типа <b>INormalized</b> на
+/// объект типа <b>TMeasure</b> через интерфейсную ссылку типа <b>IMeasure</b>
+/// .
+/// </summary>
+/// <param name="AMeasure">
+/// Интерфейсная ссылка типа <b>IMeasure</b> на объект типа <b>TMeasure</b>.
+/// </param>
+/// <returns>
+/// Интерфейсная ссылка типа <b>INormalized</b> на объект типа <b>TMeasure</b>
+/// в случае успешного выполнения функции либо <b>nil</b> в случае ошибки.
+/// </returns>
 function GetINormalized(const AMeasure: IMeasure): INormalized; overload;
 
 implementation
@@ -695,7 +720,7 @@ begin
   duration_hours := 0;
   duration_minutes := 0;
   measure_type := Type_;
-  measure_name := Name;
+  measure_name := name;
   measure_author := Author;
   measure_producer := Producer;
   measure_performer := Performer;
@@ -778,7 +803,7 @@ begin
   DurationMinutes := 0;
 
   Type_ := Routines.PrepareStringForRNE5(Type_);
-  Name := Routines.PrepareStringForRNE5(Name);
+  name := Routines.PrepareStringForRNE5(name);
   Author := Routines.PrepareStringForRNE5(Author);
   Producer := Routines.PrepareStringForRNE5(Producer);
   Performer := Routines.PrepareStringForRNE5(Performer);

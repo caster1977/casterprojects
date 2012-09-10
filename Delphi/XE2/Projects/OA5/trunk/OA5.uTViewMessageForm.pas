@@ -3,7 +3,7 @@ unit OA5.uTViewMessageForm;
 interface
 
 uses
-  CastersPackage.uTLogForm,
+  CastersPackage.uTPositionedLogForm,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
@@ -13,7 +13,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-  TViewMessageForm = class(TLogForm)
+  TViewMessageForm = class(TPositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actHelp: TAction;
@@ -63,6 +63,7 @@ uses
   Vcl.Forms,
   OA5.uMainForm,
   CastersPackage.uRoutines,
+  CastersPackage.uTLogForm,
   System.SysUtils;
 
 resourcestring
@@ -82,46 +83,6 @@ begin
     Log.UserName := MainForm.CurrentUser.Login;
     Log.AllowedTypes := KeepLogTypes;
     Log.Enabled := EnableLog;
-
-    // установка положения окна в соответсвии со значениями конфигурации программы
-    if ViewMessageFormPosition.bCenter then
-    begin
-      Position := poScreenCenter;
-    end
-    else
-    begin
-      Position := poDesigned;
-      if ViewMessageFormPosition.x < Screen.WorkAreaLeft then
-      begin
-        Left := Screen.WorkAreaLeft;
-      end
-      else
-      begin
-        if ViewMessageFormPosition.x > Screen.WorkAreaLeft + Screen.WorkAreaWidth then
-        begin
-          Left := Screen.WorkAreaLeft + Screen.WorkAreaWidth - Width;
-        end
-        else
-        begin
-          Left := ViewMessageFormPosition.x;
-        end;
-      end;
-      if ViewMessageFormPosition.y < Screen.WorkAreaTop then
-      begin
-        Top := Screen.WorkAreaTop;
-      end
-      else
-      begin
-        if ViewMessageFormPosition.y > Screen.WorkAreaTop + Screen.WorkAreaHeight then
-        begin
-          Top := Screen.WorkAreaTop + Screen.WorkAreaHeight - Height;
-        end
-        else
-        begin
-          Top := ViewMessageFormPosition.y;
-        end;
-      end;
-    end;
   end;
 
   ProcedureFooter;
@@ -178,21 +139,24 @@ end;
 
 procedure TViewMessageForm.actPreviousExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actPrevious.Caption]), '{F1B8E1BE-3D35-4D60-A962-1C33B0E2140E}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actPrevious.Caption]),
+    '{F1B8E1BE-3D35-4D60-A962-1C33B0E2140E}');
   _Previous;
   ProcedureFooter;
 end;
 
 procedure TViewMessageForm.actProcessExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actProcess.Caption]), '{DE989347-B026-45D2-B6BA-21A502C1F8F9}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actProcess.Caption]),
+    '{DE989347-B026-45D2-B6BA-21A502C1F8F9}');
   _Process;
   ProcedureFooter;
 end;
 
 procedure TViewMessageForm._Close;
 begin
-  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsViewMessageForm]), '{25E73E71-59EF-4E44-BCFE-482B953B7469}');
+  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsViewMessageForm]),
+    '{25E73E71-59EF-4E44-BCFE-482B953B7469}');
   ModalResult := mrCancel;
   Log.SendInfo(Format(RsWindowClosedByUser, [RsViewMessageForm]));
   ProcedureFooter;

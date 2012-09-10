@@ -1,4 +1,4 @@
-﻿unit OA5.uMainForm;
+﻿unit OA5.uTMainForm;
 
 interface
 

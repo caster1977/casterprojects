@@ -1,25 +1,12 @@
-unit OA5.uInterfaces;
+unit OA5.uIAccount;
 
 interface
 
-type
-  IPrivilegies=interface(IInterface)
-  ['{8591B178-CA0E-455E-A823-9C21A34B118F}']
-    function GetAccount: boolean;
-    function GetClear: boolean;
-    function GetEdit: boolean;
-    function GetReport: boolean;
-    procedure SetAccount(const Value: boolean);
-    procedure SetClear(const Value: boolean);
-    procedure SetEdit(const Value: boolean);
-    procedure SetReport(const Value: boolean);
-    property Edit: boolean read GetEdit write SetEdit;
-    property Clear: boolean read GetClear write SetClear;
-    property Account: boolean read GetAccount write SetAccount;
-    property Report: boolean read GetReport write SetReport;
-  end;
+uses
+  OA5.uIPrivilegies;
 
-  IAccount=interface(IInterface)
+type
+  IAccount = interface
     ['{1D74197E-59C0-4A84-AAA2-BFFD74A84FA3}']
     function GetLogged: boolean;
     function GetFullname: string;
@@ -46,7 +33,6 @@ type
     property Phone: string read GetPhone write SetPhone;
     property Privilegies: IPrivilegies read GetPrivilegies write SetPrivilegies;
   end;
-
 
 implementation
 
