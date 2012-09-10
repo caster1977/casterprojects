@@ -28,7 +28,6 @@ object ReportForm: TReportForm
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitHeight = 359
     object pnlUsers: TPanel
       Left = 0
       Top = 0
@@ -38,7 +37,6 @@ object ReportForm: TReportForm
       Anchors = [akLeft, akTop, akRight, akBottom]
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitHeight = 42
       DesignSize = (
         259
         349)
@@ -96,8 +94,6 @@ object ReportForm: TReportForm
     BevelKind = bkTile
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 399
-    ExplicitHeight = 359
     DesignSize = (
       387
       349)
@@ -326,7 +322,6 @@ object ReportForm: TReportForm
         Anchors = [akLeft, akTop, akRight]
         Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1077#1081', '#1085#1077' '#1080#1079#1084#1077#1085#1103#1074#1096#1080#1093' '#1041#1044' '#1074' '#1091#1082#1072#1079#1072#1085#1085#1099#1081' '#1087#1077#1088#1080#1086#1076
         TabOrder = 2
-        ExplicitWidth = 374
       end
       object chkbxWeekStartsFromDayOfBeginning: TCheckBox
         Left = 7
@@ -348,8 +343,6 @@ object ReportForm: TReportForm
       BevelKind = bkTile
       BevelOuter = bvNone
       TabOrder = 3
-      ExplicitTop = 54
-      ExplicitWidth = 284
       DesignSize = (
         387
         30)
@@ -390,7 +383,7 @@ object ReportForm: TReportForm
     Left = 200
     Top = 200
     Bitmap = {
-      494C010104000800B00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800B40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

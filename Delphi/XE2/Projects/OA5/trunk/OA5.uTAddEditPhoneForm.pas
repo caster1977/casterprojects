@@ -3,7 +3,7 @@ unit OA5.uTAddEditPhoneForm;
 interface
 
 uses
-  CastersPackage.uTLogForm,
+  CastersPackage.uTPositionedLogForm,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
@@ -13,7 +13,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-  TAddEditPhoneForm = class(TLogForm)
+  TAddEditPhoneForm = class(TPositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actClear: TAction;
@@ -71,6 +71,7 @@ uses
   Vcl.Forms,
   System.SysUtils,
   System.DateUtils,
+  CastersPackage.uTLogForm,
   CastersPackage.uRoutines,
   OA5.uMainForm;
 
@@ -184,28 +185,6 @@ begin
     Log.UserName := MainForm.CurrentUser.Login;
     Log.AllowedTypes := KeepLogTypes;
     Log.Enabled := EnableLog;
-
-    // установка положения окна в соответсвии со значениями конфигурации программы
-    if AddEditPhoneFormPosition.bCenter then
-      Position := poScreenCenter
-    else
-    begin
-      Position := poDesigned;
-      if AddEditPhoneFormPosition.x < Screen.WorkAreaLeft then
-        Left := Screen.WorkAreaLeft
-      else
-        if AddEditPhoneFormPosition.x > Screen.WorkAreaLeft + Screen.WorkAreaWidth then
-          Left := Screen.WorkAreaLeft + Screen.WorkAreaWidth - Width
-        else
-          Left := AddEditPhoneFormPosition.x;
-      if AddEditPhoneFormPosition.y < Screen.WorkAreaTop then
-        Top := Screen.WorkAreaTop
-      else
-        if AddEditPhoneFormPosition.y > Screen.WorkAreaTop + Screen.WorkAreaHeight then
-          Top := Screen.WorkAreaTop + Screen.WorkAreaHeight - Height
-        else
-          Top := AddEditPhoneFormPosition.y;
-    end;
   end;
 
   ProcedureFooter;

@@ -1,5 +1,5 @@
 {$WARN UNIT_PLATFORM OFF}
-unit OA5.uConfigurationForm;
+unit OA5.uTConfigurationForm;
 
 interface
 

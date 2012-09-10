@@ -2,19 +2,17 @@
 
 uses
   Forms,
-  OA5.uMainForm in 'OA5.uMainForm.pas' {MainForm},
+  OA5.uTMainForm in 'OA5.uTMainForm.pas' {MainForm},
   OA5.uTLoginForm in 'OA5.uTLoginForm.pas' {LoginForm},
-  OA5.uConsts in 'OA5.uConsts.pas',
   OA5.uTAboutForm in 'OA5.uTAboutForm.pas' {AboutForm},
-  OA5.uConfigurationForm in 'OA5.uConfigurationForm.pas' {ConfigurationForm},
+  OA5.uTConfigurationForm in 'OA5.uTConfigurationForm.pas' {ConfigurationForm},
   OA5.uTConfiguration in 'OA5.uTConfiguration.pas',
-  OA5.uAccountClass in 'OA5.uAccountClass.pas',
+  OA5.uTAccount in 'OA5.uTAccount.pas',
   OA5.uTAddMassMsrForm in 'OA5.uTAddMassMsrForm.pas' {AddMassMsrForm},
-  OA5.uReportForm in 'OA5.uReportForm.pas' {ReportForm},
+  OA5.uTReportForm in 'OA5.uTReportForm.pas' {ReportForm},
   OA5.uTSetPasswordForm in 'OA5.uTSetPasswordForm.pas' {SetPasswordForm},
-  OA5.uPermissionsForm in 'OA5.uPermissionsForm.pas' {PermissionsForm},
+  OA5.uTPermissionsForm in 'OA5.uTPermissionsForm.pas' {PermissionsForm},
   OA5.uTMultiBufferForm in 'OA5.uTMultiBufferForm.pas' {MultiBufferForm},
-  OA5.uTypes in 'OA5.uTypes.pas',
   OA5.uTMeasure in 'OA5.uTMeasure.pas',
   Vcl.Themes,
   Vcl.Styles,
@@ -26,7 +24,12 @@ uses
   OA5.uINormalized in 'OA5.uINormalized.pas',
   OA5.uIMeasure in 'OA5.uIMeasure.pas',
   OA5.uIMeasureList in 'OA5.uIMeasureList.pas',
-  OA5.uTMeasureList in 'OA5.uTMeasureList.pas';
+  OA5.uTMeasureList in 'OA5.uTMeasureList.pas',
+  CastersPackage.uTDialogPosition in '..\CastersPackage\CastersPackage.uTDialogPosition.pas',
+  CastersPackage.uIPositionedDialog in '..\CastersPackage\CastersPackage.uIPositionedDialog.pas',
+  CastersPackage.uTPositionedLogForm in '..\CastersPackage\CastersPackage.uTPositionedLogForm.pas' {PositionedLogForm},
+  OA5.uDefaultConsts in 'OA5.uDefaultConsts.pas',
+  OA5.uTPrivilegies in 'OA5.uTPrivilegies.pas';
 
 {$R *.res}
 

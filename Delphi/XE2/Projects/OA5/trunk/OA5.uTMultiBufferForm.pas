@@ -3,7 +3,7 @@ unit OA5.uTMultiBufferForm;
 interface
 
 uses
-  CastersPackage.uTLogForm,
+  CastersPackage.uTPositionedLogForm,
   System.SysUtils,
   System.Classes,
   Vcl.ComCtrls,
@@ -14,7 +14,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-  TMultiBufferForm = class(TLogForm)
+  TMultiBufferForm = class(TPositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actPaste: TAction;
@@ -59,6 +59,7 @@ uses
   Vcl.Forms,
   Winapi.Windows,
   OA5.uMainForm,
+  CastersPackage.uTLogForm,
   CastersPackage.uRoutines;
 
 resourcestring
@@ -210,44 +211,6 @@ begin
     Log.UserName := MainForm.CurrentUser.Login;
     Log.AllowedTypes := KeepLogTypes;
     Log.Enabled := EnableLog;
-
-    // установка положения окна конфигурации в соответсвии со значениями конфигурации программы
-    if MultibufferFormPosition.bCenter then
-    begin
-      Position := poScreenCenter;
-    end
-    else
-    begin
-      Position := poDesigned;
-      if MultibufferFormPosition.x < Screen.WorkAreaLeft then
-      begin
-        Left := Screen.WorkAreaLeft;
-      end
-      else
-        if MultibufferFormPosition.x > Screen.WorkAreaLeft + Screen.WorkAreaWidth then
-        begin
-          Left := Screen.WorkAreaLeft + Screen.WorkAreaWidth - Width;
-        end
-        else
-        begin
-          Left := LoginFormPosition.x;
-        end;
-      if MultibufferFormPosition.y < Screen.WorkAreaTop then
-      begin
-        Top := Screen.WorkAreaTop;
-      end
-      else
-      begin
-        if MultibufferFormPosition.y > Screen.WorkAreaTop + Screen.WorkAreaHeight then
-        begin
-          Top := Screen.WorkAreaTop + Screen.WorkAreaHeight - Height;
-        end
-        else
-        begin
-          Top := LoginFormPosition.y;
-        end;
-      end;
-    end;
   end;
 
   ProcedureFooter;

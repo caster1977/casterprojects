@@ -8,150 +8,64 @@ uses
   CastersPackage.uLogKeeperData,
   CastersPackage.uMysql,
   CastersPackage.uTIniFileDataStorage,
-  OA5.uTMySQLConnection;
+  OA5.uTMySQLConnection,
+  CastersPackage.uTDialogPosition,
+  OA5.uDefaultConsts,
+  CastersPackage.uTReportFolder,
+  CastersPackage.uTLogMessagesType,
+  CastersPackage.uTLogMessagesTypes;
 
 type
-  TReportFolders=(rfTempFolder, rfApplicationFolder, rfCustomFolder);
-
-  TFormPosition=record
-    bCenter: boolean;
-    x, y: integer;
-  end;
-
-const
-  // вкладка "настройки интерфейса"
-  DefaultValue_ShowSplashAtStart=True;
-  DefaultValue_ShowToolbar=True;
-  DefaultValue_ShowStatusbar=True;
-  DefaultValue_ShowEditboxHints=True;
-  DefaultValue_ShowCommonSearchEditbox=True;
-  DefaultValue_ShowID=False;
-  DefaultValue_UseMultibuffer=True;
-  DefaultValue_ShowConfirmationOnQuit=True;
-
-  // вкладка "настройки ведения протокола работы"
-  DefaultValue_EnableLog=True;
-  DefaultValue_KeepLogTypes=[lmtError, lmtWarning, lmtInfo];
-  DefaultValue_FlushLogOnExit=True;
-  DefaultValue_FlushLogOnStringsQuantity=True;
-  DefaultValue_FlushLogOnStringsQuantityValue=10000;
-  DefaultValue_FlushLogOnClearingLog=True;
-  DefaultValue_FlushLogOnApply=False;
-  DefaultValue_CustomLogClientFile=False;
-  DefaultValue_CustomLogClientFileValue='';
-
-  // вкладка "настройки положения диалоговых окон"
-  DefaultValue_FormPosition_Center=True;
-  DefaultValue_FormPosition_x=0;
-  DefaultValue_FormPosition_y=0;
-
-  // вкладка "настройки процедуры логирования"
-  DefaultValue_StoreLogin=False;
-  DefaultValue_StorePassword=False;
-  DefaultValue_Login='';
-  DefaultValue_Password='';
-  DefaultValue_AutoLogon=False;
-
-  // вкладка "подключения к серверу базы данных услуги"
-  DefaultValue_RNE4Server_Host='RNE4SERVER';
-  DefaultValue_RNE4Server_Port=MYSQL_PORT;
-  DefaultValue_RNE4Server_Timeout=30;
-  DefaultValue_RNE4Server_Compression=True;
-  DefaultValue_RNE4Server_Login='root';
-  DefaultValue_RNE4Server_Password='sqladmin';
-  DefaultValue_RNE4Server_Database='rne4';
-
-  // вкладка "подключения к серверу системы обмена сообщениями"
-  DefaultValue_MessagesServer_Host='RNE4MESSAGESSERVER';
-  DefaultValue_MessagesServer_Port=MYSQL_PORT;
-  DefaultValue_MessagesServer_Timeout=30;
-  DefaultValue_MessagesServer_Compression=True;
-  DefaultValue_MessagesServer_Login='root';
-  DefaultValue_MessagesServer_Password='sqladmin';
-  DefaultValue_MessagesServer_Database='rne4messages';
-
-  // вкладка "настройки формирования отчётов"
-  DefaultValue_ReportFolder=rfApplicationFolder;
-  DefaultValue_CustomReportFolderValue='';
-  DefaultValue_DontDemandOverwriteConfirmation=False;
-  DefaultValue_AskForFileName=True;
-
-  // вкладка "настройки прочие"
-  DefaultValue_LaunchAtStartup=False;
-  DefaultValue_PlaySoundOnComplete=True;
-  DefaultValue_EnableAutoGetMessages=True;
-  DefaultValue_AutoGetMessagesCycleDurationValue=5;
-  DefaultValue_CustomHelpFile=False;
-  DefaultValue_CustomHelpFileValue='';
-
-  // вкладка "настройки главного окна"
-  DefaultValue_MainFormLeft=0;
-  DefaultValue_MainFormTop=0;
-  DefaultValue_MainFormWidth=800;
-  DefaultValue_MainFormHeight=600;
-  DefaultValue_MainFormPositionByCenter=True;
-  DefaultValue_FullScreenAtLaunch=False;
-
-  // вкладка "настройки отображения информации"
-  DefaultValue_OrganizationPanelHeightValue=100;
-  DefaultValue_OrganizationPanelHalfHeight=True;
-  DefaultValue_DataPanelWidthValue=340;
-  DefaultValue_DataPanelHalfWidth=False;
-  DefaultValue_ShowDataInOtherInfoPanel=True;
-  DefaultValue_ShowMeasuresListAsRichEdit=True;
-  DefaultValue_MarkSearchedStrings=True;
-  DefaultValue_PutTownAtTheEnd=False;
-
-type
-  TConfiguration=class(TIniFileDataStorage)
+  TConfiguration = class(TIniFileDataStorage)
   strict private
     FFileName: string;
-    FConfigurationFormPage: integer;
+    FConfigurationFormPage: Integer;
     FLogin: string;
     FPassword: string;
 
     // вкладка "настройки интерфейса"
-    FShowSplashAtStart: boolean; // Отображать окно "О программе..." при запуске
-    FShowToolbar: boolean; // Отображать панель кнопок
-    FShowStatusbar: boolean; // Отображать панель статуса
-    FShowEditboxHints: boolean; // Отображать всплывающие подсказки для полей ввода
-    FShowCommonSearchEditbox: boolean; // Отображать единое поле ввода для поиска данных
-    FShowID: boolean; // Отображать поле ID записей базы данных при работе программы
-    FUseMultibuffer: boolean; // Использовать мультибуфер для операций копирования мероприятий
-    FShowConfirmationOnQuit: boolean; // Требовать подтверждение при выходе из программы
+    FShowSplashAtStart: Boolean; // Отображать окно "О программе..." при запуске
+    FShowToolbar: Boolean; // Отображать панель кнопок
+    FShowStatusbar: Boolean; // Отображать панель статуса
+    FShowEditboxHints: Boolean; // Отображать всплывающие подсказки для полей ввода
+    FShowCommonSearchEditbox: Boolean; // Отображать единое поле ввода для поиска данных
+    FShowID: Boolean; // Отображать поле ID записей базы данных при работе программы
+    FUseMultibuffer: Boolean; // Использовать мультибуфер для операций копирования мероприятий
+    FShowConfirmationOnQuit: Boolean; // Требовать подтверждение при выходе из программы
 
     // вкладка "настройки ведения протокола работы"
-    FEnableLog: boolean; // Вести лог работы программы
+    FEnableLog: Boolean; // Вести лог работы программы
     FKeepLogTypes: TLogMessagesTypes; // выводить сообщения перечисленных типов
-    FFlushLogOnExit: boolean; // Сбрасывать протокол работы в текстовый файл при завершении работы программы
-    FFlushLogOnStringsQuantity: boolean; // Сбрасывать протокол работы в текстовый файл при достижении количества строк
-    FFlushLogOnStringsQuantityValue: integer; // Сбрасывать протокол работы в текстовый файл при достижении количества строк (непосредственно количество)
-    FFlushLogOnClearingLog: boolean; // Сбрасывать протокол работы в текстовый файл при операции очистки протокола
-    FFlushLogOnApply: boolean; // Сбрасывать протокол работы в текстовый файл при нажатии кнопки "Применить"
-    FCustomLogClientFile: boolean; // Использовать внешний клиент протоколирования
+    FFlushLogOnExit: Boolean; // Сбрасывать протокол работы в текстовый файл при завершении работы программы
+    FFlushLogOnStringsQuantity: Boolean; // Сбрасывать протокол работы в текстовый файл при достижении количества строк
+    FFlushLogOnStringsQuantityValue: Integer;
+    // Сбрасывать протокол работы в текстовый файл при достижении количества строк (непосредственно количество)
+    FFlushLogOnClearingLog: Boolean; // Сбрасывать протокол работы в текстовый файл при операции очистки протокола
+    FFlushLogOnApply: Boolean; // Сбрасывать протокол работы в текстовый файл при нажатии кнопки "Применить"
+    FCustomLogClientFile: Boolean; // Использовать внешний клиент протоколирования
     FCustomLogClientFileValue: string; // имя файла внешнего клиента протоколирования
 
     // вкладка "настройки положения диалоговых окон"
-    FLoginFormPosition: TFormPosition;
-    FConfigurationFormPosition: TFormPosition;
-    FUsersFormPosition: TFormPosition;
-    FSetPasswordFormPosition: TFormPosition;
-    FReportFormPosition: TFormPosition;
-    FMaintenanceFormPosition: TFormPosition;
-    FClearingFormPosition: TFormPosition;
-    FViewMessagesFormPosition: TFormPosition;
-    FCreateMessageFormPosition: TFormPosition;
-    FViewMessageFormPosition: TFormPosition;
-    FPhonesFormPosition: TFormPosition;
-    FAddEditPhoneFormPosition: TFormPosition;
-    FAddMassMsrFormPosition: TFormPosition;
-    FPermissionsFormPosition: TFormPosition;
-    FMultibufferFormPosition: TFormPosition;
+    FLoginFormPosition: TDialogPosition;
+    FConfigurationFormPosition: TDialogPosition;
+    FUsersFormPosition: TDialogPosition;
+    FSetPasswordFormPosition: TDialogPosition;
+    FReportFormPosition: TDialogPosition;
+    FMaintenanceFormPosition: TDialogPosition;
+    FClearingFormPosition: TDialogPosition;
+    FViewMessagesFormPosition: TDialogPosition;
+    FCreateMessageFormPosition: TDialogPosition;
+    FViewMessageFormPosition: TDialogPosition;
+    FPhonesFormPosition: TDialogPosition;
+    FAddEditPhoneFormPosition: TDialogPosition;
+    FAddMassMsrFormPosition: TDialogPosition;
+    FPermissionsFormPosition: TDialogPosition;
+    FMultibufferFormPosition: TDialogPosition;
 
     // вкладка "настройки процедуры логирования"
-    FStoreLogin: boolean; // Сохранять логин последнего пользователя
-    FStorePassword: boolean; // Сохранять пароль последнего пользователя
-    FAutoLogon: boolean; // Выполнять автоматический вход, используя сохранённые логин и пароль пользователя
+    FStoreLogin: Boolean; // Сохранять логин последнего пользователя
+    FStorePassword: Boolean; // Сохранять пароль последнего пользователя
+    FAutoLogon: Boolean; // Выполнять автоматический вход, используя сохранённые логин и пароль пользователя
 
     // вкладка "настройки подключения к серверу базы данных услуги"
     FRNE4Server: TMySQLConnection;
@@ -160,104 +74,104 @@ type
     FMessagesServer: TMySQLConnection;
 
     // вкладка "настройки формирования отчётов"
-    FReportFolder: TReportFolders; //
+    FReportFolder: TReportFolder; //
     FCustomReportFolderValue: string; //
-    FDontDemandOverwriteConfirmation: boolean; //
-    FAskForFileName: boolean; //
+    FDontDemandOverwriteConfirmation: Boolean; //
+    FAskForFileName: Boolean; //
 
     // вкладка "настройки списка автозамены"
 
     // вкладка "настройки прочие"
-    FLaunchAtStartup: boolean;
-    FPlaySoundOnComplete: boolean;
-    FEnableAutoGetMessages: boolean;
-    FAutoGetMessagesCycleDurationValue: integer;
-    FCustomHelpFile: boolean;
+    FLaunchAtStartup: Boolean;
+    FPlaySoundOnComplete: Boolean;
+    FEnableAutoGetMessages: Boolean;
+    FAutoGetMessagesCycleDurationValue: Integer;
+    FCustomHelpFile: Boolean;
     FCustomHelpFileValue: string;
 
     // вкладка "настройки главного окна"
-    FMainFormLeft: integer;
-    FMainFormTop: integer;
-    FMainFormWidth: integer;
-    FMainFormHeight: integer;
-    FMainFormPositionByCenter: boolean;
-    FFullScreenAtLaunch: boolean;
+    FMainFormLeft: Integer;
+    FMainFormTop: Integer;
+    FMainFormWidth: Integer;
+    FMainFormHeight: Integer;
+    FMainFormPositionByCenter: Boolean;
+    FFullScreenAtLaunch: Boolean;
 
     // вкладка "настройки отображения информации"
-    FOrganizationPanelHeightValue: integer; // Высота панели организаций
-    FOrganizationPanelHalfHeight: boolean; // половина высоты окна
-    FDataPanelWidthValue: integer; // Ширина панели данных
-    FDataPanelHalfWidth: boolean; // половина ширины окна
-    FShowDataInOtherInfoPanel: boolean; // В режиме просмотра показывать данные в окне прочей информации
-    FShowMeasuresListAsRichEdit: boolean; // В режиме просмотра объединять меропрятия в общий спиcок
-    FMarkSearchedStrings: boolean; // В режиме просмотра выделять искомые фрагменты строк
-    FPutTownAtTheEnd: boolean; // Поместить название города в конец строки адреса
+    FOrganizationPanelHeightValue: Integer; // Высота панели организаций
+    FOrganizationPanelHalfHeight: Boolean; // половина высоты окна
+    FDataPanelWidthValue: Integer; // Ширина панели данных
+    FDataPanelHalfWidth: Boolean; // половина ширины окна
+    FShowDataInOtherInfoPanel: Boolean; // В режиме просмотра показывать данные в окне прочей информации
+    FShowMeasuresListAsRichEdit: Boolean; // В режиме просмотра объединять меропрятия в общий спиcок
+    FMarkSearchedStrings: Boolean; // В режиме просмотра выделять искомые фрагменты строк
+    FPutTownAtTheEnd: Boolean; // Поместить название города в конец строки адреса
 
-    procedure SetUseLog(const Value: boolean);
-    procedure SetStoreLogin(const Value: boolean);
-    procedure SetStorePassword(const Value: boolean);
-    procedure SetAutoLogon(const Value: boolean);
+    procedure SetUseLog(const Value: Boolean);
+    procedure SetStoreLogin(const Value: Boolean);
+    procedure SetStorePassword(const Value: Boolean);
+    procedure SetAutoLogon(const Value: Boolean);
     procedure SetKeepLogTypes(const Value: TLogMessagesTypes);
     function GetTempFolder: string;
     function GetApplicationFolder: string;
     function GetReportFolderValue: string;
     procedure SetFileName(const Value: string);
-    procedure SetAddEditPhoneFormPosition(const Value: TFormPosition);
-    procedure SetAddMassMsrFormPosition(const Value: TFormPosition);
-    procedure SetPermissionsFormPosition(const Value: TFormPosition);
-    procedure SetMultibufferFormPosition(const Value: TFormPosition);
-    procedure SetAskForFileName(const Value: boolean);
-    procedure SetAutoGetMessagesCycleDurationValue(const Value: integer);
-    procedure SetClearingFormPosition(const Value: TFormPosition);
-    procedure SetCustomHelpFile(const Value: boolean);
+    procedure SetAddEditPhoneFormPosition(const AValue: TDialogPosition);
+    procedure SetAddMassMsrFormPosition(const AValue: TDialogPosition);
+    procedure SetPermissionsFormPosition(const AValue: TDialogPosition);
+    procedure SetMultibufferFormPosition(const AValue: TDialogPosition);
+    procedure SetAskForFileName(const Value: Boolean);
+    procedure SetAutoGetMessagesCycleDurationValue(const Value: Integer);
+    procedure SetClearingFormPosition(const AValue: TDialogPosition);
+    procedure SetCustomHelpFile(const Value: Boolean);
     procedure SetCustomHelpFileValue(const Value: string);
-    procedure SetCustomLogClientFile(const Value: boolean);
+    procedure SetCustomLogClientFile(const Value: Boolean);
     procedure SetCustomLogClientFileValue(const Value: string);
-    procedure SetDataPanelHalfWidth(const Value: boolean);
-    procedure SetDataPanelWidthValue(const Value: integer);
-    procedure SetDontDemandOverwriteConfirmation(const Value: boolean);
-    procedure SetEnableAutoGetMessages(const Value: boolean);
-    procedure SetFlushLogOnApply(const Value: boolean);
-    procedure SetFlushLogOnClearingLog(const Value: boolean);
-    procedure SetFlushLogOnExit(const Value: boolean);
-    procedure SetFlushLogOnStringsQuantity(const Value: boolean);
-    procedure SetFlushLogOnStringsQuantityValue(const Value: integer);
-    procedure SetFullScreenAtLaunch(const Value: boolean);
-    procedure SetLaunchAtStartup(const Value: boolean);
-    procedure SetLoginFormPosition(const Value: TFormPosition);
-    procedure SetMainFormPositionByCenter(const Value: boolean);
-    procedure SetMaintenanceFormPosition(const Value: TFormPosition);
-    procedure SetMarkSearchedStrings(const Value: boolean);
+    procedure SetDataPanelHalfWidth(const Value: Boolean);
+    procedure SetDataPanelWidthValue(const Value: Integer);
+    procedure SetDontDemandOverwriteConfirmation(const Value: Boolean);
+    procedure SetEnableAutoGetMessages(const Value: Boolean);
+    procedure SetFlushLogOnApply(const Value: Boolean);
+    procedure SetFlushLogOnClearingLog(const Value: Boolean);
+    procedure SetFlushLogOnExit(const Value: Boolean);
+    procedure SetFlushLogOnStringsQuantity(const Value: Boolean);
+    procedure SetFlushLogOnStringsQuantityValue(const Value: Integer);
+    procedure SetFullScreenAtLaunch(const Value: Boolean);
+    procedure SetLaunchAtStartup(const Value: Boolean);
+    procedure SetLoginFormPosition(const AValue: TDialogPosition);
+    procedure SetMainFormPositionByCenter(const Value: Boolean);
+    procedure SetMaintenanceFormPosition(const AValue: TDialogPosition);
+    procedure SetMarkSearchedStrings(const Value: Boolean);
     procedure SetMessagesServer(const Value: TMySQLConnection);
-    procedure SetConfigurationFormPosition(const Value: TFormPosition);
-    procedure SetOrganizationPanelHalfHeight(const Value: boolean);
-    procedure SetOrganizationPanelHeightValue(const Value: integer);
-    procedure SetPhonesFormPosition(const Value: TFormPosition);
-    procedure SetPlaySoundOnComplete(const Value: boolean);
-    procedure SetPutTownAtTheEnd(const Value: boolean);
-    procedure SetReportFolder(const Value: TReportFolders);
+    procedure SetConfigurationFormPosition(const AValue: TDialogPosition);
+    procedure SetOrganizationPanelHalfHeight(const Value: Boolean);
+    procedure SetOrganizationPanelHeightValue(const Value: Integer);
+    procedure SetPhonesFormPosition(const AValue: TDialogPosition);
+    procedure SetPlaySoundOnComplete(const Value: Boolean);
+    procedure SetPutTownAtTheEnd(const Value: Boolean);
+    procedure SetReportFolder(const AValue: TReportFolder);
     procedure SetRNE4Server(const Value: TMySQLConnection);
     procedure SetCustomReportFolderValue(const Value: string);
-    procedure SetSetPasswordFormPosition(const Value: TFormPosition);
-    procedure SetShowSplashAtStart(const Value: boolean);
-    procedure SetShowCommonSearchEditbox(const Value: boolean);
-    procedure SetShowConfirmationOnQuit(const Value: boolean);
-    procedure SetShowDataInOtherInfoPanel(const Value: boolean);
-    procedure SetShowEditboxHints(const Value: boolean);
-    procedure SetShowID(const Value: boolean);
-    procedure SetShowMeasuresListAsRichEdit(const Value: boolean);
-    procedure SetShowStatusbar(const Value: boolean);
-    procedure SetShowToolbar(const Value: boolean);
-    procedure SetReportFormPosition(const Value: TFormPosition);
-    procedure SetUseMultibuffer(const Value: boolean);
-    procedure SetUsersFormPosition(const Value: TFormPosition);
-    procedure SetViewMessagesFormPosition(const Value: TFormPosition);
-    procedure SetMainFormHeight(const Value: integer);
-    procedure SetMainFormLeft(const Value: integer);
-    procedure SetMainFormTop(const Value: integer);
-    procedure SetMainFormWidth(const Value: integer);
-    procedure SetCreateMessageFormPosition(const Value: TFormPosition);
-    procedure SetViewMessageFormPosition(const Value: TFormPosition);
+    procedure SetSetPasswordFormPosition(const AValue: TDialogPosition);
+    procedure SetShowSplashAtStart(const Value: Boolean);
+    procedure SetShowCommonSearchEditbox(const Value: Boolean);
+    procedure SetShowConfirmationOnQuit(const Value: Boolean);
+    procedure SetShowDataInOtherInfoPanel(const Value: Boolean);
+    procedure SetShowEditboxHints(const Value: Boolean);
+    procedure SetShowID(const Value: Boolean);
+    procedure SetShowMeasuresListAsRichEdit(const Value: Boolean);
+    procedure SetShowStatusbar(const Value: Boolean);
+    procedure SetShowToolbar(const Value: Boolean);
+    procedure SetReportFormPosition(const AValue: TDialogPosition);
+    procedure SetUseMultibuffer(const Value: Boolean);
+    procedure SetUsersFormPosition(const AValue: TDialogPosition);
+    procedure SetViewMessagesFormPosition(const AValue: TDialogPosition);
+    procedure SetMainFormHeight(const Value: Integer);
+    procedure SetMainFormLeft(const Value: Integer);
+    procedure SetMainFormTop(const Value: Integer);
+    procedure SetMainFormWidth(const Value: Integer);
+    procedure SetCreateMessageFormPosition(const AValue: TDialogPosition);
+    procedure SetViewMessageFormPosition(const AValue: TDialogPosition);
     procedure SetLogin(const Value: string);
     procedure SetPassword(const Value: string);
   strict protected
@@ -275,52 +189,55 @@ type
     destructor Destroy; override;
 
     property FileName: string read FFileName write SetFileName stored False;
-    property ConfigurationFormPage: integer read FConfigurationFormPage write FConfigurationFormPage default 0;
+    property ConfigurationFormPage: Integer read FConfigurationFormPage write FConfigurationFormPage default 0;
 
     // вкладка "настройки интерфейса"
-    property ShowSplashAtStart: boolean read FShowSplashAtStart write SetShowSplashAtStart default DefaultValue_ShowSplashAtStart;
-    property ShowToolbar: boolean read FShowToolbar write SetShowToolbar default DefaultValue_ShowToolbar;
-    property ShowStatusbar: boolean read FShowStatusbar write SetShowStatusbar default DefaultValue_ShowStatusbar;
-    property ShowEditboxHints: boolean read FShowEditboxHints write SetShowEditboxHints default DefaultValue_ShowEditboxHints;
-    property ShowCommonSearchEditbox: boolean read FShowCommonSearchEditbox write SetShowCommonSearchEditbox default DefaultValue_ShowCommonSearchEditbox;
-    property ShowID: boolean read FShowID write SetShowID default DefaultValue_ShowID;
-    property UseMultibuffer: boolean read FUseMultibuffer write SetUseMultibuffer default DefaultValue_UseMultibuffer;
-    property ShowConfirmationOnQuit: boolean read FShowConfirmationOnQuit write SetShowConfirmationOnQuit default DefaultValue_ShowConfirmationOnQuit;
+    property ShowSplashAtStart: Boolean read FShowSplashAtStart write SetShowSplashAtStart default DEFAULT_CONFIGURATION_ENABLE_SPLASH_AT_START;
+    property ShowToolbar: Boolean read FShowToolbar write SetShowToolbar default DEFAULT_CONFIGURATION_ENABLE_TOOLBAR;
+    property ShowStatusbar: Boolean read FShowStatusbar write SetShowStatusbar default DEFAULT_CONFIGURATION_ENABLE_STATUSBAR;
+    property ShowEditboxHints: Boolean read FShowEditboxHints write SetShowEditboxHints default DEFAULT_CONFIGURATION_ENABLE_EDITBOX_HINTS;
+    property ShowCommonSearchEditbox: Boolean read FShowCommonSearchEditbox write SetShowCommonSearchEditbox default DEFAULT_CONFIGURATION_ENABLE_COMMON_SEARCH_EDITBOX;
+    property ShowID: Boolean read FShowID write SetShowID default DEFAULT_CONFIGURATION_ENABLE_ID;
+    property UseMultibuffer: Boolean read FUseMultibuffer write SetUseMultibuffer default DEFAULT_CONFIGURATION_ENABLE_MULTIBUFFER;
+    property ShowConfirmationOnQuit: Boolean read FShowConfirmationOnQuit write SetShowConfirmationOnQuit default DEFAULT_CONFIGURATION_ENABLE_QUIT_CONFIRMATION;
 
     // вкладка "настройки ведения протокола работы"
-    property EnableLog: boolean read FEnableLog write SetUseLog default DefaultValue_EnableLog;
-    property KeepLogTypes: TLogMessagesTypes read FKeepLogTypes write SetKeepLogTypes default DefaultValue_KeepLogTypes;
-    property FlushLogOnExit: boolean read FFlushLogOnExit write SetFlushLogOnExit default DefaultValue_FlushLogOnExit;
-    property FlushLogOnStringsQuantity: boolean read FFlushLogOnStringsQuantity write SetFlushLogOnStringsQuantity default DefaultValue_FlushLogOnStringsQuantity;
-    property FlushLogOnStringsQuantityValue: integer read FFlushLogOnStringsQuantityValue write SetFlushLogOnStringsQuantityValue default DefaultValue_FlushLogOnStringsQuantityValue;
-    property FlushLogOnClearingLog: boolean read FFlushLogOnClearingLog write SetFlushLogOnClearingLog default DefaultValue_FlushLogOnClearingLog;
-    property FlushLogOnApply: boolean read FFlushLogOnApply write SetFlushLogOnApply default DefaultValue_FlushLogOnApply;
-    property CustomLogClientFile: boolean read FCustomLogClientFile write SetCustomLogClientFile default DefaultValue_CustomLogClientFile;
-    property CustomLogClientFileValue: string read FCustomLogClientFileValue write SetCustomLogClientFileValue stored False;
+    property EnableLog: Boolean read FEnableLog write SetUseLog default DEFAULT_CONFIGURATION_ENABLE_LOG;
+    property KeepLogTypes: TLogMessagesTypes read FKeepLogTypes write SetKeepLogTypes default DEFAULT_CONFIGURATION_KEEP_LOG_TYPES;
+    property FlushLogOnExit: Boolean read FFlushLogOnExit write SetFlushLogOnExit default DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_EXIT;
+    property FlushLogOnStringsQuantity: Boolean read FFlushLogOnStringsQuantity write SetFlushLogOnStringsQuantity default DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_STRINGS_QUANTITY;
+    property FlushLogOnStringsQuantityValue: Integer read FFlushLogOnStringsQuantityValue write SetFlushLogOnStringsQuantityValue default DEFAULT_CONFIGURATION_FLUSH_LOG_ON_STRINGS_QUANTITY_VALUE;
+    property FlushLogOnClearingLog: Boolean read FFlushLogOnClearingLog write SetFlushLogOnClearingLog default DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_CLEARING_LOG;
+    property FlushLogOnApply: Boolean read FFlushLogOnApply write SetFlushLogOnApply default DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_APPLY;
+    property CustomLogClientFile: Boolean read FCustomLogClientFile write SetCustomLogClientFile default DEFAULT_CONFIGURATION_ENABLE_CUSTOM_LOG_CLIENT;
+    property CustomLogClientFileValue: string read FCustomLogClientFileValue write SetCustomLogClientFileValue nodefault;
 
     // вкладка "настройки положения диалоговых окон"
-    property LoginFormPosition: TFormPosition read FLoginFormPosition write SetLoginFormPosition stored False;
-    property ConfigurationFormPosition: TFormPosition read FConfigurationFormPosition write SetConfigurationFormPosition stored False;
-    property UsersFormPosition: TFormPosition read FUsersFormPosition write SetUsersFormPosition stored False;
-    property SetPasswordFormPosition: TFormPosition read FSetPasswordFormPosition write SetSetPasswordFormPosition stored False;
-    property ReportFormPosition: TFormPosition read FReportFormPosition write SetReportFormPosition stored False;
-    property MaintenanceFormPosition: TFormPosition read FMaintenanceFormPosition write SetMaintenanceFormPosition stored False;
-    property ClearingFormPosition: TFormPosition read FClearingFormPosition write SetClearingFormPosition stored False;
-    property ViewMessagesFormPosition: TFormPosition read FViewMessagesFormPosition write SetViewMessagesFormPosition stored False;
-    property CreateMessageFormPosition: TFormPosition read FCreateMessageFormPosition write SetCreateMessageFormPosition stored False;
-    property ViewMessageFormPosition: TFormPosition read FViewMessageFormPosition write SetViewMessageFormPosition stored False;
-    property PhonesFormPosition: TFormPosition read FPhonesFormPosition write SetPhonesFormPosition stored False;
-    property AddEditPhoneFormPosition: TFormPosition read FAddEditPhoneFormPosition write SetAddEditPhoneFormPosition stored False;
-    property AddMassMsrFormPosition: TFormPosition read FAddMassMsrFormPosition write SetAddMassMsrFormPosition stored False;
-    property PermissionsFormPosition: TFormPosition read FPermissionsFormPosition write SetPermissionsFormPosition stored False;
-    property MultibufferFormPosition: TFormPosition read FMultibufferFormPosition write SetMultibufferFormPosition stored False;
+    property LoginFormPosition: TDialogPosition read FLoginFormPosition write SetLoginFormPosition stored False;
+    property ConfigurationFormPosition: TDialogPosition read FConfigurationFormPosition write SetConfigurationFormPosition stored False;
+    property UsersFormPosition: TDialogPosition read FUsersFormPosition write SetUsersFormPosition stored False;
+    property SetPasswordFormPosition: TDialogPosition read FSetPasswordFormPosition write SetSetPasswordFormPosition stored False;
+    property ReportFormPosition: TDialogPosition read FReportFormPosition write SetReportFormPosition stored False;
+    property MaintenanceFormPosition: TDialogPosition read FMaintenanceFormPosition write SetMaintenanceFormPosition stored False;
+    property ClearingFormPosition: TDialogPosition read FClearingFormPosition write SetClearingFormPosition stored False;
+    property ViewMessagesFormPosition: TDialogPosition read FViewMessagesFormPosition write SetViewMessagesFormPosition stored False;
+    property CreateMessageFormPosition: TDialogPosition read FCreateMessageFormPosition write SetCreateMessageFormPosition stored False;
+    property ViewMessageFormPosition: TDialogPosition read FViewMessageFormPosition write SetViewMessageFormPosition stored False;
+    property PhonesFormPosition: TDialogPosition read FPhonesFormPosition write SetPhonesFormPosition stored False;
+    property AddEditPhoneFormPosition: TDialogPosition read FAddEditPhoneFormPosition write SetAddEditPhoneFormPosition stored False;
+    property AddMassMsrFormPosition: TDialogPosition read FAddMassMsrFormPosition write SetAddMassMsrFormPosition stored False;
+    property PermissionsFormPosition: TDialogPosition read FPermissionsFormPosition write SetPermissionsFormPosition stored False;
+    property MultibufferFormPosition: TDialogPosition read FMultibufferFormPosition write SetMultibufferFormPosition stored False;
 
     // вкладка "настройки процедуры логирования"
-    property StoreLogin: boolean read FStoreLogin write SetStoreLogin default DefaultValue_StoreLogin; // нужно ли хранить последний введённый логин
+    property StoreLogin: Boolean read FStoreLogin write SetStoreLogin default DEFAULT_CONFIGURATION_ENABLE_STORE_LOGIN;
+    // нужно ли хранить последний введённый логин
     property Login: string read FLogin write SetLogin stored False;
-    property StorePassword: boolean read FStorePassword write SetStorePassword default DefaultValue_StorePassword; // нужно ли хранить последний введённый пароль
+    property StorePassword: Boolean read FStorePassword write SetStorePassword default DEFAULT_CONFIGURATION_ENABLE_STORE_PASSWORD;
+    // нужно ли хранить последний введённый пароль
     property Password: string read FPassword write SetPassword stored False;
-    property AutoLogon: boolean read FAutoLogon write SetAutoLogon default DefaultValue_AutoLogon; // нужно ли выполнять автологирование
+    property AutoLogon: Boolean read FAutoLogon write SetAutoLogon default DEFAULT_CONFIGURATION_ENABLE_AUTO_LOGON;
+    // нужно ли выполнять автологирование
 
     // вкладка "настройки подключения к серверу базы данных услуги"
     property RNE4Server: TMySQLConnection read FRNE4Server write SetRNE4Server stored False;
@@ -329,37 +246,38 @@ type
     property MessagesServer: TMySQLConnection read FMessagesServer write SetMessagesServer stored False;
 
     // вкладка "настройки формирования отчётов"
-    property ReportFolder: TReportFolders read FReportFolder write SetReportFolder default DefaultValue_ReportFolder;
+    property ReportFolder: TReportFolder read FReportFolder write SetReportFolder default DEFAULT_CONFIGURATION_REPORT_FOLDER;
     property ReportFolderValue: string read GetReportFolderValue stored False;
     property CustomReportFolderValue: string read FCustomReportFolderValue write SetCustomReportFolderValue stored False;
-    property DontDemandOverwriteConfirmation: boolean read FDontDemandOverwriteConfirmation write SetDontDemandOverwriteConfirmation default DefaultValue_DontDemandOverwriteConfirmation;
-    property AskForFileName: boolean read FAskForFileName write SetAskForFileName default DefaultValue_AskForFileName;
+    property DontDemandOverwriteConfirmation: Boolean read FDontDemandOverwriteConfirmation write SetDontDemandOverwriteConfirmation default DEFAULT_CONFIGURATION_ENABLE_OVERWRITE_CONFIRMATION;
+    property AskForFileName: Boolean read FAskForFileName write SetAskForFileName default DEFAULT_CONFIGURATION_ENABLE_ASK_FOR_FILE_NAME;
 
     // вкладка "настройки прочие"
-    property LaunchAtStartup: boolean read FLaunchAtStartup write SetLaunchAtStartup default DefaultValue_LaunchAtStartup;
-    property PlaySoundOnComplete: boolean read FPlaySoundOnComplete write SetPlaySoundOnComplete default DefaultValue_PlaySoundOnComplete;
-    property EnableAutoGetMessages: boolean read FEnableAutoGetMessages write SetEnableAutoGetMessages default DefaultValue_EnableAutoGetMessages;
-    property AutoGetMessagesCycleDurationValue: integer read FAutoGetMessagesCycleDurationValue write SetAutoGetMessagesCycleDurationValue default DefaultValue_AutoGetMessagesCycleDurationValue;
-    property CustomHelpFile: boolean read FCustomHelpFile write SetCustomHelpFile default DefaultValue_CustomHelpFile;
+    property LaunchAtStartup: Boolean read FLaunchAtStartup write SetLaunchAtStartup default DEFAULT_CONFIGURATION_ENABLE_LAUNCH_AT_STARTUP;
+    property PlaySoundOnComplete: Boolean read FPlaySoundOnComplete write SetPlaySoundOnComplete default DEFAULT_CONFIGURATION_ENABLE_PLAY_SOUND_ON_COMPLETE;
+    property EnableAutoGetMessages: Boolean read FEnableAutoGetMessages write SetEnableAutoGetMessages default DEFAULT_CONFIGURATION_ENABLE_AUTO_GET_MESSAGE;
+    property AutoGetMessagesCycleDurationValue: Integer read FAutoGetMessagesCycleDurationValue write SetAutoGetMessagesCycleDurationValue
+      default DEFAULT_CONFIGURATION_AUTO_GET_MESSAGES_CYCLE_DURATION_VALUE;
+    property CustomHelpFile: Boolean read FCustomHelpFile write SetCustomHelpFile default DEFAULT_CONFIGURATION_ENABLE_CUSTOM_HELP_FILE;
     property CustomHelpFileValue: string read FCustomHelpFileValue write SetCustomHelpFileValue stored False;
 
     // вкладка "настройки главного окна"
-    property MainFormLeft: integer read FMainFormLeft write SetMainFormLeft default DefaultValue_MainFormLeft;
-    property MainFormTop: integer read FMainFormTop write SetMainFormTop default DefaultValue_MainFormTop;
-    property MainFormWidth: integer read FMainFormWidth write SetMainFormWidth default DefaultValue_MainFormWidth;
-    property MainFormHeight: integer read FMainFormHeight write SetMainFormHeight default DefaultValue_MainFormHeight;
-    property MainFormPositionByCenter: boolean read FMainFormPositionByCenter write SetMainFormPositionByCenter default DefaultValue_MainFormPositionByCenter;
-    property FullScreenAtLaunch: boolean read FFullScreenAtLaunch write SetFullScreenAtLaunch default DefaultValue_FullScreenAtLaunch;
+    property MainFormLeft: Integer read FMainFormLeft write SetMainFormLeft default DEFAULT_CONFIGURATION_MAIN_FORM_LEFT;
+    property MainFormTop: Integer read FMainFormTop write SetMainFormTop default DEFAULT_CONFIGURATION_MAIN_FORM_TOP;
+    property MainFormWidth: Integer read FMainFormWidth write SetMainFormWidth default DEFAULT_CONFIGURATION_MAIN_FORM_WIDTH;
+    property MainFormHeight: Integer read FMainFormHeight write SetMainFormHeight default DEFAULT_CONFIGURATION_MAIN_FORM_HEIGHT;
+    property MainFormPositionByCenter: Boolean read FMainFormPositionByCenter write SetMainFormPositionByCenter default DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_POSITION_BY_CENTER;
+    property FullScreenAtLaunch: Boolean read FFullScreenAtLaunch write SetFullScreenAtLaunch default DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH;
 
     // вкладка "настройки отображения информации"
-    property OrganizationPanelHeightValue: integer read FOrganizationPanelHeightValue write SetOrganizationPanelHeightValue default DefaultValue_OrganizationPanelHeightValue;
-    property OrganizationPanelHalfHeight: boolean read FOrganizationPanelHalfHeight write SetOrganizationPanelHalfHeight default DefaultValue_OrganizationPanelHalfHeight;
-    property DataPanelWidthValue: integer read FDataPanelWidthValue write SetDataPanelWidthValue default DefaultValue_DataPanelWidthValue;
-    property DataPanelHalfWidth: boolean read FDataPanelHalfWidth write SetDataPanelHalfWidth default DefaultValue_DataPanelHalfWidth;
-    property ShowDataInOtherInfoPanel: boolean read FShowDataInOtherInfoPanel write SetShowDataInOtherInfoPanel default DefaultValue_ShowDataInOtherInfoPanel;
-    property ShowMeasuresListAsRichEdit: boolean read FShowMeasuresListAsRichEdit write SetShowMeasuresListAsRichEdit default DefaultValue_ShowMeasuresListAsRichEdit;
-    property MarkSearchedStrings: boolean read FMarkSearchedStrings write SetMarkSearchedStrings default DefaultValue_MarkSearchedStrings;
-    property PutTownAtTheEnd: boolean read FPutTownAtTheEnd write SetPutTownAtTheEnd default DefaultValue_PutTownAtTheEnd;
+    property OrganizationPanelHeightValue: Integer read FOrganizationPanelHeightValue write SetOrganizationPanelHeightValue default DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_HEIGHT_VALUE;
+    property OrganizationPanelHalfHeight: Boolean read FOrganizationPanelHalfHeight write SetOrganizationPanelHalfHeight default DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_ENABLE_HALF_HEIGHT;
+    property DataPanelWidthValue: Integer read FDataPanelWidthValue write SetDataPanelWidthValue default DEFAULT_CONFIGURATION_DATA_PANEL_WIDTH_VALUE;
+    property DataPanelHalfWidth: Boolean read FDataPanelHalfWidth write SetDataPanelHalfWidth default DEFAULT_CONFIGURATION_DATA_PANEL_ENABLE_HALF_WIDTH;
+    property ShowDataInOtherInfoPanel: Boolean read FShowDataInOtherInfoPanel write SetShowDataInOtherInfoPanel default DEFAULT_CONFIGURATION_ENABLE_DATA_IN_OTHER_INFO_PANEL;
+    property ShowMeasuresListAsRichEdit: Boolean read FShowMeasuresListAsRichEdit write SetShowMeasuresListAsRichEdit default DEFAULT_CONFIGURATION_ENABLE_MEASURE_LIST_AS_RICH_EDIT;
+    property MarkSearchedStrings: Boolean read FMarkSearchedStrings write SetMarkSearchedStrings default DEFAULT_CONFIGURATION_ENABLE_MARK_SEARCHED_STRING;
+    property PutTownAtTheEnd: Boolean read FPutTownAtTheEnd write SetPutTownAtTheEnd default DEFAULT_CONFIGURATION_ENABLE_PUT_TOWN_AT_THE_END;
   end;
 
 implementation
@@ -372,223 +290,223 @@ uses
   Vcl.Forms;
 
 resourcestring
-  TEXT_INIFILESECTION_INTERFACE='Интерфейс';
-  TEXT_INIFILESECTION_LOGS='Протоколирование';
-  TEXT_INIFILESECTION_DIALOGS_POSITION='Положение диалоговых окон';
-  TEXT_INIFILESECTION_IDENTIFICATION='Идентификация';
-  TEXT_INIFILESECTION_SERVERS='Сервера и базы данных';
-  TEXT_INIFILESECTION_REPORTS='Формирование отчётов';
-  TEXT_INIFILESECTION_OTHER='Прочие';
-  TEXT_INIFILESECTION_MAINFORM='Главное окно';
-  TEXT_INIFILESECTION_INFO='Отображение информации';
+  TEXT_INIFILESECTION_INTERFACE = 'Интерфейс';
+  TEXT_INIFILESECTION_LOGS = 'Протоколирование';
+  TEXT_INIFILESECTION_DIALOGS_POSITION = 'Положение диалоговых окон';
+  TEXT_INIFILESECTION_IDENTIFICATION = 'Идентификация';
+  TEXT_INIFILESECTION_SERVERS = 'Сервера и базы данных';
+  TEXT_INIFILESECTION_REPORTS = 'Формирование отчётов';
+  TEXT_INIFILESECTION_OTHER = 'Прочие';
+  TEXT_INIFILESECTION_MAINFORM = 'Главное окно';
+  TEXT_INIFILESECTION_INFO = 'Отображение информации';
 
 procedure TConfiguration.Loading(const AIniFile: TCustomIniFile);
 var
-  FormPosition: TFormPosition;
+  FormPosition: TDialogPosition;
 begin
   inherited;
   with AIniFile do
+  begin
+    // вкладка "настройки интерфейса"
+    ShowSplashAtStart := ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowSplashAtStart', DEFAULT_CONFIGURATION_ENABLE_SPLASH_AT_START);
+    ShowToolbar := ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowToolbar', DEFAULT_CONFIGURATION_ENABLE_TOOLBAR);
+    ShowStatusbar := ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowStatusbar', DEFAULT_CONFIGURATION_ENABLE_STATUSBAR);
+    ShowEditboxHints := ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowEditboxHints', DEFAULT_CONFIGURATION_ENABLE_EDITBOX_HINTS);
+    ShowCommonSearchEditbox := ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowCommonSearchEditbox', DEFAULT_CONFIGURATION_ENABLE_COMMON_SEARCH_EDITBOX);
+    ShowID := ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowID', DEFAULT_CONFIGURATION_ENABLE_ID);
+    UseMultibuffer := ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bUseMultibuffer', DEFAULT_CONFIGURATION_ENABLE_MULTIBUFFER);
+    ShowConfirmationOnQuit := ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowConfirmationOnQuit', DEFAULT_CONFIGURATION_ENABLE_QUIT_CONFIRMATION);
+
+    // вкладка "настройки ведения протокола работы"
+    EnableLog := ReadBool(TEXT_INIFILESECTION_LOGS, 'bEnableLog', DEFAULT_CONFIGURATION_ENABLE_LOG);
+    FlushLogOnExit := ReadBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnExit', DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_EXIT);
+    FlushLogOnStringsQuantity := ReadBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnStringsQuantity', DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_STRINGS_QUANTITY);
+    FlushLogOnStringsQuantityValue := ReadInteger(TEXT_INIFILESECTION_LOGS, 'iFlushLogOnStringsQuantityValue', DEFAULT_CONFIGURATION_FLUSH_LOG_ON_STRINGS_QUANTITY_VALUE);
+    FlushLogOnClearingLog := ReadBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnClearingLog', DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_CLEARING_LOG);
+    FlushLogOnApply := ReadBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnApply', DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_APPLY);
+    CustomLogClientFile := ReadBool(TEXT_INIFILESECTION_LOGS, 'bCustomLogClientFile', DEFAULT_CONFIGURATION_ENABLE_CUSTOM_LOG_CLIENT);
+    CustomLogClientFileValue := ReadString(TEXT_INIFILESECTION_LOGS, 'sCustomLogClientFileValue', DEFAULT_CONFIGURATION_CUSTOM_LOG_CLIENT_VALUE);
+    if ReadBool(TEXT_INIFILESECTION_LOGS, 'bKeepErrorLog', lmtError in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) then
+      KeepLogTypes := KeepLogTypes + [lmtError]
+    else
+      KeepLogTypes := KeepLogTypes - [lmtError];
+    if ReadBool(TEXT_INIFILESECTION_LOGS, 'bKeepWarningLog', lmtWarning in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) then
+      KeepLogTypes := KeepLogTypes + [lmtWarning]
+    else
+      KeepLogTypes := KeepLogTypes - [lmtWarning];
+    if ReadBool(TEXT_INIFILESECTION_LOGS, 'bKeepInfoLog', lmtInfo in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) then
+      KeepLogTypes := KeepLogTypes + [lmtInfo]
+    else
+      KeepLogTypes := KeepLogTypes - [lmtInfo];
+    if ReadBool(TEXT_INIFILESECTION_LOGS, 'bKeepSQLLog', lmtSQL in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) then
+      KeepLogTypes := KeepLogTypes + [lmtSQL]
+    else
+      KeepLogTypes := KeepLogTypes - [lmtSQL];
+    if ReadBool(TEXT_INIFILESECTION_LOGS, 'bKeepDebugLog', lmtDebug in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) then
+      KeepLogTypes := KeepLogTypes + [lmtDebug]
+    else
+      KeepLogTypes := KeepLogTypes - [lmtDebug];
+
+    // вкладка "настройки положения диалоговых окон"
+    with FormPosition do
     begin
-      // вкладка "настройки интерфейса"
-      ShowSplashAtStart:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowSplashAtStart', DefaultValue_ShowSplashAtStart);
-      ShowToolbar:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowToolbar', DefaultValue_ShowToolbar);
-      ShowStatusbar:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowStatusbar', DefaultValue_ShowStatusbar);
-      ShowEditboxHints:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowEditboxHints', DefaultValue_ShowEditboxHints);
-      ShowCommonSearchEditbox:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowCommonSearchEditbox', DefaultValue_ShowCommonSearchEditbox);
-      ShowID:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowID', DefaultValue_ShowID);
-      UseMultibuffer:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bUseMultibuffer', DefaultValue_UseMultibuffer);
-      ShowConfirmationOnQuit:=ReadBool(TEXT_INIFILESECTION_INTERFACE, 'bShowConfirmationOnQuit', DefaultValue_ShowConfirmationOnQuit);
+      Centered := ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'LoginFormPosition.bCenter', DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
+      Left := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'LoginFormPosition.ix', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+      Top := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'LoginFormPosition.iy', DEFAULT_CONFIGURATION_DIALOG_TOP);
+      LoginFormPosition := FormPosition;
 
-      // вкладка "настройки ведения протокола работы"
-      EnableLog:=ReadBool(TEXT_INIFILESECTION_LOGS, 'bEnableLog', DefaultValue_EnableLog);
-      FlushLogOnExit:=ReadBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnExit', DefaultValue_FlushLogOnExit);
-      FlushLogOnStringsQuantity:=ReadBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnStringsQuantity', DefaultValue_FlushLogOnStringsQuantity);
-      FlushLogOnStringsQuantityValue:=ReadInteger(TEXT_INIFILESECTION_LOGS, 'iFlushLogOnStringsQuantityValue', DefaultValue_FlushLogOnStringsQuantityValue);
-      FlushLogOnClearingLog:=ReadBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnClearingLog', DefaultValue_FlushLogOnClearingLog);
-      FlushLogOnApply:=ReadBool(TEXT_INIFILESECTION_LOGS, 'bFlushLogOnApply', DefaultValue_FlushLogOnApply);
-      CustomLogClientFile:=ReadBool(TEXT_INIFILESECTION_LOGS, 'bCustomLogClientFile', DefaultValue_CustomLogClientFile);
-      CustomLogClientFileValue:=ReadString(TEXT_INIFILESECTION_LOGS, 'sCustomLogClientFileValue', DefaultValue_CustomLogClientFileValue);
-      if ReadBool(TEXT_INIFILESECTION_LOGS, 'bKeepErrorLog', lmtError in DefaultValue_KeepLogTypes) then
-        KeepLogTypes:=KeepLogTypes+[lmtError]
-      else
-        KeepLogTypes:=KeepLogTypes-[lmtError];
-      if ReadBool(TEXT_INIFILESECTION_LOGS, 'bKeepWarningLog', lmtWarning in DefaultValue_KeepLogTypes) then
-        KeepLogTypes:=KeepLogTypes+[lmtWarning]
-      else
-        KeepLogTypes:=KeepLogTypes-[lmtWarning];
-      if ReadBool(TEXT_INIFILESECTION_LOGS, 'bKeepInfoLog', lmtInfo in DefaultValue_KeepLogTypes) then
-        KeepLogTypes:=KeepLogTypes+[lmtInfo]
-      else
-        KeepLogTypes:=KeepLogTypes-[lmtInfo];
-      if ReadBool(TEXT_INIFILESECTION_LOGS, 'bKeepSQLLog', lmtSQL in DefaultValue_KeepLogTypes) then
-        KeepLogTypes:=KeepLogTypes+[lmtSQL]
-      else
-        KeepLogTypes:=KeepLogTypes-[lmtSQL];
-      if ReadBool(TEXT_INIFILESECTION_LOGS, 'bKeepDebugLog', lmtDebug in DefaultValue_KeepLogTypes) then
-        KeepLogTypes:=KeepLogTypes+[lmtDebug]
-      else
-        KeepLogTypes:=KeepLogTypes-[lmtDebug];
+      Centered := ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ConfigurationFormPosition.bCenter', DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
+      Left := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ConfigurationFormPosition.ix', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+      Top := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ConfigurationFormPosition.iy', DEFAULT_CONFIGURATION_DIALOG_TOP);
+      ConfigurationFormPosition := FormPosition;
 
-      // вкладка "настройки положения диалоговых окон"
-      with FormPosition do
-        begin
-          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'LoginFormPosition.bCenter', DefaultValue_FormPosition_Center);
-          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'LoginFormPosition.ix', DefaultValue_FormPosition_x);
-          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'LoginFormPosition.iy', DefaultValue_FormPosition_y);
-          LoginFormPosition:=FormPosition;
+      Centered := ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'UsersFormPosition.bCenter', DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
+      Left := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'UsersFormPosition.ix', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+      Top := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'UsersFormPosition.iy', DEFAULT_CONFIGURATION_DIALOG_TOP);
+      UsersFormPosition := FormPosition;
 
-          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ConfigurationFormPosition.bCenter', DefaultValue_FormPosition_Center);
-          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ConfigurationFormPosition.ix', DefaultValue_FormPosition_x);
-          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ConfigurationFormPosition.iy', DefaultValue_FormPosition_y);
-          ConfigurationFormPosition:=FormPosition;
+      Centered := ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'SetPasswordFormPosition.bCenter', DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
+      Left := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'SetPasswordFormPosition.ix', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+      Top := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'SetPasswordFormPosition.iy', DEFAULT_CONFIGURATION_DIALOG_TOP);
+      SetPasswordFormPosition := FormPosition;
 
-          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'UsersFormPosition.bCenter', DefaultValue_FormPosition_Center);
-          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'UsersFormPosition.ix', DefaultValue_FormPosition_x);
-          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'UsersFormPosition.iy', DefaultValue_FormPosition_y);
-          UsersFormPosition:=FormPosition;
+      Centered := ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ReportFormPosition.bCenter', DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
+      Left := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ReportFormPosition.ix', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+      Top := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ReportFormPosition.iy', DEFAULT_CONFIGURATION_DIALOG_TOP);
+      ReportFormPosition := FormPosition;
 
-          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'SetPasswordFormPosition.bCenter', DefaultValue_FormPosition_Center);
-          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'SetPasswordFormPosition.ix', DefaultValue_FormPosition_x);
-          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'SetPasswordFormPosition.iy', DefaultValue_FormPosition_y);
-          SetPasswordFormPosition:=FormPosition;
+      Centered := ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MaintenanceFormPosition.bCenter', DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
+      Left := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MaintenanceFormPosition.ix', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+      Top := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MaintenanceFormPosition.iy', DEFAULT_CONFIGURATION_DIALOG_TOP);
+      MaintenanceFormPosition := FormPosition;
 
-          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ReportFormPosition.bCenter', DefaultValue_FormPosition_Center);
-          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ReportFormPosition.ix', DefaultValue_FormPosition_x);
-          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ReportFormPosition.iy', DefaultValue_FormPosition_y);
-          ReportFormPosition:=FormPosition;
+      Centered := ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ClearingFormPosition.bCenter', DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
+      Left := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ClearingFormPosition.ix', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+      Top := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ClearingFormPosition.iy', DEFAULT_CONFIGURATION_DIALOG_TOP);
+      ClearingFormPosition := FormPosition;
 
-          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MaintenanceFormPosition.bCenter', DefaultValue_FormPosition_Center);
-          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MaintenanceFormPosition.ix', DefaultValue_FormPosition_x);
-          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MaintenanceFormPosition.iy', DefaultValue_FormPosition_y);
-          MaintenanceFormPosition:=FormPosition;
+      Centered := ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessagesFormPosition.bCenter', DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
+      Left := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessagesFormPosition.ix', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+      Top := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessagesFormPosition.iy', DEFAULT_CONFIGURATION_DIALOG_TOP);
+      ViewMessagesFormPosition := FormPosition;
 
-          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ClearingFormPosition.bCenter', DefaultValue_FormPosition_Center);
-          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ClearingFormPosition.ix', DefaultValue_FormPosition_x);
-          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ClearingFormPosition.iy', DefaultValue_FormPosition_y);
-          ClearingFormPosition:=FormPosition;
+      Centered := ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'CreateMessageFormPosition.bCenter', DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
+      Left := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'CreateMessageFormPosition.ix', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+      Top := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'CreateMessageFormPosition.iy', DEFAULT_CONFIGURATION_DIALOG_TOP);
+      CreateMessageFormPosition := FormPosition;
 
-          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessagesFormPosition.bCenter', DefaultValue_FormPosition_Center);
-          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessagesFormPosition.ix', DefaultValue_FormPosition_x);
-          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessagesFormPosition.iy', DefaultValue_FormPosition_y);
-          ViewMessagesFormPosition:=FormPosition;
+      Centered := ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessageFormPosition.bCenter', DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
+      Left := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessageFormPosition.ix', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+      Top := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessageFormPosition.iy', DEFAULT_CONFIGURATION_DIALOG_TOP);
+      ViewMessageFormPosition := FormPosition;
 
-          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'CreateMessageFormPosition.bCenter', DefaultValue_FormPosition_Center);
-          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'CreateMessageFormPosition.ix', DefaultValue_FormPosition_x);
-          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'CreateMessageFormPosition.iy', DefaultValue_FormPosition_y);
-          CreateMessageFormPosition:=FormPosition;
+      Centered := ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PhonesFormPosition.bCenter', DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
+      Left := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PhonesFormPosition.ix', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+      Top := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PhonesFormPosition.iy', DEFAULT_CONFIGURATION_DIALOG_TOP);
+      PhonesFormPosition := FormPosition;
 
-          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessageFormPosition.bCenter', DefaultValue_FormPosition_Center);
-          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessageFormPosition.ix', DefaultValue_FormPosition_x);
-          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'ViewMessageFormPosition.iy', DefaultValue_FormPosition_y);
-          ViewMessageFormPosition:=FormPosition;
+      Centered := ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddEditPhoneFormPosition.bCenter', DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
+      Left := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddEditPhoneFormPosition.ix', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+      Top := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddEditPhoneFormPosition.iy', DEFAULT_CONFIGURATION_DIALOG_TOP);
+      AddEditPhoneFormPosition := FormPosition;
 
-          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PhonesFormPosition.bCenter', DefaultValue_FormPosition_Center);
-          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PhonesFormPosition.ix', DefaultValue_FormPosition_x);
-          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PhonesFormPosition.iy', DefaultValue_FormPosition_y);
-          PhonesFormPosition:=FormPosition;
+      Centered := ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddMassMsrFormPosition.bCenter', DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
+      Left := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddMassMsrFormPosition.ix', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+      Top := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddMassMsrFormPosition.iy', DEFAULT_CONFIGURATION_DIALOG_TOP);
+      AddMassMsrFormPosition := FormPosition;
 
-          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddEditPhoneFormPosition.bCenter', DefaultValue_FormPosition_Center);
-          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddEditPhoneFormPosition.ix', DefaultValue_FormPosition_x);
-          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddEditPhoneFormPosition.iy', DefaultValue_FormPosition_y);
-          AddEditPhoneFormPosition:=FormPosition;
+      Centered := ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PermissionsFormPosition.bCenter', DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
+      Left := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PermissionsFormPosition.ix', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+      Top := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PermissionsFormPosition.iy', DEFAULT_CONFIGURATION_DIALOG_TOP);
+      PermissionsFormPosition := FormPosition;
 
-          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddMassMsrFormPosition.bCenter', DefaultValue_FormPosition_Center);
-          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddMassMsrFormPosition.ix', DefaultValue_FormPosition_x);
-          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'AddMassMsrFormPosition.iy', DefaultValue_FormPosition_y);
-          AddMassMsrFormPosition:=FormPosition;
-
-          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PermissionsFormPosition.bCenter', DefaultValue_FormPosition_Center);
-          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PermissionsFormPosition.ix', DefaultValue_FormPosition_x);
-          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'PermissionsFormPosition.iy', DefaultValue_FormPosition_y);
-          PermissionsFormPosition:=FormPosition;
-
-          bCenter:=ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MultibufferFormPosition.bCenter', DefaultValue_FormPosition_Center);
-          x:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MultibufferFormPosition.ix', DefaultValue_FormPosition_x);
-          y:=ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MultibufferFormPosition.iy', DefaultValue_FormPosition_y);
-          MultibufferFormPosition:=FormPosition;
-        end;
-
-      // вкладка "настройки процедуры логирования"
-      StoreLogin:=ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStoreLogin', DefaultValue_StoreLogin);
-      if StoreLogin then
-        Login:=ReadString(TEXT_INIFILESECTION_IDENTIFICATION, 'sLogin', '')
-      else
-        Login:='';
-      StorePassword:=ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStorePassword', DefaultValue_StorePassword);
-      if StorePassword then
-        Password:=ReadString(TEXT_INIFILESECTION_IDENTIFICATION, 'sPassword', '')
-      else
-        Password:='';
-      AutoLogon:=ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bAutoLogon', DefaultValue_AutoLogon);
-
-      // вкладка "подключения к серверу базы данных услуги"
-      with RNE4Server do
-        begin
-          Host:=ReadString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sHost', DefaultValue_RNE4Server_Host);
-          Port:=ReadInteger(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.iPort', DefaultValue_RNE4Server_Port);
-          Timeout:=ReadInteger(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.iTimeout', DefaultValue_RNE4Server_Timeout);
-          Compression:=ReadBool(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.bCompression', DefaultValue_RNE4Server_Compression);
-          Login:=ReadString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sLogin', DefaultValue_RNE4Server_Login);
-          Password:=ReadString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sPassword', DefaultValue_RNE4Server_Password);
-          Database:=ReadString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sDatabase', DefaultValue_RNE4Server_Database);
-        end;
-
-      // вкладка "подключения к серверу системы обмена сообщениями"
-      with MessagesServer do
-        begin
-          Host:=ReadString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sHost', DefaultValue_MessagesServer_Host);
-          Port:=ReadInteger(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.iPort', DefaultValue_MessagesServer_Port);
-          Timeout:=ReadInteger(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.iTimeout', DefaultValue_MessagesServer_Timeout);
-          Compression:=ReadBool(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.bCompression', DefaultValue_MessagesServer_Compression);
-          Login:=ReadString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sLogin', DefaultValue_MessagesServer_Login);
-          Password:=ReadString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sPassword', DefaultValue_MessagesServer_Password);
-          Database:=ReadString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sDatabase', DefaultValue_MessagesServer_Database);
-        end;
-
-      // вкладка "настройки формирования отчётов"
-      ReportFolder:=TReportFolders(ReadInteger(TEXT_INIFILESECTION_REPORTS, 'iReportFolder', integer(rfApplicationFolder)));
-      CustomReportFolderValue:=ReadString(TEXT_INIFILESECTION_REPORTS, 'sCustomReportFolderValue', '');
-      DontDemandOverwriteConfirmation:=ReadBool(TEXT_INIFILESECTION_REPORTS, 'bDontDemandOverwriteConfirmation', False);
-      AskForFileName:=ReadBool(TEXT_INIFILESECTION_REPORTS, 'bAskForFileName', True);
-
-      // вкладка "настройки прочие"
-      LaunchAtStartup:=ReadBool(TEXT_INIFILESECTION_OTHER, 'bLaunchAtStartup', DefaultValue_LaunchAtStartup);
-      PlaySoundOnComplete:=ReadBool(TEXT_INIFILESECTION_OTHER, 'bPlaySoundOnComplete', DefaultValue_PlaySoundOnComplete);
-      EnableAutoGetMessages:=ReadBool(TEXT_INIFILESECTION_OTHER, 'bEnableAutoGetMessages', DefaultValue_EnableAutoGetMessages);
-      AutoGetMessagesCycleDurationValue:=ReadInteger(TEXT_INIFILESECTION_OTHER, 'iAutoGetMessagesCycleDurationValue', DefaultValue_AutoGetMessagesCycleDurationValue);
-      CustomHelpFile:=ReadBool(TEXT_INIFILESECTION_OTHER, 'bCustomHelpFile', DefaultValue_CustomHelpFile);
-      CustomHelpFileValue:=ReadString(TEXT_INIFILESECTION_OTHER, 'sCustomHelpFileValue', DefaultValue_CustomHelpFileValue);
-
-      // вкладка "настройки главного окна"
-      MainFormLeft:=ReadInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormLeft', DefaultValue_MainFormLeft);
-      MainFormTop:=ReadInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormTop', DefaultValue_MainFormTop);
-      MainFormWidth:=ReadInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormWidth', DefaultValue_MainFormWidth);
-      MainFormHeight:=ReadInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormHeight', DefaultValue_MainFormHeight);
-      MainFormPositionByCenter:=ReadBool(TEXT_INIFILESECTION_MAINFORM, 'bMainFormPositionByCenter', DefaultValue_MainFormPositionByCenter);
-      FullScreenAtLaunch:=ReadBool(TEXT_INIFILESECTION_MAINFORM, 'bFullScreenAtLaunch', DefaultValue_FullScreenAtLaunch);
-
-      // вкладка "настройки отображения информации"
-      OrganizationPanelHeightValue:=ReadInteger(TEXT_INIFILESECTION_INFO, 'iOrganizationPanelHeightValue', DefaultValue_OrganizationPanelHeightValue);
-      OrganizationPanelHalfHeight:=ReadBool(TEXT_INIFILESECTION_INFO, 'bOrganizationPanelHalfHeight', DefaultValue_OrganizationPanelHalfHeight);
-      DataPanelWidthValue:=ReadInteger(TEXT_INIFILESECTION_INFO, 'iDataPanelWidthValue', DefaultValue_DataPanelWidthValue);
-      DataPanelHalfWidth:=ReadBool(TEXT_INIFILESECTION_INFO, 'bOrganizationPanelHalfHeight', DefaultValue_DataPanelHalfWidth);
-      ShowDataInOtherInfoPanel:=ReadBool(TEXT_INIFILESECTION_INFO, 'bShowDataInOtherInfoPanel', DefaultValue_ShowDataInOtherInfoPanel);
-      ShowMeasuresListAsRichEdit:=ReadBool(TEXT_INIFILESECTION_INFO, 'bShowMeasuresListAsRichEdit', DefaultValue_ShowMeasuresListAsRichEdit);
-      MarkSearchedStrings:=ReadBool(TEXT_INIFILESECTION_INFO, 'bMarkSearchedStrings', DefaultValue_MarkSearchedStrings);
-      PutTownAtTheEnd:=ReadBool(TEXT_INIFILESECTION_INFO, 'bPutTownAtTheEnd', DefaultValue_PutTownAtTheEnd);
+      Centered := ReadBool(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MultibufferFormPosition.bCenter', DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
+      Left := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MultibufferFormPosition.ix', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+      Top := ReadInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, 'MultibufferFormPosition.iy', DEFAULT_CONFIGURATION_DIALOG_TOP);
+      MultibufferFormPosition := FormPosition;
     end;
+
+    // вкладка "настройки процедуры логирования"
+    StoreLogin := ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStoreLogin', DEFAULT_CONFIGURATION_ENABLE_STORE_LOGIN);
+    if StoreLogin then
+      Login := ReadString(TEXT_INIFILESECTION_IDENTIFICATION, 'sLogin', '')
+    else
+      Login := '';
+    StorePassword := ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStorePassword', DEFAULT_CONFIGURATION_ENABLE_STORE_PASSWORD);
+    if StorePassword then
+      Password := ReadString(TEXT_INIFILESECTION_IDENTIFICATION, 'sPassword', '')
+    else
+      Password := '';
+    AutoLogon := ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bAutoLogon', DEFAULT_CONFIGURATION_ENABLE_AUTO_LOGON);
+
+    // вкладка "подключения к серверу базы данных услуги"
+    with RNE4Server do
+    begin
+      Host := ReadString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sHost', DEFAULT_CONFIGURATION_RNE4SERVER_HOST);
+      Port := ReadInteger(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.iPort', DEFAULT_CONFIGURATION_RNE4SERVER_PORT);
+      Timeout := ReadInteger(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.iTimeout', DEFAULT_CONFIGURATION_RNE4SERVER_TIMEOUT);
+      Compression := ReadBool(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.bCompression', DEFAULT_CONFIGURATION_RNE4SERVER_COMPRESSION);
+      Login := ReadString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sLogin', DEFAULT_CONFIGURATION_RNE4SERVER_LOGIN);
+      Password := ReadString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sPassword', DEFAULT_CONFIGURATION_RNE4SERVER_PASSWORD);
+      Database := ReadString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sDatabase', DEFAULT_CONFIGURATION_RNE4SERVER_DATABESE);
+    end;
+
+    // вкладка "подключения к серверу системы обмена сообщениями"
+    with MessagesServer do
+    begin
+      Host := ReadString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sHost', DEFAULT_CONFIGURATION_MESSAGESERVER_HOST);
+      Port := ReadInteger(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.iPort', DEFAULT_CONFIGURATION_MESSAGESERVER_PORT);
+      Timeout := ReadInteger(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.iTimeout', DEFAULT_CONFIGURATION_MESSAGESERVER_TIMEOUT);
+      Compression := ReadBool(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.bCompression', DEFAULT_CONFIGURATION_MESSAGESERVER_COMPRESSION);
+      Login := ReadString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sLogin', DEFAULT_CONFIGURATION_MESSAGESERVER_LOGIN);
+      Password := ReadString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sPassword', DEFAULT_CONFIGURATION_MESSAGESERVER_PASSWORD);
+      Database := ReadString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sDatabase', DEFAULT_CONFIGURATION_MESSAGESERVER_DATABASE);
+    end;
+
+    // вкладка "настройки формирования отчётов"
+    ReportFolder := TReportFolder(ReadInteger(TEXT_INIFILESECTION_REPORTS, 'iReportFolder', Integer(rfApplicationFolder)));
+    CustomReportFolderValue := ReadString(TEXT_INIFILESECTION_REPORTS, 'sCustomReportFolderValue', '');
+    DontDemandOverwriteConfirmation := ReadBool(TEXT_INIFILESECTION_REPORTS, 'bDontDemandOverwriteConfirmation', False);
+    AskForFileName := ReadBool(TEXT_INIFILESECTION_REPORTS, 'bAskForFileName', True);
+
+    // вкладка "настройки прочие"
+    LaunchAtStartup := ReadBool(TEXT_INIFILESECTION_OTHER, 'bLaunchAtStartup', DEFAULT_CONFIGURATION_ENABLE_LAUNCH_AT_STARTUP);
+    PlaySoundOnComplete := ReadBool(TEXT_INIFILESECTION_OTHER, 'bPlaySoundOnComplete', DEFAULT_CONFIGURATION_ENABLE_PLAY_SOUND_ON_COMPLETE);
+    EnableAutoGetMessages := ReadBool(TEXT_INIFILESECTION_OTHER, 'bEnableAutoGetMessages', DEFAULT_CONFIGURATION_ENABLE_AUTO_GET_MESSAGE);
+    AutoGetMessagesCycleDurationValue := ReadInteger(TEXT_INIFILESECTION_OTHER, 'iAutoGetMessagesCycleDurationValue', DEFAULT_CONFIGURATION_AUTO_GET_MESSAGES_CYCLE_DURATION_VALUE);
+    CustomHelpFile := ReadBool(TEXT_INIFILESECTION_OTHER, 'bCustomHelpFile', DEFAULT_CONFIGURATION_ENABLE_CUSTOM_HELP_FILE);
+    CustomHelpFileValue := ReadString(TEXT_INIFILESECTION_OTHER, 'sCustomHelpFileValue', DEFAULT_CONFIGURATION_CUSTOM_HELP_FILE_VALUE);
+
+    // вкладка "настройки главного окна"
+    MainFormLeft := ReadInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormLeft', DEFAULT_CONFIGURATION_MAIN_FORM_LEFT);
+    MainFormTop := ReadInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormTop', DEFAULT_CONFIGURATION_MAIN_FORM_TOP);
+    MainFormWidth := ReadInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormWidth', DEFAULT_CONFIGURATION_MAIN_FORM_WIDTH);
+    MainFormHeight := ReadInteger(TEXT_INIFILESECTION_MAINFORM, 'iMainFormHeight', DEFAULT_CONFIGURATION_MAIN_FORM_HEIGHT);
+    MainFormPositionByCenter := ReadBool(TEXT_INIFILESECTION_MAINFORM, 'bMainFormPositionByCenter', DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_POSITION_BY_CENTER);
+    FullScreenAtLaunch := ReadBool(TEXT_INIFILESECTION_MAINFORM, 'bFullScreenAtLaunch', DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH);
+
+    // вкладка "настройки отображения информации"
+    OrganizationPanelHeightValue := ReadInteger(TEXT_INIFILESECTION_INFO, 'iOrganizationPanelHeightValue', DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_HEIGHT_VALUE);
+    OrganizationPanelHalfHeight := ReadBool(TEXT_INIFILESECTION_INFO, 'bOrganizationPanelHalfHeight', DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_ENABLE_HALF_HEIGHT);
+    DataPanelWidthValue := ReadInteger(TEXT_INIFILESECTION_INFO, 'iDataPanelWidthValue', DEFAULT_CONFIGURATION_DATA_PANEL_WIDTH_VALUE);
+    DataPanelHalfWidth := ReadBool(TEXT_INIFILESECTION_INFO, 'bOrganizationPanelHalfHeight', DEFAULT_CONFIGURATION_DATA_PANEL_ENABLE_HALF_WIDTH);
+    ShowDataInOtherInfoPanel := ReadBool(TEXT_INIFILESECTION_INFO, 'bShowDataInOtherInfoPanel', DEFAULT_CONFIGURATION_ENABLE_DATA_IN_OTHER_INFO_PANEL);
+    ShowMeasuresListAsRichEdit := ReadBool(TEXT_INIFILESECTION_INFO, 'bShowMeasuresListAsRichEdit', DEFAULT_CONFIGURATION_ENABLE_MEASURE_LIST_AS_RICH_EDIT);
+    MarkSearchedStrings := ReadBool(TEXT_INIFILESECTION_INFO, 'bMarkSearchedStrings', DEFAULT_CONFIGURATION_ENABLE_MARK_SEARCHED_STRING);
+    PutTownAtTheEnd := ReadBool(TEXT_INIFILESECTION_INFO, 'bPutTownAtTheEnd', DEFAULT_CONFIGURATION_ENABLE_PUT_TOWN_AT_THE_END);
+  end;
 end;
 
 procedure TConfiguration.Saving(const AIniFile: TCustomIniFile);
 
-  procedure WriteFormPosition(IniFile: TCustomIniFile; FormPosition: TFormPosition; const FormPositionName: string);
+  procedure WriteFormPosition(IniFile: TCustomIniFile; FormPosition: TDialogPosition; const FormPositionName: string);
   begin
     with IniFile do
-      begin
-        WriteBool(TEXT_INIFILESECTION_DIALOGS_POSITION, FormPositionName+'.bCenter', FormPosition.bCenter);
-        WriteInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, FormPositionName+'.ix', FormPosition.x);
-        WriteInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, FormPositionName+'.iy', FormPosition.y);
-      end;
+    begin
+      WriteBool(TEXT_INIFILESECTION_DIALOGS_POSITION, FormPositionName + '.Centered', FormPosition.Centered);
+      WriteInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, FormPositionName + '.Left', FormPosition.Left);
+      WriteInteger(TEXT_INIFILESECTION_DIALOGS_POSITION, FormPositionName + '.Top', FormPosition.Top);
+    end;
   end;
 
 begin
@@ -653,30 +571,30 @@ begin
 
       // вкладка "подключения к серверу базы данных услуги"
       with RNE4Server do
-        begin
-          WriteString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sHost', Host);
-          WriteInteger(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.iPort', Port);
-          WriteInteger(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.iTimeout', Timeout);
-          WriteBool(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.bCompression', Compression);
-          // WriteString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sLogin', Login);
-          // WriteString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sPassword', Password);
-          WriteString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sDatabase', Database);
-        end;
+      begin
+        WriteString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sHost', Host);
+        WriteInteger(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.iPort', Port);
+        WriteInteger(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.iTimeout', Timeout);
+        WriteBool(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.bCompression', Compression);
+        // WriteString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sLogin', Login);
+        // WriteString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sPassword', Password);
+        WriteString(TEXT_INIFILESECTION_SERVERS, 'RNE4Server.sDatabase', Database);
+      end;
 
       // вкладка "подключения к серверу системы обмена сообщениями"
       with MessagesServer do
-        begin
-          WriteString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sHost', Host);
-          WriteInteger(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.iPort', Port);
-          WriteInteger(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.iTimeout', Timeout);
-          WriteBool(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.bCompression', Compression);
-          // WriteString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sLogin', Login);
-          // WriteString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sPassword', Password);
-          WriteString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sDatabase', Database);
-        end;
+      begin
+        WriteString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sHost', Host);
+        WriteInteger(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.iPort', Port);
+        WriteInteger(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.iTimeout', Timeout);
+        WriteBool(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.bCompression', Compression);
+        // WriteString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sLogin', Login);
+        // WriteString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sPassword', Password);
+        WriteString(TEXT_INIFILESECTION_SERVERS, 'MessagesServer.sDatabase', Database);
+      end;
 
       // вкладка "настройки формирования отчётов"
-      WriteInteger(TEXT_INIFILESECTION_REPORTS, 'iReportFolder', integer(ReportFolder));
+      WriteInteger(TEXT_INIFILESECTION_REPORTS, 'iReportFolder', Integer(ReportFolder));
       WriteString(TEXT_INIFILESECTION_REPORTS, 'sCustomReportFolderValue', CustomReportFolderValue);
       WriteBool(TEXT_INIFILESECTION_REPORTS, 'bDontDemandOverwriteConfirmation', DontDemandOverwriteConfirmation);
       WriteBool(TEXT_INIFILESECTION_REPORTS, 'bAskForFileName', AskForFileName);
@@ -714,229 +632,229 @@ end;
 
 procedure TConfiguration.SetKeepLogTypes(const Value: TLogMessagesTypes);
 begin
-  if FKeepLogTypes<>Value then
-    FKeepLogTypes:=Value;
+  if FKeepLogTypes <> Value then
+    FKeepLogTypes := Value;
 end;
 
-procedure TConfiguration.SetLaunchAtStartup(const Value: boolean);
+procedure TConfiguration.SetLaunchAtStartup(const Value: Boolean);
 begin
-  if FLaunchAtStartup<>Value then
-    FLaunchAtStartup:=Value;
+  if FLaunchAtStartup <> Value then
+    FLaunchAtStartup := Value;
 end;
 
-procedure TConfiguration.SetLoginFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetLoginFormPosition(const AValue: TDialogPosition);
 begin
-  if ((FLoginFormPosition.bCenter<>Value.bCenter)or(FLoginFormPosition.x<>Value.x)or(FLoginFormPosition.y<>Value.y)) then
-    FLoginFormPosition:=Value;
+  if not FLoginFormPosition.Equals(AValue) then
+    FLoginFormPosition.Assign(AValue);
 end;
 
-procedure TConfiguration.SetMainFormHeight(const Value: integer);
+procedure TConfiguration.SetMainFormHeight(const Value: Integer);
 begin
-  if FMainFormHeight<>Value then
-    FMainFormHeight:=Value;
+  if FMainFormHeight <> Value then
+    FMainFormHeight := Value;
 end;
 
-procedure TConfiguration.SetMainFormLeft(const Value: integer);
+procedure TConfiguration.SetMainFormLeft(const Value: Integer);
 begin
-  if FMainFormLeft<>Value then
-    FMainFormLeft:=Value;
+  if FMainFormLeft <> Value then
+    FMainFormLeft := Value;
 end;
 
-procedure TConfiguration.SetMainFormPositionByCenter(const Value: boolean);
+procedure TConfiguration.SetMainFormPositionByCenter(const Value: Boolean);
 begin
-  if FMainFormPositionByCenter<>Value then
-    FMainFormPositionByCenter:=Value;
+  if FMainFormPositionByCenter <> Value then
+    FMainFormPositionByCenter := Value;
 end;
 
-procedure TConfiguration.SetMainFormTop(const Value: integer);
+procedure TConfiguration.SetMainFormTop(const Value: Integer);
 begin
-  if FMainFormTop<>Value then
-    FMainFormTop:=Value;
+  if FMainFormTop <> Value then
+    FMainFormTop := Value;
 end;
 
-procedure TConfiguration.SetMainFormWidth(const Value: integer);
+procedure TConfiguration.SetMainFormWidth(const Value: Integer);
 begin
-  if FMainFormWidth<>Value then
-    FMainFormWidth:=Value;
+  if FMainFormWidth <> Value then
+    FMainFormWidth := Value;
 end;
 
-procedure TConfiguration.SetMaintenanceFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetMaintenanceFormPosition(const AValue: TDialogPosition);
 begin
-  if ((FMaintenanceFormPosition.bCenter<>Value.bCenter)or(FMaintenanceFormPosition.x<>Value.x)or(FMaintenanceFormPosition.y<>Value.y)) then
-    FMaintenanceFormPosition:=Value;
+  if not FMaintenanceFormPosition.Equals(AValue) then
+    FMaintenanceFormPosition.Assign(AValue);
 end;
 
-procedure TConfiguration.SetMarkSearchedStrings(const Value: boolean);
+procedure TConfiguration.SetMarkSearchedStrings(const Value: Boolean);
 begin
-  if FMarkSearchedStrings<>Value then
-    FMarkSearchedStrings:=Value;
+  if FMarkSearchedStrings <> Value then
+    FMarkSearchedStrings := Value;
 end;
 
 procedure TConfiguration.SetMessagesServer(const Value: TMySQLConnection);
 begin
-  if FMessagesServer<>Value then
-    FMessagesServer:=Value;
+  if FMessagesServer <> Value then
+    FMessagesServer := Value;
 end;
 
-procedure TConfiguration.SetConfigurationFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetConfigurationFormPosition(const AValue: TDialogPosition);
 begin
-  if ((FConfigurationFormPosition.bCenter<>Value.bCenter)or(FConfigurationFormPosition.x<>Value.x)or(FConfigurationFormPosition.y<>Value.y)) then
-    FConfigurationFormPosition:=Value;
+  if not FConfigurationFormPosition.Equals(AValue) then
+    FConfigurationFormPosition.Assign(AValue);
 end;
 
-procedure TConfiguration.SetOrganizationPanelHalfHeight(const Value: boolean);
+procedure TConfiguration.SetOrganizationPanelHalfHeight(const Value: Boolean);
 begin
-  if FOrganizationPanelHalfHeight<>Value then
-    FOrganizationPanelHalfHeight:=Value;
+  if FOrganizationPanelHalfHeight <> Value then
+    FOrganizationPanelHalfHeight := Value;
 end;
 
-procedure TConfiguration.SetOrganizationPanelHeightValue(const Value: integer);
+procedure TConfiguration.SetOrganizationPanelHeightValue(const Value: Integer);
 begin
-  if FOrganizationPanelHeightValue<>Value then
-    FOrganizationPanelHeightValue:=Value;
+  if FOrganizationPanelHeightValue <> Value then
+    FOrganizationPanelHeightValue := Value;
 end;
 
-procedure TConfiguration.SetPhonesFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetPhonesFormPosition(const AValue: TDialogPosition);
 begin
-  if ((FPhonesFormPosition.bCenter<>Value.bCenter)or(FPhonesFormPosition.x<>Value.x)or(FPhonesFormPosition.y<>Value.y)) then
-    FPhonesFormPosition:=Value;
+  if not FPhonesFormPosition.Equals(AValue) then
+    FPhonesFormPosition.Assign(AValue);
 end;
 
-procedure TConfiguration.SetPlaySoundOnComplete(const Value: boolean);
+procedure TConfiguration.SetPlaySoundOnComplete(const Value: Boolean);
 begin
-  if FPlaySoundOnComplete<>Value then
-    FPlaySoundOnComplete:=Value;
+  if FPlaySoundOnComplete <> Value then
+    FPlaySoundOnComplete := Value;
 end;
 
-procedure TConfiguration.SetPutTownAtTheEnd(const Value: boolean);
+procedure TConfiguration.SetPutTownAtTheEnd(const Value: Boolean);
 begin
-  if FPutTownAtTheEnd<>Value then
-    FPutTownAtTheEnd:=Value;
+  if FPutTownAtTheEnd <> Value then
+    FPutTownAtTheEnd := Value;
 end;
 
-procedure TConfiguration.SetReportFolder(const Value: TReportFolders);
+procedure TConfiguration.SetReportFolder(const AValue: TReportFolder);
 begin
-  if FReportFolder<>Value then
-    FReportFolder:=Value;
+  if FReportFolder <> AValue then
+    FReportFolder := AValue;
 end;
 
 procedure TConfiguration.SetRNE4Server(const Value: TMySQLConnection);
 begin
-  if FRNE4Server<>Value then
-    FRNE4Server:=Value;
+  if FRNE4Server <> Value then
+    FRNE4Server := Value;
 end;
 
-procedure TConfiguration.SetUseLog(const Value: boolean);
+procedure TConfiguration.SetUseLog(const Value: Boolean);
 begin
-  if FEnableLog<>Value then
-    FEnableLog:=Value;
+  if FEnableLog <> Value then
+    FEnableLog := Value;
 end;
 
 procedure TConfiguration.SetCustomReportFolderValue(const Value: string);
 begin
-  if FCustomReportFolderValue<>Value then
-    FCustomReportFolderValue:=Value;
+  if FCustomReportFolderValue <> Value then
+    FCustomReportFolderValue := Value;
 end;
 
-procedure TConfiguration.SetSetPasswordFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetSetPasswordFormPosition(const AValue: TDialogPosition);
 begin
-  if ((FSetPasswordFormPosition.bCenter<>Value.bCenter)or(FSetPasswordFormPosition.x<>Value.x)or(FSetPasswordFormPosition.y<>Value.y)) then
-    FSetPasswordFormPosition:=Value;
+  if not FSetPasswordFormPosition.Equals(AValue) then
+    FSetPasswordFormPosition.Assign(AValue);
 end;
 
-procedure TConfiguration.SetShowSplashAtStart(const Value: boolean);
+procedure TConfiguration.SetShowSplashAtStart(const Value: Boolean);
 begin
-  if FShowSplashAtStart<>Value then
-    FShowSplashAtStart:=Value;
+  if FShowSplashAtStart <> Value then
+    FShowSplashAtStart := Value;
 end;
 
-procedure TConfiguration.SetShowCommonSearchEditbox(const Value: boolean);
+procedure TConfiguration.SetShowCommonSearchEditbox(const Value: Boolean);
 begin
-  if FShowCommonSearchEditbox<>Value then
-    FShowCommonSearchEditbox:=Value;
+  if FShowCommonSearchEditbox <> Value then
+    FShowCommonSearchEditbox := Value;
 end;
 
-procedure TConfiguration.SetShowConfirmationOnQuit(const Value: boolean);
+procedure TConfiguration.SetShowConfirmationOnQuit(const Value: Boolean);
 begin
-  if FShowConfirmationOnQuit<>Value then
-    FShowConfirmationOnQuit:=Value;
+  if FShowConfirmationOnQuit <> Value then
+    FShowConfirmationOnQuit := Value;
 end;
 
-procedure TConfiguration.SetShowDataInOtherInfoPanel(const Value: boolean);
+procedure TConfiguration.SetShowDataInOtherInfoPanel(const Value: Boolean);
 begin
-  if FShowDataInOtherInfoPanel<>Value then
-    FShowDataInOtherInfoPanel:=Value;
+  if FShowDataInOtherInfoPanel <> Value then
+    FShowDataInOtherInfoPanel := Value;
 end;
 
-procedure TConfiguration.SetShowEditboxHints(const Value: boolean);
+procedure TConfiguration.SetShowEditboxHints(const Value: Boolean);
 begin
-  if FShowEditboxHints<>Value then
-    FShowEditboxHints:=Value;
+  if FShowEditboxHints <> Value then
+    FShowEditboxHints := Value;
 end;
 
-procedure TConfiguration.SetShowID(const Value: boolean);
+procedure TConfiguration.SetShowID(const Value: Boolean);
 begin
-  if FShowID<>Value then
-    FShowID:=Value;
+  if FShowID <> Value then
+    FShowID := Value;
 end;
 
-procedure TConfiguration.SetShowMeasuresListAsRichEdit(const Value: boolean);
+procedure TConfiguration.SetShowMeasuresListAsRichEdit(const Value: Boolean);
 begin
-  if FShowMeasuresListAsRichEdit<>Value then
-    FShowMeasuresListAsRichEdit:=Value;
+  if FShowMeasuresListAsRichEdit <> Value then
+    FShowMeasuresListAsRichEdit := Value;
 end;
 
-procedure TConfiguration.SetShowStatusbar(const Value: boolean);
+procedure TConfiguration.SetShowStatusbar(const Value: Boolean);
 begin
-  if FShowStatusbar<>Value then
-    FShowStatusbar:=Value;
+  if FShowStatusbar <> Value then
+    FShowStatusbar := Value;
 end;
 
-procedure TConfiguration.SetShowToolbar(const Value: boolean);
+procedure TConfiguration.SetShowToolbar(const Value: Boolean);
 begin
-  if FShowToolbar<>Value then
-    FShowToolbar:=Value;
+  if FShowToolbar <> Value then
+    FShowToolbar := Value;
 end;
 
-procedure TConfiguration.SetReportFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetReportFormPosition(const AValue: TDialogPosition);
 begin
-  if ((FReportFormPosition.bCenter<>Value.bCenter)or(FReportFormPosition.x<>Value.x)or(FReportFormPosition.y<>Value.y)) then
-    FReportFormPosition:=Value;
+  if not FReportFormPosition.Equals(AValue) then
+    FReportFormPosition.Assign(AValue);
 end;
 
-procedure TConfiguration.SetUseMultibuffer(const Value: boolean);
+procedure TConfiguration.SetUseMultibuffer(const Value: Boolean);
 begin
-  if FUseMultibuffer<>Value then
-    FUseMultibuffer:=Value;
+  if FUseMultibuffer <> Value then
+    FUseMultibuffer := Value;
 end;
 
-procedure TConfiguration.SetUsersFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetUsersFormPosition(const AValue: TDialogPosition);
 begin
-  if ((FUsersFormPosition.bCenter<>Value.bCenter)or(FUsersFormPosition.x<>Value.x)or(FUsersFormPosition.y<>Value.y)) then
-    FUsersFormPosition:=Value;
+  if not FUsersFormPosition.Equals(AValue) then
+    FUsersFormPosition.Assign(AValue);
 end;
 
-procedure TConfiguration.SetViewMessageFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetViewMessageFormPosition(const AValue: TDialogPosition);
 begin
-  if ((FViewMessageFormPosition.bCenter<>Value.bCenter)or(FViewMessageFormPosition.x<>Value.x)or(FViewMessageFormPosition.y<>Value.y)) then
-    FViewMessageFormPosition:=Value;
+  if not FViewMessageFormPosition.Equals(AValue) then
+    FViewMessageFormPosition.Assign(AValue);
 end;
 
-procedure TConfiguration.SetViewMessagesFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetViewMessagesFormPosition(const AValue: TDialogPosition);
 begin
-  if ((FViewMessagesFormPosition.bCenter<>Value.bCenter)or(FViewMessagesFormPosition.x<>Value.x)or(FViewMessagesFormPosition.y<>Value.y)) then
-    FViewMessagesFormPosition:=Value;
+  if not FViewMessagesFormPosition.Equals(AValue) then
+    FViewMessagesFormPosition.Assign(AValue);
 end;
 
 function TConfiguration.GetReportFolderValue: string;
 begin
   case FReportFolder of
     rfTempFolder:
-      Result:=GetTempFolder;
+      Result := GetTempFolder;
     rfApplicationFolder:
-      Result:=GetApplicationFolder;
+      Result := GetApplicationFolder;
     rfCustomFolder:
-      Result:=CustomReportFolderValue;
+      Result := CustomReportFolderValue;
   end;
 end;
 
@@ -951,11 +869,11 @@ function TConfiguration.GetApplicationFolder: string;
 var
   s: string;
 begin
-  GetApplicationFolder:='';
+  GetApplicationFolder := '';
 
-  s:=ExtractFilePath(ExpandFileName(Application.ExeName));
+  s := ExtractFilePath(ExpandFileName(Application.ExeName));
   if DirectoryExists(s) then
-    GetApplicationFolder:=s
+    GetApplicationFolder := s
   else
     raise Exception.Create('Возникла ошибка при попытке получения пути рабочей папки программы!')
 end;
@@ -965,26 +883,26 @@ var
   r: cardinal;
   TempPathNameBuffer: PWideChar;
 begin
-  TempPathNameBuffer:=nil;
-  GetTempFolder:='';
+  TempPathNameBuffer := nil;
+  GetTempFolder := '';
 
   try
-    GetMem(TempPathNameBuffer, 1024+1);
-    r:=GetTempPath(1024, TempPathNameBuffer);
-    if r>0 then
+    GetMem(TempPathNameBuffer, 1024 + 1);
+    r := GetTempPath(1024, TempPathNameBuffer);
+    if r > 0 then
+    begin
+      if r > 1024 then
       begin
-        if r>1024 then
-          begin
-            FreeMem(TempPathNameBuffer);
-            GetMem(TempPathNameBuffer, r+1);
-          end;
-        if DirectoryExists(TempPathNameBuffer) then
-          GetTempFolder:=TempPathNameBuffer
-        else
-          raise Exception.Create('Возникла ошибка при попытке получения пути временной папки!')
+        FreeMem(TempPathNameBuffer);
+        GetMem(TempPathNameBuffer, r + 1);
       end;
+      if DirectoryExists(TempPathNameBuffer) then
+        GetTempFolder := TempPathNameBuffer
+      else
+        raise Exception.Create('Возникла ошибка при попытке получения пути временной папки!')
+    end;
   finally
-    if TempPathNameBuffer<>nil then
+    if TempPathNameBuffer <> nil then
       FreeMem(TempPathNameBuffer);
   end;
 end;
@@ -993,364 +911,364 @@ procedure TConfiguration.Initialize;
 begin
   inherited;
   // инициализация динамических членов класса
-  FRNE4Server:=TMySQLConnection.Create;
-  FMessagesServer:=TMySQLConnection.Create;
+  FRNE4Server := TMySQLConnection.Create;
+  FMessagesServer := TMySQLConnection.Create;
 
   // инициализация пеерменных класса
-  FFileName:=ChangeFileExt(ExpandFileName(Application.ExeName), '.ini');
-  FConfigurationFormPage:=0;
-  FLogin:='';
-  FPassword:='';
+  FFileName := ChangeFileExt(ExpandFileName(Application.ExeName), '.ini');
+  FConfigurationFormPage := 0;
+  FLogin := '';
+  FPassword := '';
 
   // вкладка "настройки интерфейса"
-  FShowSplashAtStart:=DefaultValue_ShowSplashAtStart;
-  FShowToolbar:=DefaultValue_ShowToolbar;
-  FShowStatusbar:=DefaultValue_ShowStatusbar;
-  FShowEditboxHints:=DefaultValue_ShowEditboxHints;
-  FShowCommonSearchEditbox:=DefaultValue_ShowCommonSearchEditbox;
-  FShowID:=DefaultValue_ShowID;
-  FUseMultibuffer:=DefaultValue_UseMultibuffer;
-  FShowConfirmationOnQuit:=DefaultValue_ShowConfirmationOnQuit;
+  FShowSplashAtStart := DEFAULT_CONFIGURATION_ENABLE_SPLASH_AT_START;
+  FShowToolbar := DEFAULT_CONFIGURATION_ENABLE_TOOLBAR;
+  FShowStatusbar := DEFAULT_CONFIGURATION_ENABLE_STATUSBAR;
+  FShowEditboxHints := DEFAULT_CONFIGURATION_ENABLE_EDITBOX_HINTS;
+  FShowCommonSearchEditbox := DEFAULT_CONFIGURATION_ENABLE_COMMON_SEARCH_EDITBOX;
+  FShowID := DEFAULT_CONFIGURATION_ENABLE_ID;
+  FUseMultibuffer := DEFAULT_CONFIGURATION_ENABLE_MULTIBUFFER;
+  FShowConfirmationOnQuit := DEFAULT_CONFIGURATION_ENABLE_QUIT_CONFIRMATION;
 
   // вкладка "настройки ведения протокола работы"
-  FEnableLog:=DefaultValue_EnableLog;
-  FKeepLogTypes:=DefaultValue_KeepLogTypes;
-  FFlushLogOnExit:=DefaultValue_FlushLogOnExit;
-  FFlushLogOnStringsQuantity:=DefaultValue_FlushLogOnStringsQuantity;
-  FFlushLogOnStringsQuantityValue:=DefaultValue_FlushLogOnStringsQuantityValue;
-  FFlushLogOnClearingLog:=DefaultValue_FlushLogOnClearingLog;
-  FFlushLogOnApply:=DefaultValue_FlushLogOnApply;
-  FCustomLogClientFile:=DefaultValue_CustomLogClientFile;
-  FCustomLogClientFileValue:=DefaultValue_CustomLogClientFileValue;
+  FEnableLog := DEFAULT_CONFIGURATION_ENABLE_LOG;
+  FKeepLogTypes := DEFAULT_CONFIGURATION_KEEP_LOG_TYPES;
+  FFlushLogOnExit := DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_EXIT;
+  FFlushLogOnStringsQuantity := DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_STRINGS_QUANTITY;
+  FFlushLogOnStringsQuantityValue := DEFAULT_CONFIGURATION_FLUSH_LOG_ON_STRINGS_QUANTITY_VALUE;
+  FFlushLogOnClearingLog := DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_CLEARING_LOG;
+  FFlushLogOnApply := DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_APPLY;
+  FCustomLogClientFile := DEFAULT_CONFIGURATION_ENABLE_CUSTOM_LOG_CLIENT;
+  FCustomLogClientFileValue := DEFAULT_CONFIGURATION_CUSTOM_LOG_CLIENT_VALUE;
 
   // вкладка "настройки положения диалоговых окон"
   with FLoginFormPosition do
-    begin
-      bCenter:=DefaultValue_FormPosition_Center;
-      x:=DefaultValue_FormPosition_x;
-      y:=DefaultValue_FormPosition_y;
-    end;
+  begin
+    Centered := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    Left := DEFAULT_CONFIGURATION_DIALOG_LEFT;
+    Top := DEFAULT_CONFIGURATION_DIALOG_TOP;
+  end;
 
   with FConfigurationFormPosition do
-    begin
-      bCenter:=DefaultValue_FormPosition_Center;
-      x:=DefaultValue_FormPosition_x;
-      y:=DefaultValue_FormPosition_y;
-    end;
+  begin
+    Centered := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    Left := DEFAULT_CONFIGURATION_DIALOG_LEFT;
+    Top := DEFAULT_CONFIGURATION_DIALOG_TOP;
+  end;
 
   with FUsersFormPosition do
-    begin
-      bCenter:=DefaultValue_FormPosition_Center;
-      x:=DefaultValue_FormPosition_x;
-      y:=DefaultValue_FormPosition_y;
-    end;
+  begin
+    Centered := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    Left := DEFAULT_CONFIGURATION_DIALOG_LEFT;
+    Top := DEFAULT_CONFIGURATION_DIALOG_TOP;
+  end;
 
   with FSetPasswordFormPosition do
-    begin
-      bCenter:=DefaultValue_FormPosition_Center;
-      x:=DefaultValue_FormPosition_x;
-      y:=DefaultValue_FormPosition_y;
-    end;
+  begin
+    Centered := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    Left := DEFAULT_CONFIGURATION_DIALOG_LEFT;
+    Top := DEFAULT_CONFIGURATION_DIALOG_TOP;
+  end;
 
   with FReportFormPosition do
-    begin
-      bCenter:=DefaultValue_FormPosition_Center;
-      x:=DefaultValue_FormPosition_x;
-      y:=DefaultValue_FormPosition_y;
-    end;
+  begin
+    Centered := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    Left := DEFAULT_CONFIGURATION_DIALOG_LEFT;
+    Top := DEFAULT_CONFIGURATION_DIALOG_TOP;
+  end;
 
   with FMaintenanceFormPosition do
-    begin
-      bCenter:=DefaultValue_FormPosition_Center;
-      x:=DefaultValue_FormPosition_x;
-      y:=DefaultValue_FormPosition_y;
-    end;
+  begin
+    Centered := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    Left := DEFAULT_CONFIGURATION_DIALOG_LEFT;
+    Top := DEFAULT_CONFIGURATION_DIALOG_TOP;
+  end;
 
   with FClearingFormPosition do
-    begin
-      bCenter:=DefaultValue_FormPosition_Center;
-      x:=DefaultValue_FormPosition_x;
-      y:=DefaultValue_FormPosition_y;
-    end;
+  begin
+    Centered := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    Left := DEFAULT_CONFIGURATION_DIALOG_LEFT;
+    Top := DEFAULT_CONFIGURATION_DIALOG_TOP;
+  end;
 
   with FViewMessagesFormPosition do
-    begin
-      bCenter:=DefaultValue_FormPosition_Center;
-      x:=DefaultValue_FormPosition_x;
-      y:=DefaultValue_FormPosition_y;
-    end;
+  begin
+    Centered := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    Left := DEFAULT_CONFIGURATION_DIALOG_LEFT;
+    Top := DEFAULT_CONFIGURATION_DIALOG_TOP;
+  end;
 
   with FCreateMessageFormPosition do
-    begin
-      bCenter:=DefaultValue_FormPosition_Center;
-      x:=DefaultValue_FormPosition_x;
-      y:=DefaultValue_FormPosition_y;
-    end;
+  begin
+    Centered := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    Left := DEFAULT_CONFIGURATION_DIALOG_LEFT;
+    Top := DEFAULT_CONFIGURATION_DIALOG_TOP;
+  end;
 
   with FViewMessageFormPosition do
-    begin
-      bCenter:=DefaultValue_FormPosition_Center;
-      x:=DefaultValue_FormPosition_x;
-      y:=DefaultValue_FormPosition_y;
-    end;
+  begin
+    Centered := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    Left := DEFAULT_CONFIGURATION_DIALOG_LEFT;
+    Top := DEFAULT_CONFIGURATION_DIALOG_TOP;
+  end;
 
   with FPhonesFormPosition do
-    begin
-      bCenter:=DefaultValue_FormPosition_Center;
-      x:=DefaultValue_FormPosition_x;
-      y:=DefaultValue_FormPosition_y;
-    end;
+  begin
+    Centered := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    Left := DEFAULT_CONFIGURATION_DIALOG_LEFT;
+    Top := DEFAULT_CONFIGURATION_DIALOG_TOP;
+  end;
 
   with FAddEditPhoneFormPosition do
-    begin
-      bCenter:=DefaultValue_FormPosition_Center;
-      x:=DefaultValue_FormPosition_x;
-      y:=DefaultValue_FormPosition_y;
-    end;
+  begin
+    Centered := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    Left := DEFAULT_CONFIGURATION_DIALOG_LEFT;
+    Top := DEFAULT_CONFIGURATION_DIALOG_TOP;
+  end;
 
   with FAddMassMsrFormPosition do
-    begin
-      bCenter:=DefaultValue_FormPosition_Center;
-      x:=DefaultValue_FormPosition_x;
-      y:=DefaultValue_FormPosition_y;
-    end;
+  begin
+    Centered := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    Left := DEFAULT_CONFIGURATION_DIALOG_LEFT;
+    Top := DEFAULT_CONFIGURATION_DIALOG_TOP;
+  end;
 
   with FPermissionsFormPosition do
-    begin
-      bCenter:=DefaultValue_FormPosition_Center;
-      x:=DefaultValue_FormPosition_x;
-      y:=DefaultValue_FormPosition_y;
-    end;
+  begin
+    Centered := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    Left := DEFAULT_CONFIGURATION_DIALOG_LEFT;
+    Top := DEFAULT_CONFIGURATION_DIALOG_TOP;
+  end;
 
   with FMultibufferFormPosition do
-    begin
-      bCenter:=DefaultValue_FormPosition_Center;
-      x:=DefaultValue_FormPosition_x;
-      y:=DefaultValue_FormPosition_y;
-    end;
+  begin
+    Centered := DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED;
+    Left := DEFAULT_CONFIGURATION_DIALOG_LEFT;
+    Top := DEFAULT_CONFIGURATION_DIALOG_TOP;
+  end;
 
   // вкладка "настройки процедуры логирования"
-  FStoreLogin:=DefaultValue_StoreLogin;
-  FStorePassword:=DefaultValue_StorePassword;
-  FLogin:=DefaultValue_Login;
-  FPassword:=DefaultValue_Password;
-  FAutoLogon:=DefaultValue_AutoLogon;
+  FStoreLogin := DEFAULT_CONFIGURATION_ENABLE_STORE_LOGIN;
+  FStorePassword := DEFAULT_CONFIGURATION_ENABLE_STORE_PASSWORD;
+  FLogin := DEFAULT_CONFIGURATION_LOGIN;
+  FPassword := DEFAULT_CONFIGURATION_PASSWORD;
+  FAutoLogon := DEFAULT_CONFIGURATION_ENABLE_AUTO_LOGON;
 
   // вкладка "настройки подключения к серверу базы данных услуги"
   with FRNE4Server do
-    begin
-      Connected:=False;
-      LogProvider:=nil;
-      Host:=DefaultValue_RNE4Server_Host;
-      Port:=DefaultValue_RNE4Server_Port;
-      Timeout:=DefaultValue_RNE4Server_Timeout;
-      Compression:=DefaultValue_RNE4Server_Compression;
-      Login:=DefaultValue_RNE4Server_Login;
-      Password:=DefaultValue_RNE4Server_Password;
-      Database:=DefaultValue_RNE4Server_Database;
-    end;
+  begin
+    Connected := False;
+    LogProvider := nil;
+    Host := DEFAULT_CONFIGURATION_RNE4SERVER_HOST;
+    Port := DEFAULT_CONFIGURATION_RNE4SERVER_PORT;
+    Timeout := DEFAULT_CONFIGURATION_RNE4SERVER_TIMEOUT;
+    Compression := DEFAULT_CONFIGURATION_RNE4SERVER_COMPRESSION;
+    Login := DEFAULT_CONFIGURATION_RNE4SERVER_LOGIN;
+    Password := DEFAULT_CONFIGURATION_RNE4SERVER_PASSWORD;
+    Database := DEFAULT_CONFIGURATION_RNE4SERVER_DATABESE;
+  end;
 
   // вкладка "настройки подключения к серверу системы обмена сообщениями"
   with FMessagesServer do
-    begin
-      Connected:=False;
-      LogProvider:=nil;
-      Host:=DefaultValue_MessagesServer_Host;
-      Port:=DefaultValue_MessagesServer_Port;
-      Timeout:=DefaultValue_MessagesServer_Timeout;
-      Compression:=DefaultValue_MessagesServer_Compression;
-      Login:=DefaultValue_MessagesServer_Login;
-      Password:=DefaultValue_MessagesServer_Password;
-      Database:=DefaultValue_MessagesServer_Database;
-    end;
+  begin
+    Connected := False;
+    LogProvider := nil;
+    Host := DEFAULT_CONFIGURATION_MESSAGESERVER_HOST;
+    Port := DEFAULT_CONFIGURATION_MESSAGESERVER_PORT;
+    Timeout := DEFAULT_CONFIGURATION_MESSAGESERVER_TIMEOUT;
+    Compression := DEFAULT_CONFIGURATION_MESSAGESERVER_COMPRESSION;
+    Login := DEFAULT_CONFIGURATION_MESSAGESERVER_LOGIN;
+    Password := DEFAULT_CONFIGURATION_MESSAGESERVER_PASSWORD;
+    Database := DEFAULT_CONFIGURATION_MESSAGESERVER_DATABASE;
+  end;
 
   // вкладка "настройки формирования отчётов"
-  FReportFolder:=DefaultValue_ReportFolder;
-  FCustomReportFolderValue:=DefaultValue_CustomReportFolderValue;
-  FDontDemandOverwriteConfirmation:=DefaultValue_DontDemandOverwriteConfirmation;
-  AskForFileName:=DefaultValue_AskForFileName;
+  FReportFolder := DEFAULT_CONFIGURATION_REPORT_FOLDER;
+  FCustomReportFolderValue := DEFAULT_CONFIGURATION_CUSTOM_REPORT_FOLDER_VALUE;
+  FDontDemandOverwriteConfirmation := DEFAULT_CONFIGURATION_ENABLE_OVERWRITE_CONFIRMATION;
+  AskForFileName := DEFAULT_CONFIGURATION_ENABLE_ASK_FOR_FILE_NAME;
 
   // вкладка "настройки прочие"
-  FLaunchAtStartup:=DefaultValue_LaunchAtStartup;
-  FPlaySoundOnComplete:=DefaultValue_PlaySoundOnComplete;
-  FEnableAutoGetMessages:=DefaultValue_EnableAutoGetMessages;
-  FAutoGetMessagesCycleDurationValue:=DefaultValue_AutoGetMessagesCycleDurationValue;
-  FCustomHelpFile:=DefaultValue_CustomHelpFile;
-  FCustomHelpFileValue:=DefaultValue_CustomHelpFileValue;
+  FLaunchAtStartup := DEFAULT_CONFIGURATION_ENABLE_LAUNCH_AT_STARTUP;
+  FPlaySoundOnComplete := DEFAULT_CONFIGURATION_ENABLE_PLAY_SOUND_ON_COMPLETE;
+  FEnableAutoGetMessages := DEFAULT_CONFIGURATION_ENABLE_AUTO_GET_MESSAGE;
+  FAutoGetMessagesCycleDurationValue := DEFAULT_CONFIGURATION_AUTO_GET_MESSAGES_CYCLE_DURATION_VALUE;
+  FCustomHelpFile := DEFAULT_CONFIGURATION_ENABLE_CUSTOM_HELP_FILE;
+  FCustomHelpFileValue := DEFAULT_CONFIGURATION_CUSTOM_HELP_FILE_VALUE;
 
   // вкладка "настройки главного окна"
-  MainFormLeft:=DefaultValue_MainFormLeft;
-  MainFormTop:=DefaultValue_MainFormTop;
-  MainFormWidth:=DefaultValue_MainFormWidth;
-  MainFormHeight:=DefaultValue_MainFormHeight;
-  FMainFormPositionByCenter:=DefaultValue_MainFormPositionByCenter;
-  FFullScreenAtLaunch:=DefaultValue_FullScreenAtLaunch;
+  MainFormLeft := DEFAULT_CONFIGURATION_MAIN_FORM_LEFT;
+  MainFormTop := DEFAULT_CONFIGURATION_MAIN_FORM_TOP;
+  MainFormWidth := DEFAULT_CONFIGURATION_MAIN_FORM_WIDTH;
+  MainFormHeight := DEFAULT_CONFIGURATION_MAIN_FORM_HEIGHT;
+  FMainFormPositionByCenter := DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_POSITION_BY_CENTER;
+  FFullScreenAtLaunch := DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH;
 
   // вкладка "настройки отображения информации"
-  FOrganizationPanelHeightValue:=DefaultValue_OrganizationPanelHeightValue;
-  FOrganizationPanelHalfHeight:=DefaultValue_OrganizationPanelHalfHeight;
-  FDataPanelWidthValue:=DefaultValue_DataPanelWidthValue;
-  FDataPanelHalfWidth:=DefaultValue_DataPanelHalfWidth;
-  FShowDataInOtherInfoPanel:=DefaultValue_ShowDataInOtherInfoPanel;
-  FShowMeasuresListAsRichEdit:=DefaultValue_ShowMeasuresListAsRichEdit;
-  FMarkSearchedStrings:=DefaultValue_MarkSearchedStrings;
-  FPutTownAtTheEnd:=DefaultValue_PutTownAtTheEnd;
+  FOrganizationPanelHeightValue := DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_HEIGHT_VALUE;
+  FOrganizationPanelHalfHeight := DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_ENABLE_HALF_HEIGHT;
+  FDataPanelWidthValue := DEFAULT_CONFIGURATION_DATA_PANEL_WIDTH_VALUE;
+  FDataPanelHalfWidth := DEFAULT_CONFIGURATION_DATA_PANEL_ENABLE_HALF_WIDTH;
+  FShowDataInOtherInfoPanel := DEFAULT_CONFIGURATION_ENABLE_DATA_IN_OTHER_INFO_PANEL;
+  FShowMeasuresListAsRichEdit := DEFAULT_CONFIGURATION_ENABLE_MEASURE_LIST_AS_RICH_EDIT;
+  FMarkSearchedStrings := DEFAULT_CONFIGURATION_ENABLE_MARK_SEARCHED_STRING;
+  FPutTownAtTheEnd := DEFAULT_CONFIGURATION_ENABLE_PUT_TOWN_AT_THE_END;
 end;
 
-procedure TConfiguration.SetAddEditPhoneFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetAddEditPhoneFormPosition(const AValue: TDialogPosition);
 begin
-  if ((FAddEditPhoneFormPosition.bCenter<>Value.bCenter)or(FAddEditPhoneFormPosition.x<>Value.x)or(FAddEditPhoneFormPosition.y<>Value.y)) then
-    FAddEditPhoneFormPosition:=Value;
+  if not FAddEditPhoneFormPosition.Equals(AValue) then
+    FAddEditPhoneFormPosition.Assign(AValue);
 end;
 
-procedure TConfiguration.SetAddMassMsrFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetAddMassMsrFormPosition(const AValue: TDialogPosition);
 begin
-  if ((FAddMassMsrFormPosition.bCenter<>Value.bCenter)or(FAddMassMsrFormPosition.x<>Value.x)or(FAddMassMsrFormPosition.y<>Value.y)) then
-    FAddMassMsrFormPosition:=Value;
+  if not FAddMassMsrFormPosition.Equals(AValue) then
+    FAddMassMsrFormPosition.Assign(AValue);
 end;
 
-procedure TConfiguration.SetPermissionsFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetPermissionsFormPosition(const AValue: TDialogPosition);
 begin
-  if ((FPermissionsFormPosition.bCenter<>Value.bCenter)or(FPermissionsFormPosition.x<>Value.x)or(FPermissionsFormPosition.y<>Value.y)) then
-    FPermissionsFormPosition:=Value;
+  if not FPermissionsFormPosition.Equals(AValue) then
+    FPermissionsFormPosition.Assign(AValue);
 end;
 
-procedure TConfiguration.SetMultibufferFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetMultibufferFormPosition(const AValue: TDialogPosition);
 begin
-  if ((FMultibufferFormPosition.bCenter<>Value.bCenter)or(FMultibufferFormPosition.x<>Value.x)or(FMultibufferFormPosition.y<>Value.y)) then
-    FMultibufferFormPosition:=Value;
+  if not FMultibufferFormPosition.Equals(AValue) then
+    FMultibufferFormPosition.Assign(AValue);
 end;
 
-procedure TConfiguration.SetAskForFileName(const Value: boolean);
+procedure TConfiguration.SetAskForFileName(const Value: Boolean);
 begin
-  if FAskForFileName<>Value then
-    FAskForFileName:=Value;
+  if FAskForFileName <> Value then
+    FAskForFileName := Value;
 end;
 
-procedure TConfiguration.SetAutoGetMessagesCycleDurationValue(const Value: integer);
+procedure TConfiguration.SetAutoGetMessagesCycleDurationValue(const Value: Integer);
 begin
-  if FAutoGetMessagesCycleDurationValue<>Value then
-    FAutoGetMessagesCycleDurationValue:=Value;
+  if FAutoGetMessagesCycleDurationValue <> Value then
+    FAutoGetMessagesCycleDurationValue := Value;
 end;
 
-procedure TConfiguration.SetAutoLogon(const Value: boolean);
+procedure TConfiguration.SetAutoLogon(const Value: Boolean);
 begin
   if Value then
-    begin
-      if not(StoreLogin and StorePassword) then
-        raise Exception.Create('Для включения настройки автологирования необходимо сначала включить слхранение логина и пароля последнего пользователя!')
-      else
-        if FAutoLogon<>Value then
-          FAutoLogon:=Value;
-    end
+  begin
+    if not(StoreLogin and StorePassword) then
+      raise Exception.Create('Для включения настройки автологирования необходимо сначала включить слхранение логина и пароля последнего пользователя!')
+    else
+      if FAutoLogon <> Value then
+        FAutoLogon := Value;
+  end
   else
-    if FAutoLogon<>Value then
-      FAutoLogon:=Value;
+    if FAutoLogon <> Value then
+      FAutoLogon := Value;
 end;
 
-procedure TConfiguration.SetClearingFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetClearingFormPosition(const AValue: TDialogPosition);
 begin
-  if ((FClearingFormPosition.bCenter<>Value.bCenter)or(FClearingFormPosition.x<>Value.x)or(FClearingFormPosition.y<>Value.y)) then
-    FClearingFormPosition:=Value;
+  if not FClearingFormPosition.Equals(AValue) then
+    FClearingFormPosition.Assign(AValue);
 end;
 
-procedure TConfiguration.SetCreateMessageFormPosition(const Value: TFormPosition);
+procedure TConfiguration.SetCreateMessageFormPosition(const AValue: TDialogPosition);
 begin
-  if ((FCreateMessageFormPosition.bCenter<>Value.bCenter)or(FCreateMessageFormPosition.x<>Value.x)or(FCreateMessageFormPosition.y<>Value.y)) then
-    FCreateMessageFormPosition:=Value;
+  if not FCreateMessageFormPosition.Equals(AValue) then
+    FCreateMessageFormPosition.Assign(AValue);
 end;
 
 procedure TConfiguration.SetCustomHelpFileValue(const Value: string);
 begin
-  if FCustomHelpFileValue<>Value then
-    FCustomHelpFileValue:=Value;
+  if FCustomHelpFileValue <> Value then
+    FCustomHelpFileValue := Value;
 end;
 
-procedure TConfiguration.SetCustomLogClientFile(const Value: boolean);
+procedure TConfiguration.SetCustomLogClientFile(const Value: Boolean);
 begin
-  if FCustomLogClientFile<>Value then
-    FCustomLogClientFile:=Value;
+  if FCustomLogClientFile <> Value then
+    FCustomLogClientFile := Value;
 end;
 
 procedure TConfiguration.SetCustomLogClientFileValue(const Value: string);
 begin
-  if FCustomLogClientFileValue<>Value then
-    FCustomLogClientFileValue:=Value;
+  if FCustomLogClientFileValue <> Value then
+    FCustomLogClientFileValue := Value;
 end;
 
-procedure TConfiguration.SetDataPanelHalfWidth(const Value: boolean);
+procedure TConfiguration.SetDataPanelHalfWidth(const Value: Boolean);
 begin
-  if FDataPanelHalfWidth<>Value then
-    FDataPanelHalfWidth:=Value;
+  if FDataPanelHalfWidth <> Value then
+    FDataPanelHalfWidth := Value;
 end;
 
-procedure TConfiguration.SetDataPanelWidthValue(const Value: integer);
+procedure TConfiguration.SetDataPanelWidthValue(const Value: Integer);
 begin
-  if FDataPanelWidthValue<>Value then
-    FDataPanelWidthValue:=Value;
+  if FDataPanelWidthValue <> Value then
+    FDataPanelWidthValue := Value;
 end;
 
-procedure TConfiguration.SetDontDemandOverwriteConfirmation(const Value: boolean);
+procedure TConfiguration.SetDontDemandOverwriteConfirmation(const Value: Boolean);
 begin
-  if FDontDemandOverwriteConfirmation<>Value then
-    FDontDemandOverwriteConfirmation:=Value;
+  if FDontDemandOverwriteConfirmation <> Value then
+    FDontDemandOverwriteConfirmation := Value;
 end;
 
-procedure TConfiguration.SetEnableAutoGetMessages(const Value: boolean);
+procedure TConfiguration.SetEnableAutoGetMessages(const Value: Boolean);
 begin
-  if FEnableAutoGetMessages<>Value then
-    FEnableAutoGetMessages:=Value;
+  if FEnableAutoGetMessages <> Value then
+    FEnableAutoGetMessages := Value;
 end;
 
-procedure TConfiguration.SetCustomHelpFile(const Value: boolean);
+procedure TConfiguration.SetCustomHelpFile(const Value: Boolean);
 begin
-  if FCustomHelpFile<>Value then
-    FCustomHelpFile:=Value;
+  if FCustomHelpFile <> Value then
+    FCustomHelpFile := Value;
 end;
 
 procedure TConfiguration.SetFileName(const Value: string);
 begin
-  if FFileName<>Value then
-    if Trim(Value)<>'' then
-      FFileName:=Trim(Value)
+  if FFileName <> Value then
+    if Trim(Value) <> '' then
+      FFileName := Trim(Value)
     else
       raise Exception.Create('Имя файла конфигурации не должно быть пустым!');
 end;
 
-procedure TConfiguration.SetFlushLogOnApply(const Value: boolean);
+procedure TConfiguration.SetFlushLogOnApply(const Value: Boolean);
 begin
-  if FFlushLogOnApply<>Value then
-    FFlushLogOnApply:=Value;
+  if FFlushLogOnApply <> Value then
+    FFlushLogOnApply := Value;
 end;
 
-procedure TConfiguration.SetFlushLogOnClearingLog(const Value: boolean);
+procedure TConfiguration.SetFlushLogOnClearingLog(const Value: Boolean);
 begin
-  if FFlushLogOnClearingLog<>Value then
-    FFlushLogOnClearingLog:=Value;
+  if FFlushLogOnClearingLog <> Value then
+    FFlushLogOnClearingLog := Value;
 end;
 
-procedure TConfiguration.SetFlushLogOnExit(const Value: boolean);
+procedure TConfiguration.SetFlushLogOnExit(const Value: Boolean);
 begin
-  if FFlushLogOnExit<>Value then
-    FFlushLogOnExit:=Value;
+  if FFlushLogOnExit <> Value then
+    FFlushLogOnExit := Value;
 end;
 
-procedure TConfiguration.SetFlushLogOnStringsQuantity(const Value: boolean);
+procedure TConfiguration.SetFlushLogOnStringsQuantity(const Value: Boolean);
 begin
-  if FFlushLogOnStringsQuantity<>Value then
-    FFlushLogOnStringsQuantity:=Value;
+  if FFlushLogOnStringsQuantity <> Value then
+    FFlushLogOnStringsQuantity := Value;
 end;
 
-procedure TConfiguration.SetFlushLogOnStringsQuantityValue(const Value: integer);
+procedure TConfiguration.SetFlushLogOnStringsQuantityValue(const Value: Integer);
 begin
-  if FFlushLogOnStringsQuantityValue<>Value then
-    FFlushLogOnStringsQuantityValue:=Value;
+  if FFlushLogOnStringsQuantityValue <> Value then
+    FFlushLogOnStringsQuantityValue := Value;
 end;
 
-procedure TConfiguration.SetFullScreenAtLaunch(const Value: boolean);
+procedure TConfiguration.SetFullScreenAtLaunch(const Value: Boolean);
 begin
-  if FFullScreenAtLaunch<>Value then
-    FFullScreenAtLaunch:=Value;
+  if FFullScreenAtLaunch <> Value then
+    FFullScreenAtLaunch := Value;
 end;
 
 procedure TConfiguration.AfterLoad;
@@ -1361,54 +1279,54 @@ procedure TConfiguration.BeforeSave;
 begin
 end;
 
-procedure TConfiguration.SetStoreLogin(const Value: boolean);
+procedure TConfiguration.SetStoreLogin(const Value: Boolean);
 begin
-  if FStoreLogin<>Value then
+  if FStoreLogin <> Value then
+  begin
+    FStoreLogin := Value;
+    if not FStoreLogin then
     begin
-      FStoreLogin:=Value;
-      if not FStoreLogin then
-        begin
-          FLogin:='';
-          FPassword:='';
-          FStorePassword:=False;
-          FAutoLogon:=False;
-        end;
-    end
+      FLogin := '';
+      FPassword := '';
+      FStorePassword := False;
+      FAutoLogon := False;
+    end;
+  end
 end;
 
-procedure TConfiguration.SetStorePassword(const Value: boolean);
+procedure TConfiguration.SetStorePassword(const Value: Boolean);
 begin
-  if FStorePassword<>Value then
+  if FStorePassword <> Value then
+  begin
+    FStorePassword := Value;
+    if not FStorePassword then
     begin
-      FStorePassword:=Value;
-      if not FStorePassword then
-        begin
-          FPassword:='';
-          FAutoLogon:=False;
-        end;
+      FPassword := '';
+      FAutoLogon := False;
     end;
+  end;
 end;
 
 procedure TConfiguration.SetLogin(const Value: string);
 begin
   if StoreLogin then
-    begin
-      if FLogin<>Value then
-        FLogin:=Value
-    end
+  begin
+    if FLogin <> Value then
+      FLogin := Value
+  end
   else
-    FLogin:='';
+    FLogin := '';
 end;
 
 procedure TConfiguration.SetPassword(const Value: string);
 begin
   if StorePassword then
-    begin
-      if FPassword<>Value then
-        FPassword:=Value
-    end
+  begin
+    if FPassword <> Value then
+      FPassword := Value
+  end
   else
-    FPassword:='';
+    FPassword := '';
 end;
 
 initialization

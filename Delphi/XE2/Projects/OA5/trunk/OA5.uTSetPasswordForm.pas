@@ -4,7 +4,7 @@ interface
 
 uses
   Vcl.Forms,
-  CastersPackage.uTLogForm,
+  CastersPackage.uTPositionedLogForm,
   Vcl.PlatformDefaultStyleActnCtrls,
   System.Classes,
   Vcl.ActnList,
@@ -15,7 +15,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-  TSetPasswordForm = class(TLogForm)
+  TSetPasswordForm = class(TPositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actApply: TAction;
@@ -52,6 +52,7 @@ implementation
 uses
   SysUtils,
   OA5.uMainForm,
+  CastersPackage.uTLogForm,
   CastersPackage.uRoutines;
 
 const
@@ -131,28 +132,6 @@ begin
     Log.UserName := MainForm.CurrentUser.Login;
     Log.AllowedTypes := KeepLogTypes;
     Log.Enabled := EnableLog;
-
-    // установка положения окна в соответсвии со значениями конфигурации программы
-    if SetPasswordFormPosition.bCenter then
-      Position := poScreenCenter
-    else
-    begin
-      Position := poDesigned;
-      if SetPasswordFormPosition.x < Screen.WorkAreaLeft then
-        Left := Screen.WorkAreaLeft
-      else
-        if SetPasswordFormPosition.x > Screen.WorkAreaLeft + Screen.WorkAreaWidth then
-          Left := Screen.WorkAreaLeft + Screen.WorkAreaWidth - Width
-        else
-          Left := SetPasswordFormPosition.x;
-      if SetPasswordFormPosition.y < Screen.WorkAreaTop then
-        Top := Screen.WorkAreaTop
-      else
-        if SetPasswordFormPosition.y > Screen.WorkAreaTop + Screen.WorkAreaHeight then
-          Top := Screen.WorkAreaTop + Screen.WorkAreaHeight - Height
-        else
-          Top := SetPasswordFormPosition.y;
-    end;
   end;
 
   ProcedureFooter;
