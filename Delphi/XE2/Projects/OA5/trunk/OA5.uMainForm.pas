@@ -3,7 +3,6 @@
 interface
 
 uses
-  OA5.uTypes,
   Winapi.Windows,
   System.SysUtils,
   Vcl.Forms,
@@ -19,10 +18,11 @@ uses
   Vcl.Controls,
   Vcl.Menus,
   Vcl.ComCtrls,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls,
+  CastersPackage.uTLogForm;
 
 type
-  TMainForm = class(TForm)
+  TMainForm = class(TLogForm)
     MainMenu: TMainMenu;
     N1: TMenuItem;
     N2: TMenuItem;
@@ -45,7 +45,6 @@ type
     N18: TMenuItem;
     N19: TMenuItem;
     N20: TMenuItem;
-    N21: TMenuItem;
     N22: TMenuItem;
     N23: TMenuItem;
     N24: TMenuItem;
@@ -86,9 +85,7 @@ type
     procedure actReportExecute(Sender: TObject);
     procedure miStatusBarClick(Sender: TObject);
     procedure actMultibufferExecute(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure actCreateMessageExecute(Sender: TObject);
-    procedure N21Click(Sender: TObject);
     procedure actViewMessageExecute(Sender: TObject);
     procedure miToolBarClick(Sender: TObject);
     procedure actAddPhoneExecute(Sender: TObject);
@@ -101,8 +98,8 @@ type
     function GetMultiBuffer: IMeasureList;
     procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
     procedure ProcedureFooter;
-    procedure PreShowModal(const aWindowName: string; var aOldBusyState: integer);
-    procedure PostShowModal(const aWindowName: string; var aOldBusyState: integer);
+    procedure PreShowModal(const aWindowName: string; var aOldBusyState: Integer);
+    procedure PostShowModal(const aWindowName: string; var aOldBusyState: Integer);
     procedure PreFooter(const aHandle: HWND; const aError: Boolean; const aErrorMessage: string);
     procedure ApplicationOnHint(Sender: TObject);
 
@@ -119,11 +116,11 @@ type
   public
     Configuration: TConfiguration;
     CurrentUser: TAccount;
-    iBusyCounter: integer;
-    procedure ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
+    iBusyCounter: Integer;
     procedure Inc_BusyState;
     procedure Dec_BusyState;
     procedure Refresh_BusyState;
+    procedure ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
     property MultiBuffer: IMeasureList read GetMultiBuffer nodefault;
   end;
 
@@ -147,7 +144,6 @@ uses
   OA5.uTMeasureList,
   OA5.uTAddMassMsrForm,
   OA5.uTLoginForm,
-  OA5.uConsts,
   OA5.uTCreateMessageForm,
   OA5.uTViewMessageForm,
   OA5.uTViewMessagesForm,
@@ -158,7 +154,21 @@ uses
 type
   THackControl = class(TControl);
 
+const
+  ICON_BUSY = 0;
+  ICON_READY = 1;
+
+  STATUSBAR_STATE_PANEL_NUMBER: Integer = 0;
+  STATUSBAR_PROGRESS_PANEL_NUMBER: Integer = 1;
+  STATUSBAR_SERVER_NAME: Integer = 2;
+  STATUSBAR_HINT_PANEL_NUMBER: Integer = 3;
+
 resourcestring
+  // RsCreateMutexError = 'Не удалось создать мьютекс.';
+  // RsWaitForMutexError = 'Не удалось считать состояние мьютекса.';
+  // RsReleaseMutexError = 'Не удалось удалить мьютекс.';
+  // RsCloseMutexHandleError = 'Не удалось закрыть идентификатор мьютекса.';
+  // RsErrorCode = ' Код ошибки: %s';
   RsAboutFormSuffix = '"О программе..."';
   RsConfigurationFormSuffix = 'настроек программы';
   RsReportFormSuffix = 'формирования статистических отчётов по работе пользователей';
@@ -184,7 +194,7 @@ begin
   Application.ProcessMessages;
 end;
 
-procedure TMainForm.PreShowModal(const aWindowName: string; var aOldBusyState: integer);
+procedure TMainForm.PreShowModal(const aWindowName: string; var aOldBusyState: Integer);
 begin
   Log.SendDebug('Производится попытка отображения модального окна ' + aWindowName + '.');
   with MainForm do
@@ -195,7 +205,7 @@ begin
   end;
 end;
 
-procedure TMainForm.PostShowModal(const aWindowName: string; var aOldBusyState: integer);
+procedure TMainForm.PostShowModal(const aWindowName: string; var aOldBusyState: Integer);
 begin
   with MainForm do
   begin
@@ -216,7 +226,7 @@ end;
 
 procedure TMainForm.ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
 var
-  iOldBusyCounter: integer;
+  iOldBusyCounter: Integer;
 begin
   Log.SendError(aErrorMessage);
 
@@ -304,7 +314,7 @@ end;
 procedure TMainForm.Do_About(const aButtonVisible: Boolean);
 var
   AboutForm: TAboutForm;
-  iBusy: integer;
+  iBusy: Integer;
 begin
   ProcedureHeader('Процедура отображения окна ' + RsAboutFormSuffix, '{754C2801-ED59-4595-AC3E-20DBF98F6779}');
 
@@ -375,7 +385,7 @@ var
   procedure BindMainProgressBarToStatusBar;
   begin
     THackControl(pbMain).SetParent(StatusBar1);
-    SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, integer(@PanelRect));
+    SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
     pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right - PanelRect.Left,
       PanelRect.Bottom - PanelRect.Top - 1);
   end;
@@ -383,7 +393,7 @@ var
   procedure BindStateImageToStatusBar;
   begin
     THackControl(imState).SetParent(StatusBar1);
-    SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, integer(@PanelRect));
+    SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
     imState.SetBounds(PanelRect.Left + 2, PanelRect.Top + 1, PanelRect.Right - PanelRect.Left - 4,
       PanelRect.Bottom - PanelRect.Top - 4);
   end;
@@ -475,11 +485,11 @@ end;
 procedure TMainForm.Do_Configuration;
 var
   ConfigurationForm: TConfigurationForm;
-  iBusy: integer;
+  iBusy: Integer;
 begin
   ProcedureHeader('Процедура отображения окна ' + RsConfigurationFormSuffix, '{886B460D-4C73-46BE-829E-E4421B7C4378}');
 
-  ConfigurationForm := TConfigurationForm.Create(Self);
+  ConfigurationForm := TConfigurationForm.Create(Self, Configuration.ConfigurationFormPosition);
   with ConfigurationForm do
     try
       PreShowModal(RsConfigurationFormSuffix, iBusy);
@@ -627,11 +637,11 @@ end;
 procedure TMainForm.Do_Report;
 var
   ReportForm: TReportForm;
-  iBusy: integer;
+  iBusy: Integer;
 begin
   ProcedureHeader('Процедура отображения окна ' + RsReportFormSuffix, '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
 
-  ReportForm := TReportForm.Create(Self);
+  ReportForm := TReportForm.Create(Self, Configuration.ReportFormPosition);
   with ReportForm do
     try
       PreShowModal(RsReportFormSuffix, iBusy);
@@ -650,13 +660,13 @@ end;
 procedure TMainForm.actMultibufferExecute(Sender: TObject);
 var
   MultiBufferForm: TMultiBufferForm;
-  iBusy: integer;
-  i: integer;
+  iBusy: Integer;
+  i: Integer;
   aListItem: TListItem;
 begin
   ProcedureHeader('Процедура отображения окна ' + RsMultiBufferFormSuffix, '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
 
-  MultiBufferForm := TMultiBufferForm.Create(Self);
+  MultiBufferForm := TMultiBufferForm.Create(Self, Configuration.MultibufferFormPosition);
   with MultiBufferForm do
     try
       for i := 0 to MultiBuffer.Count - 1 do
@@ -683,11 +693,11 @@ end;
 procedure TMainForm.actViewMessageExecute(Sender: TObject);
 var
   ViewMessageForm: TViewMessageForm;
-  iBusy: integer;
+  iBusy: Integer;
 begin
   ProcedureHeader('Процедура отображения окна ' + RsViewMessageFormSuffix, '{347244A6-22DF-44DF-873B-2B55FC5112B9}');
 
-  ViewMessageForm := TViewMessageForm.Create(Self);
+  ViewMessageForm := TViewMessageForm.Create(Self, Configuration.ViewMessageFormPosition);
   with ViewMessageForm do
     try
       PreShowModal(RsViewMessageFormSuffix, iBusy);
@@ -706,11 +716,11 @@ end;
 procedure TMainForm.actCreateMessageExecute(Sender: TObject);
 var
   CreateMessageForm: TCreateMessageForm;
-  iBusy: integer;
+  iBusy: Integer;
 begin
   ProcedureHeader('Процедура отображения окна ' + RsCreateMessageFormSuffix, '{F356F5DA-5FF7-4F78-A80E-1C563B96AF6D}');
 
-  CreateMessageForm := TCreateMessageForm.Create(Self);
+  CreateMessageForm := TCreateMessageForm.Create(Self, Configuration.CreateMessageFormPosition);
   with CreateMessageForm do
     try
       PreShowModal(RsCreateMessageFormSuffix, iBusy);
@@ -729,11 +739,11 @@ end;
 procedure TMainForm.actAddPhoneExecute(Sender: TObject);
 var
   AddPhoneForm: TAddEditPhoneForm;
-  iBusy: integer;
+  iBusy: Integer;
 begin
   ProcedureHeader('Процедура отображения окна ' + RsAddPhoneFormSuffix, '{83D61BCA-0CB5-4542-9D0A-9137AE9C733C}');
 
-  AddPhoneForm := TAddEditPhoneForm.Create(Self);
+  AddPhoneForm := TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition);
   with AddPhoneForm do
     try
       Caption := 'Добавление номера телефона';
@@ -753,11 +763,11 @@ end;
 procedure TMainForm.actEditPhoneExecute(Sender: TObject);
 var
   EditPhoneForm: TAddEditPhoneForm;
-  iBusy: integer;
+  iBusy: Integer;
 begin
   ProcedureHeader('Процедура отображения окна ' + RsEditPhoneFormSuffix, '{36EA36F5-EDE2-4A3A-A7DE-BB9790D3F50F}');
 
-  EditPhoneForm := TAddEditPhoneForm.Create(Self);
+  EditPhoneForm := TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition);
   with EditPhoneForm do
     try
       Caption := 'Исправление номера телефона';
@@ -794,7 +804,7 @@ procedure TMainForm.Do_Logon;
 // TEXT_AOUTOLOGON_ERROR='Выполнить автоматический ыход не удалось - проверьте правильность сохраненных логина и пароля пользователя!';
 var
   LoginForm: TLoginForm;
-  iBusy: integer;
+  iBusy: Integer;
   bPassLoginForm: Boolean;
 
   (* procedure _Login;
@@ -871,7 +881,7 @@ begin
 
   if not bPassLoginForm then
   begin
-    LoginForm := TLoginForm.Create(Self);
+    LoginForm := TLoginForm.Create(Self, Configuration.LoginFormPosition);
     with LoginForm do
       try
         if Configuration.StoreLogin then
@@ -907,33 +917,4 @@ begin
 
 end;
 
-procedure TMainForm.Button1Click(Sender: TObject);
-{ var
-  c: IMeasure; }
-begin
-  { c := GetIMeasure;
-    c._OrganizationID := 1;
-    c._Type := '1';
-    c._Name := '2';
-    c.Normalize;
-    MultiBuffer.Append(c); }
-end;
-
-procedure TMainForm.N21Click(Sender: TObject);
-{ var
-  c: IMeasure; }
-begin
-  { c := GetIMeasure;
-    c._OrganizationID := 1;
-    c._Type := '1';
-    c._Name := '2';
-    c.Normalize;
-    MultiBuffer.Append(c); }
-end;
-
-  // RsCreateMutexError = 'Не удалось создать мьютекс.';
-  // RsWaitForMutexError = 'Не удалось считать состояние мьютекса.';
-  // RsReleaseMutexError = 'Не удалось удалить мьютекс.';
-  // RsCloseMutexHandleError = 'Не удалось закрыть идентификатор мьютекса.';
-  // RsErrorCode = ' Код ошибки: %s';
 end.

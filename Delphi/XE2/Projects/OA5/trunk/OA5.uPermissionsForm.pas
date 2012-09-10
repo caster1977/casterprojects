@@ -3,7 +3,7 @@ unit OA5.uPermissionsForm;
 interface
 
 uses
-  CastersPackage.uTLogForm,
+  CastersPackage.uTPositionedLogForm,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
@@ -13,7 +13,7 @@ uses
   Vcl.CheckLst;
 
 type
-  TPermissionsForm = class(TLogForm)
+  TPermissionsForm = class(TPositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actSelectAll: TAction;
@@ -54,6 +54,7 @@ implementation
 uses
   Vcl.Forms,
   System.SysUtils,
+  CastersPackage.uTLogForm,
   OA5.uMainForm;
 
 const
@@ -121,7 +122,7 @@ begin
       Break;
     end;
   end;
-  b := (chklbxPermissions.Items.Count > 0) and b;
+  b := b and (chklbxPermissions.Items.Count > 0);
   if actSelectAll.Enabled <> b then
   begin
     ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectAll.Caption]),
@@ -146,7 +147,7 @@ begin
       Break;
     end;
   end;
-  b := (chklbxPermissions.Items.Count > 0) and b;
+  b := b and (chklbxPermissions.Items.Count > 0);
   if actSelectNone.Enabled <> b then
   begin
     ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectNone.Caption]),
@@ -251,46 +252,6 @@ begin
     Log.UserName := MainForm.CurrentUser.Login;
     Log.AllowedTypes := KeepLogTypes;
     Log.Enabled := EnableLog;
-
-    // установка положения окна конфигурации в соответсвии со значениями конфигурации программы
-    if SetPasswordFormPosition.bCenter then
-    begin
-      Position := poScreenCenter;
-    end
-    else
-    begin
-      Position := poDesigned;
-      if PermissionsFormPosition.x < Screen.WorkAreaLeft then
-      begin
-        Left := Screen.WorkAreaLeft;
-      end
-      else
-      begin
-        if PermissionsFormPosition.x > Screen.WorkAreaLeft + Screen.WorkAreaWidth then
-        begin
-          Left := Screen.WorkAreaLeft + Screen.WorkAreaWidth - Width;
-        end
-        else
-        begin
-          Left := PermissionsFormPosition.x;
-        end;
-      end;
-      if PermissionsFormPosition.y < Screen.WorkAreaTop then
-      begin
-        Top := Screen.WorkAreaTop;
-      end
-      else
-      begin
-        if PermissionsFormPosition.y > Screen.WorkAreaTop + Screen.WorkAreaHeight then
-        begin
-          Top := Screen.WorkAreaTop + Screen.WorkAreaHeight - Height;
-        end
-        else
-        begin
-          Top := PermissionsFormPosition.y;
-        end;
-      end;
-    end;
   end;
 
   ProcedureFooter;
