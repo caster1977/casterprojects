@@ -16,26 +16,23 @@ uses
   xmldom,
   XMLDoc,
   XMLIntf,
-  Windows;
+  Windows,
+  CastersPackage.uTLogMessagesType;
 
 type
-
-  TLogMessagesType=(lmtError, lmtWarning, lmtInfo, lmtSQL, lmtDebug);
-  TLogMessagesTypes=set of TLogMessagesType;
-
   { Forward Decls }
 
-  IXMLLogkeeperdataType=interface;
-  IXMLMessageType=interface;
-  IXMLDateType=interface;
-  IXMLTimeType=interface;
-  IXMLApplicationType=interface;
-  IXMLFormType=interface;
-  IXMLMethodType=interface;
+  IXMLLogkeeperdataType = interface;
+  IXMLMessageType = interface;
+  IXMLDateType = interface;
+  IXMLTimeType = interface;
+  IXMLApplicationType = interface;
+  IXMLFormType = interface;
+  IXMLMethodType = interface;
 
   { IXMLLogkeeperdataType }
 
-  IXMLLogkeeperdataType=interface(IXMLNodeCollection)
+  IXMLLogkeeperdataType = interface(IXMLNodeCollection)
     ['{CAB01F41-32B7-48E7-BAB5-3E0BCDDF593A}']
     { Property Accessors }
     function Get_Message(index: Integer): IXMLMessageType;
@@ -47,7 +44,7 @@ type
 
   { IXMLMessageType }
 
-  IXMLMessageType=interface(IXMLNode)
+  IXMLMessageType = interface(IXMLNode)
     ['{2ABF8C0B-ED63-4D3A-8964-485BFF7ADD4D}']
     { Property Accessors }
     function Get_Index: LongWord;
@@ -73,7 +70,7 @@ type
 
   { IXMLDateType }
 
-  IXMLDateType=interface(IXMLNode)
+  IXMLDateType = interface(IXMLNode)
     ['{5B81058A-27FD-4607-9DD1-7EBE6760C83B}']
     { Property Accessors }
     function Get_Day: Word;
@@ -90,7 +87,7 @@ type
 
   { IXMLTimeType }
 
-  IXMLTimeType=interface(IXMLNode)
+  IXMLTimeType = interface(IXMLNode)
     ['{4EBE96E5-8734-4590-9301-4B7C7BB62DC7}']
     { Property Accessors }
     function Get_Hour: Word;
@@ -110,7 +107,7 @@ type
 
   { IXMLApplicationType }
 
-  IXMLApplicationType=interface(IXMLNode)
+  IXMLApplicationType = interface(IXMLNode)
     ['{FE2E3F8E-A7DA-4D13-A952-B56DF0CDB35C}']
     { Property Accessors }
     function Get_Handle: HWnd;
@@ -134,7 +131,7 @@ type
 
   { IXMLFormType }
 
-  IXMLFormType=interface(IXMLNode)
+  IXMLFormType = interface(IXMLNode)
     ['{21CE6901-3013-441B-A9D2-1D81DD8FD340}']
     { Property Accessors }
     function Get_Handle: HWnd;
@@ -148,7 +145,7 @@ type
 
   { IXMLMethodType }
 
-  IXMLMethodType=interface(IXMLNode)
+  IXMLMethodType = interface(IXMLNode)
     ['{DFC10CF6-46E1-4034-9EFC-EC54DF9F2CA5}']
     { Property Accessors }
     function Get_Guid: UnicodeString;
@@ -159,17 +156,17 @@ type
 
   { Forward Decls }
 
-  TXMLLogkeeperdataType=class;
-  TXMLMessageType=class;
-  TXMLDateType=class;
-  TXMLTimeType=class;
-  TXMLApplicationType=class;
-  TXMLFormType=class;
-  TXMLMethodType=class;
+  TXMLLogkeeperdataType = class;
+  TXMLMessageType = class;
+  TXMLDateType = class;
+  TXMLTimeType = class;
+  TXMLApplicationType = class;
+  TXMLFormType = class;
+  TXMLMethodType = class;
 
   { TXMLLogkeeperdataType }
 
-  TXMLLogkeeperdataType=class(TXMLNodeCollection, IXMLLogkeeperdataType)
+  TXMLLogkeeperdataType = class(TXMLNodeCollection, IXMLLogkeeperdataType)
   protected
     { IXMLLogkeeperdataType }
     function Get_Message(index: Integer): IXMLMessageType;
@@ -181,7 +178,7 @@ type
 
   { TXMLMessageType }
 
-  TXMLMessageType=class(TXMLNode, IXMLMessageType)
+  TXMLMessageType = class(TXMLNode, IXMLMessageType)
   protected
     { IXMLMessageType }
     function Get_Index: LongWord;
@@ -201,7 +198,7 @@ type
 
   { TXMLDateType }
 
-  TXMLDateType=class(TXMLNode, IXMLDateType)
+  TXMLDateType = class(TXMLNode, IXMLDateType)
   protected
     { IXMLDateType }
     function Get_Day: Word;
@@ -214,7 +211,7 @@ type
 
   { TXMLTimeType }
 
-  TXMLTimeType=class(TXMLNode, IXMLTimeType)
+  TXMLTimeType = class(TXMLNode, IXMLTimeType)
   protected
     { IXMLTimeType }
     function Get_Hour: Word;
@@ -229,7 +226,7 @@ type
 
   { TXMLApplicationType }
 
-  TXMLApplicationType=class(TXMLNode, IXMLApplicationType)
+  TXMLApplicationType = class(TXMLNode, IXMLApplicationType)
   protected
     { IXMLApplicationType }
     function Get_Handle: HWnd;
@@ -248,7 +245,7 @@ type
 
   { TXMLFormType }
 
-  TXMLFormType=class(TXMLNode, IXMLFormType)
+  TXMLFormType = class(TXMLNode, IXMLFormType)
   protected
     { IXMLFormType }
     function Get_Handle: HWnd;
@@ -259,7 +256,7 @@ type
 
   { TXMLMethodType }
 
-  TXMLMethodType=class(TXMLNode, IXMLMethodType)
+  TXMLMethodType = class(TXMLNode, IXMLMethodType)
   protected
     { IXMLMethodType }
     function Get_Guid: UnicodeString;
@@ -269,11 +266,11 @@ type
   { Global Functions }
 
 function GetLogKeeperData(Doc: IXMLDocument): IXMLLogkeeperdataType;
-function LoadlogKeeperData(const FileName: string): IXMLLogkeeperdataType;
+function LoadlogKeeperData(const Filename: string): IXMLLogkeeperdataType;
 function NewlogKeeperData: IXMLLogkeeperdataType;
 
 const
-  TargetNamespace='';
+  TargetNamespace = '';
 
 implementation
 
@@ -281,17 +278,17 @@ implementation
 
 function GetLogKeeperData(Doc: IXMLDocument): IXMLLogkeeperdataType;
 begin
-  Result:=Doc.GetDocBinding('logkeeperdata', TXMLLogkeeperdataType, TargetNamespace) as IXMLLogkeeperdataType;
+  Result := Doc.GetDocBinding('logkeeperdata', TXMLLogkeeperdataType, TargetNamespace) as IXMLLogkeeperdataType;
 end;
 
-function LoadLogKeeperData(const FileName: string): IXMLLogkeeperdataType;
+function LoadlogKeeperData(const Filename: string): IXMLLogkeeperdataType;
 begin
-  Result:=LoadXMLDocument(FileName).GetDocBinding('logkeeperdata', TXMLLogkeeperdataType, TargetNamespace) as IXMLLogkeeperdataType;
+  Result := LoadXMLDocument(Filename).GetDocBinding('logkeeperdata', TXMLLogkeeperdataType, TargetNamespace) as IXMLLogkeeperdataType;
 end;
 
-function NewLogKeeperData: IXMLLogkeeperdataType;
+function NewlogKeeperData: IXMLLogkeeperdataType;
 begin
-  Result:=NewXMLDocument.GetDocBinding('logkeeperdata', TXMLLogkeeperdataType, TargetNamespace) as IXMLLogkeeperdataType;
+  Result := NewXMLDocument.GetDocBinding('logkeeperdata', TXMLLogkeeperdataType, TargetNamespace) as IXMLLogkeeperdataType;
 end;
 
 { TXMLLogkeeperdataType }
@@ -299,24 +296,24 @@ end;
 procedure TXMLLogkeeperdataType.AfterConstruction;
 begin
   RegisterChildNode('message', TXMLMessageType);
-  ItemTag:='message';
-  ItemInterface:=IXMLMessageType;
+  ItemTag := 'message';
+  ItemInterface := IXMLMessageType;
   inherited;
 end;
 
 function TXMLLogkeeperdataType.Get_Message(index: Integer): IXMLMessageType;
 begin
-  Result:=List[index] as IXMLMessageType;
+  Result := List[index] as IXMLMessageType;
 end;
 
 function TXMLLogkeeperdataType.Add: IXMLMessageType;
 begin
-  Result:=AddItem(-1) as IXMLMessageType;
+  Result := AddItem(-1) as IXMLMessageType;
 end;
 
 function TXMLLogkeeperdataType.Insert(const index: Integer): IXMLMessageType;
 begin
-  Result:=AddItem(index) as IXMLMessageType;
+  Result := AddItem(index) as IXMLMessageType;
 end;
 
 { TXMLMessageType }
@@ -331,131 +328,131 @@ end;
 
 function TXMLMessageType.Get_Index: LongWord;
 begin
-  Result:=ChildNodes['index'].NodeValue;
+  Result := ChildNodes['index'].NodeValue;
 end;
 
 procedure TXMLMessageType.Set_Index(Value: LongWord);
 begin
-  ChildNodes['index'].NodeValue:=Value;
+  ChildNodes['index'].NodeValue := Value;
 end;
 
 function TXMLMessageType.Get_Date: IXMLDateType;
 begin
-  Result:=ChildNodes['date'] as IXMLDateType;
+  Result := ChildNodes['date'] as IXMLDateType;
 end;
 
 function TXMLMessageType.Get_Time: IXMLTimeType;
 begin
-  Result:=ChildNodes['time'] as IXMLTimeType;
+  Result := ChildNodes['time'] as IXMLTimeType;
 end;
 
 function TXMLMessageType.Get_Host: UnicodeString;
 begin
-  Result:=ChildNodes['host'].Text;
+  Result := ChildNodes['host'].Text;
 end;
 
 procedure TXMLMessageType.Set_Host(Value: UnicodeString);
 begin
-  ChildNodes['host'].NodeValue:=Value;
+  ChildNodes['host'].NodeValue := Value;
 end;
 
 function TXMLMessageType.Get_Application: IXMLApplicationType;
 begin
-  Result:=ChildNodes['application'] as IXMLApplicationType;
+  Result := ChildNodes['application'] as IXMLApplicationType;
 end;
 
 function TXMLMessageType.Get_MessageType: TLogMessagesType;
 begin
-  Result:=ChildNodes['type'].NodeValue;
+  Result := ChildNodes['type'].NodeValue;
 end;
 
 procedure TXMLMessageType.Set_MessageType(Value: TLogMessagesType);
 begin
-  ChildNodes['type'].NodeValue:=Value;
+  ChildNodes['type'].NodeValue := Value;
 end;
 
 function TXMLMessageType.Get_Text: UnicodeString;
 begin
-  Result:=ChildNodes['text'].Text;
+  Result := ChildNodes['text'].Text;
 end;
 
 procedure TXMLMessageType.Set_Text(Value: UnicodeString);
 begin
-  ChildNodes['text'].NodeValue:=Value;
+  ChildNodes['text'].NodeValue := Value;
 end;
 
 { TXMLDateType }
 
 function TXMLDateType.Get_Day: Word;
 begin
-  Result:=ChildNodes['day'].NodeValue;
+  Result := ChildNodes['day'].NodeValue;
 end;
 
 procedure TXMLDateType.Set_Day(Value: Word);
 begin
-  ChildNodes['day'].NodeValue:=Value;
+  ChildNodes['day'].NodeValue := Value;
 end;
 
 function TXMLDateType.Get_Month: Word;
 begin
-  Result:=ChildNodes['month'].NodeValue;
+  Result := ChildNodes['month'].NodeValue;
 end;
 
 procedure TXMLDateType.Set_Month(Value: Word);
 begin
-  ChildNodes['month'].NodeValue:=Value;
+  ChildNodes['month'].NodeValue := Value;
 end;
 
 function TXMLDateType.Get_Year: Word;
 begin
-  Result:=ChildNodes['year'].NodeValue;
+  Result := ChildNodes['year'].NodeValue;
 end;
 
 procedure TXMLDateType.Set_Year(Value: Word);
 begin
-  ChildNodes['year'].NodeValue:=Value;
+  ChildNodes['year'].NodeValue := Value;
 end;
 
 { TXMLTimeType }
 
 function TXMLTimeType.Get_Hour: Word;
 begin
-  Result:=ChildNodes['hour'].NodeValue;
+  Result := ChildNodes['hour'].NodeValue;
 end;
 
 procedure TXMLTimeType.Set_Hour(Value: Word);
 begin
-  ChildNodes['hour'].NodeValue:=Value;
+  ChildNodes['hour'].NodeValue := Value;
 end;
 
 function TXMLTimeType.Get_Minute: Word;
 begin
-  Result:=ChildNodes['minute'].NodeValue;
+  Result := ChildNodes['minute'].NodeValue;
 end;
 
 procedure TXMLTimeType.Set_Minute(Value: Word);
 begin
-  ChildNodes['minute'].NodeValue:=Value;
+  ChildNodes['minute'].NodeValue := Value;
 end;
 
 function TXMLTimeType.Get_Second: Word;
 begin
-  Result:=ChildNodes['second'].NodeValue;
+  Result := ChildNodes['second'].NodeValue;
 end;
 
 procedure TXMLTimeType.Set_Second(Value: Word);
 begin
-  ChildNodes['second'].NodeValue:=Value;
+  ChildNodes['second'].NodeValue := Value;
 end;
 
 function TXMLTimeType.Get_Msecond: Word;
 begin
-  Result:=ChildNodes['msecond'].NodeValue;
+  Result := ChildNodes['msecond'].NodeValue;
 end;
 
 procedure TXMLTimeType.Set_Msecond(Value: Word);
 begin
-  ChildNodes['msecond'].NodeValue:=Value;
+  ChildNodes['msecond'].NodeValue := Value;
 end;
 
 { TXMLApplicationType }
@@ -469,86 +466,86 @@ end;
 
 function TXMLApplicationType.Get_Handle: HWnd;
 begin
-  Result:=ChildNodes['handle'].NodeValue;
+  Result := ChildNodes['handle'].NodeValue;
 end;
 
 procedure TXMLApplicationType.Set_Handle(Value: HWnd);
 begin
-  ChildNodes['handle'].NodeValue:=Value;
+  ChildNodes['handle'].NodeValue := Value;
 end;
 
 function TXMLApplicationType.Get_Filename: UnicodeString;
 begin
-  Result:=ChildNodes['filename'].Text;
+  Result := ChildNodes['filename'].Text;
 end;
 
 procedure TXMLApplicationType.Set_Filename(Value: UnicodeString);
 begin
-  ChildNodes['filename'].NodeValue:=Value;
+  ChildNodes['filename'].NodeValue := Value;
 end;
 
 function TXMLApplicationType.Get_Filepath: UnicodeString;
 begin
-  Result:=ChildNodes['filepath'].Text;
+  Result := ChildNodes['filepath'].Text;
 end;
 
 procedure TXMLApplicationType.Set_Filepath(Value: UnicodeString);
 begin
-  ChildNodes['filepath'].NodeValue:=Value;
+  ChildNodes['filepath'].NodeValue := Value;
 end;
 
 function TXMLApplicationType.Get_Form: IXMLFormType;
 begin
-  Result:=ChildNodes['form'] as IXMLFormType;
+  Result := ChildNodes['form'] as IXMLFormType;
 end;
 
 function TXMLApplicationType.Get_Method: IXMLMethodType;
 begin
-  Result:=ChildNodes['method'] as IXMLMethodType;
+  Result := ChildNodes['method'] as IXMLMethodType;
 end;
 
 function TXMLApplicationType.Get_User: UnicodeString;
 begin
-  Result:=ChildNodes['user'].Text;
+  Result := ChildNodes['user'].Text;
 end;
 
 procedure TXMLApplicationType.Set_User(Value: UnicodeString);
 begin
-  ChildNodes['user'].NodeValue:=Value;
+  ChildNodes['user'].NodeValue := Value;
 end;
 
 { TXMLFormType }
 
 function TXMLFormType.Get_Handle: HWnd;
 begin
-  Result:=ChildNodes['handle'].NodeValue;
+  Result := ChildNodes['handle'].NodeValue;
 end;
 
 procedure TXMLFormType.Set_Handle(Value: HWnd);
 begin
-  ChildNodes['handle'].NodeValue:=Value;
+  ChildNodes['handle'].NodeValue := Value;
 end;
 
 function TXMLFormType.Get_Name: UnicodeString;
 begin
-  Result:=ChildNodes['name'].Text;
+  Result := ChildNodes['name'].Text;
 end;
 
 procedure TXMLFormType.Set_Name(Value: UnicodeString);
 begin
-  ChildNodes['name'].NodeValue:=Value;
+  ChildNodes['name'].NodeValue := Value;
 end;
 
 { TXMLMethodType }
 
 function TXMLMethodType.Get_Guid: UnicodeString;
 begin
-  Result:=ChildNodes['guid'].Text;
+  Result := ChildNodes['guid'].Text;
 end;
 
 procedure TXMLMethodType.Set_Guid(Value: UnicodeString);
 begin
-  ChildNodes['guid'].NodeValue:=Value;
+  ChildNodes['guid'].NodeValue := Value;
 end;
 
 end.

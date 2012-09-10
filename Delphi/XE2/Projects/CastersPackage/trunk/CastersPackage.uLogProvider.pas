@@ -9,10 +9,12 @@ uses
   System.Generics.Collections,
   Vcl.Forms,
   CastersPackage.uLogClasses,
-  CastersPackage.uLogKeeperData;
+  CastersPackage.uLogKeeperData,
+  CastersPackage.uTLogMessagesType,
+  CastersPackage.uTLogMessagesTypes;
 
 type
-  TLogProvider=class(TComponent)
+  TLogProvider = class(TComponent)
   strict private
     dwRecipients: DWORD;
     msgLogKeeperClientQuery, msgLogKeeperClientAnswer: cardinal;
@@ -27,7 +29,7 @@ type
     FAllowedTypes: TLogMessagesTypes;
     prOldWndProc: TWndMethod;
     procedure Send(const aString: string; const aMessageType: TLogMessagesType);
-    procedure SetEnabled(const Value: Boolean);
+    procedure SetEnabled(const Value: boolean);
     function GetLocalHostName: string;
     function GetApplicationHandle: HWnd;
     function GetApplicationFileName: string;
@@ -57,7 +59,7 @@ type
 
     property UserName: string read FUserName write FUserName;
   published
-    property Enabled: Boolean read FEnabled write SetEnabled default False;
+    property Enabled: boolean read FEnabled write SetEnabled default False;
     property LogFile: TLogFile read FLogFile write FLogFile;
     property LogClient: TLogClient read FLogClient write FLogClient;
     property BeforeSending: TNotifyEvent read FBeforeSending write FBeforeSending;
@@ -86,40 +88,40 @@ end;
 constructor TLogProvider.Create(AOwner: TComponent);
 begin
   inherited;
-  FEnabled:=False;
-  FUserName:='';
-  FAllowedTypes:=[lmtError, lmtWarning, lmtInfo, lmtSQL];
+  FEnabled := False;
+  FUserName := '';
+  FAllowedTypes := [lmtError, lmtWarning, lmtInfo, lmtSQL];
   if AOwner is TForm then
-    FOwnerForm:=TForm(AOwner);
-  FLogFile:=TLogFile.Create(Self);
-  FLogClient:=TLogClient.Create(Self);
+    FOwnerForm := TForm(AOwner);
+  FLogFile := TLogFile.Create(Self);
+  FLogClient := TLogClient.Create(Self);
   if not(csDesigning in ComponentState) then
-    begin
-      FGUIDList:=TList<string>.Create;
+  begin
+    FGUIDList := TList<string>.Create;
 
-      // перехват обработчика сообщений
-      prOldWndProc:=FOwnerForm.WindowProc;
-      FOwnerForm.WindowProc:=NewWindowProc;
+    // перехват обработчика сообщений
+    prOldWndProc := FOwnerForm.WindowProc;
+    FOwnerForm.WindowProc := NewWindowProc;
 
-      // регистрация глобальных переменных
-      msgLogKeeperClientQuery:=RegisterWindowMessage('msgLogKeeperClientQuery');
-      msgLogKeeperClientAnswer:=RegisterWindowMessage('msgLogKeeperClientAnswer');
+    // регистрация глобальных переменных
+    msgLogKeeperClientQuery := RegisterWindowMessage('msgLogKeeperClientQuery');
+    msgLogKeeperClientAnswer := RegisterWindowMessage('msgLogKeeperClientAnswer');
 
-      // отправка широковещательного сообщения клиентам на локальном компе
-      dwRecipients:=BSM_APPLICATIONS;
-      if Assigned(FOwnerForm) then
-        BroadcastSystemMessage(BSF_IGNORECURRENTTASK or BSF_POSTMESSAGE, @dwRecipients, msgLogKeeperClientQuery, FOwnerForm.Handle, 0);
-    end;
+    // отправка широковещательного сообщения клиентам на локальном компе
+    dwRecipients := BSM_APPLICATIONS;
+    if Assigned(FOwnerForm) then
+      BroadcastSystemMessage(BSF_IGNORECURRENTTASK or BSF_POSTMESSAGE, @dwRecipients, msgLogKeeperClientQuery, FOwnerForm.Handle, 0);
+  end;
 end;
 
 destructor TLogProvider.Destroy;
 begin
   if not(csDesigning in ComponentState) then
-    begin
-      if Assigned(FOwnerForm) then
-        FOwnerForm.WindowProc:=prOldWndProc;
-    end;
-  FEnabled:=False;
+  begin
+    if Assigned(FOwnerForm) then
+      FOwnerForm.WindowProc := prOldWndProc;
+  end;
+  FEnabled := False;
   FreeAndNil(FLogFile);
   FreeAndNil(FLogClient);
   FreeAndNil(FGUIDList);
@@ -128,23 +130,23 @@ end;
 
 function TLogProvider.GetLocalHostName: string;
 const
-  WSVer=$101;
+  WSVer = $101;
 var
   wsaData: TWSAData;
   P: PHostEnt;
-  Buf: array [0..127] of Char;
+  Buf: array [0 .. 127] of Char;
 begin
-  Result:='';
-  if WSAStartup(WSVer, wsaData)=0 then
+  Result := '';
+  if WSAStartup(WSVer, wsaData) = 0 then
+  begin
+    if GetHostName(@Buf, 128) = 0 then
     begin
-      if GetHostName(@Buf, 128)=0 then
-        begin
-          P:=GetHostByName(@Buf);
-          if Assigned(P) then
-            Result:=string(iNet_ntoa(PInAddr(p^.h_addr_list^)^));
-        end;
-      WSACleanup;
+      P := GetHostByName(@Buf);
+      if Assigned(P) then
+        Result := string(iNet_ntoa(PInAddr(P^.h_addr_list^)^));
     end;
+    WSACleanup;
+  end;
 end;
 
 procedure TLogProvider.Loaded;
@@ -156,14 +158,15 @@ end;
 
 procedure TLogProvider.NewWindowProc(var Msg: TMessage);
 begin
-  if Msg.Msg=msgLogKeeperClientAnswer then
-    begin
-      // if Msg.WParam=FOwnerForm.Handle then
-      MessageBox(FOwnerForm.Handle, PWideChar('Получено сообщение msgLogKeeperClientAnswer в форму '+FOwnerForm.Name+'!'), PWideChar('OA5 - Информация!'), MB_OK+MB_ICONINFORMATION+MB_DEFBUTTON1);
-      // if Msg.lParam=1 then
-      // hBaseInfo:=Msg.wParam; // обновляем хэндл окна-приёмника
-      // Handled:=True;
-    end;
+  if Msg.Msg = msgLogKeeperClientAnswer then
+  begin
+    // if Msg.WParam=FOwnerForm.Handle then
+    MessageBox(FOwnerForm.Handle, PWideChar('Получено сообщение msgLogKeeperClientAnswer в форму ' + FOwnerForm.Name + '!'), PWideChar('OA5 - Информация!'),
+      MB_OK + MB_ICONINFORMATION + MB_DEFBUTTON1);
+    // if Msg.lParam=1 then
+    // hBaseInfo:=Msg.wParam; // обновляем хэндл окна-приёмника
+    // Handled:=True;
+  end;
   prOldWndProc(Msg);
 end;
 
@@ -178,100 +181,100 @@ var
 begin
   // если компонент включен
   if Enabled then
-    begin
-      try
-        bNeedToSend:=False;
-        if Assigned(FLogFile) then
-          if FLogFile.Enabled then
-            bNeedToSend:=True;
-        if Assigned(FLogClient) then
-          if FLogClient.Enabled then
-            bNeedToSend:=True;
-        if bNeedToSend then
-          begin
-            DoBeforeSending;
+  begin
+    try
+      bNeedToSend := False;
+      if Assigned(FLogFile) then
+        if FLogFile.Enabled then
+          bNeedToSend := True;
+      if Assigned(FLogClient) then
+        if FLogClient.Enabled then
+          bNeedToSend := True;
+      if bNeedToSend then
+      begin
+        DoBeforeSending;
 
-            dtNow:=Now;
-            DecodeDate(dtNow, wYear, wMonth, wDay);
-            DecodeTime(dtNow, wHour, wMinute, wSecond, wMSecond);
-            Application.ProcessMessages;
+        dtNow := Now;
+        DecodeDate(dtNow, wYear, wMonth, wDay);
+        DecodeTime(dtNow, wHour, wMinute, wSecond, wMSecond);
+        Application.ProcessMessages;
 
-            // оформление передаваемого сообщения в виде XML-документа
-            Doc:=TXMLDocument.Create(Self);
-            Doc.Active:=True;
-            if Doc.Version<>'' then
-              Doc.Version:='1.0';
-            lmd:=GetLogKeeperData(Doc);
+        // оформление передаваемого сообщения в виде XML-документа
+        Doc := TXMLDocument.Create(Self);
+        Doc.Active := True;
+        if Doc.Version <> '' then
+          Doc.Version := '1.0';
+        lmd := GetLogKeeperData(Doc);
 
-            if Assigned(lmd) then
+        if Assigned(lmd) then
+        begin
+          lm := lmd.Add;
+          if Assigned(lm) then
+            with lm do
+            begin
+              index := Count;
+              with Date do
               begin
-                lm:=lmd.Add;
-                if Assigned(lm) then
-                  with lm do
-                    begin
-                      index:=Count;
-                      with Date do
-                        begin
-                          Year:=wYear;
-                          Month:=wMonth;
-                          Day:=wDay;
-                        end;
-                      with Time do
-                        begin
-                          Hour:=wHour;
-                          Minute:=wHour;
-                          Second:=wSecond;
-                          MSecond:=wMSecond;
-                        end;
-                      Host:=GetLocalHostName;
-                      with lm.Application do
-                        begin
-                          Handle:=GetApplicationHandle;
-                          FileName:=GetApplicationFileName;
-                          FilePath:=GetApplicationFilePath;
-                          with Form do
-                            begin
-                              Handle:=GetFormHandle;
-                              name:=GetFormName;
-                            end;
-                          if FGUIDList.Count>0 then
-                            Method.Guid:=FGUIDList.Last
-                          else
-                            raise Exception.Create('Спиоок GUID методов пуст!');
-                          User:=UserName;
-                        end;
-                      MessageType:=aMessageType;
-                      Text:=aString;
-                    end;
+                Year := wYear;
+                Month := wMonth;
+                Day := wDay;
+              end;
+              with Time do
+              begin
+                Hour := wHour;
+                Minute := wHour;
+                Second := wSecond;
+                MSecond := wMSecond;
+              end;
+              Host := GetLocalHostName;
+              with lm.Application do
+              begin
+                Handle := GetApplicationHandle;
+                FileName := GetApplicationFileName;
+                FilePath := GetApplicationFilePath;
+                with Form do
+                begin
+                  Handle := GetFormHandle;
+                  name := GetFormName;
+                end;
+                if FGUIDList.Count > 0 then
+                  Method.Guid := FGUIDList.Last
+                else
+                  raise Exception.Create('Спиоок GUID методов пуст!');
+                User := UserName;
+              end;
+              MessageType := aMessageType;
+              Text := aString;
+            end;
 
-                if Assigned(FLogFile) then
-                  with FLogFile do
-                    if Enabled then
-                      begin
-                        AppendToQueue(lmd.XML);
-                        Suspended:=False;
-                      end;
-
-                if Assigned(FLogClient) then
-                  with FLogClient do
-                    if Enabled then
-                      begin
-                        AppendToQueue(lmd.XML);
-                        Suspended:=False;
-                      end;
-                lm:=nil;
+          if Assigned(FLogFile) then
+            with FLogFile do
+              if Enabled then
+              begin
+                AppendToQueue(lmd.Xml);
+                Suspended := False;
               end;
 
-            lmd:=nil;
-            Doc:=nil;
-            FCount:=FCount+1;
-            DoAfterSending;
-          end;
-      except
-        Application.HandleException(Self);
+          if Assigned(FLogClient) then
+            with FLogClient do
+              if Enabled then
+              begin
+                AppendToQueue(lmd.Xml);
+                Suspended := False;
+              end;
+          lm := nil;
+        end;
+
+        lmd := nil;
+        Doc := nil;
+        FCount := FCount + 1;
+        DoAfterSending;
       end;
-      Application.ProcessMessages;
+    except
+      Application.HandleException(Self);
     end;
+    Application.ProcessMessages;
+  end;
 end;
 
 procedure TLogProvider.SendDebug(const aString: string);
@@ -304,15 +307,15 @@ begin
     Send(aString, lmtWarning);
 end;
 
-procedure TLogProvider.SetEnabled(const Value: Boolean);
+procedure TLogProvider.SetEnabled(const Value: boolean);
 begin
-  if FEnabled<>Value then
-    begin
-      FEnabled:=Value;
-      // только после прогрузки, и только в случае, если программа запущена на выполнение, а не находится в состоянии разработки
-      if not((csLoading in ComponentState)or(csDesigning in ComponentState)) then
-        RefreshConnections;
-    end;
+  if FEnabled <> Value then
+  begin
+    FEnabled := Value;
+    // только после прогрузки, и только в случае, если программа запущена на выполнение, а не находится в состоянии разработки
+    if not((csLoading in ComponentState) or (csDesigning in ComponentState)) then
+      RefreshConnections;
+  end;
 end;
 
 procedure TLogProvider.RefreshConnections;
@@ -320,34 +323,34 @@ begin
   // только в случае, если программа запущена на выполнение, а не находится в состоянии разработки
   if not(csDesigning in ComponentState) then
     if Enabled then
-      begin
-        FLogClient.Refresh;
-        FLogFile.Refresh;
-      end;
+    begin
+      FLogClient.Refresh;
+      FLogFile.Refresh;
+    end;
 end;
 
 procedure TLogProvider.EnterMethod(const aString, aGUID: string);
 begin
-  if Length(aGUID)=38 then
+  if Length(aGUID) = 38 then
     FGUIDList.Add(aGUID)
   else
     raise Exception.Create('Не удалось добавить элемент в список GUID методов из-за некорректной длины строки!');
-  SendDebug('['+aString+']');
+  SendDebug('[' + aString + ']');
   SendDebug('Начало процедуры...');
 end;
 
 procedure TLogProvider.ExitMethod;
 begin
   SendDebug('Окончание процедуры.');
-  if FGUIDList.Count>0 then
-    FGUIDList.Delete(FGUIDList.Count-1)
+  if FGUIDList.Count > 0 then
+    FGUIDList.Delete(FGUIDList.Count - 1)
   else
     raise Exception.Create('Не удалось удалить последний элемент списка GUID методов, т.к. список пуст!');
 end;
 
 function TLogProvider.GetApplicationHandle: HWnd;
 begin
-  Result:=Application.Handle;
+  Result := Application.Handle;
 end;
 
 procedure TLogProvider.DoAfterSending;
@@ -364,18 +367,18 @@ end;
 
 function TLogProvider.GetApplicationFileName: string;
 begin
-  Result:=ExtractFileName(Application.ExeName);
+  Result := ExtractFileName(Application.ExeName);
 end;
 
 function TLogProvider.GetApplicationFilePath: string;
 begin
-  Result:=ExtractFilePath(Application.ExeName);
+  Result := ExtractFilePath(Application.ExeName);
 end;
 
 function TLogProvider.GetFormHandle: HWnd;
 begin
   if Assigned(FOwnerForm) then
-    Result:=FOwnerForm.Handle
+    Result := FOwnerForm.Handle
   else
     raise Exception.Create('Не удалось получить handle родительской формы, поскольку указатель на родительскую форму пуст!');
 end;
@@ -383,7 +386,7 @@ end;
 function TLogProvider.GetFormName: string;
 begin
   if Assigned(FOwnerForm) then
-    Result:=FOwnerForm.Caption
+    Result := FOwnerForm.Caption
   else
     raise Exception.Create('Не удалось получить заголовок родительской формы, поскольку указатель на родительскую форму пуст!');
 end;
