@@ -61,7 +61,7 @@ implementation
 
 uses
   Vcl.Forms,
-  OA5.uMainForm,
+  OA5.uTMainForm,
   CastersPackage.uRoutines,
   CastersPackage.uTLogForm,
   System.SysUtils;

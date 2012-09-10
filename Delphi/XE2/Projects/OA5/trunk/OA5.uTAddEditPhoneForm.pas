@@ -73,7 +73,7 @@ uses
   System.DateUtils,
   CastersPackage.uTLogForm,
   CastersPackage.uRoutines,
-  OA5.uMainForm;
+  OA5.uTMainForm;
 
 const
   ICON_ADDEDITPHONE = 1;

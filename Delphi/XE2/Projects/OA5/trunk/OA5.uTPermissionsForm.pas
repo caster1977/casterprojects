@@ -55,7 +55,7 @@ uses
   Vcl.Forms,
   System.SysUtils,
   CastersPackage.uTLogForm,
-  OA5.uMainForm;
+  OA5.uTMainForm;
 
 const
   ICON_PERMISSIONS = 3;

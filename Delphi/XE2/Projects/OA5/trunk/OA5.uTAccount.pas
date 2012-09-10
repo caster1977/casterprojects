@@ -3,52 +3,62 @@
 interface
 
 uses
+  OA5.uIAccount,
   System.SysUtils,
+  System.Classes,
+  OA5.uIPrivilegies,
   OA5.uTPrivilegies;
 
 type
   EAccount = class(Exception);
 
-  TAccount = class
+  TAccount = class(TInterfacedPersistent, IAccount)
   strict private
-    FLogged: boolean;
-    FID: integer;
+    FLogged: Boolean;
+    FID: Integer;
     FLogin: string;
     FPassword: string;
     FFullname: string;
     FPosition: string;
     FPhone: string;
-    FPrivilegies: TPrivilegies;
+    FPrivilegies: IPrivilegies;
     function GetFullname: string;
-    function GetID: integer;
-    function GetLogin: string;
-    function GetLogged: boolean;
-    function GetPassword: string;
-    function GetPhone: string;
-    function GetPosition: string;
-    function GetPrivilegies: TPrivilegies;
     procedure SetFullname(const Value: string);
-    procedure SetID(const Value: integer);
+    function GetID: Integer;
+    procedure SetID(const Value: Integer);
+    function GetLogin: string;
     procedure SetLogin(const Value: string);
-    procedure SetLogged(const Value: boolean);
+    function GetLogged: Boolean;
+    procedure SetLogged(const Value: Boolean);
+    function GetPassword: string;
     procedure SetPassword(const Value: string);
+    function GetPhone: string;
     procedure SetPhone(const Value: string);
+    function GetPosition: string;
     procedure SetPosition(const Value: string);
-    procedure SetPrivilegies(const Value: TPrivilegies);
+    function GetPrivilegies: IPrivilegies;
+    procedure SetPrivilegies(const AValue: IPrivilegies);
   public
     constructor Create; virtual;
     destructor Destroy; override;
-    property Logged: boolean read GetLogged write SetLogged default False;
-    property ID: integer read GetID write SetID nodefault;
+    property Logged: Boolean read GetLogged write SetLogged default False;
+    property ID: Integer read GetID write SetID nodefault;
     property Login: string read GetLogin write SetLogin nodefault;
     property Password: string read GetPassword write SetPassword nodefault;
     property Fullname: string read GetFullname write SetFullname nodefault;
     property Position: string read GetPosition write SetPosition nodefault;
     property Phone: string read GetPhone write SetPhone nodefault;
-    property Privilegies: TPrivilegies read GetPrivilegies write SetPrivilegies nodefault;
+    property Privilegies: IPrivilegies read GetPrivilegies write SetPrivilegies nodefault;
   end;
 
+function GetIAccount: IAccount;
+
 implementation
+
+function GetIAccount: IAccount;
+begin
+  Result := TAccount.Create;
+end;
 
 constructor TAccount.Create;
 begin
@@ -82,12 +92,12 @@ begin
   Result := FFullname;
 end;
 
-function TAccount.GetID: integer;
+function TAccount.GetID: Integer;
 begin
   Result := FID;
 end;
 
-function TAccount.GetLogged: boolean;
+function TAccount.GetLogged: Boolean;
 begin
   Result := FLogged;
 end;
@@ -112,7 +122,7 @@ begin
   Result := FPosition;
 end;
 
-function TAccount.GetPrivilegies: TPrivilegies;
+function TAccount.GetPrivilegies: IPrivilegies;
 begin
   Result := FPrivilegies;
 end;
@@ -126,7 +136,7 @@ begin
     FFullname := s;
 end;
 
-procedure TAccount.SetID(const Value: integer);
+procedure TAccount.SetID(const Value: Integer);
 resourcestring
   TEXT_ACCOUNT_ID_ERROR = 'Идентификатор учётной записи не может быть отрицательным!';
 begin
@@ -137,7 +147,7 @@ begin
       FID := Value;
 end;
 
-procedure TAccount.SetLogged(const Value: boolean);
+procedure TAccount.SetLogged(const Value: Boolean);
 begin
   if FLogged <> Value then
     FLogged := Value;
@@ -181,11 +191,10 @@ begin
     FPosition := Value;
 end;
 
-procedure TAccount.SetPrivilegies(const Value: TPrivilegies);
+procedure TAccount.SetPrivilegies(const AValue: IPrivilegies);
 begin
-  if ((FPrivilegies.Editing <> Value.Editing) or (FPrivilegies.Clearing <> Value.Clearing) or
-    (FPrivilegies.Accounting <> Value.Accounting) or (FPrivilegies.Reporting <> Value.Reporting)) then
-    FPrivilegies := Value;
+  if ((FPrivilegies.Editing <> AValue.Editing) or (FPrivilegies.Clearing <> AValue.Clearing) or (FPrivilegies.Accounting <> AValue.Accounting) or (FPrivilegies.Reporting <> AValue.Reporting)) then
+    FPrivilegies := AValue;
 end;
 
 end.

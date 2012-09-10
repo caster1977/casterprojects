@@ -55,7 +55,7 @@ uses
   System.SysUtils,
   Vcl.Forms,
   CastersPackage.uTLogForm,
-  OA5.uMainForm;
+  OA5.uTMainForm;
 
 const
   ICON_CREATEMESSAGE = 1;

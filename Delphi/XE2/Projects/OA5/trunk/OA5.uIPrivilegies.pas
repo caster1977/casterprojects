@@ -5,18 +5,18 @@ interface
 type
   IPrivilegies = interface
     ['{8591B178-CA0E-455E-A823-9C21A34B118F}']
-    function GetAccount: Boolean;
-    function GetClear: Boolean;
-    function GetEdit: Boolean;
-    function GetReport: Boolean;
-    procedure SetAccount(const Value: Boolean);
-    procedure SetClear(const Value: Boolean);
-    procedure SetEdit(const Value: Boolean);
-    procedure SetReport(const Value: Boolean);
-    property Edit: Boolean read GetEdit write SetEdit;
-    property Clear: Boolean read GetClear write SetClear;
-    property Account: Boolean read GetAccount write SetAccount;
-    property Report: Boolean read GetReport write SetReport;
+    function GetAccounting: Boolean;
+    function GetClearing: Boolean;
+    function GetEditing: Boolean;
+    function GetReporting: Boolean;
+    procedure SetAccounting(const AValue: Boolean);
+    procedure SetClearing(const AValue: Boolean);
+    procedure SetEditing(const AValue: Boolean);
+    procedure SetReporting(const AValue: Boolean);
+    property Accounting: Boolean read GetAccounting write SetAccounting;
+    property Clearing: Boolean read GetClearing write SetClearing;
+    property Editing: Boolean read GetEditing write SetEditing;
+    property Reporting: Boolean read GetReporting write SetReporting;
   end;
 
 implementation
