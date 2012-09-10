@@ -58,7 +58,7 @@ implementation
 uses
   Vcl.Forms,
   Winapi.Windows,
-  OA5.uMainForm,
+  OA5.uTMainForm,
   CastersPackage.uTLogForm,
   CastersPackage.uRoutines;
 

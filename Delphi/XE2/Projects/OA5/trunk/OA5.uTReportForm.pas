@@ -102,7 +102,7 @@ uses
   System.SysUtils,
   System.DateUtils,
   CastersPackage.uRoutines,
-  OA5.uMainForm;
+  OA5.uTMainForm;
 
 const
   ICON_STATISTIC = 0;

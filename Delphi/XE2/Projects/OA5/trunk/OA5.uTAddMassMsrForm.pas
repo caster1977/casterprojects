@@ -71,7 +71,7 @@ implementation
 uses
   System.SysUtils,
   CastersPackage.uRoutines,
-  OA5.uMainForm,
+  OA5.uTMainForm,
   Winapi.Windows,
   CastersPackage.uTLogForm,
   VCL.Forms;

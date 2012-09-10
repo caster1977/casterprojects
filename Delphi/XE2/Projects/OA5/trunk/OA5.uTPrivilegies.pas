@@ -2,82 +2,94 @@ unit OA5.uTPrivilegies;
 
 interface
 
+uses
+  System.Classes,
+  OA5.uDefaultConsts,
+  OA5.uIPrivilegies;
+
 type
-  TPrivilegies = class
+  TPrivilegies = class(TInterfacedPersistent, IPrivilegies)
   strict private
-    FEditing: boolean;
-    FClearing: boolean;
-    FAccounting: boolean;
-    FReporting: boolean;
-    function GetAccounting: boolean;
-    function GetClearing: boolean;
-    function GetEditing: boolean;
-    function GetReporting: boolean;
-    procedure SetAccounting(const Value: boolean);
-    procedure SetClearing(const Value: boolean);
-    procedure SetEditing(const Value: boolean);
-    procedure SetReporting(const Value: boolean);
+    FEditing: Boolean;
+    FClearing: Boolean;
+    FAccounting: Boolean;
+    FReporting: Boolean;
+    function GetAccounting: Boolean;
+    function GetClearing: Boolean;
+    function GetEditing: Boolean;
+    function GetReporting: Boolean;
+    procedure SetAccounting(const AValue: Boolean);
+    procedure SetClearing(const AValue: Boolean);
+    procedure SetEditing(const AValue: Boolean);
+    procedure SetReporting(const AValue: Boolean);
   public
     constructor Create; virtual;
-    property Editing: boolean read GetEditing write SetEditing default False;
-    property Clearing: boolean read GetClearing write SetClearing default False;
-    property Accounting: boolean read GetAccounting write SetAccounting default False;
-    property Reporting: boolean read GetReporting write SetReporting default False;
+  published
+    property Editing: Boolean read GetEditing write SetEditing default DEFAULT_PRIVILEGIES_ACCOUNTING;
+    property Clearing: Boolean read GetClearing write SetClearing default DEFAULT_PRIVILEGIES_CLEARING;
+    property Accounting: Boolean read GetAccounting write SetAccounting default DEFAULT_PRIVILEGIES_EDITING;
+    property Reporting: Boolean read GetReporting write SetReporting default DEFAULT_PRIVILEGIES_REPORTING;
   end;
 
+function GetIPrivilegies: IPrivilegies;
+
 implementation
+
+uses
+  CastersPackage.uRoutines;
+
+function GetIPrivilegies: IPrivilegies;
+begin
+  Result := TPrivilegies.Create;
+end;
 
 constructor TPrivilegies.Create;
 begin
   inherited;
-  FAccounting := False;
-  FClearing := False;
-  FEditing := False;
-  FReporting := False;
+  Routines.SetField(DEFAULT_PRIVILEGIES_ACCOUNTING, FAccounting);
+  Routines.SetField(DEFAULT_PRIVILEGIES_CLEARING, FClearing);
+  Routines.SetField(DEFAULT_PRIVILEGIES_EDITING, FEditing);
+  Routines.SetField(DEFAULT_PRIVILEGIES_REPORTING, FReporting);
 end;
 
-function TPrivilegies.GetAccounting: boolean;
+function TPrivilegies.GetAccounting: Boolean;
 begin
   Result := FAccounting;
 end;
 
-function TPrivilegies.GetClearing: boolean;
+function TPrivilegies.GetClearing: Boolean;
 begin
   Result := FClearing;
 end;
 
-function TPrivilegies.GetEditing: boolean;
+function TPrivilegies.GetEditing: Boolean;
 begin
   Result := FEditing;
 end;
 
-function TPrivilegies.GetReporting: boolean;
+function TPrivilegies.GetReporting: Boolean;
 begin
   Result := FReporting;
 end;
 
-procedure TPrivilegies.SetAccounting(const Value: boolean);
+procedure TPrivilegies.SetAccounting(const AValue: Boolean);
 begin
-  if FAccounting <> Value then
-    FAccounting := Value;
+  Routines.SetField(AValue, FAccounting);
 end;
 
-procedure TPrivilegies.SetClearing(const Value: boolean);
+procedure TPrivilegies.SetClearing(const AValue: Boolean);
 begin
-  if FClearing <> Value then
-    FClearing := Value;
+  Routines.SetField(AValue, FClearing);
 end;
 
-procedure TPrivilegies.SetEditing(const Value: boolean);
+procedure TPrivilegies.SetEditing(const AValue: Boolean);
 begin
-  if FEditing <> Value then
-    FEditing := Value;
+  Routines.SetField(AValue, FEditing);
 end;
 
-procedure TPrivilegies.SetReporting(const Value: boolean);
+procedure TPrivilegies.SetReporting(const AValue: Boolean);
 begin
-  if FReporting <> Value then
-    FReporting := Value;
+  Routines.SetField(AValue, FReporting);
 end;
 
 end.

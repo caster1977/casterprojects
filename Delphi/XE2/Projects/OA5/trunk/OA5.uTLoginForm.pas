@@ -47,7 +47,7 @@ implementation
 
 uses
   System.SysUtils,
-  OA5.uMainForm,
+  OA5.uTMainForm,
   CastersPackage.uTLogForm,
   CastersPackage.uRoutines;
 

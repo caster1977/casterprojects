@@ -29,7 +29,9 @@ uses
   CastersPackage.uIPositionedDialog in '..\CastersPackage\CastersPackage.uIPositionedDialog.pas',
   CastersPackage.uTPositionedLogForm in '..\CastersPackage\CastersPackage.uTPositionedLogForm.pas' {PositionedLogForm},
   OA5.uDefaultConsts in 'OA5.uDefaultConsts.pas',
-  OA5.uTPrivilegies in 'OA5.uTPrivilegies.pas';
+  OA5.uTPrivilegies in 'OA5.uTPrivilegies.pas',
+  OA5.uIPrivilegies in 'OA5.uIPrivilegies.pas',
+  OA5.uIAccount in 'OA5.uIAccount.pas';
 
 {$R *.res}
 

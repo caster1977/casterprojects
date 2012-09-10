@@ -6,11 +6,10 @@ uses
   Winapi.Windows,
   System.SysUtils,
   Vcl.Forms,
-  OA5.uAccountClass,
+  OA5.uTAccount,
   OA5.uTConfiguration,
   System.IniFiles,
   OA5.uIMeasureList,
-  OA5.uInterfaces,
   System.Classes,
   Vcl.ActnList,
   CastersPackage.uLogProvider,
@@ -72,7 +71,6 @@ type
     StatusBar1: TStatusBar;
     pbMain: TProgressBar;
     imState: TImage;
-    Log: TLogProvider;
     ActionList: TActionList;
     procedure actQuitExecute(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
@@ -136,8 +134,8 @@ uses
   CommCtrl,
   OA5.uTMySQLConnection,
   OA5.uTAboutForm,
-  OA5.uConfigurationForm,
-  OA5.uReportForm,
+  OA5.uTConfigurationForm,
+  OA5.uTReportForm,
   OA5.uTMultiBufferForm,
   OA5.uIMeasure,
   OA5.uTMeasure,
