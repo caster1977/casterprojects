@@ -3,8 +3,8 @@ unit OA5.uDefaultConsts;
 interface
 
 uses
-  CastersPackage.uTLogMessagesType,
   CastersPackage.uMysql,
+  CastersPackage.uTLogMessagesType,
   CastersPackage.uTReportFolder;
 
 const

@@ -180,6 +180,7 @@ type
     procedure AfterLoad; override;
     procedure BeforeSave; override;
     procedure Initialize; override;
+    procedure Finalize; override;
   public
     // sDefaultAction: string;
     // bImmediatelyQuit: boolean;
@@ -862,6 +863,11 @@ destructor TConfiguration.Destroy;
 begin
   FreeAndNil(FMessagesServer);
   FreeAndNil(FRNE4Server);
+  inherited;
+end;
+
+procedure TConfiguration.Finalize;
+begin
   inherited;
 end;
 
