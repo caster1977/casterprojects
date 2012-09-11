@@ -163,6 +163,7 @@
 			<DCCReference Include="UI\OA5.uTViewMessagesForm.pas">
 				<Form>ViewMessagesForm</Form>
 			</DCCReference>
+			<DCCReference Include="Logic\OA5.uIConfiguration.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
