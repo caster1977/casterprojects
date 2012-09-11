@@ -4,8 +4,8 @@ interface
 
 uses
   System.Classes,
-  OA5.uDefaultConsts,
-  OA5.uIPrivilegies;
+  OA5.uIPrivilegies,
+  OA5.uDefaultConsts;
 
 type
   TPrivilegies = class(TInterfacedPersistent, IPrivilegies)
