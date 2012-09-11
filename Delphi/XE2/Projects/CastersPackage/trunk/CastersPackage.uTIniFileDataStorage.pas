@@ -6,15 +6,17 @@ uses
   System.Classes,
   System.IniFiles,
   System.SysUtils,
+  CastersPackage.uICustomized,
   CastersPackage.uIIniFileDataStorage;
 
 type
   EIniFileDataStorage = class(Exception);
 
-  TIniFileDataStorage = class(TInterfacedPersistent, IIniFileDataStorage)
+  TIniFileDataStorage = class(TInterfacedPersistent, IIniFileDataStorage, ICustomized)
   strict protected
     FIniFileName: string;
     procedure Initialize; virtual; abstract;
+    procedure Finalize; virtual; abstract;
     procedure Loading(const AIniFile: TCustomIniFile); virtual; abstract;
     procedure AfterLoad; virtual; abstract;
     procedure BeforeSave; virtual; abstract;
@@ -22,6 +24,7 @@ type
   protected
     constructor Create(const AIniFileName: string = ''); virtual;
   public
+    destructor Destroy; override;
     procedure Load; virtual; final;
     procedure Save; virtual; final;
   end;
@@ -48,6 +51,12 @@ begin
   else
     FIniFileName := s;
   Initialize;
+end;
+
+destructor TIniFileDataStorage.Destroy;
+begin
+  Finalize;
+  inherited;
 end;
 
 procedure TIniFileDataStorage.Load;

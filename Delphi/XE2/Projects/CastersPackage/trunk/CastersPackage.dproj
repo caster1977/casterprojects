@@ -125,6 +125,8 @@
 			<DCCReference Include="CastersPackage.uTLogMessagesType.pas"/>
 			<DCCReference Include="CastersPackage.uTLogMessagesTypes.pas"/>
 			<DCCReference Include="CastersPackage.uTReportFolder.pas"/>
+			<DCCReference Include="CastersPackage.uICustomized.pas"/>
+			<DCCReference Include="CastersPackage.uINormalized.pas"/>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
