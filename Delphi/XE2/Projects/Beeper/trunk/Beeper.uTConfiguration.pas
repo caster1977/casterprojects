@@ -9,10 +9,11 @@ uses
   CastersPackage.uTIniFileDataStorage,
   CastersPackage.uIIniFileDataStorage,
   Beeper.uConsts,
+  CastersPackage.uICustomized,
   Beeper.uISignalList;
 
 type
-  TConfiguration = class(TIniFileDataStorage, IConfiguration)
+  TConfiguration = class(TIniFileDataStorage, IConfiguration, ICustomized)
   strict private
     FShowBaloonHints: Boolean;
     FSoundEnabled: Boolean;
@@ -34,6 +35,7 @@ type
     function GetSignalList: ISignalList;
   strict protected
     procedure Initialize; override;
+    procedure Finalize; override;
     procedure Loading(const AIniFile: TCustomIniFile); override;
     procedure AfterLoad; override;
     procedure BeforeSave; override;
@@ -96,6 +98,11 @@ begin
 end;
 
 procedure TConfiguration.BeforeSave;
+begin
+  inherited;
+end;
+
+procedure TConfiguration.Finalize;
 begin
   inherited;
 end;

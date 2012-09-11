@@ -10,8 +10,6 @@ uses
 type
   IConfiguration = interface(IIniFileDataStorage)
     ['{C6590F16-FD1C-4F10-AF66-F5AA590C5494}']
-    procedure Initialize;
-
     function GetSoundEnabled: Boolean;
     procedure SetSoundEnabled(const AValue: Boolean);
 
