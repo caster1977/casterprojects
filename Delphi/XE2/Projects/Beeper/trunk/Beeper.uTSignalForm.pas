@@ -17,7 +17,8 @@ uses
   Vcl.ActnList,
   Vcl.ExtCtrls,
   Vcl.ImgList,
-  Beeper.uISignal, CastersPackage.Actions.Classes;
+  Beeper.uISignal,
+  CastersPackage.Actions.Classes;
 
 type
   TSignalForm = class(TForm)
@@ -69,8 +70,7 @@ type
     constructor Create(AOwner: TComponent; const ANew: Boolean); reintroduce; virtual;
     property Signal: ISignal read GetSignal write SetSignal nodefault;
     property MessageHistory: TStringList read GetMessageHistory write SetMessageHistory nodefault;
-    property WaveFileHistory: TStringList read GetWaveFileHistory
-      write SetWaveFileHistory nodefault;
+    property WaveFileHistory: TStringList read GetWaveFileHistory write SetWaveFileHistory nodefault;
   end;
 
 implementation
@@ -116,8 +116,7 @@ end;
 
 procedure TSignalForm.actPlayWaveFileUpdate(Sender: TObject);
 begin
-  actPlayWaveFile.Enabled := actEnablePlayWaveFile.Checked and FileExists(GetWaveFileName) and
-    (not FNowPlaying);
+  actPlayWaveFile.Enabled := actEnablePlayWaveFile.Checked and FileExists(GetWaveFileName) and (not FNowPlaying);
 end;
 
 procedure TSignalForm.FormCreate(Sender: TObject);
@@ -216,12 +215,9 @@ end;
 
 procedure TSignalForm.actSaveUpdate(Sender: TObject);
 begin
-  TAction(Sender).Enabled := (cmbxPeriodType.ItemIndex > -1) and (Trim(ledPeriod.Text) <> EmptyStr)
-    and (Trim(ledTitle.Text) <> EmptyStr) and
-    ((FileExists(GetWaveFileName) and actEnablePlayWaveFile.Checked) or
-    (not actEnablePlayWaveFile.Checked)) and
-    ((not actEnableShowMessage.Checked) or (actEnableShowMessage.Checked and
-    (Trim(cmbbxMessage.Text) <> EmptyStr)));
+  TAction(Sender).Enabled := (cmbxPeriodType.ItemIndex > -1) and (Trim(ledPeriod.Text) <> EmptyStr) and (Trim(ledTitle.Text) <> EmptyStr) and
+    ((FileExists(GetWaveFileName) and actEnablePlayWaveFile.Checked) or (not actEnablePlayWaveFile.Checked)) and
+    ((not actEnableShowMessage.Checked) or (actEnableShowMessage.Checked and (Trim(cmbbxMessage.Text) <> EmptyStr)));
   btnSave.Default := TAction(Sender).Enabled;
   btnCancel.Default := not TAction(Sender).Enabled;
 end;
@@ -255,8 +251,7 @@ procedure TSignalForm.actSelectWaveFileExecute(Sender: TObject);
 begin
   with TOpenDialog.Create(Self) do
     try
-      Filter := RsWaveFile + ' ' + UpperCase(WAVEFILE_EXTENTION) + ' (*.' + WAVEFILE_EXTENTION +
-        ')|*.' + WAVEFILE_EXTENTION;
+      Filter := RsWaveFile + ' ' + UpperCase(WAVEFILE_EXTENTION) + ' (*.' + WAVEFILE_EXTENTION + ')|*.' + WAVEFILE_EXTENTION;
       DefaultExt := WAVEFILE_EXTENTION;
       Title := RsSelectWaveFile;
       FilterIndex := 1;
