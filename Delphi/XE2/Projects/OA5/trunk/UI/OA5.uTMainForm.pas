@@ -250,7 +250,7 @@ begin
       ilStates.GetIcon(ICON_BUSY, imState.Picture.Icon)
     else
       ilStates.GetIcon(ICON_READY, imState.Picture.Icon);
-    if Configuration.ShowStatusbar then
+    if Configuration.EnableStatusbar then
       StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := Routines.GetConditionalString(iBusyCounter > 0,
         'Пожалуйста, подождите...', 'Готово');
   end;
@@ -274,7 +274,7 @@ begin
     '{3550143C-FACD-490F-A327-4E1496CDEC5E}');
 
   StatusBar.Visible := miStatusBar.Checked;
-  Configuration.ShowStatusbar := StatusBar.Visible;
+  Configuration.EnableStatusbar := StatusBar.Visible;
   Log.SendInfo('Панель статуса ' + Routines.GetConditionalString(StatusBar.Visible, 'в', 'от') + 'ключена.');
 
   ProcedureFooter;
@@ -416,7 +416,7 @@ end;
 
 procedure TMainForm.ApplicationOnHint(Sender: TObject);
 begin
-  if Configuration.ShowStatusbar then
+  if Configuration.EnableStatusbar then
     StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := GetLongHint(Application.Hint);
 end;
 
@@ -428,7 +428,7 @@ begin
   begin
     iBusyCounter := 0;
     bFirstRun := False;
-    if Configuration.ShowSplashAtStart then
+    if Configuration.EnableSplashAtStart then
       Do_About(False);
     // if Configuration.AutoLogon then
     // Do_Logon;
@@ -511,14 +511,14 @@ begin
   Configuration.MainFormTop := Top;
   Configuration.MainFormWidth := Width;
   Configuration.MainFormHeight := Height;
-  Configuration.MainFormPositionByCenter := False;
-  Configuration.FullScreenAtLaunch := WindowState = wsMaximized;
+  Configuration.MainFormEnableCentered := False;
+  Configuration.MainFormEnableFullScreenAtLaunch := WindowState = wsMaximized;
 
   // запись конфигурации
   Do_SaveConfiguration;
 
-  Configuration.RNE4Server.Connected := False;
-  Configuration.MessagesServer.Connected := False;
+  Configuration.DBServer.Connected := False;
+  Configuration.MessageServer.Connected := False;
   Do_UpdateActions;
 
   ProcedureFooter;
@@ -610,8 +610,8 @@ begin
   Log.Enabled := Configuration.EnableLog;
 
   // установка видимости панели статуса в соответствии с настройками программы
-  miStatusBar.Checked := Configuration.ShowStatusbar;
-  StatusBar.Visible := Configuration.ShowStatusbar;
+  miStatusBar.Checked := Configuration.EnableStatusbar;
+  StatusBar.Visible := Configuration.EnableStatusbar;
 
   // установка позиции и размеров главного окна в соответсвии с параметрами конфигурации
   WindowState := wsNormal;
@@ -620,13 +620,13 @@ begin
   Top := Configuration.MainFormTop;
   Width := Configuration.MainFormWidth;
   Height := Configuration.MainFormHeight;
-  if Configuration.FullScreenAtLaunch then
+  if Configuration.MainFormEnableFullScreenAtLaunch then
     WindowState := wsMaximized
   else
-    if Configuration.MainFormPositionByCenter then
+    if Configuration.MainFormEnableCentered then
     begin
       Position := poScreenCenter;
-      Configuration.MainFormPositionByCenter := False;
+      Configuration.MainFormEnableCentered := False;
     end;
 
   ProcedureFooter;
@@ -861,7 +861,7 @@ var
 begin
   ProcedureHeader('Процедура отображения окна ' + RsLoginFormSuffix, '{68883F7C-57C2-4E56-B2FB-AEDCB1EB25DC}');
 
-  bPassLoginForm := Configuration.AutoLogon and Configuration.StoreLogin and Configuration.StorePassword and
+  bPassLoginForm := Configuration.EnableAutoLogon and Configuration.EnableStoreLogin and Configuration.EnableStorePassword and
     (Configuration.Login <> '');
 
   if bPassLoginForm then
@@ -882,9 +882,9 @@ begin
     LoginForm := TLoginForm.Create(Self, Configuration.LoginFormPosition);
     with LoginForm do
       try
-        if Configuration.StoreLogin then
+        if Configuration.EnableStoreLogin then
           edbxLogin.Text := Configuration.Login;
-        if Configuration.StorePassword then
+        if Configuration.EnableStorePassword then
           mePassword.Text := Configuration.Password;
         PreShowModal(RsLoginFormSuffix, iBusy);
         ShowModal;
@@ -892,9 +892,9 @@ begin
         PostShowModal(RsLoginFormSuffix, iBusy);
         if ModalResult = mrOk then
         begin
-          if Configuration.StoreLogin then
+          if Configuration.EnableStoreLogin then
             Configuration.Login := edbxLogin.Text;
-          if Configuration.StorePassword then
+          if Configuration.EnableStorePassword then
             Configuration.Password := mePassword.Text;
           try
             (* _Login; *)

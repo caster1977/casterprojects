@@ -388,14 +388,14 @@ begin
   with MainForm.Configuration do
   begin
     // вкладка "настройки интерфейса"
-    ShowSplashAtStart := chkbxShowSplashAtStart.Enabled and chkbxShowSplashAtStart.Checked;
-    ShowToolbar := chkbxShowToolbar.Enabled and chkbxShowToolbar.Checked;
-    ShowStatusbar := chkbxShowStatusbar.Enabled and chkbxShowStatusbar.Checked;
-    ShowEditboxHints := chkbxShowEditboxHints.Enabled and chkbxShowEditboxHints.Checked;
-    ShowCommonSearchEditbox := chkbxShowCommonSearchEditbox.Enabled and chkbxShowCommonSearchEditbox.Checked;
-    ShowID := chkbxShowID.Enabled and chkbxShowID.Checked;
-    UseMultibuffer := chkbxUseMultibuffer.Enabled and chkbxUseMultibuffer.Checked;
-    ShowConfirmationOnQuit := chkbxShowConfirmationOnQuit.Enabled and chkbxShowConfirmationOnQuit.Checked;
+    EnableSplashAtStart := chkbxShowSplashAtStart.Enabled and chkbxShowSplashAtStart.Checked;
+    EnableToolbar := chkbxShowToolbar.Enabled and chkbxShowToolbar.Checked;
+    EnableStatusbar := chkbxShowStatusbar.Enabled and chkbxShowStatusbar.Checked;
+    EnableEditboxHints := chkbxShowEditboxHints.Enabled and chkbxShowEditboxHints.Checked;
+    EnableCommonSearchEditbox := chkbxShowCommonSearchEditbox.Enabled and chkbxShowCommonSearchEditbox.Checked;
+    EnableID := chkbxShowID.Enabled and chkbxShowID.Checked;
+    EnableMultibuffer := chkbxUseMultibuffer.Enabled and chkbxUseMultibuffer.Checked;
+    EnableQuitConfirmation := chkbxShowConfirmationOnQuit.Enabled and chkbxShowConfirmationOnQuit.Checked;
 
     // вкладка "настройки ведения протокола работы"
     EnableLog := chkbxEnableLog.Enabled and chkbxEnableLog.Checked;
@@ -445,16 +445,16 @@ begin
       KeepLogTypes := KeepLogTypes - [lmtDebug];
     end;
 
-    FlushLogOnExit := chkbxFlushLogOnExit.Enabled and chkbxFlushLogOnExit.Checked;
-    FlushLogOnStringsQuantity := chkbxFlushLogOnStringsQuantity.Enabled and chkbxFlushLogOnStringsQuantity.Checked;
-    FlushLogOnStringsQuantityValue :=
+    EnableFlushLogOnExit := chkbxFlushLogOnExit.Enabled and chkbxFlushLogOnExit.Checked;
+    EnableFlushLogOnStringsQuantity := chkbxFlushLogOnStringsQuantity.Enabled and chkbxFlushLogOnStringsQuantity.Checked;
+    EnableFlushLogOnStringsQuantityValue :=
       StrToIntDef(Routines.GetConditionalString(chkbxFlushLogOnStringsQuantity.Enabled and
       chkbxFlushLogOnStringsQuantity.Checked and edbxFlushLogOnStringsQuantityValue.Enabled,
       Trim(edbxFlushLogOnStringsQuantityValue.Text), EmptyStr), DEFAULT_CONFIGURATION_FLUSH_LOG_ON_STRINGS_QUANTITY_VALUE);
-    FlushLogOnClearingLog := chkbxFlushLogOnClearingLog.Enabled and chkbxFlushLogOnClearingLog.Checked;
-    FlushLogOnApply := chkbxFlushLogOnApply.Enabled and chkbxFlushLogOnApply.Checked;
-    CustomLogClientFile := chkbxCustomLogClientFile.Enabled and chkbxCustomLogClientFile.Checked;
-    CustomLogClientFileValue := Routines.GetConditionalString(chkbxCustomLogClientFile.Enabled and
+    EnableFlushLogOnClearingLog := chkbxFlushLogOnClearingLog.Enabled and chkbxFlushLogOnClearingLog.Checked;
+    EnableFlushLogOnApply := chkbxFlushLogOnApply.Enabled and chkbxFlushLogOnApply.Checked;
+    EnableCustomLogClient := chkbxCustomLogClientFile.Enabled and chkbxCustomLogClientFile.Checked;
+    CustomLogClientValue := Routines.GetConditionalString(chkbxCustomLogClientFile.Enabled and
       chkbxCustomLogClientFile.Checked and chkbxEnableLog.Enabled and chkbxEnableLog.Checked and
       edbxCustomLogClientFileValue.Enabled, Trim(edbxCustomLogClientFileValue.Text),
       DEFAULT_CONFIGURATION_CUSTOM_LOG_CLIENT_VALUE);
@@ -567,15 +567,15 @@ begin
     PermissionsFormPosition.Assign(dialog_position);
 
     // вкладка "настройки процедуры логирования"
-    StoreLogin := chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked;
-    StorePassword := chkbxStoreLastPassword.Enabled and chkbxStoreLastPassword.Checked;
-    AutoLogon := chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked and chkbxStoreLastPassword.Enabled and
+    EnableStoreLogin := chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked;
+    EnableStorePassword := chkbxStoreLastPassword.Enabled and chkbxStoreLastPassword.Checked;
+    EnableAutoLogon := chkbxStoreLastLogin.Enabled and chkbxStoreLastLogin.Checked and chkbxStoreLastPassword.Enabled and
       chkbxStoreLastPassword.Checked and chkbxAutoLogon.Enabled and chkbxAutoLogon.Checked;
 
     // вкладка "подключения к серверу базы данных услуги"
     if vleRNE4SERVER.Enabled then
     begin
-      with RNE4Server, vleRNE4SERVER do
+      with DBServer, vleRNE4SERVER do
       begin
         Host := Trim(Cells[1, 1]);
         Port := StrToIntDef(Trim(Cells[1, 2]), DEFAULT_CONFIGURATION_RNE4SERVER_PORT);
@@ -588,7 +588,7 @@ begin
     // вкладка "подключения к серверу системы обмена сообщениями"
     if vleRNE4MESSAGESSERVER.Enabled then
     begin
-      with MessagesServer, vleRNE4MESSAGESSERVER do
+      with MessageServer, vleRNE4MESSAGESSERVER do
       begin
         Host := Trim(Cells[1, 1]);
         Port := StrToIntDef(Trim(Cells[1, 2]), DEFAULT_CONFIGURATION_MESSAGESERVER_PORT);
@@ -601,42 +601,42 @@ begin
     // вкладка "настройки формирования отчётов"
     if rbSaveIntoTheTempFolder.Enabled and rbSaveIntoTheTempFolder.Checked then
     begin
-      ReportFolder := rfTempFolder;
+      ReportFolderType := rfTempFolder;
     end;
     if rbSaveIntoTheApplicationFolder.Enabled and rbSaveIntoTheApplicationFolder.Checked then
     begin
-      ReportFolder := rfApplicationFolder;
+      ReportFolderType := rfApplicationFolder;
     end;
     if rbSaveIntoTheCustomFolder.Enabled and rbSaveIntoTheCustomFolder.Checked then
     begin
-      ReportFolder := rfCustomFolder;
+      ReportFolderType := rfCustomFolder;
     end;
 
     CustomReportFolderValue := Routines.GetConditionalString(rbSaveIntoTheCustomFolder.Enabled and
       rbSaveIntoTheCustomFolder.Checked, Trim(edbxCustomReportFolderValue.Text), DEFAULT_CONFIGURATION_CUSTOM_REPORT_FOLDER_VALUE);
-    DontDemandOverwriteConfirmation := chkbxDontDemandOverwriteConfirmation.Enabled and
+    EnableOverwriteConfirmation := chkbxDontDemandOverwriteConfirmation.Enabled and
       chkbxDontDemandOverwriteConfirmation.Checked;
-    AskForFileName := chkbxAskForFileName.Enabled and chkbxAskForFileName.Checked;
+    EnableAskForFileName := chkbxAskForFileName.Enabled and chkbxAskForFileName.Checked;
 
     // вкладка "настройки списка автозамены"
 
     // вкладка "настройки прочие"
-    LaunchAtStartup := chkbxLaunchAtStartup.Enabled and chkbxLaunchAtStartup.Checked;
-    PlaySoundOnComplete := chkbxPlaySoundOnComplete.Enabled and chkbxPlaySoundOnComplete.Checked;
+    EnableLaunchAtStartup := chkbxLaunchAtStartup.Enabled and chkbxLaunchAtStartup.Checked;
+    EnablePlaySoundOnComplete := chkbxPlaySoundOnComplete.Enabled and chkbxPlaySoundOnComplete.Checked;
     EnableAutoGetMessages := chkbxEnableAutoGetMessages.Enabled and chkbxEnableAutoGetMessages.Checked;
     AutoGetMessagesCycleDurationValue :=
       StrToIntDef(Routines.GetConditionalString(chkbxEnableAutoGetMessages.Enabled and
       chkbxEnableAutoGetMessages.Checked and edbxAutoGetMessagesCycleDurationValue.Enabled,
       Trim(edbxAutoGetMessagesCycleDurationValue.Text), IntToStr(DEFAULT_CONFIGURATION_AUTO_GET_MESSAGES_CYCLE_DURATION_VALUE)),
       DEFAULT_CONFIGURATION_AUTO_GET_MESSAGES_CYCLE_DURATION_VALUE);
-    CustomHelpFile := chkbxCustomHelpFile.Enabled and chkbxCustomHelpFile.Checked;
+    EnableCustomHelpFile := chkbxCustomHelpFile.Enabled and chkbxCustomHelpFile.Checked;
     CustomHelpFileValue := Routines.GetConditionalString(chkbxCustomHelpFile.Enabled and chkbxCustomHelpFile.Checked and
       edbxCustomHelpFileValue.Enabled, Trim(edbxCustomHelpFileValue.Text), DEFAULT_CONFIGURATION_CUSTOM_HELP_FILE_VALUE);
 
     // вкладка "настройки главного окна"
-    MainFormPositionByCenter := chkbxMainFormPositionByCenter.Enabled and chkbxMainFormPositionByCenter.Checked and
+    MainFormEnableCentered := chkbxMainFormPositionByCenter.Enabled and chkbxMainFormPositionByCenter.Checked and
       (not(chkbxFullScreenAtLaunch.Enabled and chkbxFullScreenAtLaunch.Checked));
-    FullScreenAtLaunch := chkbxFullScreenAtLaunch.Enabled and chkbxFullScreenAtLaunch.Checked;
+    MainFormEnableFullScreenAtLaunch := chkbxFullScreenAtLaunch.Enabled and chkbxFullScreenAtLaunch.Checked;
     if chkbxFullScreenAtLaunch.Enabled and chkbxFullScreenAtLaunch.Checked then
     begin
       MainFormLeft := Screen.WorkAreaLeft;
@@ -711,15 +711,15 @@ begin
       StrToIntDef(Routines.GetConditionalString(chkbxOrganizationPanelHalfHeight.Enabled and
       chkbxOrganizationPanelHalfHeight.Checked, EmptyStr, Trim(edbxOrganizationPanelHeightValue.Text)),
       DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_HEIGHT_VALUE);
-    OrganizationPanelHalfHeight := chkbxOrganizationPanelHalfHeight.Enabled and
+    OrganizationPanelEnableHalfHeight := chkbxOrganizationPanelHalfHeight.Enabled and
       chkbxOrganizationPanelHalfHeight.Checked;
     DataPanelWidthValue := StrToIntDef(Routines.GetConditionalString(chkbxDataPanelHalfWidth.Enabled and
       chkbxDataPanelHalfWidth.Checked, EmptyStr, Trim(edbxDataPanelWidthValue.Text)), DEFAULT_CONFIGURATION_DATA_PANEL_WIDTH_VALUE);
-    DataPanelHalfWidth := chkbxDataPanelHalfWidth.Enabled and chkbxDataPanelHalfWidth.Checked;
-    ShowDataInOtherInfoPanel := chkbxShowDataInOtherInfoPanel.Enabled and chkbxShowDataInOtherInfoPanel.Checked;
-    ShowMeasuresListAsRichEdit := chkbxShowMeasuresListAsRichEdit.Enabled and chkbxShowMeasuresListAsRichEdit.Checked;
-    MarkSearchedStrings := chkbxMarkSearchedStrings.Enabled and chkbxMarkSearchedStrings.Checked;
-    PutTownAtTheEnd := chkbxPutTownAtTheEnd.Enabled and chkbxPutTownAtTheEnd.Checked;
+    DataPanelEnableHalfWidth := chkbxDataPanelHalfWidth.Enabled and chkbxDataPanelHalfWidth.Checked;
+    EnableDataInOtherInfoPanel := chkbxShowDataInOtherInfoPanel.Enabled and chkbxShowDataInOtherInfoPanel.Checked;
+    EnableMeasuresListAsRichEdit := chkbxShowMeasuresListAsRichEdit.Enabled and chkbxShowMeasuresListAsRichEdit.Checked;
+    EnableMarkSearchedStrings := chkbxMarkSearchedStrings.Enabled and chkbxMarkSearchedStrings.Checked;
+    EnablePutTownAtTheEnd := chkbxPutTownAtTheEnd.Enabled and chkbxPutTownAtTheEnd.Checked;
   end;
 
   Log.SendInfo('Окно изменения настроек программы закрыто.');
@@ -1175,15 +1175,15 @@ begin
   if PageControl1.ActivePage.Caption = ' формирования отчётов' then
   begin
     // выставление значений по умолчанию для элементов интерфейса
-    rbSaveIntoTheTempFolder.Checked := DEFAULT_CONFIGURATION_REPORT_FOLDER = rfTempFolder;
-    rbSaveIntoTheApplicationFolder.Checked := DEFAULT_CONFIGURATION_REPORT_FOLDER = rfApplicationFolder;
-    rbSaveIntoTheCustomFolder.Checked := DEFAULT_CONFIGURATION_REPORT_FOLDER = rfCustomFolder;
+    rbSaveIntoTheTempFolder.Checked := DEFAULT_CONFIGURATION_REPORT_FOLDER_TYPE = rfTempFolder;
+    rbSaveIntoTheApplicationFolder.Checked := DEFAULT_CONFIGURATION_REPORT_FOLDER_TYPE = rfApplicationFolder;
+    rbSaveIntoTheCustomFolder.Checked := DEFAULT_CONFIGURATION_REPORT_FOLDER_TYPE = rfCustomFolder;
     edbxCustomReportFolderValue.Text := DEFAULT_CONFIGURATION_CUSTOM_REPORT_FOLDER_VALUE;
     chkbxDontDemandOverwriteConfirmation.Checked := DEFAULT_CONFIGURATION_ENABLE_OVERWRITE_CONFIRMATION;
     chkbxAskForFileName.Checked := DEFAULT_CONFIGURATION_ENABLE_ASK_FOR_FILE_NAME;
     // выставление доступа к элементам интерфейса
-    edbxCustomReportFolderValue.Enabled := DEFAULT_CONFIGURATION_REPORT_FOLDER = rfCustomFolder;
-    actChooseReportFolder.Enabled := DEFAULT_CONFIGURATION_REPORT_FOLDER = rfCustomFolder;
+    edbxCustomReportFolderValue.Enabled := DEFAULT_CONFIGURATION_REPORT_FOLDER_TYPE = rfCustomFolder;
+    actChooseReportFolder.Enabled := DEFAULT_CONFIGURATION_REPORT_FOLDER_TYPE = rfCustomFolder;
     Log.SendDebug('Действие "' + actChooseReportFolder.Caption + '" ' + Routines.GetConditionalString
       (actChooseReportFolder.Enabled, 'в', 'от') + 'ключено.');
   end;
@@ -1194,14 +1194,14 @@ begin
     // выставление значений по умолчанию для элементов интерфейса
     chkbxLaunchAtStartup.Checked := DEFAULT_CONFIGURATION_ENABLE_LAUNCH_AT_STARTUP;
     chkbxPlaySoundOnComplete.Checked := DEFAULT_CONFIGURATION_ENABLE_PLAY_SOUND_ON_COMPLETE;
-    chkbxEnableAutoGetMessages.Checked := DEFAULT_CONFIGURATION_ENABLE_AUTO_GET_MESSAGE;
-    edbxAutoGetMessagesCycleDurationValue.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_AUTO_GET_MESSAGE,
+    chkbxEnableAutoGetMessages.Checked := DEFAULT_CONFIGURATION_ENABLE_AUTO_GET_MESSAGES;
+    edbxAutoGetMessagesCycleDurationValue.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_AUTO_GET_MESSAGES,
       IntToStr(DEFAULT_CONFIGURATION_AUTO_GET_MESSAGES_CYCLE_DURATION_VALUE), EmptyStr);
     chkbxCustomHelpFile.Checked := DEFAULT_CONFIGURATION_ENABLE_CUSTOM_HELP_FILE;
     edbxCustomHelpFileValue.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_ENABLE_CUSTOM_HELP_FILE,
       DEFAULT_CONFIGURATION_CUSTOM_HELP_FILE_VALUE, EmptyStr);
     // выставление доступа к элементам интерфейса
-    edbxAutoGetMessagesCycleDurationValue.Enabled := DEFAULT_CONFIGURATION_ENABLE_AUTO_GET_MESSAGE;
+    edbxAutoGetMessagesCycleDurationValue.Enabled := DEFAULT_CONFIGURATION_ENABLE_AUTO_GET_MESSAGES;
     edbxCustomHelpFileValue.Enabled := DEFAULT_CONFIGURATION_ENABLE_CUSTOM_HELP_FILE;
     actChooseCustomHelpFile.Enabled := DEFAULT_CONFIGURATION_ENABLE_CUSTOM_HELP_FILE;
     Log.SendDebug('Действие "' + actChooseCustomHelpFile.Caption + '" ' + Routines.GetConditionalString
@@ -1213,13 +1213,13 @@ begin
   begin
     // выставление значений по умолчанию для элементов интерфейса
     chkbxFullScreenAtLaunch.Checked := DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH;
-    chkbxMainFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_POSITION_BY_CENTER and
+    chkbxMainFormPositionByCenter.Checked := DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_CENTERED and
       (not DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH);
     edbxMainFormPositionX.Text := Routines.GetConditionalString
-      (not(DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_POSITION_BY_CENTER or DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH),
+      (not(DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_CENTERED or DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH),
       IntToStr(DEFAULT_CONFIGURATION_MAIN_FORM_LEFT), EmptyStr);
     edbxMainFormPositionY.Text := Routines.GetConditionalString
-      (not(DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_POSITION_BY_CENTER or DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH),
+      (not(DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_CENTERED or DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH),
       IntToStr(DEFAULT_CONFIGURATION_MAIN_FORM_TOP), EmptyStr);
     edbxMainFormWidth.Text := Routines.GetConditionalString(DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH, EmptyStr,
       IntToStr(DEFAULT_CONFIGURATION_MAIN_FORM_WIDTH));
@@ -1239,7 +1239,7 @@ begin
     chkbxDataPanelHalfWidth.Checked := DEFAULT_CONFIGURATION_DATA_PANEL_ENABLE_HALF_WIDTH;
     chkbxShowDataInOtherInfoPanel.Checked := DEFAULT_CONFIGURATION_ENABLE_DATA_IN_OTHER_INFO_PANEL;
     chkbxShowMeasuresListAsRichEdit.Checked := DEFAULT_CONFIGURATION_ENABLE_MEASURE_LIST_AS_RICH_EDIT;
-    chkbxMarkSearchedStrings.Checked := DEFAULT_CONFIGURATION_ENABLE_MARK_SEARCHED_STRING;
+    chkbxMarkSearchedStrings.Checked := DEFAULT_CONFIGURATION_ENABLE_MARK_SEARCHED_STRINGS;
     chkbxPutTownAtTheEnd.Checked := DEFAULT_CONFIGURATION_ENABLE_PUT_TOWN_AT_THE_END;;
     // выставление доступа к элементам интерфейса
     edbxOrganizationPanelHeightValue.Enabled := not DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_ENABLE_HALF_HEIGHT;
@@ -1261,7 +1261,7 @@ end;
 
 procedure TConfigurationForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  MainForm.Configuration.ConfigurationFormPage := cbPage.ItemIndex;
+  MainForm.Configuration.CurrentPage := cbPage.ItemIndex;
   FreeAndNil(FBooleanValuesList);
 end;
 
@@ -1302,8 +1302,8 @@ begin
   edbxFlushLogOnStringsQuantityValue.Enabled := bUseLog and chkbxFlushLogOnStringsQuantity.Checked and
     chkbxFlushLogOnStringsQuantity.Enabled;
   edbxFlushLogOnStringsQuantityValue.Text := Routines.GetConditionalString(edbxFlushLogOnStringsQuantityValue.Enabled,
-    Routines.GetConditionalString(MainForm.Configuration.FlushLogOnStringsQuantityValue > 0,
-    IntToStr(MainForm.Configuration.FlushLogOnStringsQuantityValue),
+    Routines.GetConditionalString(MainForm.Configuration.EnableFlushLogOnStringsQuantityValue > 0,
+    IntToStr(MainForm.Configuration.EnableFlushLogOnStringsQuantityValue),
     IntToStr(DEFAULT_CONFIGURATION_FLUSH_LOG_ON_STRINGS_QUANTITY_VALUE)), EmptyStr);
 
   chkbxFlushLogOnClearingLog.Enabled := bUseLog;
@@ -1342,8 +1342,8 @@ begin
   bFlushLogOnStringsQuantity := chkbxFlushLogOnStringsQuantity.Checked and chkbxFlushLogOnStringsQuantity.Enabled;
   edbxFlushLogOnStringsQuantityValue.Enabled := bFlushLogOnStringsQuantity;
   edbxFlushLogOnStringsQuantityValue.Text := Routines.GetConditionalString(bFlushLogOnStringsQuantity,
-    Routines.GetConditionalString(MainForm.Configuration.FlushLogOnStringsQuantityValue > 0,
-    IntToStr(MainForm.Configuration.FlushLogOnStringsQuantityValue),
+    Routines.GetConditionalString(MainForm.Configuration.EnableFlushLogOnStringsQuantityValue > 0,
+    IntToStr(MainForm.Configuration.EnableFlushLogOnStringsQuantityValue),
     IntToStr(DEFAULT_CONFIGURATION_FLUSH_LOG_ON_STRINGS_QUANTITY_VALUE)), EmptyStr);
 
   Log.SendDebug('Флажок "' + chkbxFlushLogOnStringsQuantity.Caption + '"' + Routines.GetConditionalString
@@ -1451,14 +1451,14 @@ begin
     Log.Enabled := EnableLog;
 
     // вкладка "настройки интерфейса"
-    chkbxShowSplashAtStart.Checked := ShowSplashAtStart;
-    chkbxShowToolbar.Checked := ShowToolbar;
-    chkbxShowStatusbar.Checked := ShowStatusbar;
-    chkbxShowEditboxHints.Checked := ShowEditboxHints;
-    chkbxShowCommonSearchEditbox.Checked := ShowCommonSearchEditbox;
-    chkbxShowID.Checked := ShowID;
-    chkbxUseMultibuffer.Checked := UseMultibuffer;
-    chkbxShowConfirmationOnQuit.Checked := ShowConfirmationOnQuit;
+    chkbxShowSplashAtStart.Checked := EnableSplashAtStart;
+    chkbxShowToolbar.Checked := EnableToolbar;
+    chkbxShowStatusbar.Checked := EnableStatusbar;
+    chkbxShowEditboxHints.Checked := EnableEditboxHints;
+    chkbxShowCommonSearchEditbox.Checked := EnableCommonSearchEditbox;
+    chkbxShowID.Checked := EnableID;
+    chkbxUseMultibuffer.Checked := EnableMultibuffer;
+    chkbxShowConfirmationOnQuit.Checked := EnableQuitConfirmation;
 
     // вкладка "настройки ведения протокола работы"
     chkbxEnableLog.Checked := EnableLog;
@@ -1467,15 +1467,15 @@ begin
     chkbxKeepInfoLog.Checked := (lmtInfo in KeepLogTypes) and EnableLog;
     chkbxKeepSQLLog.Checked := (lmtSQL in KeepLogTypes) and EnableLog;
     chkbxKeepDebugLog.Checked := (lmtDebug in KeepLogTypes) and EnableLog;
-    chkbxFlushLogOnExit.Checked := FlushLogOnExit and EnableLog;
-    chkbxFlushLogOnStringsQuantity.Checked := FlushLogOnStringsQuantity and EnableLog;
-    edbxFlushLogOnStringsQuantityValue.Text := Routines.GetConditionalString(FlushLogOnStringsQuantity and EnableLog,
-      IntToStr(FlushLogOnStringsQuantityValue), EmptyStr);
-    chkbxFlushLogOnClearingLog.Checked := FlushLogOnClearingLog and EnableLog;
-    chkbxFlushLogOnApply.Checked := FlushLogOnApply and EnableLog;
-    chkbxCustomLogClientFile.Checked := CustomLogClientFile and EnableLog;
-    edbxCustomLogClientFileValue.Text := Routines.GetConditionalString(CustomLogClientFile and EnableLog,
-      CustomLogClientFileValue, EmptyStr);
+    chkbxFlushLogOnExit.Checked := EnableFlushLogOnExit and EnableLog;
+    chkbxFlushLogOnStringsQuantity.Checked := EnableFlushLogOnStringsQuantity and EnableLog;
+    edbxFlushLogOnStringsQuantityValue.Text := Routines.GetConditionalString(EnableFlushLogOnStringsQuantity and EnableLog,
+      IntToStr(EnableFlushLogOnStringsQuantityValue), EmptyStr);
+    chkbxFlushLogOnClearingLog.Checked := EnableFlushLogOnClearingLog and EnableLog;
+    chkbxFlushLogOnApply.Checked := EnableFlushLogOnApply and EnableLog;
+    chkbxCustomLogClientFile.Checked := EnableCustomLogClient and EnableLog;
+    edbxCustomLogClientFileValue.Text := Routines.GetConditionalString(EnableCustomLogClient and EnableLog,
+      CustomLogClientValue, EmptyStr);
     lblShowData.Enabled := EnableLog;
     chkbxKeepErrorLog.Enabled := EnableLog;
     chkbxKeepWarningLog.Enabled := EnableLog;
@@ -1489,8 +1489,8 @@ begin
     chkbxFlushLogOnClearingLog.Enabled := EnableLog;
     chkbxFlushLogOnApply.Enabled := EnableLog;
     chkbxCustomLogClientFile.Enabled := EnableLog;
-    edbxCustomLogClientFileValue.Enabled := CustomLogClientFile and EnableLog;
-    actChooseCustomLogClientFile.Enabled := CustomLogClientFile and EnableLog;
+    edbxCustomLogClientFileValue.Enabled := EnableCustomLogClient and EnableLog;
+    actChooseCustomLogClientFile.Enabled := EnableCustomLogClient and EnableLog;
     Log.SendDebug('Действие "' + actChooseCustomLogClientFile.Caption + '" ' +
       Routines.GetConditionalString(actChooseCustomLogClientFile.Enabled, 'в', 'от') + 'ключено.');
 
@@ -1610,45 +1610,45 @@ begin
     edbxPermissionsFormPositionY.Enabled := not PermissionsFormPosition.Centered;
 
     // вкладка "настройки процедуры логирования"
-    chkbxStoreLastLogin.Checked := StoreLogin;
-    chkbxStoreLastPassword.Checked := StorePassword;
-    chkbxAutoLogon.Checked := AutoLogon and StoreLogin and StorePassword;
-    chkbxAutoLogon.Enabled := StoreLogin and StorePassword;
+    chkbxStoreLastLogin.Checked := EnableStoreLogin;
+    chkbxStoreLastPassword.Checked := EnableStorePassword;
+    chkbxAutoLogon.Checked := EnableAutoLogon and EnableStoreLogin and EnableStorePassword;
+    chkbxAutoLogon.Enabled := EnableStoreLogin and EnableStorePassword;
 
     // вкладка "подключения к серверу базы данных услуги"
-    vleRNE4SERVER.Cells[1, 1] := RNE4Server.Host;
+    vleRNE4SERVER.Cells[1, 1] := DBServer.Host;
     vleRNE4SERVER.ItemProps[1].EditMask := '99999;0; ';
-    vleRNE4SERVER.Cells[1, 2] := IntToStr(RNE4Server.Port);
+    vleRNE4SERVER.Cells[1, 2] := IntToStr(DBServer.Port);
     vleRNE4SERVER.ItemProps[2].EditMask := '99999;0; ';
-    vleRNE4SERVER.Cells[1, 3] := IntToStr(RNE4Server.Timeout);
+    vleRNE4SERVER.Cells[1, 3] := IntToStr(DBServer.Timeout);
     vleRNE4SERVER.ItemProps[3].EditStyle := esPickList;
     vleRNE4SERVER.ItemProps[3].PickList := FBooleanValuesList;
     vleRNE4SERVER.ItemProps[3].ReadOnly := True;
-    vleRNE4SERVER.Cells[1, 4] := vleRNE4SERVER.ItemProps[3].PickList.Strings[integer(RNE4Server.Compression)];
-    vleRNE4SERVER.Cells[1, 5] := RNE4Server.Database;
+    vleRNE4SERVER.Cells[1, 4] := vleRNE4SERVER.ItemProps[3].PickList.Strings[integer(DBServer.Compression)];
+    vleRNE4SERVER.Cells[1, 5] := DBServer.Database;
 
     // вкладка "подключения к серверу системы обмена сообщениями"
-    vleRNE4MESSAGESSERVER.Cells[1, 1] := MessagesServer.Host;
+    vleRNE4MESSAGESSERVER.Cells[1, 1] := MessageServer.Host;
     vleRNE4MESSAGESSERVER.ItemProps[1].EditMask := '99999;0; ';
-    vleRNE4MESSAGESSERVER.Cells[1, 2] := IntToStr(MessagesServer.Port);
+    vleRNE4MESSAGESSERVER.Cells[1, 2] := IntToStr(MessageServer.Port);
     vleRNE4MESSAGESSERVER.ItemProps[2].EditMask := '99999;0; ';
-    vleRNE4MESSAGESSERVER.Cells[1, 3] := IntToStr(MessagesServer.Timeout);
+    vleRNE4MESSAGESSERVER.Cells[1, 3] := IntToStr(MessageServer.Timeout);
     vleRNE4MESSAGESSERVER.ItemProps[3].EditStyle := esPickList;
     vleRNE4MESSAGESSERVER.ItemProps[3].PickList := FBooleanValuesList;
     vleRNE4MESSAGESSERVER.ItemProps[3].ReadOnly := True;
     vleRNE4MESSAGESSERVER.Cells[1, 4] := vleRNE4MESSAGESSERVER.ItemProps[3].PickList.Strings
-      [integer(MessagesServer.Compression)];
-    vleRNE4MESSAGESSERVER.Cells[1, 5] := MessagesServer.Database;
+      [integer(MessageServer.Compression)];
+    vleRNE4MESSAGESSERVER.Cells[1, 5] := MessageServer.Database;
 
     // вкладка "настройки формирования отчётов"
-    rbSaveIntoTheTempFolder.Checked := ReportFolder = rfTempFolder;
-    rbSaveIntoTheApplicationFolder.Checked := ReportFolder = rfApplicationFolder;
-    rbSaveIntoTheCustomFolder.Checked := ReportFolder = rfCustomFolder;
+    rbSaveIntoTheTempFolder.Checked := ReportFolderType = rfTempFolder;
+    rbSaveIntoTheApplicationFolder.Checked := ReportFolderType = rfApplicationFolder;
+    rbSaveIntoTheCustomFolder.Checked := ReportFolderType = rfCustomFolder;
     edbxCustomReportFolderValue.Text := CustomReportFolderValue;
-    chkbxDontDemandOverwriteConfirmation.Checked := DontDemandOverwriteConfirmation;
-    chkbxAskForFileName.Checked := AskForFileName;
-    edbxCustomReportFolderValue.Enabled := ReportFolder = rfCustomFolder;
-    actChooseReportFolder.Enabled := ReportFolder = rfCustomFolder;
+    chkbxDontDemandOverwriteConfirmation.Checked := EnableOverwriteConfirmation;
+    chkbxAskForFileName.Checked := EnableAskForFileName;
+    edbxCustomReportFolderValue.Enabled := ReportFolderType = rfCustomFolder;
+    actChooseReportFolder.Enabled := ReportFolderType = rfCustomFolder;
     Log.SendDebug('Действие "' + actChooseReportFolder.Caption + '" ' + Routines.GetConditionalString
       (actChooseReportFolder.Enabled, 'в', 'от') + 'ключено.');
 
@@ -1657,18 +1657,18 @@ begin
       'с правами редактирования базы данных' + sLineBreak + 'при подлючении к базе данных!';
 
     // вкладка "настройки прочие"
-    chkbxLaunchAtStartup.Checked := LaunchAtStartup;
-    chkbxPlaySoundOnComplete.Checked := PlaySoundOnComplete;
+    chkbxLaunchAtStartup.Checked := EnableLaunchAtStartup;
+    chkbxPlaySoundOnComplete.Checked := EnablePlaySoundOnComplete;
     chkbxEnableAutoGetMessages.Checked := EnableAutoGetMessages;
     edbxAutoGetMessagesCycleDurationValue.Text := Routines.GetConditionalString(EnableAutoGetMessages,
       IntToStr(AutoGetMessagesCycleDurationValue), EmptyStr);
-    chkbxCustomHelpFile.Checked := CustomHelpFile;
+    chkbxCustomHelpFile.Checked := EnableCustomHelpFile;
 
-    edbxCustomHelpFileValue.Text := Routines.GetConditionalString(CustomHelpFile, CustomHelpFileValue, EmptyStr);
+    edbxCustomHelpFileValue.Text := Routines.GetConditionalString(EnableCustomHelpFile, CustomHelpFileValue, EmptyStr);
 
     edbxAutoGetMessagesCycleDurationValue.Enabled := EnableAutoGetMessages;
-    edbxCustomHelpFileValue.Enabled := CustomHelpFile;
-    actChooseCustomHelpFile.Enabled := CustomHelpFile;
+    edbxCustomHelpFileValue.Enabled := EnableCustomHelpFile;
+    actChooseCustomHelpFile.Enabled := EnableCustomHelpFile;
     Log.SendDebug('Действие "' + actChooseCustomHelpFile.Caption + '" ' + Routines.GetConditionalString
       (actChooseCustomHelpFile.Enabled, 'в', 'от') + 'ключено.');
 
@@ -1687,22 +1687,22 @@ begin
       IntToStr(MainForm.Height));
 
     // вкладка "настройки отображения информации"
-    edbxOrganizationPanelHeightValue.Text := Routines.GetConditionalString(OrganizationPanelHalfHeight, EmptyStr,
+    edbxOrganizationPanelHeightValue.Text := Routines.GetConditionalString(OrganizationPanelEnableHalfHeight, EmptyStr,
       IntToStr(OrganizationPanelHeightValue));
-    chkbxOrganizationPanelHalfHeight.Checked := OrganizationPanelHalfHeight;
-    edbxDataPanelWidthValue.Text := Routines.GetConditionalString(DataPanelHalfWidth, EmptyStr,
+    chkbxOrganizationPanelHalfHeight.Checked := OrganizationPanelEnableHalfHeight;
+    edbxDataPanelWidthValue.Text := Routines.GetConditionalString(DataPanelEnableHalfWidth, EmptyStr,
       IntToStr(DataPanelWidthValue));
-    chkbxDataPanelHalfWidth.Checked := DataPanelHalfWidth;
-    chkbxShowDataInOtherInfoPanel.Checked := ShowDataInOtherInfoPanel;
-    chkbxShowMeasuresListAsRichEdit.Checked := ShowMeasuresListAsRichEdit;
-    chkbxMarkSearchedStrings.Checked := MarkSearchedStrings;
-    chkbxPutTownAtTheEnd.Checked := PutTownAtTheEnd;;
-    edbxOrganizationPanelHeightValue.Enabled := not OrganizationPanelHalfHeight;
-    edbxDataPanelWidthValue.Enabled := not DataPanelHalfWidth;
+    chkbxDataPanelHalfWidth.Checked := DataPanelEnableHalfWidth;
+    chkbxShowDataInOtherInfoPanel.Checked := EnableDataInOtherInfoPanel;
+    chkbxShowMeasuresListAsRichEdit.Checked := EnableMeasuresListAsRichEdit;
+    chkbxMarkSearchedStrings.Checked := EnableMarkSearchedStrings;
+    chkbxPutTownAtTheEnd.Checked := EnablePutTownAtTheEnd;;
+    edbxOrganizationPanelHeightValue.Enabled := not OrganizationPanelEnableHalfHeight;
+    edbxDataPanelWidthValue.Enabled := not DataPanelEnableHalfWidth;
 
   end;
 
-  cbPage.ItemIndex := MainForm.Configuration.ConfigurationFormPage;
+  cbPage.ItemIndex := MainForm.Configuration.CurrentPage;
   Do_PageSelect;
   rbSaveIntoTheCustomFolderClick(Sender);
 
