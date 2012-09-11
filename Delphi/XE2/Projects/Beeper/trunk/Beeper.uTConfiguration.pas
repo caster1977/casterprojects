@@ -3,17 +3,19 @@ unit Beeper.uTConfiguration;
 interface
 
 uses
+  System.SysUtils,
   Beeper.uIConfiguration,
   Winapi.Windows,
   System.IniFiles,
   CastersPackage.uTIniFileDataStorage,
   CastersPackage.uIIniFileDataStorage,
   Beeper.uConsts,
-  CastersPackage.uICustomized,
   Beeper.uISignalList;
 
 type
-  TConfiguration = class(TIniFileDataStorage, IConfiguration, ICustomized)
+  EConfiguration = class(Exception);
+
+  TConfiguration = class(TIniFileDataStorage, IConfiguration)
   strict private
     FShowBaloonHints: Boolean;
     FSoundEnabled: Boolean;
@@ -57,7 +59,6 @@ implementation
 
 uses
   System.Classes,
-  System.SysUtils,
   Beeper.uTSignalList,
   Beeper.uResourceStrings,
   Beeper.uISignal,
