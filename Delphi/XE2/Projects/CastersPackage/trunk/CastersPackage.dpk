@@ -58,7 +58,9 @@ contains
   CastersPackage.uTPositionedLogForm in 'CastersPackage.uTPositionedLogForm.pas' {PositionedLogForm},
   CastersPackage.uTLogMessagesType in 'CastersPackage.uTLogMessagesType.pas',
   CastersPackage.uTLogMessagesTypes in 'CastersPackage.uTLogMessagesTypes.pas',
-  CastersPackage.uTReportFolder in 'CastersPackage.uTReportFolder.pas';
+  CastersPackage.uTReportFolder in 'CastersPackage.uTReportFolder.pas',
+  CastersPackage.uICustomized in 'CastersPackage.uICustomized.pas',
+  CastersPackage.uINormalized in 'CastersPackage.uINormalized.pas';
 
 end.
 
