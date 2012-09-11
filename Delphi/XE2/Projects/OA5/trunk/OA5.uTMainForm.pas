@@ -65,10 +65,10 @@ type
     actViewMessage: TAction;
     actAddPhone: TAction;
     actEditPhone: TAction;
-    ilMainFormSmallImages: TImageList;
-    ilMainFormBigImages: TImageList;
-    ilMainFormStateIcons: TImageList;
-    StatusBar1: TStatusBar;
+    ilSmall: TImageList;
+    ilLarge: TImageList;
+    ilStates: TImageList;
+    StatusBar: TStatusBar;
     pbMain: TProgressBar;
     imState: TImage;
     ActionList: TActionList;
@@ -247,11 +247,11 @@ begin
   with MainForm do
   begin
     if iBusyCounter > 0 then
-      ilMainFormStateIcons.GetIcon(ICON_BUSY, imState.Picture.Icon)
+      ilStates.GetIcon(ICON_BUSY, imState.Picture.Icon)
     else
-      ilMainFormStateIcons.GetIcon(ICON_READY, imState.Picture.Icon);
+      ilStates.GetIcon(ICON_READY, imState.Picture.Icon);
     if Configuration.ShowStatusbar then
-      StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := Routines.GetConditionalString(iBusyCounter > 0,
+      StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := Routines.GetConditionalString(iBusyCounter > 0,
         'Пожалуйста, подождите...', 'Готово');
   end;
   Application.ProcessMessages;
@@ -273,9 +273,9 @@ begin
   ProcedureHeader('Процедура включения/отключения отображения панели статуса',
     '{3550143C-FACD-490F-A327-4E1496CDEC5E}');
 
-  StatusBar1.Visible := miStatusBar.Checked;
-  Configuration.ShowStatusbar := StatusBar1.Visible;
-  Log.SendInfo('Панель статуса ' + Routines.GetConditionalString(StatusBar1.Visible, 'в', 'от') + 'ключена.');
+  StatusBar.Visible := miStatusBar.Checked;
+  Configuration.ShowStatusbar := StatusBar.Visible;
+  Log.SendInfo('Панель статуса ' + Routines.GetConditionalString(StatusBar.Visible, 'в', 'от') + 'ключена.');
 
   ProcedureFooter;
 end;
@@ -382,16 +382,16 @@ var
 
   procedure BindMainProgressBarToStatusBar;
   begin
-    THackControl(pbMain).SetParent(StatusBar1);
-    SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
+    THackControl(pbMain).SetParent(StatusBar);
+    SendMessage(StatusBar.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
     pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right - PanelRect.Left,
       PanelRect.Bottom - PanelRect.Top - 1);
   end;
 
   procedure BindStateImageToStatusBar;
   begin
-    THackControl(imState).SetParent(StatusBar1);
-    SendMessage(StatusBar1.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
+    THackControl(imState).SetParent(StatusBar);
+    SendMessage(StatusBar.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
     imState.SetBounds(PanelRect.Left + 2, PanelRect.Top + 1, PanelRect.Right - PanelRect.Left - 4,
       PanelRect.Bottom - PanelRect.Top - 4);
   end;
@@ -417,7 +417,7 @@ end;
 procedure TMainForm.ApplicationOnHint(Sender: TObject);
 begin
   if Configuration.ShowStatusbar then
-    StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := GetLongHint(Application.Hint);
+    StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := GetLongHint(Application.Hint);
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
@@ -611,7 +611,7 @@ begin
 
   // установка видимости панели статуса в соответствии с настройками программы
   miStatusBar.Checked := Configuration.ShowStatusbar;
-  StatusBar1.Visible := Configuration.ShowStatusbar;
+  StatusBar.Visible := Configuration.ShowStatusbar;
 
   // установка позиции и размеров главного окна в соответсвии с параметрами конфигурации
   WindowState := wsNormal;

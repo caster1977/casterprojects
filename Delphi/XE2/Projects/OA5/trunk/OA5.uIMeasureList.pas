@@ -9,9 +9,6 @@ uses
 type
   IMeasureList = interface
     ['{5E8836C1-9622-4F7B-AFA2-523E54B5149B}']
-    procedure Initialize;
-    procedure Finalize;
-
     function GetItem(const AIndex: Integer): IMeasure;
     procedure PutItem(const AIndex: Integer; const AItem: IMeasure);
 

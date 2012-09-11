@@ -429,14 +429,14 @@ begin
     // вкладка "настройки процедуры логирования"
     StoreLogin := ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStoreLogin', DEFAULT_CONFIGURATION_ENABLE_STORE_LOGIN);
     if StoreLogin then
-      Login := ReadString(TEXT_INIFILESECTION_IDENTIFICATION, 'sLogin', '')
+      Login := ReadString(TEXT_INIFILESECTION_IDENTIFICATION, 'sLogin', EmptyStr)
     else
-      Login := '';
+      Login := EmptyStr;
     StorePassword := ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bStorePassword', DEFAULT_CONFIGURATION_ENABLE_STORE_PASSWORD);
     if StorePassword then
-      Password := ReadString(TEXT_INIFILESECTION_IDENTIFICATION, 'sPassword', '')
+      Password := ReadString(TEXT_INIFILESECTION_IDENTIFICATION, 'sPassword', EmptyStr)
     else
-      Password := '';
+      Password := EmptyStr;
     AutoLogon := ReadBool(TEXT_INIFILESECTION_IDENTIFICATION, 'bAutoLogon', DEFAULT_CONFIGURATION_ENABLE_AUTO_LOGON);
 
     // вкладка "подключения к серверу базы данных услуги"
@@ -465,7 +465,7 @@ begin
 
     // вкладка "настройки формирования отчётов"
     ReportFolder := TReportFolder(ReadInteger(TEXT_INIFILESECTION_REPORTS, 'iReportFolder', Integer(rfApplicationFolder)));
-    CustomReportFolderValue := ReadString(TEXT_INIFILESECTION_REPORTS, 'sCustomReportFolderValue', '');
+    CustomReportFolderValue := ReadString(TEXT_INIFILESECTION_REPORTS, 'sCustomReportFolderValue', EmptyStr);
     DontDemandOverwriteConfirmation := ReadBool(TEXT_INIFILESECTION_REPORTS, 'bDontDemandOverwriteConfirmation', False);
     AskForFileName := ReadBool(TEXT_INIFILESECTION_REPORTS, 'bAskForFileName', True);
 
@@ -869,7 +869,7 @@ function TConfiguration.GetApplicationFolder: string;
 var
   s: string;
 begin
-  GetApplicationFolder := '';
+  GetApplicationFolder := EmptyStr;
 
   s := ExtractFilePath(ExpandFileName(Application.ExeName));
   if DirectoryExists(s) then
@@ -884,7 +884,7 @@ var
   TempPathNameBuffer: PWideChar;
 begin
   TempPathNameBuffer := nil;
-  GetTempFolder := '';
+  GetTempFolder := EmptyStr;
 
   try
     GetMem(TempPathNameBuffer, 1024 + 1);
@@ -917,8 +917,8 @@ begin
   // инициализация пеерменных класса
   FFileName := ChangeFileExt(ExpandFileName(Application.ExeName), '.ini');
   FConfigurationFormPage := 0;
-  FLogin := '';
-  FPassword := '';
+  FLogin := EmptyStr;
+  FPassword := EmptyStr;
 
   // вкладка "настройки интерфейса"
   FShowSplashAtStart := DEFAULT_CONFIGURATION_ENABLE_SPLASH_AT_START;
@@ -1229,7 +1229,7 @@ end;
 procedure TConfiguration.SetFileName(const Value: string);
 begin
   if FFileName <> Value then
-    if Trim(Value) <> '' then
+    if Trim(Value) <> EmptyStr then
       FFileName := Trim(Value)
     else
       raise Exception.Create('Имя файла конфигурации не должно быть пустым!');
@@ -1286,8 +1286,8 @@ begin
     FStoreLogin := Value;
     if not FStoreLogin then
     begin
-      FLogin := '';
-      FPassword := '';
+      FLogin := EmptyStr;
+      FPassword := EmptyStr;
       FStorePassword := False;
       FAutoLogon := False;
     end;
@@ -1301,7 +1301,7 @@ begin
     FStorePassword := Value;
     if not FStorePassword then
     begin
-      FPassword := '';
+      FPassword := EmptyStr;
       FAutoLogon := False;
     end;
   end;
@@ -1315,7 +1315,7 @@ begin
       FLogin := Value
   end
   else
-    FLogin := '';
+    FLogin := EmptyStr;
 end;
 
 procedure TConfiguration.SetPassword(const Value: string);
@@ -1326,11 +1326,13 @@ begin
       FPassword := Value
   end
   else
-    FPassword := '';
+    FPassword := EmptyStr;
 end;
 
 initialization
 
-System.Classes.RegisterClass(TConfiguration);
+begin
+  System.Classes.RegisterClass(TConfiguration);
+end;
 
 end.

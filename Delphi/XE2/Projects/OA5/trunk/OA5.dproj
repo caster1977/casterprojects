@@ -162,16 +162,9 @@
 				<FormType>dfm</FormType>
 			</DCCReference>
 			<DCCReference Include="OA5.uTMySQLConnection.pas"/>
-			<DCCReference Include="OA5.uINormalized.pas"/>
 			<DCCReference Include="OA5.uIMeasure.pas"/>
 			<DCCReference Include="OA5.uIMeasureList.pas"/>
 			<DCCReference Include="OA5.uTMeasureList.pas"/>
-			<DCCReference Include="..\CastersPackage\CastersPackage.uTDialogPosition.pas"/>
-			<DCCReference Include="..\CastersPackage\CastersPackage.uIPositionedDialog.pas"/>
-			<DCCReference Include="..\CastersPackage\CastersPackage.uTPositionedLogForm.pas">
-				<Form>PositionedLogForm</Form>
-				<FormType>dfm</FormType>
-			</DCCReference>
 			<DCCReference Include="OA5.uDefaultConsts.pas"/>
 			<DCCReference Include="OA5.uTPrivilegies.pas"/>
 			<DCCReference Include="OA5.uIPrivilegies.pas"/>

@@ -3,17 +3,20 @@ unit OA5.uTMeasure;
 interface
 
 uses
-  OA5.uINormalized,
+  CastersPackage.uINormalized,
+  CastersPackage.uICustomized,
   OA5.uIMeasure,
   System.SysUtils,
   System.Classes,
   OA5.uDefaultConsts;
 
 type
+  EMeasure = class(Exception);
+
   /// <summary>
   /// Класс, предназначеный для хранения данных мероприятия
   /// </summary>
-  TMeasure = class(TInterfacedPersistent, IMeasure, INormalized)
+  TMeasure = class(TInterfacedPersistent, IMeasure, INormalized, ICustomized)
   strict private
     FAutoNormalizeData: Boolean;
     FOrganizationID: Integer;
@@ -106,6 +109,10 @@ type
     /// </param>
     constructor Create(const AAutoNormalizeData: Boolean = DEFAULT_MEASURE_AUTO_NORMALIZE_DATA); virtual;
     /// <summary>
+    /// Деструктор класса
+    /// </summary>
+    destructor Destroy; override;
+    /// <summary>
     /// Функция валидации данных класса (только проверка значений)
     /// </summary>
     /// <returns>
@@ -131,6 +138,11 @@ type
     /// См. также функцию <b>Normalized</b>
     /// </remarks>
     procedure Normalize; virtual;
+    procedure Assign(Source: TPersistent); override;
+    function Equals(Obj: TObject): Boolean; override;
+  protected
+    procedure Initialize; virtual;
+    procedure Finalize; virtual;
   published
     /// <summary>
     /// Требуется ли при записи данных в поля автоматически проводить их
@@ -156,13 +168,11 @@ type
     /// <summary>
     /// Продолжительность мероприятия в минутах
     /// </summary>
-    property DurationMinutes: Integer read GetDurationMinutes write SetDurationMinutes
-      default DEFAULT_MEASURE_DURATION_MINUTES;
+    property DurationMinutes: Integer read GetDurationMinutes write SetDurationMinutes default DEFAULT_MEASURE_DURATION_MINUTES;
     /// <summary>
     /// Мероприятие "только для взрослых"?
     /// </summary>
-    property ForAdultsOnly: Boolean read GetForAdultsOnly write SetForAdultsOnly
-      default DEFAULT_MEASURE_FOR_ADULTS_ONLY;
+    property ForAdultsOnly: Boolean read GetForAdultsOnly write SetForAdultsOnly default DEFAULT_MEASURE_FOR_ADULTS_ONLY;
     /// <summary>
     /// Мероприятие является детским?
     /// </summary>
@@ -174,18 +184,15 @@ type
     /// <summary>
     /// Длительность мероприятия неизвестна?
     /// </summary>
-    property HasUnknownDuration: Boolean read GetHasUnknownDuration write SetHasUnknownDuration
-      default DEFAULT_MEASURE_HAS_UNKNOWN_DURATION;
+    property HasUnknownDuration: Boolean read GetHasUnknownDuration write SetHasUnknownDuration default DEFAULT_MEASURE_HAS_UNKNOWN_DURATION;
     /// <summary>
     /// Есть ли у мероприятия дата/время начала
     /// </summary>
-    property HasStartDateTime: Boolean read GetHasStartDateTime write SetHasStartDateTime
-      default DEFAULT_MEASURE_HAS_START_DATETIME;
+    property HasStartDateTime: Boolean read GetHasStartDateTime write SetHasStartDateTime default DEFAULT_MEASURE_HAS_START_DATETIME;
     /// <summary>
     /// Есть ли у мероприятия дата/время окончания
     /// </summary>
-    property HasStopDateTime: Boolean read GetHasStopDateTime write SetHasStopDateTime
-      default DEFAULT_MEASURE_HAS_STOP_DATETIME;
+    property HasStopDateTime: Boolean read GetHasStopDateTime write SetHasStopDateTime default DEFAULT_MEASURE_HAS_STOP_DATETIME;
     /// <summary>
     /// Мероприятие является премьерным?
     /// </summary>
@@ -205,8 +212,7 @@ type
     /// <summary>
     /// Идентификатор организации, которая проводит мероприятие
     /// </summary>
-    property OrganizationID: Integer read GetOrganizationID write SetOrganizationID
-      default DEFAULT_MEASURE_ORGANIZATION_ID;
+    property OrganizationID: Integer read GetOrganizationID write SetOrganizationID default DEFAULT_MEASURE_ORGANIZATION_ID;
     /// <summary>
     /// Организатор мероприятия
     /// </summary>
@@ -245,6 +251,8 @@ type
     property Type_: string read GetType write SetType nodefault;
   end;
 
+  TMeasureClass = class of TMeasure;
+
   /// <summary>
   /// Функция для создания нового объекта типа <b>TMasure</b> и получения
   /// интерфейсной ссылки на созданный объект.
@@ -273,6 +281,19 @@ function GetIMeasure(const AAutoNormalizeData: Boolean = DEFAULT_MEASURE_AUTO_NO
 /// в случае успешного выполнения функции либо <b>nil</b> в случае ошибки.
 /// </returns>
 function GetINormalized(const AMeasure: IMeasure): INormalized; overload;
+/// <summary>
+/// Функция для получения интерфейсной ссылки типа <b>ICustomized</b> на
+/// объект типа <b>TMeasure</b> через интерфейсную ссылку типа <b>IMeasure</b>
+/// .
+/// </summary>
+/// <param name="AMeasure">
+/// Интерфейсная ссылка типа <b>IMeasure</b> на объект типа <b>TMeasure</b>.
+/// </param>
+/// <returns>
+/// Интерфейсная ссылка типа <b>ICustomized</b> на объект типа <b>TMeasure</b>
+/// в случае успешного выполнения функции либо <b>nil</b> в случае ошибки.
+/// </returns>
+function GetICustomized(const AMeasure: IMeasure): ICustomized; overload;
 
 implementation
 
@@ -299,6 +320,57 @@ begin
     begin
       Result := AMeasure as INormalized;
     end;
+  end;
+end;
+
+function GetICustomized(const AMeasure: IMeasure): ICustomized;
+begin
+  Result := nil;
+  if Assigned(AMeasure) then
+  begin
+    if Supports(AMeasure, ICustomized) then
+    begin
+      Result := AMeasure as ICustomized;
+    end;
+  end;
+end;
+
+procedure TMeasure.Assign(Source: TPersistent);
+var
+  o: TMeasure;
+begin
+  if Source is TMeasure then
+  begin
+    o := Source as TMeasure;
+    AutoNormalizeData := o.AutoNormalizeData;
+    OrganizationID := o.OrganizationID;
+    Type_ := o.Type_;
+    name := o.Name;
+    Author := o.Author;
+    Producer := o.Producer;
+    Performer := o.Performer;
+    Organizer := o.Organizer;
+    TicketPrice := o.TicketPrice;
+    OtherInfoRTF := o.OtherInfoRTF;
+    OtherInfoPlane := o.OtherInfoPlane;
+    HasUnknownDuration := o.HasUnknownDuration;
+    HasStartDateTime := o.HasStartDateTime;
+    HasStopDateTime := o.HasStopDateTime;
+    StartDateTime := o.StartDateTime;
+    StopDateTime := o.StopDateTime;
+    DurationDays := o.DurationDays;
+    DurationHours := o.DurationHours;
+    DurationMinutes := o.DurationMinutes;
+    IsPremier := o.IsPremier;
+    IsTour := o.IsTour;
+    IsSport := o.IsSport;
+    ForChildren := o.ForChildren;
+    ForTeenagers := o.ForTeenagers;
+    ForAdultsOnly := o.ForAdultsOnly;
+  end
+  else
+  begin
+    inherited;
   end;
 end;
 
@@ -330,6 +402,7 @@ begin
   FForChildren := DEFAULT_MEASURE_FOR_CHILDREN;
   FForTeenagers := DEFAULT_MEASURE_FOR_TEENAGERS;
   FForAdultsOnly := DEFAULT_MEASURE_FOR_ADULTS_ONLY;
+  Initialize;
 end;
 
 class procedure TMeasure.SetField(const AValue: Integer; var AField: Integer);
@@ -380,6 +453,36 @@ begin
       AField := s;
     end;
   end;
+end;
+
+destructor TMeasure.Destroy;
+begin
+  Finalize;
+  inherited;
+end;
+
+function TMeasure.Equals(Obj: TObject): Boolean;
+var
+  o: TMeasure;
+begin
+  Result := False;
+  if Obj is TMeasure then
+  begin
+    o := Obj as TMeasure;
+    Result := (AutoNormalizeData = o.AutoNormalizeData) and (OrganizationID = o.OrganizationID) and (Type_ = o.Type_) and (name = o.Name) and (Author = o.Author) and (Producer = o.Producer) and
+      (Performer = o.Performer) and (Organizer = o.Organizer) and (TicketPrice = o.TicketPrice) and (OtherInfoRTF = o.OtherInfoRTF) and (OtherInfoPlane = o.OtherInfoPlane) and
+      (HasUnknownDuration = o.HasUnknownDuration) and (HasStartDateTime = o.HasStartDateTime) and (HasStopDateTime = o.HasStopDateTime) and (StartDateTime = o.StartDateTime) and
+      (StopDateTime = o.StopDateTime) and (DurationDays = o.DurationDays) and (DurationHours = o.DurationHours) and (DurationMinutes = o.DurationMinutes) and (IsPremier = o.IsPremier) and
+      (IsTour = o.IsTour) and (IsSport = o.IsSport) and (ForChildren = o.ForChildren) and (ForTeenagers = o.ForTeenagers) and (ForAdultsOnly = o.ForAdultsOnly);
+  end
+  else
+  begin
+    inherited;
+  end;
+end;
+
+procedure TMeasure.Finalize;
+begin
 end;
 
 function TMeasure.GetAuthor: string;
@@ -669,6 +772,10 @@ end;
 
 { TODO : Нужно переписать методы класса (нормализацию в зависимости от значения свойства AutoNormalizeData) }
 
+procedure TMeasure.Initialize;
+begin
+end;
+
 function TMeasure.IsNormalized: Boolean;
 var
   a1: Comp;
@@ -704,14 +811,10 @@ begin
   start_date_time := StartDateTime;
   stop_date_time := StopDateTime;
 
-  if (OrganizationID < 0) or (measure_type <> Routines.PrepareStringForRNE5(measure_type)) or
-    (measure_name <> Routines.PrepareStringForRNE5(measure_name)) or
-    (measure_author <> Routines.PrepareStringForRNE5(measure_author)) or
-    (measure_producer <> Routines.PrepareStringForRNE5(measure_producer)) or
-    (measure_performer <> Routines.PrepareStringForRNE5(measure_performer)) or
-    (measure_organizer <> Routines.PrepareStringForRNE5(measure_organizer)) or
-    (measure_ticket_price <> Routines.PrepareStringForRNE5(measure_ticket_price)) or
-    (measure_other_info_plane <> Routines.PrepareStringForRNE5(measure_other_info_plane)) or
+  if (OrganizationID < 0) or (measure_type <> Routines.PrepareStringForRNE5(measure_type)) or (measure_name <> Routines.PrepareStringForRNE5(measure_name)) or
+    (measure_author <> Routines.PrepareStringForRNE5(measure_author)) or (measure_producer <> Routines.PrepareStringForRNE5(measure_producer)) or
+    (measure_performer <> Routines.PrepareStringForRNE5(measure_performer)) or (measure_organizer <> Routines.PrepareStringForRNE5(measure_organizer)) or
+    (measure_ticket_price <> Routines.PrepareStringForRNE5(measure_ticket_price)) or (measure_other_info_plane <> Routines.PrepareStringForRNE5(measure_other_info_plane)) or
     ((ForChildren or ForTeenagers) and ForAdultsOnly) then
   begin
     Exit;
@@ -727,8 +830,7 @@ begin
     if not HasUnknownDuration then
     begin
       // получаем дату начала, дату конца и высчитываем длителность мероприятия в милисекундах
-      a1 := TimeStampToMSecs(DateTimeToTimeStamp(stop_date_time)) -
-        TimeStampToMSecs(DateTimeToTimeStamp(start_date_time));
+      a1 := TimeStampToMSecs(DateTimeToTimeStamp(stop_date_time)) - TimeStampToMSecs(DateTimeToTimeStamp(start_date_time));
 
       // внимание! значение a2 в данном случае УЖЕ равно a1, т.к. переменная абсолютная!!!
       if (a2 > 0) then
@@ -740,8 +842,7 @@ begin
         duration_minutes := a4 div MSECONDS_PER_MINUTE;
       end;
 
-      if (DurationDays <> duration_days) or (DurationHours <> duration_hours) or (DurationMinutes <> duration_minutes)
-      then
+      if (DurationDays <> duration_days) or (DurationHours <> duration_hours) or (DurationMinutes <> duration_minutes) then
       begin
         Exit;
       end;
@@ -807,8 +908,7 @@ begin
     if not HasUnknownDuration then
     begin
       // получаем дату начала, дату конца и высчитываем длительность мероприятия
-      a1 := TimeStampToMSecs(DateTimeToTimeStamp(stop_date_time)) -
-        TimeStampToMSecs(DateTimeToTimeStamp(start_date_time));
+      a1 := TimeStampToMSecs(DateTimeToTimeStamp(stop_date_time)) - TimeStampToMSecs(DateTimeToTimeStamp(start_date_time));
       // внимание! значение a2 в данном случае УЖЕ равно a1, т.к. переменная абсолютная!!!
       if (a2 > 0) then
       begin
@@ -821,6 +921,12 @@ begin
     end;
   end;
 
+end;
+
+initialization
+
+begin
+  RegisterClass(TMeasure);
 end;
 
 end.

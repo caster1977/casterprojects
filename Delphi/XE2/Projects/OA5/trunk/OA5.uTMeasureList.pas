@@ -7,7 +7,8 @@ uses
   System.SysUtils,
   OA5.uIMeasureList,
   OA5.uIMeasure,
-  OA5.uINormalized;
+  CastersPackage.uINormalized,
+  CastersPackage.uICustomized;
 
 const
   DEFAULT_MEASURE_LIST_AUTO_NORMALIZE_DATA = False;
@@ -27,7 +28,7 @@ type
   /// <remarks>
   /// См. также описание интерфейса <b>IMeasure</b> и класса <b>TMeasure</b>.
   /// </remarks>
-  TMeasureList = class(TInterfacedObject, IMeasureList, INormalized)
+  TMeasureList = class(TInterfacedPersistent, IMeasureList, INormalized, ICustomized)
   strict private
     FAutoNormalizeData: Boolean;
     FList: IInterfaceList;
@@ -37,11 +38,16 @@ type
     procedure SetCount(const ANewCount: Integer);
     function GetAutoNormalizeData: Boolean;
     procedure SetAutoNormalizeData(const AValue: Boolean);
+  protected
+    procedure Initialize; virtual;
+    procedure Finalize; virtual;
   public
     constructor Create; reintroduce; virtual;
     destructor Destroy; override;
-    procedure Initialize; virtual;
-    procedure Finalize; virtual;
+
+    function Equals(Obj: TObject): Boolean; override;
+    procedure Assign(Source: TPersistent); override;
+
     function IndexOf(const AItem: IMeasure): Integer;
 
     function Add(const AItem: IMeasure): Integer;
@@ -62,12 +68,12 @@ type
 
     property Count: Integer read GetCount write SetCount nodefault;
     property Items[const AIndex: Integer]: IMeasure read GetItem write PutItem; default;
-    property AutoNormalizeData: Boolean read GetAutoNormalizeData write SetAutoNormalizeData
-      default DEFAULT_MEASURE_LIST_AUTO_NORMALIZE_DATA;
+    property AutoNormalizeData: Boolean read GetAutoNormalizeData write SetAutoNormalizeData default DEFAULT_MEASURE_LIST_AUTO_NORMALIZE_DATA;
   end;
 
 function GetIMeasureList: IMeasureList;
 function GetINormalized(const AMeasureList: IMeasureList): INormalized; overload;
+function GetICustomized(const AMeasureList: IMeasureList): ICustomized; overload;
 
 implementation
 
@@ -88,6 +94,18 @@ begin
     if Supports(AMeasureList, INormalized) then
     begin
       Result := AMeasureList as INormalized;
+    end;
+  end;
+end;
+
+function GetICustomized(const AMeasureList: IMeasureList): ICustomized; overload;
+begin
+  Result := nil;
+  if Assigned(AMeasureList) then
+  begin
+    if Supports(AMeasureList, ICustomized) then
+    begin
+      Result := AMeasureList as ICustomized;
     end;
   end;
 end;
@@ -288,6 +306,55 @@ begin
       (FList.Items[i] as INormalized).Normalize;
     end;
   end;
+end;
+
+procedure TMeasureList.Assign(Source: TPersistent);
+var
+  o: TMeasureList;
+  i: Integer;
+begin
+  if Source is TMeasureList then
+  begin
+    o := Source as TMeasureList;
+    AutoNormalizeData := o.AutoNormalizeData;
+    Count := o.Count;
+    for i := 0 to o.Count - 1 do
+    begin
+      Items[i] := o.Items[i];
+    end;
+  end
+  else
+  begin
+    inherited;
+  end;
+end;
+
+function TMeasureList.Equals(Obj: TObject): Boolean;
+var
+  o: TMeasureList;
+  i: Integer;
+begin
+  Result := False;
+  if Obj is TMeasureList then
+  begin
+    o := Obj as TMeasureList;
+    Result := (AutoNormalizeData = o.AutoNormalizeData) and (Count = o.Count);
+    if Result then
+      for i := 0 to o.Count - 1 do
+      begin
+        Result := Result and (Items[i] = o.Items[i]);
+      end;
+  end
+  else
+  begin
+    inherited;
+  end;
+end;
+
+initialization
+
+begin
+  RegisterClass(TMeasureList);
 end;
 
 end.
