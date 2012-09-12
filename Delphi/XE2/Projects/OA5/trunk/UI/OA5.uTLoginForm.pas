@@ -3,7 +3,7 @@ unit OA5.uTLoginForm;
 interface
 
 uses
-  CastersPackage.uTPositionedLogForm,
+  OA5.uTOA5PositionedLogForm,
   System.Classes,
   Vcl.Forms,
   Vcl.ActnList,
@@ -14,7 +14,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-  TLoginForm = class(TPositionedLogForm)
+  TLoginForm = class(TOA5PositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actHelp: TAction;
@@ -46,9 +46,9 @@ implementation
 {$R *.dfm}
 
 uses
+  CastersPackage.uResourceStrings,
   System.SysUtils,
   OA5.uTMainForm,
-  CastersPackage.uTLogForm,
   CastersPackage.uRoutines;
 
 resourcestring

@@ -3,7 +3,7 @@ unit OA5.uTViewMessageForm;
 interface
 
 uses
-  CastersPackage.uTPositionedLogForm,
+  OA5.uTOA5PositionedLogForm,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
@@ -13,7 +13,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-  TViewMessageForm = class(TPositionedLogForm)
+  TViewMessageForm = class(TOA5PositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actHelp: TAction;
@@ -60,10 +60,10 @@ implementation
 {$R *.dfm}
 
 uses
+  CastersPackage.uResourceStrings,
   Vcl.Forms,
   OA5.uTMainForm,
   CastersPackage.uRoutines,
-  CastersPackage.uTLogForm,
   System.SysUtils;
 
 resourcestring

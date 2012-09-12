@@ -3,7 +3,7 @@ unit OA5.uTAddEditPhoneForm;
 interface
 
 uses
-  CastersPackage.uTPositionedLogForm,
+  OA5.uTOA5PositionedLogForm,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
@@ -13,7 +13,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-  TAddEditPhoneForm = class(TPositionedLogForm)
+  TAddEditPhoneForm = class(TOA5PositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actClear: TAction;
@@ -71,7 +71,7 @@ uses
   Vcl.Forms,
   System.SysUtils,
   System.DateUtils,
-  CastersPackage.uTLogForm,
+  CastersPackage.uResourceStrings,
   CastersPackage.uRoutines,
   OA5.uTMainForm;
 
@@ -116,8 +116,7 @@ end;
 
 procedure TAddEditPhoneForm._Close;
 begin
-  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsAddEditPhoneForm]),
-    '{EEEFBB6B-50BB-4EDD-9400-5784801D6950}');
+  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsAddEditPhoneForm]), '{EEEFBB6B-50BB-4EDD-9400-5784801D6950}');
 
   ModalResult := mrClose;
   Log.SendInfo(Format(RsWindowClosedByUser, [RsAddEditPhoneForm]));
@@ -243,8 +242,8 @@ procedure TAddEditPhoneForm.actClearUpdate(Sender: TObject);
 var
   b: boolean;
 begin
-  b := (edbxNumber.Text <> EmptyStr) or (cmbexType.ItemIndex > -1) or (dtpCheckDate.DateTime <> EncodeDate(1900, 01, 01)
-    ) or (edbxPriority.Text <> EmptyStr) or (meComments.Text <> EmptyStr);
+  b := (edbxNumber.Text <> EmptyStr) or (cmbexType.ItemIndex > -1) or (dtpCheckDate.DateTime <> EncodeDate(1900, 01, 01)) or
+    (edbxPriority.Text <> EmptyStr) or (meComments.Text <> EmptyStr);
   if actClear.Enabled <> b then
   begin
     ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actClear.Caption]), '{F81F6D8B-EAFB-4A9D-AB50-E79FD75F2401}');

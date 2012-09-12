@@ -3,7 +3,7 @@ unit OA5.uTReportForm;
 interface
 
 uses
-  CastersPackage.uTPositionedLogForm,
+  OA5.uTOA5PositionedLogForm,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
@@ -14,7 +14,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-  TReportForm = class(TPositionedLogForm)
+  TReportForm = class(TOA5PositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actSelectAll: TAction;
@@ -97,6 +97,7 @@ implementation
 {$R *.dfm}
 
 uses
+  CastersPackage.uResourceStrings,
   Vcl.Forms,
   CastersPackage.uTLogForm,
   System.SysUtils,

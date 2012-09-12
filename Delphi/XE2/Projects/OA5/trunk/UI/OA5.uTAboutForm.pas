@@ -4,7 +4,6 @@ interface
 
 uses
   CastersPackage.uTGSFileVersionInfo,
-  CastersPackage.uTLogForm,
   Vcl.Forms,
   Vcl.ComCtrls,
   System.Classes,
@@ -12,10 +11,12 @@ uses
   Vcl.ExtCtrls,
   Vcl.Controls,
   Vcl.StdCtrls,
-  Vcl.Graphics;
+  Vcl.Graphics,
+  OA5.uTOA5LogForm,
+  CastersPackage.uTRefreshBusyStateMethod;
 
 type
-  TAboutForm = class(TLogForm)
+  TAboutForm = class(TOA5LogForm)
     GSFileVersionInfo: TGSFileVersionInfo;
     ActionList: TActionList;
     actClose: TAction;
@@ -40,8 +41,7 @@ type
     procedure _Close;
   public
     constructor Create(AOwner: TComponent; const AShowCloseButton: Boolean; ABusyCounter: PInteger = nil;
-      AIncrease: TBusyStateMethod = nil; ADecrease: TBusyStateMethod = nil; ARefresh: TBusyStateMethod = nil;
-      AProgressBar: TProgressBar = nil); reintroduce; virtual;
+      ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil; AProgressBar: TProgressBar = nil); reintroduce; virtual;
   end;
 
 implementation
@@ -49,6 +49,7 @@ implementation
 {$R *.dfm}
 
 uses
+  CastersPackage.uResourceStrings,
   Winapi.Windows,
   System.SysUtils,
   Winapi.ShellAPI;
@@ -59,15 +60,14 @@ resourcestring
   RsEMailClickEventHandlerProcedure = 'Процедура-обработчик щелчка по метке адреса электронной почты';
 
 constructor TAboutForm.Create(AOwner: TComponent; const AShowCloseButton: Boolean; ABusyCounter: PInteger;
-  AIncrease, ADecrease, ARefresh: TBusyStateMethod; AProgressBar: TProgressBar);
+  ARefreshBusyStateMethod: TRefreshBusyStateMethod; AProgressBar: TProgressBar);
 begin
-  inherited Create(AOwner, ABusyCounter, AIncrease, ADecrease, ARefresh, AProgressBar);
+  inherited Create(AOwner, ABusyCounter, ARefreshBusyStateMethod, AProgressBar);
   FFirstShow := True;
   actClose.Visible := AShowCloseButton;
   GSFileVersionInfo.Filename := Application.ExeName;
-  lblVersion.Caption := Format(RsVersionInfo, [GSFileVersionInfo.ModuleVersion.Major,
-    GSFileVersionInfo.ModuleVersion.Minor, GSFileVersionInfo.ModuleVersion.Release,
-    GSFileVersionInfo.ModuleVersion.Build]);
+  lblVersion.Caption := Format(RsVersionInfo, [GSFileVersionInfo.ModuleVersion.Major, GSFileVersionInfo.ModuleVersion.Minor,
+    GSFileVersionInfo.ModuleVersion.Release, GSFileVersionInfo.ModuleVersion.Build]);
   lblLegalCopyright.Caption := GSFileVersionInfo.LegalCopyright;
 end;
 

@@ -3,7 +3,7 @@ unit OA5.uTMultiBufferForm;
 interface
 
 uses
-  CastersPackage.uTPositionedLogForm,
+  OA5.uTOA5PositionedLogForm,
   System.SysUtils,
   System.Classes,
   Vcl.ComCtrls,
@@ -14,7 +14,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-  TMultiBufferForm = class(TPositionedLogForm)
+  TMultiBufferForm = class(TOA5PositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actPaste: TAction;
@@ -59,7 +59,7 @@ uses
   Vcl.Forms,
   Winapi.Windows,
   OA5.uTMainForm,
-  CastersPackage.uTLogForm,
+  CastersPackage.uResourceStrings,
   CastersPackage.uRoutines;
 
 resourcestring

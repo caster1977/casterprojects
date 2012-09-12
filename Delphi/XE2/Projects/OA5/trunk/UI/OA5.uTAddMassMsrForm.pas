@@ -3,7 +3,7 @@ unit OA5.uTAddMassMsrForm;
 interface
 
 uses
-  CastersPackage.uTPositionedLogForm,
+  OA5.uTOA5PositionedLogForm,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
@@ -13,7 +13,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-  TAddMassMsrForm = class(TPositionedLogForm)
+  TAddMassMsrForm = class(TOA5PositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actAdd: TAction;
@@ -73,7 +73,7 @@ uses
   CastersPackage.uRoutines,
   OA5.uTMainForm,
   Winapi.Windows,
-  CastersPackage.uTLogForm,
+  CastersPackage.uResourceStrings,
   VCL.Forms;
 
 resourcestring

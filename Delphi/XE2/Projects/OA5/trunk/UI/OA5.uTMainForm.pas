@@ -6,7 +6,9 @@ uses
   Winapi.Windows,
   System.SysUtils,
   Vcl.Forms,
+  OA5.uIAccount,
   OA5.uTAccount,
+  OA5.uIConfiguration,
   OA5.uTConfiguration,
   System.IniFiles,
   OA5.uIMeasureList,
@@ -18,11 +20,32 @@ uses
   Vcl.Menus,
   Vcl.ComCtrls,
   Vcl.ExtCtrls,
-  CastersPackage.uTLogForm;
+  OA5.uTOA5LogForm;
 
 type
-  TMainForm = class(TLogForm)
+  TMainForm = class(TOA5LogForm)
     MainMenu: TMainMenu;
+    imState: TImage;
+    ilSmall: TImageList;
+    ilLarge: TImageList;
+    ilStates: TImageList;
+    StatusBar: TStatusBar;
+    pbMain: TProgressBar;
+    ActionList: TActionList;
+    actQuit: TAction;
+    actAbout: TAction;
+    actHelp: TAction;
+    actConfiguration: TAction;
+    actAccounts: TAction;
+    actReport: TAction;
+    actLogon: TAction;
+    actLogoff: TAction;
+    actMultibuffer: TAction;
+    actCreateMessage: TAction;
+    actViewMessages: TAction;
+    actViewMessage: TAction;
+    actAddPhone: TAction;
+    actEditPhone: TAction;
     N1: TMenuItem;
     N2: TMenuItem;
     N3: TMenuItem;
@@ -51,75 +74,54 @@ type
     N26: TMenuItem;
     miStatusBar: TMenuItem;
     miToolBar: TMenuItem;
-    actQuit: TAction;
-    actAbout: TAction;
-    actHelp: TAction;
-    actConfiguration: TAction;
-    actAccounts: TAction;
-    actReport: TAction;
-    actLogon: TAction;
-    actLogout: TAction;
-    actMultibuffer: TAction;
-    actCreateMessage: TAction;
-    actViewMessages: TAction;
-    actViewMessage: TAction;
-    actAddPhone: TAction;
-    actEditPhone: TAction;
-    ilSmall: TImageList;
-    ilLarge: TImageList;
-    ilStates: TImageList;
-    StatusBar: TStatusBar;
-    pbMain: TProgressBar;
-    imState: TImage;
-    ActionList: TActionList;
+    actStatusBar: TAction;
+    actToolBar: TAction;
+    procedure FormCreate(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
     procedure actHelpExecute(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
-    procedure FormShow(Sender: TObject);
     procedure actConfigurationExecute(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure actReportExecute(Sender: TObject);
-    procedure miStatusBarClick(Sender: TObject);
     procedure actMultibufferExecute(Sender: TObject);
     procedure actCreateMessageExecute(Sender: TObject);
     procedure actViewMessageExecute(Sender: TObject);
-    procedure miToolBarClick(Sender: TObject);
     procedure actAddPhoneExecute(Sender: TObject);
     procedure actEditPhoneExecute(Sender: TObject);
     procedure actLogonExecute(Sender: TObject);
-    procedure actLogoutExecute(Sender: TObject);
+    procedure actLogoffExecute(Sender: TObject);
+    procedure actLogonUpdate(Sender: TObject);
+    procedure actLogoffUpdate(Sender: TObject);
+    procedure actAccountsUpdate(Sender: TObject);
+    procedure actStatusBarExecute(Sender: TObject);
+    procedure actToolBarExecute(Sender: TObject);
   strict private
     FMultiBuffer: IMeasureList;
-    bFirstRun: Boolean;
+    FConfiguration: IConfiguration;
+    FCurrentUser: IAccount;
     function GetMultiBuffer: IMeasureList;
-    procedure ProcedureHeader(const aTitle, aLogGroupGUID: string);
-    procedure ProcedureFooter;
-    procedure PreShowModal(const aWindowName: string; var aOldBusyState: Integer);
-    procedure PostShowModal(const aWindowName: string; var aOldBusyState: Integer);
-    procedure PreFooter(const aHandle: HWND; const aError: Boolean; const aErrorMessage: string);
     procedure ApplicationOnHint(Sender: TObject);
-
-    procedure Do_UpdateActions;
-    procedure Do_About(const aButtonVisible: Boolean);
-    procedure Do_Help;
-    procedure Do_Configuration;
-    procedure Do_Report;
-    procedure Do_LoadConfiguration;
-    procedure Do_ApplyConfiguration;
-    procedure Do_SaveConfiguration;
-    procedure Do_Logon;
-    procedure Do_Logout;
+    function GetConfiguration: IConfiguration;
+    procedure _About(const AButtonVisible: Boolean);
+    procedure _Help;
+    procedure _Configuration;
+    procedure _Report;
+    procedure _LoadConfiguration;
+    procedure _ApplyConfiguration;
+    procedure _SaveConfiguration;
+    procedure _Logon;
+    procedure _Logoff;
+  private
+    function GetCurrentUser: IAccount;
+  protected
+    procedure Initialize; override;
+    procedure Finalize; override;
+    procedure InitializeLog; override;
   public
-    Configuration: TConfiguration;
-    CurrentUser: TAccount;
-    iBusyCounter: Integer;
-    procedure Inc_BusyState;
-    procedure Dec_BusyState;
-    procedure Refresh_BusyState;
-    procedure ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
+    BusyCounter: Integer;
+    procedure RefreshBusyState;
     property MultiBuffer: IMeasureList read GetMultiBuffer nodefault;
+    property Configuration: IConfiguration read GetConfiguration nodefault;
+    property CurrentUser: IAccount read GetCurrentUser nodefault;
   end;
 
 var
@@ -130,8 +132,9 @@ implementation
 {$R *.dfm}
 
 uses
+  CastersPackage.uResourceStrings,
   System.IOUtils,
-  CommCtrl,
+  Winapi.CommCtrl,
   OA5.uTMySQLConnection,
   OA5.uTAboutForm,
   OA5.uTConfigurationForm,
@@ -153,9 +156,6 @@ type
   THackControl = class(TControl);
 
 const
-  ICON_BUSY = 0;
-  ICON_READY = 1;
-
   STATUSBAR_STATE_PANEL_NUMBER: Integer = 0;
   STATUSBAR_PROGRESS_PANEL_NUMBER: Integer = 1;
   STATUSBAR_SERVER_NAME: Integer = 2;
@@ -167,6 +167,7 @@ resourcestring
   // RsReleaseMutexError = 'Не удалось удалить мьютекс.';
   // RsCloseMutexHandleError = 'Не удалось закрыть идентификатор мьютекса.';
   // RsErrorCode = ' Код ошибки: %s';
+  RsMainForm = 'главного окна программы';
   RsAboutFormSuffix = '"О программе..."';
   RsConfigurationFormSuffix = 'настроек программы';
   RsReportFormSuffix = 'формирования статистических отчётов по работе пользователей';
@@ -177,215 +178,123 @@ resourcestring
   RsAddPhoneFormSuffix = 'добавления номера телефона';
   RsEditPhoneFormSuffix = 'исправления номера телефона';
   RsLoginFormSuffix = 'ввода учётной записи';
+  RsShowWindowProcedure = 'Процедура отображения окна %s';
 
-procedure TMainForm.ProcedureHeader(const aTitle, aLogGroupGUID: string);
-begin
-  Log.EnterMethod(aTitle, aLogGroupGUID);
-  MainForm.Inc_BusyState;
-  Application.ProcessMessages;
-end;
-
-procedure TMainForm.ProcedureFooter;
-begin
-  MainForm.Dec_BusyState;
-  Log.ExitMethod;
-  Application.ProcessMessages;
-end;
-
-procedure TMainForm.PreShowModal(const aWindowName: string; var aOldBusyState: Integer);
-begin
-  Log.SendDebug('Производится попытка отображения модального окна ' + aWindowName + '.');
-  with MainForm do
-  begin
-    aOldBusyState := iBusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
-    iBusyCounter := 0; // обнуление счётчика перед открытием модального окна
-    Refresh_BusyState; // обновление состояния индикатора
-  end;
-end;
-
-procedure TMainForm.PostShowModal(const aWindowName: string; var aOldBusyState: Integer);
-begin
-  with MainForm do
-  begin
-    iBusyCounter := aOldBusyState; // возвращение старого значения счётчика
-    Refresh_BusyState; // обновление состояния индикатора
-  end;
-  Log.SendDebug('Окно ' + aWindowName + ' скрыто.');
-end;
-
-procedure TMainForm.PreFooter(const aHandle: HWND; const aError: Boolean; const aErrorMessage: string);
-begin
-  if aError then
-    MainForm.ShowErrorBox(aHandle, aErrorMessage)
-  else
-    Log.SendDebug('Процедура выполнена без ошибок.');
-  MainForm.pbMain.Position := MainForm.pbMain.Min;
-end;
-
-procedure TMainForm.ShowErrorBox(const aHandle: HWND; const aErrorMessage: string);
+procedure TMainForm.RefreshBusyState;
 var
-  iOldBusyCounter: Integer;
+  b: Boolean;
 begin
-  Log.SendError(aErrorMessage);
-
-  iOldBusyCounter := iBusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
-  iBusyCounter := 0; // обнуление счётчика перед открытием модального окна
-  Refresh_BusyState; // обновление состояния индикатора
-
-  MessageBox(aHandle, PWideChar(aErrorMessage), PWideChar(MainForm.Caption + ' - Ошибка!'),
-    MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
-  Application.ProcessMessages;
-
-  iBusyCounter := iOldBusyCounter; // возвращение старого значения счётчика
-  Refresh_BusyState; // обновление состояния индикатора
-  Application.ProcessMessages;
-end;
-
-procedure TMainForm.Refresh_BusyState;
-begin
-  Log.SendDebug('Установлен режим "' + Routines.GetConditionalString(iBusyCounter > 0, 'Занято', 'Готово') + '".');
-  with MainForm do
+  b := BusyCounter = 0;
+  Log.SendDebug('Установлен режим "' + Routines.GetConditionalString(b, 'Готово', 'Занято') + '".');
+  ilStates.GetIcon(Integer(b), imState.Picture.Icon);
+  if Configuration.EnableStatusbar then
   begin
-    if iBusyCounter > 0 then
-      ilStates.GetIcon(ICON_BUSY, imState.Picture.Icon)
-    else
-      ilStates.GetIcon(ICON_READY, imState.Picture.Icon);
-    if Configuration.EnableStatusbar then
-      StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := Routines.GetConditionalString(iBusyCounter > 0,
-        'Пожалуйста, подождите...', 'Готово');
+    StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := Routines.GetConditionalString(BusyCounter > 0,
+      'Пожалуйста, подождите...', 'Готово');
+  end
+  else
+  begin
+    StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := EmptyStr;
   end;
   Application.ProcessMessages;
-end;
-
-procedure TMainForm.Inc_BusyState;
-begin
-  with MainForm do
-  begin
-    iBusyCounter := iBusyCounter + 1;
-    if iBusyCounter < 0 then
-      iBusyCounter := 0;
-    Refresh_BusyState;
-  end;
-end;
-
-procedure TMainForm.miStatusBarClick(Sender: TObject);
-begin
-  ProcedureHeader('Процедура включения/отключения отображения панели статуса',
-    '{3550143C-FACD-490F-A327-4E1496CDEC5E}');
-
-  StatusBar.Visible := miStatusBar.Checked;
-  Configuration.EnableStatusbar := StatusBar.Visible;
-  Log.SendInfo('Панель статуса ' + Routines.GetConditionalString(StatusBar.Visible, 'в', 'от') + 'ключена.');
-
-  ProcedureFooter;
-end;
-
-procedure TMainForm.miToolBarClick(Sender: TObject);
-begin
-  ProcedureHeader('Процедура включения/отключения отображения панели кнопок', '{786D709B-0201-41AE-923C-BC307AE26A6B}');
-
-  // StatusBar1.Visible:=miStatusbar.Checked;
-  // Configuration.ShowToolbar:=StatusBar1.Visible;
-  // Log.SendInfo('Панель кнопок '+Routines.GetConditionalString(StatusBar1.Visible, 'в', 'от')+'ключена.');
-
-  ProcedureFooter;
-end;
-
-procedure TMainForm.Dec_BusyState;
-begin
-  with MainForm do
-  begin
-    iBusyCounter := iBusyCounter - 1;
-    if iBusyCounter < 0 then
-      iBusyCounter := 0;
-    Refresh_BusyState;
-  end;
 end;
 
 procedure TMainForm.actAboutExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + actAbout.Caption + '"', '{90CC0AAB-ED7C-46FF-97FF-4431F18EBA1A}');
-  Do_About(True);
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actAbout.Caption]), '{90CC0AAB-ED7C-46FF-97FF-4431F18EBA1A}');
+  _About(True);
   ProcedureFooter;
 end;
 
-procedure TMainForm.Do_About(const aButtonVisible: Boolean);
-var
-  AboutForm: TAboutForm;
-  iBusy: Integer;
+procedure TMainForm._About(const AButtonVisible: Boolean);
 begin
-  ProcedureHeader('Процедура отображения окна ' + RsAboutFormSuffix, '{754C2801-ED59-4595-AC3E-20DBF98F6779}');
-
-  AboutForm := TAboutForm.Create(Self, aButtonVisible, Addr(MainForm.iBusyCounter), MainForm.Inc_BusyState,
-    MainForm.Dec_BusyState, MainForm.Refresh_BusyState, pbMain);
-  with AboutForm do
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsAboutFormSuffix]), '{754C2801-ED59-4595-AC3E-20DBF98F6779}');
+  with TAboutForm.Create(Self, AButtonVisible, Addr(MainForm.BusyCounter), RefreshBusyState, pbMain) do
+  begin
     try
-      PreShowModal(RsAboutFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(RsAboutFormSuffix, iBusy);
       Free;
     end;
-
+  end;
   ProcedureFooter;
 end;
 
 procedure TMainForm.actHelpExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + actHelp.Caption + '"', '{D066E67D-C195-440D-94C2-6757C427DCF6}');
-  Do_Help;
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{D066E67D-C195-440D-94C2-6757C427DCF6}');
+  _Help;
   ProcedureFooter;
 end;
 
 procedure TMainForm.actQuitExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + actQuit.Caption + '"', '{5DB14721-5FC4-4B42-B0DB-4E7C323A2AA2}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actQuit.Caption]), '{5DB14721-5FC4-4B42-B0DB-4E7C323A2AA2}');
   Close;
   ProcedureFooter;
 end;
 
 procedure TMainForm.actReportExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + actReport.Caption + '"',
-    '{90957E86-35D1-4C1B-9C1F-4C99CE5D2B56}');
-  Do_Report;
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actReport.Caption]), '{90957E86-35D1-4C1B-9C1F-4C99CE5D2B56}');
+  _Report;
   ProcedureFooter;
 end;
 
-procedure TMainForm.Do_Help;
+procedure TMainForm.actStatusBarExecute(Sender: TObject);
 var
-  bError: Boolean;
-  sErrorMessage: string;
+  b: Boolean;
 begin
-  ProcedureHeader('Процедура открытия справочного файла программы', '{457E450C-4870-4B17-9594-EB7F91B4578E}');
-  bError := False;
+  ProcedureHeader('Процедура включения/отключения отображения панели статуса', '{3550143C-FACD-490F-A327-4E1496CDEC5E}');
+  b := actStatusBar.Checked;
 
-  Log.SendInfo('Производится попытка открытия справочного файла программы...');
-  if (FileExists(ExpandFileName(Application.HelpFile))) then
-    Application.HelpContext(0)
-  else
-    Routines.GenerateError('Извините, справочный файл к данной программе не найден.', sErrorMessage, bError);
+  StatusBar.Visible := b;
+  Configuration.EnableStatusbar := b;
+  Log.SendInfo('Панель статуса ' + Routines.GetConditionalString(b, 'в', 'от') + 'ключена.');
 
-  PreFooter(Handle, bError, sErrorMessage);
   ProcedureFooter;
 end;
 
-procedure TMainForm.FormDestroy(Sender: TObject);
+procedure TMainForm.actToolBarExecute(Sender: TObject);
+var
+  b: Boolean;
 begin
-  FreeAndNil(Configuration);
-  FreeAndNil(CurrentUser);
+  ProcedureHeader('Процедура включения/отключения отображения панели кнопок', '{786D709B-0201-41AE-923C-BC307AE26A6B}');
+  b := actToolBar.Checked;
+
+  // StatusBar.Visible:=b;
+  Configuration.EnableToolbar := b;
+  Log.SendInfo('Панель кнопок ' + Routines.GetConditionalString(b, 'в', 'от') + 'ключена.');
+
+  ProcedureFooter;
 end;
 
-procedure TMainForm.FormCreate(Sender: TObject);
+procedure TMainForm._Help;
+begin
+  ProcedureHeader(RsContextHelpProcedure, '{55CCABBE-B299-44B5-B6EC-3DD41090C3FB}');
+
+  Log.SendInfo(RsTryingToOpenHelpFile);
+  if (FileExists(ExpandFileName(Application.HelpFile))) then
+  begin
+    Application.HelpContext(HelpContext);
+  end
+  else
+  begin
+    GenerateError(RsHelpFileNonFound);
+  end;
+
+  ProcedureFooter;
+end;
+
+procedure TMainForm.Initialize;
 var
   PanelRect: TRect;
 
-  procedure BindMainProgressBarToStatusBar;
+  procedure BindProgressBarToStatusBar;
   begin
     THackControl(pbMain).SetParent(StatusBar);
     SendMessage(StatusBar.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
-    pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right - PanelRect.Left,
-      PanelRect.Bottom - PanelRect.Top - 1);
+    pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right - PanelRect.Left, PanelRect.Bottom - PanelRect.Top - 1);
   end;
 
   procedure BindStateImageToStatusBar;
@@ -397,115 +306,29 @@ var
   end;
 
 begin
-  // переменная правдива с момента запуска программы до момента отображения главного окна
-  bFirstRun := True;
-  CurrentUser := TAccount.Create; // создание и инициализщация объекта текущего пользователя
-  Configuration := TConfiguration.Create; // создание и инициализщация объекта конфигурации
-  (* Configuration.RNE4Server.LogProvider := MainForm.Log;
-    Configuration.MessagesServer.LogProvider := MainForm.Log; *)
-  BindMainProgressBarToStatusBar; // привязка прогрессбара к позиции на строке статуса
+  BusyCounter := 0;
+  RefreshBusyState;
+  Configuration.DBServer.LogProvider := Log;
+  Configuration.MessageServer.LogProvider := Log;
+  BindProgressBarToStatusBar; // привязка прогрессбара к позиции на строке статуса
   BindStateImageToStatusBar; // привязка иконки готовности к позиции на строке статуса
   Application.OnHint := ApplicationOnHint;
-  (* Do_LoadConfiguration; // загрузка настроек из файла *)
-  Do_ApplyConfiguration; // применение настроек к интерфейсу
-
-  { TODO : добавить отображение окна "о программе" }
-
-  Do_UpdateActions;
+  _LoadConfiguration; // загрузка настроек из файла
+  inherited;
+  _ApplyConfiguration; // применение настроек к интерфейсу
 end;
 
-procedure TMainForm.ApplicationOnHint(Sender: TObject);
+procedure TMainForm.InitializeLog;
 begin
-  if Configuration.EnableStatusbar then
-    StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := GetLongHint(Application.Hint);
+  inherited;
+  // установка параметров протоколирования в соответствии с настройками программы
+  Log.UserName := CurrentUser.Login;
+  Log.AllowedTypes := Configuration.KeepLogTypes;
+  Log.Enabled := Configuration.EnableLog;
 end;
 
-procedure TMainForm.FormShow(Sender: TObject);
+procedure TMainForm.Finalize;
 begin
-  ProcedureHeader('Процедура-обработчик события отображения окна', '{9FD296B5-1A3D-4E90-85CA-492271D2B6A9}');
-
-  if bFirstRun then
-  begin
-    iBusyCounter := 0;
-    bFirstRun := False;
-    if Configuration.EnableSplashAtStart then
-      Do_About(False);
-    // if Configuration.AutoLogon then
-    // Do_Logon;
-  end;
-  Refresh_BusyState;
-
-  ProcedureFooter;
-end;
-
-function TMainForm.GetMultiBuffer: IMeasureList;
-begin
-  if not Assigned(FMultiBuffer) then
-  begin
-    FMultiBuffer := TMeasureList.Create;
-  end;
-  Result := FMultiBuffer;
-end;
-
-procedure TMainForm.Do_UpdateActions;
-var
-  b: Boolean;
-begin
-  ProcedureHeader('Процедура обновления состояния действий', '{03351462-40CF-47ED-AE96-3F9E0D9EA148}');
-
-  b := CurrentUser.Logged;
-
-  actLogon.Enabled := not b;
-  // actLogon.Visible:=not b;
-  Log.SendDebug('Действие "' + actLogon.Caption + '" ' + Routines.GetConditionalString(actLogon.Enabled, 'включено',
-    'отключено') + '.');
-  actLogout.Enabled := b;
-  // actLogout.Visible:=b;
-  Log.SendDebug('Действие "' + actLogout.Caption + '" ' + Routines.GetConditionalString(actLogout.Enabled, 'включено',
-    'отключено') + '.');
-  b := b and CurrentUser.Privilegies.Accounting;
-  actAccounts.Enabled := b;
-  // actAccounts.Visible:=b;
-
-  Application.ProcessMessages;
-
-  ProcedureFooter;
-end;
-
-procedure TMainForm.actConfigurationExecute(Sender: TObject);
-begin
-  ProcedureHeader('Процедура-обработчик действия "' + actConfiguration.Caption + '"',
-    '{024B2718-8D00-49A1-9E1E-C02CB2696CE0}');
-  Do_Configuration;
-  ProcedureFooter;
-end;
-
-procedure TMainForm.Do_Configuration;
-var
-  ConfigurationForm: TConfigurationForm;
-  iBusy: Integer;
-begin
-  ProcedureHeader('Процедура отображения окна ' + RsConfigurationFormSuffix, '{886B460D-4C73-46BE-829E-E4421B7C4378}');
-
-  ConfigurationForm := TConfigurationForm.Create(Self, Configuration.ConfigurationFormPosition);
-  with ConfigurationForm do
-    try
-      PreShowModal(RsConfigurationFormSuffix, iBusy);
-      ShowModal;
-    finally
-      PostShowModal(RsConfigurationFormSuffix, iBusy);
-      if ModalResult = mrOk then
-        Do_ApplyConfiguration;
-      Free;
-    end;
-
-  ProcedureFooter;
-end;
-
-procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-begin
-  ProcedureHeader('Процедура-обработчик события закрытия окна', '{A430AB2D-F069-4FFF-A5CA-883D7B3E1985}');
-
   // применение текущих настроек главного окна к конфигурации
   Configuration.MainFormLeft := Left;
   Configuration.MainFormTop := Top;
@@ -513,56 +336,160 @@ begin
   Configuration.MainFormHeight := Height;
   Configuration.MainFormEnableCentered := False;
   Configuration.MainFormEnableFullScreenAtLaunch := WindowState = wsMaximized;
-
   // запись конфигурации
-  Do_SaveConfiguration;
+  _SaveConfiguration;
+  inherited;
+end;
 
-  Configuration.DBServer.Connected := False;
-  Configuration.MessageServer.Connected := False;
-  Do_UpdateActions;
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+  Initialize;
+  if Configuration.EnableSplashAtStart then
+  begin
+    _About(False);
+  end;
+  if Configuration.EnableAutoLogon then
+  begin
+    _Logon;
+  end;
+end;
+
+procedure TMainForm.ApplicationOnHint(Sender: TObject);
+begin
+  if Configuration.EnableStatusbar then
+  begin
+    StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := GetLongHint(Application.Hint);
+  end;
+end;
+
+function TMainForm.GetConfiguration: IConfiguration;
+begin
+  if not Assigned(FConfiguration) then
+  begin
+    FConfiguration := GetIConfiguration;
+  end;
+  Result := FConfiguration;
+end;
+
+function TMainForm.GetCurrentUser: IAccount;
+begin
+  if not Assigned(FCurrentUser) then
+  begin
+    FCurrentUser := GetIAccount;
+  end;
+  Result := FCurrentUser;
+end;
+
+function TMainForm.GetMultiBuffer: IMeasureList;
+begin
+  if not Assigned(FMultiBuffer) then
+  begin
+    FMultiBuffer := GetIMeasureList;
+  end;
+  Result := FMultiBuffer;
+end;
+
+procedure TMainForm.actLogonUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  if Assigned(CurrentUser) then
+  begin
+    b := not CurrentUser.Logged;
+    if actLogon.Enabled <> b then
+    begin
+      ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actLogon.Caption]), '{03684037-88D8-43AE-B198-A1DF544BDC40}');
+      actLogon.Enabled := b;
+      Log.SendDebug(GetActionUpdateLogMessage(actLogon));
+      ProcedureFooter;
+    end;
+  end;
+end;
+
+procedure TMainForm.actLogoffUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  if Assigned(CurrentUser) then
+  begin
+    b := CurrentUser.Logged;
+    if actLogoff.Enabled <> b then
+    begin
+      ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actLogoff.Caption]), '{AFDD10B3-F271-4126-A984-0607A15A0950}');
+      actLogoff.Enabled := b;
+      Log.SendDebug(GetActionUpdateLogMessage(actLogoff));
+      ProcedureFooter;
+    end;
+  end;
+end;
+
+procedure TMainForm.actAccountsUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  if Assigned(CurrentUser) then
+  begin
+    b := CurrentUser.Logged and CurrentUser.Privilegies.Accounting;
+    if actAccounts.Enabled <> b then
+    begin
+      ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actAccounts.Caption]), '{AFDD10B3-F271-4126-A984-0607A15A0950}');
+      actAccounts.Enabled := b;
+      Log.SendDebug(GetActionUpdateLogMessage(actAccounts));
+      ProcedureFooter;
+    end;
+  end;
+end;
+
+procedure TMainForm.actConfigurationExecute(Sender: TObject);
+begin
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actConfiguration.Caption]),
+    '{024B2718-8D00-49A1-9E1E-C02CB2696CE0}');
+  _Configuration;
+  ProcedureFooter;
+end;
+
+procedure TMainForm._Configuration;
+begin
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsConfigurationFormSuffix]), '{886B460D-4C73-46BE-829E-E4421B7C4378}');
+
+  with TConfigurationForm.Create(Self, Configuration.ConfigurationFormPosition) do
+  begin
+    try
+      ShowModal;
+    finally
+      if ModalResult = mrOk then
+      begin
+        _ApplyConfiguration;
+      end;
+      Free;
+    end;
+  end;
 
   ProcedureFooter;
 end;
 
-procedure TMainForm.Do_LoadConfiguration;
-var
-  bError: Boolean;
-  sErrorMessage: string;
+procedure TMainForm._LoadConfiguration;
 begin
-  if not bFirstRun then
-  begin
-    ProcedureHeader('Процедура чтения настроек программы из файла', '{650B9486-2600-4038-B711-3281F7252336}');
-    bError := False;
-    Log.SendInfo('Производится попытка чтения настроек программы из файла...');
-  end;
+  ProcedureHeader('Процедура чтения настроек программы из файла', '{650B9486-2600-4038-B711-3281F7252336}');
+  Log.SendInfo('Производится попытка чтения настроек программы из файла...');
   try
     Screen.Cursor := crHourGlass;
     try
       Configuration.Load;
-      if not bFirstRun then
-        Log.SendInfo('Чтение настроек программы из файла прошло успешно.');
+      Log.SendInfo('Чтение настроек программы из файла прошло успешно.');
     finally
       Screen.Cursor := crDefault;
     end;
   except
-    if not bFirstRun then
-      Routines.GenerateError('Произошла ошибка при попытке чтения настроек программы из файла!', sErrorMessage, bError);
+    GenerateError('Произошла ошибка при попытке чтения настроек программы из файла!');
     Application.HandleException(Self);
   end;
-  if not bFirstRun then
-  begin
-    PreFooter(Handle, bError, sErrorMessage);
-    ProcedureFooter;
-  end;
+  ProcedureFooter;
 end;
 
-procedure TMainForm.Do_SaveConfiguration;
-var
-  bError: Boolean;
-  sErrorMessage: string;
+procedure TMainForm._SaveConfiguration;
 begin
   ProcedureHeader('Процедура записи настроек программы в файл', '{2BD55804-9631-45C8-9484-42F4DDC45C29}');
-  bError := False;
 
   Log.SendInfo('Производится попытка записи настроек программы в файл...');
   try
@@ -576,9 +503,9 @@ begin
   except
     on E: EIniFileException do
     begin
-      Routines.GenerateError(E.Message, sErrorMessage, bError);
+      GenerateError(E.Message);
       if MessageBox(Handle, PWideChar('Вы желаете повторить попытку записи настроек программы в файл?'),
-        PWideChar(MainForm.Caption + ' - Предупреждение'), MB_OKCANCEL + MB_ICONWARNING + MB_DEFBUTTON1) = IDOK then
+        PWideChar(Application.Title + ' - Предупреждение'), MB_OKCANCEL + MB_ICONWARNING + MB_DEFBUTTON1) = IDOK then
         try
           Screen.Cursor := crHourGlass;
           try
@@ -586,7 +513,7 @@ begin
             Log.SendInfo('Запись настроек программы в файл прошла успешно.');
           except
             on E: EIniFileException do
-              Routines.GenerateError(E.Message, sErrorMessage, bError);
+              GenerateError(E.Message);
           end;
         finally
           Screen.Cursor := crDefault;
@@ -596,18 +523,12 @@ begin
       Application.HandleException(Self);
   end;
 
-  PreFooter(Handle, bError, sErrorMessage);
   ProcedureFooter;
 end;
 
-procedure TMainForm.Do_ApplyConfiguration;
+procedure TMainForm._ApplyConfiguration;
 begin
   ProcedureHeader('Процедура применения изменений к интерфейсу программы', '{67A9E9BC-62AC-4848-B20D-C8B5095DEB6C}');
-
-  // установка параметров протоколирования в соответствии с настройками программы
-  Log.UserName := CurrentUser.Login;
-  Log.AllowedTypes := Configuration.KeepLogTypes;
-  Log.Enabled := Configuration.EnableLog;
 
   // установка видимости панели статуса в соответствии с настройками программы
   miStatusBar.Checked := Configuration.EnableStatusbar;
@@ -632,40 +553,34 @@ begin
   ProcedureFooter;
 end;
 
-procedure TMainForm.Do_Report;
-var
-  ReportForm: TReportForm;
-  iBusy: Integer;
+procedure TMainForm._Report;
 begin
-  ProcedureHeader('Процедура отображения окна ' + RsReportFormSuffix, '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsReportFormSuffix]), '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
 
-  ReportForm := TReportForm.Create(Self, Configuration.ReportFormPosition);
-  with ReportForm do
+  with TReportForm.Create(Self, Configuration.ReportFormPosition) do
+  begin
     try
-      PreShowModal(RsReportFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(RsReportFormSuffix, iBusy);
-      { TODO : дописать! }
-      // if ModalResult=mrOk then
-      // Do_ApplyConfiguration;
+      if ModalResult = mrOk then
+      begin
+      end;
       Free;
     end;
+  end;
 
   ProcedureFooter;
 end;
 
 procedure TMainForm.actMultibufferExecute(Sender: TObject);
 var
-  MultiBufferForm: TMultiBufferForm;
-  iBusy: Integer;
   i: Integer;
   aListItem: TListItem;
 begin
-  ProcedureHeader('Процедура отображения окна ' + RsMultiBufferFormSuffix, '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsMultiBufferFormSuffix]), '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
 
-  MultiBufferForm := TMultiBufferForm.Create(Self, Configuration.MultibufferFormPosition);
-  with MultiBufferForm do
+  with TMultiBufferForm.Create(Self, Configuration.MultibufferFormPosition) do
+  begin
     try
       for i := 0 to MultiBuffer.Count - 1 do
       begin
@@ -675,134 +590,115 @@ begin
           MultiBuffer[i].Producer + '|' + MultiBuffer[i].Performer + '|' + MultiBuffer[i].Organizer + '|' +
           MultiBuffer[i].TicketPrice + '|' + string(MultiBuffer[i].OtherInfoPlane));
       end;
-      PreShowModal(RsMultiBufferFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(RsMultiBufferFormSuffix, iBusy);
-      { TODO : дописать! }
-      // if ModalResult=mrOk then
-      // Do_ApplyConfiguration;
+      if ModalResult = mrOk then
+      begin
+      end;
       Free;
     end;
+  end;
 
   ProcedureFooter;
 end;
 
 procedure TMainForm.actViewMessageExecute(Sender: TObject);
-var
-  ViewMessageForm: TViewMessageForm;
-  iBusy: Integer;
 begin
-  ProcedureHeader('Процедура отображения окна ' + RsViewMessageFormSuffix, '{347244A6-22DF-44DF-873B-2B55FC5112B9}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsViewMessageFormSuffix]), '{347244A6-22DF-44DF-873B-2B55FC5112B9}');
 
-  ViewMessageForm := TViewMessageForm.Create(Self, Configuration.ViewMessageFormPosition);
-  with ViewMessageForm do
+  with TViewMessageForm.Create(Self, Configuration.ViewMessageFormPosition) do
+  begin
     try
-      PreShowModal(RsViewMessageFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(RsViewMessageFormSuffix, iBusy);
-      { TODO : дописать! }
-      // if ModalResult=mrOk then
-      // Do_ApplyConfiguration;
+      if ModalResult = mrOk then
+      begin
+      end;
       Free;
     end;
+  end;
 
   ProcedureFooter;
 end;
 
 procedure TMainForm.actCreateMessageExecute(Sender: TObject);
-var
-  CreateMessageForm: TCreateMessageForm;
-  iBusy: Integer;
 begin
-  ProcedureHeader('Процедура отображения окна ' + RsCreateMessageFormSuffix, '{F356F5DA-5FF7-4F78-A80E-1C563B96AF6D}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsCreateMessageFormSuffix]), '{F356F5DA-5FF7-4F78-A80E-1C563B96AF6D}');
 
-  CreateMessageForm := TCreateMessageForm.Create(Self, Configuration.CreateMessageFormPosition);
-  with CreateMessageForm do
+  with TCreateMessageForm.Create(Self, Configuration.CreateMessageFormPosition) do
+  begin
     try
-      PreShowModal(RsCreateMessageFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(RsCreateMessageFormSuffix, iBusy);
-      { TODO : дописать! }
-      // if ModalResult=mrOk then
-      // Do_ApplyConfiguration;
+      if ModalResult = mrOk then
+      begin
+      end;
       Free;
     end;
+  end;
 
   ProcedureFooter;
 end;
 
 procedure TMainForm.actAddPhoneExecute(Sender: TObject);
-var
-  AddPhoneForm: TAddEditPhoneForm;
-  iBusy: Integer;
 begin
-  ProcedureHeader('Процедура отображения окна ' + RsAddPhoneFormSuffix, '{83D61BCA-0CB5-4542-9D0A-9137AE9C733C}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsAddPhoneFormSuffix]), '{83D61BCA-0CB5-4542-9D0A-9137AE9C733C}');
 
-  AddPhoneForm := TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition);
-  with AddPhoneForm do
+  with TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition) do
+  begin
     try
       Caption := 'Добавление номера телефона';
-      PreShowModal(RsAddPhoneFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(RsAddPhoneFormSuffix, iBusy);
-      { TODO : дописать! }
-      // if ModalResult=mrOk then
-      // Do_ApplyConfiguration;
+      if ModalResult = mrOk then
+      begin
+      end;
       Free;
     end;
+  end;
 
   ProcedureFooter;
 end;
 
 procedure TMainForm.actEditPhoneExecute(Sender: TObject);
-var
-  EditPhoneForm: TAddEditPhoneForm;
-  iBusy: Integer;
 begin
-  ProcedureHeader('Процедура отображения окна ' + RsEditPhoneFormSuffix, '{36EA36F5-EDE2-4A3A-A7DE-BB9790D3F50F}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsEditPhoneFormSuffix]), '{36EA36F5-EDE2-4A3A-A7DE-BB9790D3F50F}');
 
-  EditPhoneForm := TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition);
-  with EditPhoneForm do
+  with TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition) do
+  begin
     try
       Caption := 'Исправление номера телефона';
-      PreShowModal(RsEditPhoneFormSuffix, iBusy);
       ShowModal;
     finally
-      PostShowModal(RsEditPhoneFormSuffix, iBusy);
-      { TODO : дописать! }
-      // if ModalResult=mrOk then
-      // Do_ApplyConfiguration;
+      if ModalResult = mrOk then
+      begin
+      end;
       Free;
     end;
+  end;
 
   ProcedureFooter;
 end;
 
 procedure TMainForm.actLogonExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + actLogon.Caption + '"', '{25B404A0-78C1-47D6-AFCE-33168CAF333A}');
-  Do_Logon;
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actLogon.Caption]), '{25B404A0-78C1-47D6-AFCE-33168CAF333A}');
+  _Logon;
   ProcedureFooter;
 end;
 
-procedure TMainForm.actLogoutExecute(Sender: TObject);
+procedure TMainForm.actLogoffExecute(Sender: TObject);
 begin
-  ProcedureHeader('Процедура-обработчик действия "' + actLogout.Caption + '"',
-    '{3A1F49AC-A9CF-4FC7-90AA-A6D2E5AE1619}');
-  Do_Logout;
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actLogoff.Caption]), '{3A1F49AC-A9CF-4FC7-90AA-A6D2E5AE1619}');
+  _Logoff;
   ProcedureFooter;
 end;
 
-procedure TMainForm.Do_Logon;
+procedure TMainForm._Logon;
 // resourcestring
 // TEXT_AOUTOLOGON_ERROR='Выполнить автоматический ыход не удалось - проверьте правильность сохраненных логина и пароля пользователя!';
 var
   LoginForm: TLoginForm;
-  iBusy: Integer;
   bPassLoginForm: Boolean;
 
   (* procedure _Login;
@@ -859,10 +755,10 @@ var
     end; *)
 
 begin
-  ProcedureHeader('Процедура отображения окна ' + RsLoginFormSuffix, '{68883F7C-57C2-4E56-B2FB-AEDCB1EB25DC}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsLoginFormSuffix]), '{68883F7C-57C2-4E56-B2FB-AEDCB1EB25DC}');
 
-  bPassLoginForm := Configuration.EnableAutoLogon and Configuration.EnableStoreLogin and Configuration.EnableStorePassword and
-    (Configuration.Login <> '');
+  bPassLoginForm := Configuration.EnableAutoLogon and Configuration.EnableStoreLogin and
+    Configuration.EnableStorePassword and (Configuration.StoredLogin <> EmptyStr);
 
   if bPassLoginForm then
     try
@@ -870,8 +766,9 @@ begin
     except
       on E: EMySQLException do
       begin
-        MainForm.ShowErrorBox(MainForm.Handle, E.Message);
         bPassLoginForm := False;
+        GenerateError(E.Message);
+        ShowErrorDialog;
       end;
       // else
       // raise Exception.Create(TEXT_AOUTOLOGON_ERROR);
@@ -883,24 +780,25 @@ begin
     with LoginForm do
       try
         if Configuration.EnableStoreLogin then
-          edbxLogin.Text := Configuration.Login;
+          edbxLogin.Text := Configuration.StoredLogin;
         if Configuration.EnableStorePassword then
-          mePassword.Text := Configuration.Password;
-        PreShowModal(RsLoginFormSuffix, iBusy);
+          mePassword.Text := Configuration.StoredPassword;
         ShowModal;
       finally
-        PostShowModal(RsLoginFormSuffix, iBusy);
         if ModalResult = mrOk then
         begin
           if Configuration.EnableStoreLogin then
-            Configuration.Login := edbxLogin.Text;
+            Configuration.StoredLogin := edbxLogin.Text;
           if Configuration.EnableStorePassword then
-            Configuration.Password := mePassword.Text;
+            Configuration.StoredPassword := mePassword.Text;
           try
             (* _Login; *)
           except
             on E: Exception do
-              MainForm.ShowErrorBox(MainForm.Handle, E.Message);
+            begin
+              GenerateError(E.Message);
+              ShowErrorDialog;
+            end;
           end;
         end;
         Free;
@@ -910,7 +808,7 @@ begin
   ProcedureFooter;
 end;
 
-procedure TMainForm.Do_Logout;
+procedure TMainForm._Logoff;
 begin
 
 end;
