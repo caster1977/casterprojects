@@ -3,7 +3,7 @@ unit OA5.uTCreateMessageForm;
 interface
 
 uses
-  CastersPackage.uTPositionedLogForm,
+  OA5.uTOA5PositionedLogForm,
   Vcl.ComCtrls,
   Vcl.Controls,
   Vcl.ExtCtrls,
@@ -13,7 +13,7 @@ uses
   Vcl.StdCtrls;
 
 type
-  TCreateMessageForm = class(TPositionedLogForm)
+  TCreateMessageForm = class(TOA5PositionedLogForm)
     ImageList: TImageList;
     actHelp: TAction;
     actClose: TAction;
@@ -52,9 +52,9 @@ implementation
 {$R *.dfm}
 
 uses
+  CastersPackage.uResourceStrings,
   System.SysUtils,
   Vcl.Forms,
-  CastersPackage.uTLogForm,
   OA5.uTMainForm;
 
 const

@@ -3,7 +3,7 @@ unit OA5.uTPermissionsForm;
 interface
 
 uses
-  CastersPackage.uTPositionedLogForm,
+  OA5.uTOA5PositionedLogForm,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
@@ -13,7 +13,7 @@ uses
   Vcl.CheckLst;
 
 type
-  TPermissionsForm = class(TPositionedLogForm)
+  TPermissionsForm = class(TOA5PositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actSelectAll: TAction;
@@ -52,6 +52,7 @@ implementation
 {$R *.dfm}
 
 uses
+  CastersPackage.uResourceStrings,
   Vcl.Forms,
   System.SysUtils,
   CastersPackage.uTLogForm,

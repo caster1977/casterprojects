@@ -28,7 +28,9 @@ uses
   OA5.uTSetPasswordForm in 'UI\OA5.uTSetPasswordForm.pas' {SetPasswordForm},
   OA5.uTViewMessageForm in 'UI\OA5.uTViewMessageForm.pas' {ViewMessageForm},
   OA5.uTViewMessagesForm in 'UI\OA5.uTViewMessagesForm.pas' {ViewMessagesForm},
-  OA5.uIConfiguration in 'Logic\OA5.uIConfiguration.pas';
+  OA5.uIConfiguration in 'Logic\OA5.uIConfiguration.pas',
+  OA5.uTOA5PositionedLogForm in 'Logic\OA5.uTOA5PositionedLogForm.pas' {OA5PositionedLogForm},
+  OA5.uTOA5LogForm in 'Logic\OA5.uTOA5LogForm.pas' {OA5LogForm};
 
 {$R *.res}
 

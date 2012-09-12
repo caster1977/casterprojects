@@ -1311,10 +1311,6 @@ object ConfigurationForm: TConfigurationForm
           Caption = ' '#1092#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1103' '#1086#1090#1095#1105#1090#1086#1074
           ImageIndex = 3
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Bevel3: TBevel
             Left = 0
             Top = 0
@@ -1717,7 +1713,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 176
     Top = 96
     Bitmap = {
-      494C010106000800EC0310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800A80410001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2018,6 +2014,7 @@ object ConfigurationForm: TConfigurationForm
       Hint = #1054#1090#1082#1088#1099#1090#1100' '#1089#1087#1088#1072#1074#1082#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1089#1087#1088#1072#1074#1086#1095#1085#1086#1075#1086' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
       ImageIndex = 0
       OnExecute = actHelpExecute
+      OnUpdate = actHelpUpdate
     end
     object actPreviousPage: TAction
       Hint = 

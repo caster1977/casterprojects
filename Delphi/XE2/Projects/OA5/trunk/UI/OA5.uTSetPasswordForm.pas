@@ -4,7 +4,7 @@ interface
 
 uses
   Vcl.Forms,
-  CastersPackage.uTPositionedLogForm,
+  OA5.uTOA5PositionedLogForm,
   Vcl.PlatformDefaultStyleActnCtrls,
   System.Classes,
   Vcl.ActnList,
@@ -15,7 +15,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-  TSetPasswordForm = class(TPositionedLogForm)
+  TSetPasswordForm = class(TOA5PositionedLogForm)
     ImageList: TImageList;
     ActionList: TActionList;
     actApply: TAction;
@@ -50,9 +50,9 @@ implementation
 {$R *.dfm}
 
 uses
+  CastersPackage.uResourceStrings,
   System.SysUtils,
   OA5.uTMainForm,
-  CastersPackage.uTLogForm,
   CastersPackage.uRoutines;
 
 const
