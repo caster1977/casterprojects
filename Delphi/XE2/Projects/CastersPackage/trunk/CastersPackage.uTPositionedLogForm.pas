@@ -15,7 +15,8 @@ uses
   CastersPackage.uTLogForm,
   CastersPackage.uIPositionedDialog,
   CastersPackage.uTDialogPosition,
-  Vcl.ComCtrls;
+  Vcl.ComCtrls,
+  CastersPackage.uTRefreshBusyStateMethod;
 
 type
   TPositionedLogForm = class(TLogForm, IPositionedDialog)
@@ -25,8 +26,7 @@ type
     procedure SetDialogPosition(const AValue: TDialogPosition);
   public
     constructor Create(AOwner: TComponent; const ADialogPosition: TDialogPosition; ABusyCounter: PInteger = nil;
-      AIncrease: TBusyStateMethod = nil; ADecrease: TBusyStateMethod = nil; ARefresh: TBusyStateMethod = nil;
-      AProgressBar: TProgressBar = nil); reintroduce; virtual;
+      ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil; AProgressBar: TProgressBar = nil); reintroduce; virtual;
   published
     property DialogPosition: TDialogPosition read GetDialogPosition write SetDialogPosition nodefault;
   end;
@@ -35,10 +35,11 @@ implementation
 
 {$R *.dfm}
 
-constructor TPositionedLogForm.Create(AOwner: TComponent; const ADialogPosition: TDialogPosition;
-  ABusyCounter: PInteger; AIncrease, ADecrease, ARefresh: TBusyStateMethod; AProgressBar: TProgressBar);
+constructor TPositionedLogForm.Create(AOwner: TComponent;
+  const ADialogPosition: TDialogPosition; ABusyCounter: PInteger;
+  ARefreshBusyStateMethod: TRefreshBusyStateMethod; AProgressBar: TProgressBar);
 begin
-  inherited Create(AOwner, ABusyCounter, AIncrease, ADecrease, ARefresh, AProgressBar);
+  inherited Create(AOwner, ABusyCounter, ARefreshBusyStateMethod, AProgressBar);
   DialogPosition := ADialogPosition;
 end;
 

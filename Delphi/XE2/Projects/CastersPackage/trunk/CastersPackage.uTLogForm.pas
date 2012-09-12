@@ -4,6 +4,7 @@ interface
 
 uses
   CastersPackage.uLogProvider,
+  CastersPackage.uICustomized,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -15,52 +16,42 @@ uses
   Vcl.Dialogs,
   Vcl.ComCtrls,
   Vcl.ActnList,
-  CastersPackage.uTDialogPosition;
+  CastersPackage.uTDialogPosition,
+  CastersPackage.uTRefreshBusyStateMethod;
 
 type
-  TBusyStateMethod = procedure of object;
-
-  TLogForm = class(TForm)
+  TLogForm = class(TForm, ICustomized)
     Log: TLogProvider;
   strict private
     FBusyCounter: PInteger;
-    FIncrease: TBusyStateMethod;
-    FDecrease: TBusyStateMethod;
-    FRefresh: TBusyStateMethod;
+    FRefresh: TRefreshBusyStateMethod;
     FProgressBar: TProgressBar;
     FError: Boolean;
     FErrorMessage: string;
     procedure ClearError;
-    procedure RunBusy(ABusyStateMethod: TBusyStateMethod);
-    procedure ShowErrorDialog;
+    procedure RunRefreshBusy;
+    procedure RunIncreaseBusy;
+    procedure RunDecreaseBusy;
   protected
+    procedure ShowErrorDialog;
     procedure ProcedureHeader(const ATitle, ALogGroupGUID: string);
     procedure ProcedureFooter;
     procedure GenerateError(const AMessage: string);
     function GetActionUpdateLogMessage(AAction: TCustomAction): string;
+    procedure Initialize; virtual;
+    procedure InitializeLog; virtual;
+    procedure Finalize; virtual;
   public
-    constructor Create(AOwner: TComponent; ABusyCounter: PInteger = nil; AIncrease: TBusyStateMethod = nil;
-      ADecrease: TBusyStateMethod = nil; ARefresh: TBusyStateMethod = nil; AProgressBar: TProgressBar = nil);
-      reintroduce; virtual;
+    constructor Create(AOwner: TComponent; ABusyCounter: PInteger = nil;
+      ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil; AProgressBar: TProgressBar = nil); reintroduce; virtual;
+    destructor Destroy; override;
+    function ShowModal: Integer; override;
   end;
-
-resourcestring
-  RsEventHandlerOfActionExecute = 'Процедура-обработчик действия "%s"';
-  RsEventHandlerOfActionUpdate = 'Процедура-обработчик обновления действия "%s';
-  RsEventHandlerOfFormCreation = 'Процедура-обработчик события создания окна %s';
-  RsEventHandlerOfFormShowing = 'Процедура-обработчик события отображения окна %s';
-  RsWindowShowed ='Отображено окно %s.';
-  RsWindowClosed = 'Окно %s закрыто.';
-  RsWindowClosedByUser = 'Окно %s закрыто пользователем.';
-  RsContextHelpProcedure = 'Процедура вызова контекстной справки';
-  RsTryingToOpenHelpFile = 'Производится попытка открытия справочного файла программы...';
-  RsHelpFileNonFound = 'Извините, справочный файл к данной программе не найден.';
-  RsCloseModalWithOkProcedure = 'Процедура закрытия модального окна %s с результатом mrOk';
-  RsCloseModalWithCancelProcedure = 'Процедура закрытия модального окна %s с результатом mrCancel';
 
 implementation
 
 {$R *.dfm}
+
 uses
   CastersPackage.uRoutines;
 
@@ -70,47 +61,93 @@ resourcestring
   RsActionStateChanged = 'Действие "%s" %s.';
   RsActionOn = 'включено';
   RsActionOff = 'отключено';
-
+  RsTryingToShowModalWindow = 'Производится попытка отображения модального о' + 'кна "%s".';
+  RsModalWindowHiden = 'Модальное окно "%s" скрыто.';
 
 procedure TLogForm.ProcedureHeader(const ATitle, ALogGroupGUID: string);
 begin
   ClearError;
   Log.EnterMethod(ATitle, ALogGroupGUID);
-  RunBusy(FIncrease);
+  RunIncreaseBusy;
 end;
 
-constructor TLogForm.Create(AOwner: TComponent; ABusyCounter: PInteger;
-  AIncrease, ADecrease, ARefresh: TBusyStateMethod; AProgressBar: TProgressBar);
+constructor TLogForm.Create(AOwner: TComponent; ABusyCounter: PInteger; ARefreshBusyStateMethod: TRefreshBusyStateMethod;
+  AProgressBar: TProgressBar);
 begin
   inherited Create(AOwner);
   FBusyCounter := ABusyCounter;
-  FIncrease := AIncrease;
-  FDecrease := ADecrease;
-  FRefresh := ARefresh;
+  FRefresh := ARefreshBusyStateMethod;
   FProgressBar := AProgressBar;
-  Log.LogFile.FileNameSuffix := Application.Title + '_' + Self.Name;
+  Initialize;
+end;
+
+destructor TLogForm.Destroy;
+begin
+  Finalize;
+  inherited;
+end;
+
+procedure TLogForm.Finalize;
+begin
 end;
 
 procedure TLogForm.GenerateError(const AMessage: string);
 begin
-  FErrorMessage:=AMessage;
-  FError:=True;
+  FErrorMessage := AMessage;
+  FError := True;
 end;
 
 function TLogForm.GetActionUpdateLogMessage(AAction: TCustomAction): string;
 begin
-  Result:=EmptyStr;
+  Result := EmptyStr;
   if Assigned(AAction) then
-    begin
-      Result:=Format(RsActionStateChanged, [AAction.Caption, Routines.GetConditionalString(AAction.Enabled, RsActionOn, RsActionOff)]);
-    end;
+  begin
+    Result := Format(RsActionStateChanged, [AAction.Caption, Routines.GetConditionalString(AAction.Enabled, RsActionOn,
+      RsActionOff)]);
+  end;
 end;
 
-procedure TLogForm.RunBusy(ABusyStateMethod: TBusyStateMethod);
+procedure TLogForm.Initialize;
 begin
-  if Assigned(ABusyStateMethod) then
+  InitializeLog;
+end;
+
+procedure TLogForm.InitializeLog;
+begin
+  Log.LogFile.FileNameSuffix := Application.Title + '_' + Self.Name;
+end;
+
+procedure TLogForm.RunIncreaseBusy;
+begin
+  if Assigned(FBusyCounter) then
   begin
-    ABusyStateMethod;
+    FBusyCounter^ := FBusyCounter^ + 1;
+    if FBusyCounter^ < 0 then
+    begin
+      FBusyCounter^ := 0;
+    end;
+    RunRefreshBusy;
+  end;
+end;
+
+procedure TLogForm.RunDecreaseBusy;
+begin
+  if Assigned(FBusyCounter) then
+  begin
+    FBusyCounter^ := FBusyCounter^ - 1;
+    if FBusyCounter^ < 0 then
+    begin
+      FBusyCounter^ := 0;
+    end;
+    RunRefreshBusy;
+  end;
+end;
+
+procedure TLogForm.RunRefreshBusy;
+begin
+  if Assigned(FRefresh) then
+  begin
+    FRefresh;
   end;
 end;
 
@@ -129,7 +166,7 @@ begin
   begin
     FProgressBar.Position := FProgressBar.Min;
   end;
-  RunBusy(FDecrease);
+  RunDecreaseBusy;
   Log.ExitMethod;
 end;
 
@@ -148,18 +185,42 @@ begin
   try
     if Assigned(FBusyCounter) then
     begin
-      old_busy_counter := FBusyCounter^; // сохранение значения счётчика действий, требующих состояния "занято"
+      old_busy_counter := FBusyCounter^;
       FBusyCounter^ := 0;
-      RunBusy(FRefresh);
+      RunRefreshBusy;
     end;
     MessageBox(Handle, PWideChar(FErrorMessage), PWideChar(Format(RsShowErrorDialogCaption, [Application.Title])),
       MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
   finally
     if Assigned(FBusyCounter) then
     begin
-      FBusyCounter^ := old_busy_counter; // возвращение старого значения счётчика
-      RunBusy(FRefresh);
+      FBusyCounter^ := old_busy_counter;
+      RunRefreshBusy;
     end;
+  end;
+end;
+
+function TLogForm.ShowModal: Integer;
+var
+  old_busy_counter: Integer;
+begin
+  old_busy_counter := 0;
+  Log.SendDebug(Format(RsTryingToShowModalWindow, [Caption]));
+  try
+    if Assigned(FBusyCounter) then
+    begin
+      old_busy_counter := FBusyCounter^;
+      FBusyCounter^ := 0;
+      RunRefreshBusy;
+    end;
+    Result := inherited;
+  finally
+    if Assigned(FBusyCounter) then
+    begin
+      FBusyCounter^ := old_busy_counter;
+      RunRefreshBusy;
+    end;
+    Log.SendDebug(Format(RsModalWindowHiden, [Caption]));
   end;
 end;
 

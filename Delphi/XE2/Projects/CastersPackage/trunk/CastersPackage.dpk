@@ -60,7 +60,9 @@ contains
   CastersPackage.uTLogMessagesTypes in 'CastersPackage.uTLogMessagesTypes.pas',
   CastersPackage.uTReportFolder in 'CastersPackage.uTReportFolder.pas',
   CastersPackage.uICustomized in 'CastersPackage.uICustomized.pas',
-  CastersPackage.uINormalized in 'CastersPackage.uINormalized.pas';
+  CastersPackage.uINormalized in 'CastersPackage.uINormalized.pas',
+  CastersPackage.uTRefreshBusyStateMethod in 'CastersPackage.uTRefreshBusyStateMethod.pas',
+  CastersPackage.uResourceStrings in 'CastersPackage.uResourceStrings.pas';
 
 end.
 

@@ -47,9 +47,13 @@ begin
   inherited Create;
   s := Trim(AIniFileName);
   if s = EmptyStr then
-    FIniFileName := ChangeFileExt(ExpandFileName(Application.ExeName), '.ini')
+  begin
+    FIniFileName := ChangeFileExt(ExpandFileName(Application.ExeName), '.ini');
+  end
   else
+  begin
     FIniFileName := s;
+  end;
   Initialize;
 end;
 
@@ -64,7 +68,9 @@ var
   ini_file: TCustomIniFile;
 begin
   if FIniFileName = EmptyStr then
+  begin
     raise EIniFileDataStorage.Create(TEXT_WRONG_INIFILE_NAME);
+  end;
   ini_file := TMemIniFile.Create(FIniFileName);
   try
     Loading(ini_file);
@@ -85,16 +91,22 @@ var
 begin
   BeforeSave;
   if FIniFileName = EmptyStr then
+  begin
     raise EIniFileDataStorage.Create(TEXT_WRONG_INIFILE_NAME);
+  end;
   ini_file := TMemIniFile.Create(FIniFileName);
   try
     try
       Saving(ini_file);
       if ini_file is TMemIniFile then
+      begin
         (ini_file as TMemIniFile).UpdateFile;
+      end;
     except
       on EIniFileException do
+      begin
         raise EIniFileException.Create(TEXT_SAVE_INIFILE_ERROR);
+      end;
     end;
   finally
     ini_file.Free;

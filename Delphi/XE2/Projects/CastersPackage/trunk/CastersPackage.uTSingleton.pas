@@ -30,12 +30,11 @@ implementation
 
 uses
   System.Classes,
+  System.SysUtils,
   System.Contnrs;
 
 var
   SingletonList: TObjectList;
-
-  { TSingleton }
 
 procedure TSingleton.BeforeDestruction;
 begin
@@ -59,7 +58,7 @@ begin
     begin
       if SingletonList[i].ClassType = Self then
       begin
-        Result := TSingleton(SingletonList[i]);
+        Result := SingletonList[i] as TSingleton;
         Break;
       end;
     end;
@@ -74,11 +73,11 @@ end;
 class function TSingleton.NewInstance: TObject;
 begin
   Result := FindInstance;
-  if Result = nil then
+  if not Assigned(Result) then
   begin
     Result := inherited NewInstance;
     Result.Create;
-    RegisterInstance(TSingleton(Result));
+    RegisterInstance(Result as TSingleton);
   end;
 end;
 
@@ -100,13 +99,14 @@ end;
 
 initialization
 
-SingletonList := TObjectList.Create(True);
+begin
+  SingletonList := TObjectList.Create(True);
+end;
 
 finalization
 
-if Assigned(SingletonList) then
 begin
-  SingletonList.Free;
+  FreeAndNil(SingletonList);
 end;
 
 end.
