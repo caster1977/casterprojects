@@ -80,7 +80,8 @@ begin
   if Obj is TPrivilegies then
   begin
     o := Obj as TPrivilegies;
-    Result := (Accounting = o.Accounting) and (Editing = o.Editing) and (Clearing = o.Clearing) and (Reporting = o.Reporting);
+    Result := (Accounting = o.Accounting) and (Editing = o.Editing) and (Clearing = o.Clearing) and
+      (Reporting = o.Reporting);
   end
   else
   begin

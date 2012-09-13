@@ -83,9 +83,6 @@ type
     FLastYearStart: TDate;
     FLastYearStop: TDate;
     FLastYear: Word;
-    procedure _Create;
-    procedure _Close;
-    procedure _Help;
     procedure _SelectAll;
     procedure _SelectNone;
     procedure _UpdateLastDates;
@@ -113,8 +110,7 @@ resourcestring
 
 procedure TReportForm.actSelectAllExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectAll.Caption]),
-    '{14A91B39-D3D7-49C4-9F19-D253DE7AB611}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectAll.Caption]), '{14A91B39-D3D7-49C4-9F19-D253DE7AB611}');
   _SelectAll;
   ProcedureFooter;
 end;
@@ -124,6 +120,7 @@ var
   b: Boolean;
   i: Integer;
 begin
+  inherited;
   b := False;
   for i := 0 to chklbxUsers.Items.Count - 1 do
   begin
@@ -136,8 +133,7 @@ begin
   b := (chklbxUsers.Items.Count > 0) and b;
   if actSelectAll.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectAll.Caption]),
-      '{71FE28EC-CC3B-4E72-978D-F534FFD2E2C7}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectAll.Caption]), '{71FE28EC-CC3B-4E72-978D-F534FFD2E2C7}');
     actSelectAll.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actSelectAll));
     ProcedureFooter;
@@ -146,8 +142,7 @@ end;
 
 procedure TReportForm.actSelectNoneExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectNone.Caption]),
-    '{2E28DFC0-7D3C-4E6E-B105-CFEC8B796E11}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectNone.Caption]), '{2E28DFC0-7D3C-4E6E-B105-CFEC8B796E11}');
   _SelectNone;
   ProcedureFooter;
 end;
@@ -157,6 +152,7 @@ var
   b: Boolean;
   i: Integer;
 begin
+  inherited;
   b := False;
   for i := 0 to chklbxUsers.Items.Count - 1 do
   begin
@@ -169,8 +165,7 @@ begin
   b := (chklbxUsers.Items.Count > 0) and b;
   if actSelectNone.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectNone.Caption]),
-      '{CFD84C36-9A02-46E0-B166-8E79EE356622}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectNone.Caption]), '{CFD84C36-9A02-46E0-B166-8E79EE356622}');
     actSelectNone.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actSelectNone));
     ProcedureFooter;
@@ -196,14 +191,16 @@ end;
 procedure TReportForm.actCloseExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{D290B7F6-9D16-47E1-90F0-FEAAB5120E56}');
-  _Close;
+  Log.SendInfo('Попытка формирования статистических отчётов по работе пользователей была отменена пользователем.');
+  CloseModalWindowWithCancelResult(RsReportForm, '{279A6A67-6C17-421D-8A9C-69DD4A7DA050}');
   ProcedureFooter;
 end;
 
 procedure TReportForm.actCreateExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actCreate.Caption]), '{C4CEAC65-3699-4660-871E-12985753ECBB}');
-  _Create;
+  Log.SendInfo('Попытка формирования статистического отчёта по работе пользователей была подтверждена пользователем.');
+  CloseModalWindowWithOkResult(RsReportForm, '{6481A63F-9A8B-487C-887F-4CD80F4FB0EF}');
   ProcedureFooter;
 end;
 
@@ -212,8 +209,7 @@ var
   i: Integer;
   b: Boolean;
 begin
-  ProcedureHeader('Процедура обновления состояния действий', '{C46D65CB-16C9-4200-8F05-DBA4AE839B73}');
-
+  inherited;
   b := False;
   for i := 0 to chklbxUsers.Count - 1 do
   begin
@@ -223,8 +219,7 @@ begin
     rbChoisenPeriod.Checked) and (cmbbxGroupByPeriod.ItemIndex > -1);
   if actCreate.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actCreate.Caption]),
-      '{42F1CD4C-614D-40B7-BD9F-A64CA7C1ABD6}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actCreate.Caption]), '{42F1CD4C-614D-40B7-BD9F-A64CA7C1ABD6}');
     actCreate.Enabled := b;
     if btnCreate.Default <> b then
     begin
@@ -234,6 +229,7 @@ begin
     begin
       btnClose.Default := not b;
     end;
+    Log.SendDebug(GetActionUpdateLogMessage(actCreate));
     ProcedureFooter;
   end;
 end;
@@ -241,7 +237,7 @@ end;
 procedure TReportForm.actHelpExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{4A44C954-EC7F-4C4F-8C87-B9B19B83AA8B}');
-  _Help;
+  Help(HelpContext, '{B3865EF7-4F75-4C6E-933A-5231CCAB3E72}');
   ProcedureFooter;
 end;
 
@@ -257,43 +253,6 @@ begin
     Log.SendDebug(GetActionUpdateLogMessage(actHelp));
     ProcedureFooter;
   end;
-end;
-
-procedure TReportForm._Create;
-begin
-  ProcedureHeader(Format(RsCloseModalWithOkProcedure, [RsReportForm]), '{4B55786C-4198-48B1-8F00-56DBD8D6736A}');
-  ModalResult := mrOk;
-  Log.SendInfo('Попытка формирования статистического отчёта по работе пользователей была подтверждена пользователем.');
-  Log.SendInfo(Format(RsWindowClosedByUser, [RsReportForm]));
-  ProcedureFooter;
-end;
-
-procedure TReportForm._Close;
-begin
-  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsReportForm]), '{95ED87E6-F0C7-48B0-9108-4B59EDC3B329}');
-
-  ModalResult := mrCancel;
-  Log.SendInfo('Попытка формирования статистических отчётов по работе пользователей была отменена пользователем.');
-  Log.SendInfo(Format(RsWindowClosedByUser, [RsReportForm]));
-
-  ProcedureFooter;
-end;
-
-procedure TReportForm._Help;
-begin
-  ProcedureHeader(RsContextHelpProcedure, '{CCEFD9CE-4903-4688-85C9-239F10B3C6A3}');
-
-  Log.SendInfo(RsTryingToOpenHelpFile);
-  if (FileExists(ExpandFileName(Application.HelpFile))) then
-  begin
-    Application.HelpContext(HelpContext);
-  end
-  else
-  begin
-    GenerateError(RsHelpFileNonFound);
-  end;
-
-  ProcedureFooter;
 end;
 
 procedure TReportForm._SelectAll;
@@ -387,7 +346,7 @@ end;
 
 procedure TReportForm.FormCreate(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsReportForm]),  '{84933C2E-2797-40EF-96C1-0E13F61295CD}');
+  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsReportForm]), '{84933C2E-2797-40EF-96C1-0E13F61295CD}');
 
   ImageList.GetIcon(ICON_STATISTIC, Icon);
   with MainForm.Configuration do

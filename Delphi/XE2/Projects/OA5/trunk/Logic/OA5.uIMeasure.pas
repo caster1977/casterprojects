@@ -101,7 +101,7 @@ type
     /// <summary>
     /// Наименование мероприятия
     /// </summary>
-    property Name: string read GetName write SetName;
+    property name: string read GetName write SetName;
 
     function GetOrganizationID: Integer;
     procedure SetOrganizationID(const AValue: Integer);

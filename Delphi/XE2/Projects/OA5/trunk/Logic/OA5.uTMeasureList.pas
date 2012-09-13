@@ -68,7 +68,8 @@ type
 
     property Count: Integer read GetCount write SetCount nodefault;
     property Items[const AIndex: Integer]: IMeasure read GetItem write PutItem; default;
-    property AutoNormalizeData: Boolean read GetAutoNormalizeData write SetAutoNormalizeData default DEFAULT_MEASURE_LIST_AUTO_NORMALIZE_DATA;
+    property AutoNormalizeData: Boolean read GetAutoNormalizeData write SetAutoNormalizeData
+      default DEFAULT_MEASURE_LIST_AUTO_NORMALIZE_DATA;
   end;
 
 function GetIMeasureList: IMeasureList;

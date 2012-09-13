@@ -41,10 +41,7 @@ type
     procedure actClearUpdate(Sender: TObject);
     procedure actSendUpdate(Sender: TObject);
   strict private
-    procedure _Help;
-    procedure _Close;
     procedure _Clear;
-    procedure _Send;
   end;
 
 implementation
@@ -63,17 +60,6 @@ const
 resourcestring
   RsCreateMessageForm = 'создания нового сообщения';
 
-procedure TCreateMessageForm._Send;
-begin
-  ProcedureHeader(Format(RsCloseModalWithOkProcedure, [RsCreateMessageForm]), '{7BDDCBE9-E93E-4D51-A45E-6F8E532E8661}');
-
-  ModalResult := mrOk;
-  Log.SendInfo('Попытка отправки созданного сообщения была подтверждена пользователем.');
-  Log.SendInfo(Format(RsWindowClosedByUser, [RsCreateMessageForm]));
-
-  ProcedureFooter;
-end;
-
 procedure TCreateMessageForm.actClearExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClear.Caption]), '{F78DE6D4-0164-4F4E-9DCA-0BD6FA5EB2CF}');
@@ -84,21 +70,23 @@ end;
 procedure TCreateMessageForm.actCloseExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{F1FBC2E1-336C-491D-BC0B-8B2E70108C6D}');
-  _Close;
+  Log.SendInfo('Попытка отправки нового сообщения была отменена пользователем.');
+  CloseModalWindowWithOkResult(RsCreateMessageForm, '{6534AA5E-554C-4205-9A00-ED012CB9C24A}');
   ProcedureFooter;
 end;
 
 procedure TCreateMessageForm.actHelpExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{800109C0-82AB-4EAC-80E9-9341BC00A650}');
-  _Help;
+  Help(HelpContext, '{C62837FE-27A8-4514-A2ED-4F01ABBAFCD3}');
   ProcedureFooter;
 end;
 
 procedure TCreateMessageForm.actSendExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSend.Caption]), '{09170DB8-FCE2-4EF4-BD59-4E149C5F8280}');
-  _Send;
+  Log.SendInfo('Попытка отправки созданного сообщения была подтверждена пользователем.');
+  CloseModalWindowWithOkResult(RsCreateMessageForm, '{6B3A55BA-2855-4E4F-A7DE-806E72AE46EB}');
   ProcedureFooter;
 end;
 
@@ -115,38 +103,9 @@ begin
   ProcedureFooter;
 end;
 
-procedure TCreateMessageForm._Close;
-begin
-  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsCreateMessageForm]),
-    '{FB15D7B1-D988-4AB8-952A-A407B768E1C6}');
-
-  ModalResult := mrCancel;
-  Log.SendInfo('Попытка отправки нового сообщения была отменена пользователем.');
-  Log.SendInfo(Format(RsWindowClosedByUser, [RsCreateMessageForm]));
-  ProcedureFooter;
-end;
-
-procedure TCreateMessageForm._Help;
-begin
-  ProcedureHeader(RsContextHelpProcedure, '{4C5AF0DB-D386-413F-AC80-B0E36F4F9777}');
-
-  Log.SendInfo(RsTryingToOpenHelpFile);
-  if (FileExists(ExpandFileName(Application.HelpFile))) then
-  begin
-    Application.HelpContext(HelpContext);
-  end
-  else
-  begin
-    GenerateError(RsHelpFileNonFound);
-  end;
-
-  ProcedureFooter;
-end;
-
 procedure TCreateMessageForm.FormCreate(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsCreateMessageForm]),
-    '{7FD82BF2-AA3D-4AD0-848B-14E0000E9B31}');
+  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsCreateMessageForm]), '{7FD82BF2-AA3D-4AD0-848B-14E0000E9B31}');
 
   ImageList.GetIcon(ICON_CREATEMESSAGE, Icon);
   with MainForm.Configuration do
@@ -171,14 +130,15 @@ procedure TCreateMessageForm.actSendUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
+  inherited;
   b := (cmbbxTo.ItemIndex > -1) and (edbxTheme.Text <> EmptyStr) and (reMessage.Text <> EmptyStr);
   if actSend.Enabled <> b then
   begin
     ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSend.Caption]), '{4FBC980F-4CAF-4B64-89D3-77F33D1EA9F3}');
     actSend.Enabled := b;
-    Log.SendDebug(GetActionUpdateLogMessage(actSend));
     btnSend.Default := b;
     btnClose.Default := not b;
+    Log.SendDebug(GetActionUpdateLogMessage(actSend));
     ProcedureFooter;
   end;
 end;
@@ -187,6 +147,7 @@ procedure TCreateMessageForm.actClearUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
+  inherited;
   b := (cmbbxTo.ItemIndex > -1) or (edbxTheme.Text <> EmptyStr) or (reMessage.Text <> EmptyStr);
   if actClear.Enabled <> b then
   begin
@@ -201,6 +162,7 @@ procedure TCreateMessageForm.actHelpUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
+  inherited;
   b := Application.HelpFile <> EmptyStr;
   if actHelp.Enabled <> b then
   begin

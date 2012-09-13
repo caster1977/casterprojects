@@ -47,8 +47,6 @@ type
     procedure actProcessExecute(Sender: TObject);
     procedure actHelpUpdate(Sender: TObject);
   strict private
-    procedure _Help;
-    procedure _Close;
     procedure _Delete;
     procedure _Next;
     procedure _Previous;
@@ -98,7 +96,7 @@ end;
 procedure TViewMessageForm.actCloseExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{C51BD81D-B224-409C-9AE1-985C0263C371}');
-  _Close;
+  CloseModalWindowWithCancelResult(RsViewMessageForm, '{CEC7B0B6-5FD5-480B-A6AA-404C7922AAAB}');
   ProcedureFooter;
 end;
 
@@ -112,7 +110,7 @@ end;
 procedure TViewMessageForm.actHelpExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{C6AC5679-39E1-4FD7-81E4-79CBE93831A5}');
-  _Help;
+  Help(HelpContext, '{D5CDD891-E10A-4CD6-A006-A166E58E43AE}');
   ProcedureFooter;
 end;
 
@@ -120,6 +118,7 @@ procedure TViewMessageForm.actHelpUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
+  inherited;
   b := Application.HelpFile <> EmptyStr;
   if actHelp.Enabled <> b then
   begin
@@ -139,26 +138,15 @@ end;
 
 procedure TViewMessageForm.actPreviousExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actPrevious.Caption]),
-    '{F1B8E1BE-3D35-4D60-A962-1C33B0E2140E}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actPrevious.Caption]), '{F1B8E1BE-3D35-4D60-A962-1C33B0E2140E}');
   _Previous;
   ProcedureFooter;
 end;
 
 procedure TViewMessageForm.actProcessExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actProcess.Caption]),
-    '{DE989347-B026-45D2-B6BA-21A502C1F8F9}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actProcess.Caption]), '{DE989347-B026-45D2-B6BA-21A502C1F8F9}');
   _Process;
-  ProcedureFooter;
-end;
-
-procedure TViewMessageForm._Close;
-begin
-  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsViewMessageForm]),
-    '{25E73E71-59EF-4E44-BCFE-482B953B7469}');
-  ModalResult := mrCancel;
-  Log.SendInfo(Format(RsWindowClosedByUser, [RsViewMessageForm]));
   ProcedureFooter;
 end;
 
@@ -167,23 +155,6 @@ begin
   ProcedureHeader('Процедура удаления текущего сообщения', '{876CA1BB-200F-4922-9D2D-59FBCB5A2506}');
 
   { TODO : дописать }
-
-  ProcedureFooter;
-end;
-
-procedure TViewMessageForm._Help;
-begin
-  ProcedureHeader(RsContextHelpProcedure, '{BD937891-4495-4529-8E8B-A630DCD93E12}');
-
-  Log.SendInfo(RsTryingToOpenHelpFile);
-  if (FileExists(ExpandFileName(Application.HelpFile))) then
-  begin
-    Application.HelpContext(HelpContext);
-  end
-  else
-  begin
-    GenerateError(RsHelpFileNonFound);
-  end;
 
   ProcedureFooter;
 end;

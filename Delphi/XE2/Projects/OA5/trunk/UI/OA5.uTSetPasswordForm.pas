@@ -39,9 +39,6 @@ type
     procedure actHelpUpdate(Sender: TObject);
     procedure actApplyUpdate(Sender: TObject);
   strict private
-    procedure _Help;
-    procedure _Apply;
-    procedure _Close;
     procedure _SwitchPasswordVisibility;
   end;
 
@@ -60,44 +57,6 @@ const
 
 resourcestring
   RsSetPasswordForm = 'изменения пароля учётной записи';
-
-procedure TSetPasswordForm._Apply;
-begin
-  ProcedureHeader(Format(RsCloseModalWithOkProcedure, [RsSetPasswordForm]), '{8C1D1934-43A0-4BD3-A063-95940EA9B73D}');
-
-  ModalResult := mrOk;
-  Log.SendInfo('Попытка изменения пароля учётной записи была подтверждена пользователем.');
-  Log.SendInfo(Format(RsWindowClosedByUser, [RsSetPasswordForm]));
-
-  ProcedureFooter;
-end;
-
-procedure TSetPasswordForm._Close;
-begin
-  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsSetPasswordForm]),
-    '{19DBBA6D-0E8E-4BBB-BF5B-D2C80E71A631}');
-
-  ModalResult := mrCancel;
-  Log.SendInfo('Попытка изменения пароля учётной записи была отменена пользователем.');
-  Log.SendInfo(Format(RsWindowClosed, [RsSetPasswordForm]));
-
-  ProcedureFooter;
-end;
-
-procedure TSetPasswordForm._Help;
-begin
-  ProcedureHeader(RsContextHelpProcedure, '{ACC5A843-E8FF-4CD2-B210-EF7E1A5DB038}');
-  Log.SendInfo(RsTryingToOpenHelpFile);
-  if (FileExists(ExpandFileName(Application.HelpFile))) then
-  begin
-    Application.HelpContext(HelpContext);
-  end
-  else
-  begin
-    GenerateError(RsHelpFileNonFound);
-  end;
-  ProcedureFooter;
-end;
 
 procedure TSetPasswordForm._SwitchPasswordVisibility;
 const
@@ -147,7 +106,8 @@ end;
 procedure TSetPasswordForm.actApplyExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actApply.Caption]), '{D6F02F10-4334-4227-9C49-E2DB8B98CA70}');
-  _Apply;
+  Log.SendInfo('Попытка изменения пароля учётной записи была подтверждена пользователем.');
+  CloseModalWindowWithOkResult(RsSetPasswordForm, '{C91510FD-FEE6-435A-914F-18C3AA52AECC}');
   ProcedureFooter;
 end;
 
@@ -155,35 +115,37 @@ procedure TSetPasswordForm.actApplyUpdate(Sender: TObject);
 var
   b: boolean;
 begin
+  inherited;
   b := mePassword.Text = meConfirmation.Text;
   if actApply.Enabled <> b then
   begin
     ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actApply.Caption]), '{C430F728-3AC7-4605-831B-F2AE12429BDA}');
     actApply.Enabled := b;
+    if btnApply.Default <> b then
+    begin
+      btnApply.Default := b;
+    end;
+    if btnClose.Default <> (not b) then
+    begin
+      btnClose.Default := not b;
+    end;
     Log.SendDebug(GetActionUpdateLogMessage(actApply));
     ProcedureFooter;
-  end;
-  if btnApply.Default <> b then
-  begin
-    btnApply.Default := b;
-  end;
-  if btnClose.Default <> (not b) then
-  begin
-    btnClose.Default := not b;
   end;
 end;
 
 procedure TSetPasswordForm.actCloseExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{4569EB61-7A53-4A07-8D49-7D91C54D6FEF}');
-  _Close;
+  Log.SendInfo('Попытка изменения пароля учётной записи была отменена пользователем.');
+  CloseModalWindowWithCancelResult(RsSetPasswordForm, '{927BC3C9-B8AF-4E3E-93CA-576E9FE65D08}');
   ProcedureFooter;
 end;
 
 procedure TSetPasswordForm.actHelpExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{772E549E-6DD2-4921-B2F9-5C65F20976FE}');
-  _Help;
+  Help(HelpContext, '{9E50E972-CBB5-47DB-8241-9317E3EA51F6}');
   ProcedureFooter;
 end;
 

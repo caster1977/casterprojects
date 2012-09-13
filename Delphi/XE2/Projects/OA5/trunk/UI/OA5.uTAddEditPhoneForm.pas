@@ -57,10 +57,7 @@ type
     procedure actHelpUpdate(Sender: TObject);
     procedure actClearUpdate(Sender: TObject);
   strict private
-    procedure _Help;
-    procedure _Close;
     procedure _Clear;
-    procedure _Apply;
   end;
 
 implementation
@@ -93,44 +90,6 @@ begin
   meComments.Clear;
   ActiveControl := edbxNumber;
   Log.SendInfo('Поля ввода очищены пользователем.');
-
-  ProcedureFooter;
-end;
-
-procedure TAddEditPhoneForm._Help;
-begin
-  ProcedureHeader(RsContextHelpProcedure, '{AEEB97A8-F1CC-492B-B07F-9ADE5530DDB4}');
-
-  Log.SendInfo(RsTryingToOpenHelpFile);
-  if (FileExists(ExpandFileName(Application.HelpFile))) then
-  begin
-    Application.HelpContext(HelpContext);
-  end
-  else
-  begin
-    GenerateError(RsHelpFileNonFound);
-  end;
-
-  ProcedureFooter;
-end;
-
-procedure TAddEditPhoneForm._Close;
-begin
-  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsAddEditPhoneForm]), '{EEEFBB6B-50BB-4EDD-9400-5784801D6950}');
-
-  ModalResult := mrClose;
-  Log.SendInfo(Format(RsWindowClosedByUser, [RsAddEditPhoneForm]));
-
-  ProcedureFooter;
-end;
-
-procedure TAddEditPhoneForm._Apply;
-begin
-  ProcedureHeader(Format(RsCloseModalWithOkProcedure, [RsAddEditPhoneForm]), '{11F67191-F306-4C76-B8A8-CEC1AC239942}');
-
-  ModalResult := mrOk;
-  Log.SendInfo('Попытка добавления/исправления номера телефона была подтверждена пользователем.');
-  Log.SendInfo(Format(RsWindowClosedByUser, [RsAddEditPhoneForm]));
 
   ProcedureFooter;
 end;
@@ -199,7 +158,8 @@ end;
 procedure TAddEditPhoneForm.actApplyExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actApply.Caption]), '{3F6501C9-344A-46E6-9296-03C327D24EC1}');
-  _Apply;
+  Log.SendInfo('Попытка добавления/исправления номера телефона была подтверждена пользователем.');
+  CloseModalWindowWithOkResult(RsAddEditPhoneForm, '{5EDFF0E8-891D-4F4E-90D9-B3195669939E}');
   ProcedureFooter;
 end;
 
@@ -213,14 +173,14 @@ end;
 procedure TAddEditPhoneForm.actCloseExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{F5FC1E75-0564-4531-A1EC-242606AF6D3C}');
-  _Close;
+  CloseModalWindowWithCancelResult(RsAddEditPhoneForm, '{82C266AC-84F6-4B06-8B0E-0FACDB889CD1}');
   ProcedureFooter;
 end;
 
 procedure TAddEditPhoneForm.actHelpExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{FC1F0DFA-B75D-455A-B245-37BE180520E1}');
-  _Help;
+  Help(HelpContext, '{1A7EF6C2-56E0-476A-86B6-14A49DFCB413}');
   ProcedureFooter;
 end;
 
@@ -228,6 +188,7 @@ procedure TAddEditPhoneForm.actHelpUpdate(Sender: TObject);
 var
   b: boolean;
 begin
+  inherited;
   b := Application.HelpFile <> EmptyStr;
   if actHelp.Enabled <> b then
   begin
@@ -242,6 +203,7 @@ procedure TAddEditPhoneForm.actClearUpdate(Sender: TObject);
 var
   b: boolean;
 begin
+  inherited;
   b := (edbxNumber.Text <> EmptyStr) or (cmbexType.ItemIndex > -1) or (dtpCheckDate.DateTime <> EncodeDate(1900, 01, 01)) or
     (edbxPriority.Text <> EmptyStr) or (meComments.Text <> EmptyStr);
   if actClear.Enabled <> b then

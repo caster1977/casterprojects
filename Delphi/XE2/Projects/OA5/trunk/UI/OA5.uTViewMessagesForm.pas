@@ -31,9 +31,6 @@ type
     procedure actCloseExecute(Sender: TObject);
     procedure actHelpExecute(Sender: TObject);
     procedure actHelpUpdate(Sender: TObject);
-  strict private
-    procedure _Close;
-    procedure _Help;
   end;
 
 implementation
@@ -52,14 +49,14 @@ resourcestring
 procedure TViewMessagesForm.actCloseExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{37A8475E-6BD4-4823-94D2-8FE6965B2F7C}');
-  _Close;
+  CloseModalWindowWithCancelResult(RsViewMessagesForm, '{36E905AB-B82A-4DCF-B459-F22973FD0B8D}');
   ProcedureFooter;
 end;
 
 procedure TViewMessagesForm.actHelpExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{B33612F9-C8BF-491C-8327-379CB02B0531}');
-  _Help;
+  Help(HelpContext, '{87D37E94-9189-4786-90B4-DF122F140089}');
   ProcedureFooter;
 end;
 
@@ -67,6 +64,7 @@ procedure TViewMessagesForm.actHelpUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
+  inherited;
   b := Application.HelpFile <> EmptyStr;
   if actHelp.Enabled <> b then
   begin
@@ -75,29 +73,6 @@ begin
     Log.SendDebug(GetActionUpdateLogMessage(actHelp));
     ProcedureFooter;
   end;
-end;
-
-procedure TViewMessagesForm._Close;
-begin
-  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsViewMessagesForm]), '{335FD3A9-F77B-4CB0-840A-A3BF1A22FB2D}');
-  ModalResult := mrCancel;
-  Log.SendInfo(Format(RsWindowClosedByUser, [RsViewMessagesForm]));
-  ProcedureFooter;
-end;
-
-procedure TViewMessagesForm._Help;
-begin
-  ProcedureHeader(RsContextHelpProcedure, '{0A6F8938-BD19-4812-9EDB-65B2CC550958}');
-  Log.SendInfo(RsTryingToOpenHelpFile);
-  if (FileExists(ExpandFileName(Application.HelpFile))) then
-  begin
-    Application.HelpContext(HelpContext);
-  end
-  else
-  begin
-    GenerateError(RsHelpFileNonFound);
-  end;
-  ProcedureFooter;
 end;
 
 end.

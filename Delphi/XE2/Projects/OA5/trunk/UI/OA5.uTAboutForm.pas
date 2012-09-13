@@ -38,7 +38,6 @@ type
     procedure lblEMailAddressClick(Sender: TObject);
   strict private
     FFirstShow: Boolean;
-    procedure _Close;
   public
     constructor Create(AOwner: TComponent; const AShowCloseButton: Boolean; ABusyCounter: PInteger = nil;
       ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil; AProgressBar: TProgressBar = nil); reintroduce; virtual;
@@ -103,22 +102,14 @@ end;
 procedure TAboutForm.actCloseExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{D141CB7B-C326-4B85-BDFC-5F5107598AEA}');
-  _Close;
-  ProcedureFooter;
-end;
-
-procedure TAboutForm._Close;
-begin
-  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsAboutForm]), '{0C17F685-16BC-4D7F-B964-287B74A1CABF}');
-  ModalResult := mrCancel;
-  Log.SendInfo(Format(RsWindowClosedByUser, [RsAboutForm]));
+  CloseModalWindowWithCancelResult(RsAboutForm, '{AB7A1A05-3D91-4D07-A810-625F107DC2CA}');
   ProcedureFooter;
 end;
 
 procedure TAboutForm.CloseTimerTimer(Sender: TObject);
 begin
   ProcedureHeader('Процедура закрытия окна по истечению счётчика таймера', '{1A3ED186-8181-467D-8491-E6C021EB2174}');
-  _Close;
+  CloseModalWindowWithCancelResult(RsAboutForm, '{ADA7E65F-7D54-4E83-A06F-AA8DEE769379}');
   ProcedureFooter;
 end;
 

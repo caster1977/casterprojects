@@ -40,9 +40,6 @@ type
     procedure actSelectAllUpdate(Sender: TObject);
     procedure actSelectNoneUpdate(Sender: TObject);
   strict private
-    procedure _Help;
-    procedure _Apply;
-    procedure _Close;
     procedure _SelectAll;
     procedure _SelectNone;
   end;
@@ -69,21 +66,23 @@ resourcestring
 procedure TPermissionsForm.actApplyExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actApply.Caption]), '{5C75FA77-50A0-471B-B6DA-472A571E78A5}');
-  _Apply;
+  Log.SendInfo('Попытка изменения прав доступа пользователя была подтверждена пользователем.');
+  CloseModalWindowWithOkResult(RsPermissionsForm, '{2EF8ACE7-43DE-4B94-A258-A103D3C6FA7F}');
   ProcedureFooter;
 end;
 
 procedure TPermissionsForm.actCloseExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{0CD08097-3CBD-497C-A6E9-C334C2613D87}');
-  _Close;
+  Log.SendInfo('Попытка изменения прав доступа пользователя была отменена пользователем.');
+  CloseModalWindowWithCancelResult(RsPermissionsForm, '{E4DF2DA7-A9E4-43B4-9563-208F2AC0E0FD}');
   ProcedureFooter;
 end;
 
 procedure TPermissionsForm.actHelpExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{803148B5-8C37-4D3C-964F-ACC9A7FFD4BD}');
-  _Help;
+  Help(HelpContext, '{45BBFABB-48D2-4D33-B84C-7D977203E7C0}');
   ProcedureFooter;
 end;
 
@@ -91,6 +90,7 @@ procedure TPermissionsForm.actHelpUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
+  inherited;
   b := Application.HelpFile <> EmptyStr;
   if actHelp.Enabled <> b then
   begin
@@ -103,8 +103,7 @@ end;
 
 procedure TPermissionsForm.actSelectAllExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectAll.Caption]),
-    '{14A91B39-D3D7-49C4-9F19-D253DE7AB611}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectAll.Caption]), '{14A91B39-D3D7-49C4-9F19-D253DE7AB611}');
   _SelectAll;
   ProcedureFooter;
 end;
@@ -114,6 +113,7 @@ var
   b: Boolean;
   i: Integer;
 begin
+  inherited;
   b := False;
   for i := 0 to chklbxPermissions.Items.Count - 1 do
   begin
@@ -126,8 +126,7 @@ begin
   b := b and (chklbxPermissions.Items.Count > 0);
   if actSelectAll.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectAll.Caption]),
-      '{713F5389-E51C-45D3-9EA7-857AA2ADDAE5}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectAll.Caption]), '{713F5389-E51C-45D3-9EA7-857AA2ADDAE5}');
     actSelectAll.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actSelectAll));
     ProcedureFooter;
@@ -139,6 +138,7 @@ var
   b: Boolean;
   i: Integer;
 begin
+  inherited;
   b := False;
   for i := 0 to chklbxPermissions.Items.Count - 1 do
   begin
@@ -151,8 +151,7 @@ begin
   b := b and (chklbxPermissions.Items.Count > 0);
   if actSelectNone.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectNone.Caption]),
-      '{6A789C2D-BE1B-4AE4-A348-DC0BAEC83549}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectNone.Caption]), '{6A789C2D-BE1B-4AE4-A348-DC0BAEC83549}');
     actSelectNone.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actSelectNone));
     ProcedureFooter;
@@ -161,8 +160,7 @@ end;
 
 procedure TPermissionsForm.actSelectNoneExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectNone.Caption]),
-    '{2E28DFC0-7D3C-4E6E-B105-CFEC8B796E11}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectNone.Caption]), '{2E28DFC0-7D3C-4E6E-B105-CFEC8B796E11}');
   _SelectNone;
   ProcedureFooter;
 end;
@@ -173,45 +171,6 @@ begin
     '{FC7CC002-2ADC-4615-95D0-2F86AEC2E17B}');
     _UpdateActions;
     ProcedureFooter; *)
-end;
-
-procedure TPermissionsForm._Apply;
-begin
-  ProcedureHeader(Format(RsCloseModalWithOkProcedure, [RsPermissionsForm]), '{8C1D1934-43A0-4BD3-A063-95940EA9B73D}');
-
-  ModalResult := mrOk;
-  Log.SendInfo('Попытка изменения прав доступа пользователя была подтверждена пользователем.');
-  Log.SendInfo(Format(RsWindowClosedByUser, [RsPermissionsForm]));
-
-  ProcedureFooter;
-end;
-
-procedure TPermissionsForm._Close;
-begin
-  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsPermissionsForm]), '{19DBBA6D-0E8E-4BBB-BF5B-D2C80E71A631}');
-
-  ModalResult := mrCancel;
-  Log.SendInfo('Попытка изменения прав доступа пользователя была отменена пользователем.');
-  Log.SendInfo(Format(RsWindowClosedByUser, [RsPermissionsForm]));
-
-  ProcedureFooter;
-end;
-
-procedure TPermissionsForm._Help;
-begin
-  ProcedureHeader(RsContextHelpProcedure, '{9965AA17-93E4-445A-857B-CD0AB780CB8B}');
-
-  Log.SendInfo(RsTryingToOpenHelpFile);
-  if (FileExists(ExpandFileName(Application.HelpFile))) then
-  begin
-    Application.HelpContext(HelpContext);
-  end
-  else
-  begin
-    GenerateError(RsHelpFileNonFound);
-  end;
-
-  ProcedureFooter;
 end;
 
 procedure TPermissionsForm._SelectAll;

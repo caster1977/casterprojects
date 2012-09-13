@@ -15,29 +15,30 @@ uses
   OA5.uTMeasureList in 'Logic\OA5.uTMeasureList.pas',
   OA5.uTMySQLConnection in 'Logic\OA5.uTMySQLConnection.pas',
   OA5.uTPrivilegies in 'Logic\OA5.uTPrivilegies.pas',
-  OA5.uTAboutForm in 'UI\OA5.uTAboutForm.pas' {AboutForm},
-  OA5.uTAddEditPhoneForm in 'UI\OA5.uTAddEditPhoneForm.pas' {AddEditPhoneForm},
-  OA5.uTAddMassMsrForm in 'UI\OA5.uTAddMassMsrForm.pas' {AddMassMsrForm},
-  OA5.uTConfigurationForm in 'UI\OA5.uTConfigurationForm.pas' {ConfigurationForm},
-  OA5.uTCreateMessageForm in 'UI\OA5.uTCreateMessageForm.pas' {CreateMessageForm},
-  OA5.uTLoginForm in 'UI\OA5.uTLoginForm.pas' {LoginForm},
-  OA5.uTMainForm in 'UI\OA5.uTMainForm.pas' {MainForm},
-  OA5.uTMultiBufferForm in 'UI\OA5.uTMultiBufferForm.pas' {MultiBufferForm},
-  OA5.uTPermissionsForm in 'UI\OA5.uTPermissionsForm.pas' {PermissionsForm},
-  OA5.uTReportForm in 'UI\OA5.uTReportForm.pas' {ReportForm},
-  OA5.uTSetPasswordForm in 'UI\OA5.uTSetPasswordForm.pas' {SetPasswordForm},
-  OA5.uTViewMessageForm in 'UI\OA5.uTViewMessageForm.pas' {ViewMessageForm},
-  OA5.uTViewMessagesForm in 'UI\OA5.uTViewMessagesForm.pas' {ViewMessagesForm},
+  OA5.uTAboutForm in 'UI\OA5.uTAboutForm.pas' {AboutForm} ,
+  OA5.uTAddEditPhoneForm in 'UI\OA5.uTAddEditPhoneForm.pas' {AddEditPhoneForm} ,
+  OA5.uTAddMassMsrForm in 'UI\OA5.uTAddMassMsrForm.pas' {AddMassMsrForm} ,
+  OA5.uTConfigurationForm in 'UI\OA5.uTConfigurationForm.pas' {ConfigurationForm} ,
+  OA5.uTCreateMessageForm in 'UI\OA5.uTCreateMessageForm.pas' {CreateMessageForm} ,
+  OA5.uTLoginForm in 'UI\OA5.uTLoginForm.pas' {LoginForm} ,
+  OA5.uTMainForm in 'UI\OA5.uTMainForm.pas' {MainForm} ,
+  OA5.uTMultiBufferForm in 'UI\OA5.uTMultiBufferForm.pas' {MultiBufferForm} ,
+  OA5.uTPermissionsForm in 'UI\OA5.uTPermissionsForm.pas' {PermissionsForm} ,
+  OA5.uTReportForm in 'UI\OA5.uTReportForm.pas' {ReportForm} ,
+  OA5.uTSetPasswordForm in 'UI\OA5.uTSetPasswordForm.pas' {SetPasswordForm} ,
+  OA5.uTViewMessageForm in 'UI\OA5.uTViewMessageForm.pas' {ViewMessageForm} ,
+  OA5.uTViewMessagesForm in 'UI\OA5.uTViewMessagesForm.pas' {ViewMessagesForm} ,
   OA5.uIConfiguration in 'Logic\OA5.uIConfiguration.pas',
-  OA5.uTOA5PositionedLogForm in 'Logic\OA5.uTOA5PositionedLogForm.pas' {OA5PositionedLogForm},
+  OA5.uTOA5PositionedLogForm in 'Logic\OA5.uTOA5PositionedLogForm.pas' {OA5PositionedLogForm} ,
   OA5.uTOA5LogForm in 'Logic\OA5.uTOA5LogForm.pas' {OA5LogForm};
 
 {$R *.res}
 
 begin
   Application.Initialize;
-  Application.MainFormOnTaskbar:=True;
+  Application.MainFormOnTaskbar := True;
   Application.Title := 'OA5';
   Application.CreateForm(TMainForm, MainForm);
   Application.Run;
+
 end.

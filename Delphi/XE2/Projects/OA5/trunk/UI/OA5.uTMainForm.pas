@@ -3,24 +3,24 @@
 interface
 
 uses
-  Winapi.Windows,
-  System.SysUtils,
-  Vcl.Forms,
-  OA5.uIAccount,
-  OA5.uTAccount,
-  OA5.uIConfiguration,
-  OA5.uTConfiguration,
-  System.IniFiles,
-  OA5.uIMeasureList,
-  System.Classes,
-  Vcl.ActnList,
   CastersPackage.uLogProvider,
-  Vcl.ImgList,
-  Vcl.Controls,
-  Vcl.Menus,
+  OA5.uIAccount,
+  OA5.uIConfiguration,
+  OA5.uIMeasureList,
+  OA5.uTAccount,
+  OA5.uTConfiguration,
+  OA5.uTOA5LogForm,
+  System.Classes,
+  System.IniFiles,
+  System.SysUtils,
+  Vcl.ActnList,
   Vcl.ComCtrls,
+  Vcl.Controls,
   Vcl.ExtCtrls,
-  OA5.uTOA5LogForm;
+  Vcl.Forms,
+  Vcl.ImgList,
+  Vcl.Menus,
+  Winapi.Windows;
 
 type
   TMainForm = class(TOA5LogForm)
@@ -102,7 +102,6 @@ type
     procedure ApplicationOnHint(Sender: TObject);
     function GetConfiguration: IConfiguration;
     procedure _About(const AButtonVisible: Boolean);
-    procedure _Help;
     procedure _Configuration;
     procedure _Report;
     procedure _LoadConfiguration;
@@ -117,7 +116,6 @@ type
     procedure Finalize; override;
     procedure InitializeLog; override;
   public
-    BusyCounter: Integer;
     procedure RefreshBusyState;
     property MultiBuffer: IMeasureList read GetMultiBuffer nodefault;
     property Configuration: IConfiguration read GetConfiguration nodefault;
@@ -126,6 +124,7 @@ type
 
 var
   MainForm: TMainForm;
+  BusyCounter: Integer;
 
 implementation
 
@@ -209,7 +208,7 @@ end;
 procedure TMainForm._About(const AButtonVisible: Boolean);
 begin
   ProcedureHeader(Format(RsShowWindowProcedure, [RsAboutFormSuffix]), '{754C2801-ED59-4595-AC3E-20DBF98F6779}');
-  with TAboutForm.Create(Self, AButtonVisible, Addr(MainForm.BusyCounter), RefreshBusyState, pbMain) do
+  with TAboutForm.Create(Self, AButtonVisible, Addr(BusyCounter), RefreshBusyState, pbMain) do
   begin
     try
       ShowModal;
@@ -223,7 +222,7 @@ end;
 procedure TMainForm.actHelpExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{D066E67D-C195-440D-94C2-6757C427DCF6}');
-  _Help;
+  Help(HelpContext, '{94165848-9C2D-4110-A47F-32337C35794E}');
   ProcedureFooter;
 end;
 
@@ -269,23 +268,6 @@ begin
   ProcedureFooter;
 end;
 
-procedure TMainForm._Help;
-begin
-  ProcedureHeader(RsContextHelpProcedure, '{55CCABBE-B299-44B5-B6EC-3DD41090C3FB}');
-
-  Log.SendInfo(RsTryingToOpenHelpFile);
-  if (FileExists(ExpandFileName(Application.HelpFile))) then
-  begin
-    Application.HelpContext(HelpContext);
-  end
-  else
-  begin
-    GenerateError(RsHelpFileNonFound);
-  end;
-
-  ProcedureFooter;
-end;
-
 procedure TMainForm.Initialize;
 var
   PanelRect: TRect;
@@ -306,7 +288,6 @@ var
   end;
 
 begin
-  BusyCounter := 0;
   RefreshBusyState;
   Configuration.DBServer.LogProvider := Log;
   Configuration.MessageServer.LogProvider := Log;
@@ -393,6 +374,7 @@ procedure TMainForm.actLogonUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
+  inherited;
   if Assigned(CurrentUser) then
   begin
     b := not CurrentUser.Logged;
@@ -410,6 +392,7 @@ procedure TMainForm.actLogoffUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
+  inherited;
   if Assigned(CurrentUser) then
   begin
     b := CurrentUser.Logged;
@@ -427,6 +410,7 @@ procedure TMainForm.actAccountsUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
+  inherited;
   if Assigned(CurrentUser) then
   begin
     b := CurrentUser.Logged and CurrentUser.Privilegies.Accounting;
@@ -811,6 +795,12 @@ end;
 procedure TMainForm._Logoff;
 begin
 
+end;
+
+initialization
+
+begin
+  BusyCounter := 0;
 end;
 
 end.
