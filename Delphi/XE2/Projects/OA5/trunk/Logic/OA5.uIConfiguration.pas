@@ -100,7 +100,8 @@ type
     /// —брасывать протокол работы в текстовый файл при достижении количества
     /// строк
     /// </summary>
-    property EnableFlushLogOnStringsQuantity: Boolean read GetEnableFlushLogOnStringsQuantity write SetEnableFlushLogOnStringsQuantity;
+    property EnableFlushLogOnStringsQuantity: Boolean read GetEnableFlushLogOnStringsQuantity
+      write SetEnableFlushLogOnStringsQuantity;
 
     function GetEnableFlushLogOnStringsQuantityValue: Integer;
     procedure SetEnableFlushLogOnStringsQuantityValue(const AValue: Integer);
@@ -108,7 +109,8 @@ type
     /// —брасывать протокол работы в текстовый файл при достижении количества
     /// строк (непосредственно количество)
     /// </summary>
-    property EnableFlushLogOnStringsQuantityValue: Integer read GetEnableFlushLogOnStringsQuantityValue write SetEnableFlushLogOnStringsQuantityValue;
+    property EnableFlushLogOnStringsQuantityValue: Integer read GetEnableFlushLogOnStringsQuantityValue
+      write SetEnableFlushLogOnStringsQuantityValue;
 
     function GetEnableFlushLogOnClearingLog: Boolean;
     procedure SetEnableFlushLogOnClearingLog(const AValue: Boolean);
@@ -197,7 +199,8 @@ type
     // вкладка "настройки прочие"
     function GetAutoGetMessagesCycleDurationValue: Integer;
     procedure SetAutoGetMessagesCycleDurationValue(const AValue: Integer);
-    property AutoGetMessagesCycleDurationValue: Integer read GetAutoGetMessagesCycleDurationValue write SetAutoGetMessagesCycleDurationValue;
+    property AutoGetMessagesCycleDurationValue: Integer read GetAutoGetMessagesCycleDurationValue
+      write SetAutoGetMessagesCycleDurationValue;
 
     function GetCustomHelpFileValue: string;
     procedure SetCustomHelpFileValue(const AValue: string);
@@ -222,7 +225,8 @@ type
     // вкладка "настройки главного окна"
     function GetMainFormEnableFullScreenAtLaunch: Boolean;
     procedure SetMainFormEnableFullScreenAtLaunch(const AValue: Boolean);
-    property MainFormEnableFullScreenAtLaunch: Boolean read GetMainFormEnableFullScreenAtLaunch write SetMainFormEnableFullScreenAtLaunch;
+    property MainFormEnableFullScreenAtLaunch: Boolean read GetMainFormEnableFullScreenAtLaunch
+      write SetMainFormEnableFullScreenAtLaunch;
 
     function GetMainFormEnableCentered: Boolean;
     procedure SetMainFormEnableCentered(const AValue: Boolean);
@@ -263,7 +267,8 @@ type
 
     function GetEnableMeasuresListAsRichEdit: Boolean;
     procedure SetEnableMeasuresListAsRichEdit(const AValue: Boolean);
-    property EnableMeasuresListAsRichEdit: Boolean read GetEnableMeasuresListAsRichEdit write SetEnableMeasuresListAsRichEdit;
+    property EnableMeasuresListAsRichEdit: Boolean read GetEnableMeasuresListAsRichEdit
+      write SetEnableMeasuresListAsRichEdit;
 
     function GetEnablePutTownAtTheEnd: Boolean;
     procedure SetEnablePutTownAtTheEnd(const AValue: Boolean);
@@ -271,11 +276,13 @@ type
 
     function GetOrganizationPanelEnableHalfHeight: Boolean;
     procedure SetOrganizationPanelEnableHalfHeight(const AValue: Boolean);
-    property OrganizationPanelEnableHalfHeight: Boolean read GetOrganizationPanelEnableHalfHeight write SetOrganizationPanelEnableHalfHeight;
+    property OrganizationPanelEnableHalfHeight: Boolean read GetOrganizationPanelEnableHalfHeight
+      write SetOrganizationPanelEnableHalfHeight;
 
     function GetOrganizationPanelHeightValue: Integer;
     procedure SetOrganizationPanelHeightValue(const AValue: Integer);
-    property OrganizationPanelHeightValue: Integer read GetOrganizationPanelHeightValue write SetOrganizationPanelHeightValue;
+    property OrganizationPanelHeightValue: Integer read GetOrganizationPanelHeightValue
+      write SetOrganizationPanelHeightValue;
 
     // вкладка "настройки положени€ диалоговых окон"
     function GetAddEditPhoneFormPosition: TDialogPosition;

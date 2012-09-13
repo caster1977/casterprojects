@@ -54,12 +54,9 @@ type
     procedure actConfirmUpdate(Sender: TObject);
     procedure actHelpUpdate(Sender: TObject);
   strict private
-    procedure _Confirm;
     procedure _Clear;
-    procedure _Help;
     procedure _Add;
     procedure _Delete;
-    procedure _Close;
     procedure _UpdateListViewScrollBarVisibility;
     procedure _UpdateSelectedPeriod;
   end;
@@ -74,7 +71,7 @@ uses
   OA5.uTMainForm,
   Winapi.Windows,
   CastersPackage.uResourceStrings,
-  VCL.Forms;
+  Vcl.Forms;
 
 resourcestring
   RsAddMassMsrForm = 'массового размножения мероприятий';
@@ -177,8 +174,7 @@ var
   wStopMonth: word;
   wStopDay: word;
 begin
-  ProcedureHeader('Процедура добавления указанных сеансов мероприятия в список',
-    '{C0AD6CA7-C22C-4694-A1BF-384E624AC64F}');
+  ProcedureHeader('Процедура добавления указанных сеансов мероприятия в список', '{C0AD6CA7-C22C-4694-A1BF-384E624AC64F}');
 
   edbxTime.Text := Validate_TimeString(edbxTime.Text);
   dtLengthOfDay := EncodeDate(2011, 1, 2) - EncodeDate(2011, 1, 1);
@@ -271,22 +267,6 @@ begin
   ProcedureFooter;
 end;
 
-procedure TAddMassMsrForm._Confirm;
-begin
-  ProcedureHeader(Format(RsCloseModalWithOkProcedure, [RsAddMassMsrForm]), '{11BCABC0-58E5-4962-BFE0-077941762018}');
-
-  if MessageBox(Handle, PChar('Сгенерировано мероприятий: ' + IntToStr(lvMsrDateTimeList.Items.Count) +
-    '. Вы дествительно хотите их добавить?'), PChar(Application.Title + ' - Подтверждение добавления'),
-    MB_OKCANCEL + MB_ICONQUESTION + MB_DEFBUTTON2) = IDOK then
-  begin
-    ModalResult := mrOk;
-  end;
-  Log.SendInfo('Попытка массового размножения меропритий была подтверждена пользователем.');
-  Log.SendInfo(Format(RsWindowClosed, [RsAddMassMsrForm]));
-
-  ProcedureFooter;
-end;
-
 procedure TAddMassMsrForm._Delete;
 begin
   ProcedureHeader('Процедура удаления элемента списка сеансов мероприятия', '{45B04FFE-2A83-4313-A882-A31CE7B8E8F9}');
@@ -295,21 +275,6 @@ begin
     lvMsrDateTimeList.Selected.Delete;
   _UpdateListViewScrollBarVisibility;
 
-  ProcedureFooter;
-end;
-
-procedure TAddMassMsrForm._Help;
-begin
-  ProcedureHeader(RsContextHelpProcedure, '{1198290A-D679-4AC4-AF2D-BFBD620F89E2}');
-  Log.SendInfo(RsTryingToOpenHelpFile);
-  if (FileExists(ExpandFileName(Application.HelpFile))) then
-  begin
-    Application.HelpContext(HelpContext);
-  end
-  else
-  begin
-    GenerateError(RsHelpFileNonFound);
-  end;
   ProcedureFooter;
 end;
 
@@ -353,15 +318,16 @@ begin
   ProcedureFooter;
 end;
 
-procedure TAddMassMsrForm._Close;
+procedure TAddMassMsrForm.actConfirmExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsAddMassMsrForm]),
-    '{4BA6D5D6-5088-4A74-99C8-20678DCF154B}');
-
-  ModalResult := mrCancel;
-  Log.SendInfo('Попытка массового размножения меропритий была отменена пользователем.');
-  Log.SendInfo(Format(RsWindowClosedByUser, [RsAddMassMsrForm]));
-
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actConfirm.Caption]), '{440C6967-9A24-456C-A074-687F4CD5FE74}');
+  if MessageBox(Handle, PChar('Сгенерировано мероприятий: ' + IntToStr(lvMsrDateTimeList.Items.Count) +
+    '. Вы дествительно хотите их добавить?'), PChar(Application.Title + ' - Подтверждение добавления'),
+    MB_OKCANCEL + MB_ICONQUESTION + MB_DEFBUTTON2) = IDOK then
+  begin
+    Log.SendInfo('Попытка массового размножения меропритий была подтверждена пользователем.');
+    CloseModalWindowWithOkResult(RsAddMassMsrForm, '{720E0E2F-15DB-4746-8360-39264C89CD3D}');
+  end;
   ProcedureFooter;
 end;
 
@@ -382,15 +348,8 @@ end;
 procedure TAddMassMsrForm.actCloseExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{13451965-16E5-4B77-BFD8-922789209438}');
-  _Close;
-  ProcedureFooter;
-end;
-
-procedure TAddMassMsrForm.actConfirmExecute(Sender: TObject);
-begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actConfirm.Caption]),
-    '{440C6967-9A24-456C-A074-687F4CD5FE74}');
-  _Confirm;
+  Log.SendInfo('Попытка массового размножения меропритий была отменена пользователем.');
+  CloseModalWindowWithCancelResult(RsAddMassMsrForm, '{3033F184-86C0-48D0-8F3E-FF95342DDDB5}');
   ProcedureFooter;
 end;
 
@@ -404,7 +363,7 @@ end;
 procedure TAddMassMsrForm.actHelpExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{D31E7D84-CC7A-4011-85ED-5DFA3B9EE5A4}');
-  _Help;
+  Help(HelpContext, '{DD79A56F-3D97-4357-9200-3F85BD987205}');
   ProcedureFooter;
 end;
 
@@ -412,6 +371,7 @@ procedure TAddMassMsrForm.actHelpUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
+  inherited;
   b := Application.HelpFile <> EmptyStr;
   if actHelp.Enabled <> b then
   begin
@@ -482,16 +442,15 @@ begin
       Compare := 0
     else
     begin
-      if StrToDateTime(Item1.Caption + ' ' + Item1.SubItems[0]) > StrToDateTime(Item2.Caption + ' ' + Item2.SubItems[0])
-      then
+      if StrToDateTime(Item1.Caption + ' ' + Item1.SubItems[0]) > StrToDateTime(Item2.Caption + ' ' + Item2.SubItems[0]) then
         Compare := 1
       else
-        if StrToDateTime(Item1.Caption + ' ' + Item1.SubItems[0]) <
-          StrToDateTime(Item2.Caption + ' ' + Item2.SubItems[0]) then
+        if StrToDateTime(Item1.Caption + ' ' + Item1.SubItems[0]) < StrToDateTime(Item2.Caption + ' ' + Item2.SubItems[0])
+        then
           Compare := -1
         else
-          if StrToDateTime(Item1.Caption + ' ' + Item1.SubItems[0])
-            = StrToDateTime(Item2.Caption + ' ' + Item2.SubItems[0]) then
+          if StrToDateTime(Item1.Caption + ' ' + Item1.SubItems[0]) = StrToDateTime(Item2.Caption + ' ' + Item2.SubItems[0])
+          then
             Compare := 0;
     end;
   end;
@@ -521,6 +480,7 @@ procedure TAddMassMsrForm.actAddUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
+  inherited;
   b := IsStringIsTime(edbxTime.Text);
   if actAdd.Enabled <> b then
   begin
@@ -535,11 +495,11 @@ procedure TAddMassMsrForm.actDeleteUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
+  inherited;
   b := lvMsrDateTimeList.Selected <> nil;
   if actDelete.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actDelete.Caption]),
-      '{748F40FE-3AAD-45AA-AFF6-BFAD901BC997}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actDelete.Caption]), '{748F40FE-3AAD-45AA-AFF6-BFAD901BC997}');
     actDelete.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actDelete));
     ProcedureFooter;
@@ -550,6 +510,7 @@ procedure TAddMassMsrForm.actClearUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
+  inherited;
   b := lvMsrDateTimeList.Items.Count > 0;
   if actClear.Enabled <> b then
   begin
@@ -564,11 +525,11 @@ procedure TAddMassMsrForm.actConfirmUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
+  inherited;
   b := lvMsrDateTimeList.Items.Count > 0;
   if actConfirm.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actConfirm.Caption]),
-      '{4ECF3B13-FB14-4A53-8B56-5DC90A501AB8}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actConfirm.Caption]), '{4ECF3B13-FB14-4A53-8B56-5DC90A501AB8}');
     actConfirm.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actConfirm));
     ProcedureFooter;

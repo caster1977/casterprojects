@@ -168,7 +168,8 @@ type
     /// <summary>
     /// Продолжительность мероприятия в минутах
     /// </summary>
-    property DurationMinutes: Integer read GetDurationMinutes write SetDurationMinutes default DEFAULT_MEASURE_DURATION_MINUTES;
+    property DurationMinutes: Integer read GetDurationMinutes write SetDurationMinutes
+      default DEFAULT_MEASURE_DURATION_MINUTES;
     /// <summary>
     /// Мероприятие "только для взрослых"?
     /// </summary>
@@ -184,15 +185,18 @@ type
     /// <summary>
     /// Длительность мероприятия неизвестна?
     /// </summary>
-    property HasUnknownDuration: Boolean read GetHasUnknownDuration write SetHasUnknownDuration default DEFAULT_MEASURE_HAS_UNKNOWN_DURATION;
+    property HasUnknownDuration: Boolean read GetHasUnknownDuration write SetHasUnknownDuration
+      default DEFAULT_MEASURE_HAS_UNKNOWN_DURATION;
     /// <summary>
     /// Есть ли у мероприятия дата/время начала
     /// </summary>
-    property HasStartDateTime: Boolean read GetHasStartDateTime write SetHasStartDateTime default DEFAULT_MEASURE_HAS_START_DATETIME;
+    property HasStartDateTime: Boolean read GetHasStartDateTime write SetHasStartDateTime
+      default DEFAULT_MEASURE_HAS_START_DATETIME;
     /// <summary>
     /// Есть ли у мероприятия дата/время окончания
     /// </summary>
-    property HasStopDateTime: Boolean read GetHasStopDateTime write SetHasStopDateTime default DEFAULT_MEASURE_HAS_STOP_DATETIME;
+    property HasStopDateTime: Boolean read GetHasStopDateTime write SetHasStopDateTime
+      default DEFAULT_MEASURE_HAS_STOP_DATETIME;
     /// <summary>
     /// Мероприятие является премьерным?
     /// </summary>
@@ -469,11 +473,14 @@ begin
   if Obj is TMeasure then
   begin
     o := Obj as TMeasure;
-    Result := (AutoNormalizeData = o.AutoNormalizeData) and (OrganizationID = o.OrganizationID) and (Type_ = o.Type_) and (name = o.Name) and (Author = o.Author) and (Producer = o.Producer) and
-      (Performer = o.Performer) and (Organizer = o.Organizer) and (TicketPrice = o.TicketPrice) and (OtherInfoRTF = o.OtherInfoRTF) and (OtherInfoPlane = o.OtherInfoPlane) and
-      (HasUnknownDuration = o.HasUnknownDuration) and (HasStartDateTime = o.HasStartDateTime) and (HasStopDateTime = o.HasStopDateTime) and (StartDateTime = o.StartDateTime) and
-      (StopDateTime = o.StopDateTime) and (DurationDays = o.DurationDays) and (DurationHours = o.DurationHours) and (DurationMinutes = o.DurationMinutes) and (IsPremier = o.IsPremier) and
-      (IsTour = o.IsTour) and (IsSport = o.IsSport) and (ForChildren = o.ForChildren) and (ForTeenagers = o.ForTeenagers) and (ForAdultsOnly = o.ForAdultsOnly);
+    Result := (AutoNormalizeData = o.AutoNormalizeData) and (OrganizationID = o.OrganizationID) and (Type_ = o.Type_) and
+      (name = o.Name) and (Author = o.Author) and (Producer = o.Producer) and (Performer = o.Performer) and
+      (Organizer = o.Organizer) and (TicketPrice = o.TicketPrice) and (OtherInfoRTF = o.OtherInfoRTF) and
+      (OtherInfoPlane = o.OtherInfoPlane) and (HasUnknownDuration = o.HasUnknownDuration) and
+      (HasStartDateTime = o.HasStartDateTime) and (HasStopDateTime = o.HasStopDateTime) and (StartDateTime = o.StartDateTime)
+      and (StopDateTime = o.StopDateTime) and (DurationDays = o.DurationDays) and (DurationHours = o.DurationHours) and
+      (DurationMinutes = o.DurationMinutes) and (IsPremier = o.IsPremier) and (IsTour = o.IsTour) and (IsSport = o.IsSport)
+      and (ForChildren = o.ForChildren) and (ForTeenagers = o.ForTeenagers) and (ForAdultsOnly = o.ForAdultsOnly);
   end
   else
   begin
@@ -811,10 +818,14 @@ begin
   start_date_time := StartDateTime;
   stop_date_time := StopDateTime;
 
-  if (OrganizationID < 0) or (measure_type <> Routines.PrepareStringForRNE5(measure_type)) or (measure_name <> Routines.PrepareStringForRNE5(measure_name)) or
-    (measure_author <> Routines.PrepareStringForRNE5(measure_author)) or (measure_producer <> Routines.PrepareStringForRNE5(measure_producer)) or
-    (measure_performer <> Routines.PrepareStringForRNE5(measure_performer)) or (measure_organizer <> Routines.PrepareStringForRNE5(measure_organizer)) or
-    (measure_ticket_price <> Routines.PrepareStringForRNE5(measure_ticket_price)) or (measure_other_info_plane <> Routines.PrepareStringForRNE5(measure_other_info_plane)) or
+  if (OrganizationID < 0) or (measure_type <> Routines.PrepareStringForRNE5(measure_type)) or
+    (measure_name <> Routines.PrepareStringForRNE5(measure_name)) or
+    (measure_author <> Routines.PrepareStringForRNE5(measure_author)) or
+    (measure_producer <> Routines.PrepareStringForRNE5(measure_producer)) or
+    (measure_performer <> Routines.PrepareStringForRNE5(measure_performer)) or
+    (measure_organizer <> Routines.PrepareStringForRNE5(measure_organizer)) or
+    (measure_ticket_price <> Routines.PrepareStringForRNE5(measure_ticket_price)) or
+    (measure_other_info_plane <> Routines.PrepareStringForRNE5(measure_other_info_plane)) or
     ((ForChildren or ForTeenagers) and ForAdultsOnly) then
   begin
     Exit;

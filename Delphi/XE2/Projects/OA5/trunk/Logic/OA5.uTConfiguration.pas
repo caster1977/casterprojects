@@ -404,7 +404,7 @@ end;
 
 procedure TConfiguration.SetEnableLaunchAtStartup(const AValue: Boolean);
 begin
-  Routines.SetField(AValue, FEnableSplashAtStart);
+  Routines.SetField(AValue, FEnableLaunchAtStartup);
 end;
 
 procedure TConfiguration.SetMainFormHeight(const AValue: Integer);
@@ -1162,13 +1162,13 @@ begin
   begin
     Connected := False;
     LogProvider := nil;
-    Host := DEFAULT_CONFIGURATION_RNE4SERVER_HOST;
-    Port := DEFAULT_CONFIGURATION_RNE4SERVER_PORT;
-    Timeout := DEFAULT_CONFIGURATION_RNE4SERVER_TIMEOUT;
-    Compression := DEFAULT_CONFIGURATION_RNE4SERVER_COMPRESSION;
-    Login := DEFAULT_CONFIGURATION_RNE4SERVER_LOGIN;
-    Password := DEFAULT_CONFIGURATION_RNE4SERVER_PASSWORD;
-    Database := DEFAULT_CONFIGURATION_RNE4SERVER_DATABESE;
+    Host := DEFAULT_CONFIGURATION_DBSERVER_HOST;
+    Port := DEFAULT_CONFIGURATION_DBSERVER_PORT;
+    Timeout := DEFAULT_CONFIGURATION_DBSERVER_TIMEOUT;
+    Compression := DEFAULT_CONFIGURATION_DBSERVER_COMPRESSION;
+    Login := DEFAULT_CONFIGURATION_DBSERVER_LOGIN;
+    Password := DEFAULT_CONFIGURATION_DBSERVER_PASSWORD;
+    Database := DEFAULT_CONFIGURATION_DBSERVER_DATABESE;
   end;
 
   // вкладка "настройки подключения к серверу системы обмена сообщениями"
@@ -1461,8 +1461,7 @@ begin
       DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_CLEARING_LOG);
     EnableFlushLogOnApply := ReadBool(RsLogging, 'EnableFlushLogOnApply', DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_APPLY);
     EnableCustomLogClient := ReadBool(RsLogging, 'EnableCustomLogClient', DEFAULT_CONFIGURATION_ENABLE_CUSTOM_LOG_CLIENT);
-    CustomLogClientValue := ReadString(RsLogging, 'CustomLogClientValue',
-      DEFAULT_CONFIGURATION_CUSTOM_LOG_CLIENT_VALUE);
+    CustomLogClientValue := ReadString(RsLogging, 'CustomLogClientValue', DEFAULT_CONFIGURATION_CUSTOM_LOG_CLIENT_VALUE);
     if ReadBool(RsLogging, 'KeepErrorLog', lmtError in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) then
       KeepLogTypes := KeepLogTypes + [lmtError]
     else
@@ -1575,21 +1574,23 @@ begin
 
     // вкладка "настройки процедуры логирования"
     EnableStoreLogin := ReadBool(RsIdentity, 'EnableStoreLogin', DEFAULT_CONFIGURATION_ENABLE_STORE_LOGIN);
-    StoredLogin := Routines.GetConditionalString(EnableStoreLogin, ReadString(RsIdentity, 'StoredLogin', EmptyStr), EmptyStr);
+    StoredLogin := Routines.GetConditionalString(EnableStoreLogin, ReadString(RsIdentity, 'StoredLogin', EmptyStr),
+      EmptyStr);
     EnableStorePassword := ReadBool(RsIdentity, 'EnableStorePassword', DEFAULT_CONFIGURATION_ENABLE_STORE_PASSWORD);
-    StoredPassword := Routines.GetConditionalString(EnableStorePassword, ReadString(RsIdentity, 'StoredPassword', EmptyStr), EmptyStr);
+    StoredPassword := Routines.GetConditionalString(EnableStorePassword, ReadString(RsIdentity, 'StoredPassword', EmptyStr),
+      EmptyStr);
     EnableAutoLogon := ReadBool(RsIdentity, 'EnableAutoLogon', DEFAULT_CONFIGURATION_ENABLE_AUTO_LOGON);
 
     // вкладка "подключения к серверу базы данных услуги"
     with DBServer do
     begin
-      Host := ReadString(RsServers, 'DBServer.Host', DEFAULT_CONFIGURATION_RNE4SERVER_HOST);
-      Port := ReadInteger(RsServers, 'DBServer.Port', DEFAULT_CONFIGURATION_RNE4SERVER_PORT);
-      Timeout := ReadInteger(RsServers, 'DBServer.Timeout', DEFAULT_CONFIGURATION_RNE4SERVER_TIMEOUT);
-      Compression := ReadBool(RsServers, 'DBServer.Compression', DEFAULT_CONFIGURATION_RNE4SERVER_COMPRESSION);
-      Login := ReadString(RsServers, 'DBServer.Login', DEFAULT_CONFIGURATION_RNE4SERVER_LOGIN);
-      Password := ReadString(RsServers, 'DBServer.Password', DEFAULT_CONFIGURATION_RNE4SERVER_PASSWORD);
-      Database := ReadString(RsServers, 'DBServer.Database', DEFAULT_CONFIGURATION_RNE4SERVER_DATABESE);
+      Host := ReadString(RsServers, 'DBServer.Host', DEFAULT_CONFIGURATION_DBSERVER_HOST);
+      Port := ReadInteger(RsServers, 'DBServer.Port', DEFAULT_CONFIGURATION_DBSERVER_PORT);
+      Timeout := ReadInteger(RsServers, 'DBServer.Timeout', DEFAULT_CONFIGURATION_DBSERVER_TIMEOUT);
+      Compression := ReadBool(RsServers, 'DBServer.Compression', DEFAULT_CONFIGURATION_DBSERVER_COMPRESSION);
+      Login := ReadString(RsServers, 'DBServer.Login', DEFAULT_CONFIGURATION_DBSERVER_LOGIN);
+      Password := ReadString(RsServers, 'DBServer.Password', DEFAULT_CONFIGURATION_DBSERVER_PASSWORD);
+      Database := ReadString(RsServers, 'DBServer.Database', DEFAULT_CONFIGURATION_DBSERVER_DATABESE);
     end;
 
     // вкладка "подключения к серверу системы обмена сообщениями"
@@ -1606,8 +1607,8 @@ begin
 
     // вкладка "настройки формирования отчётов"
     ReportFolderType := TReportFolder(ReadInteger(RsReports, 'ReportFolderType', Integer(rfApplicationFolder)));
-    CustomReportFolderValue := ReadString(RsReports, 'CustomReportFolderValue', EmptyStr);
-    EnableOverwriteConfirmation := ReadBool(RsReports, 'EnableOverwriteConfirmation', False);
+    CustomReportFolderValue := ReadString(RsReports, 'CustomReportFolderValue', EmptyS tr);
+    EnableOverwriteConfirmation := ReadBool(RsReports, 'EnableOverwriteConfirmation', DEFAULT_CONFIGURATION_ENABLE_OVERWRITE_CONFIRMATION);
     EnableAskForFileName := ReadBool(RsReports, 'EnableAskForFileName', True);
 
     // вкладка "настройки прочие"
@@ -1673,32 +1674,93 @@ begin
   inherited;
   with AIniFile do
     try
-    { TODO : добавить условие на сохранение данных!!!!!!! }
       // вкладка "настройки интерфейса"
-      WriteBool(RsInterface, 'EnableSplashAtStart', EnableSplashAtStart);
-      WriteBool(RsInterface, 'EnableToolbar', EnableToolbar);
-      WriteBool(RsInterface, 'EnableStatusbar', EnableStatusbar);
-      WriteBool(RsInterface, 'EnableEditboxHints', EnableEditboxHints);
-      WriteBool(RsInterface, 'EnableCommonSearchEditbox', EnableCommonSearchEditbox);
-      WriteBool(RsInterface, 'EnableID', EnableID);
-      WriteBool(RsInterface, 'EnableMultibuffer', EnableMultibuffer);
-      WriteBool(RsInterface, 'EnableQuitConfirmation', EnableQuitConfirmation);
+      if EnableSplashAtStart <> DEFAULT_CONFIGURATION_ENABLE_SPLASH_AT_START then
+      begin
+        WriteBool(RsInterface, 'EnableSplashAtStart', EnableSplashAtStart);
+      end;
+      if EnableToolbar <> DEFAULT_CONFIGURATION_ENABLE_TOOLBAR then
+      begin
+        WriteBool(RsInterface, 'EnableToolbar', EnableToolbar);
+      end;
+      if EnableStatusbar <> DEFAULT_CONFIGURATION_ENABLE_STATUSBAR then
+      begin
+        WriteBool(RsInterface, 'EnableStatusbar', EnableStatusbar);
+      end;
+      if EnableEditboxHints <> DEFAULT_CONFIGURATION_ENABLE_EDITBOX_HINTS then
+      begin
+        WriteBool(RsInterface, 'EnableEditboxHints', EnableEditboxHints);
+      end;
+      if EnableCommonSearchEditbox <> DEFAULT_CONFIGURATION_ENABLE_COMMON_SEARCH_EDITBOX then
+      begin
+        WriteBool(RsInterface, 'EnableCommonSearchEditbox', EnableCommonSearchEditbox);
+      end;
+      if EnableID <> DEFAULT_CONFIGURATION_ENABLE_ID then
+      begin
+        WriteBool(RsInterface, 'EnableID', EnableID);
+      end;
+      if EnableMultibuffer <> DEFAULT_CONFIGURATION_ENABLE_MULTIBUFFER then
+      begin
+        WriteBool(RsInterface, 'EnableMultibuffer', EnableMultibuffer);
+      end;
+      if EnableQuitConfirmation <> DEFAULT_CONFIGURATION_ENABLE_QUIT_CONFIRMATION then
+      begin
+        WriteBool(RsInterface, 'EnableQuitConfirmation', EnableQuitConfirmation);
+      end;
 
       // вкладка "настройки ведения протокола работы"
-      WriteBool(RsLogging, 'EnableLog', EnableLog);
-      WriteBool(RsLogging, 'EnableFlushLogOnExit', EnableFlushLogOnExit);
-      WriteBool(RsLogging, 'EnableFlushLogOnStringsQuantity', EnableFlushLogOnStringsQuantity);
-      WriteInteger(RsLogging, 'EnableFlushLogOnStringsQuantityValue', EnableFlushLogOnStringsQuantityValue);
-      WriteBool(RsLogging, 'EnableFlushLogOnClearingLog', EnableFlushLogOnClearingLog);
-      WriteBool(RsLogging, 'EnableFlushLogOnApply', EnableFlushLogOnApply);
-      WriteBool(RsLogging, 'EnableCustomLogClient', EnableCustomLogClient);
-      WriteString(RsLogging, 'CustomLogClientValue', CustomLogClientValue);
-
-      WriteBool(RsLogging, 'KeepErrorLog', lmtError in KeepLogTypes);
-      WriteBool(RsLogging, 'KeepWarningLog', lmtWarning in KeepLogTypes);
-      WriteBool(RsLogging, 'KeepInfoLog', lmtInfo in KeepLogTypes);
-      WriteBool(RsLogging, 'KeepSQLLog', lmtSQL in KeepLogTypes);
-      WriteBool(RsLogging, 'KeepDebugLog', lmtDebug in KeepLogTypes);
+      if EnableLog <> DEFAULT_CONFIGURATION_ENABLE_LOG then
+      begin
+        WriteBool(RsLogging, 'EnableLog', EnableLog);
+      end;
+      if EnableFlushLogOnExit <> DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_EXIT then
+      begin
+        WriteBool(RsLogging, 'EnableFlushLogOnExit', EnableFlushLogOnExit);
+      end;
+      if EnableFlushLogOnStringsQuantity <> DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_STRINGS_QUANTITY then
+      begin
+        WriteBool(RsLogging, 'EnableFlushLogOnStringsQuantity', EnableFlushLogOnStringsQuantity);
+      end;
+      if EnableFlushLogOnStringsQuantityValue <> DEFAULT_CONFIGURATION_FLUSH_LOG_ON_STRINGS_QUANTITY_VALUE then
+      begin
+        WriteInteger(RsLogging, 'EnableFlushLogOnStringsQuantityValue', EnableFlushLogOnStringsQuantityValue);
+      end;
+      if EnableFlushLogOnClearingLog <> DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_CLEARING_LOG then
+      begin
+        WriteBool(RsLogging, 'EnableFlushLogOnClearingLog', EnableFlushLogOnClearingLog);
+      end;
+      if EnableFlushLogOnApply <> DEFAULT_CONFIGURATION_ENABLE_FLUSH_LOG_ON_APPLY then
+      begin
+        WriteBool(RsLogging, 'EnableFlushLogOnApply', EnableFlushLogOnApply);
+      end;
+      if EnableCustomLogClient <> DEFAULT_CONFIGURATION_ENABLE_CUSTOM_LOG_CLIENT then
+      begin
+        WriteBool(RsLogging, 'EnableCustomLogClient', EnableCustomLogClient);
+      end;
+      if CustomLogClientValue <> DEFAULT_CONFIGURATION_CUSTOM_LOG_CLIENT_VALUE then
+      begin
+        WriteString(RsLogging, 'CustomLogClientValue', CustomLogClientValue);
+      end;
+      if (lmtError in KeepLogTypes) <> (lmtError in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) then
+      begin
+        WriteBool(RsLogging, 'KeepErrorLog', lmtError in KeepLogTypes);
+      end;
+      if (lmtWarning in KeepLogTypes) <> (lmtWarning in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) then
+      begin
+        WriteBool(RsLogging, 'KeepWarningLog', lmtWarning in KeepLogTypes);
+      end;
+      if (lmtInfo in KeepLogTypes) <> (lmtInfo in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) then
+      begin
+        WriteBool(RsLogging, 'KeepInfoLog', lmtInfo in KeepLogTypes);
+      end;
+      if (lmtSQL in KeepLogTypes) <> (lmtSQL in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) then
+      begin
+        WriteBool(RsLogging, 'KeepSQLLog', lmtSQL in KeepLogTypes);
+      end;
+      if (lmtDebug in KeepLogTypes) <> (lmtDebug in DEFAULT_CONFIGURATION_KEEP_LOG_TYPES) then
+      begin
+        WriteBool(RsLogging, 'KeepDebugLog', lmtDebug in KeepLogTypes);
+      end;
 
       // вкладка "настройки положения диалоговых окон"
       WriteFormPosition(AIniFile, LoginFormPosition, 'LoginFormPosition');
@@ -1718,76 +1780,197 @@ begin
       WriteFormPosition(AIniFile, MultibufferFormPosition, 'MultibufferFormPosition');
 
       // вкладка "настройки процедуры логирования"
-      WriteBool(RsIdentity, 'EnableStoreLogin', EnableStoreLogin);
-      if EnableStoreLogin then
+      if EnableStoreLogin <> DEFAULT_CONFIGURATION_ENABLE_STORE_LOGIN then
       begin
-        WriteString(RsIdentity, 'StoredLogin', StoredLogin);
-        WriteBool(RsIdentity, 'EnableStorePassword', EnableStorePassword);
-        if EnableStorePassword then
+        WriteBool(RsIdentity, 'EnableStoreLogin', EnableStoreLogin);
+        if EnableStoreLogin then
         begin
-          WriteString(RsIdentity, 'StoredPassword', StoredPassword);
-          WriteBool(RsIdentity, 'EnableAutoLogon', EnableAutoLogon);
+          if StoredLogin <> DEFAULT_CONFIGURATION_STORED_LOGIN then
+          begin
+            WriteString(RsIdentity, 'StoredLogin', StoredLogin);
+            if EnableStorePassword <> DEFAULT_CONFIGURATION_ENABLE_STORE_PASSWORD then
+            begin
+              WriteBool(RsIdentity, 'EnableStorePassword', EnableStorePassword);
+              if EnableStorePassword then
+              begin
+                if StoredPassword <> DEFAULT_CONFIGURATION_STORED_PASSWORD then
+                begin
+                  WriteString(RsIdentity, 'StoredPassword', StoredPassword);
+                  if EnableAutoLogon <> DEFAULT_CONFIGURATION_ENABLE_AUTO_LOGON then
+                  begin
+                    WriteBool(RsIdentity, 'EnableAutoLogon', EnableAutoLogon);
+                  end;
+                end;
+              end;
+            end;
+          end;
         end;
       end;
 
       // вкладка "подключения к серверу базы данных услуги"
-      with DBServer do
+      if DBServer.Host <> DEFAULT_CONFIGURATION_DBSERVER_HOST then
       begin
-        WriteString(RsServers, 'DBServer.Host', Host);
-        WriteInteger(RsServers, 'DBServer.Port', Port);
-        WriteInteger(RsServers, 'DBServer.Timeout', Timeout);
-        WriteBool(RsServers, 'DBServer.Compression', Compression);
-        // WriteString(RsServers, 'DBServer.Login', Login);
-        // WriteString(RsServers, 'DBServer.Password', Password);
-        WriteString(RsServers, 'DBServer.Database', Database);
+        WriteString(RsServers, 'DBServer.Host', DBServer.Host);
+      end;
+      if DBServer.Port <> DEFAULT_CONFIGURATION_DBSERVER_PORT then
+      begin
+        WriteInteger(RsServers, 'DBServer.Port', DBServer.Port);
+      end;
+      if DBServer.Timeout <> DEFAULT_CONFIGURATION_DBSERVER_TIMEOUT then
+      begin
+        WriteInteger(RsServers, 'DBServer.Timeout', DBServer.Timeout);
+      end;
+      if DBServer.Compression <> DEFAULT_CONFIGURATION_DBSERVER_COMPRESSION then
+      begin
+        WriteBool(RsServers, 'DBServer.Compression', DBServer.Compression);
+      end;
+      if DBServer.Login <> DEFAULT_CONFIGURATION_DBSERVER_LOGIN then
+      begin
+        WriteString(RsServers, 'DBServer.Login', DBServer.Login);
+      end;
+      if DBServer.Password <> DEFAULT_CONFIGURATION_DBSERVER_PASSWORD then
+      begin
+        WriteString(RsServers, 'DBServer.Password', DBServer.Password);
+      end;
+      if DBServer.Database <> DEFAULT_CONFIGURATION_DBSERVER_DATABESE then
+      begin
+        WriteString(RsServers, 'DBServer.Database', DBServer.Database);
       end;
 
       // вкладка "подключения к серверу системы обмена сообщениями"
-      with MessageServer do
+      if MessageServer.Host <> DEFAULT_CONFIGURATION_MESSAGESERVER_HOST then
       begin
-        WriteString(RsServers, 'MessageServer.Host', Host);
-        WriteInteger(RsServers, 'MessageServer.Port', Port);
-        WriteInteger(RsServers, 'MessageServer.Timeout', Timeout);
-        WriteBool(RsServers, 'MessageServer.Compression', Compression);
-        // WriteString(RsServers, 'MessageServer.Login', Login);
-        // WriteString(RsServers, 'MessageServer.Password', Password);
-        WriteString(RsServers, 'MessageServer.Database', Database);
+        WriteString(RsServers, 'MessageServer.Host', MessageServer.Host);
+      end;
+      if MessageServer.Port <> DEFAULT_CONFIGURATION_MESSAGESERVER_PORT then
+      begin
+        WriteInteger(RsServers, 'MessageServer.Port', MessageServer.Port);
+      end;
+      if MessageServer.Timeout <> DEFAULT_CONFIGURATION_MESSAGESERVER_TIMEOUT then
+      begin
+        WriteInteger(RsServers, 'MessageServer.Timeout', MessageServer.Timeout);
+      end;
+      if MessageServer.Compression <> DEFAULT_CONFIGURATION_MESSAGESERVER_COMPRESSION then
+      begin
+        WriteBool(RsServers, 'MessageServer.Compression', MessageServer.Compression);
+      end;
+      if MessageServer.Login <> DEFAULT_CONFIGURATION_MESSAGESERVER_LOGIN then
+      begin
+        WriteString(RsServers, 'MessageServer.Login', MessageServer.Login);
+      end;
+      if MessageServer.Password <> DEFAULT_CONFIGURATION_MESSAGESERVER_PASSWORD then
+      begin
+        WriteString(RsServers, 'MessageServer.Password', MessageServer.Password);
+      end;
+      if MessageServer.Database <> DEFAULT_CONFIGURATION_MESSAGESERVER_DATABASE then
+      begin
+        WriteString(RsServers, 'MessageServer.Database', MessageServer.Database);
       end;
 
       // вкладка "настройки формирования отчётов"
-      WriteInteger(RsReports, 'ReportFolderType', Integer(ReportFolderType));
+      if ReportFolderType <> DEFAULT_CONFIGURATION_REPORT_FOLDER_TYPE then
+      begin
+        WriteInteger(RsReports, 'ReportFolderType', Integer(ReportFolderType));
+      end;
       if CustomReportFolderValue <> DEFAULT_CONFIGURATION_CUSTOM_REPORT_FOLDER_VALUE then
       begin
         WriteString(RsReports, 'CustomReportFolderValue', CustomReportFolderValue);
       end;
-      WriteBool(RsReports, 'EnableOverwriteConfirmation', EnableOverwriteConfirmation);
-      WriteBool(RsReports, 'EnableAskForFileName', EnableAskForFileName);
+      if EnableOverwriteConfirmation <> DEFAULT_CONFIGURATION_ENABLE_OVERWRITE_CONFIRMATION then
+      begin
+        WriteBool(RsReports, 'EnableOverwriteConfirmation', EnableOverwriteConfirmation);
+      end;
+      if EnableAskForFileName <> DEFAULT_CONFIGURATION_ENABLE_ASK_FOR_FILE_NAME then
+      begin
+        WriteBool(RsReports, 'EnableAskForFileName', EnableAskForFileName);
+      end;
 
       // вкладка "настройки прочие"
-      WriteBool(RsOther, 'EnableLaunchAtStartup', EnableLaunchAtStartup);
-      WriteBool(RsOther, 'EnablePlaySoundOnComplete', EnablePlaySoundOnComplete);
-      WriteBool(RsOther, 'EnableAutoGetMessages', EnableAutoGetMessages);
-      WriteInteger(RsOther, 'AutoGetMessagesCycleDurationValue', AutoGetMessagesCycleDurationValue);
-      WriteBool(RsOther, 'EnableCustomHelpFile', EnableCustomHelpFile);
-      WriteString(RsOther, 'CustomHelpFileValue', CustomHelpFileValue);
+      if EnableLaunchAtStartup <> DEFAULT_CONFIGURATION_ENABLE_LAUNCH_AT_STARTUP then
+      begin
+        WriteBool(RsOther, 'EnableLaunchAtStartup', EnableLaunchAtStartup);
+      end;
+      if EnablePlaySoundOnComplete <> DEFAULT_CONFIGURATION_ENABLE_PLAY_SOUND_ON_COMPLETE then
+      begin
+        WriteBool(RsOther, 'EnablePlaySoundOnComplete', EnablePlaySoundOnComplete);
+      end;
+      if EnableAutoGetMessages <> DEFAULT_CONFIGURATION_ENABLE_AUTO_GET_MESSAGES then
+      begin
+        WriteBool(RsOther, 'EnableAutoGetMessages', EnableAutoGetMessages);
+      end;
+      if AutoGetMessagesCycleDurationValue <> DEFAULT_CONFIGURATION_AUTO_GET_MESSAGES_CYCLE_DURATION_VALUE then
+      begin
+        WriteInteger(RsOther, 'AutoGetMessagesCycleDurationValue', AutoGetMessagesCycleDurationValue);
+      end;
+      if EnableCustomHelpFile <> DEFAULT_CONFIGURATION_ENABLE_CUSTOM_HELP_FILE then
+      begin
+        WriteBool(RsOther, 'EnableCustomHelpFile', EnableCustomHelpFile);
+      end;
+      if CustomHelpFileValue <> DEFAULT_CONFIGURATION_CUSTOM_HELP_FILE_VALUE then
+      begin
+        WriteString(RsOther, 'CustomHelpFileValue', CustomHelpFileValue);
+      end;
 
       // вкладка "настройки главного окна"
-      WriteInteger(RsMainForm, 'MainFormLeft', MainFormLeft);
-      WriteInteger(RsMainForm, 'MainFormTop', MainFormTop);
-      WriteInteger(RsMainForm, 'MainFormWidth', MainFormWidth);
-      WriteInteger(RsMainForm, 'MainFormHeight', MainFormHeight);
-      WriteBool(RsMainForm, 'MainFormEnableCentered', MainFormEnableCentered);
-      WriteBool(RsMainForm, 'MainFormEnableFullScreenAtLaunch', MainFormEnableFullScreenAtLaunch);
+      if MainFormLeft <> DEFAULT_CONFIGURATION_MAIN_FORM_LEFT then
+      begin
+        WriteInteger(RsMainForm, 'MainFormLeft', MainFormLeft);
+      end;
+      if MainFormTop <> DEFAULT_CONFIGURATION_MAIN_FORM_TOP then
+      begin
+        WriteInteger(RsMainForm, 'MainFormTop', MainFormTop);
+      end;
+      if MainFormWidth <> DEFAULT_CONFIGURATION_MAIN_FORM_WIDTH then
+      begin
+        WriteInteger(RsMainForm, 'MainFormWidth', MainFormWidth);
+      end;
+      if MainFormHeight <> DEFAULT_CONFIGURATION_MAIN_FORM_HEIGHT then
+      begin
+        WriteInteger(RsMainForm, 'MainFormHeight', MainFormHeight);
+      end;
+      if MainFormEnableCentered <> DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_CENTERED then
+      begin
+        WriteBool(RsMainForm, 'MainFormEnableCentered', MainFormEnableCentered);
+      end;
+      if MainFormEnableFullScreenAtLaunch <> DEFAULT_CONFIGURATION_MAIN_FORM_ENABLE_FULL_SCREEN_AT_LAUNCH then
+      begin
+        WriteBool(RsMainForm, 'MainFormEnableFullScreenAtLaunch', MainFormEnableFullScreenAtLaunch);
+      end;
 
       // вкладка "настройки отображения информации"
-      WriteInteger(RsInfo, 'OrganizationPanelHeightValue', OrganizationPanelHeightValue);
-      WriteBool(RsInfo, 'OrganizationPanelEnableHalfHeight', OrganizationPanelEnableHalfHeight);
-      WriteInteger(RsInfo, 'DataPanelWidthValue', DataPanelWidthValue);
-      WriteBool(RsInfo, 'OrganizationPanelEnableHalfHeight', OrganizationPanelEnableHalfHeight);
-      WriteBool(RsInfo, 'EnableDataInOtherInfoPanel', EnableDataInOtherInfoPanel);
-      WriteBool(RsInfo, 'EnableMeasuresListAsRichEdit', EnableMeasuresListAsRichEdit);
-      WriteBool(RsInfo, 'EnableMarkSearchedStrings', EnableMarkSearchedStrings);
-      WriteBool(RsInfo, 'EnablePutTownAtTheEnd', EnablePutTownAtTheEnd);
+      if OrganizationPanelHeightValue <> DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_HEIGHT_VALUE then
+      begin
+        WriteInteger(RsInfo, 'OrganizationPanelHeightValue', OrganizationPanelHeightValue);
+      end;
+      if OrganizationPanelEnableHalfHeight <> DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_ENABLE_HALF_HEIGHT then
+      begin
+        WriteBool(RsInfo, 'OrganizationPanelEnableHalfHeight', OrganizationPanelEnableHalfHeight);
+      end;
+      if DataPanelWidthValue <> DEFAULT_CONFIGURATION_DATA_PANEL_WIDTH_VALUE then
+      begin
+        WriteInteger(RsInfo, 'DataPanelWidthValue', DataPanelWidthValue);
+      end;
+      if OrganizationPanelEnableHalfHeight <> DEFAULT_CONFIGURATION_ORGANIZATION_PANEL_ENABLE_HALF_HEIGHT then
+      begin
+        WriteBool(RsInfo, 'OrganizationPanelEnableHalfHeight', OrganizationPanelEnableHalfHeight);
+      end;
+      if EnableDataInOtherInfoPanel <> DEFAULT_CONFIGURATION_ENABLE_DATA_IN_OTHER_INFO_PANEL then
+      begin
+        WriteBool(RsInfo, 'EnableDataInOtherInfoPanel', EnableDataInOtherInfoPanel);
+      end;
+      if EnableMeasuresListAsRichEdit <> DEFAULT_CONFIGURATION_ENABLE_MEASURE_LIST_AS_RICH_EDIT then
+      begin
+        WriteBool(RsInfo, 'EnableMeasuresListAsRichEdit', EnableMeasuresListAsRichEdit);
+      end;
+      if EnableMarkSearchedStrings <> DEFAULT_CONFIGURATION_ENABLE_MARK_SEARCHED_STRINGS then
+      begin
+        WriteBool(RsInfo, 'EnableMarkSearchedStrings', EnableMarkSearchedStrings);
+      end;
+      if EnablePutTownAtTheEnd <> DEFAULT_CONFIGURATION_ENABLE_PUT_TOWN_AT_THE_END then
+      begin
+        WriteBool(RsInfo, 'EnablePutTownAtTheEnd', EnablePutTownAtTheEnd);
+      end;
+      { TODO : добавить запись параметров сортировки записей }
     except
       on EIniFileException do
       begin

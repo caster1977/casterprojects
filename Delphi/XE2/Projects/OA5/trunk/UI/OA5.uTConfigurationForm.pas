@@ -68,7 +68,7 @@ type
     chkbxAskForFileName: TCheckBox;
     edbxCustomReportFolderValue: TEdit;
     btnSelectFolder: TButton;
-    chkbxDontDemandOverwriteConfirmation: TCheckBox;
+    chkbxDemandOverwriteConfirmation: TCheckBox;
     ts2: TTabSheet;
     vleRNE4SERVER: TValueListEditor;
     ts3: TTabSheet;
@@ -245,7 +245,6 @@ type
     procedure chkbxMainFormPositionByCenterClick(Sender: TObject);
     procedure chkbxFullScreenAtLaunchClick(Sender: TObject);
     procedure actChooseCustomHelpFileExecute(Sender: TObject);
-    procedure chkbxCustomHelpFileClick(Sender: TObject);
     procedure chkbxOrganizationPanelHalfHeightClick(Sender: TObject);
     procedure chkbxDataPanelHalfWidthClick(Sender: TObject);
     procedure chkbxLoginFormPositionByCenterClick(Sender: TObject);
@@ -264,12 +263,11 @@ type
     procedure edbxNumericFieldKeyPress(Sender: TObject; var Key: Char);
     procedure chkbxViewMessageFormPositionByCenterClick(Sender: TObject);
     procedure actHelpUpdate(Sender: TObject);
+    procedure actChooseCustomHelpFileUpdate(Sender: TObject);
+    procedure actChooseReportFolderUpdate(Sender: TObject);
   strict private
     FBooleanValuesList: TStringList;
-    procedure _Help;
     procedure _Defaults;
-    procedure _Close;
-    procedure _Apply;
     procedure _NextPage;
     procedure _PreviousPage;
     procedure _ChooseCustomReportFolder;
@@ -313,24 +311,18 @@ const
 resourcestring
   RsConfigurationForm = 'настроек программы';
 
-procedure TConfigurationForm.actApplyExecute(Sender: TObject);
-begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actApply.Caption]), '{84DDCA84-3467-43EB-9005-E35C20FD98D0}');
-  _Apply;
-  ProcedureFooter;
-end;
-
 procedure TConfigurationForm.actCloseExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{609A88EE-6BC8-4F0F-9C3D-EC1D6FD1A50F}');
-  _Close;
+  Log.SendInfo('Попытка изменения настроек программы была отменена пользователем.');
+  CloseModalWindowWithCancelResult(RsConfigurationForm, '{F09181C1-4B0D-4B59-B502-C336492D417E}');
   ProcedureFooter;
 end;
 
 procedure TConfigurationForm.actHelpExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{0CB39D36-EC59-4C76-AFE5-1718B99DA0CA}');
-  _Help;
+  Help(HelpContext, '{FAD97362-B803-468D-BD54-F5903DFFE819}');
   ProcedureFooter;
 end;
 
@@ -338,6 +330,7 @@ procedure TConfigurationForm.actHelpUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
+  inherited;
   b := Application.HelpFile <> EmptyStr;
   if actHelp.Enabled <> b then
   begin
@@ -371,6 +364,12 @@ begin
   ProcedureFooter;
 end;
 
+procedure TConfigurationForm.actChooseReportFolderUpdate(Sender: TObject);
+begin
+  inherited;
+  //
+end;
+
 procedure TConfigurationForm.actChooseCustomHelpFileExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actChooseCustomHelpFile.Caption]),
@@ -394,13 +393,11 @@ begin
   ProcedureFooter;
 end;
 
-procedure TConfigurationForm._Apply;
+procedure TConfigurationForm.actApplyExecute(Sender: TObject);
 var
   dialog_position: TDialogPosition;
 begin
-  ProcedureHeader(Format(RsCloseModalWithOkProcedure, [RsConfigurationForm]), '{55D9E5EB-97B6-47FC-B149-348070521077}');
-
-  ModalResult := mrOk;
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actApply.Caption]), '{84DDCA84-3467-43EB-9005-E35C20FD98D0}');
   Log.SendInfo('Попытка изменения настроек программы была подтверждена пользователем.');
 
   with MainForm.Configuration do
@@ -596,8 +593,8 @@ begin
       with DBServer, vleRNE4SERVER do
       begin
         Host := Trim(Cells[1, 1]);
-        Port := StrToIntDef(Trim(Cells[1, 2]), DEFAULT_CONFIGURATION_RNE4SERVER_PORT);
-        Timeout := StrToIntDef(Trim(Cells[1, 3]), DEFAULT_CONFIGURATION_RNE4SERVER_TIMEOUT);
+        Port := StrToIntDef(Trim(Cells[1, 2]), DEFAULT_CONFIGURATION_DBSERVER_PORT);
+        Timeout := StrToIntDef(Trim(Cells[1, 3]), DEFAULT_CONFIGURATION_DBSERVER_TIMEOUT);
         Compression := Trim(Cells[1, 4]) = 'Да';
         Database := Trim(Cells[1, 5]);
       end;
@@ -633,8 +630,8 @@ begin
     CustomReportFolderValue := Routines.GetConditionalString(rbSaveIntoTheCustomFolder.Enabled and
       rbSaveIntoTheCustomFolder.Checked, Trim(edbxCustomReportFolderValue.Text),
       DEFAULT_CONFIGURATION_CUSTOM_REPORT_FOLDER_VALUE);
-    EnableOverwriteConfirmation := chkbxDontDemandOverwriteConfirmation.Enabled and
-      chkbxDontDemandOverwriteConfirmation.Checked;
+    EnableOverwriteConfirmation := chkbxDemandOverwriteConfirmation.Enabled and
+      chkbxDemandOverwriteConfirmation.Checked;
     EnableAskForFileName := chkbxAskForFileName.Enabled and chkbxAskForFileName.Checked;
 
     // вкладка "настройки списка автозамены"
@@ -741,35 +738,8 @@ begin
     EnablePutTownAtTheEnd := chkbxPutTownAtTheEnd.Enabled and chkbxPutTownAtTheEnd.Checked;
   end;
 
-  Log.SendInfo(Format(RsWindowClosedByUser, [RsConfigurationForm]));
-
+  CloseModalWindowWithOkResult(RsConfigurationForm, '{92ABA070-CF8C-44CD-B913-A2FF0094ECB5}');
   ProcedureFooter;
-end;
-
-procedure TConfigurationForm._Close;
-begin
-  ProcedureHeader(Format(RsCloseModalWithCancelProcedure, [RsConfigurationForm]), '{06B73D0A-3ADF-48BB-AE29-A1C7E48A577F}');
-
-  ModalResult := mrCancel;
-  Log.SendInfo('Попытка изменения настроек программы была отменена пользователем.');
-  Log.SendInfo(Format(RsWindowClosedByUser, [RsConfigurationForm]));
-
-  ProcedureFooter;
-end;
-
-procedure TConfigurationForm._Help;
-begin
-  ProcedureHeader(RsContextHelpProcedure, '{39BD2567-FAB9-430D-8381-C63A899366A4}');
-
-  Log.SendInfo(RsTryingToOpenHelpFile);
-  if (FileExists(ExpandFileName(Application.HelpFile))) then
-  begin
-    Application.HelpContext(HelpContext);
-  end
-  else
-  begin
-    GenerateError(RsHelpFileNonFound);
-  end;
 end;
 
 procedure TConfigurationForm._PreviousPage;
@@ -813,8 +783,8 @@ var
 begin
   ProcedureHeader('Процедура выбора стороннего справочного файла к программе', '{DBF9ACD7-9F70-4D0A-9D90-CA893744CBBB}');
 
-  iOldBusyCounter := MainForm.BusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
-  MainForm.BusyCounter := 0; // обнуление счётчика перед открытием модального окна
+  iOldBusyCounter := BusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
+  BusyCounter := 0; // обнуление счётчика перед открытием модального окна
   MainForm.RefreshBusyState; // обновление состояния индикатора
 
   with TOpenDialog.Create(Self) do
@@ -844,7 +814,7 @@ begin
       Free;
     end;
 
-  MainForm.BusyCounter := iOldBusyCounter; // возвращение старого значения счётчика
+  BusyCounter := iOldBusyCounter; // возвращение старого значения счётчика
   MainForm.RefreshBusyState; // обновление состояния индикатора
 
   ProcedureFooter;
@@ -857,8 +827,8 @@ var
 begin
   ProcedureHeader('Процедура выбора папки для сохранения отчётов', '{58DA7933-E4BD-4402-9E83-2446DB94BE14}');
 
-  iOldBusyCounter := MainForm.BusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
-  MainForm.BusyCounter := 0; // обнуление счётчика перед открытием модального окна
+  iOldBusyCounter := BusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
+  BusyCounter := 0; // обнуление счётчика перед открытием модального окна
   MainForm.RefreshBusyState; // обновление состояния индикатора
 
   s := edbxCustomReportFolderValue.Text;
@@ -879,7 +849,7 @@ begin
       end;
     end;
 
-  MainForm.BusyCounter := iOldBusyCounter; // возвращение старого значения счётчика
+  BusyCounter := iOldBusyCounter; // возвращение старого значения счётчика
   MainForm.RefreshBusyState; // обновление состояния индикатора
 
   ProcedureFooter;
@@ -892,8 +862,8 @@ var
 begin
   ProcedureHeader('Процедура выбора внешнего клиента протоколирования', '{DCD63D88-72D9-42E5-91EC-35906B335D27}');
 
-  iOldBusyCounter := MainForm.BusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
-  MainForm.BusyCounter := 0; // обнуление счётчика перед открытием модального окна
+  iOldBusyCounter := BusyCounter; // сохранение значения счётчика действий, требующих состояния "занято"
+  BusyCounter := 0; // обнуление счётчика перед открытием модального окна
   MainForm.RefreshBusyState; // обновление состояния индикатора
 
   with TOpenDialog.Create(Self) do
@@ -919,7 +889,7 @@ begin
       Free;
     end;
 
-  MainForm.BusyCounter := iOldBusyCounter; // возвращение старого значения счётчика
+  BusyCounter := iOldBusyCounter; // возвращение старого значения счётчика
   MainForm.RefreshBusyState; // обновление состояния индикатора
 
   ProcedureFooter;
@@ -1171,12 +1141,12 @@ begin
   if PageControl1.ActivePage.Caption = ' подключения к серверу базы данных услуги' then
   begin
     // выставление значений по умолчанию для элементов интерфейса
-    vleRNE4SERVER.Cells[1, 1] := DEFAULT_CONFIGURATION_RNE4SERVER_HOST;
-    vleRNE4SERVER.Cells[1, 2] := IntToStr(DEFAULT_CONFIGURATION_RNE4SERVER_PORT);
-    vleRNE4SERVER.Cells[1, 3] := IntToStr(DEFAULT_CONFIGURATION_RNE4SERVER_TIMEOUT);
+    vleRNE4SERVER.Cells[1, 1] := DEFAULT_CONFIGURATION_DBSERVER_HOST;
+    vleRNE4SERVER.Cells[1, 2] := IntToStr(DEFAULT_CONFIGURATION_DBSERVER_PORT);
+    vleRNE4SERVER.Cells[1, 3] := IntToStr(DEFAULT_CONFIGURATION_DBSERVER_TIMEOUT);
     vleRNE4SERVER.Cells[1, 4] := vleRNE4SERVER.ItemProps[3].PickList.Strings
-      [Integer(DEFAULT_CONFIGURATION_RNE4SERVER_COMPRESSION)];
-    vleRNE4SERVER.Cells[1, 5] := DEFAULT_CONFIGURATION_RNE4SERVER_DATABESE;
+      [Integer(DEFAULT_CONFIGURATION_DBSERVER_COMPRESSION)];
+    vleRNE4SERVER.Cells[1, 5] := DEFAULT_CONFIGURATION_DBSERVER_DATABESE;
   end;
 
   // вкладка "подключения к серверу системы обмена сообщениями"
@@ -1199,7 +1169,7 @@ begin
     rbSaveIntoTheApplicationFolder.Checked := DEFAULT_CONFIGURATION_REPORT_FOLDER_TYPE = rfApplicationFolder;
     rbSaveIntoTheCustomFolder.Checked := DEFAULT_CONFIGURATION_REPORT_FOLDER_TYPE = rfCustomFolder;
     edbxCustomReportFolderValue.Text := DEFAULT_CONFIGURATION_CUSTOM_REPORT_FOLDER_VALUE;
-    chkbxDontDemandOverwriteConfirmation.Checked := DEFAULT_CONFIGURATION_ENABLE_OVERWRITE_CONFIRMATION;
+    chkbxDemandOverwriteConfirmation.Checked := DEFAULT_CONFIGURATION_ENABLE_OVERWRITE_CONFIRMATION;
     chkbxAskForFileName.Checked := DEFAULT_CONFIGURATION_ENABLE_ASK_FOR_FILE_NAME;
     // выставление доступа к элементам интерфейса
     edbxCustomReportFolderValue.Enabled := DEFAULT_CONFIGURATION_REPORT_FOLDER_TYPE = rfCustomFolder;
@@ -1652,7 +1622,7 @@ begin
     rbSaveIntoTheApplicationFolder.Checked := ReportFolderType = rfApplicationFolder;
     rbSaveIntoTheCustomFolder.Checked := ReportFolderType = rfCustomFolder;
     edbxCustomReportFolderValue.Text := CustomReportFolderValue;
-    chkbxDontDemandOverwriteConfirmation.Checked := EnableOverwriteConfirmation;
+    chkbxDemandOverwriteConfirmation.Checked := EnableOverwriteConfirmation;
     chkbxAskForFileName.Checked := EnableAskForFileName;
     edbxCustomReportFolderValue.Enabled := ReportFolderType = rfCustomFolder;
     actChooseReportFolder.Enabled := ReportFolderType = rfCustomFolder;
@@ -2146,28 +2116,25 @@ begin
   ProcedureFooter;
 end;
 
-procedure TConfigurationForm.chkbxCustomHelpFileClick(Sender: TObject);
+procedure TConfigurationForm.actChooseCustomHelpFileUpdate(Sender: TObject);
 var
-  bCustomHelpFile: Boolean;
+  b: Boolean;
 begin
-  ProcedureHeader('Процедура отклика на щелчок на флажке "' + chkbxCustomHelpFile.Caption + '"',
-    '{C4007F3B-8108-4F5D-8699-A1855EC707B1}');
-
-  bCustomHelpFile := chkbxCustomHelpFile.Enabled and chkbxCustomHelpFile.Checked;
-
-  edbxCustomHelpFileValue.Enabled := bCustomHelpFile;
-  actChooseCustomHelpFile.Enabled := bCustomHelpFile;
-  Log.SendDebug('Действие "' + actChooseCustomHelpFile.Caption + '" ' + Routines.GetConditionalString
-    (actChooseCustomHelpFile.Enabled, 'в', 'от') + 'ключено.');
-  if not bCustomHelpFile then
+  inherited;
+  b := chkbxCustomHelpFile.Enabled and chkbxCustomHelpFile.Checked;
+  if actChooseCustomHelpFile.Enabled <> b then
   begin
-    edbxCustomHelpFileValue.Text := EmptyStr;
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actChooseCustomHelpFile.Caption]),
+      '{CEE5E3DF-C04C-4125-AFDE-D6FE85947558}');
+    if not b then
+    begin
+      edbxCustomHelpFileValue.Text := EmptyStr;
+    end;
+    edbxCustomHelpFileValue.Enabled := b;
+    actChooseCustomHelpFile.Enabled := b;
+    Log.SendDebug(GetActionUpdateLogMessage(actChooseCustomHelpFile));
+    ProcedureFooter;
   end;
-
-  Log.SendDebug('Флажок "' + chkbxCustomHelpFile.Caption + '"' + Routines.GetConditionalString(bCustomHelpFile, 'в', 'от') +
-    'ключен.');
-
-  ProcedureFooter;
 end;
 
 procedure TConfigurationForm.chkbxMainFormPositionByCenterClick(Sender: TObject);
