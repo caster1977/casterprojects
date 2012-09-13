@@ -41,6 +41,9 @@ type
     procedure Initialize; virtual;
     procedure InitializeLog; virtual;
     procedure Finalize; virtual;
+    procedure Help(const AHelpContext: THelpContext; const AGUID: string);
+    procedure CloseModalWindowWithCancelResult(const AWindowCaption, AGUID: string);
+    procedure CloseModalWindowWithOkResult(const AWindowCaption, AGUID: string);
   public
     constructor Create(AOwner: TComponent; ABusyCounter: PInteger = nil;
       ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil; AProgressBar: TProgressBar = nil); reintroduce; virtual;
@@ -56,6 +59,9 @@ uses
   CastersPackage.uRoutines;
 
 resourcestring
+  RsContextHelpProcedure = 'Процедура вызова контекстной справки';
+  RsTryingToOpenHelpFile = 'Производится попытка открытия справочного файла программы...';
+  RsHelpFileNonFound = 'Извините, справочный файл к данной программе не найден.';
   RsProcedureExecutesWithoutError = 'Процедура выполнена без ошибок.';
   RsShowErrorDialogCaption = '%s - Ошибка!';
   RsActionStateChanged = 'Действие "%s" %s.';
@@ -63,12 +69,32 @@ resourcestring
   RsActionOff = 'отключено';
   RsTryingToShowModalWindow = 'Производится попытка отображения модального о' + 'кна "%s".';
   RsModalWindowHiden = 'Модальное окно "%s" скрыто.';
+  RsCloseModalWithCancelResultProcedure = 'Процедура закрытия модального окна %s с результатом mrCancel';
+  RsCloseModalWithOkResultProcedure = 'Процедура закрытия модального окна %s с результатом mrOk';
+  // RsWindowClosedByUser = 'Окно %s закрыто пользователем.';
+  RsWindowClosed = 'Окно %s закрыто.';
 
 procedure TLogForm.ProcedureHeader(const ATitle, ALogGroupGUID: string);
 begin
   ClearError;
   Log.EnterMethod(ATitle, ALogGroupGUID);
   RunIncreaseBusy;
+end;
+
+procedure TLogForm.CloseModalWindowWithCancelResult(const AWindowCaption, AGUID: string);
+begin
+  ProcedureHeader(Format(RsCloseModalWithCancelResultProcedure, [AWindowCaption]), AGUID);
+  ModalResult := mrCancel;
+  Log.SendInfo(Format(RsWindowClosed, [AWindowCaption]));
+  ProcedureFooter;
+end;
+
+procedure TLogForm.CloseModalWindowWithOkResult(const AWindowCaption, AGUID: string);
+begin
+  ProcedureHeader(Format(RsCloseModalWithOkResultProcedure, [AWindowCaption]), AGUID);
+  ModalResult := mrOk;
+  Log.SendInfo(Format(RsWindowClosed, [AWindowCaption]));
+  ProcedureFooter;
 end;
 
 constructor TLogForm.Create(AOwner: TComponent; ABusyCounter: PInteger; ARefreshBusyStateMethod: TRefreshBusyStateMethod;
@@ -105,6 +131,23 @@ begin
     Result := Format(RsActionStateChanged, [AAction.Caption, Routines.GetConditionalString(AAction.Enabled, RsActionOn,
       RsActionOff)]);
   end;
+end;
+
+procedure TLogForm.Help(const AHelpContext: THelpContext; const AGUID: string);
+begin
+  ProcedureHeader(RsContextHelpProcedure, AGUID);
+
+  Log.SendInfo(RsTryingToOpenHelpFile);
+  if (FileExists(ExpandFileName(Application.HelpFile))) then
+  begin
+    Application.HelpContext(AHelpContext);
+  end
+  else
+  begin
+    GenerateError(RsHelpFileNonFound);
+  end;
+
+  ProcedureFooter;
 end;
 
 procedure TLogForm.Initialize;
