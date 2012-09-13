@@ -57,14 +57,14 @@ type
     constructor Create; virtual; final;
     destructor Destroy; override;
     property Title: string read GetTitle write SetTitle nodefault;
-    property PeriodType: TPeriodType read GetPeriodType write SetPeriodType default DEFAULT_PERIOD_TYPE;
-    property Period: Int64 read GetPeriod write SetPeriod default DEFAULT_PERIOD;
-    property MessageEnabled: Boolean read GetMessageEnabled write SetMessageEnabled default DEFAULT_MESSAGE_ENABLED;
+    property PeriodType: TPeriodType read GetPeriodType write SetPeriodType default DEFAULT_SIGNAL_PERIOD_TYPE;
+    property Period: Int64 read GetPeriod write SetPeriod default DEFAULT_SIGNAL_PERIOD;
+    property MessageEnabled: Boolean read GetMessageEnabled write SetMessageEnabled default DEFAULT_SIGNAL_MESSAGE_ENABLED;
     property message: string read GetMessage write SetMessage nodefault;
     property WaveFileEnabled: Boolean read GetWaveFileEnabled write SetWaveFileEnabled
-      default DEFAULT_WAVE_FILE_ENABLED;
+      default DEFAULT_SIGNAL_WAVE_FILE_ENABLED;
     property WaveFile: string read GetWaveFile write SetWaveFile nodefault;
-    property Enabled: Boolean read GetEnabled write SetEnabled default DEFAULT_ENABLED;
+    property Enabled: Boolean read GetEnabled write SetEnabled default DEFAULT_SIGNAL_ENABLED;
     property Timer: TTimer read GetTimer nodefault;
   end;
 
@@ -193,14 +193,14 @@ end;
 procedure TSignal.Initialize;
 begin
   inherited;
-  FEnabled := DEFAULT_ENABLED;
-  FTitle := DEFAULT_TITLE;
-  FPeriod := DEFAULT_PERIOD;
-  FPeriodType := DEFAULT_PERIOD_TYPE;
-  FMessageEnabled := DEFAULT_MESSAGE_ENABLED;
-  FMessage := DEFAULT_MESSAGE;
-  FWaveFileEnabled := DEFAULT_WAVE_FILE_ENABLED;
-  FWaveFile := DEFAULT_WAVE_FILE;
+  FEnabled := DEFAULT_SIGNAL_ENABLED;
+  FTitle := DEFAULT_SIGNAL_TITLE;
+  FPeriod := DEFAULT_SIGNAL_PERIOD;
+  FPeriodType := DEFAULT_SIGNAL_PERIOD_TYPE;
+  FMessageEnabled := DEFAULT_SIGNAL_MESSAGE_ENABLED;
+  FMessage := DEFAULT_SIGNAL_MESSAGE;
+  FWaveFileEnabled := DEFAULT_SIGNAL_WAVE_FILE_ENABLED;
+  FWaveFile := DEFAULT_SIGNAL_WAVE_FILE;
 end;
 
 procedure TSignal.Finalize;
