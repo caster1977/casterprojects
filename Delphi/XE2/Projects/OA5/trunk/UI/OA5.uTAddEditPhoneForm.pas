@@ -3,14 +3,14 @@ unit OA5.uTAddEditPhoneForm;
 interface
 
 uses
+  Vcl.ExtCtrls,
   OA5.uTOA5PositionedLogForm,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.StdCtrls,
-  Vcl.ComCtrls,
-  Vcl.ExtCtrls;
+  Vcl.ComCtrls;
 
 type
   TAddEditPhoneForm = class(TOA5PositionedLogForm)
@@ -67,10 +67,7 @@ implementation
 uses
   Vcl.Forms,
   System.SysUtils,
-  System.DateUtils,
-  CastersPackage.uResourceStrings,
-  CastersPackage.uRoutines,
-  OA5.uTMainForm;
+  CastersPackage.uResourceStrings;
 
 const
   ICON_ADDEDITPHONE = 1;
@@ -135,16 +132,7 @@ end;
 procedure TAddEditPhoneForm.FormCreate(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsAddEditPhoneForm]), '{7FD82BF2-AA3D-4AD0-848B-14E0000E9B31}');
-
   ImageList.GetIcon(ICON_ADDEDITPHONE, Icon);
-  with MainForm.Configuration do
-  begin
-    // установка параметров протоколирования в соответствии с настройками программы
-    Log.UserName := MainForm.CurrentUser.Login;
-    Log.AllowedTypes := KeepLogTypes;
-    Log.Enabled := EnableLog;
-  end;
-
   ProcedureFooter;
 end;
 

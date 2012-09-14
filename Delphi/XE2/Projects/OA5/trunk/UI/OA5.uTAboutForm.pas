@@ -3,17 +3,16 @@ unit OA5.uTAboutForm;
 interface
 
 uses
-  CastersPackage.uTGSFileVersionInfo,
-  Vcl.Forms,
   Vcl.ComCtrls,
+  CastersPackage.uTRefreshBusyStateMethod,
+  OA5.uTOA5LogForm,
   System.Classes,
   Vcl.ActnList,
+  CastersPackage.uTGSFileVersionInfo,
   Vcl.ExtCtrls,
   Vcl.Controls,
   Vcl.StdCtrls,
-  Vcl.Graphics,
-  OA5.uTOA5LogForm,
-  CastersPackage.uTRefreshBusyStateMethod;
+  Vcl.Graphics;
 
 type
   TAboutForm = class(TOA5LogForm)
@@ -48,6 +47,7 @@ implementation
 {$R *.dfm}
 
 uses
+  Vcl.Forms,
   CastersPackage.uResourceStrings,
   Winapi.Windows,
   System.SysUtils,

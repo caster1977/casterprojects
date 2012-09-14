@@ -3,6 +3,7 @@ unit OA5.uTReportForm;
 interface
 
 uses
+  Vcl.ExtCtrls,
   OA5.uTOA5PositionedLogForm,
   System.Classes,
   Vcl.ActnList,
@@ -10,8 +11,7 @@ uses
   Vcl.Controls,
   Vcl.StdCtrls,
   Vcl.ComCtrls,
-  Vcl.CheckLst,
-  Vcl.ExtCtrls;
+  Vcl.CheckLst;
 
 type
   TReportForm = class(TOA5PositionedLogForm)
@@ -87,6 +87,8 @@ type
     procedure _SelectNone;
     procedure _UpdateLastDates;
     procedure _SwitchDetailed;
+  protected
+    procedure Initialize; override;
   end;
 
 implementation
@@ -96,11 +98,9 @@ implementation
 uses
   CastersPackage.uResourceStrings,
   Vcl.Forms,
-  CastersPackage.uTLogForm,
   System.SysUtils,
   System.DateUtils,
-  CastersPackage.uRoutines,
-  OA5.uTMainForm;
+  CastersPackage.uRoutines;
 
 const
   ICON_STATISTIC = 0;
@@ -347,16 +347,7 @@ end;
 procedure TReportForm.FormCreate(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsReportForm]), '{84933C2E-2797-40EF-96C1-0E13F61295CD}');
-
   ImageList.GetIcon(ICON_STATISTIC, Icon);
-  with MainForm.Configuration do
-  begin
-    // установка параметров протоколирования в соответствии с настройками программы
-    Log.UserName := MainForm.CurrentUser.Login;
-    Log.AllowedTypes := KeepLogTypes;
-    Log.Enabled := EnableLog;
-  end;
-  _UpdateLastDates;
   ProcedureFooter;
 end;
 
@@ -413,6 +404,12 @@ begin
   Log.SendInfo(Format(RsWindowShowed, [RsReportForm]));
 
   ProcedureFooter;
+end;
+
+procedure TReportForm.Initialize;
+begin
+  inherited;
+  _UpdateLastDates;
 end;
 
 procedure TReportForm._SwitchDetailed;

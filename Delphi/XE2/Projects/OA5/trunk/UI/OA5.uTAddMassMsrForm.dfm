@@ -116,7 +116,7 @@ object AddMassMsrForm: TAddMassMsrForm
         Width = 162
         Height = 160
         MultiSelect = True
-        Date = 40739.640186932870000000
+        Date = 40739.735190798610000000
         EndDate = 40739.000000000000000000
         TabOrder = 0
         OnClick = MonthCalendarClick
@@ -129,7 +129,7 @@ object AddMassMsrForm: TAddMassMsrForm
         TabOrder = 1
       end
       object btnAdd: TButton
-        Left = 69
+        Left = 55
         Top = 219
         Width = 81
         Height = 25
@@ -137,7 +137,7 @@ object AddMassMsrForm: TAddMassMsrForm
         Action = actAdd
         Anchors = [akTop, akRight]
         TabOrder = 2
-        ExplicitLeft = 71
+        ExplicitLeft = 57
       end
     end
     object pnlRight: TPanel
@@ -201,7 +201,7 @@ object AddMassMsrForm: TAddMassMsrForm
     Left = 200
     Top = 104
     Bitmap = {
-      494C010106000800B00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800CC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

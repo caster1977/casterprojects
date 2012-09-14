@@ -96,11 +96,8 @@ type
     procedure actToolBarExecute(Sender: TObject);
   strict private
     FMultiBuffer: IMeasureList;
-    FConfiguration: IConfiguration;
-    FCurrentUser: IAccount;
     function GetMultiBuffer: IMeasureList;
     procedure ApplicationOnHint(Sender: TObject);
-    function GetConfiguration: IConfiguration;
     procedure _About(const AButtonVisible: Boolean);
     procedure _Configuration;
     procedure _Report;
@@ -109,22 +106,22 @@ type
     procedure _SaveConfiguration;
     procedure _Logon;
     procedure _Logoff;
-  private
-    function GetCurrentUser: IAccount;
+    procedure _RefreshBusyState;
   protected
     procedure Initialize; override;
     procedure Finalize; override;
     procedure InitializeLog; override;
+    function GetConfiguration: IConfiguration; override;
+    function GetCurrentUser: IAccount; override;
   public
-    procedure RefreshBusyState;
     property MultiBuffer: IMeasureList read GetMultiBuffer nodefault;
-    property Configuration: IConfiguration read GetConfiguration nodefault;
-    property CurrentUser: IAccount read GetCurrentUser nodefault;
   end;
 
 var
   MainForm: TMainForm;
-  BusyCounter: Integer;
+  GlobalBusyCounter: Integer;
+  GlobalConfiguration: IConfiguration;
+  GlobalCurrentUser: IAccount;
 
 implementation
 
@@ -179,16 +176,16 @@ resourcestring
   RsLoginFormSuffix = 'ввода учётной записи';
   RsShowWindowProcedure = 'Процедура отображения окна %s';
 
-procedure TMainForm.RefreshBusyState;
+procedure TMainForm._RefreshBusyState;
 var
   b: Boolean;
 begin
-  b := BusyCounter = 0;
+  b := GlobalBusyCounter = 0;
   Log.SendDebug('Установлен режим "' + Routines.GetConditionalString(b, 'Готово', 'Занято') + '".');
   ilStates.GetIcon(Integer(b), imState.Picture.Icon);
   if Configuration.EnableStatusbar then
   begin
-    StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := Routines.GetConditionalString(BusyCounter > 0,
+    StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := Routines.GetConditionalString(GlobalBusyCounter > 0,
       'Пожалуйста, подождите...', 'Готово');
   end
   else
@@ -208,7 +205,7 @@ end;
 procedure TMainForm._About(const AButtonVisible: Boolean);
 begin
   ProcedureHeader(Format(RsShowWindowProcedure, [RsAboutFormSuffix]), '{754C2801-ED59-4595-AC3E-20DBF98F6779}');
-  with TAboutForm.Create(Self, AButtonVisible, Addr(BusyCounter), RefreshBusyState, pbMain) do
+  with TAboutForm.Create(Self, AButtonVisible, Addr(GlobalBusyCounter), _RefreshBusyState, pbMain) do
   begin
     try
       ShowModal;
@@ -288,7 +285,7 @@ var
   end;
 
 begin
-  RefreshBusyState;
+  _RefreshBusyState;
   Configuration.DBServer.LogProvider := Log;
   Configuration.MessageServer.LogProvider := Log;
   BindProgressBarToStatusBar; // привязка прогрессбара к позиции на строке статуса
@@ -345,20 +342,12 @@ end;
 
 function TMainForm.GetConfiguration: IConfiguration;
 begin
-  if not Assigned(FConfiguration) then
-  begin
-    FConfiguration := GetIConfiguration;
-  end;
-  Result := FConfiguration;
+  Result := GlobalConfiguration;
 end;
 
 function TMainForm.GetCurrentUser: IAccount;
 begin
-  if not Assigned(FCurrentUser) then
-  begin
-    FCurrentUser := GetIAccount;
-  end;
-  Result := FCurrentUser;
+  Result := GlobalCurrentUser;
 end;
 
 function TMainForm.GetMultiBuffer: IMeasureList;
@@ -436,7 +425,8 @@ procedure TMainForm._Configuration;
 begin
   ProcedureHeader(Format(RsShowWindowProcedure, [RsConfigurationFormSuffix]), '{886B460D-4C73-46BE-829E-E4421B7C4378}');
 
-  with TConfigurationForm.Create(Self, Configuration.ConfigurationFormPosition) do
+  with TConfigurationForm.Create(Self, Configuration.ConfigurationFormPosition, @GlobalBusyCounter, _RefreshBusyState,
+    pbMain, Configuration, CurrentUser) do
   begin
     try
       ShowModal;
@@ -526,13 +516,17 @@ begin
   Width := Configuration.MainFormWidth;
   Height := Configuration.MainFormHeight;
   if Configuration.MainFormEnableFullScreenAtLaunch then
-    WindowState := wsMaximized
+  begin
+    WindowState := wsMaximized;
+  end
   else
+  begin
     if Configuration.MainFormEnableCentered then
     begin
       Position := poScreenCenter;
       Configuration.MainFormEnableCentered := False;
     end;
+  end;
 
   ProcedureFooter;
 end;
@@ -541,7 +535,8 @@ procedure TMainForm._Report;
 begin
   ProcedureHeader(Format(RsShowWindowProcedure, [RsReportFormSuffix]), '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
 
-  with TReportForm.Create(Self, Configuration.ReportFormPosition) do
+  with TReportForm.Create(Self, Configuration.ReportFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
+    Configuration, CurrentUser) do
   begin
     try
       ShowModal;
@@ -563,7 +558,8 @@ var
 begin
   ProcedureHeader(Format(RsShowWindowProcedure, [RsMultiBufferFormSuffix]), '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
 
-  with TMultiBufferForm.Create(Self, Configuration.MultibufferFormPosition) do
+  with TMultiBufferForm.Create(Self, Configuration.MultibufferFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
+    Configuration, CurrentUser) do
   begin
     try
       for i := 0 to MultiBuffer.Count - 1 do
@@ -590,7 +586,8 @@ procedure TMainForm.actViewMessageExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsShowWindowProcedure, [RsViewMessageFormSuffix]), '{347244A6-22DF-44DF-873B-2B55FC5112B9}');
 
-  with TViewMessageForm.Create(Self, Configuration.ViewMessageFormPosition) do
+  with TViewMessageForm.Create(Self, Configuration.ViewMessageFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
+    Configuration, CurrentUser) do
   begin
     try
       ShowModal;
@@ -609,7 +606,8 @@ procedure TMainForm.actCreateMessageExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsShowWindowProcedure, [RsCreateMessageFormSuffix]), '{F356F5DA-5FF7-4F78-A80E-1C563B96AF6D}');
 
-  with TCreateMessageForm.Create(Self, Configuration.CreateMessageFormPosition) do
+  with TCreateMessageForm.Create(Self, Configuration.CreateMessageFormPosition, @GlobalBusyCounter, _RefreshBusyState,
+    pbMain, Configuration, CurrentUser) do
   begin
     try
       ShowModal;
@@ -628,7 +626,8 @@ procedure TMainForm.actAddPhoneExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsShowWindowProcedure, [RsAddPhoneFormSuffix]), '{83D61BCA-0CB5-4542-9D0A-9137AE9C733C}');
 
-  with TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition) do
+  with TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
+    Configuration, CurrentUser) do
   begin
     try
       Caption := 'Добавление номера телефона';
@@ -648,7 +647,8 @@ procedure TMainForm.actEditPhoneExecute(Sender: TObject);
 begin
   ProcedureHeader(Format(RsShowWindowProcedure, [RsEditPhoneFormSuffix]), '{36EA36F5-EDE2-4A3A-A7DE-BB9790D3F50F}');
 
-  with TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition) do
+  with TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
+    Configuration, CurrentUser) do
   begin
     try
       Caption := 'Исправление номера телефона';
@@ -760,7 +760,8 @@ begin
 
   if not bPassLoginForm then
   begin
-    LoginForm := TLoginForm.Create(Self, Configuration.LoginFormPosition);
+    LoginForm := TLoginForm.Create(Self, Configuration.LoginFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
+      Configuration, CurrentUser);
     with LoginForm do
       try
         if Configuration.EnableStoreLogin then
@@ -800,7 +801,15 @@ end;
 initialization
 
 begin
-  BusyCounter := 0;
+  GlobalBusyCounter := 0;
+  if not Assigned(GlobalConfiguration) then
+  begin
+    GlobalConfiguration := GetIConfiguration;
+  end;
+  if not Assigned(GlobalCurrentUser) then
+  begin
+    GlobalCurrentUser := GetIAccount;
+  end;
 end;
 
 end.

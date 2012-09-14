@@ -3,14 +3,14 @@ unit OA5.uTViewMessagesForm;
 interface
 
 uses
+  Vcl.ComCtrls,
   OA5.uTOA5PositionedLogForm,
   System.Classes,
-  Vcl.Controls,
-  Vcl.ImgList,
-  Vcl.ExtCtrls,
-  Vcl.StdCtrls,
   Vcl.ActnList,
-  Vcl.ComCtrls;
+  Vcl.ImgList,
+  Vcl.Controls,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls;
 
 type
   TViewMessagesForm = class(TOA5PositionedLogForm)
@@ -39,9 +39,8 @@ implementation
 
 uses
   Vcl.Forms,
-  CastersPackage.uResourceStrings,
-  CastersPackage.uRoutines,
-  System.SysUtils;
+  System.SysUtils,
+  CastersPackage.uResourceStrings;
 
 resourcestring
   RsViewMessagesForm = 'просмотра полученных сообщений';

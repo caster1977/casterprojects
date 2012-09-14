@@ -3,15 +3,14 @@ unit OA5.uTMultiBufferForm;
 interface
 
 uses
+  Vcl.ExtCtrls,
   OA5.uTOA5PositionedLogForm,
-  System.SysUtils,
   System.Classes,
-  Vcl.ComCtrls,
   Vcl.ActnList,
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.StdCtrls,
-  Vcl.ExtCtrls;
+  Vcl.ComCtrls;
 
 type
   TMultiBufferForm = class(TOA5PositionedLogForm)
@@ -31,7 +30,6 @@ type
     btnHelp: TButton;
     procedure actCloseExecute(Sender: TObject);
     procedure actHelpExecute(Sender: TObject);
-    procedure lvBufferSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actDeleteExecute(Sender: TObject);
@@ -43,7 +41,6 @@ type
     procedure actClearUpdate(Sender: TObject);
   strict private
     procedure _UpdateListViewScrollBarVisibility;
-    { TODO : Переделать методы, перечисленные ниже }
     procedure _Delete;
     procedure _Clear;
   end;
@@ -53,11 +50,11 @@ implementation
 {$R *.dfm}
 
 uses
+  System.SysUtils,
   Vcl.Forms,
   Winapi.Windows,
-  OA5.uTMainForm,
   CastersPackage.uResourceStrings,
-  CastersPackage.uRoutines;
+  OA5.uTMainForm;
 
 resourcestring
   RsMultiBufferForm = 'мультибуфера';
@@ -168,16 +165,7 @@ end;
 procedure TMultiBufferForm.FormCreate(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsMultiBufferForm]), '{356A4C31-9E29-476F-A4EC-4CCDEC00EED0}');
-
   ImageList.GetIcon(ICON_MULTIBUFFER, Icon);
-  with MainForm.Configuration do
-  begin
-    // установка параметров протоколирования в соответствии с настройками программы
-    Log.UserName := MainForm.CurrentUser.Login;
-    Log.AllowedTypes := KeepLogTypes;
-    Log.Enabled := EnableLog;
-  end;
-
   ProcedureFooter;
 end;
 
@@ -197,13 +185,6 @@ begin
   Log.SendInfo(Format(RsWindowShowed, [RsMultiBufferForm]));
 
   ProcedureFooter;
-end;
-
-procedure TMultiBufferForm.lvBufferSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
-begin
-  (* ProcedureHeader('Процедура-обработчик события выбора элемента списка', '{85E95E47-C35D-4FCA-8319-39B52C4047CB}');
-    _UpdateActions;
-    ProcedureFooter; *)
 end;
 
 procedure TMultiBufferForm._UpdateListViewScrollBarVisibility;
