@@ -4,7 +4,7 @@ interface
 
 uses
   System.IniFiles,
-  OA5.uTMySQLConnection,
+  OA5.uIMySQLConnection,
   CastersPackage.uTDialogPosition,
   CastersPackage.uTReportFolder,
   CastersPackage.uIIniFileDataStorage,
@@ -346,14 +346,12 @@ type
     property ViewMessagesFormPosition: TDialogPosition read GetViewMessagesFormPosition write SetViewMessagesFormPosition;
 
     // вкладка "настройки подключения к серверу базы данных услуги"
-    function GetDBServer: TMySQLConnection;
-    procedure SetDBServer(const AValue: TMySQLConnection);
-    property DBServer: TMySQLConnection read GetDBServer write SetDBServer;
+    function GetDBServer: IMySQLConnection;
+    property DBServer: IMySQLConnection read GetDBServer;
 
     // вкладка "настройки подключения к серверу системы обмена сообщениями"
-    function GetMessageServer: TMySQLConnection;
-    procedure SetMessageServer(const AValue: TMySQLConnection);
-    property MessageServer: TMySQLConnection read GetMessageServer write SetMessageServer;
+    function GetMessageServer: IMySQLConnection;
+    property MessageServer: IMySQLConnection read GetMessageServer;
 
     function GetCurrentPage: Integer;
     procedure SetCurrentPage(const AValue: Integer);
