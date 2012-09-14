@@ -3,14 +3,14 @@ unit OA5.uTViewMessageForm;
 interface
 
 uses
+  Vcl.ExtCtrls,
   OA5.uTOA5PositionedLogForm,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.StdCtrls,
-  Vcl.ComCtrls,
-  Vcl.ExtCtrls;
+  Vcl.ComCtrls;
 
 type
   TViewMessageForm = class(TOA5PositionedLogForm)
@@ -60,8 +60,6 @@ implementation
 uses
   CastersPackage.uResourceStrings,
   Vcl.Forms,
-  OA5.uTMainForm,
-  CastersPackage.uRoutines,
   System.SysUtils;
 
 resourcestring
@@ -73,16 +71,7 @@ const
 procedure TViewMessageForm.FormCreate(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsViewMessageForm]), '{79ED6FCD-6B91-4FE9-8729-67067D3B5FA2}');
-
   ImageList.GetIcon(ICON_VIEWMESSAGE, Icon);
-  with MainForm.Configuration do
-  begin
-    // установка параметров протоколирования в соответствии с настройками программы
-    Log.UserName := MainForm.CurrentUser.Login;
-    Log.AllowedTypes := KeepLogTypes;
-    Log.Enabled := EnableLog;
-  end;
-
   ProcedureFooter;
 end;
 

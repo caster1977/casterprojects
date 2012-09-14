@@ -3,16 +3,14 @@
 interface
 
 uses
-  Vcl.Forms,
+  Vcl.ExtCtrls,
   OA5.uTOA5PositionedLogForm,
-  Vcl.PlatformDefaultStyleActnCtrls,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.StdCtrls,
-  Vcl.Mask,
-  Vcl.ExtCtrls;
+  Vcl.Mask;
 
 type
   TSetPasswordForm = class(TOA5PositionedLogForm)
@@ -47,10 +45,9 @@ implementation
 {$R *.dfm}
 
 uses
+  Vcl.Forms,
   CastersPackage.uResourceStrings,
-  System.SysUtils,
-  OA5.uTMainForm,
-  CastersPackage.uRoutines;
+  System.SysUtils;
 
 const
   ICON_SETPASSWORD = 1;
@@ -83,16 +80,7 @@ end;
 procedure TSetPasswordForm.FormCreate(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsSetPasswordForm]), '{43E2DB1C-46EC-46FB-BE5F-69082FF4BDB0}');
-
   ImageList.GetIcon(ICON_SETPASSWORD, Icon);
-  with MainForm.Configuration do
-  begin
-    // установка параметров протоколирования в соответствии с настройками программы
-    Log.UserName := MainForm.CurrentUser.Login;
-    Log.AllowedTypes := KeepLogTypes;
-    Log.Enabled := EnableLog;
-  end;
-
   ProcedureFooter;
 end;
 

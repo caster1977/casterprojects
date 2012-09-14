@@ -3,14 +3,14 @@ unit OA5.uTCreateMessageForm;
 interface
 
 uses
+  Vcl.StdCtrls,
   OA5.uTOA5PositionedLogForm,
-  Vcl.ComCtrls,
-  Vcl.Controls,
-  Vcl.ExtCtrls,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
-  Vcl.StdCtrls;
+  Vcl.Controls,
+  Vcl.ComCtrls,
+  Vcl.ExtCtrls;
 
 type
   TCreateMessageForm = class(TOA5PositionedLogForm)
@@ -51,8 +51,7 @@ implementation
 uses
   CastersPackage.uResourceStrings,
   System.SysUtils,
-  Vcl.Forms,
-  OA5.uTMainForm;
+  Vcl.Forms;
 
 const
   ICON_CREATEMESSAGE = 1;
@@ -106,16 +105,7 @@ end;
 procedure TCreateMessageForm.FormCreate(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsCreateMessageForm]), '{7FD82BF2-AA3D-4AD0-848B-14E0000E9B31}');
-
   ImageList.GetIcon(ICON_CREATEMESSAGE, Icon);
-  with MainForm.Configuration do
-  begin
-    // установка параметров протоколирования в соответствии с настройками программы
-    Log.UserName := MainForm.CurrentUser.Login;
-    Log.AllowedTypes := KeepLogTypes;
-    Log.Enabled := EnableLog;
-  end;
-
   ProcedureFooter;
 end;
 

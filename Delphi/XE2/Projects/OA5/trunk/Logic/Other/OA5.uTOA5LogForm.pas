@@ -3,6 +3,7 @@ unit OA5.uTOA5LogForm;
 interface
 
 uses
+  OA5.uIOA5Form,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -19,12 +20,16 @@ uses
   OA5.uIAccount;
 
 type
-  TOA5LogForm = class(TLogForm)
+  TOA5LogForm = class(TLogForm, IOA5Form)
   strict private
     FConfiguration: IConfiguration;
     FCurrentUser: IAccount;
   protected
     procedure InitializeLog; override;
+    function GetConfiguration: IConfiguration; virtual;
+    function GetCurrentUser: IAccount; virtual;
+    property Configuration: IConfiguration read GetConfiguration nodefault;
+    property CurrentUser: IAccount read GetCurrentUser nodefault;
   public
     constructor Create(AOwner: TComponent; ABusyCounter: PInteger = nil;
       ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil; AProgressBar: TProgressBar = nil;
@@ -41,6 +46,16 @@ begin
   inherited Create(AOwner, ABusyCounter, ARefreshBusyStateMethod, AProgressBar);
   FConfiguration := AConfiguration;
   FCurrentUser := FCurrentUser;
+end;
+
+function TOA5LogForm.GetConfiguration: IConfiguration;
+begin
+  Result := FConfiguration;
+end;
+
+function TOA5LogForm.GetCurrentUser: IAccount;
+begin
+  Result := FCurrentUser;
 end;
 
 procedure TOA5LogForm.InitializeLog;

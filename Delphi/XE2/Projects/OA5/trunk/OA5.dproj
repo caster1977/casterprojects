@@ -113,17 +113,25 @@
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
-			<DCCReference Include="Logic\OA5.uDefaultConsts.pas"/>
-			<DCCReference Include="Logic\OA5.uIAccount.pas"/>
-			<DCCReference Include="Logic\OA5.uIMeasure.pas"/>
-			<DCCReference Include="Logic\OA5.uIMeasureList.pas"/>
-			<DCCReference Include="Logic\OA5.uIPrivilegies.pas"/>
-			<DCCReference Include="Logic\OA5.uTAccount.pas"/>
-			<DCCReference Include="Logic\OA5.uTConfiguration.pas"/>
-			<DCCReference Include="Logic\OA5.uTMeasure.pas"/>
-			<DCCReference Include="Logic\OA5.uTMeasureList.pas"/>
-			<DCCReference Include="Logic\OA5.uTMySQLConnection.pas"/>
-			<DCCReference Include="Logic\OA5.uTPrivilegies.pas"/>
+			<DCCReference Include="Logic\Classes\OA5.uTAccount.pas"/>
+			<DCCReference Include="Logic\Classes\OA5.uTConfiguration.pas"/>
+			<DCCReference Include="Logic\Classes\OA5.uTMeasure.pas"/>
+			<DCCReference Include="Logic\Classes\OA5.uTMeasureList.pas"/>
+			<DCCReference Include="Logic\Classes\OA5.uTMySQLConnection.pas"/>
+			<DCCReference Include="Logic\Classes\OA5.uTPrivilegies.pas"/>
+			<DCCReference Include="Logic\Interfaces\OA5.uIAccount.pas"/>
+			<DCCReference Include="Logic\Interfaces\OA5.uIConfiguration.pas"/>
+			<DCCReference Include="Logic\Interfaces\OA5.uIMeasure.pas"/>
+			<DCCReference Include="Logic\Interfaces\OA5.uIMeasureList.pas"/>
+			<DCCReference Include="Logic\Interfaces\OA5.uIMySQLConnection.pas"/>
+			<DCCReference Include="Logic\Interfaces\OA5.uIPrivilegies.pas"/>
+			<DCCReference Include="Logic\Other\OA5.uDefaultConsts.pas"/>
+			<DCCReference Include="Logic\Other\OA5.uTOA5LogForm.pas">
+				<Form>OA5LogForm</Form>
+			</DCCReference>
+			<DCCReference Include="Logic\Other\OA5.uTOA5PositionedLogForm.pas">
+				<Form>OA5PositionedLogForm</Form>
+			</DCCReference>
 			<DCCReference Include="UI\OA5.uTAboutForm.pas">
 				<Form>AboutForm</Form>
 			</DCCReference>
@@ -163,16 +171,7 @@
 			<DCCReference Include="UI\OA5.uTViewMessagesForm.pas">
 				<Form>ViewMessagesForm</Form>
 			</DCCReference>
-			<DCCReference Include="Logic\OA5.uIConfiguration.pas"/>
-			<DCCReference Include="Logic\OA5.uTOA5PositionedLogForm.pas">
-				<Form>OA5PositionedLogForm</Form>
-				<FormType>dfm</FormType>
-			</DCCReference>
-			<DCCReference Include="Logic\OA5.uTOA5LogForm.pas">
-				<Form>OA5LogForm</Form>
-				<FormType>dfm</FormType>
-			</DCCReference>
-			<DCCReference Include="Logic\OA5.uIMySQLConnection.pas"/>
+			<DCCReference Include="Logic\Interfaces\OA5.uIOA5Form.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

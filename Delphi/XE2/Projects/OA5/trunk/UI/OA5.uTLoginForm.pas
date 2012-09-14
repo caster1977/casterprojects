@@ -3,15 +3,14 @@ unit OA5.uTLoginForm;
 interface
 
 uses
+  Vcl.ExtCtrls,
   OA5.uTOA5PositionedLogForm,
   System.Classes,
-  Vcl.Forms,
   Vcl.ActnList,
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.Mask,
-  Vcl.StdCtrls,
-  Vcl.ExtCtrls;
+  Vcl.StdCtrls;
 
 type
   TLoginForm = class(TOA5PositionedLogForm)
@@ -42,10 +41,9 @@ implementation
 {$R *.dfm}
 
 uses
+  Vcl.Forms,
   CastersPackage.uResourceStrings,
-  System.SysUtils,
-  OA5.uTMainForm,
-  CastersPackage.uRoutines;
+  System.SysUtils;
 
 resourcestring
   RsLoginForm = 'авторизации';
@@ -94,16 +92,7 @@ end;
 procedure TLoginForm.FormCreate(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsLoginForm]), '{B7B2C87E-2141-43CA-A41B-23FE0E874839}');
-
   ImageList.GetIcon(ICON_LOGIN, Icon);
-  with MainForm.Configuration do
-  begin
-    // установка параметров протоколирования в соответствии с настройками программы
-    Log.UserName := MainForm.CurrentUser.Login;
-    Log.AllowedTypes := KeepLogTypes;
-    Log.Enabled := EnableLog;
-  end;
-
   ProcedureFooter;
 end;
 

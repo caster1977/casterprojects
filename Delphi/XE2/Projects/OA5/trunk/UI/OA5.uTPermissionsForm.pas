@@ -3,14 +3,14 @@ unit OA5.uTPermissionsForm;
 interface
 
 uses
+  Vcl.CheckLst,
   OA5.uTOA5PositionedLogForm,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
   Vcl.Controls,
-  Vcl.ExtCtrls,
   Vcl.StdCtrls,
-  Vcl.CheckLst;
+  Vcl.ExtCtrls;
 
 type
   TPermissionsForm = class(TOA5PositionedLogForm)
@@ -51,9 +51,7 @@ implementation
 uses
   CastersPackage.uResourceStrings,
   Vcl.Forms,
-  System.SysUtils,
-  CastersPackage.uTLogForm,
-  OA5.uTMainForm;
+  System.SysUtils;
 
 const
   ICON_PERMISSIONS = 3;
@@ -204,16 +202,7 @@ end;
 procedure TPermissionsForm.FormCreate(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsPermissionsForm]), '{E6E569D5-7A13-4FB2-8364-E0B6605D87D8}');
-
   ImageList.GetIcon(ICON_PERMISSIONS, Icon);
-  with MainForm.Configuration do
-  begin
-    // установка параметров протоколирования в соответствии с настройками программы
-    Log.UserName := MainForm.CurrentUser.Login;
-    Log.AllowedTypes := KeepLogTypes;
-    Log.Enabled := EnableLog;
-  end;
-
   ProcedureFooter;
 end;
 

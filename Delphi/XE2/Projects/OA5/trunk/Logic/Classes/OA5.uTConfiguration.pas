@@ -21,6 +21,7 @@ type
   TConfiguration = class(TIniFileDataStorage, IConfiguration)
   strict protected
     procedure Initialize; override;
+    procedure Finalize; override;
     procedure Loading(const AIniFile: TCustomIniFile); override;
     procedure AfterLoad; override;
     procedure BeforeSave; override;
@@ -1268,6 +1269,11 @@ end;
 
 procedure TConfiguration.BeforeSave;
 begin
+end;
+
+procedure TConfiguration.Finalize;
+begin
+  inherited;
 end;
 
 procedure TConfiguration.SetEnableStoreLogin(const AValue: Boolean);

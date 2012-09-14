@@ -3,14 +3,14 @@ unit OA5.uTAddMassMsrForm;
 interface
 
 uses
+  Vcl.ExtCtrls,
   OA5.uTOA5PositionedLogForm,
   System.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.ComCtrls,
-  Vcl.StdCtrls,
-  Vcl.ExtCtrls;
+  Vcl.StdCtrls;
 
 type
   TAddMassMsrForm = class(TOA5PositionedLogForm)
@@ -68,7 +68,6 @@ implementation
 uses
   System.SysUtils,
   CastersPackage.uRoutines,
-  OA5.uTMainForm,
   Winapi.Windows,
   CastersPackage.uResourceStrings,
   Vcl.Forms;
@@ -385,16 +384,7 @@ end;
 procedure TAddMassMsrForm.FormCreate(Sender: TObject);
 begin
   ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsAddMassMsrForm]), '{C60DAAE3-5E20-473B-8895-240001F68D38}');
-
   ImageList.GetIcon(ICON_ADDMASSMSR, Icon);
-  with MainForm.Configuration do
-  begin
-    // установка параметров протоколирования в соответствии с настройками программы
-    Log.UserName := MainForm.CurrentUser.Login;
-    Log.AllowedTypes := KeepLogTypes;
-    Log.Enabled := EnableLog;
-  end;
-
   ProcedureFooter;
 end;
 
