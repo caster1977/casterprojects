@@ -24,6 +24,7 @@ type
     Log: TLogProvider;
   strict private
     FBusyCounter: PInteger;
+    FSavedBusyCounter: Integer;
     FRefresh: TRefreshBusyStateMethod;
     FProgressBar: TProgressBar;
     FError: Boolean;
@@ -33,6 +34,8 @@ type
     procedure RunIncreaseBusy;
     procedure RunDecreaseBusy;
   protected
+    procedure SaveBusyCounter;
+    procedure RestoreBusyCounter;
     procedure ShowErrorDialog;
     procedure ProcedureHeader(const ATitle, ALogGroupGUID: string);
     procedure ProcedureFooter;
@@ -152,6 +155,7 @@ end;
 
 procedure TLogForm.Initialize;
 begin
+  FSavedBusyCounter := 0;
   InitializeLog;
 end;
 
@@ -220,50 +224,46 @@ begin
 end;
 
 procedure TLogForm.ShowErrorDialog;
-var
-  old_busy_counter: Integer;
 begin
-  old_busy_counter := 0;
   Log.SendError(FErrorMessage);
   try
-    if Assigned(FBusyCounter) then
-    begin
-      old_busy_counter := FBusyCounter^;
-      FBusyCounter^ := 0;
-      RunRefreshBusy;
-    end;
+    SaveBusyCounter;
     MessageBox(Handle, PWideChar(FErrorMessage), PWideChar(Format(RsShowErrorDialogCaption, [Application.Title])),
       MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
   finally
-    if Assigned(FBusyCounter) then
-    begin
-      FBusyCounter^ := old_busy_counter;
-      RunRefreshBusy;
-    end;
+    RestoreBusyCounter;
   end;
 end;
 
 function TLogForm.ShowModal: Integer;
-var
-  old_busy_counter: Integer;
 begin
-  old_busy_counter := 0;
   Log.SendDebug(Format(RsTryingToShowModalWindow, [Caption]));
   try
-    if Assigned(FBusyCounter) then
-    begin
-      old_busy_counter := FBusyCounter^;
-      FBusyCounter^ := 0;
-      RunRefreshBusy;
-    end;
+    SaveBusyCounter;
     Result := inherited;
   finally
-    if Assigned(FBusyCounter) then
-    begin
-      FBusyCounter^ := old_busy_counter;
-      RunRefreshBusy;
-    end;
+    RestoreBusyCounter;
     Log.SendDebug(Format(RsModalWindowHiden, [Caption]));
+  end;
+end;
+
+procedure TLogForm.SaveBusyCounter;
+begin
+  if Assigned(FBusyCounter) then
+  begin
+    FSavedBusyCounter := FBusyCounter^;
+    FBusyCounter^ := 0;
+    RunRefreshBusy;
+  end;
+end;
+
+procedure TLogForm.RestoreBusyCounter;
+begin
+  if Assigned(FBusyCounter) then
+  begin
+    FBusyCounter^ := FSavedBusyCounter;
+    FSavedBusyCounter := 0;
+    RunRefreshBusy;
   end;
 end;
 
