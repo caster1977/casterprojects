@@ -3,405 +3,587 @@
 interface
 
 uses
-  CastersPackage.uLogProvider,
+  OA5.uIMySQLConnection,
   System.SysUtils,
   System.Classes,
+  CastersPackage.uLogProvider,
+  CastersPackage.uICustomized,
   CastersPackage.uMysql;
 
 type
   EMySQLException = class(Exception);
 
-  TMySQLConnection = class
+  TMySQLConnection = class(TInterfacedObject, IMySQLConnection, ICustomized)
   strict private
-    FConnected: boolean;
+    FActive: Boolean;
     FConnection: PMYSQL;
     FLogProvider: TLogProvider;
     FHost: string;
-    FPort: integer;
-    FTimeout: integer;
-    FCompression: boolean;
+    FPort: Integer;
+    FTimeout: Integer;
+    FCompression: Boolean;
     FLogin: string;
     FPassword: string;
     FDatabase: string;
-    procedure SetConnected(const Value: boolean);
-    procedure SetConnection(const Value: PMYSQL);
-    procedure SetHost(const Value: string);
-    procedure SetPort(const Value: integer);
-    procedure SetTimeout(const Value: integer);
-    procedure SetCompression(const Value: boolean);
-    procedure SetLogin(const Value: string);
-    procedure SetPassword(const Value: string);
-    procedure SetDatabase(const Value: string);
-    procedure SetLogProvider(const Value: TLogProvider);
-    procedure SendDebug(const Value: string);
-    // procedure SendError(const Value: string);
-    // procedure SendWarning(const Value: string);
-    procedure SendInfo(const Value: string);
-    procedure SendSQL(const Value: string);
-    procedure RaiseEMySQLException(const Value: string);
+    function GetConnection: PMYSQL;
+    procedure SetConnection(const AValue: PMYSQL);
+    procedure SendDebug(const AValue: string);
+    procedure SendInfo(const AValue: string);
+    procedure SendSQL(const AValue: string);
+    procedure RaiseEMySQLException(const AValue: string);
+    procedure Open;
+    procedure Close;
+    function GetActive: Boolean;
+    procedure SetActive(const AValue: Boolean);
+    function GetCompression: Boolean;
+    procedure SetCompression(const AValue: Boolean);
+    function GetDatabase: string;
+    procedure SetDatabase(const AValue: string);
+    function GetHost: string;
+    procedure SetHost(const AValue: string);
+    function GetLogin: string;
+    procedure SetLogin(const AValue: string);
+    function GetLogProvider: TLogProvider;
+    procedure SetLogProvider(const AValue: TLogProvider);
+    function GetPassword: string;
+    procedure SetPassword(const AValue: string);
+    function GetPort: Integer;
+    procedure SetPort(const AValue: Integer);
+    function GetTimeout: Integer;
+    procedure SetTimeout(const AValue: Integer);
   protected
-    procedure OpenConnection;
-    procedure CloseConnection;
-    property Connection: PMYSQL read FConnection write SetConnection stored False;
+    property Connection: PMYSQL read GetConnection write SetConnection stored False;
+    procedure Initialize; virtual;
+    procedure Finalize; virtual;
   public
     constructor Create; virtual;
     destructor Destroy; override;
-
+    class function PrepareStringForQuery(const ASource: string; const AAddCommas: Boolean; const AReturnNull: Boolean)
+      : string; static;
     function GetLastErrorInfo: string;
-    class function PrepareStringValueForQuery(const Source: string; AddCommas, ReturnNull: boolean): string; static;
-    function Query(const SQL: string): integer; overload;
-    function Query(const SQL: string; var ResultSet: PMYSQL_RES): integer; overload;
-    function UpdateQuery(const SQL: string): integer;
-    function FetchRow(const ResultSet: PMYSQL_RES): TStringList;
-    function RowCount(const ResultSet: PMYSQL_RES): cardinal;
+    procedure Query(const ASQL: string); overload;
+    procedure Query(const ASQL: string; out AResultSet: PMYSQL_RES); overload;
+    function UpdateQuery(const ASQL: string): Int64;
+    function FetchRow(const AResultSet: PMYSQL_RES): TStringList;
+    function RowCount(const AResultSet: PMYSQL_RES): Cardinal;
 
-    property Connected: boolean read FConnected write SetConnected stored False;
-    property LogProvider: TLogProvider read FLogProvider write SetLogProvider stored False;
-    property Host: string read FHost write SetHost stored False;
-    property Port: integer read FPort write SetPort default MYSQL_PORT;
-    property Timeout: integer read FTimeout write SetTimeout default 30;
-    property Compression: boolean read FCompression write SetCompression default True;
-    property Login: string read FLogin write SetLogin stored False;
-    property Password: string read FPassword write SetPassword stored False;
-    property Database: string read FDatabase write SetDatabase stored False;
+    property Active: Boolean read GetActive write SetActive stored False;
+    property LogProvider: TLogProvider read GetLogProvider write SetLogProvider stored False;
+    property Host: string read GetHost write SetHost stored False;
+    property Port: Integer read GetPort write SetPort default MYSQL_PORT;
+    property Timeout: Integer read GetTimeout write SetTimeout default 30;
+    property Compression: Boolean read GetCompression write SetCompression default True;
+    property Login: string read GetLogin write SetLogin stored False;
+    property Password: string read GetPassword write SetPassword stored False;
+    property Database: string read GetDatabase write SetDatabase stored False;
   end;
 
+function GetIMySQLConnection: IMySQLConnection;
+
 implementation
+
+resourcestring
+  RsConnectionStarted = 'Выполняется операция подключения к MySQL-серверу "%s:%d"...';
+  RsConnectionInitializationCompleteSuccessfully =
+    'Инициализация объекта соединения с MySQL-сервером "%s:%d" выполнена успешно.';
+  RsConnectionInitializationError = 'Возникла ошибка при инициализации объекта соединения с MySQL-сервером "%s:%d"!';
+  RsConnectionCompleteSuccessfully = 'Подключение к MySQL-серверу "%s:%d" выполнено успешно.';
+  RsConnectionError = 'Возникла ошибка при попытке подключения к MySQL-серверу "%s:%d"!';
+  RsConnectionFinished = 'Выполнение операции подключения к MySQL-серверу "%s:%d" завершено.';
+  RsDisconnectionStarted = 'Выполняется операция отключения от MySQL-сервер "%s:%d"...';
+  RsDisconnectionCompleteSuccessfully = 'Отключение от MySQL-сервера "%s:%d" выполнено успешно.';
+  RsDisconnectionFinished = 'Выполнение операции отключения от MySQL-сервера "%s:%d" завершено.';
+  RsNULL = 'NULL';
+  RsResultSetNotAssigned = 'Указатель на результат выборки равен NULL!';
+  RsFetchRowStarted = 'Операция по получению строки выборки запущена...';
+  RsFetchRowFinished = 'Операция по получению строки выборки завершена.';
+  RsFetchRowCompleteSuccessfully = 'Данные строки выборки получены успешно.';
+  RsFetchRowError = 'Возникла ошибка при получении данных очередной строки выборки!';
+  RsErrorCode = 'Код ошибки: ';
+  RsErrorName = 'Наименование ошибки: ';
+  RsConnectionNotAssigned = 'Возникла ошибка при попытке получения указателя активного соединения!';
+  RsNonResultingQueryStarted = 'Операция по выполнению SQL-запроса не возвращающего результирующую выборку запущена...';
+  RsNonResultingQueryFinished = 'Операция по выполнению SQL-запроса не возвращающего результирующую выборку завершена.';
+  RsConnectionDemanded = 'Для выполнения операции необходимо подключение к серверу MySQL!';
+  RsConnectionVerificationError = 'Возникла ошибка при попытке проверки подключения к серверу MySQL!';
+  RsQueryStarted = 'Операция по выполнению SQL-запроса запущена...';
+  RsUpdateQueryStarted = 'Операция по обновлению данных таблицы базы данных ...';
+  RsQueryFinished = 'Операция по выполнению SQL-запроса завершена.';
+  RsUpdateQueryFinished = 'Операция по обновлению данных таблицы базы данных завершена.';
+  RsSQLQueryError = 'Возникла ошибка при выполнении SQL-запроса!';
+  RsNonResultingQueryCompleteSuccessfully =
+    'Операция по выполнению SQL-запроса не возвращающего результирующую выборку выполнена успешно.';
+  RsUpdateQueryCompleteSuccessfully = 'Операция по обновлению данных таблицы базы данных выполнена успешно.';
+  RsQueryCompleteSuccessfully = 'Операция по выполнению SQL-запроса выполнена успешно.';
+  RsQueryExecuted = 'SQL-запрос выполнен.';
+  RsResultSetRecievedSuccessfully = 'Результирующая выборка получена успешно.';
+  RsResultSetRecieveError = 'Не удалось получить результирующую выборку по SQL-запросу!';
+  RsReceivedResultSetRowsCount = 'Количество строк полученной выборки: %d.';
+  RsAffectedRowsCount = 'Количество обновлённых строк: %d.';
+  RsAffectedRowsCountError = 'Количество обновлённых строк (%d) не соответствует требуемому (>=0)!';
+  RsReceivedResultSetRowsCountError = 'Возникла ошибка при получении количества срок полученной результирующей выборки!';
+  RsCommas = '"';
+
+function GetIMySQLConnection: IMySQLConnection;
+begin
+  Result := TMySQLConnection.Create;
+end;
+
+function TMySQLConnection.GetActive: Boolean;
+begin
+  Result := FActive;
+end;
+
+function TMySQLConnection.GetCompression: Boolean;
+begin
+  Result := FCompression;
+end;
+
+function TMySQLConnection.GetConnection: PMYSQL;
+begin
+  Result := FConnection;
+end;
+
+function TMySQLConnection.GetDatabase: string;
+begin
+  Result := FDatabase;
+end;
+
+function TMySQLConnection.GetHost: string;
+begin
+  Result := FHost;
+end;
+
+function TMySQLConnection.GetLogin: string;
+begin
+  Result := FLogin;
+end;
+
+function TMySQLConnection.GetLogProvider: TLogProvider;
+begin
+  Result := FLogProvider;
+end;
+
+function TMySQLConnection.GetPassword: string;
+begin
+  Result := FPassword;
+end;
+
+function TMySQLConnection.GetPort: Integer;
+begin
+  Result := FPort;
+end;
+
+function TMySQLConnection.GetTimeout: Integer;
+begin
+  Result := FTimeout;
+end;
+
+procedure TMySQLConnection.Initialize;
+begin
+  FActive := False;
+  FConnection := nil;
+  FLogProvider := nil;
+  FHost := EmptyStr;
+  FPort := MYSQL_PORT;
+  FTimeout := 30;
+  FCompression := True;
+  FLogin := EmptyStr;
+  FPassword := EmptyStr;
+  FDatabase := EmptyStr;
+end;
 
 function TMySQLConnection.GetLastErrorInfo: string;
 begin
   if Assigned(FConnection) then
+  begin
+    Result := EmptyStr;
     if mysql_errno(FConnection) <> 0 then
-      Result := sLineBreak + sLineBreak + 'Код ошибки: ' + sLineBreak + IntToStr(mysql_errno(FConnection)) + sLineBreak +
-        sLineBreak + 'Наименование ошибки: ' + sLineBreak + string(mysql_error(FConnection))
-    else
-      Result := ''
-  else
-    raise EInvalidPointer.Create('Возникла ошибка при попытке получения указателя активного соединения!');
-end;
-
-class function TMySQLConnection.PrepareStringValueForQuery(const Source: string; AddCommas, ReturnNull: boolean): string;
-var
-  z: PAnsiChar;
-begin
-  Result := '';
-  if (ReturnNull and (Trim(Source) = '')) then
-    Result := 'NULL'
+    begin
+      Result := sLineBreak + sLineBreak + RsErrorCode + sLineBreak + IntToStr(mysql_errno(FConnection)) + sLineBreak +
+        sLineBreak + RsErrorName + sLineBreak + string(mysql_error(FConnection));
+    end;
+  end
   else
   begin
-    z := GetMemory(Length(PAnsiChar(AnsiString(Source))) * 2 + 1);
-    try
-      mysql_escape_string(z, PAnsiChar(AnsiString(Source)), Length(PAnsiChar(AnsiString(Source))));
-      if AddCommas then
-        Result := '"' + string(StrPas(z)) + '"'
-      else
-        Result := string(StrPas(z));
-    finally
-      if z <> nil then
-        FreeMemory(z);
+    raise EInvalidPointer.Create(RsConnectionNotAssigned);
+  end;
+end;
+
+procedure TMySQLConnection.RaiseEMySQLException(const AValue: string);
+begin
+  if Assigned(FLogProvider) then
+  begin
+    FLogProvider.SendError(AValue + GetLastErrorInfo);
+  end;
+  raise EMySQLException.Create(AValue + GetLastErrorInfo);
+end;
+
+procedure TMySQLConnection.SendDebug(const AValue: string);
+begin
+  if Assigned(FLogProvider) then
+  begin
+    FLogProvider.SendDebug(AValue);
+  end;
+end;
+
+procedure TMySQLConnection.SendInfo(const AValue: string);
+begin
+  if Assigned(FLogProvider) then
+  begin
+    FLogProvider.SendInfo(AValue);
+  end;
+end;
+
+procedure TMySQLConnection.SendSQL(const AValue: string);
+begin
+  if Assigned(FLogProvider) then
+  begin
+    FLogProvider.SendSQL(AValue);
+  end;
+end;
+
+procedure TMySQLConnection.SetCompression(const AValue: Boolean);
+begin
+  if FCompression <> AValue then
+  begin
+    FCompression := AValue;
+  end;
+end;
+
+procedure TMySQLConnection.SetActive(const AValue: Boolean);
+begin
+  if FActive <> AValue then
+  begin
+    if AValue then
+    begin
+      Open;
+    end
+    else
+    begin
+      Close;
     end;
   end;
 end;
 
-procedure TMySQLConnection.RaiseEMySQLException(const Value: string);
+procedure TMySQLConnection.SetConnection(const AValue: PMYSQL);
 begin
-  if Assigned(FLogProvider) then
-    FLogProvider.SendError(Value + GetLastErrorInfo);
-  raise EMySQLException.Create(Value + GetLastErrorInfo);
-end;
-
-procedure TMySQLConnection.SendDebug(const Value: string);
-begin
-  if Assigned(FLogProvider) then
-    FLogProvider.SendDebug(Value);
-end;
-
-{
-  procedure TMySQLConnection.SendError(const Value: string);
+  if FConnection <> AValue then
   begin
-  if Assigned(FLogProvider) then
-  FLogProvider.SendError(Value);
+    FConnection := AValue;
   end;
-}
-
-procedure TMySQLConnection.SendInfo(const Value: string);
-begin
-  if Assigned(FLogProvider) then
-    FLogProvider.SendInfo(Value);
 end;
 
-procedure TMySQLConnection.SendSQL(const Value: string);
+procedure TMySQLConnection.SetDatabase(const AValue: string);
 begin
-  if Assigned(FLogProvider) then
-    FLogProvider.SendSQL(Value);
-end;
-
-{
-  procedure TMySQLConnection.SendWarning(const Value: string);
+  if FDatabase <> AValue then
   begin
-  if Assigned(FLogProvider) then
-  FLogProvider.SendWarning(Value);
+    FDatabase := AValue;
   end;
-}
-
-procedure TMySQLConnection.SetCompression(const Value: boolean);
-begin
-  if FCompression <> Value then
-    FCompression := Value;
 end;
 
-procedure TMySQLConnection.SetConnected(const Value: boolean);
+procedure TMySQLConnection.SetHost(const AValue: string);
 begin
-  if FConnected <> Value then
-    if Value then
-      OpenConnection
-    else
-      CloseConnection;
+  if FHost <> AValue then
+  begin
+    FHost := AValue;
+  end;
 end;
 
-procedure TMySQLConnection.SetConnection(const Value: PMYSQL);
+procedure TMySQLConnection.SetLogin(const AValue: string);
 begin
-  if FConnection <> Value then
-    FConnection := Value;
+  if FLogin <> AValue then
+  begin
+    FLogin := AValue;
+  end;
 end;
 
-procedure TMySQLConnection.SetDatabase(const Value: string);
+procedure TMySQLConnection.SetLogProvider(const AValue: TLogProvider);
 begin
-  if FDatabase <> Value then
-    FDatabase := Value;
+  if FLogProvider <> AValue then
+  begin
+    FLogProvider := AValue;
+  end;
 end;
 
-procedure TMySQLConnection.SetHost(const Value: string);
+procedure TMySQLConnection.SetPassword(const AValue: string);
 begin
-  if FHost <> Value then
-    FHost := Value;
+  if FPassword <> AValue then
+  begin
+    FPassword := AValue;
+  end;
 end;
 
-procedure TMySQLConnection.SetLogin(const Value: string);
+procedure TMySQLConnection.SetPort(const AValue: Integer);
 begin
-  if FLogin <> Value then
-    FLogin := Value;
+  if FPort <> AValue then
+  begin
+    FPort := AValue;
+  end;
 end;
 
-procedure TMySQLConnection.SetLogProvider(const Value: TLogProvider);
+procedure TMySQLConnection.SetTimeout(const AValue: Integer);
 begin
-  if FLogProvider <> Value then
-    FLogProvider := Value;
+  if FTimeout <> AValue then
+  begin
+    FTimeout := AValue;
+  end;
 end;
 
-procedure TMySQLConnection.SetPassword(const Value: string);
+procedure TMySQLConnection.Query(const ASQL: string);
 begin
-  if FPassword <> Value then
-    FPassword := Value;
-end;
-
-procedure TMySQLConnection.SetPort(const Value: integer);
-begin
-  if FPort <> Value then
-    FPort := Value;
-end;
-
-procedure TMySQLConnection.SetTimeout(const Value: integer);
-begin
-  if FTimeout <> Value then
-    FTimeout := Value;
-end;
-
-function TMySQLConnection.Query(const SQL: string): integer;
-begin
-  Result := -1;
-  SendDebug('Операция по выполнению SQL-запроса не возвращающего результирующую выборку запущена...');
+  SendDebug(RsNonResultingQueryStarted);
   try
-    if not Connected then
-      RaiseEMySQLException('Для выполнения операции необходимо подключение к серверу MySQL!')
-    else
-      if mysql_ping(Connection) <> 0 then
-        RaiseEMySQLException('Возникла ошибка при попытке проверки подключения к серверу MySQL!')
-      else
+    if Active then
+    begin
+      if mysql_ping(Connection) = 0 then
       begin
-        SendSQL(SQL);
-        if mysql_real_query(Connection, PAnsiChar(AnsiString(SQL)), Length(SQL)) <> 0 then
-          RaiseEMySQLException('Возникла ошибка при выполнении SQL-запроса!')
-        else
+        SendSQL(ASQL);
+        if mysql_real_query(Connection, PAnsiChar(AnsiString(ASQL)), Length(ASQL)) <> 0 then
         begin
-          Result := 0;
-          SendDebug('Операция по выполнению SQL-запроса не возвращающего результирующую выборку выполнена успешно.');
+          RaiseEMySQLException(RsSQLQueryError);
         end;
+        SendDebug(RsNonResultingQueryCompleteSuccessfully);
+      end
+      else
+      begin
+        RaiseEMySQLException(RsConnectionVerificationError);
       end;
+    end
+    else
+    begin
+      RaiseEMySQLException(RsConnectionDemanded);
+    end;
   finally
-    SendDebug('Операция по выполнению SQL-запроса не возвращающего результирующую выборку завершена.');
+    SendDebug(RsNonResultingQueryFinished);
   end;
 end;
 
-function TMySQLConnection.Query(const SQL: string; var ResultSet: PMYSQL_RES): integer;
+procedure TMySQLConnection.Query(const ASQL: string; out AResultSet: PMYSQL_RES);
+var
+  rows: Int64;
 begin
-  Result := -1;
-  SendDebug('Операция по выполнению SQL-запроса запущена...');
+  SendDebug(RsQueryStarted);
   try
-    if not Connected then
-      RaiseEMySQLException('Для выполнения операции необходимо подключение к серверу MySQL!')
-    else
-      if mysql_ping(Connection) <> 0 then
-        RaiseEMySQLException('Возникла ошибка при попытке проверки подключения к серверу MySQL!')
-      else
+    if Active then
+    begin
+      if mysql_ping(Connection) = 0 then
       begin
-        SendSQL(SQL);
-        if mysql_real_query(Connection, PAnsiChar(AnsiString(SQL)), Length(SQL)) <> 0 then
-          RaiseEMySQLException('Возникла ошибка при выполнении SQL-запроса!')
-        else
+        SendSQL(ASQL);
+        if mysql_real_query(Connection, PAnsiChar(AnsiString(ASQL)), Length(ASQL)) = 0 then
         begin
-          SendDebug('SQL-запрос выполнен успешно.');
-          ResultSet := mysql_store_result(Connection);
-          if ResultSet = nil then
-            RaiseEMySQLException('Не удалось получить результирующую выборку по SQL-запросу!')
+          SendDebug(RsQueryExecuted);
+          AResultSet := mysql_store_result(Connection);
+          if Assigned(AResultSet) then
+          begin
+            SendDebug(RsResultSetRecievedSuccessfully);
+            rows := mysql_num_rows(AResultSet);
+            SendDebug(Format(RsReceivedResultSetRowsCount, [rows]));
+            if rows < 0 then
+            begin
+              RaiseEMySQLException(RsReceivedResultSetRowsCountError);
+            end;
+            SendDebug(RsQueryCompleteSuccessfully);
+          end
           else
           begin
-            SendDebug('Результирующая выборка получена успешно.');
-            Result := mysql_num_rows(ResultSet);
-            SendDebug('Количество строк выборки равно ' + IntToStr(Result) + '.');
-            if Result < 0 then
-              RaiseEMySQLException('Возникла ошибка при получении количества срок результирующей выборки!')
-            else
-              SendDebug('Операция по выполнению SQL-запроса выполнена успешно.');
+            RaiseEMySQLException(RsResultSetRecieveError);
           end;
+        end
+        else
+        begin
+          RaiseEMySQLException(RsSQLQueryError);
         end;
+      end
+      else
+      begin
+        RaiseEMySQLException(RsConnectionVerificationError);
       end;
+    end
+    else
+    begin
+      RaiseEMySQLException(RsConnectionDemanded);
+    end;
   finally
-    SendDebug('Операция по выполнению SQL-запроса завершена.');
+    SendDebug(RsQueryFinished);
   end;
 end;
 
 constructor TMySQLConnection.Create;
 begin
   inherited;
-  FConnected := False;
-  FConnection := nil;
-  FLogProvider := nil;
-  FHost := '';
-  FPort := MYSQL_PORT;
-  FTimeout := 30;
-  FCompression := True;
-  FLogin := '';
-  FPassword := '';
-  FDatabase := '';
+  Initialize;
 end;
 
 destructor TMySQLConnection.Destroy;
 begin
-  Connected := False;
+  Finalize;
   inherited;
 end;
 
-function TMySQLConnection.FetchRow(const ResultSet: PMYSQL_RES): TStringList;
+function TMySQLConnection.FetchRow(const AResultSet: PMYSQL_RES): TStringList;
 var
-  ResultRow: PMYSQL_ROW;
-  i, num_fields: cardinal;
+  result_row: PMYSQL_ROW;
+  i: Cardinal;
+  num_fields: Cardinal;
 begin
-  SendDebug('Операция по получению строки выборки запущена...');
+  Result := TStringList.Create;
+  Result.Sorted := False;
+  SendDebug(RsFetchRowStarted);
   try
-    Result := TStringList.Create;
-    Result.Sorted := False;
-
-    if Assigned(ResultSet) then
+    if Assigned(AResultSet) then
     begin
-      ResultRow := mysql_fetch_row(ResultSet);
-      if not Assigned(ResultRow) then
-        RaiseEMySQLException('Возникла ошибка при получении данных очередной строки выборки!')
+      result_row := mysql_fetch_row(AResultSet);
+      if Assigned(result_row) then
+      begin
+        num_fields := mysql_num_fields(AResultSet);
+        for i := 0 to num_fields - 1 do
+        begin
+          Result.Append(string(result_row[i]));
+        end;
+        SendDebug(RsFetchRowCompleteSuccessfully);
+      end
       else
       begin
-        num_fields := mysql_num_fields(ResultSet);
-        for i := 0 to num_fields - 1 do
-          Result.Append(string(ResultRow[i]));
-        SendDebug('Данные строки выборки получены успешно.');
+        RaiseEMySQLException(RsFetchRowError);
       end;
+    end
+    else
+    begin
+      raise EInvalidPointer.Create(RsResultSetNotAssigned);
     end;
   finally
-    SendDebug('Операция по получению строки выборки завершена.');
+    SendDebug(RsFetchRowFinished);
   end;
 end;
 
-function TMySQLConnection.RowCount(const ResultSet: PMYSQL_RES): cardinal;
+procedure TMySQLConnection.Finalize;
 begin
-  if not Assigned(ResultSet) then
-    raise EInvalidPointer.Create('Указатель на результат выборки равен NULL!')
-  else
-    Result := mysql_num_rows(ResultSet);
+  Active := False;
 end;
 
-function TMySQLConnection.UpdateQuery(const SQL: string): integer;
+function TMySQLConnection.RowCount(const AResultSet: PMYSQL_RES): Cardinal;
+begin
+  if Assigned(AResultSet) then
+  begin
+    Result := mysql_num_rows(AResultSet);
+  end
+  else
+  begin
+    raise EInvalidPointer.Create(RsResultSetNotAssigned);
+  end;
+end;
+
+function TMySQLConnection.UpdateQuery(const ASQL: string): Int64;
 begin
   Result := -1;
-  SendDebug('Операция по обновления данных таблицы базы данных ...');
+  SendDebug(RsUpdateQueryStarted);
   try
-    if not Connected then
-      RaiseEMySQLException('Для выполнения операции необходимо подключение к MySQL-серверу!')
-    else
+    if Active then
     begin
-      if mysql_ping(Connection) <> 0 then
-        RaiseEMySQLException('Возникла ошибка при попытке проверки подключения к MySQL-серверу!')
-      else
+      if mysql_ping(Connection) = 0 then
       begin
-        SendSQL(SQL);
-        if mysql_real_query(Connection, PAnsiChar(AnsiString(SQL)), Length(SQL)) <> 0 then
-          RaiseEMySQLException('Возникла ошибка при выполнении SQL-запроса!')
+        SendSQL(ASQL);
+        if mysql_real_query(Connection, PAnsiChar(AnsiString(ASQL)), Length(ASQL)) = 0 then
+        begin
+          SendDebug(RsQueryExecuted);
+          Result := mysql_affected_rows(Connection);
+          SendDebug(Format(RsAffectedRowsCount, [Result]));
+          if Result >= 0 then
+          begin
+            SendDebug(RsUpdateQueryCompleteSuccessfully);
+          end
+          else
+          begin
+            RaiseEMySQLException(Format(RsAffectedRowsCountError, [Result]));
+          end;
+        end
         else
         begin
-          SendDebug('SQL-запрос выполнен успешно.');
-          Result := mysql_affected_rows(Connection);
-          SendDebug('Количество обновлённых строк равно ' + IntToStr(Result) + '.');
-          if Result < 0 then
-            RaiseEMySQLException('Количество обновлённых строк (' + IntToStr(Result) +
-              ') не соответствует требуемому (>=0)!')
-          else
-            SendDebug('Операция по обновлению данных таблицы базы данных выполнена успешно.');
+          RaiseEMySQLException(RsSQLQueryError);
         end;
-      end;
-    end;
-  finally
-    SendDebug('Выполнение операции обновления данных таблицы базы данных завершено.');
-  end;
-end;
-
-procedure TMySQLConnection.OpenConnection;
-begin
-  if not Connected then
-  begin
-    SendDebug('Выполняется операция подключения к MySQL-серверу ' + Host + ':' + IntToStr(Port) + '...');
-    Connection := mysql_init(nil);
-    if Connection = nil then
-      RaiseEMySQLException('Возникла ошибка при инициализации объекта соединения с MySQL-сервером ' + Host + ':' +
-        IntToStr(Port) + '!')
-    else
-    begin
-      SendDebug('Инициализация объекта соединения с MySQL-сервером ' + Host + ':' + IntToStr(Port) + ' выполнена успешно.');
-      if Connection <> mysql_real_connect(Connection, PAnsiChar(AnsiString(Host)), PAnsiChar(AnsiString(Login)),
-        PAnsiChar(AnsiString(Password)), PAnsiChar(AnsiString(Database)), Port, nil, integer(Compression) * CLIENT_COMPRESS)
-      then
-        RaiseEMySQLException('Возникла ошибка при при попытке подключения к MySQL-серверу ' + Host + ':' +
-          IntToStr(Port) + '!')
+      end
       else
       begin
-        FConnected := True;
-        SendDebug('Подключение к MySQL-серверу ' + Host + ':' + IntToStr(Port) + ' выполнено успешно.');
+        RaiseEMySQLException(RsConnectionVerificationError);
       end;
+    end
+    else
+    begin
+      RaiseEMySQLException(RsConnectionDemanded);
     end;
-    SendDebug('Выполнение операции подключения к MySQL-серверу ' + Host + ':' + IntToStr(Port) + ' завершено.');
+  finally
+    SendDebug(RsUpdateQueryFinished);
   end;
 end;
 
-procedure TMySQLConnection.CloseConnection;
+procedure TMySQLConnection.Open;
 begin
-  if Connected then
+  if not Active then
   begin
-    SendDebug('Выполняется операция отключения от MySQL-сервера ' + Host + ':' + IntToStr(Port) + '...');
+    SendDebug(Format(RsConnectionStarted, [Host, Port]));
+    Connection := mysql_init(nil);
+    if Assigned(Connection) then
+    begin
+      SendDebug(Format(RsConnectionInitializationCompleteSuccessfully, [Host, Port]));
+      if Connection <> mysql_real_connect(Connection, PAnsiChar(AnsiString(Host)), PAnsiChar(AnsiString(Login)),
+        PAnsiChar(AnsiString(Password)), PAnsiChar(AnsiString(Database)), Port, nil, Integer(Compression) * CLIENT_COMPRESS)
+      then
+      begin
+        RaiseEMySQLException(Format(RsConnectionError, [Host, Port]));
+      end
+      else
+      begin
+        FActive := True;
+        SendDebug(Format(RsConnectionCompleteSuccessfully, [Host, Port]));
+      end;
+    end
+    else
+    begin
+      RaiseEMySQLException(Format(RsConnectionInitializationError, [Host, Port]));
+    end;
+    SendDebug(Format(RsConnectionFinished, [Host, Port]));
+  end;
+end;
+
+procedure TMySQLConnection.Close;
+begin
+  if Active then
+  begin
+    SendDebug(Format(RsDisconnectionStarted, [Host, Port]));
     if Assigned(Connection) then
     begin
       mysql_close(Connection);
       Connection := nil;
     end;
-    FConnected := False;
-    SendInfo('Отключение от MySQL-сервера ' + Host + ':' + IntToStr(Port) + ' выполнено успешно.');
-    SendDebug('Выполнение операции отключения от MySQL-сервера ' + Host + ':' + IntToStr(Port) + ' завершено.');
+    FActive := False;
+    SendInfo(Format(RsDisconnectionCompleteSuccessfully, [Host, Port]));
+    SendDebug(Format(RsDisconnectionFinished, [Host, Port]));
+  end;
+end;
+
+class function TMySQLConnection.PrepareStringForQuery(const ASource: string; const AAddCommas, AReturnNull: Boolean): string;
+var
+  pac: PAnsiChar;
+begin
+  Result := EmptyStr;
+  if (AReturnNull and (Trim(ASource) = EmptyStr)) then
+  begin
+    Result := RsNULL;
+  end
+  else
+  begin
+    pac := GetMemory(Length(PAnsiChar(AnsiString(ASource))) * 2 + 1);
+    try
+      mysql_escape_string(pac, PAnsiChar(AnsiString(ASource)), Length(PAnsiChar(AnsiString(ASource))));
+      Result := string(StrPas(pac));
+      if AAddCommas then
+      begin
+        Result := RsCommas + Result + RsCommas;
+      end;
+    finally
+      FreeMemory(pac);
+    end;
   end;
 end;
 
