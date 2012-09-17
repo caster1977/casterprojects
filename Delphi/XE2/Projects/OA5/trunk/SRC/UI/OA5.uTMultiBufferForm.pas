@@ -10,7 +10,12 @@ uses
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.StdCtrls,
-  Vcl.ComCtrls;
+  Vcl.ComCtrls,
+  CastersPackage.uTRefreshBusyStateMethod,
+  CastersPackage.uTDialogPosition,
+  OA5.uIMeasureList,
+  OA5.uIConfiguration,
+  OA5.uIAccount;
 
 type
   TMultiBufferForm = class(TOA5PositionedLogForm)
@@ -40,9 +45,15 @@ type
     procedure actDeleteUpdate(Sender: TObject);
     procedure actClearUpdate(Sender: TObject);
   strict private
+    FMultibuffer: IMeasureList;
     procedure _UpdateListViewScrollBarVisibility;
     procedure _Delete;
     procedure _Clear;
+  public
+    constructor Create(AOwner: TComponent; const ADialogPosition: TDialogPosition; ABusyCounter: PInteger = nil;
+      ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil; AProgressBar: TProgressBar = nil;
+      const AConfiguration: IConfiguration = nil; const ACurrentUser: IAccount = nil;
+      const AMultibuffer: IMeasureList = nil); reintroduce; virtual;
   end;
 
 implementation
@@ -53,8 +64,7 @@ uses
   System.SysUtils,
   Vcl.Forms,
   Winapi.Windows,
-  CastersPackage.uResourceStrings,
-  OA5.uTMainForm;
+  CastersPackage.uResourceStrings;
 
 resourcestring
   RsMultiBufferForm = 'мультибуфера';
@@ -101,7 +111,7 @@ var
   b: Boolean;
 begin
   inherited;
-  b := lvBuffer.Items.Count > 0;
+  b := (lvBuffer.Items.Count > 0) and Assigned(FMultibuffer);
   if actPaste.Enabled <> b then
   begin
     ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actPaste.Caption]), '{A71F9C3A-194D-44D8-8E18-6DC8F76F9006}');
@@ -111,12 +121,21 @@ begin
   end;
 end;
 
+constructor TMultiBufferForm.Create(AOwner: TComponent; const ADialogPosition: TDialogPosition; ABusyCounter: PInteger;
+  ARefreshBusyStateMethod: TRefreshBusyStateMethod; AProgressBar: TProgressBar; const AConfiguration: IConfiguration;
+  const ACurrentUser: IAccount; const AMultibuffer: IMeasureList);
+begin
+  inherited Create(AOwner, ADialogPosition, ABusyCounter, ARefreshBusyStateMethod, AProgressBar, AConfiguration,
+    ACurrentUser);
+  FMultibuffer := AMultibuffer;
+end;
+
 procedure TMultiBufferForm.actDeleteUpdate(Sender: TObject);
 var
   b: Boolean;
 begin
   inherited;
-  b := Assigned(lvBuffer.Selected);
+  b := Assigned(lvBuffer.Selected) and Assigned(FMultibuffer);
   if actDelete.Enabled <> b then
   begin
     ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actDelete.Caption]), '{50D24F38-E7F9-4435-B34B-69300DA17CA0}');
@@ -138,7 +157,7 @@ var
   b: Boolean;
 begin
   inherited;
-  b := lvBuffer.Items.Count > 0;
+  b := (lvBuffer.Items.Count > 0) and Assigned(FMultibuffer);
   if actClear.Enabled <> b then
   begin
     ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actClear.Caption]), '{3A6B4025-F962-486D-B670-55664B32CBBA}');
@@ -215,10 +234,12 @@ procedure TMultiBufferForm._Clear;
 begin
   ProcedureHeader(RsClearListProcedure, '{2E8AC92F-B5AF-47CA-B6D7-2063421BCC77}');
 
-  lvBuffer.Clear;
-  MainForm.MultiBuffer.Clear;
-
-  _UpdateListViewScrollBarVisibility;
+  if Assigned(FMultibuffer) then
+  begin
+    FMultibuffer.Clear;
+    lvBuffer.Clear;
+    _UpdateListViewScrollBarVisibility;
+  end;
 
   ProcedureFooter;
 end;
@@ -227,11 +248,11 @@ procedure TMultiBufferForm._Delete;
 begin
   ProcedureHeader(RsListItemDeleteProcedure, '{2A3724F3-1297-4823-BC75-59127E72572B}');
 
-  if Assigned(lvBuffer.Selected) then
+  if Assigned(lvBuffer.Selected) and Assigned(FMultibuffer) then
   begin
     if StrToIntDef(lvBuffer.Selected.Caption, -1) > -1 then
     begin
-      MainForm.MultiBuffer.Delete(lvBuffer.Selected.Index);
+      FMultibuffer.Delete(lvBuffer.Selected.Index);
       lvBuffer.Selected.Delete;
     end;
   end;

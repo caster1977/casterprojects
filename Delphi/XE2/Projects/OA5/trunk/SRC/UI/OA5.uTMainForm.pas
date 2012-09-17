@@ -559,7 +559,7 @@ begin
   ProcedureHeader(Format(RsShowWindowProcedure, [RsMultiBufferFormSuffix]), '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
 
   with TMultiBufferForm.Create(Self, Configuration.MultibufferFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
-    Configuration, CurrentUser) do
+    Configuration, CurrentUser, MultiBuffer) do
   begin
     try
       for i := 0 to MultiBuffer.Count - 1 do
