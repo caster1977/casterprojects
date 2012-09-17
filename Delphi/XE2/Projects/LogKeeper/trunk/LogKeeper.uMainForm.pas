@@ -15,7 +15,6 @@ uses
   StdCtrls,
   ComCtrls,
   ImgList,
-  CastersPackage.getFVI,
   AppEvnts,
   ExtCtrls,
   Menus,
