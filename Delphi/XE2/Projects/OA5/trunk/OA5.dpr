@@ -31,8 +31,15 @@ uses
   OA5.uTMySQLConnection in 'SRC\Logic\Classes\OA5.uTMySQLConnection.pas',
   OA5.uTPrivilegies in 'SRC\Logic\Classes\OA5.uTPrivilegies.pas',
   OA5.uDefaultConsts in 'SRC\Logic\Other\OA5.uDefaultConsts.pas',
-  OA5.uTOA5LogForm in 'SRC\Logic\Other\OA5.uTOA5LogForm.pas' {OA5LogForm},
-  OA5.uTOA5PositionedLogForm in 'SRC\Logic\Other\OA5.uTOA5PositionedLogForm.pas' {OA5PositionedLogForm};
+  OA5.uTPhone in 'SRC\Logic\Classes\OA5.uTPhone.pas',
+  OA5.uTPhoneInfo in 'SRC\Logic\Types\OA5.uTPhoneInfo.pas',
+  OA5.uTPhoneTypes in 'SRC\Logic\Types\OA5.uTPhoneTypes.pas',
+  OA5.uTStationaryProviders in 'SRC\Logic\Types\OA5.uTStationaryProviders.pas',
+  OA5.uTMobileProviders in 'SRC\Logic\Types\OA5.uTMobileProviders.pas',
+  OA5.uResourceStrings in 'SRC\Logic\Other\OA5.uResourceStrings.pas',
+  OA5.uConsts in 'SRC\Logic\Other\OA5.uConsts.pas',
+  OA5.uTOA5LogForm in 'SRC\Logic\Classes\OA5.uTOA5LogForm.pas' {OA5LogForm},
+  OA5.uTOA5PositionedLogForm in 'SRC\Logic\Classes\OA5.uTOA5PositionedLogForm.pas' {OA5PositionedLogForm};
 
 {$R *.res}
 
