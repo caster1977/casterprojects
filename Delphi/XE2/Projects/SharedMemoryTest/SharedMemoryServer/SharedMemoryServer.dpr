@@ -4,9 +4,9 @@ program SharedMemoryServer;
 
 uses
   Vcl.Forms,
-  SharedMemoryServer.uMainForm in 'SharedMemoryServer.uMainForm.pas' {MainForm},
-  SharedMemoryServer.uConfigurationForm in 'SharedMemoryServer.uConfigurationForm.pas' {ConfigurationForm},
-  SharedMemoryServer.uAboutForm in 'SharedMemoryServer.uAboutForm.pas' {AboutForm},
+  SharedMemoryServer.uMainForm in 'SharedMemoryServer.uMainForm.pas' {MainForm} ,
+  SharedMemoryServer.uConfigurationForm in 'SharedMemoryServer.uConfigurationForm.pas' {ConfigurationForm} ,
+  SharedMemoryServer.uAboutForm in 'SharedMemoryServer.uAboutForm.pas' {AboutForm} ,
   SharedMemoryServer.uConfigurationClass in 'SharedMemoryServer.uConfigurationClass.pas',
   SharedMemoryCommon.uChunkClass in '..\SharedMemoryCommon\SharedMemoryCommon.uChunkClass.pas',
   SharedMemoryCommon.uChunkedFileClass in '..\SharedMemoryCommon\SharedMemoryCommon.uChunkedFileClass.pas',
@@ -24,4 +24,5 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMainForm, MainForm);
   Application.Run;
+
 end.

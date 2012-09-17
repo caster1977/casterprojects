@@ -19,7 +19,7 @@ type
   /// Класс, наследник <b>TThread</b>, обеспечивающий проверку существования окна с указанным
   /// при создании экземпляра класса значением Handle.
   /// </summary>
-  TWatchThreadClass=class(TThread)
+  TWatchThreadClass = class(TThread)
   strict private
     /// <summary>
     /// Handle окна, за существованием которого необходимо следить
@@ -85,33 +85,35 @@ type
     /// <b>Необязательный параметр.</b> Время задержки в милисекундах между
     /// циклами передачи сообщения. По умолчанию равен 1000 (1 сек.)
     /// </param>
-    constructor Create(const WatchHandle, ListenerHandle: THandle; const Msg: cardinal; const wParam: WPARAM=0; const lParam: LPARAM=0; const Pause: integer=CONST_DEFAULTVALUE_WATCHPAUSE);
+    constructor Create(const WatchHandle, ListenerHandle: Thandle; const Msg: cardinal; const WPARAM: WPARAM = 0;
+      const LPARAM: LPARAM = 0; const Pause: integer = CONST_DEFAULTVALUE_WATCHPAUSE);
   end;
 
 implementation
 
-constructor TWatchThreadClass.Create(const WatchHandle, ListenerHandle: THandle; const Msg: cardinal; const wParam: WPARAM=0; const lParam: LPARAM=0; const Pause: integer=CONST_DEFAULTVALUE_WATCHPAUSE);
+constructor TWatchThreadClass.Create(const WatchHandle, ListenerHandle: Thandle; const Msg: cardinal;
+  const WPARAM: WPARAM = 0; const LPARAM: LPARAM = 0; const Pause: integer = CONST_DEFAULTVALUE_WATCHPAUSE);
 begin
   inherited Create(True);
-  Priority:=tpLower;
-  FreeOnTerminate:=True;
-  FWatchHandle:=WatchHandle;
-  FListenerHandle:=ListenerHandle;
-  FMessage:=Msg;
-  FWParam:=wParam;
-  FLParam:=lParam;
-  FPause:=Pause;
+  Priority := tpLower;
+  FreeOnTerminate := True;
+  FWatchHandle := WatchHandle;
+  FListenerHandle := ListenerHandle;
+  FMessage := Msg;
+  FWParam := WPARAM;
+  FLParam := LPARAM;
+  FPause := Pause;
 end;
 
 procedure TWatchThreadClass.Execute;
 begin
   inherited;
   while not Terminated do
-    begin
-      if not IsWindow(FWatchHandle) then
-        PostMessage(FListenerHandle, FMessage, FWParam, FLParam);
-      Sleep(FPause);
-    end;
+  begin
+    if not IsWindow(FWatchHandle) then
+      PostMessage(FListenerHandle, FMessage, FWParam, FLParam);
+    Sleep(FPause);
+  end;
 end;
 
 end.
