@@ -172,8 +172,7 @@ end;
 
 procedure TMainForm.ShowErrorMessageBox(const AMessage: string);
 begin
-  MessageBox(Handle, PWideChar(AMessage), PWideChar(Format(RsErrorMessageCaption, [Application.Title])),
-    MESSAGE_TYPE_ERROR);
+  MessageBox(Handle, PWideChar(AMessage), PWideChar(Format(RsErrorMessageCaption, [Application.Title])), MESSAGE_TYPE_ERROR);
 end;
 
 procedure TMainForm.RegisterHotKeys;
@@ -279,8 +278,7 @@ begin
       begin
         if Assigned(FConfiguration) then
         begin
-          FConfiguration.SignalList.Items[FConfiguration.SignalList.IndexOf(ISignal(Item.Data))].Enabled :=
-            Item.Checked;
+          FConfiguration.SignalList.Items[FConfiguration.SignalList.IndexOf(ISignal(Item.Data))].Enabled := Item.Checked;
         end;
       end;
     end;
@@ -393,8 +391,7 @@ begin
             ShowModal;
             if ModalResult = mrOk then
             begin
-              FConfiguration.SignalList.Items[FConfiguration.SignalList.IndexOf(ISignal(ListView.Selected.Data))]
-                := Signal;
+              FConfiguration.SignalList.Items[FConfiguration.SignalList.IndexOf(ISignal(ListView.Selected.Data))] := Signal;
               i := ListView.ItemIndex;
               RefreshSignals;
               ListView.ItemIndex := i;
