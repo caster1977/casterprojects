@@ -172,10 +172,6 @@ object ConfigurationForm: TConfigurationForm
         object tsInterface: TTabSheet
           Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object chkbxShowSplashAtStart: TCheckBox
             Left = 0
             Top = 26
@@ -233,7 +229,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 120
     Top = 208
     Bitmap = {
-      494C01010300AC00D40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010300AC00D80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

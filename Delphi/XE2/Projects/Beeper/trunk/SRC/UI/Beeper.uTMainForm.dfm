@@ -32,7 +32,7 @@ object MainForm: TMainForm
     Panels = <>
     SimplePanel = True
   end
-  object ActionToolBar1: TActionToolBar
+  object ActionToolBar: TActionToolBar
     Left = 0
     Top = 0
     Width = 424
@@ -76,6 +76,8 @@ object MainForm: TMainForm
     TabOrder = 2
     ViewStyle = vsReport
     OnItemChecked = ListViewItemChecked
+    ExplicitWidth = 418
+    ExplicitHeight = 293
   end
   object TrayIcon: TTrayIcon
     BalloonTimeout = 0
@@ -135,7 +137,7 @@ object MainForm: TMainForm
     Left = 40
     Top = 144
     Bitmap = {
-      494C0101110088012C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010111008801340110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -853,7 +855,7 @@ object MainForm: TMainForm
             Action = actAbout
             ImageIndex = 15
           end>
-        ActionBar = ActionToolBar1
+        ActionBar = ActionToolBar
       end>
     Images = ImageList
     Left = 40

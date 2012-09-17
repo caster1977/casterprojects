@@ -3,15 +3,15 @@ unit Beeper.uTAboutForm;
 interface
 
 uses
+  Vcl.Forms,
+  Vcl.ActnList,
+  System.Classes,
   CastersPackage.Actions.Classes,
   CastersPackage.uTGSFileVersionInfo,
-  Vcl.Forms,
   Vcl.ExtCtrls,
   Vcl.Controls,
   Vcl.StdCtrls,
-  Vcl.Graphics,
-  System.Classes,
-  Vcl.ActnList;
+  Vcl.Graphics;
 
 type
   TAboutForm = class(TForm)
