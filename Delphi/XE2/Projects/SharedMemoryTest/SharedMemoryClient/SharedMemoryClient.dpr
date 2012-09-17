@@ -4,9 +4,9 @@ program SharedMemoryClient;
 
 uses
   Vcl.Forms,
-  SharedMemoryClient.uMainForm in 'SharedMemoryClient.uMainForm.pas' {MainForm},
-  SharedMemoryClient.uConfigurationForm in 'SharedMemoryClient.uConfigurationForm.pas' {ConfigurationForm},
-  SharedMemoryClient.uAboutForm in 'SharedMemoryClient.uAboutForm.pas' {AboutForm},
+  SharedMemoryClient.uMainForm in 'SharedMemoryClient.uMainForm.pas' {MainForm} ,
+  SharedMemoryClient.uConfigurationForm in 'SharedMemoryClient.uConfigurationForm.pas' {ConfigurationForm} ,
+  SharedMemoryClient.uAboutForm in 'SharedMemoryClient.uAboutForm.pas' {AboutForm} ,
   SharedMemoryClient.uConfigurationClass in 'SharedMemoryClient.uConfigurationClass.pas',
   SharedMemoryCommon.uChunkClass in '..\SharedMemoryCommon\SharedMemoryCommon.uChunkClass.pas',
   SharedMemoryCommon.uChunkedFileClass in '..\SharedMemoryCommon\SharedMemoryCommon.uChunkedFileClass.pas',
@@ -23,4 +23,5 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMainForm, MainForm);
   Application.Run;
+
 end.

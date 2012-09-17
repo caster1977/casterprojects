@@ -12,7 +12,7 @@ uses
   SharedMemoryCommon.uCommonConfigurationClass;
 
 type
-  TConfigurationClass=class(TCommonConfigurationClass)
+  TConfigurationClass = class(TCommonConfigurationClass)
   public
     property ConfigurationFormPage;
     property ConfigurationFormPosition;

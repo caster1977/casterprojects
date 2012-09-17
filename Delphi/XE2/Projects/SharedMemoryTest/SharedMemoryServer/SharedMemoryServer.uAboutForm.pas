@@ -7,15 +7,15 @@ uses
   ActnList,
   ActnMan,
   ExtCtrls,
-  CastersPackage.getFVI,
   StdCtrls,
   Classes,
   PlatformDefaultStyleActnCtrls,
   Controls,
-  Graphics;
+  Graphics,
+  CastersPackage.uTGSFileVersionInfo;
 
 type
-  TAboutForm=class(TForm)
+  TAboutForm = class(TForm)
     Shape1: TShape;
     ActionManager1: TActionManager;
     Action_Close: TAction;
@@ -53,28 +53,30 @@ uses
 procedure TAboutForm.FormCreate(Sender: TObject);
 begin
   // процедура-обработчик события создания окна
-  gsFileVersionInfo1.Filename:=Application.ExeName;
-  Action_Close.Visible:=False;
+  gsFileVersionInfo1.Filename := Application.ExeName;
+  Action_Close.Visible := False;
 end;
 
 procedure TAboutForm.FormShow(Sender: TObject);
 begin
   // процедура-обработчик события отображения окна
   if Action_Close.Visible then
-    begin
-      Timer1.Enabled:=False;
-      AlphaBlendValue:=222;
-      Timer2.Enabled:=False;
-    end
+  begin
+    Timer1.Enabled := False;
+    AlphaBlendValue := 222;
+    Timer2.Enabled := False;
+  end
   else
-    begin
-      Timer1.Enabled:=True;
-      AlphaBlendValue:=0;
-      Timer2.Enabled:=True;
-    end;
-  btnClose.Default:=Action_Close.Visible;
-  lblVersion.Caption:=Format(TEXT_APPLICATION_VERSION, [gsFileVersionInfo1.ModuleVersion.Major, gsFileVersionInfo1.ModuleVersion.Minor, gsFileVersionInfo1.ModuleVersion.Release, gsFileVersionInfo1.ModuleVersion.Build]);
-  lblLegalCopyright.Caption:=gsFileVersionInfo1.LegalCopyright;
+  begin
+    Timer1.Enabled := True;
+    AlphaBlendValue := 0;
+    Timer2.Enabled := True;
+  end;
+  btnClose.Default := Action_Close.Visible;
+  lblVersion.Caption := Format(TEXT_APPLICATION_VERSION, [gsFileVersionInfo1.ModuleVersion.Major,
+    gsFileVersionInfo1.ModuleVersion.Minor, gsFileVersionInfo1.ModuleVersion.Release,
+    gsFileVersionInfo1.ModuleVersion.Build]);
+  lblLegalCopyright.Caption := gsFileVersionInfo1.LegalCopyright;
   MainForm.LogInfo(Format(TEXT_WINDOW_SHOWED, [TEXT_ABOUTFORM_SUFFIX]));
 end;
 
@@ -87,7 +89,7 @@ end;
 procedure TAboutForm.Do_Close;
 begin
   // процедура закрытия модального окна с результатом mrClose
-  ModalResult:=mrClose;
+  ModalResult := mrClose;
   MainForm.LogInfo(Format(TEXT_WINDOW_CLOSED, [TEXT_ABOUTFORM_SUFFIX]));
 end;
 
@@ -100,8 +102,8 @@ end;
 procedure TAboutForm.Timer2Timer(Sender: TObject);
 begin
   // процедура реакции на срабатывание таймера, отвечающего за плавное увеличение прозрачности окна
-  if ((AlphaBlendValue+17)<=222) then
-    AlphaBlendValue:=AlphaBlendValue+17;
+  if ((AlphaBlendValue + 17) <= 222) then
+    AlphaBlendValue := AlphaBlendValue + 17;
 end;
 
 procedure TAboutForm.lblEMailAddressClick(Sender: TObject);

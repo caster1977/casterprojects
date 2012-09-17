@@ -17,7 +17,7 @@ type
   /// Класс, обеспечивающий работы по созданию, маппингу и уничтожению
   /// объекта общей памяти.
   /// </summary>
-  TSharedMemClass=class
+  TSharedMemClass = class
   strict private
 
     /// <summary>
@@ -187,7 +187,7 @@ type
     /// Для дальнейшей работы с общей памятью необходимо включить маппинг
     /// объекта при помощи изменения значения свойства <b>Mapped</b>.
     /// </remarks>
-    constructor Create(const CustomName: WideString=''; const CustomSize: cardinal=1024; const TimeOut: cardinal=5000);
+    constructor Create(const CustomName: WideString = ''; const CustomSize: cardinal = 1024; const TimeOut: cardinal = 5000);
 
     /// <summary>
     /// Деструктор объекта.
@@ -275,149 +275,149 @@ uses
   SharedMemoryCommon.uCommon;
 
 resourcestring
-  TEXT_ERROR_CREATE_MUTEX='Не удалось создать флаг управления процессом чтения/записи!';
-  TEXT_ERROR_WAITFOR_MUTEX='Не удалось считать состояние флага управления процессом чтения/записи!';
-  TEXT_ERROR_RELEASE_MUTEX='Не удалось удалить флаг управления процессом чтения/записи!';
-  TEXT_ERROR_CLOSE_MUTEX_HANDLE='Не удалось закрыть идентификатор флага управления процессом чтения/записи!';
-  TEXT_ERROR_CANT_MAP_CLOSED_FILE='Для выполнения маппинга вначале необходимо создать блок общей памяти!';
-  TEXT_MUTEX_NAMESUFFIX='_MUTEX';
-  TEXT_ERROR_INVALID_MAP_POINTER='Неверный указатель на область общей памяти!';
-  TEXT_ERROR_MUST_MAPPED_FIRST='Сначала необходимо выполнить маппинг общей памяти!';
-  TEXT_ERROR_INVALID_CHUNK_SIZE='Размер данных объекта порции памяти превышает размер общей памяти!';
-  TEXT_WRONGSHAREDMEMORYSIZE='Размер блока общей памяти не должен быть менее одного байта!';
-  TEXT_ERROR_CREATEFILEMAPPING='Не удалось создать блок общей памяти!';
-  TEXT_ERROR_CLOSE_FILEMAPPING_HANDLE='Не удалось закрыть идентификатор блока общей памяти!';
-  TEXT_ERROR_MAPVIEWOFFILE='Не удалось подключиться к блоку общей памяти!';
-  TEXT_ERROR_UNMAPVIEWOFFILE='Не удалось отключиться от блока общей памяти!';
+  TEXT_ERROR_CREATE_MUTEX = 'Не удалось создать флаг управления процессом чтения/записи!';
+  TEXT_ERROR_WAITFOR_MUTEX = 'Не удалось считать состояние флага управления процессом чтения/записи!';
+  TEXT_ERROR_RELEASE_MUTEX = 'Не удалось удалить флаг управления процессом чтения/записи!';
+  TEXT_ERROR_CLOSE_MUTEX_HANDLE = 'Не удалось закрыть идентификатор флага управления процессом чтения/записи!';
+  TEXT_ERROR_CANT_MAP_CLOSED_FILE = 'Для выполнения маппинга вначале необходимо создать блок общей памяти!';
+  TEXT_MUTEX_NAMESUFFIX = '_MUTEX';
+  TEXT_ERROR_INVALID_MAP_POINTER = 'Неверный указатель на область общей памяти!';
+  TEXT_ERROR_MUST_MAPPED_FIRST = 'Сначала необходимо выполнить маппинг общей памяти!';
+  TEXT_ERROR_INVALID_CHUNK_SIZE = 'Размер данных объекта порции памяти превышает размер общей памяти!';
+  TEXT_WRONGSHAREDMEMORYSIZE = 'Размер блока общей памяти не должен быть менее одного байта!';
+  TEXT_ERROR_CREATEFILEMAPPING = 'Не удалось создать блок общей памяти!';
+  TEXT_ERROR_CLOSE_FILEMAPPING_HANDLE = 'Не удалось закрыть идентификатор блока общей памяти!';
+  TEXT_ERROR_MAPVIEWOFFILE = 'Не удалось подключиться к блоку общей памяти!';
+  TEXT_ERROR_UNMAPVIEWOFFILE = 'Не удалось отключиться от блока общей памяти!';
 
-
-constructor TSharedMemClass.Create(const CustomName: WideString=''; const CustomSize: cardinal=1024; const TimeOut: cardinal=5000);
+constructor TSharedMemClass.Create(const CustomName: WideString = ''; const CustomSize: cardinal = 1024;
+  const TimeOut: cardinal = 5000);
 begin
-  if Trim(CustomName)='' then
-    FName:=TPath.GetGUIDFileName(True)
+  if Trim(CustomName) = '' then
+    FName := TPath.GetGUIDFileName(True)
   else
-    FName:=Trim(CustomName);
-  FMutexName:=FName+WideString(TEXT_MUTEX_NAMESUFFIX);
+    FName := Trim(CustomName);
+  FMutexName := FName + WideString(TEXT_MUTEX_NAMESUFFIX);
 
-  if CustomSize>0 then
-    FSize:=CustomSize
+  if CustomSize > 0 then
+    FSize := CustomSize
   else
     raise Exception.Create(TEXT_WRONGSHAREDMEMORYSIZE);
 
-  FTimeOut:=TimeOut;
-  FMap:=nil;
+  FTimeOut := TimeOut;
+  FMap := nil;
 
-  Opened:=True;
+  Opened := True;
 end;
 
 destructor TSharedMemClass.Destroy;
 begin
-  Mapped:=False;
-  Opened:=False;
+  Mapped := False;
+  Opened := False;
   inherited;
 end;
 
 procedure TSharedMemClass.SetMapped(const Value: boolean);
 begin
-  if FMapped<>Value then
+  if FMapped <> Value then
     if not Opened then
       raise Exception.Create(TEXT_ERROR_CANT_MAP_CLOSED_FILE)
     else
       if Value then
-        begin
-          if _LockMap then
-            if _Map then
-              FMapped:=Value;
-        end
+      begin
+        if _LockMap then
+          if _Map then
+            FMapped := Value;
+      end
       else
         if _UnlockMap then
           if _Unmap then
-            FMapped:=Value;
+            FMapped := Value;
 end;
 
 procedure TSharedMemClass.SetOpened(const Value: boolean);
 begin
-  if FOpened<>Value then
+  if FOpened <> Value then
     if Value then
-      begin
-        if _Open then
-          FOpened:=Value;
-      end
+    begin
+      if _Open then
+        FOpened := Value;
+    end
     else
       if _Close then
-        FOpened:=Value;
+        FOpened := Value;
 end;
 
 function TSharedMemClass._Open: boolean;
 begin
-  FHandle:=CreateFileMapping(INVALID_HANDLE_VALUE, nil, PAGE_READWRITE, 0, FSize, PWideChar(FName));
-  Result:=FHandle<>NULL;
+  FHandle := CreateFileMapping(INVALID_HANDLE_VALUE, nil, PAGE_READWRITE, 0, FSize, PWideChar(FName));
+  Result := FHandle <> NULL;
   if not Result then
-    raise Exception.Create(TEXT_ERROR_CREATEFILEMAPPING+TEXT_ERRORCODE+IntToStr(GetLastError));
+    raise Exception.Create(TEXT_ERROR_CREATEFILEMAPPING + TEXT_ERRORCODE + IntToStr(GetLastError));
 end;
 
 function TSharedMemClass._Close: boolean;
 begin
-  Result:=CloseHandle(FHandle);
+  Result := CloseHandle(FHandle);
   if not Result then
-    raise Exception.Create(TEXT_ERROR_CLOSE_FILEMAPPING_HANDLE+TEXT_ERRORCODE+IntToStr(GetLastError))
+    raise Exception.Create(TEXT_ERROR_CLOSE_FILEMAPPING_HANDLE + TEXT_ERRORCODE + IntToStr(GetLastError))
 end;
 
 function TSharedMemClass._Map: boolean;
 begin
-  FMap:=MapViewOfFile(FHandle, FILE_MAP_WRITE, 0, 0, 0);
-  Result:=Assigned(FMap);
+  FMap := MapViewOfFile(FHandle, FILE_MAP_WRITE, 0, 0, 0);
+  Result := Assigned(FMap);
   if not Result then
-    raise Exception.Create(TEXT_ERROR_MAPVIEWOFFILE+TEXT_ERRORCODE+IntToStr(GetLastError));
+    raise Exception.Create(TEXT_ERROR_MAPVIEWOFFILE + TEXT_ERRORCODE + IntToStr(GetLastError));
 end;
 
 function TSharedMemClass._Unmap: boolean;
 begin
-  Result:=UnmapViewOfFile(FMap);
-  FMap:=nil;
+  Result := UnmapViewOfFile(FMap);
+  FMap := nil;
   if not Result then
-    raise Exception.Create(TEXT_ERROR_UNMAPVIEWOFFILE+TEXT_ERRORCODE+IntToStr(GetLastError));
+    raise Exception.Create(TEXT_ERROR_UNMAPVIEWOFFILE + TEXT_ERRORCODE + IntToStr(GetLastError));
 end;
 
 function TSharedMemClass._LockMap: boolean;
 begin
-  FMutexHandle:=CreateMutex(nil, False, PWideChar(FMutexName));
-  Result:=FMutexHandle<>0;
+  FMutexHandle := CreateMutex(nil, False, PWideChar(FMutexName));
+  Result := FMutexHandle <> 0;
   if not Result then
     raise Exception.Create(TEXT_ERROR_CREATE_MUTEX)
   else
-    begin
-      Result:=WaitForSingleObject(FMutexHandle, FTimeOut)<>WAIT_FAILED;
-      if not Result then
-        raise Exception.Create(TEXT_ERROR_WAITFOR_MUTEX+TEXT_ERRORCODE+IntToStr(GetLastError));
-    end;
+  begin
+    Result := WaitForSingleObject(FMutexHandle, FTimeOut) <> WAIT_FAILED;
+    if not Result then
+      raise Exception.Create(TEXT_ERROR_WAITFOR_MUTEX + TEXT_ERRORCODE + IntToStr(GetLastError));
+  end;
 end;
 
 function TSharedMemClass._UnlockMap: boolean;
 begin
-  Result:=ReleaseMutex(FMutexHandle);
+  Result := ReleaseMutex(FMutexHandle);
   if not Result then
     raise Exception.Create(TEXT_ERROR_RELEASE_MUTEX)
   else
-    begin
-      Result:=CloseHandle(FMutexHandle);
-      if not Result then
-        raise Exception.Create(TEXT_ERROR_CLOSE_MUTEX_HANDLE+TEXT_ERRORCODE+IntToStr(GetLastError));
-    end;
+  begin
+    Result := CloseHandle(FMutexHandle);
+    if not Result then
+      raise Exception.Create(TEXT_ERROR_CLOSE_MUTEX_HANDLE + TEXT_ERRORCODE + IntToStr(GetLastError));
+  end;
 end;
 
 function TSharedMemClass.Read(const Len: cardinal; out Chunk: TChunkClass): boolean;
 begin
   if not Assigned(Chunk) then
-    Chunk:=TChunkClass.Create;
+    Chunk := TChunkClass.Create;
   if Mapped then
     if Assigned(FMap) then
-      if Chunk.Size<=Size then
-        begin
-          Chunk.Size:=Len;
-          CopyMemory(Chunk.Data, Map, Chunk.Size);
-          Result:=Chunk.CRC32=CommonFunctions.CRC32OfBuffer(Map, Chunk.Size);
-        end
+      if Chunk.Size <= Size then
+      begin
+        Chunk.Size := Len;
+        CopyMemory(Chunk.Data, Map, Chunk.Size);
+        Result := Chunk.CRC32 = CommonFunctions.CRC32OfBuffer(Map, Chunk.Size);
+      end
       else
         raise Exception.Create(TEXT_ERROR_INVALID_CHUNK_SIZE)
     else
@@ -432,11 +432,11 @@ begin
     raise Exception.Create(TEXT_ERROR_WRONG_CHUNK_OBJECT);
   if Mapped then
     if Assigned(FMap) then
-      if Chunk.Size<=Size then
-        begin
-          CopyMemory(Map, Chunk.Data, Chunk.Size);
-          Result:=Chunk.CRC32=CommonFunctions.CRC32OfBuffer(Map, Chunk.Size);
-        end
+      if Chunk.Size <= Size then
+      begin
+        CopyMemory(Map, Chunk.Data, Chunk.Size);
+        Result := Chunk.CRC32 = CommonFunctions.CRC32OfBuffer(Map, Chunk.Size);
+      end
       else
         raise Exception.Create(TEXT_ERROR_INVALID_CHUNK_SIZE)
     else

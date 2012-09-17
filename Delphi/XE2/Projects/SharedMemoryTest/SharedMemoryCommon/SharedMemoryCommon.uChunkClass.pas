@@ -9,15 +9,15 @@ unit SharedMemoryCommon.uChunkClass;
 interface
 
 resourcestring
-  TEXT_ERROR_WRONG_CHUNK_OBJECT='Указан несуществующий объект порции данных!';
+  TEXT_ERROR_WRONG_CHUNK_OBJECT = 'Указан несуществующий объект порции данных!';
 
 type
 
-  ///	<summary>
-  ///	  Класс, хранящий порцию данных, их размер в байтах и контрольную сумму
-  ///	  (CRC32).
-  ///	</summary>
-  TChunkClass=class
+  /// <summary>
+  /// Класс, хранящий порцию данных, их размер в байтах и контрольную сумму
+  /// (CRC32).
+  /// </summary>
+  TChunkClass = class
   strict private
 
     /// <summary>
@@ -80,37 +80,37 @@ uses
 constructor TChunkClass.Create;
 begin
   inherited Create;
-  Size:=0;
+  Size := 0;
 end;
 
 destructor TChunkClass.Destroy;
 begin
-  Size:=0;
+  Size := 0;
   inherited;
 end;
 
 function TChunkClass.GetCRC32: cardinal;
 begin
-  Result:=CommonFunctions.CRC32OfByteArray(Data);
+  Result := CommonFunctions.CRC32OfByteArray(Data);
 end;
 
 procedure TChunkClass.SetData(const Value: TArray<byte>);
 begin
-  if FData<>Value then
-    begin
-      Size:=Length(Value);
-      FData:=Copy(Value, 0, FSize);
-    end;
+  if FData <> Value then
+  begin
+    Size := Length(Value);
+    FData := Copy(Value, 0, FSize);
+  end;
 end;
 
 procedure TChunkClass.SetSize(const Value: cardinal);
 begin
-  if FSize<>Value then
-    begin
-      SetLength(FData, 0);
-      FSize:=Value;
-      SetLength(FData, FSize);
-    end;
+  if FSize <> Value then
+  begin
+    SetLength(FData, 0);
+    FSize := Value;
+    SetLength(FData, FSize);
+  end;
 end;
 
 end.

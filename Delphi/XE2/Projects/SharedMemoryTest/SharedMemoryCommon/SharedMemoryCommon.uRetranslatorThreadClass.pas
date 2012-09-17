@@ -20,7 +20,7 @@ type
   /// при создании экземпляра класса оконного сообщения при помощи функции
   /// <b>BroadcastSystemMessage</b>.
   /// </summary>
-  TRetranslatorThreadClass=class(TThread)
+  TRetranslatorThreadClass = class(TThread)
   strict private
 
     /// <summary>
@@ -70,7 +70,8 @@ type
     /// <b>Необязательный параметр.</b> Время задержки в милисекундах между
     /// циклами передачи сообщения. По умолчанию равен 1000 (1 сек.)
     /// </param>
-    constructor Create(const Msg: cardinal; const wParam: WPARAM=0; const lParam: LPARAM=0; const Pause: integer=CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+    constructor Create(const Msg: cardinal; const WPARAM: WPARAM = 0; const LPARAM: LPARAM = 0;
+      const Pause: integer = CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
   end;
 
 implementation
@@ -79,27 +80,29 @@ var
   /// <summary>
   /// Тип получателей сообщения (изначальное значение - только приложения)
   /// </summary>
-  Recipients: DWORD=BSM_APPLICATIONS;
+  Recipients: DWORD = BSM_APPLICATIONS;
 
-constructor TRetranslatorThreadClass.Create(const Msg: cardinal; const wParam: WPARAM=0; const lParam: LPARAM=0; const Pause: integer=CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
+constructor TRetranslatorThreadClass.Create(const Msg: cardinal; const WPARAM: WPARAM = 0; const LPARAM: LPARAM = 0;
+  const Pause: integer = CONST_DEFAULTVALUE_RETRANSLATORPAUSE);
 begin
   inherited Create(True);
-  Priority:=tpLower;
-  FreeOnTerminate:=True;
-  FPause:=Pause;
-  FMessage:=Msg;
-  FWParam:=wParam;
-  FLParam:=lParam;
+  Priority := tpLower;
+  FreeOnTerminate := True;
+  FPause := Pause;
+  FMessage := Msg;
+  FWParam := WPARAM;
+  FLParam := LPARAM;
 end;
 
 procedure TRetranslatorThreadClass.Execute;
 begin
   inherited;
   while not Terminated do
-    begin
-      BroadcastSystemMessage(BSF_IGNORECURRENTTASK or BSF_POSTMESSAGE, @Recipients, FMessage, FWParam, FLParam); // PostMessage(HWND_BROADCAST, FMessage, FWParam, FLParam);
-      Sleep(FPause);
-    end;
+  begin
+    BroadcastSystemMessage(BSF_IGNORECURRENTTASK or BSF_POSTMESSAGE, @Recipients, FMessage, FWParam, FLParam);
+    // PostMessage(HWND_BROADCAST, FMessage, FWParam, FLParam);
+    Sleep(FPause);
+  end;
 end;
 
 end.

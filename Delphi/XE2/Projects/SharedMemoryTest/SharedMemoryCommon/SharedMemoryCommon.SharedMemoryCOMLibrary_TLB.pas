@@ -49,33 +49,33 @@ uses
 // *********************************************************************//
 const
   // TypeLibrary Major and minor versions
-  SharedMemoryCOMLibraryMajorVersion=1;
-  SharedMemoryCOMLibraryMinorVersion=0;
+  SharedMemoryCOMLibraryMajorVersion = 1;
+  SharedMemoryCOMLibraryMinorVersion = 0;
 
-  LIBID_SharedMemoryCOMLibrary: TGUID='{B700842C-690F-42BB-AC87-0F089F491CCA}';
+  LIBID_SharedMemoryCOMLibrary: TGUID = '{B700842C-690F-42BB-AC87-0F089F491CCA}';
 
-  IID_ISharedMemoryCOMInterface: TGUID='{7BE80D96-AC20-4C37-B58B-B543058F4BA0}';
-  CLASS_SharedMemoryCOMCoClass: TGUID='{06464D22-3E60-4F58-85BD-DE05CEB33CEC}';
+  IID_ISharedMemoryCOMInterface: TGUID = '{7BE80D96-AC20-4C37-B58B-B543058F4BA0}';
+  CLASS_SharedMemoryCOMCoClass: TGUID = '{06464D22-3E60-4F58-85BD-DE05CEB33CEC}';
 
 type
 
   // *********************************************************************//
   // Forward declaration of types defined in TypeLibrary
   // *********************************************************************//
-  ISharedMemoryCOMInterface=interface;
+  ISharedMemoryCOMInterface = interface;
 
   // *********************************************************************//
   // Declaration of CoClasses defined in Type Library
   // (NOTE: Here we map each CoClass to its Default Interface)
   // *********************************************************************//
-  SharedMemoryCOMCoClass=ISharedMemoryCOMInterface;
+  SharedMemoryCOMCoClass = ISharedMemoryCOMInterface;
 
   // *********************************************************************//
   // Interface: ISharedMemoryCOMInterface
   // Flags:     (256) OleAutomation
   // GUID:      {7BE80D96-AC20-4C37-B58B-B543058F4BA0}
   // *********************************************************************//
-  ISharedMemoryCOMInterface=interface(IUnknown)
+  ISharedMemoryCOMInterface = interface(IUnknown)
     ['{7BE80D96-AC20-4C37-B58B-B543058F4BA0}']
     function GetSharedMemoryName(out vName: WideString): HResult; stdcall;
   end;
@@ -87,7 +87,7 @@ type
   // clients wishing to automate the CoClass objects exposed by the
   // server of this typelibrary.
   // *********************************************************************//
-  CoSharedMemoryCOMCoClass=class
+  CoSharedMemoryCOMCoClass = class
     class function Create: ISharedMemoryCOMInterface;
     class function CreateRemote(const MachineName: string): ISharedMemoryCOMInterface;
   end;
@@ -99,12 +99,12 @@ uses
 
 class function CoSharedMemoryCOMCoClass.Create: ISharedMemoryCOMInterface;
 begin
-  Result:=CreateComObject(CLASS_SharedMemoryCOMCoClass) as ISharedMemoryCOMInterface;
+  Result := CreateComObject(CLASS_SharedMemoryCOMCoClass) as ISharedMemoryCOMInterface;
 end;
 
 class function CoSharedMemoryCOMCoClass.CreateRemote(const MachineName: string): ISharedMemoryCOMInterface;
 begin
-  Result:=CreateRemoteComObject(MachineName, CLASS_SharedMemoryCOMCoClass) as ISharedMemoryCOMInterface;
+  Result := CreateRemoteComObject(MachineName, CLASS_SharedMemoryCOMCoClass) as ISharedMemoryCOMInterface;
 end;
 
 end.

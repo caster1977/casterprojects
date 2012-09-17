@@ -17,7 +17,7 @@ type
   /// <summary>
   /// Класс-обёртка для "порционного" файла
   /// </summary>
-  TChunkedFileClass=class
+  TChunkedFileClass = class
   strict private
 
     /// <summary>
@@ -69,7 +69,7 @@ type
     /// <summary>
     /// Конструктор класса
     /// </summary>
-    constructor Create(const FileName: string; const SizeOfChunk: cardinal; const FileSize: Int64=0);
+    constructor Create(const FileName: string; const SizeOfChunk: cardinal; const FileSize: Int64 = 0);
 
     /// <summary>
     /// Деструктор класса.
@@ -148,37 +148,37 @@ uses
   SharedMemoryCommon.uCommon;
 
 resourcestring
-  TEXT_ERROR_WRONG_CHUNK_SIZE='Размер порции данных не должен быть менее одного байта!';
-  TEXT_ERROR_WRONG_FILE_SIZE='Размер принятого сервером файла отличается от размера передаваемого клиентом!';
-  TEXT_ERROR_WRONG_FILE_STREAM_OBJECT='Не удалось создать объект файлового потока!';
-  TEXT_ERROR_WRITING_CHUNK_TO_FILE='Не удалось записать порцию данных в файл!';
+  TEXT_ERROR_WRONG_CHUNK_SIZE = 'Размер порции данных не должен быть менее одного байта!';
+  TEXT_ERROR_WRONG_FILE_SIZE = 'Размер принятого сервером файла отличается от размера передаваемого клиентом!';
+  TEXT_ERROR_WRONG_FILE_STREAM_OBJECT = 'Не удалось создать объект файлового потока!';
+  TEXT_ERROR_WRITING_CHUNK_TO_FILE = 'Не удалось записать порцию данных в файл!';
 
-constructor TChunkedFileClass.Create(const FileName: string; const SizeOfChunk: cardinal; const FileSize: Int64=0);
+constructor TChunkedFileClass.Create(const FileName: string; const SizeOfChunk: cardinal; const FileSize: Int64 = 0);
 begin
   inherited Create;
-  FIndex:=0;
-  FName:=Trim(FileName);
+  FIndex := 0;
+  FName := Trim(FileName);
 
   // если размер порции менее одного байта
-  if SizeOfChunk<1 then
+  if SizeOfChunk < 1 then
     raise Exception.Create(TEXT_ERROR_WRONG_CHUNK_SIZE)
   else
-    FChunkSize:=SizeOfChunk;
+    FChunkSize := SizeOfChunk;
 
   // если файл с данным именем существует, а так же не указан размер файла в байтах, будем открывать имеющийся файл для чтения
   try
-    if FileExists(FName)and(FileSize=0) then
-      begin
-        FStream:=TFile.OpenRead(FName);
-        FSize:=FStream.Size;
-        FComplete:=True;
-      end
+    if FileExists(FName) and (FileSize = 0) then
+    begin
+      FStream := TFile.OpenRead(FName);
+      FSize := FStream.Size;
+      FComplete := True;
+    end
     else // если нет - создаём и открываем на запись
-      begin
-        FStream:=TFile.Create(FName);
-        FSize:=FileSize;
-        FComplete:=False;
-      end;
+    begin
+      FStream := TFile.Create(FName);
+      FSize := FileSize;
+      FComplete := False;
+    end;
   except
     on EInOutError do
       raise
@@ -198,35 +198,35 @@ end;
 
 function TChunkedFileClass.GetCount: cardinal;
 begin
-  Result:=(Size div ChunkSize)+1;
+  Result := (Size div ChunkSize) + 1;
 end;
 
 function TChunkedFileClass.Read(const Index: cardinal; out Chunk: TChunkClass): boolean;
 var
   Data: TArray<byte>;
 begin
-  Result:=False;
+  Result := False;
   if not Assigned(Chunk) then
-    Chunk:=TChunkClass.Create;
+    Chunk := TChunkClass.Create;
   if Assigned(FStream) then
-    begin
-      FStream.Position:=Int64(ChunkSize)*Int64(index);
-      SetLength(Data, ChunkSize);
-      Chunk.Size:=FStream.Read(Data[0], ChunkSize);
-      SetLength(Data, Chunk.Size);
-      Chunk.Data:=Data;
-      if Chunk.Size>0 then
-        Result:=Chunk.CRC32=CommonFunctions.CRC32OfByteArray(Data);
-    end;
+  begin
+    FStream.Position := Int64(ChunkSize) * Int64(index);
+    SetLength(Data, ChunkSize);
+    Chunk.Size := FStream.Read(Data[0], ChunkSize);
+    SetLength(Data, Chunk.Size);
+    Chunk.Data := Data;
+    if Chunk.Size > 0 then
+      Result := Chunk.CRC32 = CommonFunctions.CRC32OfByteArray(Data);
+  end;
 end;
 
 procedure TChunkedFileClass.SetComplete(const Value: boolean);
 begin
-  if Value<>FComplete then
+  if Value <> FComplete then
     if Value then
       if Assigned(FStream) then
-        if Size=FStream.Size then
-          FComplete:=Value
+        if Size = FStream.Size then
+          FComplete := Value
         else
           raise Exception.Create(TEXT_ERROR_WRONG_FILE_SIZE)
       else
@@ -235,13 +235,13 @@ end;
 
 function TChunkedFileClass.Write(const Chunk: TChunkClass): boolean;
 begin
-  Result:=False;
+  Result := False;
   if not Assigned(Chunk) then
     raise Exception.Create(TEXT_ERROR_WRONG_CHUNK_OBJECT);
   if Assigned(FStream) then
     try
       FStream.WriteBuffer(Chunk.Data[0], Chunk.Size);
-      Result:=True;
+      Result := True;
     except
       on EWriteError do
         raise Exception.Create(TEXT_ERROR_WRITING_CHUNK_TO_FILE);
