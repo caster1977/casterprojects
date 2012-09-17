@@ -3,22 +3,16 @@ unit Beeper.uTConfigurationForm;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
-  System.Variants,
-  System.Classes,
-  Vcl.Graphics,
-  Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs,
+  Vcl.ImgList,
+  CastersPackage.Actions.Classes,
+  Vcl.StdActns,
+  System.Classes,
+  Vcl.ActnList,
+  Vcl.Controls,
   Vcl.StdCtrls,
   Vcl.ComCtrls,
-  Vcl.ExtCtrls,
-  Vcl.StdActns,
-  CastersPackage.Actions.Classes,
-  Vcl.ActnList,
-  Vcl.ImgList;
+  Vcl.ExtCtrls;
 
 type
   TConfigurationForm = class(TForm)
@@ -51,14 +45,7 @@ type
     actPreviousPage: TAction_PreviousPage;
     actNextPage: TAction_NextPage;
     procedure actCancelExecute(Sender: TObject);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
-
-var
-  ConfigurationForm: TConfigurationForm;
 
 implementation
 

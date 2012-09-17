@@ -3,24 +3,23 @@ unit Beeper.uTMainForm;
 interface
 
 uses
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.ComCtrls,
-  Vcl.AppEvnts,
-  Vcl.ActnMan,
-  Vcl.ActnCtrls,
-  Vcl.Menus,
-  Vcl.PlatformDefaultStyleActnCtrls,
-  Vcl.ExtCtrls,
-  System.Classes,
-  Vcl.ActnList,
-  Vcl.ImgList,
-  Vcl.ToolWin,
+  Beeper.uIConfiguration,
   CastersPackage.Actions.Classes,
-  Vcl.StdActns,
   Winapi.Messages,
   Winapi.Windows,
-  Beeper.uIConfiguration;
+  System.Classes,
+  Vcl.Forms,
+  Vcl.Menus,
+  Vcl.StdActns,
+  Vcl.ActnList,
+  Vcl.PlatformDefaultStyleActnCtrls,
+  Vcl.ActnMan,
+  Vcl.ImgList,
+  Vcl.Controls,
+  Vcl.ExtCtrls,
+  Vcl.ComCtrls,
+  Vcl.ToolWin,
+  Vcl.ActnCtrls;
 
 type
   TMainForm = class(TForm)
@@ -28,30 +27,35 @@ type
     TrayIcon: TTrayIcon;
     ImageList: TImageList;
     ActionManager: TActionManager;
-    MainMenu: TMainMenu;
-    TrayPopupMenu: TPopupMenu;
-    ActionToolBar1: TActionToolBar;
-    actQuit: TQuitAction;
-    N1: TMenuItem;
-    N2: TMenuItem;
-    actFileMenuGroup: TFileMenuGroupAction;
-    ListView: TListView;
-    actHelpMenuGroup: THelpMenuGroupAction;
-    actHelpContents: THelpContentsAction;
-    N3: TMenuItem;
-    N4: TMenuItem;
     actEraseSignal: TAction;
     actEditSignal: TAction;
     actCreateSignal: TAction;
+    actActionMenuGroup: TActionMenuGroupAction;
+    actClearSignals: TAction;
+    actAbout: TAction_About;
+    actShow: TAction;
+    actHide: TAction;
+    actConfiguration: TAction_Configuration;
+    actFileMenuGroup: TFileMenuGroupAction;
+    actHelpMenuGroup: THelpMenuGroupAction;
+    actHelpContents: THelpContentsAction;
+    actQuit: TQuitAction;
+    ActionToolBar: TActionToolBar;
+    ListView: TListView;
+    TrayPopupMenu: TPopupMenu;
+    MainMenu: TMainMenu;
+    miShow: TMenuItem;
+    miHide: TMenuItem;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
     N5: TMenuItem;
     N6: TMenuItem;
     N7: TMenuItem;
     N8: TMenuItem;
     N9: TMenuItem;
-    actActionMenuGroup: TActionMenuGroupAction;
-    actClearSignals: TAction;
     N10: TMenuItem;
-    actAbout: TAction_About;
     N11: TMenuItem;
     N12: TMenuItem;
     N14: TMenuItem;
@@ -59,11 +63,6 @@ type
     N16: TMenuItem;
     N17: TMenuItem;
     N18: TMenuItem;
-    actShow: TAction;
-    actHide: TAction;
-    miShow: TMenuItem;
-    miHide: TMenuItem;
-    actConfiguration: TAction_Configuration;
     N13: TMenuItem;
     N19: TMenuItem;
     procedure actEraseSignalUpdate(Sender: TObject);
@@ -92,7 +91,7 @@ type
     FWaveFileHistory, FMessageHistory: TStringList;
     FWindowMessage: Cardinal;
     FFirstRun: Boolean;
-    procedure DisplayHint(Sender: TObject);
+    procedure DisplayHint(ASender: TObject);
     procedure ShowErrorMessageBox(const AMessage: string);
     procedure RegisterHotKeys;
     procedure UnregisterHotKeys;
@@ -101,12 +100,12 @@ type
     procedure FillHistory;
     procedure ShowAboutWindow(const AShowCloseButton: Boolean);
     procedure HideAboutWindow;
-    procedure WMHotkey(var Msg: TWMHotkey); message WM_HOTKEY;
+    procedure WMHotkey(var AMsg: TWMHotkey); message WM_HOTKEY;
     procedure Flash;
     procedure UpdateVisibilityActions;
   strict protected
-    procedure WMGetSysCommand(var Message: TMessage); message WM_SYSCOMMAND;
-    procedure WndProc(var Message: TMessage); override;
+    procedure WMGetSysCommand(var AMessage: TMessage); message WM_SYSCOMMAND;
+    procedure WndProc(var AMessage: TMessage); override;
   end;
 
 var
@@ -136,7 +135,7 @@ resourcestring
   RsErrorUnregisterStartHotKey = 'Не удалось освободить горячую клавишу предназначеную для останова сигналов.';
   RsErrorUnregisterStopHotKey = 'Не удалось освободить горячую клавишу предназначеную для запуска сигналов.';
 
-procedure TMainForm.DisplayHint(Sender: TObject);
+procedure TMainForm.DisplayHint(ASender: TObject);
 begin
   StatusBar.SimpleText := GetLongHint(Application.Hint);
 end;
@@ -447,9 +446,9 @@ begin
   end;
 end;
 
-procedure TMainForm.WMHotkey(var Msg: TWMHotkey);
+procedure TMainForm.WMHotkey(var AMsg: TWMHotkey);
 begin
-  case Msg.HotKey of
+  case AMsg.HotKey of
     HOTKEY_ON:
       { if not FSignalingActive then
         actStart.Execute };
@@ -500,10 +499,10 @@ begin
   miHide.Default := actHide.Visible;
 end;
 
-procedure TMainForm.WndProc(var Message: TMessage);
+procedure TMainForm.WndProc(var AMessage: TMessage);
 begin
   inherited;
-  if message.Msg = FWindowMessage then
+  if AMessage.Msg = FWindowMessage then
   begin
     actShow.Execute;
     Flash;
@@ -525,9 +524,9 @@ begin
   SetForegroundWindow(Handle);
 end;
 
-procedure TMainForm.WMGetSysCommand(var Message: TMessage);
+procedure TMainForm.WMGetSysCommand(var AMessage: TMessage);
 begin
-  if (message.WParam = SC_MINIMIZE) then
+  if (AMessage.WParam = SC_MINIMIZE) then
   begin
     actHide.Execute;
   end
