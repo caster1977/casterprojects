@@ -166,10 +166,17 @@
 			<DCCReference Include="SRC\Logic\Classes\OA5.uTMySQLConnection.pas"/>
 			<DCCReference Include="SRC\Logic\Classes\OA5.uTPrivilegies.pas"/>
 			<DCCReference Include="SRC\Logic\Other\OA5.uDefaultConsts.pas"/>
-			<DCCReference Include="SRC\Logic\Other\OA5.uTOA5LogForm.pas">
+			<DCCReference Include="SRC\Logic\Classes\OA5.uTPhone.pas"/>
+			<DCCReference Include="SRC\Logic\Types\OA5.uTPhoneInfo.pas"/>
+			<DCCReference Include="SRC\Logic\Types\OA5.uTPhoneTypes.pas"/>
+			<DCCReference Include="SRC\Logic\Types\OA5.uTStationaryProviders.pas"/>
+			<DCCReference Include="SRC\Logic\Types\OA5.uTMobileProviders.pas"/>
+			<DCCReference Include="SRC\Logic\Other\OA5.uResourceStrings.pas"/>
+			<DCCReference Include="SRC\Logic\Other\OA5.uConsts.pas"/>
+			<DCCReference Include="SRC\Logic\Classes\OA5.uTOA5LogForm.pas">
 				<Form>OA5LogForm</Form>
 			</DCCReference>
-			<DCCReference Include="SRC\Logic\Other\OA5.uTOA5PositionedLogForm.pas">
+			<DCCReference Include="SRC\Logic\Classes\OA5.uTOA5PositionedLogForm.pas">
 				<Form>OA5PositionedLogForm</Form>
 			</DCCReference>
 			<BuildConfiguration Include="Release">
