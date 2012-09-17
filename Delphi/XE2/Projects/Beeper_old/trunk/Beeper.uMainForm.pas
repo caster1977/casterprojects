@@ -24,7 +24,6 @@ uses
   ExtCtrls,
   XPMan,
   ImgList,
-  CastersPackage.getFVI,
   AppEvnts,
   IniFiles,
   Beeper.uToolTipForm,

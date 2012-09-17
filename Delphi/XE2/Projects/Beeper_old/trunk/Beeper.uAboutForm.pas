@@ -15,11 +15,11 @@ uses
   ExtCtrls,
   StdCtrls,
   ShellAPI,
-  CastersPackage.getFVI,
-  Beeper.uMainForm;
+  Beeper.uMainForm,
+  CastersPackage.uTGSFileVersionInfo;
 
 type
-  TAboutForm=class(TForm)
+  TAboutForm = class(TForm)
     Timer1: TTimer;
     Shape1: TShape;
     Image1: TImage;
@@ -42,7 +42,7 @@ implementation
 
 procedure TAboutForm.Timer1Timer(Sender: TObject);
 begin
-  ModalResult:=mrOk;
+  ModalResult := mrOk;
 end;
 
 procedure TAboutForm.Label5Click(Sender: TObject);
@@ -52,8 +52,8 @@ end;
 
 procedure TAboutForm.Timer2Timer(Sender: TObject);
 begin
-  if ((AlphaBlendValue+17)<=222) then
-    AlphaBlendValue:=AlphaBlendValue+17;
+  if ((AlphaBlendValue + 17) <= 222) then
+    AlphaBlendValue := AlphaBlendValue + 17;
 end;
 
 end.
