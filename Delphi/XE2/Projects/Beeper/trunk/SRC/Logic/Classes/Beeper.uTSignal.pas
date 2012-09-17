@@ -22,8 +22,8 @@ type
     FWaveFile: string;
     FEnabled: Boolean;
     FTimer: TTimer;
-    function PeriodToSeconds(const ASeconds: word; const AMinutes: word = 0; const AHours: word = 0;
-      const ADays: word = 0; const AWeeks: word = 0; const AMonths: word = 0; const AYears: word = 0): Int64;
+    function PeriodToSeconds(const ASeconds: word; const AMinutes: word = 0; const AHours: word = 0; const ADays: word = 0;
+      const AWeeks: word = 0; const AMonths: word = 0; const AYears: word = 0): Int64;
 
     function GetTitle: string;
     procedure SetTitle(const AValue: string);

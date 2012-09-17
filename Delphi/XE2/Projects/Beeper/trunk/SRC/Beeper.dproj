@@ -50,16 +50,16 @@
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<VerInfo_MajorVer>3</VerInfo_MajorVer>
 			<VerInfo_Locale>1049</VerInfo_Locale>
-			<DCC_UnitSearchPath>..\CastersPackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_UnitSearchPath>..\..\CastersPackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<Manifest_File>None</Manifest_File>
 			<VerInfo_Keys>CompanyName=;FileDescription=Утилита для подачи сигналов с указанной периодичностью;FileVersion=3.0.0.0;InternalName=Beeper;LegalCopyright=(C)opyright 2012 by Vlad Ivanov;LegalTrademarks=;OriginalFilename=Beeper.exe;ProductName=Beeper;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
-			<DCC_BplOutput>.\$(Platform)\$(Config)\Package</DCC_BplOutput>
-			<DCC_DcpOutput>.\$(Platform)\$(Config)\DCP</DCC_DcpOutput>
+			<DCC_BplOutput>..\$(Platform)\$(Config)\Package</DCC_BplOutput>
+			<DCC_DcpOutput>..\$(Platform)\$(Config)\DCP</DCC_DcpOutput>
 			<DCC_UsePackage>bindcompfmx;fmx;rtl;dbrtl;IndySystem;DbxClientDriver;bindcomp;inetdb;DBXInterBaseDriver;DataSnapCommon;DataSnapClient;DataSnapServer;DataSnapProviderClient;xmlrtl;DbxCommonDriver;IndyProtocols;DBXMySQLDriver;dbxcds;soaprtl;FMXTee;bindengine;DBXOracleDriver;CustomIPTransport;dsnap;DBXInformixDriver;IndyCore;FmxTeeUI;DBXFirebirdDriver;inet;inetdbxpress;DBXSybaseASADriver;IPIndyImpl;dbexpress;DataSnapIndy10ServerTransport;$(DCC_UsePackage)</DCC_UsePackage>
 			<Icon_MainIcon>Beeper_Icon.ico</Icon_MainIcon>
 			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
-			<DCC_DcuOutput>.\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
-			<DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+			<DCC_DcuOutput>..\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
+			<DCC_ExeOutput>..\$(Platform)\$(Config)</DCC_ExeOutput>
 			<DCC_E>false</DCC_E>
 			<DCC_N>false</DCC_N>
 			<DCC_S>false</DCC_S>
@@ -103,32 +103,32 @@
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
-			<RcCompile Include="Beeper.Waves.rc">
+			<RcCompile Include="Resources\Beeper.Waves.rc">
 				<Form>Beeper.Waves.res</Form>
 			</RcCompile>
-			<DCCReference Include="Beeper.uTMainForm.pas">
-				<Form>MainForm</Form>
-			</DCCReference>
-			<DCCReference Include="Beeper.uTConfiguration.pas"/>
-			<DCCReference Include="Beeper.uResourceStrings.pas"/>
-			<DCCReference Include="Beeper.uConsts.pas"/>
-			<DCCReference Include="Beeper.uTSignal.pas"/>
-			<DCCReference Include="Beeper.uTPeriodType.pas"/>
-			<DCCReference Include="Beeper.uISignal.pas"/>
-			<DCCReference Include="Beeper.uISignalList.pas"/>
-			<DCCReference Include="Beeper.uTSignalList.pas"/>
-			<DCCReference Include="Beeper.uIConfiguration.pas"/>
-			<DCCReference Include="Beeper.uTSignalForm.pas">
-				<Form>SignalForm</Form>
-			</DCCReference>
-			<DCCReference Include="Beeper.uTAboutForm.pas">
+			<DCCReference Include="UI\Beeper.uTAboutForm.pas">
 				<Form>AboutForm</Form>
 			</DCCReference>
-			<DCCReference Include="Beeper.uTConfigurationForm.pas">
+			<DCCReference Include="UI\Beeper.uTConfigurationForm.pas">
 				<Form>ConfigurationForm</Form>
 			</DCCReference>
-			<DCCReference Include="Beeper.uTBeeper.pas"/>
-			<DCCReference Include="Beeper.uIBeeper.pas"/>
+			<DCCReference Include="UI\Beeper.uTMainForm.pas">
+				<Form>MainForm</Form>
+			</DCCReference>
+			<DCCReference Include="UI\Beeper.uTSignalForm.pas">
+				<Form>SignalForm</Form>
+			</DCCReference>
+			<DCCReference Include="Logic\Other\Beeper.uConsts.pas"/>
+			<DCCReference Include="Logic\Other\Beeper.uResourceStrings.pas"/>
+			<DCCReference Include="Logic\Classes\Beeper.uTBeeper.pas"/>
+			<DCCReference Include="Logic\Classes\Beeper.uTConfiguration.pas"/>
+			<DCCReference Include="Logic\Classes\Beeper.uTPeriodType.pas"/>
+			<DCCReference Include="Logic\Classes\Beeper.uTSignal.pas"/>
+			<DCCReference Include="Logic\Classes\Beeper.uTSignalList.pas"/>
+			<DCCReference Include="Logic\Interfaces\Beeper.uIBeeper.pas"/>
+			<DCCReference Include="Logic\Interfaces\Beeper.uIConfiguration.pas"/>
+			<DCCReference Include="Logic\Interfaces\Beeper.uISignal.pas"/>
+			<DCCReference Include="Logic\Interfaces\Beeper.uISignalList.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

@@ -215,8 +215,9 @@ end;
 
 procedure TSignalForm.actSaveUpdate(Sender: TObject);
 begin
-  TAction(Sender).Enabled := (cmbxPeriodType.ItemIndex > -1) and (Trim(ledPeriod.Text) <> EmptyStr) and (Trim(ledTitle.Text) <> EmptyStr) and
-    ((FileExists(GetWaveFileName) and actEnablePlayWaveFile.Checked) or (not actEnablePlayWaveFile.Checked)) and
+  TAction(Sender).Enabled := (cmbxPeriodType.ItemIndex > -1) and (Trim(ledPeriod.Text) <> EmptyStr) and
+    (Trim(ledTitle.Text) <> EmptyStr) and ((FileExists(GetWaveFileName) and actEnablePlayWaveFile.Checked) or
+    (not actEnablePlayWaveFile.Checked)) and
     ((not actEnableShowMessage.Checked) or (actEnableShowMessage.Checked and (Trim(cmbbxMessage.Text) <> EmptyStr)));
   btnSave.Default := TAction(Sender).Enabled;
   btnCancel.Default := not TAction(Sender).Enabled;
