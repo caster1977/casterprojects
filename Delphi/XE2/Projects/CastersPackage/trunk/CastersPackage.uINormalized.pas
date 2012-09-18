@@ -5,8 +5,8 @@ interface
 type
   INormalized = interface
     ['{AD602BB0-347C-4223-B729-4CE1CC8A1E0F}']
-    function GetAutoNormalizeData: boolean;
-    procedure SetAutoNormalizeData(const Value: boolean);
+    function GetAutoNormalizeData: Boolean;
+    procedure SetAutoNormalizeData(const AValue: Boolean);
     /// <summary>
     /// Требуется ли при записи данных в поля автоматически проводить их
     /// нормализацию?
@@ -15,7 +15,7 @@ type
     /// Так же исходное значение можно передать при создании объекта через
     /// конструктор <b>Create(<i>значение</i>);</b>
     /// </remarks>
-    property AutoNormalizeData: boolean read GetAutoNormalizeData write SetAutoNormalizeData;
+    property AutoNormalizeData: Boolean read GetAutoNormalizeData write SetAutoNormalizeData;
     /// <summary>
     /// Функция валидации данных класса (только проверка значений)
     /// </summary>
@@ -34,7 +34,7 @@ type
     /// <remarks>
     /// См. также процедуру <b>Normalize</b>
     /// </remarks>
-    function IsNormalized: boolean;
+    function IsNormalized: Boolean;
     /// <summary>
     /// Процедура нормализации значений данных класса
     /// </summary>
