@@ -58,9 +58,13 @@ type
     class function PrepareStringForRNE5(Source: string): string; overload;
     class function PrepareStringForRNE5(Source: AnsiString): AnsiString; overload;
     class procedure SetField(const AValue: string; var AField: string); overload; static;
+    class procedure SetField(const AValue: Byte; var AField: Byte); overload; static;
     class procedure SetField(const AValue: Integer; var AField: Integer); overload; static;
+    class procedure SetField(const AValue: Int64; var AField: Int64); overload; static;
     class procedure SetField(const AValue: Cardinal; var AField: Cardinal); overload; static;
     class procedure SetField(const AValue: Boolean; var AField: Boolean); overload; static;
+    class procedure SetField(const AValue: TDateTime; var AField: TDateTime); overload; static;
+    class procedure SetField(const AValue: TDate; var AField: TDate); overload; static;
   end;
 
 implementation
@@ -69,6 +73,7 @@ uses
   Winapi.Windows,
   Winapi.WinSock,
   CastersPackage.uMysql,
+  System.DateUtils,
   System.AnsiStrings,
   System.SysUtils,
   Vcl.Clipbrd,
@@ -556,6 +561,29 @@ begin
   Result := new_s;
 end;
 
+class procedure Routines.SetField(const AValue: TDateTime;
+  var AField: TDateTime);
+begin
+  if AField <> AValue then
+    AField := AValue;
+end;
+
+class procedure Routines.SetField(const AValue: TDate;
+  var AField: TDate);
+var
+  v: TDate;
+begin
+  v:=DateOf(AValue);
+  if AField <> v then
+    AField := v;
+end;
+
+class procedure Routines.SetField(const AValue: Byte; var AField: Byte);
+begin
+  if AField <> AValue then
+    AField := AValue;
+end;
+
 class procedure Routines.SetField(const AValue: string; var AField: string);
 var
   s: string;
@@ -566,6 +594,12 @@ begin
 end;
 
 class procedure Routines.SetField(const AValue: Integer; var AField: Integer);
+begin
+  if AField <> AValue then
+    AField := AValue;
+end;
+
+class procedure Routines.SetField(const AValue: Int64; var AField: Int64);
 begin
   if AField <> AValue then
     AField := AValue;
