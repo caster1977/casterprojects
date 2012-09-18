@@ -3,7 +3,7 @@ unit OA5.uResourceStrings;
 interface
 
 resourcestring
-  RsPhoneTypeUnknown = 'неопределённый';
+  RsUnknown = 'неопределённый';
   RsPhoneTypeStationary = 'стационарный';
   RsPhoneTypeMobile = 'мобильный';
   RsPhoneTypeSuffix = ' (%s)';

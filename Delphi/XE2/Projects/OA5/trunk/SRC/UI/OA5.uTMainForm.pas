@@ -20,7 +20,8 @@ uses
   Vcl.Forms,
   Vcl.ImgList,
   Vcl.Menus,
-  Winapi.Windows;
+  Winapi.Windows,
+  Vcl.StdCtrls;
 
 type
   TMainForm = class(TOA5LogForm)
@@ -146,7 +147,14 @@ uses
   OA5.uTViewMessagesForm,
   OA5.uTAddEditPhoneForm,
   CastersPackage.uRoutines,
-  CastersPackage.uMysql;
+  CastersPackage.uMysql,
+  OA5.uTPhone,
+  OA5.uICustomPhone,
+  OA5.uTUnknownPhone,
+  OA5.uTStationaryPhone,
+  OA5.uTStationaryProviders,
+  OA5.uTMobilePhone,
+  OA5.uTMobileProviders;
 
 type
   THackControl = class(TControl);

@@ -32,14 +32,18 @@ uses
   OA5.uTPrivilegies in 'SRC\Logic\Classes\OA5.uTPrivilegies.pas',
   OA5.uDefaultConsts in 'SRC\Logic\Other\OA5.uDefaultConsts.pas',
   OA5.uTPhone in 'SRC\Logic\Classes\OA5.uTPhone.pas',
-  OA5.uTPhoneInfo in 'SRC\Logic\Types\OA5.uTPhoneInfo.pas',
   OA5.uTPhoneTypes in 'SRC\Logic\Types\OA5.uTPhoneTypes.pas',
   OA5.uTStationaryProviders in 'SRC\Logic\Types\OA5.uTStationaryProviders.pas',
   OA5.uTMobileProviders in 'SRC\Logic\Types\OA5.uTMobileProviders.pas',
   OA5.uResourceStrings in 'SRC\Logic\Other\OA5.uResourceStrings.pas',
   OA5.uConsts in 'SRC\Logic\Other\OA5.uConsts.pas',
   OA5.uTOA5LogForm in 'SRC\Logic\Classes\OA5.uTOA5LogForm.pas' {OA5LogForm},
-  OA5.uTOA5PositionedLogForm in 'SRC\Logic\Classes\OA5.uTOA5PositionedLogForm.pas' {OA5PositionedLogForm};
+  OA5.uTOA5PositionedLogForm in 'SRC\Logic\Classes\OA5.uTOA5PositionedLogForm.pas' {OA5PositionedLogForm},
+  OA5.uTCustomPhone in 'SRC\Logic\Classes\OA5.uTCustomPhone.pas',
+  OA5.uTUnknownPhone in 'SRC\Logic\Classes\OA5.uTUnknownPhone.pas',
+  OA5.uTStationaryPhone in 'SRC\Logic\Classes\OA5.uTStationaryPhone.pas',
+  OA5.uTMobilePhone in 'SRC\Logic\Classes\OA5.uTMobilePhone.pas',
+  OA5.uICustomPhone in 'SRC\Logic\Interfaces\OA5.uICustomPhone.pas';
 
 {$R *.res}
 

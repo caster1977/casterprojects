@@ -3,10 +3,36 @@ unit OA5.uTPhone;
 interface
 
 uses
-  System.Classes;
+  System.Classes,
+  OA5.uICustomPhone;
 
-const
-  DEFAULT_PHONE_TYPE = 0;
+type
+  TPhone = class(TInterfacedPersistent)
+  strict private
+    FPhone: ICustomPhone;
+    function GetTypeName: string;
+  public
+    constructor Create(const APhone: ICustomPhone);
+    property TypeName: string read GetTypeName nodefault;
+  end;
+
+implementation
+
+uses
+  OA5.uTCustomPhone,
+  OA5.uTUnknownPhone,
+  OA5.uTStationaryPhone,
+  OA5.uTMobilePhone,
+  System.SysUtils;
+
+constructor TPhone.Create(const APhone: ICustomPhone);
+begin
+  FPhone := APhone;
+  if not Assigned(FPhone) then
+  begin
+    FPhone := GetUnknownPhoneAsICustomPhone;
+  end;
+end;
 
 // Минская ГТС (город и пригород - 80172xxxxxx, 80173xxxxxx, 80175xxxxxx)
 // Минская область, (017, за исключением теоефонов филиала "Минская ГТС")
@@ -20,17 +46,14 @@ const
 // БеСТ (80255xxxxxx, 80256xxxxxx, 80257xxxxxx, 80259xxxxxx)
 // БелСел (80294xxxxxx)
 
-type
- TPhone = class(TInterfacedPersistent)
-  {strict private
-    function GetType: TPhoneType;
-    procedure SetType(const AValue: TPhoneType);
-  publiс
-    property Number: string read GetNumber write SetNumber nodefault;
-    property Type_: TPhoneType read GetType write SetType default DEFAULT_PHONE_TYPE;}
- end;
-
-implementation
+function TPhone.GetTypeName: string;
+begin
+  Result := EmptyStr;
+  if Assigned(FPhone) then
+  begin
+    Result := FPhone.PhoneTypeToString;
+  end;
+end;
 
 initialization
 

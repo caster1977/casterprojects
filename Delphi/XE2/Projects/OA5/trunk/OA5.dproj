@@ -167,7 +167,6 @@
 			<DCCReference Include="SRC\Logic\Classes\OA5.uTPrivilegies.pas"/>
 			<DCCReference Include="SRC\Logic\Other\OA5.uDefaultConsts.pas"/>
 			<DCCReference Include="SRC\Logic\Classes\OA5.uTPhone.pas"/>
-			<DCCReference Include="SRC\Logic\Types\OA5.uTPhoneInfo.pas"/>
 			<DCCReference Include="SRC\Logic\Types\OA5.uTPhoneTypes.pas"/>
 			<DCCReference Include="SRC\Logic\Types\OA5.uTStationaryProviders.pas"/>
 			<DCCReference Include="SRC\Logic\Types\OA5.uTMobileProviders.pas"/>
@@ -179,6 +178,11 @@
 			<DCCReference Include="SRC\Logic\Classes\OA5.uTOA5PositionedLogForm.pas">
 				<Form>OA5PositionedLogForm</Form>
 			</DCCReference>
+			<DCCReference Include="SRC\Logic\Classes\OA5.uTCustomPhone.pas"/>
+			<DCCReference Include="SRC\Logic\Classes\OA5.uTUnknownPhone.pas"/>
+			<DCCReference Include="SRC\Logic\Classes\OA5.uTStationaryPhone.pas"/>
+			<DCCReference Include="SRC\Logic\Classes\OA5.uTMobilePhone.pas"/>
+			<DCCReference Include="SRC\Logic\Interfaces\OA5.uICustomPhone.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

@@ -3,7 +3,7 @@ unit OA5.uTMobileProviders;
 interface
 
 type
-  TMobileProviders = (mpMTS, mpMCS, mpBeST, mpBelSel);
+  TMobileProviders = (mpUnknown, mpMTS, mpMCS, mpBeST, mpBelSel);
 
 implementation
 
