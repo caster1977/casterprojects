@@ -31,6 +31,7 @@ type
     procedure actCloseExecute(Sender: TObject);
     procedure actHelpExecute(Sender: TObject);
     procedure actHelpUpdate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   end;
 
 implementation
@@ -41,6 +42,9 @@ uses
   Vcl.Forms,
   System.SysUtils,
   CastersPackage.uResourceStrings;
+
+const
+  ICON_VIEWMESSAGES = 1;
 
 resourcestring
   RsViewMessagesForm = 'просмотра полученных сообщений';
@@ -72,6 +76,13 @@ begin
     Log.SendDebug(GetActionUpdateLogMessage(actHelp));
     ProcedureFooter;
   end;
+end;
+
+procedure TViewMessagesForm.FormCreate(Sender: TObject);
+begin
+  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsViewMessagesForm]), '{E0A86FE8-2053-4FCE-81B0-95A611DDCF34}');
+  ImageList.GetIcon(ICON_VIEWMESSAGES, Icon);
+  ProcedureFooter;
 end;
 
 end.

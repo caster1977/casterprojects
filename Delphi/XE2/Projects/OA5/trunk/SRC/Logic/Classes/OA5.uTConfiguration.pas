@@ -91,7 +91,7 @@ type
     FViewMessagesFormPosition: TDialogPosition;
     FCreateMessageFormPosition: TDialogPosition;
     FViewMessageFormPosition: TDialogPosition;
-    FPhonesFormPosition: TDialogPosition;
+    FPhoneListFormPosition: TDialogPosition;
     FAddEditPhoneFormPosition: TDialogPosition;
     FAddMassMsrFormPosition: TDialogPosition;
     FPermissionsFormPosition: TDialogPosition;
@@ -210,8 +210,8 @@ type
     procedure SetMultibufferFormPosition(const AValue: TDialogPosition);
     function GetPermissionsFormPosition: TDialogPosition;
     procedure SetPermissionsFormPosition(const AValue: TDialogPosition);
-    function GetPhonesFormPosition: TDialogPosition;
-    procedure SetPhonesFormPosition(const AValue: TDialogPosition);
+    function GetPhoneListFormPosition: TDialogPosition;
+    procedure SetPhoneListFormPosition(const AValue: TDialogPosition);
     function GetReportFormPosition: TDialogPosition;
     procedure SetReportFormPosition(const AValue: TDialogPosition);
     function GetSetPasswordFormPosition: TDialogPosition;
@@ -340,7 +340,7 @@ type
     property MaintenanceFormPosition: TDialogPosition read GetMaintenanceFormPosition
       write SetMaintenanceFormPosition nodefault;
     property ClearingFormPosition: TDialogPosition read GetClearingFormPosition write SetClearingFormPosition nodefault;
-    property PhonesFormPosition: TDialogPosition read GetPhonesFormPosition write SetPhonesFormPosition nodefault;
+    property PhoneListFormPosition: TDialogPosition read GetPhoneListFormPosition write SetPhoneListFormPosition nodefault;
     // вкладка "настройки подключения к серверу базы данных услуги"
     property DBServer: IMySQLConnection read GetDBServer nodefault;
     // вкладка "настройки подключения к серверу системы обмена сообщениями"
@@ -483,11 +483,11 @@ begin
   Routines.SetField(AValue, FOrganizationsSortedByColumn);
 end;
 
-procedure TConfiguration.SetPhonesFormPosition(const AValue: TDialogPosition);
+procedure TConfiguration.SetPhoneListFormPosition(const AValue: TDialogPosition);
 begin
-  if not FPhonesFormPosition.Equals(AValue) then
+  if not FPhoneListFormPosition.Equals(AValue) then
   begin
-    FPhonesFormPosition.Assign(AValue);
+    FPhoneListFormPosition.Assign(AValue);
   end;
 end;
 
@@ -963,9 +963,9 @@ begin
   Result := FPermissionsFormPosition;
 end;
 
-function TConfiguration.GetPhonesFormPosition: TDialogPosition;
+function TConfiguration.GetPhoneListFormPosition: TDialogPosition;
 begin
-  Result := FPhonesFormPosition;
+  Result := FPhoneListFormPosition;
 end;
 
 function TConfiguration.GetSetPasswordFormPosition: TDialogPosition;
@@ -1043,7 +1043,7 @@ begin
   ViewMessagesFormPosition := dialog_position;
   CreateMessageFormPosition := dialog_position;
   ViewMessageFormPosition := dialog_position;
-  PhonesFormPosition := dialog_position;
+  PhoneListFormPosition := dialog_position;
   AddEditPhoneFormPosition := dialog_position;
   AddMassMsrFormPosition := dialog_position;
   PermissionsFormPosition := dialog_position;
@@ -1462,10 +1462,10 @@ begin
     ViewMessageFormPosition.Top := ReadInteger(RsDialogsPosition, 'ViewMessageFormPosition.Top',
       DEFAULT_CONFIGURATION_DIALOG_TOP);
 
-    PhonesFormPosition.Centered := ReadBool(RsDialogsPosition, 'PhonesFormPosition.Centered',
+    PhoneListFormPosition.Centered := ReadBool(RsDialogsPosition, 'PhoneListFormPosition.Centered',
       DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
-    PhonesFormPosition.Left := ReadInteger(RsDialogsPosition, 'PhonesFormPosition.Left', DEFAULT_CONFIGURATION_DIALOG_LEFT);
-    PhonesFormPosition.Top := ReadInteger(RsDialogsPosition, 'PhonesFormPosition.Top', DEFAULT_CONFIGURATION_DIALOG_TOP);
+    PhoneListFormPosition.Left := ReadInteger(RsDialogsPosition, 'PhoneListFormPosition.Left', DEFAULT_CONFIGURATION_DIALOG_LEFT);
+    PhoneListFormPosition.Top := ReadInteger(RsDialogsPosition, 'PhoneListFormPosition.Top', DEFAULT_CONFIGURATION_DIALOG_TOP);
 
     AddEditPhoneFormPosition.Centered := ReadBool(RsDialogsPosition, 'AddEditPhoneFormPosition.Centered',
       DEFAULT_CONFIGURATION_ENABLE_DIALOG_CENTERED);
@@ -1697,7 +1697,7 @@ begin
       WriteFormPosition(AIniFile, ViewMessagesFormPosition, 'ViewMessagesFormPosition');
       WriteFormPosition(AIniFile, CreateMessageFormPosition, 'CreateMessageFormPosition');
       WriteFormPosition(AIniFile, ViewMessageFormPosition, 'ViewMessageFormPosition');
-      WriteFormPosition(AIniFile, PhonesFormPosition, 'PhonesFormPosition');
+      WriteFormPosition(AIniFile, PhoneListFormPosition, 'PhoneListFormPosition');
       WriteFormPosition(AIniFile, AddEditPhoneFormPosition, 'AddEditPhoneFormPosition');
       WriteFormPosition(AIniFile, AddMassMsrFormPosition, 'AddMassMsrFormPosition');
       WriteFormPosition(AIniFile, PermissionsFormPosition, 'PermissionsFormPosition');

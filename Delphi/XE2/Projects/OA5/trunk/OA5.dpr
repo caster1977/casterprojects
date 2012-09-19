@@ -43,7 +43,8 @@ uses
   OA5.uTUnknownPhone in 'SRC\Logic\Classes\OA5.uTUnknownPhone.pas',
   OA5.uTStationaryPhone in 'SRC\Logic\Classes\OA5.uTStationaryPhone.pas',
   OA5.uTMobilePhone in 'SRC\Logic\Classes\OA5.uTMobilePhone.pas',
-  OA5.uICustomPhone in 'SRC\Logic\Interfaces\OA5.uICustomPhone.pas';
+  OA5.uICustomPhone in 'SRC\Logic\Interfaces\OA5.uICustomPhone.pas',
+  OA5.uTPhoneListForm in 'SRC\UI\OA5.uTPhoneListForm.pas' {PhoneListForm};
 
 {$R *.res}
 

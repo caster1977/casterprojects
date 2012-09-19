@@ -22,4 +22,3 @@ resourcestring
 implementation
 
 end.
-

@@ -872,62 +872,61 @@ var
   stop_date_time: TDateTime;
 begin
   // если данные уже нормализованы, выходим из процедуры
-  if IsNormalized then
+  if not IsNormalized then
   begin
-    Exit;
-  end;
 
-  // начинаем нормализацию
-  if OrganizationID < 0 then
-  begin
-    OrganizationID := 0;
-  end;
-
-  // обнуляем длительности
-  DurationDays := 0;
-  DurationHours := 0;
-  DurationMinutes := 0;
-
-  Type_ := Routines.PrepareStringForRNE5(Type_);
-  name := Routines.PrepareStringForRNE5(name);
-  Author := Routines.PrepareStringForRNE5(Author);
-  Producer := Routines.PrepareStringForRNE5(Producer);
-  Performer := Routines.PrepareStringForRNE5(Performer);
-  Organizer := Routines.PrepareStringForRNE5(Organizer);
-  TicketPrice := Routines.PrepareStringForRNE5(TicketPrice);
-  OtherInfoPlane := Routines.PrepareStringForRNE5(OtherInfoPlane);
-
-  if ForChildren or ForTeenagers then
-  begin
-    ForAdultsOnly := False;
-  end;
-
-  // если есть и дата начала и дата конца
-  if HasStartDateTime and HasStopDateTime then
-  begin
-    // нужно провериить их по линии времени, поменять местами, если нужно
-    start_date_time := StartDateTime;
-    stop_date_time := StopDateTime;
-    if start_date_time > stop_date_time then
+    // начинаем нормализацию
+    if OrganizationID < 0 then
     begin
-      StartDateTime := stop_date_time;
-      StopDateTime := start_date_time;
+      OrganizationID := 0;
+    end;
+
+    // обнуляем длительности
+    DurationDays := 0;
+    DurationHours := 0;
+    DurationMinutes := 0;
+
+    Type_ := Routines.PrepareStringForRNE5(Type_);
+    name := Routines.PrepareStringForRNE5(name);
+    Author := Routines.PrepareStringForRNE5(Author);
+    Producer := Routines.PrepareStringForRNE5(Producer);
+    Performer := Routines.PrepareStringForRNE5(Performer);
+    Organizer := Routines.PrepareStringForRNE5(Organizer);
+    TicketPrice := Routines.PrepareStringForRNE5(TicketPrice);
+    OtherInfoPlane := Routines.PrepareStringForRNE5(OtherInfoPlane);
+
+    if ForChildren or ForTeenagers then
+    begin
+      ForAdultsOnly := False;
+    end;
+
+    // если есть и дата начала и дата конца
+    if HasStartDateTime and HasStopDateTime then
+    begin
+      // нужно провериить их по линии времени, поменять местами, если нужно
       start_date_time := StartDateTime;
       stop_date_time := StopDateTime;
-    end;
-    // если известна длительность - пересчитываем длительность
-    if not HasUnknownDuration then
-    begin
-      // получаем дату начала, дату конца и высчитываем длительность мероприятия
-      a1 := TimeStampToMSecs(DateTimeToTimeStamp(stop_date_time)) - TimeStampToMSecs(DateTimeToTimeStamp(start_date_time));
-      // внимание! значение a2 в данном случае УЖЕ равно a1, т.к. переменная абсолютная!!!
-      if (a2 > 0) then
+      if start_date_time > stop_date_time then
       begin
-        DurationDays := a2 div MSECONDS_PER_DAY;
-        a3 := a2 - Int64(DurationDays) * MSECONDS_PER_DAY;
-        DurationHours := a3 div MSECONDS_PER_HOUR;
-        a4 := a3 - Int64(DurationHours) * MSECONDS_PER_HOUR;
-        DurationMinutes := a4 div MSECONDS_PER_MINUTE;
+        StartDateTime := stop_date_time;
+        StopDateTime := start_date_time;
+        start_date_time := StartDateTime;
+        stop_date_time := StopDateTime;
+      end;
+      // если известна длительность - пересчитываем длительность
+      if not HasUnknownDuration then
+      begin
+        // получаем дату начала, дату конца и высчитываем длительность мероприятия
+        a1 := TimeStampToMSecs(DateTimeToTimeStamp(stop_date_time)) - TimeStampToMSecs(DateTimeToTimeStamp(start_date_time));
+        // внимание! значение a2 в данном случае УЖЕ равно a1, т.к. переменная абсолютная!!!
+        if (a2 > 0) then
+        begin
+          DurationDays := a2 div MSECONDS_PER_DAY;
+          a3 := a2 - Int64(DurationDays) * MSECONDS_PER_DAY;
+          DurationHours := a3 div MSECONDS_PER_HOUR;
+          a4 := a3 - Int64(DurationHours) * MSECONDS_PER_HOUR;
+          DurationMinutes := a4 div MSECONDS_PER_MINUTE;
+        end;
       end;
     end;
   end;

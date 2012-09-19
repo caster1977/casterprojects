@@ -133,19 +133,6 @@ begin
   Result := FPriority;
 end;
 
-function TCustomPhone.IsNormalized: Boolean;
-begin
-  Result := False;
-end;
-
-procedure TCustomPhone.Normalize;
-begin
-  if not IsNormalized then
-  begin
-
-  end;
-end;
-
 function TCustomPhone.PhoneTypeToString: string;
 begin
   Result := PHONE_TYPES[PhoneType];
@@ -197,6 +184,20 @@ end;
 procedure TCustomPhone.SetPriority(const AValue: Byte);
 begin
   Routines.SetField(AValue, FPriority);
+end;
+
+function TCustomPhone.IsNormalized: Boolean;
+begin
+  Result := True;
+  { TODO : Разработать алгоритм проверки нормализованности телефона. }
+end;
+
+procedure TCustomPhone.Normalize;
+begin
+  if not IsNormalized then
+  begin
+    { TODO : Разработать алгоритм нормализации телефона. }
+  end;
 end;
 
 end.

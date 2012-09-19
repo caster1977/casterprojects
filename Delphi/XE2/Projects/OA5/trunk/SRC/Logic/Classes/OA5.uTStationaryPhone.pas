@@ -31,7 +31,7 @@ uses
 
 function GetStationaryPhoneAsICustomPhone: ICustomPhone;
 begin
-  Result:=TStationaryPhone.Create;
+  Result := TStationaryPhone.Create;
 end;
 
 constructor TStationaryPhone.Create;
