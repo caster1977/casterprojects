@@ -183,6 +183,10 @@
 			<DCCReference Include="SRC\Logic\Classes\OA5.uTStationaryPhone.pas"/>
 			<DCCReference Include="SRC\Logic\Classes\OA5.uTMobilePhone.pas"/>
 			<DCCReference Include="SRC\Logic\Interfaces\OA5.uICustomPhone.pas"/>
+			<DCCReference Include="SRC\UI\OA5.uTPhoneListForm.pas">
+				<Form>PhoneListForm</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

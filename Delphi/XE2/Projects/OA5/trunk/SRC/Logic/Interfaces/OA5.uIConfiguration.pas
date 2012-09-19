@@ -321,9 +321,9 @@ type
     procedure SetPermissionsFormPosition(const AValue: TDialogPosition);
     property PermissionsFormPosition: TDialogPosition read GetPermissionsFormPosition write SetPermissionsFormPosition;
 
-    function GetPhonesFormPosition: TDialogPosition;
-    procedure SetPhonesFormPosition(const AValue: TDialogPosition);
-    property PhonesFormPosition: TDialogPosition read GetPhonesFormPosition write SetPhonesFormPosition;
+    function GetPhoneListFormPosition: TDialogPosition;
+    procedure SetPhoneListFormPosition(const AValue: TDialogPosition);
+    property PhoneListFormPosition: TDialogPosition read GetPhoneListFormPosition write SetPhoneListFormPosition;
 
     function GetReportFormPosition: TDialogPosition;
     procedure SetReportFormPosition(const AValue: TDialogPosition);

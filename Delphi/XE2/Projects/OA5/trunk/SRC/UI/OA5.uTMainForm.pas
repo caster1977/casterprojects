@@ -77,6 +77,8 @@ type
     miToolBar: TMenuItem;
     actStatusBar: TAction;
     actToolBar: TAction;
+    actViewPhones: TAction;
+    N21: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
@@ -95,6 +97,7 @@ type
     procedure actAccountsUpdate(Sender: TObject);
     procedure actStatusBarExecute(Sender: TObject);
     procedure actToolBarExecute(Sender: TObject);
+    procedure actViewPhonesExecute(Sender: TObject);
   strict private
     FMultiBuffer: IMeasureList;
     function GetMultiBuffer: IMeasureList;
@@ -153,6 +156,7 @@ uses
   OA5.uTUnknownPhone,
   OA5.uTStationaryPhone,
   OA5.uTStationaryProviders,
+  OA5.uTPhoneListForm,
   OA5.uTMobilePhone,
   OA5.uTMobileProviders;
 
@@ -181,6 +185,7 @@ resourcestring
   RsViewMessagesFormSuffix = 'просмотра полученных сообщений';
   RsAddPhoneFormSuffix = 'добавления номера телефона';
   RsEditPhoneFormSuffix = 'исправления номера телефона';
+  RsPhoneListFormSuffix = 'просмотра списка телефонов';
   RsLoginFormSuffix = 'ввода учётной записи';
   RsShowWindowProcedure = 'Процедура отображения окна %s';
 
@@ -595,6 +600,26 @@ begin
   ProcedureHeader(Format(RsShowWindowProcedure, [RsViewMessageFormSuffix]), '{347244A6-22DF-44DF-873B-2B55FC5112B9}');
 
   with TViewMessageForm.Create(Self, Configuration.ViewMessageFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
+    Configuration, CurrentUser) do
+  begin
+    try
+      ShowModal;
+    finally
+      if ModalResult = mrOk then
+      begin
+      end;
+      Free;
+    end;
+  end;
+
+  ProcedureFooter;
+end;
+
+procedure TMainForm.actViewPhonesExecute(Sender: TObject);
+begin
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsPhoneListFormSuffix]), '{5CFCDFBC-34DF-4A16-A725-A4B388B9EC97}');
+
+  with TPhoneListForm.Create(Self, Configuration.PhoneListFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
     Configuration, CurrentUser) do
   begin
     try
