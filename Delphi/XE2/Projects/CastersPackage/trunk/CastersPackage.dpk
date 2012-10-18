@@ -62,7 +62,8 @@ contains
   CastersPackage.uICustomized in 'CastersPackage.uICustomized.pas',
   CastersPackage.uINormalized in 'CastersPackage.uINormalized.pas',
   CastersPackage.uTRefreshBusyStateMethod in 'CastersPackage.uTRefreshBusyStateMethod.pas',
-  CastersPackage.uResourceStrings in 'CastersPackage.uResourceStrings.pas';
+  CastersPackage.uResourceStrings in 'CastersPackage.uResourceStrings.pas',
+  CastersPackage.uIInterfaceListOfGivenType in 'CastersPackage.uIInterfaceListOfGivenType.pas';
 
 end.
 
