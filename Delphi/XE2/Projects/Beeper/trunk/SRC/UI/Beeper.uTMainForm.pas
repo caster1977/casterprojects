@@ -118,7 +118,7 @@ implementation
 uses
   System.SysUtils,
   Beeper.uISignal,
-  Beeper.uTPeriodType,
+  Beeper.uTPeriodTypes,
   Beeper.uTConfiguration,
   Beeper.uConsts,
   Beeper.uResourceStrings,

@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows,
-  Beeper.uTPeriodType,
+  Beeper.uTPeriodTypes,
   Beeper.uResourceStrings;
 
 const
@@ -29,7 +29,7 @@ const
   DEFAULT_SIGNAL_WAVE_FILE = '';
   DEFAULT_SIGNAL_ENABLED = True;
 
-  PERIODS: array [low(TPeriodType) .. high(TPeriodType)] of string = (RsSeconds, RsMinutes, RsHours, RsDays, RsWeeks, RsMonths, RsYears);
+  PERIODS: array [low(TPeriodTypes) .. high(TPeriodTypes)] of string = (RsSeconds, RsMinutes, RsHours, RsDays, RsWeeks, RsMonths, RsYears);
 
   WAVEFILE_EXTENTION = 'wav';
 

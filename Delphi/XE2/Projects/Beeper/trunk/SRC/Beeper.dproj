@@ -122,7 +122,7 @@
 			<DCCReference Include="Logic\Other\Beeper.uResourceStrings.pas"/>
 			<DCCReference Include="Logic\Classes\Beeper.uTBeeper.pas"/>
 			<DCCReference Include="Logic\Classes\Beeper.uTConfiguration.pas"/>
-			<DCCReference Include="Logic\Classes\Beeper.uTPeriodType.pas"/>
+			<DCCReference Include="Logic\Types\Beeper.uTPeriodTypes.pas"/>
 			<DCCReference Include="Logic\Classes\Beeper.uTSignal.pas"/>
 			<DCCReference Include="Logic\Classes\Beeper.uTSignalList.pas"/>
 			<DCCReference Include="Logic\Interfaces\Beeper.uIBeeper.pas"/>

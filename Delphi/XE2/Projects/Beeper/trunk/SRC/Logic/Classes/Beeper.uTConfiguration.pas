@@ -60,7 +60,7 @@ uses
   System.Classes,
   Beeper.uResourceStrings,
   Beeper.uISignal,
-  Beeper.uTPeriodType,
+  Beeper.uTPeriodTypes,
   CastersPackage.uRoutines;
 
 resourcestring
@@ -209,7 +209,7 @@ begin
       signal := GetISignal;
       signal.Title := ReadString(s, RsTitle, DEFAULT_SIGNAL_TITLE);
       signal.Period := ReadInteger(s, RsPeriod, DEFAULT_SIGNAL_PERIOD);
-      signal.PeriodType := TPeriodType(ReadInteger(s, RsPeriodType, Integer(DEFAULT_SIGNAL_PERIOD_TYPE)));
+      signal.PeriodType := TPeriodTypes(ReadInteger(s, RsPeriodType, Integer(DEFAULT_SIGNAL_PERIOD_TYPE)));
       signal.MessageEnabled := ReadBool(s, RsMessageEnabled, DEFAULT_SIGNAL_MESSAGE_ENABLED);
       signal.Message := ReadString(s, RsMessage, DEFAULT_SIGNAL_MESSAGE);
       signal.WaveFileEnabled := ReadBool(s, RsWaveFileEnabled, DEFAULT_SIGNAL_WAVE_FILE_ENABLED);
