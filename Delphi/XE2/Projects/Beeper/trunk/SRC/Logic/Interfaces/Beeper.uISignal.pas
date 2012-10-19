@@ -15,7 +15,7 @@ type
     procedure Initialize;
     procedure Finalize;
 
-//    procedure Assign(const AValue: ISignal);
+    // procedure Assign(const AValue: ISignal);
 
     function GetTitle: string;
     procedure SetTitle(const AValue: string);
@@ -47,7 +47,7 @@ type
     property Period: Int64 read GetPeriod write SetPeriod;
     property PeriodType: TPeriodType read GetPeriodType write SetPeriodType;
     property MessageEnabled: Boolean read GetMessageEnabled write SetMessageEnabled;
-    property Message: string read GetMessage write SetMessage;
+    property message: string read GetMessage write SetMessage;
     property WaveFileEnabled: Boolean read GetWaveFileEnabled write SetWaveFileEnabled;
     property WaveFile: string read GetWaveFile write SetWaveFile;
     property Enabled: Boolean read GetEnabled write SetEnabled;

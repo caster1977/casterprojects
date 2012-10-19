@@ -56,7 +56,6 @@ type
   public
     constructor Create; virtual; final;
     destructor Destroy; override;
-//    procedure Assign(const AValue: ISignal);
     property Title: string read GetTitle write SetTitle nodefault;
     property PeriodType: TPeriodType read GetPeriodType write SetPeriodType default DEFAULT_SIGNAL_PERIOD_TYPE;
     property Period: Int64 read GetPeriod write SetPeriod default DEFAULT_SIGNAL_PERIOD;
@@ -73,21 +72,6 @@ implementation
 uses
   System.SysUtils,
   CastersPackage.uRoutines;
-
-{procedure TSignal.Assign(const AValue: ISignal);
-begin
-  if Assigned(AValue) then
-  begin
-    Title := AValue.Title;
-    PeriodType := AValue.PeriodType;
-    Period := AValue.Period;
-    MessageEnabled := AValue.MessageEnabled;
-    Message := AValue.Message;
-    WaveFileEnabled := AValue.WaveFileEnabled;
-    WaveFile := AValue.WaveFile;
-    Enabled := AValue.Enabled;
-  end;
-end;}
 
 constructor TSignal.Create;
 begin
