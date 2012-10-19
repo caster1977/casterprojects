@@ -6,7 +6,7 @@ uses
   System.IniFiles,
   System.Classes,
   Vcl.ExtCtrls,
-  Beeper.uTPeriodType,
+  Beeper.uTPeriodTypes,
   Beeper.uISignal,
   Beeper.uConsts;
 
@@ -15,7 +15,7 @@ type
   strict private
     FTitle: string;
     FPeriod: integer;
-    FPeriodType: TPeriodType;
+    FPeriodType: TPeriodTypes;
     FMessageEnabled: Boolean;
     FMessage: string;
     FWaveFileEnabled: Boolean;
@@ -31,8 +31,8 @@ type
     function GetPeriod: Int64;
     procedure SetPeriod(const AValue: Int64);
 
-    function GetPeriodType: TPeriodType;
-    procedure SetPeriodType(const AValue: TPeriodType);
+    function GetPeriodType: TPeriodTypes;
+    procedure SetPeriodType(const AValue: TPeriodTypes);
 
     function GetMessageEnabled: Boolean;
     procedure SetMessageEnabled(const AValue: Boolean);
@@ -57,7 +57,7 @@ type
     constructor Create; virtual; final;
     destructor Destroy; override;
     property Title: string read GetTitle write SetTitle nodefault;
-    property PeriodType: TPeriodType read GetPeriodType write SetPeriodType default DEFAULT_SIGNAL_PERIOD_TYPE;
+    property PeriodType: TPeriodTypes read GetPeriodType write SetPeriodType default DEFAULT_SIGNAL_PERIOD_TYPE;
     property Period: Int64 read GetPeriod write SetPeriod default DEFAULT_SIGNAL_PERIOD;
     property MessageEnabled: Boolean read GetMessageEnabled write SetMessageEnabled default DEFAULT_SIGNAL_MESSAGE_ENABLED;
     property message: string read GetMessage write SetMessage nodefault;
@@ -119,7 +119,7 @@ begin
   Result := FPeriod;
 end;
 
-function TSignal.GetPeriodType: TPeriodType;
+function TSignal.GetPeriodType: TPeriodTypes;
 begin
   Result := FPeriodType;
 end;
@@ -159,7 +159,7 @@ begin
   Routines.SetField(AValue, FPeriod);
 end;
 
-procedure TSignal.SetPeriodType(const AValue: TPeriodType);
+procedure TSignal.SetPeriodType(const AValue: TPeriodTypes);
 begin
   if FPeriodType <> AValue then
   begin

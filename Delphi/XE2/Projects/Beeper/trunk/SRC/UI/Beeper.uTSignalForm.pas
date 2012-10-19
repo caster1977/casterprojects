@@ -76,7 +76,7 @@ uses
   Vcl.Dialogs,
   Beeper.uConsts,
   Beeper.uResourceStrings,
-  Beeper.uTPeriodType,
+  Beeper.uTPeriodTypes,
   Beeper.uTSignal;
 
 resourcestring
@@ -116,12 +116,12 @@ end;
 
 procedure TSignalForm.FormCreate(Sender: TObject);
 var
-  pt: TPeriodType;
+  pt: TPeriodTypes;
 begin
   FNowPlaying := False;
   FEnabled := False;
   cmbxPeriodType.Clear;
-  for pt := low(TPeriodType) to high(TPeriodType) do
+  for pt := low(TPeriodTypes) to high(TPeriodTypes) do
   begin
     cmbxPeriodType.Items.Add(PERIODS[pt]);
   end;
@@ -129,12 +129,12 @@ end;
 
 function TSignalForm.GetSignal: ISignal;
 var
-  pt: TPeriodType;
+  pt: TPeriodTypes;
 begin
   Result := GetISignal;
   Result.Title := Trim(ledTitle.Text);
   Result.Period := StrToIntDef(ledPeriod.Text, 0);
-  for pt := low(TPeriodType) to high(TPeriodType) do
+  for pt := low(TPeriodTypes) to high(TPeriodTypes) do
   begin
     if cmbxPeriodType.Items[cmbxPeriodType.ItemIndex] = PERIODS[pt] then
     begin

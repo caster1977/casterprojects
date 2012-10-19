@@ -3,7 +3,7 @@ unit Beeper.uResourceStrings;
 interface
 
 uses
-  Beeper.uTPeriodType;
+  Beeper.uTPeriodTypes;
 
 resourcestring
   RsErrorMessageCaption = '%s - Ошибка!';

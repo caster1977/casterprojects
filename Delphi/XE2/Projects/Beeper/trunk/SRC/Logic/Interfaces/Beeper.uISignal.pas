@@ -4,7 +4,7 @@ interface
 
 uses
   Vcl.ExtCtrls,
-  Beeper.uTPeriodType;
+  Beeper.uTPeriodTypes;
 
 type
   ISignal = interface
@@ -23,8 +23,8 @@ type
     function GetPeriod: Int64;
     procedure SetPeriod(const AValue: Int64);
 
-    function GetPeriodType: TPeriodType;
-    procedure SetPeriodType(const AValue: TPeriodType);
+    function GetPeriodType: TPeriodTypes;
+    procedure SetPeriodType(const AValue: TPeriodTypes);
 
     function GetMessageEnabled: Boolean;
     procedure SetMessageEnabled(const AValue: Boolean);
@@ -45,7 +45,7 @@ type
 
     property Title: string read GetTitle write SetTitle;
     property Period: Int64 read GetPeriod write SetPeriod;
-    property PeriodType: TPeriodType read GetPeriodType write SetPeriodType;
+    property PeriodType: TPeriodTypes read GetPeriodType write SetPeriodType;
     property MessageEnabled: Boolean read GetMessageEnabled write SetMessageEnabled;
     property message: string read GetMessage write SetMessage;
     property WaveFileEnabled: Boolean read GetWaveFileEnabled write SetWaveFileEnabled;
