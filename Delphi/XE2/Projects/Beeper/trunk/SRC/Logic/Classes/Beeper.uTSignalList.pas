@@ -3,6 +3,7 @@ unit Beeper.uTSignalList;
 interface
 
 uses
+  //CastersPackage.uTInterfaceListOfGivenType,
   System.Classes,
   System.SysUtils,
   Beeper.uISignalList,
@@ -10,6 +11,13 @@ uses
 
 type
   ESignalList = class(Exception);
+
+  (*
+  TSignalList = class(TInterfaceListOfGivenType<ISignal>, ISignalList)
+  protected
+    procedure Initialize; override;
+  end;
+  *)
 
   TSignalList = class(TInterfacedObject, ISignalList)
   strict private
@@ -42,18 +50,20 @@ type
     property Items[const AIndex: Integer]: ISignal read GetItem write PutItem; default;
   end;
 
-function GetISignalList: ISignalList;
-
 implementation
 
 resourcestring
   RsCantAddSignalToSignalList = 'Ќе удалось добавить сигнал в список сигналов!';
   RsCantRemoveSignalFromSignalList = 'Ќе удалось удалить сигнал из списка сигналов!';
 
-function GetISignalList: ISignalList;
+(*
+procedure TSignalList.Initialize;
 begin
-  Result := TSignalList.Create;
+  inherited;
+  AddItemErrorString := RsCantAddSignalToSignalList;
+  RemoveItemErrorString := RsCantRemoveSignalFromSignalList;
 end;
+*)
 
 constructor TSignalList.Create;
 begin

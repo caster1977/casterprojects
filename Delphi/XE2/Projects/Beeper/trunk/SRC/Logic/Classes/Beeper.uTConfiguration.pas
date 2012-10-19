@@ -60,10 +60,8 @@ implementation
 
 uses
   System.Classes,
-  Beeper.uTSignalList,
   Beeper.uResourceStrings,
   Beeper.uISignal,
-  Beeper.uTSignal,
   Beeper.uTPeriodType,
   CastersPackage.uRoutines;
 
