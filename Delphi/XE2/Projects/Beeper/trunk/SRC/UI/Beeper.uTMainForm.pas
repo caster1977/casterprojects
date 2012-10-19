@@ -118,7 +118,6 @@ implementation
 uses
   System.SysUtils,
   Beeper.uISignal,
-  Beeper.uTSignal,
   Beeper.uTPeriodType,
   Beeper.uTConfiguration,
   Beeper.uConsts,
@@ -263,8 +262,7 @@ end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
-    PWideChar(Format(RsExitConfirmationCaption, [Application.Title])), MESSAGE_TYPE_CONFIRMATION) = IDOK;
+  CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage), PWideChar(Format(RsExitConfirmationCaption, [Application.Title])), MESSAGE_TYPE_CONFIRMATION) = IDOK;
 end;
 
 procedure TMainForm.ListViewItemChecked(Sender: TObject; Item: TListItem);
@@ -333,12 +331,14 @@ begin
       begin
         for i := 0 to FConfiguration.SignalList.Count - 1 do
         begin
-          node := ListView.Items.Add;
-          node.Data := Pointer(FConfiguration.SignalList.Items[i]);
-          node.Caption := FConfiguration.SignalList.Items[i].Title;
-          node.SubItems.Add(IntToStr(FConfiguration.SignalList.Items[i].Period) + ' ' +
-            PERIODS[FConfiguration.SignalList.Items[i].PeriodType]);
-          node.Checked := FConfiguration.SignalList.Items[i].Enabled;
+          if Assigned(FConfiguration.SignalList.Items[i]) then
+          begin
+            node := ListView.Items.Add;
+            node.Data := Pointer(FConfiguration.SignalList.Items[i]);
+            node.Caption := FConfiguration.SignalList.Items[i].Title;
+            node.SubItems.Add(IntToStr(FConfiguration.SignalList.Items[i].Period) + ' ' + PERIODS[FConfiguration.SignalList.Items[i].PeriodType]);
+            node.Checked := FConfiguration.SignalList.Items[i].Enabled;
+          end;
         end;
       end;
     end;
@@ -350,6 +350,7 @@ end;
 procedure TMainForm.actCreateSignalExecute(Sender: TObject);
 var
   i: Integer;
+  sig: ISignal;
 begin
   if Assigned(FConfiguration) then
   begin
@@ -360,7 +361,9 @@ begin
         ShowModal;
         if ModalResult = mrOk then
         begin
-          i := FConfiguration.SignalList.Add(Signal);
+          sig:=GetISignal;
+          sig.Assign(Signal);
+          i := FConfiguration.SignalList.Add(sig);
           RefreshSignals;
           ListView.ItemIndex := i;
           FMessageHistory := MessageHistory;
