@@ -11,7 +11,7 @@ uses
   Beeper.uConsts;
 
 type
-  TSignal = class(TInterfacedPersistent, ISignal)
+  TSignal = class(TInterfacedObject, ISignal)
   strict private
     FTitle: string;
     FPeriod: integer;
@@ -22,8 +22,8 @@ type
     FWaveFile: string;
     FEnabled: Boolean;
     FTimer: TTimer;
-    function PeriodToSeconds(const ASeconds: word; const AMinutes: word = 0; const AHours: word = 0; const ADays: word = 0;
-      const AWeeks: word = 0; const AMonths: word = 0; const AYears: word = 0): Int64;
+    function PeriodToSeconds(const ASeconds: word; const AMinutes: word = 0; const AHours: word = 0; const ADays: word = 0; const AWeeks: word = 0; const AMonths: word = 0;
+      const AYears: word = 0): Int64;
 
     function GetTitle: string;
     procedure SetTitle(const AValue: string);
@@ -56,19 +56,17 @@ type
   public
     constructor Create; virtual; final;
     destructor Destroy; override;
+    procedure Assign(const AValue: ISignal);
     property Title: string read GetTitle write SetTitle nodefault;
     property PeriodType: TPeriodType read GetPeriodType write SetPeriodType default DEFAULT_SIGNAL_PERIOD_TYPE;
     property Period: Int64 read GetPeriod write SetPeriod default DEFAULT_SIGNAL_PERIOD;
     property MessageEnabled: Boolean read GetMessageEnabled write SetMessageEnabled default DEFAULT_SIGNAL_MESSAGE_ENABLED;
     property message: string read GetMessage write SetMessage nodefault;
-    property WaveFileEnabled: Boolean read GetWaveFileEnabled write SetWaveFileEnabled
-      default DEFAULT_SIGNAL_WAVE_FILE_ENABLED;
+    property WaveFileEnabled: Boolean read GetWaveFileEnabled write SetWaveFileEnabled default DEFAULT_SIGNAL_WAVE_FILE_ENABLED;
     property WaveFile: string read GetWaveFile write SetWaveFile nodefault;
     property Enabled: Boolean read GetEnabled write SetEnabled default DEFAULT_SIGNAL_ENABLED;
     property Timer: TTimer read GetTimer nodefault;
   end;
-
-function GetISignal: ISignal;
 
 implementation
 
@@ -76,9 +74,19 @@ uses
   System.SysUtils,
   CastersPackage.uRoutines;
 
-function GetISignal: ISignal;
+procedure TSignal.Assign(const AValue: ISignal);
 begin
-  Result := TSignal.Create;
+  if Assigned(AValue) then
+  begin
+    Title := AValue.Title;
+    PeriodType := AValue.PeriodType;
+    Period := AValue.Period;
+    MessageEnabled := AValue.MessageEnabled;
+    Message := AValue.Message;
+    WaveFileEnabled := AValue.WaveFileEnabled;
+    WaveFile := AValue.WaveFile;
+    Enabled := AValue.Enabled;
+  end;
 end;
 
 constructor TSignal.Create;
