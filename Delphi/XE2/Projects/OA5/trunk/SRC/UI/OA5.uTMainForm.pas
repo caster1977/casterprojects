@@ -188,6 +188,8 @@ resourcestring
   RsPhoneListFormSuffix = 'просмотра списка телефонов';
   RsLoginFormSuffix = 'ввода учётной записи';
   RsShowWindowProcedure = 'Процедура отображения окна %s';
+  RsAddPhoneFormCaption = 'Добавление номера телефона';
+  RsEditPhoneFormCaption = 'Исправление номера телефона';
 
 procedure TMainForm._RefreshBusyState;
 var
@@ -663,7 +665,7 @@ begin
     Configuration, CurrentUser) do
   begin
     try
-      Caption := 'Добавление номера телефона';
+      Caption := RsAddPhoneFormCaption;
       ShowModal;
     finally
       if ModalResult = mrOk then
@@ -684,7 +686,7 @@ begin
     Configuration, CurrentUser) do
   begin
     try
-      Caption := 'Исправление номера телефона';
+      Caption := RsEditPhoneFormCaption;
       ShowModal;
     finally
       if ModalResult = mrOk then
