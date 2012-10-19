@@ -350,7 +350,6 @@ end;
 procedure TMainForm.actCreateSignalExecute(Sender: TObject);
 var
   i: Integer;
-//  sig: ISignal;
 begin
   if Assigned(FConfiguration) then
   begin
@@ -361,9 +360,6 @@ begin
         ShowModal;
         if ModalResult = mrOk then
         begin
-          {sig:=GetISignal;
-          sig.Assign(Signal);
-          i := FConfiguration.SignalList.Add(sig);}
           i := FConfiguration.SignalList.Add(Signal);
           RefreshSignals;
           ListView.ItemIndex := i;

@@ -57,8 +57,8 @@ end;
 
 procedure TBeeper.ShowError;
 begin
-  MessageBox(Application.Handle, PWideChar(FError + sLineBreak + sLineBreak + Format(RsErrorCode, [IntToStr(GetLastError)])),
-    PWideChar(Format(RsErrorMessageCaption, [Application.Title])), MESSAGE_TYPE_ERROR);
+  MessageBox(Application.Handle, PWideChar(FError + sLineBreak + sLineBreak + Format(RsErrorCode, [IntToStr(GetLastError)])), PWideChar(Format(RsErrorMessageCaption, [Application.Title])),
+    MESSAGE_TYPE_ERROR);
 end;
 
 function TBeeper.StartSession: boolean;

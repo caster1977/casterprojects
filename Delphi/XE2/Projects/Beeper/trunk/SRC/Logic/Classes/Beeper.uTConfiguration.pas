@@ -43,14 +43,12 @@ type
     procedure BeforeSave; override;
     procedure Saving(const AIniFile: TCustomIniFile); override;
   public
-    property ShowBaloonHints: Boolean read GetShowBaloonHints write SetShowBaloonHints
-      default DEFAULT_CONFIGURATION_SHOW_BALOON_HINTS;
+    property ShowBaloonHints: Boolean read GetShowBaloonHints write SetShowBaloonHints default DEFAULT_CONFIGURATION_SHOW_BALOON_HINTS;
     property SoundEnabled: Boolean read GetSoundEnabled write SetSoundEnabled default DEFAULT_CONFIGURATION_SOUND_ENABLED;
     property ModifierOn: Integer read GetModifierOn write SetModifierOn default DEFAULT_CONFIGURATION_MODIFIER_ON;
     property VirtualKeyOn: Cardinal read GetVirtualKeyOn write SetVirtualKeyOn default DEFAULT_CONFIGURATION_VIRTUAL_KEY_ON;
     property ModifierOff: Integer read GetModifierOff write SetModifierOff default DEFAULT_CONFIGURATION_MODIFIER_OFF;
-    property VirtualKeyOff: Cardinal read GetVirtualKeyOff write SetVirtualKeyOff
-      default DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF;
+    property VirtualKeyOff: Cardinal read GetVirtualKeyOff write SetVirtualKeyOff default DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF;
     property SignalList: ISignalList read GetSignalList nodefault;
   end;
 

@@ -58,8 +58,8 @@ begin
   GSFileVersionInfo.Filename := Application.ExeName;
   lblTitle.Caption := Application.Title;
   imgApplicationIcon.Picture.Icon.Assign(Application.Icon);
-  lblVersion.Caption := Format(RsVersionInfo, [GSFileVersionInfo.ModuleVersion.Major, GSFileVersionInfo.ModuleVersion.Minor,
-    GSFileVersionInfo.ModuleVersion.Release, GSFileVersionInfo.ModuleVersion.Build]);
+  lblVersion.Caption := Format(RsVersionInfo, [GSFileVersionInfo.ModuleVersion.Major, GSFileVersionInfo.ModuleVersion.Minor, GSFileVersionInfo.ModuleVersion.Release,
+    GSFileVersionInfo.ModuleVersion.Build]);
   lblLegalCopyright.Caption := GSFileVersionInfo.LegalCopyright;
 end;
 
