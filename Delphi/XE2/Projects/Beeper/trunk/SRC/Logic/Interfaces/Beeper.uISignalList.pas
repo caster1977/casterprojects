@@ -3,44 +3,13 @@ unit Beeper.uISignalList;
 interface
 
 uses
-  // CastersPackage.uIInterfaceListOfGivenType,
+  CastersPackage.uIInterfaceListOfGivenType,
   System.Classes,
   Beeper.uISignal;
 
 type
-  (*
-    ISignalList = interface(IInterfaceListOfGivenType<ISignal>)
+  ISignalList = interface(IInterfaceListOfGivenType<ISignal>)
     ['{D85F74EC-8C32-4132-9AAB-4F7BEF367ACE}']
-    end;
-  *)
-
-  ISignalList = interface
-    ['{D85F74EC-8C32-4132-9AAB-4F7BEF367ACE}']
-    procedure Initialize;
-
-    function GetItem(const AIndex: Integer): ISignal;
-    procedure PutItem(const AIndex: Integer; const AItem: ISignal);
-
-    function GetCount: Integer;
-    procedure SetCount(const ANewCount: Integer);
-
-    function Add(const AItem: ISignal): Integer;
-    procedure Append(const AItems: ISignalList);
-    procedure Insert(const AIndex: Integer; const AItem: ISignal);
-
-    procedure Delete(const AIndex: Integer);
-    function Remove(const AItem: ISignal; const ASkipIfNotFound: Boolean = False): Integer; overload;
-    procedure Remove(const AItems: ISignalList; const ASkipIfNotFound: Boolean = False); overload;
-    procedure Clear;
-
-    function First: ISignal;
-    function Last: ISignal;
-
-    procedure Exchange(const AIndex1, AIndex2: Integer);
-    function IndexOf(const AItem: ISignal): Integer;
-
-    property Count: Integer read GetCount write SetCount;
-    property Items[const AIndex: Integer]: ISignal read GetItem write PutItem; default;
   end;
 
 function GetISignalList: ISignalList;

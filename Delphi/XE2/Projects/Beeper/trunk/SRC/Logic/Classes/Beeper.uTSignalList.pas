@@ -3,7 +3,8 @@ unit Beeper.uTSignalList;
 interface
 
 uses
-  //CastersPackage.uTInterfaceListOfGivenType,
+  CastersPackage.uIInterfaceListOfGivenType,
+  CastersPackage.uTInterfaceListOfGivenType,
   System.Classes,
   System.SysUtils,
   Beeper.uISignalList,
@@ -12,13 +13,12 @@ uses
 type
   ESignalList = class(Exception);
 
-  (*
   TSignalList = class(TInterfaceListOfGivenType<ISignal>, ISignalList)
   protected
     procedure Initialize; override;
   end;
-  *)
 
+  (*
   TSignalList = class(TInterfacedObject, ISignalList)
   strict private
     FList: IInterfaceList;
@@ -34,13 +34,13 @@ type
     function IndexOf(const AItem: ISignal): Integer;
 
     function Add(const AItem: ISignal): Integer;
-    procedure Append(const AItems: ISignalList);
+    procedure Append(const AItems: IInterfaceListOfGivenType<ISignal> { ISignalList } );
     procedure Insert(const AIndex: Integer; const AItem: ISignal);
 
     procedure Delete(const AIndex: Integer);
     procedure Exchange(const AIndex1, AIndex2: Integer);
     function Remove(const AItem: ISignal; const ASkipIfNotFound: Boolean = False): Integer; overload;
-    procedure Remove(const AItems: ISignalList; const ASkipIfNotFound: Boolean = False); overload;
+    procedure Remove(const AItems: IInterfaceListOfGivenType<ISignal> { ISignalList }; const ASkipIfNotFound: Boolean = False); overload;
     procedure Clear;
 
     function First: ISignal;
@@ -50,30 +50,32 @@ type
     property Items[const AIndex: Integer]: ISignal read GetItem write PutItem; default;
   end;
 
+*)
+
 implementation
 
 resourcestring
   RsCantAddSignalToSignalList = 'Ќе удалось добавить сигнал в список сигналов!';
   RsCantRemoveSignalFromSignalList = 'Ќе удалось удалить сигнал из списка сигналов!';
 
-(*
 procedure TSignalList.Initialize;
 begin
   inherited;
   AddItemErrorString := RsCantAddSignalToSignalList;
   RemoveItemErrorString := RsCantRemoveSignalFromSignalList;
 end;
-*)
+
+(*
+procedure TSignalList.Initialize;
+begin
+  inherited;
+  FList := TInterfaceList.Create;
+end;
 
 constructor TSignalList.Create;
 begin
   inherited;
   Initialize;
-end;
-
-procedure TSignalList.Initialize;
-begin
-  FList := TInterfaceList.Create;
 end;
 
 destructor TSignalList.Destroy;
@@ -91,7 +93,7 @@ begin
   end;
 end;
 
-procedure TSignalList.Append(const AItems: ISignalList);
+procedure TSignalList.Append(const AItems: IInterfaceListOfGivenType<ISignal> { ISignalList } );
 var
   i: Integer;
 begin
@@ -172,7 +174,7 @@ begin
   Result := Self.GetItem(Count - 1);
 end;
 
-procedure TSignalList.Remove(const AItems: ISignalList; const ASkipIfNotFound: Boolean);
+procedure TSignalList.Remove(const AItems: IInterfaceListOfGivenType<ISignal> { ISignalList }; const ASkipIfNotFound: Boolean = False);
 var
   i: Integer;
 begin
@@ -213,5 +215,7 @@ begin
     end;
   end;
 end;
+
+*)
 
 end.
