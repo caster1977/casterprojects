@@ -3,37 +3,54 @@ unit OA5.uIMeasureList;
 interface
 
 uses
+  CastersPackage.uIInterfaceListOfGivenType,
+  CastersPackage.uINormalized,
+  CastersPackage.uICustomized,
   System.Classes,
   OA5.uIMeasure;
 
 type
-  IMeasureList = interface
-    ['{5E8836C1-9622-4F7B-AFA2-523E54B5149B}']
-    function GetItem(const AIndex: Integer): IMeasure;
-    procedure PutItem(const AIndex: Integer; const AItem: IMeasure);
-
-    function GetCount: Integer;
-    procedure SetCount(const ANewCount: Integer);
-
-    function Add(const AItem: IMeasure): Integer;
-    procedure Append(const AItems: IMeasureList);
-    procedure Insert(const AIndex: Integer; const AItem: IMeasure);
-
-    procedure Delete(const AIndex: Integer);
-    function Remove(const AItem: IMeasure; const ASkipIfNotFound: Boolean = False): Integer; overload;
-    procedure Remove(const AItems: IMeasureList; const ASkipIfNotFound: Boolean = False); overload;
-    procedure Clear;
-
-    function First: IMeasure;
-    function Last: IMeasure;
-
-    procedure Exchange(const AIndex1, AIndex2: Integer);
-    function IndexOf(const AItem: IMeasure): Integer;
-
-    property Count: Integer read GetCount write SetCount;
-    property Items[const AIndex: Integer]: IMeasure read GetItem write PutItem; default;
+  IMeasureList = interface(IInterfaceListOfGivenType<IMeasure>)
+    ['{EDB472CB-45F2-40EE-B518-8FADC247C37C}']
   end;
 
+function GetIMeasureList: IMeasureList;
+function GetINormalized(const AMeasureList: IMeasureList): INormalized; overload;
+function GetICustomized(const AMeasureList: IMeasureList): ICustomized; overload;
+
 implementation
+
+uses
+  System.SysUtils,
+  OA5.uTMeasureList;
+
+function GetIMeasureList: IMeasureList;
+begin
+  Result := TMeasureList.Create;
+end;
+
+function GetINormalized(const AMeasureList: IMeasureList): INormalized; overload;
+begin
+  Result := nil;
+  if Assigned(AMeasureList) then
+  begin
+    if Supports(AMeasureList, INormalized) then
+    begin
+      Result := AMeasureList as INormalized;
+    end;
+  end;
+end;
+
+function GetICustomized(const AMeasureList: IMeasureList): ICustomized; overload;
+begin
+  Result := nil;
+  if Assigned(AMeasureList) then
+  begin
+    if Supports(AMeasureList, ICustomized) then
+    begin
+      Result := AMeasureList as ICustomized;
+    end;
+  end;
+end;
 
 end.

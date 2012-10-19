@@ -7,7 +7,7 @@ uses
   System.Classes;
 
 type
-  TInterfaceListOfGivenType<T: IInterface> = class(TInterfacedObject, IInterfaceListOfGivenType<T>)
+  TInterfaceListOfGivenType<T: IInterface> = class(TInterfacedPersistent, IInterfaceListOfGivenType<T>)
   strict private
     FList: IInterfaceList;
     FAddItemErrorString: string;
