@@ -15,7 +15,7 @@ type
     procedure Initialize;
     procedure Finalize;
 
-    procedure Assign(const AValue: ISignal);
+//    procedure Assign(const AValue: ISignal);
 
     function GetTitle: string;
     procedure SetTitle(const AValue: string);
