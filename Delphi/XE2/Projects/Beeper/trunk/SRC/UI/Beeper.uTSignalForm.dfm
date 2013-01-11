@@ -94,7 +94,7 @@ object SignalForm: TSignalForm
     Action = actSelectWaveFile
     TabOrder = 5
   end
-  object chkbxPlayWaveFile: TCheckBox
+  object chkbxWaveFileEnabled: TCheckBox
     Left = 8
     Top = 100
     Width = 234
@@ -102,7 +102,7 @@ object SignalForm: TSignalForm
     Action = actEnablePlayWaveFile
     TabOrder = 3
   end
-  object chkbxShowMessage: TCheckBox
+  object chkbxMessageEnabled: TCheckBox
     Left = 8
     Top = 150
     Width = 234
@@ -134,7 +134,7 @@ object SignalForm: TSignalForm
     Left = 207
     Top = 8
     Bitmap = {
-      494C010102000400580010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101020004006C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

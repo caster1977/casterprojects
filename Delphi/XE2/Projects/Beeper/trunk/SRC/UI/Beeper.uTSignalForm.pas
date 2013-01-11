@@ -4,6 +4,7 @@ interface
 
 uses
   Beeper.uISignal,
+  Beeper.uTPeriodTypes,
   CastersPackage.Actions.Classes,
   System.Classes,
   Vcl.Forms,
@@ -11,7 +12,8 @@ uses
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.StdCtrls,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls,
+  System.Actions;
 
 type
   TSignalForm = class(TForm)
@@ -25,8 +27,8 @@ type
     btnSave: TButton;
     cmbbxWaveFile: TComboBox;
     btnSelectWaveFile: TButton;
-    chkbxPlayWaveFile: TCheckBox;
-    chkbxShowMessage: TCheckBox;
+    chkbxWaveFileEnabled: TCheckBox;
+    chkbxMessageEnabled: TCheckBox;
     actSave: TAction;
     actSelectWaveFile: TAction;
     actEnablePlayWaveFile: TAction;
@@ -51,8 +53,29 @@ type
   strict private
     FEnabled: Boolean;
     FNowPlaying: Boolean;
-    function GetWaveFileName: string;
     procedure AppendMessage;
+  strict private
+    function GetTitle: string;
+    procedure SetTitle(const AValue: string);
+    property Title: string read GetTitle write SetTitle nodefault;
+    function GetPeriod: Int64;
+    procedure SetPeriod(const AValue: Int64);
+    property Period: Int64 read GetPeriod write SetPeriod nodefault;
+    function GetPeriodType: TPeriodTypes;
+    procedure SetPeriodType(const AValue: TPeriodTypes);
+    property PeriodType: TPeriodTypes read GetPeriodType write SetPeriodType nodefault;
+    function GetWaveFileEnabled: Boolean;
+    procedure SetWaveFileEnabled(const AValue: Boolean);
+    property WaveFileEnabled: Boolean read GetWaveFileEnabled write SetWaveFileEnabled nodefault;
+    procedure SetWaveFile(const AValue: string);
+    function GetWaveFile: string;
+    property WaveFile: string read GetWaveFile write SetWaveFile nodefault;
+    function GetMessageEnabled: Boolean;
+    procedure SetMessageEnabled(const AValue: Boolean);
+    property MessageEnabled: Boolean read GetMessageEnabled write SetMessageEnabled nodefault;
+    function GetMessage: string;
+    procedure SetMessage(const AValue: string);
+    property message: string read GetMessage write SetMessage nodefault;
     function GetSignal: ISignal;
     procedure SetSignal(const AValue: ISignal);
     function GetMessageHistory: TStringList;
@@ -60,10 +83,11 @@ type
     function GetWaveFileHistory: TStringList;
     procedure SetWaveFileHistory(const AValue: TStringList);
   public
-    constructor Create(AOwner: TComponent; const ANew: Boolean); reintroduce; virtual;
     property Signal: ISignal read GetSignal write SetSignal nodefault;
     property MessageHistory: TStringList read GetMessageHistory write SetMessageHistory nodefault;
-    property WaveFileHistory: TStringList read GetWaveFileHistory write SetWaveFileHistory nodefault;
+    property WaveFileHistory: TStringList read GetWaveFileHistory
+      write SetWaveFileHistory nodefault;
+    constructor Create(AOwner: TComponent; const ANew: Boolean); reintroduce; virtual;
   end;
 
 implementation
@@ -76,7 +100,6 @@ uses
   Vcl.Dialogs,
   Beeper.uConsts,
   Beeper.uResourceStrings,
-  Beeper.uTPeriodTypes,
   Beeper.uTSignal;
 
 resourcestring
@@ -89,76 +112,126 @@ begin
   ModalResult := mrCancel;
 end;
 
-procedure TSignalForm.actEnablePlayWaveFileExecute(Sender: TObject);
-begin
-  TAction(Sender).Checked := not TAction(Sender).Checked;
-end;
-
 procedure TSignalForm.actEnablePlayWaveFileUpdate(Sender: TObject);
 begin
-  cmbbxWaveFile.Enabled := TAction(Sender).Checked;
-end;
-
-procedure TSignalForm.actEnableShowMessageExecute(Sender: TObject);
-begin
-  TAction(Sender).Checked := not TAction(Sender).Checked;
-end;
-
-procedure TSignalForm.actEnableShowMessageUpdate(Sender: TObject);
-begin
-  cmbbxMessage.Enabled := TAction(Sender).Checked;
+  cmbbxWaveFile.Enabled := actEnablePlayWaveFile.Checked;
 end;
 
 procedure TSignalForm.actPlayWaveFileUpdate(Sender: TObject);
 begin
-  actPlayWaveFile.Enabled := actEnablePlayWaveFile.Checked and FileExists(GetWaveFileName) and (not FNowPlaying);
+  actPlayWaveFile.Enabled := actEnablePlayWaveFile.Checked and FileExists(WaveFile) and
+    (not FNowPlaying);
+end;
+
+procedure TSignalForm.actEnablePlayWaveFileExecute(Sender: TObject);
+begin
+  actEnablePlayWaveFile.Checked := not actEnablePlayWaveFile.Checked;
+end;
+
+procedure TSignalForm.actEnableShowMessageUpdate(Sender: TObject);
+begin
+  cmbbxMessage.Enabled := actEnableShowMessage.Checked;
+end;
+
+procedure TSignalForm.actEnableShowMessageExecute(Sender: TObject);
+begin
+  actEnableShowMessage.Checked := not actEnableShowMessage.Checked;
 end;
 
 procedure TSignalForm.FormCreate(Sender: TObject);
-var
-  pt: TPeriodTypes;
+  procedure InitPeriodTypes;
+  var
+    pt: TPeriodTypes;
+  begin
+    cmbxPeriodType.Clear;
+    for pt := low(TPeriodTypes) to high(TPeriodTypes) do
+    begin
+      cmbxPeriodType.Items.Add(PERIODS[pt]);
+    end;
+  end;
+
 begin
   FNowPlaying := False;
   FEnabled := False;
-  cmbxPeriodType.Clear;
-  for pt := low(TPeriodTypes) to high(TPeriodTypes) do
-  begin
-    cmbxPeriodType.Items.Add(PERIODS[pt]);
-  end;
+  InitPeriodTypes;
 end;
 
 function TSignalForm.GetSignal: ISignal;
-var
-  pt: TPeriodTypes;
 begin
   Result := GetISignal;
-  Result.Title := Trim(ledTitle.Text);
-  Result.Period := StrToIntDef(ledPeriod.Text, 0);
-  for pt := low(TPeriodTypes) to high(TPeriodTypes) do
-  begin
-    if cmbxPeriodType.Items[cmbxPeriodType.ItemIndex] = PERIODS[pt] then
-    begin
-      Result.PeriodType := pt;
-      Break;
-    end;
-  end;
-  Result.MessageEnabled := actEnableShowMessage.Checked;
-  if Result.MessageEnabled then
-  begin
-    Result.Message := Trim(cmbbxMessage.Text);
-  end;
-  Result.WaveFileEnabled := actEnablePlayWaveFile.Checked;
-  if Result.WaveFileEnabled then
-  begin
-    Result.WaveFile := GetWaveFileName;
-  end;
+  Result.Title := Title;
+  Result.Period := Period;
+  Result.PeriodType := PeriodType;
+  Result.MessageEnabled := MessageEnabled;
+  Result.Message := message;
+  Result.WaveFileEnabled := WaveFileEnabled;
+  Result.WaveFile := WaveFile;
   Result.Enabled := FEnabled;
+end;
+
+function TSignalForm.GetMessage: string;
+begin
+  if MessageEnabled then
+  begin
+    Result := Trim(cmbbxMessage.Text);
+  end
+  else
+  begin
+    Result := EmptyStr;
+  end;
+end;
+
+function TSignalForm.GetMessageEnabled: Boolean;
+begin
+  Result := actEnableShowMessage.Checked;
+end;
+
+function TSignalForm.GetTitle: string;
+begin
+  Result := Trim(ledTitle.Text);
 end;
 
 function TSignalForm.GetMessageHistory: TStringList;
 begin
   Result := TStringList.Create;
   Result.AddStrings(cmbbxMessage.Items);
+end;
+
+function TSignalForm.GetPeriod: Int64;
+begin
+  Result := StrToIntDef(ledPeriod.Text, 0);
+end;
+
+function TSignalForm.GetPeriodType: TPeriodTypes;
+var
+  pt: TPeriodTypes;
+begin
+  Result := ptSeconds;
+  for pt := low(TPeriodTypes) to high(TPeriodTypes) do
+  begin
+    if cmbxPeriodType.Items[cmbxPeriodType.ItemIndex] = PERIODS[pt] then
+    begin
+      Result := pt;
+      Break;
+    end;
+  end;
+end;
+
+function TSignalForm.GetWaveFile: string;
+begin
+  Result := EmptyStr;
+  if WaveFileEnabled then
+  begin
+    if cmbbxWaveFile.ItemIndex > -1 then
+    begin
+      Result := Trim(cmbbxWaveFile.Items[cmbbxWaveFile.ItemIndex]);
+    end;
+  end;
+end;
+
+function TSignalForm.GetWaveFileEnabled: Boolean;
+begin
+  Result := actEnablePlayWaveFile.Checked;
 end;
 
 function TSignalForm.GetWaveFileHistory: TStringList;
@@ -179,70 +252,59 @@ procedure TSignalForm.SetSignal(const AValue: ISignal);
 begin
   if Assigned(AValue) then
   begin
-    ledTitle.Text := AValue.Title;
-    ledPeriod.Text := IntToStr(AValue.Period);
-    cmbxPeriodType.ItemIndex := cmbxPeriodType.Items.IndexOf(PERIODS[AValue.PeriodType]);
-
-    actEnableShowMessage.Checked := AValue.MessageEnabled;
-    if AValue.MessageEnabled then
-    begin
-      if cmbbxMessage.Items.IndexOf(AValue.Message) = -1 then
-      begin
-        cmbbxMessage.ItemIndex := cmbbxMessage.Items.Add(AValue.Message);
-      end
-      else
-      begin
-        cmbbxMessage.ItemIndex := cmbbxMessage.Items.IndexOf(AValue.Message);
-      end;
-    end;
-
-    actEnablePlayWaveFile.Checked := AValue.WaveFileEnabled;
-    if AValue.WaveFileEnabled then
-    begin
-      if cmbbxWaveFile.Items.IndexOf(AValue.WaveFile) = -1 then
-      begin
-        cmbbxWaveFile.ItemIndex := cmbbxWaveFile.Items.Add(AValue.WaveFile);
-      end
-      else
-      begin
-        cmbbxWaveFile.ItemIndex := cmbbxWaveFile.Items.IndexOf(AValue.WaveFile);
-      end;
-    end;
+    Title := AValue.Title;
+    Period := AValue.Period;
+    PeriodType := AValue.PeriodType;
+    MessageEnabled := AValue.MessageEnabled;
+    message := AValue.Message;
+    WaveFileEnabled := AValue.WaveFileEnabled;
+    WaveFile := AValue.WaveFile;
     FEnabled := AValue.Enabled;
+  end;
+end;
+
+procedure TSignalForm.SetTitle(const AValue: string);
+var
+  s: string;
+begin
+  s := Trim(AValue);
+  if ledTitle.Text <> s then
+  begin
+    ledTitle.Text := s;
   end;
 end;
 
 procedure TSignalForm.AppendMessage;
 var
-  s: string;
+  i: Integer;
 begin
-  s := Trim(cmbbxMessage.Text);
-  if s <> EmptyStr then
+  if message <> EmptyStr then
   begin
-    if cmbbxMessage.Items.IndexOf(s) = -1 then
+    i := cmbbxMessage.Items.IndexOf(message);
+    if i = -1 then
     begin
-      cmbbxMessage.ItemIndex := cmbbxMessage.Items.Add(s);
+      cmbbxMessage.ItemIndex := cmbbxMessage.Items.Add(message);
     end
     else
     begin
-      cmbbxMessage.ItemIndex := cmbbxMessage.Items.IndexOf(s);
+      cmbbxMessage.ItemIndex := i;
     end;
   end;
+end;
+
+procedure TSignalForm.actSaveUpdate(Sender: TObject);
+begin
+  actSave.Enabled := (cmbxPeriodType.ItemIndex > -1) and (Period > 0) and (Title <> EmptyStr) and
+    ((not WaveFileEnabled) or (WaveFileEnabled and FileExists(WaveFile))) and
+    ((not MessageEnabled) or (MessageEnabled and (message <> EmptyStr)));
+  btnSave.Default := actSave.Enabled;
+  btnCancel.Default := not actSave.Enabled;
 end;
 
 procedure TSignalForm.actSaveExecute(Sender: TObject);
 begin
   AppendMessage;
   ModalResult := mrOk;
-end;
-
-procedure TSignalForm.actSaveUpdate(Sender: TObject);
-begin
-  TAction(Sender).Enabled := (cmbxPeriodType.ItemIndex > -1) and (Trim(ledPeriod.Text) <> EmptyStr) and (Trim(ledTitle.Text) <> EmptyStr) and
-    ((FileExists(GetWaveFileName) and actEnablePlayWaveFile.Checked) or (not actEnablePlayWaveFile.Checked)) and
-    ((not actEnableShowMessage.Checked) or (actEnableShowMessage.Checked and (Trim(cmbbxMessage.Text) <> EmptyStr)));
-  btnSave.Default := TAction(Sender).Enabled;
-  btnCancel.Default := not TAction(Sender).Enabled;
 end;
 
 constructor TSignalForm.Create(AOwner: TComponent; const ANew: Boolean);
@@ -262,36 +324,40 @@ end;
 
 procedure TSignalForm.actPlayWaveFileExecute(Sender: TObject);
 begin
-  FNowPlaying := True;
   Screen.Cursor := crHourGlass;
+  FNowPlaying := True;
   try
     actPlayWaveFile.Update;
     Application.ProcessMessages;
-    sndPlaySound(PWideChar(GetWaveFileName), SND_FILENAME or SND_SYNC);
+    sndPlaySound(PWideChar(WaveFile), SND_FILENAME or SND_SYNC);
   finally
-    Screen.Cursor := crDefault;
     FNowPlaying := False;
+    Screen.Cursor := crDefault;
   end;
 end;
 
 procedure TSignalForm.actSelectWaveFileExecute(Sender: TObject);
+var
+  i: Integer;
 begin
   with TOpenDialog.Create(Self) do
     try
-      Filter := RsWaveFile + ' ' + UpperCase(WAVEFILE_EXTENTION) + ' (*.' + WAVEFILE_EXTENTION + ')|*.' + WAVEFILE_EXTENTION;
+      Filter := RsWaveFile + ' ' + UpperCase(WAVEFILE_EXTENTION) + ' (*.' + WAVEFILE_EXTENTION +
+        ')|*.' + WAVEFILE_EXTENTION;
       DefaultExt := WAVEFILE_EXTENTION;
       Title := RsSelectWaveFile;
       FilterIndex := 1;
       Options := [ofReadOnly, ofFileMustExist];
       if Execute then
       begin
-        if cmbbxWaveFile.Items.IndexOf(FileName) = -1 then
+        i := cmbbxWaveFile.Items.IndexOf(FileName);
+        if i = -1 then
         begin
           cmbbxWaveFile.ItemIndex := cmbbxWaveFile.Items.Add(FileName);
         end
         else
         begin
-          cmbbxWaveFile.ItemIndex := cmbbxWaveFile.Items.IndexOf(FileName);
+          cmbbxWaveFile.ItemIndex := i;
         end;
       end;
     finally
@@ -301,18 +367,32 @@ end;
 
 procedure TSignalForm.actSelectWaveFileUpdate(Sender: TObject);
 begin
-  TAction(Sender).Enabled := chkbxPlayWaveFile.Checked;
+  actSelectWaveFile.Enabled := chkbxWaveFileEnabled.Checked;
 end;
 
-function TSignalForm.GetWaveFileName: string;
+procedure TSignalForm.SetWaveFile(const AValue: string);
+var
+  i: Integer;
 begin
-  if cmbbxWaveFile.ItemIndex > -1 then
+  if WaveFileEnabled then
   begin
-    Result := Trim(cmbbxWaveFile.Items[cmbbxWaveFile.ItemIndex]);
-  end
-  else
+    i := cmbbxWaveFile.Items.IndexOf(AValue);
+    if i = -1 then
+    begin
+      cmbbxWaveFile.ItemIndex := cmbbxWaveFile.Items.Add(AValue);
+    end
+    else
+    begin
+      cmbbxWaveFile.ItemIndex := i;
+    end;
+  end;
+end;
+
+procedure TSignalForm.SetWaveFileEnabled(const AValue: Boolean);
+begin
+  if chkbxWaveFileEnabled.Checked <> AValue then
   begin
-    Result := EmptyStr;
+    chkbxWaveFileEnabled.Checked := AValue;
   end;
 end;
 
@@ -322,10 +402,58 @@ begin
   cmbbxWaveFile.Items.AddStrings(AValue);
 end;
 
+procedure TSignalForm.SetMessage(const AValue: string);
+var
+  i: Integer;
+begin
+  if MessageEnabled then
+  begin
+    i := cmbbxMessage.Items.IndexOf(AValue);
+    if i = -1 then
+    begin
+      cmbbxMessage.ItemIndex := cmbbxMessage.Items.Add(AValue);
+    end
+    else
+    begin
+      cmbbxMessage.ItemIndex := i;
+    end;
+  end;
+end;
+
+procedure TSignalForm.SetMessageEnabled(const AValue: Boolean);
+begin
+  if actEnableShowMessage.Checked <> AValue then
+  begin
+    actEnableShowMessage.Checked := AValue;
+  end;
+end;
+
 procedure TSignalForm.SetMessageHistory(const AValue: TStringList);
 begin
   cmbbxMessage.Clear;
   cmbbxMessage.Items.AddStrings(AValue);
+end;
+
+procedure TSignalForm.SetPeriod(const AValue: Int64);
+var
+  s: string;
+begin
+  s := IntToStr(AValue);
+  if ledPeriod.Text <> s then
+  begin
+    ledPeriod.Text := s;
+  end;
+end;
+
+procedure TSignalForm.SetPeriodType(const AValue: TPeriodTypes);
+var
+  i: Integer;
+begin
+  i := cmbxPeriodType.Items.IndexOf(PERIODS[AValue]);
+  if cmbxPeriodType.ItemIndex <> i then
+  begin
+    cmbxPeriodType.ItemIndex := i;
+  end;
 end;
 
 end.

@@ -139,6 +139,7 @@ procedure Register;
 implementation
 
 uses
+  System.Actions,
   Winapi.Windows,
   Winapi.Messages,
   CastersPackage.Actions.DataModule;

@@ -11,7 +11,8 @@ uses
   Vcl.ExtCtrls,
   Vcl.Controls,
   Vcl.StdCtrls,
-  Vcl.Graphics;
+  Vcl.Graphics,
+  System.Actions;
 
 type
   TAboutForm = class(TForm)

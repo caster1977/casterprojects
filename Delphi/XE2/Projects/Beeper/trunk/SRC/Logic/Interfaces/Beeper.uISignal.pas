@@ -54,16 +54,6 @@ type
     property Timer: TTimer read GetTimer;
   end;
 
-function GetISignal: ISignal;
-
 implementation
-
-uses
-  Beeper.uTSignal;
-
-function GetISignal: ISignal;
-begin
-  Result := TSignal.Create;
-end;
 
 end.

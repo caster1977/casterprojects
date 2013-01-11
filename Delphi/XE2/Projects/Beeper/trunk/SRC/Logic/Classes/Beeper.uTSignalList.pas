@@ -13,11 +13,21 @@ type
     procedure Initialize; override;
   end;
 
+function GetISignalList: ISignalList;
+
 implementation
+
+uses
+  Beeper.uTSignal;
 
 resourcestring
   RsCantAddSignalToSignalList = 'Ќе удалось добавить сигнал в список сигналов!';
   RsCantRemoveSignalFromSignalList = 'Ќе удалось удалить сигнал из списка сигналов!';
+
+function GetISignalList: ISignalList;
+begin
+  Result := TSignalList.Create;
+end;
 
 procedure TSignalList.Initialize;
 begin
