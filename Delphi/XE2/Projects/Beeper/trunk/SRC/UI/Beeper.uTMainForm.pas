@@ -19,7 +19,7 @@ uses
   Vcl.ExtCtrls,
   Vcl.ComCtrls,
   Vcl.ToolWin,
-  Vcl.ActnCtrls;
+  Vcl.ActnCtrls, System.Actions;
 
 type
   TMainForm = class(TForm)
@@ -84,7 +84,6 @@ type
     procedure actHideExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
   strict private
-    FConfiguration: IConfiguration;
     FSignalingActive: Boolean;
     FAboutWindowExists: Boolean;
     FAboutWindowHandle: HWND;
@@ -103,13 +102,17 @@ type
     procedure WMHotkey(var AMsg: TWMHotkey); message WM_HOTKEY;
     procedure Flash;
     procedure UpdateVisibilityActions;
-  strict protected
+  strict
+  private
+    function GetConfiguration: IConfiguration; protected
     procedure WMGetSysCommand(var AMessage: TMessage); message WM_SYSCOMMAND;
     procedure WndProc(var AMessage: TMessage); override;
+    property Configuration: IConfiguration read GetConfiguration nodefault;
   end;
 
 var
   MainForm: TMainForm;
+  GlobalConfiguration: IConfiguration;
 
 implementation
 
@@ -118,6 +121,7 @@ implementation
 uses
   System.SysUtils,
   Beeper.uISignal,
+  Beeper.uTSignal,
   Beeper.uTPeriodTypes,
   Beeper.uTConfiguration,
   Beeper.uConsts,
@@ -175,13 +179,13 @@ end;
 
 procedure TMainForm.RegisterHotKeys;
 begin
-  if Assigned(FConfiguration) then
+  if Assigned(Configuration) then
   begin
-    if not RegisterHotkey(Handle, HOTKEY_ON, FConfiguration.ModifierOn, FConfiguration.VirtualKeyOn) then
+    if not RegisterHotkey(Handle, HOTKEY_ON, Configuration.ModifierOn, Configuration.VirtualKeyOn) then
     begin
       ShowErrorMessageBox(RsErrorResigterStartHotKey);
     end;
-    if not RegisterHotkey(Handle, HOTKEY_OFF, FConfiguration.ModifierOff, FConfiguration.VirtualKeyOff) then
+    if not RegisterHotkey(Handle, HOTKEY_OFF, Configuration.ModifierOff, Configuration.VirtualKeyOff) then
     begin
       ShowErrorMessageBox(RsErrorResigterStopHotKey);
     end;
@@ -241,19 +245,19 @@ begin
     FMessageHistory.Sorted := True;
     FMessageHistory.Duplicates := dupIgnore;
   end;
-  if Assigned(FConfiguration) then
+  if Assigned(Configuration) then
   begin
-    if Assigned(FConfiguration.SignalList) then
+    if Assigned(Configuration.SignalList) then
     begin
-      for i := 0 to FConfiguration.SignalList.Count - 1 do
+      for i := 0 to Configuration.SignalList.Count - 1 do
       begin
-        if FConfiguration.SignalList.Items[i].WaveFile <> EmptyStr then
+        if Configuration.SignalList.Items[i].WaveFile <> EmptyStr then
         begin
-          FWaveFileHistory.Append(FConfiguration.SignalList.Items[i].WaveFile);
+          FWaveFileHistory.Append(Configuration.SignalList.Items[i].WaveFile);
         end;
-        if FConfiguration.SignalList.Items[i].Message <> EmptyStr then
+        if Configuration.SignalList.Items[i].Message <> EmptyStr then
         begin
-          FMessageHistory.Append(FConfiguration.SignalList.Items[i].Message);
+          FMessageHistory.Append(Configuration.SignalList.Items[i].Message);
         end;
       end;
     end;
@@ -273,9 +277,9 @@ begin
     begin
       if Assigned(Item.Data) then
       begin
-        if Assigned(FConfiguration) then
+        if Assigned(Configuration) then
         begin
-          FConfiguration.SignalList.Items[FConfiguration.SignalList.IndexOf(ISignal(Item.Data))].Enabled := Item.Checked;
+          Configuration.SignalList.Items[Configuration.SignalList.IndexOf(ISignal(Item.Data))].Enabled := Item.Checked;
         end;
       end;
     end;
@@ -288,11 +292,11 @@ begin
   begin
     if Assigned(ListView.Selected.Data) then
     begin
-      if Assigned(FConfiguration) then
+      if Assigned(Configuration) then
       begin
-        if Assigned(FConfiguration.SignalList) then
+        if Assigned(Configuration.SignalList) then
         begin
-          FConfiguration.SignalList.Remove(ISignal(ListView.Selected.Data));
+          Configuration.SignalList.Remove(ISignal(ListView.Selected.Data));
           RefreshSignals;
         end;
       end;
@@ -307,11 +311,11 @@ end;
 
 procedure TMainForm.actClearSignalsExecute(Sender: TObject);
 begin
-  if Assigned(FConfiguration) then
+  if Assigned(Configuration) then
   begin
     if ListView.Items.Count > 0 then
     begin
-      FConfiguration.SignalList.Clear;
+      Configuration.SignalList.Clear;
       RefreshSignals;
     end;
   end;
@@ -325,19 +329,19 @@ begin
   ListView.Items.BeginUpdate;
   try
     ListView.Items.Clear;
-    if Assigned(FConfiguration) then
+    if Assigned(Configuration) then
     begin
-      if Assigned(FConfiguration.SignalList) then
+      if Assigned(Configuration.SignalList) then
       begin
-        for i := 0 to FConfiguration.SignalList.Count - 1 do
+        for i := 0 to Configuration.SignalList.Count - 1 do
         begin
-          if Assigned(FConfiguration.SignalList.Items[i]) then
+          if Assigned(Configuration.SignalList.Items[i]) then
           begin
             node := ListView.Items.Add;
-            node.Data := Pointer(FConfiguration.SignalList.Items[i]);
-            node.Caption := FConfiguration.SignalList.Items[i].Title;
-            node.SubItems.Add(IntToStr(FConfiguration.SignalList.Items[i].Period) + ' ' + PERIODS[FConfiguration.SignalList.Items[i].PeriodType]);
-            node.Checked := FConfiguration.SignalList.Items[i].Enabled;
+            node.Data := Pointer(Configuration.SignalList.Items[i]);
+            node.Caption := Configuration.SignalList.Items[i].Title;
+            node.SubItems.Add(IntToStr(Configuration.SignalList.Items[i].Period) + ' ' + PERIODS[Configuration.SignalList.Items[i].PeriodType]);
+            node.Checked := Configuration.SignalList.Items[i].Enabled;
           end;
         end;
       end;
@@ -351,7 +355,7 @@ procedure TMainForm.actCreateSignalExecute(Sender: TObject);
 var
   i: Integer;
 begin
-  if Assigned(FConfiguration) then
+  if Assigned(Configuration) then
   begin
     with TSignalForm.Create(Self, True) do
       try
@@ -360,7 +364,7 @@ begin
         ShowModal;
         if ModalResult = mrOk then
         begin
-          i := FConfiguration.SignalList.Add(Signal);
+          i := Configuration.SignalList.Add(Signal);
           RefreshSignals;
           ListView.ItemIndex := i;
           FMessageHistory := MessageHistory;
@@ -376,7 +380,7 @@ procedure TMainForm.actEditSignalExecute(Sender: TObject);
 var
   i: Integer;
 begin
-  if Assigned(FConfiguration) then
+  if Assigned(Configuration) then
   begin
     if Assigned(ListView.Selected) then
     begin
@@ -390,7 +394,7 @@ begin
             ShowModal;
             if ModalResult = mrOk then
             begin
-              FConfiguration.SignalList.Items[FConfiguration.SignalList.IndexOf(ISignal(ListView.Selected.Data))] := Signal;
+              Configuration.SignalList.Items[Configuration.SignalList.IndexOf(ISignal(ListView.Selected.Data))] := Signal;
               i := ListView.ItemIndex;
               RefreshSignals;
               ListView.ItemIndex := i;
@@ -407,14 +411,13 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-  FConfiguration := GetIConfiguration;
   FSignalingActive := False;
   FAboutWindowExists := False;
   FAboutWindowHandle := 0;
   FFirstRun := True;
-  if Assigned(FConfiguration) then
+  if Assigned(Configuration) then
   begin
-    FConfiguration.Load;
+    Configuration.Load;
   end;
   Caption := Application.Title;
   Application.OnHint := DisplayHint;
@@ -429,9 +432,9 @@ procedure TMainForm.FormDestroy(Sender: TObject);
 begin
   FSignalingActive := False;
   UnregisterHotKeys;
-  if Assigned(FConfiguration) then
+  if Assigned(Configuration) then
   begin
-    FConfiguration.Save;
+    Configuration.Save;
   end;
   FreeAndNil(FMessageHistory);
   FreeAndNil(FWaveFileHistory);
@@ -444,6 +447,11 @@ begin
     FFirstRun := False;
     ShowAboutWindow(False);
   end;
+end;
+
+function TMainForm.GetConfiguration: IConfiguration;
+begin
+  Result := GlobalConfiguration;
 end;
 
 procedure TMainForm.WMHotkey(var AMsg: TWMHotkey);
@@ -533,6 +541,14 @@ begin
   else
   begin
     inherited;
+  end;
+end;
+
+initialization
+begin
+  if not Assigned(GlobalConfiguration) then
+  begin
+    GlobalConfiguration := GetIConfiguration;
   end;
 end;
 

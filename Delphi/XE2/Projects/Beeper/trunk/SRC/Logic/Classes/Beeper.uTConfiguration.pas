@@ -21,7 +21,6 @@ type
     FSoundEnabled: Boolean;
     FModifierOn, FModifierOff: Integer;
     FVirtualKeyOn, FVirtualKeyOff: Cardinal;
-    FSignalList: ISignalList;
     function GetShowBaloonHints: Boolean;
     procedure SetShowBaloonHints(const AValue: Boolean);
     function GetSoundEnabled: Boolean;
@@ -52,6 +51,9 @@ type
     property SignalList: ISignalList read GetSignalList nodefault;
   end;
 
+var
+  GlobalSignalList: ISignalList;
+
 function GetIConfiguration(const AIniFileName: string = ''): IConfiguration;
 
 implementation
@@ -60,6 +62,8 @@ uses
   System.Classes,
   Beeper.uResourceStrings,
   Beeper.uISignal,
+  Beeper.uTSignal,
+  Beeper.uTSignalList,
   Beeper.uTPeriodTypes,
   CastersPackage.uRoutines;
 
@@ -122,11 +126,7 @@ end;
 
 function TConfiguration.GetSignalList: ISignalList;
 begin
-  if not Assigned(FSignalList) then
-  begin
-    FSignalList := GetISignalList;
-  end;
-  Result := FSignalList;
+  Result := GlobalSignalList;
 end;
 
 function TConfiguration.GetSoundEnabled: Boolean;
@@ -314,6 +314,10 @@ end;
 initialization
 
 begin
+  if not Assigned(GlobalSignalList) then
+  begin
+    GlobalSignalList := GetISignalList;
+  end;
   RegisterClass(TConfiguration);
 end;
 

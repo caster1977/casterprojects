@@ -9,7 +9,7 @@ uses
 type
   TInterfaceListOfGivenType<T: IInterface> = class(TInterfacedPersistent, IInterfaceListOfGivenType<T>)
   strict private
-    FList: IInterfaceList;
+    FList: TInterfaceList;
     FAddItemErrorString: string;
     FRemoveItemErrorString: string;
     function GetCount: Integer;
@@ -91,18 +91,18 @@ begin
   Initialize;
 end;
 
+destructor TInterfaceListOfGivenType<T>.Destroy;
+begin
+  Finalize;
+  inherited;
+end;
+
 procedure TInterfaceListOfGivenType<T>.Delete(const AIndex: Integer);
 begin
   if Assigned(FList) then
   begin
     FList.Delete(AIndex);
   end;
-end;
-
-destructor TInterfaceListOfGivenType<T>.Destroy;
-begin
-  Finalize;
-  inherited;
 end;
 
 procedure TInterfaceListOfGivenType<T>.Exchange(const AIndex1, AIndex2: Integer);
@@ -116,6 +116,7 @@ end;
 procedure TInterfaceListOfGivenType<T>.Finalize;
 begin
   Clear;
+  FreeAndNil(FList);
 end;
 
 function TInterfaceListOfGivenType<T>.First: T;

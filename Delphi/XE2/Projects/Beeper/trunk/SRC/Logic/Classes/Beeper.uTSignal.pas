@@ -67,11 +67,18 @@ type
     property Timer: TTimer read GetTimer nodefault;
   end;
 
+function GetISignal: ISignal;
+
 implementation
 
 uses
   System.SysUtils,
   CastersPackage.uRoutines;
+
+function GetISignal: ISignal;
+begin
+  Result := TSignal.Create;
+end;
 
 constructor TSignal.Create;
 begin
