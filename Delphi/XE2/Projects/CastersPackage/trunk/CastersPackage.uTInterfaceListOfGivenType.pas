@@ -187,7 +187,7 @@ begin
   begin
     if Assigned(FList) then
     begin
-      FList[AIndex] := AItem;
+      FList[AIndex] := IInterface(AItem);
     end;
   end;
 end;
