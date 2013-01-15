@@ -17,9 +17,6 @@ function GetISignalList: ISignalList;
 
 implementation
 
-uses
-  Beeper.uTSignal;
-
 resourcestring
   RsCantAddSignalToSignalList = 'Ќе удалось добавить сигнал в список сигналов!';
   RsCantRemoveSignalFromSignalList = 'Ќе удалось удалить сигнал из списка сигналов!';

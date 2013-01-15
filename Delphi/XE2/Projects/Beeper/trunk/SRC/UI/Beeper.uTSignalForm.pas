@@ -139,7 +139,7 @@ begin
 end;
 
 procedure TSignalForm.FormCreate(Sender: TObject);
-  procedure InitPeriodTypes;
+  procedure RefreshPeriodTypes;
   var
     pt: TPeriodTypes;
   begin
@@ -153,7 +153,7 @@ procedure TSignalForm.FormCreate(Sender: TObject);
 begin
   FNowPlaying := False;
   FEnabled := False;
-  InitPeriodTypes;
+  RefreshPeriodTypes;
 end;
 
 function TSignalForm.GetSignal: ISignal;
@@ -310,15 +310,13 @@ end;
 constructor TSignalForm.Create(AOwner: TComponent; const ANew: Boolean);
 begin
   inherited Create(AOwner);
-  case ANew of
-    True:
-      begin
-        Caption := RsAddSignalCaption;
-      end;
-    False:
-      begin
-        Caption := RsEditSignalCaption;
-      end;
+  if ANew then
+  begin
+    Caption := RsAddSignalCaption;
+  end
+  else
+  begin
+    Caption := RsEditSignalCaption;
   end;
 end;
 

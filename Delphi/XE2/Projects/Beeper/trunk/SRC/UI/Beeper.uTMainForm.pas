@@ -7,6 +7,7 @@ uses
   CastersPackage.Actions.Classes,
   Winapi.Messages,
   Winapi.Windows,
+  System.Actions,
   System.Classes,
   Vcl.Forms,
   Vcl.Menus,
@@ -19,8 +20,7 @@ uses
   Vcl.ExtCtrls,
   Vcl.ComCtrls,
   Vcl.ToolWin,
-  Vcl.ActnCtrls,
-  System.Actions;
+  Vcl.ActnCtrls;
 
 type
   TMainForm = class(TForm)
@@ -86,7 +86,6 @@ type
     procedure FormShow(Sender: TObject);
   strict private
     FSignalingActive: Boolean;
-    FAboutWindowExists: Boolean;
     FAboutWindowHandle: HWND;
     FWaveFileHistory, FMessageHistory: TStringList;
     FWindowMessage: Cardinal;
@@ -100,15 +99,17 @@ type
     procedure FillHistory;
     procedure ShowAboutWindow(const AShowCloseButton: Boolean);
     procedure HideAboutWindow;
-    procedure WMHotkey(var AMsg: TWMHotkey); message WM_HOTKEY;
     procedure Flash;
     procedure UpdateVisibilityActions;
-  strict private
-    function GetConfiguration: IConfiguration;
-  protected
+    procedure WMHotkey(var AMsg: TWMHotkey); message WM_HOTKEY;
     procedure WMGetSysCommand(var AMessage: TMessage); message WM_SYSCOMMAND;
-    procedure WndProc(var AMessage: TMessage); override;
+    function GetConfiguration: IConfiguration;
+    function GetAboutWindowHandle: HWND;
+    procedure SetAboutWindowHandle(const AValue: HWND);
+    property AboutWindowHandle: HWND read GetAboutWindowHandle write SetAboutWindowHandle nodefault;
     property Configuration: IConfiguration read GetConfiguration nodefault;
+  protected
+    procedure WndProc(var AMessage: TMessage); override;
   end;
 
 var
@@ -146,32 +147,38 @@ begin
   StatusBar.SimpleText := GetLongHint(Application.Hint);
 end;
 
+procedure TMainForm.SetAboutWindowHandle(const AValue: HWND);
+begin
+  if FAboutWindowHandle <> AValue then
+  begin
+    FAboutWindowHandle := AValue;
+  end;
+end;
+
 procedure TMainForm.ShowAboutWindow(const AShowCloseButton: Boolean);
 begin
-  if not FAboutWindowExists then
+  if AboutWindowHandle = 0 then
   begin
     with TAboutForm.Create(Self, AShowCloseButton) do
       try
-        FAboutWindowHandle := Handle;
-        FAboutWindowExists := True;
+        AboutWindowHandle := Handle;
         ShowModal;
       finally
-        FAboutWindowExists := False;
-        FAboutWindowHandle := 0;
+        AboutWindowHandle := 0;
         Free;
       end;
   end
   else
   begin
-    SetForegroundWindow(FAboutWindowHandle);
+    SetForegroundWindow(AboutWindowHandle);
   end;
 end;
 
 procedure TMainForm.HideAboutWindow;
 begin
-  if FAboutWindowExists then
+  if AboutWindowHandle > 0 then
   begin
-    SendMessage(FAboutWindowHandle, WM_SYSCOMMAND, SC_CLOSE, 0);
+    SendMessage(AboutWindowHandle, WM_SYSCOMMAND, SC_CLOSE, 0);
   end;
 end;
 
@@ -426,8 +433,7 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   FSignalingActive := False;
-  FAboutWindowExists := False;
-  FAboutWindowHandle := 0;
+  AboutWindowHandle := 0;
   FFirstRun := True;
   if Assigned(Configuration) then
   begin
@@ -461,6 +467,11 @@ begin
     FFirstRun := False;
     ShowAboutWindow(False);
   end;
+end;
+
+function TMainForm.GetAboutWindowHandle: HWND;
+begin
+  Result := FAboutWindowHandle;
 end;
 
 function TMainForm.GetConfiguration: IConfiguration;
