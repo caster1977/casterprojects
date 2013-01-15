@@ -32,9 +32,13 @@ type
     procedure FormShow(Sender: TObject);
     procedure CloseTimerTimer(Sender: TObject);
     procedure FadeTimerTimer(Sender: TObject);
+    procedure actCloseUpdate(Sender: TObject);
     procedure lblEMailAddressClick(Sender: TObject);
-  strict protected
+  strict private
     FFirstShow: Boolean;
+    FShowCloseButton: Boolean;
+    function GetShowCloseButton: Boolean;
+    property ShowCloseButton: Boolean read GetShowCloseButton nodefault;
   public
     constructor Create(AOwner: TComponent; const AShowCloseButton: Boolean); reintroduce; virtual;
   end;
@@ -55,7 +59,7 @@ constructor TAboutForm.Create(AOwner: TComponent; const AShowCloseButton: Boolea
 begin
   inherited Create(AOwner);
   FFirstShow := True;
-  actClose.Visible := AShowCloseButton;
+  FShowCloseButton := AShowCloseButton;
   GSFileVersionInfo.Filename := Application.ExeName;
   lblTitle.Caption := Application.Title;
   imgApplicationIcon.Picture.Icon.Assign(Application.Icon);
@@ -70,7 +74,7 @@ begin
   if FFirstShow then
   begin
     FFirstShow := False;
-    if actClose.Visible then
+    if ShowCloseButton then
     begin
       CloseTimer.Enabled := False;
       AlphaBlendValue := 222;
@@ -83,6 +87,16 @@ begin
       FadeTimer.Enabled := True;
     end;
   end;
+end;
+
+function TAboutForm.GetShowCloseButton: Boolean;
+begin
+  Result := FShowCloseButton;
+end;
+
+procedure TAboutForm.actCloseUpdate(Sender: TObject);
+begin
+  actClose.Visible := ShowCloseButton;
 end;
 
 procedure TAboutForm.CloseTimerTimer(Sender: TObject);
