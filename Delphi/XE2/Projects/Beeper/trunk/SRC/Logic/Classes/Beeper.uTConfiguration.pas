@@ -17,6 +17,7 @@ type
 
   TConfiguration = class(TIniFileDataStorage, IConfiguration)
   strict private
+    FSignals: ISignalList;
     FShowBaloonHints: Boolean;
     FSoundEnabled: Boolean;
     FModifierOn, FModifierOff: Integer;
@@ -33,7 +34,7 @@ type
     procedure SetVirtualKeyOff(const AValue: Cardinal);
     function GetVirtualKeyOn: Cardinal;
     procedure SetVirtualKeyOn(const AValue: Cardinal);
-    function GetSignalList: ISignalList;
+    function GetSignals: ISignalList;
   strict protected
     procedure Initialize; override;
     procedure Finalize; override;
@@ -42,17 +43,20 @@ type
     procedure BeforeSave; override;
     procedure Saving(const AIniFile: TCustomIniFile); override;
   public
-    property ShowBaloonHints: Boolean read GetShowBaloonHints write SetShowBaloonHints default DEFAULT_CONFIGURATION_SHOW_BALOON_HINTS;
-    property SoundEnabled: Boolean read GetSoundEnabled write SetSoundEnabled default DEFAULT_CONFIGURATION_SOUND_ENABLED;
-    property ModifierOn: Integer read GetModifierOn write SetModifierOn default DEFAULT_CONFIGURATION_MODIFIER_ON;
-    property VirtualKeyOn: Cardinal read GetVirtualKeyOn write SetVirtualKeyOn default DEFAULT_CONFIGURATION_VIRTUAL_KEY_ON;
-    property ModifierOff: Integer read GetModifierOff write SetModifierOff default DEFAULT_CONFIGURATION_MODIFIER_OFF;
-    property VirtualKeyOff: Cardinal read GetVirtualKeyOff write SetVirtualKeyOff default DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF;
-    property SignalList: ISignalList read GetSignalList nodefault;
+    property ShowBaloonHints: Boolean read GetShowBaloonHints write SetShowBaloonHints
+      default DEFAULT_CONFIGURATION_SHOW_BALOON_HINTS;
+    property SoundEnabled: Boolean read GetSoundEnabled write SetSoundEnabled
+      default DEFAULT_CONFIGURATION_SOUND_ENABLED;
+    property ModifierOn: Integer read GetModifierOn write SetModifierOn
+      default DEFAULT_CONFIGURATION_MODIFIER_ON;
+    property VirtualKeyOn: Cardinal read GetVirtualKeyOn write SetVirtualKeyOn
+      default DEFAULT_CONFIGURATION_VIRTUAL_KEY_ON;
+    property ModifierOff: Integer read GetModifierOff write SetModifierOff
+      default DEFAULT_CONFIGURATION_MODIFIER_OFF;
+    property VirtualKeyOff: Cardinal read GetVirtualKeyOff write SetVirtualKeyOff
+      default DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF;
+    property Signals: ISignalList read GetSignals nodefault;
   end;
-
-var
-  GlobalSignalList: ISignalList;
 
 function GetIConfiguration(const AIniFileName: string = ''): IConfiguration;
 
@@ -87,7 +91,8 @@ resourcestring
   RsMessageEnabled = 'Выводить сообщение';
   RsMessage = 'Сообщение';
   RsWaveFileEnabled = 'Проигрывать звуковой файл';
-  RsIniFileSaveError = 'Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
+  RsIniFileSaveError =
+    'Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
 
 function GetIConfiguration(const AIniFileName: string): IConfiguration;
 begin
@@ -124,9 +129,13 @@ begin
   Result := FShowBaloonHints;
 end;
 
-function TConfiguration.GetSignalList: ISignalList;
+function TConfiguration.GetSignals: ISignalList;
 begin
-  Result := GlobalSignalList;
+  if not Assigned(FSignals) then
+  begin
+    FSignals := GetISignalList;
+  end;
+  Result := FSignals;
 end;
 
 function TConfiguration.GetSoundEnabled: Boolean;
@@ -202,21 +211,22 @@ begin
     ModifierOff := ReadInteger(RsHotKeys, RsModifierOff, DEFAULT_CONFIGURATION_MODIFIER_OFF);
     VirtualKeyOff := ReadInteger(RsHotKeys, RsVirtualKeyOff, DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF);
     signal_count := ReadInteger(RsSignals, RsQuantity, DEFAULT_SIGNAL_COUNT);
-    SignalList.Clear;
+    Signals.Clear;
     for i := 0 to signal_count - 1 do
     begin
       s := Format(RsSignal, [IntToStr(i)]);
       signal := GetISignal;
       signal.Title := ReadString(s, RsTitle, DEFAULT_SIGNAL_TITLE);
       signal.Period := ReadInteger(s, RsPeriod, DEFAULT_SIGNAL_PERIOD);
-      signal.PeriodType := TPeriodTypes(ReadInteger(s, RsPeriodType, Integer(DEFAULT_SIGNAL_PERIOD_TYPE)));
+      signal.PeriodType := TPeriodTypes(ReadInteger(s, RsPeriodType,
+        Integer(DEFAULT_SIGNAL_PERIOD_TYPE)));
       signal.MessageEnabled := ReadBool(s, RsMessageEnabled, DEFAULT_SIGNAL_MESSAGE_ENABLED);
       signal.Message := ReadString(s, RsMessage, DEFAULT_SIGNAL_MESSAGE);
       signal.WaveFileEnabled := ReadBool(s, RsWaveFileEnabled, DEFAULT_SIGNAL_WAVE_FILE_ENABLED);
       signal.WaveFile := ReadString(s, RsWaveFile, DEFAULT_SIGNAL_WAVE_FILE);
       signal.Enabled := ReadBool(s, RsEnabled, DEFAULT_SIGNAL_ENABLED);
       signal.Timer.Enabled := False;
-      SignalList.Add(signal);
+      Signals.Add(signal);
     end;
   end;
 end;
@@ -255,15 +265,15 @@ begin
       begin
         AIniFile.WriteInteger(RsHotKeys, RsVirtualKeyOff, VirtualKeyOff);
       end;
-      if Assigned(SignalList) then
+      if Assigned(Signals) then
       begin
-        if SignalList.Count <> DEFAULT_SIGNAL_COUNT then
+        if Signals.Count <> DEFAULT_SIGNAL_COUNT then
         begin
-          AIniFile.WriteInteger(RsSignals, RsQuantity, SignalList.Count);
-          for i := 0 to SignalList.Count - 1 do
+          AIniFile.WriteInteger(RsSignals, RsQuantity, Signals.Count);
+          for i := 0 to Signals.Count - 1 do
           begin
             s := Format(RsSignal, [IntToStr(i)]);
-            _signal := SignalList.Items[i];
+            _signal := Signals.Items[i];
             if Assigned(_signal) then
             begin
               if _signal.Title <> DEFAULT_SIGNAL_TITLE then
@@ -314,10 +324,6 @@ end;
 initialization
 
 begin
-  if not Assigned(GlobalSignalList) then
-  begin
-    GlobalSignalList := GetISignalList;
-  end;
   RegisterClass(TConfiguration);
 end;
 

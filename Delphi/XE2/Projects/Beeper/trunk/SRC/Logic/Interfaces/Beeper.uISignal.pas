@@ -9,7 +9,8 @@ uses
 type
   ISignal = interface
     ['{8FB4586E-5BBB-430D-AD29-EE5B9776088F}']
-    function PeriodToSeconds(const ASeconds: Word; const AMinutes: Word = 0; const AHours: Word = 0; const ADays: Word = 0; const AWeeks: Word = 0; const AMonths: Word = 0;
+    function PeriodToSeconds(const ASeconds: Word; const AMinutes: Word = 0; const AHours: Word = 0;
+      const ADays: Word = 0; const AWeeks: Word = 0; const AMonths: Word = 0;
       const AYears: Word = 0): Int64;
 
     procedure Initialize;

@@ -25,7 +25,7 @@ type
     function GetVirtualKeyOn: Cardinal;
     procedure SetVirtualKeyOn(const AValue: Cardinal);
 
-    function GetSignalList: ISignalList;
+    function GetSignals: ISignalList;
 
     function GetShowBaloonHints: Boolean;
     procedure SetShowBaloonHints(const AValue: Boolean);
@@ -36,7 +36,7 @@ type
     property ModifierOn: Integer read GetModifierOn write SetModifierOn;
     property VirtualKeyOff: Cardinal read GetVirtualKeyOff write SetVirtualKeyOff;
     property VirtualKeyOn: Cardinal read GetVirtualKeyOn write SetVirtualKeyOn;
-    property SignalList: ISignalList read GetSignalList;
+    property Signals: ISignalList read GetSignals;
   end;
 
 implementation

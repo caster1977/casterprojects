@@ -59,7 +59,8 @@ begin
   GSFileVersionInfo.Filename := Application.ExeName;
   lblTitle.Caption := Application.Title;
   imgApplicationIcon.Picture.Icon.Assign(Application.Icon);
-  lblVersion.Caption := Format(RsVersionInfo, [GSFileVersionInfo.ModuleVersion.Major, GSFileVersionInfo.ModuleVersion.Minor, GSFileVersionInfo.ModuleVersion.Release,
+  lblVersion.Caption := Format(RsVersionInfo, [GSFileVersionInfo.ModuleVersion.Major,
+    GSFileVersionInfo.ModuleVersion.Minor, GSFileVersionInfo.ModuleVersion.Release,
     GSFileVersionInfo.ModuleVersion.Build]);
   lblLegalCopyright.Caption := GSFileVersionInfo.LegalCopyright;
 end;
@@ -99,7 +100,8 @@ end;
 
 procedure TAboutForm.lblEMailAddressClick(Sender: TObject);
 begin
-  ShellExecute(Application.Handle, 'open', PWideChar('mailto:vlad_dracula@tut.by'), nil, nil, SW_MAXIMIZE);
+  ShellExecute(Application.Handle, 'open', PWideChar('mailto:vlad_dracula@tut.by'), nil, nil,
+    SW_MAXIMIZE);
 end;
 
 end.

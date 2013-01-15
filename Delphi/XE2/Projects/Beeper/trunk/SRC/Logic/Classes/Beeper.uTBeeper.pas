@@ -33,7 +33,8 @@ const
 
 resourcestring
   RsErrorCode = ' Код ошибки: %s';
-  RsErrorMutexAlreadyExists = 'Работа данной копии программы будет завершена, т.к. одна копия программы уже запущена.';
+  RsErrorMutexAlreadyExists =
+    'Работа данной копии программы будет завершена, т.к. одна копия программы уже запущена.';
   RsErrorCreateMutex = 'Не удалось создать объект мютекса';
   RsErrorWaitForMutex = 'Не удалось считать состояние объекта мьютекса';
   RsErrorReleaseMutex = 'Не удалось освободить объект мьютекса';
@@ -57,7 +58,8 @@ end;
 
 procedure TBeeper.ShowError;
 begin
-  MessageBox(Application.Handle, PWideChar(FError + sLineBreak + sLineBreak + Format(RsErrorCode, [IntToStr(GetLastError)])), PWideChar(Format(RsErrorMessageCaption, [Application.Title])),
+  MessageBox(Application.Handle, PWideChar(FError + sLineBreak + sLineBreak + Format(RsErrorCode,
+    [IntToStr(GetLastError)])), PWideChar(Format(RsErrorMessageCaption, [Application.Title])),
     MESSAGE_TYPE_ERROR);
 end;
 
