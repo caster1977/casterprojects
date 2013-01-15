@@ -22,7 +22,8 @@ type
     FWaveFile: string;
     FEnabled: Boolean;
     FTimer: TTimer;
-    function PeriodToSeconds(const ASeconds: word; const AMinutes: word = 0; const AHours: word = 0; const ADays: word = 0; const AWeeks: word = 0; const AMonths: word = 0;
+    function PeriodToSeconds(const ASeconds: word; const AMinutes: word = 0; const AHours: word = 0;
+      const ADays: word = 0; const AWeeks: word = 0; const AMonths: word = 0;
       const AYears: word = 0): Int64;
 
     function GetTitle: string;
@@ -57,11 +58,14 @@ type
     constructor Create; virtual; final;
     destructor Destroy; override;
     property Title: string read GetTitle write SetTitle nodefault;
-    property PeriodType: TPeriodTypes read GetPeriodType write SetPeriodType default DEFAULT_SIGNAL_PERIOD_TYPE;
+    property PeriodType: TPeriodTypes read GetPeriodType write SetPeriodType
+      default DEFAULT_SIGNAL_PERIOD_TYPE;
     property Period: Int64 read GetPeriod write SetPeriod default DEFAULT_SIGNAL_PERIOD;
-    property MessageEnabled: Boolean read GetMessageEnabled write SetMessageEnabled default DEFAULT_SIGNAL_MESSAGE_ENABLED;
+    property MessageEnabled: Boolean read GetMessageEnabled write SetMessageEnabled
+      default DEFAULT_SIGNAL_MESSAGE_ENABLED;
     property message: string read GetMessage write SetMessage nodefault;
-    property WaveFileEnabled: Boolean read GetWaveFileEnabled write SetWaveFileEnabled default DEFAULT_SIGNAL_WAVE_FILE_ENABLED;
+    property WaveFileEnabled: Boolean read GetWaveFileEnabled write SetWaveFileEnabled
+      default DEFAULT_SIGNAL_WAVE_FILE_ENABLED;
     property WaveFile: string read GetWaveFile write SetWaveFile nodefault;
     property Enabled: Boolean read GetEnabled write SetEnabled default DEFAULT_SIGNAL_ENABLED;
     property Timer: TTimer read GetTimer nodefault;
@@ -184,7 +188,8 @@ begin
   Routines.SetField(AValue, FWaveFileEnabled);
 end;
 
-function TSignal.PeriodToSeconds(const ASeconds, AMinutes, AHours, ADays, AWeeks, AMonths, AYears: word): Int64;
+function TSignal.PeriodToSeconds(const ASeconds, AMinutes, AHours, ADays, AWeeks, AMonths,
+  AYears: word): Int64;
 begin
   Result := 0;
 end;

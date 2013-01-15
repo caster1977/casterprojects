@@ -12,7 +12,7 @@ uses
   Vcl.Controls,
   Vcl.StdCtrls,
   Vcl.ComCtrls,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls, System.Actions;
 
 type
   TConfigurationForm = class(TForm)

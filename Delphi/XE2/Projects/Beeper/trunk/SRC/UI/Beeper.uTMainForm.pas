@@ -19,7 +19,8 @@ uses
   Vcl.ExtCtrls,
   Vcl.ComCtrls,
   Vcl.ToolWin,
-  Vcl.ActnCtrls, System.Actions;
+  Vcl.ActnCtrls,
+  System.Actions;
 
 type
   TMainForm = class(TForm)
@@ -102,9 +103,9 @@ type
     procedure WMHotkey(var AMsg: TWMHotkey); message WM_HOTKEY;
     procedure Flash;
     procedure UpdateVisibilityActions;
-  strict
-  private
-    function GetConfiguration: IConfiguration; protected
+  strict private
+    function GetConfiguration: IConfiguration;
+  protected
     procedure WMGetSysCommand(var AMessage: TMessage); message WM_SYSCOMMAND;
     procedure WndProc(var AMessage: TMessage); override;
     property Configuration: IConfiguration read GetConfiguration nodefault;
@@ -135,8 +136,10 @@ resourcestring
   RsErrorRegisterWindowMessage = 'Не удалось выполнить операцию регистрации оконного сообщения!';
   RsErrorResigterStartHotKey = 'Не удалось назначить горячую клавишу для запуска сигналов.';
   RsErrorResigterStopHotKey = 'Не удалось назначить горячую клавишу для останова сигналов.';
-  RsErrorUnregisterStartHotKey = 'Не удалось освободить горячую клавишу предназначеную для останова сигналов.';
-  RsErrorUnregisterStopHotKey = 'Не удалось освободить горячую клавишу предназначеную для запуска сигналов.';
+  RsErrorUnregisterStartHotKey =
+    'Не удалось освободить горячую клавишу предназначеную для останова сигналов.';
+  RsErrorUnregisterStopHotKey =
+    'Не удалось освободить горячую клавишу предназначеную для запуска сигналов.';
 
 procedure TMainForm.DisplayHint(ASender: TObject);
 begin
@@ -174,18 +177,21 @@ end;
 
 procedure TMainForm.ShowErrorMessageBox(const AMessage: string);
 begin
-  MessageBox(Handle, PWideChar(AMessage), PWideChar(Format(RsErrorMessageCaption, [Application.Title])), MESSAGE_TYPE_ERROR);
+  MessageBox(Handle, PWideChar(AMessage),
+    PWideChar(Format(RsErrorMessageCaption, [Application.Title])), MESSAGE_TYPE_ERROR);
 end;
 
 procedure TMainForm.RegisterHotKeys;
 begin
   if Assigned(Configuration) then
   begin
-    if not RegisterHotkey(Handle, HOTKEY_ON, Configuration.ModifierOn, Configuration.VirtualKeyOn) then
+    if not RegisterHotkey(Handle, HOTKEY_ON, Configuration.ModifierOn, Configuration.VirtualKeyOn)
+    then
     begin
       ShowErrorMessageBox(RsErrorResigterStartHotKey);
     end;
-    if not RegisterHotkey(Handle, HOTKEY_OFF, Configuration.ModifierOff, Configuration.VirtualKeyOff) then
+    if not RegisterHotkey(Handle, HOTKEY_OFF, Configuration.ModifierOff, Configuration.VirtualKeyOff)
+    then
     begin
       ShowErrorMessageBox(RsErrorResigterStopHotKey);
     end;
@@ -232,6 +238,7 @@ end;
 procedure TMainForm.FillHistory;
 var
   i: Integer;
+  s: ISignal;
 begin
   if not Assigned(FWaveFileHistory) then
   begin
@@ -247,17 +254,18 @@ begin
   end;
   if Assigned(Configuration) then
   begin
-    if Assigned(Configuration.SignalList) then
+    if Assigned(Configuration.Signals) then
     begin
-      for i := 0 to Configuration.SignalList.Count - 1 do
+      for i := 0 to Configuration.Signals.Count - 1 do
       begin
-        if Configuration.SignalList.Items[i].WaveFile <> EmptyStr then
+        s := Configuration.Signals.Items[i];
+        if s.WaveFile <> EmptyStr then
         begin
-          FWaveFileHistory.Append(Configuration.SignalList.Items[i].WaveFile);
+          FWaveFileHistory.Append(s.WaveFile);
         end;
-        if Configuration.SignalList.Items[i].Message <> EmptyStr then
+        if s.Message <> EmptyStr then
         begin
-          FMessageHistory.Append(Configuration.SignalList.Items[i].Message);
+          FMessageHistory.Append(s.Message);
         end;
       end;
     end;
@@ -266,7 +274,9 @@ end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage), PWideChar(Format(RsExitConfirmationCaption, [Application.Title])), MESSAGE_TYPE_CONFIRMATION) = IDOK;
+  CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
+    PWideChar(Format(RsExitConfirmationCaption, [Application.Title])),
+    MESSAGE_TYPE_CONFIRMATION) = IDOK;
 end;
 
 procedure TMainForm.ListViewItemChecked(Sender: TObject; Item: TListItem);
@@ -279,7 +289,8 @@ begin
       begin
         if Assigned(Configuration) then
         begin
-          Configuration.SignalList.Items[Configuration.SignalList.IndexOf(ISignal(Item.Data))].Enabled := Item.Checked;
+          Configuration.Signals.Items[Configuration.Signals.IndexOf(ISignal(Item.Data))].Enabled :=
+            Item.Checked;
         end;
       end;
     end;
@@ -294,9 +305,9 @@ begin
     begin
       if Assigned(Configuration) then
       begin
-        if Assigned(Configuration.SignalList) then
+        if Assigned(Configuration.Signals) then
         begin
-          Configuration.SignalList.Remove(ISignal(ListView.Selected.Data));
+          Configuration.Signals.Remove(ISignal(ListView.Selected.Data));
           RefreshSignals;
         end;
       end;
@@ -315,7 +326,7 @@ begin
   begin
     if ListView.Items.Count > 0 then
     begin
-      Configuration.SignalList.Clear;
+      Configuration.Signals.Clear;
       RefreshSignals;
     end;
   end;
@@ -325,23 +336,25 @@ procedure TMainForm.RefreshSignals;
 var
   i: Integer;
   node: TListItem;
+  s: ISignal;
 begin
   ListView.Items.BeginUpdate;
   try
     ListView.Items.Clear;
     if Assigned(Configuration) then
     begin
-      if Assigned(Configuration.SignalList) then
+      if Assigned(Configuration.Signals) then
       begin
-        for i := 0 to Configuration.SignalList.Count - 1 do
+        for i := 0 to Configuration.Signals.Count - 1 do
         begin
-          if Assigned(Configuration.SignalList.Items[i]) then
+          s := Configuration.Signals.Items[i];
+          if Assigned(s) then
           begin
             node := ListView.Items.Add;
-            node.Data := Pointer(Configuration.SignalList.Items[i]);
-            node.Caption := Configuration.SignalList.Items[i].Title;
-            node.SubItems.Add(IntToStr(Configuration.SignalList.Items[i].Period) + ' ' + PERIODS[Configuration.SignalList.Items[i].PeriodType]);
-            node.Checked := Configuration.SignalList.Items[i].Enabled;
+            node.Data := Pointer(s);
+            node.Caption := s.Title;
+            node.SubItems.Add(IntToStr(s.Period) + ' ' + PERIODS[s.PeriodType]);
+            node.Checked := s.Enabled;
           end;
         end;
       end;
@@ -364,7 +377,7 @@ begin
         ShowModal;
         if ModalResult = mrOk then
         begin
-          i := Configuration.SignalList.Add(Signal);
+          i := Configuration.Signals.Add(Signal);
           RefreshSignals;
           ListView.ItemIndex := i;
           FMessageHistory := MessageHistory;
@@ -394,7 +407,8 @@ begin
             ShowModal;
             if ModalResult = mrOk then
             begin
-              Configuration.SignalList.Items[Configuration.SignalList.IndexOf(ISignal(ListView.Selected.Data))] := Signal;
+              Configuration.Signals.Items
+                [Configuration.Signals.IndexOf(ISignal(ListView.Selected.Data))] := Signal;
               i := ListView.ItemIndex;
               RefreshSignals;
               ListView.ItemIndex := i;
@@ -545,6 +559,7 @@ begin
 end;
 
 initialization
+
 begin
   if not Assigned(GlobalConfiguration) then
   begin
