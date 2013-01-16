@@ -58,10 +58,15 @@ uses
 
 constructor TSignalThread.Create(const ASignal: ISignal);
 begin
-  inherited Create(True);
-  Priority := tpLower;
-  FreeOnTerminate := False;
-  OnTerminate := OnTerminateProc;
+  if Assigned(ASignal) then
+  begin
+    inherited Create(True);
+    Priority := tpLower;
+    FreeOnTerminate := False;
+    OnTerminate := OnTerminateProc;
+  end
+  else
+    raise Exception.Create('Error Message');
 end;
 
 procedure TSignalThread.Execute;
