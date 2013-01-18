@@ -21,7 +21,8 @@ uses
   Beeper.uIConfiguration in 'SRC\Logic\Interfaces\Beeper.uIConfiguration.pas',
   Beeper.uISignal in 'SRC\Logic\Interfaces\Beeper.uISignal.pas',
   Beeper.uISignalList in 'SRC\Logic\Interfaces\Beeper.uISignalList.pas',
-  Beeper.uTSignalThread in 'SRC\Logic\Classes\Beeper.uTSignalThread.pas';
+  Beeper.uTSignalThread in 'SRC\Logic\Classes\Beeper.uTSignalThread.pas',
+  Beeper.uESignalThread in 'SRC\Logic\Classes\Beeper.uESignalThread.pas';
 
 {$R *.res}
 
