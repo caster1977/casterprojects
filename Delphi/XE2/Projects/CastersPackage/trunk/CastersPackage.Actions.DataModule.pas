@@ -8,7 +8,7 @@ uses
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.ActnList,
-  CastersPackage.Actions.Classes, Vcl.StdActns;
+  CastersPackage.Actions.Classes, Vcl.StdActns, System.Actions;
 
 type
   TActionsDataModule = class(TDataModule)
@@ -35,6 +35,7 @@ type
     HelpContentsAction: THelpContentsAction;
     ActionMenuGroupAction: TActionMenuGroupAction;
     Action_Cancel: TAction_Cancel;
+    ProfilesMenuGroupAction: TProfilesMenuGroupAction;
   end;
 
 implementation
