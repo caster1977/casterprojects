@@ -130,6 +130,7 @@
         <DCCReference Include="SRC\Logic\Interfaces\Beeper.uISignal.pas"/>
         <DCCReference Include="SRC\Logic\Interfaces\Beeper.uISignalList.pas"/>
         <DCCReference Include="SRC\Logic\Classes\Beeper.uTSignalThread.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\Beeper.uESignalThread.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

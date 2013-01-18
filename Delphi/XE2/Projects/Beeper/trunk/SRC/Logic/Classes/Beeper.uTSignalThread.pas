@@ -23,7 +23,8 @@ type
 implementation
 
 uses
-  System.SysUtils;
+  System.SysUtils,
+  Beeper.uESignalThread;
 
 {
   Important: Methods and properties of objects in visual components can only be
@@ -66,7 +67,9 @@ begin
     OnTerminate := OnTerminateProc;
   end
   else
-    raise Exception.Create('Error Message');
+  begin
+    raise ESignalThread.Create('ISignal is nil.');
+  end;
 end;
 
 procedure TSignalThread.Execute;
@@ -74,8 +77,10 @@ begin
   inherited;
 {$IFDEF DEBUG}
   if Assigned(Signal) then
+  begin
     NameThreadForDebugging(AnsiString(HexDisplayPrefix + IntToHex(PInteger(Signal)^,
       SizeOf(PInteger) * 2)));
+  end;
 {$ENDIF}
   { Place thread code here }
 end;
@@ -87,6 +92,7 @@ end;
 
 procedure TSignalThread.OnTerminateProc(Sender: TObject);
 begin
+  { TODO : можно добавить код освобождени€ объектов или сохранени€ данных перед уничтожением треда }
 end;
 
 end.
