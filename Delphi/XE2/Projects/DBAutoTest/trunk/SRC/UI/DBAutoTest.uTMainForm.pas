@@ -18,13 +18,12 @@ uses
   Vcl.ImgList,
   Vcl.Menus,
   Vcl.ComCtrls,
-  Vcl.StdActns, Vcl.StdCtrls, Vcl.ExtCtrls;
+  Vcl.StdActns, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ActnMenus, Vcl.ToolWin,
+  Vcl.ActnMan, Vcl.ActnCtrls, Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnPopup;
 
 type
   TMainForm = class(TForm)
-    MainMenu: TMainMenu;
     StatusBar: TStatusBar;
-    ActionList: TActionList;
     ImageList: TImageList;
     actHelpMenuGroup: THelpMenuGroupAction;
     actFileMenuGroup: TFileMenuGroupAction;
@@ -32,18 +31,27 @@ type
     actHelpContents: THelpContentsAction;
     actAbout: TAction;
     actQuit: TQuitAction;
-    N1: TMenuItem;
-    N2: TMenuItem;
-    N3: TMenuItem;
-    N4: TMenuItem;
-    N5: TMenuItem;
-    N6: TMenuItem;
     pnlMain: TPanel;
     pnlButtons: TPanel;
     btnProcess: TButton;
     btnProfiles: TButton;
-    pnlTopButtonSpacer: TPanel;
-    ListView1: TListView;
+    lvTaskList: TListView;
+    actLoadProfile: TAction;
+    actSaveProfileAs: TAction;
+    actClearProfile: TAction;
+    actSaveProfile: TAction;
+    ActionManager: TActionManager;
+    ActionMainMenuBar1: TActionMainMenuBar;
+    pabTaskList: TPopupActionBar;
+    pabProfiles: TPopupActionBar;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    actProfiles: TProfilesMenuGroupAction;
+    actConfiguration: TAction_Configuration;
+    TrayIcon: TTrayIcon;
+    pabTray: TPopupActionBar;
     procedure actQuitExecute(Sender: TObject);
   end;
 
