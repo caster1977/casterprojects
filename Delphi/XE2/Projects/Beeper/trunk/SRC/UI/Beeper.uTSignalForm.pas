@@ -77,17 +77,16 @@ type
     procedure SetMessage(const AValue: string);
     property message: string read GetMessage write SetMessage nodefault;
     function GetSignal: ISignal;
-    procedure SetSignal(const AValue: ISignal);
     function GetMessageHistory: TStringList;
     procedure SetMessageHistory(const AValue: TStringList);
     function GetWaveFileHistory: TStringList;
     procedure SetWaveFileHistory(const AValue: TStringList);
   public
-    property Signal: ISignal read GetSignal write SetSignal nodefault;
+    property Signal: ISignal read GetSignal nodefault;
     property MessageHistory: TStringList read GetMessageHistory write SetMessageHistory nodefault;
     property WaveFileHistory: TStringList read GetWaveFileHistory
       write SetWaveFileHistory nodefault;
-    constructor Create(AOwner: TComponent; const ANew: Boolean); reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const ASignal: ISignal = nil); reintroduce; virtual;
   end;
 
 implementation
@@ -248,21 +247,6 @@ begin
   end;
 end;
 
-procedure TSignalForm.SetSignal(const AValue: ISignal);
-begin
-  if Assigned(AValue) then
-  begin
-    Title := AValue.Title;
-    Period := AValue.Period;
-    PeriodType := AValue.PeriodType;
-    MessageEnabled := AValue.MessageEnabled;
-    message := AValue.Message;
-    WaveFileEnabled := AValue.WaveFileEnabled;
-    WaveFile := AValue.WaveFile;
-    FEnabled := AValue.Enabled;
-  end;
-end;
-
 procedure TSignalForm.SetTitle(const AValue: string);
 var
   s: string;
@@ -307,16 +291,24 @@ begin
   ModalResult := mrOk;
 end;
 
-constructor TSignalForm.Create(AOwner: TComponent; const ANew: Boolean);
+constructor TSignalForm.Create(AOwner: TComponent; const ASignal: ISignal);
 begin
   inherited Create(AOwner);
-  if ANew then
+  if Assigned(ASignal) then
   begin
-    Caption := RsAddSignalCaption;
+    Caption := RsEditSignalCaption;
+    Title := ASignal.Title;
+    Period := ASignal.Period;
+    PeriodType := ASignal.PeriodType;
+    MessageEnabled := ASignal.MessageEnabled;
+    message := ASignal.Message;
+    WaveFileEnabled := ASignal.WaveFileEnabled;
+    WaveFile := ASignal.WaveFile;
+    FEnabled := ASignal.Enabled;
   end
   else
   begin
-    Caption := RsEditSignalCaption;
+    Caption := RsAddSignalCaption;
   end;
 end;
 
