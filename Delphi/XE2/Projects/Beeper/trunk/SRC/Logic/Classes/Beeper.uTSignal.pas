@@ -7,11 +7,12 @@ uses
   System.Classes,
   Vcl.ExtCtrls,
   Beeper.uTPeriodTypes,
+  CastersPackage.uICustomized,
   Beeper.uISignal,
   Beeper.uConsts;
 
 type
-  TSignal = class(TInterfacedObject, ISignal)
+  TSignal = class(TInterfacedObject, ISignal, ICustomized)
   strict private
     FTitle: string;
     FPeriod: integer;
@@ -51,7 +52,7 @@ type
     procedure SetEnabled(const AValue: Boolean);
 
     function GetTimer: TTimer;
-  strict protected
+  protected
     procedure Initialize; virtual;
     procedure Finalize; virtual;
   public

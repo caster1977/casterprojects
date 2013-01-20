@@ -377,7 +377,7 @@ var
 begin
   if Assigned(Configuration) then
   begin
-    with TSignalForm.Create(Self, True) do
+    with TSignalForm.Create(Self) do
       try
         MessageHistory := FMessageHistory;
         WaveFileHistory := FWaveFileHistory;
@@ -406,11 +406,10 @@ begin
     begin
       if Assigned(ListView.Selected.Data) then
       begin
-        with TSignalForm.Create(Self, False) do
+        with TSignalForm.Create(Self, ISignal(ListView.Selected.Data)) do
           try
             MessageHistory := FMessageHistory;
             WaveFileHistory := FWaveFileHistory;
-            Signal := ISignal(ListView.Selected.Data);
             ShowModal;
             if ModalResult = mrOk then
             begin
