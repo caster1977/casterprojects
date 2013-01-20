@@ -1,4 +1,4 @@
-unit DBAutoTest.uETaskThread;
+unit DBAutoTest.uETaskList;
 
 interface
 
@@ -6,7 +6,7 @@ uses
   System.SysUtils;
 
 type
-  ETaskThread = class(Exception);
+  ETaskList = class(Exception);
 
 implementation
 
