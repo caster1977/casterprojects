@@ -74,21 +74,22 @@ object MainForm: TMainForm
       Checkboxes = True
       Columns = <
         item
+          AutoSize = True
           Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1090#1077#1089#1090#1072
-          Width = 250
         end
         item
           Caption = #1056#1077#1079#1091#1083#1100#1090#1072#1090
-          Width = -2
-          WidthType = (
-            -2)
+          Width = 100
         end>
+      FlatScrollBars = True
+      GroupView = True
+      ReadOnly = True
+      RowSelect = True
       PopupMenu = pabTaskList
       SmallImages = ImageList
       TabOrder = 1
       ViewStyle = vsReport
-      ExplicitTop = 57
-      ExplicitHeight = 323
+      OnResize = lvTaskListResize
     end
     object ActionMainMenuBar1: TActionMainMenuBar
       Left = 6
@@ -117,7 +118,7 @@ object MainForm: TMainForm
     Left = 256
     Top = 136
     Bitmap = {
-      494C0101040008002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800300010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

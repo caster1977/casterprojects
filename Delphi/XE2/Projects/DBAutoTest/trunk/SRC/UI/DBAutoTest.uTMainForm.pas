@@ -53,6 +53,7 @@ type
     TrayIcon: TTrayIcon;
     pabTray: TPopupActionBar;
     procedure actQuitExecute(Sender: TObject);
+    procedure lvTaskListResize(Sender: TObject);
   end;
 
 var
@@ -67,4 +68,20 @@ begin
   Close;
 end;
 
+procedure TMainForm.lvTaskListResize(Sender: TObject);
+//var
+//  h: HWND;
+begin
+//  h:=lvTaskList.Handle;
+//  lvTaskList.Column[0].Width:=lvTaskList.Width-100-(lvTaskList.BevelWidth*2)-2;
+//  if (GetWindowLong(h, GWL_STYLE)and WS_VSCROLL)=WS_VSCROLL then
+//  begin
+//    lvTaskList.Column[0].Width:=lvTaskList.Column[0].Width-GetSystemMetrics(SM_CXVSCROLL);
+//  end;
+//  lvTaskList.Column[1].Width:=100;
+//  lvTaskList.FlatScrollBars:=False;
+//  lvTaskList.FlatScrollBars:=True;
+end;
+
 end.
+
