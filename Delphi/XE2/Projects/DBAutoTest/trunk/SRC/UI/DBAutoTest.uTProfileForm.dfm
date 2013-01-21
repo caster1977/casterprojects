@@ -1,9 +1,11 @@
-object Form4: TForm4
+object ProfileForm: TProfileForm
   Left = 0
   Top = 0
-  Caption = 'Form4'
-  ClientHeight = 243
-  ClientWidth = 472
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'ProfileForm'
+  ClientHeight = 253
+  ClientWidth = 482
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,6 +13,7 @@ object Form4: TForm4
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
   PixelsPerInch = 96
   TextHeight = 13
 end

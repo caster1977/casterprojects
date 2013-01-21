@@ -1,9 +1,9 @@
-object ConfigurationForm: TConfigurationForm
+object RecentsPropertiesForm: TRecentsPropertiesForm
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
-  Caption = 'ConfigurationForm'
+  Caption = 'RecentsPropertiesForm'
   ClientHeight = 253
   ClientWidth = 482
   Color = clBtnFace

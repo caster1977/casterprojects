@@ -63,7 +63,7 @@ object MainForm: TMainForm
         Top = 6
         Width = 100
         Height = 25
-        Action = actProfiles
+        Action = actProfileProperties
         DoubleBuffered = False
         DropDownMenu = pabProfiles
         ParentDoubleBuffered = False
@@ -124,7 +124,7 @@ object MainForm: TMainForm
     Left = 256
     Top = 136
     Bitmap = {
-      494C01010B00A000C00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B00A000C40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       00000000000000000000000000000000000000000000897970007D6E65007463
       5A0073625900736259007362590073625900736259007362590074635A007D6E
@@ -543,6 +543,7 @@ object MainForm: TMainForm
           item
             Action = actConfiguration
             ImageIndex = 3
+            ShortCut = 32888
           end
           item
             Caption = '-'
@@ -564,6 +565,7 @@ object MainForm: TMainForm
               item
                 Action = actConfiguration
                 ImageIndex = 3
+                ShortCut = 32888
               end
               item
                 Caption = '-'
@@ -580,6 +582,7 @@ object MainForm: TMainForm
               item
                 Action = actProcess
                 ImageIndex = 4
+                ShortCut = 120
               end
               item
                 Caption = '-'
@@ -587,14 +590,17 @@ object MainForm: TMainForm
               item
                 Action = actCreateTask
                 ImageIndex = 7
+                ShortCut = 45
               end
               item
                 Action = actEditTask
                 ImageIndex = 8
+                ShortCut = 113
               end
               item
                 Action = actDeleteTask
                 ImageIndex = 9
+                ShortCut = 46
               end
               item
                 Action = actClearTasks
@@ -636,6 +642,7 @@ object MainForm: TMainForm
           item
             Action = actConfiguration
             ImageIndex = 3
+            ShortCut = 32888
           end
           item
             Caption = '-'
@@ -643,6 +650,7 @@ object MainForm: TMainForm
           item
             Action = actProcess
             ImageIndex = 4
+            ShortCut = 120
           end
           item
             Caption = '-'
@@ -650,14 +658,17 @@ object MainForm: TMainForm
           item
             Action = actCreateTask
             ImageIndex = 7
+            ShortCut = 45
           end
           item
             Action = actEditTask
             ImageIndex = 8
+            ShortCut = 113
           end
           item
             Action = actDeleteTask
             ImageIndex = 9
+            ShortCut = 46
           end
           item
             Action = actClearTasks
@@ -736,7 +747,6 @@ object MainForm: TMainForm
       Caption = #1055#1086#1089#1083#1077#1076#1085#1080#1077
       Hint = #1055#1086#1089#1083#1077#1076#1085#1080#1077' '#1086#1090#1082#1088#1099#1090#1099#1077'|'#1047#1072#1075#1088#1091#1079#1080#1090#1100' '#1086#1076#1080#1085' '#1080#1079' '#1087#1086#1089#1083#1077#1076#1085#1080#1093' '#1086#1090#1082#1088#1099#1090#1099#1093' '#1092#1072#1081#1083#1086#1074
       OnExecute = actRecentProfilesExecute
-      OnUpdate = actRecentProfilesUpdate
     end
     object actSaveProfile: TAction
       Category = #1055#1088#1086#1092#1080#1083#1100
@@ -746,15 +756,12 @@ object MainForm: TMainForm
       Category = #1055#1088#1086#1092#1080#1083#1100
       Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1082#1072#1082'...'
     end
-    object actProfiles: TProfilesMenuGroupAction
-      Category = #1055#1088#1086#1092#1080#1083#1100
-      Caption = '&'#1055#1088#1086#1092#1080#1083#1100
-    end
     object actConfiguration: TAction_Configuration
       Category = #1060#1072#1081#1083
       Caption = '&'#1050#1086#1085#1092#1080#1075#1091#1088#1072#1094#1080#1103'...'
       Hint = #1050#1086#1085#1092#1080#1075#1091#1088#1072#1094#1080#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1086#1082#1085#1072' '#1082#1086#1085#1092#1080#1075#1091#1088#1072#1094#1080#1080' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
       ImageIndex = 3
+      ShortCut = 32888
       OnExecute = actConfigurationExecute
     end
     object actProcess: TAction
@@ -762,6 +769,7 @@ object MainForm: TMainForm
       Caption = '&'#1042#1099#1087#1086#1083#1085#1080#1090#1100
       Hint = #1042#1099#1087#1086#1083#1085#1080#1090#1100' '#1090#1077#1089#1090#1099'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1079#1072#1087#1091#1089#1082#1072' '#1090#1077#1089#1090#1086#1074' '#1085#1072' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1077
       ImageIndex = 4
+      ShortCut = 120
       OnUpdate = actProcessUpdate
     end
     object actCreateTask: TAction
@@ -769,6 +777,7 @@ object MainForm: TMainForm
       Caption = #1057#1086#1079#1076#1072#1090#1100' '#1090#1077#1089#1090
       Hint = #1057#1086#1079#1076#1072#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1076#1086#1073#1072#1074#1083#1077#1085#1080#1103' '#1085#1086#1074#1086#1075#1086' '#1101#1083#1077#1084#1077#1085#1090#1072' '#1074' '#1089#1087#1080#1089#1086#1082
       ImageIndex = 7
+      ShortCut = 45
       OnExecute = actCreateTaskExecute
       OnUpdate = actCreateTaskUpdate
     end
@@ -779,6 +788,7 @@ object MainForm: TMainForm
         #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1088#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1103' '#1074#1099#1076#1077#1083#1077#1085#1085#1086#1075#1086' '#1101#1083#1077#1084#1077#1085#1090#1072' '#1089#1087 +
         #1080#1089#1082#1072
       ImageIndex = 8
+      ShortCut = 113
       OnUpdate = actEditTaskUpdate
     end
     object actDeleteTask: TAction
@@ -786,6 +796,7 @@ object MainForm: TMainForm
       Caption = #1059#1076#1072#1083#1080#1090#1100' '#1090#1077#1089#1090
       Hint = #1059#1076#1072#1083#1080#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1074#1099#1076#1077#1083#1077#1085#1085#1086#1075#1086' '#1101#1083#1077#1084#1077#1085#1090#1072' '#1080#1079' '#1089#1087#1080#1089#1082#1072
       ImageIndex = 9
+      ShortCut = 46
       OnUpdate = actDeleteTaskUpdate
     end
     object actClearTasks: TAction
@@ -794,6 +805,18 @@ object MainForm: TMainForm
       Hint = #1054#1095#1080#1089#1090#1080#1090#1100' '#1089#1087#1080#1089#1086#1082'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1074#1089#1077#1093' '#1101#1083#1077#1084#1077#1085#1090#1086#1074' '#1080#1079' '#1089#1087#1080#1089#1082#1072
       ImageIndex = 10
       OnUpdate = actClearTasksUpdate
+    end
+    object actRecentProfilesProperties: TAction
+      Category = #1055#1088#1086#1092#1080#1083#1100
+      Caption = #1057#1074#1086#1081#1089#1090#1074#1072'...'
+      Hint = #1057#1074#1086#1081#1089#1090#1074#1072'...|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1086#1082#1085#1072' '#1089#1074#1086#1081#1089#1090#1074' '#1087#1088#1086#1092#1080#1083#1077#1081
+      OnExecute = actRecentProfilesPropertiesExecute
+    end
+    object actProfileProperties: TAction
+      Category = #1055#1088#1086#1092#1080#1083#1100
+      Caption = #1055#1088#1086#1092#1080#1083#1100'...'
+      OnExecute = actProfilePropertiesExecute
+      OnUpdate = actProfilePropertiesUpdate
     end
   end
   object pabTaskList: TPopupActionBar
@@ -813,6 +836,12 @@ object MainForm: TMainForm
     end
     object N5: TMenuItem
       Action = actRecentProfiles
+      object N31: TMenuItem
+        Caption = '-'
+      end
+      object N30: TMenuItem
+        Action = actRecentProfilesProperties
+      end
     end
     object N3: TMenuItem
       Action = actSaveProfile
@@ -869,26 +898,6 @@ object MainForm: TMainForm
       end
       object N26: TMenuItem
         Action = actClearTasks
-      end
-    end
-    object N9: TMenuItem
-      Action = actProfiles
-      object N12: TMenuItem
-        Action = actCreateProfile
-      end
-      object N13: TMenuItem
-        Action = actLoadProfile
-      end
-      object N14: TMenuItem
-        Action = actRecentProfiles
-        object TMenuItem
-        end
-      end
-      object N15: TMenuItem
-        Action = actSaveProfile
-      end
-      object N16: TMenuItem
-        Action = actSaveProfileAs
       end
     end
     object N10: TMenuItem

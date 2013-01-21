@@ -125,13 +125,19 @@
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTTaskThread.pas"/>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uETaskThread.pas"/>
         <DCCReference Include="SRC\UI\DBAutoTest.uTProfileForm.pas">
-            <Form>Form4</Form>
+            <Form>ProfileForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="SRC\Logic\Other\DBAutoTest.uConsts.pas"/>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uETaskList.pas"/>
         <DCCReference Include="SRC\UI\DBAutoTest.uTAboutForm.pas">
             <Form>AboutForm</Form>
+        </DCCReference>
+        <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uIProfile.pas"/>
+        <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uIProfileList.pas"/>
+        <DCCReference Include="SRC\UI\DBAutoTest.uTRecentsPropertiesForm.pas">
+            <Form>RecentsPropertiesForm</Form>
+            <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

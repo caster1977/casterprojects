@@ -56,7 +56,6 @@ type
     N4: TMenuItem;
     N5: TMenuItem;
     N6: TMenuItem;
-    actProfiles: TProfilesMenuGroupAction;
     actConfiguration: TAction_Configuration;
     TrayIcon: TTrayIcon;
     pabTray: TPopupActionBar;
@@ -70,13 +69,7 @@ type
     atbMain: TActionToolBar;
     N7: TMenuItem;
     N8: TMenuItem;
-    N9: TMenuItem;
     N10: TMenuItem;
-    N12: TMenuItem;
-    N13: TMenuItem;
-    N14: TMenuItem;
-    N15: TMenuItem;
-    N16: TMenuItem;
     N17: TMenuItem;
     N18: TMenuItem;
     N19: TMenuItem;
@@ -89,6 +82,10 @@ type
     N27: TMenuItem;
     N28: TMenuItem;
     N29: TMenuItem;
+    actRecentProfilesProperties: TAction;
+    N30: TMenuItem;
+    N31: TMenuItem;
+    actProfileProperties: TAction;
     procedure actQuitExecute(Sender: TObject);
     procedure lvTaskListResize(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
@@ -102,7 +99,9 @@ type
     procedure actCreateTaskUpdate(Sender: TObject);
     procedure actProcessUpdate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure actRecentProfilesUpdate(Sender: TObject);
+    procedure actRecentProfilesPropertiesExecute(Sender: TObject);
+    procedure actProfilePropertiesUpdate(Sender: TObject);
+    procedure actProfilePropertiesExecute(Sender: TObject);
   strict private
     procedure OnHint(ASender: TObject);
     procedure ShowAboutWindow(const AShowCloseButton: Boolean);
@@ -120,7 +119,9 @@ uses
   DBAutoTest.uTConfigurationForm,
   DBAutoTest.uTAboutForm,
   DBAutoTest.uTTaskForm,
-  DBAutoTest.uConsts;
+  DBAutoTest.uConsts,
+  DBAutoTest.uTRecentsPropertiesForm,
+  DBAutoTest.uTProfileForm;
 
 resourcestring
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
@@ -169,7 +170,7 @@ end;
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
-    PWideChar(Format(RsExitConfirmationCaption, [Application.Title])),
+    PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])),
     MESSAGE_TYPE_CONFIRMATION) = IDOK;
 end;
 
@@ -235,19 +236,38 @@ begin
   actProcess.Enabled := (lvTaskList.Items.Count > 0); // and (not FProcessActive);
 end;
 
+procedure TMainForm.actProfilePropertiesExecute(Sender: TObject);
+begin
+  with TProfileForm.Create(Self) do
+    try
+      ShowModal;
+    finally
+      Free;
+    end;
+end;
+
+procedure TMainForm.actProfilePropertiesUpdate(Sender: TObject);
+begin
+  // actProfileProperties.Enabled := not FProcessActive;
+end;
+
+procedure TMainForm.actRecentProfilesPropertiesExecute(Sender: TObject);
+begin
+  with TRecentsPropertiesForm.Create(Self) do
+    try
+      ShowModal;
+    finally
+      Free;
+    end;
+end;
+
 procedure TMainForm.actClearTasksUpdate(Sender: TObject);
 begin
   TAction(Sender).Enabled := (lvTaskList.Items.Count > 0); // and (not FProcessActive);
 end;
 
-procedure TMainForm.actRecentProfilesUpdate(Sender: TObject);
-begin
-  { TODO : добавить проверку на длину списка последних файлов профиля}
-end;
-
 procedure TMainForm.RefreshTaskList;
 begin
-
 end;
 
 end.

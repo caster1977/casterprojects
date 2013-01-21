@@ -14,10 +14,14 @@ uses
   DBAutoTest.uTTaskList in 'SRC\Logic\Classes\DBAutoTest.uTTaskList.pas',
   DBAutoTest.uTTaskThread in 'SRC\Logic\Classes\DBAutoTest.uTTaskThread.pas',
   DBAutoTest.uETaskThread in 'SRC\Logic\Classes\DBAutoTest.uETaskThread.pas',
-  DBAutoTest.uTProfileForm in 'SRC\UI\DBAutoTest.uTProfileForm.pas' {Form4} ,
+  DBAutoTest.uTProfileForm in 'SRC\UI\DBAutoTest.uTProfileForm.pas' {ProfileForm} ,
   DBAutoTest.uConsts in 'SRC\Logic\Other\DBAutoTest.uConsts.pas',
   DBAutoTest.uETaskList in 'SRC\Logic\Classes\DBAutoTest.uETaskList.pas',
-  DBAutoTest.uTAboutForm in 'SRC\UI\DBAutoTest.uTAboutForm.pas' {AboutForm};
+  DBAutoTest.uTAboutForm in 'SRC\UI\DBAutoTest.uTAboutForm.pas' {AboutForm} ,
+  DBAutoTest.uIProfile in 'SRC\Logic\Interfaces\DBAutoTest.uIProfile.pas',
+  DBAutoTest.uIProfileList in 'SRC\Logic\Interfaces\DBAutoTest.uIProfileList.pas',
+  DBAutoTest.uTRecentsPropertiesForm
+    in 'SRC\UI\DBAutoTest.uTRecentsPropertiesForm.pas' {RecentsPropertiesForm};
 
 {$R *.res}
 

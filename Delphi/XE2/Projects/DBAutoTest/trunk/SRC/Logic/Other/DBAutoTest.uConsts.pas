@@ -13,6 +13,8 @@ const
 
   MESSAGE_TYPE_CONFIRMATION: Cardinal = MB_OKCANCEL + MB_ICONQUESTION + MB_DEFBUTTON2;
 
+  APPLICATION_NAME = 'DBAutoTest';
+
 implementation
 
 end.
