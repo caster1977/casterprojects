@@ -18,7 +18,7 @@ function GetITasks: ITasks;
 implementation
 
 resourcestring
-  RsCantAddTaskToTaskList = 'Ќе удалось добавить тест в список тестов.';
+  RsCantAddTaskToTasks = 'Ќе удалось добавить тест в список тестов.';
   RsCantRemoveTaskFromTaskList = 'Ќе удалось удалить тест из списка тестов.';
 
 function GetITasks: ITasks;
@@ -29,7 +29,7 @@ end;
 procedure TTasks.Initialize;
 begin
   inherited;
-  AddItemErrorString := RsCantAddTaskToTaskList;
+  AddItemErrorString := RsCantAddTaskToTasks;
   RemoveItemErrorString := RsCantRemoveTaskFromTaskList;
 end;
 
