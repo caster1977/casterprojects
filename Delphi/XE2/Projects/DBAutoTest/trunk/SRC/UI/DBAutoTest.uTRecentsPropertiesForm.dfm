@@ -4,8 +4,8 @@ object RecentsPropertiesForm: TRecentsPropertiesForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'RecentsPropertiesForm'
-  ClientHeight = 253
-  ClientWidth = 482
+  ClientHeight = 332
+  ClientWidth = 474
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

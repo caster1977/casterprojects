@@ -4,8 +4,8 @@ object ProfileForm: TProfileForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'ProfileForm'
-  ClientHeight = 253
-  ClientWidth = 482
+  ClientHeight = 332
+  ClientWidth = 474
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
