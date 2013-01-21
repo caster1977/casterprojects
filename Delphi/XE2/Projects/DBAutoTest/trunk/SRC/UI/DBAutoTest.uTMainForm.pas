@@ -67,7 +67,7 @@ type
     actDeleteTask: TAction;
     actClearTasks: TAction;
     MainMenu: TMainMenu;
-    ActionToolBar1: TActionToolBar;
+    atbMain: TActionToolBar;
     N7: TMenuItem;
     N8: TMenuItem;
     N9: TMenuItem;
@@ -95,9 +95,18 @@ type
     procedure FormCreate(Sender: TObject);
     procedure actConfigurationExecute(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
+    procedure actCreateTaskExecute(Sender: TObject);
+    procedure actEditTaskUpdate(Sender: TObject);
+    procedure actDeleteTaskUpdate(Sender: TObject);
+    procedure actClearTasksUpdate(Sender: TObject);
+    procedure actCreateTaskUpdate(Sender: TObject);
+    procedure actProcessUpdate(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure actRecentProfilesUpdate(Sender: TObject);
   strict private
     procedure OnHint(ASender: TObject);
     procedure ShowAboutWindow(const AShowCloseButton: Boolean);
+    procedure RefreshTaskList;
   end;
 
 var
@@ -109,7 +118,13 @@ implementation
 
 uses
   DBAutoTest.uTConfigurationForm,
-  DBAutoTest.uTAboutForm;
+  DBAutoTest.uTAboutForm,
+  DBAutoTest.uTTaskForm,
+  DBAutoTest.uConsts;
+
+resourcestring
+  RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
+  RsExitConfirmationCaption = '%s - Подтверждение выхода';
 
 procedure TMainForm.actAboutExecute(Sender: TObject);
 begin
@@ -151,6 +166,13 @@ begin
     end;
 end;
 
+procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
+    PWideChar(Format(RsExitConfirmationCaption, [Application.Title])),
+    MESSAGE_TYPE_CONFIRMATION) = IDOK;
+end;
+
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   Application.OnHint := OnHint;
@@ -169,6 +191,63 @@ begin
   // lvTaskList.Column[1].Width:=100;
   // lvTaskList.FlatScrollBars:=False;
   // lvTaskList.FlatScrollBars:=True;
+end;
+
+procedure TMainForm.actCreateTaskExecute(Sender: TObject);
+var
+  i: Integer;
+begin
+  i := lvTaskList.ItemIndex;
+  with TTaskForm.Create(Self, nil { Profile.TaskList } ) do
+    try
+      ShowModal;
+      if ModalResult = mrOk then
+      begin
+        i := TaskListIndex;
+      end;
+    finally
+      Free;
+    end;
+  if lvTaskList.ItemIndex <> i then
+  begin
+    RefreshTaskList;
+    lvTaskList.ItemIndex := i;
+  end;
+end;
+
+procedure TMainForm.actCreateTaskUpdate(Sender: TObject);
+begin
+  // actCreateTask.Enabled := not FProcessActive;
+end;
+
+procedure TMainForm.actDeleteTaskUpdate(Sender: TObject);
+begin
+  actDeleteTask.Enabled := Assigned(lvTaskList.Selected); // and (not FProcessActive);
+end;
+
+procedure TMainForm.actEditTaskUpdate(Sender: TObject);
+begin
+  actEditTask.Enabled := Assigned(lvTaskList.Selected); // and (not FProcessActive);
+end;
+
+procedure TMainForm.actProcessUpdate(Sender: TObject);
+begin
+  actProcess.Enabled := (lvTaskList.Items.Count > 0); // and (not FProcessActive);
+end;
+
+procedure TMainForm.actClearTasksUpdate(Sender: TObject);
+begin
+  TAction(Sender).Enabled := (lvTaskList.Items.Count > 0); // and (not FProcessActive);
+end;
+
+procedure TMainForm.actRecentProfilesUpdate(Sender: TObject);
+begin
+  { TODO : добавить проверку на длину списка последних файлов профиля}
+end;
+
+procedure TMainForm.RefreshTaskList;
+begin
+
 end;
 
 end.

@@ -58,7 +58,6 @@ type
     function GetTaskList: ITaskList;
     function GetTaskListIndex: Integer;
     property TaskList: ITaskList read GetTaskList nodefault;
-    property TaskListIndex: Integer read GetTaskListIndex nodefault;
     property TaskGroup: string read GetTaskGroup write SetTaskGroup nodefault;
     property TaskName: string read GetTaskName write SetTaskName nodefault;
     property TaskSQL: TStringList read GetTaskSQL write SetTaskSQL default DEFAULT_TASK_SQL;
@@ -67,6 +66,7 @@ type
   public
     constructor Create(AOwner: TComponent; const ATaskList: ITaskList; const AIndex: Integer = -1);
       reintroduce; virtual;
+    property TaskListIndex: Integer read GetTaskListIndex nodefault;
   end;
 
 implementation
