@@ -38,7 +38,6 @@ type
     btnPlayWaveFile: TButton;
     actCancel: TAction_Cancel;
     procedure ledPeriodKeyPress(Sender: TObject; var Key: Char);
-    procedure FormCreate(Sender: TObject);
     procedure actSaveExecute(Sender: TObject);
     procedure actSaveUpdate(Sender: TObject);
     procedure actEnablePlayWaveFileUpdate(Sender: TObject);
@@ -135,24 +134,6 @@ end;
 procedure TSignalForm.actEnableShowMessageExecute(Sender: TObject);
 begin
   actEnableShowMessage.Checked := not actEnableShowMessage.Checked;
-end;
-
-procedure TSignalForm.FormCreate(Sender: TObject);
-  procedure RefreshPeriodTypes;
-  var
-    pt: TPeriodTypes;
-  begin
-    cmbxPeriodType.Clear;
-    for pt := low(TPeriodTypes) to high(TPeriodTypes) do
-    begin
-      cmbxPeriodType.Items.Add(PERIODS[pt]);
-    end;
-  end;
-
-begin
-  FNowPlaying := False;
-  FEnabled := False;
-  RefreshPeriodTypes;
 end;
 
 function TSignalForm.GetSignal: ISignal;
@@ -292,8 +273,21 @@ begin
 end;
 
 constructor TSignalForm.Create(AOwner: TComponent; const ASignal: ISignal);
+  procedure RefreshPeriodTypes;
+  var
+    pt: TPeriodTypes;
+  begin
+    cmbxPeriodType.Clear;
+    for pt := low(TPeriodTypes) to high(TPeriodTypes) do
+    begin
+      cmbxPeriodType.Items.Add(PERIODS[pt]);
+    end;
+  end;
 begin
   inherited Create(AOwner);
+  FNowPlaying := False;
+  FEnabled := False;
+  RefreshPeriodTypes;
   if Assigned(ASignal) then
   begin
     Caption := RsEditSignalCaption;
