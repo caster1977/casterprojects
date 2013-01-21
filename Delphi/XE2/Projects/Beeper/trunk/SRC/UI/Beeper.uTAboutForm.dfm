@@ -47,6 +47,7 @@ object AboutForm: TAboutForm
     Width = 207
     Height = 16
     Cursor = crHandPoint
+    Hint = #1053#1072#1078#1084#1080#1090#1077' '#1085#1072' '#1089#1089#1099#1083#1082#1091', '#1095#1090#1086#1073#1099' '#1085#1072#1087#1080#1089#1072#1090#1100' '#1087#1080#1089#1100#1084#1086' '#1072#1074#1090#1086#1088#1091
     AutoSize = False
     Caption = 'vlad_dracula@tut.by'
     Font.Charset = DEFAULT_CHARSET
