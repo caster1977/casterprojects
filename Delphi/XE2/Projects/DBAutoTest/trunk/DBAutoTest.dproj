@@ -120,8 +120,8 @@
         <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uITask.pas"/>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTConfiguration.pas"/>
         <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uIConfiguration.pas"/>
-        <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uITaskList.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTTaskList.pas"/>
+        <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uITasks.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTTasks.pas"/>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTTaskThread.pas"/>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uETaskThread.pas"/>
         <DCCReference Include="SRC\UI\DBAutoTest.uTProfileForm.pas">
@@ -129,16 +129,18 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="SRC\Logic\Other\DBAutoTest.uConsts.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uETaskList.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uETasks.pas"/>
         <DCCReference Include="SRC\UI\DBAutoTest.uTAboutForm.pas">
             <Form>AboutForm</Form>
         </DCCReference>
         <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uIProfile.pas"/>
-        <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uIProfileList.pas"/>
+        <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uIProfiles.pas"/>
         <DCCReference Include="SRC\UI\DBAutoTest.uTRecentsPropertiesForm.pas">
             <Form>RecentsPropertiesForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uIRecent.pas"/>
+        <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uIRecents.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

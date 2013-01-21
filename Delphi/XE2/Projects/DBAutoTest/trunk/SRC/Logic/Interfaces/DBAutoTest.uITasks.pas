@@ -1,4 +1,4 @@
-unit DBAutoTest.uITaskList;
+unit DBAutoTest.uITasks;
 
 interface
 
@@ -8,7 +8,7 @@ uses
   DBAutoTest.uITask;
 
 type
-  ITaskList = interface(IInterfaceListOfGivenType<ITask>)
+  ITasks = interface(IInterfaceListOfGivenType<ITask>)
     ['{4003E584-E070-40E9-A9BF-71D29D2D4763}']
   end;
 

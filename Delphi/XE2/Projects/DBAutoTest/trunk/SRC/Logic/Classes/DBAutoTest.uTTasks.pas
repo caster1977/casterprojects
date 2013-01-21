@@ -1,19 +1,19 @@
-unit DBAutoTest.uTTaskList;
+unit DBAutoTest.uTTasks;
 
 interface
 
 uses
   CastersPackage.uTInterfaceListOfGivenType,
-  DBAutoTest.uITaskList,
+  DBAutoTest.uITasks,
   DBAutoTest.uITask;
 
 type
-  TTaskList = class(TInterfaceListOfGivenType<ITask>, ITaskList)
+  TTasks = class(TInterfaceListOfGivenType<ITask>, ITasks)
   protected
     procedure Initialize; override;
   end;
 
-function GetISignalList: ITaskList;
+function GetITasks: ITasks;
 
 implementation
 
@@ -21,12 +21,12 @@ resourcestring
   RsCantAddTaskToTaskList = 'Ќе удалось добавить тест в список тестов.';
   RsCantRemoveTaskFromTaskList = 'Ќе удалось удалить тест из списка тестов.';
 
-function GetISignalList: ITaskList;
+function GetITasks: ITasks;
 begin
-  Result := TTaskList.Create;
+  Result := TTasks.Create;
 end;
 
-procedure TTaskList.Initialize;
+procedure TTasks.Initialize;
 begin
   inherited;
   AddItemErrorString := RsCantAddTaskToTaskList;

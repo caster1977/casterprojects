@@ -204,7 +204,7 @@ begin
       ShowModal;
       if ModalResult = mrOk then
       begin
-        i := TaskListIndex;
+        i := TaskIndex;
       end;
     finally
       Free;
@@ -234,6 +234,7 @@ end;
 procedure TMainForm.actProcessUpdate(Sender: TObject);
 begin
   actProcess.Enabled := (lvTaskList.Items.Count > 0); // and (not FProcessActive);
+  btnProcess.Default := actProcess.Enabled;
 end;
 
 procedure TMainForm.actProfilePropertiesExecute(Sender: TObject);
