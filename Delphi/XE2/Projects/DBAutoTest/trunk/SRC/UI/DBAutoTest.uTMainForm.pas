@@ -38,22 +38,56 @@ type
     lvTaskList: TListView;
     actLoadProfile: TAction;
     actSaveProfileAs: TAction;
-    actClearProfile: TAction;
+    actCreateProfile: TAction;
     actSaveProfile: TAction;
     ActionManager: TActionManager;
-    ActionMainMenuBar1: TActionMainMenuBar;
     pabTaskList: TPopupActionBar;
     pabProfiles: TPopupActionBar;
     N1: TMenuItem;
     N2: TMenuItem;
     N3: TMenuItem;
     N4: TMenuItem;
+    N5: TMenuItem;
+    N6: TMenuItem;
     actProfiles: TProfilesMenuGroupAction;
     actConfiguration: TAction_Configuration;
     TrayIcon: TTrayIcon;
     pabTray: TPopupActionBar;
+    actProcess: TAction;
+    actRecentProfiles: TAction;
+    actCreateTask: TAction;
+    actEditTask: TAction;
+    actDeleteTask: TAction;
+    actClearTasks: TAction;
+    MainMenu: TMainMenu;
+    ActionToolBar1: TActionToolBar;
+    N7: TMenuItem;
+    N8: TMenuItem;
+    N9: TMenuItem;
+    N10: TMenuItem;
+    N12: TMenuItem;
+    N13: TMenuItem;
+    N14: TMenuItem;
+    N15: TMenuItem;
+    N16: TMenuItem;
+    N17: TMenuItem;
+    N18: TMenuItem;
+    N19: TMenuItem;
+    N20: TMenuItem;
+    N22: TMenuItem;
+    N23: TMenuItem;
+    N24: TMenuItem;
+    N25: TMenuItem;
+    N26: TMenuItem;
+    N27: TMenuItem;
+    N28: TMenuItem;
+    N29: TMenuItem;
     procedure actQuitExecute(Sender: TObject);
     procedure lvTaskListResize(Sender: TObject);
+    procedure actRecentProfilesExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  strict private
+    procedure OnHint(ASender: TObject);
   end;
 
 var
@@ -66,6 +100,21 @@ implementation
 procedure TMainForm.actQuitExecute(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TMainForm.actRecentProfilesExecute(Sender: TObject);
+begin
+  // заглушка
+end;
+
+procedure TMainForm.OnHint(ASender: TObject);
+begin
+  StatusBar.SimpleText := GetLongHint(Application.Hint);
+end;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+  Application.OnHint := OnHint;
 end;
 
 procedure TMainForm.lvTaskListResize(Sender: TObject);

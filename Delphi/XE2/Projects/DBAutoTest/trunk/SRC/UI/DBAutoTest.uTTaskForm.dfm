@@ -124,7 +124,6 @@ object TaskForm: TTaskForm
     WordWrap = False
   end
   object ActionList: TActionList
-    Images = ImageList
     Left = 16
     Top = 200
     object actCancel: TAction
@@ -141,9 +140,5 @@ object TaskForm: TTaskForm
       OnExecute = actClearExecute
       OnUpdate = actClearUpdate
     end
-  end
-  object ImageList: TImageList
-    Left = 72
-    Top = 200
   end
 end

@@ -34,7 +34,6 @@ type
     cmbName: TComboBox;
     lblSQL: TLabel;
     ActionList: TActionList;
-    ImageList: TImageList;
     btnClear: TButton;
     actCancel: TAction;
     actApply: TAction;
