@@ -1,4 +1,4 @@
-unit DBAutoTest.uTProfileForm;
+unit DBAutoTest.uTRecentsPropertiesForm;
 
 interface
 
@@ -14,7 +14,7 @@ uses
   Vcl.Dialogs;
 
 type
-  TProfileForm = class(TForm)
+  TRecentsPropertiesForm = class(TForm)
   end;
 
 implementation

@@ -1,7 +1,7 @@
 object TaskForm: TTaskForm
   Left = 0
   Top = 0
-  BorderIcons = [biSystemMenu, biMinimize]
+  BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   BorderWidth = 6
   Caption = 'TaskForm'
