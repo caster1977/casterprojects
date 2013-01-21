@@ -1,30 +1,30 @@
 ﻿[btnProcess]
-Coordinates=350,30,79,80
+Coordinates=350,30,70,69
 Visible=True
 ExplicitSubNodes=Default
 LayerNames=
 
 [pnlMain]
-Coordinates=120,1,60,58
+Coordinates=120,1,53,51
 
 [lvTaskList]
-Coordinates=0,0,101,124
+Coordinates=0,0,84,105
 
 [pnlButtons]
-Coordinates=101,143,75,58
+Coordinates=101,143,68,51
 
 [StatusBar]
-Coordinates=22,143,71,58
+Coordinates=22,143,62,51
 
 [btnProfiles]
-Coordinates=120,78,76,58
+Coordinates=120,78,68,51
 
 [atbMain]
-Coordinates=698,331,60,36
+Coordinates=698,331,53,33
 
 [actProcess]
 Visible=True
-Coordinates=440,30,78,58
+Coordinates=440,30,69,51
 ExplicitSubNodes=Enabled
 LayerNames=
 
