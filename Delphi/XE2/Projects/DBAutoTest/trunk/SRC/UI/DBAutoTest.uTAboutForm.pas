@@ -61,7 +61,7 @@ begin
   FFirstShow := True;
   FShowCloseButton := AShowCloseButton;
   GSFileVersionInfo.Filename := Application.ExeName;
-  lblTitle.Caption := GSFileVersionInfo.InternalName; // Application.Title;
+  lblTitle.Caption := GSFileVersionInfo.InternalName;
   imgApplicationIcon.Picture.Icon.Assign(Application.Icon);
   lblVersion.Caption := Format(RsVersionInfo, [GSFileVersionInfo.ModuleVersion.Major,
     GSFileVersionInfo.ModuleVersion.Minor, GSFileVersionInfo.ModuleVersion.Release,

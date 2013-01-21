@@ -34,7 +34,7 @@ object AboutForm: TAboutForm
   end
   object lblEMail: TLabel
     Left = 104
-    Top = 173
+    Top = 157
     Width = 32
     Height = 13
     Alignment = taRightJustify
@@ -43,7 +43,7 @@ object AboutForm: TAboutForm
   end
   object lblEMailAddress: TLabel
     Left = 140
-    Top = 172
+    Top = 156
     Width = 207
     Height = 16
     Cursor = crHandPoint
@@ -61,7 +61,7 @@ object AboutForm: TAboutForm
   end
   object lblLegalCopyright: TLabel
     Left = 0
-    Top = 158
+    Top = 142
     Width = 347
     Height = 16
     Alignment = taCenter
@@ -76,7 +76,7 @@ object AboutForm: TAboutForm
   end
   object lblVersion: TLabel
     Left = 0
-    Top = 142
+    Top = 126
     Width = 347
     Height = 16
     Alignment = taCenter
