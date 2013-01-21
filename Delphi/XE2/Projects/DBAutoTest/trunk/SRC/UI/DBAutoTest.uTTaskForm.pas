@@ -22,7 +22,7 @@ uses
   DBAutoTest.uITaskList;
 
 type
-  TTaskForm=class(TForm)
+  TTaskForm = class(TForm)
     pnlButtons: TPanel;
     btnApply: TButton;
     btnCancel: TButton;
@@ -62,9 +62,11 @@ type
     property TaskGroup: string read GetTaskGroup write SetTaskGroup nodefault;
     property TaskName: string read GetTaskName write SetTaskName nodefault;
     property TaskSQL: TStringList read GetTaskSQL write SetTaskSQL default DEFAULT_TASK_SQL;
-    property TaskEnabled: Boolean read GetTaskEnabled write SetTaskEnabled default DEFAULT_TASK_ENABLED;
+    property TaskEnabled: Boolean read GetTaskEnabled write SetTaskEnabled
+      default DEFAULT_TASK_ENABLED;
   public
-    constructor Create(AOwner: TComponent; const ATaskList: ITaskList; const AIndex: Integer=-1); reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const ATaskList: ITaskList; const AIndex: Integer = -1);
+      reintroduce; virtual;
   end;
 
 implementation
@@ -76,62 +78,64 @@ uses
   DBAutoTest.uETaskList;
 
 resourcestring
-  RsAddTaskCaption='Добавление теста';
-  RsEditTaskCaption='Редактирование теста';
-  RsATaskListIsNil='ATaskList is nil.';
-  RsWrongAIndexValue='Wrong AIndex value (%d).';
-  RsITaskIsNil='ITask is nil.';
-  RsCantAddTaskToTaskList='Не удалось добавить тест в список тестов.';
+  RsAddTaskCaption = 'Добавление теста';
+  RsEditTaskCaption = 'Редактирование теста';
+  RsATaskListIsNil = 'ATaskList is nil.';
+  RsWrongAIndexValue = 'Wrong AIndex value (%d).';
+  RsITaskIsNil = 'ITask is nil.';
+  RsCantAddTaskToTaskList = 'Не удалось добавить тест в список тестов.';
 
 procedure TTaskForm.actApplyExecute(Sender: TObject);
 var
   task: ITask;
   i: Integer;
 begin
-  if TaskListIndex=-1 then
+  if TaskListIndex = -1 then
+  begin
+    task := GetITask;
+    i := TaskList.Add(task);
+    if i < 0 then
     begin
-      task:=GetITask;
-      i:=TaskList.Add(task);
-      if i<0 then
-        begin
-          raise ETaskList.Create(RsCantAddTaskToTaskList);
-        end
-      else
-        begin
-          FTaskListIndex:=i;
-        end;
+      raise ETaskList.Create(RsCantAddTaskToTaskList);
     end
-  else
+    else
     begin
-      task:=TaskList[TaskListIndex];
+      FTaskListIndex := i;
     end;
-  task.Group:=TaskGroup;
-  task.Name:=TaskName;
-  task.SQL:=TaskSQL;
-  task.Enabled:=TaskEnabled;
-  ModalResult:=mrOk;
+  end
+  else
+  begin
+    task := TaskList[TaskListIndex];
+  end;
+  task.Group := TaskGroup;
+  task.Name := TaskName;
+  task.SQL := TaskSQL;
+  task.Enabled := TaskEnabled;
+  ModalResult := mrOk;
 end;
 
 procedure TTaskForm.actApplyUpdate(Sender: TObject);
 begin
-  actApply.Enabled:=(TaskGroup<>EmptyStr)and(TaskName<>EmptyStr)and(TaskSQL.Text<>EmptyStr);
+  actApply.Enabled := (TaskGroup <> EmptyStr) and (TaskName <> EmptyStr) and
+    (TaskSQL.Text <> EmptyStr);
 end;
 
 procedure TTaskForm.actCancelExecute(Sender: TObject);
 begin
-  ModalResult:=mrCancel;
+  ModalResult := mrCancel;
 end;
 
 procedure TTaskForm.actClearExecute(Sender: TObject);
 begin
-  TaskGroup:=EmptyStr;
-  TaskName:=EmptyStr;
+  TaskGroup := EmptyStr;
+  TaskName := EmptyStr;
   TaskSQL.Clear;
 end;
 
 procedure TTaskForm.actClearUpdate(Sender: TObject);
 begin
-  actClear.Enabled:=(TaskGroup<>EmptyStr)and(TaskName<>EmptyStr)and(TaskSQL.Text<>EmptyStr);
+  actClear.Enabled := (TaskGroup <> EmptyStr) and (TaskName <> EmptyStr) and
+    (TaskSQL.Text <> EmptyStr);
 end;
 
 constructor TTaskForm.Create(AOwner: TComponent; const ATaskList: ITaskList; const AIndex: Integer);
@@ -143,14 +147,14 @@ constructor TTaskForm.Create(AOwner: TComponent; const ATaskList: ITaskList; con
     cmbGroup.Items.BeginUpdate;
     try
       cmbGroup.Items.Clear;
-      for i:=0 to TaskList.Count-1 do
+      for i := 0 to TaskList.Count - 1 do
+      begin
+        s := TaskList[i].Group;
+        if cmbGroup.Items.IndexOf(s) < 0 then
         begin
-          s := TaskList[i].Group;
-          if cmbGroup.Items.IndexOf(s) < 0 then
-          begin
-            cmbGroup.Items.Append(s);
-          end;
+          cmbGroup.Items.Append(s);
         end;
+      end;
     finally
       cmbGroup.Items.EndUpdate;
     end;
@@ -164,14 +168,14 @@ constructor TTaskForm.Create(AOwner: TComponent; const ATaskList: ITaskList; con
     cmbName.Items.BeginUpdate;
     try
       cmbName.Items.Clear;
-      for i:=0 to TaskList.Count-1 do
+      for i := 0 to TaskList.Count - 1 do
+      begin
+        s := TaskList[i].Name;
+        if cmbName.Items.IndexOf(s) < 0 then
         begin
-          s := TaskList[i].Name;
-          if cmbName.Items.IndexOf(s) < 0 then
-          begin
-            cmbName.Items.Append(s);
-          end;
+          cmbName.Items.Append(s);
         end;
+      end;
     finally
       cmbName.Items.EndUpdate;
     end;
@@ -182,82 +186,82 @@ var
 begin
   inherited Create(AOwner);
   Assert(Assigned(ATaskList), RsATaskListIsNil);
-  Assert((AIndex>=-1)and(AIndex<ATaskList.Count), Format(RsWrongAIndexValue, [AIndex]));
-  Assert((AIndex>-1)and Assigned(ATaskList[AIndex]), RsITaskIsNil);
-  FTaskList:=ATaskList;
-  FTaskListIndex:=AIndex;
+  Assert((AIndex >= -1) and (AIndex < ATaskList.Count), Format(RsWrongAIndexValue, [AIndex]));
+  Assert((AIndex > -1) and Assigned(ATaskList[AIndex]), RsITaskIsNil);
+  FTaskList := ATaskList;
+  FTaskListIndex := AIndex;
   FillGroups;
   FillNames;
-  if TaskListIndex=-1 then
-    begin
-      Caption:=RsAddTaskCaption;
-      TaskGroup:=DEFAULT_TASK_GROUP;
-      TaskName:=DEFAULT_TASK_NAME;
-      TaskSQL:=DEFAULT_TASK_SQL;
-      TaskEnabled:=DEFAULT_TASK_ENABLED;
-    end
+  if TaskListIndex = -1 then
+  begin
+    Caption := RsAddTaskCaption;
+    TaskGroup := DEFAULT_TASK_GROUP;
+    TaskName := DEFAULT_TASK_NAME;
+    TaskSQL := DEFAULT_TASK_SQL;
+    TaskEnabled := DEFAULT_TASK_ENABLED;
+  end
   else
-    begin
-      Caption:=RsEditTaskCaption;
-      task:=TaskList[TaskListIndex];
-      TaskGroup:=task.Group;
-      TaskName:=task.Name;
-      TaskSQL:=task.SQL;
-      TaskEnabled:=task.Enabled;
-    end;
+  begin
+    Caption := RsEditTaskCaption;
+    task := TaskList[TaskListIndex];
+    TaskGroup := task.Group;
+    TaskName := task.Name;
+    TaskSQL := task.SQL;
+    TaskEnabled := task.Enabled;
+  end;
 end;
 
 function TTaskForm.GetTaskEnabled: Boolean;
 begin
-  Result:=FTaskEnabled;
+  Result := FTaskEnabled;
 end;
 
 function TTaskForm.GetTaskGroup: string;
 var
   i: Integer;
 begin
-  Result:=Trim(cmbGroup.Text);
-  i:=cmbGroup.ItemIndex;
-  if i>-1 then
-    begin
-      Result:=Trim(cmbGroup.Items[i]);
-    end;
+  Result := Trim(cmbGroup.Text);
+  i := cmbGroup.ItemIndex;
+  if i > -1 then
+  begin
+    Result := Trim(cmbGroup.Items[i]);
+  end;
 end;
 
 function TTaskForm.GetTaskList: ITaskList;
 begin
-  Result:=FTaskList;
+  Result := FTaskList;
 end;
 
 function TTaskForm.GetTaskListIndex: Integer;
 begin
-  Result:=FTaskListIndex;
+  Result := FTaskListIndex;
 end;
 
 function TTaskForm.GetTaskName: string;
 var
   i: Integer;
 begin
-  Result:=Trim(cmbName.Text);
-  i:=cmbName.ItemIndex;
-  if i>-1 then
-    begin
-      Result:=Trim(cmbName.Items[i]);
-    end;
+  Result := Trim(cmbName.Text);
+  i := cmbName.ItemIndex;
+  if i > -1 then
+  begin
+    Result := Trim(cmbName.Items[i]);
+  end;
 end;
 
 function TTaskForm.GetTaskSQL: TStringList;
 begin
-  Result:=TStringList.Create;
+  Result := TStringList.Create;
   Result.AddStrings(meSQL.Lines);
 end;
 
 procedure TTaskForm.SetTaskEnabled(const AValue: Boolean);
 begin
-  if FTaskEnabled<>AValue then
-    begin
-      FTaskEnabled:=AValue;
-    end;
+  if FTaskEnabled <> AValue then
+  begin
+    FTaskEnabled := AValue;
+  end;
 end;
 
 procedure TTaskForm.SetTaskGroup(const AValue: string);
@@ -265,13 +269,13 @@ var
   s: string;
   i: Integer;
 begin
-  s:=Trim(AValue);
-  i:=cmbGroup.Items.IndexOf(s);
-  if i=-1 then
-    begin
-      i:=cmbGroup.Items.Add(s);
-    end;
-  cmbGroup.ItemIndex:=i;
+  s := Trim(AValue);
+  i := cmbGroup.Items.IndexOf(s);
+  if i = -1 then
+  begin
+    i := cmbGroup.Items.Add(s);
+  end;
+  cmbGroup.ItemIndex := i;
 end;
 
 procedure TTaskForm.SetTaskName(const AValue: string);
@@ -279,30 +283,30 @@ var
   s: string;
   i: Integer;
 begin
-  s:=Trim(AValue);
-  i:=cmbName.Items.IndexOf(s);
-  if i=-1 then
-    begin
-      i:=cmbName.Items.Add(s);
-    end;
-  cmbName.ItemIndex:=i;
+  s := Trim(AValue);
+  i := cmbName.Items.IndexOf(s);
+  if i = -1 then
+  begin
+    i := cmbName.Items.Add(s);
+  end;
+  cmbName.ItemIndex := i;
 end;
 
 procedure TTaskForm.SetTaskSQL(const AValue: TStringList);
 begin
-  if meSQL.Lines<>AValue then
-    begin
-      meSQL.Lines.BeginUpdate;
-      try
-        meSQL.Lines.Clear;
-        if Assigned(AValue) then
-          begin
-            meSQL.Lines.AddStrings(AValue);
-          end;
-      finally
-        meSQL.Lines.EndUpdate;
+  if meSQL.Lines <> AValue then
+  begin
+    meSQL.Lines.BeginUpdate;
+    try
+      meSQL.Lines.Clear;
+      if Assigned(AValue) then
+      begin
+        meSQL.Lines.AddStrings(AValue);
       end;
+    finally
+      meSQL.Lines.EndUpdate;
     end;
+  end;
 end;
 
 end.

@@ -17,7 +17,7 @@ type
     procedure SetName(const AValue: string);
     procedure SetSQL(const AValue: TStringList);
     property Group: string read GetGroup write SetGroup;
-    property Name: string read GetName write SetName;
+    property name: string read GetName write SetName;
     property SQL: TStringList read GetSQL write SetSQL;
     property Enabled: Boolean read GetEnabled write SetEnabled;
   end;

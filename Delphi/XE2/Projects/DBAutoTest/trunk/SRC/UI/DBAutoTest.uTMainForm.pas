@@ -13,13 +13,20 @@ uses
   Vcl.Forms,
   Vcl.Dialogs,
   CastersPackage.Actions.Classes,
-  System.Actions,
   Vcl.ActnList,
   Vcl.ImgList,
   Vcl.Menus,
   Vcl.ComCtrls,
-  Vcl.StdActns, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ActnMenus, Vcl.ToolWin,
-  Vcl.ActnMan, Vcl.ActnCtrls, Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnPopup;
+  Vcl.StdActns,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.ActnMenus,
+  Vcl.ToolWin,
+  Vcl.ActnMan,
+  Vcl.ActnCtrls,
+  Vcl.PlatformDefaultStyleActnCtrls,
+  Vcl.ActnPopup,
+  System.Actions;
 
 type
   TMainForm = class(TForm)
@@ -86,8 +93,11 @@ type
     procedure lvTaskListResize(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure actConfigurationExecute(Sender: TObject);
+    procedure actAboutExecute(Sender: TObject);
   strict private
     procedure OnHint(ASender: TObject);
+    procedure ShowAboutWindow(const AShowCloseButton: Boolean);
   end;
 
 var
@@ -96,6 +106,25 @@ var
 implementation
 
 {$R *.dfm}
+
+uses
+  DBAutoTest.uTConfigurationForm,
+  DBAutoTest.uTAboutForm;
+
+procedure TMainForm.actAboutExecute(Sender: TObject);
+begin
+  ShowAboutWindow(True);
+end;
+
+procedure TMainForm.actConfigurationExecute(Sender: TObject);
+begin
+  with TConfigurationForm.Create(Self) do
+    try
+      ShowModal;
+    finally
+      Free;
+    end;
+end;
 
 procedure TMainForm.actQuitExecute(Sender: TObject);
 begin
@@ -112,25 +141,34 @@ begin
   StatusBar.SimpleText := GetLongHint(Application.Hint);
 end;
 
+procedure TMainForm.ShowAboutWindow(const AShowCloseButton: Boolean);
+begin
+  with TAboutForm.Create(Self, AShowCloseButton) do
+    try
+      ShowModal;
+    finally
+      Free;
+    end;
+end;
+
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   Application.OnHint := OnHint;
 end;
 
 procedure TMainForm.lvTaskListResize(Sender: TObject);
-//var
-//  h: HWND;
+// var
+// h: HWND;
 begin
-//  h:=lvTaskList.Handle;
-//  lvTaskList.Column[0].Width:=lvTaskList.Width-100-(lvTaskList.BevelWidth*2)-2;
-//  if (GetWindowLong(h, GWL_STYLE)and WS_VSCROLL)=WS_VSCROLL then
-//  begin
-//    lvTaskList.Column[0].Width:=lvTaskList.Column[0].Width-GetSystemMetrics(SM_CXVSCROLL);
-//  end;
-//  lvTaskList.Column[1].Width:=100;
-//  lvTaskList.FlatScrollBars:=False;
-//  lvTaskList.FlatScrollBars:=True;
+  // h:=lvTaskList.Handle;
+  // lvTaskList.Column[0].Width:=lvTaskList.Width-100-(lvTaskList.BevelWidth*2)-2;
+  // if (GetWindowLong(h, GWL_STYLE)and WS_VSCROLL)=WS_VSCROLL then
+  // begin
+  // lvTaskList.Column[0].Width:=lvTaskList.Column[0].Width-GetSystemMetrics(SM_CXVSCROLL);
+  // end;
+  // lvTaskList.Column[1].Width:=100;
+  // lvTaskList.FlatScrollBars:=False;
+  // lvTaskList.FlatScrollBars:=True;
 end;
 
 end.
-

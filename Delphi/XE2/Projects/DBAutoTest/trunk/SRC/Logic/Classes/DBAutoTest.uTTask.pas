@@ -30,7 +30,7 @@ type
     constructor Create; virtual; final;
     destructor Destroy; override;
     property Group: string read GetGroup write SetGroup nodefault;
-    property Name: string read GetName write SetName nodefault;
+    property name: string read GetName write SetName nodefault;
     property SQL: TStringList read GetSQL write SetSQL default DEFAULT_TASK_SQL;
     property Enabled: Boolean read GetEnabled write SetEnabled default DEFAULT_TASK_ENABLED;
   end;
@@ -92,7 +92,7 @@ procedure TTask.Initialize;
 begin
   Enabled := DEFAULT_TASK_ENABLED;
   Group := DEFAULT_TASK_GROUP;
-  Name := DEFAULT_TASK_NAME;
+  name := DEFAULT_TASK_NAME;
   SQL := DEFAULT_TASK_SQL;
 end;
 

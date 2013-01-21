@@ -3,19 +3,19 @@ unit DBAutoTest.uTConfigurationForm;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs;
 
 type
-  TForm3 = class(TForm)
-  private
-    { Private declarations }
-  public
-    { Public declarations }
+  TConfigurationForm = class(TForm)
   end;
-
-var
-  Form3: TForm3;
 
 implementation
 

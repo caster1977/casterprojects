@@ -57,7 +57,7 @@
         <DCC_BplOutput>..\$(Platform)\$(Config)\Package</DCC_BplOutput>
         <DCC_DcpOutput>.\$(Platform)\$(Config)\DCP</DCC_DcpOutput>
         <DCC_UsePackage>bindcompfmx;fmx;rtl;dbrtl;IndySystem;DbxClientDriver;bindcomp;inetdb;DBXInterBaseDriver;DataSnapCommon;DataSnapClient;DataSnapServer;DataSnapProviderClient;xmlrtl;DbxCommonDriver;IndyProtocols;DBXMySQLDriver;dbxcds;soaprtl;FMXTee;bindengine;DBXOracleDriver;CustomIPTransport;dsnap;DBXInformixDriver;IndyCore;FmxTeeUI;DBXFirebirdDriver;inet;inetdbxpress;DBXSybaseASADriver;IPIndyImpl;dbexpress;DataSnapIndy10ServerTransport;$(DCC_UsePackage)</DCC_UsePackage>
-        <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
+        <Icon_MainIcon>DBAutoTest_Icon.ico</Icon_MainIcon>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <DCC_DcuOutput>.\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
         <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
@@ -113,7 +113,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="SRC\UI\DBAutoTest.uTConfigurationForm.pas">
-            <Form>Form3</Form>
+            <Form>ConfigurationForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTTask.pas"/>
@@ -130,6 +130,9 @@
         </DCCReference>
         <DCCReference Include="SRC\Logic\Other\DBAutoTest.uConsts.pas"/>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uETaskList.pas"/>
+        <DCCReference Include="SRC\UI\DBAutoTest.uTAboutForm.pas">
+            <Form>AboutForm</Form>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
