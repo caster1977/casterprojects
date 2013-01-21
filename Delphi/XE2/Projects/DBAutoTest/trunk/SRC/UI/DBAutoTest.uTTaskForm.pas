@@ -19,7 +19,7 @@ uses
   Vcl.ExtCtrls,
   DBAutoTest.uConsts,
   DBAutoTest.uITask,
-  DBAutoTest.uITasks;
+  DBAutoTest.uITasks, Vcl.StdActns, CastersPackage.Actions.Classes;
 
 type
   TTaskForm = class(TForm)
@@ -35,9 +35,11 @@ type
     lblSQL: TLabel;
     ActionList: TActionList;
     btnClear: TButton;
+    btnHelp: TButton;
     actCancel: TAction;
     actApply: TAction;
     actClear: TAction;
+    actHelp: TAction_Help;
     procedure actClearUpdate(Sender: TObject);
     procedure actApplyUpdate(Sender: TObject);
     procedure actCancelExecute(Sender: TObject);
@@ -184,10 +186,10 @@ constructor TTaskForm.Create(AOwner: TComponent; const ATasks: ITasks; const AIn
 var
   task: ITask;
 begin
-  inherited Create(AOwner);
   Assert(Assigned(ATasks), RsATasksIsNil);
   Assert((AIndex >= -1) and (AIndex < ATasks.Count), Format(RsWrongAIndexValue, [AIndex]));
   Assert((AIndex > -1) and Assigned(ATasks[AIndex]), RsITaskIsNil);
+  inherited Create(AOwner);
   FTasks := ATasks;
   FTaskIndex := AIndex;
   FillGroups;

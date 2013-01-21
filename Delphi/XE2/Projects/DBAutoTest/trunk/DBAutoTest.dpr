@@ -21,7 +21,9 @@ uses
   DBAutoTest.uIProfiles in 'SRC\Logic\Interfaces\DBAutoTest.uIProfiles.pas',
   DBAutoTest.uTRecentsPropertiesForm in 'SRC\UI\DBAutoTest.uTRecentsPropertiesForm.pas' {RecentsPropertiesForm},
   DBAutoTest.uIRecent in 'SRC\Logic\Interfaces\DBAutoTest.uIRecent.pas',
-  DBAutoTest.uIRecents in 'SRC\Logic\Interfaces\DBAutoTest.uIRecents.pas';
+  DBAutoTest.uIRecents in 'SRC\Logic\Interfaces\DBAutoTest.uIRecents.pas',
+  DBAutoTest.uTRecent in 'SRC\Logic\Classes\DBAutoTest.uTRecent.pas',
+  DBAutoTest.uTRecents in 'SRC\Logic\Classes\DBAutoTest.uTRecents.pas';
 
 {$R *.res}
 

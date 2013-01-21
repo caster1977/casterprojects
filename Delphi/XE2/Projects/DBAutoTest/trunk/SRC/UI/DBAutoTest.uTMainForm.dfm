@@ -25,8 +25,6 @@ object MainForm: TMainForm
     Hint = #1055#1072#1085#1077#1083#1100' '#1089#1090#1072#1090#1091#1089#1072
     Panels = <>
     SimplePanel = True
-    ExplicitTop = 417
-    ExplicitWidth = 381
   end
   object pnlMain: TPanel
     Left = 0
@@ -37,8 +35,6 @@ object MainForm: TMainForm
     BevelOuter = bvNone
     BorderWidth = 6
     TabOrder = 1
-    ExplicitWidth = 381
-    ExplicitHeight = 390
     object pnlButtons: TPanel
       Left = 6
       Top = 219
@@ -49,8 +45,6 @@ object MainForm: TMainForm
       Constraints.MaxHeight = 31
       Constraints.MinHeight = 31
       TabOrder = 0
-      ExplicitTop = 353
-      ExplicitWidth = 369
       DesignSize = (
         452
         31)
@@ -62,7 +56,6 @@ object MainForm: TMainForm
         Action = actProcess
         Anchors = [akTop, akRight]
         TabOrder = 0
-        ExplicitLeft = 269
       end
       object btnProfiles: TButton
         Left = 0
@@ -103,8 +96,6 @@ object MainForm: TMainForm
       TabOrder = 1
       ViewStyle = vsReport
       OnResize = lvTaskListResize
-      ExplicitWidth = 369
-      ExplicitHeight = 347
     end
   end
   object atbMain: TActionToolBar
@@ -127,13 +118,12 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
     Spacing = 0
-    ExplicitWidth = 381
   end
   object ImageList: TImageList
     Left = 256
     Top = 136
     Bitmap = {
-      494C01010B00A000CC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B00A000EC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       00000000000000000000000000000000000000000000897970007D6E65007463
       5A0073625900736259007362590073625900736259007362590074635A007D6E

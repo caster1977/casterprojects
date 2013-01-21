@@ -254,7 +254,7 @@ end;
 
 procedure TMainForm.actRecentProfilesPropertiesExecute(Sender: TObject);
 begin
-  with TRecentsPropertiesForm.Create(Self) do
+  with TRecentsPropertiesForm.Create(Self, nil, 10) do
     try
       ShowModal;
     finally
