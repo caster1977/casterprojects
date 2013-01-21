@@ -19,7 +19,7 @@ implementation
 
 resourcestring
   RsCantAddTaskToTasks = 'Ќе удалось добавить тест в список тестов.';
-  RsCantRemoveTaskFromTaskList = 'Ќе удалось удалить тест из списка тестов.';
+  RsCantRemoveTaskFromTasks = 'Ќе удалось удалить тест из списка тестов.';
 
 function GetITasks: ITasks;
 begin
@@ -30,7 +30,7 @@ procedure TTasks.Initialize;
 begin
   inherited;
   AddItemErrorString := RsCantAddTaskToTasks;
-  RemoveItemErrorString := RsCantRemoveTaskFromTaskList;
+  RemoveItemErrorString := RsCantRemoveTaskFromTasks;
 end;
 
 end.

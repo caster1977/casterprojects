@@ -5,6 +5,8 @@ interface
 type
   IInterfaceListOfGivenType<T: IInterface> = interface
     ['{CAA4BD57-6B34-4049-B339-1CDC686C5CA8}']
+    function Equals(const AItems: IInterfaceListOfGivenType<T>): Boolean;
+    procedure Assign(const AItems: IInterfaceListOfGivenType<T>);
     function Add(const AItem: T): Integer;
     procedure Append(const AItems: IInterfaceListOfGivenType<T>);
     procedure Insert(const AIndex: Integer; const AItem: T);

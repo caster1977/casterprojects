@@ -31,7 +31,7 @@ object TaskForm: TTaskForm
       462
       31)
     object btnApply: TButton
-      Left = 306
+      Left = 225
       Top = 6
       Width = 75
       Height = 25
@@ -41,13 +41,14 @@ object TaskForm: TTaskForm
       TabOrder = 1
     end
     object btnCancel: TButton
-      Left = 387
+      Left = 306
       Top = 6
       Width = 75
       Height = 25
       Cursor = crHandPoint
       Action = actCancel
       Anchors = [akTop, akRight]
+      Cancel = True
       TabOrder = 2
     end
     object btnClear: TButton
@@ -58,6 +59,16 @@ object TaskForm: TTaskForm
       Cursor = crHandPoint
       Action = actClear
       TabOrder = 0
+    end
+    object btnHelp: TButton
+      Left = 387
+      Top = 6
+      Width = 75
+      Height = 25
+      Cursor = crHandPoint
+      Action = actHelp
+      Anchors = [akTop, akRight]
+      TabOrder = 3
     end
   end
   object pnlTop: TPanel
@@ -127,18 +138,29 @@ object TaskForm: TTaskForm
     Left = 16
     Top = 200
     object actCancel: TAction
+      Category = #1044#1077#1081#1089#1090#1074#1080#1103
       Caption = '&'#1054#1090#1084#1077#1085#1072
       OnExecute = actCancelExecute
     end
     object actApply: TAction
+      Category = #1044#1077#1081#1089#1090#1074#1080#1103
       Caption = '&'#1055#1088#1080#1084#1077#1085#1080#1090#1100
       OnExecute = actApplyExecute
       OnUpdate = actApplyUpdate
     end
     object actClear: TAction
+      Category = #1044#1077#1081#1089#1090#1074#1080#1103
       Caption = #1054'&'#1095#1080#1089#1090#1080#1090#1100
       OnExecute = actClearExecute
       OnUpdate = actClearUpdate
+    end
+    object actHelp: TAction_Help
+      Category = #1057#1087#1088#1072#1074#1082#1072
+      Caption = '&'#1057#1087#1088#1072#1074#1082#1072
+      Enabled = False
+      Hint = #1057#1087#1088#1072#1074#1082#1072'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1086#1082#1085#1072' '#1089#1087#1088#1072#1074#1082#1080' '#1086' '#1087#1088#1086#1075#1088#1072#1084#1084#1077
+      ImageIndex = 2
+      ShortCut = 112
     end
   end
 end
