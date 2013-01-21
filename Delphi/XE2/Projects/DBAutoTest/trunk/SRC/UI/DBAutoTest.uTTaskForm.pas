@@ -19,7 +19,7 @@ uses
   Vcl.ExtCtrls,
   DBAutoTest.uConsts,
   DBAutoTest.uITask,
-  DBAutoTest.uITaskList;
+  DBAutoTest.uITasks;
 
 type
   TTaskForm = class(TForm)
@@ -45,8 +45,8 @@ type
     procedure actClearExecute(Sender: TObject);
   strict private
     FTaskEnabled: Boolean;
-    FTaskList: ITaskList;
-    FTaskListIndex: Integer;
+    FTasks: ITasks;
+    FTaskIndex: Integer;
     function GetTaskGroup: string;
     procedure SetTaskGroup(const AValue: string);
     function GetTaskName: string;
@@ -55,18 +55,18 @@ type
     procedure SetTaskSQL(const AValue: TStringList);
     function GetTaskEnabled: Boolean;
     procedure SetTaskEnabled(const AValue: Boolean);
-    function GetTaskList: ITaskList;
-    function GetTaskListIndex: Integer;
-    property TaskList: ITaskList read GetTaskList nodefault;
+    function GetTasks: ITasks;
+    function GetTaskIndex: Integer;
+    property Tasks: ITasks read GetTasks nodefault;
     property TaskGroup: string read GetTaskGroup write SetTaskGroup nodefault;
     property TaskName: string read GetTaskName write SetTaskName nodefault;
     property TaskSQL: TStringList read GetTaskSQL write SetTaskSQL default DEFAULT_TASK_SQL;
     property TaskEnabled: Boolean read GetTaskEnabled write SetTaskEnabled
       default DEFAULT_TASK_ENABLED;
   public
-    constructor Create(AOwner: TComponent; const ATaskList: ITaskList; const AIndex: Integer = -1);
+    constructor Create(AOwner: TComponent; const ATasks: ITasks; const AIndex: Integer = -1);
       reintroduce; virtual;
-    property TaskListIndex: Integer read GetTaskListIndex nodefault;
+    property TaskIndex: Integer read GetTaskIndex nodefault;
   end;
 
 implementation
@@ -75,37 +75,37 @@ implementation
 
 uses
   DBAutoTest.uTTask,
-  DBAutoTest.uETaskList;
+  DBAutoTest.uETasks;
 
 resourcestring
   RsAddTaskCaption = 'Добавление теста';
   RsEditTaskCaption = 'Редактирование теста';
-  RsATaskListIsNil = 'ATaskList is nil.';
+  RsATasksIsNil = 'ATasks is nil.';
   RsWrongAIndexValue = 'Wrong AIndex value (%d).';
   RsITaskIsNil = 'ITask is nil.';
-  RsCantAddTaskToTaskList = 'Не удалось добавить тест в список тестов.';
+  RsCantAddTaskToTasks = 'Не удалось добавить тест в список тестов.';
 
 procedure TTaskForm.actApplyExecute(Sender: TObject);
 var
   task: ITask;
   i: Integer;
 begin
-  if TaskListIndex = -1 then
+  if TaskIndex = -1 then
   begin
     task := GetITask;
-    i := TaskList.Add(task);
+    i := Tasks.Add(task);
     if i < 0 then
     begin
-      raise ETaskList.Create(RsCantAddTaskToTaskList);
+      raise ETasks.Create(RsCantAddTaskToTasks);
     end
     else
     begin
-      FTaskListIndex := i;
+      FTaskIndex := i;
     end;
   end
   else
   begin
-    task := TaskList[TaskListIndex];
+    task := Tasks[TaskIndex];
   end;
   task.Group := TaskGroup;
   task.Name := TaskName;
@@ -138,7 +138,7 @@ begin
     (TaskSQL.Text <> EmptyStr);
 end;
 
-constructor TTaskForm.Create(AOwner: TComponent; const ATaskList: ITaskList; const AIndex: Integer);
+constructor TTaskForm.Create(AOwner: TComponent; const ATasks: ITasks; const AIndex: Integer);
   procedure FillGroups;
   var
     i: Integer;
@@ -147,9 +147,9 @@ constructor TTaskForm.Create(AOwner: TComponent; const ATaskList: ITaskList; con
     cmbGroup.Items.BeginUpdate;
     try
       cmbGroup.Items.Clear;
-      for i := 0 to TaskList.Count - 1 do
+      for i := 0 to Tasks.Count - 1 do
       begin
-        s := TaskList[i].Group;
+        s := Tasks[i].Group;
         if cmbGroup.Items.IndexOf(s) < 0 then
         begin
           cmbGroup.Items.Append(s);
@@ -168,9 +168,9 @@ constructor TTaskForm.Create(AOwner: TComponent; const ATaskList: ITaskList; con
     cmbName.Items.BeginUpdate;
     try
       cmbName.Items.Clear;
-      for i := 0 to TaskList.Count - 1 do
+      for i := 0 to Tasks.Count - 1 do
       begin
-        s := TaskList[i].Name;
+        s := Tasks[i].Name;
         if cmbName.Items.IndexOf(s) < 0 then
         begin
           cmbName.Items.Append(s);
@@ -185,14 +185,14 @@ var
   task: ITask;
 begin
   inherited Create(AOwner);
-  Assert(Assigned(ATaskList), RsATaskListIsNil);
-  Assert((AIndex >= -1) and (AIndex < ATaskList.Count), Format(RsWrongAIndexValue, [AIndex]));
-  Assert((AIndex > -1) and Assigned(ATaskList[AIndex]), RsITaskIsNil);
-  FTaskList := ATaskList;
-  FTaskListIndex := AIndex;
+  Assert(Assigned(ATasks), RsATasksIsNil);
+  Assert((AIndex >= -1) and (AIndex < ATasks.Count), Format(RsWrongAIndexValue, [AIndex]));
+  Assert((AIndex > -1) and Assigned(ATasks[AIndex]), RsITaskIsNil);
+  FTasks := ATasks;
+  FTaskIndex := AIndex;
   FillGroups;
   FillNames;
-  if TaskListIndex = -1 then
+  if TaskIndex = -1 then
   begin
     Caption := RsAddTaskCaption;
     TaskGroup := DEFAULT_TASK_GROUP;
@@ -203,7 +203,7 @@ begin
   else
   begin
     Caption := RsEditTaskCaption;
-    task := TaskList[TaskListIndex];
+    task := Tasks[TaskIndex];
     TaskGroup := task.Group;
     TaskName := task.Name;
     TaskSQL := task.SQL;
@@ -228,14 +228,14 @@ begin
   end;
 end;
 
-function TTaskForm.GetTaskList: ITaskList;
+function TTaskForm.GetTasks: ITasks;
 begin
-  Result := FTaskList;
+  Result := FTasks;
 end;
 
-function TTaskForm.GetTaskListIndex: Integer;
+function TTaskForm.GetTaskIndex: Integer;
 begin
-  Result := FTaskListIndex;
+  Result := FTaskIndex;
 end;
 
 function TTaskForm.GetTaskName: string;

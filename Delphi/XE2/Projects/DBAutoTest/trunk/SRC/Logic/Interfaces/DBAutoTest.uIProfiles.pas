@@ -1,4 +1,4 @@
-unit DBAutoTest.uIProfileList;
+unit DBAutoTest.uIProfiles;
 
 interface
 
@@ -8,7 +8,7 @@ uses
   DBAutoTest.uIProfile;
 
 type
-  IProfileList = interface(IInterfaceListOfGivenType<IProfile>)
+  IProfiles = interface(IInterfaceListOfGivenType<IProfile>)
     ['{700412B7-A057-4988-9E3B-685881E3C86A}']
   end;
 
