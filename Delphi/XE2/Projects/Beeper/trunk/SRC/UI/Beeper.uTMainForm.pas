@@ -219,17 +219,17 @@ end;
 
 procedure TMainForm.actCreateSignalUpdate(Sender: TObject);
 begin
-  TAction(Sender).Enabled := not FSignalingActive;
+  actCreateSignal.Enabled := not FSignalingActive;
 end;
 
 procedure TMainForm.actEditSignalUpdate(Sender: TObject);
 begin
-  TAction(Sender).Enabled := Assigned(ListView.Selected) and (not FSignalingActive);
+  actEditSignal.Enabled := Assigned(ListView.Selected) and (not FSignalingActive);
 end;
 
 procedure TMainForm.actEraseSignalUpdate(Sender: TObject);
 begin
-  TAction(Sender).Enabled := Assigned(ListView.Selected) and (not FSignalingActive);
+  actEraseSignal.Enabled := Assigned(ListView.Selected) and (not FSignalingActive);
 end;
 
 procedure TMainForm.actQuitExecute(Sender: TObject);
