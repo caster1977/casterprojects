@@ -88,7 +88,7 @@ object MainForm: TMainForm
           Width = 100
         end>
       FlatScrollBars = True
-      Items.ItemData = {}
+      MultiSelect = True
       GroupView = True
       ReadOnly = True
       RowSelect = True
@@ -96,7 +96,6 @@ object MainForm: TMainForm
       SmallImages = ImageList
       TabOrder = 1
       ViewStyle = vsReport
-      OnResize = lvTaskListResize
     end
   end
   object atbMain: TActionToolBar
@@ -124,7 +123,7 @@ object MainForm: TMainForm
     Left = 256
     Top = 136
     Bitmap = {
-      494C01010B00A000FC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B00A000000110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       00000000000000000000000000000000000000000000897970007D6E65007463
       5A0073625900736259007362590073625900736259007362590074635A007D6E
@@ -796,6 +795,7 @@ object MainForm: TMainForm
         #1080#1089#1082#1072
       ImageIndex = 8
       ShortCut = 113
+      OnExecute = actEditTaskExecute
       OnUpdate = actEditTaskUpdate
     end
     object actDeleteTask: TAction
@@ -804,6 +804,7 @@ object MainForm: TMainForm
       Hint = #1059#1076#1072#1083#1080#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1074#1099#1076#1077#1083#1077#1085#1085#1086#1075#1086' '#1101#1083#1077#1084#1077#1085#1090#1072' '#1080#1079' '#1089#1087#1080#1089#1082#1072
       ImageIndex = 9
       ShortCut = 46
+      OnExecute = actDeleteTaskExecute
       OnUpdate = actDeleteTaskUpdate
     end
     object actClearTasks: TAction
@@ -811,6 +812,7 @@ object MainForm: TMainForm
       Caption = '&'#1054#1095#1080#1089#1090#1080#1090#1100' '#1089#1087#1080#1089#1086#1082
       Hint = #1054#1095#1080#1089#1090#1080#1090#1100' '#1089#1087#1080#1089#1086#1082'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1074#1089#1077#1093' '#1101#1083#1077#1084#1077#1085#1090#1086#1074' '#1080#1079' '#1089#1087#1080#1089#1082#1072
       ImageIndex = 10
+      OnExecute = actClearTasksExecute
       OnUpdate = actClearTasksUpdate
     end
     object actRecentProfilesProperties: TAction

@@ -15,24 +15,19 @@ type
     FServer: string;
     function GetServer: string;
     procedure SetServer(const AValue: string);
-    property Server: string read GetServer write SetServer;
   strict private
     FLogin: string;
     function GetLogin: string;
     procedure SetLogin(const AValue: string);
-    property Login: string read GetLogin write SetLogin;
   strict private
     FDB: string;
     function GetDB: string;
     procedure SetDB(const AValue: string);
-    property DB: string read GetDB write SetDB;
   strict private
     function GetADOConnectionString: string;
-    property ADOConnectionString: string read GetADOConnectionString;
   strict private
     FTasks: ITasks;
     function GetTasks: ITasks;
-    property Tasks: ITasks read GetTasks;
   protected
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -40,6 +35,11 @@ type
     constructor Create; virtual; final;
     destructor Destroy; override;
     procedure Clear; virtual;
+    property Server: string read GetServer write SetServer;
+    property Login: string read GetLogin write SetLogin;
+    property DB: string read GetDB write SetDB;
+    property ADOConnectionString: string read GetADOConnectionString;
+    property Tasks: ITasks read GetTasks;
   end;
 
 function GetIProfile: IProfile;
@@ -58,7 +58,7 @@ end;
 procedure TProfile.Clear;
 begin
   Initialize;
-  FreeAndNil(FTasks);
+  FTasks := GetITasks;
 end;
 
 constructor TProfile.Create;
@@ -111,6 +111,7 @@ begin
   Server := DEFAULT_SERVER;
   Login := DEFAULT_LOGIN;
   DB := DEFAULT_DB;
+  FTasks := GetITasks;
 end;
 
 procedure TProfile.SetDB(const AValue: string);

@@ -190,7 +190,10 @@ var
 begin
   Assert(Assigned(ATasks), RsATasksIsNil);
   Assert((AIndex >= -1) and (AIndex < ATasks.Count), Format(RsWrongAIndexValue, [AIndex]));
-  Assert((AIndex > -1) and Assigned(ATasks[AIndex]), RsITaskIsNil);
+  if AIndex > -1 then
+  begin
+    Assert(Assigned(ATasks[AIndex]), RsITaskIsNil);
+  end;
   inherited Create(AOwner);
   FTasks := ATasks;
   FTaskIndex := AIndex;
