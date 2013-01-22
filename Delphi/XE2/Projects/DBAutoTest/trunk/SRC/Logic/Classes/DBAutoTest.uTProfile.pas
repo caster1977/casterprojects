@@ -33,7 +33,7 @@ type
     procedure Finalize; virtual;
   public
     constructor Create; virtual; final;
-    destructor Destroy; override;
+    destructor Destroy; override; final;
     property Server: string read GetServer write SetServer;
     property Login: string read GetLogin write SetLogin;
     property DB: string read GetDB write SetDB;

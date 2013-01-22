@@ -21,7 +21,7 @@ type
     procedure Finalize; virtual;
   public
     constructor Create; virtual; final;
-    destructor Destroy; override;
+    destructor Destroy; override; final;
     property FullName: string read GetFullName write SetFullName nodefault;
     property ShortName: string read GetShortName nodefault;
     property Exists: Boolean read GetExists nodefault;

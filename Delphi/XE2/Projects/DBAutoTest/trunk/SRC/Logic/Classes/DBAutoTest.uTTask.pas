@@ -28,7 +28,7 @@ type
     procedure Finalize; virtual;
   public
     constructor Create; virtual; final;
-    destructor Destroy; override;
+    destructor Destroy; override; final;
     property Group: string read GetGroup write SetGroup nodefault;
     property name: string read GetName write SetName nodefault;
     property SQL: TStringList read GetSQL write SetSQL default DEFAULT_TASK_SQL;
