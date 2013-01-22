@@ -55,7 +55,7 @@ type
     N2: TMenuItem;
     N3: TMenuItem;
     N4: TMenuItem;
-    N5: TMenuItem;
+    miRecents: TMenuItem;
     N6: TMenuItem;
     actConfiguration: TAction_Configuration;
     TrayIcon: TTrayIcon;
@@ -111,6 +111,8 @@ type
     FRecents: IRecents;
     function GetRecents: IRecents;
     property Recents: IRecents read GetRecents nodefault;
+    procedure OnRecentsMenuItemClick(Sender: TObject);
+    procedure RefreshRecentsMenu;
   end;
 
 var
@@ -134,6 +136,7 @@ uses
 resourcestring
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
   RsExitConfirmationCaption = '%s - Подтверждение выхода';
+  RsOpenRecent = 'Нажмите для загрузки файла профиля с указанным именем';
 
 procedure TMainForm.actAboutExecute(Sender: TObject);
 begin
@@ -195,6 +198,7 @@ begin
     r.FullName := IntToStr(i);
     Recents.Add(r);
   end;
+  RefreshRecentsMenu;
 end;
 
 function TMainForm.GetRecents: IRecents;
@@ -285,13 +289,53 @@ begin
     try
       ShowModal;
     finally
+      if ModalResult = mrOk then
+      begin
+        RefreshRecentsMenu;
+      end;
       Free;
     end;
 end;
 
 procedure TMainForm.actClearTasksUpdate(Sender: TObject);
 begin
-  TAction(Sender).Enabled := (lvTaskList.Items.Count > 0); // and (not FProcessActive);
+  actClearTasks.Enabled := (lvTaskList.Items.Count > 0); // and (not FProcessActive);
+end;
+
+procedure TMainForm.RefreshRecentsMenu;
+var
+  i: Integer;
+  item: TMenuItem;
+begin
+  for i := miRecents.Count-3 downto 0 do
+  begin
+    miRecents.Items[i].Free;
+  end;
+  for i := Recents.Count-1 downto 0 do
+  begin
+    item := TMenuItem.Create(Self);
+    item.Caption := Recents.Items[i].FullName;
+    //item.Enabled := Recents.Items[i].Exists;
+    item.OnClick := OnRecentsMenuItemClick;
+    item.Hint := RsOpenRecent;
+    miRecents.Insert(0, item);
+  end;
+end;
+
+procedure TMainForm.OnRecentsMenuItemClick(Sender: TObject);
+var
+  mi: TMenuItem;
+  r: IRecent;
+begin
+  if Sender is TMenuItem then
+  begin
+    mi := Sender as TMenuItem;
+    ShowMessage(mi.Caption);
+    r := Recents[mi.MenuIndex];
+    Recents.Delete(mi.MenuIndex);
+    Recents.Insert(0, r);
+    RefreshRecentsMenu;
+  end;
 end;
 
 procedure TMainForm.RefreshTaskList;
