@@ -88,6 +88,7 @@ object MainForm: TMainForm
           Width = 100
         end>
       FlatScrollBars = True
+      Items.ItemData = {}
       GroupView = True
       ReadOnly = True
       RowSelect = True
@@ -737,6 +738,7 @@ object MainForm: TMainForm
       Category = #1055#1088#1086#1092#1080#1083#1100
       Caption = '&'#1057#1086#1079#1076#1072#1090#1100
       Hint = #1057#1086#1079#1076#1072#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1089#1086#1079#1076#1072#1085#1080#1103' '#1085#1086#1074#1086#1075#1086' '#1087#1088#1086#1092#1080#1083#1103
+      OnExecute = actCreateProfileExecute
     end
     object actLoadProfile: TAction
       Category = #1055#1088#1086#1092#1080#1083#1100
@@ -920,5 +922,17 @@ object MainForm: TMainForm
         Action = actAbout
       end
     end
+  end
+  object ADOConnection1: TADOConnection
+    CommandTimeout = 60000
+    ConnectionString = 
+      'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security In' +
+      'fo=False;User ID=v_ivanov;Initial Catalog=CSC_Frito;Data Source=' +
+      'SRV-SQL-TEST01'
+    ConnectionTimeout = 60
+    LoginPrompt = False
+    Provider = 'SQLOLEDB.1'
+    Left = 432
+    Top = 232
   end
 end
