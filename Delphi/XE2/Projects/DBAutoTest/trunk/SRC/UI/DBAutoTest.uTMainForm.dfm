@@ -123,7 +123,7 @@ object MainForm: TMainForm
     Left = 256
     Top = 136
     Bitmap = {
-      494C01010B00A000000110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B00A000040110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       00000000000000000000000000000000000000000000897970007D6E65007463
       5A0073625900736259007362590073625900736259007362590074635A007D6E
@@ -776,6 +776,7 @@ object MainForm: TMainForm
       Hint = #1042#1099#1087#1086#1083#1085#1080#1090#1100' '#1090#1077#1089#1090#1099'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1079#1072#1087#1091#1089#1082#1072' '#1090#1077#1089#1090#1086#1074' '#1085#1072' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1077
       ImageIndex = 4
       ShortCut = 120
+      OnExecute = actProcessExecute
       OnUpdate = actProcessUpdate
     end
     object actCreateTask: TAction
@@ -924,17 +925,5 @@ object MainForm: TMainForm
         Action = actAbout
       end
     end
-  end
-  object ADOConnection1: TADOConnection
-    CommandTimeout = 60000
-    ConnectionString = 
-      'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security In' +
-      'fo=False;User ID=v_ivanov;Initial Catalog=CSC_Frito;Data Source=' +
-      'SRV-SQL-TEST01'
-    ConnectionTimeout = 60
-    LoginPrompt = False
-    Provider = 'SQLOLEDB.1'
-    Left = 432
-    Top = 232
   end
 end

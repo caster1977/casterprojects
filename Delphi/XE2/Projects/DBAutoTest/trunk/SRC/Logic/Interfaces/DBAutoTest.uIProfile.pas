@@ -9,7 +9,6 @@ uses
 type
   IProfile = interface
     ['{36CBBEE6-6950-4024-80B6-984A84C93A7A}']
-    procedure Clear;
     function GetTasks: ITasks;
     property Tasks: ITasks read GetTasks;
     function GetServer: string;
