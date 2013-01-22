@@ -92,7 +92,6 @@ type
     actProfileProperties: TAction;
     ADOConnection1: TADOConnection;
     procedure actQuitExecute(Sender: TObject);
-    procedure lvTaskListResize(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actConfigurationExecute(Sender: TObject);
@@ -108,6 +107,9 @@ type
     procedure actProfilePropertiesUpdate(Sender: TObject);
     procedure actProfilePropertiesExecute(Sender: TObject);
     procedure actCreateProfileExecute(Sender: TObject);
+    procedure actClearTasksExecute(Sender: TObject);
+    procedure actDeleteTaskExecute(Sender: TObject);
+    procedure actEditTaskExecute(Sender: TObject);
   strict private
     procedure OnHint(ASender: TObject);
     procedure ShowAboutWindow(const AShowCloseButton: Boolean);
@@ -123,6 +125,7 @@ type
     function GetProfile: IProfile;
     procedure SetProfile(const AValue: IProfile);
     property Profile: IProfile read GetProfile write SetProfile nodefault;
+    procedure AddEditTask(const AIndex: Integer = -1);
   end;
 
 var
@@ -142,6 +145,7 @@ uses
   DBAutoTest.uTProfile,
   DBAutoTest.uTRecents,
   DBAutoTest.uIRecent,
+  DBAutoTest.uITask,
   DBAutoTest.uTRecent;
 
 resourcestring
@@ -228,7 +232,7 @@ function TMainForm.GetProfile: IProfile;
 begin
   if not Assigned(FProfile) then
   begin
-    FProfile := TProfile.Create;
+    FProfile := GetIProfile;
   end;
   Result := FProfile;
 end;
@@ -240,21 +244,6 @@ begin
     FRecents := GetIRecents;
   end;
   Result := FRecents;
-end;
-
-procedure TMainForm.lvTaskListResize(Sender: TObject);
-// var
-// h: HWND;
-begin
-  // h:=lvTaskList.Handle;
-  // lvTaskList.Column[0].Width:=lvTaskList.Width-100-(lvTaskList.BevelWidth*2)-2;
-  // lvTaskList.FlatScrollBars:=False;
-  // lvTaskList.FlatScrollBars:=True;
-  // if (GetWindowLong(h, GWL_STYLE)and WS_VSCROLL)=WS_VSCROLL then
-  // begin
-  // lvTaskList.Column[0].Width:=lvTaskList.Column[0].Width-GetSystemMetrics(SM_CXVSCROLL);
-  // end;
-  // lvTaskList.Column[1].Width:=100;
 end;
 
 procedure TMainForm.actCreateProfileExecute(Sender: TObject);
@@ -270,26 +259,40 @@ begin
   end;
 end;
 
-procedure TMainForm.actCreateTaskExecute(Sender: TObject);
+procedure TMainForm.AddEditTask(const AIndex: Integer);
 var
   i: Integer;
+  t: ITask;
 begin
-  i := lvTaskList.ItemIndex;
-  with TTaskForm.Create(Self, nil { Profile.TaskList } ) do
+  with TTaskForm.Create(Self, Profile.Tasks, AIndex) do
     try
       ShowModal;
       if ModalResult = mrOk then
       begin
-        i := TaskIndex;
+        t := Profile.Tasks[TaskIndex];
       end;
     finally
       Free;
     end;
-  if lvTaskList.ItemIndex <> i then
+  RefreshTaskList;
+  for i := 0 to lvTaskList.Items.Count - 1 do
   begin
-    RefreshTaskList;
-    lvTaskList.ItemIndex := i;
+    if lvTaskList.Items[i].Data = Pointer(t) then
+    begin
+      lvTaskList.Items[i].Selected := True;
+      Break;
+    end;
   end;
+end;
+
+procedure TMainForm.actCreateTaskExecute(Sender: TObject);
+begin
+  AddEditTask;
+end;
+
+procedure TMainForm.actEditTaskExecute(Sender: TObject);
+begin
+  AddEditTask(lvTaskList.ItemIndex);
 end;
 
 procedure TMainForm.actCreateTaskUpdate(Sender: TObject);
@@ -297,14 +300,54 @@ begin
   // actCreateTask.Enabled := not FProcessActive;
 end;
 
-procedure TMainForm.actDeleteTaskUpdate(Sender: TObject);
+procedure TMainForm.actDeleteTaskExecute(Sender: TObject);
+var
+  i: Integer;
 begin
-  actDeleteTask.Enabled := Assigned(lvTaskList.Selected); // and (not FProcessActive);
+  for i := lvTaskList.Items.Count - 1 downto 0 do
+  begin
+    if lvTaskList.Items[i].Selected then
+    begin
+      Profile.Tasks.Remove(ITask(lvTaskList.Items[i].Data));
+    end;
+  end;
+  RefreshTaskList;
+end;
+
+procedure TMainForm.actDeleteTaskUpdate(Sender: TObject);
+var
+  i: Integer;
+  b: Boolean;
+begin
+  b := False;
+  for i := 0 to lvTaskList.Items.Count - 1 do
+  begin
+    if lvTaskList.Items[i].Selected then
+    begin
+      b := True;
+    end;
+  end;
+  actDeleteTask.Enabled := b; // and (not FProcessActive);
 end;
 
 procedure TMainForm.actEditTaskUpdate(Sender: TObject);
+var
+  i: Integer;
+  j: Integer;
 begin
-  actEditTask.Enabled := Assigned(lvTaskList.Selected); // and (not FProcessActive);
+  j := 0;
+  for i := 0 to lvTaskList.Items.Count - 1 do
+  begin
+    if lvTaskList.Items[i].Selected then
+    begin
+      j := j + 1;
+      if j > 1 then
+      begin
+        Break;
+      end;
+    end;
+  end;
+  actEditTask.Enabled := j = 1; // and (not FProcessActive);
 end;
 
 procedure TMainForm.actProcessUpdate(Sender: TObject);
@@ -340,6 +383,12 @@ begin
       end;
       Free;
     end;
+end;
+
+procedure TMainForm.actClearTasksExecute(Sender: TObject);
+begin
+  Profile.Tasks.Clear;
+  RefreshTaskList;
 end;
 
 procedure TMainForm.actClearTasksUpdate(Sender: TObject);
@@ -384,7 +433,62 @@ begin
 end;
 
 procedure TMainForm.RefreshTaskList;
+  function GetGroupIDByHeader(const AValue: string): Integer;
+  var
+    i: Integer;
+  begin
+    Result := -1;
+    for i := 0 to lvTaskList.Groups.Count - 1 do
+    begin
+      if lvTaskList.Groups[i].Header = Trim(AValue) then
+      begin
+        Result := lvTaskList.Groups[i].GroupID;
+      end;
+    end;
+  end;
+
+  function AddGroup(const AHeader: string): Integer;
+  var
+    grp: TListGroup;
+  begin
+    grp := lvTaskList.Groups.Add;
+    grp.Header := Trim(AHeader);
+    grp.State := [lgsCollapsible];
+    Result := grp.GroupID;
+  end;
+
+var
+  i: Integer;
+  t: ITask;
+  node: TListItem;
 begin
+  lvTaskList.Items.BeginUpdate;
+  try
+    lvTaskList.Clear;
+    if Assigned(Profile.Tasks) then
+    begin
+      for i := 0 to Profile.Tasks.Count - 1 do
+      begin
+        t := Profile.Tasks.Items[i];
+        if Assigned(t) then
+        begin
+          node := lvTaskList.Items.Add;
+          node.StateIndex := -1;
+          node.ImageIndex := -1;
+          node.Data := Pointer(t);
+          node.GroupID := GetGroupIDByHeader(t.Group);
+          if node.GroupID = -1 then
+          begin
+            node.GroupID := AddGroup(t.Group);
+          end;
+          node.Caption := t.name;
+          node.SubItems.Add('');
+        end;
+      end;
+    end;
+  finally
+    lvTaskList.Items.EndUpdate;
+  end;
 end;
 
 end.

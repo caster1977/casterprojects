@@ -132,6 +132,10 @@ begin
   begin
     if Assigned(AValue) then
     begin
+      if not Assigned(FSQL) then
+      begin
+        FSQL := TStringList.Create;
+      end;
       FSQL.Clear;
       FSQL.AddStrings(AValue);
     end
