@@ -90,6 +90,7 @@ type
     N30: TMenuItem;
     N31: TMenuItem;
     actProfileProperties: TAction;
+    OpenDialog1: TOpenDialog;
     procedure actQuitExecute(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -110,6 +111,7 @@ type
     procedure actDeleteTaskExecute(Sender: TObject);
     procedure actEditTaskExecute(Sender: TObject);
     procedure actProcessExecute(Sender: TObject);
+    procedure actLoadProfileExecute(Sender: TObject);
   strict private
     procedure OnHint(ASender: TObject);
     procedure ShowAboutWindow(const AShowCloseButton: Boolean);
@@ -156,6 +158,8 @@ resourcestring
   RsCreateProfileConfirmationMessage =
     'Вы действительно хотите создать новый профиль, предварительно не сохранив текущий?';
   RsCreateProfileConfirmationCaption = '%s - Подтверждение создания нового профиля';
+  RsOpenProfileFilters = 'Файлы профилей (*.profile)|*.profile|Все файлы (*.*)|*.*';
+  RsOpenProfileDefaultExt = 'profile';
 
 procedure TMainForm.actAboutExecute(Sender: TObject);
 begin
@@ -351,6 +355,21 @@ begin
     end;
   end;
   actEditTask.Enabled := j = 1; // and (not FProcessActive);
+end;
+
+procedure TMainForm.actLoadProfileExecute(Sender: TObject);
+begin
+  with TOpenDialog.Create(Self) do
+  try
+    DefaultExt := RsOpenProfileDefaultExt;
+    Filter := RsOpenProfileFilters;
+    if Execute(Handle) then
+    begin
+
+    end;
+  finally
+    Free;
+  end;
 end;
 
 procedure TMainForm.actProcessExecute(Sender: TObject);
