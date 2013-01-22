@@ -112,6 +112,7 @@ type
     procedure actEditTaskExecute(Sender: TObject);
     procedure actProcessExecute(Sender: TObject);
     procedure actLoadProfileExecute(Sender: TObject);
+    procedure lvTaskListDblClick(Sender: TObject);
   strict private
     procedure OnHint(ASender: TObject);
     procedure ShowAboutWindow(const AShowCloseButton: Boolean);
@@ -251,6 +252,11 @@ begin
   Result := FRecents;
 end;
 
+procedure TMainForm.lvTaskListDblClick(Sender: TObject);
+begin
+  actEditTask.Execute;
+end;
+
 procedure TMainForm.actCreateProfileExecute(Sender: TObject);
 begin
   { TODO :
@@ -261,6 +267,7 @@ begin
     MESSAGE_TYPE_CONFIRMATION_WARNING) = IDOK then
   begin
     Profile := GetIProfile;
+    { TODO : нужно как-то изменить алгоритм работы с именем файла }
     RefreshTaskList;
   end;
 end;
@@ -273,10 +280,11 @@ begin
   with TTaskForm.Create(Self, Profile.Tasks, AIndex) do
     try
       ShowModal;
-      if ModalResult = mrOk then
-      begin
-        t := Profile.Tasks[TaskIndex];
-      end;
+//      if ModalResult = mrOk then
+        if TaskIndex > -1 then
+        begin
+          t := Profile.Tasks[TaskIndex];
+        end;
     finally
       Free;
     end;
@@ -286,6 +294,7 @@ begin
     if lvTaskList.Items[i].Data = Pointer(t) then
     begin
       lvTaskList.Items[i].Selected := True;
+      lvTaskList.Items[i].Focused := True;
       Break;
     end;
   end;
@@ -363,9 +372,11 @@ begin
   try
     DefaultExt := RsOpenProfileDefaultExt;
     Filter := RsOpenProfileFilters;
+    Options := Options + [ofFileMustExist];
     if Execute(Handle) then
     begin
-
+      Profile.Load;
+      RefreshTaskList;
     end;
   finally
     Free;

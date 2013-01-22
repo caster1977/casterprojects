@@ -131,7 +131,6 @@ object TaskForm: TTaskForm
     Height = 178
     Align = alClient
     TabOrder = 1
-    WantTabs = True
     WordWrap = False
   end
   object ActionList: TActionList

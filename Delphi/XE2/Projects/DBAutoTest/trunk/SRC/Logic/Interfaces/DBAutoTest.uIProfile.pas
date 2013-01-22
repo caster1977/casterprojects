@@ -4,10 +4,11 @@ interface
 
 uses
   System.Classes,
+  CastersPackage.uIIniFileDataStorage,
   DBAutoTest.uITasks;
 
 type
-  IProfile = interface
+  IProfile = interface(IIniFileDataStorage)
     ['{36CBBEE6-6950-4024-80B6-984A84C93A7A}']
     function GetTasks: ITasks;
     property Tasks: ITasks read GetTasks;
@@ -17,9 +18,9 @@ type
     function GetLogin: string;
     procedure SetLogin(const AValue: string);
     property Login: string read GetLogin write SetLogin;
-    function GetDB: string;
-    procedure SetDB(const AValue: string);
-    property DB: string read GetDB write SetDB;
+    function GetDatabase: string;
+    procedure SetDatabase(const AValue: string);
+    property Database: string read GetDatabase write SetDatabase;
     function GetADOConnectionString: string;
     property ADOConnectionString: string read GetADOConnectionString;
   end;

@@ -7,10 +7,12 @@ uses
   DBAutoTest.uITasks,
   DBAutoTest.uConsts,
   CastersPackage.uICustomized,
+  CastersPackage.uTIniFileDataStorage,
+  System.IniFiles,
   System.Classes;
 
 type
-  TProfile = class(TInterfacedObject, IProfile, ICustomized)
+  TProfile = class(TIniFileDataStorage, IProfile, ICustomized)
   strict private
     FServer: string;
     function GetServer: string;
@@ -21,27 +23,30 @@ type
     procedure SetLogin(const AValue: string);
   strict private
     FDB: string;
-    function GetDB: string;
-    procedure SetDB(const AValue: string);
+    function GetDatabase: string;
+    procedure SetDatabase(const AValue: string);
   strict private
     function GetADOConnectionString: string;
   strict private
     FTasks: ITasks;
     function GetTasks: ITasks;
   protected
-    procedure Initialize; virtual;
-    procedure Finalize; virtual;
+    procedure Initialize; override;
+    procedure Finalize; override;
+    procedure Loading(const AIniFile: TCustomIniFile); override;
+    procedure AfterLoad; override;
+    procedure BeforeSave; override;
+    procedure Saving(const AIniFile: TCustomIniFile); override;
   public
-    constructor Create; virtual; final;
-    destructor Destroy; override; final;
+//    constructor Create(const AProfileFileName: string = ''); override; final;
     property Server: string read GetServer write SetServer;
     property Login: string read GetLogin write SetLogin;
-    property DB: string read GetDB write SetDB;
+    property Database: string read GetDatabase write SetDatabase;
     property ADOConnectionString: string read GetADOConnectionString;
     property Tasks: ITasks read GetTasks;
   end;
 
-function GetIProfile: IProfile;
+function GetIProfile(const AProfileFileName: string = ''): IProfile;
 
 implementation
 
@@ -49,22 +54,28 @@ uses
   System.SysUtils,
   DBAutoTest.uTTasks;
 
-function GetIProfile: IProfile;
+function GetIProfile(const AProfileFileName: string): IProfile;
 begin
-  Result := TProfile.Create;
+  Result := TProfile.Create(AProfileFileName);
 end;
 
-constructor TProfile.Create;
+procedure TProfile.AfterLoad;
 begin
   inherited;
-  Initialize;
+
 end;
 
-destructor TProfile.Destroy;
+procedure TProfile.BeforeSave;
 begin
-  Finalize;
   inherited;
+
 end;
+
+//constructor TProfile.Create(const AProfileFileName: string);
+//begin
+//  inherited;
+//  Initialize;
+//end;
 
 procedure TProfile.Finalize;
 begin
@@ -72,10 +83,10 @@ end;
 
 function TProfile.GetADOConnectionString: string;
 begin
-  Result := Format(DEFAULT_ADO_CONNECTION_STRING, [Login, DB, Server]);
+  Result := Format(DEFAULT_ADO_CONNECTION_STRING, [Login, Database, Server]);
 end;
 
-function TProfile.GetDB: string;
+function TProfile.GetDatabase: string;
 begin
   Result := FDB;
 end;
@@ -103,11 +114,23 @@ procedure TProfile.Initialize;
 begin
   Server := DEFAULT_SERVER;
   Login := DEFAULT_LOGIN;
-  DB := DEFAULT_DB;
+  Database := DEFAULT_DB;
   FTasks := GetITasks;
 end;
 
-procedure TProfile.SetDB(const AValue: string);
+procedure TProfile.Loading(const AIniFile: TCustomIniFile);
+begin
+  inherited;
+
+end;
+
+procedure TProfile.Saving(const AIniFile: TCustomIniFile);
+begin
+  inherited;
+
+end;
+
+procedure TProfile.SetDatabase(const AValue: string);
 var
   s: string;
 begin
