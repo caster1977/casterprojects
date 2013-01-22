@@ -22,7 +22,7 @@ type
     procedure BeforeSave; virtual; abstract;
     procedure Saving(const AIniFile: TCustomIniFile); virtual; abstract;
   protected
-    constructor Create(const AIniFileName: string = ''); virtual;
+    constructor Create(const AIniFileName: string = ''); virtual; final;
   public
     destructor Destroy; override;
     procedure Load; virtual; final;

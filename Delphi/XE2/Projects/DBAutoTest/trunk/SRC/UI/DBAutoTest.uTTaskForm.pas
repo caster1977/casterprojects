@@ -122,6 +122,7 @@ procedure TTaskForm.actApplyUpdate(Sender: TObject);
 begin
   actApply.Enabled := (TaskGroup <> EmptyStr) and (TaskName <> EmptyStr) and
     (TaskSQL.Text <> EmptyStr);
+  btnApply.Default := actApply.Enabled;
 end;
 
 procedure TTaskForm.actCancelExecute(Sender: TObject);
@@ -133,12 +134,12 @@ procedure TTaskForm.actClearExecute(Sender: TObject);
 begin
   TaskGroup := EmptyStr;
   TaskName := EmptyStr;
-  TaskSQL.Clear;
+  TaskSQL := nil;
 end;
 
 procedure TTaskForm.actClearUpdate(Sender: TObject);
 begin
-  actClear.Enabled := (TaskGroup <> EmptyStr) and (TaskName <> EmptyStr) and
+  actClear.Enabled := (TaskGroup <> EmptyStr) or (TaskName <> EmptyStr) or
     (TaskSQL.Text <> EmptyStr);
 end;
 

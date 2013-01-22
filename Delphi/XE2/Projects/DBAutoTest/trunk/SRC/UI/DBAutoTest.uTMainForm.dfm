@@ -1,6 +1,7 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
+  ActiveControl = lvTaskList
   Caption = 'MainForm'
   ClientHeight = 422
   ClientWidth = 624
@@ -96,6 +97,7 @@ object MainForm: TMainForm
       SmallImages = ImageList
       TabOrder = 1
       ViewStyle = vsReport
+      OnDblClick = lvTaskListDblClick
     end
   end
   object atbMain: TActionToolBar
@@ -123,7 +125,7 @@ object MainForm: TMainForm
     Left = 256
     Top = 136
     Bitmap = {
-      494C01010B00A000080110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B00A0000C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       00000000000000000000000000000000000000000000897970007D6E65007463
       5A0073625900736259007362590073625900736259007362590074635A007D6E
@@ -796,6 +798,8 @@ object MainForm: TMainForm
         #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1088#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1103' '#1074#1099#1076#1077#1083#1077#1085#1085#1086#1075#1086' '#1101#1083#1077#1084#1077#1085#1090#1072' '#1089#1087 +
         #1080#1089#1082#1072
       ImageIndex = 8
+      SecondaryShortCuts.Strings = (
+        'Enter')
       ShortCut = 113
       OnExecute = actEditTaskExecute
       OnUpdate = actEditTaskUpdate
