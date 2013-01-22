@@ -3,6 +3,8 @@ unit DBAutoTest.uTRecentsPropertiesForm;
 interface
 
 uses
+  CastersPackage.Actions.Classes,
+  DBAutoTest.uIRecents,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -16,14 +18,13 @@ uses
   Vcl.ExtCtrls,
   Vcl.ComCtrls,
   Vcl.StdActns,
-  CastersPackage.Actions.Classes,
   System.Actions,
   Vcl.ActnList,
   Vcl.Samples.Spin,
-  DBAutoTest.uIRecents;
+  Vcl.Menus;
 
 type
-  TRecentsPropertiesForm=class(TForm)
+  TRecentsPropertiesForm = class(TForm)
     ActionList: TActionList;
     actCancel: TAction;
     actApply: TAction;
@@ -38,15 +39,23 @@ type
     pnlTop: TPanel;
     lblRecentsListSize: TLabel;
     lblRecentsList: TLabel;
-    seRecentsListSize: TSpinEdit;
+    seRecentsSize: TSpinEdit;
     pnlBottom: TPanel;
     btnClear: TButton;
     Bevel1: TBevel;
-    Button1: TButton;
+    btnDelete: TButton;
     btnDeleteNotExists: TButton;
     actDeleteNotExists: TAction;
+    lblSizeHint: TLabel;
+    pmRecentList: TPopupMenu;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    actSelectAll: TAction;
+    actSelectAll1: TMenuItem;
     procedure actCancelExecute(Sender: TObject);
-    procedure seRecentsListSizeKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure seRecentsSizeKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure actApplyUpdate(Sender: TObject);
     procedure actApplyExecute(Sender: TObject);
     procedure actClearExecute(Sender: TObject);
@@ -55,19 +64,28 @@ type
     procedure actDeleteUpdate(Sender: TObject);
     procedure actDeleteNotExistsExecute(Sender: TObject);
     procedure actDeleteNotExistsUpdate(Sender: TObject);
+    procedure seRecentsSizeExit(Sender: TObject);
+    procedure lvRecentsListCustomDrawItem(Sender: TCustomListView; Item: TListItem;
+      State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure actSelectAllUpdate(Sender: TObject);
+    procedure actSelectAllExecute(Sender: TObject);
   strict private
-    FOriginalRecentsListSize: Integer;
     FOriginalRecents: IRecents;
+    FOriginalSize: Integer;
     FRecents: IRecents;
     function GetOriginalRecents: IRecents;
-    function GetOriginalRecentsListSize: Integer;
     function GetRecents: IRecents;
+    function GetSize: Integer;
+    procedure SetSize(const AValue: Integer);
+    function GetOriginalSize: Integer;
     procedure RefreshRecentsList;
-    property OriginalRecentsListSize: Integer read GetOriginalRecentsListSize nodefault;
     property OriginalRecents: IRecents read GetOriginalRecents nodefault;
+    property OriginalSize: Integer read GetOriginalSize nodefault;
     property Recents: IRecents read GetRecents nodefault;
+    property Size: Integer read GetSize write SetSize nodefault;
   public
-    constructor Create(AOwner: TComponent; const ARecents: IRecents; const ARecentsListSize: Integer); reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const ARecents: IRecents; const ASize: Integer);
+      reintroduce; virtual;
   end;
 
 implementation
@@ -79,30 +97,42 @@ uses
   DBAutoTest.uIRecent;
 
 resourcestring
-  RsARecentsIsNil='ARecents is nil.';
+  RsARecentsIsNil = 'ARecents is nil.';
+  RsSizeHint = '(%d - %d)';
+  RsEnterNumber = 'Введите число от %d до %d';
 
 procedure TRecentsPropertiesForm.actApplyExecute(Sender: TObject);
+var
+  i: Integer;
 begin
   if Assigned(OriginalRecents) then
+  begin
+    OriginalRecents.Clear;
+    if Assigned(Recents) then
     begin
-      OriginalRecents.Clear;
-      if Assigned(Recents) then
+      for i := 0 to Size - 1 do
+      begin
+        if i > Recents.Count - 1 then
         begin
-          OriginalRecents.Append(Recents);
+          Break;
         end;
+        OriginalRecents.Add(Recents[i]);
+      end;
     end;
-  ModalResult:=mrOk;
+  end;
+  ModalResult := mrOk;
 end;
 
 procedure TRecentsPropertiesForm.actApplyUpdate(Sender: TObject);
 begin
-  actApply.Enabled:=Recents.Equals(OriginalRecents);
-  btnApply.Default:=actApply.Enabled;
+  actApply.Enabled := (not Recents.Equals(OriginalRecents)) or (Size <> OriginalSize);
+  btnApply.Default := actApply.Enabled;
+  btnCancel.Default := not actApply.Enabled;
 end;
 
 procedure TRecentsPropertiesForm.actCancelExecute(Sender: TObject);
 begin
-  ModalResult:=mrCancel;
+  ModalResult := mrCancel;
 end;
 
 procedure TRecentsPropertiesForm.actClearExecute(Sender: TObject);
@@ -113,20 +143,20 @@ end;
 
 procedure TRecentsPropertiesForm.actClearUpdate(Sender: TObject);
 begin
-  actClear.Enabled:=lvRecentsList.Items.Count>0;
+  actClear.Enabled := lvRecentsList.Items.Count > 0;
 end;
 
 procedure TRecentsPropertiesForm.actDeleteExecute(Sender: TObject);
 var
   i: Integer;
 begin
-  for i:=lvRecentsList.Items.Count-1 to 0 do
+  for i := lvRecentsList.Items.Count - 1 downto 0 do
+  begin
+    if lvRecentsList.Items[i].Selected then
     begin
-      if lvRecentsList.Items[i].Selected then
-        begin
-          Recents.Remove(IRecent(lvRecentsList.Items[i].Data));
-        end;
+      Recents.Remove(IRecent(lvRecentsList.Items[i].Data));
     end;
+  end;
   RefreshRecentsList;
 end;
 
@@ -134,13 +164,13 @@ procedure TRecentsPropertiesForm.actDeleteNotExistsExecute(Sender: TObject);
 var
   i: Integer;
 begin
-  for i:=Recents.Count-1 downto 0 do
+  for i := Recents.Count - 1 downto 0 do
+  begin
+    if not Recents[i].Exists then
     begin
-      if not Recents[i].Exists then
-        begin
-          Recents.Delete(i);
-        end;
+      Recents.Delete(i);
     end;
+  end;
   RefreshRecentsList;
 end;
 
@@ -149,70 +179,175 @@ var
   i: Integer;
   b: Boolean;
 begin
-  b:=False;
-  for i:=0 to Recents.Count-1 do
+  b := False;
+  for i := 0 to Recents.Count - 1 do
+  begin
+    if not Recents[i].Exists then
     begin
-      if not Recents[i].Exists then
-        begin
-          b:=True;
-          Break;
-        end;
+      b := True;
+      Break;
     end;
-  actDeleteNotExists.Enabled:=b;
+  end;
+  actDeleteNotExists.Enabled := b;
 end;
 
 procedure TRecentsPropertiesForm.actDeleteUpdate(Sender: TObject);
 begin
-  actDelete.Enabled:=lvRecentsList.SelCount>0;
+  actDelete.Enabled := lvRecentsList.SelCount > 0;
+end;
+
+procedure TRecentsPropertiesForm.actSelectAllExecute(Sender: TObject);
+begin
+  lvRecentsList.SelectAll;
+end;
+
+procedure TRecentsPropertiesForm.actSelectAllUpdate(Sender: TObject);
+begin
+  actSelectAll.Enabled := lvRecentsList.Items.Count > 0;
 end;
 
 function TRecentsPropertiesForm.GetOriginalRecents: IRecents;
 begin
-  Result:=FOriginalRecents;
+  Result := FOriginalRecents;
 end;
 
-function TRecentsPropertiesForm.GetOriginalRecentsListSize: Integer;
+function TRecentsPropertiesForm.GetSize: Integer;
 begin
-  Result := FOriginalRecentsListSize;
+  Result := seRecentsSize.Value;
+end;
+
+procedure TRecentsPropertiesForm.lvRecentsListCustomDrawItem(Sender: TCustomListView;
+  Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  lvRecentsList.Canvas.Font.Color := clBlack;
+  if Assigned(Item.Data) then
+  begin
+    if not IRecent(Item.Data).Exists then
+    begin
+      lvRecentsList.Canvas.Font.Color := clGray;
+    end;
+  end;
 end;
 
 function TRecentsPropertiesForm.GetRecents: IRecents;
 begin
-  // если список не был создан
   if not Assigned(FRecents) then
+  begin
+    FRecents := GetIRecents;
+    if Assigned(OriginalRecents) then
     begin
-      // создаём список
-      FRecents:=GetIRecents;
-      // и если оригинальный список создан
-      if Assigned(OriginalRecents) then
-        begin
-          // копируем все элементы их оригинального списка
-          FRecents.Append(OriginalRecents);
-        end;
+      FRecents.Assign(OriginalRecents);
     end;
-  Result:=FRecents;
+  end;
+  Result := FRecents;
 end;
 
 procedure TRecentsPropertiesForm.RefreshRecentsList;
-begin
-
-end;
-
-procedure TRecentsPropertiesForm.seRecentsListSizeKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-  if Key=VK_ESCAPE then
+  procedure ResizeColumn;
+  begin
+    lvRecentsList.Column[0].Width := lvRecentsList.Width - (lvRecentsList.BevelWidth * 2) - 2;
+    lvRecentsList.FlatScrollBars := False;
+    lvRecentsList.FlatScrollBars := True;
+    if (GetWindowLong(lvRecentsList.Handle, GWL_STYLE) and WS_VSCROLL) = WS_VSCROLL then
     begin
-      actCancel.Execute;
+      lvRecentsList.Column[0].Width := lvRecentsList.Column[0].Width -
+        GetSystemMetrics(SM_CXVSCROLL);
     end;
-end;
+  end;
 
-constructor TRecentsPropertiesForm.Create(AOwner: TComponent; const ARecents: IRecents; const ARecentsListSize: Integer);
+var
+  i: Integer;
+  r: IRecent;
+  node: TListItem;
 begin
-  // Assert(Assigned(ARecents), RsARecentsIsNil);
-  inherited Create(AOwner);
-  FOriginalRecentsListSize := ARecentsListSize;
-  FOriginalRecents:=ARecents;
+  lvRecentsList.Items.BeginUpdate;
+  try
+    lvRecentsList.Items.Clear;
+    if Assigned(Recents) then
+    begin
+      for i := 0 to Size - 1 do
+      begin
+        if i > Recents.Count - 1 then
+        begin
+          Break;
+        end;
+        r := Recents.Items[i];
+        if Assigned(r) then
+        begin
+          node := lvRecentsList.Items.Add;
+          node.Data := Pointer(r);
+          node.Caption := r.FullName;
+        end;
+      end;
+    end;
+    ResizeColumn;
+  finally
+    lvRecentsList.Items.EndUpdate;
+  end;
 end;
 
-  { TODO : добавить проперти RecentsListSize для задания размера листав интерфейсе }
+procedure TRecentsPropertiesForm.seRecentsSizeExit(Sender: TObject);
+begin
+  seRecentsSize.Value := Size;
+end;
+
+procedure TRecentsPropertiesForm.seRecentsSizeKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case Key of
+    VK_ESCAPE:
+      begin
+        actCancel.Execute;
+      end;
+    VK_RETURN:
+      begin
+        if actApply.Enabled then
+        begin
+          actApply.Execute;
+        end
+        else
+        begin
+          actCancel.Execute;
+        end;
+      end;
+  end;
+end;
+
+procedure TRecentsPropertiesForm.SetSize(const AValue: Integer);
+var
+  i: Integer;
+begin
+  i := AValue;
+  if i > seRecentsSize.MaxValue then
+  begin
+    i := seRecentsSize.MaxValue;
+  end;
+  if i < seRecentsSize.MinValue then
+  begin
+    i := seRecentsSize.MinValue;
+  end;
+  if seRecentsSize.Value <> i then
+  begin
+    seRecentsSize.Value := i;
+  end;
+end;
+
+function TRecentsPropertiesForm.GetOriginalSize: Integer;
+begin
+  Result := FOriginalSize;
+end;
+
+constructor TRecentsPropertiesForm.Create(AOwner: TComponent; const ARecents: IRecents;
+  const ASize: Integer);
+begin
+  Assert(Assigned(ARecents), RsARecentsIsNil);
+  inherited Create(AOwner);
+  FOriginalRecents := ARecents;
+  FOriginalSize := ASize;
+  Size := OriginalSize;
+  lblSizeHint.Caption := Format(RsSizeHint, [seRecentsSize.MinValue, seRecentsSize.MaxValue]);
+  seRecentsSize.Hint := Format(RsEnterNumber, [seRecentsSize.MinValue, seRecentsSize.MaxValue]);
+  RefreshRecentsList;
+end;
+
 end.

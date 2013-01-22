@@ -46,7 +46,8 @@ end;
 
 function TDialogPosition.Equals(const AValue: TDialogPosition): Boolean;
 begin
-  Result := (Self.Centered = AValue.Centered) and (Self.Left = AValue.Left) and (Self.Top = AValue.Top);
+  Result := (Self.Centered = AValue.Centered) and (Self.Left = AValue.Left) and
+    (Self.Top = AValue.Top);
 end;
 
 function TDialogPosition.GetCentered: Boolean;

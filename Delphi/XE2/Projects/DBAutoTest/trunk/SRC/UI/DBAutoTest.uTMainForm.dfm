@@ -2,8 +2,8 @@ object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = 'MainForm'
-  ClientHeight = 302
-  ClientWidth = 464
+  ClientHeight = 422
+  ClientWidth = 624
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,43 +19,50 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar: TStatusBar
     Left = 0
-    Top = 283
-    Width = 464
+    Top = 403
+    Width = 624
     Height = 19
     Hint = #1055#1072#1085#1077#1083#1100' '#1089#1090#1072#1090#1091#1089#1072
     Panels = <>
     SimplePanel = True
+    ExplicitTop = 283
+    ExplicitWidth = 464
   end
   object pnlMain: TPanel
     Left = 0
     Top = 27
-    Width = 464
-    Height = 256
+    Width = 624
+    Height = 376
     Align = alClient
     BevelOuter = bvNone
     BorderWidth = 6
     TabOrder = 1
+    ExplicitWidth = 464
+    ExplicitHeight = 256
     object pnlButtons: TPanel
       Left = 6
-      Top = 219
-      Width = 452
+      Top = 339
+      Width = 612
       Height = 31
       Align = alBottom
       BevelOuter = bvNone
       Constraints.MaxHeight = 31
       Constraints.MinHeight = 31
       TabOrder = 0
+      ExplicitTop = 219
+      ExplicitWidth = 452
       DesignSize = (
-        452
+        612
         31)
       object btnProcess: TButton
-        Left = 352
+        Left = 512
         Top = 6
         Width = 100
         Height = 25
         Action = actProcess
         Anchors = [akTop, akRight]
         TabOrder = 0
+        ExplicitLeft = 352
       end
       object btnProfiles: TButton
         Left = 0
@@ -73,8 +80,8 @@ object MainForm: TMainForm
     object lvTaskList: TListView
       Left = 6
       Top = 6
-      Width = 452
-      Height = 213
+      Width = 612
+      Height = 333
       Hint = #1057#1087#1080#1089#1086#1082' '#1090#1077#1089#1090#1086#1074
       Align = alClient
       Checkboxes = True
@@ -96,12 +103,14 @@ object MainForm: TMainForm
       TabOrder = 1
       ViewStyle = vsReport
       OnResize = lvTaskListResize
+      ExplicitWidth = 452
+      ExplicitHeight = 213
     end
   end
   object atbMain: TActionToolBar
     Left = 0
     Top = 0
-    Width = 464
+    Width = 624
     Height = 27
     ActionManager = ActionManager
     Caption = 'atbMain'
@@ -118,12 +127,13 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
     Spacing = 0
+    ExplicitWidth = 464
   end
   object ImageList: TImageList
     Left = 256
     Top = 136
     Bitmap = {
-      494C01010B00A000EC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B00A000F40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       00000000000000000000000000000000000000000000897970007D6E65007463
       5A0073625900736259007362590073625900736259007362590074635A007D6E

@@ -19,7 +19,9 @@ uses
   Vcl.ExtCtrls,
   DBAutoTest.uConsts,
   DBAutoTest.uITask,
-  DBAutoTest.uITasks, Vcl.StdActns, CastersPackage.Actions.Classes;
+  DBAutoTest.uITasks,
+  Vcl.StdActns,
+  CastersPackage.Actions.Classes;
 
 type
   TTaskForm = class(TForm)

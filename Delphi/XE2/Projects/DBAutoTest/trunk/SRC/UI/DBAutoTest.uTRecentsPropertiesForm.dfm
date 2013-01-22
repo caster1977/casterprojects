@@ -36,7 +36,7 @@ object RecentsPropertiesForm: TRecentsPropertiesForm
     BevelOuter = bvNone
     Constraints.MaxHeight = 31
     Constraints.MinHeight = 31
-    TabOrder = 2
+    TabOrder = 3
     DesignSize = (
       462
       31)
@@ -81,17 +81,18 @@ object RecentsPropertiesForm: TRecentsPropertiesForm
     Align = alClient
     Columns = <
       item
-        AutoSize = True
         Caption = #1048#1084#1103' '#1092#1072#1081#1083#1072
+        Width = 458
       end>
     ColumnClick = False
-    FlatScrollBars = True
     MultiSelect = True
     ReadOnly = True
     RowSelect = True
+    PopupMenu = pmRecentList
     ShowColumnHeaders = False
     TabOrder = 1
     ViewStyle = vsReport
+    OnCustomDrawItem = lvRecentsListCustomDrawItem
   end
   object pnlTop: TPanel
     Left = 0
@@ -106,10 +107,10 @@ object RecentsPropertiesForm: TRecentsPropertiesForm
     object lblRecentsListSize: TLabel
       Left = 0
       Top = 0
-      Width = 113
+      Width = 101
       Height = 13
-      Caption = '&'#1056#1072#1079#1084#1077#1088' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074
-      FocusControl = seRecentsListSize
+      Caption = '&'#1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' '#1092#1072#1081#1083#1086#1074
+      FocusControl = seRecentsSize
     end
     object lblRecentsList: TLabel
       Left = 0
@@ -119,17 +120,27 @@ object RecentsPropertiesForm: TRecentsPropertiesForm
       Caption = #1057#1087#1080#1089#1086#1082' &'#1092#1072#1081#1083#1086#1074
       FocusControl = lvRecentsList
     end
-    object seRecentsListSize: TSpinEdit
+    object lblSizeHint: TLabel
+      Left = 127
+      Top = 22
+      Width = 28
+      Height = 13
+      Caption = '(? - ?)'
+      FocusControl = seRecentsSize
+    end
+    object seRecentsSize: TSpinEdit
       Left = 0
       Top = 19
       Width = 121
       Height = 22
+      Hint = #1042#1074#1077#1076#1080#1090#1077' '
       MaxLength = 2
       MaxValue = 20
       MinValue = 0
       TabOrder = 0
       Value = 0
-      OnKeyUp = seRecentsListSizeKeyUp
+      OnExit = seRecentsSizeExit
+      OnKeyUp = seRecentsSizeKeyUp
     end
   end
   object pnlBottom: TPanel
@@ -141,7 +152,7 @@ object RecentsPropertiesForm: TRecentsPropertiesForm
     BevelOuter = bvNone
     Constraints.MaxHeight = 37
     Constraints.MinHeight = 37
-    TabOrder = 3
+    TabOrder = 2
     DesignSize = (
       462
       37)
@@ -153,9 +164,9 @@ object RecentsPropertiesForm: TRecentsPropertiesForm
       Cursor = crHandPoint
       Action = actClear
       Anchors = [akTop, akRight]
-      TabOrder = 0
+      TabOrder = 2
     end
-    object Button1: TButton
+    object btnDelete: TButton
       Left = 306
       Top = 6
       Width = 75
@@ -173,7 +184,7 @@ object RecentsPropertiesForm: TRecentsPropertiesForm
       Cursor = crHandPoint
       Action = actDeleteNotExists
       Anchors = [akTop, akRight]
-      TabOrder = 2
+      TabOrder = 0
     end
   end
   object ActionList: TActionList
@@ -182,11 +193,13 @@ object RecentsPropertiesForm: TRecentsPropertiesForm
     object actCancel: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
       Caption = '&'#1054#1090#1084#1077#1085#1072
+      Hint = #1054#1090#1084#1077#1085#1072'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1084#1077#1085#1099' '#1074#1085#1077#1089#1105#1085#1085#1099#1093' '#1080#1079#1084#1077#1085#1077#1085#1080#1081
       OnExecute = actCancelExecute
     end
     object actApply: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
       Caption = '&'#1055#1088#1080#1084#1077#1085#1080#1090#1100
+      Hint = #1055#1088#1080#1084#1077#1085#1080#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1074#1085#1077#1089#1105#1085#1085#1099#1093' '#1080#1079#1084#1077#1085#1077#1085#1080#1081
       OnExecute = actApplyExecute
       OnUpdate = actApplyUpdate
     end
@@ -201,13 +214,14 @@ object RecentsPropertiesForm: TRecentsPropertiesForm
     object actClear: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
       Caption = #1054'&'#1095#1080#1089#1090#1080#1090#1100
+      Hint = #1054#1095#1080#1089#1090#1080#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1095#1080#1089#1090#1082#1080' '#1089#1087#1080#1089#1082#1072
       OnExecute = actClearExecute
       OnUpdate = actClearUpdate
     end
     object actDelete: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      Caption = #1059#1076#1072#1083#1080#1090#1100
-      Hint = #1059#1076#1072#1083#1080#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1074#1099#1076#1077#1083#1077#1085#1085#1086#1075#1086' '#1101#1083#1077#1084#1077#1085#1090#1072' '#1080#1079' '#1089#1087#1080#1089#1082#1072
+      Caption = '&'#1059#1076#1072#1083#1080#1090#1100
+      Hint = #1059#1076#1072#1083#1080#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1074#1099#1076#1077#1083#1077#1085#1085#1099#1093' '#1101#1083#1077#1084#1077#1085#1090#1086#1074' '#1089#1087#1080#1089#1082#1072
       ImageIndex = 9
       ShortCut = 46
       OnExecute = actDeleteExecute
@@ -215,12 +229,39 @@ object RecentsPropertiesForm: TRecentsPropertiesForm
     end
     object actDeleteNotExists: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      Caption = #1059#1076#1072#1083#1080#1090#1100' '#1085#1077#1089#1091#1097#1077#1089#1090#1074#1091#1102#1097#1080#1077
+      Caption = #1059#1076#1072#1083#1080#1090#1100' &'#1085#1077#1089#1091#1097#1077#1089#1090#1074#1091#1102#1097#1080#1077
       Hint = 
-        #1059#1076#1072#1083#1080#1090#1100' '#1085#1077#1089#1091#1097#1077#1089#1090#1074#1091#1102#1097#1080#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1080#1079#1089' '#1087#1080#1089#1082#1072' '#1085#1077#1089#1091#1097#1077#1089#1090#1074#1091 +
-        #1102#1097#1080#1093' '#1092#1072#1081#1083#1086#1074
+        #1059#1076#1072#1083#1080#1090#1100' '#1085#1077#1089#1091#1097#1077#1089#1090#1074#1091#1102#1097#1080#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1080#1079' '#1089#1087#1080#1089#1082#1072' '#1101#1083#1077#1084#1077#1085#1090#1086#1074',' +
+        ' '#1089#1089#1099#1083#1072#1102#1097#1080#1093#1089#1103' '#1085#1072' '#1085#1077#1089#1091#1097#1077#1089#1090#1074#1091#1102#1097#1080#1077' '#1092#1072#1081#1083#1099
       OnExecute = actDeleteNotExistsExecute
       OnUpdate = actDeleteNotExistsUpdate
+    end
+    object actSelectAll: TAction
+      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Caption = '&'#1042#1099#1076#1077#1083#1080#1090#1100' '#1074#1089#1077
+      Hint = #1042#1099#1076#1077#1083#1080#1090#1100' '#1074#1089#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1074#1099#1076#1077#1083#1077#1085#1080#1103' '#1074#1089#1077#1093' '#1101#1083#1077#1084#1077#1085#1090#1086#1074' '#1089#1087#1080#1089#1082#1072
+      ShortCut = 16449
+      OnExecute = actSelectAllExecute
+      OnUpdate = actSelectAllUpdate
+    end
+  end
+  object pmRecentList: TPopupMenu
+    Left = 72
+    Top = 200
+    object N1: TMenuItem
+      Action = actDeleteNotExists
+    end
+    object N2: TMenuItem
+      Action = actDelete
+    end
+    object N3: TMenuItem
+      Action = actClear
+    end
+    object N4: TMenuItem
+      Caption = '-'
+    end
+    object actSelectAll1: TMenuItem
+      Action = actSelectAll
     end
   end
 end

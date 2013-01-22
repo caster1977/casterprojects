@@ -18,8 +18,10 @@ function GetIRecents: IRecents;
 implementation
 
 resourcestring
-  RsCantAddRecentToRecents = 'Не удалось добавить ранее открытый файл в список ранее открытых файлов.';
-  RsCantRemoveRecentFromRecents = 'Не удалось удалить ранее открытый файл из списка ранее открытых файлов.';
+  RsCantAddRecentToRecents =
+    'Не удалось добавить ранее открытый файл в список ранее открытых файлов.';
+  RsCantRemoveRecentFromRecents =
+    'Не удалось удалить ранее открытый файл из списка ранее открытых файлов.';
 
 function GetIRecents: IRecents;
 begin

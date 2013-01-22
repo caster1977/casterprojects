@@ -26,7 +26,8 @@ uses
   Vcl.ActnCtrls,
   Vcl.PlatformDefaultStyleActnCtrls,
   Vcl.ActnPopup,
-  System.Actions;
+  System.Actions,
+  DBAutoTest.uIRecents;
 
 type
   TMainForm = class(TForm)
@@ -106,6 +107,10 @@ type
     procedure OnHint(ASender: TObject);
     procedure ShowAboutWindow(const AShowCloseButton: Boolean);
     procedure RefreshTaskList;
+  strict private
+    FRecents: IRecents;
+    function GetRecents: IRecents;
+    property Recents: IRecents read GetRecents nodefault;
   end;
 
 var
@@ -121,7 +126,10 @@ uses
   DBAutoTest.uTTaskForm,
   DBAutoTest.uConsts,
   DBAutoTest.uTRecentsPropertiesForm,
-  DBAutoTest.uTProfileForm;
+  DBAutoTest.uTProfileForm,
+  DBAutoTest.uTRecents,
+  DBAutoTest.uIRecent,
+  DBAutoTest.uTRecent;
 
 resourcestring
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
@@ -175,8 +183,27 @@ begin
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
+var
+  r: IRecent;
+  i: Integer;
 begin
   Application.OnHint := OnHint;
+  FRecents := GetIRecents;
+  for i := 0 to 19 do
+  begin
+    r := GetIRecent;
+    r.FullName := IntToStr(i);
+    Recents.Add(r);
+  end;
+end;
+
+function TMainForm.GetRecents: IRecents;
+begin
+  if not Assigned(FRecents) then
+  begin
+    FRecents := GetIRecents;
+  end;
+  Result := FRecents;
 end;
 
 procedure TMainForm.lvTaskListResize(Sender: TObject);
@@ -185,13 +212,13 @@ procedure TMainForm.lvTaskListResize(Sender: TObject);
 begin
   // h:=lvTaskList.Handle;
   // lvTaskList.Column[0].Width:=lvTaskList.Width-100-(lvTaskList.BevelWidth*2)-2;
+  // lvTaskList.FlatScrollBars:=False;
+  // lvTaskList.FlatScrollBars:=True;
   // if (GetWindowLong(h, GWL_STYLE)and WS_VSCROLL)=WS_VSCROLL then
   // begin
   // lvTaskList.Column[0].Width:=lvTaskList.Column[0].Width-GetSystemMetrics(SM_CXVSCROLL);
   // end;
   // lvTaskList.Column[1].Width:=100;
-  // lvTaskList.FlatScrollBars:=False;
-  // lvTaskList.FlatScrollBars:=True;
 end;
 
 procedure TMainForm.actCreateTaskExecute(Sender: TObject);
@@ -254,7 +281,7 @@ end;
 
 procedure TMainForm.actRecentProfilesPropertiesExecute(Sender: TObject);
 begin
-  with TRecentsPropertiesForm.Create(Self, nil, 10) do
+  with TRecentsPropertiesForm.Create(Self, Recents, 20) do
     try
       ShowModal;
     finally

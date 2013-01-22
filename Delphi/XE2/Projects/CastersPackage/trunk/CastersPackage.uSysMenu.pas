@@ -193,10 +193,10 @@ uses
   Messages;
 
 type
-  TSysMenuLocationKind=(smtTaskBar, smtWindowBar);
-  TSysMenuLocation=set of TSysMenuLocationKind;
+  TSysMenuLocationKind = (smtTaskBar, smtWindowBar);
+  TSysMenuLocation = set of TSysMenuLocationKind;
 
-  TSysMenu=class(TComponent)
+  TSysMenu = class(TComponent)
   private
     FFormMenuHandle: HMENU;
     FApplicationMenuHandle: HMENU;
@@ -215,11 +215,12 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure WinMsg(var Msg: tagMSG; var Handled: Boolean);
+    procedure WinMsg(var Msg: tagMSG; var Handled: boolean);
   published
     property Menu: TPopupMenu read FMenu write SetMenu;
     property Visible: boolean read FVisible write SetVisible stored True default True;
-    property Location: TSysMenuLocation read FLocation write SetLocation default [smtTaskBar, smtWindowBar];
+    property Location: TSysMenuLocation read FLocation write SetLocation
+      default [smtTaskBar, smtWindowBar];
   end;
 
 procedure register;
@@ -237,14 +238,14 @@ constructor TSysMenu.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   if AOwner is TWinControl then
-    FFormHandle:=TWinControl(AOwner).Handle;
-  FFormMenuHandle:=GetSystemMenu(FFormHandle, False);
+    FFormHandle := TWinControl(AOwner).Handle;
+  FFormMenuHandle := GetSystemMenu(FFormHandle, False);
   if TWinControl(AOwner).Owner is TApplication then
-    FApplicationHandle:=TApplication(TWinControl(AOwner).Owner).Handle;
-  FApplicationMenuHandle:=GetSystemMenu(FApplicationHandle, False);
-  FLocation:=[smtTaskBar, smtWindowBar];
-  FVisible:=True;
-  FMenu:=nil;
+    FApplicationHandle := TApplication(TWinControl(AOwner).Owner).Handle;
+  FApplicationMenuHandle := GetSystemMenu(FApplicationHandle, False);
+  FLocation := [smtTaskBar, smtWindowBar];
+  FVisible := True;
+  FMenu := nil;
   // if AOwner is TWinControl then //
   // if TWinControl(Owner).Owner is TApplication then //
   // if Assigned(TApplication(TWinControl(Owner).Owner).OnMessage) then //
@@ -260,43 +261,43 @@ procedure TSysMenu.AddMenus;
   var
     i: integer;
   begin
-    for i:=0 to FMenu.Items.Count-1 do
-      begin
-        if FMenu.Items[i].IsLine then
-          AppendMenu(AMenuHandle, MF_SEPARATOR, 0, '')
-        else
-          AppendMenu(AMenuHandle, MF_STRING, i, PChar(FMenu.Items[i].Caption));
-      end;
+    for i := 0 to FMenu.Items.Count - 1 do
+    begin
+      if FMenu.Items[i].IsLine then
+        AppendMenu(AMenuHandle, MF_SEPARATOR, 0, '')
+      else
+        AppendMenu(AMenuHandle, MF_STRING, i, PChar(FMenu.Items[i].Caption));
+    end;
   end;
 
 begin
-  if FMenu=nil then
+  if FMenu = nil then
     Exit;
   if smtTaskBar in Location then
-    begin
-      FApplicationMenuHandle:=GetSystemMenu(FApplicationHandle, False);
-      AddMenu(FApplicationMenuHandle);
-    end;
+  begin
+    FApplicationMenuHandle := GetSystemMenu(FApplicationHandle, False);
+    AddMenu(FApplicationMenuHandle);
+  end;
   if smtWindowBar in Location then
-    begin
-      FFormMenuHandle:=GetSystemMenu(FFormHandle, False);
-      AddMenu(FFormMenuHandle);
-    end;
+  begin
+    FFormMenuHandle := GetSystemMenu(FFormHandle, False);
+    AddMenu(FFormMenuHandle);
+  end;
   if Owner is TWinControl then
     if TWinControl(Owner).Owner is TApplication then
-      TApplication(TWinControl(Owner).Owner).OnMessage:=WinMsg;
+      TApplication(TWinControl(Owner).Owner).OnMessage := WinMsg;
 end;
 
-procedure TSysMenu.WinMsg(var Msg: tagMSG; var Handled: Boolean);
+procedure TSysMenu.WinMsg(var Msg: tagMSG; var Handled: boolean);
 var
   i: word;
 begin
-  if Msg.message=WM_SYSCOMMAND then
-    begin
-      for i:=0 to FMenu.Items.Count-1 do
-        if Msg.wParam=i then
-          FMenu.Items[i].OnClick(nil);
-    end;
+  if Msg.message = WM_SYSCOMMAND then
+  begin
+    for i := 0 to FMenu.Items.Count - 1 do
+      if Msg.wParam = i then
+        FMenu.Items[i].OnClick(nil);
+  end;
   // OldWinMsg(Msg, Handled); //
 end;
 
@@ -318,22 +319,22 @@ end;
 
 procedure TSysMenu.SetLocation(const Value: TSysMenuLocation);
 begin
-  if FLocation<>Value then
-    FLocation:=Value;
+  if FLocation <> Value then
+    FLocation := Value;
   Refresh;
 end;
 
 procedure TSysMenu.SetMenu(const Value: TPopupMenu);
 begin
-  if FMenu<>Value then
-    FMenu:=Value;
+  if FMenu <> Value then
+    FMenu := Value;
   Refresh;
 end;
 
 procedure TSysMenu.SetVisible(const Value: boolean);
 begin
-  if FVisible<>Value then
-    FVisible:=Value;
+  if FVisible <> Value then
+    FVisible := Value;
   Refresh;
 end;
 

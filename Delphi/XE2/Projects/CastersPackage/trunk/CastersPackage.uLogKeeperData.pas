@@ -278,17 +278,20 @@ implementation
 
 function GetLogKeeperData(Doc: IXMLDocument): IXMLLogkeeperdataType;
 begin
-  Result := Doc.GetDocBinding('logkeeperdata', TXMLLogkeeperdataType, TargetNamespace) as IXMLLogkeeperdataType;
+  Result := Doc.GetDocBinding('logkeeperdata', TXMLLogkeeperdataType, TargetNamespace)
+    as IXMLLogkeeperdataType;
 end;
 
 function LoadlogKeeperData(const Filename: string): IXMLLogkeeperdataType;
 begin
-  Result := LoadXMLDocument(Filename).GetDocBinding('logkeeperdata', TXMLLogkeeperdataType, TargetNamespace) as IXMLLogkeeperdataType;
+  Result := LoadXMLDocument(Filename).GetDocBinding('logkeeperdata', TXMLLogkeeperdataType,
+    TargetNamespace) as IXMLLogkeeperdataType;
 end;
 
 function NewlogKeeperData: IXMLLogkeeperdataType;
 begin
-  Result := NewXMLDocument.GetDocBinding('logkeeperdata', TXMLLogkeeperdataType, TargetNamespace) as IXMLLogkeeperdataType;
+  Result := NewXMLDocument.GetDocBinding('logkeeperdata', TXMLLogkeeperdataType, TargetNamespace)
+    as IXMLLogkeeperdataType;
 end;
 
 { TXMLLogkeeperdataType }

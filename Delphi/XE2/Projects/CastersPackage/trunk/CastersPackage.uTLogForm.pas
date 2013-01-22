@@ -49,7 +49,8 @@ type
     procedure CloseModalWindowWithOkResult(const AWindowCaption, AGUID: string);
   public
     constructor Create(AOwner: TComponent; ABusyCounter: PInteger = nil;
-      ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil; AProgressBar: TProgressBar = nil); reintroduce; virtual;
+      ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil; AProgressBar: TProgressBar = nil);
+      reintroduce; virtual;
     destructor Destroy; override;
     function ShowModal: Integer; override;
   end;
@@ -72,7 +73,8 @@ resourcestring
   RsActionOff = 'отключено';
   RsTryingToShowModalWindow = 'Производится попытка отображения модального о' + 'кна "%s".';
   RsModalWindowHiden = 'Модальное окно "%s" скрыто.';
-  RsCloseModalWithCancelResultProcedure = 'Процедура закрытия модального окна %s с результатом mrCancel';
+  RsCloseModalWithCancelResultProcedure =
+    'Процедура закрытия модального окна %s с результатом mrCancel';
   RsCloseModalWithOkResultProcedure = 'Процедура закрытия модального окна %s с результатом mrOk';
   // RsWindowClosedByUser = 'Окно %s закрыто пользователем.';
   RsWindowClosed = 'Окно %s закрыто.';
@@ -100,8 +102,8 @@ begin
   ProcedureFooter;
 end;
 
-constructor TLogForm.Create(AOwner: TComponent; ABusyCounter: PInteger; ARefreshBusyStateMethod: TRefreshBusyStateMethod;
-  AProgressBar: TProgressBar);
+constructor TLogForm.Create(AOwner: TComponent; ABusyCounter: PInteger;
+  ARefreshBusyStateMethod: TRefreshBusyStateMethod; AProgressBar: TProgressBar);
 begin
   inherited Create(AOwner);
   FBusyCounter := ABusyCounter;
@@ -131,8 +133,8 @@ begin
   Result := EmptyStr;
   if Assigned(AAction) then
   begin
-    Result := Format(RsActionStateChanged, [AAction.Caption, Routines.GetConditionalString(AAction.Enabled, RsActionOn,
-      RsActionOff)]);
+    Result := Format(RsActionStateChanged,
+      [AAction.Caption, Routines.GetConditionalString(AAction.Enabled, RsActionOn, RsActionOff)]);
   end;
 end;
 
@@ -228,7 +230,8 @@ begin
   Log.SendError(FErrorMessage);
   try
     SaveBusyCounter;
-    MessageBox(Handle, PWideChar(FErrorMessage), PWideChar(Format(RsShowErrorDialogCaption, [Application.Title])),
+    MessageBox(Handle, PWideChar(FErrorMessage),
+      PWideChar(Format(RsShowErrorDialogCaption, [Application.Title])),
       MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
   finally
     RestoreBusyCounter;
