@@ -14,7 +14,8 @@ const
   DEFAULT_SERVER = '';
   DEFAULT_LOGIN = '';
   DEFAULT_DB = '';
-  DEFAULT_ADO_CONNECTION_STRING = 'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;User ID=%s;Initial Catalog=%s;Data Source=%s';
+  DEFAULT_ADO_CONNECTION_STRING =
+    'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;User ID=%s;Initial Catalog=%s;Data Source=%s';
 
   MESSAGE_TYPE_ERROR: Cardinal = MB_OK + MB_ICONERROR + MB_DEFBUTTON1;
   MESSAGE_TYPE_CONFIRMATION: Cardinal = MB_OKCANCEL + MB_ICONQUESTION + MB_DEFBUTTON2;
