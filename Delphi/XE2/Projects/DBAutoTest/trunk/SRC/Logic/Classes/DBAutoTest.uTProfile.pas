@@ -34,7 +34,6 @@ type
   public
     constructor Create; virtual; final;
     destructor Destroy; override;
-    procedure Clear; virtual;
     property Server: string read GetServer write SetServer;
     property Login: string read GetLogin write SetLogin;
     property DB: string read GetDB write SetDB;
@@ -53,12 +52,6 @@ uses
 function GetIProfile: IProfile;
 begin
   Result := TProfile.Create;
-end;
-
-procedure TProfile.Clear;
-begin
-  Initialize;
-  FTasks := GetITasks;
 end;
 
 constructor TProfile.Create;

@@ -90,7 +90,6 @@ type
     N30: TMenuItem;
     N31: TMenuItem;
     actProfileProperties: TAction;
-    ADOConnection1: TADOConnection;
     procedure actQuitExecute(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -110,22 +109,24 @@ type
     procedure actClearTasksExecute(Sender: TObject);
     procedure actDeleteTaskExecute(Sender: TObject);
     procedure actEditTaskExecute(Sender: TObject);
+    procedure actProcessExecute(Sender: TObject);
   strict private
     procedure OnHint(ASender: TObject);
     procedure ShowAboutWindow(const AShowCloseButton: Boolean);
     procedure RefreshTaskList;
+    procedure RefreshRecentsMenu;
+    procedure AddEditTask(const AIndex: Integer = -1);
   strict private
+    { TODO : убрать функционал в класс конфигурации }
     FRecents: IRecents;
     function GetRecents: IRecents;
     property Recents: IRecents read GetRecents nodefault;
     procedure OnRecentsMenuItemClick(Sender: TObject);
-    procedure RefreshRecentsMenu;
   strict private
     FProfile: IProfile;
     function GetProfile: IProfile;
     procedure SetProfile(const AValue: IProfile);
     property Profile: IProfile read GetProfile write SetProfile nodefault;
-    procedure AddEditTask(const AIndex: Integer = -1);
   end;
 
 var
@@ -136,17 +137,17 @@ implementation
 {$R *.dfm}
 
 uses
+  DBAutoTest.uConsts,
   DBAutoTest.uTConfigurationForm,
   DBAutoTest.uTAboutForm,
   DBAutoTest.uTTaskForm,
-  DBAutoTest.uConsts,
   DBAutoTest.uTRecentsPropertiesForm,
   DBAutoTest.uTProfileForm,
-  DBAutoTest.uTProfile,
+  DBAutoTest.uITask,
   DBAutoTest.uTRecents,
   DBAutoTest.uIRecent,
-  DBAutoTest.uITask,
-  DBAutoTest.uTRecent;
+  DBAutoTest.uTRecent,
+  DBAutoTest.uTProfile;
 
 resourcestring
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
@@ -178,21 +179,12 @@ end;
 
 procedure TMainForm.actRecentProfilesExecute(Sender: TObject);
 begin
-  // заглушка
+  // заглушка, необзодимая для того, чтобы пункт меню был активным
 end;
 
 procedure TMainForm.OnHint(ASender: TObject);
 begin
   StatusBar.SimpleText := GetLongHint(Application.Hint);
-end;
-
-procedure TMainForm.SetProfile(const AValue: IProfile);
-begin
-  if FProfile <> AValue then
-  begin
-    FProfile := AValue;
-    RefreshTaskList;
-  end;
 end;
 
 procedure TMainForm.ShowAboutWindow(const AShowCloseButton: Boolean);
@@ -237,6 +229,15 @@ begin
   Result := FProfile;
 end;
 
+procedure TMainForm.SetProfile(const AValue: IProfile);
+begin
+  if FProfile <> AValue then
+  begin
+    FProfile := AValue;
+    RefreshTaskList;
+  end;
+end;
+
 function TMainForm.GetRecents: IRecents;
 begin
   if not Assigned(FRecents) then
@@ -250,12 +251,13 @@ procedure TMainForm.actCreateProfileExecute(Sender: TObject);
 begin
   { TODO :
     добавить проверку сохранённости текущего профиля:
-    если профиль не сохранён, задать вопрос юзеру }
+    если профиль был изменён и не сохранён, задать вопрос юзеру }
   if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage),
     PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])),
     MESSAGE_TYPE_CONFIRMATION_WARNING) = IDOK then
   begin
-    Profile.Clear;
+    Profile := GetIProfile;
+    RefreshTaskList;
   end;
 end;
 
@@ -325,6 +327,7 @@ begin
     if lvTaskList.Items[i].Selected then
     begin
       b := True;
+      Break;
     end;
   end;
   actDeleteTask.Enabled := b; // and (not FProcessActive);
@@ -350,9 +353,26 @@ begin
   actEditTask.Enabled := j = 1; // and (not FProcessActive);
 end;
 
-procedure TMainForm.actProcessUpdate(Sender: TObject);
+procedure TMainForm.actProcessExecute(Sender: TObject);
 begin
-  actProcess.Enabled := (lvTaskList.Items.Count > 0); // and (not FProcessActive);
+  { TODO : реализовать функционал выполнения выбранных тестов в параллельных тредах }
+end;
+
+procedure TMainForm.actProcessUpdate(Sender: TObject);
+var
+  i: Integer;
+  b: Boolean;
+begin
+  b := False;
+  for i := 0 to lvTaskList.Items.Count - 1 do
+  begin
+    if lvTaskList.Items[i].Checked then
+    begin
+      b := True;
+      Break;
+    end;
+  end;
+  actProcess.Enabled := b; // and (not FProcessActive);
   btnProcess.Default := actProcess.Enabled;
 end;
 
@@ -443,6 +463,7 @@ procedure TMainForm.RefreshTaskList;
       if lvTaskList.Groups[i].Header = Trim(AValue) then
       begin
         Result := lvTaskList.Groups[i].GroupID;
+        Break;
       end;
     end;
   end;
