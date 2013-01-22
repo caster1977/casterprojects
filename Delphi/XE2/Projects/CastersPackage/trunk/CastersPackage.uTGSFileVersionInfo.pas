@@ -77,7 +77,7 @@ uses
 const
   QUERY_VALUE = '\VarFileInfo\Translation';
   STRING_FILE_INFO = '\StringFileInfo\%s\%s';
-  COMPANY_NAME ='CompanyName';
+  COMPANY_NAME = 'CompanyName';
   FILE_DESCRIPTION = 'FileDescription';
   FILE_VERSION = 'FileVersion';
   INTERNAL_NAME = 'InternalName';
@@ -85,7 +85,7 @@ const
   ORIGINAL_FILE_NAME = 'OriginalFilename';
   PRODUCT_NAME = 'ProductName';
   PRODUCT_VERSION = 'ProductVersion';
-  COMMENTS = 'Comments';
+  Comments = 'Comments';
   DELIMITER = '.';
   COMPONENTS_PAGE = 'CasterComponents';
 
@@ -107,10 +107,10 @@ end;
 
 procedure TGSFileVersionInfo.GetModuleVersionInfo(out AMajor, AMinor, ARelease, ABuild: Word);
 const
-  MINOR = 0;
+  Minor = 0;
   MAYOR = 1;
-  BUILD = 2;
-  RELEASE = 3;
+  Build = 2;
+  Release = 3;
 type
   TV = array [0 .. 3] of SmallInt;
 var
@@ -123,9 +123,9 @@ begin
   H := LoadResource(MainInstance, HR);
   Integer(C) := Integer(LockResource(H)) + 48;
   AMajor := Word(C[MAYOR]);
-  AMinor := Word(C[MINOR]);
-  ARelease := Word(C[RELEASE]);
-  ABuild := Word(C[BUILD]);
+  AMinor := Word(C[Minor]);
+  ARelease := Word(C[Release]);
+  ABuild := Word(C[Build]);
   UnlockResource(H);
   FreeResource(H);
 end;
@@ -184,7 +184,8 @@ var
 
   function GetStringValue(const AFrom: string): string;
   begin
-    VerQueryValue(VIBuff, PChar(Format(STRING_FILE_INFO, [LanguageInfo, AFrom])), Pointer(str), buffsize);
+    VerQueryValue(VIBuff, PChar(Format(STRING_FILE_INFO, [LanguageInfo, AFrom])), Pointer(str),
+      buffsize);
     if buffsize = 0 then
     begin
       Result := RsNotAvailable;
@@ -233,7 +234,7 @@ begin
   FOriginalFilename := GetStringValue(ORIGINAL_FILE_NAME);
   FProductName := GetStringValue(PRODUCT_NAME);
   FProductVersion := GetStringValue(PRODUCT_VERSION);
-  FComments := GetStringValue(COMMENTS);
+  FComments := GetStringValue(Comments);
 
   FreeMem(VIBuff, VISize);
 end;

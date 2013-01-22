@@ -8,7 +8,9 @@ uses
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.ActnList,
-  CastersPackage.Actions.Classes, Vcl.StdActns, System.Actions;
+  CastersPackage.Actions.Classes,
+  Vcl.StdActns,
+  System.Actions;
 
 type
   TActionsDataModule = class(TDataModule)
@@ -40,7 +42,7 @@ type
 
 implementation
 
-{%CLASSGROUP 'Vcl.Controls.TControl'}
+{ %CLASSGROUP 'Vcl.Controls.TControl' }
 
 {$R *.dfm}
 

@@ -561,19 +561,17 @@ begin
   Result := new_s;
 end;
 
-class procedure Routines.SetField(const AValue: TDateTime;
-  var AField: TDateTime);
+class procedure Routines.SetField(const AValue: TDateTime; var AField: TDateTime);
 begin
   if AField <> AValue then
     AField := AValue;
 end;
 
-class procedure Routines.SetField(const AValue: TDate;
-  var AField: TDate);
+class procedure Routines.SetField(const AValue: TDate; var AField: TDate);
 var
   v: TDate;
 begin
-  v:=DateOf(AValue);
+  v := DateOf(AValue);
   if AField <> v then
     AField := v;
 end;

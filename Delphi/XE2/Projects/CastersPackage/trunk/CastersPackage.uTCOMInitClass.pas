@@ -14,16 +14,19 @@ type
     destructor Destroy; override;
   end;
 
-function NewCOMInitClass(const ACoInit: Integer = COINIT_MULTITHREADED + COINIT_SPEED_OVER_MEMORY): IUnknown;
+function NewCOMInitClass(const ACoInit: Integer = COINIT_MULTITHREADED + COINIT_SPEED_OVER_MEMORY)
+  : IUnknown;
 
 implementation
 
-function NewCOMInitClass(const ACoInit: Integer = COINIT_MULTITHREADED + COINIT_SPEED_OVER_MEMORY): IUnknown;
+function NewCOMInitClass(const ACoInit: Integer = COINIT_MULTITHREADED + COINIT_SPEED_OVER_MEMORY)
+  : IUnknown;
 begin
   Result := TCOMInitClass.Create(ACoInit);
 end;
 
-constructor TCOMInitClass.Create(const ACoInit: Integer = COINIT_MULTITHREADED + COINIT_SPEED_OVER_MEMORY);
+constructor TCOMInitClass.Create(const ACoInit: Integer = COINIT_MULTITHREADED +
+  COINIT_SPEED_OVER_MEMORY);
 begin
   inherited Create;
   FNeedToUninitialize := Succeeded(CoInitializeEx(nil, ACoInit));

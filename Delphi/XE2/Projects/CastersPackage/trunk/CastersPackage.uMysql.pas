@@ -78,25 +78,25 @@ uses
 // ----------------
 
 type
-  my_bool=byte;
-  gptr=pAnsiChar;
+  my_bool = byte;
+  gptr = pAnsiChar;
 
 type
-  PUSED_MEM=^TUSED_MEM; // struct for once_alloc
+  PUSED_MEM = ^TUSED_MEM; // struct for once_alloc
 
-  TUSED_MEM=record
+  TUSED_MEM = record
     next: PUSED_MEM; // Next block in use
     left: longword; // memory left in block
     size: longword; // size of block
   end;
 
 type
-  error_proc=procedure;
+  error_proc = procedure;
 
 type
-  PMEM_ROOT=^TMEM_ROOT;
+  PMEM_ROOT = ^TMEM_ROOT;
 
-  TMEM_ROOT=record
+  TMEM_ROOT = record
     free: PUSED_MEM;
     used: PUSED_MEM;
     pre_alloc: PUSED_MEM;
@@ -106,102 +106,104 @@ type
   end;
 
 type
-  my_socket=TSocket;
+  my_socket = TSocket;
 
   // --------------------
   // From mysql_com.h ...
   // --------------------
 
 const
-  NAME_LEN=64; // Field/table name length
-  HOSTNAME_LENGTH=60;
-  USERNAME_LENGTH=16;
-  SERVER_VERSION_LENGTH=60;
+  NAME_LEN = 64; // Field/table name length
+  HOSTNAME_LENGTH = 60;
+  USERNAME_LENGTH = 16;
+  SERVER_VERSION_LENGTH = 60;
 
-  LOCAL_HOST='localhost';
-  LOCAL_HOST_NAMEDPIPE='.';
+  LOCAL_HOST = 'localhost';
+  LOCAL_HOST_NAMEDPIPE = '.';
 
-  MYSQL_NAMEDPIPE='MySQL';
-  MYSQL_SERVICENAME='MySql';
+  MYSQL_NAMEDPIPE = 'MySQL';
+  MYSQL_SERVICENAME = 'MySql';
 
 type
-  enum_server_command=(COM_SLEEP, COM_QUIT, COM_INIT_DB, COM_QUERY, COM_FIELD_LIST, COM_CREATE_DB, COM_DROP_DB, COM_REFRESH, COM_SHUTDOWN, COM_STATISTICS, COM_PROCESS_INFO, COM_CONNECT, COM_PROCESS_KILL, COM_DEBUG, COM_PING, COM_TIME,
-    COM_DELAYED_INSERT, COM_CHANGE_USER, COM_BINLOG_DUMP, COM_TABLE_DUMP, COM_CONNECT_OUT);
+  enum_server_command = (COM_SLEEP, COM_QUIT, COM_INIT_DB, COM_QUERY, COM_FIELD_LIST, COM_CREATE_DB,
+    COM_DROP_DB, COM_REFRESH, COM_SHUTDOWN, COM_STATISTICS, COM_PROCESS_INFO, COM_CONNECT,
+    COM_PROCESS_KILL, COM_DEBUG, COM_PING, COM_TIME, COM_DELAYED_INSERT, COM_CHANGE_USER,
+    COM_BINLOG_DUMP, COM_TABLE_DUMP, COM_CONNECT_OUT);
 
 const
-  NOT_NULL_FLAG=1; // Field can't be NULL
-  PRI_KEY_FLAG=2; // Field is part of a primary key
-  UNIQUE_KEY_FLAG=4; // Field is part of a unique key
-  MULTIPLE_KEY_FLAG=8; // Field is part of a key
-  BLOB_FLAG=16; // Field is a blob
-  UNSIGNED_FLAG=32; // Field is unsigned
-  ZEROFILL_FLAG=64; // Field is zerofill
-  BINARY_FLAG=128;
+  NOT_NULL_FLAG = 1; // Field can't be NULL
+  PRI_KEY_FLAG = 2; // Field is part of a primary key
+  UNIQUE_KEY_FLAG = 4; // Field is part of a unique key
+  MULTIPLE_KEY_FLAG = 8; // Field is part of a key
+  BLOB_FLAG = 16; // Field is a blob
+  UNSIGNED_FLAG = 32; // Field is unsigned
+  ZEROFILL_FLAG = 64; // Field is zerofill
+  BINARY_FLAG = 128;
 
   // The following are only sent to new clients
 
-  ENUM_FLAG=256; // field is an enum
-  AUTO_INCREMENT_FLAG=512; // field is a autoincrement field
-  TIMESTAMP_FLAG=1024; // Field is a timestamp
-  SET_FLAG=2048; // field is a set
-  NUM_FLAG=32768; // Field is num (for clients)
-  PART_KEY_FLAG=16384; // Intern; Part of some key
-  GROUP_FLAG=32768; // Intern: Group field
-  UNIQUE_FLAG=65536; // Intern: Used by sql_yacc
+  ENUM_FLAG = 256; // field is an enum
+  AUTO_INCREMENT_FLAG = 512; // field is a autoincrement field
+  TIMESTAMP_FLAG = 1024; // Field is a timestamp
+  SET_FLAG = 2048; // field is a set
+  NUM_FLAG = 32768; // Field is num (for clients)
+  PART_KEY_FLAG = 16384; // Intern; Part of some key
+  GROUP_FLAG = 32768; // Intern: Group field
+  UNIQUE_FLAG = 65536; // Intern: Used by sql_yacc
 
-  REFRESH_GRANT=1; // Refresh grant tables
-  REFRESH_LOG=2; // Start on new log file
-  REFRESH_TABLES=4; // close all tables
-  REFRESH_HOSTS=8; // Flush host cache
-  REFRESH_STATUS=16; // Flush status variables
-  REFRESH_THREADS=32; // Flush status variables
-  REFRESH_SLAVE=64; // Reset master info and restart slave
+  REFRESH_GRANT = 1; // Refresh grant tables
+  REFRESH_LOG = 2; // Start on new log file
+  REFRESH_TABLES = 4; // close all tables
+  REFRESH_HOSTS = 8; // Flush host cache
+  REFRESH_STATUS = 16; // Flush status variables
+  REFRESH_THREADS = 32; // Flush status variables
+  REFRESH_SLAVE = 64; // Reset master info and restart slave
   // thread
-  REFRESH_MASTER=128; // Remove all bin logs in the index
+  REFRESH_MASTER = 128; // Remove all bin logs in the index
   // and truncate the index
 
   // The following can't be set with mysql_refresh()
 
-  REFRESH_READ_LOCK=16384; // Lock tables for read
-  REFRESH_FAST=32768; // Intern flag
+  REFRESH_READ_LOCK = 16384; // Lock tables for read
+  REFRESH_FAST = 32768; // Intern flag
 
-  CLIENT_LONG_PASSWORD=1; // new more secure passwords
-  CLIENT_FOUND_ROWS=2; // Found instead of affected rows
-  CLIENT_LONG_FLAG=4; // Get all column flags
-  CLIENT_CONNECT_WITH_DB=8; // One can specify db on connect
-  CLIENT_NO_SCHEMA=16; // Don't allow database.table.column
-  CLIENT_COMPRESS=32; // Can use compression protcol
-  CLIENT_ODBC=64; // Odbc client
-  CLIENT_LOCAL_FILES=128; // Can use LOAD DATA LOCAL
-  CLIENT_IGNORE_SPACE=256; // Ignore spaces before '('
-  CLIENT_INTERACTIVE=1024; // This is an interactive client
-  CLIENT_SSL=2048; // Switch to SSL after handshake
-  CLIENT_IGNORE_SIGPIPE=4096; // IGNORE sigpipes
-  CLIENT_TRANSACTIONS=8192; // Client knows about transactions
+  CLIENT_LONG_PASSWORD = 1; // new more secure passwords
+  CLIENT_FOUND_ROWS = 2; // Found instead of affected rows
+  CLIENT_LONG_FLAG = 4; // Get all column flags
+  CLIENT_CONNECT_WITH_DB = 8; // One can specify db on connect
+  CLIENT_NO_SCHEMA = 16; // Don't allow database.table.column
+  CLIENT_COMPRESS = 32; // Can use compression protcol
+  CLIENT_ODBC = 64; // Odbc client
+  CLIENT_LOCAL_FILES = 128; // Can use LOAD DATA LOCAL
+  CLIENT_IGNORE_SPACE = 256; // Ignore spaces before '('
+  CLIENT_INTERACTIVE = 1024; // This is an interactive client
+  CLIENT_SSL = 2048; // Switch to SSL after handshake
+  CLIENT_IGNORE_SIGPIPE = 4096; // IGNORE sigpipes
+  CLIENT_TRANSACTIONS = 8192; // Client knows about transactions
 
-  SERVER_STATUS_IN_TRANS=1; // Transaction has started
-  SERVER_STATUS_AUTOCOMMIT=2; // Server in auto_commit mode
+  SERVER_STATUS_IN_TRANS = 1; // Transaction has started
+  SERVER_STATUS_AUTOCOMMIT = 2; // Server in auto_commit mode
 
-  MYSQL_ERRMSG_SIZE=200;
-  NET_READ_TIMEOUT=30; // Timeout on read
-  NET_WRITE_TIMEOUT=60; // Timeout on write
-  NET_WAIT_TIMEOUT=8*60*60; // Wait for new query
+  MYSQL_ERRMSG_SIZE = 200;
+  NET_READ_TIMEOUT = 30; // Timeout on read
+  NET_WRITE_TIMEOUT = 60; // Timeout on write
+  NET_WAIT_TIMEOUT = 8 * 60 * 60; // Wait for new query
 
 type
-  PVio=^TVio;
+  PVio = ^TVio;
 
-  TVio=record
+  TVio = record
   end;
 
 type
-  PNET=^TNET;
+  PNET = ^TNET;
 
-  TNET=record
+  TNET = record
     vio: PVio;
     fd: my_socket;
     fcntl: longint;
     buff, buff_end, write_pos, read_pos: pByte;
-    last_error: array [0..MYSQL_ERRMSG_SIZE-1] of char;
+    last_error: array [0 .. MYSQL_ERRMSG_SIZE - 1] of char;
     last_errno, max_packet, timeout, pkt_nr: longword;
     error: byte;
     return_errno, compress: my_bool;
@@ -215,52 +217,52 @@ type
   end;
 
 const
-  packet_error: longword=$FFFFFFFF;
+  packet_error: longword = $FFFFFFFF;
 
 const
-  FIELD_TYPE_DECIMAL=0;
-  FIELD_TYPE_TINY=1;
-  FIELD_TYPE_SHORT=2;
-  FIELD_TYPE_LONG=3;
-  FIELD_TYPE_FLOAT=4;
-  FIELD_TYPE_DOUBLE=5;
-  FIELD_TYPE_NULL=6;
-  FIELD_TYPE_TIMESTAMP=7;
-  FIELD_TYPE_LONGLONG=8;
-  FIELD_TYPE_INT24=9;
-  FIELD_TYPE_DATE=10;
-  FIELD_TYPE_TIME=11;
-  FIELD_TYPE_DATETIME=12;
-  FIELD_TYPE_YEAR=13;
-  FIELD_TYPE_NEWDATE=14;
-  FIELD_TYPE_ENUM=247;
-  FIELD_TYPE_SET=248;
-  FIELD_TYPE_TINY_BLOB=249;
-  FIELD_TYPE_MEDIUM_BLOB=250;
-  FIELD_TYPE_LONG_BLOB=251;
-  FIELD_TYPE_BLOB=252;
-  FIELD_TYPE_VAR_STRING=253;
-  FIELD_TYPE_STRING=254;
+  FIELD_TYPE_DECIMAL = 0;
+  FIELD_TYPE_TINY = 1;
+  FIELD_TYPE_SHORT = 2;
+  FIELD_TYPE_LONG = 3;
+  FIELD_TYPE_FLOAT = 4;
+  FIELD_TYPE_DOUBLE = 5;
+  FIELD_TYPE_NULL = 6;
+  FIELD_TYPE_TIMESTAMP = 7;
+  FIELD_TYPE_LONGLONG = 8;
+  FIELD_TYPE_INT24 = 9;
+  FIELD_TYPE_DATE = 10;
+  FIELD_TYPE_TIME = 11;
+  FIELD_TYPE_DATETIME = 12;
+  FIELD_TYPE_YEAR = 13;
+  FIELD_TYPE_NEWDATE = 14;
+  FIELD_TYPE_ENUM = 247;
+  FIELD_TYPE_SET = 248;
+  FIELD_TYPE_TINY_BLOB = 249;
+  FIELD_TYPE_MEDIUM_BLOB = 250;
+  FIELD_TYPE_LONG_BLOB = 251;
+  FIELD_TYPE_BLOB = 252;
+  FIELD_TYPE_VAR_STRING = 253;
+  FIELD_TYPE_STRING = 254;
 
 const
-  FIELD_TYPE_CHAR=FIELD_TYPE_TINY; // For compability
-  FIELD_TYPE_INTERVAL=FIELD_TYPE_ENUM; // For compability
+  FIELD_TYPE_CHAR = FIELD_TYPE_TINY; // For compability
+  FIELD_TYPE_INTERVAL = FIELD_TYPE_ENUM; // For compability
 
 type
-  enum_field_types=FIELD_TYPE_DECIMAL..FIELD_TYPE_STRING;
+  enum_field_types = FIELD_TYPE_DECIMAL .. FIELD_TYPE_STRING;
 
   // ------------------------
   // From mysql_version.h ...
   // ------------------------
 
 const
-  PROTOCOL_VERSION=10;
-  MYSQL_SERVER_VERSION='3.23.49';
-  MYSQL_SERVER_SUFFIX='';
-  FRM_VER=6;
-  MYSQL_VERSION_ID=32349;
-  MYSQL_PORT=3306;
-  MYSQL_UNIX_ADDR='/tmp/mysql.sock';
+  PROTOCOL_VERSION = 10;
+  MYSQL_SERVER_VERSION = '3.23.49';
+  MYSQL_SERVER_SUFFIX = '';
+  FRM_VER = 6;
+  MYSQL_VERSION_ID = 32349;
+  MYSQL_PORT = 3306;
+  MYSQL_UNIX_ADDR = '/tmp/mysql.sock';
 
   // ----------------
   // From mysql.h ...
@@ -272,9 +274,9 @@ function IS_BLOB(n: longword): boolean;
 function IS_NUM(t: longword): boolean;
 
 type
-  PMYSQL_FIELD=^TMYSQL_FIELD;
+  PMYSQL_FIELD = ^TMYSQL_FIELD;
 
-  TMYSQL_FIELD=record
+  TMYSQL_FIELD = record
     name: pAnsiChar; // Name of column
     table: pAnsiChar; // Table of column if column was a field
     def: pAnsiChar; // Default value (set by mysql_list_fields)
@@ -289,33 +291,33 @@ function IS_NUM_FIELD(f: PMYSQL_FIELD): boolean;
 function INTERNAL_NUM_FIELD(f: PMYSQL_FIELD): boolean;
 
 type
-  PMYSQL_ROW=^TMYSQL_ROW; // return data as array of strings
-  TMYSQL_ROW=array [0..MaxInt div SizeOf(pAnsiChar)-1] of pAnsiChar;
+  PMYSQL_ROW = ^TMYSQL_ROW; // return data as array of strings
+  TMYSQL_ROW = array [0 .. MaxInt div SizeOf(pAnsiChar) - 1] of pAnsiChar;
 
 type
-  MYSQL_FIELD_OFFSET=longword; // offset to current field
+  MYSQL_FIELD_OFFSET = longword; // offset to current field
 
 type
-  my_ulonglong=int64;
+  my_ulonglong = int64;
 
 const
-  MYSQL_COUNT_ERROR: my_ulonglong=not 0;
+  MYSQL_COUNT_ERROR: my_ulonglong = not 0;
 
 type
-  PMYSQL_ROWS=^TMYSQL_ROWS;
+  PMYSQL_ROWS = ^TMYSQL_ROWS;
 
-  TMYSQL_ROWS=record
+  TMYSQL_ROWS = record
     next: PMYSQL_ROWS; // list of rows
     data: PMYSQL_ROW;
   end;
 
 type
-  MYSQL_ROW_OFFSET=PMYSQL_ROWS; // offset to current row
+  MYSQL_ROW_OFFSET = PMYSQL_ROWS; // offset to current row
 
 type
-  PMYSQL_DATA=^TMYSQL_DATA;
+  PMYSQL_DATA = ^TMYSQL_DATA;
 
-  TMYSQL_DATA=record
+  TMYSQL_DATA = record
     rows: my_ulonglong;
     fields: longword;
     data: PMYSQL_ROWS;
@@ -323,9 +325,9 @@ type
   end;
 
 type
-  PMYSQL_OPTIONS=^TMYSQL_OPTIONS;
+  PMYSQL_OPTIONS = ^TMYSQL_OPTIONS;
 
-  TMYSQL_OPTIONS=record
+  TMYSQL_OPTIONS = record
     connect_timeout, client_flag: longword;
     compress, named_pipe: my_bool;
     port: longword;
@@ -339,33 +341,35 @@ type
   end;
 
 type
-  mysql_option=(MYSQL_OPT_CONNECT_TIMEOUT, MYSQL_OPT_COMPRESS, MYSQL_OPT_NAMED_PIPE, MYSQL_INIT_COMMAND, MYSQL_READ_DEFAULT_FILE, MYSQL_READ_DEFAULT_GROUP, MYSQL_SET_CHARSET_DIR, MYSQL_SET_CHARSET_NAME, MYSQL_OPT_LOCAL_INFILE);
+  mysql_option = (MYSQL_OPT_CONNECT_TIMEOUT, MYSQL_OPT_COMPRESS, MYSQL_OPT_NAMED_PIPE,
+    MYSQL_INIT_COMMAND, MYSQL_READ_DEFAULT_FILE, MYSQL_READ_DEFAULT_GROUP, MYSQL_SET_CHARSET_DIR,
+    MYSQL_SET_CHARSET_NAME, MYSQL_OPT_LOCAL_INFILE);
 
 type
-  mysql_status=(MYSQL_STATUS_READY, MYSQL_STATUS_GET_RESULT, MYSQL_STATUS_USE_RESULT);
+  mysql_status = (MYSQL_STATUS_READY, MYSQL_STATUS_GET_RESULT, MYSQL_STATUS_USE_RESULT);
 
 type
-  PMYSQL_FIELDS=^TMYSQL_FIELDS;
-  TMYSQL_FIELDS=array [0..MaxInt div SizeOf(TMYSQL_FIELD)-1] of TMYSQL_FIELD;
+  PMYSQL_FIELDS = ^TMYSQL_FIELDS;
+  TMYSQL_FIELDS = array [0 .. MaxInt div SizeOf(TMYSQL_FIELD) - 1] of TMYSQL_FIELD;
 
 type
-  PCHARSET_INFO=^TCHARSET_INFO;
+  PCHARSET_INFO = ^TCHARSET_INFO;
 
-  TCHARSET_INFO=record
+  TCHARSET_INFO = record
     // Omitted: Structure not necessarily needed.
     // Definition of struct charset_info_st can be
     // found in include/m_ctype.h
   end;
 
 type
-  PMYSQL=^TMYSQL;
+  PMYSQL = ^TMYSQL;
 
-  TMYSQL=record
+  TMYSQL = record
     net: TNET; // Communication parameters
     connector_fd: gptr; // ConnectorFd for SSL
     host, user, passwd, unix_socket, server_version, host_info, info, db: pAnsiChar;
     port, client_flag, server_capabilities: longword;
-    protocol_version: longword;
+    PROTOCOL_VERSION: longword;
     field_count: longword;
     server_status: longword;
     thread_id: longword; // Id for connection in server
@@ -379,15 +383,15 @@ type
     free_me: my_bool; // If free in mysql_close
     reconnect: my_bool; // set to 1 if automatic reconnect
     options: TMYSQL_OPTIONS;
-    scramble_buff: array [0..8] of char;
+    scramble_buff: array [0 .. 8] of char;
     charset: PCHARSET_INFO;
     server_language: longword;
   end;
 
 type
-  PMYSQL_RES=^TMYSQL_RES;
+  PMYSQL_RES = ^TMYSQL_RES;
 
-  TMYSQL_RES=record
+  TMYSQL_RES = record
     row_count: my_ulonglong;
     field_count, current_field: longword;
     fields: PMYSQL_FIELDS;
@@ -424,11 +428,11 @@ var
   mysql_character_set_name: function(_mysql: PMYSQL): pAnsiChar; stdcall;
 
 type
-  PMYSQL_LENGTHS=^TMYSQL_LENGTHS;
-  TMYSQL_LENGTHS=array [0..MaxInt div SizeOf(longword)-1] of longword;
+  PMYSQL_LENGTHS = ^TMYSQL_LENGTHS;
+  TMYSQL_LENGTHS = array [0 .. MaxInt div SizeOf(longword) - 1] of longword;
 
 type
-  extend_buffer_func=function(void: pointer; _to: pAnsiChar; length: pLongword): pAnsiChar;
+  extend_buffer_func = function(void: pointer; _to: pAnsiChar; length: pLongword): pAnsiChar;
 
 var
   mysql_init: function(_mysql: PMYSQL): PMYSQL; stdcall;
@@ -439,15 +443,18 @@ var
 {$ENDIF} // HAVE_OPENSSL
   mysql_connect: function(_mysql: PMYSQL; const host, user, passwd: pAnsiChar): PMYSQL; stdcall;
   mysql_change_user: function(_mysql: PMYSQL; const user, passwd, db: pAnsiChar): my_bool; stdcall;
-  mysql_real_connect: function(_mysql: PMYSQL; const host, user, passwd, db: pAnsiChar; port: longword; const unix_socket: pAnsiChar; clientflag: longword): PMYSQL; stdcall;
+  mysql_real_connect: function(_mysql: PMYSQL; const host, user, passwd, db: pAnsiChar;
+    port: longword; const unix_socket: pAnsiChar; clientflag: longword): PMYSQL; stdcall;
   mysql_close: procedure(sock: PMYSQL); stdcall;
   mysql_select_db: function(_mysql: PMYSQL; const db: pAnsiChar): longint; stdcall;
   mysql_query: function(_mysql: PMYSQL; const q: pAnsiChar): longint; stdcall;
-  mysql_send_query: function(_mysql: PMYSQL; const q: pAnsiChar; length: longword): longint; stdcall;
+  mysql_send_query: function(_mysql: PMYSQL; const q: pAnsiChar; length: longword)
+    : longint; stdcall;
   mysql_read_query_result: function(_mysql: PMYSQL): longint; stdcall;
-  mysql_real_query: function(_mysql: PMYSQL; const q: pAnsiChar; length: longword): longint; stdcall;
-  mysql_create_db: function(_mysql: PMYSQL; const DB: pAnsiChar): longint; stdcall;
-  mysql_drop_db: function(_mysql: PMYSQL; const DB: pAnsiChar): longint; stdcall;
+  mysql_real_query: function(_mysql: PMYSQL; const q: pAnsiChar; length: longword)
+    : longint; stdcall;
+  mysql_create_db: function(_mysql: PMYSQL; const db: pAnsiChar): longint; stdcall;
+  mysql_drop_db: function(_mysql: PMYSQL; const db: pAnsiChar): longint; stdcall;
   mysql_shutdown: function(_mysql: PMYSQL): longint; stdcall;
   mysql_dump_debug_info: function(_mysql: PMYSQL): longint; stdcall;
   mysql_refresh: function(_mysql: PMYSQL; refresh_options: longword): longint; stdcall;
@@ -464,34 +471,40 @@ var
   mysql_list_processes: function(_mysql: PMYSQL): PMYSQL_RES; stdcall;
   mysql_store_result: function(_mysql: PMYSQL): PMYSQL_RES; stdcall;
   mysql_use_result: function(_mysql: PMYSQL): PMYSQL_RES; stdcall;
-  mysql_options: function(_mysql: PMYSQL; option: mysql_option; const arg: pAnsiChar): longint; stdcall;
+  mysql_options: function(_mysql: PMYSQL; option: mysql_option; const arg: pAnsiChar)
+    : longint; stdcall;
   mysql_free_result: procedure(result: PMYSQL_RES); stdcall;
   mysql_data_seek: procedure(result: PMYSQL_RES; offset: my_ulonglong); stdcall;
   mysql_row_seek: function(result: PMYSQL_RES; offset: MYSQL_ROW_OFFSET): MYSQL_ROW_OFFSET; stdcall;
-  mysql_field_seek: function(result: PMYSQL_RES; offset: MYSQL_FIELD_OFFSET): MYSQL_FIELD_OFFSET; stdcall;
+  mysql_field_seek: function(result: PMYSQL_RES; offset: MYSQL_FIELD_OFFSET)
+    : MYSQL_FIELD_OFFSET; stdcall;
   mysql_fetch_row: function(result: PMYSQL_RES): PMYSQL_ROW; stdcall;
   mysql_fetch_lengths: function(result: PMYSQL_RES): PMYSQL_LENGTHS; stdcall;
   mysql_fetch_field: function(result: PMYSQL_RES): PMYSQL_FIELD; stdcall;
-  mysql_escape_string: function(_to: pAnsiChar; const from: pAnsiChar; from_length: longword): longword; stdcall;
-  mysql_real_escape_string: function(_mysql: PMYSQL; _to: pAnsiChar; const from: pAnsiChar; length: longword): longword; stdcall;
+  mysql_escape_string: function(_to: pAnsiChar; const from: pAnsiChar; from_length: longword)
+    : longword; stdcall;
+  mysql_real_escape_string: function(_mysql: PMYSQL; _to: pAnsiChar; const from: pAnsiChar;
+    length: longword): longword; stdcall;
   mysql_debug: procedure(const debug: pAnsiChar); stdcall;
-  mysql_odbc_escape_string: function(_mysql: PMYSQL; _to: pAnsiChar; to_length: longword; const from: pAnsiChar; from_length: longword; param: pointer; extend_buffer: extend_buffer_func): pAnsiChar; stdcall;
+  mysql_odbc_escape_string: function(_mysql: PMYSQL; _to: pAnsiChar; to_length: longword;
+    const from: pAnsiChar; from_length: longword; param: pointer; extend_buffer: extend_buffer_func)
+    : pAnsiChar; stdcall;
   myodbc_remove_escape: procedure(_mysql: PMYSQL; name: pAnsiChar); stdcall;
   mysql_thread_safe: function: longword; stdcall;
 
-function mysql_reload(_mysql: PMySQL): longint;
+function mysql_reload(_mysql: PMYSQL): longint;
 
 // Status codes for libmySQL.dll
 
 const
-  LIBMYSQL_UNDEFINED=0; // libmysql_load() has not yet been called
-  LIBMYSQL_MISSING=1; // No suitable DLL could be located
-  LIBMYSQL_INCOMPATIBLE=2; // A DLL was found but it is not compatible
-  LIBMYSQL_READY=3; // The DLL was loaded successfully
+  LIBMYSQL_UNDEFINED = 0; // libmysql_load() has not yet been called
+  LIBMYSQL_MISSING = 1; // No suitable DLL could be located
+  LIBMYSQL_INCOMPATIBLE = 2; // A DLL was found but it is not compatible
+  LIBMYSQL_READY = 3; // The DLL was loaded successfully
 
 var
-  libmysql_handle: HMODULE=0;
-  libmysql_status: byte=LIBMYSQL_UNDEFINED;
+  libmysql_handle: HMODULE = 0;
+  libmysql_status: byte = LIBMYSQL_UNDEFINED;
 
 function libmysql_load(name: pChar): byte;
 procedure libmysql_free;
@@ -503,130 +516,131 @@ implementation
 
 function IS_PRI_KEY(n: longword): boolean;
 begin
-  Result:=(n and PRI_KEY_FLAG)=PRI_KEY_FLAG;
+  result := (n and PRI_KEY_FLAG) = PRI_KEY_FLAG;
 end;
 
 function IS_NOT_NULL(n: longword): boolean;
 begin
-  Result:=(n and NOT_NULL_FLAG)=NOT_NULL_FLAG;
+  result := (n and NOT_NULL_FLAG) = NOT_NULL_FLAG;
 end;
 
 function IS_BLOB(n: longword): boolean;
 begin
-  Result:=(n and BLOB_FLAG)=BLOB_FLAG;
+  result := (n and BLOB_FLAG) = BLOB_FLAG;
 end;
 
 function IS_NUM(t: longword): boolean;
 begin
-  Result:=(t<=FIELD_TYPE_INT24)or(t=FIELD_TYPE_YEAR);
+  result := (t <= FIELD_TYPE_INT24) or (t = FIELD_TYPE_YEAR);
 end;
 
 function IS_NUM_FIELD(f: PMYSQL_FIELD): boolean;
 begin
-  Result:=(f.flags and NUM_FLAG)=NUM_FLAG;
+  result := (f.flags and NUM_FLAG) = NUM_FLAG;
 end;
 
 function INTERNAL_NUM_FIELD(f: PMYSQL_FIELD): boolean;
 begin
-  Result:=(((f._type<=FIELD_TYPE_INT24)and((f._type<>FIELD_TYPE_TIMESTAMP)or(f.length=14)or(f.length=8)))or(f._type=FIELD_TYPE_YEAR));
+  result := (((f._type <= FIELD_TYPE_INT24) and ((f._type <> FIELD_TYPE_TIMESTAMP) or
+    (f.length = 14) or (f.length = 8))) or (f._type = FIELD_TYPE_YEAR));
 end;
 
 function mysql_reload(_mysql: PMYSQL): longint;
 begin
-  Result:=mysql_refresh(_mysql, REFRESH_GRANT);
+  result := mysql_refresh(_mysql, REFRESH_GRANT);
 end;
 
 function libmysql_load(name: pChar): byte;
 
   procedure assign_proc(var proc: FARPROC; name: pChar);
   begin
-    proc:=GetProcAddress(libmysql_handle, name);
-    if proc=nil then
-      libmysql_status:=LIBMYSQL_INCOMPATIBLE;
+    proc := GetProcAddress(libmysql_handle, name);
+    if proc = nil then
+      libmysql_status := LIBMYSQL_INCOMPATIBLE;
   end;
 
 begin
   libmysql_free;
-  if name=nil then
-    name:='libmysql.dll';
-  libmysql_handle:=LoadLibrary(name);
-  if libmysql_handle=0 then
-    libmysql_status:=LIBMYSQL_MISSING
+  if name = nil then
+    name := 'libmysql.dll';
+  libmysql_handle := LoadLibrary(name);
+  if libmysql_handle = 0 then
+    libmysql_status := LIBMYSQL_MISSING
   else
-    begin
-      libmysql_status:=LIBMYSQL_READY;
-      assign_proc(@mysql_num_rows, 'mysql_num_rows');
-      assign_proc(@mysql_num_fields, 'mysql_num_fields');
-      assign_proc(@mysql_eof, 'mysql_eof');
-      assign_proc(@mysql_fetch_field_direct, 'mysql_fetch_field_direct');
-      assign_proc(@mysql_fetch_fields, 'mysql_fetch_fields');
-      assign_proc(@mysql_row_tell, 'mysql_row_tell');
-      assign_proc(@mysql_field_tell, 'mysql_field_tell');
-      assign_proc(@mysql_field_count, 'mysql_field_count');
-      assign_proc(@mysql_affected_rows, 'mysql_affected_rows');
-      assign_proc(@mysql_insert_id, 'mysql_insert_id');
-      assign_proc(@mysql_errno, 'mysql_errno');
-      assign_proc(@mysql_error, 'mysql_error');
-      assign_proc(@mysql_info, 'mysql_info');
-      assign_proc(@mysql_thread_id, 'mysql_thread_id');
-      assign_proc(@mysql_character_set_name, 'mysql_character_set_name');
-      assign_proc(@mysql_init, 'mysql_init');
+  begin
+    libmysql_status := LIBMYSQL_READY;
+    assign_proc(@mysql_num_rows, 'mysql_num_rows');
+    assign_proc(@mysql_num_fields, 'mysql_num_fields');
+    assign_proc(@mysql_eof, 'mysql_eof');
+    assign_proc(@mysql_fetch_field_direct, 'mysql_fetch_field_direct');
+    assign_proc(@mysql_fetch_fields, 'mysql_fetch_fields');
+    assign_proc(@mysql_row_tell, 'mysql_row_tell');
+    assign_proc(@mysql_field_tell, 'mysql_field_tell');
+    assign_proc(@mysql_field_count, 'mysql_field_count');
+    assign_proc(@mysql_affected_rows, 'mysql_affected_rows');
+    assign_proc(@mysql_insert_id, 'mysql_insert_id');
+    assign_proc(@mysql_errno, 'mysql_errno');
+    assign_proc(@mysql_error, 'mysql_error');
+    assign_proc(@mysql_info, 'mysql_info');
+    assign_proc(@mysql_thread_id, 'mysql_thread_id');
+    assign_proc(@mysql_character_set_name, 'mysql_character_set_name');
+    assign_proc(@mysql_init, 'mysql_init');
 {$IFDEF HAVE_OPENSSL}
-      assign_proc(@mysql_ssl_set, 'mysql_ssl_set');
-      assign_proc(@mysql_ssl_cipher, 'mysql_ssl_cipher');
-      assign_proc(@mysql_ssl_clear, 'mysql_ssl_clear');
+    assign_proc(@mysql_ssl_set, 'mysql_ssl_set');
+    assign_proc(@mysql_ssl_cipher, 'mysql_ssl_cipher');
+    assign_proc(@mysql_ssl_clear, 'mysql_ssl_clear');
 {$ENDIF} // HAVE_OPENSSL
-      assign_proc(@mysql_connect, 'mysql_connect');
-      assign_proc(@mysql_change_user, 'mysql_change_user');
-      assign_proc(@mysql_real_connect, 'mysql_real_connect');
-      assign_proc(@mysql_close, 'mysql_close');
-      assign_proc(@mysql_select_db, 'mysql_select_db');
-      assign_proc(@mysql_query, 'mysql_query');
-      assign_proc(@mysql_send_query, 'mysql_send_query');
-      assign_proc(@mysql_read_query_result, 'mysql_read_query_result');
-      assign_proc(@mysql_real_query, 'mysql_real_query');
-      assign_proc(@mysql_create_db, 'mysql_create_db');
-      assign_proc(@mysql_drop_db, 'mysql_drop_db');
-      assign_proc(@mysql_shutdown, 'mysql_shutdown');
-      assign_proc(@mysql_dump_debug_info, 'mysql_dump_debug_info');
-      assign_proc(@mysql_refresh, 'mysql_refresh');
-      assign_proc(@mysql_kill, 'mysql_kill');
-      assign_proc(@mysql_ping, 'mysql_ping');
-      assign_proc(@mysql_stat, 'mysql_stat');
-      assign_proc(@mysql_get_server_info, 'mysql_get_server_info');
-      assign_proc(@mysql_get_client_info, 'mysql_get_client_info');
-      assign_proc(@mysql_get_host_info, 'mysql_get_host_info');
-      assign_proc(@mysql_get_proto_info, 'mysql_get_proto_info');
-      assign_proc(@mysql_list_dbs, 'mysql_list_dbs');
-      assign_proc(@mysql_list_tables, 'mysql_list_tables');
-      assign_proc(@mysql_list_fields, 'mysql_list_fields');
-      assign_proc(@mysql_list_processes, 'mysql_list_processes');
-      assign_proc(@mysql_store_result, 'mysql_store_result');
-      assign_proc(@mysql_use_result, 'mysql_use_result');
-      assign_proc(@mysql_options, 'mysql_options');
-      assign_proc(@mysql_free_result, 'mysql_free_result');
-      assign_proc(@mysql_data_seek, 'mysql_data_seek');
-      assign_proc(@mysql_row_seek, 'mysql_row_seek');
-      assign_proc(@mysql_field_seek, 'mysql_field_seek');
-      assign_proc(@mysql_fetch_row, 'mysql_fetch_row');
-      assign_proc(@mysql_fetch_lengths, 'mysql_fetch_lengths');
-      assign_proc(@mysql_fetch_field, 'mysql_fetch_field');
-      assign_proc(@mysql_escape_string, 'mysql_escape_string');
-      assign_proc(@mysql_real_escape_string, 'mysql_real_escape_string');
-      assign_proc(@mysql_debug, 'mysql_debug');
-      assign_proc(@mysql_odbc_escape_string, 'mysql_odbc_escape_string');
-      assign_proc(@myodbc_remove_escape, 'myodbc_remove_escape');
-      assign_proc(@mysql_thread_safe, 'mysql_thread_safe');
-    end;
-  Result:=libmysql_status;
+    assign_proc(@mysql_connect, 'mysql_connect');
+    assign_proc(@mysql_change_user, 'mysql_change_user');
+    assign_proc(@mysql_real_connect, 'mysql_real_connect');
+    assign_proc(@mysql_close, 'mysql_close');
+    assign_proc(@mysql_select_db, 'mysql_select_db');
+    assign_proc(@mysql_query, 'mysql_query');
+    assign_proc(@mysql_send_query, 'mysql_send_query');
+    assign_proc(@mysql_read_query_result, 'mysql_read_query_result');
+    assign_proc(@mysql_real_query, 'mysql_real_query');
+    assign_proc(@mysql_create_db, 'mysql_create_db');
+    assign_proc(@mysql_drop_db, 'mysql_drop_db');
+    assign_proc(@mysql_shutdown, 'mysql_shutdown');
+    assign_proc(@mysql_dump_debug_info, 'mysql_dump_debug_info');
+    assign_proc(@mysql_refresh, 'mysql_refresh');
+    assign_proc(@mysql_kill, 'mysql_kill');
+    assign_proc(@mysql_ping, 'mysql_ping');
+    assign_proc(@mysql_stat, 'mysql_stat');
+    assign_proc(@mysql_get_server_info, 'mysql_get_server_info');
+    assign_proc(@mysql_get_client_info, 'mysql_get_client_info');
+    assign_proc(@mysql_get_host_info, 'mysql_get_host_info');
+    assign_proc(@mysql_get_proto_info, 'mysql_get_proto_info');
+    assign_proc(@mysql_list_dbs, 'mysql_list_dbs');
+    assign_proc(@mysql_list_tables, 'mysql_list_tables');
+    assign_proc(@mysql_list_fields, 'mysql_list_fields');
+    assign_proc(@mysql_list_processes, 'mysql_list_processes');
+    assign_proc(@mysql_store_result, 'mysql_store_result');
+    assign_proc(@mysql_use_result, 'mysql_use_result');
+    assign_proc(@mysql_options, 'mysql_options');
+    assign_proc(@mysql_free_result, 'mysql_free_result');
+    assign_proc(@mysql_data_seek, 'mysql_data_seek');
+    assign_proc(@mysql_row_seek, 'mysql_row_seek');
+    assign_proc(@mysql_field_seek, 'mysql_field_seek');
+    assign_proc(@mysql_fetch_row, 'mysql_fetch_row');
+    assign_proc(@mysql_fetch_lengths, 'mysql_fetch_lengths');
+    assign_proc(@mysql_fetch_field, 'mysql_fetch_field');
+    assign_proc(@mysql_escape_string, 'mysql_escape_string');
+    assign_proc(@mysql_real_escape_string, 'mysql_real_escape_string');
+    assign_proc(@mysql_debug, 'mysql_debug');
+    assign_proc(@mysql_odbc_escape_string, 'mysql_odbc_escape_string');
+    assign_proc(@myodbc_remove_escape, 'myodbc_remove_escape');
+    assign_proc(@mysql_thread_safe, 'mysql_thread_safe');
+  end;
+  result := libmysql_status;
 end;
 
 procedure libmysql_free;
 begin
-  if libmysql_handle<>0 then
+  if libmysql_handle <> 0 then
     FreeLibrary(libmysql_handle);
-  libmysql_handle:=0;
-  libmysql_status:=LIBMYSQL_UNDEFINED;
+  libmysql_handle := 0;
+  libmysql_status := LIBMYSQL_UNDEFINED;
 end;
 
 initialization

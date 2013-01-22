@@ -34,7 +34,8 @@ uses
   Windows;
 
 type
-  TColumnResizeEvent = procedure(Sender: TCustomListview; columnIndex: Integer; columnWidth: Integer) of object;
+  TColumnResizeEvent = procedure(Sender: TCustomListview; columnIndex: Integer;
+    columnWidth: Integer) of object;
   TScrollEvent = procedure(Sender: TCustomListview) of object;
 
   TListViewEx = class(TListView)
@@ -56,10 +57,13 @@ type
     function FindColumnWidth(pHeader: pNMHdr): Integer;
     procedure CreateWnd; override;
   published
-    property OnBeginColumnResize: TColumnResizeEvent read fBeginColumnResizeEvent write fBeginColumnResizeEvent;
-    property OnEndColumnResize: TColumnResizeEvent read fEndColumnResizeEvent write fEndColumnResizeEvent;
+    property OnBeginColumnResize: TColumnResizeEvent read fBeginColumnResizeEvent
+      write fBeginColumnResizeEvent;
+    property OnEndColumnResize: TColumnResizeEvent read fEndColumnResizeEvent
+      write fEndColumnResizeEvent;
     property OnColumnResize: TColumnResizeEvent read fColumnResizeEvent write fColumnResizeEvent;
-    property OnDividerDblClick: TColumnResizeEvent read fDividerDblClickEvent write fDividerDblClickEvent;
+    property OnDividerDblClick: TColumnResizeEvent read fDividerDblClickEvent
+      write fDividerDblClickEvent;
     property OnScroll: TScrollEvent read fOnScrollEvent write fOnScrollEvent;
     property OnMouseWheel;
     property OnMouseWheelDown;
@@ -156,7 +160,8 @@ end;
 function TListViewEx.FindColumnWidth(pHeader: pNMHdr): Integer;
 begin
   Result := -1;
-  if Assigned(pHDNotify(pHeader)^.pItem) and ((pHDNotify(pHeader)^.pItem^.Mask and HDI_WIDTH) <> 0) then
+  if Assigned(pHDNotify(pHeader)^.pItem) and ((pHDNotify(pHeader)^.pItem^.Mask and HDI_WIDTH) <> 0)
+  then
     Result := pHDNotify(pHeader)^.pItem^.cxy;
 end;
 

@@ -3,7 +3,7 @@
 interface
 
 type
-  TReportFolders=(rfTempFolder, rfApplicationFolder, rfCustomFolder);
+  TReportFolders = (rfTempFolder, rfApplicationFolder, rfCustomFolder);
 
 implementation
 

@@ -283,6 +283,7 @@ constructor TSignalForm.Create(AOwner: TComponent; const ASignal: ISignal);
       cmbxPeriodType.Items.Add(PERIODS[pt]);
     end;
   end;
+
 begin
   inherited Create(AOwner);
   FNowPlaying := False;

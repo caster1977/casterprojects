@@ -64,7 +64,8 @@ type
     property LogClient: TLogClient read FLogClient write FLogClient;
     property BeforeSending: TNotifyEvent read FBeforeSending write FBeforeSending;
     property AfterSending: TNotifyEvent read FAfterSending write FAfterSending;
-    property AllowedTypes: TLogMessagesTypes read FAllowedTypes write FAllowedTypes default [lmtError, lmtWarning, lmtInfo, lmtSQL];
+    property AllowedTypes: TLogMessagesTypes read FAllowedTypes write FAllowedTypes
+      default [lmtError, lmtWarning, lmtInfo, lmtSQL];
   end;
 
 procedure register;
@@ -110,7 +111,8 @@ begin
     // отправка широковещательного сообщения клиентам на локальном компе
     dwRecipients := BSM_APPLICATIONS;
     if Assigned(FOwnerForm) then
-      BroadcastSystemMessage(BSF_IGNORECURRENTTASK or BSF_POSTMESSAGE, @dwRecipients, msgLogKeeperClientQuery, FOwnerForm.Handle, 0);
+      BroadcastSystemMessage(BSF_IGNORECURRENTTASK or BSF_POSTMESSAGE, @dwRecipients,
+        msgLogKeeperClientQuery, FOwnerForm.Handle, 0);
   end;
 end;
 
@@ -161,8 +163,9 @@ begin
   if Msg.Msg = msgLogKeeperClientAnswer then
   begin
     // if Msg.WParam=FOwnerForm.Handle then
-    MessageBox(FOwnerForm.Handle, PWideChar('Получено сообщение msgLogKeeperClientAnswer в форму ' + FOwnerForm.Name + '!'), PWideChar('OA5 - Информация!'),
-      MB_OK + MB_ICONINFORMATION + MB_DEFBUTTON1);
+    MessageBox(FOwnerForm.Handle, PWideChar('Получено сообщение msgLogKeeperClientAnswer в форму ' +
+      FOwnerForm.Name + '!'), PWideChar('OA5 - Информация!'), MB_OK + MB_ICONINFORMATION +
+      MB_DEFBUTTON1);
     // if Msg.lParam=1 then
     // hBaseInfo:=Msg.wParam; // обновляем хэндл окна-приёмника
     // Handled:=True;
@@ -334,7 +337,8 @@ begin
   if Length(aGUID) = 38 then
     FGUIDList.Add(aGUID)
   else
-    raise Exception.Create('Не удалось добавить элемент в список GUID методов из-за некорректной длины строки!');
+    raise Exception.Create
+      ('Не удалось добавить элемент в список GUID методов из-за некорректной длины строки!');
   SendDebug('[' + aString + ']');
   SendDebug('Начало процедуры...');
 end;
@@ -345,7 +349,8 @@ begin
   if FGUIDList.Count > 0 then
     FGUIDList.Delete(FGUIDList.Count - 1)
   else
-    raise Exception.Create('Не удалось удалить последний элемент списка GUID методов, т.к. список пуст!');
+    raise Exception.Create
+      ('Не удалось удалить последний элемент списка GUID методов, т.к. список пуст!');
 end;
 
 function TLogProvider.GetApplicationHandle: HWnd;
@@ -380,7 +385,8 @@ begin
   if Assigned(FOwnerForm) then
     Result := FOwnerForm.Handle
   else
-    raise Exception.Create('Не удалось получить handle родительской формы, поскольку указатель на родительскую форму пуст!');
+    raise Exception.Create
+      ('Не удалось получить handle родительской формы, поскольку указатель на родительскую форму пуст!');
 end;
 
 function TLogProvider.GetFormName: string;
@@ -388,7 +394,8 @@ begin
   if Assigned(FOwnerForm) then
     Result := FOwnerForm.Caption
   else
-    raise Exception.Create('Не удалось получить заголовок родительской формы, поскольку указатель на родительскую форму пуст!');
+    raise Exception.Create
+      ('Не удалось получить заголовок родительской формы, поскольку указатель на родительскую форму пуст!');
 end;
 
 (*

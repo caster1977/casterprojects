@@ -12,7 +12,8 @@ uses
   Vcl.Controls,
   Vcl.StdCtrls,
   Vcl.ComCtrls,
-  Vcl.ExtCtrls, System.Actions;
+  Vcl.ExtCtrls,
+  System.Actions;
 
 type
   TConfigurationForm = class(TForm)

@@ -25,19 +25,21 @@ type
     function GetDialogPosition: TDialogPosition;
     procedure SetDialogPosition(const AValue: TDialogPosition);
   public
-    constructor Create(AOwner: TComponent; const ADialogPosition: TDialogPosition; ABusyCounter: PInteger = nil;
-      ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil; AProgressBar: TProgressBar = nil); reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const ADialogPosition: TDialogPosition;
+      ABusyCounter: PInteger = nil; ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil;
+      AProgressBar: TProgressBar = nil); reintroduce; virtual;
   published
-    property DialogPosition: TDialogPosition read GetDialogPosition write SetDialogPosition nodefault;
+    property DialogPosition: TDialogPosition read GetDialogPosition
+      write SetDialogPosition nodefault;
   end;
 
 implementation
 
 {$R *.dfm}
 
-constructor TPositionedLogForm.Create(AOwner: TComponent;
-  const ADialogPosition: TDialogPosition; ABusyCounter: PInteger;
-  ARefreshBusyStateMethod: TRefreshBusyStateMethod; AProgressBar: TProgressBar);
+constructor TPositionedLogForm.Create(AOwner: TComponent; const ADialogPosition: TDialogPosition;
+  ABusyCounter: PInteger; ARefreshBusyStateMethod: TRefreshBusyStateMethod;
+  AProgressBar: TProgressBar);
 begin
   inherited Create(AOwner, ABusyCounter, ARefreshBusyStateMethod, AProgressBar);
   DialogPosition := ADialogPosition;

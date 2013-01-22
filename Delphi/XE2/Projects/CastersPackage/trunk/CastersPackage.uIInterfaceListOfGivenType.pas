@@ -12,7 +12,8 @@ type
     procedure Insert(const AIndex: Integer; const AItem: T);
     procedure Delete(const AIndex: Integer);
     function Remove(const AItem: T; const ASkipIfNotFound: Boolean = False): Integer; overload;
-    procedure Remove(const AItems: IInterfaceListOfGivenType<T>; const ASkipIfNotFound: Boolean = False); overload;
+    procedure Remove(const AItems: IInterfaceListOfGivenType<T>;
+      const ASkipIfNotFound: Boolean = False); overload;
     procedure Clear;
     function First: T;
     function Last: T;

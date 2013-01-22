@@ -4,16 +4,16 @@ interface
 
 uses
   VCL.Forms,
-  Vcl.ActnList,
+  VCL.ActnList,
   System.Classes,
-  Vcl.StdActns;
+  VCL.StdActns;
 
 type
-  TQuitAction = class(TAction); {class(TCustomAction)
-  public
+  TQuitAction = class(TAction); { class(TCustomAction)
+    public
     function HandlesTarget(Target: TObject): Boolean; override;
     procedure ExecuteTarget(Target: TObject); override;
-  published
+    published
     property Caption;
     property Enabled;
     property HelpContext;
@@ -26,7 +26,7 @@ type
     property Visible;
     property OnHint;
     property OnUpdate;
-  end;}
+    end; }
 
   TWindowCloseAction = class(TCustomAction)
   public
@@ -56,33 +56,33 @@ type
   TAction_Help = class(THelpContents)
   end;
 
-  TAction_About = class(TAction) {(TCustomAction)
-  strict private
-    FFormClass: TForm; // Class;
-    function GetFormClass: TFormClass;
-    procedure SetFormClass(const Value: TFormClass);
-  strict protected
-    function GetForm(Target: TObject): TForm; virtual;
-    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
-  public
-    constructor Create(AOwner: TComponent); override;
-    function HandlesTarget(Target: TObject): Boolean; override;
-    procedure ExecuteTarget(Target: TObject); override;
-    procedure UpdateTarget(Target: TObject); override;
-  published
-    property Caption;
-    property Enabled;
-    property HelpContext;
-    property HelpKeyword;
-    property HelpType;
-    property Hint;
-    property ImageIndex;
-    property ShortCut;
-    property SecondaryShortCuts;
-    property Visible;
-    property OnHint;
-    property OnUpdate;
-    property FormClass: TForm read FFormClass write FFormClass; //Class read GetFormClass write SetFormClass;}
+  TAction_About = class(TAction) { (TCustomAction)
+      strict private
+      FFormClass: TForm; // Class;
+      function GetFormClass: TFormClass;
+      procedure SetFormClass(const Value: TFormClass);
+      strict protected
+      function GetForm(Target: TObject): TForm; virtual;
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+      public
+      constructor Create(AOwner: TComponent); override;
+      function HandlesTarget(Target: TObject): Boolean; override;
+      procedure ExecuteTarget(Target: TObject); override;
+      procedure UpdateTarget(Target: TObject); override;
+      published
+      property Caption;
+      property Enabled;
+      property HelpContext;
+      property HelpKeyword;
+      property HelpType;
+      property Hint;
+      property ImageIndex;
+      property ShortCut;
+      property SecondaryShortCuts;
+      property Visible;
+      property OnHint;
+      property OnUpdate;
+      property FormClass: TForm read FFormClass write FFormClass; //Class read GetFormClass write SetFormClass; }
   end;
 
   TAction_Apply = class(TAction)
@@ -145,93 +145,96 @@ uses
   Winapi.Messages,
   CastersPackage.Actions.DataModule;
 
-procedure register;
+procedure Register;
 begin
-  RegisterActions('Файл', [TQuitAction, TAction_Configuration, TAction_Logon, TAction_Logoff, TFileMenuGroupAction], TActionsDataModule);
-  RegisterActions('Справка', [TAction_Help, TAction_About, THelpContentsAction, THelpMenuGroupAction], TActionsDataModule);
+  RegisterActions('Файл', [TQuitAction, TAction_Configuration, TAction_Logon, TAction_Logoff,
+    TFileMenuGroupAction], TActionsDataModule);
+  RegisterActions('Справка', [TAction_Help, TAction_About, THelpContentsAction,
+    THelpMenuGroupAction], TActionsDataModule);
   RegisterActions('Окно', [TAction_Restore], TActionsDataModule);
-  RegisterActions('Действие', [TWindowCloseAction, TAction_Apply, TAction_Defaults, TAction_PreviousPage, TAction_NextPage, TAction_Accounts,
-    TAction_Report, TAction_Cancel, TActionMenuGroupAction], TActionsDataModule);
+  RegisterActions('Действие', [TWindowCloseAction, TAction_Apply, TAction_Defaults,
+    TAction_PreviousPage, TAction_NextPage, TAction_Accounts, TAction_Report, TAction_Cancel,
+    TActionMenuGroupAction], TActionsDataModule);
   RegisterActions('Профили', [TProfilesMenuGroupAction], TActionsDataModule);
 end;
 
 { TAction_About
 
-constructor TAction_About.Create(AOwner: TComponent);
-begin
+  constructor TAction_About.Create(AOwner: TComponent);
+  begin
   inherited;
   DisableIfNoHandler := False;
   Enabled := csDesigning in ComponentState;
-end;
+  end;
 
-procedure TAction_About.ExecuteTarget(Target: TObject);
-begin
+  procedure TAction_About.ExecuteTarget(Target: TObject);
+  begin
   // with GetForm(Target) do ;
   if Assigned(FFormClass) then
-    begin
-      with FFormClass.Create(Self) do
-        try
-          ShowModal;
-        finally
-          Free;
-        end;
-    end;
-end;
+  begin
+  with FFormClass.Create(Self) do
+  try
+  ShowModal;
+  finally
+  Free;
+  end;
+  end;
+  end;
 
-function TAction_About.GetForm(Target: TObject): TForm;
-begin
+  function TAction_About.GetForm(Target: TObject): TForm;
+  begin
   Result := (Target as TForm);
-end;
+  end;
 
-function TAction_About.GetFormClass: TFormClass;
-begin
+  function TAction_About.GetFormClass: TFormClass;
+  begin
   Result := FFormClass;
-end;
+  end;
 
-function TAction_About.HandlesTarget(Target: TObject): Boolean;
-begin
+  function TAction_About.HandlesTarget(Target: TObject): Boolean;
+  begin
   Result := True; //((FFormClass <> nil) and (Target = FFormClass) or (FFormClass = nil) and (Target is TForm)) and (TForm(Target).FormStyle = fsMDIForm);
-end;
+  end;
 
-procedure TAction_About.Notification(AComponent: TComponent; Operation: TOperation);
-begin
+  procedure TAction_About.Notification(AComponent: TComponent; Operation: TOperation);
+  begin
   inherited Notification(AComponent, Operation);
   if (Operation = opRemove) and (AComponent.ClassType = FFormClass) then
-    FFormClass := nil;
-end;
+  FFormClass := nil;
+  end;
 
-procedure TAction_About.SetFormClass(const Value: TFormClass);
-begin
+  procedure TAction_About.SetFormClass(const Value: TFormClass);
+  begin
   if Value <> FFormClass then
-    begin
-      FFormClass := Value;
-      //if Value <> nil then
-      //  Value.FreeNotification(Self);
-    end;
-end;
+  begin
+  FFormClass := Value;
+  //if Value <> nil then
+  //  Value.FreeNotification(Self);
+  end;
+  end;
 
-procedure TAction_About.UpdateTarget(Target: TObject);
-begin
+  procedure TAction_About.UpdateTarget(Target: TObject);
+  begin
   Enabled := True; // GetForm(Target).ActiveMDIChild <> nil;
-end;}
+  end; }
 
 { TQuitAction }
 
-{procedure TQuitAction.ExecuteTarget(Target: TObject);
-begin
+{ procedure TQuitAction.ExecuteTarget(Target: TObject);
+  begin
   inherited;
   if Assigned(Application.MainForm) then
-    begin
-      Application.HelpCommand(HELP_QUIT, 0);
-      SendMessage(Application.MainForm.Handle, WM_SYSCOMMAND, SC_CLOSE, 0);
-      //Application.MainForm.Close;
-    end;
-end;
+  begin
+  Application.HelpCommand(HELP_QUIT, 0);
+  SendMessage(Application.MainForm.Handle, WM_SYSCOMMAND, SC_CLOSE, 0);
+  //Application.MainForm.Close;
+  end;
+  end;
 
-function TQuitAction.HandlesTarget(Target: TObject): Boolean;
-begin
+  function TQuitAction.HandlesTarget(Target: TObject): Boolean;
+  begin
   Result := True;
-end;}
+  end; }
 
 { TWindowCloseAction }
 
@@ -243,7 +246,7 @@ end;
 
 function TWindowCloseAction.HandlesTarget(Target: TObject): Boolean;
 begin
-  Result:=True;
+  Result := True;
 end;
 
 { TMenuGroupAction }
