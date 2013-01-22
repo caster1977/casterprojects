@@ -27,7 +27,10 @@ uses
   Vcl.PlatformDefaultStyleActnCtrls,
   Vcl.ActnPopup,
   System.Actions,
-  DBAutoTest.uIRecents;
+  DBAutoTest.uIProfile,
+  DBAutoTest.uIRecents,
+  Data.DB,
+  Data.Win.ADODB;
 
 type
   TMainForm = class(TForm)
@@ -87,6 +90,7 @@ type
     N30: TMenuItem;
     N31: TMenuItem;
     actProfileProperties: TAction;
+    ADOConnection1: TADOConnection;
     procedure actQuitExecute(Sender: TObject);
     procedure lvTaskListResize(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
@@ -103,6 +107,7 @@ type
     procedure actRecentProfilesPropertiesExecute(Sender: TObject);
     procedure actProfilePropertiesUpdate(Sender: TObject);
     procedure actProfilePropertiesExecute(Sender: TObject);
+    procedure actCreateProfileExecute(Sender: TObject);
   strict private
     procedure OnHint(ASender: TObject);
     procedure ShowAboutWindow(const AShowCloseButton: Boolean);
@@ -113,6 +118,11 @@ type
     property Recents: IRecents read GetRecents nodefault;
     procedure OnRecentsMenuItemClick(Sender: TObject);
     procedure RefreshRecentsMenu;
+  strict private
+    FProfile: IProfile;
+    function GetProfile: IProfile;
+    procedure SetProfile(const AValue: IProfile);
+    property Profile: IProfile read GetProfile write SetProfile nodefault;
   end;
 
 var
@@ -129,6 +139,7 @@ uses
   DBAutoTest.uConsts,
   DBAutoTest.uTRecentsPropertiesForm,
   DBAutoTest.uTProfileForm,
+  DBAutoTest.uTProfile,
   DBAutoTest.uTRecents,
   DBAutoTest.uIRecent,
   DBAutoTest.uTRecent;
@@ -137,6 +148,9 @@ resourcestring
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
   RsExitConfirmationCaption = '%s - Подтверждение выхода';
   RsOpenRecent = 'Нажмите для загрузки файла профиля с указанным именем';
+  RsCreateProfileConfirmationMessage =
+    'Вы действительно хотите создать новый профиль, предварительно не сохранив текущий?';
+  RsCreateProfileConfirmationCaption = '%s - Подтверждение создания нового профиля';
 
 procedure TMainForm.actAboutExecute(Sender: TObject);
 begin
@@ -166,6 +180,15 @@ end;
 procedure TMainForm.OnHint(ASender: TObject);
 begin
   StatusBar.SimpleText := GetLongHint(Application.Hint);
+end;
+
+procedure TMainForm.SetProfile(const AValue: IProfile);
+begin
+  if FProfile <> AValue then
+  begin
+    FProfile := AValue;
+    RefreshTaskList;
+  end;
 end;
 
 procedure TMainForm.ShowAboutWindow(const AShowCloseButton: Boolean);
@@ -201,6 +224,15 @@ begin
   RefreshRecentsMenu;
 end;
 
+function TMainForm.GetProfile: IProfile;
+begin
+  if not Assigned(FProfile) then
+  begin
+    FProfile := TProfile.Create;
+  end;
+  Result := FProfile;
+end;
+
 function TMainForm.GetRecents: IRecents;
 begin
   if not Assigned(FRecents) then
@@ -223,6 +255,19 @@ begin
   // lvTaskList.Column[0].Width:=lvTaskList.Column[0].Width-GetSystemMetrics(SM_CXVSCROLL);
   // end;
   // lvTaskList.Column[1].Width:=100;
+end;
+
+procedure TMainForm.actCreateProfileExecute(Sender: TObject);
+begin
+  { TODO :
+    добавить проверку сохранённости текущего профиля:
+    если профиль не сохранён, задать вопрос юзеру }
+  if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage),
+    PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])),
+    MESSAGE_TYPE_CONFIRMATION_WARNING) = IDOK then
+  begin
+    Profile.Clear;
+  end;
 end;
 
 procedure TMainForm.actCreateTaskExecute(Sender: TObject);
@@ -307,15 +352,15 @@ var
   i: Integer;
   item: TMenuItem;
 begin
-  for i := miRecents.Count-3 downto 0 do
+  for i := miRecents.Count - 3 downto 0 do
   begin
     miRecents.Items[i].Free;
   end;
-  for i := Recents.Count-1 downto 0 do
+  for i := Recents.Count - 1 downto 0 do
   begin
     item := TMenuItem.Create(Self);
     item.Caption := Recents.Items[i].FullName;
-    //item.Enabled := Recents.Items[i].Exists;
+    item.Enabled := Recents.Items[i].Exists;
     item.OnClick := OnRecentsMenuItemClick;
     item.Hint := RsOpenRecent;
     miRecents.Insert(0, item);
