@@ -280,11 +280,11 @@ begin
   with TTaskForm.Create(Self, Profile.Tasks, AIndex) do
     try
       ShowModal;
-//      if ModalResult = mrOk then
-        if TaskIndex > -1 then
-        begin
-          t := Profile.Tasks[TaskIndex];
-        end;
+      // if ModalResult = mrOk then
+      if TaskIndex > -1 then
+      begin
+        t := Profile.Tasks[TaskIndex];
+      end;
     finally
       Free;
     end;
@@ -369,18 +369,18 @@ end;
 procedure TMainForm.actLoadProfileExecute(Sender: TObject);
 begin
   with TOpenDialog.Create(Self) do
-  try
-    DefaultExt := RsOpenProfileDefaultExt;
-    Filter := RsOpenProfileFilters;
-    Options := Options + [ofFileMustExist];
-    if Execute(Handle) then
-    begin
-      Profile.Load;
-      RefreshTaskList;
+    try
+      DefaultExt := RsOpenProfileDefaultExt;
+      Filter := RsOpenProfileFilters;
+      Options := Options + [ofFileMustExist];
+      if Execute(Handle) then
+      begin
+        Profile.Load;
+        RefreshTaskList;
+      end;
+    finally
+      Free;
     end;
-  finally
-    Free;
-  end;
 end;
 
 procedure TMainForm.actProcessExecute(Sender: TObject);
