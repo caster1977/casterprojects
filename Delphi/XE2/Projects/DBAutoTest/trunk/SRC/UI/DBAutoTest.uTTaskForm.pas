@@ -38,9 +38,9 @@ type
     ActionList: TActionList;
     btnClear: TButton;
     btnHelp: TButton;
-    actCancel: TAction;
-    actApply: TAction;
     actClear: TAction;
+    actApply: TAction;
+    actCancel: TAction;
     actHelp: TAction_Help;
     procedure actClearUpdate(Sender: TObject);
     procedure actApplyUpdate(Sender: TObject);
