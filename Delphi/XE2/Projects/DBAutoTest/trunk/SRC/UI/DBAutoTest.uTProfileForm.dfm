@@ -76,6 +76,7 @@ object ProfileForm: TProfileForm
     Top = 53
     Width = 462
     Height = 240
+    ActivePage = tsConnection
     Align = alClient
     Style = tsButtons
     TabOrder = 1
@@ -187,20 +188,20 @@ object ProfileForm: TProfileForm
           Anchors = [akTop, akRight]
           TabOrder = 8
         end
-        object cbUseEmptyPassword: TCheckBox
+        object chkEnableEmptyPassword: TCheckBox
           Left = 302
           Top = 149
           Width = 63
           Height = 17
-          Action = actUseEmptyPassword
+          Action = actEnableEmptyPassword
           TabOrder = 5
         end
-        object cbAllowPasswordSaving: TCheckBox
+        object chkEnablePasswordSaving: TCheckBox
           Left = 371
           Top = 149
           Width = 73
           Height = 17
-          Action = actAllowPasswordSaving
+          Action = actEnablePasswordSaving
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 6
         end
@@ -361,19 +362,19 @@ object ProfileForm: TProfileForm
       OnExecute = actNextPageExecute
       OnUpdate = actNextPageUpdate
     end
-    object actAllowPasswordSaving: TAction
+    object actEnablePasswordSaving: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
       AutoCheck = True
       Caption = #1089#1086'&'#1093#1088#1072#1085#1080#1090#1100
-      OnExecute = actAllowPasswordSavingExecute
-      OnUpdate = actAllowPasswordSavingUpdate
+      OnExecute = actEnablePasswordSavingExecute
+      OnUpdate = actEnablePasswordSavingUpdate
     end
-    object actUseEmptyPassword: TAction
+    object actEnableEmptyPassword: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
       AutoCheck = True
       Caption = #1087#1091#1089#1090#1086'&'#1081
-      OnExecute = actUseEmptyPasswordExecute
-      OnUpdate = actUseEmptyPasswordUpdate
+      OnExecute = actEnableEmptyPasswordExecute
+      OnUpdate = actEnableEmptyPasswordUpdate
     end
   end
   object ADOConnection: TADOConnection
@@ -385,7 +386,7 @@ object ProfileForm: TProfileForm
     Left = 16
     Top = 184
     Bitmap = {
-      494C010102000800200010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000800240010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

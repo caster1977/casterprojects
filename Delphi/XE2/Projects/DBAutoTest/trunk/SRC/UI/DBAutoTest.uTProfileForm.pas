@@ -51,8 +51,8 @@ type
     rbLoginAndPassword: TRadioButton;
     btnTestConnection: TButton;
     actTestConnection: TAction;
-    cbUseEmptyPassword: TCheckBox;
-    cbAllowPasswordSaving: TCheckBox;
+    chkEnableEmptyPassword: TCheckBox;
+    chkEnablePasswordSaving: TCheckBox;
     actUseWinNTSecurity: TAction;
     gbTop: TGroupBox;
     cmbPageName: TComboBox;
@@ -66,14 +66,14 @@ type
     actNextPage: TAction_NextPage;
     pnlTop: TPanel;
     actUseLoginAndPassword: TAction;
-    actAllowPasswordSaving: TAction;
-    actUseEmptyPassword: TAction;
+    actEnablePasswordSaving: TAction;
+    actEnableEmptyPassword: TAction;
     procedure actUseWinNTSecurityExecute(Sender: TObject);
-    procedure actAllowPasswordSavingUpdate(Sender: TObject);
-    procedure actUseEmptyPasswordUpdate(Sender: TObject);
+    procedure actEnablePasswordSavingUpdate(Sender: TObject);
+    procedure actEnableEmptyPasswordUpdate(Sender: TObject);
     procedure actUseLoginAndPasswordExecute(Sender: TObject);
-    procedure actUseEmptyPasswordExecute(Sender: TObject);
-    procedure actAllowPasswordSavingExecute(Sender: TObject);
+    procedure actEnableEmptyPasswordExecute(Sender: TObject);
+    procedure actEnablePasswordSavingExecute(Sender: TObject);
     procedure cmbServerNameChange(Sender: TObject);
     procedure cmbServerNameDropDown(Sender: TObject);
     procedure cmbServerNameSelect(Sender: TObject);
@@ -182,24 +182,24 @@ begin
   ActivePage := cmbPageName.ItemIndex;
 end;
 
-procedure TProfileForm.actAllowPasswordSavingExecute(Sender: TObject);
+procedure TProfileForm.actEnablePasswordSavingExecute(Sender: TObject);
 begin
   //
 end;
 
-procedure TProfileForm.actAllowPasswordSavingUpdate(Sender: TObject);
+procedure TProfileForm.actEnablePasswordSavingUpdate(Sender: TObject);
 begin
-  actAllowPasswordSaving.Enabled := actUseLoginAndPassword.Checked;
+  actEnablePasswordSaving.Enabled := actUseLoginAndPassword.Checked;
 end;
 
-procedure TProfileForm.actUseEmptyPasswordExecute(Sender: TObject);
+procedure TProfileForm.actEnableEmptyPasswordExecute(Sender: TObject);
 begin
   //
 end;
 
-procedure TProfileForm.actUseEmptyPasswordUpdate(Sender: TObject);
+procedure TProfileForm.actEnableEmptyPasswordUpdate(Sender: TObject);
 begin
-  actUseEmptyPassword.Enabled := actUseLoginAndPassword.Checked;
+  actEnableEmptyPassword.Enabled := actUseLoginAndPassword.Checked;
 end;
 
 procedure TProfileForm.actUseLoginAndPasswordExecute(Sender: TObject);
@@ -289,8 +289,8 @@ begin
         Format(ADO_CONNECTION_STRING_SUFFIX_USER_ID, [ebLogin.Text]);
       ADOConnection.ConnectionString := ADOConnection.ConnectionString +
         Format(ADO_CONNECTION_STRING_SUFFIX_PERSIST_SECURITY_INFO,
-        [BoolToStr(actAllowPasswordSaving.Checked, True)]);
-      if actAllowPasswordSaving.Checked then
+        [BoolToStr(actEnablePasswordSaving.Checked, True)]);
+      if actEnablePasswordSaving.Checked then
       begin
         ADOConnection.ConnectionString := ADOConnection.ConnectionString +
           Format(ADO_CONNECTION_STRING_SUFFIX_PASSWORD, [mePassword.Text]);

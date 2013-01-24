@@ -169,7 +169,7 @@ end;
 
 procedure TMainForm.actConfigurationExecute(Sender: TObject);
 begin
-  with TConfigurationForm.Create(Self) do
+  with TConfigurationForm.Create(Self, nil) do
     try
       ShowModal;
     finally
