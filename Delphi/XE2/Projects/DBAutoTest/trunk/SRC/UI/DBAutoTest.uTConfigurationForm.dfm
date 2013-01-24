@@ -8,6 +8,10 @@ object ConfigurationForm: TConfigurationForm
   ClientHeight = 320
   ClientWidth = 462
   Color = clBtnFace
+  Constraints.MaxHeight = 360
+  Constraints.MaxWidth = 480
+  Constraints.MinHeight = 360
+  Constraints.MinWidth = 480
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -402,6 +406,8 @@ object ConfigurationForm: TConfigurationForm
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
       Caption = '&'#1055#1088#1080#1084#1077#1085#1080#1090#1100
       Hint = #1055#1088#1080#1084#1077#1085#1080#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1074#1085#1077#1089#1105#1085#1085#1099#1093' '#1080#1079#1084#1077#1085#1077#1085#1080#1081
+      OnExecute = actApplyExecute
+      OnUpdate = actApplyUpdate
     end
     object actHelp: TAction_Help
       Category = #1057#1087#1088#1072#1074#1082#1072
@@ -417,6 +423,8 @@ object ConfigurationForm: TConfigurationForm
       Hint = 
         #1057#1073#1088#1086#1089#1080#1090#1100' '#1079#1085#1072#1095#1077#1085#1080#1103'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1089#1073#1088#1086#1089#1072' '#1074#1089#1077#1093' '#1079#1085#1072#1095#1077#1085#1080#1081' '#1082' '#1079#1085#1072#1095#1077#1085#1080#1103#1084' '#1087 +
         #1086' '#1091#1084#1086#1083#1095#1072#1085#1080#1102
+      OnExecute = actDefaultsExecute
+      OnUpdate = actDefaultsUpdate
     end
     object actPreviousPage: TAction_PreviousPage
       Category = #1044#1077#1081#1089#1090#1074#1080#1077

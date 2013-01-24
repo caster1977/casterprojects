@@ -63,6 +63,10 @@ type
     procedure actPreviousPageExecute(Sender: TObject);
     procedure actPreviousPageUpdate(Sender: TObject);
     procedure cmbPageNameSelect(Sender: TObject);
+    procedure actApplyExecute(Sender: TObject);
+    procedure actDefaultsExecute(Sender: TObject);
+    procedure actDefaultsUpdate(Sender: TObject);
+    procedure actApplyUpdate(Sender: TObject);
   strict private
     function GetActivePage: Integer;
     function GetPageCount: Integer;
@@ -112,11 +116,102 @@ resourcestring
 
 constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: IConfiguration;
   const AActivePage: Integer);
+
+  procedure ApplyConfiguration;
+  begin
+    if Assigned(Configuration) then
+    begin
+      EnablePlaySoundOnComplete := Configuration.EnablePlaySoundOnComplete;
+      EnableQuitConfirmation := Configuration.EnableQuitConfirmation;
+      EnableSplashAtStart := Configuration.EnableSplashAtStart;
+      EnableStatusbar := Configuration.EnableStatusbar;
+      EnableToolbar := Configuration.EnableToolbar;
+    end;
+  end;
+
 begin
-  //Assert(Assigned(AConfiguration), RsAConfigurationIsNil);
+  // Assert(Assigned(AConfiguration), RsAConfigurationIsNil);
   inherited Create(AOwner);
-  FConfiguration := AConfiguration;
   ActivePage := AActivePage;
+  FConfiguration := AConfiguration;
+  ApplyConfiguration;
+end;
+
+procedure TConfigurationForm.actDefaultsExecute(Sender: TObject);
+begin
+  if PageControl.ActivePage = tsInterface then
+  begin
+    EnableQuitConfirmation := CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
+    EnableSplashAtStart := CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
+    EnableStatusbar := CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
+    EnableToolbar := CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
+  end;
+  if PageControl.ActivePage = tsResults then
+  begin
+  end;
+  if PageControl.ActivePage = tsReport then
+  begin
+  end;
+  if PageControl.ActivePage = tsOther then
+  begin
+    EnablePlaySoundOnComplete := CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
+  end;
+end;
+
+procedure TConfigurationForm.actDefaultsUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  if PageControl.ActivePage = tsInterface then
+  begin
+    b := not((EnableQuitConfirmation = CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION) and
+      (EnableSplashAtStart = CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START) and
+      (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and
+      (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR));
+  end;
+  if PageControl.ActivePage = tsResults then
+  begin
+  end;
+  if PageControl.ActivePage = tsReport then
+  begin
+  end;
+  if PageControl.ActivePage = tsOther then
+  begin
+    b := not(EnablePlaySoundOnComplete = CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE);
+  end;
+  actDefaults.Enabled := b;
+end;
+
+procedure TConfigurationForm.actApplyExecute(Sender: TObject);
+begin
+  if Assigned(Configuration) then
+  begin
+    Configuration.EnablePlaySoundOnComplete := EnablePlaySoundOnComplete;
+    Configuration.EnableQuitConfirmation := EnableQuitConfirmation;
+    Configuration.EnableSplashAtStart := EnableSplashAtStart;
+    Configuration.EnableStatusbar := EnableStatusbar;
+    Configuration.EnableToolbar := EnableToolbar;
+  end;
+  ModalResult := mrOk;
+end;
+
+procedure TConfigurationForm.actApplyUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  if Assigned(Configuration) then
+  begin
+    b := not((Configuration.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete) and
+      (Configuration.EnableQuitConfirmation = EnableQuitConfirmation) and
+      (Configuration.EnableSplashAtStart = EnableSplashAtStart) and
+      (Configuration.EnableStatusbar = EnableStatusbar) and
+      (Configuration.EnableToolbar = EnableToolbar));
+  end;
+  actApply.Enabled := b;
+  btnApply.Default := b;
+  btnCancel.Default := not b;
 end;
 
 procedure TConfigurationForm.actCancelExecute(Sender: TObject);
@@ -199,14 +294,7 @@ procedure TConfigurationForm.SetCheckBoxState(const ACheckBox: TCheckBox; const 
 begin
   if ACheckBox.Checked <> AValue then
   begin
-    if ACheckBox.Enabled then
-    begin
-      ACheckBox.Checked := AValue;
-    end
-    else
-    begin
-      ACheckBox.Checked := False;
-    end;
+    ACheckBox.Checked := AValue and ACheckBox.Enabled;
   end;
 end;
 

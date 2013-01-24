@@ -72,7 +72,7 @@ end;
 
 procedure TRecent.Initialize;
 begin
-  FullName := DEFAULT_FULL_NAME;
+  FullName := RECENT_DEFAULT_FULL_NAME;
 end;
 
 procedure TRecent.SetFullName(const AValue: string);
