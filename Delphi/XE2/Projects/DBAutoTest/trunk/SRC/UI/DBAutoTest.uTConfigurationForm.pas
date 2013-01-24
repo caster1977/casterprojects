@@ -60,19 +60,16 @@ type
     procedure actPreviousPageUpdate(Sender: TObject);
     procedure actNextPageUpdate(Sender: TObject);
     procedure cmbPageNameSelect(Sender: TObject);
-  private
+  strict private
     function GetActivePage: Integer;
     procedure SetActivePage(const AValue: Integer);
-    /// <summary>
-    /// Свойство для управления текущей страницей окна настроек программы
-    /// </summary>
-    property ActivePage: Integer read GetActivePage write SetActivePage
-      default CONFIGURATION_DEFAULT_ACTIVE_PAGE;
     function GetPageCount: Integer;
     property PageCount: Integer read GetPageCount nodefault;
   public
     constructor Create(AOwner: TComponent;
       const AActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
+    property ActivePage: Integer read GetActivePage write SetActivePage
+      default CONFIGURATION_DEFAULT_ACTIVE_PAGE;
   end;
 
 implementation
