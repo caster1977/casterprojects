@@ -25,48 +25,48 @@ uses
 
 type
   TTaskForm = class(TForm)
-    pnlButtons: TPanel;
-    btnApply: TButton;
-    btnCancel: TButton;
-    pnlTop: TPanel;
-    meSQL: TMemo;
-    lblGroup: TLabel;
-    cmbGroup: TComboBox;
-    lblName: TLabel;
-    cmbName: TComboBox;
-    lblSQL: TLabel;
     ActionList: TActionList;
-    btnClear: TButton;
-    btnHelp: TButton;
-    actClear: TAction;
     actApply: TAction;
     actCancel: TAction;
+    actClear: TAction;
     actHelp: TAction_Help;
-    procedure actClearUpdate(Sender: TObject);
+    btnApply: TButton;
+    btnCancel: TButton;
+    btnClear: TButton;
+    btnHelp: TButton;
+    cmbGroup: TComboBox;
+    cmbName: TComboBox;
+    lblGroup: TLabel;
+    lblName: TLabel;
+    lblSQL: TLabel;
+    meSQL: TMemo;
+    pnlButtons: TPanel;
+    pnlTop: TPanel;
+    procedure actApplyExecute(Sender: TObject);
     procedure actApplyUpdate(Sender: TObject);
     procedure actCancelExecute(Sender: TObject);
-    procedure actApplyExecute(Sender: TObject);
     procedure actClearExecute(Sender: TObject);
+    procedure actClearUpdate(Sender: TObject);
   strict private
     FTaskEnabled: Boolean;
-    FTasks: ITasks;
     FTaskIndex: Integer;
-    function GetTaskGroup: string;
-    procedure SetTaskGroup(const AValue: string);
-    function GetTaskName: string;
-    procedure SetTaskName(const AValue: string);
-    function GetTaskSQL: TStringList;
-    procedure SetTaskSQL(const AValue: TStringList);
+    FTasks: ITasks;
     function GetTaskEnabled: Boolean;
-    procedure SetTaskEnabled(const AValue: Boolean);
-    function GetTasks: ITasks;
+    function GetTaskGroup: string;
     function GetTaskIndex: Integer;
-    property Tasks: ITasks read GetTasks nodefault;
-    property TaskGroup: string read GetTaskGroup write SetTaskGroup nodefault;
-    property TaskName: string read GetTaskName write SetTaskName nodefault;
-    property TaskSQL: TStringList read GetTaskSQL write SetTaskSQL default DEFAULT_TASK_SQL;
+    function GetTaskName: string;
+    function GetTasks: ITasks;
+    function GetTaskSQL: TStringList;
+    procedure SetTaskEnabled(const AValue: Boolean);
+    procedure SetTaskGroup(const AValue: string);
+    procedure SetTaskName(const AValue: string);
+    procedure SetTaskSQL(const AValue: TStringList);
     property TaskEnabled: Boolean read GetTaskEnabled write SetTaskEnabled
       default DEFAULT_TASK_ENABLED;
+    property TaskGroup: string read GetTaskGroup write SetTaskGroup nodefault;
+    property TaskName: string read GetTaskName write SetTaskName nodefault;
+    property Tasks: ITasks read GetTasks nodefault;
+    property TaskSQL: TStringList read GetTaskSQL write SetTaskSQL default DEFAULT_TASK_SQL;
   public
     constructor Create(AOwner: TComponent; const ATasks: ITasks; const AIndex: Integer = -1);
       reintroduce; virtual;

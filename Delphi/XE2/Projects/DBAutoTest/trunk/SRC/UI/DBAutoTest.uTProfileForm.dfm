@@ -26,7 +26,7 @@ object ProfileForm: TProfileForm
     BevelOuter = bvNone
     Constraints.MaxHeight = 27
     Constraints.MinHeight = 27
-    TabOrder = 0
+    TabOrder = 2
     DesignSize = (
       462
       27)
@@ -51,13 +51,13 @@ object ProfileForm: TProfileForm
       Cancel = True
       TabOrder = 2
     end
-    object btnClear: TButton
+    object btnDefaults: TButton
       Left = 0
       Top = 2
       Width = 75
       Height = 25
       Cursor = crHandPoint
-      Action = actClear
+      Action = actDefaults
       TabOrder = 0
     end
     object btnHelp: TButton
@@ -236,7 +236,7 @@ object ProfileForm: TProfileForm
     Align = alTop
     BevelOuter = bvNone
     BorderWidth = 4
-    TabOrder = 2
+    TabOrder = 0
     object gbTop: TGroupBox
       Left = 4
       Top = 4
@@ -303,16 +303,12 @@ object ProfileForm: TProfileForm
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
       Caption = '&'#1054#1090#1084#1077#1085#1072
       Hint = #1054#1090#1084#1077#1085#1072'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1084#1077#1085#1099' '#1074#1085#1077#1089#1105#1085#1085#1099#1093' '#1080#1079#1084#1077#1085#1077#1085#1080#1081
+      OnExecute = actCancelExecute
     end
     object actApply: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
       Caption = '&'#1055#1088#1080#1084#1077#1085#1080#1090#1100
       Hint = #1055#1088#1080#1084#1077#1085#1080#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1074#1085#1077#1089#1105#1085#1085#1099#1093' '#1080#1079#1084#1077#1085#1077#1085#1080#1081
-    end
-    object actClear: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      Caption = #1054'&'#1095#1080#1089#1090#1080#1090#1100
-      Hint = #1054#1095#1080#1089#1090#1080#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1095#1080#1089#1090#1082#1080' '#1089#1087#1080#1089#1082#1072
     end
     object actHelp: TAction_Help
       Category = #1057#1087#1088#1072#1074#1082#1072
@@ -387,7 +383,7 @@ object ProfileForm: TProfileForm
     Left = 16
     Top = 184
     Bitmap = {
-      494C010102000800140010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000800180010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

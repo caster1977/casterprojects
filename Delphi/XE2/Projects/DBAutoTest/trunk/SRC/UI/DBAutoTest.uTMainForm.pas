@@ -280,7 +280,6 @@ begin
   with TTaskForm.Create(Self, Profile.Tasks, AIndex) do
     try
       ShowModal;
-      // if ModalResult = mrOk then
       if TaskIndex > -1 then
       begin
         t := Profile.Tasks[TaskIndex];
@@ -411,6 +410,9 @@ begin
   with TProfileForm.Create(Self) do
     try
       ShowModal;
+      if ModalResult = mrOk then
+      begin
+      end;
     finally
       Free;
     end;
@@ -426,11 +428,11 @@ begin
   with TRecentsPropertiesForm.Create(Self, Recents, 20) do
     try
       ShowModal;
-    finally
       if ModalResult = mrOk then
       begin
         RefreshRecentsMenu;
       end;
+    finally
       Free;
     end;
 end;
