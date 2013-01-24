@@ -43,7 +43,7 @@ object ConfigurationForm: TConfigurationForm
       DesignSize = (
         454
         45)
-      object cbPageName: TComboBox
+      object cmbPageName: TComboBox
         Left = 10
         Top = 15
         Width = 379
@@ -51,6 +51,7 @@ object ConfigurationForm: TConfigurationForm
         Style = csDropDownList
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 0
+        OnSelect = cmbPageNameSelect
         Items.Strings = (
           ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
           ' '#1087#1088#1086#1095#1080#1077
@@ -150,8 +151,6 @@ object ConfigurationForm: TConfigurationForm
     object tsInterface: TTabSheet
       Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
       TabVisible = False
-      ExplicitTop = 27
-      ExplicitHeight = 209
       object gbInterface: TGroupBox
         Left = 0
         Top = 0
@@ -159,10 +158,6 @@ object ConfigurationForm: TConfigurationForm
         Height = 230
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 200
-        ExplicitTop = 104
-        ExplicitWidth = 185
-        ExplicitHeight = 105
         object chkbxShowToolbar: TCheckBox
           Left = 10
           Top = 33
@@ -201,8 +196,6 @@ object ConfigurationForm: TConfigurationForm
       Caption = ' '#1087#1088#1086#1095#1080#1077
       ImageIndex = 1
       TabVisible = False
-      ExplicitTop = 27
-      ExplicitHeight = 209
       object gbOther: TGroupBox
         Left = 0
         Top = 0
@@ -210,10 +203,6 @@ object ConfigurationForm: TConfigurationForm
         Height = 230
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 200
-        ExplicitTop = 104
-        ExplicitWidth = 185
-        ExplicitHeight = 105
         object chkbxPlaySoundOnComplete: TCheckBox
           Left = 10
           Top = 10
@@ -230,8 +219,6 @@ object ConfigurationForm: TConfigurationForm
       Caption = ' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1088#1077#1079#1091#1083#1100#1090#1072#1090#1086#1074' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103
       ImageIndex = 2
       TabVisible = False
-      ExplicitTop = 27
-      ExplicitHeight = 209
       object gbResults: TGroupBox
         Left = 0
         Top = 0
@@ -239,10 +226,6 @@ object ConfigurationForm: TConfigurationForm
         Height = 230
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 200
-        ExplicitTop = 104
-        ExplicitWidth = 185
-        ExplicitHeight = 105
       end
     end
   end
@@ -250,7 +233,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 16
     Top = 184
     Bitmap = {
-      494C010102000800200010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000800240010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -427,6 +410,7 @@ object ConfigurationForm: TConfigurationForm
       ImageIndex = 0
       ShortCut = 16421
       OnExecute = actPreviousPageExecute
+      OnUpdate = actPreviousPageUpdate
     end
     object actNextPage: TAction_NextPage
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
@@ -434,6 +418,7 @@ object ConfigurationForm: TConfigurationForm
       ImageIndex = 1
       ShortCut = 16423
       OnExecute = actNextPageExecute
+      OnUpdate = actNextPageUpdate
     end
   end
 end

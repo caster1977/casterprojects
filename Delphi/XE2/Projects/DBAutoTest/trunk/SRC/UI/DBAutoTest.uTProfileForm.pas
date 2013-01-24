@@ -54,7 +54,7 @@ type
     cbAllowPasswordSaving: TCheckBox;
     actUseWinNTSecurity: TAction;
     gbTop: TGroupBox;
-    cbPageName: TComboBox;
+    cmbPageName: TComboBox;
     btnNextPage: TButton;
     btnPreviousPage: TButton;
     PageControl: TPageControl;
