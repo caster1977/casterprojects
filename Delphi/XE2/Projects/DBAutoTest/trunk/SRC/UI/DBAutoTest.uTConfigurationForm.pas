@@ -19,7 +19,8 @@ uses
   CastersPackage.Actions.Classes,
   Vcl.StdActns,
   System.Actions,
-  Vcl.ActnList;
+  Vcl.ActnList,
+  DBAutoTest.uConsts;
 
 type
   TConfigurationForm = class(TForm)
@@ -36,7 +37,7 @@ type
     btnHelp: TButton;
     btnNextPage: TButton;
     btnPreviousPage: TButton;
-    cbPageName: TComboBox;
+    cmbPageName: TComboBox;
     chkbxPlaySoundOnComplete: TCheckBox;
     chkbxShowConfirmationOnQuit: TCheckBox;
     chkbxShowSplashAtStart: TCheckBox;
@@ -56,57 +57,103 @@ type
     procedure actCancelExecute(Sender: TObject);
     procedure actNextPageExecute(Sender: TObject);
     procedure actPreviousPageExecute(Sender: TObject);
+    procedure actPreviousPageUpdate(Sender: TObject);
+    procedure actNextPageUpdate(Sender: TObject);
+    procedure cmbPageNameSelect(Sender: TObject);
   private
-    procedure SelectPage;
+    function GetActivePage: Integer;
+    procedure SetActivePage(const AValue: Integer); { TODO : убрать, выполнив рефакторинг }
+    /// <summary>
+    /// Свойство для управления текущей страницей окна настроек программы
+    /// </summary>
+    property ActivePage: Integer read GetActivePage write SetActivePage
+      default CONFIGURATION_DEFAULT_ACTIVE_PAGE;
+    function GetPageCount: Integer;
+    property PageCount: Integer read GetPageCount nodefault;
+  public
+    constructor Create(AOwner: TComponent;
+      const AActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
   end;
 
 implementation
 
 {$R *.dfm}
 
+constructor TConfigurationForm.Create(AOwner: TComponent; const AActivePage: Integer);
+begin
+  inherited Create(AOwner);
+  ActivePage := AActivePage;
+end;
+
 procedure TConfigurationForm.actCancelExecute(Sender: TObject);
 begin
   ModalResult := mrCancel;
 end;
 
-procedure TConfigurationForm.actNextPageExecute(Sender: TObject);
+function TConfigurationForm.GetActivePage: Integer;
+begin
+  Result := cmbPageName.ItemIndex;
+end;
+
+function TConfigurationForm.GetPageCount: Integer;
+begin
+  Result := cmbPageName.Items.Count;
+end;
+
+procedure TConfigurationForm.SetActivePage(const AValue: Integer);
 var
   i: Integer;
 begin
-  i := cbPageName.ItemIndex + 1;
-  if i > cbPageName.Items.Count - 1 then
+  i := AValue;
+  if i < 0 then
+  begin
+    i := PageCount - 1;
+  end;
+  if i > PageCount - 1 then
   begin
     i := 0;
   end;
-  cbPageName.ItemIndex := i;
-  SelectPage;
-end;
-
-procedure TConfigurationForm.actPreviousPageExecute(Sender: TObject);
-var
-  i: Integer;
-begin
-  i := cbPageName.ItemIndex - 1;
-  if i < 0 then
+  if cmbPageName.ItemIndex <> i then
   begin
-    i := cbPageName.Items.Count - 1;
+    cmbPageName.ItemIndex := i;
   end;
-  cbPageName.ItemIndex := i;
-  SelectPage;
-end;
 
-procedure TConfigurationForm.SelectPage;
-var
-  i: Integer;
-begin
   for i := 0 to PageControl.PageCount - 1 do
   begin
-    if PageControl.Pages[i].Caption = cbPageName.Items[cbPageName.ItemIndex] then
+    if PageControl.Pages[i].Caption = cmbPageName.Items[cmbPageName.ItemIndex] then
     begin
-      PageControl.ActivePageIndex := i;
+      if PageControl.ActivePageIndex <> i then
+      begin
+        PageControl.ActivePageIndex := i;
+      end;
       Break;
     end;
   end;
+end;
+
+procedure TConfigurationForm.actPreviousPageUpdate(Sender: TObject);
+begin
+  actPreviousPage.Enabled := PageCount > 1;
+end;
+
+procedure TConfigurationForm.actNextPageExecute(Sender: TObject);
+begin
+  ActivePage := ActivePage + 1;
+end;
+
+procedure TConfigurationForm.actNextPageUpdate(Sender: TObject);
+begin
+  actNextPage.Enabled := PageCount > 1;
+end;
+
+procedure TConfigurationForm.actPreviousPageExecute(Sender: TObject);
+begin
+  ActivePage := ActivePage - 1;
+end;
+
+procedure TConfigurationForm.cmbPageNameSelect(Sender: TObject);
+begin
+  ActivePage := cmbPageName.ItemIndex;
 end;
 
 end.

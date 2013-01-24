@@ -25,9 +25,6 @@ Coordinates=300,301,80,33
 [PageControl]
 Coordinates=430,282,75,33
 
-[cbPageName]
-Coordinates=430,352,84,87
-
 [lblServerName]
 Coordinates=145,122,86,51
 
@@ -88,4 +85,7 @@ Coordinates=381,369,48,51
 
 [btnDefaults]
 Coordinates=72,122,56,51
+
+[cmbPageName]
+Coordinates=430,352,84,87
 
