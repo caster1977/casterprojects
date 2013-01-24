@@ -62,7 +62,7 @@ type
     procedure cmbPageNameSelect(Sender: TObject);
   private
     function GetActivePage: Integer;
-    procedure SetActivePage(const AValue: Integer); { TODO : убрать, выполнив рефакторинг }
+    procedure SetActivePage(const AValue: Integer);
     /// <summary>
     /// Свойство для управления текущей страницей окна настроек программы
     /// </summary>

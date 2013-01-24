@@ -76,7 +76,6 @@ object ProfileForm: TProfileForm
     Top = 53
     Width = 462
     Height = 240
-    ActivePage = tsConnection
     Align = alClient
     Style = tsButtons
     TabOrder = 1
@@ -261,9 +260,8 @@ object ProfileForm: TProfileForm
         Height = 21
         Style = csDropDownList
         Anchors = [akLeft, akTop, akRight]
-        ItemIndex = 0
         TabOrder = 0
-        Text = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1090#1077#1089#1090#1080#1088#1091#1077#1084#1086#1081' '#1073#1072#1079#1077' '#1076#1072#1085#1085#1099#1093
+        OnSelect = cmbPageNameSelect
         Items.Strings = (
           ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1090#1077#1089#1090#1080#1088#1091#1077#1084#1086#1081' '#1073#1072#1079#1077' '#1076#1072#1085#1085#1099#1093)
       end
@@ -352,12 +350,16 @@ object ProfileForm: TProfileForm
         #1099
       ImageIndex = 0
       ShortCut = 16421
+      OnExecute = actPreviousPageExecute
+      OnUpdate = actPreviousPageUpdate
     end
     object actNextPage: TAction_NextPage
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
       Hint = #1050' '#1089#1083#1077#1076#1091#1102#1097#1077#1081' '#1089#1090#1088#1072#1085#1080#1094#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1089#1083#1077#1076#1091#1102#1097#1077#1081' '#1089#1090#1088#1072#1085#1080#1094#1099
       ImageIndex = 1
       ShortCut = 16423
+      OnExecute = actNextPageExecute
+      OnUpdate = actNextPageUpdate
     end
     object actAllowPasswordSaving: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
@@ -383,7 +385,7 @@ object ProfileForm: TProfileForm
     Left = 16
     Top = 184
     Bitmap = {
-      494C0101020008001C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000800200010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
