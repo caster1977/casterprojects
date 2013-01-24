@@ -21,7 +21,7 @@ uses
   Vcl.ImgList,
   Vcl.Menus,
   Winapi.Windows,
-  Vcl.StdCtrls;
+  Vcl.StdCtrls, System.Actions;
 
 type
   TMainForm = class(TOA5LogForm)
