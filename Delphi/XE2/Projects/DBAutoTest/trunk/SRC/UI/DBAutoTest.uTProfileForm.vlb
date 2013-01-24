@@ -61,14 +61,6 @@ Coordinates=121,10,109,87
 [btnTestConnection]
 Coordinates=411,212,108,51
 
-[cbUseEmptyPassword]
-Coordinates=232,10,125,69
-ExplicitSubNodes=Enabled
-
-[cbAllowPasswordSaving]
-Coordinates=322,10,136,69
-ExplicitSubNodes=Enabled
-
 [ebLogin]
 Coordinates=10,122,54,69
 Visible=True
@@ -88,4 +80,12 @@ Coordinates=72,122,56,51
 
 [cmbPageName]
 Coordinates=430,352,84,87
+
+[chkEnableEmptyPassword]
+Coordinates=232,10,125,69
+ExplicitSubNodes=Enabled
+
+[chkEnablePasswordSaving]
+Coordinates=322,10,136,69
+ExplicitSubNodes=Enabled
 

@@ -54,8 +54,9 @@ object ConfigurationForm: TConfigurationForm
         OnSelect = cmbPageNameSelect
         Items.Strings = (
           ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
-          ' '#1087#1088#1086#1095#1080#1077
-          ' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1088#1077#1079#1091#1083#1100#1090#1072#1090#1086#1074' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103)
+          ' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1088#1077#1079#1091#1083#1100#1090#1072#1090#1086#1074' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103
+          ' '#1092#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1103' '#1086#1090#1095#1105#1090#1072
+          ' '#1087#1088#1086#1095#1080#1077)
       end
       object btnNextPage: TButton
         Left = 423
@@ -144,7 +145,7 @@ object ConfigurationForm: TConfigurationForm
     Top = 53
     Width = 462
     Height = 240
-    ActivePage = tsResults
+    ActivePage = tsInterface
     Align = alClient
     Style = tsButtons
     TabOrder = 1
@@ -158,7 +159,7 @@ object ConfigurationForm: TConfigurationForm
         Height = 230
         Align = alClient
         TabOrder = 0
-        object chkbxShowToolbar: TCheckBox
+        object chkEnableToolbar: TCheckBox
           Left = 10
           Top = 33
           Width = 435
@@ -166,7 +167,7 @@ object ConfigurationForm: TConfigurationForm
           Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1087#1072#1085#1077#1083#1100' '#1082#1085#1086#1087#1086#1082
           TabOrder = 1
         end
-        object chkbxShowSplashAtStart: TCheckBox
+        object chkEnableSplashAtStart: TCheckBox
           Left = 10
           Top = 10
           Width = 435
@@ -174,7 +175,7 @@ object ConfigurationForm: TConfigurationForm
           Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1086#1082#1085#1086' "'#1054' '#1087#1088#1086#1075#1088#1072#1084#1084#1077'..." '#1087#1088#1080' '#1079#1072#1087#1091#1089#1082#1077
           TabOrder = 0
         end
-        object chkbxShowStatusbar: TCheckBox
+        object chkEnableStatusbar: TCheckBox
           Left = 10
           Top = 56
           Width = 435
@@ -182,36 +183,13 @@ object ConfigurationForm: TConfigurationForm
           Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1087#1072#1085#1077#1083#1100' '#1089#1090#1072#1090#1091#1089#1072
           TabOrder = 2
         end
-        object chkbxShowConfirmationOnQuit: TCheckBox
+        object chkEnableQuitConfirmation: TCheckBox
           Left = 10
           Top = 79
           Width = 435
           Height = 17
           Caption = #1058#1088#1077#1073#1086#1074#1072#1090#1100' '#1087#1086#1076#1090#1074#1077#1088#1078#1076#1077#1085#1080#1077' '#1087#1088#1080' '#1074#1099#1093#1086#1076#1077' '#1080#1079' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
           TabOrder = 3
-        end
-      end
-    end
-    object tsOther: TTabSheet
-      Caption = ' '#1087#1088#1086#1095#1080#1077
-      ImageIndex = 1
-      TabVisible = False
-      object gbOther: TGroupBox
-        Left = 0
-        Top = 0
-        Width = 454
-        Height = 230
-        Align = alClient
-        TabOrder = 0
-        object chkbxPlaySoundOnComplete: TCheckBox
-          Left = 10
-          Top = 10
-          Width = 435
-          Height = 17
-          Caption = 
-            #1055#1086#1076#1072#1074#1072#1090#1100' '#1079#1074#1091#1082#1086#1074#1086#1081' '#1089#1080#1075#1085#1072#1083' '#1087#1088#1080' '#1079#1072#1074#1077#1088#1096#1077#1085#1080#1080' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103' '#1076#1083#1080#1090#1077#1083#1100#1085#1086#1075#1086' '#1076 +
-            #1077#1081#1089#1090#1074#1080#1103
-          TabOrder = 0
         end
       end
     end
@@ -228,12 +206,50 @@ object ConfigurationForm: TConfigurationForm
         TabOrder = 0
       end
     end
+    object tsReport: TTabSheet
+      Caption = ' '#1092#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1103' '#1086#1090#1095#1105#1090#1072
+      ImageIndex = 3
+      TabVisible = False
+      ExplicitTop = 27
+      ExplicitHeight = 209
+      object gbReport: TGroupBox
+        Left = 0
+        Top = 0
+        Width = 454
+        Height = 230
+        Align = alClient
+        TabOrder = 0
+      end
+    end
+    object tsOther: TTabSheet
+      Caption = ' '#1087#1088#1086#1095#1080#1077
+      ImageIndex = 1
+      TabVisible = False
+      object gbOther: TGroupBox
+        Left = 0
+        Top = 0
+        Width = 454
+        Height = 230
+        Align = alClient
+        TabOrder = 0
+        object chkEnablePlaySoundOnComplete: TCheckBox
+          Left = 10
+          Top = 10
+          Width = 435
+          Height = 17
+          Caption = 
+            #1055#1086#1076#1072#1074#1072#1090#1100' '#1079#1074#1091#1082#1086#1074#1086#1081' '#1089#1080#1075#1085#1072#1083' '#1087#1088#1080' '#1079#1072#1074#1077#1088#1096#1077#1085#1080#1080' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103' '#1076#1083#1080#1090#1077#1083#1100#1085#1086#1075#1086' '#1076 +
+            #1077#1081#1089#1090#1074#1080#1103
+          TabOrder = 0
+        end
+      end
+    end
   end
   object ImageList: TImageList
-    Left = 16
-    Top = 184
+    Left = 408
+    Top = 128
     Bitmap = {
-      494C010102000800240010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000800280010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -374,8 +390,8 @@ object ConfigurationForm: TConfigurationForm
   end
   object ActionList: TActionList
     Images = ImageList
-    Left = 64
-    Top = 184
+    Left = 408
+    Top = 80
     object actCancel: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
       Caption = '&'#1054#1090#1084#1077#1085#1072
