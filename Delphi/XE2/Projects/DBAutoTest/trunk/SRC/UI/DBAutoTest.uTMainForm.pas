@@ -69,8 +69,10 @@ type
     actEditTask: TAction;
     actDeleteTask: TAction;
     actClearTasks: TAction;
+    actStatusBar: TAction;
+    actToolBar: TAction;
     MainMenu: TMainMenu;
-    atbMain: TActionToolBar;
+    ToolBar: TActionToolBar;
     N7: TMenuItem;
     N8: TMenuItem;
     N10: TMenuItem;
@@ -91,6 +93,10 @@ type
     N31: TMenuItem;
     actProfileProperties: TAction;
     OpenDialog1: TOpenDialog;
+    actViewMenuGroupAction: TViewMenuGroupAction;
+    N5: TMenuItem;
+    N9: TMenuItem;
+    N11: TMenuItem;
     procedure actQuitExecute(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -113,6 +119,8 @@ type
     procedure actProcessExecute(Sender: TObject);
     procedure actLoadProfileExecute(Sender: TObject);
     procedure lvTaskListDblClick(Sender: TObject);
+    procedure actStatusBarExecute(Sender: TObject);
+    procedure actToolBarExecute(Sender: TObject);
   strict private
     procedure OnHint(ASender: TObject);
     procedure ShowAboutWindow(const AShowCloseButton: Boolean);
@@ -542,6 +550,26 @@ begin
   finally
     lvTaskList.Items.EndUpdate;
   end;
+end;
+
+procedure TMainForm.actStatusBarExecute(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := actStatusBar.Checked;
+  StatusBar.Visible := b;
+  { TODO : дописать }
+  //Configuration.EnableStatusbar := b;
+end;
+
+procedure TMainForm.actToolBarExecute(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := actToolbar.Checked;
+  ToolBar.Visible := b;
+  { TODO : дописать }
+//  Configuration.EnableStatusbar := b;
 end;
 
 end.

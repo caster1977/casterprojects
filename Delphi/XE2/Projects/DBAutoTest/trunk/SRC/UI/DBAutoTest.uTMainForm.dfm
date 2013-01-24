@@ -100,13 +100,13 @@ object MainForm: TMainForm
       OnDblClick = lvTaskListDblClick
     end
   end
-  object atbMain: TActionToolBar
+  object ToolBar: TActionToolBar
     Left = 0
     Top = 0
     Width = 624
     Height = 27
     ActionManager = ActionManager
-    Caption = 'atbMain'
+    Caption = 'ToolBar'
     Color = clMenuBar
     ColorMap.DisabledFontColor = 7171437
     ColorMap.HighlightColor = clWhite
@@ -125,7 +125,7 @@ object MainForm: TMainForm
     Left = 256
     Top = 136
     Bitmap = {
-      494C01010B00A000140110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B00A0002C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       00000000000000000000000000000000000000000000897970007D6E65007463
       5A0073625900736259007362590073625900736259007362590074635A007D6E
@@ -690,7 +690,7 @@ object MainForm: TMainForm
             Action = actAbout
             ImageIndex = 1
           end>
-        ActionBar = atbMain
+        ActionBar = ToolBar
       end>
     Images = ImageList
     Left = 192
@@ -834,6 +834,24 @@ object MainForm: TMainForm
       OnExecute = actProfilePropertiesExecute
       OnUpdate = actProfilePropertiesUpdate
     end
+    object actViewMenuGroupAction: TViewMenuGroupAction
+      Category = #1042#1080#1076
+      Caption = '&'#1042#1080#1076
+    end
+    object actStatusBar: TAction
+      AutoCheck = True
+      Caption = #1055#1072#1085#1077#1083#1100' '#1089#1090#1072#1090#1091#1089#1072
+      Checked = True
+      Hint = #1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1074#1082#1083#1102#1095#1077#1085#1080#1103'/'#1086#1090#1082#1083#1102#1095#1077#1085#1080#1103' '#1087#1072#1085#1077#1083#1080' '#1089#1090#1072#1090#1091#1089#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+      OnExecute = actStatusBarExecute
+    end
+    object actToolBar: TAction
+      AutoCheck = True
+      Caption = #1055#1072#1085#1077#1083#1100' '#1082#1085#1086#1087#1086#1082
+      Checked = True
+      Hint = #1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1074#1082#1083#1102#1095#1077#1085#1080#1103'/'#1086#1090#1082#1083#1102#1095#1077#1085#1080#1103' '#1087#1072#1085#1077#1083#1080' '#1082#1085#1086#1087#1086#1082' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+      OnExecute = actToolBarExecute
+    end
   end
   object pabTaskList: TPopupActionBar
     Images = ImageList
@@ -917,6 +935,17 @@ object MainForm: TMainForm
       end
       object N26: TMenuItem
         Action = actClearTasks
+      end
+    end
+    object N5: TMenuItem
+      Action = actViewMenuGroupAction
+      object N9: TMenuItem
+        Action = actToolBar
+        AutoCheck = True
+      end
+      object N11: TMenuItem
+        Action = actStatusBar
+        AutoCheck = True
       end
     end
     object N10: TMenuItem
