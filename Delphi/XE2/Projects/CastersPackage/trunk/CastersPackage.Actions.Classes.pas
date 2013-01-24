@@ -133,7 +133,7 @@ type
   TFileMenuGroupAction = class(TMenuGroupAction);
   TActionMenuGroupAction = class(TMenuGroupAction);
   THelpMenuGroupAction = class(TMenuGroupAction);
-  TProfilesMenuGroupAction = class(TMenuGroupAction);
+  TViewMenuGroupAction = class(TMenuGroupAction);
 
 procedure Register;
 
@@ -155,7 +155,7 @@ begin
   RegisterActions('Действие', [TWindowCloseAction, TAction_Apply, TAction_Defaults,
     TAction_PreviousPage, TAction_NextPage, TAction_Accounts, TAction_Report, TAction_Cancel,
     TActionMenuGroupAction], TActionsDataModule);
-  RegisterActions('Профили', [TProfilesMenuGroupAction], TActionsDataModule);
+  RegisterActions('Вид', [TViewMenuGroupAction], TActionsDataModule);
 end;
 
 { TAction_About
