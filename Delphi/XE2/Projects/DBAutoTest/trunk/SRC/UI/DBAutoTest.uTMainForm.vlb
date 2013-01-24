@@ -19,12 +19,12 @@ Coordinates=22,143,62,51
 [btnProfiles]
 Coordinates=120,78,68,51
 
-[atbMain]
-Coordinates=698,331,53,33
-
 [actProcess]
 Visible=True
 Coordinates=440,30,69,51
 ExplicitSubNodes=Enabled
 LayerNames=
+
+[ToolBar]
+Coordinates=698,331,53,33
 
