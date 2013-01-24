@@ -62,11 +62,11 @@ type
     procedure SetTaskName(const AValue: string);
     procedure SetTaskSQL(const AValue: TStringList);
     property TaskEnabled: Boolean read GetTaskEnabled write SetTaskEnabled
-      default DEFAULT_TASK_ENABLED;
+      default TASK_DEFAULT_ENABLED;
     property TaskGroup: string read GetTaskGroup write SetTaskGroup nodefault;
     property TaskName: string read GetTaskName write SetTaskName nodefault;
     property Tasks: ITasks read GetTasks nodefault;
-    property TaskSQL: TStringList read GetTaskSQL write SetTaskSQL default DEFAULT_TASK_SQL;
+    property TaskSQL: TStringList read GetTaskSQL write SetTaskSQL default TASK_DEFAULT_SQL;
   public
     constructor Create(AOwner: TComponent; const ATasks: ITasks; const AIndex: Integer = -1);
       reintroduce; virtual;
@@ -203,10 +203,10 @@ begin
   if TaskIndex = -1 then
   begin
     Caption := RsAddTaskCaption;
-    TaskGroup := DEFAULT_TASK_GROUP;
-    TaskName := DEFAULT_TASK_NAME;
-    TaskSQL := DEFAULT_TASK_SQL;
-    TaskEnabled := DEFAULT_TASK_ENABLED;
+    TaskGroup := TASK_DEFAULT_GROUP;
+    TaskName := TASK_DEFAULT_NAME;
+    TaskSQL := TASK_DEFAULT_SQL;
+    TaskEnabled := TASK_DEFAULT_ENABLED;
   end
   else
   begin

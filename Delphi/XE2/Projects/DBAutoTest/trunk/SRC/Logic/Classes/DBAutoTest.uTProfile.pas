@@ -161,11 +161,11 @@ end;
 
 procedure TProfile.Initialize;
 begin
-  Server := DEFAULT_SERVER;
-  Login := DEFAULT_LOGIN;
-  Password := DEFAULT_PASSWORD;
-  Database := DEFAULT_DB;
-  WinNTSecurity := DEFAULT_WIN_NT_SECURITY;
+  Server := PROFILE_DEFAULT_SERVER;
+  Login := PROFILE_DEFAULT_LOGIN;
+  Password := PROFILE_DEFAULT_PASSWORD;
+  Database := PROFILE_DEFAULT_DB;
+  WinNTSecurity := PROFILE_DEFAULT_WIN_NT_SECURITY;
   FTasks := GetITasks;
 end;
 

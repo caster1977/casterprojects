@@ -8,6 +8,10 @@ object RecentsPropertiesForm: TRecentsPropertiesForm
   ClientHeight = 320
   ClientWidth = 462
   Color = clBtnFace
+  Constraints.MaxHeight = 360
+  Constraints.MaxWidth = 480
+  Constraints.MinHeight = 360
+  Constraints.MinWidth = 480
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11

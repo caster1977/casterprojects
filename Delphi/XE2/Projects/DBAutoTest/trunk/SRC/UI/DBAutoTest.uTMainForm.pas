@@ -206,7 +206,7 @@ procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
     PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])),
-    MESSAGE_TYPE_CONFIRMATION) = IDOK;
+    MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);

@@ -31,8 +31,8 @@ type
     destructor Destroy; override; final;
     property Group: string read GetGroup write SetGroup nodefault;
     property name: string read GetName write SetName nodefault;
-    property SQL: TStringList read GetSQL write SetSQL default DEFAULT_TASK_SQL;
-    property Enabled: Boolean read GetEnabled write SetEnabled default DEFAULT_TASK_ENABLED;
+    property SQL: TStringList read GetSQL write SetSQL default TASK_DEFAULT_SQL;
+    property Enabled: Boolean read GetEnabled write SetEnabled default TASK_DEFAULT_ENABLED;
   end;
 
 function GetITask: ITask;
@@ -90,10 +90,10 @@ end;
 
 procedure TTask.Initialize;
 begin
-  Enabled := DEFAULT_TASK_ENABLED;
-  Group := DEFAULT_TASK_GROUP;
-  name := DEFAULT_TASK_NAME;
-  SQL := DEFAULT_TASK_SQL;
+  Enabled := TASK_DEFAULT_ENABLED;
+  Group := TASK_DEFAULT_GROUP;
+  name := TASK_DEFAULT_NAME;
+  SQL := TASK_DEFAULT_SQL;
 end;
 
 procedure TTask.SetEnabled(const AValue: Boolean);
