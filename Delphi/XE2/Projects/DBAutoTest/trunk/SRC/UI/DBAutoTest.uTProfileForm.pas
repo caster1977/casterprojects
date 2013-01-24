@@ -22,7 +22,8 @@ uses
   Data.Win.ADODB,
   Vcl.Mask,
   Vcl.ComCtrls,
-  Vcl.ImgList;
+  Vcl.ImgList,
+  DBAutoTest.uConsts;
 
 type
   TProfileForm = class(TForm)
@@ -78,9 +79,27 @@ type
     procedure cmbServerNameSelect(Sender: TObject);
     procedure cmbServerNameKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure actCancelExecute(Sender: TObject);
+    procedure actPreviousPageExecute(Sender: TObject);
+    procedure actPreviousPageUpdate(Sender: TObject);
+    procedure actNextPageExecute(Sender: TObject);
+    procedure actNextPageUpdate(Sender: TObject);
+    procedure cmbPageNameSelect(Sender: TObject);
   private
     procedure GetServerList(const aList: TStrings);
     procedure GetDatabasesList(const aList: TStrings);
+  private
+    function GetActivePage: Integer;
+    procedure SetActivePage(const AValue: Integer);
+    /// <summary>
+    /// Свойство для управления текущей страницей окна настроек программы
+    /// </summary>
+    property ActivePage: Integer read GetActivePage write SetActivePage
+      default PROFILE_DEFAULT_ACTIVE_PAGE;
+    function GetPageCount: Integer;
+    property PageCount: Integer read GetPageCount nodefault;
+  public
+    constructor Create(AOwner: TComponent;
+      const AActivePage: Integer = PROFILE_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
   end;
 
 implementation
@@ -88,8 +107,79 @@ implementation
 {$R *.dfm}
 
 uses
-  CastersPackage.UNetSrvList,
-  DBAutoTest.uConsts;
+  CastersPackage.UNetSrvList;
+
+constructor TProfileForm.Create(AOwner: TComponent; const AActivePage: Integer);
+begin
+  inherited Create(AOwner);
+  ActivePage := AActivePage;
+end;
+
+procedure TProfileForm.actCancelExecute(Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+procedure TProfileForm.actNextPageExecute(Sender: TObject);
+begin
+  ActivePage := ActivePage + 1;
+end;
+
+procedure TProfileForm.actNextPageUpdate(Sender: TObject);
+begin
+  actNextPage.Enabled := PageCount > 1;
+end;
+
+procedure TProfileForm.actPreviousPageExecute(Sender: TObject);
+begin
+  ActivePage := ActivePage - 1;
+end;
+
+procedure TProfileForm.actPreviousPageUpdate(Sender: TObject);
+begin
+  actPreviousPage.Enabled := PageCount > 1;
+end;
+
+function TProfileForm.GetActivePage: Integer;
+begin
+  Result := cmbPageName.ItemIndex;
+end;
+
+function TProfileForm.GetPageCount: Integer;
+begin
+  Result := cmbPageName.Items.Count;
+end;
+
+procedure TProfileForm.SetActivePage(const AValue: Integer);
+var
+  i: Integer;
+begin
+  i := AValue;
+  if i < 0 then
+  begin
+    i := PageCount - 1;
+  end;
+  if i > PageCount - 1 then
+  begin
+    i := 0;
+  end;
+  if cmbPageName.ItemIndex <> i then
+  begin
+    cmbPageName.ItemIndex := i;
+  end;
+
+  for i := 0 to PageControl.PageCount - 1 do
+  begin
+    if PageControl.Pages[i].Caption = cmbPageName.Items[cmbPageName.ItemIndex] then
+    begin
+      if PageControl.ActivePageIndex <> i then
+      begin
+        PageControl.ActivePageIndex := i;
+      end;
+      Break;
+    end;
+  end;
+end;
 
 procedure TProfileForm.actAllowPasswordSavingExecute(Sender: TObject);
 begin
@@ -99,11 +189,6 @@ end;
 procedure TProfileForm.actAllowPasswordSavingUpdate(Sender: TObject);
 begin
   actAllowPasswordSaving.Enabled := actUseLoginAndPassword.Checked;
-end;
-
-procedure TProfileForm.actCancelExecute(Sender: TObject);
-begin
-  ModalResult := mrCancel;
 end;
 
 procedure TProfileForm.actUseEmptyPasswordExecute(Sender: TObject);
@@ -130,6 +215,11 @@ begin
   ebLogin.Enabled := False;
   lblPassword.Enabled := False;
   mePassword.Enabled := False;
+end;
+
+procedure TProfileForm.cmbPageNameSelect(Sender: TObject);
+begin
+  ActivePage := cmbPageName.ItemIndex;
 end;
 
 procedure TProfileForm.cmbServerNameChange(Sender: TObject);
