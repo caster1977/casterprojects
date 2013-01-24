@@ -17,7 +17,7 @@ uses
   Vcl.StdCtrls,
   Vcl.ValEdit,
   Vcl.Forms,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls, System.Actions;
 
 type
   TConfigurationForm = class(TOA5PositionedLogForm)
@@ -896,6 +896,7 @@ begin
     if PageControl1.Pages[i].Caption = cbPage.Items[cbPage.ItemIndex] then
     begin
       PageControl1.ActivePageIndex := i;
+      Break;
     end;
   end;
 

@@ -1,7 +1,4 @@
-﻿[btnClear]
-Coordinates=72,122,56,51
-
-[btnHelp]
+﻿[btnHelp]
 Coordinates=279,212,52,51
 
 [btnCancel]
@@ -88,4 +85,7 @@ Coordinates=361,369,48,51
 
 [pnlTop]
 Coordinates=381,369,48,51
+
+[btnDefaults]
+Coordinates=72,122,56,51
 

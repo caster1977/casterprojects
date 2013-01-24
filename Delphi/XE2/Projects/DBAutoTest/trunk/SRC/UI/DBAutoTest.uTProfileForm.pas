@@ -29,10 +29,9 @@ type
     pnlButtons: TPanel;
     btnApply: TButton;
     btnCancel: TButton;
-    btnClear: TButton;
+    btnDefaults: TButton;
     btnHelp: TButton;
     ActionList: TActionList;
-    actClear: TAction;
     actApply: TAction;
     actCancel: TAction;
     actHelp: TAction_Help;
@@ -60,8 +59,8 @@ type
     btnPreviousPage: TButton;
     PageControl: TPageControl;
     tsConnection: TTabSheet;
-    actDefaults: TAction_Defaults;
     ImageList: TImageList;
+    actDefaults: TAction_Defaults;
     actPreviousPage: TAction_PreviousPage;
     actNextPage: TAction_NextPage;
     pnlTop: TPanel;
@@ -78,6 +77,7 @@ type
     procedure cmbServerNameDropDown(Sender: TObject);
     procedure cmbServerNameSelect(Sender: TObject);
     procedure cmbServerNameKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure actCancelExecute(Sender: TObject);
   private
     procedure GetServerList(const aList: TStrings);
     procedure GetDatabasesList(const aList: TStrings);
@@ -99,6 +99,11 @@ end;
 procedure TProfileForm.actAllowPasswordSavingUpdate(Sender: TObject);
 begin
   actAllowPasswordSaving.Enabled := actUseLoginAndPassword.Checked;
+end;
+
+procedure TProfileForm.actCancelExecute(Sender: TObject);
+begin
+  ModalResult := mrCancel;
 end;
 
 procedure TProfileForm.actUseEmptyPasswordExecute(Sender: TObject);
