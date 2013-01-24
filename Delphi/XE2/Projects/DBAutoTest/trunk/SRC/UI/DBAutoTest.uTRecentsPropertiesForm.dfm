@@ -4,7 +4,7 @@ object RecentsPropertiesForm: TRecentsPropertiesForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   BorderWidth = 6
-  Caption = 'RecentsPropertiesForm'
+  Caption = #1057#1074#1086#1081#1089#1090#1074#1072' '#1089#1087#1080#1089#1082#1072' '#1088#1072#1085#1077#1077' '#1086#1090#1082#1088#1099#1074#1072#1074#1096#1080#1093#1089#1103' '#1092#1072#1081#1083#1086#1074
   ClientHeight = 320
   ClientWidth = 462
   Color = clBtnFace

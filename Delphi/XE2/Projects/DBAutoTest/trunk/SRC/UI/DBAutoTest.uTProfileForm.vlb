@@ -28,9 +28,6 @@ Coordinates=430,282,75,33
 [lblServerName]
 Coordinates=145,122,86,51
 
-[cmbServerName]
-Coordinates=10,10,95,87
-
 [lblSecurity]
 Coordinates=85,280,66,51
 
@@ -88,4 +85,7 @@ ExplicitSubNodes=Enabled
 [chkEnablePasswordSaving]
 Coordinates=322,10,136,69
 ExplicitSubNodes=Enabled
+
+[cmbServers]
+Coordinates=10,10,95,87
 
