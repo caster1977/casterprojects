@@ -84,22 +84,18 @@ type
     procedure actNextPageExecute(Sender: TObject);
     procedure actNextPageUpdate(Sender: TObject);
     procedure cmbPageNameSelect(Sender: TObject);
-  private
+  strict private
     procedure GetServerList(const aList: TStrings);
     procedure GetDatabasesList(const aList: TStrings);
-  private
     function GetActivePage: Integer;
     procedure SetActivePage(const AValue: Integer);
-    /// <summary>
-    /// Свойство для управления текущей страницей окна настроек программы
-    /// </summary>
-    property ActivePage: Integer read GetActivePage write SetActivePage
-      default PROFILE_DEFAULT_ACTIVE_PAGE;
     function GetPageCount: Integer;
     property PageCount: Integer read GetPageCount nodefault;
   public
     constructor Create(AOwner: TComponent;
       const AActivePage: Integer = PROFILE_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
+    property ActivePage: Integer read GetActivePage write SetActivePage
+      default PROFILE_DEFAULT_ACTIVE_PAGE;
   end;
 
 implementation
@@ -181,6 +177,11 @@ begin
   end;
 end;
 
+procedure TProfileForm.cmbPageNameSelect(Sender: TObject);
+begin
+  ActivePage := cmbPageName.ItemIndex;
+end;
+
 procedure TProfileForm.actAllowPasswordSavingExecute(Sender: TObject);
 begin
   //
@@ -215,11 +216,6 @@ begin
   ebLogin.Enabled := False;
   lblPassword.Enabled := False;
   mePassword.Enabled := False;
-end;
-
-procedure TProfileForm.cmbPageNameSelect(Sender: TObject);
-begin
-  ActivePage := cmbPageName.ItemIndex;
 end;
 
 procedure TProfileForm.cmbServerNameChange(Sender: TObject);
