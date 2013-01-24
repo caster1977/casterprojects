@@ -37,7 +37,7 @@ type
     HelpContentsAction: THelpContentsAction;
     ActionMenuGroupAction: TActionMenuGroupAction;
     Action_Cancel: TAction_Cancel;
-    ProfilesMenuGroupAction: TProfilesMenuGroupAction;
+    ViewMenuGroupAction: TViewMenuGroupAction;
   end;
 
 implementation
