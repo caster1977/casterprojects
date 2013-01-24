@@ -86,8 +86,8 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>16</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для тестирования значений данных в таблицах БД;FileVersion=0.1.0.16;InternalName=DBAutoTest;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Sergey Shaporov;LegalTrademarks=;OriginalFilename=DBAutoTest.exe;ProductName=DBAutoTest;ProductVersion=0.1.0.0;Comments=Idea: Sergey Shaporov. Developing: Vlad Ivanov.</VerInfo_Keys>
+        <VerInfo_Build>17</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для тестирования значений данных в таблицах БД;FileVersion=0.1.0.17;InternalName=DBAutoTest;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Sergey Shaporov;LegalTrademarks=;OriginalFilename=DBAutoTest.exe;ProductName=DBAutoTest;ProductVersion=0.1.0.0;Comments=Idea: Sergey Shaporov. Developing: Vlad Ivanov.</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>

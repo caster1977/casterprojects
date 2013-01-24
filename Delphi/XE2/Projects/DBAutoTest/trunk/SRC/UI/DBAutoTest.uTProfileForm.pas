@@ -38,7 +38,7 @@ type
     actHelp: TAction_Help;
     gbConnection: TGroupBox;
     lblServerName: TLabel;
-    cmbServerName: TComboBox;
+    cmbServers: TComboBox;
     lblDatabaseName: TLabel;
     cmbDatabaseName: TComboBox;
     lblLogin: TLabel;
@@ -68,24 +68,28 @@ type
     actUseLoginAndPassword: TAction;
     actEnablePasswordSaving: TAction;
     actEnableEmptyPassword: TAction;
+    btnRefreshServers: TButton;
+    actRefreshServers: TAction;
     procedure actUseWinNTSecurityExecute(Sender: TObject);
     procedure actEnablePasswordSavingUpdate(Sender: TObject);
     procedure actEnableEmptyPasswordUpdate(Sender: TObject);
     procedure actUseLoginAndPasswordExecute(Sender: TObject);
     procedure actEnableEmptyPasswordExecute(Sender: TObject);
     procedure actEnablePasswordSavingExecute(Sender: TObject);
-    procedure cmbServerNameChange(Sender: TObject);
-    procedure cmbServerNameDropDown(Sender: TObject);
-    procedure cmbServerNameSelect(Sender: TObject);
-    procedure cmbServerNameKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure cmbServersChange(Sender: TObject);
+    procedure cmbServersDropDown(Sender: TObject);
+    procedure cmbServersSelect(Sender: TObject);
+    procedure cmbServersKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure actCancelExecute(Sender: TObject);
     procedure actPreviousPageExecute(Sender: TObject);
     procedure actPreviousPageUpdate(Sender: TObject);
     procedure actNextPageExecute(Sender: TObject);
     procedure actNextPageUpdate(Sender: TObject);
     procedure cmbPageNameSelect(Sender: TObject);
+    procedure actRefreshServersExecute(Sender: TObject);
+    procedure actRefreshServersUpdate(Sender: TObject);
   strict private
-    procedure GetServerList(const aList: TStrings);
+    procedure GetServerList(const aList: TStrings; var ARefreshing: Boolean);
     procedure GetDatabasesList(const aList: TStrings);
     function GetActivePage: Integer;
     procedure SetActivePage(const AValue: Integer);
@@ -96,6 +100,8 @@ type
       const AActivePage: Integer = PROFILE_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
     property ActivePage: Integer read GetActivePage write SetActivePage
       default PROFILE_DEFAULT_ACTIVE_PAGE;
+  strict private
+    FRefreshingServers: Boolean;
   end;
 
 implementation
@@ -109,6 +115,7 @@ constructor TProfileForm.Create(AOwner: TComponent; const AActivePage: Integer);
 begin
   inherited Create(AOwner);
   ActivePage := AActivePage;
+  FRefreshingServers := False;
 end;
 
 procedure TProfileForm.actCancelExecute(Sender: TObject);
@@ -218,19 +225,21 @@ begin
   mePassword.Enabled := False;
 end;
 
-procedure TProfileForm.cmbServerNameChange(Sender: TObject);
+procedure TProfileForm.cmbServersChange(Sender: TObject);
 begin
-  lblDatabaseName.Enabled := (Trim(cmbServerName.Text) > EmptyStr) or
-    (cmbServerName.ItemIndex > -1);
+  lblDatabaseName.Enabled := (Trim(cmbServers.Text) > EmptyStr) or (cmbServers.ItemIndex > -1);
   cmbDatabaseName.Enabled := lblDatabaseName.Enabled;
 end;
 
-procedure TProfileForm.cmbServerNameDropDown(Sender: TObject);
+procedure TProfileForm.cmbServersDropDown(Sender: TObject);
 begin
-  GetServerList(cmbServerName.Items);
+  if cmbServers.Items.Count = 0 then
+  begin
+    actRefreshServers.Execute;
+  end;
 end;
 
-procedure TProfileForm.cmbServerNameKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TProfileForm.cmbServersKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = VK_RETURN then
   begin
@@ -238,27 +247,35 @@ begin
   end;
 end;
 
-procedure TProfileForm.cmbServerNameSelect(Sender: TObject);
+procedure TProfileForm.cmbServersSelect(Sender: TObject);
 begin
   GetDatabasesList(cmbDatabaseName.Items);
-  lblDatabaseName.Enabled := (Trim(cmbServerName.Text) > EmptyStr) or
-    (cmbServerName.ItemIndex > -1);
+  lblDatabaseName.Enabled := (Trim(cmbServers.Text) > EmptyStr) or (cmbServers.ItemIndex > -1);
   cmbDatabaseName.Enabled := lblDatabaseName.Enabled;
 end;
 
-procedure TProfileForm.GetServerList(const aList: TStrings);
+procedure TProfileForm.GetServerList(const aList: TStrings; var ARefreshing: Boolean);
 var
   aSrvs: IServerList;
   i: Integer;
+  c: TCursor;
 begin
+  c := Screen.Cursor;
+  Screen.Cursor := crHourGlass;
+  ARefreshing := True;
   aList.BeginUpdate;
   try
     aList.Clear;
     aSrvs := MakeServerList('', '', SV_TYPE_SQLSERVER);
     for i := 0 to aSrvs.Count - 1 do
-      aList.AddObject(aSrvs[i].Svr_Name, TObject(aSrvs[i].svr_Type));
+    begin
+      // aList.AddObject(aSrvs[i].Svr_Name, TObject(aSrvs[i].svr_Type));
+      aList.Add(aSrvs[i].Svr_Name);
+    end;
   finally
     aList.EndUpdate;
+    ARefreshing := False;
+    Screen.Cursor := c;
   end;
 end;
 
@@ -269,13 +286,13 @@ var
 begin
   aList.BeginUpdate;
   try
-    if cmbServerName.ItemIndex > -1 then
+    if cmbServers.ItemIndex > -1 then
     begin
-      s := cmbServerName.Items[cmbServerName.ItemIndex];
+      s := cmbServers.Items[cmbServers.ItemIndex];
     end
     else
     begin
-      s := cmbServerName.Text;
+      s := cmbServers.Text;
     end;
     ADOConnection.ConnectionString := Format(ADO_CONNECTION_STRING_PREFIX, [s]);
     if actUseWinNTSecurity.Checked then
@@ -321,6 +338,16 @@ begin
   finally
     aList.EndUpdate;
   end;
+end;
+
+procedure TProfileForm.actRefreshServersExecute(Sender: TObject);
+begin
+  GetServerList(cmbServers.Items, FRefreshingServers);
+end;
+
+procedure TProfileForm.actRefreshServersUpdate(Sender: TObject);
+begin
+  actRefreshServers.Enabled := not FRefreshingServers;
 end;
 
 end.
