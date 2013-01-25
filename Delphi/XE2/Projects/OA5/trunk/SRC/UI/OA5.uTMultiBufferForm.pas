@@ -15,7 +15,7 @@ uses
   CastersPackage.uTDialogPosition,
   OA5.uIMeasureList,
   OA5.uIConfiguration,
-  OA5.uIAccount;
+  OA5.uIAccount, System.Actions;
 
 type
   TMultiBufferForm = class(TOA5PositionedLogForm)
@@ -50,10 +50,11 @@ type
     procedure _Delete;
     procedure _Clear;
   public
-    constructor Create(AOwner: TComponent; const ADialogPosition: TDialogPosition; ABusyCounter: PInteger = nil;
-      ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil; AProgressBar: TProgressBar = nil;
-      const AConfiguration: IConfiguration = nil; const ACurrentUser: IAccount = nil;
-      const AMultibuffer: IMeasureList = nil); reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const ADialogPosition: TDialogPosition;
+      ABusyCounter: PInteger = nil; ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil;
+      AProgressBar: TProgressBar = nil; const AConfiguration: IConfiguration = nil;
+      const ACurrentUser: IAccount = nil; const AMultibuffer: IMeasureList = nil);
+      reintroduce; virtual;
   end;
 
 implementation
@@ -78,7 +79,8 @@ const
 
 procedure TMultiBufferForm.actHelpExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{991A06F2-F6DE-4EA6-A329-857E77C0B01C}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]),
+    '{991A06F2-F6DE-4EA6-A329-857E77C0B01C}');
   Help(HelpContext, '{E8F450A4-D05E-4F01-A690-3B2F8F766046}');
   ProcedureFooter;
 end;
@@ -91,7 +93,8 @@ begin
   b := Application.HelpFile <> EmptyStr;
   if actHelp.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]), '{ADE69D60-880D-463E-9776-5E197AD9212E}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]),
+      '{ADE69D60-880D-463E-9776-5E197AD9212E}');
     actHelp.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actHelp));
     ProcedureFooter;
@@ -100,7 +103,8 @@ end;
 
 procedure TMultiBufferForm.actPasteExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actPaste.Caption]), '{0DC0CD76-2CF2-4502-A386-A5F6C1E8E7B3}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actPaste.Caption]),
+    '{0DC0CD76-2CF2-4502-A386-A5F6C1E8E7B3}');
   Log.SendInfo(RsTryingToPasteItemConfirmedByUser);
   CloseModalWindowWithOkResult(RsMultiBufferForm, '{5262CAAB-5039-4EDF-823D-08C8593F0B02}');
   ProcedureFooter;
@@ -114,19 +118,21 @@ begin
   b := (lvBuffer.Items.Count > 0) and Assigned(FMultibuffer);
   if actPaste.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actPaste.Caption]), '{A71F9C3A-194D-44D8-8E18-6DC8F76F9006}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actPaste.Caption]),
+      '{A71F9C3A-194D-44D8-8E18-6DC8F76F9006}');
     actPaste.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actPaste));
     ProcedureFooter;
   end;
 end;
 
-constructor TMultiBufferForm.Create(AOwner: TComponent; const ADialogPosition: TDialogPosition; ABusyCounter: PInteger;
-  ARefreshBusyStateMethod: TRefreshBusyStateMethod; AProgressBar: TProgressBar; const AConfiguration: IConfiguration;
-  const ACurrentUser: IAccount; const AMultibuffer: IMeasureList);
+constructor TMultiBufferForm.Create(AOwner: TComponent; const ADialogPosition: TDialogPosition;
+  ABusyCounter: PInteger; ARefreshBusyStateMethod: TRefreshBusyStateMethod;
+  AProgressBar: TProgressBar; const AConfiguration: IConfiguration; const ACurrentUser: IAccount;
+  const AMultibuffer: IMeasureList);
 begin
-  inherited Create(AOwner, ADialogPosition, ABusyCounter, ARefreshBusyStateMethod, AProgressBar, AConfiguration,
-    ACurrentUser);
+  inherited Create(AOwner, ADialogPosition, ABusyCounter, ARefreshBusyStateMethod, AProgressBar,
+    AConfiguration, ACurrentUser);
   FMultibuffer := AMultibuffer;
 end;
 
@@ -138,7 +144,8 @@ begin
   b := Assigned(lvBuffer.Selected) and Assigned(FMultibuffer);
   if actDelete.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actDelete.Caption]), '{50D24F38-E7F9-4435-B34B-69300DA17CA0}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actDelete.Caption]),
+      '{50D24F38-E7F9-4435-B34B-69300DA17CA0}');
     actDelete.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actDelete));
     ProcedureFooter;
@@ -147,7 +154,8 @@ end;
 
 procedure TMultiBufferForm.actClearExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClear.Caption]), '{6276AF19-2B53-4A4F-90D5-40F1973EEED5}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClear.Caption]),
+    '{6276AF19-2B53-4A4F-90D5-40F1973EEED5}');
   _Clear;
   ProcedureFooter;
 end;
@@ -160,7 +168,8 @@ begin
   b := (lvBuffer.Items.Count > 0) and Assigned(FMultibuffer);
   if actClear.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actClear.Caption]), '{3A6B4025-F962-486D-B670-55664B32CBBA}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actClear.Caption]),
+      '{3A6B4025-F962-486D-B670-55664B32CBBA}');
     actClear.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actClear));
     ProcedureFooter;
@@ -169,28 +178,32 @@ end;
 
 procedure TMultiBufferForm.actCloseExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{F1FBC2E1-336C-491D-BC0B-8B2E70108C6D}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]),
+    '{F1FBC2E1-336C-491D-BC0B-8B2E70108C6D}');
   CloseModalWindowWithCancelResult(RsMultiBufferForm, '{59BDD556-26B9-4AC9-90DD-DCBC3CB1E874}');
   ProcedureFooter;
 end;
 
 procedure TMultiBufferForm.actDeleteExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actDelete.Caption]), '{46DC8E0A-D03A-47AF-80E2-86B5FDF2A567}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actDelete.Caption]),
+    '{46DC8E0A-D03A-47AF-80E2-86B5FDF2A567}');
   _Delete;
   ProcedureFooter;
 end;
 
 procedure TMultiBufferForm.FormCreate(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsMultiBufferForm]), '{356A4C31-9E29-476F-A4EC-4CCDEC00EED0}');
+  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsMultiBufferForm]),
+    '{356A4C31-9E29-476F-A4EC-4CCDEC00EED0}');
   ImageList.GetIcon(ICON_MULTIBUFFER, Icon);
   ProcedureFooter;
 end;
 
 procedure TMultiBufferForm.FormShow(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsMultiBufferForm]), '{AB96A9E3-8B37-427E-8826-8E1873A44D98}');
+  ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsMultiBufferForm]),
+    '{AB96A9E3-8B37-427E-8826-8E1873A44D98}');
   _UpdateListViewScrollBarVisibility;
 
   if lvBuffer.Items.Count > 0 then
@@ -210,19 +223,21 @@ procedure TMultiBufferForm._UpdateListViewScrollBarVisibility;
 var
   h: HWND;
 begin
-  ProcedureHeader('ѕроцедура изменени€ ширины колонки списка элементов в зависимости от наличи€ полосы прокрутки',
+  ProcedureHeader
+    ('ѕроцедура изменени€ ширины колонки списка элементов в зависимости от наличи€ полосы прокрутки',
     '{01D76D7B-0DD5-4A6F-B6A7-7DC52A7DAE82}');
 
   h := lvBuffer.Handle;
   lvBuffer.Column[0].Width := 75;
   if (GetWindowLong(h, GWL_STYLE) and WS_VSCROLL) = WS_VSCROLL then
   begin
-    lvBuffer.Column[1].Width := lvBuffer.Width - (lvBuffer.BevelWidth * 2) - 2 - GetSystemMetrics(SM_CXVSCROLL) -
-      lvBuffer.Column[0].Width;
+    lvBuffer.Column[1].Width := lvBuffer.Width - (lvBuffer.BevelWidth * 2) - 2 -
+      GetSystemMetrics(SM_CXVSCROLL) - lvBuffer.Column[0].Width;
   end
   else
   begin
-    lvBuffer.Column[1].Width := lvBuffer.Width - (lvBuffer.BevelWidth * 2) - 2 - lvBuffer.Column[0].Width;
+    lvBuffer.Column[1].Width := lvBuffer.Width - (lvBuffer.BevelWidth * 2) - 2 -
+      lvBuffer.Column[0].Width;
   end;
   lvBuffer.FlatScrollBars := False; // принудительна€ перерисовка элемента управлени€
   lvBuffer.FlatScrollBars := True;

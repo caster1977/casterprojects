@@ -58,8 +58,8 @@ type
   public
     constructor Create; virtual;
     destructor Destroy; override;
-    class function PrepareStringForQuery(const ASource: string; const AAddCommas: Boolean; const AReturnNull: Boolean)
-      : string; static;
+    class function PrepareStringForQuery(const ASource: string; const AAddCommas: Boolean;
+      const AReturnNull: Boolean): string; static;
     function GetLastErrorInfo: string;
     procedure Query(const ASQL: string); overload;
     procedure Query(const ASQL: string; out AResultSet: PMYSQL_RES); overload;
@@ -86,7 +86,8 @@ resourcestring
   RsConnectionStarted = 'Выполняется операция подключения к MySQL-серверу "%s:%d"...';
   RsConnectionInitializationCompleteSuccessfully =
     'Инициализация объекта соединения с MySQL-сервером "%s:%d" выполнена успешно.';
-  RsConnectionInitializationError = 'Возникла ошибка при инициализации объекта соединения с MySQL-сервером "%s:%d"!';
+  RsConnectionInitializationError =
+    'Возникла ошибка при инициализации объекта соединения с MySQL-сервером "%s:%d"!';
   RsConnectionCompleteSuccessfully = 'Подключение к MySQL-серверу "%s:%d" выполнено успешно.';
   RsConnectionError = 'Возникла ошибка при попытке подключения к MySQL-серверу "%s:%d"!';
   RsConnectionFinished = 'Выполнение операции подключения к MySQL-серверу "%s:%d" завершено.';
@@ -102,10 +103,13 @@ resourcestring
   RsErrorCode = 'Код ошибки: ';
   RsErrorName = 'Наименование ошибки: ';
   RsConnectionNotAssigned = 'Возникла ошибка при попытке получения указателя активного соединения!';
-  RsNonResultingQueryStarted = 'Операция по выполнению SQL-запроса не возвращающего результирующую выборку запущена...';
-  RsNonResultingQueryFinished = 'Операция по выполнению SQL-запроса не возвращающего результирующую выборку завершена.';
+  RsNonResultingQueryStarted =
+    'Операция по выполнению SQL-запроса не возвращающего результирующую выборку запущена...';
+  RsNonResultingQueryFinished =
+    'Операция по выполнению SQL-запроса не возвращающего результирующую выборку завершена.';
   RsConnectionDemanded = 'Для выполнения операции необходимо подключение к серверу MySQL!';
-  RsConnectionVerificationError = 'Возникла ошибка при попытке проверки подключения к серверу MySQL!';
+  RsConnectionVerificationError =
+    'Возникла ошибка при попытке проверки подключения к серверу MySQL!';
   RsQueryStarted = 'Операция по выполнению SQL-запроса запущена...';
   RsUpdateQueryStarted = 'Операция по обновлению данных таблицы базы данных ...';
   RsQueryFinished = 'Операция по выполнению SQL-запроса завершена.';
@@ -113,7 +117,8 @@ resourcestring
   RsSQLQueryError = 'Возникла ошибка при выполнении SQL-запроса!';
   RsNonResultingQueryCompleteSuccessfully =
     'Операция по выполнению SQL-запроса не возвращающего результирующую выборку выполнена успешно.';
-  RsUpdateQueryCompleteSuccessfully = 'Операция по обновлению данных таблицы базы данных выполнена успешно.';
+  RsUpdateQueryCompleteSuccessfully =
+    'Операция по обновлению данных таблицы базы данных выполнена успешно.';
   RsQueryCompleteSuccessfully = 'Операция по выполнению SQL-запроса выполнена успешно.';
   RsQueryExecuted = 'SQL-запрос выполнен.';
   RsResultSetRecievedSuccessfully = 'Результирующая выборка получена успешно.';
@@ -121,7 +126,8 @@ resourcestring
   RsReceivedResultSetRowsCount = 'Количество строк полученной выборки: %d.';
   RsAffectedRowsCount = 'Количество обновлённых строк: %d.';
   RsAffectedRowsCountError = 'Количество обновлённых строк (%d) не соответствует требуемому (>=0)!';
-  RsReceivedResultSetRowsCountError = 'Возникла ошибка при получении количества срок полученной результирующей выборки!';
+  RsReceivedResultSetRowsCountError =
+    'Возникла ошибка при получении количества срок полученной результирующей выборки!';
   RsCommas = '"';
 
 function GetIMySQLConnection: IMySQLConnection;
@@ -200,8 +206,9 @@ begin
     Result := EmptyStr;
     if mysql_errno(FConnection) <> 0 then
     begin
-      Result := sLineBreak + sLineBreak + RsErrorCode + sLineBreak + IntToStr(mysql_errno(FConnection)) + sLineBreak +
-        sLineBreak + RsErrorName + sLineBreak + string(mysql_error(FConnection));
+      Result := sLineBreak + sLineBreak + RsErrorCode + sLineBreak +
+        IntToStr(mysql_errno(FConnection)) + sLineBreak + sLineBreak + RsErrorName + sLineBreak +
+        string(mysql_error(FConnection));
     end;
   end
   else
@@ -526,9 +533,9 @@ begin
     if Assigned(Connection) then
     begin
       SendDebug(Format(RsConnectionInitializationCompleteSuccessfully, [Host, Port]));
-      if Connection <> mysql_real_connect(Connection, PAnsiChar(AnsiString(Host)), PAnsiChar(AnsiString(Login)),
-        PAnsiChar(AnsiString(Password)), PAnsiChar(AnsiString(Database)), Port, nil, Integer(Compression) * CLIENT_COMPRESS)
-      then
+      if Connection <> mysql_real_connect(Connection, PAnsiChar(AnsiString(Host)),
+        PAnsiChar(AnsiString(Login)), PAnsiChar(AnsiString(Password)),
+        PAnsiChar(AnsiString(Database)), Port, nil, Integer(Compression) * CLIENT_COMPRESS) then
       begin
         RaiseEMySQLException(Format(RsConnectionError, [Host, Port]));
       end
@@ -562,7 +569,8 @@ begin
   end;
 end;
 
-class function TMySQLConnection.PrepareStringForQuery(const ASource: string; const AAddCommas, AReturnNull: Boolean): string;
+class function TMySQLConnection.PrepareStringForQuery(const ASource: string;
+  const AAddCommas, AReturnNull: Boolean): string;
 var
   pac: PAnsiChar;
 begin
@@ -575,7 +583,8 @@ begin
   begin
     pac := GetMemory(Length(PAnsiChar(AnsiString(ASource))) * 2 + 1);
     try
-      mysql_escape_string(pac, PAnsiChar(AnsiString(ASource)), Length(PAnsiChar(AnsiString(ASource))));
+      mysql_escape_string(pac, PAnsiChar(AnsiString(ASource)),
+        Length(PAnsiChar(AnsiString(ASource))));
       Result := string(StrPas(pac));
       if AAddCommas then
       begin

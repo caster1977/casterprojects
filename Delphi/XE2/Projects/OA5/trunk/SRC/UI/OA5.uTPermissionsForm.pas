@@ -10,7 +10,7 @@ uses
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.StdCtrls,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls, System.Actions;
 
 type
   TPermissionsForm = class(TOA5PositionedLogForm)
@@ -59,11 +59,13 @@ const
 resourcestring
   RsPermissionsForm = 'управления правами доступа пользователя';
   RsSelectAllPermissionProcedure = 'Процедура выделения всех элементов списк' + 'а прав доступа';
-  RsSelectNonePermissionProcedure = 'Процедура снятия выделения со всех элем' + 'ентов списка прав доступа';
+  RsSelectNonePermissionProcedure = 'Процедура снятия выделения со всех элем' +
+    'ентов списка прав доступа';
 
 procedure TPermissionsForm.actApplyExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actApply.Caption]), '{5C75FA77-50A0-471B-B6DA-472A571E78A5}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actApply.Caption]),
+    '{5C75FA77-50A0-471B-B6DA-472A571E78A5}');
   Log.SendInfo('Попытка изменения прав доступа пользователя была подтверждена пользователем.');
   CloseModalWindowWithOkResult(RsPermissionsForm, '{2EF8ACE7-43DE-4B94-A258-A103D3C6FA7F}');
   ProcedureFooter;
@@ -71,7 +73,8 @@ end;
 
 procedure TPermissionsForm.actCloseExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{0CD08097-3CBD-497C-A6E9-C334C2613D87}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]),
+    '{0CD08097-3CBD-497C-A6E9-C334C2613D87}');
   Log.SendInfo('Попытка изменения прав доступа пользователя была отменена пользователем.');
   CloseModalWindowWithCancelResult(RsPermissionsForm, '{E4DF2DA7-A9E4-43B4-9563-208F2AC0E0FD}');
   ProcedureFooter;
@@ -79,7 +82,8 @@ end;
 
 procedure TPermissionsForm.actHelpExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{803148B5-8C37-4D3C-964F-ACC9A7FFD4BD}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]),
+    '{803148B5-8C37-4D3C-964F-ACC9A7FFD4BD}');
   Help(HelpContext, '{45BBFABB-48D2-4D33-B84C-7D977203E7C0}');
   ProcedureFooter;
 end;
@@ -92,7 +96,8 @@ begin
   b := Application.HelpFile <> EmptyStr;
   if actHelp.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]), '{876209CD-9450-437C-BECD-39568ECD2FC0}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]),
+      '{876209CD-9450-437C-BECD-39568ECD2FC0}');
     actHelp.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actHelp));
     ProcedureFooter;
@@ -101,7 +106,8 @@ end;
 
 procedure TPermissionsForm.actSelectAllExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectAll.Caption]), '{14A91B39-D3D7-49C4-9F19-D253DE7AB611}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectAll.Caption]),
+    '{14A91B39-D3D7-49C4-9F19-D253DE7AB611}');
   _SelectAll;
   ProcedureFooter;
 end;
@@ -124,7 +130,8 @@ begin
   b := b and (chklbxPermissions.Items.Count > 0);
   if actSelectAll.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectAll.Caption]), '{713F5389-E51C-45D3-9EA7-857AA2ADDAE5}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectAll.Caption]),
+      '{713F5389-E51C-45D3-9EA7-857AA2ADDAE5}');
     actSelectAll.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actSelectAll));
     ProcedureFooter;
@@ -149,7 +156,8 @@ begin
   b := b and (chklbxPermissions.Items.Count > 0);
   if actSelectNone.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectNone.Caption]), '{6A789C2D-BE1B-4AE4-A348-DC0BAEC83549}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectNone.Caption]),
+      '{6A789C2D-BE1B-4AE4-A348-DC0BAEC83549}');
     actSelectNone.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actSelectNone));
     ProcedureFooter;
@@ -158,7 +166,8 @@ end;
 
 procedure TPermissionsForm.actSelectNoneExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectNone.Caption]), '{2E28DFC0-7D3C-4E6E-B105-CFEC8B796E11}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectNone.Caption]),
+    '{2E28DFC0-7D3C-4E6E-B105-CFEC8B796E11}');
   _SelectNone;
   ProcedureFooter;
 end;
@@ -201,14 +210,16 @@ end;
 
 procedure TPermissionsForm.FormCreate(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsPermissionsForm]), '{E6E569D5-7A13-4FB2-8364-E0B6605D87D8}');
+  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsPermissionsForm]),
+    '{E6E569D5-7A13-4FB2-8364-E0B6605D87D8}');
   ImageList.GetIcon(ICON_PERMISSIONS, Icon);
   ProcedureFooter;
 end;
 
 procedure TPermissionsForm.FormShow(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsPermissionsForm]), '{37196BB1-FC40-4D57-839E-F76454FD74F3}');
+  ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsPermissionsForm]),
+    '{37196BB1-FC40-4D57-839E-F76454FD74F3}');
   Log.SendInfo(Format(RsWindowShowed, [RsPermissionsForm]));
   ProcedureFooter;
 end;

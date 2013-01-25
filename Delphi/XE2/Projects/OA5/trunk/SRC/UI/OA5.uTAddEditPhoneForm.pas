@@ -10,7 +10,7 @@ uses
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.StdCtrls,
-  Vcl.ComCtrls;
+  Vcl.ComCtrls, System.Actions;
 
 type
   TAddEditPhoneForm = class(TOA5PositionedLogForm)
@@ -131,21 +131,24 @@ end;
 
 procedure TAddEditPhoneForm.FormCreate(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsAddEditPhoneForm]), '{7FD82BF2-AA3D-4AD0-848B-14E0000E9B31}');
+  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsAddEditPhoneForm]),
+    '{7FD82BF2-AA3D-4AD0-848B-14E0000E9B31}');
   ImageList.GetIcon(ICON_ADDEDITPHONE, Icon);
   ProcedureFooter;
 end;
 
 procedure TAddEditPhoneForm.FormShow(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsAddEditPhoneForm]), '{56B99E60-8AE1-4B33-B005-32AFBC21114F}');
+  ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsAddEditPhoneForm]),
+    '{56B99E60-8AE1-4B33-B005-32AFBC21114F}');
   Log.SendInfo(Format(RsWindowShowed, [RsAddEditPhoneForm]));
   ProcedureFooter;
 end;
 
 procedure TAddEditPhoneForm.actApplyExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actApply.Caption]), '{3F6501C9-344A-46E6-9296-03C327D24EC1}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actApply.Caption]),
+    '{3F6501C9-344A-46E6-9296-03C327D24EC1}');
   Log.SendInfo('ѕопытка добавлени€/исправлени€ номера телефона была подтверждена пользователем.');
   CloseModalWindowWithOkResult(RsAddEditPhoneForm, '{5EDFF0E8-891D-4F4E-90D9-B3195669939E}');
   ProcedureFooter;
@@ -153,21 +156,24 @@ end;
 
 procedure TAddEditPhoneForm.actClearExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClear.Caption]), '{E9B5319A-67B6-43AF-B5C3-C2970E5E66BC}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClear.Caption]),
+    '{E9B5319A-67B6-43AF-B5C3-C2970E5E66BC}');
   _Clear;
   ProcedureFooter;
 end;
 
 procedure TAddEditPhoneForm.actCloseExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{F5FC1E75-0564-4531-A1EC-242606AF6D3C}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]),
+    '{F5FC1E75-0564-4531-A1EC-242606AF6D3C}');
   CloseModalWindowWithCancelResult(RsAddEditPhoneForm, '{82C266AC-84F6-4B06-8B0E-0FACDB889CD1}');
   ProcedureFooter;
 end;
 
 procedure TAddEditPhoneForm.actHelpExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{FC1F0DFA-B75D-455A-B245-37BE180520E1}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]),
+    '{FC1F0DFA-B75D-455A-B245-37BE180520E1}');
   Help(HelpContext, '{1A7EF6C2-56E0-476A-86B6-14A49DFCB413}');
   ProcedureFooter;
 end;
@@ -180,7 +186,8 @@ begin
   b := Application.HelpFile <> EmptyStr;
   if actHelp.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]), '{CEE5E3DF-C04C-4125-AFDE-D6FE85947558}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]),
+      '{CEE5E3DF-C04C-4125-AFDE-D6FE85947558}');
     actHelp.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actHelp));
     ProcedureFooter;
@@ -192,11 +199,13 @@ var
   b: boolean;
 begin
   inherited;
-  b := (edbxNumber.Text <> EmptyStr) or (cmbexType.ItemIndex > -1) or (dtpCheckDate.DateTime <> EncodeDate(1900, 01, 01)) or
-    (edbxPriority.Text <> EmptyStr) or (meComments.Text <> EmptyStr);
+  b := (edbxNumber.Text <> EmptyStr) or (cmbexType.ItemIndex > -1) or
+    (dtpCheckDate.DateTime <> EncodeDate(1900, 01, 01)) or (edbxPriority.Text <> EmptyStr) or
+    (meComments.Text <> EmptyStr);
   if actClear.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actClear.Caption]), '{F81F6D8B-EAFB-4A9D-AB50-E79FD75F2401}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actClear.Caption]),
+      '{F81F6D8B-EAFB-4A9D-AB50-E79FD75F2401}');
     actClear.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actClear));
     ProcedureFooter;

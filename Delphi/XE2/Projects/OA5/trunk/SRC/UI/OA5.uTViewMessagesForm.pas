@@ -10,7 +10,7 @@ uses
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.StdCtrls,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls, System.Actions;
 
 type
   TViewMessagesForm = class(TOA5PositionedLogForm)
@@ -51,14 +51,16 @@ resourcestring
 
 procedure TViewMessagesForm.actCloseExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{37A8475E-6BD4-4823-94D2-8FE6965B2F7C}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]),
+    '{37A8475E-6BD4-4823-94D2-8FE6965B2F7C}');
   CloseModalWindowWithCancelResult(RsViewMessagesForm, '{36E905AB-B82A-4DCF-B459-F22973FD0B8D}');
   ProcedureFooter;
 end;
 
 procedure TViewMessagesForm.actHelpExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{B33612F9-C8BF-491C-8327-379CB02B0531}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]),
+    '{B33612F9-C8BF-491C-8327-379CB02B0531}');
   Help(HelpContext, '{87D37E94-9189-4786-90B4-DF122F140089}');
   ProcedureFooter;
 end;
@@ -71,7 +73,8 @@ begin
   b := Application.HelpFile <> EmptyStr;
   if actHelp.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]), '{66193937-EBE8-4A00-90AE-B0C4BCF61DD3}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]),
+      '{66193937-EBE8-4A00-90AE-B0C4BCF61DD3}');
     actHelp.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actHelp));
     ProcedureFooter;
@@ -80,7 +83,8 @@ end;
 
 procedure TViewMessagesForm.FormCreate(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsViewMessagesForm]), '{E0A86FE8-2053-4FCE-81B0-95A611DDCF34}');
+  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsViewMessagesForm]),
+    '{E0A86FE8-2053-4FCE-81B0-95A611DDCF34}');
   ImageList.GetIcon(ICON_VIEWMESSAGES, Icon);
   ProcedureFooter;
 end;

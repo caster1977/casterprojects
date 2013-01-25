@@ -11,7 +11,7 @@ uses
   Vcl.Controls,
   Vcl.StdCtrls,
   Vcl.ComCtrls,
-  Vcl.CheckLst;
+  Vcl.CheckLst, System.Actions;
 
 type
   TReportForm = class(TOA5PositionedLogForm)
@@ -110,7 +110,8 @@ resourcestring
 
 procedure TReportForm.actSelectAllExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectAll.Caption]), '{14A91B39-D3D7-49C4-9F19-D253DE7AB611}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectAll.Caption]),
+    '{14A91B39-D3D7-49C4-9F19-D253DE7AB611}');
   _SelectAll;
   ProcedureFooter;
 end;
@@ -133,7 +134,8 @@ begin
   b := (chklbxUsers.Items.Count > 0) and b;
   if actSelectAll.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectAll.Caption]), '{71FE28EC-CC3B-4E72-978D-F534FFD2E2C7}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectAll.Caption]),
+      '{71FE28EC-CC3B-4E72-978D-F534FFD2E2C7}');
     actSelectAll.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actSelectAll));
     ProcedureFooter;
@@ -142,7 +144,8 @@ end;
 
 procedure TReportForm.actSelectNoneExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectNone.Caption]), '{2E28DFC0-7D3C-4E6E-B105-CFEC8B796E11}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSelectNone.Caption]),
+    '{2E28DFC0-7D3C-4E6E-B105-CFEC8B796E11}');
   _SelectNone;
   ProcedureFooter;
 end;
@@ -165,7 +168,8 @@ begin
   b := (chklbxUsers.Items.Count > 0) and b;
   if actSelectNone.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectNone.Caption]), '{CFD84C36-9A02-46E0-B166-8E79EE356622}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSelectNone.Caption]),
+      '{CFD84C36-9A02-46E0-B166-8E79EE356622}');
     actSelectNone.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actSelectNone));
     ProcedureFooter;
@@ -190,16 +194,20 @@ end;
 
 procedure TReportForm.actCloseExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{D290B7F6-9D16-47E1-90F0-FEAAB5120E56}');
-  Log.SendInfo('Попытка формирования статистических отчётов по работе пользователей была отменена пользователем.');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]),
+    '{D290B7F6-9D16-47E1-90F0-FEAAB5120E56}');
+  Log.SendInfo
+    ('Попытка формирования статистических отчётов по работе пользователей была отменена пользователем.');
   CloseModalWindowWithCancelResult(RsReportForm, '{279A6A67-6C17-421D-8A9C-69DD4A7DA050}');
   ProcedureFooter;
 end;
 
 procedure TReportForm.actCreateExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actCreate.Caption]), '{C4CEAC65-3699-4660-871E-12985753ECBB}');
-  Log.SendInfo('Попытка формирования статистического отчёта по работе пользователей была подтверждена пользователем.');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actCreate.Caption]),
+    '{C4CEAC65-3699-4660-871E-12985753ECBB}');
+  Log.SendInfo
+    ('Попытка формирования статистического отчёта по работе пользователей была подтверждена пользователем.');
   CloseModalWindowWithOkResult(RsReportForm, '{6481A63F-9A8B-487C-887F-4CD80F4FB0EF}');
   ProcedureFooter;
 end;
@@ -215,11 +223,12 @@ begin
   begin
     b := b or chklbxUsers.Checked[i];
   end;
-  b := b and (rbChoisenDate.Checked or rbChoisenMonth.Checked or rbChoisenQuarter.Checked or rbChoisenYear.Checked or
-    rbChoisenPeriod.Checked) and (cmbbxGroupByPeriod.ItemIndex > -1);
+  b := b and (rbChoisenDate.Checked or rbChoisenMonth.Checked or rbChoisenQuarter.Checked or
+    rbChoisenYear.Checked or rbChoisenPeriod.Checked) and (cmbbxGroupByPeriod.ItemIndex > -1);
   if actCreate.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actCreate.Caption]), '{42F1CD4C-614D-40B7-BD9F-A64CA7C1ABD6}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actCreate.Caption]),
+      '{42F1CD4C-614D-40B7-BD9F-A64CA7C1ABD6}');
     actCreate.Enabled := b;
     if btnCreate.Default <> b then
     begin
@@ -236,7 +245,8 @@ end;
 
 procedure TReportForm.actHelpExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{4A44C954-EC7F-4C4F-8C87-B9B19B83AA8B}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]),
+    '{4A44C954-EC7F-4C4F-8C87-B9B19B83AA8B}');
   Help(HelpContext, '{B3865EF7-4F75-4C6E-933A-5231CCAB3E72}');
   ProcedureFooter;
 end;
@@ -248,7 +258,8 @@ begin
   b := Application.HelpFile <> EmptyStr;
   if actHelp.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]), '{876209CD-9450-437C-BECD-39568ECD2FC0}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]),
+      '{876209CD-9450-437C-BECD-39568ECD2FC0}');
     actHelp.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actHelp));
     ProcedureFooter;
@@ -259,7 +270,8 @@ procedure TReportForm._SelectAll;
 var
   i: Integer;
 begin
-  ProcedureHeader('Процедура выделения всех элементов спика пользователей', '{40DE70C8-A47D-441A-93A4-A142CA28214E}');
+  ProcedureHeader('Процедура выделения всех элементов спика пользователей',
+    '{40DE70C8-A47D-441A-93A4-A142CA28214E}');
 
   for i := 0 to chklbxUsers.Count - 1 do
   begin
@@ -290,7 +302,8 @@ var
   dtDayDuration: TDateTime;
   Day, Month, Year: Word;
 begin
-  ProcedureHeader('Процедура обновления значений "предыдущих" дат', '{27348EBC-CC42-4754-B611-206BB1DA553F}');
+  ProcedureHeader('Процедура обновления значений "предыдущих" дат',
+    '{27348EBC-CC42-4754-B611-206BB1DA553F}');
 
   dtNow := Now;
   DecodeDate(dtNow, Year, Month, Day);
@@ -346,7 +359,8 @@ end;
 
 procedure TReportForm.FormCreate(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsReportForm]), '{84933C2E-2797-40EF-96C1-0E13F61295CD}');
+  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsReportForm]),
+    '{84933C2E-2797-40EF-96C1-0E13F61295CD}');
   ImageList.GetIcon(ICON_STATISTIC, Icon);
   ProcedureFooter;
 end;
@@ -355,7 +369,8 @@ procedure TReportForm.FormShow(Sender: TObject);
 var
   i: Integer;
 begin
-  ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsReportForm]), '{021C76A7-4D4B-482B-8DFA-1F9923F7899A}');
+  ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsReportForm]),
+    '{021C76A7-4D4B-482B-8DFA-1F9923F7899A}');
 
   // заполнение списков годов
   // данные В АРХИВАХ есть начиная с 2008 года!!!
@@ -391,7 +406,8 @@ begin
   cbChoisenMonth_Year.ItemIndex := cbChoisenMonth_Year.Items.IndexOf(IntToStr(FLastMonth_Year));
 
   cbChoisenQuarter_Quarter.ItemIndex := FLastQuarter_Quarter - 1;
-  cbChoisenQuarter_Year.ItemIndex := cbChoisenQuarter_Year.Items.IndexOf(IntToStr(FLastQuarter_Year));
+  cbChoisenQuarter_Year.ItemIndex := cbChoisenQuarter_Year.Items.IndexOf
+    (IntToStr(FLastQuarter_Year));
 
   cbChoisenYear.ItemIndex := cbChoisenYear.Items.IndexOf(IntToStr(FLastYear));
 
@@ -416,14 +432,15 @@ procedure TReportForm._SwitchDetailed;
 var
   b: Boolean;
 begin
-  ProcedureHeader('Процедура реакции на переключение состояния флажка "' + chkbxShowSQLQueries.Caption + '"',
-    '{EBD05A59-B466-47D6-8E79-930DA5F4B713}');
+  ProcedureHeader('Процедура реакции на переключение состояния флажка "' +
+    chkbxShowSQLQueries.Caption + '"', '{EBD05A59-B466-47D6-8E79-930DA5F4B713}');
 
   b := chkbxDetailed.Checked;
   chkbxShowSQLQueries.Enabled := b;
   if not b then
     chkbxShowSQLQueries.Checked := False;
-  Log.SendDebug('Флажок "' + chkbxDetailed.Caption + '" ' + Routines.GetConditionalString(b, 'в', 'от') + 'ключен.');
+  Log.SendDebug('Флажок "' + chkbxDetailed.Caption + '" ' + Routines.GetConditionalString(b, 'в',
+    'от') + 'ключен.');
 
   ProcedureFooter;
 end;

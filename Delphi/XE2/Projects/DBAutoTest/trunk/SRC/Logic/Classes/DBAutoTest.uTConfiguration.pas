@@ -5,13 +5,12 @@ interface
 uses
   DBAutoTest.uIConfiguration,
   CastersPackage.uTIniFileDataStorage,
-  CastersPackage.uIModified,
   DBAutoTest.uConsts,
   System.IniFiles,
   DBAutoTest.uIRecents;
 
 type
-  TConfiguration = class(TIniFileDataStorage, IConfiguration, IModified)
+  TConfiguration = class(TIniFileDataStorage, IConfiguration)
   strict private
     FRecents: IRecents;
     FEnablePlaySoundOnComplete: Boolean;
@@ -33,11 +32,12 @@ type
   protected
     procedure Initialize; override;
     procedure Finalize; override;
-    procedure Loading(const AIniFile: TCustomIniFile); override;
+    procedure Loading; override;
     procedure AfterLoad; override;
     procedure BeforeSave; override;
-    procedure Saving(const AIniFile: TCustomIniFile); override;
+    procedure Saving; override;
   public
+    constructor Create(const AConfigurationFileName: string = ''); override;
     property Modified: Boolean read GetModified nodefault;
     property Recents: IRecents read GetRecents;
     property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete
@@ -53,7 +53,7 @@ type
       default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
   end;
 
-function GetIConfiguration(const AIniFileName: string = ''): IConfiguration;
+function GetIConfiguration(const AConfigurationFileName: string = ''): IConfiguration;
 
 implementation
 
@@ -66,8 +66,7 @@ uses
 resourcestring
   RsInterface = 'Интерфейс';
   RsOther = 'Прочие';
-  RsConfigurationSaveError =
-    'Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
+  RsConfigurationSaveError = 'Произошла ошибка при попытке записи настроек программы в файл!';
 
   RsEnableQuitConfirmation = 'EnableQuitConfirmation';
   RsEnableSplashAtStart = 'EnableSplashAtStart';
@@ -75,9 +74,9 @@ resourcestring
   RsEnableToolbar = 'EnableToolbar';
   RsEnablePlaySoundOnComplete = 'EnablePlaySoundOnComplete';
 
-function GetIConfiguration(const AIniFileName: string): IConfiguration;
+function GetIConfiguration(const AConfigurationFileName: string): IConfiguration;
 begin
-  Result := TConfiguration.Create(AIniFileName);
+  Result := TConfiguration.Create(AConfigurationFileName);
 end;
 
 procedure TConfiguration.AfterLoad;
@@ -86,6 +85,11 @@ begin
 end;
 
 procedure TConfiguration.BeforeSave;
+begin
+  inherited;
+end;
+
+constructor TConfiguration.Create(const AConfigurationFileName: string);
 begin
   inherited;
 end;
@@ -140,54 +144,60 @@ begin
   inherited;
 end;
 
-procedure TConfiguration.Loading(const AIniFile: TCustomIniFile);
+procedure TConfiguration.Loading;
 begin
   inherited;
-  with AIniFile do
+  if Assigned(IniFile) then
   begin
-    EnableQuitConfirmation := ReadBool(RsInterface, RsEnableQuitConfirmation,
-      CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION);
-    EnableSplashAtStart := ReadBool(RsInterface, RsEnableSplashAtStart,
-      CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START);
-    EnableStatusbar := ReadBool(RsInterface, RsEnableStatusbar,
-      CONFIGURATION_DEFAULT_ENABLE_STATUSBAR);
-    EnableToolbar := ReadBool(RsInterface, RsEnableToolbar, CONFIGURATION_DEFAULT_ENABLE_TOOLBAR);
-    EnablePlaySoundOnComplete := ReadBool(RsOther, RsEnablePlaySoundOnComplete,
-      CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE);
+    with IniFile do
+    begin
+      EnableQuitConfirmation := ReadBool(RsInterface, RsEnableQuitConfirmation,
+        CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION);
+      EnableSplashAtStart := ReadBool(RsInterface, RsEnableSplashAtStart,
+        CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START);
+      EnableStatusbar := ReadBool(RsInterface, RsEnableStatusbar,
+        CONFIGURATION_DEFAULT_ENABLE_STATUSBAR);
+      EnableToolbar := ReadBool(RsInterface, RsEnableToolbar, CONFIGURATION_DEFAULT_ENABLE_TOOLBAR);
+      EnablePlaySoundOnComplete := ReadBool(RsOther, RsEnablePlaySoundOnComplete,
+        CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE);
+    end;
   end;
 end;
 
-procedure TConfiguration.Saving(const AIniFile: TCustomIniFile);
+procedure TConfiguration.Saving;
 begin
   inherited;
-  with AIniFile do
-    try
-      if EnableQuitConfirmation <> CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION then
-      begin
-        WriteBool(RsInterface, RsEnableQuitConfirmation, EnableQuitConfirmation);
+  if Assigned(IniFile) then
+  begin
+    with IniFile do
+      try
+        if EnableQuitConfirmation <> CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION then
+        begin
+          WriteBool(RsInterface, RsEnableQuitConfirmation, EnableQuitConfirmation);
+        end;
+        if EnableSplashAtStart <> CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START then
+        begin
+          WriteBool(RsInterface, RsEnableSplashAtStart, EnableSplashAtStart);
+        end;
+        if EnableStatusbar <> CONFIGURATION_DEFAULT_ENABLE_STATUSBAR then
+        begin
+          WriteBool(RsInterface, RsEnableStatusbar, EnableStatusbar);
+        end;
+        if EnableToolbar <> CONFIGURATION_DEFAULT_ENABLE_TOOLBAR then
+        begin
+          WriteBool(RsInterface, RsEnableToolbar, EnableToolbar);
+        end;
+        if EnablePlaySoundOnComplete <> CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE then
+        begin
+          WriteBool(RsOther, RsEnablePlaySoundOnComplete, EnablePlaySoundOnComplete);
+        end;
+      except
+        on EIniFileException do
+        begin
+          raise EConfiguration.Create(RsConfigurationSaveError);
+        end;
       end;
-      if EnableSplashAtStart <> CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START then
-      begin
-        WriteBool(RsInterface, RsEnableSplashAtStart, EnableSplashAtStart);
-      end;
-      if EnableStatusbar <> CONFIGURATION_DEFAULT_ENABLE_STATUSBAR then
-      begin
-        WriteBool(RsInterface, RsEnableStatusbar, EnableStatusbar);
-      end;
-      if EnableToolbar <> CONFIGURATION_DEFAULT_ENABLE_TOOLBAR then
-      begin
-        WriteBool(RsInterface, RsEnableToolbar, EnableToolbar);
-      end;
-      if EnablePlaySoundOnComplete <> CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE then
-      begin
-        WriteBool(RsOther, RsEnablePlaySoundOnComplete, EnablePlaySoundOnComplete);
-      end;
-    except
-      on EIniFileException do
-      begin
-        raise EConfiguration.Create(RsConfigurationSaveError);
-      end;
-    end;
+  end;
 end;
 
 procedure TConfiguration.SetEnablePlaySoundOnComplete(const AValue: Boolean);

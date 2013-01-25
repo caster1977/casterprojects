@@ -29,7 +29,8 @@ type
     property CheckDate: TDate read GetCheckDate write SetCheckDate;
     property Comments: string read GetComments write SetComments;
     property CreationDateTime: TDateTime read GetCreationDateTime write SetCreationDateTime;
-    property ModificationDateTime: TDateTime read GetModificationDateTime write SetModificationDateTime;
+    property ModificationDateTime: TDateTime read GetModificationDateTime
+      write SetModificationDateTime;
     property PhoneNumber: string read GetPhoneNumber write SetPhoneNumber;
     property Priority: byte read GetPriority write SetPriority;
     property PhoneType: TPhoneTypes read GetPhoneType write SetPhoneType;

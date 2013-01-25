@@ -107,7 +107,8 @@ type
     /// присвоении значений остальным свойствам объекта. Значение по
     /// умолчанию - <b>DEFAULT_MEASURE_AUTO_NORMALIZE_DATA</b>.
     /// </param>
-    constructor Create(const AAutoNormalizeData: Boolean = DEFAULT_MEASURE_AUTO_NORMALIZE_DATA); virtual;
+    constructor Create(const AAutoNormalizeData
+      : Boolean = DEFAULT_MEASURE_AUTO_NORMALIZE_DATA); virtual;
     /// <summary>
     /// Деструктор класса
     /// </summary>
@@ -152,7 +153,8 @@ type
     /// Так же исходное значение можно передать при создании объекта через
     /// конструктор <b>Create(<i>значение</i>);</b>
     /// </remarks>
-    property AutoNormalizeData: Boolean read GetAutoNormalizeData write SetAutoNormalizeData default True;
+    property AutoNormalizeData: Boolean read GetAutoNormalizeData write SetAutoNormalizeData
+      default True;
     /// <summary>
     /// Автор мероприятия
     /// </summary>
@@ -160,11 +162,13 @@ type
     /// <summary>
     /// Продолжительность мероприятия в сутках
     /// </summary>
-    property DurationDays: Integer read GetDurationDays write SetDurationDays default DEFAULT_MEASURE_DURATION_DAYS;
+    property DurationDays: Integer read GetDurationDays write SetDurationDays
+      default DEFAULT_MEASURE_DURATION_DAYS;
     /// <summary>
     /// Продолжительность мероприятия в часах
     /// </summary>
-    property DurationHours: Integer read GetDurationHours write SetDurationHours default DEFAULT_MEASURE_DURATION_HOURS;
+    property DurationHours: Integer read GetDurationHours write SetDurationHours
+      default DEFAULT_MEASURE_DURATION_HOURS;
     /// <summary>
     /// Продолжительность мероприятия в минутах
     /// </summary>
@@ -173,15 +177,18 @@ type
     /// <summary>
     /// Мероприятие "только для взрослых"?
     /// </summary>
-    property ForAdultsOnly: Boolean read GetForAdultsOnly write SetForAdultsOnly default DEFAULT_MEASURE_FOR_ADULTS_ONLY;
+    property ForAdultsOnly: Boolean read GetForAdultsOnly write SetForAdultsOnly
+      default DEFAULT_MEASURE_FOR_ADULTS_ONLY;
     /// <summary>
     /// Мероприятие является детским?
     /// </summary>
-    property ForChildren: Boolean read GetForChildren write SetForChildren default DEFAULT_MEASURE_FOR_CHILDREN;
+    property ForChildren: Boolean read GetForChildren write SetForChildren
+      default DEFAULT_MEASURE_FOR_CHILDREN;
     /// <summary>
     /// Мероприятие является подростковым?
     /// </summary>
-    property ForTeenagers: Boolean read GetForTeenagers write SetForTeenagers default DEFAULT_MEASURE_FOR_TEENAGERS;
+    property ForTeenagers: Boolean read GetForTeenagers write SetForTeenagers
+      default DEFAULT_MEASURE_FOR_TEENAGERS;
     /// <summary>
     /// Длительность мероприятия неизвестна?
     /// </summary>
@@ -200,7 +207,8 @@ type
     /// <summary>
     /// Мероприятие является премьерным?
     /// </summary>
-    property IsPremier: Boolean read GetIsPremier write SetIsPremier default DEFAULT_MEASURE_IS_PREMIER;
+    property IsPremier: Boolean read GetIsPremier write SetIsPremier
+      default DEFAULT_MEASURE_IS_PREMIER;
     /// <summary>
     /// Мероприятие является гастрольным?
     /// </summary>
@@ -216,7 +224,8 @@ type
     /// <summary>
     /// Идентификатор организации, которая проводит мероприятие
     /// </summary>
-    property OrganizationID: Integer read GetOrganizationID write SetOrganizationID default DEFAULT_MEASURE_ORGANIZATION_ID;
+    property OrganizationID: Integer read GetOrganizationID write SetOrganizationID
+      default DEFAULT_MEASURE_ORGANIZATION_ID;
     /// <summary>
     /// Организатор мероприятия
     /// </summary>
@@ -270,7 +279,8 @@ type
   /// Интерфейсная ссылка на созданный объект в случае успешного выполнения
   /// функции, либо <b>nil</b> в случае ошибки.
   /// </returns>
-function GetIMeasure(const AAutoNormalizeData: Boolean = DEFAULT_MEASURE_AUTO_NORMALIZE_DATA): IMeasure;
+function GetIMeasure(const AAutoNormalizeData: Boolean = DEFAULT_MEASURE_AUTO_NORMALIZE_DATA)
+  : IMeasure;
 
 /// <summary>
 /// Функция для получения интерфейсной ссылки типа <b>INormalized</b> на
@@ -310,7 +320,8 @@ const
   MSECONDS_PER_HOUR = MSECONDS_PER_MINUTE * 60;
   MSECONDS_PER_DAY = MSECONDS_PER_HOUR * 24;
 
-function GetIMeasure(const AAutoNormalizeData: Boolean = DEFAULT_MEASURE_AUTO_NORMALIZE_DATA): IMeasure;
+function GetIMeasure(const AAutoNormalizeData: Boolean = DEFAULT_MEASURE_AUTO_NORMALIZE_DATA)
+  : IMeasure;
 begin
   Result := TMeasure.Create(AAutoNormalizeData);
 end;
@@ -473,14 +484,17 @@ begin
   if Obj is TMeasure then
   begin
     o := Obj as TMeasure;
-    Result := (AutoNormalizeData = o.AutoNormalizeData) and (OrganizationID = o.OrganizationID) and (Type_ = o.Type_) and
-      (name = o.Name) and (Author = o.Author) and (Producer = o.Producer) and (Performer = o.Performer) and
-      (Organizer = o.Organizer) and (TicketPrice = o.TicketPrice) and (OtherInfoRTF = o.OtherInfoRTF) and
-      (OtherInfoPlane = o.OtherInfoPlane) and (HasUnknownDuration = o.HasUnknownDuration) and
-      (HasStartDateTime = o.HasStartDateTime) and (HasStopDateTime = o.HasStopDateTime) and (StartDateTime = o.StartDateTime)
-      and (StopDateTime = o.StopDateTime) and (DurationDays = o.DurationDays) and (DurationHours = o.DurationHours) and
-      (DurationMinutes = o.DurationMinutes) and (IsPremier = o.IsPremier) and (IsTour = o.IsTour) and (IsSport = o.IsSport)
-      and (ForChildren = o.ForChildren) and (ForTeenagers = o.ForTeenagers) and (ForAdultsOnly = o.ForAdultsOnly);
+    Result := (AutoNormalizeData = o.AutoNormalizeData) and (OrganizationID = o.OrganizationID) and
+      (Type_ = o.Type_) and (name = o.Name) and (Author = o.Author) and (Producer = o.Producer) and
+      (Performer = o.Performer) and (Organizer = o.Organizer) and (TicketPrice = o.TicketPrice) and
+      (OtherInfoRTF = o.OtherInfoRTF) and (OtherInfoPlane = o.OtherInfoPlane) and
+      (HasUnknownDuration = o.HasUnknownDuration) and (HasStartDateTime = o.HasStartDateTime) and
+      (HasStopDateTime = o.HasStopDateTime) and (StartDateTime = o.StartDateTime) and
+      (StopDateTime = o.StopDateTime) and (DurationDays = o.DurationDays) and
+      (DurationHours = o.DurationHours) and (DurationMinutes = o.DurationMinutes) and
+      (IsPremier = o.IsPremier) and (IsTour = o.IsTour) and (IsSport = o.IsSport) and
+      (ForChildren = o.ForChildren) and (ForTeenagers = o.ForTeenagers) and
+      (ForAdultsOnly = o.ForAdultsOnly);
   end
   else
   begin
@@ -841,7 +855,8 @@ begin
     if not HasUnknownDuration then
     begin
       // получаем дату начала, дату конца и высчитываем длителность мероприятия в милисекундах
-      a1 := TimeStampToMSecs(DateTimeToTimeStamp(stop_date_time)) - TimeStampToMSecs(DateTimeToTimeStamp(start_date_time));
+      a1 := TimeStampToMSecs(DateTimeToTimeStamp(stop_date_time)) -
+        TimeStampToMSecs(DateTimeToTimeStamp(start_date_time));
 
       // внимание! значение a2 в данном случае УЖЕ равно a1, т.к. переменная абсолютная!!!
       if (a2 > 0) then
@@ -853,7 +868,8 @@ begin
         duration_minutes := a4 div MSECONDS_PER_MINUTE;
       end;
 
-      if (DurationDays <> duration_days) or (DurationHours <> duration_hours) or (DurationMinutes <> duration_minutes) then
+      if (DurationDays <> duration_days) or (DurationHours <> duration_hours) or
+        (DurationMinutes <> duration_minutes) then
       begin
         Exit;
       end;
@@ -917,7 +933,8 @@ begin
       if not HasUnknownDuration then
       begin
         // получаем дату начала, дату конца и высчитываем длительность мероприятия
-        a1 := TimeStampToMSecs(DateTimeToTimeStamp(stop_date_time)) - TimeStampToMSecs(DateTimeToTimeStamp(start_date_time));
+        a1 := TimeStampToMSecs(DateTimeToTimeStamp(stop_date_time)) -
+          TimeStampToMSecs(DateTimeToTimeStamp(start_date_time));
         // внимание! значение a2 в данном случае УЖЕ равно a1, т.к. переменная абсолютная!!!
         if (a2 > 0) then
         begin

@@ -12,7 +12,7 @@ uses
   System.Classes;
 
 type
-  TProfile = class(TIniFileDataStorage, IProfile, ICustomized)
+  TProfile = class(TIniFileDataStorage, IProfile)
   strict private
     FServer: string;
     function GetServer: string;
@@ -45,18 +45,20 @@ type
   protected
     procedure Initialize; override;
     procedure Finalize; override;
-    procedure Loading(const AIniFile: TCustomIniFile); override;
+    procedure Loading; override;
     procedure AfterLoad; override;
     procedure BeforeSave; override;
-    procedure Saving(const AIniFile: TCustomIniFile); override;
+    procedure Saving; override;
   public
     constructor Create(const AProfileFileName: string = ''); override;
     property Server: string read GetServer write SetServer nodefault;
     property Login: string read GetLogin write SetLogin nodefault;
     property Password: string read GetPassword write SetPassword nodefault;
     property Database: string read GetDatabase write SetDatabase nodefault;
-    property WinNTSecurity: Boolean read GetWinNTSecurity write SetWinNTSecurity default PROFILE_DEFAULT_WIN_NT_SECURITY;
-    property StorePassword: Boolean read GetStorePassword write SetStorePassword default PROFILE_DEFAULT_STORE_PASSWORD;
+    property WinNTSecurity: Boolean read GetWinNTSecurity write SetWinNTSecurity
+      default PROFILE_DEFAULT_WIN_NT_SECURITY;
+    property StorePassword: Boolean read GetStorePassword write SetStorePassword
+      default PROFILE_DEFAULT_STORE_PASSWORD;
     property ADOConnectionString: string read GetADOConnectionString nodefault;
     property Tasks: ITasks read GetTasks nodefault;
     property Modified: Boolean read GetModified nodefault;
@@ -68,7 +70,11 @@ implementation
 
 uses
   System.SysUtils,
-  DBAutoTest.uTTasks;
+  DBAutoTest.uTTasks,
+  DBAutoTest.uEProfile;
+
+resourcestring
+  RsProfileSaveError = 'Произошла ошибка при попытке записи настроек профиля в файл!';
 
 function GetIProfile(const AProfileFileName: string): IProfile;
 begin
@@ -169,16 +175,33 @@ begin
   Result := FWinNTSecurity;
 end;
 
-procedure TProfile.Loading(const AIniFile: TCustomIniFile);
+procedure TProfile.Loading;
 begin
   inherited;
+  if Assigned(IniFile) then
+  begin
+    with IniFile do
+    begin
 
+    end;
+  end;
 end;
 
-procedure TProfile.Saving(const AIniFile: TCustomIniFile);
+procedure TProfile.Saving;
 begin
   inherited;
+  if Assigned(IniFile) then
+  begin
+    with IniFile do
+      try
 
+      except
+        on EIniFileException do
+        begin
+          raise EProfile.Create(RsProfileSaveError);
+        end;
+      end;
+  end;
 end;
 
 procedure TProfile.SetDatabase(const AValue: string);

@@ -560,17 +560,17 @@ begin
   b := actStatusBar.Checked;
   StatusBar.Visible := b;
   { TODO : дописать }
-  //Configuration.EnableStatusbar := b;
+  // Configuration.EnableStatusbar := b;
 end;
 
 procedure TMainForm.actToolBarExecute(Sender: TObject);
 var
   b: Boolean;
 begin
-  b := actToolbar.Checked;
+  b := actToolBar.Checked;
   ToolBar.Visible := b;
   { TODO : дописать }
-//  Configuration.EnableStatusbar := b;
+  // Configuration.EnableStatusbar := b;
 end;
 
 end.

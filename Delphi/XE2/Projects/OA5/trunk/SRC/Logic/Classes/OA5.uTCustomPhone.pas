@@ -45,14 +45,17 @@ type
     function IsNormalized: Boolean; virtual;
     procedure Normalize; virtual;
     function PhoneTypeToString: string; virtual;
-    property AutoNormalizeData: Boolean read GetAutoNormalizeData write SetAutoNormalizeData default False;
+    property AutoNormalizeData: Boolean read GetAutoNormalizeData write SetAutoNormalizeData
+      default False;
     property Id: Int64 read GetId write SetId default -1;
     property PhoneNumber: string read GetPhoneNumber write SetPhoneNumber nodefault;
     property PhoneType: TPhoneTypes read GetPhoneType write SetPhoneType default ptUnknown;
     property Comments: string read GetComments write SetComments nodefault;
     property CheckDate: TDate read GetCheckDate write SetCheckDate nodefault;
-    property CreationDateTime: TDateTime read GetCreationDateTime write SetCreationDateTime nodefault;
-    property ModificationDateTime: TDateTime read GetModificationDateTime write SetModificationDateTime nodefault;
+    property CreationDateTime: TDateTime read GetCreationDateTime
+      write SetCreationDateTime nodefault;
+    property ModificationDateTime: TDateTime read GetModificationDateTime
+      write SetModificationDateTime nodefault;
     property Priority: Byte read GetPriority write SetPriority default 0;
   end;
 

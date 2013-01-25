@@ -7,27 +7,30 @@ uses
   System.IniFiles,
   System.SysUtils,
   CastersPackage.uICustomized,
-  CastersPackage.uIIniFileDataStorage,
-  CastersPackage.uIModified;
+  CastersPackage.uIIniFileDataStorage;
 
 type
   EIniFileDataStorage = class(Exception);
 
-  TIniFileDataStorage = class(TInterfacedPersistent, IIniFileDataStorage, ICustomized, IModified)
+  TIniFileDataStorage = class(TInterfacedPersistent, IIniFileDataStorage, ICustomized)
   strict private
     FModified: Boolean;
     procedure SetModified(const AValue: Boolean);
-  protected
+  strict private
     FIniFileName: string;
+    FIniFile: TCustomIniFile;
+    function GetIniFile: TCustomIniFile; virtual;
+  strict protected
+    constructor Create(const AIniFileName: string = ''); virtual;
     procedure Initialize; virtual; abstract;
     procedure Finalize; virtual; abstract;
-    procedure Loading(const AIniFile: TCustomIniFile); virtual; abstract;
+    procedure Loading; virtual; abstract;
     procedure AfterLoad; virtual; abstract;
     procedure BeforeSave; virtual; abstract;
-    procedure Saving(const AIniFile: TCustomIniFile); virtual; abstract;
-    constructor Create(const AIniFileName: string = ''); virtual;
+    procedure Saving; virtual; abstract;
     function GetModified: Boolean; virtual;
     property Modified: Boolean read GetModified write SetModified nodefault;
+    property IniFile: TCustomIniFile read GetIniFile nodefault;
   public
     destructor Destroy; override;
     procedure Load; virtual; final;
@@ -59,6 +62,7 @@ begin
   begin
     FIniFileName := s;
   end;
+  FIniFile := nil;
   Initialize;
   Modified := False;
 end;
@@ -66,7 +70,16 @@ end;
 destructor TIniFileDataStorage.Destroy;
 begin
   Finalize;
+  if Assigned(FIniFile) then
+  begin
+    FreeAndNil(FIniFile);
+  end;
   inherited;
+end;
+
+function TIniFileDataStorage.GetIniFile: TCustomIniFile;
+begin
+  Result := FIniFile;
 end;
 
 function TIniFileDataStorage.GetModified: Boolean;
@@ -75,44 +88,40 @@ begin
 end;
 
 procedure TIniFileDataStorage.Load;
-var
-  ini_file: TCustomIniFile;
 begin
   if FIniFileName = EmptyStr then
   begin
     raise EIniFileDataStorage.Create(TEXT_WRONG_INIFILE_NAME);
   end;
-  ini_file := TMemIniFile.Create(FIniFileName);
+  FIniFile := TMemIniFile.Create(FIniFileName);
   try
-    Loading(ini_file);
-    if ini_file is TMemIniFile then
+    Loading;
+    if IniFile is TMemIniFile then
     begin
-      (ini_file as TMemIniFile).Clear;
-      (ini_file as TMemIniFile).UpdateFile;
+      (IniFile as TMemIniFile).Clear;
+      (IniFile as TMemIniFile).UpdateFile;
     end;
     Modified := False;
   finally
-    ini_file.Free;
+    FreeAndNil(FIniFile);
   end;
   AfterLoad;
 end;
 
 procedure TIniFileDataStorage.Save;
-var
-  ini_file: TCustomIniFile;
 begin
   BeforeSave;
   if FIniFileName = EmptyStr then
   begin
     raise EIniFileDataStorage.Create(TEXT_WRONG_INIFILE_NAME);
   end;
-  ini_file := TMemIniFile.Create(FIniFileName);
+  FIniFile := TMemIniFile.Create(FIniFileName);
   try
     try
-      Saving(ini_file);
-      if ini_file is TMemIniFile then
+      Saving;
+      if IniFile is TMemIniFile then
       begin
-        (ini_file as TMemIniFile).UpdateFile;
+        (IniFile as TMemIniFile).UpdateFile;
       end;
       Modified := False;
     except
@@ -122,7 +131,7 @@ begin
       end;
     end;
   finally
-    ini_file.Free;
+    FreeAndNil(FIniFile);
   end;
 end;
 
