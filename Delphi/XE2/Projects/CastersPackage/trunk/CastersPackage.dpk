@@ -66,7 +66,8 @@ contains
   CastersPackage.uIInterfaceListOfGivenType in 'CastersPackage.uIInterfaceListOfGivenType.pas',
   CastersPackage.uEInterfaceListOfGivenType in 'CastersPackage.uEInterfaceListOfGivenType.pas',
   CastersPackage.uTInterfaceListOfGivenType in 'CastersPackage.uTInterfaceListOfGivenType.pas',
-  CastersPackage.UNetSrvList in 'CastersPackage.UNetSrvList.pas';
+  CastersPackage.UNetSrvList in 'CastersPackage.UNetSrvList.pas',
+  CastersPackage.uIModified in 'CastersPackage.uIModified.pas';
 
 end.
 

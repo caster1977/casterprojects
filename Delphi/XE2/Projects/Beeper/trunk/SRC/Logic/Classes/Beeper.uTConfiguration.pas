@@ -8,7 +8,6 @@ uses
   Winapi.Windows,
   System.IniFiles,
   CastersPackage.uTIniFileDataStorage,
-  CastersPackage.uIIniFileDataStorage,
   Beeper.uConsts,
   Beeper.uISignalList;
 
@@ -315,7 +314,7 @@ begin
     except
       on EIniFileException do
       begin
-        raise EIniFileException.Create(RsIniFileSaveError);
+        raise EConfiguration.Create(RsIniFileSaveError);
       end;
     end;
   end;
