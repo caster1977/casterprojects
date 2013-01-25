@@ -22,8 +22,10 @@ type
     procedure SetEnableStatusbar(const AValue: Boolean);
     procedure SetEnableToolbar(const AValue: Boolean);
     property Recents: IRecents read GetRecents;
-    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete write SetEnablePlaySoundOnComplete;
-    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation write SetEnableQuitConfirmation;
+    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete
+      write SetEnablePlaySoundOnComplete;
+    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation
+      write SetEnableQuitConfirmation;
     property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart;
     property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar;
     property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar;

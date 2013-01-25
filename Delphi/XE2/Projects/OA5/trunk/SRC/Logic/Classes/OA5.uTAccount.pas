@@ -124,8 +124,8 @@ begin
   if Obj is TAccount then
   begin
     o := Obj as TAccount;
-    Result := (Logged = o.Logged) and (ID = o.ID) and (Login = o.Login) and (Password = o.Password) and
-      (Fullname = o.Fullname) and (Position = o.Position) and (Phone = o.Phone) and
+    Result := (Logged = o.Logged) and (ID = o.ID) and (Login = o.Login) and (Password = o.Password)
+      and (Fullname = o.Fullname) and (Position = o.Position) and (Phone = o.Phone) and
       ((Privilegies as TPrivilegies).Equals(o.Privilegies as TPrivilegies));
   end
   else

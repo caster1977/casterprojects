@@ -32,18 +32,19 @@ type
     property Configuration: IConfiguration read GetConfiguration nodefault;
     property CurrentUser: IAccount read GetCurrentUser nodefault;
   public
-    constructor Create(AOwner: TComponent; const ADialogPosition: TDialogPosition; ABusyCounter: PInteger = nil;
-      ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil; AProgressBar: TProgressBar = nil;
-      const AConfiguration: IConfiguration = nil; const ACurrentUser: IAccount = nil); reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const ADialogPosition: TDialogPosition;
+      ABusyCounter: PInteger = nil; ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil;
+      AProgressBar: TProgressBar = nil; const AConfiguration: IConfiguration = nil;
+      const ACurrentUser: IAccount = nil); reintroduce; virtual;
   end;
 
 implementation
 
 {$R *.dfm}
 
-constructor TOA5PositionedLogForm.Create(AOwner: TComponent; const ADialogPosition: TDialogPosition; ABusyCounter: PInteger;
-  ARefreshBusyStateMethod: TRefreshBusyStateMethod; AProgressBar: TProgressBar; const AConfiguration: IConfiguration;
-  const ACurrentUser: IAccount);
+constructor TOA5PositionedLogForm.Create(AOwner: TComponent; const ADialogPosition: TDialogPosition;
+  ABusyCounter: PInteger; ARefreshBusyStateMethod: TRefreshBusyStateMethod;
+  AProgressBar: TProgressBar; const AConfiguration: IConfiguration; const ACurrentUser: IAccount);
 begin
   inherited Create(AOwner, ADialogPosition, ABusyCounter, ARefreshBusyStateMethod, AProgressBar);
   FConfiguration := AConfiguration;

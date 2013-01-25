@@ -10,7 +10,7 @@ uses
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.ComCtrls,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls, System.Actions;
 
 type
   TCreateMessageForm = class(TOA5PositionedLogForm)
@@ -61,14 +61,16 @@ resourcestring
 
 procedure TCreateMessageForm.actClearExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClear.Caption]), '{F78DE6D4-0164-4F4E-9DCA-0BD6FA5EB2CF}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClear.Caption]),
+    '{F78DE6D4-0164-4F4E-9DCA-0BD6FA5EB2CF}');
   _Clear;
   ProcedureFooter;
 end;
 
 procedure TCreateMessageForm.actCloseExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{F1FBC2E1-336C-491D-BC0B-8B2E70108C6D}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]),
+    '{F1FBC2E1-336C-491D-BC0B-8B2E70108C6D}');
   Log.SendInfo('Попытка отправки нового сообщения была отменена пользователем.');
   CloseModalWindowWithOkResult(RsCreateMessageForm, '{6534AA5E-554C-4205-9A00-ED012CB9C24A}');
   ProcedureFooter;
@@ -76,14 +78,16 @@ end;
 
 procedure TCreateMessageForm.actHelpExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{800109C0-82AB-4EAC-80E9-9341BC00A650}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]),
+    '{800109C0-82AB-4EAC-80E9-9341BC00A650}');
   Help(HelpContext, '{C62837FE-27A8-4514-A2ED-4F01ABBAFCD3}');
   ProcedureFooter;
 end;
 
 procedure TCreateMessageForm.actSendExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSend.Caption]), '{09170DB8-FCE2-4EF4-BD59-4E149C5F8280}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actSend.Caption]),
+    '{09170DB8-FCE2-4EF4-BD59-4E149C5F8280}');
   Log.SendInfo('Попытка отправки созданного сообщения была подтверждена пользователем.');
   CloseModalWindowWithOkResult(RsCreateMessageForm, '{6B3A55BA-2855-4E4F-A7DE-806E72AE46EB}');
   ProcedureFooter;
@@ -91,7 +95,8 @@ end;
 
 procedure TCreateMessageForm._Clear;
 begin
-  ProcedureHeader('Процедура очистки полей ввода окна создания сообщения', '{CC3CBEB8-842A-44C8-A6A0-92FE911F5A4D}');
+  ProcedureHeader('Процедура очистки полей ввода окна создания сообщения',
+    '{CC3CBEB8-842A-44C8-A6A0-92FE911F5A4D}');
 
   cmbbxTo.ItemIndex := -1;
   edbxTheme.Clear;
@@ -104,14 +109,16 @@ end;
 
 procedure TCreateMessageForm.FormCreate(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsCreateMessageForm]), '{7FD82BF2-AA3D-4AD0-848B-14E0000E9B31}');
+  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsCreateMessageForm]),
+    '{7FD82BF2-AA3D-4AD0-848B-14E0000E9B31}');
   ImageList.GetIcon(ICON_CREATEMESSAGE, Icon);
   ProcedureFooter;
 end;
 
 procedure TCreateMessageForm.FormShow(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsCreateMessageForm]), '{C74EFD70-4CE5-4DF6-AFCD-D946EF325B07}');
+  ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsCreateMessageForm]),
+    '{C74EFD70-4CE5-4DF6-AFCD-D946EF325B07}');
   Log.SendInfo(Format(RsWindowShowed, [RsCreateMessageForm]));
   ProcedureFooter;
 end;
@@ -124,7 +131,8 @@ begin
   b := (cmbbxTo.ItemIndex > -1) and (edbxTheme.Text <> EmptyStr) and (reMessage.Text <> EmptyStr);
   if actSend.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSend.Caption]), '{4FBC980F-4CAF-4B64-89D3-77F33D1EA9F3}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actSend.Caption]),
+      '{4FBC980F-4CAF-4B64-89D3-77F33D1EA9F3}');
     actSend.Enabled := b;
     btnSend.Default := b;
     btnClose.Default := not b;
@@ -141,7 +149,8 @@ begin
   b := (cmbbxTo.ItemIndex > -1) or (edbxTheme.Text <> EmptyStr) or (reMessage.Text <> EmptyStr);
   if actClear.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actClear.Caption]), '{C0B63DD7-D5B5-4F12-A314-CB2826FBB521}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actClear.Caption]),
+      '{C0B63DD7-D5B5-4F12-A314-CB2826FBB521}');
     actClear.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actClear));
     ProcedureFooter;
@@ -156,7 +165,8 @@ begin
   b := Application.HelpFile <> EmptyStr;
   if actHelp.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]), '{876209CD-9450-437C-BECD-39568ECD2FC0}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]),
+      '{876209CD-9450-437C-BECD-39568ECD2FC0}');
     actHelp.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actHelp));
     ProcedureFooter;

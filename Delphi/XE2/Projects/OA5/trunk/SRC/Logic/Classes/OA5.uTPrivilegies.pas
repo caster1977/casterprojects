@@ -27,10 +27,14 @@ type
     function Equals(Obj: TObject): Boolean; override;
     procedure Assign(Source: TPersistent); override;
   published
-    property Editing: Boolean read GetEditing write SetEditing default DEFAULT_PRIVILEGIES_ACCOUNTING;
-    property Clearing: Boolean read GetClearing write SetClearing default DEFAULT_PRIVILEGIES_CLEARING;
-    property Accounting: Boolean read GetAccounting write SetAccounting default DEFAULT_PRIVILEGIES_EDITING;
-    property Reporting: Boolean read GetReporting write SetReporting default DEFAULT_PRIVILEGIES_REPORTING;
+    property Editing: Boolean read GetEditing write SetEditing
+      default DEFAULT_PRIVILEGIES_ACCOUNTING;
+    property Clearing: Boolean read GetClearing write SetClearing
+      default DEFAULT_PRIVILEGIES_CLEARING;
+    property Accounting: Boolean read GetAccounting write SetAccounting
+      default DEFAULT_PRIVILEGIES_EDITING;
+    property Reporting: Boolean read GetReporting write SetReporting
+      default DEFAULT_PRIVILEGIES_REPORTING;
   end;
 
 function GetIPrivilegies: IPrivilegies;

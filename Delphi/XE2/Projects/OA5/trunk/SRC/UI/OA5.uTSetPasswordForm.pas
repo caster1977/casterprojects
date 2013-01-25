@@ -10,7 +10,7 @@ uses
   Vcl.ImgList,
   Vcl.Controls,
   Vcl.StdCtrls,
-  Vcl.Mask;
+  Vcl.Mask, System.Actions;
 
 type
   TSetPasswordForm = class(TOA5PositionedLogForm)
@@ -60,8 +60,8 @@ const
   MASK_ON_CHAR = '*';
   MASK_OFF_CHAR = #0;
 begin
-  ProcedureHeader('Процедура реакции на переключение состояния флажка "' + chkbxShowPassword.Caption + '"',
-    '{0219B9CF-B108-49C8-A390-22AF8B17C186}');
+  ProcedureHeader('Процедура реакции на переключение состояния флажка "' + chkbxShowPassword.Caption
+    + '"', '{0219B9CF-B108-49C8-A390-22AF8B17C186}');
 
   if chkbxShowPassword.Checked then
   begin
@@ -79,21 +79,24 @@ end;
 
 procedure TSetPasswordForm.FormCreate(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsSetPasswordForm]), '{43E2DB1C-46EC-46FB-BE5F-69082FF4BDB0}');
+  ProcedureHeader(Format(RsEventHandlerOfFormCreation, [RsSetPasswordForm]),
+    '{43E2DB1C-46EC-46FB-BE5F-69082FF4BDB0}');
   ImageList.GetIcon(ICON_SETPASSWORD, Icon);
   ProcedureFooter;
 end;
 
 procedure TSetPasswordForm.FormShow(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsSetPasswordForm]), '{109E2C60-29E7-4230-956B-848F6063FD69}');
+  ProcedureHeader(Format(RsEventHandlerOfFormShowing, [RsSetPasswordForm]),
+    '{109E2C60-29E7-4230-956B-848F6063FD69}');
   Log.SendInfo(Format(RsWindowShowed, [RsSetPasswordForm]));
   ProcedureFooter;
 end;
 
 procedure TSetPasswordForm.actApplyExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actApply.Caption]), '{D6F02F10-4334-4227-9C49-E2DB8B98CA70}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actApply.Caption]),
+    '{D6F02F10-4334-4227-9C49-E2DB8B98CA70}');
   Log.SendInfo('Попытка изменения пароля учётной записи была подтверждена пользователем.');
   CloseModalWindowWithOkResult(RsSetPasswordForm, '{C91510FD-FEE6-435A-914F-18C3AA52AECC}');
   ProcedureFooter;
@@ -107,7 +110,8 @@ begin
   b := mePassword.Text = meConfirmation.Text;
   if actApply.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actApply.Caption]), '{C430F728-3AC7-4605-831B-F2AE12429BDA}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actApply.Caption]),
+      '{C430F728-3AC7-4605-831B-F2AE12429BDA}');
     actApply.Enabled := b;
     if btnApply.Default <> b then
     begin
@@ -124,7 +128,8 @@ end;
 
 procedure TSetPasswordForm.actCloseExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]), '{4569EB61-7A53-4A07-8D49-7D91C54D6FEF}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actClose.Caption]),
+    '{4569EB61-7A53-4A07-8D49-7D91C54D6FEF}');
   Log.SendInfo('Попытка изменения пароля учётной записи была отменена пользователем.');
   CloseModalWindowWithCancelResult(RsSetPasswordForm, '{927BC3C9-B8AF-4E3E-93CA-576E9FE65D08}');
   ProcedureFooter;
@@ -132,7 +137,8 @@ end;
 
 procedure TSetPasswordForm.actHelpExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{772E549E-6DD2-4921-B2F9-5C65F20976FE}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]),
+    '{772E549E-6DD2-4921-B2F9-5C65F20976FE}');
   Help(HelpContext, '{9E50E972-CBB5-47DB-8241-9317E3EA51F6}');
   ProcedureFooter;
 end;
@@ -144,7 +150,8 @@ begin
   b := Application.HelpFile <> EmptyStr;
   if actHelp.Enabled <> b then
   begin
-    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]), '{B92D0FEB-6E73-42D9-A684-68918F5F11A6}');
+    ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actHelp.Caption]),
+      '{B92D0FEB-6E73-42D9-A684-68918F5F11A6}');
     actHelp.Enabled := b;
     Log.SendDebug(GetActionUpdateLogMessage(actHelp));
     ProcedureFooter;

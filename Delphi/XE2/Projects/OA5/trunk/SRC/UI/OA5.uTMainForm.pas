@@ -21,7 +21,8 @@ uses
   Vcl.ImgList,
   Vcl.Menus,
   Winapi.Windows,
-  Vcl.StdCtrls, System.Actions;
+  Vcl.StdCtrls,
+  System.Actions;
 
 type
   TMainForm = class(TOA5LogForm)
@@ -200,8 +201,8 @@ begin
   ilStates.GetIcon(Integer(b), imState.Picture.Icon);
   if Configuration.EnableStatusbar then
   begin
-    StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := Routines.GetConditionalString(GlobalBusyCounter > 0,
-      'Пожалуйста, подождите...', 'Готово');
+    StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text :=
+      Routines.GetConditionalString(GlobalBusyCounter > 0, 'Пожалуйста, подождите...', 'Готово');
   end
   else
   begin
@@ -212,15 +213,18 @@ end;
 
 procedure TMainForm.actAboutExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actAbout.Caption]), '{90CC0AAB-ED7C-46FF-97FF-4431F18EBA1A}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actAbout.Caption]),
+    '{90CC0AAB-ED7C-46FF-97FF-4431F18EBA1A}');
   _About(True);
   ProcedureFooter;
 end;
 
 procedure TMainForm._About(const AButtonVisible: Boolean);
 begin
-  ProcedureHeader(Format(RsShowWindowProcedure, [RsAboutFormSuffix]), '{754C2801-ED59-4595-AC3E-20DBF98F6779}');
-  with TAboutForm.Create(Self, AButtonVisible, Addr(GlobalBusyCounter), _RefreshBusyState, pbMain) do
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsAboutFormSuffix]),
+    '{754C2801-ED59-4595-AC3E-20DBF98F6779}');
+  with TAboutForm.Create(Self, AButtonVisible, Addr(GlobalBusyCounter), _RefreshBusyState,
+    pbMain) do
   begin
     try
       ShowModal;
@@ -233,21 +237,24 @@ end;
 
 procedure TMainForm.actHelpExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]), '{D066E67D-C195-440D-94C2-6757C427DCF6}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actHelp.Caption]),
+    '{D066E67D-C195-440D-94C2-6757C427DCF6}');
   Help(HelpContext, '{94165848-9C2D-4110-A47F-32337C35794E}');
   ProcedureFooter;
 end;
 
 procedure TMainForm.actQuitExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actQuit.Caption]), '{5DB14721-5FC4-4B42-B0DB-4E7C323A2AA2}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actQuit.Caption]),
+    '{5DB14721-5FC4-4B42-B0DB-4E7C323A2AA2}');
   Close;
   ProcedureFooter;
 end;
 
 procedure TMainForm.actReportExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actReport.Caption]), '{90957E86-35D1-4C1B-9C1F-4C99CE5D2B56}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actReport.Caption]),
+    '{90957E86-35D1-4C1B-9C1F-4C99CE5D2B56}');
   _Report;
   ProcedureFooter;
 end;
@@ -256,7 +263,8 @@ procedure TMainForm.actStatusBarExecute(Sender: TObject);
 var
   b: Boolean;
 begin
-  ProcedureHeader('Процедура включения/отключения отображения панели статуса', '{3550143C-FACD-490F-A327-4E1496CDEC5E}');
+  ProcedureHeader('Процедура включения/отключения отображения панели статуса',
+    '{3550143C-FACD-490F-A327-4E1496CDEC5E}');
   b := actStatusBar.Checked;
 
   StatusBar.Visible := b;
@@ -270,7 +278,8 @@ procedure TMainForm.actToolBarExecute(Sender: TObject);
 var
   b: Boolean;
 begin
-  ProcedureHeader('Процедура включения/отключения отображения панели кнопок', '{786D709B-0201-41AE-923C-BC307AE26A6B}');
+  ProcedureHeader('Процедура включения/отключения отображения панели кнопок',
+    '{786D709B-0201-41AE-923C-BC307AE26A6B}');
   b := actToolBar.Checked;
 
   // StatusBar.Visible:=b;
@@ -288,7 +297,8 @@ var
   begin
     THackControl(pbMain).SetParent(StatusBar);
     SendMessage(StatusBar.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
-    pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right - PanelRect.Left, PanelRect.Bottom - PanelRect.Top - 1);
+    pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right - PanelRect.Left,
+      PanelRect.Bottom - PanelRect.Top - 1);
   end;
 
   procedure BindStateImageToStatusBar;
@@ -384,7 +394,8 @@ begin
     b := not CurrentUser.Logged;
     if actLogon.Enabled <> b then
     begin
-      ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actLogon.Caption]), '{03684037-88D8-43AE-B198-A1DF544BDC40}');
+      ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actLogon.Caption]),
+        '{03684037-88D8-43AE-B198-A1DF544BDC40}');
       actLogon.Enabled := b;
       Log.SendDebug(GetActionUpdateLogMessage(actLogon));
       ProcedureFooter;
@@ -402,7 +413,8 @@ begin
     b := CurrentUser.Logged;
     if actLogoff.Enabled <> b then
     begin
-      ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actLogoff.Caption]), '{AFDD10B3-F271-4126-A984-0607A15A0950}');
+      ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actLogoff.Caption]),
+        '{AFDD10B3-F271-4126-A984-0607A15A0950}');
       actLogoff.Enabled := b;
       Log.SendDebug(GetActionUpdateLogMessage(actLogoff));
       ProcedureFooter;
@@ -420,7 +432,8 @@ begin
     b := CurrentUser.Logged and CurrentUser.Privilegies.Accounting;
     if actAccounts.Enabled <> b then
     begin
-      ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actAccounts.Caption]), '{AFDD10B3-F271-4126-A984-0607A15A0950}');
+      ProcedureHeader(Format(RsEventHandlerOfActionUpdate, [actAccounts.Caption]),
+        '{AFDD10B3-F271-4126-A984-0607A15A0950}');
       actAccounts.Enabled := b;
       Log.SendDebug(GetActionUpdateLogMessage(actAccounts));
       ProcedureFooter;
@@ -438,10 +451,11 @@ end;
 
 procedure TMainForm._Configuration;
 begin
-  ProcedureHeader(Format(RsShowWindowProcedure, [RsConfigurationFormSuffix]), '{886B460D-4C73-46BE-829E-E4421B7C4378}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsConfigurationFormSuffix]),
+    '{886B460D-4C73-46BE-829E-E4421B7C4378}');
 
-  with TConfigurationForm.Create(Self, Configuration.ConfigurationFormPosition, @GlobalBusyCounter, _RefreshBusyState,
-    pbMain, Configuration, CurrentUser) do
+  with TConfigurationForm.Create(Self, Configuration.ConfigurationFormPosition, @GlobalBusyCounter,
+    _RefreshBusyState, pbMain, Configuration, CurrentUser) do
   begin
     try
       ShowModal;
@@ -459,7 +473,8 @@ end;
 
 procedure TMainForm._LoadConfiguration;
 begin
-  ProcedureHeader('Процедура чтения настроек программы из файла', '{650B9486-2600-4038-B711-3281F7252336}');
+  ProcedureHeader('Процедура чтения настроек программы из файла',
+    '{650B9486-2600-4038-B711-3281F7252336}');
   Log.SendInfo('Производится попытка чтения настроек программы из файла...');
   try
     Screen.Cursor := crHourGlass;
@@ -478,7 +493,8 @@ end;
 
 procedure TMainForm._SaveConfiguration;
 begin
-  ProcedureHeader('Процедура записи настроек программы в файл', '{2BD55804-9631-45C8-9484-42F4DDC45C29}');
+  ProcedureHeader('Процедура записи настроек программы в файл',
+    '{2BD55804-9631-45C8-9484-42F4DDC45C29}');
 
   Log.SendInfo('Производится попытка записи настроек программы в файл...');
   try
@@ -493,8 +509,10 @@ begin
     on E: EIniFileException do
     begin
       GenerateError(E.Message);
-      if MessageBox(Handle, PWideChar('Вы желаете повторить попытку записи настроек программы в файл?'),
-        PWideChar(Application.Title + ' - Предупреждение'), MB_OKCANCEL + MB_ICONWARNING + MB_DEFBUTTON1) = IDOK then
+      if MessageBox(Handle,
+        PWideChar('Вы желаете повторить попытку записи настроек программы в файл?'),
+        PWideChar(Application.Title + ' - Предупреждение'), MB_OKCANCEL + MB_ICONWARNING +
+        MB_DEFBUTTON1) = IDOK then
         try
           Screen.Cursor := crHourGlass;
           try
@@ -517,7 +535,8 @@ end;
 
 procedure TMainForm._ApplyConfiguration;
 begin
-  ProcedureHeader('Процедура применения изменений к интерфейсу программы', '{67A9E9BC-62AC-4848-B20D-C8B5095DEB6C}');
+  ProcedureHeader('Процедура применения изменений к интерфейсу программы',
+    '{67A9E9BC-62AC-4848-B20D-C8B5095DEB6C}');
 
   // установка видимости панели статуса в соответствии с настройками программы
   miStatusBar.Checked := Configuration.EnableStatusbar;
@@ -548,10 +567,11 @@ end;
 
 procedure TMainForm._Report;
 begin
-  ProcedureHeader(Format(RsShowWindowProcedure, [RsReportFormSuffix]), '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsReportFormSuffix]),
+    '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
 
-  with TReportForm.Create(Self, Configuration.ReportFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
-    Configuration, CurrentUser) do
+  with TReportForm.Create(Self, Configuration.ReportFormPosition, @GlobalBusyCounter,
+    _RefreshBusyState, pbMain, Configuration, CurrentUser) do
   begin
     try
       ShowModal;
@@ -571,19 +591,21 @@ var
   i: Integer;
   aListItem: TListItem;
 begin
-  ProcedureHeader(Format(RsShowWindowProcedure, [RsMultiBufferFormSuffix]), '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsMultiBufferFormSuffix]),
+    '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
 
-  with TMultiBufferForm.Create(Self, Configuration.MultibufferFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
-    Configuration, CurrentUser, MultiBuffer) do
+  with TMultiBufferForm.Create(Self, Configuration.MultibufferFormPosition, @GlobalBusyCounter,
+    _RefreshBusyState, pbMain, Configuration, CurrentUser, MultiBuffer) do
   begin
     try
       for i := 0 to MultiBuffer.Count - 1 do
       begin
         aListItem := lvBuffer.Items.Add;
         aListItem.Caption := IntToStr(i);
-        aListItem.SubItems.Add(MultiBuffer[i].Type_ + '|' + MultiBuffer[i].Name + '|' + MultiBuffer[i].Author + '|' +
-          MultiBuffer[i].Producer + '|' + MultiBuffer[i].Performer + '|' + MultiBuffer[i].Organizer + '|' +
-          MultiBuffer[i].TicketPrice + '|' + string(MultiBuffer[i].OtherInfoPlane));
+        aListItem.SubItems.Add(MultiBuffer[i].Type_ + '|' + MultiBuffer[i].Name + '|' +
+          MultiBuffer[i].Author + '|' + MultiBuffer[i].Producer + '|' + MultiBuffer[i].Performer +
+          '|' + MultiBuffer[i].Organizer + '|' + MultiBuffer[i].TicketPrice + '|' +
+          string(MultiBuffer[i].OtherInfoPlane));
       end;
       ShowModal;
     finally
@@ -599,10 +621,11 @@ end;
 
 procedure TMainForm.actViewMessageExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsShowWindowProcedure, [RsViewMessageFormSuffix]), '{347244A6-22DF-44DF-873B-2B55FC5112B9}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsViewMessageFormSuffix]),
+    '{347244A6-22DF-44DF-873B-2B55FC5112B9}');
 
-  with TViewMessageForm.Create(Self, Configuration.ViewMessageFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
-    Configuration, CurrentUser) do
+  with TViewMessageForm.Create(Self, Configuration.ViewMessageFormPosition, @GlobalBusyCounter,
+    _RefreshBusyState, pbMain, Configuration, CurrentUser) do
   begin
     try
       ShowModal;
@@ -619,10 +642,11 @@ end;
 
 procedure TMainForm.actViewPhonesExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsShowWindowProcedure, [RsPhoneListFormSuffix]), '{5CFCDFBC-34DF-4A16-A725-A4B388B9EC97}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsPhoneListFormSuffix]),
+    '{5CFCDFBC-34DF-4A16-A725-A4B388B9EC97}');
 
-  with TPhoneListForm.Create(Self, Configuration.PhoneListFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
-    Configuration, CurrentUser) do
+  with TPhoneListForm.Create(Self, Configuration.PhoneListFormPosition, @GlobalBusyCounter,
+    _RefreshBusyState, pbMain, Configuration, CurrentUser) do
   begin
     try
       ShowModal;
@@ -639,10 +663,11 @@ end;
 
 procedure TMainForm.actCreateMessageExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsShowWindowProcedure, [RsCreateMessageFormSuffix]), '{F356F5DA-5FF7-4F78-A80E-1C563B96AF6D}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsCreateMessageFormSuffix]),
+    '{F356F5DA-5FF7-4F78-A80E-1C563B96AF6D}');
 
-  with TCreateMessageForm.Create(Self, Configuration.CreateMessageFormPosition, @GlobalBusyCounter, _RefreshBusyState,
-    pbMain, Configuration, CurrentUser) do
+  with TCreateMessageForm.Create(Self, Configuration.CreateMessageFormPosition, @GlobalBusyCounter,
+    _RefreshBusyState, pbMain, Configuration, CurrentUser) do
   begin
     try
       ShowModal;
@@ -659,10 +684,11 @@ end;
 
 procedure TMainForm.actAddPhoneExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsShowWindowProcedure, [RsAddPhoneFormSuffix]), '{83D61BCA-0CB5-4542-9D0A-9137AE9C733C}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsAddPhoneFormSuffix]),
+    '{83D61BCA-0CB5-4542-9D0A-9137AE9C733C}');
 
-  with TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
-    Configuration, CurrentUser) do
+  with TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition, @GlobalBusyCounter,
+    _RefreshBusyState, pbMain, Configuration, CurrentUser) do
   begin
     try
       Caption := RsAddPhoneFormCaption;
@@ -680,10 +706,11 @@ end;
 
 procedure TMainForm.actEditPhoneExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsShowWindowProcedure, [RsEditPhoneFormSuffix]), '{36EA36F5-EDE2-4A3A-A7DE-BB9790D3F50F}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsEditPhoneFormSuffix]),
+    '{36EA36F5-EDE2-4A3A-A7DE-BB9790D3F50F}');
 
-  with TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
-    Configuration, CurrentUser) do
+  with TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition, @GlobalBusyCounter,
+    _RefreshBusyState, pbMain, Configuration, CurrentUser) do
   begin
     try
       Caption := RsEditPhoneFormCaption;
@@ -701,14 +728,16 @@ end;
 
 procedure TMainForm.actLogonExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actLogon.Caption]), '{25B404A0-78C1-47D6-AFCE-33168CAF333A}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actLogon.Caption]),
+    '{25B404A0-78C1-47D6-AFCE-33168CAF333A}');
   _Logon;
   ProcedureFooter;
 end;
 
 procedure TMainForm.actLogoffExecute(Sender: TObject);
 begin
-  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actLogoff.Caption]), '{3A1F49AC-A9CF-4FC7-90AA-A6D2E5AE1619}');
+  ProcedureHeader(Format(RsEventHandlerOfActionExecute, [actLogoff.Caption]),
+    '{3A1F49AC-A9CF-4FC7-90AA-A6D2E5AE1619}');
   _Logoff;
   ProcedureFooter;
 end;
@@ -774,7 +803,8 @@ var
     end; *)
 
 begin
-  ProcedureHeader(Format(RsShowWindowProcedure, [RsLoginFormSuffix]), '{68883F7C-57C2-4E56-B2FB-AEDCB1EB25DC}');
+  ProcedureHeader(Format(RsShowWindowProcedure, [RsLoginFormSuffix]),
+    '{68883F7C-57C2-4E56-B2FB-AEDCB1EB25DC}');
 
   bPassLoginForm := Configuration.EnableAutoLogon and Configuration.EnableStoreLogin and
     Configuration.EnableStorePassword and (Configuration.StoredLogin <> EmptyStr);
@@ -795,8 +825,8 @@ begin
 
   if not bPassLoginForm then
   begin
-    LoginForm := TLoginForm.Create(Self, Configuration.LoginFormPosition, @GlobalBusyCounter, _RefreshBusyState, pbMain,
-      Configuration, CurrentUser);
+    LoginForm := TLoginForm.Create(Self, Configuration.LoginFormPosition, @GlobalBusyCounter,
+      _RefreshBusyState, pbMain, Configuration, CurrentUser);
     with LoginForm do
       try
         if Configuration.EnableStoreLogin then

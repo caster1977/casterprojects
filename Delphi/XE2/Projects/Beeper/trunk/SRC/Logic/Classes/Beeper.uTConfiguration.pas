@@ -37,11 +37,12 @@ type
   strict protected
     procedure Initialize; override;
     procedure Finalize; override;
-    procedure Loading(const AIniFile: TCustomIniFile); override;
+    procedure Loading; override;
     procedure AfterLoad; override;
     procedure BeforeSave; override;
-    procedure Saving(const AIniFile: TCustomIniFile); override;
+    procedure Saving; override;
   public
+    constructor Create(const AConfigurationFileName: string = ''); override;
     property ShowBaloonHints: Boolean read GetShowBaloonHints write SetShowBaloonHints
       default DEFAULT_CONFIGURATION_SHOW_BALOON_HINTS;
     property SoundEnabled: Boolean read GetSoundEnabled write SetSoundEnabled
@@ -57,7 +58,7 @@ type
     property Signals: ISignalList read GetSignals nodefault;
   end;
 
-function GetIConfiguration(const AIniFileName: string = ''): IConfiguration;
+function GetIConfiguration(const AConfigurationFileName: string = ''): IConfiguration;
 
 implementation
 
@@ -93,9 +94,9 @@ resourcestring
   RsIniFileSaveError =
     'Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
 
-function GetIConfiguration(const AIniFileName: string): IConfiguration;
+function GetIConfiguration(const AConfigurationFileName: string): IConfiguration;
 begin
-  Result := TConfiguration.Create(AIniFileName);
+  Result := TConfiguration.Create(AConfigurationFileName);
 end;
 
 procedure TConfiguration.AfterLoad;
@@ -104,6 +105,11 @@ begin
 end;
 
 procedure TConfiguration.BeforeSave;
+begin
+  inherited;
+end;
+
+constructor TConfiguration.Create(const AConfigurationFileName: string);
 begin
   inherited;
 end;
@@ -193,7 +199,7 @@ begin
   VirtualKeyOff := DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF;
 end;
 
-procedure TConfiguration.Loading(const AIniFile: TCustomIniFile);
+procedure TConfiguration.Loading;
 var
   i: Integer;
   signal_count: Integer;
@@ -201,122 +207,127 @@ var
   s: string;
 begin
   inherited;
-  with AIniFile do
+  if Assigned(IniFile) then
   begin
-    ShowBaloonHints := ReadBool(RsHints, RsInTray, DEFAULT_CONFIGURATION_SHOW_BALOON_HINTS);
-    SoundEnabled := ReadBool(RsSounds, RsEnabled, DEFAULT_CONFIGURATION_SOUND_ENABLED);
-    ModifierOn := ReadInteger(RsHotKeys, RsModifierOn, DEFAULT_CONFIGURATION_MODIFIER_ON);
-    VirtualKeyOn := ReadInteger(RsHotKeys, RsVirtualKeyOn, DEFAULT_CONFIGURATION_VIRTUAL_KEY_ON);
-    ModifierOff := ReadInteger(RsHotKeys, RsModifierOff, DEFAULT_CONFIGURATION_MODIFIER_OFF);
-    VirtualKeyOff := ReadInteger(RsHotKeys, RsVirtualKeyOff, DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF);
-    signal_count := ReadInteger(RsSignals, RsQuantity, DEFAULT_SIGNAL_COUNT);
-    Signals.Clear;
-    for i := 0 to signal_count - 1 do
+    with IniFile do
     begin
-      s := Format(RsSignal, [IntToStr(i)]);
-      signal := GetISignal;
-      signal.Title := ReadString(s, RsTitle, DEFAULT_SIGNAL_TITLE);
-      signal.Period := ReadInteger(s, RsPeriod, DEFAULT_SIGNAL_PERIOD);
-      signal.PeriodType := TPeriodTypes(ReadInteger(s, RsPeriodType,
-        Integer(DEFAULT_SIGNAL_PERIOD_TYPE)));
-      signal.MessageEnabled := ReadBool(s, RsMessageEnabled, DEFAULT_SIGNAL_MESSAGE_ENABLED);
-      signal.Message := ReadString(s, RsMessage, DEFAULT_SIGNAL_MESSAGE);
-      signal.WaveFileEnabled := ReadBool(s, RsWaveFileEnabled, DEFAULT_SIGNAL_WAVE_FILE_ENABLED);
-      signal.WaveFile := ReadString(s, RsWaveFile, DEFAULT_SIGNAL_WAVE_FILE);
-      signal.Enabled := ReadBool(s, RsEnabled, DEFAULT_SIGNAL_ENABLED);
-      signal.Timer.Enabled := False;
-      Signals.Add(signal);
+      ShowBaloonHints := ReadBool(RsHints, RsInTray, DEFAULT_CONFIGURATION_SHOW_BALOON_HINTS);
+      SoundEnabled := ReadBool(RsSounds, RsEnabled, DEFAULT_CONFIGURATION_SOUND_ENABLED);
+      ModifierOn := ReadInteger(RsHotKeys, RsModifierOn, DEFAULT_CONFIGURATION_MODIFIER_ON);
+      VirtualKeyOn := ReadInteger(RsHotKeys, RsVirtualKeyOn, DEFAULT_CONFIGURATION_VIRTUAL_KEY_ON);
+      ModifierOff := ReadInteger(RsHotKeys, RsModifierOff, DEFAULT_CONFIGURATION_MODIFIER_OFF);
+      VirtualKeyOff := ReadInteger(RsHotKeys, RsVirtualKeyOff,
+        DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF);
+      signal_count := ReadInteger(RsSignals, RsQuantity, DEFAULT_SIGNAL_COUNT);
+      Signals.Clear;
+      for i := 0 to signal_count - 1 do
+      begin
+        s := Format(RsSignal, [IntToStr(i)]);
+        signal := GetISignal;
+        signal.Title := ReadString(s, RsTitle, DEFAULT_SIGNAL_TITLE);
+        signal.Period := ReadInteger(s, RsPeriod, DEFAULT_SIGNAL_PERIOD);
+        signal.PeriodType := TPeriodTypes(ReadInteger(s, RsPeriodType,
+          Integer(DEFAULT_SIGNAL_PERIOD_TYPE)));
+        signal.MessageEnabled := ReadBool(s, RsMessageEnabled, DEFAULT_SIGNAL_MESSAGE_ENABLED);
+        signal.Message := ReadString(s, RsMessage, DEFAULT_SIGNAL_MESSAGE);
+        signal.WaveFileEnabled := ReadBool(s, RsWaveFileEnabled, DEFAULT_SIGNAL_WAVE_FILE_ENABLED);
+        signal.WaveFile := ReadString(s, RsWaveFile, DEFAULT_SIGNAL_WAVE_FILE);
+        signal.Enabled := ReadBool(s, RsEnabled, DEFAULT_SIGNAL_ENABLED);
+        signal.Timer.Enabled := False;
+        Signals.Add(signal);
+      end;
     end;
   end;
 end;
 
-procedure TConfiguration.Saving(const AIniFile: TCustomIniFile);
+procedure TConfiguration.Saving;
 var
   i: Integer;
   s: string;
   _signal: ISignal;
 begin
   inherited;
-  if Assigned(AIniFile) then
+  if Assigned(IniFile) then
   begin
-    try
-      if ShowBaloonHints <> DEFAULT_CONFIGURATION_SHOW_BALOON_HINTS then
-      begin
-        AIniFile.WriteBool(RsHints, RsInTray, ShowBaloonHints);
-      end;
-      if SoundEnabled <> DEFAULT_CONFIGURATION_SOUND_ENABLED then
-      begin
-        AIniFile.WriteBool(RsSounds, RsEnabled, SoundEnabled);
-      end;
-      if ModifierOn <> DEFAULT_CONFIGURATION_MODIFIER_ON then
-      begin
-        AIniFile.WriteInteger(RsHotKeys, RsModifierOn, ModifierOn);
-      end;
-      if VirtualKeyOn <> DEFAULT_CONFIGURATION_VIRTUAL_KEY_ON then
-      begin
-        AIniFile.WriteInteger(RsHotKeys, RsVirtualKeyOn, VirtualKeyOn);
-      end;
-      if ModifierOff <> DEFAULT_CONFIGURATION_MODIFIER_OFF then
-      begin
-        AIniFile.WriteInteger(RsHotKeys, RsModifierOff, ModifierOff);
-      end;
-      if VirtualKeyOff <> DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF then
-      begin
-        AIniFile.WriteInteger(RsHotKeys, RsVirtualKeyOff, VirtualKeyOff);
-      end;
-      if Assigned(Signals) then
-      begin
-        if Signals.Count <> DEFAULT_SIGNAL_COUNT then
+    with IniFile do
+      try
+        if ShowBaloonHints <> DEFAULT_CONFIGURATION_SHOW_BALOON_HINTS then
         begin
-          AIniFile.WriteInteger(RsSignals, RsQuantity, Signals.Count);
-          for i := 0 to Signals.Count - 1 do
+          WriteBool(RsHints, RsInTray, ShowBaloonHints);
+        end;
+        if SoundEnabled <> DEFAULT_CONFIGURATION_SOUND_ENABLED then
+        begin
+          WriteBool(RsSounds, RsEnabled, SoundEnabled);
+        end;
+        if ModifierOn <> DEFAULT_CONFIGURATION_MODIFIER_ON then
+        begin
+          WriteInteger(RsHotKeys, RsModifierOn, ModifierOn);
+        end;
+        if VirtualKeyOn <> DEFAULT_CONFIGURATION_VIRTUAL_KEY_ON then
+        begin
+          WriteInteger(RsHotKeys, RsVirtualKeyOn, VirtualKeyOn);
+        end;
+        if ModifierOff <> DEFAULT_CONFIGURATION_MODIFIER_OFF then
+        begin
+          WriteInteger(RsHotKeys, RsModifierOff, ModifierOff);
+        end;
+        if VirtualKeyOff <> DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF then
+        begin
+          WriteInteger(RsHotKeys, RsVirtualKeyOff, VirtualKeyOff);
+        end;
+        if Assigned(Signals) then
+        begin
+          if Signals.Count <> DEFAULT_SIGNAL_COUNT then
           begin
-            s := Format(RsSignal, [IntToStr(i)]);
-            _signal := Signals.Items[i];
-            if Assigned(_signal) then
+            WriteInteger(RsSignals, RsQuantity, Signals.Count);
+            for i := 0 to Signals.Count - 1 do
             begin
-              if _signal.Title <> DEFAULT_SIGNAL_TITLE then
+              s := Format(RsSignal, [IntToStr(i)]);
+              _signal := Signals.Items[i];
+              if Assigned(_signal) then
               begin
-                AIniFile.WriteString(s, RsTitle, _signal.Title);
-              end;
-              if _signal.Period <> DEFAULT_SIGNAL_PERIOD then
-              begin
-                AIniFile.WriteInteger(s, RsPeriod, _signal.Period);
-              end;
-              if _signal.PeriodType <> DEFAULT_SIGNAL_PERIOD_TYPE then
-              begin
-                AIniFile.WriteInteger(s, RsPeriodType, Integer(_signal.PeriodType));
-              end;
-              if _signal.MessageEnabled <> DEFAULT_SIGNAL_MESSAGE_ENABLED then
-              begin
-                AIniFile.WriteBool(s, RsMessageEnabled, _signal.MessageEnabled);
-              end;
-              if _signal.Message <> DEFAULT_SIGNAL_MESSAGE then
-              begin
-                AIniFile.WriteString(s, RsMessage, _signal.Message);
-              end;
-              if _signal.WaveFileEnabled <> DEFAULT_SIGNAL_WAVE_FILE_ENABLED then
-              begin
-                AIniFile.WriteBool(s, RsWaveFileEnabled, _signal.WaveFileEnabled);
-              end;
-              if _signal.WaveFile <> DEFAULT_SIGNAL_WAVE_FILE then
-              begin
-                AIniFile.WriteString(s, RsWaveFile, _signal.WaveFile);
-              end;
-              if _signal.Enabled <> DEFAULT_SIGNAL_ENABLED then
-              begin
-                AIniFile.WriteBool(s, RsEnabled, _signal.Enabled);
+                if _signal.Title <> DEFAULT_SIGNAL_TITLE then
+                begin
+                  WriteString(s, RsTitle, _signal.Title);
+                end;
+                if _signal.Period <> DEFAULT_SIGNAL_PERIOD then
+                begin
+                  WriteInteger(s, RsPeriod, _signal.Period);
+                end;
+                if _signal.PeriodType <> DEFAULT_SIGNAL_PERIOD_TYPE then
+                begin
+                  WriteInteger(s, RsPeriodType, Integer(_signal.PeriodType));
+                end;
+                if _signal.MessageEnabled <> DEFAULT_SIGNAL_MESSAGE_ENABLED then
+                begin
+                  WriteBool(s, RsMessageEnabled, _signal.MessageEnabled);
+                end;
+                if _signal.Message <> DEFAULT_SIGNAL_MESSAGE then
+                begin
+                  WriteString(s, RsMessage, _signal.Message);
+                end;
+                if _signal.WaveFileEnabled <> DEFAULT_SIGNAL_WAVE_FILE_ENABLED then
+                begin
+                  WriteBool(s, RsWaveFileEnabled, _signal.WaveFileEnabled);
+                end;
+                if _signal.WaveFile <> DEFAULT_SIGNAL_WAVE_FILE then
+                begin
+                  WriteString(s, RsWaveFile, _signal.WaveFile);
+                end;
+                if _signal.Enabled <> DEFAULT_SIGNAL_ENABLED then
+                begin
+                  WriteBool(s, RsEnabled, _signal.Enabled);
+                end;
               end;
             end;
           end;
         end;
+      except
+        on EIniFileException do
+        begin
+          raise EConfiguration.Create(RsIniFileSaveError);
+        end;
       end;
-    except
-      on EIniFileException do
-      begin
-        raise EConfiguration.Create(RsIniFileSaveError);
-      end;
-    end;
   end;
 end;
 

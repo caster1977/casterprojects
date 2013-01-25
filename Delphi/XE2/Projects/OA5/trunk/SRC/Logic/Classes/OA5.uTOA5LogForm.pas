@@ -33,15 +33,17 @@ type
   public
     constructor Create(AOwner: TComponent; ABusyCounter: PInteger = nil;
       ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil; AProgressBar: TProgressBar = nil;
-      const AConfiguration: IConfiguration = nil; const ACurrentUser: IAccount = nil); reintroduce; virtual;
+      const AConfiguration: IConfiguration = nil; const ACurrentUser: IAccount = nil);
+      reintroduce; virtual;
   end;
 
 implementation
 
 {$R *.dfm}
 
-constructor TOA5LogForm.Create(AOwner: TComponent; ABusyCounter: PInteger; ARefreshBusyStateMethod: TRefreshBusyStateMethod;
-  AProgressBar: TProgressBar; const AConfiguration: IConfiguration; const ACurrentUser: IAccount);
+constructor TOA5LogForm.Create(AOwner: TComponent; ABusyCounter: PInteger;
+  ARefreshBusyStateMethod: TRefreshBusyStateMethod; AProgressBar: TProgressBar;
+  const AConfiguration: IConfiguration; const ACurrentUser: IAccount);
 begin
   inherited Create(AOwner, ABusyCounter, ARefreshBusyStateMethod, AProgressBar);
   FConfiguration := AConfiguration;

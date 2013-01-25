@@ -4,6 +4,7 @@ interface
 
 uses
   CastersPackage.uTInterfaceListOfGivenType,
+  CastersPackage.uIInterfaceListOfGivenType,
   System.Classes,
   OA5.uIMeasure,
   OA5.uIMeasureList,
@@ -28,11 +29,13 @@ type
   protected
     procedure Initialize; override;
   public
-    function Equals(Obj: TObject): Boolean; override;
-    procedure Assign(Source: TPersistent); override;
+    function Equals(const AItems: IInterfaceListOfGivenType<IMeasure>): Boolean; override;
+    procedure Assign(const AItems: IInterfaceListOfGivenType<IMeasure>); override;
+
     function IsNormalized: Boolean;
     procedure Normalize;
-    property AutoNormalizeData: Boolean read GetAutoNormalizeData write SetAutoNormalizeData default DEFAULT_MEASURE_LIST_AUTO_NORMALIZE_DATA;
+    property AutoNormalizeData: Boolean read GetAutoNormalizeData write SetAutoNormalizeData
+      default DEFAULT_MEASURE_LIST_AUTO_NORMALIZE_DATA;
   end;
 
 implementation
@@ -46,6 +49,59 @@ begin
   inherited;
   AddItemErrorString := RsCantAddMeasureToMeasureList;
   RemoveItemErrorString := RsCantRemoveMeasureFromMeasureList;
+end;
+
+procedure TMeasureList.Assign(const AItems: IInterfaceListOfGivenType<IMeasure>);
+begin
+  inherited;
+  { TODO : дописать }
+  // procedure TMeasureList.Assign(Source: TPersistent);
+  // var
+  // o: TMeasureList;
+  // i: Integer;
+  // begin
+  // if Source is TMeasureList then
+  // begin
+  // o := Source as TMeasureList;
+  // AutoNormalizeData := o.AutoNormalizeData;
+  // Count := o.Count;
+  // for i := 0 to o.Count - 1 do
+  // begin
+  // Items[i] := o.Items[i];
+  // end;
+  // end
+  // else
+  // begin
+  // inherited;
+  // end;
+  // end;
+end;
+
+function TMeasureList.Equals(const AItems: IInterfaceListOfGivenType<IMeasure>): Boolean;
+begin
+  Result := inherited;
+  { TODO : дописать }
+  // function TMeasureList.Equals(Obj: TObject): Boolean;
+  // var
+  // o: TMeasureList;
+  // i: Integer;
+  // begin
+  // Result := False;
+  // if Obj is TMeasureList then
+  // begin
+  // o := Obj as TMeasureList;
+  // Result := (AutoNormalizeData = o.AutoNormalizeData) and (Count = o.Count);
+  // if Result then
+  // for i := 0 to o.Count - 1 do
+  // begin
+  // Result := Result and (Items[i] = o.Items[i]);
+  // end;
+  // end
+  // else
+  // begin
+  // inherited;
+  // end;
+  // end;
 end;
 
 function TMeasureList.GetAutoNormalizeData: Boolean;
@@ -89,49 +145,6 @@ begin
     begin
       (Items[i] as INormalized).Normalize;
     end;
-  end;
-end;
-
-procedure TMeasureList.Assign(Source: TPersistent);
-var
-  o: TMeasureList;
-  i: Integer;
-begin
-  if Source is TMeasureList then
-  begin
-    o := Source as TMeasureList;
-    AutoNormalizeData := o.AutoNormalizeData;
-    Count := o.Count;
-    for i := 0 to o.Count - 1 do
-    begin
-      Items[i] := o.Items[i];
-    end;
-  end
-  else
-  begin
-    inherited;
-  end;
-end;
-
-function TMeasureList.Equals(Obj: TObject): Boolean;
-var
-  o: TMeasureList;
-  i: Integer;
-begin
-  Result := False;
-  if Obj is TMeasureList then
-  begin
-    o := Obj as TMeasureList;
-    Result := (AutoNormalizeData = o.AutoNormalizeData) and (Count = o.Count);
-    if Result then
-      for i := 0 to o.Count - 1 do
-      begin
-        Result := Result and (Items[i] = o.Items[i]);
-      end;
-  end
-  else
-  begin
-    inherited;
   end;
 end;
 
