@@ -123,6 +123,7 @@ begin
   actApply.Enabled := (TaskGroup <> EmptyStr) and (TaskName <> EmptyStr) and
     (TaskSQL.Text <> EmptyStr);
   btnApply.Default := actApply.Enabled;
+{TODO: Apply Update !}
 end;
 
 procedure TTaskForm.actCancelExecute(Sender: TObject);
