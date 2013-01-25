@@ -51,14 +51,15 @@ type
     procedure Saving(const AIniFile: TCustomIniFile); override;
   public
     constructor Create(const AProfileFileName: string = ''); override;
-    property Server: string read GetServer write SetServer;
-    property Login: string read GetLogin write SetLogin;
-    property Password: string read GetPassword write SetPassword;
-    property Database: string read GetDatabase write SetDatabase;
-    property WinNTSecurity: Boolean read GetWinNTSecurity write SetWinNTSecurity;
-    property StorePassword: Boolean read GetStorePassword write SetStorePassword;
-    property ADOConnectionString: string read GetADOConnectionString;
-    property Tasks: ITasks read GetTasks;
+    property Server: string read GetServer write SetServer nodefault;
+    property Login: string read GetLogin write SetLogin nodefault;
+    property Password: string read GetPassword write SetPassword nodefault;
+    property Database: string read GetDatabase write SetDatabase nodefault;
+    property WinNTSecurity: Boolean read GetWinNTSecurity write SetWinNTSecurity default PROFILE_DEFAULT_WIN_NT_SECURITY;
+    property StorePassword: Boolean read GetStorePassword write SetStorePassword default PROFILE_DEFAULT_STORE_PASSWORD;
+    property ADOConnectionString: string read GetADOConnectionString nodefault;
+    property Tasks: ITasks read GetTasks nodefault;
+    property Modified: Boolean read GetModified nodefault;
   end;
 
 function GetIProfile(const AProfileFileName: string = ''): IProfile;
@@ -77,23 +78,32 @@ end;
 procedure TProfile.AfterLoad;
 begin
   inherited;
-
 end;
 
 procedure TProfile.BeforeSave;
 begin
   inherited;
-
 end;
 
 constructor TProfile.Create(const AProfileFileName: string);
 begin
   inherited;
-  Initialize;
+end;
+
+procedure TProfile.Initialize;
+begin
+  inherited;
+  Server := PROFILE_DEFAULT_SERVER;
+  Login := PROFILE_DEFAULT_LOGIN;
+  Password := PROFILE_DEFAULT_PASSWORD;
+  Database := PROFILE_DEFAULT_DB;
+  WinNTSecurity := PROFILE_DEFAULT_WIN_NT_SECURITY;
+  FTasks := GetITasks;
 end;
 
 procedure TProfile.Finalize;
 begin
+  inherited;
 end;
 
 function TProfile.GetADOConnectionString: string;
@@ -159,16 +169,6 @@ begin
   Result := FWinNTSecurity;
 end;
 
-procedure TProfile.Initialize;
-begin
-  Server := PROFILE_DEFAULT_SERVER;
-  Login := PROFILE_DEFAULT_LOGIN;
-  Password := PROFILE_DEFAULT_PASSWORD;
-  Database := PROFILE_DEFAULT_DB;
-  WinNTSecurity := PROFILE_DEFAULT_WIN_NT_SECURITY;
-  FTasks := GetITasks;
-end;
-
 procedure TProfile.Loading(const AIniFile: TCustomIniFile);
 begin
   inherited;
@@ -189,6 +189,7 @@ begin
   if FDB <> s then
   begin
     FDB := s;
+    inherited Modified := True;
   end;
 end;
 
@@ -200,6 +201,7 @@ begin
   if FLogin <> s then
   begin
     FLogin := s;
+    inherited Modified := True;
   end;
 end;
 
@@ -211,6 +213,7 @@ begin
   if FPassword <> s then
   begin
     FPassword := s;
+    inherited Modified := True;
   end;
 end;
 
@@ -222,6 +225,7 @@ begin
   if FServer <> s then
   begin
     FServer := s;
+    inherited Modified := True;
   end;
 end;
 
@@ -230,6 +234,7 @@ begin
   if FStorePassword <> AValue then
   begin
     FStorePassword := AValue;
+    inherited Modified := True;
   end;
 end;
 
@@ -238,6 +243,7 @@ begin
   if FWinNTSecurity <> AValue then
   begin
     FWinNTSecurity := AValue;
+    inherited Modified := True;
   end;
 end;
 

@@ -7,13 +7,17 @@ uses
   System.IniFiles,
   System.SysUtils,
   CastersPackage.uICustomized,
-  CastersPackage.uIIniFileDataStorage;
+  CastersPackage.uIIniFileDataStorage,
+  CastersPackage.uIModified;
 
 type
   EIniFileDataStorage = class(Exception);
 
-  TIniFileDataStorage = class(TInterfacedPersistent, IIniFileDataStorage, ICustomized)
-  strict protected
+  TIniFileDataStorage = class(TInterfacedPersistent, IIniFileDataStorage, ICustomized, IModified)
+  strict private
+    FModified: Boolean;
+    procedure SetModified(const AValue: Boolean);
+  protected
     FIniFileName: string;
     procedure Initialize; virtual; abstract;
     procedure Finalize; virtual; abstract;
@@ -21,8 +25,9 @@ type
     procedure AfterLoad; virtual; abstract;
     procedure BeforeSave; virtual; abstract;
     procedure Saving(const AIniFile: TCustomIniFile); virtual; abstract;
-  protected
     constructor Create(const AIniFileName: string = ''); virtual;
+    function GetModified: Boolean; virtual;
+    property Modified: Boolean read GetModified write SetModified nodefault;
   public
     destructor Destroy; override;
     procedure Load; virtual; final;
@@ -55,12 +60,18 @@ begin
     FIniFileName := s;
   end;
   Initialize;
+  Modified := False;
 end;
 
 destructor TIniFileDataStorage.Destroy;
 begin
   Finalize;
   inherited;
+end;
+
+function TIniFileDataStorage.GetModified: Boolean;
+begin
+  Result := FModified;
 end;
 
 procedure TIniFileDataStorage.Load;
@@ -79,6 +90,7 @@ begin
       (ini_file as TMemIniFile).Clear;
       (ini_file as TMemIniFile).UpdateFile;
     end;
+    Modified := False;
   finally
     ini_file.Free;
   end;
@@ -102,6 +114,7 @@ begin
       begin
         (ini_file as TMemIniFile).UpdateFile;
       end;
+      Modified := False;
     except
       on EIniFileException do
       begin
@@ -110,6 +123,14 @@ begin
     end;
   finally
     ini_file.Free;
+  end;
+end;
+
+procedure TIniFileDataStorage.SetModified(const AValue: Boolean);
+begin
+  if FModified <> AValue then
+  begin
+    FModified := AValue;
   end;
 end;
 

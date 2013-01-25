@@ -30,7 +30,8 @@ uses
   DBAutoTest.uIProfile,
   DBAutoTest.uIRecents,
   Data.DB,
-  Data.Win.ADODB;
+  Data.Win.ADODB,
+  DBAutoTest.uIConfiguration;
 
 type
   TMainForm = class(TForm)
@@ -128,16 +129,16 @@ type
     procedure RefreshRecentsMenu;
     procedure AddEditTask(const AIndex: Integer = -1);
   strict private
-    { TODO : убрать функционал в класс конфигурации }
-    FRecents: IRecents;
-    function GetRecents: IRecents;
-    property Recents: IRecents read GetRecents nodefault;
     procedure OnRecentsMenuItemClick(Sender: TObject);
   strict private
     FProfile: IProfile;
     function GetProfile: IProfile;
     procedure SetProfile(const AValue: IProfile);
     property Profile: IProfile read GetProfile write SetProfile nodefault;
+  strict private
+    FConfiguration: IConfiguration;
+    function GetConfiguration: IConfiguration;
+    property Configuration: IConfiguration read GetConfiguration nodefault;
   end;
 
 var
@@ -158,7 +159,8 @@ uses
   DBAutoTest.uTRecents,
   DBAutoTest.uIRecent,
   DBAutoTest.uTRecent,
-  DBAutoTest.uTProfile;
+  DBAutoTest.uTProfile,
+  DBAutoTest.uTConfiguration;
 
 resourcestring
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
@@ -223,14 +225,22 @@ var
   i: Integer;
 begin
   Application.OnHint := OnHint;
-  FRecents := GetIRecents;
   for i := 0 to 19 do
   begin
     r := GetIRecent;
     r.FullName := IntToStr(i);
-    Recents.Add(r);
+    Configuration.Recents.Add(r);
   end;
   RefreshRecentsMenu;
+end;
+
+function TMainForm.GetConfiguration: IConfiguration;
+begin
+  if not Assigned(FConfiguration) then
+  begin
+    FConfiguration := GetIConfiguration;
+  end;
+  Result := FConfiguration;
 end;
 
 function TMainForm.GetProfile: IProfile;
@@ -249,15 +259,6 @@ begin
     FProfile := AValue;
     RefreshTaskList;
   end;
-end;
-
-function TMainForm.GetRecents: IRecents;
-begin
-  if not Assigned(FRecents) then
-  begin
-    FRecents := GetIRecents;
-  end;
-  Result := FRecents;
 end;
 
 procedure TMainForm.lvTaskListDblClick(Sender: TObject);
@@ -433,7 +434,7 @@ end;
 
 procedure TMainForm.actRecentProfilesPropertiesExecute(Sender: TObject);
 begin
-  with TRecentsPropertiesForm.Create(Self, Recents, 20) do
+  with TRecentsPropertiesForm.Create(Self, Configuration.Recents, 20) do
     try
       ShowModal;
       if ModalResult = mrOk then
@@ -465,11 +466,11 @@ begin
   begin
     miRecents.Items[i].Free;
   end;
-  for i := Recents.Count - 1 downto 0 do
+  for i := Configuration.Recents.Count - 1 downto 0 do
   begin
     item := TMenuItem.Create(Self);
-    item.Caption := Recents.Items[i].FullName;
-    item.Enabled := Recents.Items[i].Exists;
+    item.Caption := Configuration.Recents.Items[i].FullName;
+    item.Enabled := Configuration.Recents.Items[i].Exists;
     item.OnClick := OnRecentsMenuItemClick;
     item.Hint := RsOpenRecent;
     miRecents.Insert(0, item);
@@ -485,9 +486,9 @@ begin
   begin
     mi := Sender as TMenuItem;
     ShowMessage(mi.Caption);
-    r := Recents[mi.MenuIndex];
-    Recents.Delete(mi.MenuIndex);
-    Recents.Insert(0, r);
+    r := Configuration.Recents[mi.MenuIndex];
+    Configuration.Recents.Delete(mi.MenuIndex);
+    Configuration.Recents.Insert(0, r);
     RefreshRecentsMenu;
   end;
 end;
