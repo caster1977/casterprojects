@@ -84,6 +84,7 @@ resourcestring
   RsEnableStatusbar = 'EnableStatusbar';
   RsEnableToolbar = 'EnableToolbar';
   RsEnablePlaySoundOnComplete = 'EnablePlaySoundOnComplete';
+  RsEnableStoreMainFormSizesAndPosition = 'EnableStoreMainFormSizesAndPosition';
 
 function GetIConfiguration(const AConfigurationFileName: string): IConfiguration;
 begin
@@ -152,6 +153,7 @@ begin
   EnableSplashAtStart := CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
   EnableStatusbar := CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
   EnableToolbar := CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
+  EnableStoreMainFormSizesAndPosition := CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
   Recents.Clear;
 end;
 
@@ -235,6 +237,8 @@ begin
       EnableToolbar := ReadBool(RsInterface, RsEnableToolbar, CONFIGURATION_DEFAULT_ENABLE_TOOLBAR);
       EnablePlaySoundOnComplete := ReadBool(RsOther, RsEnablePlaySoundOnComplete,
         CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE);
+      EnableStoreMainFormSizesAndPosition := ReadBool(RsInterface, RsEnableStoreMainFormSizesAndPosition,
+        CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION);
 
       Recents.Clear;
       for i := 0 to ReadInteger(RsRecents, RsQuantity, RECENTS_DEFAULT_COUNT) - 1 do
@@ -278,10 +282,15 @@ begin
         begin
           WriteBool(RsInterface, RsEnableToolbar, EnableToolbar);
         end;
+        if EnableStoreMainFormSizesAndPosition <> CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION then
+        begin
+          WriteBool(RsInterface, RsEnableStoreMainFormSizesAndPosition, EnableStoreMainFormSizesAndPosition);
+        end;
         if EnablePlaySoundOnComplete <> CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE then
         begin
           WriteBool(RsOther, RsEnablePlaySoundOnComplete, EnablePlaySoundOnComplete);
         end;
+
         if Recents.Count <> RECENTS_DEFAULT_COUNT then
         begin
           j := 0;
