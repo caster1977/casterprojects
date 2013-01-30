@@ -16,11 +16,13 @@ type
     function GetEnableSplashAtStart: Boolean;
     function GetEnableStatusbar: Boolean;
     function GetEnableToolbar: Boolean;
+    function GetEnableStoreMainFormSizesAndPosition: Boolean;
     procedure SetEnablePlaySoundOnComplete(const AValue: Boolean);
     procedure SetEnableQuitConfirmation(const AValue: Boolean);
     procedure SetEnableSplashAtStart(const AValue: Boolean);
     procedure SetEnableStatusbar(const AValue: Boolean);
     procedure SetEnableToolbar(const AValue: Boolean);
+    procedure SetEnableStoreMainFormSizesAndPosition(const AValue: Boolean);
     property Recents: IRecents read GetRecents;
     property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete
       write SetEnablePlaySoundOnComplete;
@@ -29,6 +31,8 @@ type
     property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart;
     property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar;
     property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar;
+    property EnableStoreMainFormSizesAndPosition: Boolean
+      read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition;
   end;
 
 implementation

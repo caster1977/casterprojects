@@ -31,10 +31,11 @@ uses
   DBAutoTest.uIRecents,
   Data.DB,
   Data.Win.ADODB,
-  DBAutoTest.uIConfiguration;
+  DBAutoTest.uIConfiguration,
+  CastersPackage.uICustomized;
 
 type
-  TMainForm = class(TForm)
+  TMainForm = class(TForm, ICustomized)
     StatusBar: TStatusBar;
     ImageList: TImageList;
     actHelpMenuGroup: THelpMenuGroupAction;
@@ -122,7 +123,14 @@ type
     procedure lvTaskListDblClick(Sender: TObject);
     procedure actStatusBarExecute(Sender: TObject);
     procedure actToolBarExecute(Sender: TObject);
+    procedure actSaveProfileExecute(Sender: TObject);
+    procedure actSaveProfileUpdate(Sender: TObject);
   strict private
+    procedure Initialize; virtual;
+    procedure Finalize; virtual;
+    procedure LoadConfiguration;
+    procedure ApplyConfiguration;
+    procedure SaveConfiguration;
     procedure OnHint(ASender: TObject);
     procedure ShowAboutWindow(const AShowCloseButton: Boolean);
     procedure RefreshTaskList;
@@ -139,6 +147,8 @@ type
     FConfiguration: IConfiguration;
     function GetConfiguration: IConfiguration;
     property Configuration: IConfiguration read GetConfiguration nodefault;
+  public
+    destructor Destroy; override;
   end;
 
 var
@@ -160,17 +170,23 @@ uses
   DBAutoTest.uIRecent,
   DBAutoTest.uTRecent,
   DBAutoTest.uTProfile,
-  DBAutoTest.uTConfiguration;
+  DBAutoTest.uTConfiguration,
+  DBAutoTest.uEConfiguration,
+  System.IniFiles;
 
 resourcestring
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
   RsExitConfirmationCaption = '%s - Подтверждение выхода';
+  RsWarningCaption = '%s - Предупреждение';
+  RsErrorCaption = '%s - Ошибка';
   RsOpenRecent = 'Нажмите для загрузки файла профиля с указанным именем';
   RsCreateProfileConfirmationMessage =
     'Вы действительно хотите создать новый профиль, предварительно не сохранив текущий?';
   RsCreateProfileConfirmationCaption = '%s - Подтверждение создания нового профиля';
   RsOpenProfileFilters = 'Файлы профилей (*.profile)|*.profile|Все файлы (*.*)|*.*';
   RsOpenProfileDefaultExt = 'profile';
+  RsTryAgain = '%s.' + sLineBreak + 'Вы желаете повторить попытку?';
+  RsConfigurationSaveError = 'Не удалось выполнить запись настроек программы в файл.';
 
 procedure TMainForm.actAboutExecute(Sender: TObject);
 begin
@@ -179,10 +195,14 @@ end;
 
 procedure TMainForm.actConfigurationExecute(Sender: TObject);
 begin
-  with TConfigurationForm.Create(Self, nil) do
+  with TConfigurationForm.Create(Self, Configuration) do
     try
       ShowModal;
     finally
+      if ModalResult = mrOk then
+      begin
+        ApplyConfiguration;
+      end;
       Free;
     end;
 end;
@@ -212,26 +232,78 @@ begin
     end;
 end;
 
+procedure TMainForm.Finalize;
+begin
+  SaveConfiguration;
+end;
+
+destructor TMainForm.Destroy;
+begin
+  Finalize;
+  inherited;
+end;
+
+procedure TMainForm.SaveConfiguration;
+begin
+  Screen.Cursor := crHourGlass;
+  try
+    try
+      Configuration.Save;
+    finally
+      Screen.Cursor := crDefault;
+    end;
+  except
+    on E: EConfiguration do
+    begin
+      if MessageBox(Handle, PWideChar(Format(RsTryAgain, [E.Message])),
+        PWideChar(Format(RsWarningCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING1)
+        = IDOK then
+      begin
+        try
+          Screen.Cursor := crHourGlass;
+          try
+            Configuration.Save;
+          finally
+            Screen.Cursor := crDefault;
+          end;
+        except
+          on E: EConfiguration do
+          begin
+            MessageBox(Handle, PWideChar(E.Message),
+              PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
+          end;
+          else
+          begin
+            Application.HandleException(Self);
+          end;
+        end;
+      end;
+    end;
+    else
+    begin
+      Application.HandleException(Self);
+    end;
+  end;
+end;
+
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
-    PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])),
-    MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
+  CanClose := True;
+  if Configuration.EnableQuitConfirmation then
+  begin
+    CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
+      PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])),
+      MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
+  end;
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
-var
-  r: IRecent;
-  i: Integer;
 begin
-  Application.OnHint := OnHint;
-  for i := 0 to 19 do
+  Initialize;
+  if Configuration.EnableSplashAtStart then
   begin
-    r := GetIRecent;
-    r.FullName := IntToStr(i);
-    Configuration.Recents.Add(r);
+    ShowAboutWindow(False);
   end;
-  RefreshRecentsMenu;
 end;
 
 function TMainForm.GetConfiguration: IConfiguration;
@@ -250,6 +322,44 @@ begin
     FProfile := GetIProfile;
   end;
   Result := FProfile;
+end;
+
+procedure TMainForm.Initialize;
+var
+  r: IRecent;
+  i: Integer;
+begin
+  Application.OnHint := OnHint;
+  LoadConfiguration;
+
+//  Configuration.Recents.Clear;
+//  for i := 0 to 19 do
+//  begin
+//    r := GetIRecent;
+//    r.FullName := IntToStr(i);
+//    Configuration.Recents.Add(r);
+//  end;
+
+  ApplyConfiguration;
+  RefreshRecentsMenu;
+end;
+
+procedure TMainForm.LoadConfiguration;
+begin
+  try
+    Screen.Cursor := crHourGlass;
+    try
+      Configuration.Load;
+    finally
+      Screen.Cursor := crDefault;
+    end;
+  except
+    on E: Exception do
+    begin
+      MessageBox(Handle, PWideChar(E.Message), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])
+        ), MESSAGE_TYPE_ERROR);
+    end;
+  end;
 end;
 
 procedure TMainForm.SetProfile(const AValue: IProfile);
@@ -273,7 +383,7 @@ begin
     если профиль был изменён и не сохранён, задать вопрос юзеру }
   if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage),
     PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])),
-    MESSAGE_TYPE_CONFIRMATION_WARNING) = IDOK then
+    MESSAGE_TYPE_CONFIRMATION_WARNING2) = IDOK then
   begin
     Profile := GetIProfile;
     { TODO : нужно как-то изменить алгоритм работы с именем файла }
@@ -306,6 +416,14 @@ begin
       Break;
     end;
   end;
+end;
+
+procedure TMainForm.ApplyConfiguration;
+begin
+  actStatusBar.Checked := Configuration.EnableStatusbar;
+  StatusBar.Visible := Configuration.EnableStatusbar;
+  actToolBar.Checked := Configuration.EnableToolbar;
+  ToolBar.Visible := Configuration.EnableToolbar;
 end;
 
 procedure TMainForm.actCreateTaskExecute(Sender: TObject);
@@ -553,14 +671,23 @@ begin
   end;
 end;
 
+procedure TMainForm.actSaveProfileExecute(Sender: TObject);
+begin
+  //
+end;
+
+procedure TMainForm.actSaveProfileUpdate(Sender: TObject);
+begin
+  actSaveProfile.Enabled := Configuration.Modified;
+end;
+
 procedure TMainForm.actStatusBarExecute(Sender: TObject);
 var
   b: Boolean;
 begin
   b := actStatusBar.Checked;
   StatusBar.Visible := b;
-  { TODO : дописать }
-  // Configuration.EnableStatusbar := b;
+  Configuration.EnableStatusbar := b;
 end;
 
 procedure TMainForm.actToolBarExecute(Sender: TObject);
@@ -569,8 +696,7 @@ var
 begin
   b := actToolBar.Checked;
   ToolBar.Visible := b;
-  { TODO : дописать }
-  // Configuration.EnableStatusbar := b;
+  Configuration.EnableToolbar := b;
 end;
 
 end.

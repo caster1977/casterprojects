@@ -18,17 +18,20 @@ type
     FEnableSplashAtStart: Boolean;
     FEnableStatusbar: Boolean;
     FEnableToolbar: Boolean;
+    FEnableStoreMainFormSizesAndPosition: Boolean;
     function GetRecents: IRecents;
     function GetEnablePlaySoundOnComplete: Boolean;
     function GetEnableQuitConfirmation: Boolean;
     function GetEnableSplashAtStart: Boolean;
     function GetEnableStatusbar: Boolean;
     function GetEnableToolbar: Boolean;
+    function GetEnableStoreMainFormSizesAndPosition: Boolean;
     procedure SetEnablePlaySoundOnComplete(const AValue: Boolean);
     procedure SetEnableQuitConfirmation(const AValue: Boolean);
     procedure SetEnableSplashAtStart(const AValue: Boolean);
     procedure SetEnableStatusbar(const AValue: Boolean);
     procedure SetEnableToolbar(const AValue: Boolean);
+    procedure SetEnableStoreMainFormSizesAndPosition(const AValue: Boolean);
   protected
     procedure Initialize; override;
     procedure Finalize; override;
@@ -51,6 +54,9 @@ type
       default CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
     property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar
       default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
+    property EnableStoreMainFormSizesAndPosition: Boolean
+      read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition
+      default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
   end;
 
 function GetIConfiguration(const AConfigurationFileName: string = ''): IConfiguration;
@@ -61,12 +67,17 @@ uses
   System.Classes,
   System.SysUtils,
   DBAutoTest.uEConfiguration,
-  DBAutoTest.uTRecents;
+  DBAutoTest.uTRecents,
+  DBAutoTest.uIRecent,
+  DBAutoTest.uTRecent;
 
 resourcestring
   RsInterface = 'Интерфейс';
+  RsRecents = 'Ранее открытые профили';
+  RsRecentProfile = 'Профиль %s';
   RsOther = 'Прочие';
-  RsConfigurationSaveError = 'Произошла ошибка при попытке записи настроек программы в файл!';
+  RsQuantity = 'Количество';
+  RsConfigurationSaveError = 'Произошла ошибка при попытке записи настроек программы в файл.';
 
   RsEnableQuitConfirmation = 'EnableQuitConfirmation';
   RsEnableSplashAtStart = 'EnableSplashAtStart';
@@ -114,6 +125,11 @@ begin
   Result := FEnableStatusbar;
 end;
 
+function TConfiguration.GetEnableStoreMainFormSizesAndPosition: Boolean;
+begin
+  Result := FEnableStoreMainFormSizesAndPosition;
+end;
+
 function TConfiguration.GetEnableToolbar: Boolean;
 begin
   Result := FEnableToolbar;
@@ -131,73 +147,17 @@ end;
 procedure TConfiguration.Initialize;
 begin
   inherited;
-  FRecents := GetIRecents;
   EnablePlaySoundOnComplete := CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
   EnableQuitConfirmation := CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
   EnableSplashAtStart := CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
   EnableStatusbar := CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
   EnableToolbar := CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
+  Recents.Clear;
 end;
 
 procedure TConfiguration.Finalize;
 begin
   inherited;
-end;
-
-procedure TConfiguration.Loading;
-begin
-  inherited;
-  if Assigned(IniFile) then
-  begin
-    with IniFile do
-    begin
-      EnableQuitConfirmation := ReadBool(RsInterface, RsEnableQuitConfirmation,
-        CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION);
-      EnableSplashAtStart := ReadBool(RsInterface, RsEnableSplashAtStart,
-        CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START);
-      EnableStatusbar := ReadBool(RsInterface, RsEnableStatusbar,
-        CONFIGURATION_DEFAULT_ENABLE_STATUSBAR);
-      EnableToolbar := ReadBool(RsInterface, RsEnableToolbar, CONFIGURATION_DEFAULT_ENABLE_TOOLBAR);
-      EnablePlaySoundOnComplete := ReadBool(RsOther, RsEnablePlaySoundOnComplete,
-        CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE);
-    end;
-  end;
-end;
-
-procedure TConfiguration.Saving;
-begin
-  inherited;
-  if Assigned(IniFile) then
-  begin
-    with IniFile do
-      try
-        if EnableQuitConfirmation <> CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION then
-        begin
-          WriteBool(RsInterface, RsEnableQuitConfirmation, EnableQuitConfirmation);
-        end;
-        if EnableSplashAtStart <> CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START then
-        begin
-          WriteBool(RsInterface, RsEnableSplashAtStart, EnableSplashAtStart);
-        end;
-        if EnableStatusbar <> CONFIGURATION_DEFAULT_ENABLE_STATUSBAR then
-        begin
-          WriteBool(RsInterface, RsEnableStatusbar, EnableStatusbar);
-        end;
-        if EnableToolbar <> CONFIGURATION_DEFAULT_ENABLE_TOOLBAR then
-        begin
-          WriteBool(RsInterface, RsEnableToolbar, EnableToolbar);
-        end;
-        if EnablePlaySoundOnComplete <> CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE then
-        begin
-          WriteBool(RsOther, RsEnablePlaySoundOnComplete, EnablePlaySoundOnComplete);
-        end;
-      except
-        on EIniFileException do
-        begin
-          raise EConfiguration.Create(RsConfigurationSaveError);
-        end;
-      end;
-  end;
 end;
 
 procedure TConfiguration.SetEnablePlaySoundOnComplete(const AValue: Boolean);
@@ -236,12 +196,115 @@ begin
   end;
 end;
 
+procedure TConfiguration.SetEnableStoreMainFormSizesAndPosition(
+  const AValue: Boolean);
+begin
+  if FEnableStoreMainFormSizesAndPosition <> AValue then
+  begin
+    FEnableStoreMainFormSizesAndPosition := AValue;
+    inherited Modified := True;
+  end;
+end;
+
 procedure TConfiguration.SetEnableToolbar(const AValue: Boolean);
 begin
   if FEnableToolbar <> AValue then
   begin
     FEnableToolbar := AValue;
     inherited Modified := True;
+  end;
+end;
+
+procedure TConfiguration.Loading;
+var
+  i: Integer;
+  s: string;
+  r: IRecent;
+begin
+  inherited;
+  if Assigned(IniFile) then
+  begin
+    with IniFile do
+    begin
+      EnableQuitConfirmation := ReadBool(RsInterface, RsEnableQuitConfirmation,
+        CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION);
+      EnableSplashAtStart := ReadBool(RsInterface, RsEnableSplashAtStart,
+        CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START);
+      EnableStatusbar := ReadBool(RsInterface, RsEnableStatusbar,
+        CONFIGURATION_DEFAULT_ENABLE_STATUSBAR);
+      EnableToolbar := ReadBool(RsInterface, RsEnableToolbar, CONFIGURATION_DEFAULT_ENABLE_TOOLBAR);
+      EnablePlaySoundOnComplete := ReadBool(RsOther, RsEnablePlaySoundOnComplete,
+        CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE);
+
+      Recents.Clear;
+      for i := 0 to ReadInteger(RsRecents, RsQuantity, RECENTS_DEFAULT_COUNT) - 1 do
+      begin
+        s := Format(RsRecentProfile, [IntToStr(i)]);
+        r := GetIRecent;
+        r.FullName := ReadString(RsRecents, s, RECENT_DEFAULT_FULL_NAME);
+        if r.FullName <> RECENT_DEFAULT_FULL_NAME then
+        begin
+          Recents.Add(r);
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TConfiguration.Saving;
+var
+  i: Integer;
+  j: Integer;
+  r: IRecent;
+begin
+  inherited;
+  if Assigned(IniFile) then
+  begin
+    with IniFile do
+      try
+        if EnableQuitConfirmation <> CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION then
+        begin
+          WriteBool(RsInterface, RsEnableQuitConfirmation, EnableQuitConfirmation);
+        end;
+        if EnableSplashAtStart <> CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START then
+        begin
+          WriteBool(RsInterface, RsEnableSplashAtStart, EnableSplashAtStart);
+        end;
+        if EnableStatusbar <> CONFIGURATION_DEFAULT_ENABLE_STATUSBAR then
+        begin
+          WriteBool(RsInterface, RsEnableStatusbar, EnableStatusbar);
+        end;
+        if EnableToolbar <> CONFIGURATION_DEFAULT_ENABLE_TOOLBAR then
+        begin
+          WriteBool(RsInterface, RsEnableToolbar, EnableToolbar);
+        end;
+        if EnablePlaySoundOnComplete <> CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE then
+        begin
+          WriteBool(RsOther, RsEnablePlaySoundOnComplete, EnablePlaySoundOnComplete);
+        end;
+        if Recents.Count <> RECENTS_DEFAULT_COUNT then
+        begin
+          j := 0;
+          for i := 0 to Recents.Count - 1 do
+          begin
+            r := Recents.Items[i];
+            if Assigned(r) then
+            begin
+              if r.FullName <> RECENT_DEFAULT_FULL_NAME then
+              begin
+                WriteString(RsRecents, Format(RsRecentProfile, [IntToStr(j)]), r.FullName);
+                Inc(j);
+              end;
+            end;
+          end;
+          WriteInteger(RsRecents, RsQuantity, j);
+        end;
+      except
+        on EIniFileException do
+        begin
+          raise EConfiguration.Create(RsConfigurationSaveError);
+        end;
+      end;
   end;
 end;
 
