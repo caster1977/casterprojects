@@ -281,9 +281,14 @@ end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
+  CanClose := True;
+  { TODO : добавить опцию в конфигурацию }
+  //if Configuration.EnableQuitConfirmation then
+  begin
   CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
     PWideChar(Format(RsExitConfirmationCaption, [Application.Title])),
     MESSAGE_TYPE_CONFIRMATION) = IDOK;
+  end;
 end;
 
 procedure TMainForm.ListViewItemChecked(Sender: TObject; Item: TListItem);

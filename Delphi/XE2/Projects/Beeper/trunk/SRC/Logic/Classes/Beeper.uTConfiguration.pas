@@ -197,12 +197,12 @@ begin
   ModifierOff := DEFAULT_CONFIGURATION_MODIFIER_OFF;
   VirtualKeyOn := DEFAULT_CONFIGURATION_VIRTUAL_KEY_ON;
   VirtualKeyOff := DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF;
+  Signals.Clear;
 end;
 
 procedure TConfiguration.Loading;
 var
   i: Integer;
-  signal_count: Integer;
   signal: ISignal;
   s: string;
 begin
@@ -218,9 +218,8 @@ begin
       ModifierOff := ReadInteger(RsHotKeys, RsModifierOff, DEFAULT_CONFIGURATION_MODIFIER_OFF);
       VirtualKeyOff := ReadInteger(RsHotKeys, RsVirtualKeyOff,
         DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF);
-      signal_count := ReadInteger(RsSignals, RsQuantity, DEFAULT_SIGNAL_COUNT);
       Signals.Clear;
-      for i := 0 to signal_count - 1 do
+      for i := 0 to ReadInteger(RsSignals, RsQuantity, DEFAULT_SIGNAL_COUNT) - 1 do
       begin
         s := Format(RsSignal, [IntToStr(i)]);
         signal := GetISignal;
@@ -243,6 +242,7 @@ end;
 procedure TConfiguration.Saving;
 var
   i: Integer;
+  j: Integer;
   s: string;
   _signal: ISignal;
 begin
@@ -279,10 +279,10 @@ begin
         begin
           if Signals.Count <> DEFAULT_SIGNAL_COUNT then
           begin
-            WriteInteger(RsSignals, RsQuantity, Signals.Count);
+            j := 0;
             for i := 0 to Signals.Count - 1 do
             begin
-              s := Format(RsSignal, [IntToStr(i)]);
+              s := Format(RsSignal, [IntToStr(j)]);
               _signal := Signals.Items[i];
               if Assigned(_signal) then
               begin
@@ -318,8 +318,10 @@ begin
                 begin
                   WriteBool(s, RsEnabled, _signal.Enabled);
                 end;
+                Inc(j);
               end;
             end;
+            WriteInteger(RsSignals, RsQuantity, j);
           end;
         end;
       except
