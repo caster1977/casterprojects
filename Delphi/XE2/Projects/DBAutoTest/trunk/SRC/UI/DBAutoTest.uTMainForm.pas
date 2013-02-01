@@ -325,9 +325,9 @@ begin
 end;
 
 procedure TMainForm.Initialize;
-var
-  r: IRecent;
-  i: Integer;
+//var
+//  r: IRecent;
+//  i: Integer;
 begin
   Application.OnHint := OnHint;
   LoadConfiguration;

@@ -119,11 +119,25 @@ begin
 end;
 
 procedure TTaskForm.actApplyUpdate(Sender: TObject);
+var
+  t: ITask;
 begin
-  actApply.Enabled := (TaskGroup <> EmptyStr) and (TaskName <> EmptyStr) and
-    (TaskSQL.Text <> EmptyStr);
+  if TaskIndex = -1 then
+  begin
+    actApply.Enabled := (TaskGroup <> EmptyStr) and (TaskName <> EmptyStr) and
+      (TaskSQL.Text <> EmptyStr);
+  end
+  else
+  begin
+    t := Tasks[TaskIndex];
+    if Assigned(t) then
+    begin
+      actApply.Enabled := ((TaskGroup <> t.Group) or (TaskName <> t.Name) or
+        (TaskSQL.Text <> t.SQL.Text)) and ((TaskGroup <> EmptyStr) and (TaskName <> EmptyStr) and
+        (TaskSQL.Text <> EmptyStr));
+    end;
+  end;
   btnApply.Default := actApply.Enabled;
-{TODO: Apply Update !}
 end;
 
 procedure TTaskForm.actCancelExecute(Sender: TObject);
