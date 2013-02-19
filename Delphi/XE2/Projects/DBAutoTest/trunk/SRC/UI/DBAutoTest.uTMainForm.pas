@@ -256,7 +256,7 @@ begin
     on E: EConfiguration do
     begin
       if MessageBox(Handle, PWideChar(Format(RsTryAgain, [E.Message])),
-        PWideChar(Format(RsWarningCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING1)
+        PWideChar(Format(RsWarningCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING_OK)
         = IDOK then
       begin
         try
@@ -383,7 +383,7 @@ begin
     если профиль был изменён и не сохранён, задать вопрос юзеру }
   if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage),
     PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])),
-    MESSAGE_TYPE_CONFIRMATION_WARNING2) = IDOK then
+    MESSAGE_TYPE_CONFIRMATION_WARNING_CANCEL) = IDOK then
   begin
     Profile := GetIProfile;
     { TODO : нужно как-то изменить алгоритм работы с именем файла }

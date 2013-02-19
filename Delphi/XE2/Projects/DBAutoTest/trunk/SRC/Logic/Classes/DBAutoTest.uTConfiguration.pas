@@ -81,48 +81,9 @@ begin
   Result := TConfiguration.Create(AConfigurationFileName);
 end;
 
-constructor TConfiguration.Create(const AConfigurationFileName: string);
-begin
-  inherited;
-end;
-
 function TConfiguration.GetEnablePlaySoundOnComplete: Boolean;
 begin
   Result := FEnablePlaySoundOnComplete;
-end;
-
-function TConfiguration.GetEnableQuitConfirmation: Boolean;
-begin
-  Result := FEnableQuitConfirmation;
-end;
-
-function TConfiguration.GetEnableSplashAtStart: Boolean;
-begin
-  Result := FEnableSplashAtStart;
-end;
-
-function TConfiguration.GetEnableStatusbar: Boolean;
-begin
-  Result := FEnableStatusbar;
-end;
-
-function TConfiguration.GetEnableStoreMainFormSizesAndPosition: Boolean;
-begin
-  Result := FEnableStoreMainFormSizesAndPosition;
-end;
-
-function TConfiguration.GetEnableToolbar: Boolean;
-begin
-  Result := FEnableToolbar;
-end;
-
-function TConfiguration.GetRecents: IRecents;
-begin
-  if not Assigned(FRecents) then
-  begin
-    FRecents := GetIRecents;
-  end;
-  Result := FRecents;
 end;
 
 procedure TConfiguration.SetEnablePlaySoundOnComplete(const AValue: Boolean);
@@ -134,6 +95,11 @@ begin
   end;
 end;
 
+function TConfiguration.GetEnableQuitConfirmation: Boolean;
+begin
+  Result := FEnableQuitConfirmation;
+end;
+
 procedure TConfiguration.SetEnableQuitConfirmation(const AValue: Boolean);
 begin
   if FEnableQuitConfirmation <> AValue then
@@ -141,6 +107,11 @@ begin
     FEnableQuitConfirmation := AValue;
     inherited Modified := True;
   end;
+end;
+
+function TConfiguration.GetEnableSplashAtStart: Boolean;
+begin
+  Result := FEnableSplashAtStart;
 end;
 
 procedure TConfiguration.SetEnableSplashAtStart(const AValue: Boolean);
@@ -152,6 +123,11 @@ begin
   end;
 end;
 
+function TConfiguration.GetEnableStatusbar: Boolean;
+begin
+  Result := FEnableStatusbar;
+end;
+
 procedure TConfiguration.SetEnableStatusbar(const AValue: Boolean);
 begin
   if FEnableStatusbar <> AValue then
@@ -161,14 +137,23 @@ begin
   end;
 end;
 
-procedure TConfiguration.SetEnableStoreMainFormSizesAndPosition(
-  const AValue: Boolean);
+function TConfiguration.GetEnableStoreMainFormSizesAndPosition: Boolean;
+begin
+  Result := FEnableStoreMainFormSizesAndPosition;
+end;
+
+procedure TConfiguration.SetEnableStoreMainFormSizesAndPosition(const AValue: Boolean);
 begin
   if FEnableStoreMainFormSizesAndPosition <> AValue then
   begin
     FEnableStoreMainFormSizesAndPosition := AValue;
     inherited Modified := True;
   end;
+end;
+
+function TConfiguration.GetEnableToolbar: Boolean;
+begin
+  Result := FEnableToolbar;
 end;
 
 procedure TConfiguration.SetEnableToolbar(const AValue: Boolean);
@@ -178,6 +163,20 @@ begin
     FEnableToolbar := AValue;
     inherited Modified := True;
   end;
+end;
+
+function TConfiguration.GetRecents: IRecents;
+begin
+  if not Assigned(FRecents) then
+  begin
+    FRecents := GetIRecents;
+  end;
+  Result := FRecents;
+end;
+
+constructor TConfiguration.Create(const AConfigurationFileName: string);
+begin
+  inherited;
 end;
 
 procedure TConfiguration.Initialize;
@@ -208,17 +207,12 @@ begin
   begin
     with IniFile do
     begin
-      EnableQuitConfirmation := ReadBool(RsInterface, RsEnableQuitConfirmation,
-        CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION);
-      EnableSplashAtStart := ReadBool(RsInterface, RsEnableSplashAtStart,
-        CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START);
-      EnableStatusbar := ReadBool(RsInterface, RsEnableStatusbar,
-        CONFIGURATION_DEFAULT_ENABLE_STATUSBAR);
+      EnableQuitConfirmation := ReadBool(RsInterface, RsEnableQuitConfirmation, CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION);
+      EnableSplashAtStart := ReadBool(RsInterface, RsEnableSplashAtStart, CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START);
+      EnableStatusbar := ReadBool(RsInterface, RsEnableStatusbar, CONFIGURATION_DEFAULT_ENABLE_STATUSBAR);
       EnableToolbar := ReadBool(RsInterface, RsEnableToolbar, CONFIGURATION_DEFAULT_ENABLE_TOOLBAR);
-      EnablePlaySoundOnComplete := ReadBool(RsOther, RsEnablePlaySoundOnComplete,
-        CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE);
-      EnableStoreMainFormSizesAndPosition := ReadBool(RsInterface, RsEnableStoreMainFormSizesAndPosition,
-        CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION);
+      EnablePlaySoundOnComplete := ReadBool(RsOther, RsEnablePlaySoundOnComplete, CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE);
+      EnableStoreMainFormSizesAndPosition := ReadBool(RsInterface, RsEnableStoreMainFormSizesAndPosition, CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION);
 
       Recents.Clear;
       for i := 0 to ReadInteger(RsRecents, RsQuantity, RECENTS_DEFAULT_COUNT) - 1 do
