@@ -23,8 +23,6 @@ type
     procedure Initialize; override;
     procedure Finalize; override;
     procedure Loading; override;
-    procedure AfterLoad; override;
-    procedure BeforeSave; override;
     procedure Saving; override;
   strict private
     // вкладка "настройки интерфейса"
@@ -1291,14 +1289,6 @@ end;
 procedure TConfiguration.SetMainFormEnableFullScreenAtLaunch(const AValue: Boolean);
 begin
   Routines.SetField(AValue, FMainFormEnableFullScreenAtLaunch)
-end;
-
-procedure TConfiguration.AfterLoad;
-begin
-end;
-
-procedure TConfiguration.BeforeSave;
-begin
 end;
 
 constructor TConfiguration.Create(const AConfigurationFileName: string);

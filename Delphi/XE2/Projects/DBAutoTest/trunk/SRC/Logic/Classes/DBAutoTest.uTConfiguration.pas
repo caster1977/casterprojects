@@ -3,10 +3,10 @@ unit DBAutoTest.uTConfiguration;
 interface
 
 uses
-  DBAutoTest.uIConfiguration,
-  CastersPackage.uTIniFileDataStorage,
-  DBAutoTest.uConsts,
   System.IniFiles,
+  CastersPackage.uTIniFileDataStorage,
+  DBAutoTest.uIConfiguration,
+  DBAutoTest.uConsts,
   DBAutoTest.uIRecents;
 
 type
@@ -36,27 +36,17 @@ type
     procedure Initialize; override;
     procedure Finalize; override;
     procedure Loading; override;
-    procedure AfterLoad; override;
-    procedure BeforeSave; override;
     procedure Saving; override;
   public
     constructor Create(const AConfigurationFileName: string = ''); override;
     property Modified: Boolean read GetModified nodefault;
     property Recents: IRecents read GetRecents;
-    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete
-      write SetEnablePlaySoundOnComplete
-      default CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
-    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation
-      write SetEnableQuitConfirmation default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
-    property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart
-      default CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
-    property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar
-      default CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
-    property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar
-      default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
-    property EnableStoreMainFormSizesAndPosition: Boolean
-      read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition
-      default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
+    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete write SetEnablePlaySoundOnComplete default CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
+    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation write SetEnableQuitConfirmation default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
+    property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart default CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
+    property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar default CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
+    property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
+    property EnableStoreMainFormSizesAndPosition: Boolean read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
   end;
 
 function GetIConfiguration(const AConfigurationFileName: string = ''): IConfiguration;
@@ -89,16 +79,6 @@ resourcestring
 function GetIConfiguration(const AConfigurationFileName: string): IConfiguration;
 begin
   Result := TConfiguration.Create(AConfigurationFileName);
-end;
-
-procedure TConfiguration.AfterLoad;
-begin
-  inherited;
-end;
-
-procedure TConfiguration.BeforeSave;
-begin
-  inherited;
 end;
 
 constructor TConfiguration.Create(const AConfigurationFileName: string);
@@ -143,23 +123,6 @@ begin
     FRecents := GetIRecents;
   end;
   Result := FRecents;
-end;
-
-procedure TConfiguration.Initialize;
-begin
-  inherited;
-  EnablePlaySoundOnComplete := CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
-  EnableQuitConfirmation := CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
-  EnableSplashAtStart := CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
-  EnableStatusbar := CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
-  EnableToolbar := CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
-  EnableStoreMainFormSizesAndPosition := CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
-  Recents.Clear;
-end;
-
-procedure TConfiguration.Finalize;
-begin
-  inherited;
 end;
 
 procedure TConfiguration.SetEnablePlaySoundOnComplete(const AValue: Boolean);
@@ -215,6 +178,23 @@ begin
     FEnableToolbar := AValue;
     inherited Modified := True;
   end;
+end;
+
+procedure TConfiguration.Initialize;
+begin
+  inherited;
+  EnablePlaySoundOnComplete := CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
+  EnableQuitConfirmation := CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
+  EnableSplashAtStart := CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
+  EnableStatusbar := CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
+  EnableToolbar := CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
+  EnableStoreMainFormSizesAndPosition := CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
+  Recents.Clear;
+end;
+
+procedure TConfiguration.Finalize;
+begin
+  inherited;
 end;
 
 procedure TConfiguration.Loading;

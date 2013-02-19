@@ -18,7 +18,7 @@ uses
   ActnList,
   PlatformDefaultStyleActnCtrls,
   ActnMan,
-  ComCtrls;
+  ComCtrls, System.Actions;
 
 type
   TConfigurationForm=class(TForm)

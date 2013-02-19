@@ -122,7 +122,6 @@ object ConfigurationForm: TConfigurationForm
         Height = 22
         Cursor = crHandPoint
         Action = Action_NextPage
-        Images = MainForm.ImageList1
         ParentShowHint = False
         ShowHint = True
         TabOrder = 2
@@ -134,7 +133,6 @@ object ConfigurationForm: TConfigurationForm
         Height = 22
         Cursor = crHandPoint
         Action = Action_PreviousPage
-        Images = MainForm.ImageList1
         ParentShowHint = False
         ShowHint = True
         TabOrder = 1
@@ -176,6 +174,10 @@ object ConfigurationForm: TConfigurationForm
         object TabSheet1: TTabSheet
           Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object lblOrgPanelHalfHeight: TLabel
             Left = 0
             Top = 51
@@ -489,7 +491,6 @@ object ConfigurationForm: TConfigurationForm
     end
   end
   object ActionManager1: TActionManager
-    Images = MainForm.ImageList1
     Left = 160
     Top = 208
     StyleName = 'Platform Default'
