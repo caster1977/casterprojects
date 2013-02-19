@@ -35,7 +35,7 @@ uses
   OverseerConsts,
   OverseerTypes,
   OverseerRoutines,
-  CastersPackage.uTListViewEx;
+  CastersPackage.uTListViewEx, System.Actions;
 
 type
   THackControl = class(TControl);
@@ -531,6 +531,7 @@ uses
   Clipbrd,
   Comments,
   ShellAPI,
+  System.Types,
   jpeg;
 
 var

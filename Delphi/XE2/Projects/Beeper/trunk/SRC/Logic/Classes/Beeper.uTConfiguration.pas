@@ -38,8 +38,6 @@ type
     procedure Initialize; override;
     procedure Finalize; override;
     procedure Loading; override;
-    procedure AfterLoad; override;
-    procedure BeforeSave; override;
     procedure Saving; override;
   public
     constructor Create(const AConfigurationFileName: string = ''); override;
@@ -97,16 +95,6 @@ resourcestring
 function GetIConfiguration(const AConfigurationFileName: string): IConfiguration;
 begin
   Result := TConfiguration.Create(AConfigurationFileName);
-end;
-
-procedure TConfiguration.AfterLoad;
-begin
-  inherited;
-end;
-
-procedure TConfiguration.BeforeSave;
-begin
-  inherited;
 end;
 
 constructor TConfiguration.Create(const AConfigurationFileName: string);

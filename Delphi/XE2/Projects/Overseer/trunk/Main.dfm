@@ -559,6 +559,10 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-04-...'
           ImageIndex = 8
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object gb_SIC_04: TGroupBox
             Left = 0
             Top = 0
@@ -751,6 +755,10 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-05-...'
           ImageIndex = 5
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object gb_SIC_05: TGroupBox
             Left = 0
             Top = 0
@@ -813,6 +821,10 @@ object MainForm: TMainForm
           Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1077' '#1086#1090#1095#1105#1090#1072' '#1087#1086' '#1092#1086#1088#1084#1077' '#8470' '#1057#1048#1062'-06-...'
           ImageIndex = 12
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object gb_SIC_06: TGroupBox
             Left = 0
             Top = 0
@@ -2295,7 +2307,7 @@ object MainForm: TMainForm
     Left = 384
     Top = 424
     Bitmap = {
-      494C01012200A000A00510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01012200A000A40510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000009000000001002000000000000090
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000ECA6A6FFECA6A6FFCF8C8CFF0000
@@ -3661,10 +3673,10 @@ object MainForm: TMainForm
       Caption = '&'#1042#1099#1093#1086#1076
       Hint = #1047#1072#1074#1077#1088#1096#1077#1085#1080#1077' '#1088#1072#1073#1086#1090#1099'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1079#1072#1074#1077#1088#1096#1077#1085#1080#1103' '#1088#1072#1073#1086#1090#1099' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
       ImageIndex = 4
-      ShortCut = 32883
       SecondaryShortCuts.Strings = (
         'Alt+X'
         'F10')
+      ShortCut = 32883
       OnExecute = Action_QuitExecute
     end
     object Action_Logon: TAction
@@ -4045,7 +4057,7 @@ object MainForm: TMainForm
     Left = 256
     Top = 424
     Bitmap = {
-      494C010103000800600110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000800640110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

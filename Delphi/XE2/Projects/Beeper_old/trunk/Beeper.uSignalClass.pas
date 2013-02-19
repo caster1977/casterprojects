@@ -58,26 +58,14 @@ type
     property PeriodType: TPeriodType read GetPeriodType write SetPeriodType;
     property Hint: string read GetHint write SetHint;
     property WaveFile: string read GetWaveFile write SetWaveFile;
-    procedure AfterLoad; override;
-    procedure BeforeSave; override;
-    procedure Loading(const AIniFile: TCustomIniFile); override;
-    procedure Saving(const AIniFile: TCustomIniFile); override;
+    procedure Loading; override;
+    procedure Saving; override;
   end;
 
 implementation
 
 uses
   System.SysUtils;
-
-procedure TSignal.AfterLoad;
-begin
-  inherited;
-end;
-
-procedure TSignal.BeforeSave;
-begin
-  inherited;
-end;
 
 function TSignal.GetHint: string;
 begin
@@ -148,13 +136,13 @@ begin
     FWaveFile := s;
 end;
 
-procedure TSignal.Loading(const AIniFile: TCustomIniFile);
+procedure TSignal.Loading;
 begin
   inherited;
 
 end;
 
-procedure TSignal.Saving(const AIniFile: TCustomIniFile);
+procedure TSignal.Saving;
 begin
   inherited;
 

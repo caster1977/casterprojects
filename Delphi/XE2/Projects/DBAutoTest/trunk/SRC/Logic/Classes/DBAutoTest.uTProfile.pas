@@ -46,8 +46,6 @@ type
     procedure Initialize; override;
     procedure Finalize; override;
     procedure Loading; override;
-    procedure AfterLoad; override;
-    procedure BeforeSave; override;
     procedure Saving; override;
   public
     constructor Create(const AProfileFileName: string = ''); override;
@@ -79,16 +77,6 @@ resourcestring
 function GetIProfile(const AProfileFileName: string): IProfile;
 begin
   Result := TProfile.Create(AProfileFileName);
-end;
-
-procedure TProfile.AfterLoad;
-begin
-  inherited;
-end;
-
-procedure TProfile.BeforeSave;
-begin
-  inherited;
 end;
 
 constructor TProfile.Create(const AProfileFileName: string);

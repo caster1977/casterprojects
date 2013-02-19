@@ -25,8 +25,8 @@ type
     procedure Initialize; virtual; abstract;
     procedure Finalize; virtual; abstract;
     procedure Loading; virtual; abstract;
-    procedure AfterLoad; virtual; abstract;
-    procedure BeforeSave; virtual; abstract;
+    procedure AfterLoad; virtual;
+    procedure BeforeSave; virtual;
     procedure Saving; virtual; abstract;
     function GetModified: Boolean; virtual;
     property Modified: Boolean read GetModified write SetModified nodefault;
@@ -47,6 +47,14 @@ uses
 resourcestring
   TEXT_WRONG_INIFILE_NAME = 'Имя файла конфигурации не должно быть пустым!';
   TEXT_SAVE_INIFILE_ERROR = 'Произошла ошибка при попытке записи данных в файл конфигурации!';
+
+procedure TIniFileDataStorage.AfterLoad;
+begin
+end;
+
+procedure TIniFileDataStorage.BeforeSave;
+begin
+end;
 
 constructor TIniFileDataStorage.Create(const AIniFileName: string);
 var
