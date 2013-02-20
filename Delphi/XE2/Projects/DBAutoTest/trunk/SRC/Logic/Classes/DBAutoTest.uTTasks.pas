@@ -9,13 +9,18 @@ uses
 
 type
   TTasks = class(TInterfaceListOfGivenType<ITask>, ITasks)
-  protected
+  strict protected
     procedure Initialize; override;
+  public
+    procedure Run;
   end;
 
 function GetITasks: ITasks;
 
 implementation
+
+uses
+  System.Classes;
 
 resourcestring
   RsCantAddTaskToTasks = 'Ќе удалось добавить тест в список тестов.';
@@ -31,6 +36,22 @@ begin
   inherited;
   AddItemErrorString := RsCantAddTaskToTasks;
   RemoveItemErrorString := RsCantRemoveTaskFromTasks;
+end;
+
+procedure TTasks.Run;
+var
+  i: Integer;
+begin
+  for i := 0 to Count - 1 do
+  begin
+    Items[i].Run;
+  end;
+end;
+
+initialization
+
+begin
+  RegisterClass(TTasks);
 end;
 
 end.

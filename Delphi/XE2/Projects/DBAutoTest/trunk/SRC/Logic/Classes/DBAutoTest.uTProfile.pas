@@ -8,8 +8,7 @@ uses
   DBAutoTest.uConsts,
   CastersPackage.uICustomized,
   CastersPackage.uTIniFileDataStorage,
-  System.IniFiles,
-  System.Classes;
+  System.IniFiles;
 
 type
   TProfile = class(TIniFileDataStorage, IProfile)
@@ -42,9 +41,8 @@ type
     FStorePassword: Boolean;
     function GetStorePassword: Boolean;
     procedure SetStorePassword(const AValue: Boolean);
-  protected
+  strict protected
     procedure Initialize; override;
-    procedure Finalize; override;
     procedure Loading; override;
     procedure Saving; override;
   public
@@ -53,10 +51,8 @@ type
     property Login: string read GetLogin write SetLogin nodefault;
     property Password: string read GetPassword write SetPassword nodefault;
     property Database: string read GetDatabase write SetDatabase nodefault;
-    property WinNTSecurity: Boolean read GetWinNTSecurity write SetWinNTSecurity
-      default PROFILE_DEFAULT_WIN_NT_SECURITY;
-    property StorePassword: Boolean read GetStorePassword write SetStorePassword
-      default PROFILE_DEFAULT_STORE_PASSWORD;
+    property WinNTSecurity: Boolean read GetWinNTSecurity write SetWinNTSecurity default PROFILE_DEFAULT_WIN_NT_SECURITY;
+    property StorePassword: Boolean read GetStorePassword write SetStorePassword default PROFILE_DEFAULT_STORE_PASSWORD;
     property ADOConnectionString: string read GetADOConnectionString nodefault;
     property Tasks: ITasks read GetTasks nodefault;
     property Modified: Boolean read GetModified nodefault;
@@ -67,6 +63,7 @@ function GetIProfile(const AProfileFileName: string = ''): IProfile;
 implementation
 
 uses
+  System.Classes,
   System.SysUtils,
   DBAutoTest.uTTasks,
   DBAutoTest.uEProfile;
@@ -84,22 +81,6 @@ begin
   inherited;
 end;
 
-procedure TProfile.Initialize;
-begin
-  inherited;
-  Server := PROFILE_DEFAULT_SERVER;
-  Login := PROFILE_DEFAULT_LOGIN;
-  Password := PROFILE_DEFAULT_PASSWORD;
-  Database := PROFILE_DEFAULT_DB;
-  WinNTSecurity := PROFILE_DEFAULT_WIN_NT_SECURITY;
-  FTasks := GetITasks;
-end;
-
-procedure TProfile.Finalize;
-begin
-  inherited;
-end;
-
 function TProfile.GetADOConnectionString: string;
 begin
   Result := Format(ADO_CONNECTION_STRING_PREFIX, [Server]);
@@ -111,8 +92,7 @@ begin
   else
   begin
     Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_USER_ID, [Login]);
-    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PERSIST_SECURITY_INFO,
-      [BoolToStr(StorePassword, True)]);
+    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PERSIST_SECURITY_INFO, [BoolToStr(StorePassword, True)]);
     if StorePassword then
     begin
       Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PASSWORD, [Password]);
@@ -161,35 +141,6 @@ end;
 function TProfile.GetWinNTSecurity: Boolean;
 begin
   Result := FWinNTSecurity;
-end;
-
-procedure TProfile.Loading;
-begin
-  inherited;
-  if Assigned(IniFile) then
-  begin
-    with IniFile do
-    begin
-
-    end;
-  end;
-end;
-
-procedure TProfile.Saving;
-begin
-  inherited;
-  if Assigned(IniFile) then
-  begin
-    with IniFile do
-      try
-
-      except
-        on EIniFileException do
-        begin
-          raise EProfile.Create(RsProfileSaveError);
-        end;
-      end;
-  end;
 end;
 
 procedure TProfile.SetDatabase(const AValue: string);
@@ -256,6 +207,52 @@ begin
     FWinNTSecurity := AValue;
     inherited Modified := True;
   end;
+end;
+
+procedure TProfile.Initialize;
+begin
+  inherited;
+  Server := PROFILE_DEFAULT_SERVER;
+  Login := PROFILE_DEFAULT_LOGIN;
+  Password := PROFILE_DEFAULT_PASSWORD;
+  Database := PROFILE_DEFAULT_DB;
+  WinNTSecurity := PROFILE_DEFAULT_WIN_NT_SECURITY;
+  FTasks := GetITasks;
+end;
+
+procedure TProfile.Loading;
+begin
+  inherited;
+  if Assigned(IniFile) then
+  begin
+    with IniFile do
+    begin
+
+    end;
+  end;
+end;
+
+procedure TProfile.Saving;
+begin
+  inherited;
+  if Assigned(IniFile) then
+  begin
+    with IniFile do
+      try
+
+      except
+        on EIniFileException do
+        begin
+          raise EProfile.Create(RsProfileSaveError);
+        end;
+      end;
+  end;
+end;
+
+initialization
+
+begin
+  RegisterClass(TProfile);
 end;
 
 end.

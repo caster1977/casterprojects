@@ -13,40 +13,45 @@ type
   TConfiguration = class(TIniFileDataStorage, IConfiguration)
   strict private
     FRecents: IRecents;
-    FEnablePlaySoundOnComplete: Boolean;
-    FEnableQuitConfirmation: Boolean;
-    FEnableSplashAtStart: Boolean;
-    FEnableStatusbar: Boolean;
-    FEnableToolbar: Boolean;
-    FEnableStoreMainFormSizesAndPosition: Boolean;
     function GetRecents: IRecents;
+  strict private
+    FEnablePlaySoundOnComplete: Boolean;
     function GetEnablePlaySoundOnComplete: Boolean;
-    function GetEnableQuitConfirmation: Boolean;
-    function GetEnableSplashAtStart: Boolean;
-    function GetEnableStatusbar: Boolean;
-    function GetEnableToolbar: Boolean;
-    function GetEnableStoreMainFormSizesAndPosition: Boolean;
     procedure SetEnablePlaySoundOnComplete(const AValue: Boolean);
+  strict private
+    FEnableQuitConfirmation: Boolean;
+    function GetEnableQuitConfirmation: Boolean;
     procedure SetEnableQuitConfirmation(const AValue: Boolean);
+  strict private
+    FEnableSplashAtStart: Boolean;
+    function GetEnableSplashAtStart: Boolean;
     procedure SetEnableSplashAtStart(const AValue: Boolean);
+  strict private
+    FEnableStatusbar: Boolean;
+    function GetEnableStatusbar: Boolean;
     procedure SetEnableStatusbar(const AValue: Boolean);
+  strict private
+    FEnableToolbar: Boolean;
+    function GetEnableToolbar: Boolean;
     procedure SetEnableToolbar(const AValue: Boolean);
+  strict private
+    FEnableStoreMainFormSizesAndPosition: Boolean;
+    function GetEnableStoreMainFormSizesAndPosition: Boolean;
     procedure SetEnableStoreMainFormSizesAndPosition(const AValue: Boolean);
-  protected
+  strict protected
     procedure Initialize; override;
-    procedure Finalize; override;
     procedure Loading; override;
     procedure Saving; override;
   public
     constructor Create(const AConfigurationFileName: string = ''); override;
-    property Modified: Boolean read GetModified nodefault;
-    property Recents: IRecents read GetRecents;
     property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete write SetEnablePlaySoundOnComplete default CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
     property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation write SetEnableQuitConfirmation default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
     property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart default CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
     property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar default CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
     property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
     property EnableStoreMainFormSizesAndPosition: Boolean read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
+    property Recents: IRecents read GetRecents;
+    property Modified: Boolean read GetModified nodefault;
   end;
 
 function GetIConfiguration(const AConfigurationFileName: string = ''): IConfiguration;
@@ -79,6 +84,15 @@ resourcestring
 function GetIConfiguration(const AConfigurationFileName: string): IConfiguration;
 begin
   Result := TConfiguration.Create(AConfigurationFileName);
+end;
+
+function TConfiguration.GetRecents: IRecents;
+begin
+  if not Assigned(FRecents) then
+  begin
+    FRecents := GetIRecents;
+  end;
+  Result := FRecents;
 end;
 
 function TConfiguration.GetEnablePlaySoundOnComplete: Boolean;
@@ -165,15 +179,6 @@ begin
   end;
 end;
 
-function TConfiguration.GetRecents: IRecents;
-begin
-  if not Assigned(FRecents) then
-  begin
-    FRecents := GetIRecents;
-  end;
-  Result := FRecents;
-end;
-
 constructor TConfiguration.Create(const AConfigurationFileName: string);
 begin
   inherited;
@@ -189,11 +194,6 @@ begin
   EnableToolbar := CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
   EnableStoreMainFormSizesAndPosition := CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
   Recents.Clear;
-end;
-
-procedure TConfiguration.Finalize;
-begin
-  inherited;
 end;
 
 procedure TConfiguration.Loading;

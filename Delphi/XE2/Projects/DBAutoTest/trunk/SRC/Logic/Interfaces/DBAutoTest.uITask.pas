@@ -8,6 +8,7 @@ uses
 type
   ITask = interface
     ['{F336E692-7815-4511-B0C9-71E310602CF0}']
+    procedure Run;
     function GetEnabled: Boolean;
     function GetGroup: string;
     function GetName: string;

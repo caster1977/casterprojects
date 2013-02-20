@@ -4,11 +4,11 @@ interface
 
 uses
   CastersPackage.uIInterfaceListOfGivenType,
+  CastersPackage.uICustomized,
   System.Classes;
 
 type
-  TInterfaceListOfGivenType<T: IInterface> = class(TInterfacedPersistent,
-    IInterfaceListOfGivenType<T>)
+  TInterfaceListOfGivenType<T: IInterface> = class(TInterfacedPersistent, IInterfaceListOfGivenType<T>, ICustomized)
   strict private
     FList: IInterfaceList;
     FAddItemErrorString: string;
@@ -21,13 +21,11 @@ type
     procedure SetAddItemErrorString(const AValue: string);
     function GetRemoveItemErrorString: string;
     procedure SetRemoveItemErrorString(const AValue: string);
-  protected
+  strict protected
     procedure Initialize; virtual;
     procedure Finalize; virtual;
-    property AddItemErrorString: string read GetAddItemErrorString
-      write SetAddItemErrorString nodefault;
-    property RemoveItemErrorString: string read GetRemoveItemErrorString
-      write SetRemoveItemErrorString nodefault;
+    property AddItemErrorString: string read GetAddItemErrorString write SetAddItemErrorString nodefault;
+    property RemoveItemErrorString: string read GetRemoveItemErrorString write SetRemoveItemErrorString nodefault;
   public
     constructor Create; virtual;
     destructor Destroy; override;
@@ -39,10 +37,8 @@ type
     procedure Append(const AItems: IInterfaceListOfGivenType<T>); virtual;
     procedure Insert(const AIndex: Integer; const AItem: T); virtual;
     procedure Delete(const AIndex: Integer); virtual;
-    function Remove(const AItem: T; const ASkipIfNotFound: Boolean = False): Integer;
-      overload; virtual;
-    procedure Remove(const AItems: IInterfaceListOfGivenType<T>;
-      const ASkipIfNotFound: Boolean = False); overload; virtual;
+    function Remove(const AItem: T; const ASkipIfNotFound: Boolean = False): Integer; overload; virtual;
+    procedure Remove(const AItems: IInterfaceListOfGivenType<T>; const ASkipIfNotFound: Boolean = False); overload; virtual;
     procedure Clear; virtual;
     function First: T; virtual;
     function Last: T; virtual;
@@ -240,8 +236,7 @@ begin
   end;
 end;
 
-function TInterfaceListOfGivenType<T>.Remove(const AItem: T;
-  const ASkipIfNotFound: Boolean): Integer;
+function TInterfaceListOfGivenType<T>.Remove(const AItem: T; const ASkipIfNotFound: Boolean): Integer;
 begin
   Result := -1;
   if Assigned(FList) and (not((IndexOf(AItem) = Result) and ASkipIfNotFound)) then
@@ -250,8 +245,7 @@ begin
   end;
 end;
 
-procedure TInterfaceListOfGivenType<T>.Remove(const AItems: IInterfaceListOfGivenType<T>;
-  const ASkipIfNotFound: Boolean);
+procedure TInterfaceListOfGivenType<T>.Remove(const AItems: IInterfaceListOfGivenType<T>; const ASkipIfNotFound: Boolean);
 var
   i: Integer;
 begin

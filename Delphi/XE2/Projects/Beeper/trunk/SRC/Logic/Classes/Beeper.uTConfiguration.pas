@@ -12,8 +12,6 @@ uses
   Beeper.uISignalList;
 
 type
-  EConfiguration = class(Exception);
-
   TConfiguration = class(TIniFileDataStorage, IConfiguration)
   strict private
     FSignals: ISignalList;
@@ -36,23 +34,16 @@ type
     function GetSignals: ISignalList;
   strict protected
     procedure Initialize; override;
-    procedure Finalize; override;
     procedure Loading; override;
     procedure Saving; override;
   public
     constructor Create(const AConfigurationFileName: string = ''); override;
-    property ShowBaloonHints: Boolean read GetShowBaloonHints write SetShowBaloonHints
-      default DEFAULT_CONFIGURATION_SHOW_BALOON_HINTS;
-    property SoundEnabled: Boolean read GetSoundEnabled write SetSoundEnabled
-      default DEFAULT_CONFIGURATION_SOUND_ENABLED;
-    property ModifierOn: Integer read GetModifierOn write SetModifierOn
-      default DEFAULT_CONFIGURATION_MODIFIER_ON;
-    property VirtualKeyOn: Cardinal read GetVirtualKeyOn write SetVirtualKeyOn
-      default DEFAULT_CONFIGURATION_VIRTUAL_KEY_ON;
-    property ModifierOff: Integer read GetModifierOff write SetModifierOff
-      default DEFAULT_CONFIGURATION_MODIFIER_OFF;
-    property VirtualKeyOff: Cardinal read GetVirtualKeyOff write SetVirtualKeyOff
-      default DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF;
+    property ShowBaloonHints: Boolean read GetShowBaloonHints write SetShowBaloonHints default DEFAULT_CONFIGURATION_SHOW_BALOON_HINTS;
+    property SoundEnabled: Boolean read GetSoundEnabled write SetSoundEnabled default DEFAULT_CONFIGURATION_SOUND_ENABLED;
+    property ModifierOn: Integer read GetModifierOn write SetModifierOn default DEFAULT_CONFIGURATION_MODIFIER_ON;
+    property VirtualKeyOn: Cardinal read GetVirtualKeyOn write SetVirtualKeyOn default DEFAULT_CONFIGURATION_VIRTUAL_KEY_ON;
+    property ModifierOff: Integer read GetModifierOff write SetModifierOff default DEFAULT_CONFIGURATION_MODIFIER_OFF;
+    property VirtualKeyOff: Cardinal read GetVirtualKeyOff write SetVirtualKeyOff default DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF;
     property Signals: ISignalList read GetSignals nodefault;
   end;
 
@@ -67,6 +58,7 @@ uses
   Beeper.uTSignal,
   Beeper.uTSignalList,
   Beeper.uTPeriodTypes,
+  Beeper.uEConfiguration,
   CastersPackage.uRoutines;
 
 resourcestring
@@ -89,8 +81,7 @@ resourcestring
   RsMessageEnabled = 'Выводить сообщение';
   RsMessage = 'Сообщение';
   RsWaveFileEnabled = 'Проигрывать звуковой файл';
-  RsIniFileSaveError =
-    'Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
+  RsIniFileSaveError = 'Произошла ошибка при попытке записи настроек программы в файл конфигурации!';
 
 function GetIConfiguration(const AConfigurationFileName: string): IConfiguration;
 begin
@@ -98,11 +89,6 @@ begin
 end;
 
 constructor TConfiguration.Create(const AConfigurationFileName: string);
-begin
-  inherited;
-end;
-
-procedure TConfiguration.Finalize;
 begin
   inherited;
 end;
@@ -204,8 +190,7 @@ begin
       ModifierOn := ReadInteger(RsHotKeys, RsModifierOn, DEFAULT_CONFIGURATION_MODIFIER_ON);
       VirtualKeyOn := ReadInteger(RsHotKeys, RsVirtualKeyOn, DEFAULT_CONFIGURATION_VIRTUAL_KEY_ON);
       ModifierOff := ReadInteger(RsHotKeys, RsModifierOff, DEFAULT_CONFIGURATION_MODIFIER_OFF);
-      VirtualKeyOff := ReadInteger(RsHotKeys, RsVirtualKeyOff,
-        DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF);
+      VirtualKeyOff := ReadInteger(RsHotKeys, RsVirtualKeyOff, DEFAULT_CONFIGURATION_VIRTUAL_KEY_OFF);
       Signals.Clear;
       for i := 0 to ReadInteger(RsSignals, RsQuantity, DEFAULT_SIGNAL_COUNT) - 1 do
       begin
@@ -213,8 +198,7 @@ begin
         signal := GetISignal;
         signal.Title := ReadString(s, RsTitle, DEFAULT_SIGNAL_TITLE);
         signal.Period := ReadInteger(s, RsPeriod, DEFAULT_SIGNAL_PERIOD);
-        signal.PeriodType := TPeriodTypes(ReadInteger(s, RsPeriodType,
-          Integer(DEFAULT_SIGNAL_PERIOD_TYPE)));
+        signal.PeriodType := TPeriodTypes(ReadInteger(s, RsPeriodType, Integer(DEFAULT_SIGNAL_PERIOD_TYPE)));
         signal.MessageEnabled := ReadBool(s, RsMessageEnabled, DEFAULT_SIGNAL_MESSAGE_ENABLED);
         signal.Message := ReadString(s, RsMessage, DEFAULT_SIGNAL_MESSAGE);
         signal.WaveFileEnabled := ReadBool(s, RsWaveFileEnabled, DEFAULT_SIGNAL_WAVE_FILE_ENABLED);
