@@ -5,6 +5,7 @@ interface
 uses
   CastersPackage.uTInterfaceListOfGivenType,
   DBAutoTest.uITasks,
+  DBAutoTest.uIProfile,
   DBAutoTest.uITask;
 
 type
@@ -20,7 +21,8 @@ function GetITasks: ITasks;
 implementation
 
 uses
-  System.Classes;
+  System.Classes,
+  DBAutoTest.uTTaskThread;
 
 resourcestring
   RsCantAddTaskToTasks = 'Не удалось добавить тест в список тестов.';
@@ -44,7 +46,13 @@ var
 begin
   for i := 0 to Count - 1 do
   begin
-    Items[i].Run;
+    if Items[i].Enabled then
+    begin
+      //with TTaskThread.Create(Self, ADOConnectionString) do
+      begin
+      end;
+      { TODO : добавить запуск привязанного треда }
+    end;
   end;
 end;
 

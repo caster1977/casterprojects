@@ -32,7 +32,6 @@ type
   public
     constructor Create; virtual; final;
     destructor Destroy; override; final;
-    procedure Run;
     property Group: string read GetGroup write SetGroup nodefault;
     property name: string read GetName write SetName nodefault;
     property SQL: TStringList read GetSQL write SetSQL default TASK_DEFAULT_SQL;
@@ -147,14 +146,6 @@ begin
     begin
       FreeAndNil(FSQL);
     end;
-  end;
-end;
-
-procedure TTask.Run;
-begin
-  if Enabled then
-  begin
-    { TODO : добавить запуск привязанного треда }
   end;
 end;
 
