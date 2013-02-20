@@ -21,7 +21,7 @@ type
   protected
     procedure Execute; override;
   public
-    constructor Create(const ATask: ITask; const AConnectionString: WideString); reintroduce; virtual;
+    constructor Create(const ATask: ITask; const AConnectionString: WideString = ''); reintroduce; virtual;
   end;
 
 implementation
@@ -30,6 +30,7 @@ uses
   System.SysUtils,
   Data.Win.ADODB,
   Vcl.Forms,
+  DBAutoTest.uConsts,
   DBAutoTest.uETaskThread;
 
 resourcestring
@@ -114,6 +115,7 @@ begin
     query := TADOQuery.Create(Application.MainForm);
     try
       query.ConnectionString := ConnectionString;
+      query.CommandTimeout := ADO_CONNECTION_DEFAULT_COMMAND_TIMEOUT;
       query.SQL.AddStrings(Task.SQL);
       try
         query.Open;

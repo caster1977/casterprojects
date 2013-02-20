@@ -142,12 +142,12 @@ type
     FProfile: IProfile;
     function GetProfile: IProfile;
     procedure SetProfile(const AValue: IProfile);
-    property Profile: IProfile read GetProfile write SetProfile nodefault;
   strict private
     FConfiguration: IConfiguration;
     function GetConfiguration: IConfiguration;
     property Configuration: IConfiguration read GetConfiguration nodefault;
   public
+    property Profile: IProfile read GetProfile write SetProfile nodefault;
     destructor Destroy; override;
   end;
 
