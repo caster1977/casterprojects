@@ -13,20 +13,21 @@ type
     function GetTask: ITask;
     property Task: ITask read GetTask nodefault;
   strict private
-    FConnectionString: WideString;
-    function GetConnectionString: WideString;
-    property ConnectionString: WideString read GetConnectionString nodefault;
+    FADOConnectionString: WideString;
+    function GetADOConnectionString: WideString;
+    property ADOConnectionString: WideString read GetADOConnectionString nodefault;
   strict private
     procedure OnTerminateProc(Sender: TObject);
   protected
     procedure Execute; override;
   public
-    constructor Create(const ATask: ITask; const AConnectionString: WideString = ''); reintroduce; virtual;
+    constructor Create(const ATask: ITask; const AADOConnectionString: WideString = ''); reintroduce; virtual;
   end;
 
 implementation
 
 uses
+  CastersPackage.uTCOMInitClass,
   System.SysUtils,
   Data.Win.ADODB,
   Vcl.Forms,
@@ -67,7 +68,7 @@ resourcestring
 
   }
 
-constructor TTaskThread.Create(const ATask: ITask; const AConnectionString: WideString);
+constructor TTaskThread.Create(const ATask: ITask; const AADOConnectionString: WideString);
 begin
   if Assigned(ATask) then
   begin
@@ -76,7 +77,7 @@ begin
     FreeOnTerminate := True;
     OnTerminate := OnTerminateProc;
     FTask := ATask;
-    FConnectionString := AConnectionString;
+    FADOConnectionString := AADOConnectionString;
   end
   else
   begin
@@ -84,9 +85,9 @@ begin
   end;
 end;
 
-function TTaskThread.GetConnectionString: WideString;
+function TTaskThread.GetADOConnectionString: WideString;
 begin
-  Result := FConnectionString;
+  Result := FADOConnectionString;
 end;
 
 function TTaskThread.GetTask: ITask;
@@ -104,7 +105,7 @@ var
   query: TADOQuery;
   i: Integer;
 begin
-  { Place thread code here }
+  NewCOMInitClass;
   inherited;
   if Assigned(Task) then
   begin
@@ -112,27 +113,32 @@ begin
     NameThreadForDebugging(AnsiString(HexDisplayPrefix + IntToHex(PInteger(Task)^, SizeOf(PInteger) * 2)));
 {$ENDIF}
     i := -1;
-    query := TADOQuery.Create(Application.MainForm);
-    try
-      query.ConnectionString := ConnectionString;
-      query.CommandTimeout := ADO_CONNECTION_DEFAULT_COMMAND_TIMEOUT;
-      query.SQL.AddStrings(Task.SQL);
+    if Trim(Task.SQL.Text) > EmptyStr then
+    begin
+      query := TADOQuery.Create(Application.MainForm);
       try
-        query.Open;
-        if not Eof then
-        begin
-          i := query.FieldValues['Result'];
+        query.ConnectionString := ADOConnectionString;
+        query.CommandTimeout := ADO_CONNECTION_DEFAULT_COMMAND_TIMEOUT;
+        query.SQL.Assign(Task.SQL);
+        try
+          query.Open;
+          if not Eof then
+          begin
+            i := query.FieldValues['Result'];
+          end;
+        finally
+          query.Close;
         end;
       finally
-        query.Close;
+        FreeAndNil(query);
       end;
-    finally
-      FreeAndNil(query);
     end;
     Synchronize(
       procedure
       begin
+        { TODO : дописать }
         // Task.ResultValue := i;
+        Application.MainForm.Caption := AnsiString(HexDisplayPrefix + IntToHex(PInteger(Task)^, SizeOf(PInteger) * 2));
       end);
   end;
 end;
