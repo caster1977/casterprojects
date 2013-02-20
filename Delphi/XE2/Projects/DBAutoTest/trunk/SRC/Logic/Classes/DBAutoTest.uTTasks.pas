@@ -13,7 +13,7 @@ type
   strict protected
     procedure Initialize; override;
   public
-    procedure Run;
+    procedure Run(const AADOConnectionString: WideString);
   end;
 
 function GetITasks: ITasks;
@@ -22,6 +22,9 @@ implementation
 
 uses
   System.Classes,
+  System.SysUtils,
+  DBAutoTest.uConsts,
+  DBAutoTest.uETaskThread,
   DBAutoTest.uTTaskThread;
 
 resourcestring
@@ -40,7 +43,7 @@ begin
   RemoveItemErrorString := RsCantRemoveTaskFromTasks;
 end;
 
-procedure TTasks.Run;
+procedure TTasks.Run(const AADOConnectionString: WideString);
 var
   i: Integer;
 begin
@@ -48,10 +51,15 @@ begin
   begin
     if Items[i].Enabled then
     begin
-      //with TTaskThread.Create(Self, ADOConnectionString) do
-      begin
-      end;
-      { TODO : добавить запуск привязанного треда }
+      with TTaskThread.Create(Items[i], AADOConnectionString) do
+        try
+          Start;
+        except
+          on e: Exception do
+          begin
+            raise ETaskThread.Create(e.Message);
+          end;
+        end;
     end;
   end;
 end;

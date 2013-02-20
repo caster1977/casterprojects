@@ -125,6 +125,8 @@ type
     procedure actToolBarExecute(Sender: TObject);
     procedure actSaveProfileExecute(Sender: TObject);
     procedure actSaveProfileUpdate(Sender: TObject);
+    procedure lvTaskListChange(Sender: TObject; Item: TListItem;
+      Change: TItemChange);
   strict private
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -371,6 +373,12 @@ begin
   end;
 end;
 
+procedure TMainForm.lvTaskListChange(Sender: TObject; Item: TListItem;
+  Change: TItemChange);
+begin
+  Profile.Tasks.IndexOf(ITask(lvTaskList.Items[i].Data));
+end;
+
 procedure TMainForm.lvTaskListDblClick(Sender: TObject);
 begin
   actEditTask.Execute;
@@ -512,6 +520,7 @@ end;
 procedure TMainForm.actProcessExecute(Sender: TObject);
 begin
   { TODO : реализовать функционал выполнения выбранных тестов в параллельных тредах }
+  Profile.Tasks.Run(Profile.ADOConnectionString);
 end;
 
 procedure TMainForm.actProcessUpdate(Sender: TObject);
@@ -520,6 +529,7 @@ var
   b: Boolean;
 begin
   b := False;
+  { TODO : переписать алгоритм с использованием Profile.Tasks }
   for i := 0 to lvTaskList.Items.Count - 1 do
   begin
     if lvTaskList.Items[i].Checked then
@@ -663,6 +673,7 @@ begin
           end;
           node.Caption := t.name;
           node.SubItems.Add('');
+          node.Checked := t.Enabled;
         end;
       end;
     end;
