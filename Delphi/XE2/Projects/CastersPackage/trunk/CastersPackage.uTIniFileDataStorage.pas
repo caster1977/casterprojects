@@ -23,7 +23,7 @@ type
   strict protected
     constructor Create(const AIniFileName: string = ''); virtual;
     procedure Initialize; virtual; abstract;
-    procedure Finalize; virtual; abstract;
+    procedure Finalize; virtual;
     procedure Loading; virtual; abstract;
     procedure AfterLoad; virtual;
     procedure BeforeSave; virtual;
@@ -83,6 +83,10 @@ begin
     FreeAndNil(FIniFile);
   end;
   inherited;
+end;
+
+procedure TIniFileDataStorage.Finalize;
+begin
 end;
 
 function TIniFileDataStorage.GetIniFile: TCustomIniFile;

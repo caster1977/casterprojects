@@ -174,10 +174,6 @@ object ConfigurationForm: TConfigurationForm
         object TabSheet1: TTabSheet
           Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object lblOrgPanelHalfHeight: TLabel
             Left = 0
             Top = 51

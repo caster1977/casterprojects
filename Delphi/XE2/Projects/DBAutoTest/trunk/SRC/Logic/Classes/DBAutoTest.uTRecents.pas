@@ -9,13 +9,16 @@ uses
 
 type
   TRecents = class(TInterfaceListOfGivenType<IRecent>, IRecents)
-  protected
+  strict protected
     procedure Initialize; override;
   end;
 
 function GetIRecents: IRecents;
 
 implementation
+
+uses
+  System.Classes;
 
 resourcestring
   RsCantAddRecentToRecents =
@@ -33,6 +36,12 @@ begin
   inherited;
   AddItemErrorString := RsCantAddRecentToRecents;
   RemoveItemErrorString := RsCantRemoveRecentFromRecents;
+end;
+
+initialization
+
+begin
+  RegisterClass(TRecents);
 end;
 
 end.

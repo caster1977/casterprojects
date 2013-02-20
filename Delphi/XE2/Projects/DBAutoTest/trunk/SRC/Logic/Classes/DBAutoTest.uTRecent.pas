@@ -12,11 +12,13 @@ type
   TRecent = class(TInterfacedObject, IRecent, ICustomized)
   strict private
     FFullName: string;
-    function GetExists: Boolean;
     function GetFullName: string;
-    function GetShortName: string;
     procedure SetFullName(const AValue: string);
-  protected
+  strict private
+    function GetExists: Boolean;
+  strict private
+    function GetShortName: string;
+  strict protected
     procedure Initialize; virtual;
     procedure Finalize; virtual;
   public
@@ -51,28 +53,18 @@ begin
   inherited;
 end;
 
-procedure TRecent.Finalize;
+procedure TRecent.Initialize;
 begin
+  FullName := RECENT_DEFAULT_FULL_NAME;
 end;
 
-function TRecent.GetExists: Boolean;
+procedure TRecent.Finalize;
 begin
-  Result := FileExists(FullName);
 end;
 
 function TRecent.GetFullName: string;
 begin
   Result := FFullName;
-end;
-
-function TRecent.GetShortName: string;
-begin
-  Result := ExtractFileName(FullName);
-end;
-
-procedure TRecent.Initialize;
-begin
-  FullName := RECENT_DEFAULT_FULL_NAME;
 end;
 
 procedure TRecent.SetFullName(const AValue: string);
@@ -84,6 +76,16 @@ begin
   begin
     FFullName := s;
   end;
+end;
+
+function TRecent.GetExists: Boolean;
+begin
+  Result := FileExists(FullName);
+end;
+
+function TRecent.GetShortName: string;
+begin
+  Result := ExtractFileName(FullName);
 end;
 
 end.

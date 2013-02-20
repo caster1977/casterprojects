@@ -3,32 +3,36 @@ unit DBAutoTest.uTTask;
 interface
 
 uses
+  System.Classes,
   DBAutoTest.uITask,
   DBAutoTest.uConsts,
-  CastersPackage.uICustomized,
-  System.Classes;
+  CastersPackage.uICustomized;
 
 type
   TTask = class(TInterfacedObject, ITask, ICustomized)
   strict private
     FGroup: string;
+    function GetGroup: string;
+    procedure SetGroup(const AValue: string);
+  strict private
     FName: string;
+    function GetName: string;
+    procedure SetName(const AValue: string);
+  strict private
     FSQL: TStringList;
+    function GetSQL: TStringList;
+    procedure SetSQL(const AValue: TStringList);
+  strict private
     FEnabled: Boolean;
     function GetEnabled: Boolean;
-    function GetGroup: string;
-    function GetName: string;
-    function GetSQL: TStringList;
     procedure SetEnabled(const AValue: Boolean);
-    procedure SetGroup(const AValue: string);
-    procedure SetName(const AValue: string);
-    procedure SetSQL(const AValue: TStringList);
-  protected
+  strict protected
     procedure Initialize; virtual;
     procedure Finalize; virtual;
   public
     constructor Create; virtual; final;
     destructor Destroy; override; final;
+    procedure Run;
     property Group: string read GetGroup write SetGroup nodefault;
     property name: string read GetName write SetName nodefault;
     property SQL: TStringList read GetSQL write SetSQL default TASK_DEFAULT_SQL;
@@ -143,6 +147,14 @@ begin
     begin
       FreeAndNil(FSQL);
     end;
+  end;
+end;
+
+procedure TTask.Run;
+begin
+  if Enabled then
+  begin
+    { TODO : добавить запуск привязанного треда }
   end;
 end;
 
