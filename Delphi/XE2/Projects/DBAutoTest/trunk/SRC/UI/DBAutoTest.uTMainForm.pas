@@ -125,8 +125,7 @@ type
     procedure actToolBarExecute(Sender: TObject);
     procedure actSaveProfileExecute(Sender: TObject);
     procedure actSaveProfileUpdate(Sender: TObject);
-    procedure lvTaskListChange(Sender: TObject; Item: TListItem;
-      Change: TItemChange);
+    procedure lvTaskListChange(Sender: TObject; Item: TListItem; Change: TItemChange);
   strict private
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -182,8 +181,7 @@ resourcestring
   RsWarningCaption = '%s - Предупреждение';
   RsErrorCaption = '%s - Ошибка';
   RsOpenRecent = 'Нажмите для загрузки файла профиля с указанным именем';
-  RsCreateProfileConfirmationMessage =
-    'Вы действительно хотите создать новый профиль, предварительно не сохранив текущий?';
+  RsCreateProfileConfirmationMessage = 'Вы действительно хотите создать новый профиль, предварительно не сохранив текущий?';
   RsCreateProfileConfirmationCaption = '%s - Подтверждение создания нового профиля';
   RsOpenProfileFilters = 'Файлы профилей (*.profile)|*.profile|Все файлы (*.*)|*.*';
   RsOpenProfileDefaultExt = 'profile';
@@ -257,9 +255,7 @@ begin
   except
     on E: EConfiguration do
     begin
-      if MessageBox(Handle, PWideChar(Format(RsTryAgain, [E.Message])),
-        PWideChar(Format(RsWarningCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING_OK)
-        = IDOK then
+      if MessageBox(Handle, PWideChar(Format(RsTryAgain, [E.Message])), PWideChar(Format(RsWarningCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING_OK) = IDOK then
       begin
         try
           Screen.Cursor := crHourGlass;
@@ -271,8 +267,7 @@ begin
         except
           on E: EConfiguration do
           begin
-            MessageBox(Handle, PWideChar(E.Message),
-              PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
+            MessageBox(Handle, PWideChar(E.Message), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
           end;
           else
           begin
@@ -293,9 +288,7 @@ begin
   CanClose := True;
   if Configuration.EnableQuitConfirmation then
   begin
-    CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
-      PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])),
-      MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
+    CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage), PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
   end;
 end;
 
@@ -327,20 +320,20 @@ begin
 end;
 
 procedure TMainForm.Initialize;
-//var
-//  r: IRecent;
-//  i: Integer;
+// var
+// r: IRecent;
+// i: Integer;
 begin
   Application.OnHint := OnHint;
   LoadConfiguration;
 
-//  Configuration.Recents.Clear;
-//  for i := 0 to 19 do
-//  begin
-//    r := GetIRecent;
-//    r.FullName := IntToStr(i);
-//    Configuration.Recents.Add(r);
-//  end;
+  // Configuration.Recents.Clear;
+  // for i := 0 to 19 do
+  // begin
+  // r := GetIRecent;
+  // r.FullName := IntToStr(i);
+  // Configuration.Recents.Add(r);
+  // end;
 
   ApplyConfiguration;
   RefreshRecentsMenu;
@@ -358,8 +351,7 @@ begin
   except
     on E: Exception do
     begin
-      MessageBox(Handle, PWideChar(E.Message), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])
-        ), MESSAGE_TYPE_ERROR);
+      MessageBox(Handle, PWideChar(E.Message), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
     end;
   end;
 end;
@@ -373,10 +365,18 @@ begin
   end;
 end;
 
-procedure TMainForm.lvTaskListChange(Sender: TObject; Item: TListItem;
-  Change: TItemChange);
+procedure TMainForm.lvTaskListChange(Sender: TObject; Item: TListItem; Change: TItemChange);
 begin
-  Profile.Tasks.IndexOf(ITask(lvTaskList.Items[i].Data));
+  if Change = ctState then
+  begin
+    if Assigned(Item) then
+    begin
+      if Assigned(ITask(Item.Data)) then
+      begin
+        ITask(Item.Data).Enabled := Item.Checked;
+      end;
+    end;
+  end;
 end;
 
 procedure TMainForm.lvTaskListDblClick(Sender: TObject);
@@ -389,9 +389,7 @@ begin
   { TODO :
     добавить проверку сохранённости текущего профиля:
     если профиль был изменён и не сохранён, задать вопрос юзеру }
-  if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage),
-    PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])),
-    MESSAGE_TYPE_CONFIRMATION_WARNING_CANCEL) = IDOK then
+  if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage), PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING_CANCEL) = IDOK then
   begin
     Profile := GetIProfile;
     { TODO : нужно как-то изменить алгоритм работы с именем файла }
@@ -588,7 +586,7 @@ end;
 procedure TMainForm.RefreshRecentsMenu;
 var
   i: Integer;
-  item: TMenuItem;
+  Item: TMenuItem;
 begin
   for i := miRecents.Count - 3 downto 0 do
   begin
@@ -596,12 +594,12 @@ begin
   end;
   for i := Configuration.Recents.Count - 1 downto 0 do
   begin
-    item := TMenuItem.Create(Self);
-    item.Caption := Configuration.Recents.Items[i].FullName;
-    item.Enabled := Configuration.Recents.Items[i].Exists;
-    item.OnClick := OnRecentsMenuItemClick;
-    item.Hint := RsOpenRecent;
-    miRecents.Insert(0, item);
+    Item := TMenuItem.Create(Self);
+    Item.Caption := Configuration.Recents.Items[i].FullName;
+    Item.Enabled := Configuration.Recents.Items[i].Exists;
+    Item.OnClick := OnRecentsMenuItemClick;
+    Item.Hint := RsOpenRecent;
+    miRecents.Insert(0, Item);
   end;
 end;
 
