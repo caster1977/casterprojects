@@ -43,37 +43,6 @@ resourcestring
   RsITaskIsNil = 'ITask is nil.';
   RsCannotRegisterThreadMessage = 'Не удалось зарегистрировать оконное сообщение для дочернего потока.';
 
-  {
-    Important: Methods and properties of objects in visual components can only be
-    used in a method called using Synchronize, for example,
-
-    Synchronize(UpdateCaption);
-
-    and UpdateCaption could look like,
-
-    procedure TSignalThread.UpdateCaption;
-    begin
-    Form1.Caption := 'Updated in a thread';
-    end;
-
-    or
-
-    Synchronize(
-    procedure
-    begin
-    Form1.Caption := 'Updated in thread via an anonymous method'
-    end
-    )
-    );
-
-    where an anonymous method is passed.
-
-    Similarly, the developer can call the Queue method with similar parameters as
-    above, instead passing another TThread class as the first parameter, putting
-    the calling thread in a queue with the other thread.
-
-  }
-
 constructor TTaskThread.Create(const ATask: ITask; const AADOConnectionString: WideString);
 begin
   if Assigned(ATask) then
@@ -124,11 +93,11 @@ begin
 {$IFDEF DEBUG}
     NameThreadForDebugging(AnsiString(HexDisplayPrefix + IntToHex(PInteger(Task)^, SizeOf(PInteger) * 2)));
 {$ENDIF}
-  if not RegisterThreadMessage then
-  begin
-    MessageBox(Handle, PWideChar(RsCannotRegisterThreadMessage), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
-    Terminate;
-  end;
+    if not RegisterThreadMessage then
+    begin
+      MessageBox(Handle, PWideChar(RsCannotRegisterThreadMessage), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
+      Terminate;
+    end;
     i := -1;
     if Trim(Task.SQL.Text) > EmptyStr then
     begin
@@ -162,7 +131,7 @@ begin
         begin
           Task.Status := tsError;
         end;
-        //Application.MainForm.Caption := AnsiString(HexDisplayPrefix + IntToHex(PInteger(Task)^, SizeOf(PInteger) * 2));
+        // Application.MainForm.Caption := AnsiString(HexDisplayPrefix + IntToHex(PInteger(Task)^, SizeOf(PInteger) * 2));
       end);
     PostMessage(Application.MainForm.Handle, FThreadMessage, NativeUInt(Task), NativeUInt(0));
   end;
