@@ -79,7 +79,8 @@ implementation
 
 uses
   DBAutoTest.uTTask,
-  DBAutoTest.uETasks;
+  DBAutoTest.uETasks,
+  DBAutoTest.uTTaskStatus;
 
 resourcestring
   RsAddTaskCaption = 'Добавление теста';
@@ -115,6 +116,7 @@ begin
   task.Name := TaskName;
   task.SQL := TaskSQL;
   task.Enabled := TaskEnabled;
+  task.Status := tsUnknown;
   ModalResult := mrOk;
 end;
 

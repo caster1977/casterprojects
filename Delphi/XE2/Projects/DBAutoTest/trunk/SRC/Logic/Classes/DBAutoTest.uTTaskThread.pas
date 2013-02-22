@@ -17,6 +17,8 @@ type
     function GetADOConnectionString: WideString;
     property ADOConnectionString: WideString read GetADOConnectionString nodefault;
   strict private
+    FThreadMessage: Cardinal;
+    function RegisterThreadMessage: Boolean;
     procedure OnTerminateProc(Sender: TObject);
   protected
     procedure Execute; override;
@@ -28,14 +30,18 @@ implementation
 
 uses
   CastersPackage.uTCOMInitClass,
+  Winapi.Windows,
   System.SysUtils,
   Data.Win.ADODB,
   Vcl.Forms,
   DBAutoTest.uConsts,
-  DBAutoTest.uETaskThread;
+  DBAutoTest.uTTaskStatus,
+  DBAutoTest.uETaskThread,
+  DBAutoTest.uResourceStrings;
 
 resourcestring
   RsITaskIsNil = 'ITask is nil.';
+  RsCannotRegisterThreadMessage = 'Не удалось зарегистрировать оконное сообщение для дочернего потока.';
 
   {
     Important: Methods and properties of objects in visual components can only be
@@ -100,6 +106,12 @@ begin
   { TODO : можно добавить код освобождения объектов или сохранения данных перед уничтожением треда }
 end;
 
+function TTaskThread.RegisterThreadMessage: Boolean;
+begin
+  FThreadMessage := RegisterWindowMessage(PWideChar(WM_TASK_THREAD_MESSAGE));
+  Result := FThreadMessage > 0;
+end;
+
 procedure TTaskThread.Execute;
 var
   query: TADOQuery;
@@ -112,6 +124,11 @@ begin
 {$IFDEF DEBUG}
     NameThreadForDebugging(AnsiString(HexDisplayPrefix + IntToHex(PInteger(Task)^, SizeOf(PInteger) * 2)));
 {$ENDIF}
+  if not RegisterThreadMessage then
+  begin
+    MessageBox(Handle, PWideChar(RsCannotRegisterThreadMessage), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
+    Terminate;
+  end;
     i := -1;
     if Trim(Task.SQL.Text) > EmptyStr then
     begin
@@ -137,9 +154,17 @@ begin
       procedure
       begin
         { TODO : дописать }
-        // Task.ResultValue := i;
-        Application.MainForm.Caption := AnsiString(HexDisplayPrefix + IntToHex(PInteger(Task)^, SizeOf(PInteger) * 2));
+        if i = 0 then
+        begin
+          Task.Status := tsComplete;
+        end
+        else
+        begin
+          Task.Status := tsError;
+        end;
+        //Application.MainForm.Caption := AnsiString(HexDisplayPrefix + IntToHex(PInteger(Task)^, SizeOf(PInteger) * 2));
       end);
+    PostMessage(Application.MainForm.Handle, FThreadMessage, NativeUInt(Task), NativeUInt(0));
   end;
 end;
 

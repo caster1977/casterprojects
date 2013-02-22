@@ -6,6 +6,7 @@ uses
   System.Classes,
   DBAutoTest.uITask,
   DBAutoTest.uConsts,
+  DBAutoTest.uTTaskStatus,
   CastersPackage.uICustomized;
 
 type
@@ -26,6 +27,10 @@ type
     FEnabled: Boolean;
     function GetEnabled: Boolean;
     procedure SetEnabled(const AValue: Boolean);
+  strict private
+    FTaskStatus: TTaskStatus;
+    function GetStatus: TTaskStatus;
+    procedure SetStatus(const AValue: TTaskStatus);
   strict protected
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -36,6 +41,7 @@ type
     property name: string read GetName write SetName nodefault;
     property SQL: TStringList read GetSQL write SetSQL default TASK_DEFAULT_SQL;
     property Enabled: Boolean read GetEnabled write SetEnabled default TASK_DEFAULT_ENABLED;
+    property Status: TTaskStatus read GetStatus write SetStatus default TASK_DEFAULT_STATUS;
   end;
 
 function GetITask: ITask;
@@ -91,12 +97,18 @@ begin
   Result := FSQL;
 end;
 
+function TTask.GetStatus: TTaskStatus;
+begin
+  Result := FTaskStatus;
+end;
+
 procedure TTask.Initialize;
 begin
   Enabled := TASK_DEFAULT_ENABLED;
   Group := TASK_DEFAULT_GROUP;
   name := TASK_DEFAULT_NAME;
   SQL := TASK_DEFAULT_SQL;
+  Status := TASK_DEFAULT_STATUS;
 end;
 
 procedure TTask.SetEnabled(const AValue: Boolean);
@@ -146,6 +158,14 @@ begin
     begin
       FreeAndNil(FSQL);
     end;
+  end;
+end;
+
+procedure TTask.SetStatus(const AValue: TTaskStatus);
+begin
+  if FTaskStatus <> AValue then
+  begin
+    FTaskStatus := AValue;
   end;
 end;
 
