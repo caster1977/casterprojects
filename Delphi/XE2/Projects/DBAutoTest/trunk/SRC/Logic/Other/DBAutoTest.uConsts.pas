@@ -3,7 +3,9 @@ unit DBAutoTest.uConsts;
 interface
 
 uses
-  Winapi.Windows;
+  Winapi.Windows,
+  DBAutoTest.uTTaskStatus,
+  DBAutoTest.uResourceStrings;
 
 const
   APPLICATION_NAME = 'DBAutoTest';
@@ -18,6 +20,7 @@ const
   TASK_DEFAULT_GROUP = '';
   TASK_DEFAULT_NAME = '';
   TASK_DEFAULT_SQL = nil;
+  TASK_DEFAULT_STATUS = tsUnknown;
 
   CONFIGURATION_DEFAULT_ACTIVE_PAGE = 0;
   CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE = True;
@@ -47,6 +50,11 @@ const
   ADO_CONNECTION_STRING_SUFFIX_INITIAL_CATALOG = ';Initial Catalog="%s"';
 
   ADO_CONNECTION_DEFAULT_COMMAND_TIMEOUT = 60000;
+
+  TASK_STATUS_NAMES: array [Low(TTaskStatus) .. High(TTaskStatus)] of string = (RsUnknown, RsExecuting, RsError, RsComplete);
+
+  WM_TASK_THREAD_MESSAGE = 'WM_TASK_THREAD_MESSAGE';
+
 
 implementation
 

@@ -3,6 +3,7 @@ unit DBAutoTest.uTMainForm;
 interface
 
 uses
+  DBAutoTest.uITask,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -99,6 +100,8 @@ type
     N5: TMenuItem;
     N9: TMenuItem;
     N11: TMenuItem;
+    actMoveDown: TAction;
+    actMoveUp: TAction;
     procedure actQuitExecute(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -126,6 +129,10 @@ type
     procedure actSaveProfileExecute(Sender: TObject);
     procedure actSaveProfileUpdate(Sender: TObject);
     procedure lvTaskListChange(Sender: TObject; Item: TListItem; Change: TItemChange);
+    procedure actMoveUpUpdate(Sender: TObject);
+    procedure actMoveDownUpdate(Sender: TObject);
+    procedure actMoveUpExecute(Sender: TObject);
+    procedure actMoveDownExecute(Sender: TObject);
   strict private
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -134,9 +141,10 @@ type
     procedure SaveConfiguration;
     procedure OnHint(ASender: TObject);
     procedure ShowAboutWindow(const AShowCloseButton: Boolean);
-    procedure RefreshTaskList;
     procedure RefreshRecentsMenu;
     procedure AddEditTask(const AIndex: Integer = -1);
+    procedure RefreshTaskList;
+    procedure RefreshTaskStatus(const ATask: ITask);
   strict private
     procedure OnRecentsMenuItemClick(Sender: TObject);
   strict private
@@ -150,6 +158,11 @@ type
   public
     property Profile: IProfile read GetProfile write SetProfile nodefault;
     destructor Destroy; override;
+  strict private
+    FThreadMessage: Cardinal;
+    function RegisterThreadMessage: Boolean;
+  protected
+    procedure WndProc(var Message: TMessage); override;
   end;
 
 var
@@ -166,20 +179,20 @@ uses
   DBAutoTest.uTTaskForm,
   DBAutoTest.uTRecentsPropertiesForm,
   DBAutoTest.uTProfileForm,
-  DBAutoTest.uITask,
   DBAutoTest.uTRecents,
   DBAutoTest.uIRecent,
   DBAutoTest.uTRecent,
   DBAutoTest.uTProfile,
   DBAutoTest.uTConfiguration,
   DBAutoTest.uEConfiguration,
+  DBAutoTest.uResourceStrings,
   System.IniFiles;
 
 resourcestring
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
   RsExitConfirmationCaption = '%s - Подтверждение выхода';
   RsWarningCaption = '%s - Предупреждение';
-  RsErrorCaption = '%s - Ошибка';
+  RsCannotRegisterThreadMessage = 'Не удалось зарегистрировать оконное сообщение для дочерних потоков.';
   RsOpenRecent = 'Нажмите для загрузки файла профиля с указанным именем';
   RsCreateProfileConfirmationMessage = 'Вы действительно хотите создать новый профиль, предварительно не сохранив текущий?';
   RsCreateProfileConfirmationCaption = '%s - Подтверждение создания нового профиля';
@@ -230,6 +243,21 @@ begin
     finally
       Free;
     end;
+end;
+
+procedure TMainForm.WndProc(var Message: TMessage);
+var
+  t: ITask;
+begin
+  inherited;
+  if message.Msg = FThreadMessage then
+  begin
+    t := ITask(message.WParam);
+    if Assigned(t) then
+    begin
+      RefreshTaskStatus(t);
+    end;
+  end;
 end;
 
 procedure TMainForm.Finalize;
@@ -325,6 +353,11 @@ procedure TMainForm.Initialize;
 // i: Integer;
 begin
   Application.OnHint := OnHint;
+  if not RegisterThreadMessage then
+  begin
+    MessageBox(Handle, PWideChar(RsCannotRegisterThreadMessage), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
+    Application.Terminate;
+  end;
   LoadConfiguration;
 
   // Configuration.Recents.Clear;
@@ -515,6 +548,76 @@ begin
     end;
 end;
 
+procedure TMainForm.actMoveDownExecute(Sender: TObject);
+var
+  i: Integer;
+begin
+  for i := 0 to lvTaskList.Items.Count - 1 do
+  begin
+    if lvTaskList.Items[i].Selected then
+    begin
+      if Assigned(ITask(lvTaskList.Items[i].Data)) then
+      begin
+        if i < lvTaskList.Items.Count - 1 then
+        begin
+          Profile.Tasks.Exchange(Profile.Tasks.IndexOf(ITask(lvTaskList.Items[i].Data)), Profile.Tasks.IndexOf(ITask(lvTaskList.Items[i + 1].Data)));
+        end;
+      end;
+    end;
+  end;
+  RefreshTaskList;
+end;
+
+procedure TMainForm.actMoveDownUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  if lvTaskList.SelCount = 1 then
+  begin
+    if Assigned(lvTaskList.Selected) then
+    begin
+      b := lvTaskList.Selected.Index < lvTaskList.Items.Count - 1;
+    end;
+  end;
+  actMoveDown.Enabled := b; // and (not FProcessActive);
+end;
+
+procedure TMainForm.actMoveUpExecute(Sender: TObject);
+var
+  i: Integer;
+begin
+  for i := lvTaskList.Items.Count - 1 downto 0 do
+  begin
+    if lvTaskList.Items[i].Selected then
+    begin
+      if Assigned(ITask(lvTaskList.Items[i].Data)) then
+      begin
+        if i > 0 then
+        begin
+          Profile.Tasks.Exchange(Profile.Tasks.IndexOf(ITask(lvTaskList.Items[i].Data)), Profile.Tasks.IndexOf(ITask(lvTaskList.Items[i - 1].Data)));
+        end;
+      end;
+    end;
+  end;
+  RefreshTaskList;
+end;
+
+procedure TMainForm.actMoveUpUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  if lvTaskList.SelCount = 1 then
+  begin
+    if Assigned(lvTaskList.Selected) then
+    begin
+      b := lvTaskList.Selected.Index > 0;
+    end;
+  end;
+  actMoveUp.Enabled := b; // and (not FProcessActive);
+end;
+
 procedure TMainForm.actProcessExecute(Sender: TObject);
 begin
   { TODO : реализовать функционал выполнения выбранных тестов в параллельных тредах }
@@ -620,6 +723,7 @@ begin
 end;
 
 procedure TMainForm.RefreshTaskList;
+
   function GetGroupIDByHeader(const AValue: string): Integer;
   var
     i: Integer;
@@ -670,7 +774,7 @@ begin
             node.GroupID := AddGroup(t.Group);
           end;
           node.Caption := t.name;
-          node.SubItems.Add('');
+          node.SubItems.Add(TASK_STATUS_NAMES[t.Status]);
           node.Checked := t.Enabled;
         end;
       end;
@@ -678,6 +782,12 @@ begin
   finally
     lvTaskList.Items.EndUpdate;
   end;
+end;
+
+function TMainForm.RegisterThreadMessage: Boolean;
+begin
+  FThreadMessage := RegisterWindowMessage(PWideChar(WM_TASK_THREAD_MESSAGE));
+  Result := FThreadMessage > 0;
 end;
 
 procedure TMainForm.actSaveProfileExecute(Sender: TObject);
@@ -706,6 +816,26 @@ begin
   b := actToolBar.Checked;
   ToolBar.Visible := b;
   Configuration.EnableToolbar := b;
+end;
+
+procedure TMainForm.RefreshTaskStatus(const ATask: ITask);
+var
+  i: Integer;
+begin
+  if Assigned(ATask) then
+  begin
+    for i := 0 to lvTaskList.Items.Count - 1 do
+    begin
+      if lvTaskList.Items[i].Data = Pointer(ATask) then
+      begin
+        if lvTaskList.Items[i].SubItems.Count > 0 then
+        begin
+          lvTaskList.Items[i].SubItems[0] := TASK_STATUS_NAMES[ATask.Status];
+          Break;
+        end;
+      end;
+    end;
+  end;
 end;
 
 end.
