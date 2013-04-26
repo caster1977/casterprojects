@@ -4,7 +4,7 @@ object MainForm: TMainForm
   ActiveControl = ledFrom
   BorderStyle = bsDialog
   Caption = 'MAPI Test'
-  ClientHeight = 222
+  ClientHeight = 225
   ClientWidth = 482
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,7 +16,7 @@ object MainForm: TMainForm
   Position = poScreenCenter
   DesignSize = (
     482
-    222)
+    225)
   PixelsPerInch = 96
   TextHeight = 13
   object lblBody: TLabel
@@ -31,9 +31,9 @@ object MainForm: TMainForm
     Left = 399
     Top = 146
     Width = 75
-    Height = 31
+    Height = 20
     Action = actSendByMAPI
-    Anchors = [akTop, akRight, akBottom]
+    Anchors = [akTop, akRight]
     TabOrder = 4
     WordWrap = True
   end
@@ -48,7 +48,6 @@ object MainForm: TMainForm
     EditLabel.Caption = #1054#1090' '#1082#1086#1075#1086':'
     TabOrder = 0
     Text = 'v_ivanov@rtl.by'
-    ExplicitWidth = 456
   end
   object ledTo: TLabeledEdit
     Left = 8
@@ -61,7 +60,6 @@ object MainForm: TMainForm
     EditLabel.Caption = #1050#1086#1084#1091':'
     TabOrder = 1
     Text = 'caster1977@yandex.ru'
-    ExplicitWidth = 456
   end
   object ledSubject: TLabeledEdit
     Left = 8
@@ -74,27 +72,35 @@ object MainForm: TMainForm
     EditLabel.Caption = #1058#1077#1084#1072':'
     TabOrder = 2
     Text = 'Test'
-    ExplicitWidth = 456
   end
   object meBody: TMemo
     Left = 8
     Top = 146
     Width = 385
-    Height = 68
+    Height = 71
     Anchors = [akLeft, akTop, akRight, akBottom]
     Lines.Strings = (
       #1058#1077#1089#1090#1086#1074#1086#1077' '#1087#1080#1089#1100#1084#1086'.')
     TabOrder = 3
-    ExplicitHeight = 67
   end
   object Button1: TButton
     Left = 399
-    Top = 183
+    Top = 172
     Width = 75
-    Height = 31
+    Height = 20
     Action = actSendBySMTP
-    Anchors = [akTop, akRight, akBottom]
+    Anchors = [akTop, akRight]
     TabOrder = 5
+    WordWrap = True
+  end
+  object Button2: TButton
+    Left = 399
+    Top = 198
+    Width = 75
+    Height = 20
+    Action = actSendByOutlook
+    Anchors = [akTop, akRight]
+    TabOrder = 6
     WordWrap = True
   end
   object ActionList: TActionList
@@ -112,6 +118,12 @@ object MainForm: TMainForm
       OnExecute = actSendBySMTPExecute
       OnUpdate = actSendBySMTPUpdate
     end
+    object actSendByOutlook: TAction
+      Category = 'Internet'
+      Caption = 'Outlook'
+      OnExecute = actSendByOutlookExecute
+      OnUpdate = actSendByOutlookUpdate
+    end
   end
   object IdSMTP: TIdSMTP
     SASLMechanisms = <>
@@ -119,7 +131,7 @@ object MainForm: TMainForm
     Top = 24
   end
   object IdMessage: TIdMessage
-    AttachmentEncoding = 'MIME'
+    AttachmentEncoding = 'UUE'
     BccList = <>
     CCList = <>
     Encoding = meDefault

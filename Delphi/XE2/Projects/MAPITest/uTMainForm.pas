@@ -34,10 +34,14 @@ type
     actSendBySMTP: TAction;
     IdSMTP: TIdSMTP;
     IdMessage: TIdMessage;
+    Button2: TButton;
+    actSendByOutlook: TAction;
     procedure actSendByMAPIUpdate(Sender: TObject);
     procedure actSendByMAPIExecute(Sender: TObject);
     procedure actSendBySMTPExecute(Sender: TObject);
     procedure actSendBySMTPUpdate(Sender: TObject);
+    procedure actSendByOutlookExecute(Sender: TObject);
+    procedure actSendByOutlookUpdate(Sender: TObject);
   private
     function GetFrom: LPSTR;
     property From: LPSTR read GetFrom nodefault;
@@ -67,12 +71,18 @@ implementation
 
 {$R *.dfm}
 
+uses
+  System.Win.ComObj;
+
 procedure TMainForm.actSendByMAPIExecute(Sender: TObject);
 var
   Letter: TMapiMessage;
+  session: LPLHANDLE;
+  c: Cardinal;
 begin
   Letter := GetLetter;
-  MapiSendMail(0, Application.Handle, Letter, MAPI_DIALOG or MAPI_LOGON_UI or MAPI_NEW_SESSION, 0);
+  //c := MapiLogOn(Application.Handle, '', '', MAPI_LOGON_UI, 0, @session);
+  MapiSendMail(NativeUInt(session), Application.Handle, Letter, 0{MAPI_DIALOG or  MAPI_LOGON_UI or MAPI_NEW_SESSION}, 0);
 end;
 
 procedure TMainForm.actSendByMAPIUpdate(Sender: TObject);
@@ -204,6 +214,33 @@ begin
       IdSMTP.Disconnect;
     end;
   end;
+end;
+
+procedure TMainForm.actSendByOutlookExecute(Sender: TObject);
+const
+  olMailItem = 0;
+var
+  Outlook: OleVariant;
+  vMailItem: variant;
+begin
+  try
+    Outlook := GetActiveOleObject('Outlook.Application');
+  except
+    Outlook := CreateOleObject('Outlook.Application');
+  end;
+  vMailItem := Outlook.CreateItem(olMailItem);
+  vMailItem.Subject := string(Subject);
+  vMailItem.Body := string(Body);
+  vMailItem.Recipients.Add(string(Recip));
+  //vMailItem.Attachments.Add('C:\temp\sample.txt');
+  vMailItem.Send;
+
+  VarClear(Outlook);
+end;
+
+procedure TMainForm.actSendByOutlookUpdate(Sender: TObject);
+begin
+  actSendByOutlook.Enabled := (Trim(ledFrom.Text) <> EmptyStr) and (Trim(ledTo.Text) <> EmptyStr) and (Trim(ledSubject.Text) <> EmptyStr) and (Trim(meBody.Lines.Text) <> EmptyStr);
 end;
 
 end.
