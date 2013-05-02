@@ -54,6 +54,7 @@ uses
 
 resourcestring
   RsVersionInfo = 'Версия %d.%d Release %d Build %d';
+  RsCaption = 'О программе "%s"';
 
 constructor TAboutForm.Create(AOwner: TComponent; const ASplash: Boolean);
 begin
@@ -63,6 +64,7 @@ begin
   if not (csDesigning in ComponentState) then
   begin
     GSFileVersionInfo.Filename := Application.ExeName;
+    Caption := Format(RsCaption, [GSFileVersionInfo.InternalName]);
     lblTitle.Caption := GSFileVersionInfo.InternalName;
     imgApplicationIcon.Picture.Icon.Assign(Application.Icon);
     lblVersion.Caption := Format(RsVersionInfo, [GSFileVersionInfo.ModuleVersion.Major, GSFileVersionInfo.ModuleVersion.Minor, GSFileVersionInfo.ModuleVersion.Release, GSFileVersionInfo.ModuleVersion.Build]);
