@@ -11,12 +11,13 @@ uses
 type
   TAboutWindow = class(TComponent, ICustomized)
   strict private
+    FFirst: Boolean;
     FForm: TForm;
     function GetForm: TForm;
     property Form: TForm read GetForm nodefault;
-    procedure ApplyProperties;
     procedure Initialize;
     procedure Finalize;
+    procedure FreeForm;
   strict private
     FPosition: TPosition;
     function GetPosition: TPosition;
@@ -59,6 +60,7 @@ end;
 
 procedure TAboutWindow.Initialize;
 begin
+  FFirst := True;
   FPosition := poScreenCenter;
 end;
 
@@ -68,10 +70,17 @@ begin
   if not (csDesigning in ComponentState) then
   begin
     Show;
+    FFirst := False;
+    FreeForm;
   end;
 end;
 
 procedure TAboutWindow.Finalize;
+begin
+  FreeForm;
+end;
+
+procedure TAboutWindow.FreeForm;
 begin
   FreeAndNil(FForm);
 end;
@@ -80,7 +89,7 @@ function TAboutWindow.GetForm: TForm;
 begin
   if not Assigned(FForm) then
   begin
-    FForm := TAboutForm.Create(Self, True);
+    FForm := TAboutForm.Create(Self, FFirst);
   end;
   Result := FForm;
 end;
@@ -91,11 +100,6 @@ begin
   begin
     FPosition := AValue;
   end;
-  ApplyProperties;
-end;
-
-procedure TAboutWindow.ApplyProperties;
-begin
   if Form.Position <> Position then
   begin
     Form.Position := Position;
