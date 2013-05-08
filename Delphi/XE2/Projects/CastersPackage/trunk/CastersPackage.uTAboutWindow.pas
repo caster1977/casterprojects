@@ -22,6 +22,10 @@ type
     FPosition: TPosition;
     function GetPosition: TPosition;
     procedure SetPosition(const AValue: TPosition);
+  strict private
+    FEMail: string;
+    function GetEMail: string;
+    procedure SetEMail(const AValue: string);
   protected
     procedure Loaded; override;
   public
@@ -30,6 +34,7 @@ type
     procedure Show;
   published
     property Position: TPosition read GetPosition write SetPosition default poScreenCenter;
+    property EMail: string read GetEMail write SetEMail nodefault;
   end;
 
 procedure Register;
@@ -62,6 +67,7 @@ procedure TAboutWindow.Initialize;
 begin
   FFirst := True;
   FPosition := poScreenCenter;
+  FEMail := 'vlad_dracula@tut.by';
 end;
 
 procedure TAboutWindow.Loaded;
@@ -85,13 +91,30 @@ begin
   FreeAndNil(FForm);
 end;
 
+function TAboutWindow.GetEMail: string;
+begin
+  Result := FEMail;
+end;
+
 function TAboutWindow.GetForm: TForm;
 begin
   if not Assigned(FForm) then
   begin
-    FForm := TAboutForm.Create(Self, FFirst);
+    FForm := TAboutForm.Create(Self, FFirst, EMail);
   end;
   Result := FForm;
+end;
+
+procedure TAboutWindow.SetEMail(const AValue: string);
+begin
+  if FEMail <> AValue then
+  begin
+    FEMail := AValue;
+  end;
+//  if Form.Position <> Position then
+//  begin
+//    Form.Position := Position;
+//  end;
 end;
 
 procedure TAboutWindow.SetPosition(const AValue: TPosition);
