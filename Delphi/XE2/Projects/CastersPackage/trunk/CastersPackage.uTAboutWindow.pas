@@ -26,6 +26,10 @@ type
     FEMail: string;
     function GetEMail: string;
     procedure SetEMail(const AValue: string);
+  strict private
+    FShowSplash: Boolean;
+    function GetShowSplash: Boolean;
+    procedure SetShowSplash(const AValue: Boolean);
   protected
     procedure Loaded; override;
   public
@@ -35,6 +39,7 @@ type
   published
     property Position: TPosition read GetPosition write SetPosition default poScreenCenter;
     property EMail: string read GetEMail write SetEMail nodefault;
+    property ShowSplash: Boolean read GetShowSplash write SetShowSplash default True;
   end;
 
 procedure Register;
@@ -61,6 +66,11 @@ end;
 function TAboutWindow.GetPosition: TPosition;
 begin
   Result := FPosition;
+end;
+
+function TAboutWindow.GetShowSplash: Boolean;
+begin
+  Result := FShowSplash;
 end;
 
 procedure TAboutWindow.Initialize;
@@ -127,6 +137,11 @@ begin
   begin
     Form.Position := Position;
   end;
+end;
+
+procedure TAboutWindow.SetShowSplash(const AValue: Boolean);
+begin
+
 end;
 
 procedure TAboutWindow.Show;
