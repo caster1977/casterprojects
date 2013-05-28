@@ -31,10 +31,11 @@ object AboutForm: TAboutForm
     Pen.Color = clInactiveCaptionText
     Pen.Width = 4
     Shape = stEllipse
+    ExplicitTop = -8
   end
   object lblEMail: TLabel
-    Left = 104
-    Top = 157
+    Left = 98
+    Top = 167
     Width = 32
     Height = 13
     Alignment = taRightJustify
@@ -42,9 +43,9 @@ object AboutForm: TAboutForm
     Transparent = True
   end
   object lblEMailAddress: TLabel
-    Left = 140
-    Top = 156
-    Width = 207
+    Left = 136
+    Top = 166
+    Width = 112
     Height = 16
     Cursor = crHandPoint
     Hint = #1053#1072#1078#1084#1080#1090#1077' '#1085#1072' '#1089#1089#1099#1083#1082#1091', '#1095#1090#1086#1073#1099' '#1085#1072#1087#1080#1089#1072#1090#1100' '#1087#1080#1089#1100#1084#1086' '#1072#1074#1090#1086#1088#1091
@@ -60,34 +61,40 @@ object AboutForm: TAboutForm
     OnClick = lblEMailAddressClick
   end
   object lblLegalCopyright: TLabel
-    Left = 0
-    Top = 142
-    Width = 347
-    Height = 16
+    Left = 14
+    Top = 133
+    Width = 320
+    Height = 32
     Alignment = taCenter
     AutoSize = False
+    Color = clGreen
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Verdana'
     Font.Style = []
+    ParentColor = False
     ParentFont = False
     Transparent = True
+    WordWrap = True
   end
   object lblVersion: TLabel
-    Left = 0
-    Top = 126
-    Width = 347
+    Left = 14
+    Top = 112
+    Width = 320
     Height = 16
     Alignment = taCenter
     AutoSize = False
+    Color = clGreen
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Verdana'
     Font.Style = []
+    ParentColor = False
     ParentFont = False
     Transparent = True
+    WordWrap = True
   end
   object imgApplicationIcon: TImage
     Left = 157
@@ -98,20 +105,23 @@ object AboutForm: TAboutForm
     Transparent = True
   end
   object lblTitle: TLabel
-    Left = 0
-    Top = 95
-    Width = 347
+    Left = 14
+    Top = 88
+    Width = 320
     Height = 19
     Alignment = taCenter
     AutoSize = False
+    Color = clGreen
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = 0
     Font.Name = 'Times New Roman'
     Font.Style = [fsBold]
+    ParentColor = False
     ParentFont = False
     Transparent = True
     Layout = tlBottom
+    WordWrap = True
   end
   object btnClose: TButton
     Left = 133

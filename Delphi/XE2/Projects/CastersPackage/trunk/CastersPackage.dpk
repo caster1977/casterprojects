@@ -68,7 +68,6 @@ contains
   CastersPackage.uTInterfaceListOfGivenType in 'CastersPackage.uTInterfaceListOfGivenType.pas',
   CastersPackage.UNetSrvList in 'CastersPackage.UNetSrvList.pas',
   CastersPackage.uIModified in 'CastersPackage.uIModified.pas',
-  CastersPackage.uTAddress in 'CastersPackage.uTAddress.pas',
   CastersPackage.uTAboutWindow in 'CastersPackage.uTAboutWindow.pas',
   CastersPackage.uTAboutForm in 'CastersPackage.uTAboutForm.pas' {AboutForm};
 

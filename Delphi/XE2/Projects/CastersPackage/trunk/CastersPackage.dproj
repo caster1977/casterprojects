@@ -134,7 +134,6 @@
         <DCCReference Include="CastersPackage.uTInterfaceListOfGivenType.pas"/>
         <DCCReference Include="CastersPackage.UNetSrvList.pas"/>
         <DCCReference Include="CastersPackage.uIModified.pas"/>
-        <DCCReference Include="CastersPackage.uTAddress.pas"/>
         <DCCReference Include="CastersPackage.uTAboutWindow.pas"/>
         <DCCReference Include="CastersPackage.uTAboutForm.pas">
             <Form>AboutForm</Form>
