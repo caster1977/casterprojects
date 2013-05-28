@@ -62,8 +62,8 @@ resourcestring
 constructor TAboutForm.Create(AOwner: TComponent; const ASplash: Boolean; const AEMail: string);
 begin
   inherited Create(AOwner);
-  FFirstShow := True;
   FSplash := ASplash;
+  FFirstShow := ASplash;
   FEmail := AEMail;
   if not (csDesigning in ComponentState) then
   begin
@@ -74,7 +74,7 @@ begin
     lblVersion.Caption := Format(RsVersionInfo, [GSFileVersionInfo.ModuleVersion.Major, GSFileVersionInfo.ModuleVersion.Minor, GSFileVersionInfo.ModuleVersion.Release, GSFileVersionInfo.ModuleVersion.Build]);
     lblLegalCopyright.Caption := GSFileVersionInfo.LegalCopyright;
   end;
-  lblEMail.Caption := EMail;
+  lblEMailAddress.Caption := EMail;
 end;
 
 procedure TAboutForm.FormShow(Sender: TObject);

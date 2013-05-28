@@ -11,7 +11,7 @@ uses
 type
   TAboutWindow = class(TComponent, ICustomized)
   strict private
-    FFirst: Boolean;
+    FFirstShow: Boolean;
     FForm: TForm;
     function GetForm: TForm;
     property Form: TForm read GetForm nodefault;
@@ -75,7 +75,8 @@ end;
 
 procedure TAboutWindow.Initialize;
 begin
-  FFirst := True;
+  FFirstShow := True;
+  FShowSplash := True;
   FPosition := poScreenCenter;
   FEMail := 'vlad_dracula@tut.by';
 end;
@@ -85,8 +86,11 @@ begin
   inherited;
   if not (csDesigning in ComponentState) then
   begin
-    Show;
-    FFirst := False;
+    if ShowSplash then
+    begin
+      Show;
+      FFirstShow := False;
+    end;
     FreeForm;
   end;
 end;
@@ -108,9 +112,13 @@ end;
 
 function TAboutWindow.GetForm: TForm;
 begin
+  if Assigned(FForm) then
+  begin
+    FreeAndNil(FForm);
+  end;
   if not Assigned(FForm) then
   begin
-    FForm := TAboutForm.Create(Self, FFirst, EMail);
+    FForm := TAboutForm.Create(Self, FFirstShow, EMail);
   end;
   Result := FForm;
 end;
@@ -121,10 +129,6 @@ begin
   begin
     FEMail := AValue;
   end;
-//  if Form.Position <> Position then
-//  begin
-//    Form.Position := Position;
-//  end;
 end;
 
 procedure TAboutWindow.SetPosition(const AValue: TPosition);
@@ -141,12 +145,16 @@ end;
 
 procedure TAboutWindow.SetShowSplash(const AValue: Boolean);
 begin
-
+  if FShowSplash <> AValue then
+  begin
+    FShowSplash := AValue;
+  end;
 end;
 
 procedure TAboutWindow.Show;
 begin
   Form.ShowModal;
+  FFirstShow := False;
 end;
 
 procedure Register;
