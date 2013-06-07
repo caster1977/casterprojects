@@ -32,8 +32,13 @@ uses
   Data.DB,
   Data.Win.ADODB,
   TAPEstimator.uIConfiguration,
-  CastersPackage.uICustomized, CastersPackage.uTAboutWindow, Data.Bind.EngExt,
-  Vcl.Bind.DBEngExt, System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors,
+  CastersPackage.uICustomized,
+  CastersPackage.uTAboutWindow,
+  Data.Bind.EngExt,
+  Vcl.Bind.DBEngExt,
+  System.Rtti,
+  System.Bindings.Outputs,
+  Vcl.Bind.Editors,
   Data.Bind.Components;
 
 type
@@ -167,7 +172,8 @@ resourcestring
   RsWarningCaption = '%s - Предупреждение';
   RsCannotRegisterThreadMessage = 'Не удалось зарегистрировать оконное сообщение для дочерних потоков.';
   RsOpenRecent = 'Нажмите для загрузки файла профиля с указанным именем';
-  RsCreateProfileConfirmationMessage = 'Вы действительно хотите создать новый профиль, предварительно не сохранив текущий?';
+  RsCreateProfileConfirmationMessage =
+    'Вы действительно хотите создать новый профиль, предварительно не сохранив текущий?';
   RsCreateProfileConfirmationCaption = '%s - Подтверждение создания нового профиля';
   RsOpenProfileDefaultExt = 'profile';
   RsOpenProfileFilters = 'Файлы профилей (*.profile)|*.profile|Все файлы (*.*)|*.*';
@@ -233,7 +239,8 @@ begin
   except
     on E: EConfiguration do
     begin
-      if MessageBox(Handle, PWideChar(Format(RsTryAgain, [E.Message])), PWideChar(Format(RsWarningCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING_OK) = IDOK then
+      if MessageBox(Handle, PWideChar(Format(RsTryAgain, [E.Message])),
+        PWideChar(Format(RsWarningCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING_OK) = IDOK then
       begin
         try
           Screen.Cursor := crHourGlass;
@@ -245,7 +252,8 @@ begin
         except
           on E: EConfiguration do
           begin
-            MessageBox(Handle, PWideChar(E.Message), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
+            MessageBox(Handle, PWideChar(E.Message), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])),
+              MESSAGE_TYPE_ERROR);
           end;
           else
           begin
@@ -266,7 +274,8 @@ begin
   CanClose := True;
   if Configuration.EnableQuitConfirmation then
   begin
-    CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage), PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
+    CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
+      PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
   end;
 end;
 
@@ -301,7 +310,8 @@ begin
   Application.OnHint := OnHint;
   if not RegisterThreadMessage then
   begin
-    MessageBox(Handle, PWideChar(RsCannotRegisterThreadMessage), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
+    MessageBox(Handle, PWideChar(RsCannotRegisterThreadMessage), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])),
+      MESSAGE_TYPE_ERROR);
     Application.Terminate;
   end;
   LoadConfiguration;
@@ -334,7 +344,8 @@ begin
   except
     on E: Exception do
     begin
-      MessageBox(Handle, PWideChar(E.Message), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
+      MessageBox(Handle, PWideChar(E.Message), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])),
+        MESSAGE_TYPE_ERROR);
     end;
   end;
 end;
@@ -352,7 +363,9 @@ begin
   { TODO :
     добавить проверку сохранённости текущего профиля:
     если профиль был изменён и не сохранён, задать вопрос юзеру }
-  if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage), PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING_CANCEL) = IDOK then
+  if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage),
+    PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING_CANCEL)
+    = IDOK then
   begin
     Profile := GetIProfile;
     { TODO : нужно как-то изменить алгоритм работы с именем файла }
@@ -368,7 +381,7 @@ begin
       Options := Options + [ofFileMustExist];
       if Execute(Handle) then
       begin
-        //TAPFile.Load;
+        // TAPFile.Load;
         meTap.Lines.LoadFromFile(FileName);
       end;
     finally
@@ -403,24 +416,24 @@ end;
 procedure TMainForm.actProcessExecute(Sender: TObject);
 begin
   { TODO : реализовать функционал выполнения выбранных тестов в параллельных тредах }
-  //Profile.Tasks.Run(Profile.ADOConnectionString);
+  // Profile.Tasks.Run(Profile.ADOConnectionString);
 end;
 
 procedure TMainForm.actProcessUpdate(Sender: TObject);
 var
-//  i: Integer;
+  // i: Integer;
   b: Boolean;
 begin
   b := False;
   { TODO : переписать алгоритм с использованием Profile.Tasks }
-  {for i := 0 to lvTaskList.Items.Count - 1 do
-  begin
+  { for i := 0 to lvTaskList.Items.Count - 1 do
+    begin
     if lvTaskList.Items[i].Checked then
     begin
-      b := True;
-      Break;
+    b := True;
+    Break;
     end;
-  end;}
+    end; }
   actProcess.Enabled := b; // and (not FProcessActive);
   btnProcess.Default := actProcess.Enabled;
 end;

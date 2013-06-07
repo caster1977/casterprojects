@@ -24,15 +24,13 @@ type
     procedure SetEnableToolbar(const AValue: Boolean);
     procedure SetEnableStoreMainFormSizesAndPosition(const AValue: Boolean);
     property Recents: IRecents read GetRecents;
-    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete
-      write SetEnablePlaySoundOnComplete;
-    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation
-      write SetEnableQuitConfirmation;
+    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete write SetEnablePlaySoundOnComplete;
+    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation write SetEnableQuitConfirmation;
     property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart;
     property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar;
     property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar;
-    property EnableStoreMainFormSizesAndPosition: Boolean
-      read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition;
+    property EnableStoreMainFormSizesAndPosition: Boolean read GetEnableStoreMainFormSizesAndPosition
+      write SetEnableStoreMainFormSizesAndPosition;
   end;
 
 implementation

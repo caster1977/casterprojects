@@ -80,8 +80,7 @@ type
   public
     constructor Create(AOwner: TComponent; const AConfiguration: IConfiguration;
       const AActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
-    property ActivePage: Integer read GetActivePage write SetActivePage
-      default CONFIGURATION_DEFAULT_ACTIVE_PAGE;
+    property ActivePage: Integer read GetActivePage write SetActivePage default CONFIGURATION_DEFAULT_ACTIVE_PAGE;
   strict private
     procedure SetCheckBoxState(const ACheckBox: TCheckBox; const AValue: Boolean);
   strict private
@@ -97,19 +96,18 @@ type
     procedure SetEnableStatusbar(const AValue: Boolean);
     procedure SetEnableToolbar(const AValue: Boolean);
     procedure SetEnableStoreMainFormSizesAndPosition(const AValue: Boolean);
-    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete
-      write SetEnablePlaySoundOnComplete
+    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete write SetEnablePlaySoundOnComplete
       default CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
-    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation
-      write SetEnableQuitConfirmation default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
+    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation write SetEnableQuitConfirmation
+      default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
     property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart
       default CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
     property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar
       default CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
     property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar
       default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
-    property EnableStoreMainFormSizesAndPosition: Boolean
-      read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition
+    property EnableStoreMainFormSizesAndPosition: Boolean read GetEnableStoreMainFormSizesAndPosition
+      write SetEnableStoreMainFormSizesAndPosition
       default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
   end;
 
@@ -215,9 +213,8 @@ begin
   begin
     b := not((Configuration.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete) and
       (Configuration.EnableQuitConfirmation = EnableQuitConfirmation) and
-      (Configuration.EnableSplashAtStart = EnableSplashAtStart) and
-      (Configuration.EnableStatusbar = EnableStatusbar) and
-      (Configuration.EnableToolbar = EnableToolbar) and
+      (Configuration.EnableSplashAtStart = EnableSplashAtStart) and (Configuration.EnableStatusbar = EnableStatusbar)
+      and (Configuration.EnableToolbar = EnableToolbar) and
       (Configuration.EnableStoreMainFormSizesAndPosition = EnableStoreMainFormSizesAndPosition));
   end;
   actApply.Enabled := b;
@@ -262,8 +259,7 @@ end;
 
 function TConfigurationForm.GetEnableStoreMainFormSizesAndPosition: Boolean;
 begin
-  Result := chkEnableStoreMainFormSizesAndPosition.Enabled and
-    chkEnableStoreMainFormSizesAndPosition.Checked;
+  Result := chkEnableStoreMainFormSizesAndPosition.Enabled and chkEnableStoreMainFormSizesAndPosition.Checked;
 end;
 
 function TConfigurationForm.GetEnableToolbar: Boolean;

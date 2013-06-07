@@ -20,7 +20,17 @@ uses
   TAPEstimator.uEConfiguration in 'SRC\Logic\Classes\TAPEstimator.uEConfiguration.pas',
   TAPEstimator.uEProfile in 'SRC\Logic\Classes\TAPEstimator.uEProfile.pas',
   TAPEstimator.uResourceStrings in 'SRC\Logic\Other\TAPEstimator.uResourceStrings.pas',
-  TAPEstimator.Temp in 'SRC\Logic\Other\TAPEstimator.Temp.pas';
+  TAPEstimator.uICoordinate in 'SRC\Logic\Interfaces\TAPEstimator.uICoordinate.pas',
+  TAPEstimator.uTAbstractCoordinate in 'SRC\Logic\Types\TAPEstimator.uTAbstractCoordinate.pas',
+  TAPEstimator.uIIntegerCoordinate in 'SRC\Logic\Interfaces\TAPEstimator.uIIntegerCoordinate.pas',
+  TAPEstimator.uIInt64Coordinate in 'SRC\Logic\Interfaces\TAPEstimator.uIInt64Coordinate.pas',
+  TAPEstimator.uTIntegerFunction in 'SRC\Logic\Types\TAPEstimator.uTIntegerFunction.pas',
+  TAPEstimator.uTIntegerCoordinate in 'SRC\Logic\Types\TAPEstimator.uTIntegerCoordinate.pas',
+  TAPEstimator.uTInt64Function in 'SRC\Logic\Types\TAPEstimator.uTInt64Function.pas',
+  TAPEstimator.uTInt64Coordinate in 'SRC\Logic\Types\TAPEstimator.uTInt64Coordinate.pas',
+  TAPEstimator.uICoordinateConverter in 'SRC\Logic\Interfaces\TAPEstimator.uICoordinateConverter.pas',
+  TAPEstimator.Temp in 'SRC\Logic\Other\TAPEstimator.Temp.pas',
+  TAPEstimator.uTTableRotation in 'SRC\Logic\Types\TAPEstimator.uTTableRotation.pas';
 
 {$R *.res}
 
