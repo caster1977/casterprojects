@@ -46,7 +46,6 @@ const
 
   WM_TASK_THREAD_MESSAGE = 'WM_TASK_THREAD_MESSAGE';
 
-
 implementation
 
 end.

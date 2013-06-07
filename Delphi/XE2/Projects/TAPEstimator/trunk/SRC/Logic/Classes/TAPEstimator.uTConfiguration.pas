@@ -44,12 +44,19 @@ type
     procedure Saving; override;
   public
     constructor Create(const AConfigurationFileName: string = ''); override;
-    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete write SetEnablePlaySoundOnComplete default CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
-    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation write SetEnableQuitConfirmation default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
-    property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart default CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
-    property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar default CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
-    property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
-    property EnableStoreMainFormSizesAndPosition: Boolean read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
+    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete write SetEnablePlaySoundOnComplete
+      default CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
+    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation write SetEnableQuitConfirmation
+      default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
+    property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart
+      default CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
+    property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar
+      default CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
+    property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar
+      default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
+    property EnableStoreMainFormSizesAndPosition: Boolean read GetEnableStoreMainFormSizesAndPosition
+      write SetEnableStoreMainFormSizesAndPosition
+      default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
     property Recents: IRecents read GetRecents;
     property Modified: Boolean read GetModified nodefault;
   end;
@@ -207,12 +214,15 @@ begin
   begin
     with IniFile do
     begin
-      EnableQuitConfirmation := ReadBool(RsInterface, RsEnableQuitConfirmation, CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION);
+      EnableQuitConfirmation := ReadBool(RsInterface, RsEnableQuitConfirmation,
+        CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION);
       EnableSplashAtStart := ReadBool(RsInterface, RsEnableSplashAtStart, CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START);
       EnableStatusbar := ReadBool(RsInterface, RsEnableStatusbar, CONFIGURATION_DEFAULT_ENABLE_STATUSBAR);
       EnableToolbar := ReadBool(RsInterface, RsEnableToolbar, CONFIGURATION_DEFAULT_ENABLE_TOOLBAR);
-      EnablePlaySoundOnComplete := ReadBool(RsOther, RsEnablePlaySoundOnComplete, CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE);
-      EnableStoreMainFormSizesAndPosition := ReadBool(RsInterface, RsEnableStoreMainFormSizesAndPosition, CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION);
+      EnablePlaySoundOnComplete := ReadBool(RsOther, RsEnablePlaySoundOnComplete,
+        CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE);
+      EnableStoreMainFormSizesAndPosition := ReadBool(RsInterface, RsEnableStoreMainFormSizesAndPosition,
+        CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION);
 
       Recents.Clear;
       for i := 0 to ReadInteger(RsRecents, RsQuantity, RECENTS_DEFAULT_COUNT) - 1 do

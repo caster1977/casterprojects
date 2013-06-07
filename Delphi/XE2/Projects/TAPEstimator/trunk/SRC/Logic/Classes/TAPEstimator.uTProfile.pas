@@ -47,7 +47,8 @@ type
     property Login: string read GetLogin write SetLogin nodefault;
     property Password: string read GetPassword write SetPassword nodefault;
     property Database: string read GetDatabase write SetDatabase nodefault;
-    property WinNTSecurity: Boolean read GetWinNTSecurity write SetWinNTSecurity default PROFILE_DEFAULT_WIN_NT_SECURITY;
+    property WinNTSecurity: Boolean read GetWinNTSecurity write SetWinNTSecurity
+      default PROFILE_DEFAULT_WIN_NT_SECURITY;
     property StorePassword: Boolean read GetStorePassword write SetStorePassword default PROFILE_DEFAULT_STORE_PASSWORD;
     property ADOConnectionString: string read GetADOConnectionString nodefault;
     property Modified: Boolean read GetModified nodefault;

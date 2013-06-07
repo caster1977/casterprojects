@@ -96,10 +96,9 @@ type
     function GetPageCount: Integer;
     property PageCount: Integer read GetPageCount nodefault;
   public
-    constructor Create(AOwner: TComponent;
-      const AActivePage: Integer = PROFILE_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
-    property ActivePage: Integer read GetActivePage write SetActivePage
-      default PROFILE_DEFAULT_ACTIVE_PAGE;
+    constructor Create(AOwner: TComponent; const AActivePage: Integer = PROFILE_DEFAULT_ACTIVE_PAGE);
+      reintroduce; virtual;
+    property ActivePage: Integer read GetActivePage write SetActivePage default PROFILE_DEFAULT_ACTIVE_PAGE;
   strict private
     FRefreshingServers: Boolean;
   end;
@@ -302,15 +301,14 @@ begin
     end
     else
     begin
+      ADOConnection.ConnectionString := ADOConnection.ConnectionString + Format(ADO_CONNECTION_STRING_SUFFIX_USER_ID,
+        [ebLogin.Text]);
       ADOConnection.ConnectionString := ADOConnection.ConnectionString +
-        Format(ADO_CONNECTION_STRING_SUFFIX_USER_ID, [ebLogin.Text]);
-      ADOConnection.ConnectionString := ADOConnection.ConnectionString +
-        Format(ADO_CONNECTION_STRING_SUFFIX_PERSIST_SECURITY_INFO,
-        [BoolToStr(actEnablePasswordSaving.Checked, True)]);
+        Format(ADO_CONNECTION_STRING_SUFFIX_PERSIST_SECURITY_INFO, [BoolToStr(actEnablePasswordSaving.Checked, True)]);
       if actEnablePasswordSaving.Checked then
       begin
-        ADOConnection.ConnectionString := ADOConnection.ConnectionString +
-          Format(ADO_CONNECTION_STRING_SUFFIX_PASSWORD, [mePassword.Text]);
+        ADOConnection.ConnectionString := ADOConnection.ConnectionString + Format(ADO_CONNECTION_STRING_SUFFIX_PASSWORD,
+          [mePassword.Text]);
       end;
     end;
 
@@ -320,8 +318,7 @@ begin
       try
         q.Connection := ADOConnection;
         aList.Clear;
-        q.SQL.Text :=
-          'SELECT sd.name FROM sys.databases sd WHERE  HAS_DBACCESS(sd.name) = 1 ORDER BY sd.name';
+        q.SQL.Text := 'SELECT sd.name FROM sys.databases sd WHERE  HAS_DBACCESS(sd.name) = 1 ORDER BY sd.name';
         q.Open;
         while not q.Eof do
         begin
