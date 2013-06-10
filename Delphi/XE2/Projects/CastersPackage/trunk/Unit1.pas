@@ -24,12 +24,12 @@ type
   ///	</typeparam>
   IFigure<T> = interface
     ['{000A8D06-5EBE-4DC5-8407-77204433CE6A}']
+    function GetRawCoordinate(AIndex: Int64): T;
+    procedure SetRawCoordinate(AIndex: Int64; const AValue: T);
+    property RawCoordinates[AIndex: Int64]: T read GetRawCoordinate write SetRawCoordinate;
+
     function GetDimensionCount: Integer;
     property DimensionCount: Integer read GetDimensionCount;
-
-    function GetCoordinate(AIndex: Int64): T;
-    procedure SetCoordinate(AIndex: Int64; const AValue: T);
-    property Coordinates[AIndex: Int64]: T read GetCoordinate write SetCoordinate;
   end;
 
   ///	<summary>
@@ -38,23 +38,31 @@ type
   ///	<typeparam name="T">
   ///	  тип данных координаты
   ///	</typeparam>
-  TFigure<T> = class(TInterfacedObject, ICustomized, IFigure<T>)
-  strict private
-    FDimensionCount: Integer;
-    function GetDimensionCount: Integer;
+  TGenericFigure<T> = class(TInterfacedObject, ICustomized, IFigure<T>)
   strict protected
     procedure Initialize; virtual;
     procedure Finalize; virtual;
+  strict private
+    FRawCoordinates: TList<T>;
+    function GetRawCoordinate(AIndex: Int64): T;
+    procedure SetRawCoordinate(AIndex: Int64; const AValue: T);
   strict protected
-    FCoordinates: TList<T>;
-    function GetCoordinate(AIndex: Int64): T;
-    procedure SetCoordinate(AIndex: Int64; const AValue: T);
-    property Coordinates[AIndex: Int64]: T read GetCoordinate write SetCoordinate;
+    property RawCoordinates[AIndex: Int64]: T read GetRawCoordinate write SetRawCoordinate;
+  strict private
+    FDimensionCount: Integer;
+    function GetDimensionCount: Integer;
+  public
+    property DimensionCount: Integer read GetDimensionCount nodefault;
   public
     constructor Create(const ADimensionCount: Integer); reintroduce; overload; virtual;
-    constructor Create(const ADimensionCount: Integer; const ACoordinates: array of T); reintroduce; overload; virtual;
+    constructor Create(const ADimensionCount: Integer; const ARawCoordinates: array of T); reintroduce; overload; virtual;
     destructor Destroy; override;
-    property DimensionCount: Integer read GetDimensionCount nodefault;
+  end;
+
+  TGenericPoint<T> = class(TGenericFigure<T>)
+    function GetCoordinate: TList<T>; virtual; abstract;
+    procedure SetCoordinate; virtual; abstract;
+    property Coordinates[AIndex: Int64]: T read GetCoordinate write SetCoordinate;
   end;
 
 (*  IAbstractPoint<T> = interface
@@ -166,59 +174,59 @@ begin
   inherited;
 end;*)
 
-constructor TFigure<T>.Create(const ADimensionCount: Integer;
-  const ACoordinates: array of T);
+constructor TGenericFigure<T>.Create(const ADimensionCount: Integer;
+  const ARawCoordinates: array of T);
 begin
   inherited Create;
   FDimensionCount := ADimensionCount;
-  if not Assigned(FCoordinates) then
+  if not Assigned(FRawCoordinates) then
   begin
-    FCoordinates.Create;
+    FRawCoordinates.Create;
   end;
-  if Length(ACoordinates) > 0 then
+  if Length(ARawCoordinates) > 0 then
   begin
-    FCoordinates.AddRange(ACoordinates);
+    FRawCoordinates.AddRange(ARawCoordinates);
   end;
   Initialize;
 end;
 
-constructor TFigure<T>.Create(const ADimensionCount: Integer);
+constructor TGenericFigure<T>.Create(const ADimensionCount: Integer);
 begin
   Create(ADimensionCount, []);
 end;
 
-destructor TFigure<T>.Destroy;
+destructor TGenericFigure<T>.Destroy;
 begin
   Finalize;
-  if Assigned(FCoordinates) then
+  if Assigned(FRawCoordinates) then
   begin
-    FreeAndNil(FCoordinates);
+    FreeAndNil(FRawCoordinates);
   end;
   inherited;
 end;
 
-procedure TFigure<T>.Initialize;
+procedure TGenericFigure<T>.Initialize;
 begin
 end;
 
-procedure TFigure<T>.Finalize;
+procedure TGenericFigure<T>.Finalize;
 begin
 end;
 
 
-function TFigure<T>.GetDimensionCount: Integer;
+function TGenericFigure<T>.GetDimensionCount: Integer;
 begin
   Result := FDimensionCount;
 end;
 
-function TFigure<T>.GetCoordinate(AIndex: Int64): T;
+function TGenericFigure<T>.GetRawCoordinate(AIndex: Int64): T;
 begin
-  Result := FCoordinates[AIndex];
+  Result := FRawCoordinates[AIndex];
 end;
 
-procedure TFigure<T>.SetCoordinate(AIndex: Int64; const AValue: T);
+procedure TGenericFigure<T>.SetRawCoordinate(AIndex: Int64; const AValue: T);
 begin
-  FCoordinates[AIndex] := AValue;
+  FRawCoordinates[AIndex] := AValue;
 end;
 
 end.
