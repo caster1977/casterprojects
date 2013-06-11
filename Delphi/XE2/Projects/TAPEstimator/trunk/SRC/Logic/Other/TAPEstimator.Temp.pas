@@ -12,9 +12,137 @@ uses
   TAPEstimator.uTInt64Coordinate,
   TAPEstimator.uTIntegerFunction,
   TAPEstimator.uTInt64Function,
-  TAPEstimator.uICoordinateConverter;
+  TAPEstimator.uICoordinateConverter,
+  System.Classes;
 
 type
+  ///	<summary>
+  ///	  Интерфейс "Местоположение"
+  ///	</summary>
+  ILocation = interface
+    ['{B98C78E3-A7BB-4437-AB3E-4A57E915B1B9}']
+  end;
+
+  ///	<summary>
+  ///	  Интерфейс "Фигура"
+  ///	</summary>
+  IFigure = interface
+    ['{6D1F425D-A14D-46EE-97DD-09519FE6B633}']
+  end;
+
+  ///	<summary>
+  ///	  Интерфейс "Точка"
+  ///	</summary>
+  IPoint = interface(IFigure)
+    ['{DAC078D9-E632-4CC3-BDEE-8CDCFE47AF5F}']
+    function GetLocationA: ILocation;
+    procedure SetLocationA(const AValue: ILocation);
+
+    ///	<summary>
+    ///	  Точка A
+    ///	</summary>
+    property LocationA: ILocation read GetLocationA write SetLocationA;
+  end;
+
+  ///	<summary>
+  ///	  Интерфейс "Отрезок прямой"
+  ///	</summary>
+  ILineSegment = interface(IPoint)
+    ['{6D95B53A-58F9-4C08-BE07-5F16FB10AF76}']
+    function GetLength: Double;
+
+    ///	<summary>
+    ///	  Длина фигуры
+    ///	</summary>
+    property Length: Double read GetLength;
+
+    function GetLocationB: ILocation;
+    procedure SetLocationB(const AValue: ILocation);
+
+    ///	<summary>
+    ///	  Точка B
+    ///	</summary>
+    property LocationB: ILocation read GetLocationB write SetLocationB;
+  end;
+
+  ///	<summary>
+  ///	  Интерфейс "Дуга"
+  ///	</summary>
+  IArc = interface(ILineSegment)
+    ['{EF76CC51-040A-4FDD-9264-800E1454F013}']
+    function GetRadius: Double;
+
+    ///	<summary>
+    ///	  Радиус (расстояние от точки С до точки A(B))
+    ///	</summary>
+    property Radius: Double read GetRadius;
+
+    ///	<summary>
+    ///	  Проверка на корректность координат точки B (A-&gt;C должно равняться
+    ///	  B-&gt;C)
+    ///	</summary>
+    function Valid: Boolean;
+    function GetSkewAngle: Double;
+
+    ///	<summary>
+    ///	  Угол отклонения
+    ///	</summary>
+    property SkewAngle: Double read GetSkewAngle;
+    function GetLocationC: ILocation;
+    procedure SetLocationC(const AValue: ILocation);
+
+    ///	<summary>
+    ///	  Точка C
+    ///	</summary>
+    property LocationC: ILocation read GetLocationC write SetLocationC;
+  end;
+
+  TFigure = class(TInterfacedObject, IFigure{, ICustomized})
+  strict protected
+    FLocations: TArray<ILocation>;
+  strict protected
+    procedure Initialize; virtual; abstract;
+    procedure Finalize; virtual; abstract;
+  public
+    constructor Create; reintroduce; overload; virtual;
+    constructor Create(const ALocations: TArray<ILocation>); overload; virtual;
+    destructor Destroy; override;
+  end;
+
+  TPoint = class(TFigure, IPoint, IFigure)
+  strict private
+    FLocationA: ILocation;
+    function GetLocationA: ILocation;
+    procedure SetLocationA(const AValue: ILocation);
+  public
+    property LocationA: ILocation read GetLocationA write SetLocationA;
+  end;
+
+  TLineSegment = class(TPoint, ILineSegment, IFigure)
+  strict private
+    FLocationB: ILocation;
+    function GetLocationB: ILocation;
+    procedure SetLocationB(const AValue: ILocation);
+  strict private
+    function GetLength: Double;
+  public
+    property LocationB: ILocation read GetLocationB write SetLocationB;
+    property Length: Double read GetLength;
+  end;
+
+  TArc = class(TLineSegment, IArc, IFigure)
+  strict private
+    function GetRadius: Double;
+    function GetSkewAngle: Double;
+    function GetLocationC: ILocation;
+    procedure SetLocationC(const AValue: ILocation);
+  strict protected
+    function Valid: Boolean;
+  public
+    property LocationC: ILocation read GetLocationC write SetLocationC;
+    property Radius: Double read GetRadius;
+    property SkewAngle: Double read GetSkewAngle;
+  end;
 
   TTest = class
   strict private
