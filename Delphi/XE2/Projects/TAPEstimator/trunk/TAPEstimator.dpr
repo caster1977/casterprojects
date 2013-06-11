@@ -21,7 +21,7 @@ uses
   TAPEstimator.uEProfile in 'SRC\Logic\Classes\TAPEstimator.uEProfile.pas',
   TAPEstimator.uResourceStrings in 'SRC\Logic\Other\TAPEstimator.uResourceStrings.pas',
   TAPEstimator.uICoordinate in 'SRC\Logic\Interfaces\TAPEstimator.uICoordinate.pas',
-  TAPEstimator.uTAbstractCoordinate in 'SRC\Logic\Types\TAPEstimator.uTAbstractCoordinate.pas',
+  TAPEstimator.uTGenericCoordinate in 'SRC\Logic\Types\TAPEstimator.uTGenericCoordinate.pas',
   TAPEstimator.uIIntegerCoordinate in 'SRC\Logic\Interfaces\TAPEstimator.uIIntegerCoordinate.pas',
   TAPEstimator.uIInt64Coordinate in 'SRC\Logic\Interfaces\TAPEstimator.uIInt64Coordinate.pas',
   TAPEstimator.uTIntegerFunction in 'SRC\Logic\Types\TAPEstimator.uTIntegerFunction.pas',
@@ -30,7 +30,11 @@ uses
   TAPEstimator.uTInt64Coordinate in 'SRC\Logic\Types\TAPEstimator.uTInt64Coordinate.pas',
   TAPEstimator.uICoordinateConverter in 'SRC\Logic\Interfaces\TAPEstimator.uICoordinateConverter.pas',
   TAPEstimator.Temp in 'SRC\Logic\Other\TAPEstimator.Temp.pas',
-  TAPEstimator.uTTableRotation in 'SRC\Logic\Types\TAPEstimator.uTTableRotation.pas';
+  TAPEstimator.uTTableRotation in 'SRC\Logic\Types\TAPEstimator.uTTableRotation.pas',
+  TAPEstimator.uIDrawable in 'SRC\Logic\Interfaces\TAPEstimator.uIDrawable.pas',
+  TAPEstimator.uIGenericFigure in 'SRC\Logic\Interfaces\TAPEstimator.uIGenericFigure.pas',
+  TAPEstimator.uTGenericFigure in 'SRC\Logic\Types\TAPEstimator.uTGenericFigure.pas',
+  TAPEstimator.uTGenericPoint in 'SRC\Logic\Types\TAPEstimator.uTGenericPoint.pas';
 
 {$R *.res}
 

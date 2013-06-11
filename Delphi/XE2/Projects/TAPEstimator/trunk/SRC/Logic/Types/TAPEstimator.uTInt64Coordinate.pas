@@ -4,11 +4,11 @@ interface
 
 uses
   TAPEstimator.uTInt64Function,
-  TAPEstimator.uTAbstractCoordinate,
+  TAPEstimator.uTGenericCoordinate,
   TAPEstimator.uIInt64Coordinate;
 
 type
-  TInt64Coordinate = class(TAbstractCoordinate<Int64, TInt64Function>, IInt64Coordinate)
+  TInt64Coordinate = class(TGenericCoordinate<Int64, TInt64Function>, IInt64Coordinate)
   strict protected
     procedure Initialize; override;
   strict protected

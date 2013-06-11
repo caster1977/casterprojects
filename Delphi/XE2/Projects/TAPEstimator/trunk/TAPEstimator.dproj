@@ -136,7 +136,7 @@
         <DCCReference Include="SRC\Logic\Classes\TAPEstimator.uEProfile.pas"/>
         <DCCReference Include="SRC\Logic\Other\TAPEstimator.uResourceStrings.pas"/>
         <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uICoordinate.pas"/>
-        <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTAbstractCoordinate.pas"/>
+        <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTGenericCoordinate.pas"/>
         <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uIIntegerCoordinate.pas"/>
         <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uIInt64Coordinate.pas"/>
         <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTIntegerFunction.pas"/>
@@ -146,6 +146,10 @@
         <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uICoordinateConverter.pas"/>
         <DCCReference Include="SRC\Logic\Other\TAPEstimator.Temp.pas"/>
         <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTTableRotation.pas"/>
+        <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uIDrawable.pas"/>
+        <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uIGenericFigure.pas"/>
+        <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTGenericFigure.pas"/>
+        <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTGenericPoint.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

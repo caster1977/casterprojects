@@ -4,11 +4,11 @@ interface
 
 uses
   TAPEstimator.uTIntegerFunction,
-  TAPEstimator.uTAbstractCoordinate,
+  TAPEstimator.uTGenericCoordinate,
   TAPEstimator.uIIntegerCoordinate;
 
 type
-  TIntegerCoordinate = class(TAbstractCoordinate<Integer, TIntegerFunction>, IIntegerCoordinate)
+  TIntegerCoordinate = class(TGenericCoordinate<Integer, TIntegerFunction>, IIntegerCoordinate)
   strict protected
     procedure Initialize; override;
   strict protected
