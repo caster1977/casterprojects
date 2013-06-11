@@ -1,4 +1,4 @@
-unit TAPEstimator.uTAbstractCoordinate;
+unit TAPEstimator.uTGenericCoordinate;
 
 interface
 
@@ -8,7 +8,7 @@ uses
   TAPEstimator.uICoordinateConverter;
 
 type
-  TAbstractCoordinate<T, F> = class(TInterfacedObject, ICoordinate<T>, ICoordinateConverter<T, F>, ICustomized)
+  TGenericCoordinate<T, F> = class(TInterfacedObject, ICoordinate<T>, ICoordinateConverter<T, F>, ICustomized)
 
   strict private
     FAbsoluteValue: T;
@@ -51,57 +51,57 @@ type
 
 implementation
 
-constructor TAbstractCoordinate<T, F>.Create;
+constructor TGenericCoordinate<T, F>.Create;
 begin
   Initialize;
 end;
 
-destructor TAbstractCoordinate<T, F>.Destroy;
+destructor TGenericCoordinate<T, F>.Destroy;
 begin
   Finalize;
   inherited;
 end;
 
-procedure TAbstractCoordinate<T, F>.Finalize;
+procedure TGenericCoordinate<T, F>.Finalize;
 begin
 end;
 
-function TAbstractCoordinate<T, F>.GetAbsoluteValue: T;
+function TGenericCoordinate<T, F>.GetAbsoluteValue: T;
 begin
   Result := FAbsoluteValue;
 end;
 
-procedure TAbstractCoordinate<T, F>.SetAbsoluteValue(const AValue: T);
+procedure TGenericCoordinate<T, F>.SetAbsoluteValue(const AValue: T);
 begin
   FAbsoluteValue := AValue;
 end;
 
-procedure TAbstractCoordinate<T, F>.SetOnAbsoluteToRelative(const AValue: F);
+procedure TGenericCoordinate<T, F>.SetOnAbsoluteToRelative(const AValue: F);
 begin
   FOnAbsoluteToRelative := AValue;
 end;
 
-procedure TAbstractCoordinate<T, F>.SetOnRelativeToAbsolute(const AValue: F);
+procedure TGenericCoordinate<T, F>.SetOnRelativeToAbsolute(const AValue: F);
 begin
   FOnRelativeToAbsolute := AValue;
 end;
 
-function TAbstractCoordinate<T, F>.GetRelativeValue: T;
+function TGenericCoordinate<T, F>.GetRelativeValue: T;
 begin
   Result := AbsoluteToRelative(AbsoluteValue);
 end;
 
-procedure TAbstractCoordinate<T, F>.SetRelativeValue(const AValue: T);
+procedure TGenericCoordinate<T, F>.SetRelativeValue(const AValue: T);
 begin
   AbsoluteValue := RelativeToAbsolute(AValue);
 end;
 
-function TAbstractCoordinate<T, F>.GetOnAbsoluteToRelative: F;
+function TGenericCoordinate<T, F>.GetOnAbsoluteToRelative: F;
 begin
   Result := FOnAbsoluteToRelative;
 end;
 
-function TAbstractCoordinate<T, F>.GetOnRelativeToAbsolute: F;
+function TGenericCoordinate<T, F>.GetOnRelativeToAbsolute: F;
 begin
   Result := FOnRelativeToAbsolute;
 end;

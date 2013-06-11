@@ -5,7 +5,7 @@ interface
 uses
   TAPEstimator.uTTableRotation,
   TAPEstimator.uICoordinate,
-  TAPEstimator.uTAbstractCoordinate,
+  TAPEstimator.uTGenericCoordinate,
   TAPEstimator.uIIntegerCoordinate,
   TAPEstimator.uIInt64Coordinate,
   TAPEstimator.uTIntegerCoordinate,
