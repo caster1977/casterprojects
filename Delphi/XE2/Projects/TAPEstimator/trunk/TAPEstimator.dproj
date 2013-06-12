@@ -87,8 +87,8 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
-        <VerInfo_Build>37</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для расчёта времени выполнения TAP-файлов;FileVersion=0.1.0.37;InternalName=TAP Estimator;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Anton Zhevnyak, Ilya Kuzmenkov;LegalTrademarks=;OriginalFilename=TAPEstimator.exe;ProductName=TAPEstimator;ProductVersion=0.1.0.0;Comments=Idea: Ilya Kuzmenkov. Developing: Vlad Ivanov, Anton Zhevnyak.</VerInfo_Keys>
+        <VerInfo_Build>38</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для расчёта времени выполнения TAP-файлов;FileVersion=0.1.0.38;InternalName=TAP Estimator;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Anton Zhevnyak, Ilya Kuzmenkov;LegalTrademarks=;OriginalFilename=TAPEstimator.exe;ProductName=TAPEstimator;ProductVersion=0.1.0.0;Comments=Idea: Ilya Kuzmenkov. Developing: Vlad Ivanov, Anton Zhevnyak.</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
@@ -144,12 +144,15 @@
         <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTInt64Function.pas"/>
         <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTInt64Coordinate.pas"/>
         <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uICoordinateConverter.pas"/>
-        <DCCReference Include="SRC\Logic\Other\TAPEstimator.Temp.pas"/>
         <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTTableRotation.pas"/>
         <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uIDrawable.pas"/>
         <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uIGenericFigure.pas"/>
         <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTGenericFigure.pas"/>
         <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTGenericPoint.pas"/>
+        <DCCReference Include="SRC\Logic\Other\TAPEstimator.uTTAPStringRoutines.pas"/>
+        <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTTAPCommandPrefixes.pas"/>
+        <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTTAPNonCommandChars.pas"/>
+        <DCCReference Include="SRC\Logic\Other\TAPEstimator.Temp.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
