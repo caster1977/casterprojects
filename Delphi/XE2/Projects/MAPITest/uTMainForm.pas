@@ -18,7 +18,8 @@ uses
   Vcl.ExtCtrls,
   Vcl.ExtActns,
   MAPI, IdMessage, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
-  IdExplicitTLSClientServerBase, IdMessageClient, IdSMTPBase, IdSMTP;
+  IdExplicitTLSClientServerBase, IdMessageClient, IdSMTPBase, IdSMTP,
+  CastersPackage.uTAboutWindow;
 
 type
   TMainForm = class(TForm)
@@ -36,6 +37,7 @@ type
     IdMessage: TIdMessage;
     Button2: TButton;
     actSendByOutlook: TAction;
+    AboutWindow1: TAboutWindow;
     procedure actSendByMAPIUpdate(Sender: TObject);
     procedure actSendByMAPIExecute(Sender: TObject);
     procedure actSendBySMTPExecute(Sender: TObject);
