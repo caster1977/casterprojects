@@ -1,5 +1,4 @@
-﻿{$WARNINGS OFF}
-unit CastersPackage.uTSingleton;
+﻿unit CastersPackage.uTSingleton;
 
 interface
 
