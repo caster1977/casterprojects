@@ -144,4 +144,9 @@ object MainForm: TMainForm
     Left = 352
     Top = 24
   end
+  object AboutWindow1: TAboutWindow
+    EMail = 'vlad_dracula@tut.by'
+    Left = 312
+    Top = 112
+  end
 end
