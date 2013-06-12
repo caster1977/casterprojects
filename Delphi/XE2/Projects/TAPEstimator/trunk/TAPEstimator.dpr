@@ -29,12 +29,15 @@ uses
   TAPEstimator.uTInt64Function in 'SRC\Logic\Types\TAPEstimator.uTInt64Function.pas',
   TAPEstimator.uTInt64Coordinate in 'SRC\Logic\Types\TAPEstimator.uTInt64Coordinate.pas',
   TAPEstimator.uICoordinateConverter in 'SRC\Logic\Interfaces\TAPEstimator.uICoordinateConverter.pas',
-  TAPEstimator.Temp in 'SRC\Logic\Other\TAPEstimator.Temp.pas',
   TAPEstimator.uTTableRotation in 'SRC\Logic\Types\TAPEstimator.uTTableRotation.pas',
   TAPEstimator.uIDrawable in 'SRC\Logic\Interfaces\TAPEstimator.uIDrawable.pas',
   TAPEstimator.uIGenericFigure in 'SRC\Logic\Interfaces\TAPEstimator.uIGenericFigure.pas',
   TAPEstimator.uTGenericFigure in 'SRC\Logic\Types\TAPEstimator.uTGenericFigure.pas',
-  TAPEstimator.uTGenericPoint in 'SRC\Logic\Types\TAPEstimator.uTGenericPoint.pas';
+  TAPEstimator.uTGenericPoint in 'SRC\Logic\Types\TAPEstimator.uTGenericPoint.pas',
+  TAPEstimator.uTTAPStringRoutines in 'SRC\Logic\Other\TAPEstimator.uTTAPStringRoutines.pas',
+  TAPEstimator.uTTAPCommandPrefixes in 'SRC\Logic\Types\TAPEstimator.uTTAPCommandPrefixes.pas',
+  TAPEstimator.uTTAPNonCommandChars in 'SRC\Logic\Types\TAPEstimator.uTTAPNonCommandChars.pas',
+  TAPEstimator.Temp in 'SRC\Logic\Other\TAPEstimator.Temp.pas';
 
 {$R *.res}
 
