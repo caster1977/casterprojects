@@ -114,7 +114,10 @@ begin
     begin
       if i > low(string) then
       begin
-        if CharInSet(s[i], TTAPCommandPrefixes) and (s1[Length(s1) - 1 + low(string)] <> ' ') then
+        if CharInSet(s[i], TTAPCommandPrefixes) and // если символ является префиксом команды
+        // (s1[Length(s1) - 1 + low(string)] <> ' ') and
+          (not CharInSet(s[i - 1], TTAPCommandPrefixes + [' '])) // и предыдущий символ не был пробелом либо префиксом команды
+        then
         begin
           s1 := s1 + ' ';
         end;
