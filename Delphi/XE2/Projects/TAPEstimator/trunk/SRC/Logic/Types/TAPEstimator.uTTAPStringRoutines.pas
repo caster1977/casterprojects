@@ -71,7 +71,7 @@ type
     /// Если строка является корректной, будет возвращено значение <b>True</b>
     /// , в противном случае будет возвращено <b>False</b>.
     /// </returns>
-    class function Valid(const AValue: string): Boolean;
+    class function Valid(const AValue: string; out AWrongSymbol: Char): Boolean;
   end;
 
 implementation
@@ -82,13 +82,19 @@ uses
   CastersPackage.uRoutines,
   System.Character,
   TAPEstimator.uTTAPCommandPrefixes,
-  TAPEstimator.uTTAPNonCommandChars;
+  TAPEstimator.uTTAPNonCommandChars,
+  TAPEstimator.uETAPWrongSymbol;
+
+var
+  sTAPString: string;
+  cWrongSymbol: Char;
 
 class function TTAPStringRoutines.IsComment(const AValue: string): Boolean;
 var
   s: string;
 begin
-  s := Trim(AValue); // убираем пробелы с начала и конца строки
+  // убираем пробелы с начала и конца строки
+  s := Trim(AValue);
   Result :=
   // минимальной строкой с комментарием является строка [],
   // поэтому длина строки должна быть минимум 2 символа
@@ -105,56 +111,76 @@ var
   s1: string;
   i: Integer;
 begin
-  s := Trim(AValue); // убираем пробелы с начала и конца строки
-  if not IsComment(s) then // если строка не является комментарием, продолжаем нормализацию
+  s1 := EmptyStr;
+  // убираем пробелы с начала и конца строки
+  s := Trim(AValue);
+  // если строка не является комментарием, продолжаем нормализацию
+  if not IsComment(s) then
   begin
+    // преобразуем строку в верхний регистр
     s := AnsiUpperCase(s);
-    s1 := EmptyStr;
+    // перебираем все символы в строке
     for i := low(string) to Length(s) - 1 + low(string) do
     begin
-      if i > low(string) then
+      if i > low(string) then // если символ не является первым в строке
       begin
-        if CharInSet(s[i], TTAPCommandPrefixes) and // если символ является префиксом команды
-        // (s1[Length(s1) - 1 + low(string)] <> ' ') and
-          (not CharInSet(s[i - 1], TTAPCommandPrefixes + [' '])) // и предыдущий символ не был пробелом либо префиксом команды
-        then
+        // если символ является префиксом команды
+        if CharInSet(s[i], TTAPCommandPrefixes) and
+        // и предыдущий символ не был префиксом команды либо пробелом
+          (not CharInSet(s[i - 1], TTAPCommandPrefixes + [' '])) then
         begin
+          // вставляем пробел перед очередным сисмволом
           s1 := s1 + ' ';
         end;
       end;
+      // добавляем очередной символ
       s1 := s1 + s[i];
     end;
+    // возвращаем нормализованную строку
     s := s1;
   end;
-  Result := s; // возвращаем нормализованную строку
+  // возвращаем строку
+  Result := s;
 end;
 
 class function TTAPStringRoutines.Normalized(const AValue: string): Boolean;
 begin
-  Result := AValue <> Normalize(AValue); // если строка совпадает с нормализованным значением, значит она является нормализованной
+  // если строка совпадает с нормализованным значением, значит она является нормализованной
+  Result := AValue <> Normalize(AValue);
 end;
 
 class function TTAPStringRoutines.ToStringList(const AValue: string): TStringList;
 begin
+  // создаём список строк
   Result := TStringList.Create;
-  Routines.CutStringByLimiterToStringList(AValue, Result, ' '); // разбиваем строку на подстроки и возвращаем их в виде списка
+  // разбиваем строку на подстроки и возвращаем их в виде списка
+  Routines.CutStringByLimiterToStringList(AValue, Result, ' ');
 end;
 
-class function TTAPStringRoutines.Valid(const AValue: string): Boolean;
+class function TTAPStringRoutines.Valid(const AValue: string; out AWrongSymbol: Char): Boolean;
 var
   s: string;
   i: Integer;
 begin
+  AWrongSymbol := Char(0);
   Result := IsComment(AValue);
-  if not Result then // если строка не является комментарием, продолжаем валидацию
+  // если строка не является комментарием, продолжаем валидацию
+  if not Result then
   begin
+    // получаем нормализованную версию строки
     s := Normalize(AValue);
+    // устанавливаем результат по умолчанию "истина"
     Result := True;
+    // перебираем все символы в строке
     for i := low(string) to Length(s) - 1 + low(string) do
     begin
+      // если символ не относится к допустимым форматом
       if not CharInSet(s[i], TTAPCommandPrefixes + TTAPNonCommandChars) then
       begin
+        // возвращаем "ложь"
         Result := False;
+        // прекращаем работу цикла
+        AWrongSymbol := s[i];
         Break;
       end;
     end;
@@ -163,6 +189,21 @@ end;
 
 initialization
 
-ShowMessage(BoolToStr(TTAPStringRoutines.Valid(TTAPStringRoutines.Normalize(' G90G1Z0f350 y10z20  ')), True));
+sTAPString := ' G90G1Z0f350 y10z20 xyz ';
+try
+  if TTAPStringRoutines.Valid(TTAPStringRoutines.Normalize(sTAPString), cWrongSymbol) then
+  begin
+    ShowMessage(TTAPStringRoutines.Normalize(sTAPString));
+  end
+  else
+  begin
+    raise ETAPWrongSymbol.Create('Некорректный символ [%s] в строке.', cWrongSymbol);
+  end;
+except
+  on E: Exception do
+    begin
+      ShowMessage(E.Message);
+    end;
+end;
 
 end.

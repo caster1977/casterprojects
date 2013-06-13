@@ -6,7 +6,7 @@ uses
   System.SysUtils;
 
 const
-  TTAPCommandPrefixes: TSysCharSet = ['G', 'M', 'L', 'X', 'Y', 'Z', 'F', 'I', 'J', 'T', 'C'];
+  TTAPCommandPrefixes: TSysCharSet = ['G', 'M', 'L', 'X', 'Y', 'Z', 'F', 'I', 'J', 'T', 'C', 'P', 'A', 'W'];
 
 implementation
 
