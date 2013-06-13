@@ -34,10 +34,10 @@ uses
   TAPEstimator.uIGenericFigure in 'SRC\Logic\Interfaces\TAPEstimator.uIGenericFigure.pas',
   TAPEstimator.uTGenericFigure in 'SRC\Logic\Types\TAPEstimator.uTGenericFigure.pas',
   TAPEstimator.uTGenericPoint in 'SRC\Logic\Types\TAPEstimator.uTGenericPoint.pas',
-  TAPEstimator.uTTAPStringRoutines in 'SRC\Logic\Other\TAPEstimator.uTTAPStringRoutines.pas',
   TAPEstimator.uTTAPCommandPrefixes in 'SRC\Logic\Types\TAPEstimator.uTTAPCommandPrefixes.pas',
   TAPEstimator.uTTAPNonCommandChars in 'SRC\Logic\Types\TAPEstimator.uTTAPNonCommandChars.pas',
-  TAPEstimator.Temp in 'SRC\Logic\Other\TAPEstimator.Temp.pas';
+  TAPEstimator.uTTAPStringRoutines in 'SRC\Logic\Types\TAPEstimator.uTTAPStringRoutines.pas',
+  TAPEstimator.uETAPWrongSymbol in 'SRC\Logic\Types\TAPEstimator.uETAPWrongSymbol.pas';
 
 {$R *.res}
 

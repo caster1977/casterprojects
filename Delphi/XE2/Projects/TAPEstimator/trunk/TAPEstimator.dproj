@@ -149,10 +149,10 @@
         <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uIGenericFigure.pas"/>
         <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTGenericFigure.pas"/>
         <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTGenericPoint.pas"/>
-        <DCCReference Include="SRC\Logic\Other\TAPEstimator.uTTAPStringRoutines.pas"/>
         <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTTAPCommandPrefixes.pas"/>
         <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTTAPNonCommandChars.pas"/>
-        <DCCReference Include="SRC\Logic\Other\TAPEstimator.Temp.pas"/>
+        <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTTAPStringRoutines.pas"/>
+        <DCCReference Include="SRC\Logic\Types\TAPEstimator.uETAPWrongSymbol.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
