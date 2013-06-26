@@ -21,9 +21,9 @@ function GetITasks: ITasks;
 implementation
 
 uses
-  System.Classes,
   System.SysUtils,
   DBAutoTest.uConsts,
+  DBAutoTest.uTTaskStatus,
   DBAutoTest.uETaskThread,
   DBAutoTest.uTTaskThread;
 
@@ -49,6 +49,7 @@ var
 begin
   for i := 0 to Count - 1 do
   begin
+    Items[i].Status := tsUnknown;
     if Items[i].Enabled then
     begin
       with TTaskThread.Create(Items[i], AADOConnectionString) do
@@ -62,12 +63,6 @@ begin
         end;
     end;
   end;
-end;
-
-initialization
-
-begin
-  RegisterClass(TTasks);
 end;
 
 end.

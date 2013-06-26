@@ -28,6 +28,17 @@ type
     function GetStatus: TTaskStatus;
     procedure SetStatus(const AValue: TTaskStatus);
     property Status: TTaskStatus read GetStatus write SetStatus;
+
+    function GetStartTime: TDateTime;
+    procedure SetStartTime(const AValue: TDateTime);
+    property StartTime: TDateTime read GetStartTime write SetStartTime;
+
+    function GetStopTime: TDateTime;
+    procedure SetStopTime(const AValue: TDateTime);
+    property StopTime: TDateTime read GetStopTime write SetStopTime;
+
+    function GetTime: TTime;
+    property Time: TTime read GetTime;
   end;
 
 implementation

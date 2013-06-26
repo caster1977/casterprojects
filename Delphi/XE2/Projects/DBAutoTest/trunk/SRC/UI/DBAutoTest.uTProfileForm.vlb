@@ -55,9 +55,6 @@ Coordinates=148,280,100,51
 [cmbDatabaseName]
 Coordinates=121,10,109,87
 
-[btnTestConnection]
-Coordinates=411,212,108,51
-
 [ebLogin]
 Coordinates=10,122,54,69
 Visible=True
@@ -67,7 +64,7 @@ ExplicitSubNodes=Enabled
 Coordinates=218,122,83,51
 
 []
-Coordinates=361,369,48,51
+Coordinates=411,212,108,51
 
 [pnlTop]
 Coordinates=381,369,48,51

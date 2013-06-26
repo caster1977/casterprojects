@@ -11,9 +11,7 @@ uses
 
 type
   TConfiguration = class(TIniFileDataStorage, IConfiguration)
-  strict
-  private
-    function GetModified: Boolean; protected
+  strict protected
     procedure Initialize; override;
     procedure Loading; override;
     procedure Saving; override;
@@ -89,7 +87,6 @@ function GetIConfiguration(const AConfigurationFileName: string = ''): IConfigur
 implementation
 
 uses
-  System.Classes,
   System.SysUtils,
   DBAutoTest.uEConfiguration,
   DBAutoTest.uTRecents,
@@ -232,11 +229,6 @@ begin
   Result := FEnableToolbar;
 end;
 
-function TConfiguration.GetModified: Boolean;
-begin
-
-end;
-
 procedure TConfiguration.SetEnableToolbar(const AValue: Boolean);
 begin
   if FEnableToolbar <> AValue then
@@ -368,12 +360,6 @@ begin
         end;
       end;
   end;
-end;
-
-initialization
-
-begin
-  RegisterClass(TConfiguration);
 end;
 
 end.

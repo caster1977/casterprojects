@@ -17,9 +17,6 @@ function GetIRecents: IRecents;
 
 implementation
 
-uses
-  System.Classes;
-
 resourcestring
   RsCantAddRecentToRecents =
     'Не удалось добавить ранее открытый файл в список ранее открытых файлов.';
@@ -36,12 +33,6 @@ begin
   inherited;
   AddItemErrorString := RsCantAddRecentToRecents;
   RemoveItemErrorString := RsCantRemoveRecentFromRecents;
-end;
-
-initialization
-
-begin
-  RegisterClass(TRecents);
 end;
 
 end.

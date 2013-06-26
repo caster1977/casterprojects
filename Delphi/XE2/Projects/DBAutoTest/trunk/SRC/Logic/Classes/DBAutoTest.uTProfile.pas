@@ -12,50 +12,81 @@ uses
 
 type
   TProfile = class(TIniFileDataStorage, IProfile)
-  strict private
-    FServer: string;
-    function GetServer: string;
-    procedure SetServer(const AValue: string);
-  strict private
-    FLogin: string;
-    function GetLogin: string;
-    procedure SetLogin(const AValue: string);
-  strict private
-    FPassword: string;
-    function GetPassword: string;
-    procedure SetPassword(const AValue: string);
-  strict private
-    FDB: string;
-    function GetDatabase: string;
-    procedure SetDatabase(const AValue: string);
-  strict private
-    function GetADOConnectionString: string;
-  strict private
-    FTasks: ITasks;
-    function GetTasks: ITasks;
-  strict private
-    FWinNTSecurity: Boolean;
-    function GetWinNTSecurity: Boolean;
-    procedure SetWinNTSecurity(const AValue: Boolean);
-  strict private
-    FStorePassword: Boolean;
-    function GetStorePassword: Boolean;
-    procedure SetStorePassword(const AValue: Boolean);
   strict protected
     procedure Initialize; override;
     procedure Loading; override;
     procedure Saving; override;
   public
     constructor Create(const AProfileFileName: string = ''); override;
-    property Server: string read GetServer write SetServer nodefault;
-    property Login: string read GetLogin write SetLogin nodefault;
-    property Password: string read GetPassword write SetPassword nodefault;
-    property Database: string read GetDatabase write SetDatabase nodefault;
-    property WinNTSecurity: Boolean read GetWinNTSecurity write SetWinNTSecurity default PROFILE_DEFAULT_WIN_NT_SECURITY;
-    property StorePassword: Boolean read GetStorePassword write SetStorePassword default PROFILE_DEFAULT_STORE_PASSWORD;
-    property ADOConnectionString: string read GetADOConnectionString nodefault;
-    property Tasks: ITasks read GetTasks nodefault;
+  public
     property Modified: Boolean read GetModified nodefault;
+
+  strict private
+    FTasks: ITasks;
+    function GetTasks: ITasks;
+  public
+    property Tasks: ITasks read GetTasks nodefault;
+
+  strict private
+    FEnableStoreTasks: Boolean;
+    function GetEnableStoreTasks: Boolean;
+    procedure SetEnableStoreTasks(const AValue: Boolean);
+  public
+    property EnableStoreTasks: Boolean read GetEnableStoreTasks write SetEnableStoreTasks;
+
+  strict private
+    FEnableStoreOnlyEnabledTasks: Boolean;
+    function GetEnableStoreOnlyEnabledTasks: Boolean;
+    procedure SetEnableStoreOnlyEnabledTasks(const AValue: Boolean);
+  public
+    property EnableStoreOnlyEnabledTasks: Boolean read GetEnableStoreOnlyEnabledTasks write SetEnableStoreOnlyEnabledTasks;
+
+  strict private
+    function GetADOConnectionString: string;
+  public
+    property ADOConnectionString: string read GetADOConnectionString nodefault;
+
+  strict private
+    FServer: string;
+    function GetServer: string;
+    procedure SetServer(const AValue: string);
+  public
+    property Server: string read GetServer write SetServer nodefault;
+
+  strict private
+    FWinNTSecurity: Boolean;
+    function GetWinNTSecurity: Boolean;
+    procedure SetWinNTSecurity(const AValue: Boolean);
+  public
+    property WinNTSecurity: Boolean read GetWinNTSecurity write SetWinNTSecurity default PROFILE_DEFAULT_WIN_NT_SECURITY;
+
+  strict private
+    FLogin: string;
+    function GetLogin: string;
+    procedure SetLogin(const AValue: string);
+  public
+    property Login: string read GetLogin write SetLogin nodefault;
+
+  strict private
+    FPassword: string;
+    function GetPassword: string;
+    procedure SetPassword(const AValue: string);
+  public
+    property Password: string read GetPassword write SetPassword nodefault;
+
+  strict private
+    FStorePassword: Boolean;
+    function GetStorePassword: Boolean;
+    procedure SetStorePassword(const AValue: Boolean);
+  public
+    property StorePassword: Boolean read GetStorePassword write SetStorePassword default PROFILE_DEFAULT_STORE_PASSWORD;
+
+  strict private
+    FDatabese: string;
+    function GetDatabase: string;
+    procedure SetDatabase(const AValue: string);
+  public
+    property Database: string read GetDatabase write SetDatabase nodefault;
   end;
 
 function GetIProfile(const AProfileFileName: string = ''): IProfile;
@@ -63,7 +94,6 @@ function GetIProfile(const AProfileFileName: string = ''): IProfile;
 implementation
 
 uses
-  System.Classes,
   System.SysUtils,
   DBAutoTest.uTTasks,
   DBAutoTest.uEProfile;
@@ -106,7 +136,17 @@ end;
 
 function TProfile.GetDatabase: string;
 begin
-  Result := FDB;
+  Result := FDatabese;
+end;
+
+function TProfile.GetEnableStoreOnlyEnabledTasks: Boolean;
+begin
+  Result := FEnableStoreOnlyEnabledTasks;
+end;
+
+function TProfile.GetEnableStoreTasks: Boolean;
+begin
+  Result := FEnableStoreTasks;
 end;
 
 function TProfile.GetLogin: string;
@@ -148,9 +188,27 @@ var
   s: string;
 begin
   s := Trim(AValue);
-  if FDB <> s then
+  if FDatabese <> s then
   begin
-    FDB := s;
+    FDatabese := s;
+    inherited Modified := True;
+  end;
+end;
+
+procedure TProfile.SetEnableStoreOnlyEnabledTasks(const AValue: Boolean);
+begin
+  if FEnableStoreOnlyEnabledTasks <> AValue then
+  begin
+    FEnableStoreOnlyEnabledTasks := AValue;
+    inherited Modified := True;
+  end;
+end;
+
+procedure TProfile.SetEnableStoreTasks(const AValue: Boolean);
+begin
+  if FEnableStoreTasks <> AValue then
+  begin
+    FEnableStoreTasks := AValue;
     inherited Modified := True;
   end;
 end;
@@ -247,12 +305,6 @@ begin
         end;
       end;
   end;
-end;
-
-initialization
-
-begin
-  RegisterClass(TProfile);
 end;
 
 end.

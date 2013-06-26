@@ -35,7 +35,6 @@ type
     ActionList: TActionList;
     actApply: TAction;
     actCancel: TAction;
-    actHelp: TAction_Help;
     gbConnection: TGroupBox;
     lblServerName: TLabel;
     cmbServers: TComboBox;
@@ -49,8 +48,7 @@ type
     rbWinNTSecurity: TRadioButton;
     lblSecurity: TLabel;
     rbLoginAndPassword: TRadioButton;
-    btnTestConnection: TButton;
-    actTestConnection: TAction;
+    actRefreshDatabases: TAction;
     chkEnableEmptyPassword: TCheckBox;
     chkEnablePasswordSaving: TCheckBox;
     actUseWinNTSecurity: TAction;
@@ -70,16 +68,14 @@ type
     actEnableEmptyPassword: TAction;
     btnRefreshServers: TButton;
     actRefreshServers: TAction;
+    btnRefreshDatabases: TButton;
+    actHelp: TAction_Help;
     procedure actUseWinNTSecurityExecute(Sender: TObject);
-    procedure actEnablePasswordSavingUpdate(Sender: TObject);
-    procedure actEnableEmptyPasswordUpdate(Sender: TObject);
     procedure actUseLoginAndPasswordExecute(Sender: TObject);
     procedure actEnableEmptyPasswordExecute(Sender: TObject);
     procedure actEnablePasswordSavingExecute(Sender: TObject);
-    procedure cmbServersChange(Sender: TObject);
     procedure cmbServersDropDown(Sender: TObject);
     procedure cmbServersSelect(Sender: TObject);
-    procedure cmbServersKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure actCancelExecute(Sender: TObject);
     procedure actPreviousPageExecute(Sender: TObject);
     procedure actPreviousPageUpdate(Sender: TObject);
@@ -87,7 +83,16 @@ type
     procedure actNextPageUpdate(Sender: TObject);
     procedure cmbPageNameSelect(Sender: TObject);
     procedure actRefreshServersExecute(Sender: TObject);
-    procedure actRefreshServersUpdate(Sender: TObject);
+    procedure cmbServersChange(Sender: TObject);
+    procedure cmbServersKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure ActionListUpdate(Action: TBasicAction; var Handled: Boolean);
+    procedure actDefaultsExecute(Sender: TObject);
+    procedure actRefreshDatabasesExecute(Sender: TObject);
+    procedure ebLoginKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure mePasswordKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   strict private
     procedure GetServerList(const aList: TStrings; var ARefreshing: Boolean);
     procedure GetDatabasesList(const aList: TStrings);
@@ -102,6 +107,7 @@ type
       default PROFILE_DEFAULT_ACTIVE_PAGE;
   strict private
     FRefreshingServers: Boolean;
+    FRefreshingDatabases: Boolean;
   end;
 
 implementation
@@ -116,6 +122,17 @@ begin
   inherited Create(AOwner);
   ActivePage := AActivePage;
   FRefreshingServers := False;
+  FRefreshingDatabases := False;
+end;
+
+procedure TProfileForm.ebLoginKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_RETURN then
+  begin
+    Key := 0;
+    actRefreshDatabases.Execute;
+  end;
 end;
 
 procedure TProfileForm.actCancelExecute(Sender: TObject);
@@ -194,9 +211,9 @@ begin
   //
 end;
 
-procedure TProfileForm.actEnablePasswordSavingUpdate(Sender: TObject);
+procedure TProfileForm.actDefaultsExecute(Sender: TObject);
 begin
-  actEnablePasswordSaving.Enabled := actUseLoginAndPassword.Checked;
+  //
 end;
 
 procedure TProfileForm.actEnableEmptyPasswordExecute(Sender: TObject);
@@ -204,31 +221,19 @@ begin
   //
 end;
 
-procedure TProfileForm.actEnableEmptyPasswordUpdate(Sender: TObject);
-begin
-  actEnableEmptyPassword.Enabled := actUseLoginAndPassword.Checked;
-end;
-
 procedure TProfileForm.actUseLoginAndPasswordExecute(Sender: TObject);
 begin
-  lblLogin.Enabled := True;
-  ebLogin.Enabled := True;
-  lblPassword.Enabled := True;
-  mePassword.Enabled := True;
+  //
 end;
 
 procedure TProfileForm.actUseWinNTSecurityExecute(Sender: TObject);
 begin
-  lblLogin.Enabled := False;
-  ebLogin.Enabled := False;
-  lblPassword.Enabled := False;
-  mePassword.Enabled := False;
+  //
 end;
 
 procedure TProfileForm.cmbServersChange(Sender: TObject);
 begin
-  lblDatabaseName.Enabled := (Trim(cmbServers.Text) > EmptyStr) or (cmbServers.ItemIndex > -1);
-  cmbDatabaseName.Enabled := lblDatabaseName.Enabled;
+  cmbDatabaseName.Items.Clear;
 end;
 
 procedure TProfileForm.cmbServersDropDown(Sender: TObject);
@@ -237,21 +242,6 @@ begin
   begin
     actRefreshServers.Execute;
   end;
-end;
-
-procedure TProfileForm.cmbServersKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-  if Key = VK_RETURN then
-  begin
-    GetDatabasesList(cmbDatabaseName.Items);
-  end;
-end;
-
-procedure TProfileForm.cmbServersSelect(Sender: TObject);
-begin
-  GetDatabasesList(cmbDatabaseName.Items);
-  lblDatabaseName.Enabled := (Trim(cmbServers.Text) > EmptyStr) or (cmbServers.ItemIndex > -1);
-  cmbDatabaseName.Enabled := lblDatabaseName.Enabled;
 end;
 
 procedure TProfileForm.GetServerList(const aList: TStrings; var ARefreshing: Boolean);
@@ -279,6 +269,16 @@ begin
   end;
 end;
 
+procedure TProfileForm.mePasswordKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_RETURN then
+  begin
+    Key := 0;
+    actRefreshDatabases.Execute;
+  end;
+end;
+
 procedure TProfileForm.GetDatabasesList(const aList: TStrings);
 var
   q: TADOQuery;
@@ -286,6 +286,7 @@ var
 begin
   aList.BeginUpdate;
   try
+    aList.Clear;
     if cmbServers.ItemIndex > -1 then
     begin
       s := cmbServers.Items[cmbServers.ItemIndex];
@@ -319,7 +320,6 @@ begin
       q := TADOQuery.Create(Self);
       try
         q.Connection := ADOConnection;
-        aList.Clear;
         q.SQL.Text :=
           'SELECT sd.name FROM sys.databases sd WHERE  HAS_DBACCESS(sd.name) = 1 ORDER BY sd.name';
         q.Open;
@@ -345,9 +345,70 @@ begin
   GetServerList(cmbServers.Items, FRefreshingServers);
 end;
 
-procedure TProfileForm.actRefreshServersUpdate(Sender: TObject);
+procedure TProfileForm.actRefreshDatabasesExecute(Sender: TObject);
+begin
+  FRefreshingDatabases := True;
+  actRefreshDatabases.Enabled := False;
+  try
+    GetDatabasesList(cmbDatabaseName.Items);
+  finally
+    FRefreshingDatabases := False;
+  end;
+end;
+
+procedure TProfileForm.cmbServersSelect(Sender: TObject);
+begin
+  cmbServers.Text := cmbServers.Items[cmbServers.ItemIndex];
+  cmbServers.Repaint;
+  actRefreshDatabases.Execute;
+end;
+
+procedure TProfileForm.cmbServersKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_RETURN then
+  begin
+    Key := 0;
+    actRefreshDatabases.Execute;
+  end;
+end;
+
+procedure TProfileForm.ActionListUpdate(Action: TBasicAction;
+  var Handled: Boolean);
 begin
   actRefreshServers.Enabled := not FRefreshingServers;
+  actRefreshDatabases.Enabled := (not FRefreshingDatabases) and ((Trim(cmbServers.Text) > EmptyStr) or (cmbServers.ItemIndex > -1));
+
+  lblLogin.Enabled := actUseLoginAndPassword.Checked;
+
+  ebLogin.Enabled := lblLogin.Enabled;
+  if not ebLogin.Enabled then
+  begin
+    ebLogin.Clear;
+    ebLogin.Color := clBtnFace;
+  end
+  else
+  begin
+    ebLogin.Color := clWindow;
+  end;
+
+  lblPassword.Enabled := actUseLoginAndPassword.Checked and (not actEnableEmptyPassword.Checked);
+  mePassword.Enabled := lblPassword.Enabled;
+  if not mePassword.Enabled then
+  begin
+    mePassword.Clear;
+    mePassword.Color := clBtnFace;
+  end
+  else
+  begin
+    mePassword.Color := clWindow;
+  end;
+
+  actEnableEmptyPassword.Enabled := actUseLoginAndPassword.Checked;
+  actEnablePasswordSaving.Enabled := actUseLoginAndPassword.Checked;
+
+  cmbDatabaseName.Enabled := actRefreshDatabases.Enabled and (cmbDatabaseName.Items.Count > 0);
+  lblDatabaseName.Enabled := actRefreshDatabases.Enabled;
 end;
 
 end.
