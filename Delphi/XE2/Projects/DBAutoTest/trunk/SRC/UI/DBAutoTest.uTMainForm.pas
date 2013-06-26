@@ -145,6 +145,7 @@ type
     procedure AddEditTask(const AIndex: Integer = -1);
     procedure RefreshTaskList;
     procedure RefreshTaskStatus(const ATask: ITask);
+    procedure UpdateTaskListAvailability;
   strict private
     procedure OnRecentsMenuItemClick(Sender: TObject);
   strict private
@@ -177,6 +178,7 @@ uses
   DBAutoTest.uTConfigurationForm,
   DBAutoTest.uTAboutForm,
   DBAutoTest.uTTaskForm,
+  DBAutoTest.uTTaskStatus,
   DBAutoTest.uTRecentsPropertiesForm,
   DBAutoTest.uTProfileForm,
   DBAutoTest.uTRecents,
@@ -407,6 +409,11 @@ begin
       if Assigned(ITask(Item.Data)) then
       begin
         ITask(Item.Data).Enabled := Item.Checked;
+        if not ITask(Item.Data).Enabled then
+        begin
+          ITask(Item.Data).Status := tsUnknown;
+          RefreshTaskStatus(ITask(Item.Data));
+        end;
       end;
     end;
   end;
@@ -618,31 +625,6 @@ begin
   actMoveUp.Enabled := b; // and (not FProcessActive);
 end;
 
-procedure TMainForm.actProcessExecute(Sender: TObject);
-begin
-  { TODO : реализовать функционал выполнения выбранных тестов в параллельных тредах }
-  Profile.Tasks.Run(Profile.ADOConnectionString);
-end;
-
-procedure TMainForm.actProcessUpdate(Sender: TObject);
-var
-  i: Integer;
-  b: Boolean;
-begin
-  b := False;
-  { TODO : переписать алгоритм с использованием Profile.Tasks }
-  for i := 0 to lvTaskList.Items.Count - 1 do
-  begin
-    if lvTaskList.Items[i].Checked then
-    begin
-      b := True;
-      Break;
-    end;
-  end;
-  actProcess.Enabled := b; // and (not FProcessActive);
-  btnProcess.Default := actProcess.Enabled;
-end;
-
 procedure TMainForm.actProfilePropertiesExecute(Sender: TObject);
 begin
   with TProfileForm.Create(Self) do
@@ -775,12 +757,21 @@ begin
           end;
           node.Caption := t.name;
           node.SubItems.Add(TASK_STATUS_NAMES[t.Status]);
+          if t.Status in [tsError, tsComplete] then
+          begin
+            node.SubItems.Add(TimeToStr(t.Time));
+          end
+          else
+          begin
+            node.SubItems.Add(EmptyStr);
+          end;
           node.Checked := t.Enabled;
         end;
       end;
     end;
   finally
     lvTaskList.Items.EndUpdate;
+    UpdateTaskListAvailability;
   end;
 end;
 
@@ -821,6 +812,7 @@ end;
 procedure TMainForm.RefreshTaskStatus(const ATask: ITask);
 var
   i: Integer;
+  s: string;
 begin
   if Assigned(ATask) then
   begin
@@ -831,11 +823,80 @@ begin
         if lvTaskList.Items[i].SubItems.Count > 0 then
         begin
           lvTaskList.Items[i].SubItems[0] := TASK_STATUS_NAMES[ATask.Status];
+          s := EmptyStr;
+          if ATask.Status in [tsError, tsComplete] then
+          begin
+            s := TimeToStr(ATask.Time);
+          end;
+          lvTaskList.Items[i].SubItems[1] := s;
           Break;
         end;
       end;
     end;
+    UpdateTaskListAvailability;
   end;
+end;
+
+procedure TMainForm.actProcessExecute(Sender: TObject);
+begin
+  { TODO : реализовать функционал выполнения выбранных тестов в параллельных тредах }
+  Profile.Tasks.Run(Profile.ADOConnectionString);
+  RefreshTaskList;
+end;
+
+procedure TMainForm.actProcessUpdate(Sender: TObject);
+var
+  i: Integer;
+  b: Boolean;
+begin
+  b := False;
+  { TODO : переписать алгоритм с использованием Profile.Tasks }
+  if Assigned(Profile) then
+  begin
+    if Assigned(Profile.Tasks) then
+    begin
+      b := True;
+      for i := 0 to Profile.Tasks.Count - 1 do
+      begin
+        if Profile.Tasks[i].Status = tsExecuting then
+        begin
+          b := False;
+          Break;
+        end;
+      end;
+      if b then
+      begin
+        b := False;
+        for i := 0 to Profile.Tasks.Count - 1 do
+        begin
+          if Profile.Tasks[i].Enabled then
+          begin
+            b := True;
+            Break;
+          end;
+        end;
+      end;
+    end;
+  end;
+  actProcess.Enabled := b; // and (not FProcessActive);
+  btnProcess.Default := actProcess.Enabled;
+end;
+
+procedure TMainForm.UpdateTaskListAvailability;
+var
+  i: Integer;
+  b: Boolean;
+begin
+  b := True;
+  for i := 0 to lvTaskList.Items.Count - 1 do
+  begin
+    if ITask(lvTaskList.Items[i].Data).Status = tsExecuting then
+    begin
+      b := False;
+      Break;
+    end;
+  end;
+  lvTaskList.Enabled := b;
 end;
 
 end.

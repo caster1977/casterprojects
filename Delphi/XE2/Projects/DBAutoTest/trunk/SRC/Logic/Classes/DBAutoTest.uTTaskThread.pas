@@ -90,6 +90,9 @@ begin
   inherited;
   if Assigned(Task) then
   begin
+    Task.Status := tsExecuting;
+    PostMessage(Application.MainForm.Handle, FThreadMessage, NativeUInt(Task), NativeUInt(0));
+    Task.StartTime := Now;
 {$IFDEF DEBUG}
     NameThreadForDebugging(AnsiString(HexDisplayPrefix + IntToHex(PInteger(Task)^, SizeOf(PInteger) * 2)));
 {$ENDIF}
@@ -101,7 +104,7 @@ begin
     i := -1;
     if Trim(Task.SQL.Text) > EmptyStr then
     begin
-      query := TADOQuery.Create(Application.MainForm);
+      {query := TADOQuery.Create(Application.MainForm);
       try
         query.ConnectionString := ADOConnectionString;
         query.CommandTimeout := ADO_CONNECTION_DEFAULT_COMMAND_TIMEOUT;
@@ -117,13 +120,13 @@ begin
         end;
       finally
         FreeAndNil(query);
-      end;
+      end;}
     end;
     Synchronize(
       procedure
       begin
         { TODO : дописать }
-        if i = 0 then
+        if i = 1 then
         begin
           Task.Status := tsComplete;
         end
@@ -131,6 +134,7 @@ begin
         begin
           Task.Status := tsError;
         end;
+        Task.StopTime := Now;
         // Application.MainForm.Caption := AnsiString(HexDisplayPrefix + IntToHex(PInteger(Task)^, SizeOf(PInteger) * 2));
       end);
     PostMessage(Application.MainForm.Handle, FThreadMessage, NativeUInt(Task), NativeUInt(0));
