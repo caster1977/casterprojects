@@ -11,47 +11,77 @@ uses
 
 type
   TConfiguration = class(TIniFileDataStorage, IConfiguration)
-  strict private
-    FRecents: IRecents;
-    function GetRecents: IRecents;
-  strict private
-    FEnablePlaySoundOnComplete: Boolean;
-    function GetEnablePlaySoundOnComplete: Boolean;
-    procedure SetEnablePlaySoundOnComplete(const AValue: Boolean);
-  strict private
-    FEnableQuitConfirmation: Boolean;
-    function GetEnableQuitConfirmation: Boolean;
-    procedure SetEnableQuitConfirmation(const AValue: Boolean);
-  strict private
-    FEnableSplashAtStart: Boolean;
-    function GetEnableSplashAtStart: Boolean;
-    procedure SetEnableSplashAtStart(const AValue: Boolean);
-  strict private
-    FEnableStatusbar: Boolean;
-    function GetEnableStatusbar: Boolean;
-    procedure SetEnableStatusbar(const AValue: Boolean);
-  strict private
-    FEnableToolbar: Boolean;
-    function GetEnableToolbar: Boolean;
-    procedure SetEnableToolbar(const AValue: Boolean);
-  strict private
-    FEnableStoreMainFormSizesAndPosition: Boolean;
-    function GetEnableStoreMainFormSizesAndPosition: Boolean;
-    procedure SetEnableStoreMainFormSizesAndPosition(const AValue: Boolean);
-  strict protected
+  strict
+  private
+    function GetModified: Boolean; protected
     procedure Initialize; override;
     procedure Loading; override;
     procedure Saving; override;
   public
     constructor Create(const AConfigurationFileName: string = ''); override;
-    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete write SetEnablePlaySoundOnComplete default CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
-    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation write SetEnableQuitConfirmation default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
-    property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart default CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
-    property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar default CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
-    property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
-    property EnableStoreMainFormSizesAndPosition: Boolean read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
-    property Recents: IRecents read GetRecents;
     property Modified: Boolean read GetModified nodefault;
+
+  strict private
+    FRecents: IRecents;
+    function GetRecents: IRecents;
+  public
+    property Recents: IRecents read GetRecents;
+
+  strict private
+    FEnablePlaySoundOnComplete: Boolean;
+    function GetEnablePlaySoundOnComplete: Boolean;
+    procedure SetEnablePlaySoundOnComplete(const AValue: Boolean);
+  public
+    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete write SetEnablePlaySoundOnComplete default CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
+
+  strict private
+    FEnableQuitConfirmation: Boolean;
+    function GetEnableQuitConfirmation: Boolean;
+    procedure SetEnableQuitConfirmation(const AValue: Boolean);
+  public
+    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation write SetEnableQuitConfirmation default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
+
+  strict private
+    FEnableSplashAtStart: Boolean;
+    function GetEnableSplashAtStart: Boolean;
+    procedure SetEnableSplashAtStart(const AValue: Boolean);
+  public
+    property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart default CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
+
+  strict private
+    FEnableStatusbar: Boolean;
+    function GetEnableStatusbar: Boolean;
+    procedure SetEnableStatusbar(const AValue: Boolean);
+  public
+    property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar default CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
+
+  strict private
+    FEnableToolbar: Boolean;
+    function GetEnableToolbar: Boolean;
+    procedure SetEnableToolbar(const AValue: Boolean);
+  public
+    property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
+
+  strict private
+    FEnableStoreMainFormSizesAndPosition: Boolean;
+    function GetEnableStoreMainFormSizesAndPosition: Boolean;
+    procedure SetEnableStoreMainFormSizesAndPosition(const AValue: Boolean);
+  public
+    property EnableStoreMainFormSizesAndPosition: Boolean read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
+
+  strict private
+    FEnableGenerateFastReportDocument: Boolean;
+    function GetEnableGenerateFastReportDocument: Boolean;
+    procedure SetEnableGenerateFastReportDocument(const AValue: Boolean);
+  public
+    property EnableGenerateFastReportDocument: Boolean read GetEnableGenerateFastReportDocument write SetEnableGenerateFastReportDocument default CONFIGURATION_DEFAULT_ENABLE_GENEDATE_FASTREPORT_DOCUMENT;
+
+  strict private
+    FEnableGenerateExcelDocument: Boolean;
+    function GetEnableGenerateExcelDocument: Boolean;
+    procedure SetEnableGenerateExcelDocument(const AValue: Boolean);
+  public
+    property EnableGenerateExcelDocument: Boolean read GetEnableGenerateExcelDocument write SetEnableGenerateExcelDocument default CONFIGURATION_DEFAULT_ENABLE_GENEDATE_EXCEL_DOCUMENT;
   end;
 
 function GetIConfiguration(const AConfigurationFileName: string = ''): IConfiguration;
@@ -71,6 +101,7 @@ resourcestring
   RsRecents = 'Ранее открытые профили';
   RsRecentProfile = 'Профиль %s';
   RsOther = 'Прочие';
+  RsReports = 'Отчёты';
   RsQuantity = 'Количество';
   RsConfigurationSaveError = 'Произошла ошибка при попытке записи настроек программы в файл.';
 
@@ -80,6 +111,8 @@ resourcestring
   RsEnableToolbar = 'EnableToolbar';
   RsEnablePlaySoundOnComplete = 'EnablePlaySoundOnComplete';
   RsEnableStoreMainFormSizesAndPosition = 'EnableStoreMainFormSizesAndPosition';
+  RsEnableGenerateFastReportDocument = 'EnableGenerateFastReportDocument';
+  RsEnableGenerateExcelDocument = 'EnableGenerateExcelDocument';
 
 function GetIConfiguration(const AConfigurationFileName: string): IConfiguration;
 begin
@@ -95,9 +128,38 @@ begin
   Result := FRecents;
 end;
 
+function TConfiguration.GetEnableGenerateExcelDocument: Boolean;
+begin
+  Result := FEnableGenerateExcelDocument;
+end;
+
+function TConfiguration.GetEnableGenerateFastReportDocument: Boolean;
+begin
+  Result := FEnableGenerateFastReportDocument;
+end;
+
 function TConfiguration.GetEnablePlaySoundOnComplete: Boolean;
 begin
   Result := FEnablePlaySoundOnComplete;
+end;
+
+procedure TConfiguration.SetEnableGenerateExcelDocument(const AValue: Boolean);
+begin
+  if FEnableGenerateExcelDocument <> AValue then
+  begin
+    FEnableGenerateExcelDocument := AValue;
+    inherited Modified := True;
+  end;
+end;
+
+procedure TConfiguration.SetEnableGenerateFastReportDocument(
+  const AValue: Boolean);
+begin
+  if FEnableGenerateFastReportDocument <> AValue then
+  begin
+    FEnableGenerateFastReportDocument := AValue;
+    inherited Modified := True;
+  end;
 end;
 
 procedure TConfiguration.SetEnablePlaySoundOnComplete(const AValue: Boolean);
@@ -170,6 +232,11 @@ begin
   Result := FEnableToolbar;
 end;
 
+function TConfiguration.GetModified: Boolean;
+begin
+
+end;
+
 procedure TConfiguration.SetEnableToolbar(const AValue: Boolean);
 begin
   if FEnableToolbar <> AValue then
@@ -193,6 +260,8 @@ begin
   EnableStatusbar := CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
   EnableToolbar := CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
   EnableStoreMainFormSizesAndPosition := CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
+  EnableGenerateFastReportDocument := CONFIGURATION_DEFAULT_ENABLE_GENEDATE_FASTREPORT_DOCUMENT;
+  EnableGenerateExcelDocument := CONFIGURATION_DEFAULT_ENABLE_GENEDATE_EXCEL_DOCUMENT;
   Recents.Clear;
 end;
 
@@ -213,6 +282,8 @@ begin
       EnableToolbar := ReadBool(RsInterface, RsEnableToolbar, CONFIGURATION_DEFAULT_ENABLE_TOOLBAR);
       EnablePlaySoundOnComplete := ReadBool(RsOther, RsEnablePlaySoundOnComplete, CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE);
       EnableStoreMainFormSizesAndPosition := ReadBool(RsInterface, RsEnableStoreMainFormSizesAndPosition, CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION);
+      EnableGenerateFastReportDocument := ReadBool(RsReports, RsEnableGenerateFastReportDocument, CONFIGURATION_DEFAULT_ENABLE_GENEDATE_FASTREPORT_DOCUMENT);
+      EnableGenerateExcelDocument := ReadBool(RsReports, RsEnableGenerateExcelDocument, CONFIGURATION_DEFAULT_ENABLE_GENEDATE_EXCEL_DOCUMENT);
 
       Recents.Clear;
       for i := 0 to ReadInteger(RsRecents, RsQuantity, RECENTS_DEFAULT_COUNT) - 1 do
@@ -259,6 +330,14 @@ begin
         if EnableStoreMainFormSizesAndPosition <> CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION then
         begin
           WriteBool(RsInterface, RsEnableStoreMainFormSizesAndPosition, EnableStoreMainFormSizesAndPosition);
+        end;
+        if EnableGenerateFastReportDocument <> CONFIGURATION_DEFAULT_ENABLE_GENEDATE_FASTREPORT_DOCUMENT then
+        begin
+          WriteBool(RsReports, RsEnableGenerateFastReportDocument, EnableGenerateFastReportDocument);
+        end;
+        if EnableGenerateExcelDocument <> CONFIGURATION_DEFAULT_ENABLE_GENEDATE_EXCEL_DOCUMENT then
+        begin
+          WriteBool(RsReports, RsEnableGenerateExcelDocument, EnableGenerateExcelDocument);
         end;
         if EnablePlaySoundOnComplete <> CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE then
         begin
