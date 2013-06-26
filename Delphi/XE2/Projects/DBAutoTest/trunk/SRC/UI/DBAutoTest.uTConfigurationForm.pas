@@ -58,6 +58,8 @@ type
     tsReport: TTabSheet;
     tsResults: TTabSheet;
     chkEnableStoreMainFormSizesAndPosition: TCheckBox;
+    chkEnableGenerateFastReportDocument: TCheckBox;
+    chkEnableGenerateExcelDocument: TCheckBox;
     procedure actCancelExecute(Sender: TObject);
     procedure actNextPageExecute(Sender: TObject);
     procedure actNextPageUpdate(Sender: TObject);
@@ -78,39 +80,42 @@ type
     function GetConfiguration: IConfiguration;
     property Configuration: IConfiguration read GetConfiguration nodefault;
   public
-    constructor Create(AOwner: TComponent; const AConfiguration: IConfiguration;
-      const AActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
-    property ActivePage: Integer read GetActivePage write SetActivePage
-      default CONFIGURATION_DEFAULT_ACTIVE_PAGE;
+    constructor Create(AOwner: TComponent; const AConfiguration: IConfiguration; const AActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
+    property ActivePage: Integer read GetActivePage write SetActivePage default CONFIGURATION_DEFAULT_ACTIVE_PAGE;
   strict private
     procedure SetCheckBoxState(const ACheckBox: TCheckBox; const AValue: Boolean);
   strict private
     function GetEnablePlaySoundOnComplete: Boolean;
-    function GetEnableQuitConfirmation: Boolean;
-    function GetEnableSplashAtStart: Boolean;
-    function GetEnableStatusbar: Boolean;
-    function GetEnableToolbar: Boolean;
-    function GetEnableStoreMainFormSizesAndPosition: Boolean;
     procedure SetEnablePlaySoundOnComplete(const AValue: Boolean);
+    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete write SetEnablePlaySoundOnComplete default CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
+  strict private
+    function GetEnableQuitConfirmation: Boolean;
     procedure SetEnableQuitConfirmation(const AValue: Boolean);
+    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation write SetEnableQuitConfirmation default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
+  strict private
+    function GetEnableSplashAtStart: Boolean;
     procedure SetEnableSplashAtStart(const AValue: Boolean);
+    property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart default CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
+  strict private
+    function GetEnableStatusbar: Boolean;
     procedure SetEnableStatusbar(const AValue: Boolean);
+    property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar default CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
+  strict private
+    function GetEnableToolbar: Boolean;
     procedure SetEnableToolbar(const AValue: Boolean);
+    property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
+  strict private
+    function GetEnableStoreMainFormSizesAndPosition: Boolean;
     procedure SetEnableStoreMainFormSizesAndPosition(const AValue: Boolean);
-    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete
-      write SetEnablePlaySoundOnComplete
-      default CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
-    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation
-      write SetEnableQuitConfirmation default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
-    property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart
-      default CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
-    property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar
-      default CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
-    property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar
-      default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
-    property EnableStoreMainFormSizesAndPosition: Boolean
-      read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition
-      default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
+    property EnableStoreMainFormSizesAndPosition: Boolean read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
+  strict private
+    function GetEnableGenerateFastReportDocument: Boolean;
+    procedure SetEnableGenerateFastReportDocument(const AValue: Boolean);
+    property EnableGenerateFastReportDocument: Boolean read GetEnableGenerateFastReportDocument write SetEnableGenerateFastReportDocument default CONFIGURATION_DEFAULT_ENABLE_GENEDATE_FASTREPORT_DOCUMENT;
+  strict private
+    function GetEnableGenerateExcelDocument: Boolean;
+    procedure SetEnableGenerateExcelDocument(const AValue: Boolean);
+    property EnableGenerateExcelDocument: Boolean read GetEnableGenerateExcelDocument write SetEnableGenerateExcelDocument default CONFIGURATION_DEFAULT_ENABLE_GENEDATE_EXCEL_DOCUMENT;
   end;
 
 implementation
@@ -120,8 +125,7 @@ resourcestring
 
 {$R *.dfm}
 
-constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: IConfiguration;
-  const AActivePage: Integer);
+constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: IConfiguration; const AActivePage: Integer);
 
   procedure ApplyConfiguration;
   begin
@@ -133,6 +137,8 @@ constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: 
       EnableStatusbar := Configuration.EnableStatusbar;
       EnableToolbar := Configuration.EnableToolbar;
       EnableStoreMainFormSizesAndPosition := Configuration.EnableStoreMainFormSizesAndPosition;
+      EnableGenerateFastReportDocument := Configuration.EnableGenerateFastReportDocument;
+      EnableGenerateExcelDocument := Configuration.EnableGenerateExcelDocument;
     end;
   end;
 
@@ -159,6 +165,8 @@ begin
   end;
   if PageControl.ActivePage = tsReport then
   begin
+    EnableGenerateFastReportDocument := CONFIGURATION_DEFAULT_ENABLE_GENEDATE_FASTREPORT_DOCUMENT;
+    EnableGenerateExcelDocument := CONFIGURATION_DEFAULT_ENABLE_GENEDATE_EXCEL_DOCUMENT;
   end;
   if PageControl.ActivePage = tsOther then
   begin
@@ -173,17 +181,15 @@ begin
   b := False;
   if PageControl.ActivePage = tsInterface then
   begin
-    b := not((EnableQuitConfirmation = CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION) and
-      (EnableSplashAtStart = CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START) and
-      (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and
-      (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR) and
-      (EnableStoreMainFormSizesAndPosition = CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION));
+    b := not((EnableQuitConfirmation = CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION) and (EnableSplashAtStart = CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START) and (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and
+      (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR) and (EnableStoreMainFormSizesAndPosition = CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION));
   end;
   if PageControl.ActivePage = tsResults then
   begin
   end;
   if PageControl.ActivePage = tsReport then
   begin
+    b := not((EnableGenerateFastReportDocument = CONFIGURATION_DEFAULT_ENABLE_GENEDATE_FASTREPORT_DOCUMENT) and (EnableGenerateExcelDocument = CONFIGURATION_DEFAULT_ENABLE_GENEDATE_EXCEL_DOCUMENT));
   end;
   if PageControl.ActivePage = tsOther then
   begin
@@ -202,6 +208,8 @@ begin
     Configuration.EnableStatusbar := EnableStatusbar;
     Configuration.EnableToolbar := EnableToolbar;
     Configuration.EnableStoreMainFormSizesAndPosition := EnableStoreMainFormSizesAndPosition;
+    Configuration.EnableGenerateFastReportDocument := EnableGenerateFastReportDocument;
+    Configuration.EnableGenerateExcelDocument := EnableGenerateExcelDocument;
   end;
   ModalResult := mrOk;
 end;
@@ -213,12 +221,9 @@ begin
   b := False;
   if Assigned(Configuration) then
   begin
-    b := not((Configuration.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete) and
-      (Configuration.EnableQuitConfirmation = EnableQuitConfirmation) and
-      (Configuration.EnableSplashAtStart = EnableSplashAtStart) and
-      (Configuration.EnableStatusbar = EnableStatusbar) and
-      (Configuration.EnableToolbar = EnableToolbar) and
-      (Configuration.EnableStoreMainFormSizesAndPosition = EnableStoreMainFormSizesAndPosition));
+    b := not((Configuration.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete) and (Configuration.EnableQuitConfirmation = EnableQuitConfirmation) and (Configuration.EnableSplashAtStart = EnableSplashAtStart) and
+      (Configuration.EnableStatusbar = EnableStatusbar) and (Configuration.EnableToolbar = EnableToolbar) and (Configuration.EnableStoreMainFormSizesAndPosition = EnableStoreMainFormSizesAndPosition) and
+      (Configuration.EnableGenerateFastReportDocument = EnableGenerateFastReportDocument) and (Configuration.EnableGenerateExcelDocument = EnableGenerateExcelDocument));
   end;
   actApply.Enabled := b;
   btnApply.Default := b;
@@ -238,6 +243,16 @@ end;
 function TConfigurationForm.GetConfiguration: IConfiguration;
 begin
   Result := FConfiguration;
+end;
+
+function TConfigurationForm.GetEnableGenerateExcelDocument: Boolean;
+begin
+  Result := chkEnableGenerateExcelDocument.Enabled and chkEnableGenerateExcelDocument.Checked;
+end;
+
+function TConfigurationForm.GetEnableGenerateFastReportDocument: Boolean;
+begin
+  Result := chkEnableGenerateFastReportDocument.Enabled and chkEnableGenerateFastReportDocument.Checked;
 end;
 
 function TConfigurationForm.GetEnablePlaySoundOnComplete: Boolean;
@@ -262,8 +277,7 @@ end;
 
 function TConfigurationForm.GetEnableStoreMainFormSizesAndPosition: Boolean;
 begin
-  Result := chkEnableStoreMainFormSizesAndPosition.Enabled and
-    chkEnableStoreMainFormSizesAndPosition.Checked;
+  Result := chkEnableStoreMainFormSizesAndPosition.Enabled and chkEnableStoreMainFormSizesAndPosition.Checked;
 end;
 
 function TConfigurationForm.GetEnableToolbar: Boolean;
@@ -313,6 +327,16 @@ begin
   begin
     ACheckBox.Checked := AValue and ACheckBox.Enabled;
   end;
+end;
+
+procedure TConfigurationForm.SetEnableGenerateExcelDocument(const AValue: Boolean);
+begin
+  SetCheckBoxState(chkEnableGenerateExcelDocument, AValue);
+end;
+
+procedure TConfigurationForm.SetEnableGenerateFastReportDocument(const AValue: Boolean);
+begin
+  SetCheckBoxState(chkEnableGenerateFastReportDocument, AValue);
 end;
 
 procedure TConfigurationForm.SetEnablePlaySoundOnComplete(const AValue: Boolean);

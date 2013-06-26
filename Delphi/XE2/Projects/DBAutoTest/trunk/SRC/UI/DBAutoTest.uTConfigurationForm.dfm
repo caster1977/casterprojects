@@ -149,7 +149,7 @@ object ConfigurationForm: TConfigurationForm
     Top = 53
     Width = 462
     Height = 240
-    ActivePage = tsInterface
+    ActivePage = tsReport
     Align = alClient
     Style = tsButtons
     TabOrder = 1
@@ -229,6 +229,22 @@ object ConfigurationForm: TConfigurationForm
         Height = 230
         Align = alClient
         TabOrder = 0
+        object chkEnableGenerateFastReportDocument: TCheckBox
+          Left = 10
+          Top = 10
+          Width = 435
+          Height = 17
+          Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1090#1100' '#1086#1090#1095#1105#1090' '#1074' '#1074#1080#1076#1077' '#1087#1077#1095#1072#1090#1085#1086#1081' '#1092#1086#1088#1084#1099' FastReport'
+          TabOrder = 0
+        end
+        object chkEnableGenerateExcelDocument: TCheckBox
+          Left = 10
+          Top = 33
+          Width = 435
+          Height = 17
+          Caption = #1060#1086#1088#1084#1080#1088#1086#1074#1072#1090#1100' '#1086#1090#1095#1105#1090' '#1074' '#1074#1080#1076#1077' '#1076#1086#1082#1091#1084#1077#1085#1090#1072' Microsoft Excel'
+          TabOrder = 1
+        end
       end
     end
     object tsOther: TTabSheet
@@ -259,7 +275,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 408
     Top = 128
     Bitmap = {
-      494C010102000800340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000800380010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
