@@ -28,7 +28,9 @@ uses
   DBAutoTest.uEConfiguration in 'SRC\Logic\Classes\DBAutoTest.uEConfiguration.pas',
   DBAutoTest.uEProfile in 'SRC\Logic\Classes\DBAutoTest.uEProfile.pas',
   DBAutoTest.uTTaskStatus in 'SRC\Logic\Types\DBAutoTest.uTTaskStatus.pas',
-  DBAutoTest.uResourceStrings in 'SRC\Logic\Other\DBAutoTest.uResourceStrings.pas';
+  DBAutoTest.uResourceStrings in 'SRC\Logic\Other\DBAutoTest.uResourceStrings.pas',
+  DBAutoTest.uIConfigurationProperties in 'SRC\Logic\Interfaces\DBAutoTest.uIConfigurationProperties.pas',
+  DBAutoTest.uTConfigurationProperties in 'SRC\Logic\Classes\DBAutoTest.uTConfigurationProperties.pas';
 
 {$R *.res}
 

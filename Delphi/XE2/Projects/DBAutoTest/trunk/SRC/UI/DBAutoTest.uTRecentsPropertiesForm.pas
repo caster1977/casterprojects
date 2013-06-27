@@ -69,23 +69,32 @@ type
       State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure actSelectAllUpdate(Sender: TObject);
     procedure actSelectAllExecute(Sender: TObject);
+
   strict private
-    FOriginalRecents: IRecents;
-    FOriginalSize: Integer;
-    FRecents: IRecents;
-    function GetOriginalRecents: IRecents;
-    function GetRecents: IRecents;
-    function GetSize: Integer;
-    procedure SetSize(const AValue: Integer);
-    function GetOriginalSize: Integer;
     procedure RefreshRecentsList;
-    property OriginalRecents: IRecents read GetOriginalRecents nodefault;
-    property OriginalSize: Integer read GetOriginalSize nodefault;
-    property Recents: IRecents read GetRecents nodefault;
-    property Size: Integer read GetSize write SetSize nodefault;
   public
     constructor Create(AOwner: TComponent; const ARecents: IRecents; const ASize: Integer);
       reintroduce; virtual;
+
+  strict private
+    FOriginalRecents: IRecents;
+    function GetOriginalRecents: IRecents;
+    property OriginalRecents: IRecents read GetOriginalRecents nodefault;
+
+  strict private
+    FOriginalSize: Integer;
+    function GetOriginalSize: Integer;
+    property OriginalSize: Integer read GetOriginalSize nodefault;
+
+  strict private
+    FRecents: IRecents;
+    function GetRecents: IRecents;
+    property Recents: IRecents read GetRecents nodefault;
+
+  strict private
+    function GetSize: Integer;
+    procedure SetSize(const AValue: Integer);
+    property Size: Integer read GetSize write SetSize nodefault;
   end;
 
 implementation

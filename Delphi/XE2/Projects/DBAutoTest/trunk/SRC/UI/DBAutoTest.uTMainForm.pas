@@ -174,6 +174,7 @@ implementation
 {$R *.dfm}
 
 uses
+  CastersPackage.uIModified,
   DBAutoTest.uConsts,
   DBAutoTest.uTConfigurationForm,
   DBAutoTest.uTAboutForm,
@@ -316,7 +317,7 @@ end;
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   CanClose := True;
-  if Configuration.EnableQuitConfirmation then
+  if Configuration.Properties.EnableQuitConfirmation then
   begin
     CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage), PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
   end;
@@ -325,7 +326,7 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   Initialize;
-  if Configuration.EnableSplashAtStart then
+  if Configuration.Properties.EnableSplashAtStart then
   begin
     ShowAboutWindow(False);
   end;
@@ -466,10 +467,10 @@ end;
 
 procedure TMainForm.ApplyConfiguration;
 begin
-  actStatusBar.Checked := Configuration.EnableStatusbar;
-  StatusBar.Visible := Configuration.EnableStatusbar;
-  actToolBar.Checked := Configuration.EnableToolbar;
-  ToolBar.Visible := Configuration.EnableToolbar;
+  actStatusBar.Checked := Configuration.Properties.EnableStatusbar;
+  StatusBar.Visible := Configuration.Properties.EnableStatusbar;
+  actToolBar.Checked := Configuration.Properties.EnableToolbar;
+  ToolBar.Visible := Configuration.Properties.EnableToolbar;
 end;
 
 procedure TMainForm.actCreateTaskExecute(Sender: TObject);
@@ -788,7 +789,7 @@ end;
 
 procedure TMainForm.actSaveProfileUpdate(Sender: TObject);
 begin
-  actSaveProfile.Enabled := Configuration.Modified;
+  actSaveProfile.Enabled := (Configuration as IModified).Modified;
 end;
 
 procedure TMainForm.actStatusBarExecute(Sender: TObject);
@@ -797,7 +798,7 @@ var
 begin
   b := actStatusBar.Checked;
   StatusBar.Visible := b;
-  Configuration.EnableStatusbar := b;
+  Configuration.Properties.EnableStatusbar := b;
 end;
 
 procedure TMainForm.actToolBarExecute(Sender: TObject);
@@ -806,7 +807,7 @@ var
 begin
   b := actToolBar.Checked;
   ToolBar.Visible := b;
-  Configuration.EnableToolbar := b;
+  Configuration.Properties.EnableToolbar := b;
 end;
 
 procedure TMainForm.RefreshTaskStatus(const ATask: ITask);

@@ -253,6 +253,39 @@ object ProfileForm: TProfileForm
         end
       end
     end
+    object tsSaving: TTabSheet
+      Caption = ' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1076#1072#1085#1085#1099#1093' '#1074' '#1087#1088#1086#1092#1080#1083#1077
+      ImageIndex = 1
+      TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 27
+      ExplicitWidth = 0
+      ExplicitHeight = 209
+      object gbSaving: TGroupBox
+        Left = 0
+        Top = 0
+        Width = 454
+        Height = 230
+        Align = alClient
+        TabOrder = 0
+        object cmbEnableStoreTasks: TCheckBox
+          Left = 10
+          Top = 10
+          Width = 435
+          Height = 17
+          Action = actEnableStoreTasks
+          TabOrder = 0
+        end
+        object cmbEnableStoreOnlyEnabledTasks: TCheckBox
+          Left = 10
+          Top = 33
+          Width = 435
+          Height = 17
+          Action = actEnableStoreOnlyEnabledTasks
+          TabOrder = 1
+        end
+      end
+    end
   end
   object pnlTop: TPanel
     Left = 0
@@ -290,7 +323,8 @@ object ProfileForm: TProfileForm
         TabOrder = 0
         OnSelect = cmbPageNameSelect
         Items.Strings = (
-          ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1090#1077#1089#1090#1080#1088#1091#1077#1084#1086#1081' '#1073#1072#1079#1077' '#1076#1072#1085#1085#1099#1093)
+          ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1090#1077#1089#1090#1080#1088#1091#1077#1084#1086#1081' '#1073#1072#1079#1077' '#1076#1072#1085#1085#1099#1093
+          ' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1076#1072#1085#1085#1099#1093' '#1074' '#1087#1088#1086#1092#1080#1083#1077)
       end
       object btnNextPage: TButton
         Left = 423
@@ -411,6 +445,18 @@ object ProfileForm: TProfileForm
       ImageIndex = 3
       ShortCut = 112
     end
+    object actEnableStoreTasks: TAction
+      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      AutoCheck = True
+      Caption = #1057#1086#1093#1088#1072#1085#1103#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1090#1077#1089#1090#1086#1074' '#1074' '#1087#1088#1086#1092#1080#1083#1077
+      OnExecute = actEnableStoreTasksExecute
+    end
+    object actEnableStoreOnlyEnabledTasks: TAction
+      AutoCheck = True
+      Caption = #1057#1086#1093#1088#1072#1085#1103#1090#1100' '#1090#1086#1083#1100#1082#1086' '#1072#1082#1090#1080#1074#1085#1099#1077' '#1090#1077#1089#1090#1099
+      Enabled = False
+      OnExecute = actEnableStoreOnlyEnabledTasksExecute
+    end
   end
   object ADOConnection: TADOConnection
     Provider = 'SQLOLEDB.1'
@@ -422,7 +468,7 @@ object ProfileForm: TProfileForm
     Left = 16
     Top = 184
     Bitmap = {
-      494C010104000800440010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101040008004C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
