@@ -8,7 +8,8 @@ uses
   DBAutoTest.uConsts,
   CastersPackage.uICustomized,
   CastersPackage.uTIniFileDataStorage,
-  System.IniFiles;
+  System.IniFiles,
+  DBAutoTest.uIProfileProperties;
 
 type
   TProfile = class(TIniFileDataStorage, IProfile)
@@ -16,8 +17,15 @@ type
     procedure Initialize; override;
     procedure Loading; override;
     procedure Saving; override;
+    //function GetModified: Boolean; override;
   public
     constructor Create(const AProfileFileName: string = ''); override;
+    property Modified: Boolean read GetModified nodefault;
+
+  strict private
+    function GetADOConnectionString: string;
+  public
+    property ADOConnectionString: string read GetADOConnectionString;
 
   strict private
     FTasks: ITasks;
@@ -26,65 +34,10 @@ type
     property Tasks: ITasks read GetTasks nodefault;
 
   strict private
-    FEnableStoreTasks: Boolean;
-    function GetEnableStoreTasks: Boolean;
-    procedure SetEnableStoreTasks(const AValue: Boolean);
+    FProperties: IProfileProperties;
+    function GetProperties: IProfileProperties;
   public
-    property EnableStoreTasks: Boolean read GetEnableStoreTasks write SetEnableStoreTasks;
-
-  strict private
-    FEnableStoreOnlyEnabledTasks: Boolean;
-    function GetEnableStoreOnlyEnabledTasks: Boolean;
-    procedure SetEnableStoreOnlyEnabledTasks(const AValue: Boolean);
-  public
-    property EnableStoreOnlyEnabledTasks: Boolean read GetEnableStoreOnlyEnabledTasks write SetEnableStoreOnlyEnabledTasks;
-
-  strict private
-    function GetADOConnectionString: string;
-  public
-    property ADOConnectionString: string read GetADOConnectionString nodefault;
-
-  strict private
-    FServer: string;
-    function GetServer: string;
-    procedure SetServer(const AValue: string);
-  public
-    property Server: string read GetServer write SetServer nodefault;
-
-  strict private
-    FWinNTSecurity: Boolean;
-    function GetWinNTSecurity: Boolean;
-    procedure SetWinNTSecurity(const AValue: Boolean);
-  public
-    property WinNTSecurity: Boolean read GetWinNTSecurity write SetWinNTSecurity default PROFILE_DEFAULT_WIN_NT_SECURITY;
-
-  strict private
-    FLogin: string;
-    function GetLogin: string;
-    procedure SetLogin(const AValue: string);
-  public
-    property Login: string read GetLogin write SetLogin nodefault;
-
-  strict private
-    FPassword: string;
-    function GetPassword: string;
-    procedure SetPassword(const AValue: string);
-  public
-    property Password: string read GetPassword write SetPassword nodefault;
-
-  strict private
-    FStorePassword: Boolean;
-    function GetStorePassword: Boolean;
-    procedure SetStorePassword(const AValue: Boolean);
-  public
-    property StorePassword: Boolean read GetStorePassword write SetStorePassword default PROFILE_DEFAULT_STORE_PASSWORD;
-
-  strict private
-    FDatabese: string;
-    function GetDatabase: string;
-    procedure SetDatabase(const AValue: string);
-  public
-    property Database: string read GetDatabase write SetDatabase nodefault;
+    property Properties: IProfileProperties read GetProperties nodefault;
   end;
 
 function GetIProfile(const AProfileFileName: string = ''): IProfile;
@@ -92,9 +45,11 @@ function GetIProfile(const AProfileFileName: string = ''): IProfile;
 implementation
 
 uses
+  CastersPackage.uIModified,
   System.SysUtils,
   DBAutoTest.uTTasks,
-  DBAutoTest.uEProfile;
+  DBAutoTest.uEProfile,
+  DBAutoTest.uTProfileProperties;
 
 resourcestring
   RsProfileSaveError = 'Произошла ошибка при попытке записи настроек профиля в файл!';
@@ -111,60 +66,25 @@ end;
 
 function TProfile.GetADOConnectionString: string;
 begin
-  Result := Format(ADO_CONNECTION_STRING_PREFIX, [Server]);
+  Result := Format(ADO_CONNECTION_STRING_PREFIX, [Properties.Server]);
 
-  if WinNTSecurity then
+  if Properties.WinNTSecurity then
   begin
     Result := Result + ADO_CONNECTION_STRING_SUFFIX_INTEGRATED_SECURITY;
   end
   else
   begin
-    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_USER_ID, [Login]);
-    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PERSIST_SECURITY_INFO, [BoolToStr(StorePassword, True)]);
-    if StorePassword then
+    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_USER_ID, [Properties.Login]);
+    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PERSIST_SECURITY_INFO, [BoolToStr(Properties.EnableStorePassword, True)]);
+    if Properties.EnableStorePassword then
     begin
-      Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PASSWORD, [Password]);
+      Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PASSWORD, [Properties.Password]);
     end;
   end;
-  if Database > EmptyStr then
+  if Properties.Database > EmptyStr then
   begin
-    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_INITIAL_CATALOG, [Database]);
+    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_INITIAL_CATALOG, [Properties.Database]);
   end;
-end;
-
-function TProfile.GetDatabase: string;
-begin
-  Result := FDatabese;
-end;
-
-function TProfile.GetEnableStoreOnlyEnabledTasks: Boolean;
-begin
-  Result := FEnableStoreOnlyEnabledTasks;
-end;
-
-function TProfile.GetEnableStoreTasks: Boolean;
-begin
-  Result := FEnableStoreTasks;
-end;
-
-function TProfile.GetLogin: string;
-begin
-  Result := FLogin;
-end;
-
-function TProfile.GetPassword: string;
-begin
-  Result := FPassword;
-end;
-
-function TProfile.GetServer: string;
-begin
-  Result := FServer;
-end;
-
-function TProfile.GetStorePassword: Boolean;
-begin
-  Result := FStorePassword;
 end;
 
 function TProfile.GetTasks: ITasks;
@@ -176,106 +96,24 @@ begin
   Result := FTasks;
 end;
 
-function TProfile.GetWinNTSecurity: Boolean;
+{function TProfile.GetModified: Boolean;
 begin
-  Result := FWinNTSecurity;
-end;
+  Result := (inherited Modified) and (Properties as IModified).Modified;
+end;}
 
-procedure TProfile.SetDatabase(const AValue: string);
-var
-  s: string;
+function TProfile.GetProperties: IProfileProperties;
 begin
-  s := Trim(AValue);
-  if FDatabese <> s then
+  if not Assigned(FProperties) then
   begin
-    FDatabese := s;
-    //inherited Modified := True;
+    FProperties := GetIProfileProperties;
   end;
-end;
-
-procedure TProfile.SetEnableStoreOnlyEnabledTasks(const AValue: Boolean);
-begin
-  if FEnableStoreOnlyEnabledTasks <> AValue then
-  begin
-    FEnableStoreOnlyEnabledTasks := AValue;
-    //inherited Modified := True;
-  end;
-end;
-
-procedure TProfile.SetEnableStoreTasks(const AValue: Boolean);
-begin
-  if FEnableStoreTasks <> AValue then
-  begin
-    FEnableStoreTasks := AValue;
-    //inherited Modified := True;
-  end;
-end;
-
-procedure TProfile.SetLogin(const AValue: string);
-var
-  s: string;
-begin
-  s := Trim(AValue);
-  if FLogin <> s then
-  begin
-    FLogin := s;
-    //inherited Modified := True;
-  end;
-end;
-
-procedure TProfile.SetPassword(const AValue: string);
-var
-  s: string;
-begin
-  s := Trim(AValue);
-  if FPassword <> s then
-  begin
-    FPassword := s;
-    //inherited Modified := True;
-  end;
-end;
-
-procedure TProfile.SetServer(const AValue: string);
-var
-  s: string;
-begin
-  s := Trim(AValue);
-  if FServer <> s then
-  begin
-    FServer := s;
-    //inherited Modified := True;
-  end;
-end;
-
-procedure TProfile.SetStorePassword(const AValue: Boolean);
-begin
-  if FStorePassword <> AValue then
-  begin
-    FStorePassword := AValue;
-    //inherited Modified := True;
-  end;
-end;
-
-procedure TProfile.SetWinNTSecurity(const AValue: Boolean);
-begin
-  if FWinNTSecurity <> AValue then
-  begin
-    FWinNTSecurity := AValue;
-    //inherited Modified := True;
-  end;
+  Result := FProperties;
 end;
 
 procedure TProfile.Initialize;
 begin
   inherited;
-  Server := PROFILE_DEFAULT_SERVER;
-  Login := PROFILE_DEFAULT_LOGIN;
-  Password := PROFILE_DEFAULT_PASSWORD;
-  Database := PROFILE_DEFAULT_DB;
-  WinNTSecurity := PROFILE_DEFAULT_WIN_NT_SECURITY;
   FTasks := GetITasks;
-  EnableStoreTasks := PROFILE_DEFAULT_STORE_TASKS;
-  EnableStoreOnlyEnabledTasks := PROFILE_DEFAULT_STORE_ONLY_ENABLED_TASKS;
 end;
 
 procedure TProfile.Loading;

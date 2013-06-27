@@ -16,7 +16,7 @@ type
     procedure Initialize; override;
     procedure Loading; override;
     procedure Saving; override;
-    function GetModified: Boolean; override;
+    //function GetModified: Boolean; override;
   public
     constructor Create(const AConfigurationFileName: string = ''); override;
     property Modified: Boolean read GetModified nodefault;
@@ -70,10 +70,10 @@ begin
   Result := TConfiguration.Create(AConfigurationFileName);
 end;
 
-function TConfiguration.GetModified: Boolean;
+{function TConfiguration.GetModified: Boolean;
 begin
   Result := (inherited Modified) and (Properties as IModified).Modified;
-end;
+end;}
 
 function TConfiguration.GetProperties: IConfigurationProperties;
 begin
