@@ -148,6 +148,8 @@
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uEProfile.pas"/>
         <DCCReference Include="SRC\Logic\Types\DBAutoTest.uTTaskStatus.pas"/>
         <DCCReference Include="SRC\Logic\Other\DBAutoTest.uResourceStrings.pas"/>
+        <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uIConfigurationProperties.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTConfigurationProperties.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

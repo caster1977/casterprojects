@@ -70,6 +70,12 @@ type
     actRefreshServers: TAction;
     btnRefreshDatabases: TButton;
     actHelp: TAction_Help;
+    tsSaving: TTabSheet;
+    gbSaving: TGroupBox;
+    cmbEnableStoreTasks: TCheckBox;
+    cmbEnableStoreOnlyEnabledTasks: TCheckBox;
+    actEnableStoreTasks: TAction;
+    actEnableStoreOnlyEnabledTasks: TAction;
     procedure actUseWinNTSecurityExecute(Sender: TObject);
     procedure actUseLoginAndPasswordExecute(Sender: TObject);
     procedure actEnableEmptyPasswordExecute(Sender: TObject);
@@ -84,30 +90,32 @@ type
     procedure cmbPageNameSelect(Sender: TObject);
     procedure actRefreshServersExecute(Sender: TObject);
     procedure cmbServersChange(Sender: TObject);
-    procedure cmbServersKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+    procedure cmbServersKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure ActionListUpdate(Action: TBasicAction; var Handled: Boolean);
     procedure actDefaultsExecute(Sender: TObject);
     procedure actRefreshDatabasesExecute(Sender: TObject);
-    procedure ebLoginKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure mePasswordKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-  strict private
-    procedure GetServerList(const aList: TStrings; var ARefreshing: Boolean);
-    procedure GetDatabasesList(const aList: TStrings);
-    function GetActivePage: Integer;
-    procedure SetActivePage(const AValue: Integer);
-    function GetPageCount: Integer;
-    property PageCount: Integer read GetPageCount nodefault;
-  public
-    constructor Create(AOwner: TComponent;
-      const AActivePage: Integer = PROFILE_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
-    property ActivePage: Integer read GetActivePage write SetActivePage
-      default PROFILE_DEFAULT_ACTIVE_PAGE;
+    procedure ebLoginKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure mePasswordKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure actEnableStoreTasksExecute(Sender: TObject);
+    procedure actEnableStoreOnlyEnabledTasksExecute(Sender: TObject);
   strict private
     FRefreshingServers: Boolean;
     FRefreshingDatabases: Boolean;
+    procedure GetServerList(const aList: TStrings; var ARefreshing: Boolean);
+    procedure GetDatabasesList(const aList: TStrings);
+  public
+    constructor Create(AOwner: TComponent; const AActivePage: Integer = PROFILE_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
+
+  strict private
+    function GetActivePage: Integer;
+    procedure SetActivePage(const AValue: Integer);
+    property ActivePage: Integer read GetActivePage write SetActivePage default PROFILE_DEFAULT_ACTIVE_PAGE;
+
+  strict private
+    function GetPageCount: Integer;
+    property PageCount: Integer read GetPageCount nodefault;
+
+
   end;
 
 implementation
@@ -125,8 +133,7 @@ begin
   FRefreshingDatabases := False;
 end;
 
-procedure TProfileForm.ebLoginKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TProfileForm.ebLoginKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = VK_RETURN then
   begin
@@ -211,9 +218,26 @@ begin
   //
 end;
 
-procedure TProfileForm.actDefaultsExecute(Sender: TObject);
+procedure TProfileForm.actEnableStoreOnlyEnabledTasksExecute(Sender: TObject);
 begin
   //
+end;
+
+procedure TProfileForm.actEnableStoreTasksExecute(Sender: TObject);
+begin
+  //
+end;
+
+procedure TProfileForm.actDefaultsExecute(Sender: TObject);
+begin
+  if PageControl.ActivePage = tsConnection then
+  begin
+  end;
+  if PageControl.ActivePage = tsSaving then
+  begin
+    { EnablePlaySoundOnComplete := PROFILE_DEFAULT_STORE_TASKS;
+      PROFILE_DEFAULT_STORE_ONLY_ENABLED_TASKS; }
+  end;
 end;
 
 procedure TProfileForm.actEnableEmptyPasswordExecute(Sender: TObject);
@@ -269,8 +293,7 @@ begin
   end;
 end;
 
-procedure TProfileForm.mePasswordKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TProfileForm.mePasswordKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = VK_RETURN then
   begin
@@ -298,20 +321,15 @@ begin
     ADOConnection.ConnectionString := Format(ADO_CONNECTION_STRING_PREFIX, [s]);
     if actUseWinNTSecurity.Checked then
     begin
-      ADOConnection.ConnectionString := ADOConnection.ConnectionString +
-        ADO_CONNECTION_STRING_SUFFIX_INTEGRATED_SECURITY;
+      ADOConnection.ConnectionString := ADOConnection.ConnectionString + ADO_CONNECTION_STRING_SUFFIX_INTEGRATED_SECURITY;
     end
     else
     begin
-      ADOConnection.ConnectionString := ADOConnection.ConnectionString +
-        Format(ADO_CONNECTION_STRING_SUFFIX_USER_ID, [ebLogin.Text]);
-      ADOConnection.ConnectionString := ADOConnection.ConnectionString +
-        Format(ADO_CONNECTION_STRING_SUFFIX_PERSIST_SECURITY_INFO,
-        [BoolToStr(actEnablePasswordSaving.Checked, True)]);
+      ADOConnection.ConnectionString := ADOConnection.ConnectionString + Format(ADO_CONNECTION_STRING_SUFFIX_USER_ID, [ebLogin.Text]);
+      ADOConnection.ConnectionString := ADOConnection.ConnectionString + Format(ADO_CONNECTION_STRING_SUFFIX_PERSIST_SECURITY_INFO, [BoolToStr(actEnablePasswordSaving.Checked, True)]);
       if actEnablePasswordSaving.Checked then
       begin
-        ADOConnection.ConnectionString := ADOConnection.ConnectionString +
-          Format(ADO_CONNECTION_STRING_SUFFIX_PASSWORD, [mePassword.Text]);
+        ADOConnection.ConnectionString := ADOConnection.ConnectionString + Format(ADO_CONNECTION_STRING_SUFFIX_PASSWORD, [mePassword.Text]);
       end;
     end;
 
@@ -320,8 +338,7 @@ begin
       q := TADOQuery.Create(Self);
       try
         q.Connection := ADOConnection;
-        q.SQL.Text :=
-          'SELECT sd.name FROM sys.databases sd WHERE  HAS_DBACCESS(sd.name) = 1 ORDER BY sd.name';
+        q.SQL.Text := 'SELECT sd.name FROM sys.databases sd WHERE  HAS_DBACCESS(sd.name) = 1 ORDER BY sd.name';
         q.Open;
         while not q.Eof do
         begin
@@ -363,8 +380,7 @@ begin
   actRefreshDatabases.Execute;
 end;
 
-procedure TProfileForm.cmbServersKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TProfileForm.cmbServersKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = VK_RETURN then
   begin
@@ -373,8 +389,7 @@ begin
   end;
 end;
 
-procedure TProfileForm.ActionListUpdate(Action: TBasicAction;
-  var Handled: Boolean);
+procedure TProfileForm.ActionListUpdate(Action: TBasicAction; var Handled: Boolean);
 begin
   actRefreshServers.Enabled := not FRefreshingServers;
   actRefreshDatabases.Enabled := (not FRefreshingDatabases) and ((Trim(cmbServers.Text) > EmptyStr) or (cmbServers.ItemIndex > -1));
@@ -409,6 +424,9 @@ begin
 
   cmbDatabaseName.Enabled := actRefreshDatabases.Enabled and (cmbDatabaseName.Items.Count > 0);
   lblDatabaseName.Enabled := actRefreshDatabases.Enabled;
+
+  actEnableStoreOnlyEnabledTasks.Enabled := actEnableStoreTasks.Checked;
+  actEnableStoreOnlyEnabledTasks.Checked := actEnableStoreOnlyEnabledTasks.Checked and actEnableStoreOnlyEnabledTasks.Enabled;
 end;
 
 end.

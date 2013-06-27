@@ -149,7 +149,7 @@ object ConfigurationForm: TConfigurationForm
     Top = 53
     Width = 462
     Height = 240
-    ActivePage = tsReport
+    ActivePage = tsInterface
     Align = alClient
     Style = tsButtons
     TabOrder = 1
@@ -157,6 +157,10 @@ object ConfigurationForm: TConfigurationForm
     object tsInterface: TTabSheet
       Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object gbInterface: TGroupBox
         Left = 0
         Top = 0
@@ -210,6 +214,10 @@ object ConfigurationForm: TConfigurationForm
       Caption = ' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1088#1077#1079#1091#1083#1100#1090#1072#1090#1086#1074' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103
       ImageIndex = 2
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object gbResults: TGroupBox
         Left = 0
         Top = 0
@@ -223,6 +231,10 @@ object ConfigurationForm: TConfigurationForm
       Caption = ' '#1092#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1103' '#1086#1090#1095#1105#1090#1072
       ImageIndex = 3
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object gbReport: TGroupBox
         Left = 0
         Top = 0
@@ -252,6 +264,10 @@ object ConfigurationForm: TConfigurationForm
       Caption = ' '#1087#1088#1086#1095#1080#1077
       ImageIndex = 1
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object gbOther: TGroupBox
         Left = 0
         Top = 0
@@ -276,7 +292,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 408
     Top = 128
     Bitmap = {
-      494C0101020008003C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101020008004C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

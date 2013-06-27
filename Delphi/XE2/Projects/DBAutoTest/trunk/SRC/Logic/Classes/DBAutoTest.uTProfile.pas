@@ -18,8 +18,6 @@ type
     procedure Saving; override;
   public
     constructor Create(const AProfileFileName: string = ''); override;
-  public
-    property Modified: Boolean read GetModified nodefault;
 
   strict private
     FTasks: ITasks;
@@ -191,7 +189,7 @@ begin
   if FDatabese <> s then
   begin
     FDatabese := s;
-    inherited Modified := True;
+    //inherited Modified := True;
   end;
 end;
 
@@ -200,7 +198,7 @@ begin
   if FEnableStoreOnlyEnabledTasks <> AValue then
   begin
     FEnableStoreOnlyEnabledTasks := AValue;
-    inherited Modified := True;
+    //inherited Modified := True;
   end;
 end;
 
@@ -209,7 +207,7 @@ begin
   if FEnableStoreTasks <> AValue then
   begin
     FEnableStoreTasks := AValue;
-    inherited Modified := True;
+    //inherited Modified := True;
   end;
 end;
 
@@ -221,7 +219,7 @@ begin
   if FLogin <> s then
   begin
     FLogin := s;
-    inherited Modified := True;
+    //inherited Modified := True;
   end;
 end;
 
@@ -233,7 +231,7 @@ begin
   if FPassword <> s then
   begin
     FPassword := s;
-    inherited Modified := True;
+    //inherited Modified := True;
   end;
 end;
 
@@ -245,7 +243,7 @@ begin
   if FServer <> s then
   begin
     FServer := s;
-    inherited Modified := True;
+    //inherited Modified := True;
   end;
 end;
 
@@ -254,7 +252,7 @@ begin
   if FStorePassword <> AValue then
   begin
     FStorePassword := AValue;
-    inherited Modified := True;
+    //inherited Modified := True;
   end;
 end;
 
@@ -263,7 +261,7 @@ begin
   if FWinNTSecurity <> AValue then
   begin
     FWinNTSecurity := AValue;
-    inherited Modified := True;
+    //inherited Modified := True;
   end;
 end;
 
@@ -276,6 +274,8 @@ begin
   Database := PROFILE_DEFAULT_DB;
   WinNTSecurity := PROFILE_DEFAULT_WIN_NT_SECURITY;
   FTasks := GetITasks;
+  EnableStoreTasks := PROFILE_DEFAULT_STORE_TASKS;
+  EnableStoreOnlyEnabledTasks := PROFILE_DEFAULT_STORE_ONLY_ENABLED_TASKS;
 end;
 
 procedure TProfile.Loading;
