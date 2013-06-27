@@ -30,7 +30,9 @@ uses
   DBAutoTest.uTTaskStatus in 'SRC\Logic\Types\DBAutoTest.uTTaskStatus.pas',
   DBAutoTest.uResourceStrings in 'SRC\Logic\Other\DBAutoTest.uResourceStrings.pas',
   DBAutoTest.uIConfigurationProperties in 'SRC\Logic\Interfaces\DBAutoTest.uIConfigurationProperties.pas',
-  DBAutoTest.uTConfigurationProperties in 'SRC\Logic\Classes\DBAutoTest.uTConfigurationProperties.pas';
+  DBAutoTest.uTConfigurationProperties in 'SRC\Logic\Classes\DBAutoTest.uTConfigurationProperties.pas',
+  DBAutoTest.uIProfileProperties in 'SRC\Logic\Interfaces\DBAutoTest.uIProfileProperties.pas',
+  DBAutoTest.uTProfileProperties in 'SRC\Logic\Classes\DBAutoTest.uTProfileProperties.pas';
 
 {$R *.res}
 

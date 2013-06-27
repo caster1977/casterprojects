@@ -23,10 +23,11 @@ uses
   Vcl.Mask,
   Vcl.ComCtrls,
   Vcl.ImgList,
-  DBAutoTest.uConsts;
+  DBAutoTest.uConsts,
+  DBAutoTest.uIProfileProperties;
 
 type
-  TProfileForm = class(TForm)
+  TProfileForm = class(TForm, IProfileProperties)
     pnlButtons: TPanel;
     btnApply: TButton;
     btnCancel: TButton;
@@ -50,7 +51,7 @@ type
     rbLoginAndPassword: TRadioButton;
     actRefreshDatabases: TAction;
     chkEnableEmptyPassword: TCheckBox;
-    chkEnablePasswordSaving: TCheckBox;
+    chkEnableStorePassword: TCheckBox;
     actUseWinNTSecurity: TAction;
     gbTop: TGroupBox;
     cmbPageName: TComboBox;
@@ -115,7 +116,45 @@ type
     function GetPageCount: Integer;
     property PageCount: Integer read GetPageCount nodefault;
 
+  strict private
+    function GetEnableStoreTasks: Boolean;
+    procedure SetEnableStoreTasks(const AValue: Boolean);
+    property EnableStoreTasks: Boolean read GetEnableStoreTasks write SetEnableStoreTasks;
 
+  strict private
+    function GetEnableStoreOnlyEnabledTasks: Boolean;
+    procedure SetEnableStoreOnlyEnabledTasks(const AValue: Boolean);
+    property EnableStoreOnlyEnabledTasks: Boolean read GetEnableStoreOnlyEnabledTasks write SetEnableStoreOnlyEnabledTasks;
+
+  strict private
+    function GetServer: string;
+    procedure SetServer(const AValue: string);
+    property Server: string read GetServer write SetServer;
+
+  strict private
+    function GetWinNTSecurity: Boolean;
+    procedure SetWinNTSecurity(const AValue: Boolean);
+    property WinNTSecurity: Boolean read GetWinNTSecurity write SetWinNTSecurity;
+
+  strict private
+    function GetLogin: string;
+    procedure SetLogin(const AValue: string);
+    property Login: string read GetLogin write SetLogin;
+
+  strict private
+    function GetPassword: string;
+    procedure SetPassword(const AValue: string);
+    property Password: string read GetPassword write SetPassword;
+
+  strict private
+    function GetEnableStorePassword: Boolean;
+    procedure SetEnableStorePassword(const AValue: Boolean);
+    property EnableStorePassword: Boolean read GetEnableStorePassword write SetEnableStorePassword;
+
+  strict private
+    function GetDatabase: string;
+    procedure SetDatabase(const AValue: string);
+    property Database: string read GetDatabase write SetDatabase;
   end;
 
 implementation
@@ -177,6 +216,10 @@ begin
   Result := cmbPageName.Items.Count;
 end;
 
+function TProfileForm.GetPassword: string;
+begin
+end;
+
 procedure TProfileForm.SetActivePage(const AValue: Integer);
 var
   i: Integer;
@@ -206,6 +249,46 @@ begin
       Break;
     end;
   end;
+end;
+
+procedure TProfileForm.SetDatabase(const AValue: string);
+begin
+
+end;
+
+procedure TProfileForm.SetEnableStoreOnlyEnabledTasks(const AValue: Boolean);
+begin
+
+end;
+
+procedure TProfileForm.SetEnableStorePassword(const AValue: Boolean);
+begin
+
+end;
+
+procedure TProfileForm.SetEnableStoreTasks(const AValue: Boolean);
+begin
+
+end;
+
+procedure TProfileForm.SetLogin(const AValue: string);
+begin
+
+end;
+
+procedure TProfileForm.SetPassword(const AValue: string);
+begin
+
+end;
+
+procedure TProfileForm.SetServer(const AValue: string);
+begin
+
+end;
+
+procedure TProfileForm.SetWinNTSecurity(const AValue: Boolean);
+begin
+
 end;
 
 procedure TProfileForm.cmbPageNameSelect(Sender: TObject);
@@ -268,6 +351,11 @@ begin
   end;
 end;
 
+function TProfileForm.GetServer: string;
+begin
+
+end;
+
 procedure TProfileForm.GetServerList(const aList: TStrings; var ARefreshing: Boolean);
 var
   aSrvs: IServerList;
@@ -293,6 +381,11 @@ begin
   end;
 end;
 
+function TProfileForm.GetWinNTSecurity: Boolean;
+begin
+  Result := rbWinNTSecurity.Checked and rbWinNTSecurity.Enabled;
+end;
+
 procedure TProfileForm.mePasswordKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = VK_RETURN then
@@ -300,6 +393,11 @@ begin
     Key := 0;
     actRefreshDatabases.Execute;
   end;
+end;
+
+function TProfileForm.GetDatabase: string;
+begin
+
 end;
 
 procedure TProfileForm.GetDatabasesList(const aList: TStrings);
@@ -355,6 +453,26 @@ begin
   finally
     aList.EndUpdate;
   end;
+end;
+
+function TProfileForm.GetEnableStoreOnlyEnabledTasks: Boolean;
+begin
+  Result := cmbEnableStoreOnlyEnabledTasks.Checked and cmbEnableStoreOnlyEnabledTasks.Enabled;
+end;
+
+function TProfileForm.GetEnableStorePassword: Boolean;
+begin
+
+end;
+
+function TProfileForm.GetEnableStoreTasks: Boolean;
+begin
+  Result := cmbEnableStoreTasks.Checked and cmbEnableStoreTasks.Enabled;
+end;
+
+function TProfileForm.GetLogin: string;
+begin
+
 end;
 
 procedure TProfileForm.actRefreshServersExecute(Sender: TObject);

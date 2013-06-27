@@ -79,10 +79,10 @@ Coordinates=430,352,84,87
 Coordinates=232,10,125,69
 ExplicitSubNodes=Enabled
 
-[chkEnablePasswordSaving]
-Coordinates=322,10,136,69
-ExplicitSubNodes=Enabled
-
 [cmbServers]
 Coordinates=10,10,95,87
+
+[chkEnableStorePassword]
+Coordinates=322,10,136,69
+ExplicitSubNodes=Enabled
 

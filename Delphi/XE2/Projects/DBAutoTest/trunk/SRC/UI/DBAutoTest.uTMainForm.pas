@@ -174,6 +174,7 @@ implementation
 {$R *.dfm}
 
 uses
+  CastersPackage.uIIniFileDataStorage,
   CastersPackage.uIModified,
   DBAutoTest.uConsts,
   DBAutoTest.uTConfigurationForm,

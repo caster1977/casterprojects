@@ -19,7 +19,7 @@ type
 
     function GetName: string;
     procedure SetName(const AValue: string);
-    property name: string read GetName write SetName;
+    property Name: string read GetName write SetName;
 
     function GetSQL: TStringList;
     procedure SetSQL(const AValue: TStringList);

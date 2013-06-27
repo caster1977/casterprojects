@@ -194,7 +194,7 @@ object ProfileForm: TProfileForm
           Action = actEnableEmptyPassword
           TabOrder = 6
         end
-        object chkEnablePasswordSaving: TCheckBox
+        object chkEnableStorePassword: TCheckBox
           Left = 371
           Top = 149
           Width = 74
@@ -257,10 +257,6 @@ object ProfileForm: TProfileForm
       Caption = ' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1076#1072#1085#1085#1099#1093' '#1074' '#1087#1088#1086#1092#1080#1083#1077
       ImageIndex = 1
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 27
-      ExplicitWidth = 0
-      ExplicitHeight = 209
       object gbSaving: TGroupBox
         Left = 0
         Top = 0
@@ -468,7 +464,7 @@ object ProfileForm: TProfileForm
     Left = 16
     Top = 184
     Bitmap = {
-      494C0101040008004C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800580010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
