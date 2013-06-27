@@ -3,7 +3,8 @@
 interface
 
 uses
-  System.Classes;
+  System.Classes,
+  Vcl.StdCtrls;
 
 type
   Routines = class
@@ -65,6 +66,8 @@ type
     class procedure SetField(const AValue: Boolean; var AField: Boolean); overload; static;
     class procedure SetField(const AValue: TDateTime; var AField: TDateTime); overload; static;
     class procedure SetField(const AValue: TDate; var AField: TDate); overload; static;
+
+    class procedure SetCheckBoxState(const ACheckBox: TCheckBox; const AValue: Boolean); static;
   end;
 
 implementation
@@ -565,6 +568,15 @@ class procedure Routines.SetField(const AValue: TDateTime; var AField: TDateTime
 begin
   if AField <> AValue then
     AField := AValue;
+end;
+
+class procedure Routines.SetCheckBoxState(const ACheckBox: TCheckBox;
+  const AValue: Boolean);
+begin
+  if ACheckBox.Checked <> AValue then
+  begin
+    ACheckBox.Checked := AValue and ACheckBox.Enabled;
+  end;
 end;
 
 class procedure Routines.SetField(const AValue: TDate; var AField: TDate);

@@ -7,12 +7,13 @@ uses
   System.IniFiles,
   System.SysUtils,
   CastersPackage.uICustomized,
+  CastersPackage.uIModified,
   CastersPackage.uIIniFileDataStorage;
 
 type
   EIniFileDataStorage = class(Exception);
 
-  TIniFileDataStorage = class(TInterfacedPersistent, IIniFileDataStorage, ICustomized)
+  TIniFileDataStorage = class(TInterfacedPersistent, IIniFileDataStorage, ICustomized, IModified)
   strict private
     FModified: Boolean;
     procedure SetModified(const AValue: Boolean);

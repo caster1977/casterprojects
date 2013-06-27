@@ -69,7 +69,8 @@ contains
   CastersPackage.UNetSrvList in 'CastersPackage.UNetSrvList.pas',
   CastersPackage.uIModified in 'CastersPackage.uIModified.pas',
   CastersPackage.uTAboutWindow in 'CastersPackage.uTAboutWindow.pas',
-  CastersPackage.uTAboutForm in 'CastersPackage.uTAboutForm.pas' {AboutForm};
+  CastersPackage.uTAboutForm in 'CastersPackage.uTAboutForm.pas' {AboutForm},
+  CastersPackage.uTCustomProperties in 'CastersPackage.uTCustomProperties.pas';
 
 end.
 
