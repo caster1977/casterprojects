@@ -156,10 +156,4 @@ begin
   end;
 end;
 
-initialization
-
-begin
-  RegisterClass(TIniFileDataStorage);
-end;
-
 end.
