@@ -59,7 +59,7 @@ contains
   CastersPackage.uTLogMessagesType in 'CastersPackage.uTLogMessagesType.pas',
   CastersPackage.uTLogMessagesTypes in 'CastersPackage.uTLogMessagesTypes.pas',
   CastersPackage.uTReportFolder in 'CastersPackage.uTReportFolder.pas',
-  CastersPackage.uICustomized in 'CastersPackage.uICustomized.pas',
+  CastersPackage.uIInitializable in 'CastersPackage.uIInitializable.pas',
   CastersPackage.uINormalized in 'CastersPackage.uINormalized.pas',
   CastersPackage.uTRefreshBusyStateMethod in 'CastersPackage.uTRefreshBusyStateMethod.pas',
   CastersPackage.uResourceStrings in 'CastersPackage.uResourceStrings.pas',
@@ -70,7 +70,11 @@ contains
   CastersPackage.uIModified in 'CastersPackage.uIModified.pas',
   CastersPackage.uTAboutWindow in 'CastersPackage.uTAboutWindow.pas',
   CastersPackage.uTAboutForm in 'CastersPackage.uTAboutForm.pas' {AboutForm},
-  CastersPackage.uTCustomProperties in 'CastersPackage.uTCustomProperties.pas';
+  CastersPackage.uTCustomProperties in 'CastersPackage.uTCustomProperties.pas',
+  CastersPackage.uISerilizator in 'CastersPackage.uISerilizator.pas',
+  CastersPackage.uTObjectMethod in 'CastersPackage.uTObjectMethod.pas',
+  CastersPackage.uTIniFileSerilizator in 'CastersPackage.uTIniFileSerilizator.pas',
+  CastersPackage.uICustomized in 'CastersPackage.uICustomized.pas';
 
 end.
 

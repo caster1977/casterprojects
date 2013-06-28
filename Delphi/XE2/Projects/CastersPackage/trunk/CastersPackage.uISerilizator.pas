@@ -3,7 +3,7 @@ unit CastersPackage.uISerilizator;
 interface
 
 uses
-  CastersPackage.uTProcedureOfObject;
+  CastersPackage.uTObjectMethod;
 
 type
 
@@ -12,25 +12,21 @@ type
     procedure Load;
     procedure Save;
 
-    function GetLoading: TProcedureOfObject;
-    procedure SetLoading(const AValue: TProcedureOfObject);
-    property Loading: TProcedureOfObject read GetLoading write SetLoading;
+    function GetLoading: TObjectMethod;
+    procedure SetLoading(const AValue: TObjectMethod);
+    property Loading: TObjectMethod read GetLoading write SetLoading;
 
-    function GetSaving: TProcedureOfObject;
-    procedure SetSaving(const AValue: TProcedureOfObject);
-    property Saving: TProcedureOfObject read GetSaving write SetSaving;
+    function GetSaving: TObjectMethod;
+    procedure SetSaving(const AValue: TObjectMethod);
+    property Saving: TObjectMethod read GetSaving write SetSaving;
 
-    function GetBeforeSave: TProcedureOfObject;
-    procedure SetBeforeSave(const AValue: TProcedureOfObject);
-    property BeforeSave: TProcedureOfObject read GetBeforeSave write SetBeforeSave;
+    function GetBeforeSave: TObjectMethod;
+    procedure SetBeforeSave(const AValue: TObjectMethod);
+    property BeforeSave: TObjectMethod read GetBeforeSave write SetBeforeSave;
 
-    function GetAfterLoad: TProcedureOfObject;
-    procedure SetAfterLoad(const AValue: TProcedureOfObject);
-    property AfterLoad: TProcedureOfObject read GetAfterLoad write SetAfterLoad;
-  end;
-
-  TIniFileSerilizator = class
-
+    function GetAfterLoad: TObjectMethod;
+    procedure SetAfterLoad(const AValue: TObjectMethod);
+    property AfterLoad: TObjectMethod read GetAfterLoad write SetAfterLoad;
   end;
 
 implementation

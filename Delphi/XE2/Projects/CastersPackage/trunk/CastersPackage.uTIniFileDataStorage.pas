@@ -65,7 +65,7 @@ begin
   s := Trim(AIniFileName);
   if s = EmptyStr then
   begin
-    FIniFileName := ChangeFileExt(ExpandFileName(Application.ExeName), '.ini');
+    FIniFileName := ChangeFileExt(ExpandFileName(ParamStr(0)), '.ini');
   end
   else
   begin
