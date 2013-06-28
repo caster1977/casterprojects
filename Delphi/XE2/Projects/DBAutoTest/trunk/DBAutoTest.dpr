@@ -32,9 +32,7 @@ uses
   DBAutoTest.uIConfigurationProperties in 'SRC\Logic\Interfaces\DBAutoTest.uIConfigurationProperties.pas',
   DBAutoTest.uTConfigurationProperties in 'SRC\Logic\Classes\DBAutoTest.uTConfigurationProperties.pas',
   DBAutoTest.uIProfileProperties in 'SRC\Logic\Interfaces\DBAutoTest.uIProfileProperties.pas',
-  DBAutoTest.uTProfileProperties in 'SRC\Logic\Classes\DBAutoTest.uTProfileProperties.pas',
-  CastersPackage.uISerilizator in '..\CastersPackage\CastersPackage.uISerilizator.pas',
-  CastersPackage.uTProcedureOfObject in '..\CastersPackage\CastersPackage.uTProcedureOfObject.pas';
+  DBAutoTest.uTProfileProperties in 'SRC\Logic\Classes\DBAutoTest.uTProfileProperties.pas';
 
 {$R *.res}
 
