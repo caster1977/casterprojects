@@ -152,8 +152,6 @@
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTConfigurationProperties.pas"/>
         <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uIProfileProperties.pas"/>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTProfileProperties.pas"/>
-        <DCCReference Include="..\CastersPackage\CastersPackage.uISerilizator.pas"/>
-        <DCCReference Include="..\CastersPackage\CastersPackage.uTProcedureOfObject.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
