@@ -18,7 +18,7 @@ type
     procedure Initialize; virtual;
     procedure Finalize; virtual;
   public
-    constructor Create(const AFileName: string = ''); reintroduce;
+    constructor Create(const AMemoryFile: Boolean = True; const AFileName: string = ''); reintroduce;
     destructor Destroy; override;
 
     procedure RegisterOptions(const AOptionsClass: TCustomOptionsClass);
@@ -37,7 +37,7 @@ uses
   System.Rtti,
   System.SysUtils;
 
-constructor TIniFileSerilizator.Create(const AFileName: string);
+constructor TIniFileSerilizator.Create(const AMemoryFile: Boolean; const AFileName: string);
 var
   s: string;
 begin
@@ -52,6 +52,14 @@ begin
     FFileName := s;
   end;
   FOptions := TObjectList<TCustomOptions>.Create;
+  if AMemoryFile then
+  begin
+    FIniFile := TMemIniFile.Create(FFileName);
+  end
+  else
+  begin
+    FIniFile := TIniFile.Create(FFileName);
+  end;
   Initialize;
 end;
 
@@ -75,7 +83,6 @@ end;
 
 procedure TIniFileSerilizator.Initialize;
 begin
-  FIniFile := TMemIniFile.Create(FFileName);
 end;
 
 procedure TIniFileSerilizator.Finalize;

@@ -30,6 +30,7 @@ implementation
 {$R *.dfm}
 
 uses
+  System.IniFiles,
   Unit2;
 
 procedure TForm1.FormCreate(Sender: TObject);
