@@ -51,7 +51,7 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_MajorVer>0</VerInfo_MajorVer>
         <VerInfo_Locale>1049</VerInfo_Locale>
-        <DCC_UnitSearchPath>..\CastersPackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\CastersPackage;..\ConfigPackage\$(Platform)\$(Config)\DCU;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <Manifest_File>None</Manifest_File>
         <VerInfo_Keys>CompanyName=;FileDescription=Утилита для тестирования значений данных в таблицах БД;FileVersion=0.1.0.0;InternalName=DBAutoTest;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Sergey Shaporov;LegalTrademarks=;OriginalFilename=DBAutoTest.exe;ProductName=DBAutoTest;ProductVersion=0.1.0.0;Comments=Idea: Sergey Shaporov. Developing: Vlad Ivanov.</VerInfo_Keys>
         <DCC_BplOutput>..\$(Platform)\$(Config)\Package</DCC_BplOutput>
@@ -86,8 +86,8 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>27</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для тестирования значений данных в таблицах БД;FileVersion=0.1.0.27;InternalName=DBAutoTest;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Sergey Shaporov;LegalTrademarks=;OriginalFilename=DBAutoTest.exe;ProductName=DBAutoTest;ProductVersion=0.1.0.0;Comments=Idea: Sergey Shaporov. Developing: Vlad Ivanov.</VerInfo_Keys>
+        <VerInfo_Build>31</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для тестирования значений данных в таблицах БД;FileVersion=0.1.0.31;InternalName=DBAutoTest;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Sergey Shaporov;LegalTrademarks=;OriginalFilename=DBAutoTest.exe;ProductName=DBAutoTest;ProductVersion=0.1.0.0;Comments=Idea: Sergey Shaporov. Developing: Vlad Ivanov.</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
@@ -118,8 +118,6 @@
         </DCCReference>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTTask.pas"/>
         <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uITask.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTConfiguration.pas"/>
-        <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uIConfiguration.pas"/>
         <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uITasks.pas"/>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTTasks.pas"/>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTTaskThread.pas"/>
@@ -133,8 +131,6 @@
         <DCCReference Include="SRC\UI\DBAutoTest.uTAboutForm.pas">
             <Form>AboutForm</Form>
         </DCCReference>
-        <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uIProfile.pas"/>
-        <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uIProfiles.pas"/>
         <DCCReference Include="SRC\UI\DBAutoTest.uTRecentsPropertiesForm.pas">
             <Form>RecentsPropertiesForm</Form>
             <FormType>dfm</FormType>
@@ -148,10 +144,12 @@
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uEProfile.pas"/>
         <DCCReference Include="SRC\Logic\Types\DBAutoTest.uTTaskStatus.pas"/>
         <DCCReference Include="SRC\Logic\Other\DBAutoTest.uResourceStrings.pas"/>
-        <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uIConfigurationProperties.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTConfigurationProperties.pas"/>
-        <DCCReference Include="SRC\Logic\Interfaces\DBAutoTest.uIProfileProperties.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTProfileProperties.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTInterfaceOptions.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTOtherOptions.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTReportsOptions.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTConfiguration.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTConnectionOptions.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTTaskSavingOptions.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -208,6 +206,7 @@
                     <Source Name="MainSource">DBAutoTest.dpr</Source>
                 </Source>
                 <Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\v_ivanov\Documents\RAD Studio\Projects\ConfigPackage\Win32\Debug\Package\ConfigPackage.bpl">(untitled)</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k170.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dclofficexp170.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>

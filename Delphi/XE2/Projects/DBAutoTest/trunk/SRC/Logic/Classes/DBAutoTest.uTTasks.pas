@@ -5,7 +5,6 @@ interface
 uses
   CastersPackage.uTInterfaceListOfGivenType,
   DBAutoTest.uITasks,
-  DBAutoTest.uIProfile,
   DBAutoTest.uITask;
 
 type

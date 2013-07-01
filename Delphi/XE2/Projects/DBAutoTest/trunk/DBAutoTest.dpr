@@ -7,8 +7,6 @@ uses
   DBAutoTest.uTConfigurationForm in 'SRC\UI\DBAutoTest.uTConfigurationForm.pas' {ConfigurationForm},
   DBAutoTest.uTTask in 'SRC\Logic\Classes\DBAutoTest.uTTask.pas',
   DBAutoTest.uITask in 'SRC\Logic\Interfaces\DBAutoTest.uITask.pas',
-  DBAutoTest.uTConfiguration in 'SRC\Logic\Classes\DBAutoTest.uTConfiguration.pas',
-  DBAutoTest.uIConfiguration in 'SRC\Logic\Interfaces\DBAutoTest.uIConfiguration.pas',
   DBAutoTest.uITasks in 'SRC\Logic\Interfaces\DBAutoTest.uITasks.pas',
   DBAutoTest.uTTasks in 'SRC\Logic\Classes\DBAutoTest.uTTasks.pas',
   DBAutoTest.uTTaskThread in 'SRC\Logic\Classes\DBAutoTest.uTTaskThread.pas',
@@ -17,8 +15,6 @@ uses
   DBAutoTest.uConsts in 'SRC\Logic\Other\DBAutoTest.uConsts.pas',
   DBAutoTest.uETasks in 'SRC\Logic\Classes\DBAutoTest.uETasks.pas',
   DBAutoTest.uTAboutForm in 'SRC\UI\DBAutoTest.uTAboutForm.pas' {AboutForm},
-  DBAutoTest.uIProfile in 'SRC\Logic\Interfaces\DBAutoTest.uIProfile.pas',
-  DBAutoTest.uIProfiles in 'SRC\Logic\Interfaces\DBAutoTest.uIProfiles.pas',
   DBAutoTest.uTRecentsPropertiesForm in 'SRC\UI\DBAutoTest.uTRecentsPropertiesForm.pas' {RecentsPropertiesForm},
   DBAutoTest.uIRecent in 'SRC\Logic\Interfaces\DBAutoTest.uIRecent.pas',
   DBAutoTest.uIRecents in 'SRC\Logic\Interfaces\DBAutoTest.uIRecents.pas',
@@ -29,10 +25,12 @@ uses
   DBAutoTest.uEProfile in 'SRC\Logic\Classes\DBAutoTest.uEProfile.pas',
   DBAutoTest.uTTaskStatus in 'SRC\Logic\Types\DBAutoTest.uTTaskStatus.pas',
   DBAutoTest.uResourceStrings in 'SRC\Logic\Other\DBAutoTest.uResourceStrings.pas',
-  DBAutoTest.uIConfigurationProperties in 'SRC\Logic\Interfaces\DBAutoTest.uIConfigurationProperties.pas',
-  DBAutoTest.uTConfigurationProperties in 'SRC\Logic\Classes\DBAutoTest.uTConfigurationProperties.pas',
-  DBAutoTest.uIProfileProperties in 'SRC\Logic\Interfaces\DBAutoTest.uIProfileProperties.pas',
-  DBAutoTest.uTProfileProperties in 'SRC\Logic\Classes\DBAutoTest.uTProfileProperties.pas';
+  DBAutoTest.uTInterfaceOptions in 'SRC\Logic\Classes\DBAutoTest.uTInterfaceOptions.pas',
+  DBAutoTest.uTOtherOptions in 'SRC\Logic\Classes\DBAutoTest.uTOtherOptions.pas',
+  DBAutoTest.uTReportsOptions in 'SRC\Logic\Classes\DBAutoTest.uTReportsOptions.pas',
+  DBAutoTest.uTConfiguration in 'SRC\Logic\Classes\DBAutoTest.uTConfiguration.pas',
+  DBAutoTest.uTConnectionOptions in 'SRC\Logic\Classes\DBAutoTest.uTConnectionOptions.pas',
+  DBAutoTest.uTTaskSavingOptions in 'SRC\Logic\Classes\DBAutoTest.uTTaskSavingOptions.pas';
 
 {$R *.res}
 
