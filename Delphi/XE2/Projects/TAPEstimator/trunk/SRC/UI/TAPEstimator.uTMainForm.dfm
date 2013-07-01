@@ -25,8 +25,6 @@ object MainForm: TMainForm
     Hint = #1055#1072#1085#1077#1083#1100' '#1089#1090#1072#1090#1091#1089#1072
     Panels = <>
     SimplePanel = True
-    ExplicitTop = 403
-    ExplicitWidth = 624
   end
   object pnlMain: TPanel
     Left = 0
@@ -37,12 +35,10 @@ object MainForm: TMainForm
     BevelOuter = bvNone
     BorderWidth = 6
     TabOrder = 1
-    ExplicitWidth = 624
-    ExplicitHeight = 376
     object Image1: TImage
       Left = 6
       Top = 6
-      Width = 546
+      Width = 522
       Height = 453
       Align = alClient
       ExplicitLeft = 208
@@ -60,8 +56,6 @@ object MainForm: TMainForm
       Constraints.MaxHeight = 31
       Constraints.MinHeight = 31
       TabOrder = 0
-      ExplicitTop = 339
-      ExplicitWidth = 612
       DesignSize = (
         772
         31)
@@ -73,7 +67,6 @@ object MainForm: TMainForm
         Action = actProcess
         Anchors = [akTop, akRight]
         TabOrder = 0
-        ExplicitLeft = 512
       end
       object btnProfiles: TButton
         Left = 0
@@ -89,15 +82,27 @@ object MainForm: TMainForm
         Visible = False
       end
     end
-    object meTap: TMemo
-      Left = 552
+    object ListViewEx1: TListViewEx
+      Left = 528
       Top = 6
-      Width = 226
+      Width = 250
       Height = 453
       Align = alRight
+      Columns = <
+        item
+          Width = -1
+          WidthType = (
+            -1)
+        end>
+      HideSelection = False
+      MultiSelect = True
       ReadOnly = True
-      ScrollBars = ssVertical
+      ShowColumnHeaders = False
       TabOrder = 1
+      ViewStyle = vsReport
+      ExplicitLeft = 168
+      ExplicitTop = 96
+      ExplicitHeight = 150
     end
   end
   object ToolBar: TActionToolBar
@@ -121,14 +126,13 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
     Spacing = 0
-    ExplicitWidth = 624
   end
   object ImageList: TImageList
     AllocBy = 14
     Left = 64
     Top = 288
     Bitmap = {
-      494C01010E00A000040210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010E00A000180210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

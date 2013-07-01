@@ -85,9 +85,9 @@ uses
   TAPEstimator.uTTAPNonCommandChars,
   TAPEstimator.uETAPWrongSymbol;
 
-var
+{var
   sTAPString: string;
-  cWrongSymbol: Char;
+  cWrongSymbol: Char;}
 
 class function TTAPStringRoutines.IsComment(const AValue: string): Boolean;
 var
@@ -187,7 +187,7 @@ begin
   end;
 end;
 
-initialization
+{initialization
 
 sTAPString := ' G90G1Z0f350 y10z20 xyz ';
 try
@@ -201,9 +201,9 @@ try
   end;
 except
   on E: Exception do
-    begin
-      ShowMessage(E.Message);
-    end;
-end;
+  begin
+    ShowMessage(E.Message);
+  end;
+end;}
 
 end.
