@@ -31,7 +31,7 @@ uses
   TAPEstimator.uIRecents,
   Data.DB,
   Data.Win.ADODB,
-  TAPEstimator.uIConfiguration,
+  TAPEstimator.uTConfiguration,
   CastersPackage.uICustomized,
   CastersPackage.uTAboutWindow,
   Data.Bind.EngExt,
@@ -39,7 +39,9 @@ uses
   System.Rtti,
   System.Bindings.Outputs,
   Vcl.Bind.Editors,
-  Data.Bind.Components;
+  Data.Bind.Components,
+  Vcl.Touch.GestureCtrls,
+  CastersPackage.uTListViewEx;
 
 type
   TMainForm = class(TForm, ICustomized)
@@ -100,8 +102,8 @@ type
     N12: TMenuItem;
     N13: TMenuItem;
     AboutWindow: TAboutWindow;
-    meTap: TMemo;
     Image1: TImage;
+    ListViewEx1: TListViewEx;
     procedure actQuitExecute(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -123,9 +125,9 @@ type
   strict private
     procedure Initialize; virtual;
     procedure Finalize; virtual;
-    procedure LoadConfiguration;
+    // procedure LoadConfiguration;
     procedure ApplyConfiguration;
-    procedure SaveConfiguration;
+    // procedure SaveConfiguration;
     procedure OnHint(ASender: TObject);
     procedure RefreshRecentsMenu;
   strict private
@@ -135,15 +137,15 @@ type
     function GetProfile: IProfile;
     procedure SetProfile(const AValue: IProfile);
   strict private
-    FConfiguration: IConfiguration;
-    function GetConfiguration: IConfiguration;
-    property Configuration: IConfiguration read GetConfiguration nodefault;
+    FConfiguration: TConfiguration;
+    function GetConfiguration: TConfiguration;
+    property Configuration: TConfiguration read GetConfiguration nodefault;
   public
     property Profile: IProfile read GetProfile write SetProfile nodefault;
     destructor Destroy; override;
-  strict private
+  {strict private
     FThreadMessage: Cardinal;
-    function RegisterThreadMessage: Boolean;
+    function RegisterThreadMessage: Boolean;}
   end;
 
 var
@@ -162,9 +164,10 @@ uses
   TAPEstimator.uIRecent,
   TAPEstimator.uTRecent,
   TAPEstimator.uTProfile,
-  TAPEstimator.uTConfiguration,
   TAPEstimator.uEConfiguration,
   TAPEstimator.uResourceStrings,
+  TAPEstimator.uTInterfaceSection,
+  TAPEstimator.uTOtherSection,
   System.IniFiles;
 
 resourcestring
@@ -173,8 +176,7 @@ resourcestring
   RsWarningCaption = '%s - Предупреждение';
   RsCannotRegisterThreadMessage = 'Не удалось зарегистрировать оконное сообщение для дочерних потоков.';
   RsOpenRecent = 'Нажмите для загрузки файла профиля с указанным именем';
-  RsCreateProfileConfirmationMessage =
-    'Вы действительно хотите создать новый профиль, предварительно не сохранив текущий?';
+  RsCreateProfileConfirmationMessage = 'Вы действительно хотите создать новый профиль, предварительно не сохранив текущий?';
   RsCreateProfileConfirmationCaption = '%s - Подтверждение создания нового профиля';
   RsOpenProfileDefaultExt = 'profile';
   RsOpenProfileFilters = 'Файлы профилей (*.profile)|*.profile|Все файлы (*.*)|*.*';
@@ -189,17 +191,19 @@ begin
 end;
 
 procedure TMainForm.actConfigurationExecute(Sender: TObject);
+var
+  form: TConfigurationForm;
 begin
-  with TConfigurationForm.Create(Self, Configuration) do
-    try
-      ShowModal;
-    finally
-      if ModalResult = mrOk then
-      begin
-        ApplyConfiguration;
-      end;
-      Free;
+  form := TConfigurationForm.Create(Self, Configuration);
+  try
+    form.ShowModal;
+  finally
+    if form.ModalResult = mrOk then
+    begin
+      ApplyConfiguration;
     end;
+    form.Free;
+  end;
 end;
 
 procedure TMainForm.actQuitExecute(Sender: TObject);
@@ -219,7 +223,10 @@ end;
 
 procedure TMainForm.Finalize;
 begin
-  SaveConfiguration;
+  if Assigned(Configuration) then
+  begin
+    Configuration.Free;
+  end;
 end;
 
 destructor TMainForm.Destroy;
@@ -228,68 +235,68 @@ begin
   inherited;
 end;
 
-procedure TMainForm.SaveConfiguration;
-begin
+{ procedure TMainForm.SaveConfiguration;
+  begin
   Screen.Cursor := crHourGlass;
   try
-    try
-      Configuration.Save;
-    finally
-      Screen.Cursor := crDefault;
-    end;
-  except
-    on E: EConfiguration do
-    begin
-      if MessageBox(Handle, PWideChar(Format(RsTryAgain, [E.Message])),
-        PWideChar(Format(RsWarningCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING_OK) = IDOK then
-      begin
-        try
-          Screen.Cursor := crHourGlass;
-          try
-            Configuration.Save;
-          finally
-            Screen.Cursor := crDefault;
-          end;
-        except
-          on E: EConfiguration do
-          begin
-            MessageBox(Handle, PWideChar(E.Message), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])),
-              MESSAGE_TYPE_ERROR);
-          end;
-          else
-          begin
-            Application.HandleException(Self);
-          end;
-        end;
-      end;
-    end;
-    else
-    begin
-      Application.HandleException(Self);
-    end;
+  try
+  Configuration.Save;
+  finally
+  Screen.Cursor := crDefault;
   end;
-end;
+  except
+  on E: EConfiguration do
+  begin
+  if MessageBox(Handle, PWideChar(Format(RsTryAgain, [E.Message])),
+  PWideChar(Format(RsWarningCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING_OK) = IDOK then
+  begin
+  try
+  Screen.Cursor := crHourGlass;
+  try
+  Configuration.Save;
+  finally
+  Screen.Cursor := crDefault;
+  end;
+  except
+  on E: EConfiguration do
+  begin
+  MessageBox(Handle, PWideChar(E.Message), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])),
+  MESSAGE_TYPE_ERROR);
+  end;
+  else
+  begin
+  Application.HandleException(Self);
+  end;
+  end;
+  end;
+  end;
+  else
+  begin
+  Application.HandleException(Self);
+  end;
+  end;
+  end; }
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   CanClose := True;
-  if Configuration.EnableQuitConfirmation then
+  if Configuration.Section<TInterfaceSection>.EnableQuitConfirmation then
   begin
-    CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
-      PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
+    CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage), PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
   end;
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
+  inherited;
   Initialize;
 end;
 
-function TMainForm.GetConfiguration: IConfiguration;
+function TMainForm.GetConfiguration: TConfiguration;
 begin
   if not Assigned(FConfiguration) then
   begin
-    FConfiguration := GetIConfiguration;
+    FConfiguration := TConfiguration.Create;
   end;
   Result := FConfiguration;
 end;
@@ -309,14 +316,12 @@ procedure TMainForm.Initialize;
 // i: Integer;
 begin
   Application.OnHint := OnHint;
-  if not RegisterThreadMessage then
+  {if not RegisterThreadMessage then
   begin
-    MessageBox(Handle, PWideChar(RsCannotRegisterThreadMessage), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])),
-      MESSAGE_TYPE_ERROR);
+    MessageBox(Handle, PWideChar(RsCannotRegisterThreadMessage), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
     Application.Terminate;
-  end;
-  LoadConfiguration;
-  if Configuration.EnableSplashAtStart then
+  end;}
+  if Configuration.Section<TInterfaceSection>.EnableSplashAtStart then
   begin
     AboutWindow.Show;
   end;
@@ -333,23 +338,23 @@ begin
   RefreshRecentsMenu;
 end;
 
-procedure TMainForm.LoadConfiguration;
-begin
+{ procedure TMainForm.LoadConfiguration;
+  begin
   try
-    Screen.Cursor := crHourGlass;
-    try
-      Configuration.Load;
-    finally
-      Screen.Cursor := crDefault;
-    end;
-  except
-    on E: Exception do
-    begin
-      MessageBox(Handle, PWideChar(E.Message), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])),
-        MESSAGE_TYPE_ERROR);
-    end;
+  Screen.Cursor := crHourGlass;
+  try
+  Configuration.Load;
+  finally
+  Screen.Cursor := crDefault;
   end;
-end;
+  except
+  on E: Exception do
+  begin
+  MessageBox(Handle, PWideChar(E.Message), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])),
+  MESSAGE_TYPE_ERROR);
+  end;
+  end;
+  end; }
 
 procedure TMainForm.SetProfile(const AValue: IProfile);
 begin
@@ -364,9 +369,7 @@ begin
   { TODO :
     добавить проверку сохранённости текущего профиля:
     если профиль был изменён и не сохранён, задать вопрос юзеру }
-  if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage),
-    PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING_CANCEL)
-    = IDOK then
+  if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage), PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING_CANCEL) = IDOK then
   begin
     Profile := GetIProfile;
     { TODO : нужно как-то изменить алгоритм работы с именем файла }
@@ -374,44 +377,49 @@ begin
 end;
 
 procedure TMainForm.actOpenExecute(Sender: TObject);
+var
+  form: TOpenDialog;
 begin
-  with TOpenDialog.Create(Self) do
-    try
-      DefaultExt := RsOpenDefaultExt;
-      Filter := RsOpenFilters;
-      Options := Options + [ofFileMustExist];
-      if Execute(Handle) then
-      begin
-        // TAPFile.Load;
-        meTap.Lines.LoadFromFile(FileName);
-      end;
-    finally
-      Free;
+  form := TOpenDialog.Create(Self);
+  try
+    form.DefaultExt := RsOpenDefaultExt;
+    form.Filter := RsOpenFilters;
+    form.Options := form.Options + [ofFileMustExist];
+    if form.Execute(Handle) then
+    begin
+      // TAPFile.Load;
+      // meTap.Lines.LoadFromFile(FileName);
+      // ListViewEx1.Items.
     end;
+  finally
+    form.Free;
+  end;
 end;
 
 procedure TMainForm.ApplyConfiguration;
 begin
-  actStatusBar.Checked := Configuration.EnableStatusbar;
-  StatusBar.Visible := Configuration.EnableStatusbar;
-  actToolBar.Checked := Configuration.EnableToolbar;
-  ToolBar.Visible := Configuration.EnableToolbar;
+  actStatusBar.Checked := Configuration.Section<TInterfaceSection>.EnableStatusbar;
+  StatusBar.Visible := Configuration.Section<TInterfaceSection>.EnableStatusbar;
+  actToolBar.Checked := Configuration.Section<TInterfaceSection>.EnableToolbar;
+  ToolBar.Visible := Configuration.Section<TInterfaceSection>.EnableToolbar;
 end;
 
 procedure TMainForm.actLoadProfileExecute(Sender: TObject);
+var
+  form: TOpenDialog;
 begin
-  with TOpenDialog.Create(Self) do
-    try
-      DefaultExt := RsOpenProfileDefaultExt;
-      Filter := RsOpenProfileFilters;
-      Options := Options + [ofFileMustExist];
-      if Execute(Handle) then
-      begin
-        Profile.Load;
-      end;
-    finally
-      Free;
+  form := TOpenDialog.Create(Self);
+  try
+    form.DefaultExt := RsOpenProfileDefaultExt;
+    form.Filter := RsOpenProfileFilters;
+    form.Options := form.Options + [ofFileMustExist];
+    if form.Execute(Handle) then
+    begin
+      Profile.Load;
     end;
+  finally
+    form.Free;
+  end;
 end;
 
 procedure TMainForm.actProcessExecute(Sender: TObject);
@@ -440,16 +448,18 @@ begin
 end;
 
 procedure TMainForm.actProfilePropertiesExecute(Sender: TObject);
+var
+  form: TProfileForm;
 begin
-  with TProfileForm.Create(Self) do
-    try
-      ShowModal;
-      if ModalResult = mrOk then
-      begin
-      end;
-    finally
-      Free;
+  form := TProfileForm.Create(Self);
+  try
+    form.ShowModal;
+    if form.ModalResult = mrOk then
+    begin
     end;
+  finally
+    form.Free;
+  end;
 end;
 
 procedure TMainForm.actProfilePropertiesUpdate(Sender: TObject);
@@ -458,17 +468,19 @@ begin
 end;
 
 procedure TMainForm.actRecentProfilesPropertiesExecute(Sender: TObject);
+var
+  form: TRecentsPropertiesForm;
 begin
-  with TRecentsPropertiesForm.Create(Self, Configuration.Recents, 20) do
-    try
-      ShowModal;
-      if ModalResult = mrOk then
-      begin
-        RefreshRecentsMenu;
-      end;
-    finally
-      Free;
+  form := TRecentsPropertiesForm.Create(Self, Configuration.Recents, 20);
+  try
+    form.ShowModal;
+    if form.ModalResult = mrOk then
+    begin
+      RefreshRecentsMenu;
     end;
+  finally
+    form.Free;
+  end;
 end;
 
 procedure TMainForm.RefreshRecentsMenu;
@@ -507,11 +519,11 @@ begin
   end;
 end;
 
-function TMainForm.RegisterThreadMessage: Boolean;
+{function TMainForm.RegisterThreadMessage: Boolean;
 begin
   FThreadMessage := RegisterWindowMessage(PWideChar(WM_TASK_THREAD_MESSAGE));
   Result := FThreadMessage > 0;
-end;
+end;}
 
 procedure TMainForm.actSaveProfileExecute(Sender: TObject);
 begin
@@ -520,7 +532,7 @@ end;
 
 procedure TMainForm.actSaveProfileUpdate(Sender: TObject);
 begin
-//  actSaveProfile.Enabled := Configuration.Modified;
+  // actSaveProfile.Enabled := Configuration.Modified;
 end;
 
 procedure TMainForm.actStatusBarExecute(Sender: TObject);
@@ -529,7 +541,7 @@ var
 begin
   b := actStatusBar.Checked;
   StatusBar.Visible := b;
-  Configuration.EnableStatusbar := b;
+  Configuration.Section<TInterfaceSection>.EnableStatusbar := b;
 end;
 
 procedure TMainForm.actToolBarExecute(Sender: TObject);
@@ -538,7 +550,7 @@ var
 begin
   b := actToolBar.Checked;
   ToolBar.Visible := b;
-  Configuration.EnableToolbar := b;
+  Configuration.Section<TInterfaceSection>.EnableToolbar := b;
 end;
 
 end.

@@ -23,7 +23,6 @@ type
 implementation
 
 uses
-  CastersPackage.uIModified,
   System.SysUtils,
   TAPEstimator.uEConfiguration,
   TAPEstimator.uTInterfaceSection,
