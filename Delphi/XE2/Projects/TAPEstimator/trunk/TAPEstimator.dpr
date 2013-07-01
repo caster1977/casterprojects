@@ -37,7 +37,9 @@ uses
   TAPEstimator.uTTAPCommandPrefixes in 'SRC\Logic\Types\TAPEstimator.uTTAPCommandPrefixes.pas',
   TAPEstimator.uTTAPNonCommandChars in 'SRC\Logic\Types\TAPEstimator.uTTAPNonCommandChars.pas',
   TAPEstimator.uTTAPStringRoutines in 'SRC\Logic\Types\TAPEstimator.uTTAPStringRoutines.pas',
-  TAPEstimator.uETAPWrongSymbol in 'SRC\Logic\Types\TAPEstimator.uETAPWrongSymbol.pas';
+  TAPEstimator.uETAPWrongSymbol in 'SRC\Logic\Types\TAPEstimator.uETAPWrongSymbol.pas',
+  TAPEstimator.uTInterfaceSection in 'SRC\Logic\Classes\TAPEstimator.uTInterfaceSection.pas',
+  TAPEstimator.uTOtherSection in 'SRC\Logic\Classes\TAPEstimator.uTOtherSection.pas';
 
 {$R *.res}
 

@@ -149,7 +149,7 @@ object ConfigurationForm: TConfigurationForm
     Top = 53
     Width = 462
     Height = 240
-    ActivePage = tsInterface
+    ActivePage = tsOther
     Align = alClient
     Style = tsButtons
     TabOrder = 1
@@ -206,32 +206,6 @@ object ConfigurationForm: TConfigurationForm
         end
       end
     end
-    object tsResults: TTabSheet
-      Caption = ' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1088#1077#1079#1091#1083#1100#1090#1072#1090#1086#1074' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103
-      ImageIndex = 2
-      TabVisible = False
-      object gbResults: TGroupBox
-        Left = 0
-        Top = 0
-        Width = 454
-        Height = 230
-        Align = alClient
-        TabOrder = 0
-      end
-    end
-    object tsReport: TTabSheet
-      Caption = ' '#1092#1086#1088#1084#1080#1088#1086#1074#1072#1085#1080#1103' '#1086#1090#1095#1105#1090#1072
-      ImageIndex = 3
-      TabVisible = False
-      object gbReport: TGroupBox
-        Left = 0
-        Top = 0
-        Width = 454
-        Height = 230
-        Align = alClient
-        TabOrder = 0
-      end
-    end
     object tsOther: TTabSheet
       Caption = ' '#1087#1088#1086#1095#1080#1077
       ImageIndex = 1
@@ -260,7 +234,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 408
     Top = 128
     Bitmap = {
-      494C010102000800440010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000800480010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

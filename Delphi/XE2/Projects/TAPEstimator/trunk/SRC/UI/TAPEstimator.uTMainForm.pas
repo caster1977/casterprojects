@@ -101,6 +101,7 @@ type
     N13: TMenuItem;
     AboutWindow: TAboutWindow;
     meTap: TMemo;
+    Image1: TImage;
     procedure actQuitExecute(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -519,7 +520,7 @@ end;
 
 procedure TMainForm.actSaveProfileUpdate(Sender: TObject);
 begin
-  actSaveProfile.Enabled := Configuration.Modified;
+//  actSaveProfile.Enabled := Configuration.Modified;
 end;
 
 procedure TMainForm.actStatusBarExecute(Sender: TObject);
