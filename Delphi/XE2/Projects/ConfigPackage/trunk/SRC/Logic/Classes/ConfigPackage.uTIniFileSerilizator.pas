@@ -109,7 +109,7 @@ var
   ti: TRttiType;
   ctx: TRttiContext;
 begin
-  ti := ctx.GetType(typeInfo(T));
+  ti := ctx.GetType(TypeInfo(T));
   try
     for opt in FOptions do
     begin
