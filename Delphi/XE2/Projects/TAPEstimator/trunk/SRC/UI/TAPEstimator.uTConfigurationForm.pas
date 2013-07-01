@@ -46,8 +46,6 @@ type
     cmbPageName: TComboBox;
     gbInterface: TGroupBox;
     gbOther: TGroupBox;
-    gbReport: TGroupBox;
-    gbResults: TGroupBox;
     gbTop: TGroupBox;
     ImageList: TImageList;
     PageControl: TPageControl;
@@ -55,8 +53,6 @@ type
     pnlTop: TPanel;
     tsInterface: TTabSheet;
     tsOther: TTabSheet;
-    tsReport: TTabSheet;
-    tsResults: TTabSheet;
     chkEnableStoreMainFormSizesAndPosition: TCheckBox;
     procedure actCancelExecute(Sender: TObject);
     procedure actNextPageExecute(Sender: TObject);
@@ -152,12 +148,6 @@ begin
     EnableToolbar := CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
     EnableStoreMainFormSizesAndPosition := CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
   end;
-  if PageControl.ActivePage = tsResults then
-  begin
-  end;
-  if PageControl.ActivePage = tsReport then
-  begin
-  end;
   if PageControl.ActivePage = tsOther then
   begin
     EnablePlaySoundOnComplete := CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
@@ -176,12 +166,6 @@ begin
       (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and
       (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR) and
       (EnableStoreMainFormSizesAndPosition = CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION));
-  end;
-  if PageControl.ActivePage = tsResults then
-  begin
-  end;
-  if PageControl.ActivePage = tsReport then
-  begin
   end;
   if PageControl.ActivePage = tsOther then
   begin

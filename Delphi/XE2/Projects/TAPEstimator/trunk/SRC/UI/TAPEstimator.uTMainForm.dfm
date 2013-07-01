@@ -2,8 +2,8 @@ object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = 'TAP Estimator'
-  ClientHeight = 422
-  ClientWidth = 624
+  ClientHeight = 542
+  ClientWidth = 784
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,43 +19,61 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar: TStatusBar
     Left = 0
-    Top = 403
-    Width = 624
+    Top = 523
+    Width = 784
     Height = 19
     Hint = #1055#1072#1085#1077#1083#1100' '#1089#1090#1072#1090#1091#1089#1072
     Panels = <>
     SimplePanel = True
+    ExplicitTop = 403
+    ExplicitWidth = 624
   end
   object pnlMain: TPanel
     Left = 0
     Top = 27
-    Width = 624
-    Height = 376
+    Width = 784
+    Height = 496
     Align = alClient
     BevelOuter = bvNone
     BorderWidth = 6
     TabOrder = 1
+    ExplicitWidth = 624
+    ExplicitHeight = 376
+    object Image1: TImage
+      Left = 6
+      Top = 6
+      Width = 546
+      Height = 453
+      Align = alClient
+      ExplicitLeft = 208
+      ExplicitTop = 72
+      ExplicitWidth = 105
+      ExplicitHeight = 105
+    end
     object pnlButtons: TPanel
       Left = 6
-      Top = 339
-      Width = 612
+      Top = 459
+      Width = 772
       Height = 31
       Align = alBottom
       BevelOuter = bvNone
       Constraints.MaxHeight = 31
       Constraints.MinHeight = 31
       TabOrder = 0
+      ExplicitTop = 339
+      ExplicitWidth = 612
       DesignSize = (
-        612
+        772
         31)
       object btnProcess: TButton
-        Left = 512
+        Left = 672
         Top = 6
         Width = 100
         Height = 25
         Action = actProcess
         Anchors = [akTop, akRight]
         TabOrder = 0
+        ExplicitLeft = 512
       end
       object btnProfiles: TButton
         Left = 0
@@ -72,11 +90,11 @@ object MainForm: TMainForm
       end
     end
     object meTap: TMemo
-      Left = 6
+      Left = 552
       Top = 6
-      Width = 612
-      Height = 333
-      Align = alClient
+      Width = 226
+      Height = 453
+      Align = alRight
       ReadOnly = True
       ScrollBars = ssVertical
       TabOrder = 1
@@ -85,7 +103,7 @@ object MainForm: TMainForm
   object ToolBar: TActionToolBar
     Left = 0
     Top = 0
-    Width = 624
+    Width = 784
     Height = 27
     Hint = #1055#1072#1085#1077#1083#1100' '#1080#1085#1089#1090#1088#1091#1084#1077#1085#1090#1086#1074
     ActionManager = ActionManager
@@ -103,13 +121,14 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
     Spacing = 0
+    ExplicitWidth = 624
   end
   object ImageList: TImageList
     AllocBy = 14
     Left = 64
     Top = 288
     Bitmap = {
-      494C01010E00A000000210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010E00A000040210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
