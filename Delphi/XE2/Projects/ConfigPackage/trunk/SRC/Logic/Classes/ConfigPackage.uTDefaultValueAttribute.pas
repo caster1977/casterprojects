@@ -55,7 +55,7 @@ type
     /// <summary>
     /// Значение по-умолчанию
     /// </summary>
-    property Value: TValue read FValue nodefault;
+    property Value: TValue read GetValue nodefault;
   end;
 
 implementation

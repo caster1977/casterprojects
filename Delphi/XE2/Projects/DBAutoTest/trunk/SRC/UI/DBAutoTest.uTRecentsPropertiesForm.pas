@@ -65,16 +65,14 @@ type
     procedure actDeleteNotExistsExecute(Sender: TObject);
     procedure actDeleteNotExistsUpdate(Sender: TObject);
     procedure seRecentsSizeExit(Sender: TObject);
-    procedure lvRecentsListCustomDrawItem(Sender: TCustomListView; Item: TListItem;
-      State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure lvRecentsListCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure actSelectAllUpdate(Sender: TObject);
     procedure actSelectAllExecute(Sender: TObject);
 
   strict private
     procedure RefreshRecentsList;
   public
-    constructor Create(AOwner: TComponent; const ARecents: IRecents; const ASize: Integer);
-      reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const ARecents: IRecents; const ASize: Integer); reintroduce; virtual;
 
   strict private
     FOriginalRecents: IRecents;
@@ -94,6 +92,7 @@ type
   strict private
     function GetSize: Integer;
     procedure SetSize(const AValue: Integer);
+  public
     property Size: Integer read GetSize write SetSize nodefault;
   end;
 
@@ -225,8 +224,7 @@ begin
   Result := seRecentsSize.Value;
 end;
 
-procedure TRecentsPropertiesForm.lvRecentsListCustomDrawItem(Sender: TCustomListView;
-  Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+procedure TRecentsPropertiesForm.lvRecentsListCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
   lvRecentsList.Canvas.Font.Color := clBlack;
   if Assigned(Item.Data) then
@@ -259,8 +257,7 @@ procedure TRecentsPropertiesForm.RefreshRecentsList;
     lvRecentsList.FlatScrollBars := True;
     if (GetWindowLong(lvRecentsList.Handle, GWL_STYLE) and WS_VSCROLL) = WS_VSCROLL then
     begin
-      lvRecentsList.Column[0].Width := lvRecentsList.Column[0].Width -
-        GetSystemMetrics(SM_CXVSCROLL);
+      lvRecentsList.Column[0].Width := lvRecentsList.Column[0].Width - GetSystemMetrics(SM_CXVSCROLL);
     end;
   end;
 
@@ -300,8 +297,7 @@ begin
   seRecentsSize.Value := Size;
 end;
 
-procedure TRecentsPropertiesForm.seRecentsSizeKeyUp(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TRecentsPropertiesForm.seRecentsSizeKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   case Key of
     VK_ESCAPE:
@@ -346,8 +342,7 @@ begin
   Result := FOriginalSize;
 end;
 
-constructor TRecentsPropertiesForm.Create(AOwner: TComponent; const ARecents: IRecents;
-  const ASize: Integer);
+constructor TRecentsPropertiesForm.Create(AOwner: TComponent; const ARecents: IRecents; const ASize: Integer);
 begin
   Assert(Assigned(ARecents), RsARecentsIsNil);
   inherited Create(AOwner);

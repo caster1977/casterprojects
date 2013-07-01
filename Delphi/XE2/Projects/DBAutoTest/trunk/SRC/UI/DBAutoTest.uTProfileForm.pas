@@ -23,11 +23,10 @@ uses
   Vcl.Mask,
   Vcl.ComCtrls,
   Vcl.ImgList,
-  DBAutoTest.uConsts,
-  DBAutoTest.uIProfileProperties;
+  DBAutoTest.uConsts;
 
 type
-  TProfileForm = class(TForm, IProfileProperties)
+  TProfileForm = class(TForm)
     pnlButtons: TPanel;
     btnApply: TButton;
     btnCancel: TButton;
@@ -152,6 +151,11 @@ type
     property EnableStorePassword: Boolean read GetEnableStorePassword write SetEnableStorePassword;
 
   strict private
+    function GetEnableEmptyPassword: Boolean;
+    procedure SetEnableEmptyPassword(const AValue: Boolean);
+    property EnableEmptyPassword: Boolean read GetEnableEmptyPassword write SetEnableEmptyPassword;
+
+  strict private
     function GetDatabase: string;
     procedure SetDatabase(const AValue: string);
     property Database: string read GetDatabase write SetDatabase;
@@ -256,9 +260,17 @@ begin
 
 end;
 
-procedure TProfileForm.SetEnableStoreOnlyEnabledTasks(const AValue: Boolean);
+procedure TProfileForm.SetEnableEmptyPassword(const AValue: Boolean);
 begin
 
+end;
+
+procedure TProfileForm.SetEnableStoreOnlyEnabledTasks(const AValue: Boolean);
+begin
+  if actEnableStoreOnlyEnabledTasks.Enabled <> AValue then
+  begin
+    actEnableStoreOnlyEnabledTasks.Enabled := AValue;
+  end;
 end;
 
 procedure TProfileForm.SetEnableStorePassword(const AValue: Boolean);
@@ -315,11 +327,18 @@ procedure TProfileForm.actDefaultsExecute(Sender: TObject);
 begin
   if PageControl.ActivePage = tsConnection then
   begin
+    Server := PROFILE_DEFAULT_SERVER;
+    WinNTSecurity := PROFILE_DEFAULT_WIN_NT_SECURITY;
+    Login := PROFILE_DEFAULT_LOGIN;
+    Password := PROFILE_DEFAULT_PASSWORD;
+    EnableStorePassword := PROFILE_DEFAULT_ENABLE_STORE_PASSWORD;
+    EnableEmptyPassword := PROFILE_DEFAULT_ENABLE_EMPTY_PASSWORD;
+    Database := PROFILE_DEFAULT_DATABASE;
   end;
   if PageControl.ActivePage = tsSaving then
   begin
-    { EnablePlaySoundOnComplete := PROFILE_DEFAULT_STORE_TASKS;
-      PROFILE_DEFAULT_STORE_ONLY_ENABLED_TASKS; }
+    EnableStoreTasks := PROFILE_DEFAULT_ENABLE_STORE_TASKS;
+    EnableStoreOnlyEnabledTasks := PROFILE_DEFAULT_ENABLE_STORE_ONLY_ENABLED_TASKS;
   end;
 end;
 
@@ -455,6 +474,11 @@ begin
   end;
 end;
 
+function TProfileForm.GetEnableEmptyPassword: Boolean;
+begin
+  Result := chkEnableEmptyPassword.Checked and chkEnableEmptyPassword.Enabled;
+end;
+
 function TProfileForm.GetEnableStoreOnlyEnabledTasks: Boolean;
 begin
   Result := cmbEnableStoreOnlyEnabledTasks.Checked and cmbEnableStoreOnlyEnabledTasks.Enabled;
@@ -462,7 +486,7 @@ end;
 
 function TProfileForm.GetEnableStorePassword: Boolean;
 begin
-
+  Result := chkEnableStorePassword.Checked and chkEnableStorePassword.Enabled;
 end;
 
 function TProfileForm.GetEnableStoreTasks: Boolean;
@@ -472,7 +496,11 @@ end;
 
 function TProfileForm.GetLogin: string;
 begin
-
+  Result := EmptyStr;
+  if ebLogin.Enabled then
+  begin
+    Result := ebLogin.Text;
+  end;
 end;
 
 procedure TProfileForm.actRefreshServersExecute(Sender: TObject);

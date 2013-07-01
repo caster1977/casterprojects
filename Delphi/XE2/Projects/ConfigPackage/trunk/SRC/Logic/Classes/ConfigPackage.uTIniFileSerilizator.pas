@@ -11,10 +11,11 @@ uses
 type
   TIniFileSerilizator = class(TInterfacedObject)
   strict private
-    FIniFile: TCustomIniFile;
-    FFileName: string;
     FOptions: TObjectList<TCustomOptions>;
+    FFileName: string;
+    function GetFileName: string;
   strict protected
+    FIniFile: TCustomIniFile;
     procedure Initialize; virtual;
     procedure Finalize; virtual;
   public
@@ -24,7 +25,7 @@ type
     procedure RegisterOptions(const AOptionsClass: TCustomOptionsClass);
     function Section<T: TCustomOptions>: T;
 
-    property FileName: string read FFileName;
+    property FileName: string read GetFileName nodefault;
   end;
 
 resourcestring
@@ -87,6 +88,11 @@ end;
 
 procedure TIniFileSerilizator.Finalize;
 begin
+end;
+
+function TIniFileSerilizator.GetFileName: string;
+begin
+  Result := FFileName;
 end;
 
 procedure TIniFileSerilizator.RegisterOptions(const AOptionsClass: TCustomOptionsClass);

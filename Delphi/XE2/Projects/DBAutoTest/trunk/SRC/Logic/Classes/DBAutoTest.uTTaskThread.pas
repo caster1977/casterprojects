@@ -104,7 +104,7 @@ begin
     i := -1;
     if Trim(Task.SQL.Text) > EmptyStr then
     begin
-      {query := TADOQuery.Create(Application.MainForm);
+      query := TADOQuery.Create(Application.MainForm);
       try
         query.ConnectionString := ADOConnectionString;
         query.CommandTimeout := ADO_CONNECTION_DEFAULT_COMMAND_TIMEOUT;
@@ -120,7 +120,7 @@ begin
         end;
       finally
         FreeAndNil(query);
-      end;}
+      end;
     end;
     Synchronize(
       procedure

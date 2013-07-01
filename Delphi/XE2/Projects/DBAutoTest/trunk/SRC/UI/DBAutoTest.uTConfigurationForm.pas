@@ -21,11 +21,10 @@ uses
   System.Actions,
   Vcl.ActnList,
   DBAutoTest.uConsts,
-  DBAutoTest.uIConfiguration,
-  DBAutoTest.uIConfigurationProperties;
+  ConfigPackage.uTIniFileSerilizator;
 
 type
-  TConfigurationForm = class(TForm, IConfigurationProperties)
+  TConfigurationForm = class(TForm)
     actApply: TAction;
     actCancel: TAction;
     actDefaults: TAction_Defaults;
@@ -82,12 +81,12 @@ type
     property PageCount: Integer read GetPageCount nodefault;
 
   strict private
-    FConfiguration: IConfiguration;
-    function GetConfiguration: IConfiguration;
-    property Configuration: IConfiguration read GetConfiguration nodefault;
+    FConfiguration: TIniFileSerilizator;
+    function GetConfiguration: TIniFileSerilizator;
+    property Configuration: TIniFileSerilizator read GetConfiguration nodefault;
 
   public
-    constructor Create(AOwner: TComponent; const AConfiguration: IConfiguration; const AActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const AConfiguration: TIniFileSerilizator; const AActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
 
   strict private
     function GetEnablePlaySoundOnComplete: Boolean;
@@ -133,26 +132,29 @@ type
 implementation
 
 uses
-  CastersPackage.uRoutines;
+  CastersPackage.uRoutines,
+  DBAutoTest.uTInterfaceOptions,
+  DBAutoTest.uTReportsOptions,
+  DBAutoTest.uTOtherOptions;
 
 resourcestring
   RsAConfigurationIsNil = 'AConfiguration is nil.';
 
 {$R *.dfm}
-constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: IConfiguration; const AActivePage: Integer);
+constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: TIniFileSerilizator; const AActivePage: Integer);
 
   procedure ApplyConfiguration;
   begin
     if Assigned(Configuration) then
     begin
-      EnablePlaySoundOnComplete := Configuration.Properties.EnablePlaySoundOnComplete;
-      EnableQuitConfirmation := Configuration.Properties.EnableQuitConfirmation;
-      EnableSplashAtStart := Configuration.Properties.EnableSplashAtStart;
-      EnableStatusbar := Configuration.Properties.EnableStatusbar;
-      EnableToolbar := Configuration.Properties.EnableToolbar;
-      EnableStoreMainFormSizesAndPosition := Configuration.Properties.EnableStoreMainFormSizesAndPosition;
-      EnableGenerateFastReportDocument := Configuration.Properties.EnableGenerateFastReportDocument;
-      EnableGenerateExcelDocument := Configuration.Properties.EnableGenerateExcelDocument;
+      EnableQuitConfirmation := Configuration.Section<TInterfaceOptions>.EnableQuitConfirmation;
+      EnableSplashAtStart := Configuration.Section<TInterfaceOptions>.EnableSplashAtStart;
+      EnableStatusbar := Configuration.Section<TInterfaceOptions>.EnableStatusbar;
+      EnableToolbar := Configuration.Section<TInterfaceOptions>.EnableToolbar;
+      EnableStoreMainFormSizesAndPosition := Configuration.Section<TInterfaceOptions>.EnableStoreMainFormSizesAndPosition;
+      EnableGenerateFastReportDocument := Configuration.Section<TReportsOptions>.EnableGenerateFastReportDocument;
+      EnableGenerateExcelDocument := Configuration.Section<TReportsOptions>.EnableGenerateExcelDocument;
+      EnablePlaySoundOnComplete := Configuration.Section<TOtherOptions>.EnablePlaySoundOnComplete;
     end;
   end;
 
@@ -216,14 +218,14 @@ procedure TConfigurationForm.actApplyExecute(Sender: TObject);
 begin
   if Assigned(Configuration) then
   begin
-    Configuration.Properties.EnablePlaySoundOnComplete := EnablePlaySoundOnComplete;
-    Configuration.Properties.EnableQuitConfirmation := EnableQuitConfirmation;
-    Configuration.Properties.EnableSplashAtStart := EnableSplashAtStart;
-    Configuration.Properties.EnableStatusbar := EnableStatusbar;
-    Configuration.Properties.EnableToolbar := EnableToolbar;
-    Configuration.Properties.EnableStoreMainFormSizesAndPosition := EnableStoreMainFormSizesAndPosition;
-    Configuration.Properties.EnableGenerateFastReportDocument := EnableGenerateFastReportDocument;
-    Configuration.Properties.EnableGenerateExcelDocument := EnableGenerateExcelDocument;
+    Configuration.Section<TInterfaceOptions>.EnableQuitConfirmation := EnableQuitConfirmation;
+    Configuration.Section<TInterfaceOptions>.EnableSplashAtStart := EnableSplashAtStart;
+    Configuration.Section<TInterfaceOptions>.EnableStatusbar := EnableStatusbar;
+    Configuration.Section<TInterfaceOptions>.EnableToolbar := EnableToolbar;
+    Configuration.Section<TInterfaceOptions>.EnableStoreMainFormSizesAndPosition := EnableStoreMainFormSizesAndPosition;
+    Configuration.Section<TReportsOptions>.EnableGenerateFastReportDocument := EnableGenerateFastReportDocument;
+    Configuration.Section<TReportsOptions>.EnableGenerateExcelDocument := EnableGenerateExcelDocument;
+    Configuration.Section<TOtherOptions>.EnablePlaySoundOnComplete := EnablePlaySoundOnComplete;
   end;
   ModalResult := mrOk;
 end;
@@ -235,9 +237,16 @@ begin
   b := False;
   if Assigned(Configuration) then
   begin
-    b := not((Configuration.Properties.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete) and (Configuration.Properties.EnableQuitConfirmation = EnableQuitConfirmation) and (Configuration.Properties.EnableSplashAtStart = EnableSplashAtStart) and
-      (Configuration.Properties.EnableStatusbar = EnableStatusbar) and (Configuration.Properties.EnableToolbar = EnableToolbar) and (Configuration.Properties.EnableStoreMainFormSizesAndPosition = EnableStoreMainFormSizesAndPosition) and
-      (Configuration.Properties.EnableGenerateFastReportDocument = EnableGenerateFastReportDocument) and (Configuration.Properties.EnableGenerateExcelDocument = EnableGenerateExcelDocument));
+    b := not(
+      (Configuration.Section<TOtherOptions>.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete) and
+      (Configuration.Section<TInterfaceOptions>.EnableQuitConfirmation = EnableQuitConfirmation) and
+      (Configuration.Section<TInterfaceOptions>.EnableSplashAtStart = EnableSplashAtStart) and
+      (Configuration.Section<TInterfaceOptions>.EnableStatusbar = EnableStatusbar) and
+      (Configuration.Section<TInterfaceOptions>.EnableToolbar = EnableToolbar) and
+      (Configuration.Section<TInterfaceOptions>.EnableStoreMainFormSizesAndPosition = EnableStoreMainFormSizesAndPosition) and
+      (Configuration.Section<TReportsOptions>.EnableGenerateFastReportDocument = EnableGenerateFastReportDocument) and
+      (Configuration.Section<TReportsOptions>.EnableGenerateExcelDocument = EnableGenerateExcelDocument)
+      );
   end;
   actApply.Enabled := b;
   btnApply.Default := b;
@@ -254,7 +263,7 @@ begin
   Result := cmbPageName.ItemIndex;
 end;
 
-function TConfigurationForm.GetConfiguration: IConfiguration;
+function TConfigurationForm.GetConfiguration: TIniFileSerilizator;
 begin
   Result := FConfiguration;
 end;

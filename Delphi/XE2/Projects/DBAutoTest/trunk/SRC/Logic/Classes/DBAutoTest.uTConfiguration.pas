@@ -4,37 +4,21 @@ interface
 
 uses
   System.IniFiles,
-  CastersPackage.uTIniFileDataStorage,
-  DBAutoTest.uIConfiguration,
   DBAutoTest.uConsts,
   DBAutoTest.uIRecents,
-  DBAutoTest.uIConfigurationProperties;
+  ConfigPackage.uTIniFileSerilizator;
 
 type
-  TConfiguration = class(TIniFileDataStorage, IConfiguration)
+  TConfiguration = class(TIniFileSerilizator)
   strict protected
     procedure Initialize; override;
-    procedure Loading; override;
-    procedure Saving; override;
-    //function GetModified: Boolean; override;
-  public
-    constructor Create(const AConfigurationFileName: string = ''); override;
-    property Modified: Boolean read GetModified nodefault;
-
+    procedure Finalize; override;
   strict private
     FRecents: IRecents;
     function GetRecents: IRecents;
   public
-    property Recents: IRecents read GetRecents;
-
-  strict private
-    FProperties: IConfigurationProperties;
-    function GetProperties: IConfigurationProperties;
-  public
-    property Properties: IConfigurationProperties read GetProperties;
+    property Recents: IRecents read GetRecents nodefault;
   end;
-
-function GetIConfiguration(const AConfigurationFileName: string = ''): IConfiguration;
 
 implementation
 
@@ -42,7 +26,9 @@ uses
   CastersPackage.uIModified,
   System.SysUtils,
   DBAutoTest.uEConfiguration,
-  DBAutoTest.uTConfigurationProperties,
+  DBAutoTest.uTInterfaceOptions,
+  DBAutoTest.uTReportsOptions,
+  DBAutoTest.uTOtherOptions,
   DBAutoTest.uTRecents,
   DBAutoTest.uIRecent,
   DBAutoTest.uTRecent;
@@ -65,25 +51,6 @@ resourcestring
   RsEnableGenerateFastReportDocument = 'EnableGenerateFastReportDocument';
   RsEnableGenerateExcelDocument = 'EnableGenerateExcelDocument';
 
-function GetIConfiguration(const AConfigurationFileName: string): IConfiguration;
-begin
-  Result := TConfiguration.Create(AConfigurationFileName);
-end;
-
-{function TConfiguration.GetModified: Boolean;
-begin
-  Result := (inherited Modified) and (Properties as IModified).Modified;
-end;}
-
-function TConfiguration.GetProperties: IConfigurationProperties;
-begin
-  if not Assigned(FProperties) then
-  begin
-    FProperties := GetIConfigurationProperties;
-  end;
-  Result := FProperties;
-end;
-
 function TConfiguration.GetRecents: IRecents;
 begin
   if not Assigned(FRecents) then
@@ -93,37 +60,21 @@ begin
   Result := FRecents;
 end;
 
-constructor TConfiguration.Create(const AConfigurationFileName: string);
-begin
-  inherited;
-end;
-
 procedure TConfiguration.Initialize;
-begin
-  inherited;
-  Recents.Clear;
-end;
-
-procedure TConfiguration.Loading;
 var
   i: Integer;
   s: string;
   r: IRecent;
 begin
   inherited;
-  if Assigned(IniFile) then
+  RegisterOptions(TInterfaceOptions);
+  RegisterOptions(TReportsOptions);
+  RegisterOptions(TOtherOptions);
+  Recents.Clear;
+  if Assigned(FIniFile) then
   begin
-    with IniFile do
+    with FIniFile do
     begin
-      Properties.EnableQuitConfirmation := ReadBool(RsInterface, RsEnableQuitConfirmation, CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION);
-      Properties.EnableSplashAtStart := ReadBool(RsInterface, RsEnableSplashAtStart, CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START);
-      Properties.EnableStatusbar := ReadBool(RsInterface, RsEnableStatusbar, CONFIGURATION_DEFAULT_ENABLE_STATUSBAR);
-      Properties.EnableToolbar := ReadBool(RsInterface, RsEnableToolbar, CONFIGURATION_DEFAULT_ENABLE_TOOLBAR);
-      Properties.EnablePlaySoundOnComplete := ReadBool(RsOther, RsEnablePlaySoundOnComplete, CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE);
-      Properties.EnableStoreMainFormSizesAndPosition := ReadBool(RsInterface, RsEnableStoreMainFormSizesAndPosition, CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION);
-      Properties.EnableGenerateFastReportDocument := ReadBool(RsReports, RsEnableGenerateFastReportDocument, CONFIGURATION_DEFAULT_ENABLE_GENEDATE_FASTREPORT_DOCUMENT);
-      Properties.EnableGenerateExcelDocument := ReadBool(RsReports, RsEnableGenerateExcelDocument, CONFIGURATION_DEFAULT_ENABLE_GENEDATE_EXCEL_DOCUMENT);
-
       Recents.Clear;
       for i := 0 to ReadInteger(RsRecents, RsQuantity, RECENTS_DEFAULT_COUNT) - 1 do
       begin
@@ -139,50 +90,17 @@ begin
   end;
 end;
 
-procedure TConfiguration.Saving;
+procedure TConfiguration.Finalize;
 var
   i: Integer;
   j: Integer;
   r: IRecent;
 begin
   inherited;
-  if Assigned(IniFile) then
+  if Assigned(FIniFile) then
   begin
-    with IniFile do
+    with FIniFile do
       try
-        if Properties.EnableQuitConfirmation <> CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION then
-        begin
-          WriteBool(RsInterface, RsEnableQuitConfirmation, Properties.EnableQuitConfirmation);
-        end;
-        if Properties.EnableSplashAtStart <> CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START then
-        begin
-          WriteBool(RsInterface, RsEnableSplashAtStart, Properties.EnableSplashAtStart);
-        end;
-        if Properties.EnableStatusbar <> CONFIGURATION_DEFAULT_ENABLE_STATUSBAR then
-        begin
-          WriteBool(RsInterface, RsEnableStatusbar, Properties.EnableStatusbar);
-        end;
-        if Properties.EnableToolbar <> CONFIGURATION_DEFAULT_ENABLE_TOOLBAR then
-        begin
-          WriteBool(RsInterface, RsEnableToolbar, Properties.EnableToolbar);
-        end;
-        if Properties.EnableStoreMainFormSizesAndPosition <> CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION then
-        begin
-          WriteBool(RsInterface, RsEnableStoreMainFormSizesAndPosition, Properties.EnableStoreMainFormSizesAndPosition);
-        end;
-        if Properties.EnableGenerateFastReportDocument <> CONFIGURATION_DEFAULT_ENABLE_GENEDATE_FASTREPORT_DOCUMENT then
-        begin
-          WriteBool(RsReports, RsEnableGenerateFastReportDocument, Properties.EnableGenerateFastReportDocument);
-        end;
-        if Properties.EnableGenerateExcelDocument <> CONFIGURATION_DEFAULT_ENABLE_GENEDATE_EXCEL_DOCUMENT then
-        begin
-          WriteBool(RsReports, RsEnableGenerateExcelDocument, Properties.EnableGenerateExcelDocument);
-        end;
-        if Properties.EnablePlaySoundOnComplete <> CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE then
-        begin
-          WriteBool(RsOther, RsEnablePlaySoundOnComplete, Properties.EnablePlaySoundOnComplete);
-        end;
-
         if Recents.Count <> RECENTS_DEFAULT_COUNT then
         begin
           j := 0;
