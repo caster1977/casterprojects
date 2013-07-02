@@ -133,6 +133,10 @@ begin
               begin
                 WriteString(RsRecents, Format(RsRecentProfile, [IntToStr(j)]), r.FullName);
                 Inc(j);
+              end
+              else
+              begin
+                DeleteKey(RsRecents, Format(RsRecentProfile, [IntToStr(j)]));
               end;
             end;
           end;
