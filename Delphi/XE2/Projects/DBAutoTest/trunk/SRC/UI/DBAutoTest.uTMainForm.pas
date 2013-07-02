@@ -187,6 +187,7 @@ uses
   DBAutoTest.uEConfiguration,
   DBAutoTest.uResourceStrings,
   DBAutoTest.uTInterfaceOptions,
+  DBAutoTest.uTConfigurationConnectionSection,
   DBAutoTest.uTReportsOptions,
   DBAutoTest.uTOtherOptions,
   System.IniFiles;
@@ -865,7 +866,7 @@ end;
 procedure TMainForm.actProcessExecute(Sender: TObject);
 begin
   { TODO : реализовать функционал выполнения выбранных тестов в параллельных тредах }
-  Profile.Tasks.Run(Profile.ADOConnectionString, Configuration.ADOConnectionString);
+  Profile.Tasks.Run(Profile.ADOConnectionString, Configuration.ADOConnectionString, Configuration.Section<TConfigurationConnectionSection>.Server, Configuration.Section<TConfigurationConnectionSection>.Database);
   RefreshTaskList;
 end;
 
