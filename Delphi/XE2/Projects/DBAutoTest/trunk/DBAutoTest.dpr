@@ -21,7 +21,6 @@ uses
   DBAutoTest.uTRecent in 'SRC\Logic\Classes\DBAutoTest.uTRecent.pas',
   DBAutoTest.uTRecents in 'SRC\Logic\Classes\DBAutoTest.uTRecents.pas',
   DBAutoTest.uTProfile in 'SRC\Logic\Classes\DBAutoTest.uTProfile.pas',
-  DBAutoTest.uEConfiguration in 'SRC\Logic\Classes\DBAutoTest.uEConfiguration.pas',
   DBAutoTest.uEProfile in 'SRC\Logic\Classes\DBAutoTest.uEProfile.pas',
   DBAutoTest.uTTaskStatus in 'SRC\Logic\Types\DBAutoTest.uTTaskStatus.pas',
   DBAutoTest.uResourceStrings in 'SRC\Logic\Other\DBAutoTest.uResourceStrings.pas',
@@ -30,7 +29,9 @@ uses
   DBAutoTest.uTReportsOptions in 'SRC\Logic\Classes\DBAutoTest.uTReportsOptions.pas',
   DBAutoTest.uTConfiguration in 'SRC\Logic\Classes\DBAutoTest.uTConfiguration.pas',
   DBAutoTest.uTConnectionOptions in 'SRC\Logic\Classes\DBAutoTest.uTConnectionOptions.pas',
-  DBAutoTest.uTTaskSavingOptions in 'SRC\Logic\Classes\DBAutoTest.uTTaskSavingOptions.pas';
+  DBAutoTest.uTTaskSavingOptions in 'SRC\Logic\Classes\DBAutoTest.uTTaskSavingOptions.pas',
+  DBAutoTest.uTConfigurationConnectionSection in 'SRC\Logic\Classes\DBAutoTest.uTConfigurationConnectionSection.pas',
+  DBAutoTest.uEConfiguration in 'SRC\Logic\Classes\DBAutoTest.uEConfiguration.pas';
 
 {$R *.res}
 

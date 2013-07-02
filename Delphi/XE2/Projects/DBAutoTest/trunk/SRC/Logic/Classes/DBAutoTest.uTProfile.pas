@@ -29,9 +29,13 @@ type
 implementation
 
 uses
+  System.Classes,
   CastersPackage.uIModified,
   System.SysUtils,
+  DBAutoTest.uITask,
+  DBAutoTest.uTTask,
   DBAutoTest.uTTasks,
+  DBAutoTest.uEConfiguration,
   DBAutoTest.uTConnectionOptions,
   DBAutoTest.uTTaskSavingOptions,
   DBAutoTest.uEProfile;
@@ -39,42 +43,9 @@ uses
 resourcestring
   RsProfileSaveError = 'Произошла ошибка при попытке записи настроек профиля в файл!';
 
-procedure TProfile.Finalize;
-//var
-//  i: Integer;
-//  j: Integer;
-//  r: IRecent;
-begin
-  inherited;
-//  if Assigned(FIniFile) then
-//  begin
-//    with FIniFile do
-//      try
-//        if Recents.Count <> RECENTS_DEFAULT_QUANTITY then
-//        begin
-//          j := 0;
-//          for i := 0 to Recents.Count - 1 do
-//          begin
-//            r := Recents.Items[i];
-//            if Assigned(r) then
-//            begin
-//              if r.FullName <> RECENT_DEFAULT_FULL_NAME then
-//              begin
-//                WriteString(RsRecents, Format(RsRecentProfile, [IntToStr(j)]), r.FullName);
-//                Inc(j);
-//              end;
-//            end;
-//          end;
-//          WriteInteger(RsRecents, RsQuantity, j);
-//        end;
-//      except
-//        on EIniFileException do
-//        begin
-//          raise EConfiguration.Create(RsConfigurationSaveError);
-//        end;
-//      end;
-//  end;
-end;
+  RsTasks = 'Тесты';
+  RsQuantity = 'Количество';
+  RsTask = 'Тест %s';
 
 function TProfile.GetADOConnectionString: string;
 begin
@@ -109,32 +80,107 @@ begin
 end;
 
 procedure TProfile.Initialize;
-//var
-//  i: Integer;
-//  s: string;
-//  r: IRecent;
+var
+  i: Integer;
+  s: string;
+  t: ITask;
+  ms: TMemoryStream;
 begin
   inherited;
   RegisterOptions(TConnectionOptions);
   RegisterOptions(TTaskSavingOptions);
   FTasks := GetITasks;
-//  if Assigned(FIniFile) then
-//  begin
-//    with FIniFile do
-//    begin
-//      Recents.Clear;
-//      for i := 0 to ReadInteger(RsRecents, RsQuantity, RECENTS_DEFAULT_QUANTITY) - 1 do
-//      begin
-//        s := Format(RsRecentProfile, [IntToStr(i)]);
-//        r := GetIRecent;
-//        r.FullName := ReadString(RsRecents, s, RECENT_DEFAULT_FULL_NAME);
-//        if r.FullName <> RECENT_DEFAULT_FULL_NAME then
-//        begin
-//          Recents.Add(r);
-//        end;
-//      end;
-//    end;
-//  end;
+  if Assigned(FIniFile) then
+  begin
+    with FIniFile do
+    begin
+      Tasks.Clear;
+      for i := 0 to ReadInteger(RsTasks, RsQuantity, 0) - 1 do
+      begin
+        s := Format(RsTask, [IntToStr(i)]);
+        t := GetITask;
+        t.Enabled := ReadBool(s, 'Enabled', TASK_DEFAULT_ENABLED);
+        t.Group := ReadString(s, 'Group', TASK_DEFAULT_GROUP);
+        t.Name := ReadString(s, 'Name', TASK_DEFAULT_NAME);
+
+        ms := TMemoryStream.Create;
+        try
+          ReadBinaryStream(s, 'SQL', ms);
+          ms.Seek(0, soFromBeginning); // обязательно постувить курсок потока на начало !!!
+          t.SQL.LoadFromStream(ms);
+        finally
+          ms.Free;
+        end;
+
+        if ((t.Enabled <> TASK_DEFAULT_ENABLED) or (t.Group <> TASK_DEFAULT_GROUP) or (t.Name <> TASK_DEFAULT_NAME) or (t.SQL.Text <> TASK_DEFAULT_SQL)) then
+        begin
+          Tasks.Add(t);
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TProfile.Finalize;
+var
+  i: Integer;
+  j: Integer;
+  s: string;
+  t: ITask;
+  ms: TMemoryStream;
+begin
+  inherited;
+  if Assigned(FIniFile) then
+  begin
+    with FIniFile do
+      try
+        if Tasks.Count > 0 then
+        begin
+          j := 0;
+          for i := 0 to Tasks.Count - 1 do
+          begin
+            t := Tasks.Items[i];
+            if Assigned(t) then
+            begin
+              if t.Enabled <> TASK_DEFAULT_ENABLED then
+              begin
+                WriteBool(Format(RsTask, [IntToStr(j)]), 'Enabled', t.Enabled);
+              end;
+              if t.Group <> TASK_DEFAULT_GROUP then
+              begin
+                WriteString(Format(RsTask, [IntToStr(j)]), 'Group', t.Group);
+              end;
+              if t.Name <> TASK_DEFAULT_NAME then
+              begin
+                WriteString(Format(RsTask, [IntToStr(j)]), 'Name', t.Name);
+              end;
+
+              if t.SQL.Text <> TASK_DEFAULT_SQL then
+              begin
+                ms := TMemoryStream.Create;
+                try
+                  t.SQL.SaveToStream(ms);
+                  ms.Seek(0, soFromBeginning); // обязательно постувить курсок потока на начало !!!
+                  WriteBinaryStream(Format(RsTask, [IntToStr(j)]), 'SQL', ms);
+                finally
+                  ms.Free;
+                end;
+              end;
+              if ((t.Enabled <> TASK_DEFAULT_ENABLED) or (t.Group <> TASK_DEFAULT_GROUP) or (t.Name <> TASK_DEFAULT_NAME) or (t.SQL.Text <> TASK_DEFAULT_SQL)) then
+              begin
+                Inc(j);
+              end;
+            end;
+          end;
+          WriteInteger(RsTasks, RsQuantity, j);
+        end;
+      except
+        on EIniFileException do
+        begin
+          raise EConfiguration.Create(RsProfileSaveError);
+        end;
+      end;
+  end;
 end;
 
 end.

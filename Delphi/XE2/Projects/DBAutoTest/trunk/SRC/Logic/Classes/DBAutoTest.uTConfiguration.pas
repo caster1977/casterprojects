@@ -16,6 +16,10 @@ type
   strict private
     FRecents: IRecents;
     function GetRecents: IRecents;
+  strict private
+    function GetADOConnectionString: string;
+  public
+    property ADOConnectionString: string read GetADOConnectionString;
   public
     property Recents: IRecents read GetRecents nodefault;
   end;
@@ -28,6 +32,7 @@ uses
   DBAutoTest.uEConfiguration,
   DBAutoTest.uTInterfaceOptions,
   DBAutoTest.uTReportsOptions,
+  DBAutoTest.uTConfigurationConnectionSection,
   DBAutoTest.uTOtherOptions,
   DBAutoTest.uTRecents,
   DBAutoTest.uIRecent,
@@ -42,14 +47,28 @@ resourcestring
   RsQuantity = 'Количество';
   RsConfigurationSaveError = 'Произошла ошибка при попытке записи настроек программы в файл.';
 
-  RsEnableQuitConfirmation = 'EnableQuitConfirmation';
-  RsEnableSplashAtStart = 'EnableSplashAtStart';
-  RsEnableStatusbar = 'EnableStatusbar';
-  RsEnableToolbar = 'EnableToolbar';
-  RsEnablePlaySoundOnComplete = 'EnablePlaySoundOnComplete';
-  RsEnableStoreMainFormSizesAndPosition = 'EnableStoreMainFormSizesAndPosition';
-  RsEnableGenerateFastReportDocument = 'EnableGenerateFastReportDocument';
-  RsEnableGenerateExcelDocument = 'EnableGenerateExcelDocument';
+function TConfiguration.GetADOConnectionString: string;
+begin
+  Result := Format(ADO_CONNECTION_STRING_PREFIX, [Section<TConfigurationConnectionSection>.Server]);
+
+  if Section<TConfigurationConnectionSection>.WinNTSecurity then
+  begin
+    Result := Result + ADO_CONNECTION_STRING_SUFFIX_INTEGRATED_SECURITY;
+  end
+  else
+  begin
+    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_USER_ID, [Section<TConfigurationConnectionSection>.Login]);
+    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PERSIST_SECURITY_INFO, [BoolToStr(Section<TConfigurationConnectionSection>.EnableStorePassword, True)]);
+    if Section<TConfigurationConnectionSection>.EnableStorePassword then
+    begin
+      Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PASSWORD, [Section<TConfigurationConnectionSection>.Password]);
+    end;
+  end;
+  if Section<TConfigurationConnectionSection>.Database > EmptyStr then
+  begin
+    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_INITIAL_CATALOG, [Section<TConfigurationConnectionSection>.Database]);
+  end;
+end;
 
 function TConfiguration.GetRecents: IRecents;
 begin
@@ -69,6 +88,7 @@ begin
   inherited;
   RegisterOptions(TInterfaceOptions);
   RegisterOptions(TReportsOptions);
+  RegisterOptions(TConfigurationConnectionSection);
   RegisterOptions(TOtherOptions);
   Recents.Clear;
   if Assigned(FIniFile) then

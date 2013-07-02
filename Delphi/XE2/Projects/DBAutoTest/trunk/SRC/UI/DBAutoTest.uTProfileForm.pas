@@ -23,7 +23,8 @@ uses
   Vcl.Mask,
   Vcl.ComCtrls,
   Vcl.ImgList,
-  DBAutoTest.uConsts;
+  DBAutoTest.uConsts,
+  DBAutoTest.uTProfile;
 
 type
   TProfileForm = class(TForm)
@@ -98,13 +99,21 @@ type
     procedure mePasswordKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure actEnableStoreTasksExecute(Sender: TObject);
     procedure actEnableStoreOnlyEnabledTasksExecute(Sender: TObject);
+    procedure actApplyUpdate(Sender: TObject);
+    procedure actApplyExecute(Sender: TObject);
   strict private
     FRefreshingServers: Boolean;
     FRefreshingDatabases: Boolean;
     procedure GetServerList(const aList: TStrings; var ARefreshing: Boolean);
     procedure GetDatabasesList(const aList: TStrings);
+
+  strict private
+    FProfile: TProfile;
+    function GetProfile: TProfile;
+    property Profile: TProfile read GetProfile nodefault;
+
   public
-    constructor Create(AOwner: TComponent; const AActivePage: Integer = PROFILE_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const AProfile: TProfile; const AActivePage: Integer = PROFILE_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
 
   strict private
     function GetActivePage: Integer;
@@ -166,15 +175,9 @@ implementation
 {$R *.dfm}
 
 uses
+  DBAutoTest.uTConnectionOptions,
+  DBAutoTest.uTTaskSavingOptions,
   CastersPackage.UNetSrvList;
-
-constructor TProfileForm.Create(AOwner: TComponent; const AActivePage: Integer);
-begin
-  inherited Create(AOwner);
-  ActivePage := AActivePage;
-  FRefreshingServers := False;
-  FRefreshingDatabases := False;
-end;
 
 procedure TProfileForm.ebLoginKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
@@ -183,6 +186,28 @@ begin
     Key := 0;
     actRefreshDatabases.Execute;
   end;
+end;
+
+procedure TProfileForm.actApplyExecute(Sender: TObject);
+begin
+  if Assigned(Profile) then
+  begin
+    Profile.Section<TConnectionOptions>.Server := Server;
+    Profile.Section<TConnectionOptions>.WinNTSecurity := WinNTSecurity;
+    Profile.Section<TConnectionOptions>.Login := Login;
+    Profile.Section<TConnectionOptions>.Password := Password;
+    Profile.Section<TConnectionOptions>.EnableStorePassword := EnableStorePassword;
+    Profile.Section<TConnectionOptions>.EnableEmptyPassword := EnableEmptyPassword;
+    Profile.Section<TConnectionOptions>.Database := Database;
+    Profile.Section<TTaskSavingOptions>.EnableStoreTasks := EnableStoreTasks;
+    Profile.Section<TTaskSavingOptions>.EnableStoreOnlyEnabledTasks := EnableStoreOnlyEnabledTasks;
+  end;
+  ModalResult := mrOk;
+end;
+
+procedure TProfileForm.actApplyUpdate(Sender: TObject);
+begin
+  actApply.Enabled := (Server > EmptyStr) and (Database > EmptyStr);
 end;
 
 procedure TProfileForm.actCancelExecute(Sender: TObject);
@@ -222,6 +247,16 @@ end;
 
 function TProfileForm.GetPassword: string;
 begin
+  Result := EmptyStr;
+  if mePassword.Enabled then
+  begin
+    Result := mePassword.Text;
+  end;
+end;
+
+function TProfileForm.GetProfile: TProfile;
+begin
+  Result := FProfile;
 end;
 
 procedure TProfileForm.SetActivePage(const AValue: Integer);
@@ -256,8 +291,24 @@ begin
 end;
 
 procedure TProfileForm.SetDatabase(const AValue: string);
+var
+  i, j: Integer;
+  s: string;
 begin
-
+  i := -1;
+  s := Trim(AValue);
+  for j := 0 to cmbDatabaseName.Items.Count - 1 do
+  begin
+    if cmbDatabaseName.Items[j] = s then
+    begin
+      i := j;
+      Break;
+    end;
+  end;
+  if cmbDatabaseName.ItemIndex <> i then
+  begin
+    cmbDatabaseName.ItemIndex := i;
+  end;
 end;
 
 procedure TProfileForm.SetEnableEmptyPassword(const AValue: Boolean);
@@ -284,23 +335,63 @@ begin
 end;
 
 procedure TProfileForm.SetLogin(const AValue: string);
+var
+  s: string;
 begin
-
+  s := Trim(AValue);
+  if ebLogin.Text <> s then
+  begin
+    ebLogin.Text := s;
+  end;
 end;
 
 procedure TProfileForm.SetPassword(const AValue: string);
 begin
-
+  mePassword.Text := AValue;
 end;
 
 procedure TProfileForm.SetServer(const AValue: string);
+var
+  s: string;
+  i, j: Integer;
 begin
-
+  i := -1;
+  s := Trim(AValue);
+  for j := 0 to cmbServers.Items.Count - 1 do
+  begin
+    if cmbServers.Items[j] = s then
+    begin
+      i := j;
+      Break;
+    end;
+  end;
+  if i = -1 then
+  begin
+    i := cmbServers.Items.Add(s);
+  end;
+  if cmbServers.ItemIndex <> i then
+  begin
+    cmbServers.ItemIndex := i;
+  end;
+  actRefreshDatabases.Execute;
 end;
 
 procedure TProfileForm.SetWinNTSecurity(const AValue: Boolean);
 begin
-
+  if AValue then
+  begin
+    if rbWinNTSecurity.Enabled and (not rbWinNTSecurity.Checked) then
+    begin
+      rbWinNTSecurity.Checked := True;
+    end;
+  end
+  else
+  begin
+    if rbLoginAndPassword.Enabled and (not rbLoginAndPassword.Checked) then
+    begin
+      rbLoginAndPassword.Checked := True;
+    end;
+  end;
 end;
 
 procedure TProfileForm.cmbPageNameSelect(Sender: TObject);
@@ -364,15 +455,22 @@ end;
 
 procedure TProfileForm.cmbServersDropDown(Sender: TObject);
 begin
-  if cmbServers.Items.Count = 0 then
+  //if cmbServers.Items.Count = 0 then
   begin
     actRefreshServers.Execute;
   end;
 end;
 
 function TProfileForm.GetServer: string;
+var
+  s: string;
 begin
-
+  Result := EmptyStr;
+  s := Trim(cmbServers.Text);
+  if (s > EmptyStr) and (cmbDatabaseName.ItemIndex >= 0) then
+  begin
+    Result := s;
+  end;
 end;
 
 procedure TProfileForm.GetServerList(const aList: TStrings; var ARefreshing: Boolean);
@@ -416,7 +514,14 @@ end;
 
 function TProfileForm.GetDatabase: string;
 begin
-
+  Result := EmptyStr;
+  if cmbDatabaseName.ItemIndex > -1 then
+  begin
+    if cmbDatabaseName.Items.Count > cmbDatabaseName.ItemIndex then
+    begin
+      Result := cmbDatabaseName.Items[cmbDatabaseName.ItemIndex];
+    end;
+  end;
 end;
 
 procedure TProfileForm.GetDatabasesList(const aList: TStrings);
@@ -513,7 +618,14 @@ begin
   FRefreshingDatabases := True;
   actRefreshDatabases.Enabled := False;
   try
-    GetDatabasesList(cmbDatabaseName.Items);
+    try
+      GetDatabasesList(cmbDatabaseName.Items);
+    except
+      on e: Exception do
+      begin
+        MessageDlg(e.Message, mtError, [mbOk], 0);
+      end;
+    end;
   finally
     FRefreshingDatabases := False;
   end;
@@ -524,6 +636,34 @@ begin
   cmbServers.Text := cmbServers.Items[cmbServers.ItemIndex];
   cmbServers.Repaint;
   actRefreshDatabases.Execute;
+end;
+
+constructor TProfileForm.Create(AOwner: TComponent; const AProfile: TProfile;
+  const AActivePage: Integer);
+
+  procedure ApplyProfile;
+  begin
+    if Assigned(Profile) then
+    begin
+      Server := Profile.Section<TConnectionOptions>.Server;
+      WinNTSecurity := Profile.Section<TConnectionOptions>.WinNTSecurity;
+      Login := Profile.Section<TConnectionOptions>.Login;
+      Password := Profile.Section<TConnectionOptions>.Password;
+      EnableStorePassword := Profile.Section<TConnectionOptions>.EnableStorePassword;
+      EnableEmptyPassword := Profile.Section<TConnectionOptions>.EnableEmptyPassword;
+      Database := Profile.Section<TConnectionOptions>.Database;
+      EnableStoreTasks := Profile.Section<TTaskSavingOptions>.EnableStoreTasks;
+      EnableStoreOnlyEnabledTasks := Profile.Section<TTaskSavingOptions>.EnableStoreOnlyEnabledTasks;
+    end;
+  end;
+
+begin
+  inherited Create(AOwner);
+  ActivePage := AActivePage;
+  FRefreshingServers := False;
+  FRefreshingDatabases := False;
+  FProfile := AProfile;
+  ApplyProfile;
 end;
 
 procedure TProfileForm.cmbServersKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);

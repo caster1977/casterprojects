@@ -13,9 +13,13 @@ type
     function GetTask: ITask;
     property Task: ITask read GetTask nodefault;
   strict private
-    FADOConnectionString: WideString;
-    function GetADOConnectionString: WideString;
-    property ADOConnectionString: WideString read GetADOConnectionString nodefault;
+    FSourceADOConnectionString: WideString;
+    function GetSourceADOConnectionString: WideString;
+    property SourceADOConnectionString: WideString read GetSourceADOConnectionString nodefault;
+  strict private
+    FDestinationADOConnectionString: WideString;
+    function GetDestinationADOConnectionString: WideString;
+    property DestinationADOConnectionString: WideString read GetDestinationADOConnectionString nodefault;
   strict private
     FThreadMessage: Cardinal;
     function RegisterThreadMessage: Boolean;
@@ -23,13 +27,14 @@ type
   protected
     procedure Execute; override;
   public
-    constructor Create(const ATask: ITask; const AADOConnectionString: WideString = ''); reintroduce; virtual;
+    constructor Create(const ATask: ITask; const ASourceADOConnectionString: WideString = ''; const ADestinationADOConnectionString: WideString = ''); reintroduce; virtual;
   end;
 
 implementation
 
 uses
   CastersPackage.uTCOMInitClass,
+  System.StrUtils,
   Winapi.Windows,
   System.SysUtils,
   Data.Win.ADODB,
@@ -43,7 +48,7 @@ resourcestring
   RsITaskIsNil = 'ITask is nil.';
   RsCannotRegisterThreadMessage = 'Не удалось зарегистрировать оконное сообщение для дочернего потока.';
 
-constructor TTaskThread.Create(const ATask: ITask; const AADOConnectionString: WideString);
+constructor TTaskThread.Create(const ATask: ITask; const ASourceADOConnectionString: WideString; const ADestinationADOConnectionString: WideString);
 begin
   if Assigned(ATask) then
   begin
@@ -52,7 +57,8 @@ begin
     FreeOnTerminate := True;
     OnTerminate := OnTerminateProc;
     FTask := ATask;
-    FADOConnectionString := AADOConnectionString;
+    FSourceADOConnectionString := ASourceADOConnectionString;
+    FDestinationADOConnectionString := ADestinationADOConnectionString;
   end
   else
   begin
@@ -60,9 +66,14 @@ begin
   end;
 end;
 
-function TTaskThread.GetADOConnectionString: WideString;
+function TTaskThread.GetSourceADOConnectionString: WideString;
 begin
-  Result := FADOConnectionString;
+  Result := FSourceADOConnectionString;
+end;
+
+function TTaskThread.GetDestinationADOConnectionString: WideString;
+begin
+  Result := FDestinationADOConnectionString;
 end;
 
 function TTaskThread.GetTask: ITask;
@@ -106,14 +117,14 @@ begin
     begin
       query := TADOQuery.Create(Application.MainForm);
       try
-        query.ConnectionString := ADOConnectionString;
+        query.ConnectionString := SourceADOConnectionString;
         query.CommandTimeout := ADO_CONNECTION_DEFAULT_COMMAND_TIMEOUT;
         query.SQL.Assign(Task.SQL);
         try
           query.Open;
-          if not Eof then
+          if not query.Eof then
           begin
-            i := query.FieldValues['Result'];
+            i := query.Fields[0].AsInteger;
           end;
         finally
           query.Close;
@@ -138,6 +149,26 @@ begin
         // Application.MainForm.Caption := AnsiString(HexDisplayPrefix + IntToHex(PInteger(Task)^, SizeOf(PInteger) * 2));
       end);
     PostMessage(Application.MainForm.Handle, FThreadMessage, NativeUInt(Task), NativeUInt(0));
+    // сохранение результатов в базу
+    if Trim(Task.SQL.Text) > EmptyStr then
+    begin
+      query := TADOQuery.Create(Application.MainForm);
+      try
+        query.ConnectionString := DestinationADOConnectionString;
+        query.CommandTimeout := ADO_CONNECTION_DEFAULT_COMMAND_TIMEOUT;
+        query.SQL.Text := Format('INSERT INTO TestResults ' +
+          '(ServerName, DBName, GroupName, Name, Query, StartTime, FinishTime, Passed) ' +
+          'VALUES (''%s'', ''%s'', ''%s'', ''%s'', ''%s'', ''%s'', ''%s'', %d)',
+          ['TestServer', 'TestDatabase', Task.Group, Task.Name, StringReplace(Task.SQL.Text, Char(39), Char(39) + Char(39), [rfReplaceAll]), DateTimeToStr(Task.StartTime), DateTimeToStr(Task.StopTime), Integer(Task.Status = tsComplete)]);
+        try
+          query.ExecSQL;
+        finally
+          query.Close;
+        end;
+      finally
+        FreeAndNil(query);
+      end;
+    end;
   end;
 end;
 

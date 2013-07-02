@@ -37,7 +37,7 @@ type
     function GetSQL: TStringList;
     procedure SetSQL(const AValue: TStringList);
   public
-    property SQL: TStringList read GetSQL write SetSQL default TASK_DEFAULT_SQL;
+    property SQL: TStringList read GetSQL write SetSQL nodefault;
 
   strict private
     FEnabled: Boolean;
@@ -163,7 +163,7 @@ begin
   Enabled := TASK_DEFAULT_ENABLED;
   Group := TASK_DEFAULT_GROUP;
   name := TASK_DEFAULT_NAME;
-  SQL := TASK_DEFAULT_SQL;
+  SQL.Text := TASK_DEFAULT_SQL;
   Status := TASK_DEFAULT_STATUS;
   StartTime := TASK_DEFAULT_TIME;
   StopTime := TASK_DEFAULT_TIME;
