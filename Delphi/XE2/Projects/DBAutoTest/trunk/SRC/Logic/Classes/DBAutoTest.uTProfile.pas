@@ -145,14 +145,26 @@ begin
               if t.Enabled <> TASK_DEFAULT_ENABLED then
               begin
                 WriteBool(Format(RsTask, [IntToStr(j)]), 'Enabled', t.Enabled);
+              end
+              else
+              begin
+                DeleteKey(Format(RsTask, [IntToStr(j)]), 'Enabled');
               end;
               if t.Group <> TASK_DEFAULT_GROUP then
               begin
                 WriteString(Format(RsTask, [IntToStr(j)]), 'Group', t.Group);
+              end
+              else
+              begin
+                DeleteKey(Format(RsTask, [IntToStr(j)]), 'Group');
               end;
               if t.Name <> TASK_DEFAULT_NAME then
               begin
                 WriteString(Format(RsTask, [IntToStr(j)]), 'Name', t.Name);
+              end
+              else
+              begin
+                DeleteKey(Format(RsTask, [IntToStr(j)]), 'Name');
               end;
 
               if t.SQL.Text <> TASK_DEFAULT_SQL then
@@ -165,6 +177,10 @@ begin
                 finally
                   ms.Free;
                 end;
+              end
+              else
+              begin
+                DeleteKey(Format(RsTask, [IntToStr(j)]), 'SQL');
               end;
               if ((t.Enabled <> TASK_DEFAULT_ENABLED) or (t.Group <> TASK_DEFAULT_GROUP) or (t.Name <> TASK_DEFAULT_NAME) or (t.SQL.Text <> TASK_DEFAULT_SQL)) then
               begin
@@ -172,7 +188,14 @@ begin
               end;
             end;
           end;
-          WriteInteger(RsTasks, RsQuantity, j);
+          if j <> 0 then
+          begin
+            WriteInteger(RsTasks, RsQuantity, j)
+          end
+          else
+          begin
+            DeleteKey(RsTasks, RsQuantity);
+          end;
         end;
       except
         on EIniFileException do
