@@ -27,7 +27,11 @@ type
   protected
     procedure Execute; override;
   public
-    constructor Create(const ATask: ITask; const ASourceADOConnectionString: WideString = ''; const ADestinationADOConnectionString: WideString = ''); reintroduce; virtual;
+    constructor Create(const ATask: ITask;
+    const ASourceADOConnectionString: WideString = '';
+    const ADestinationADOConnectionString: WideString = '';
+    const ASourceServerName: WideString = '';
+    const ASourceDatabeseName: WideString = ''); reintroduce; virtual;
   end;
 
 implementation
@@ -48,7 +52,8 @@ resourcestring
   RsITaskIsNil = 'ITask is nil.';
   RsCannotRegisterThreadMessage = 'Не удалось зарегистрировать оконное сообщение для дочернего потока.';
 
-constructor TTaskThread.Create(const ATask: ITask; const ASourceADOConnectionString: WideString; const ADestinationADOConnectionString: WideString);
+constructor TTaskThread.Create(const ATask: ITask;
+  const ASourceADOConnectionString: WideString = ''; const ADestinationADOConnectionString: WideString = ''; const ASourceServerName: WideString = ''; const ASourceDatabeseName: WideString = '');
 begin
   if Assigned(ATask) then
   begin
