@@ -270,6 +270,10 @@ begin
     begin
     FreeAndNil(Recents);
     end; }
+  if Assigned(Profile) then
+  begin
+    Profile.Free;
+  end;
   if Assigned(Configuration) then
   begin
     Configuration.Free;
@@ -353,7 +357,7 @@ function TMainForm.GetProfile: TProfile;
 begin
   if not Assigned(FProfile) then
   begin
-    FProfile := TProfile.Create;
+    FProfile := TProfile.Create(True, ChangeFileExt(ExpandFileName(ParamStr(0)), '.profile'));
   end;
   Result := FProfile;
 end;
@@ -390,6 +394,7 @@ begin
 
   ApplyConfiguration;
   RefreshRecentsMenu;
+  RefreshTaskList;
 end;
 
 { procedure TMainForm.LoadConfiguration;
@@ -496,7 +501,7 @@ end;
 
 procedure TMainForm.actCreateTaskUpdate(Sender: TObject);
 begin
-  // actCreateTask.Enabled := not FProcessActive;
+  //actCreateTask.Enabled := not FProcessActive;
 end;
 
 procedure TMainForm.actDeleteTaskExecute(Sender: TObject);
@@ -642,16 +647,19 @@ begin
 end;
 
 procedure TMainForm.actProfilePropertiesExecute(Sender: TObject);
+var
+  form: TProfileForm;
 begin
-  with TProfileForm.Create(Self) do
-    try
-      ShowModal;
-      if ModalResult = mrOk then
-      begin
-      end;
-    finally
-      Free;
-    end;
+  form := TProfileForm.Create(Self, Profile);
+  try
+    form.ShowModal;
+    {if form.ModalResult = mrOk then
+    begin
+      ApplyProfile;
+    end;}
+  finally
+    form.Free;
+  end;
 end;
 
 procedure TMainForm.actProfilePropertiesUpdate(Sender: TObject);
@@ -857,7 +865,7 @@ end;
 procedure TMainForm.actProcessExecute(Sender: TObject);
 begin
   { TODO : реализовать функционал выполнения выбранных тестов в параллельных тредах }
-  Profile.Tasks.Run(Profile.ADOConnectionString);
+  Profile.Tasks.Run(Profile.ADOConnectionString, Configuration.ADOConnectionString);
   RefreshTaskList;
 end;
 

@@ -12,7 +12,7 @@ type
   strict protected
     procedure Initialize; override;
   public
-    procedure Run(const AADOConnectionString: WideString);
+    procedure Run(const ASourceADOConnectionString, ADestinationADOConnectionString: WideString);
   end;
 
 function GetITasks: ITasks;
@@ -42,7 +42,7 @@ begin
   RemoveItemErrorString := RsCantRemoveTaskFromTasks;
 end;
 
-procedure TTasks.Run(const AADOConnectionString: WideString);
+procedure TTasks.Run(const ASourceADOConnectionString, ADestinationADOConnectionString: WideString);
 var
   i: Integer;
 begin
@@ -51,7 +51,7 @@ begin
     Items[i].Status := tsUnknown;
     if Items[i].Enabled then
     begin
-      with TTaskThread.Create(Items[i], AADOConnectionString) do
+      with TTaskThread.Create(Items[i], ASourceADOConnectionString, ADestinationADOConnectionString) do
         try
           Start;
         except

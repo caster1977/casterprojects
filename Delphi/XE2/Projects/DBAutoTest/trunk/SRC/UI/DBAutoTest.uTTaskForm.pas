@@ -61,15 +61,15 @@ type
     procedure SetTaskGroup(const AValue: string);
     procedure SetTaskName(const AValue: string);
     procedure SetTaskSQL(const AValue: TStringList);
-    property TaskEnabled: Boolean read GetTaskEnabled write SetTaskEnabled
-      default TASK_DEFAULT_ENABLED;
+
+    property Tasks: ITasks read GetTasks nodefault;
+
+    property TaskEnabled: Boolean read GetTaskEnabled write SetTaskEnabled default TASK_DEFAULT_ENABLED;
     property TaskGroup: string read GetTaskGroup write SetTaskGroup nodefault;
     property TaskName: string read GetTaskName write SetTaskName nodefault;
-    property Tasks: ITasks read GetTasks nodefault;
-    property TaskSQL: TStringList read GetTaskSQL write SetTaskSQL default TASK_DEFAULT_SQL;
+    property TaskSQL: TStringList read GetTaskSQL write SetTaskSQL nodefault;
   public
-    constructor Create(AOwner: TComponent; const ATasks: ITasks; const AIndex: Integer = -1);
-      reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const ATasks: ITasks; const AIndex: Integer = -1); reintroduce; virtual;
     property TaskIndex: Integer read GetTaskIndex nodefault;
   end;
 
@@ -126,17 +126,14 @@ var
 begin
   if TaskIndex = -1 then
   begin
-    actApply.Enabled := (TaskGroup <> EmptyStr) and (TaskName <> EmptyStr) and
-      (TaskSQL.Text <> EmptyStr);
+    actApply.Enabled := (TaskGroup <> EmptyStr) and (TaskName <> EmptyStr) and (TaskSQL.Text <> EmptyStr);
   end
   else
   begin
     t := Tasks[TaskIndex];
     if Assigned(t) then
     begin
-      actApply.Enabled := ((TaskGroup <> t.Group) or (TaskName <> t.Name) or
-        (TaskSQL.Text <> t.SQL.Text)) and ((TaskGroup <> EmptyStr) and (TaskName <> EmptyStr) and
-        (TaskSQL.Text <> EmptyStr));
+      actApply.Enabled := ((TaskGroup <> t.Group) or (TaskName <> t.Name) or (TaskSQL.Text <> t.SQL.Text)) and ((TaskGroup <> EmptyStr) and (TaskName <> EmptyStr) and (TaskSQL.Text <> EmptyStr));
     end;
   end;
   btnApply.Default := actApply.Enabled;
@@ -156,8 +153,7 @@ end;
 
 procedure TTaskForm.actClearUpdate(Sender: TObject);
 begin
-  actClear.Enabled := (TaskGroup <> EmptyStr) or (TaskName <> EmptyStr) or
-    (TaskSQL.Text <> EmptyStr);
+  actClear.Enabled := (TaskGroup <> EmptyStr) or (TaskName <> EmptyStr) or (TaskSQL.Text <> EmptyStr);
 end;
 
 constructor TTaskForm.Create(AOwner: TComponent; const ATasks: ITasks; const AIndex: Integer);
@@ -222,7 +218,7 @@ begin
     Caption := RsAddTaskCaption;
     TaskGroup := TASK_DEFAULT_GROUP;
     TaskName := TASK_DEFAULT_NAME;
-    TaskSQL := TASK_DEFAULT_SQL;
+    TaskSQL.Text := TASK_DEFAULT_SQL;
     TaskEnabled := TASK_DEFAULT_ENABLED;
   end
   else

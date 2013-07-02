@@ -140,7 +140,6 @@
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTRecent.pas"/>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTRecents.pas"/>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTProfile.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uEConfiguration.pas"/>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uEProfile.pas"/>
         <DCCReference Include="SRC\Logic\Types\DBAutoTest.uTTaskStatus.pas"/>
         <DCCReference Include="SRC\Logic\Other\DBAutoTest.uResourceStrings.pas"/>
@@ -150,6 +149,8 @@
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTConfiguration.pas"/>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTConnectionOptions.pas"/>
         <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTTaskSavingOptions.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uTConfigurationConnectionSection.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\DBAutoTest.uEConfiguration.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
