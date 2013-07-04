@@ -216,9 +216,9 @@ uses
   CastersPackage.uRoutines,
   CastersPackage.UNetSrvList,
   System.UITypes,
-  DBAutoTest.uTInterfaceOptions,
-  DBAutoTest.uTReportsOptions,
-  DBAutoTest.uTConfigurationConnectionSection,
+  DBAutoTest.Configuration.uTInterface,
+  DBAutoTest.Configuration.uTReports,
+  DBAutoTest.Configuration.uTConnection,
   DBAutoTest.uTOtherOptions;
 
 resourcestring
@@ -232,21 +232,21 @@ constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: 
   begin
     if Assigned(Configuration) then
     begin
-      EnableQuitConfirmation := Configuration.Section<TInterfaceOptions>.EnableQuitConfirmation;
-      EnableSplashAtStart := Configuration.Section<TInterfaceOptions>.EnableSplashAtStart;
-      EnableStatusbar := Configuration.Section<TInterfaceOptions>.EnableStatusbar;
-      EnableToolbar := Configuration.Section<TInterfaceOptions>.EnableToolbar;
-      EnableStoreMainFormSizesAndPosition := Configuration.Section<TInterfaceOptions>.EnableStoreMainFormSizesAndPosition;
-      EnableGenerateFastReportDocument := Configuration.Section<TReportsOptions>.EnableGenerateFastReportDocument;
-      EnableGenerateExcelDocument := Configuration.Section<TReportsOptions>.EnableGenerateExcelDocument;
+      EnableQuitConfirmation := Configuration.Section<TInterface>.EnableQuitConfirmation;
+      EnableSplashAtStart := Configuration.Section<TInterface>.EnableSplashAtStart;
+      EnableStatusbar := Configuration.Section<TInterface>.EnableStatusbar;
+      EnableToolbar := Configuration.Section<TInterface>.EnableToolbar;
+      EnableStoreMainFormSizesAndPosition := Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition;
+      EnableGenerateFastReportDocument := Configuration.Section<TReports>.EnableGenerateFastReportDocument;
+      EnableGenerateExcelDocument := Configuration.Section<TReports>.EnableGenerateExcelDocument;
       EnablePlaySoundOnComplete := Configuration.Section<TOtherOptions>.EnablePlaySoundOnComplete;
-      Server := Configuration.Section<TConfigurationConnectionSection>.Server;
-      WinNTSecurity := Configuration.Section<TConfigurationConnectionSection>.WinNTSecurity;
-      Login := Configuration.Section<TConfigurationConnectionSection>.Login;
-      Password := Configuration.Section<TConfigurationConnectionSection>.Password;
-      EnableStorePassword := Configuration.Section<TConfigurationConnectionSection>.EnableStorePassword;
-      EnableEmptyPassword := Configuration.Section<TConfigurationConnectionSection>.EnableEmptyPassword;
-      Database := Configuration.Section<TConfigurationConnectionSection>.Database;
+      Server := Configuration.Section<TConnection>.Server;
+      WinNTSecurity := Configuration.Section<TConnection>.WinNTSecurity;
+      Login := Configuration.Section<TConnection>.Login;
+      Password := Configuration.Section<TConnection>.Password;
+      EnableStorePassword := Configuration.Section<TConnection>.EnableStorePassword;
+      EnableEmptyPassword := Configuration.Section<TConnection>.EnableEmptyPassword;
+      Database := Configuration.Section<TConnection>.Database;
     end;
   end;
 
@@ -385,20 +385,20 @@ procedure TConfigurationForm.actApplyExecute(Sender: TObject);
 begin
   if Assigned(Configuration) then
   begin
-    Configuration.Section<TInterfaceOptions>.EnableQuitConfirmation := EnableQuitConfirmation;
-    Configuration.Section<TInterfaceOptions>.EnableSplashAtStart := EnableSplashAtStart;
-    Configuration.Section<TInterfaceOptions>.EnableStatusbar := EnableStatusbar;
-    Configuration.Section<TInterfaceOptions>.EnableToolbar := EnableToolbar;
-    Configuration.Section<TInterfaceOptions>.EnableStoreMainFormSizesAndPosition := EnableStoreMainFormSizesAndPosition;
-    Configuration.Section<TReportsOptions>.EnableGenerateFastReportDocument := EnableGenerateFastReportDocument;
-    Configuration.Section<TReportsOptions>.EnableGenerateExcelDocument := EnableGenerateExcelDocument;
-    Configuration.Section<TConfigurationConnectionSection>.Server := Server;
-    Configuration.Section<TConfigurationConnectionSection>.WinNTSecurity := WinNTSecurity;
-    Configuration.Section<TConfigurationConnectionSection>.Login := Login;
-    Configuration.Section<TConfigurationConnectionSection>.Password := Password;
-    Configuration.Section<TConfigurationConnectionSection>.EnableStorePassword := EnableStorePassword;
-    Configuration.Section<TConfigurationConnectionSection>.EnableEmptyPassword := EnableEmptyPassword;
-    Configuration.Section<TConfigurationConnectionSection>.Database := Database;
+    Configuration.Section<TInterface>.EnableQuitConfirmation := EnableQuitConfirmation;
+    Configuration.Section<TInterface>.EnableSplashAtStart := EnableSplashAtStart;
+    Configuration.Section<TInterface>.EnableStatusbar := EnableStatusbar;
+    Configuration.Section<TInterface>.EnableToolbar := EnableToolbar;
+    Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition := EnableStoreMainFormSizesAndPosition;
+    Configuration.Section<TReports>.EnableGenerateFastReportDocument := EnableGenerateFastReportDocument;
+    Configuration.Section<TReports>.EnableGenerateExcelDocument := EnableGenerateExcelDocument;
+    Configuration.Section<TConnection>.Server := Server;
+    Configuration.Section<TConnection>.WinNTSecurity := WinNTSecurity;
+    Configuration.Section<TConnection>.Login := Login;
+    Configuration.Section<TConnection>.Password := Password;
+    Configuration.Section<TConnection>.EnableStorePassword := EnableStorePassword;
+    Configuration.Section<TConnection>.EnableEmptyPassword := EnableEmptyPassword;
+    Configuration.Section<TConnection>.Database := Database;
     Configuration.Section<TOtherOptions>.EnablePlaySoundOnComplete := EnablePlaySoundOnComplete;
   end;
   ModalResult := mrOk;
@@ -411,14 +411,14 @@ begin
   b := False;
   if Assigned(Configuration) then
   begin
-    b := not((Configuration.Section<TOtherOptions>.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete) and (Configuration.Section<TInterfaceOptions>.EnableQuitConfirmation = EnableQuitConfirmation) and
-      (Configuration.Section<TInterfaceOptions>.EnableSplashAtStart = EnableSplashAtStart) and (Configuration.Section<TInterfaceOptions>.EnableStatusbar = EnableStatusbar) and (Configuration.Section<TInterfaceOptions>.EnableToolbar = EnableToolbar)
-      and (Configuration.Section<TInterfaceOptions>.EnableStoreMainFormSizesAndPosition = EnableStoreMainFormSizesAndPosition) and (Configuration.Section<TReportsOptions>.EnableGenerateFastReportDocument = EnableGenerateFastReportDocument) and
-      (Configuration.Section<TReportsOptions>.EnableGenerateExcelDocument = EnableGenerateExcelDocument) and
+    b := not((Configuration.Section<TOtherOptions>.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete) and (Configuration.Section<TInterface>.EnableQuitConfirmation = EnableQuitConfirmation) and
+      (Configuration.Section<TInterface>.EnableSplashAtStart = EnableSplashAtStart) and (Configuration.Section<TInterface>.EnableStatusbar = EnableStatusbar) and (Configuration.Section<TInterface>.EnableToolbar = EnableToolbar)
+      and (Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition = EnableStoreMainFormSizesAndPosition) and (Configuration.Section<TReports>.EnableGenerateFastReportDocument = EnableGenerateFastReportDocument) and
+      (Configuration.Section<TReports>.EnableGenerateExcelDocument = EnableGenerateExcelDocument) and
 
-      (Configuration.Section<TConfigurationConnectionSection>.Server = Server) and (Configuration.Section<TConfigurationConnectionSection>.WinNTSecurity = WinNTSecurity) and (Configuration.Section<TConfigurationConnectionSection>.Login = Login) and
-      (Configuration.Section<TConfigurationConnectionSection>.Password = Password) and (Configuration.Section<TConfigurationConnectionSection>.EnableStorePassword = EnableStorePassword) and
-      (Configuration.Section<TConfigurationConnectionSection>.EnableEmptyPassword = EnableEmptyPassword) and (Configuration.Section<TConfigurationConnectionSection>.Database = Database));
+      (Configuration.Section<TConnection>.Server = Server) and (Configuration.Section<TConnection>.WinNTSecurity = WinNTSecurity) and (Configuration.Section<TConnection>.Login = Login) and
+      (Configuration.Section<TConnection>.Password = Password) and (Configuration.Section<TConnection>.EnableStorePassword = EnableStorePassword) and
+      (Configuration.Section<TConnection>.EnableEmptyPassword = EnableEmptyPassword) and (Configuration.Section<TConnection>.Database = Database));
   end;
   actApply.Enabled := b;
   btnApply.Default := b;

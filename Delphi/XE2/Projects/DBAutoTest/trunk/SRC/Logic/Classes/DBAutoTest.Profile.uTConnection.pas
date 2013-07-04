@@ -1,4 +1,4 @@
-unit DBAutoTest.uTConfigurationConnectionSection;
+unit DBAutoTest.Profile.uTConnection;
 
 interface
 
@@ -10,21 +10,21 @@ uses
 
 type
   [TSection(CONNECTION_SECTION)]
-  TConfigurationConnectionSection = class(TCustomSection)
+  TConnectionSection = class(TCustomSection)
   public
-    [TDefaultValue(CONFIGURATION_DEFAULT_SERVER)]
+    [TDefaultValue(PROFILE_DEFAULT_SERVER)]
     property Server: string index 0 read GetStringValue write SetStringValue;
-    [TDefaultValue(CONFIGURATION_DEFAULT_WIN_NT_SECURITY)]
+    [TDefaultValue(PROFILE_DEFAULT_WIN_NT_SECURITY)]
     property WinNTSecurity: Boolean index 1 read GetBooleanValue write SetBooleanValue;
-    [TDefaultValue(CONFIGURATION_DEFAULT_LOGIN)]
+    [TDefaultValue(PROFILE_DEFAULT_LOGIN)]
     property Login: string index 2 read GetStringValue write SetStringValue;
-    [TDefaultValue(CONFIGURATION_DEFAULT_PASSWORD)]
+    [TDefaultValue(PROFILE_DEFAULT_PASSWORD)]
     property Password: string index 3 read GetStringValue write SetStringValue;
-    [TDefaultValue(CONFIGURATION_DEFAULT_ENABLE_STORE_PASSWORD)]
+    [TDefaultValue(PROFILE_DEFAULT_ENABLE_STORE_PASSWORD)]
     property EnableStorePassword: Boolean index 4 read GetBooleanValue write SetBooleanValue;
-    [TDefaultValue(CONFIGURATION_DEFAULT_ENABLE_EMPTY_PASSWORD)]
+    [TDefaultValue(PROFILE_DEFAULT_ENABLE_EMPTY_PASSWORD)]
     property EnableEmptyPassword: Boolean index 5 read GetBooleanValue write SetBooleanValue;
-    [TDefaultValue(CONFIGURATION_DEFAULT_DATABASE)]
+    [TDefaultValue(PROFILE_DEFAULT_DATABASE)]
     property Database: string index 6 read GetStringValue write SetStringValue;
   end;
 

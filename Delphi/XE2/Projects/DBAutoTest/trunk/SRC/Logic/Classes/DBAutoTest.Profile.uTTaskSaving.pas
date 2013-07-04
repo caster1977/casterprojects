@@ -1,4 +1,4 @@
-unit DBAutoTest.uTTaskSavingOptions;
+unit DBAutoTest.Profile.uTTaskSaving;
 
 interface
 
@@ -10,7 +10,7 @@ uses
 
 type
   [TSection(TASK_SAVING_SECTION)]
-  TTaskSavingOptions = class(TCustomSection)
+  TTaskSaving = class(TCustomSection)
   public
     [TDefaultValue(PROFILE_DEFAULT_ENABLE_STORE_TASKS)]
     property EnableStoreTasks: Boolean index 0 read GetBooleanValue write SetBooleanValue;

@@ -21,6 +21,14 @@ type
     function GetDestinationADOConnectionString: WideString;
     property DestinationADOConnectionString: WideString read GetDestinationADOConnectionString nodefault;
   strict private
+    FSourceServerName: WideString;
+    function GetSourceServerName: WideString;
+    property SourceServerName: WideString read GetSourceServerName nodefault;
+  strict private
+    FSourceDatabaseName: WideString;
+    function GetSourceDatabaseName: WideString;
+    property SourceDatabaseName: WideString read GetSourceDatabaseName nodefault;
+  strict private
     FThreadMessage: Cardinal;
     function RegisterThreadMessage: Boolean;
     procedure OnTerminateProc(Sender: TObject);
@@ -31,7 +39,7 @@ type
     const ASourceADOConnectionString: WideString = '';
     const ADestinationADOConnectionString: WideString = '';
     const ASourceServerName: WideString = '';
-    const ASourceDatabeseName: WideString = ''); reintroduce; virtual;
+    const ASourceDatabaseName: WideString = ''); reintroduce; virtual;
   end;
 
 implementation
@@ -53,7 +61,7 @@ resourcestring
   RsCannotRegisterThreadMessage = 'Не удалось зарегистрировать оконное сообщение для дочернего потока.';
 
 constructor TTaskThread.Create(const ATask: ITask;
-  const ASourceADOConnectionString: WideString = ''; const ADestinationADOConnectionString: WideString = ''; const ASourceServerName: WideString = ''; const ASourceDatabeseName: WideString = '');
+  const ASourceADOConnectionString, ADestinationADOConnectionString, ASourceServerName, ASourceDatabaseName: WideString);
 begin
   if Assigned(ATask) then
   begin
@@ -64,6 +72,8 @@ begin
     FTask := ATask;
     FSourceADOConnectionString := ASourceADOConnectionString;
     FDestinationADOConnectionString := ADestinationADOConnectionString;
+    FSourceServerName := ASourceServerName;
+    FSourceDatabaseName := ASourceDatabaseName;
   end
   else
   begin
@@ -74,6 +84,16 @@ end;
 function TTaskThread.GetSourceADOConnectionString: WideString;
 begin
   Result := FSourceADOConnectionString;
+end;
+
+function TTaskThread.GetSourceDatabaseName: WideString;
+begin
+  Result := FSourceDatabaseName;
+end;
+
+function TTaskThread.GetSourceServerName: WideString;
+begin
+  Result := FSourceServerName;
 end;
 
 function TTaskThread.GetDestinationADOConnectionString: WideString;
@@ -164,7 +184,7 @@ begin
         query.SQL.Text := Format('INSERT INTO TestResults ' +
           '(ServerName, DBName, GroupName, Name, Query, StartTime, FinishTime, Passed) ' +
           'VALUES (''%s'', ''%s'', ''%s'', ''%s'', ''%s'', ''%s'', ''%s'', %d)',
-          ['TestServer', 'TestDatabase', Task.Group, Task.Name, StringReplace(Task.SQL.Text, Char(39), Char(39) + Char(39), [rfReplaceAll]), DateTimeToStr(Task.StartTime), DateTimeToStr(Task.StopTime), Integer(Task.Status = tsComplete)]);
+          [SourceServerName, SourceDatabaseName, Task.Group, Task.Name, StringReplace(Task.SQL.Text, Char(39), Char(39) + Char(39), [rfReplaceAll]), DateTimeToStr(Task.StartTime), DateTimeToStr(Task.StopTime), Integer(Task.Status = tsComplete)]);
         try
           query.ExecSQL;
         finally
