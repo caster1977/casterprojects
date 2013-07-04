@@ -175,6 +175,7 @@ implementation
 {$R *.dfm}
 
 uses
+  System.UITypes,
   DBAutoTest.uTConnectionOptions,
   DBAutoTest.uTTaskSavingOptions,
   CastersPackage.UNetSrvList;

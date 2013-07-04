@@ -14,7 +14,6 @@ uses
   DBAutoTest.uTProfileForm in 'SRC\UI\DBAutoTest.uTProfileForm.pas' {ProfileForm},
   DBAutoTest.uConsts in 'SRC\Logic\Other\DBAutoTest.uConsts.pas',
   DBAutoTest.uETasks in 'SRC\Logic\Classes\DBAutoTest.uETasks.pas',
-  DBAutoTest.uTAboutForm in 'SRC\UI\DBAutoTest.uTAboutForm.pas' {AboutForm},
   DBAutoTest.uTRecentsPropertiesForm in 'SRC\UI\DBAutoTest.uTRecentsPropertiesForm.pas' {RecentsPropertiesForm},
   DBAutoTest.uIRecent in 'SRC\Logic\Interfaces\DBAutoTest.uIRecent.pas',
   DBAutoTest.uIRecents in 'SRC\Logic\Interfaces\DBAutoTest.uIRecents.pas',

@@ -35,7 +35,6 @@ requires
   xmlrtl;
 
 contains
-  CastersPackage.uTGSFileVersionInfo in 'CastersPackage.uTGSFileVersionInfo.pas',
   CastersPackage.uSysMenu in 'CastersPackage.uSysMenu.pas',
   CastersPackage.fisSysMenu in 'CastersPackage.fisSysMenu.pas',
   CastersPackage.uTListViewEx in 'CastersPackage.uTListViewEx.pas',
@@ -68,8 +67,6 @@ contains
   CastersPackage.uTInterfaceListOfGivenType in 'CastersPackage.uTInterfaceListOfGivenType.pas',
   CastersPackage.UNetSrvList in 'CastersPackage.UNetSrvList.pas',
   CastersPackage.uIModified in 'CastersPackage.uIModified.pas',
-  CastersPackage.uTAboutWindow in 'CastersPackage.uTAboutWindow.pas',
-  CastersPackage.uTAboutForm in 'CastersPackage.uTAboutForm.pas' {AboutForm},
   CastersPackage.uTCustomProperties in 'CastersPackage.uTCustomProperties.pas',
   CastersPackage.uISerilizator in 'CastersPackage.uISerilizator.pas',
   CastersPackage.uTObjectMethod in 'CastersPackage.uTObjectMethod.pas',

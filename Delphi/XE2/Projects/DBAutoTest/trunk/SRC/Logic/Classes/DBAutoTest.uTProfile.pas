@@ -111,6 +111,7 @@ begin
         finally
           ms.Free;
         end;
+        EraseSection(s);
 
         if ((t.Enabled <> TASK_DEFAULT_ENABLED) or (t.Group <> TASK_DEFAULT_GROUP) or (t.Name <> TASK_DEFAULT_NAME) or (t.SQL.Text <> TASK_DEFAULT_SQL)) then
         begin
@@ -195,7 +196,13 @@ begin
           else
           begin
             DeleteKey(RsTasks, RsQuantity);
+            EraseSection(RsTasks);
           end;
+        end
+        else
+        begin
+          DeleteKey(RsTasks, RsQuantity);
+          EraseSection(RsTasks);
         end;
       except
         on EIniFileException do

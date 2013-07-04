@@ -91,6 +91,10 @@ object ProfileForm: TProfileForm
     object tsConnection: TTabSheet
       Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1090#1077#1089#1090#1080#1088#1091#1077#1084#1086#1081' '#1073#1072#1079#1077' '#1076#1072#1085#1085#1099#1093
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object gbConnection: TGroupBox
         Left = 0
         Top = 0
@@ -257,6 +261,10 @@ object ProfileForm: TProfileForm
       Caption = ' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1076#1072#1085#1085#1099#1093' '#1074' '#1087#1088#1086#1092#1080#1083#1077
       ImageIndex = 1
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object gbSaving: TGroupBox
         Left = 0
         Top = 0
@@ -466,7 +474,7 @@ object ProfileForm: TProfileForm
     Left = 16
     Top = 184
     Bitmap = {
-      494C0101040008006C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800700010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

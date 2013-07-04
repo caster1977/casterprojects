@@ -2,7 +2,7 @@
     <PropertyGroup>
         <ProjectGuid>{97C1A7E5-9E35-49CE-98F2-CFD851B6D8EF}</ProjectGuid>
         <MainSource>CastersPackage.dpk</MainSource>
-        <ProjectVersion>14.3</ProjectVersion>
+        <ProjectVersion>14.6</ProjectVersion>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
         <Base>True</Base>
@@ -47,9 +47,9 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <DCC_DcuOutput>.\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
-        <DCC_BplOutput>.\$(Platform)\$(Config)\Package</DCC_BplOutput>
-        <DCC_DcpOutput>.\$(Platform)\$(Config)\DCP</DCC_DcpOutput>
+        <DCC_DcuOutput>..\Packages\$(Platform)\$(Config)</DCC_DcuOutput>
+        <DCC_BplOutput>..\Packages\$(Platform)\$(Config)</DCC_BplOutput>
+        <DCC_DcpOutput>..\Packages\$(Platform)\$(Config)</DCC_DcpOutput>
         <DCC_UsePackage>rtl;xmlrtl;$(DCC_UsePackage)</DCC_UsePackage>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
@@ -97,7 +97,6 @@
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="vcl.dcp"/>
         <DCCReference Include="xmlrtl.dcp"/>
-        <DCCReference Include="CastersPackage.uTGSFileVersionInfo.pas"/>
         <DCCReference Include="CastersPackage.uSysMenu.pas"/>
         <DCCReference Include="CastersPackage.fisSysMenu.pas"/>
         <DCCReference Include="CastersPackage.uTListViewEx.pas"/>
@@ -134,10 +133,6 @@
         <DCCReference Include="CastersPackage.uTInterfaceListOfGivenType.pas"/>
         <DCCReference Include="CastersPackage.UNetSrvList.pas"/>
         <DCCReference Include="CastersPackage.uIModified.pas"/>
-        <DCCReference Include="CastersPackage.uTAboutWindow.pas"/>
-        <DCCReference Include="CastersPackage.uTAboutForm.pas">
-            <Form>AboutForm</Form>
-        </DCCReference>
         <DCCReference Include="CastersPackage.uTCustomProperties.pas"/>
         <DCCReference Include="CastersPackage.uISerilizator.pas"/>
         <DCCReference Include="CastersPackage.uTObjectMethod.pas"/>
@@ -192,9 +187,16 @@
                 <Source>
                     <Source Name="MainSource">CastersPackage.dpk</Source>
                 </Source>
-                <Excluded_Packages/>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\v_ivanov\Documents\RAD Studio\Projects\CastersPackage\Win32\Debug\Package\CastersPackage.bpl">(untitled)</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\v_ivanov\Documents\RAD Studio\Projects\AboutPackage\Win32\Debug\Package\AboutPackage.bpl">(untitled)</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k180.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp180.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Platforms>
+                <Platform value="iOSDevice">False</Platform>
+                <Platform value="iOSSimulator">False</Platform>
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">False</Platform>
             </Platforms>

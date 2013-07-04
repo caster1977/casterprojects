@@ -33,7 +33,7 @@ uses
   Data.Win.ADODB,
   TAPEstimator.uTConfiguration,
   CastersPackage.uICustomized,
-  CastersPackage.uTAboutWindow,
+  AboutPackage.uTAboutWindow,
   Data.Bind.EngExt,
   Vcl.Bind.DBEngExt,
   System.Rtti,
@@ -101,9 +101,9 @@ type
     actOpen: TAction;
     N12: TMenuItem;
     N13: TMenuItem;
-    AboutWindow: TAboutWindow;
     Image1: TImage;
     ListViewEx1: TListViewEx;
+    AboutWindow: TAboutWindow;
     procedure actQuitExecute(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -323,7 +323,7 @@ begin
   end;}
   if Configuration.Section<TInterfaceSection>.EnableSplashAtStart then
   begin
-    AboutWindow.Show;
+    AboutWindow.Show(True);
   end;
 
   // Configuration.Recents.Clear;
