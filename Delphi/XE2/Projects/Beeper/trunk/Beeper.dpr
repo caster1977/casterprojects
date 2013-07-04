@@ -6,7 +6,6 @@ uses
   Vcl.Forms,
   Winapi.Windows,
   System.SysUtils,
-  Beeper.uTAboutForm in 'SRC\UI\Beeper.uTAboutForm.pas' {AboutForm},
   Beeper.uTConfigurationForm in 'SRC\UI\Beeper.uTConfigurationForm.pas' {ConfigurationForm},
   Beeper.uTMainForm in 'SRC\UI\Beeper.uTMainForm.pas' {MainForm},
   Beeper.uTSignalForm in 'SRC\UI\Beeper.uTSignalForm.pas' {SignalForm},

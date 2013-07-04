@@ -50,7 +50,7 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_MajorVer>3</VerInfo_MajorVer>
         <VerInfo_Locale>1049</VerInfo_Locale>
-        <DCC_UnitSearchPath>..\CastersPackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\..\Packages\$(Platform)\$(Config);..\AboutPackage\SRC\UI;..\CastersPackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <Manifest_File>None</Manifest_File>
         <VerInfo_Keys>CompanyName=;FileDescription=Утилита для подачи сигналов с указанной периодичностью;FileVersion=3.0.0.0;InternalName=Beeper;LegalCopyright=(C)opyright 2012 by Vlad Ivanov;LegalTrademarks=;OriginalFilename=Beeper.exe;ProductName=Beeper;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
         <DCC_BplOutput>..\$(Platform)\$(Config)\Package</DCC_BplOutput>
@@ -106,9 +106,6 @@
         <RcCompile Include="SRC\Resources\Beeper.Waves.rc">
             <Form>Beeper.Waves.res</Form>
         </RcCompile>
-        <DCCReference Include="SRC\UI\Beeper.uTAboutForm.pas">
-            <Form>AboutForm</Form>
-        </DCCReference>
         <DCCReference Include="SRC\UI\Beeper.uTConfigurationForm.pas">
             <Form>ConfigurationForm</Form>
         </DCCReference>
@@ -179,10 +176,7 @@
                 <Source>
                     <Source Name="MainSource">Beeper.dpr</Source>
                 </Source>
-                <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k170.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp170.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-                </Excluded_Packages>
+                <Excluded_Packages/>
             </Delphi.Personality>
             <Deployment/>
             <Platforms>
