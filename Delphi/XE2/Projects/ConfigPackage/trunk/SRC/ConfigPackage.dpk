@@ -34,8 +34,9 @@ requires
 contains
   ConfigPackage.uTSectionAttribute in 'Logic\Classes\ConfigPackage.uTSectionAttribute.pas',
   ConfigPackage.uTDefaultValueAttribute in 'Logic\Classes\ConfigPackage.uTDefaultValueAttribute.pas',
-  ConfigPackage.uTCustomOptions in 'Logic\Classes\ConfigPackage.uTCustomOptions.pas',
-  ConfigPackage.uTCustomOptionsClass in 'Logic\Classes\ConfigPackage.uTCustomOptionsClass.pas',
+  ConfigPackage.uTCustomSection in 'Logic\Classes\ConfigPackage.uTCustomSection.pas',
+  ConfigPackage.uTCustomSectionClass in 'Logic\Classes\ConfigPackage.uTCustomSectionClass.pas',
   ConfigPackage.uTIniFileSerilizator in 'Logic\Classes\ConfigPackage.uTIniFileSerilizator.pas';
 
 end.
+

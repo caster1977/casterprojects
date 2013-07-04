@@ -4,14 +4,14 @@ interface
 
 uses
   System.Generics.Collections,
-  ConfigPackage.uTCustomOptions,
-  ConfigPackage.uTCustomOptionsClass,
+  ConfigPackage.uTCustomSection,
+  ConfigPackage.uTCustomSectionClass,
   System.IniFiles;
 
 type
   TIniFileSerilizator = class(TInterfacedObject)
   strict private
-    FOptions: TObjectList<TCustomOptions>;
+    FOptions: TObjectList<TCustomSection>;
     FFileName: string;
     function GetFileName: string;
   strict protected
@@ -22,8 +22,8 @@ type
     constructor Create(const AMemoryFile: Boolean = True; const AFileName: string = ''); reintroduce;
     destructor Destroy; override;
 
-    procedure RegisterOptions(const AOptionsClass: TCustomOptionsClass);
-    function Section<T: TCustomOptions>: T;
+    procedure RegisterOptions(const AOptionsClass: TCustomSectionClass);
+    function Section<T: TCustomSection>: T;
 
     property FileName: string read GetFileName nodefault;
   end;
@@ -52,7 +52,7 @@ begin
   begin
     FFileName := s;
   end;
-  FOptions := TObjectList<TCustomOptions>.Create;
+  FOptions := TObjectList<TCustomSection>.Create;
   if AMemoryFile then
   begin
     FIniFile := TMemIniFile.Create(FFileName);
@@ -95,9 +95,9 @@ begin
   Result := FFileName;
 end;
 
-procedure TIniFileSerilizator.RegisterOptions(const AOptionsClass: TCustomOptionsClass);
+procedure TIniFileSerilizator.RegisterOptions(const AOptionsClass: TCustomSectionClass);
 var
-  opt: TCustomOptions;
+  opt: TCustomSection;
 begin
   opt := AOptionsClass.Create(FIniFile);
   FOptions.Add(opt);
@@ -105,7 +105,7 @@ end;
 
 function TIniFileSerilizator.Section<T>: T;
 var
-  opt: TCustomOptions;
+  opt: TCustomSection;
   ti: TRttiType;
   ctx: TRttiContext;
 begin

@@ -1,4 +1,4 @@
-unit ConfigPackage.uTCustomOptions;
+unit ConfigPackage.uTCustomSection;
 
 interface
 
@@ -8,7 +8,7 @@ uses
   System.Rtti;
 
 type
-  TCustomOptions = class
+  TCustomSection = class
   strict private
     FRttiContext: TRttiContext;
     FIniFile: TCustomIniFile;
@@ -48,7 +48,7 @@ uses
 resourcestring
   RsPropertyDoesNotExists = 'Property %d does not exists.';
 
-constructor TCustomOptions.Create(const AIniFile: TCustomIniFile);
+constructor TCustomSection.Create(const AIniFile: TCustomIniFile);
 var
   ctx: TRttiContext;
   attr: TCustomAttribute;
@@ -69,13 +69,13 @@ begin
   end;
 end;
 
-destructor TCustomOptions.Destroy;
+destructor TCustomSection.Destroy;
 begin
   FRttiContext.Free;
   inherited;
 end;
 
-function TCustomOptions.GetProperty(const AIndex: Integer): TRttiProperty;
+function TCustomSection.GetProperty(const AIndex: Integer): TRttiProperty;
 var
   rtti_type: TRttiType;
   props: TArray<TRttiProperty>;
@@ -90,7 +90,7 @@ begin
   Result := props[AIndex];
 end;
 
-function TCustomOptions.GetDefaultAttribute(const ARttiProperty: TRttiProperty): TDefaultValueAttribute;
+function TCustomSection.GetDefaultAttribute(const ARttiProperty: TRttiProperty): TDefaultValueAttribute;
 var
   attr: TCustomAttribute;
 begin
@@ -104,7 +104,7 @@ begin
   end;
 end;
 
-function TCustomOptions.GetGenericValue<T>(const AIndex: Integer): T;
+function TCustomSection.GetGenericValue<T>(const AIndex: Integer): T;
 var
   prop: TRttiProperty;
   def: TDefaultValueAttribute;
@@ -149,22 +149,22 @@ begin
   end;
 end;
 
-function TCustomOptions.GetIntegerValue(const AIndex: Integer): Integer;
+function TCustomSection.GetIntegerValue(const AIndex: Integer): Integer;
 begin
   Result := GetGenericValue<Integer>(AIndex);
 end;
 
-function TCustomOptions.GetBooleanValue(const AIndex: Integer): Boolean;
+function TCustomSection.GetBooleanValue(const AIndex: Integer): Boolean;
 begin
   Result := GetGenericValue<Boolean>(AIndex);
 end;
 
-function TCustomOptions.GetStringValue(const AIndex: Integer): string;
+function TCustomSection.GetStringValue(const AIndex: Integer): string;
 begin
   Result := GetGenericValue<string>(AIndex);
 end;
 
-procedure TCustomOptions.SetGenericValue<T>(const AIndex: Integer; const AValue: T);
+procedure TCustomSection.SetGenericValue<T>(const AIndex: Integer; const AValue: T);
 var
   prop: TRttiProperty;
   val: TValue;
@@ -225,17 +225,17 @@ begin
   end;
 end;
 
-procedure TCustomOptions.SetBooleanValue(const AIndex: Integer; const AValue: Boolean);
+procedure TCustomSection.SetBooleanValue(const AIndex: Integer; const AValue: Boolean);
 begin
   SetGenericValue<Boolean>(AIndex, AValue);
 end;
 
-procedure TCustomOptions.SetIntegerValue(const AIndex, AValue: Integer);
+procedure TCustomSection.SetIntegerValue(const AIndex, AValue: Integer);
 begin
   SetGenericValue<Integer>(AIndex, AValue);
 end;
 
-procedure TCustomOptions.SetStringValue(const AIndex: Integer; const AValue: string);
+procedure TCustomSection.SetStringValue(const AIndex: Integer; const AValue: string);
 begin
   SetGenericValue<string>(AIndex, AValue);
 end;
