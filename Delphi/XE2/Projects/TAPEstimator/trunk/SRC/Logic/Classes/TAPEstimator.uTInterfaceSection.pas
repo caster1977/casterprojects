@@ -3,14 +3,14 @@ unit TAPEstimator.uTInterfaceSection;
 interface
 
 uses
-  ConfigPackage.uTCustomOptions,
+  ConfigPackage.uTCustomSection,
   ConfigPackage.uTDefaultValueAttribute,
   ConfigPackage.uTSectionAttribute,
   TAPEstimator.uConsts;
 
 type
   [TSection(CONFIGURATION_INTERFACE_SECTION)]
-  TInterfaceSection = class(TCustomOptions)
+  TInterfaceSection = class(TCustomSection)
   public
     [TDefaultValue(CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION)]
     property EnableQuitConfirmation: Boolean index 0 read GetBooleanValue write SetBooleanValue;
