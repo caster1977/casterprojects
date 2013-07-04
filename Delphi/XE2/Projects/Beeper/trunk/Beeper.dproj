@@ -1,7 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{90B133F4-1632-454A-8AC8-6C19AA835EA2}</ProjectGuid>
-        <ProjectVersion>14.3</ProjectVersion>
+        <ProjectVersion>14.6</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <MainSource>Beeper.dpr</MainSource>
         <Base>True</Base>
