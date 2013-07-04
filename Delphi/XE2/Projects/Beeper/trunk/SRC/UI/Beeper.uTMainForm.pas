@@ -20,7 +20,7 @@ uses
   Vcl.ExtCtrls,
   Vcl.ComCtrls,
   Vcl.ToolWin,
-  Vcl.ActnCtrls;
+  Vcl.ActnCtrls, AboutPackage.uTAboutWindow;
 
 type
   TMainForm = class(TForm)
@@ -66,6 +66,7 @@ type
     N18: TMenuItem;
     N13: TMenuItem;
     N19: TMenuItem;
+    AboutWindow: TAboutWindow;
     procedure actEraseSignalUpdate(Sender: TObject);
     procedure actEditSignalUpdate(Sender: TObject);
     procedure actEditSignalExecute(Sender: TObject);
@@ -97,7 +98,6 @@ type
     procedure RegisterWindowMessages;
     procedure RefreshSignals;
     procedure FillHistory;
-    procedure ShowAboutWindow(const AShowCloseButton: Boolean);
     procedure HideAboutWindow;
     procedure Flash;
     procedure UpdateVisibilityActions;
@@ -128,8 +128,7 @@ uses
   Beeper.uTConfiguration,
   Beeper.uConsts,
   Beeper.uResourceStrings,
-  Beeper.uTSignalForm,
-  Beeper.uTAboutForm;
+  Beeper.uTSignalForm;
 
 resourcestring
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
@@ -155,7 +154,7 @@ begin
   end;
 end;
 
-procedure TMainForm.ShowAboutWindow(const AShowCloseButton: Boolean);
+{procedure TMainForm.ShowAboutWindow(const AShowCloseButton: Boolean);
 begin
   if AboutWindowHandle = 0 then
   begin
@@ -172,7 +171,7 @@ begin
   begin
     SetForegroundWindow(AboutWindowHandle);
   end;
-end;
+end;}
 
 procedure TMainForm.HideAboutWindow;
 begin
@@ -329,7 +328,8 @@ end;
 
 procedure TMainForm.actAboutExecute(Sender: TObject);
 begin
-  ShowAboutWindow(True);
+  AboutWindow.Show;
+//  ShowAboutWindow(True);
 end;
 
 procedure TMainForm.actClearSignalsExecute(Sender: TObject);
@@ -469,7 +469,8 @@ begin
   if FFirstRun then
   begin
     FFirstRun := False;
-    ShowAboutWindow(False);
+    AboutWindow.Show(True);
+    //ShowAboutWindow(False);
   end;
 end;
 
