@@ -3,14 +3,14 @@ unit DBAutoTest.uTConfigurationConnectionSection;
 interface
 
 uses
-  ConfigPackage.uTCustomOptions,
+  ConfigPackage.uTCustomSection,
   ConfigPackage.uTDefaultValueAttribute,
   ConfigPackage.uTSectionAttribute,
   DBAutoTest.uConsts;
 
 type
   [TSection(CONNECTION_SECTION)]
-  TConfigurationConnectionSection = class(TCustomOptions)
+  TConfigurationConnectionSection = class(TCustomSection)
   public
     [TDefaultValue(CONFIGURATION_DEFAULT_SERVER)]
     property Server: string index 0 read GetStringValue write SetStringValue;

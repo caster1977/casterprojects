@@ -3,14 +3,14 @@ unit DBAutoTest.uTReportsOptions;
 interface
 
 uses
-  ConfigPackage.uTCustomOptions,
+  ConfigPackage.uTCustomSection,
   ConfigPackage.uTDefaultValueAttribute,
   ConfigPackage.uTSectionAttribute,
   DBAutoTest.uConsts;
 
 type
   [TSection(REPORTS_SECTION)]
-  TReportsOptions = class(TCustomOptions)
+  TReportsOptions = class(TCustomSection)
   public
     [TDefaultValue(CONFIGURATION_DEFAULT_ENABLE_GENEDATE_FASTREPORT_DOCUMENT)]
     property EnableGenerateFastReportDocument: Boolean index 0 read GetBooleanValue write SetBooleanValue;
