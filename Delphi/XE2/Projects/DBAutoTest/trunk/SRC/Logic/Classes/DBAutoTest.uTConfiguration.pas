@@ -6,10 +6,10 @@ uses
   System.IniFiles,
   DBAutoTest.uConsts,
   DBAutoTest.uIRecents,
-  ConfigPackage.uTIniFileSerilizator;
+  ConfigPackage.uTCustomConfiguration;
 
 type
-  TConfiguration = class(TIniFileSerilizator)
+  TConfiguration = class(TCustomConfiguration)
   strict protected
     procedure Initialize; override;
     procedure Finalize; override;
@@ -86,10 +86,10 @@ var
   r: IRecent;
 begin
   inherited;
-  RegisterOptions(TInterfaceOptions);
-  RegisterOptions(TReportsOptions);
-  RegisterOptions(TConfigurationConnectionSection);
-  RegisterOptions(TOtherOptions);
+  RegisterSection(TInterfaceOptions);
+  RegisterSection(TReportsOptions);
+  RegisterSection(TConfigurationConnectionSection);
+  RegisterSection(TOtherOptions);
   Recents.Clear;
   if Assigned(FIniFile) then
   begin

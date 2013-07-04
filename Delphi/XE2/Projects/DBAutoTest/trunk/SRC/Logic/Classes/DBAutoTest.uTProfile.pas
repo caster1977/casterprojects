@@ -7,10 +7,10 @@ uses
   DBAutoTest.uConsts,
   CastersPackage.uICustomized,
   System.IniFiles,
-  ConfigPackage.uTIniFileSerilizator;
+  ConfigPackage.uTCustomConfiguration;
 
 type
-  TProfile = class(TIniFileSerilizator)
+  TProfile = class(TCustomConfiguration)
   strict protected
     procedure Initialize; override;
     procedure Finalize; override;
@@ -87,8 +87,8 @@ var
   ms: TMemoryStream;
 begin
   inherited;
-  RegisterOptions(TConnectionOptions);
-  RegisterOptions(TTaskSavingOptions);
+  RegisterSection(TConnectionOptions);
+  RegisterSection(TTaskSavingOptions);
   FTasks := GetITasks;
   if Assigned(FIniFile) then
   begin
@@ -126,7 +126,6 @@ procedure TProfile.Finalize;
 var
   i: Integer;
   j: Integer;
-  s: string;
   t: ITask;
   ms: TMemoryStream;
 begin

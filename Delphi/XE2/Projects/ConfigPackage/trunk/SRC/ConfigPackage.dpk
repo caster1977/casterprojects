@@ -36,7 +36,7 @@ contains
   ConfigPackage.uTDefaultValueAttribute in 'Logic\Classes\ConfigPackage.uTDefaultValueAttribute.pas',
   ConfigPackage.uTCustomSection in 'Logic\Classes\ConfigPackage.uTCustomSection.pas',
   ConfigPackage.uTCustomSectionClass in 'Logic\Classes\ConfigPackage.uTCustomSectionClass.pas',
-  ConfigPackage.uTIniFileSerilizator in 'Logic\Classes\ConfigPackage.uTIniFileSerilizator.pas';
+  ConfigPackage.uTCustomConfiguration in 'Logic\Classes\ConfigPackage.uTCustomConfiguration.pas';
 
 end.
 

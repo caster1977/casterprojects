@@ -157,6 +157,10 @@ object ConfigurationForm: TConfigurationForm
     object tsInterface: TTabSheet
       Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object gbInterface: TGroupBox
         Left = 0
         Top = 0
@@ -210,6 +214,10 @@ object ConfigurationForm: TConfigurationForm
       Caption = ' '#1087#1088#1086#1095#1080#1077
       ImageIndex = 1
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object gbOther: TGroupBox
         Left = 0
         Top = 0
@@ -234,7 +242,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 408
     Top = 128
     Bitmap = {
-      494C010102000800500010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000800540010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

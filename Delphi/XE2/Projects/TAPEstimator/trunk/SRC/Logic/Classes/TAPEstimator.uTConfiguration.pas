@@ -6,10 +6,10 @@ uses
   System.IniFiles,
   TAPEstimator.uConsts,
   TAPEstimator.uIRecents,
-  ConfigPackage.uTIniFileSerilizator;
+  ConfigPackage.uTCustomConfiguration;
 
 type
-  TConfiguration = class(TIniFileSerilizator)
+  TConfiguration = class(TCustomConfiguration)
   strict protected
     procedure Initialize; override;
     procedure Finalize; override;
@@ -56,8 +56,8 @@ var
   r: IRecent;
 begin
   inherited;
-  RegisterOptions(TInterfaceSection);
-  RegisterOptions(TOtherSection);
+  RegisterSection(TInterfaceSection);
+  RegisterSection(TOtherSection);
   Recents.Clear;
   if Assigned(FIniFile) then
   begin

@@ -76,12 +76,12 @@ type
     property PageCount: Integer read GetPageCount nodefault;
 
   strict private
-    FConfiguration: TIniFileSerilizator;
-    function GetConfiguration: TIniFileSerilizator;
-    property Configuration: TIniFileSerilizator read GetConfiguration nodefault;
+    FConfiguration: TConfiguration;
+    function GetConfiguration: TConfiguration;
+    property Configuration: TConfiguration read GetConfiguration nodefault;
 
   public
-    constructor Create(AOwner: TComponent; const AConfiguration: TIniFileSerilizator; const AActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const AConfiguration: TConfiguration; const AActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
 
   strict private
     function GetEnablePlaySoundOnComplete: Boolean;
@@ -125,7 +125,7 @@ resourcestring
   RsAConfigurationIsNil = 'AConfiguration is nil.';
 
 {$R *.dfm}
-constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: TIniFileSerilizator; const AActivePage: Integer);
+constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: TConfiguration; const AActivePage: Integer);
 
   procedure ApplyConfiguration;
   begin
@@ -226,7 +226,7 @@ begin
   Result := cmbPageName.ItemIndex;
 end;
 
-function TConfigurationForm.GetConfiguration: TIniFileSerilizator;
+function TConfigurationForm.GetConfiguration: TConfiguration;
 begin
   Result := FConfiguration;
 end;
