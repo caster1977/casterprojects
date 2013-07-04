@@ -21,8 +21,7 @@ uses
   System.Actions,
   Vcl.ActnList,
   TAPEstimator.uConsts,
-  TAPEstimator.uTConfiguration,
-  ConfigPackage.uTIniFileSerilizator;
+  TAPEstimator.uTConfiguration;
 
 type
   TConfigurationForm = class(TForm)
