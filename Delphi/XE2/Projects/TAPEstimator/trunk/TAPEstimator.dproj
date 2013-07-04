@@ -51,7 +51,7 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_MajorVer>0</VerInfo_MajorVer>
         <VerInfo_Locale>1049</VerInfo_Locale>
-        <DCC_UnitSearchPath>..\CastersPackage;..\ConfigPackage\$(Platform)\$(Config)\DCU;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\..\Packages\$(Platform)\$(Config);..\AboutPackage\SRC\UI;..\CastersPackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <Manifest_File>None</Manifest_File>
         <VerInfo_Keys>CompanyName=;FileDescription=Утилита для тестирования значений данных в таблицах БД;FileVersion=0.1.0.0;InternalName=DBAutoTest;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Sergey Shaporov;LegalTrademarks=;OriginalFilename=DBAutoTest.exe;ProductName=DBAutoTest;ProductVersion=0.1.0.0;Comments=Idea: Sergey Shaporov. Developing: Vlad Ivanov.</VerInfo_Keys>
         <DCC_BplOutput>..\$(Platform)\$(Config)\Package</DCC_BplOutput>
@@ -86,9 +86,8 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
-        <VerInfo_Build>44</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для расчёта времени выполнения TAP-файлов;FileVersion=0.1.0.44;InternalName=TAP Estimator;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Anton Zhevnyak, Ilya Kuzmenkov;LegalTrademarks=;OriginalFilename=TAPEstimator.exe;ProductName=TAPEstimator;ProductVersion=0.1.0.0;Comments=Idea: Ilya Kuzmenkov. Developing: Vlad Ivanov, Anton Zhevnyak.</VerInfo_Keys>
+        <VerInfo_Build>46</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для расчёта времени выполнения TAP-файлов;FileVersion=0.1.0.46;InternalName=TAP Estimator;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Anton Zhevnyak, Ilya Kuzmenkov;LegalTrademarks=;OriginalFilename=TAPEstimator.exe;ProductName=TAPEstimator;ProductVersion=0.1.0.0;Comments=Idea: Ilya Kuzmenkov. Developing: Vlad Ivanov, Anton Zhevnyak.</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
@@ -199,10 +198,7 @@
                 <Source>
                     <Source Name="MainSource">TAPEstimator.dpr</Source>
                 </Source>
-                <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k180.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp180.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-                </Excluded_Packages>
+                <Excluded_Packages/>
             </Delphi.Personality>
             <Deployment/>
             <Platforms>

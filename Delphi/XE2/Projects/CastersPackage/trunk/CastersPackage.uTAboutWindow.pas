@@ -5,41 +5,43 @@ interface
 uses
   System.Classes,
   Vcl.Controls,
-  Vcl.Forms,
-  CastersPackage.uICustomized;
+  Vcl.Forms;
 
 type
-  TAboutWindow = class(TComponent, ICustomized)
+  TAboutWindow = class(TComponent)
+  strict private
+    FPosition: TPosition;
+    function GetPosition: TPosition;
+    procedure SetPosition(const AValue: TPosition);
+  published
+    property Position: TPosition read GetPosition write SetPosition default poScreenCenter;
+  strict private
+    FEMail: string;
+    function GetEMail: string;
+    procedure SetEMail(const AValue: string);
+  published
+    property EMail: string read GetEMail write SetEMail nodefault;
+  strict private
+    FShowSplash: Boolean;
+    function GetShowSplash: Boolean;
+    procedure SetShowSplash(const AValue: Boolean);
+  published
+    property ShowSplash: Boolean read GetShowSplash write SetShowSplash default True;
   strict private
     FFirstShow: Boolean;
     FForm: TForm;
     function GetForm: TForm;
     property Form: TForm read GetForm nodefault;
+  strict private
     procedure Initialize;
     procedure Finalize;
     procedure FreeForm;
-  strict private
-    FPosition: TPosition;
-    function GetPosition: TPosition;
-    procedure SetPosition(const AValue: TPosition);
-  strict private
-    FEMail: string;
-    function GetEMail: string;
-    procedure SetEMail(const AValue: string);
-  strict private
-    FShowSplash: Boolean;
-    function GetShowSplash: Boolean;
-    procedure SetShowSplash(const AValue: Boolean);
   protected
     procedure Loaded; override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Show;
-  published
-    property Position: TPosition read GetPosition write SetPosition default poScreenCenter;
-    property EMail: string read GetEMail write SetEMail nodefault;
-    property ShowSplash: Boolean read GetShowSplash write SetShowSplash default True;
   end;
 
 procedure Register;
@@ -63,6 +65,20 @@ begin
   inherited;
 end;
 
+procedure TAboutWindow.Initialize;
+begin
+  FFirstShow := True;
+  FShowSplash := True;
+  FPosition := poScreenCenter;
+  FEMail := 'vlad_dracula@tut.by';
+end;
+
+procedure TAboutWindow.Finalize;
+begin
+  FreeForm;
+end;
+
+
 function TAboutWindow.GetPosition: TPosition;
 begin
   Result := FPosition;
@@ -71,14 +87,6 @@ end;
 function TAboutWindow.GetShowSplash: Boolean;
 begin
   Result := FShowSplash;
-end;
-
-procedure TAboutWindow.Initialize;
-begin
-  FFirstShow := True;
-  FShowSplash := True;
-  FPosition := poScreenCenter;
-  FEMail := 'vlad_dracula@tut.by';
 end;
 
 procedure TAboutWindow.Loaded;
@@ -93,11 +101,6 @@ begin
     end;
     FreeForm;
   end;
-end;
-
-procedure TAboutWindow.Finalize;
-begin
-  FreeForm;
 end;
 
 procedure TAboutWindow.FreeForm;

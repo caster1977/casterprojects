@@ -32,7 +32,8 @@ uses
   Data.Win.ADODB,
   CastersPackage.uICustomized,
   DBAutoTest.uTProfile,
-  DBAutoTest.uTConfiguration;
+  DBAutoTest.uTConfiguration,
+  AboutPackage.uTAboutWindow;
 
 type
   TMainForm = class(TForm, ICustomized)
@@ -101,11 +102,11 @@ type
     N11: TMenuItem;
     actMoveDown: TAction;
     actMoveUp: TAction;
+    AboutWindow: TAboutWindow;
     procedure actQuitExecute(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actConfigurationExecute(Sender: TObject);
-    procedure actAboutExecute(Sender: TObject);
     procedure actCreateTaskExecute(Sender: TObject);
     procedure actEditTaskUpdate(Sender: TObject);
     procedure actDeleteTaskUpdate(Sender: TObject);
@@ -132,6 +133,7 @@ type
     procedure actMoveDownUpdate(Sender: TObject);
     procedure actMoveUpExecute(Sender: TObject);
     procedure actMoveDownExecute(Sender: TObject);
+    procedure actAboutExecute(Sender: TObject);
   strict private
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -139,7 +141,6 @@ type
     procedure ApplyConfiguration;
     // procedure SaveConfiguration;
     procedure OnHint(ASender: TObject);
-    procedure ShowAboutWindow(const AShowCloseButton: Boolean);
     procedure RefreshRecentsMenu;
     procedure AddEditTask(const AIndex: Integer = -1);
     procedure RefreshTaskList;
@@ -176,7 +177,6 @@ uses
   CastersPackage.uIModified,
   DBAutoTest.uConsts,
   DBAutoTest.uTConfigurationForm,
-  DBAutoTest.uTAboutForm,
   DBAutoTest.uTTaskForm,
   DBAutoTest.uTTaskStatus,
   DBAutoTest.uTRecentsPropertiesForm,
@@ -205,11 +205,6 @@ resourcestring
   RsTryAgain = '%s.' + sLineBreak + 'Вы желаете повторить попытку?';
   RsConfigurationSaveError = 'Не удалось выполнить запись настроек программы в файл.';
 
-procedure TMainForm.actAboutExecute(Sender: TObject);
-begin
-  ShowAboutWindow(True);
-end;
-
 procedure TMainForm.actConfigurationExecute(Sender: TObject);
 begin
   with TConfigurationForm.Create(Self, Configuration) do
@@ -237,16 +232,6 @@ end;
 procedure TMainForm.OnHint(ASender: TObject);
 begin
   StatusBar.SimpleText := GetLongHint(Application.Hint);
-end;
-
-procedure TMainForm.ShowAboutWindow(const AShowCloseButton: Boolean);
-begin
-  with TAboutForm.Create(Self, AShowCloseButton) do
-    try
-      ShowModal;
-    finally
-      Free;
-    end;
 end;
 
 procedure TMainForm.WndProc(var Message: TMessage);
@@ -341,7 +326,8 @@ begin
   Initialize;
   if Configuration.Section<TInterfaceOptions>.EnableSplashAtStart then
   begin
-    ShowAboutWindow(False);
+    AboutWindow.Show(True);
+    //ShowAboutWindow(False);
   end;
 end;
 
@@ -681,6 +667,11 @@ begin
     finally
       Free;
     end;
+end;
+
+procedure TMainForm.actAboutExecute(Sender: TObject);
+begin
+  AboutWindow.Show;
 end;
 
 procedure TMainForm.actClearTasksExecute(Sender: TObject);

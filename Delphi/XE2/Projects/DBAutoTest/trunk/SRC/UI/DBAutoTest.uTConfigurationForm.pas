@@ -215,6 +215,7 @@ implementation
 uses
   CastersPackage.uRoutines,
   CastersPackage.UNetSrvList,
+  System.UITypes,
   DBAutoTest.uTInterfaceOptions,
   DBAutoTest.uTReportsOptions,
   DBAutoTest.uTConfigurationConnectionSection,
