@@ -110,8 +110,8 @@
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="Logic\Classes\ConfigPackage.uTSectionAttribute.pas"/>
         <DCCReference Include="Logic\Classes\ConfigPackage.uTDefaultValueAttribute.pas"/>
-        <DCCReference Include="Logic\Classes\ConfigPackage.uTCustomOptions.pas"/>
-        <DCCReference Include="Logic\Classes\ConfigPackage.uTCustomOptionsClass.pas"/>
+        <DCCReference Include="Logic\Classes\ConfigPackage.uTCustomSection.pas"/>
+        <DCCReference Include="Logic\Classes\ConfigPackage.uTCustomSectionClass.pas"/>
         <DCCReference Include="Logic\Classes\ConfigPackage.uTIniFileSerilizator.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
