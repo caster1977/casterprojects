@@ -1,4 +1,4 @@
-unit ConfigPackage.uTIniFileSerilizator;
+unit ConfigPackage.uTCustomConfiguration;
 
 interface
 
@@ -9,9 +9,9 @@ uses
   System.IniFiles;
 
 type
-  TIniFileSerilizator = class(TInterfacedObject)
+  TCustomConfiguration = class(TInterfacedObject)
   strict private
-    FOptions: TObjectList<TCustomSection>;
+    FSections: TObjectList<TCustomSection>;
     FFileName: string;
     function GetFileName: string;
   strict protected
@@ -22,7 +22,7 @@ type
     constructor Create(const AMemoryFile: Boolean = True; const AFileName: string = ''); reintroduce;
     destructor Destroy; override;
 
-    procedure RegisterOptions(const AOptionsClass: TCustomSectionClass);
+    procedure RegisterSection(const AOptionsClass: TCustomSectionClass);
     function Section<T: TCustomSection>: T;
 
     property FileName: string read GetFileName nodefault;
@@ -38,7 +38,7 @@ uses
   System.Rtti,
   System.SysUtils;
 
-constructor TIniFileSerilizator.Create(const AMemoryFile: Boolean; const AFileName: string);
+constructor TCustomConfiguration.Create(const AMemoryFile: Boolean; const AFileName: string);
 var
   s: string;
 begin
@@ -52,7 +52,7 @@ begin
   begin
     FFileName := s;
   end;
-  FOptions := TObjectList<TCustomSection>.Create;
+  FSections := TObjectList<TCustomSection>.Create;
   if AMemoryFile then
   begin
     FIniFile := TMemIniFile.Create(FFileName);
@@ -64,12 +64,12 @@ begin
   Initialize;
 end;
 
-destructor TIniFileSerilizator.Destroy;
+destructor TCustomConfiguration.Destroy;
 begin
   Finalize;
-  if Assigned(FOptions) then
+  if Assigned(FSections) then
   begin
-    FreeAndNil(FOptions);
+    FreeAndNil(FSections);
   end;
   if Assigned(FIniFile) then
   begin
@@ -82,28 +82,28 @@ begin
   inherited;
 end;
 
-procedure TIniFileSerilizator.Initialize;
+procedure TCustomConfiguration.Initialize;
 begin
 end;
 
-procedure TIniFileSerilizator.Finalize;
+procedure TCustomConfiguration.Finalize;
 begin
 end;
 
-function TIniFileSerilizator.GetFileName: string;
+function TCustomConfiguration.GetFileName: string;
 begin
   Result := FFileName;
 end;
 
-procedure TIniFileSerilizator.RegisterOptions(const AOptionsClass: TCustomSectionClass);
+procedure TCustomConfiguration.RegisterSection(const AOptionsClass: TCustomSectionClass);
 var
   opt: TCustomSection;
 begin
   opt := AOptionsClass.Create(FIniFile);
-  FOptions.Add(opt);
+  FSections.Add(opt);
 end;
 
-function TIniFileSerilizator.Section<T>: T;
+function TCustomConfiguration.Section<T>: T;
 var
   opt: TCustomSection;
   ti: TRttiType;
@@ -111,7 +111,7 @@ var
 begin
   ti := ctx.GetType(TypeInfo(T));
   try
-    for opt in FOptions do
+    for opt in FSections do
     begin
       if opt is ti.AsInstance.MetaclassType then
       begin
