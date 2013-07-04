@@ -36,8 +36,8 @@ uses
   DBAutoTest.uTTask,
   DBAutoTest.uTTasks,
   DBAutoTest.uEConfiguration,
-  DBAutoTest.uTConnectionOptions,
-  DBAutoTest.uTTaskSavingOptions,
+  DBAutoTest.Profile.uTConnection,
+  DBAutoTest.Profile.uTTaskSaving,
   DBAutoTest.uEProfile;
 
 resourcestring
@@ -49,24 +49,24 @@ resourcestring
 
 function TProfile.GetADOConnectionString: string;
 begin
-  Result := Format(ADO_CONNECTION_STRING_PREFIX, [Section<TConnectionOptions>.Server]);
+  Result := Format(ADO_CONNECTION_STRING_PREFIX, [Section<TConnectionSection>.Server]);
 
-  if Section<TConnectionOptions>.WinNTSecurity then
+  if Section<TConnectionSection>.WinNTSecurity then
   begin
     Result := Result + ADO_CONNECTION_STRING_SUFFIX_INTEGRATED_SECURITY;
   end
   else
   begin
-    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_USER_ID, [Section<TConnectionOptions>.Login]);
-    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PERSIST_SECURITY_INFO, [BoolToStr(Section<TConnectionOptions>.EnableStorePassword, True)]);
-    if Section<TConnectionOptions>.EnableStorePassword then
+    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_USER_ID, [Section<TConnectionSection>.Login]);
+    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PERSIST_SECURITY_INFO, [BoolToStr(Section<TConnectionSection>.EnableStorePassword, True)]);
+    if Section<TConnectionSection>.EnableStorePassword then
     begin
-      Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PASSWORD, [Section<TConnectionOptions>.Password]);
+      Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PASSWORD, [Section<TConnectionSection>.Password]);
     end;
   end;
-  if Section<TConnectionOptions>.Database > EmptyStr then
+  if Section<TConnectionSection>.Database > EmptyStr then
   begin
-    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_INITIAL_CATALOG, [Section<TConnectionOptions>.Database]);
+    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_INITIAL_CATALOG, [Section<TConnectionSection>.Database]);
   end;
 end;
 
@@ -87,8 +87,8 @@ var
   ms: TMemoryStream;
 begin
   inherited;
-  RegisterSection(TConnectionOptions);
-  RegisterSection(TTaskSavingOptions);
+  RegisterSection(TConnectionSection);
+  RegisterSection(TTaskSaving);
   FTasks := GetITasks;
   if Assigned(FIniFile) then
   begin

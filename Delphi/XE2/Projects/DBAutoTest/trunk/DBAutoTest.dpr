@@ -23,13 +23,13 @@ uses
   DBAutoTest.uEProfile in 'SRC\Logic\Classes\DBAutoTest.uEProfile.pas',
   DBAutoTest.uTTaskStatus in 'SRC\Logic\Types\DBAutoTest.uTTaskStatus.pas',
   DBAutoTest.uResourceStrings in 'SRC\Logic\Other\DBAutoTest.uResourceStrings.pas',
-  DBAutoTest.uTInterfaceOptions in 'SRC\Logic\Classes\DBAutoTest.uTInterfaceOptions.pas',
+  DBAutoTest.Configuration.uTInterface in 'SRC\Logic\Classes\DBAutoTest.Configuration.uTInterface.pas',
   DBAutoTest.uTOtherOptions in 'SRC\Logic\Classes\DBAutoTest.uTOtherOptions.pas',
-  DBAutoTest.uTReportsOptions in 'SRC\Logic\Classes\DBAutoTest.uTReportsOptions.pas',
+  DBAutoTest.Configuration.uTReports in 'SRC\Logic\Classes\DBAutoTest.Configuration.uTReports.pas',
   DBAutoTest.uTConfiguration in 'SRC\Logic\Classes\DBAutoTest.uTConfiguration.pas',
-  DBAutoTest.uTConnectionOptions in 'SRC\Logic\Classes\DBAutoTest.uTConnectionOptions.pas',
-  DBAutoTest.uTTaskSavingOptions in 'SRC\Logic\Classes\DBAutoTest.uTTaskSavingOptions.pas',
-  DBAutoTest.uTConfigurationConnectionSection in 'SRC\Logic\Classes\DBAutoTest.uTConfigurationConnectionSection.pas',
+  DBAutoTest.Profile.uTConnection in 'SRC\Logic\Classes\DBAutoTest.Profile.uTConnection.pas',
+  DBAutoTest.Profile.uTTaskSaving in 'SRC\Logic\Classes\DBAutoTest.Profile.uTTaskSaving.pas',
+  DBAutoTest.Configuration.uTConnection in 'SRC\Logic\Classes\DBAutoTest.Configuration.uTConnection.pas',
   DBAutoTest.uEConfiguration in 'SRC\Logic\Classes\DBAutoTest.uEConfiguration.pas';
 
 {$R *.res}

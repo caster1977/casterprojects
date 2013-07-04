@@ -186,9 +186,9 @@ uses
   DBAutoTest.uTRecent,
   DBAutoTest.uEConfiguration,
   DBAutoTest.uResourceStrings,
-  DBAutoTest.uTInterfaceOptions,
-  DBAutoTest.uTConfigurationConnectionSection,
-  DBAutoTest.uTReportsOptions,
+  DBAutoTest.Configuration.uTInterface,
+  DBAutoTest.Configuration.uTConnection,
+  DBAutoTest.Configuration.uTReports,
   DBAutoTest.uTOtherOptions,
   System.IniFiles;
 
@@ -315,7 +315,7 @@ end;
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   CanClose := True;
-  if Configuration.Section<TInterfaceOptions>.EnableQuitConfirmation then
+  if Configuration.Section<TInterface>.EnableQuitConfirmation then
   begin
     CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage), PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
   end;
@@ -324,7 +324,7 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   Initialize;
-  if Configuration.Section<TInterfaceOptions>.EnableSplashAtStart then
+  if Configuration.Section<TInterface>.EnableSplashAtStart then
   begin
     AboutWindow.Show(True);
     //ShowAboutWindow(False);
@@ -470,10 +470,10 @@ end;
 
 procedure TMainForm.ApplyConfiguration;
 begin
-  actStatusBar.Checked := Configuration.Section<TInterfaceOptions>.EnableStatusbar;
-  StatusBar.Visible := Configuration.Section<TInterfaceOptions>.EnableStatusbar;
-  actToolBar.Checked := Configuration.Section<TInterfaceOptions>.EnableToolbar;
-  ToolBar.Visible := Configuration.Section<TInterfaceOptions>.EnableToolbar;
+  actStatusBar.Checked := Configuration.Section<TInterface>.EnableStatusbar;
+  StatusBar.Visible := Configuration.Section<TInterface>.EnableStatusbar;
+  actToolBar.Checked := Configuration.Section<TInterface>.EnableToolbar;
+  ToolBar.Visible := Configuration.Section<TInterface>.EnableToolbar;
 end;
 
 procedure TMainForm.actCreateTaskExecute(Sender: TObject);
@@ -814,7 +814,7 @@ var
 begin
   b := actStatusBar.Checked;
   StatusBar.Visible := b;
-  Configuration.Section<TInterfaceOptions>.EnableStatusbar := b;
+  Configuration.Section<TInterface>.EnableStatusbar := b;
 end;
 
 procedure TMainForm.actToolBarExecute(Sender: TObject);
@@ -823,7 +823,7 @@ var
 begin
   b := actToolBar.Checked;
   ToolBar.Visible := b;
-  Configuration.Section<TInterfaceOptions>.EnableToolbar := b;
+  Configuration.Section<TInterface>.EnableToolbar := b;
 end;
 
 procedure TMainForm.RefreshTaskStatus(const ATask: ITask);
@@ -857,7 +857,7 @@ end;
 procedure TMainForm.actProcessExecute(Sender: TObject);
 begin
   { TODO : реализовать функционал выполнения выбранных тестов в параллельных тредах }
-  Profile.Tasks.Run(Profile.ADOConnectionString, Configuration.ADOConnectionString, Configuration.Section<TConfigurationConnectionSection>.Server, Configuration.Section<TConfigurationConnectionSection>.Database);
+  Profile.Tasks.Run(Profile.ADOConnectionString, Configuration.ADOConnectionString, Configuration.Section<TConnection>.Server, Configuration.Section<TConnection>.Database);
   RefreshTaskList;
 end;
 

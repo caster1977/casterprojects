@@ -30,9 +30,9 @@ uses
   CastersPackage.uIModified,
   System.SysUtils,
   DBAutoTest.uEConfiguration,
-  DBAutoTest.uTInterfaceOptions,
-  DBAutoTest.uTReportsOptions,
-  DBAutoTest.uTConfigurationConnectionSection,
+  DBAutoTest.Configuration.uTInterface,
+  DBAutoTest.Configuration.uTReports,
+  DBAutoTest.Configuration.uTConnection,
   DBAutoTest.uTOtherOptions,
   DBAutoTest.uTRecents,
   DBAutoTest.uIRecent,
@@ -49,24 +49,24 @@ resourcestring
 
 function TConfiguration.GetADOConnectionString: string;
 begin
-  Result := Format(ADO_CONNECTION_STRING_PREFIX, [Section<TConfigurationConnectionSection>.Server]);
+  Result := Format(ADO_CONNECTION_STRING_PREFIX, [Section<TConnection>.Server]);
 
-  if Section<TConfigurationConnectionSection>.WinNTSecurity then
+  if Section<TConnection>.WinNTSecurity then
   begin
     Result := Result + ADO_CONNECTION_STRING_SUFFIX_INTEGRATED_SECURITY;
   end
   else
   begin
-    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_USER_ID, [Section<TConfigurationConnectionSection>.Login]);
-    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PERSIST_SECURITY_INFO, [BoolToStr(Section<TConfigurationConnectionSection>.EnableStorePassword, True)]);
-    if Section<TConfigurationConnectionSection>.EnableStorePassword then
+    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_USER_ID, [Section<TConnection>.Login]);
+    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PERSIST_SECURITY_INFO, [BoolToStr(Section<TConnection>.EnableStorePassword, True)]);
+    if Section<TConnection>.EnableStorePassword then
     begin
-      Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PASSWORD, [Section<TConfigurationConnectionSection>.Password]);
+      Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_PASSWORD, [Section<TConnection>.Password]);
     end;
   end;
-  if Section<TConfigurationConnectionSection>.Database > EmptyStr then
+  if Section<TConnection>.Database > EmptyStr then
   begin
-    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_INITIAL_CATALOG, [Section<TConfigurationConnectionSection>.Database]);
+    Result := Result + Format(ADO_CONNECTION_STRING_SUFFIX_INITIAL_CATALOG, [Section<TConnection>.Database]);
   end;
 end;
 
@@ -86,9 +86,9 @@ var
   r: IRecent;
 begin
   inherited;
-  RegisterSection(TInterfaceOptions);
-  RegisterSection(TReportsOptions);
-  RegisterSection(TConfigurationConnectionSection);
+  RegisterSection(TInterface);
+  RegisterSection(TReports);
+  RegisterSection(TConnection);
   RegisterSection(TOtherOptions);
   Recents.Clear;
   if Assigned(FIniFile) then

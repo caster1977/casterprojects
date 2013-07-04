@@ -176,8 +176,8 @@ implementation
 
 uses
   System.UITypes,
-  DBAutoTest.uTConnectionOptions,
-  DBAutoTest.uTTaskSavingOptions,
+  DBAutoTest.Profile.uTConnection,
+  DBAutoTest.Profile.uTTaskSaving,
   CastersPackage.UNetSrvList;
 
 procedure TProfileForm.ebLoginKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -193,15 +193,15 @@ procedure TProfileForm.actApplyExecute(Sender: TObject);
 begin
   if Assigned(Profile) then
   begin
-    Profile.Section<TConnectionOptions>.Server := Server;
-    Profile.Section<TConnectionOptions>.WinNTSecurity := WinNTSecurity;
-    Profile.Section<TConnectionOptions>.Login := Login;
-    Profile.Section<TConnectionOptions>.Password := Password;
-    Profile.Section<TConnectionOptions>.EnableStorePassword := EnableStorePassword;
-    Profile.Section<TConnectionOptions>.EnableEmptyPassword := EnableEmptyPassword;
-    Profile.Section<TConnectionOptions>.Database := Database;
-    Profile.Section<TTaskSavingOptions>.EnableStoreTasks := EnableStoreTasks;
-    Profile.Section<TTaskSavingOptions>.EnableStoreOnlyEnabledTasks := EnableStoreOnlyEnabledTasks;
+    Profile.Section<TConnectionSection>.Server := Server;
+    Profile.Section<TConnectionSection>.WinNTSecurity := WinNTSecurity;
+    Profile.Section<TConnectionSection>.Login := Login;
+    Profile.Section<TConnectionSection>.Password := Password;
+    Profile.Section<TConnectionSection>.EnableStorePassword := EnableStorePassword;
+    Profile.Section<TConnectionSection>.EnableEmptyPassword := EnableEmptyPassword;
+    Profile.Section<TConnectionSection>.Database := Database;
+    Profile.Section<TTaskSaving>.EnableStoreTasks := EnableStoreTasks;
+    Profile.Section<TTaskSaving>.EnableStoreOnlyEnabledTasks := EnableStoreOnlyEnabledTasks;
   end;
   ModalResult := mrOk;
 end;
@@ -646,15 +646,15 @@ constructor TProfileForm.Create(AOwner: TComponent; const AProfile: TProfile;
   begin
     if Assigned(Profile) then
     begin
-      Server := Profile.Section<TConnectionOptions>.Server;
-      WinNTSecurity := Profile.Section<TConnectionOptions>.WinNTSecurity;
-      Login := Profile.Section<TConnectionOptions>.Login;
-      Password := Profile.Section<TConnectionOptions>.Password;
-      EnableStorePassword := Profile.Section<TConnectionOptions>.EnableStorePassword;
-      EnableEmptyPassword := Profile.Section<TConnectionOptions>.EnableEmptyPassword;
-      Database := Profile.Section<TConnectionOptions>.Database;
-      EnableStoreTasks := Profile.Section<TTaskSavingOptions>.EnableStoreTasks;
-      EnableStoreOnlyEnabledTasks := Profile.Section<TTaskSavingOptions>.EnableStoreOnlyEnabledTasks;
+      Server := Profile.Section<TConnectionSection>.Server;
+      WinNTSecurity := Profile.Section<TConnectionSection>.WinNTSecurity;
+      Login := Profile.Section<TConnectionSection>.Login;
+      Password := Profile.Section<TConnectionSection>.Password;
+      EnableStorePassword := Profile.Section<TConnectionSection>.EnableStorePassword;
+      EnableEmptyPassword := Profile.Section<TConnectionSection>.EnableEmptyPassword;
+      Database := Profile.Section<TConnectionSection>.Database;
+      EnableStoreTasks := Profile.Section<TTaskSaving>.EnableStoreTasks;
+      EnableStoreOnlyEnabledTasks := Profile.Section<TTaskSaving>.EnableStoreOnlyEnabledTasks;
     end;
   end;
 

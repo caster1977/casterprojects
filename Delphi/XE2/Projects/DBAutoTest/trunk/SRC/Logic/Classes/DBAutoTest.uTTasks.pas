@@ -55,7 +55,7 @@ begin
     Items[i].Status := tsUnknown;
     if Items[i].Enabled then
     begin
-      with TTaskThread.Create(Items[i], ASourceADOConnectionString, ADestinationADOConnectionString) do
+      with TTaskThread.Create(Items[i], ASourceADOConnectionString, ADestinationADOConnectionString, ASourceServerName, ASourceDatabeseName) do
         try
           Start;
         except
