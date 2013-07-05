@@ -24,7 +24,7 @@ uses
   DBAutoTest.uTTaskStatus in 'SRC\Logic\Types\DBAutoTest.uTTaskStatus.pas',
   DBAutoTest.uResourceStrings in 'SRC\Logic\Other\DBAutoTest.uResourceStrings.pas',
   DBAutoTest.Configuration.uTInterface in 'SRC\Logic\Classes\DBAutoTest.Configuration.uTInterface.pas',
-  DBAutoTest.uTOtherOptions in 'SRC\Logic\Classes\DBAutoTest.uTOtherOptions.pas',
+  DBAutoTest.Configuration.uTOther in 'SRC\Logic\Classes\DBAutoTest.Configuration.uTOther.pas',
   DBAutoTest.Configuration.uTReports in 'SRC\Logic\Classes\DBAutoTest.Configuration.uTReports.pas',
   DBAutoTest.uTConfiguration in 'SRC\Logic\Classes\DBAutoTest.uTConfiguration.pas',
   DBAutoTest.Profile.uTConnection in 'SRC\Logic\Classes\DBAutoTest.Profile.uTConnection.pas',

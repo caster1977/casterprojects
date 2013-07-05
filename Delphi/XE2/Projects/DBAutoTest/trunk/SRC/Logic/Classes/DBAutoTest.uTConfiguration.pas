@@ -33,7 +33,7 @@ uses
   DBAutoTest.Configuration.uTInterface,
   DBAutoTest.Configuration.uTReports,
   DBAutoTest.Configuration.uTConnection,
-  DBAutoTest.uTOtherOptions,
+  DBAutoTest.Configuration.uTOther,
   DBAutoTest.uTRecents,
   DBAutoTest.uIRecent,
   DBAutoTest.uTRecent;
@@ -89,7 +89,7 @@ begin
   RegisterSection(TInterface);
   RegisterSection(TReports);
   RegisterSection(TConnection);
-  RegisterSection(TOtherOptions);
+  RegisterSection(TOther);
   Recents.Clear;
   if Assigned(FIniFile) then
   begin

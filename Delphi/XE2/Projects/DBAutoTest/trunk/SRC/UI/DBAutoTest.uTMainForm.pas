@@ -189,7 +189,7 @@ uses
   DBAutoTest.Configuration.uTInterface,
   DBAutoTest.Configuration.uTConnection,
   DBAutoTest.Configuration.uTReports,
-  DBAutoTest.uTOtherOptions,
+  DBAutoTest.Configuration.uTOther,
   System.IniFiles;
 
 resourcestring
@@ -666,12 +666,12 @@ end;
 procedure TMainForm.actRecentProfilesPropertiesExecute(Sender: TObject);
 begin
   with TRecentsPropertiesForm.Create(Self, Configuration.Recents,
-    Configuration.Section<TOtherOptions>.RecentsQuantity) do
+    Configuration.Section<TOther>.RecentsQuantity) do
     try
       ShowModal;
       if ModalResult = mrOk then
       begin
-        Configuration.Section<TOtherOptions>.RecentsQuantity := Size;
+        Configuration.Section<TOther>.RecentsQuantity := Size;
         RefreshRecentsMenu;
       end;
     finally
@@ -775,7 +775,7 @@ begin
         begin
           node := lvTaskList.Items.Add;
           node.StateIndex := -1;
-          node.ImageIndex := -1;
+          // node.ImageIndex := -1;
           node.Data := Pointer(t);
           node.GroupID := GetGroupIDByHeader(t.Group);
           if node.GroupID = -1 then
@@ -784,14 +784,14 @@ begin
           end;
           node.Caption := t.name;
           node.SubItems.Add(TASK_STATUS_NAMES[t.Status]);
-          (* if t.Status = tsUnknown then
-            begin
+          if t.Status = tsUnknown then
+          begin
             node.ImageIndex := -1;
-            end
-            else
-            begin
+          end
+          else
+          begin
             node.ImageIndex := Integer(t.Status);
-            end; *)
+          end;
           if t.Status in [tsError, tsComplete] then
           begin
             node.SubItems.Add(TimeToStr(t.Time));
@@ -857,7 +857,14 @@ begin
       begin
         if lvTaskList.Items[i].SubItems.Count > 0 then
         begin
-          // lvTaskList.Items[i].ImageIndex := Integer(ATask.Status);
+          if ATask.Status = tsUnknown then
+          begin
+            lvTaskList.Items[i].ImageIndex := -1;
+          end
+          else
+          begin
+            lvTaskList.Items[i].ImageIndex := Integer(ATask.Status);
+          end;
           lvTaskList.Items[i].SubItems[0] := TASK_STATUS_NAMES[ATask.Status];
           s := EmptyStr;
           if ATask.Status in [tsError, tsComplete] then

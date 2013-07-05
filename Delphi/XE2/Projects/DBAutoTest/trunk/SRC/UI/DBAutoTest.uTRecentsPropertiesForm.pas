@@ -174,7 +174,7 @@ var
 begin
   for i := Recents.Count - 1 downto 0 do
   begin
-    if not Recents[i].Exists then
+    if not Recents.Items[i].Exists then
     begin
       Recents.Delete(i);
     end;
@@ -190,7 +190,7 @@ begin
   b := False;
   for i := 0 to Recents.Count - 1 do
   begin
-    if not Recents[i].Exists then
+    if not Recents.Items[i].Exists then
     begin
       b := True;
       Break;
