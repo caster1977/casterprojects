@@ -488,6 +488,8 @@ begin
       q := TADOQuery.Create(Self);
       try
         q.Connection := ADOConnection;
+        q.CursorType := ctOpenForwardOnly;
+        q.LockType := ltReadOnly;
         q.SQL.Text := 'SELECT sd.name FROM sys.databases sd WHERE  HAS_DBACCESS(sd.name) = 1 ORDER BY sd.name';
         q.Open;
         while not q.Eof do

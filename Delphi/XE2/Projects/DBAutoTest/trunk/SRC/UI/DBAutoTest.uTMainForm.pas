@@ -38,7 +38,7 @@ uses
 type
   TMainForm = class(TForm, ICustomized)
     StatusBar: TStatusBar;
-    ImageList: TImageList;
+    ilActions: TImageList;
     actHelpMenuGroup: THelpMenuGroupAction;
     actFileMenuGroup: TFileMenuGroupAction;
     actActionMenuGroup: TActionMenuGroupAction;
@@ -95,7 +95,6 @@ type
     N30: TMenuItem;
     N31: TMenuItem;
     actProfileProperties: TAction;
-    OpenDialog1: TOpenDialog;
     actViewMenuGroupAction: TViewMenuGroupAction;
     N5: TMenuItem;
     N9: TMenuItem;
@@ -103,6 +102,7 @@ type
     actMoveDown: TAction;
     actMoveUp: TAction;
     AboutWindow: TAboutWindow;
+    ilStatuses: TImageList;
     procedure actQuitExecute(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -196,9 +196,11 @@ resourcestring
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
   RsExitConfirmationCaption = '%s - Подтверждение выхода';
   RsWarningCaption = '%s - Предупреждение';
-  RsCannotRegisterThreadMessage = 'Не удалось зарегистрировать оконное сообщение для дочерних потоков.';
+  RsCannotRegisterThreadMessage =
+    'Не удалось зарегистрировать оконное сообщение для дочерних потоков.';
   RsOpenRecent = 'Нажмите для загрузки файла профиля с указанным именем';
-  RsCreateProfileConfirmationMessage = 'Вы действительно хотите создать новый профиль, предварительно не сохранив текущий?';
+  RsCreateProfileConfirmationMessage =
+    'Вы действительно хотите создать новый профиль, предварительно не сохранив текущий?';
   RsCreateProfileConfirmationCaption = '%s - Подтверждение создания нового профиля';
   RsOpenProfileFilters = 'Файлы профилей (*.profile)|*.profile|Все файлы (*.*)|*.*';
   RsOpenProfileDefaultExt = 'profile';
@@ -317,7 +319,9 @@ begin
   CanClose := True;
   if Configuration.Section<TInterface>.EnableQuitConfirmation then
   begin
-    CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage), PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
+    CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
+      PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])),
+      MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
   end;
 end;
 
@@ -327,7 +331,7 @@ begin
   if Configuration.Section<TInterface>.EnableSplashAtStart then
   begin
     AboutWindow.Show(True);
-    //ShowAboutWindow(False);
+    // ShowAboutWindow(False);
   end;
 end;
 
@@ -366,7 +370,8 @@ begin
   Application.OnHint := OnHint;
   if not RegisterThreadMessage then
   begin
-    MessageBox(Handle, PWideChar(RsCannotRegisterThreadMessage), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
+    MessageBox(Handle, PWideChar(RsCannotRegisterThreadMessage),
+      PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
     Application.Terminate;
   end;
   // LoadConfiguration;
@@ -430,7 +435,9 @@ begin
   { TODO :
     добавить проверку сохранённости текущего профиля:
     если профиль был изменён и не сохранён, задать вопрос юзеру }
-  if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage), PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING_CANCEL) = IDOK then
+  if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage),
+    PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])),
+    MESSAGE_TYPE_CONFIRMATION_WARNING_CANCEL) = IDOK then
   begin
     if Assigned(Profile) then
     begin
@@ -488,7 +495,7 @@ end;
 
 procedure TMainForm.actCreateTaskUpdate(Sender: TObject);
 begin
-  //actCreateTask.Enabled := not FProcessActive;
+  // actCreateTask.Enabled := not FProcessActive;
 end;
 
 procedure TMainForm.actDeleteTaskExecute(Sender: TObject);
@@ -575,7 +582,8 @@ begin
       begin
         if i < lvTaskList.Items.Count - 1 then
         begin
-          Profile.Tasks.Exchange(Profile.Tasks.IndexOf(ITask(lvTaskList.Items[i].Data)), Profile.Tasks.IndexOf(ITask(lvTaskList.Items[i + 1].Data)));
+          Profile.Tasks.Exchange(Profile.Tasks.IndexOf(ITask(lvTaskList.Items[i].Data)),
+            Profile.Tasks.IndexOf(ITask(lvTaskList.Items[i + 1].Data)));
         end;
       end;
     end;
@@ -610,7 +618,8 @@ begin
       begin
         if i > 0 then
         begin
-          Profile.Tasks.Exchange(Profile.Tasks.IndexOf(ITask(lvTaskList.Items[i].Data)), Profile.Tasks.IndexOf(ITask(lvTaskList.Items[i - 1].Data)));
+          Profile.Tasks.Exchange(Profile.Tasks.IndexOf(ITask(lvTaskList.Items[i].Data)),
+            Profile.Tasks.IndexOf(ITask(lvTaskList.Items[i - 1].Data)));
         end;
       end;
     end;
@@ -640,10 +649,10 @@ begin
   form := TProfileForm.Create(Self, Profile);
   try
     form.ShowModal;
-    {if form.ModalResult = mrOk then
-    begin
+    { if form.ModalResult = mrOk then
+      begin
       ApplyProfile;
-    end;}
+      end; }
   finally
     form.Free;
   end;
@@ -656,7 +665,8 @@ end;
 
 procedure TMainForm.actRecentProfilesPropertiesExecute(Sender: TObject);
 begin
-  with TRecentsPropertiesForm.Create(Self, Configuration.Recents, Configuration.Section<TOtherOptions>.RecentsQuantity) do
+  with TRecentsPropertiesForm.Create(Self, Configuration.Recents,
+    Configuration.Section<TOtherOptions>.RecentsQuantity) do
     try
       ShowModal;
       if ModalResult = mrOk then
@@ -774,6 +784,14 @@ begin
           end;
           node.Caption := t.name;
           node.SubItems.Add(TASK_STATUS_NAMES[t.Status]);
+          (* if t.Status = tsUnknown then
+            begin
+            node.ImageIndex := -1;
+            end
+            else
+            begin
+            node.ImageIndex := Integer(t.Status);
+            end; *)
           if t.Status in [tsError, tsComplete] then
           begin
             node.SubItems.Add(TimeToStr(t.Time));
@@ -839,6 +857,7 @@ begin
       begin
         if lvTaskList.Items[i].SubItems.Count > 0 then
         begin
+          // lvTaskList.Items[i].ImageIndex := Integer(ATask.Status);
           lvTaskList.Items[i].SubItems[0] := TASK_STATUS_NAMES[ATask.Status];
           s := EmptyStr;
           if ATask.Status in [tsError, tsComplete] then
@@ -857,7 +876,8 @@ end;
 procedure TMainForm.actProcessExecute(Sender: TObject);
 begin
   { TODO : реализовать функционал выполнения выбранных тестов в параллельных тредах }
-  Profile.Tasks.Run(Profile.ADOConnectionString, Configuration.ADOConnectionString, Configuration.Section<TConnection>.Server, Configuration.Section<TConnection>.Database);
+  Profile.Tasks.Run(Profile.ADOConnectionString, Configuration.ADOConnectionString,
+    Configuration.Section<TConnection>.Server, Configuration.Section<TConnection>.Database);
   RefreshTaskList;
 end;
 

@@ -144,6 +144,8 @@ begin
       try
         query.ConnectionString := SourceADOConnectionString;
         query.CommandTimeout := ADO_CONNECTION_DEFAULT_COMMAND_TIMEOUT;
+        query.CursorType := ctOpenForwardOnly;
+        query.LockType := ltReadOnly;
         query.SQL.Assign(Task.SQL);
         try
           query.Open;
@@ -181,6 +183,8 @@ begin
       try
         query.ConnectionString := DestinationADOConnectionString;
         query.CommandTimeout := ADO_CONNECTION_DEFAULT_COMMAND_TIMEOUT;
+        query.CursorType := ctOpenForwardOnly;
+        query.LockType := ltReadOnly;
         query.SQL.Text := Format('INSERT INTO TestResults ' +
           '(ServerName, DBName, GroupName, Name, Query, StartTime, FinishTime, Passed) ' +
           'VALUES (''%s'', ''%s'', ''%s'', ''%s'', ''%s'', ''%s'', ''%s'', %d)',
