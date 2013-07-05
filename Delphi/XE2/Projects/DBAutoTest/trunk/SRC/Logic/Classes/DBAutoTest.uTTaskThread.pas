@@ -19,7 +19,8 @@ type
   strict private
     FDestinationADOConnectionString: WideString;
     function GetDestinationADOConnectionString: WideString;
-    property DestinationADOConnectionString: WideString read GetDestinationADOConnectionString nodefault;
+    property DestinationADOConnectionString: WideString
+      read GetDestinationADOConnectionString nodefault;
   strict private
     FSourceServerName: WideString;
     function GetSourceServerName: WideString;
@@ -35,11 +36,10 @@ type
   protected
     procedure Execute; override;
   public
-    constructor Create(const ATask: ITask;
-    const ASourceADOConnectionString: WideString = '';
-    const ADestinationADOConnectionString: WideString = '';
-    const ASourceServerName: WideString = '';
-    const ASourceDatabaseName: WideString = ''); reintroduce; virtual;
+    constructor Create(const ATask: ITask; const ASourceADOConnectionString: WideString = '';
+      const ADestinationADOConnectionString: WideString = '';
+      const ASourceServerName: WideString = ''; const ASourceDatabaseName: WideString = '');
+      reintroduce; virtual;
   end;
 
 implementation
@@ -58,10 +58,11 @@ uses
 
 resourcestring
   RsITaskIsNil = 'ITask is nil.';
-  RsCannotRegisterThreadMessage = 'Не удалось зарегистрировать оконное сообщение для дочернего потока.';
+  RsCannotRegisterThreadMessage =
+    'Не удалось зарегистрировать оконное сообщение для дочернего потока.';
 
-constructor TTaskThread.Create(const ATask: ITask;
-  const ASourceADOConnectionString, ADestinationADOConnectionString, ASourceServerName, ASourceDatabaseName: WideString);
+constructor TTaskThread.Create(const ATask: ITask; const ASourceADOConnectionString,
+  ADestinationADOConnectionString, ASourceServerName, ASourceDatabaseName: WideString);
 begin
   if Assigned(ATask) then
   begin
@@ -127,14 +128,16 @@ begin
   if Assigned(Task) then
   begin
     Task.Status := tsExecuting;
-    PostMessage(Application.MainForm.Handle, FThreadMessage, NativeUInt(Task), NativeUInt(0));
+    SendMessage(Application.MainForm.Handle, FThreadMessage, NativeUInt(Task), NativeUInt(0));
     Task.StartTime := Now;
 {$IFDEF DEBUG}
-    NameThreadForDebugging(AnsiString(HexDisplayPrefix + IntToHex(PInteger(Task)^, SizeOf(PInteger) * 2)));
+    NameThreadForDebugging(AnsiString(HexDisplayPrefix + IntToHex(PInteger(Task)^,
+      SizeOf(PInteger) * 2)));
 {$ENDIF}
     if not RegisterThreadMessage then
     begin
-      MessageBox(Handle, PWideChar(RsCannotRegisterThreadMessage), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
+      MessageBox(Handle, PWideChar(RsCannotRegisterThreadMessage),
+        PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
       Terminate;
     end;
     i := -1;
@@ -175,7 +178,7 @@ begin
         Task.StopTime := Now;
         // Application.MainForm.Caption := AnsiString(HexDisplayPrefix + IntToHex(PInteger(Task)^, SizeOf(PInteger) * 2));
       end);
-    PostMessage(Application.MainForm.Handle, FThreadMessage, NativeUInt(Task), NativeUInt(0));
+    SendMessage(Application.MainForm.Handle, FThreadMessage, NativeUInt(Task), NativeUInt(0));
     // сохранение результатов в базу
     if Trim(Task.SQL.Text) > EmptyStr then
     begin
@@ -188,7 +191,9 @@ begin
         query.SQL.Text := Format('INSERT INTO TestResults ' +
           '(ServerName, DBName, GroupName, Name, Query, StartTime, FinishTime, Passed) ' +
           'VALUES (''%s'', ''%s'', ''%s'', ''%s'', ''%s'', ''%s'', ''%s'', %d)',
-          [SourceServerName, SourceDatabaseName, Task.Group, Task.Name, StringReplace(Task.SQL.Text, Char(39), Char(39) + Char(39), [rfReplaceAll]), DateTimeToStr(Task.StartTime), DateTimeToStr(Task.StopTime), Integer(Task.Status = tsComplete)]);
+          [SourceServerName, SourceDatabaseName, Task.Group, Task.Name, StringReplace(Task.SQL.Text,
+          Char(39), Char(39) + Char(39), [rfReplaceAll]), DateTimeToStr(Task.StartTime),
+          DateTimeToStr(Task.StopTime), Integer(Task.Status = tsComplete)]);
         try
           query.ExecSQL;
         finally

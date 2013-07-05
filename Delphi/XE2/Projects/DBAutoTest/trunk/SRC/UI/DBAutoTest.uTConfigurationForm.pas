@@ -219,7 +219,7 @@ uses
   DBAutoTest.Configuration.uTInterface,
   DBAutoTest.Configuration.uTReports,
   DBAutoTest.Configuration.uTConnection,
-  DBAutoTest.uTOtherOptions;
+  DBAutoTest.Configuration.uTOther;
 
 resourcestring
   RsAConfigurationIsNil = 'AConfiguration is nil.';
@@ -239,7 +239,7 @@ constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: 
       EnableStoreMainFormSizesAndPosition := Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition;
       EnableGenerateFastReportDocument := Configuration.Section<TReports>.EnableGenerateFastReportDocument;
       EnableGenerateExcelDocument := Configuration.Section<TReports>.EnableGenerateExcelDocument;
-      EnablePlaySoundOnComplete := Configuration.Section<TOtherOptions>.EnablePlaySoundOnComplete;
+      EnablePlaySoundOnComplete := Configuration.Section<TOther>.EnablePlaySoundOnComplete;
       Server := Configuration.Section<TConnection>.Server;
       WinNTSecurity := Configuration.Section<TConnection>.WinNTSecurity;
       Login := Configuration.Section<TConnection>.Login;
@@ -399,7 +399,7 @@ begin
     Configuration.Section<TConnection>.EnableStorePassword := EnableStorePassword;
     Configuration.Section<TConnection>.EnableEmptyPassword := EnableEmptyPassword;
     Configuration.Section<TConnection>.Database := Database;
-    Configuration.Section<TOtherOptions>.EnablePlaySoundOnComplete := EnablePlaySoundOnComplete;
+    Configuration.Section<TOther>.EnablePlaySoundOnComplete := EnablePlaySoundOnComplete;
   end;
   ModalResult := mrOk;
 end;
@@ -411,7 +411,7 @@ begin
   b := False;
   if Assigned(Configuration) then
   begin
-    b := not((Configuration.Section<TOtherOptions>.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete) and (Configuration.Section<TInterface>.EnableQuitConfirmation = EnableQuitConfirmation) and
+    b := not((Configuration.Section<TOther>.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete) and (Configuration.Section<TInterface>.EnableQuitConfirmation = EnableQuitConfirmation) and
       (Configuration.Section<TInterface>.EnableSplashAtStart = EnableSplashAtStart) and (Configuration.Section<TInterface>.EnableStatusbar = EnableStatusbar) and (Configuration.Section<TInterface>.EnableToolbar = EnableToolbar)
       and (Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition = EnableStoreMainFormSizesAndPosition) and (Configuration.Section<TReports>.EnableGenerateFastReportDocument = EnableGenerateFastReportDocument) and
       (Configuration.Section<TReports>.EnableGenerateExcelDocument = EnableGenerateExcelDocument) and

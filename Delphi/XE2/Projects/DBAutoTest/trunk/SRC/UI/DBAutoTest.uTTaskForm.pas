@@ -47,30 +47,41 @@ type
     procedure actCancelExecute(Sender: TObject);
     procedure actClearExecute(Sender: TObject);
     procedure actClearUpdate(Sender: TObject);
+
   strict private
     FTaskEnabled: Boolean;
-    FTaskIndex: Integer;
-    FTasks: ITasks;
     function GetTaskEnabled: Boolean;
-    function GetTaskGroup: string;
-    function GetTaskIndex: Integer;
-    function GetTaskName: string;
-    function GetTasks: ITasks;
-    function GetTaskSQL: TStringList;
     procedure SetTaskEnabled(const AValue: Boolean);
-    procedure SetTaskGroup(const AValue: string);
-    procedure SetTaskName(const AValue: string);
-    procedure SetTaskSQL(const AValue: TStringList);
+    property TaskEnabled: Boolean read GetTaskEnabled write SetTaskEnabled default TASK_DEFAULT_ENABLED;
 
+  strict private
+    FTaskIndex: Integer;
+    function GetTaskIndex: Integer;
+  public
+    property TaskIndex: Integer read GetTaskIndex nodefault;
+
+  strict private
+    FTasks: ITasks;
+    function GetTasks: ITasks;
     property Tasks: ITasks read GetTasks nodefault;
 
-    property TaskEnabled: Boolean read GetTaskEnabled write SetTaskEnabled default TASK_DEFAULT_ENABLED;
+  strict private
+    function GetTaskGroup: string;
+    procedure SetTaskGroup(const AValue: string);
     property TaskGroup: string read GetTaskGroup write SetTaskGroup nodefault;
+
+  strict private
+    function GetTaskName: string;
+    procedure SetTaskName(const AValue: string);
     property TaskName: string read GetTaskName write SetTaskName nodefault;
+
+  strict private
+    function GetTaskSQL: TStringList;
+    procedure SetTaskSQL(const AValue: TStringList);
     property TaskSQL: TStringList read GetTaskSQL write SetTaskSQL nodefault;
+
   public
     constructor Create(AOwner: TComponent; const ATasks: ITasks; const AIndex: Integer = -1); reintroduce; virtual;
-    property TaskIndex: Integer read GetTaskIndex nodefault;
   end;
 
 implementation
@@ -188,7 +199,7 @@ constructor TTaskForm.Create(AOwner: TComponent; const ATasks: ITasks; const AIn
       cmbName.Items.Clear;
       for i := 0 to Tasks.Count - 1 do
       begin
-        s := Tasks[i].Name;
+        s := Tasks.Items[i].Name;
         if cmbName.Items.IndexOf(s) < 0 then
         begin
           cmbName.Items.Append(s);

@@ -1,4 +1,4 @@
-unit DBAutoTest.uTOtherOptions;
+unit DBAutoTest.Configuration.uTOther;
 
 interface
 
@@ -10,7 +10,7 @@ uses
 
 type
   [TSection(OTHER_SECTION)]
-  TOtherOptions = class(TCustomSection)
+  TOther = class(TCustomSection)
   public
     [TDefaultValue(CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE)]
     property EnablePlaySoundOnComplete: Boolean index 0 read GetBooleanValue write SetBooleanValue;
