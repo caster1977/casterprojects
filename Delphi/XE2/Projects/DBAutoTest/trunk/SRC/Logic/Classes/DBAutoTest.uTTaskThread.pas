@@ -192,8 +192,8 @@ begin
           '(ServerName, DBName, GroupName, Name, Query, StartTime, FinishTime, Passed) ' +
           'VALUES (''%s'', ''%s'', ''%s'', ''%s'', ''%s'', ''%s'', ''%s'', %d)',
           [SourceServerName, SourceDatabaseName, Task.Group, Task.Name, StringReplace(Task.SQL.Text,
-          Char(39), Char(39) + Char(39), [rfReplaceAll]), DateTimeToStr(Task.StartTime),
-          DateTimeToStr(Task.StopTime), Integer(Task.Status = tsComplete)]);
+          Char(39), Char(39) + Char(39), [rfReplaceAll]), FormatDateTime('mm-dd-yyyy hh:nn:ss', Task.StartTime),
+          FormatDateTime('mm-dd-yyyy hh:nn:ss', Task.StopTime), Integer(Task.Status = tsComplete)]);
         try
           query.ExecSQL;
         finally
