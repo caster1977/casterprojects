@@ -14,7 +14,7 @@ uses
   Vcl.Dialogs;
 
 type
-  TMainForm=class(TForm)
+  TMainForm = class(TForm)
     procedure FormClick(Sender: TObject);
   end;
 
@@ -26,28 +26,32 @@ implementation
 {$R *.dfm}
 
 type
-  TDrawBMP=procedure(Handle: THandle); stdcall;
+  TDrawBMP = procedure(Handle: THandle); stdcall;
 
 procedure TMainForm.FormClick(Sender: TObject);
 var
   hcDll: THandle; // Указатель на библиотеку
   procDrawBMP: TDrawBMP; // Подгружаемая функция
 begin
-  hcDll:=LoadLibrary('Example01_MyDll.dll'); // Динамическая загрузка DLL
-  if hcDll<=HINSTANCE_ERROR then
-    begin // Загрузка не удалась
-      MessageDlg('Отсутствует библиотека Example01_MyDll.dll!', mtError, [mbOK], 0);
-      Exit;
-    end;
+  hcDll := LoadLibrary('Example01_MyDll.dll'); // Динамическая загрузка DLL
+  if hcDll <= HINSTANCE_ERROR then
+  begin // Загрузка не удалась
+    MessageDlg('Отсутствует библиотека Example01_MyDll.dll!', mtError, [mbOK], 0);
+    Exit;
+  end;
   // Библиотека загружена. Получаем адрес точки входа нужной функции
-  procDrawBMP:=GetProcAddress(hCDll, 'DrawBMP');
-  // проверка на успешность операции связывания
-  if not Assigned(procDrawBMP) then
+  procDrawBMP := GetProcAddress(hcDll, 'DrawBMP');
+  try
+    // проверка на успешность операции связывания
+    if not Assigned(procDrawBMP) then
     begin
-      MessageDlg('В библиотеке Example01_MyDll.dll отсутствует функция DrawBMP!', mtError, [mbOK], 0);
+      MessageDlg('В библиотеке Example01_MyDll.dll отсутствует функция DrawBMP!', mtError,
+        [mbOK], 0);
       Exit;
     end;
-  procDrawBMP(Canvas.Handle); // Вызываем функцию
+  finally
+    procDrawBMP(Canvas.Handle); // Вызываем функцию
+  end;
   FreeLibrary(hcDll); // Выгружаем библиотеку
 end;
 

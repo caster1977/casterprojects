@@ -14,7 +14,7 @@ uses
   Vcl.Dialogs;
 
 type
-  TMainForm=class(TForm)
+  TMainForm = class(TForm)
     procedure FormClick(Sender: TObject);
   end;
 
@@ -24,7 +24,6 @@ var
 implementation
 
 {$R *.dfm}
-
 procedure DrawBMP(Handle: THandle); stdcall; external 'Example01_MyDll.dll';
 
 procedure TMainForm.FormClick(Sender: TObject);
