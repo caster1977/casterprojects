@@ -10,10 +10,6 @@ library Example01_MyDll;
   with your DLL. To avoid using BORLNDMM.DLL, pass string information
   using PChar or ShortString parameters. }
 
-
-
-
-
 {$R *.dres}
 
 uses
@@ -24,15 +20,18 @@ var
   wrkBitmap: TBitmap;
   wrkCanvas: TCanvas;
 begin
-  wrkBitmap:=TBitmap.Create;
-  wrkCanvas:=TCanvas.Create;
+  wrkBitmap := TBitmap.Create;
   try
     // Растр загружается из ресурсов, идентифицируется именем
     wrkBitmap.LoadFromResourceName(HInstance, 'Bitmap_1');
-    wrkCanvas.Handle:=Handle;
-    wrkCanvas.Draw(0, 0, wrkBitmap);
+    wrkCanvas := TCanvas.Create;
+    try
+      wrkCanvas.Handle := Handle;
+      wrkCanvas.Draw(0, 0, wrkBitmap);
+    finally
+      wrkCanvas.Free;
+    end;
   finally
-    wrkCanvas.Free;
     wrkBitmap.Free;
   end;
 end;

@@ -15,10 +15,10 @@ uses
   DirectDraw;
 
 type
-  TMainForm=class(TForm)
+  TMainForm = class(TForm)
     procedure FormCreate(Sender: TObject);
   private
-//    FDD: IDirectDraw;
+    // FDD: IDirectDraw;
     FDD7: IDirectDraw7;
   public
     { Public declarations }
@@ -54,11 +54,11 @@ begin
     if Assigned(FDD) then
     FDD:=nil;
   }
-  FDD7:=nil; // Это обязательно для повышения надежности работы
+  FDD7 := nil; // Это обязательно для повышения надежности работы
   try // Включаем защищенный режим
     try // ... finally
       // Создание главного объекта DirectDraw
-      hRet:=DirectDrawCreateEx(nil, FDD7, IDirectDraw7, nil);
+      hRet := DirectDrawCreateEx(nil, FDD7, IDirectDraw7, nil);
       if Failed(hRet) // Вслучае ошибки наверняка сюда не доберемся
       then
         ShowMessage('DirectX 7-й версии не доступен')
@@ -66,7 +66,7 @@ begin
         ShowMessage('DirectX 7-й версии доступен');
     finally // Влюбом случае производим освобождение памяти
       if Assigned(FDD7) then
-        FDD7:=nil;
+        FDD7 := nil;
     end;
   except // Вслучае ошибки информируем о неудаче
     ShowMessage('DirectX 7-й версии не доступен')
