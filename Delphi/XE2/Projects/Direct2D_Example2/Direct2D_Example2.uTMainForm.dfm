@@ -11,6 +11,7 @@ object MainForm: TMainForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnMouseDown = FormMouseDown
   OnPaint = FormPaint
   OnResize = FormResize
   OnShow = FormShow
