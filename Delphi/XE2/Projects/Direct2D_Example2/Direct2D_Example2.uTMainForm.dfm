@@ -11,9 +11,15 @@ object MainForm: TMainForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  OnCreate = FormCreate
   OnPaint = FormPaint
   OnResize = FormResize
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
+  object Timer1: TTimer
+    Interval = 10
+    OnTimer = Timer1Timer
+    Left = 416
+    Top = 40
+  end
 end
