@@ -14,7 +14,8 @@ uses
   Vcl.Dialogs,
   Vcl.Direct2D,
   Winapi.D2D1,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls,
+  uTGlowSpotList;
 
 type
   TMainForm = class(TForm)
@@ -23,13 +24,17 @@ type
     procedure FormPaint(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
+    procedure FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState;
+      X, Y: Integer);
   strict private
     FCanvas: TDirect2DCanvas;
     FImage: TImage;
     FFPS: Integer;
     FFrames: Integer;
     FStartTime: Cardinal;
+    FSpots: TGlowSpotList;
     procedure WMEraseBkgnd(var AMessage: TWMEraseBkgnd); message WM_ERASEBKGND;
+    procedure WMTouch(var AMessage: TMessage); message WM_TOUCH;
     function GetCanvas: TDirect2DCanvas;
     procedure UpdateFPS;
   public
@@ -45,25 +50,43 @@ implementation
 
 {$R *.dfm}
 
+uses
+  uTGlowSpot;
+
 constructor TMainForm.Create(AOwner: TComponent);
 begin
   inherited;
+  FSpots := TGlowSpotList.Create;
   FImage := TImage.Create(Self);
   FImage.Picture.LoadFromFile('img.tif');
   ClientHeight := FImage.Picture.Height;
+  RegisterTouchWindow(Handle, 0);
 end;
 
 destructor TMainForm.Destroy;
 begin
+  UnregisterTouchWindow(Handle);
   FreeAndNil(FImage);
+  FreeAndNil(FSpots);
   FreeAndNil(FCanvas);
   inherited;
+end;
+
+procedure TMainForm.FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState;
+  X, Y: Integer);
+var
+  spot: TGlowSpot;
+begin
+  spot := TGlowSpot.Create(Self);
+  spot.X := X;
+  spot.Y := Y;
+  FSpots.Add(spot);
 end;
 
 procedure TMainForm.FormPaint(Sender: TObject);
 var
   w, h: Integer;
-  x, y: Integer;
+  X, Y: Integer;
   layer: ID2D1Layer;
   lp: TD2D1LayerParameters;
   // r1, r2: TRect;
@@ -71,11 +94,12 @@ var
   // gs: array [0 .. 1] of TD2D1GradientStop;
   // gb: ID2D1RadialGradientBrush;
 const
-  gpoints: array [0 .. 2] of TD2D1Point2F = ((x: 150; y: 50), (x: 280; y: 150), (x: 150; y: 350));
+  gpoints: array [0 .. 2] of TD2D1Point2F = ((X: 150; Y: 50), (X: 280; Y: 150), (X: 150; Y: 350));
 var
   pathGeometry: ID2D1PathGeometry;
   factory: ID2D1Factory;
   sink: ID2D1GeometrySink;
+  spot: TGlowSpot;
 
   function D2D1InfiniteRect: TD2D1RectF;
   begin
@@ -97,21 +121,21 @@ begin
     Brush.Color := clBlack;
     Rectangle(0, 0, w, h);
 {$REGION}
-    x := 0;
+    X := 0;
     Pen.Color := clLtGray;
-    while x < w do
+    while X < w do
     begin
-      MoveTo(x, 0);
-      LineTo(x, h);
-      Inc(x, 10);
+      MoveTo(X, 0);
+      LineTo(X, h);
+      Inc(X, 10);
     end;
 
-    y := 0;
-    while y < h do
+    Y := 0;
+    while Y < h do
     begin
-      MoveTo(0, y);
-      LineTo(w, y);
-      Inc(y, 10);
+      MoveTo(0, Y);
+      LineTo(w, Y);
+      Inc(Y, 10);
     end;
 {$ENDREGION}
 {$REGION}
@@ -170,13 +194,6 @@ begin
       RenderTarget.PopLayer; }
 {$ENDREGION}
 {$REGION}
-    // FPS
-    Canvas.Font.Color := clRed;
-    Canvas.Brush.Color := clNone;
-    Canvas.Font.Size := 14;
-    Canvas.TextOut(10, 10, FloatToStrF(FFPS, ffFixed, 2, 2) + ' FPS');
-{$ENDREGION}
-{$REGION}
     // ----geometry mask
     RenderTarget.SetTransform(TD2DMatrix3x2F.Translation(65, 50));
     RenderTarget.CreateLayer(nil, layer);
@@ -201,6 +218,21 @@ begin
     RenderTarget.PushLayer(lp, layer);
     Draw(0, 0, FImage.Picture.Graphic);
     RenderTarget.PopLayer;
+{$ENDREGION}
+{$REGION}
+    // FPS
+    Canvas.Font.Color := clRed;
+    Canvas.Brush.Color := clNone;
+    Canvas.Font.Size := 14;
+    Canvas.TextOut(10, 10, FloatToStrF(FFPS, ffFixed, 2, 2) + ' FPS');
+{$ENDREGION}
+{$REGION}
+    // spots
+    RenderTarget.SetTransform(TD2DMatrix3x2F.Identity);
+    for spot in FSpots do
+    begin
+      spot.Paint(Canvas);
+    end;
 {$ENDREGION}
     EndDraw;
   end;
@@ -243,6 +275,8 @@ begin
 end;
 
 procedure TMainForm.UpdateFPS;
+var
+  spot: TGlowSpot;
 begin
   Inc(FFrames);
   if GetTickCount - FStartTime >= 1000 then
@@ -251,11 +285,67 @@ begin
     FFrames := 0;
     FStartTime := GetTickCount;
   end;
+  for spot in FSpots do
+  begin
+    if spot.FadeIn then
+      spot.Alpha := spot.Alpha + 0.012
+    else
+      spot.Alpha := spot.Alpha - 0.012;
+
+    if spot.Alpha < 0.3 then
+    begin
+      spot.FadeIn := True;
+      spot.Alpha := 0.4
+    end
+    else
+      if spot.Alpha > 1 then
+        spot.FadeIn := False;
+  end;
 end;
 
 procedure TMainForm.WMEraseBkgnd(var AMessage: TWMEraseBkgnd);
 begin
   AMessage.Result := 1;
+end;
+
+procedure TMainForm.WMTouch(var AMessage: TMessage);
+
+  function TouchPointToPoint(const ATouchPoint: TTouchInput): TPoint;
+  begin
+    { Result := Point(TouchPoint.x div 100, TouchPoint.y div 100);
+      PhysicalToLogicalPoint(Handle, Result); }
+  end;
+
+var
+  touch_inputs: array of TTouchInput;
+  touch_input: TTouchInput;
+  handled: Boolean;
+  point: TPoint;
+  spot: TGlowSpot;
+begin
+  handled := False;
+  try
+    SetLength(touch_inputs, AMessage.WParam);
+    GetTouchInputInfo(AMessage.LParam, AMessage.WParam, @touch_inputs[0], SizeOf(TTouchInput));
+    try
+      for touch_input in touch_inputs do
+      begin
+        point := TouchPointToPoint(touch_input);
+        spot := TGlowSpot.Create(Self);
+        spot.X := point.X;
+        spot.Y := point.Y;
+        FSpots.Add(spot);
+      end;
+      handled := True;
+    finally
+      CloseTouchInputHandle(AMessage.LParam);
+    end;
+  finally
+    if not handled then
+    begin
+      inherited;
+    end;
+  end;
 end;
 
 end.
