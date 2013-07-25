@@ -18,16 +18,24 @@ uses
 
 type
   TMainForm = class(TForm)
-    procedure FormCreate(Sender: TObject);
+    Timer1: TTimer;
     procedure FormResize(Sender: TObject);
     procedure FormPaint(Sender: TObject);
-  private
+    procedure FormShow(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+  strict private
     FCanvas: TDirect2DCanvas;
     FImage: TImage;
-  public
-    property Canvas: TDirect2DCanvas read FCanvas;
-  private
+    FFPS: Integer;
+    FFrames: Integer;
+    FStartTime: Cardinal;
     procedure WMEraseBkgnd(var AMessage: TWMEraseBkgnd); message WM_ERASEBKGND;
+    function GetCanvas: TDirect2DCanvas;
+    procedure UpdateFPS;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    property Canvas: TDirect2DCanvas read GetCanvas nodefault;
   end;
 
 var
@@ -37,26 +45,31 @@ implementation
 
 {$R *.dfm}
 
-procedure TMainForm.FormCreate(Sender: TObject);
+constructor TMainForm.Create(AOwner: TComponent);
 begin
-  FCanvas := TDirect2DCanvas.Create(Handle);
-  (Canvas.RenderTarget as ID2D1HwndRenderTarget).SetDpi(96, 96);
-
-  FImage := TImage.Create(self);
+  inherited;
+  FImage := TImage.Create(Self);
   FImage.Picture.LoadFromFile('img.tif');
   ClientHeight := FImage.Picture.Height;
+end;
+
+destructor TMainForm.Destroy;
+begin
+  FreeAndNil(FImage);
+  FreeAndNil(FCanvas);
+  inherited;
 end;
 
 procedure TMainForm.FormPaint(Sender: TObject);
 var
   w, h: Integer;
   x, y: Integer;
-  // r1, r2: TRect;
   layer: ID2D1Layer;
   lp: TD2D1LayerParameters;
-  gc: ID2D1GradientStopCollection;
-  gs: array [0 .. 1] of TD2D1GradientStop;
-  gb: ID2D1RadialGradientBrush;
+  // r1, r2: TRect;
+  // gc: ID2D1GradientStopCollection;
+  // gs: array [0 .. 1] of TD2D1GradientStop;
+  // gb: ID2D1RadialGradientBrush;
 const
   gpoints: array [0 .. 2] of TD2D1Point2F = ((x: 150; y: 50), (x: 280; y: 150), (x: 150; y: 350));
 var
@@ -81,7 +94,7 @@ begin
     BeginDraw;
     RenderTarget.SetTransform(TD2DMatrix3x2F.Identity);
 
-    Brush.Color := clWhite;
+    Brush.Color := clBlack;
     Rectangle(0, 0, w, h);
 {$REGION}
     x := 0;
@@ -157,6 +170,13 @@ begin
       RenderTarget.PopLayer; }
 {$ENDREGION}
 {$REGION}
+    // FPS
+    Canvas.Font.Color := clRed;
+    Canvas.Brush.Color := clNone;
+    Canvas.Font.Size := 14;
+    Canvas.TextOut(10, 10, FloatToStrF(FFPS, ffFixed, 2, 2) + ' FPS');
+{$ENDREGION}
+{$REGION}
     // ----geometry mask
     RenderTarget.SetTransform(TD2DMatrix3x2F.Translation(65, 50));
     RenderTarget.CreateLayer(nil, layer);
@@ -189,10 +209,48 @@ end;
 procedure TMainForm.FormResize(Sender: TObject);
 var
   a: D2D1_SIZE_U;
+  render_target: ID2D1HwndRenderTarget;
 begin
-  a := D2D1SizeU(ClientWidth, ClientHeight);
-  (FCanvas.RenderTarget as ID2D1HwndRenderTarget).Resize(a);
-  Invalidate;
+  if Supports(Canvas.RenderTarget, ID2D1HwndRenderTarget, render_target) then
+  begin
+    a := D2D1SizeU(ClientWidth, ClientHeight);
+    render_target.Resize(a);
+    Invalidate;
+  end;
+end;
+
+procedure TMainForm.FormShow(Sender: TObject);
+begin
+  FFPS := 0;
+  FFrames := 0;
+  FStartTime := GetTickCount;
+end;
+
+function TMainForm.GetCanvas: TDirect2DCanvas;
+begin
+  if not Assigned(FCanvas) then
+  begin
+    FCanvas := TDirect2DCanvas.Create(Handle);
+    (Canvas.RenderTarget as ID2D1HwndRenderTarget).SetDpi(96, 96);
+  end;
+  Result := FCanvas;
+end;
+
+procedure TMainForm.Timer1Timer(Sender: TObject);
+begin
+  UpdateFPS;
+  Paint;
+end;
+
+procedure TMainForm.UpdateFPS;
+begin
+  Inc(FFrames);
+  if GetTickCount - FStartTime >= 1000 then
+  begin
+    FFPS := FFrames;
+    FFrames := 0;
+    FStartTime := GetTickCount;
+  end;
 end;
 
 procedure TMainForm.WMEraseBkgnd(var AMessage: TWMEraseBkgnd);
