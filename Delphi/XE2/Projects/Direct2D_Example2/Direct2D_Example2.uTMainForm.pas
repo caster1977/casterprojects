@@ -12,9 +12,11 @@ uses
   Vcl.Controls,
   Vcl.Forms,
   Vcl.Dialogs,
+  Vcl.ExtCtrls,
+
   Vcl.Direct2D,
   Winapi.D2D1,
-  Vcl.ExtCtrls,
+  Winapi.Manipulations,
   uTGlowSpotList;
 
 type
@@ -51,6 +53,7 @@ implementation
 {$R *.dfm}
 
 uses
+  System.Types,
   uTGlowSpot;
 
 constructor TMainForm.Create(AOwner: TComponent);
@@ -77,6 +80,10 @@ procedure TMainForm.FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: 
 var
   spot: TGlowSpot;
 begin
+  if ssTouch in Shift then
+  begin
+    Exit;
+  end;
   spot := TGlowSpot.Create(Self);
   spot.X := X;
   spot.Y := Y;
@@ -90,15 +97,15 @@ var
   layer: ID2D1Layer;
   lp: TD2D1LayerParameters;
   // r1, r2: TRect;
-  // gc: ID2D1GradientStopCollection;
-  // gs: array [0 .. 1] of TD2D1GradientStop;
-  // gb: ID2D1RadialGradientBrush;
+  gc: ID2D1GradientStopCollection;
+  gs: array [0 .. 1] of TD2D1GradientStop;
+  gb: ID2D1RadialGradientBrush;
 const
   gpoints: array [0 .. 2] of TD2D1Point2F = ((X: 150; Y: 50), (X: 280; Y: 150), (X: 150; Y: 350));
 var
-  pathGeometry: ID2D1PathGeometry;
-  factory: ID2D1Factory;
-  sink: ID2D1GeometrySink;
+//  pathGeometry: ID2D1PathGeometry;
+//  factory: ID2D1Factory;
+//  sink: ID2D1GeometrySink;
   spot: TGlowSpot;
 
   function D2D1InfiniteRect: TD2D1RectF;
@@ -168,7 +175,7 @@ begin
       RenderTarget.PopLayer; }
 {$ENDREGION}
 {$REGION}
-    { // ---- opacity mask test
+     // ---- opacity mask test
       RenderTarget.SetTransform(TD2DMatrix3x2F.Translation(20, 20));
       RenderTarget.CreateLayer(nil, layer);
 
@@ -191,10 +198,10 @@ begin
 
       RenderTarget.PushLayer(lp, layer);
       Draw(0, 0, FImage.Picture.Graphic);
-      RenderTarget.PopLayer; }
+      RenderTarget.PopLayer;
 {$ENDREGION}
 {$REGION}
-    // ----geometry mask
+    {// ----geometry mask
     RenderTarget.SetTransform(TD2DMatrix3x2F.Translation(65, 50));
     RenderTarget.CreateLayer(nil, layer);
 
@@ -217,7 +224,7 @@ begin
 
     RenderTarget.PushLayer(lp, layer);
     Draw(0, 0, FImage.Picture.Graphic);
-    RenderTarget.PopLayer;
+    RenderTarget.PopLayer;}
 {$ENDREGION}
 {$REGION}
     // FPS
@@ -288,9 +295,13 @@ begin
   for spot in FSpots do
   begin
     if spot.FadeIn then
-      spot.Alpha := spot.Alpha + 0.012
+    begin
+      spot.Alpha := spot.Alpha + 0.012;
+    end
     else
+    begin
       spot.Alpha := spot.Alpha - 0.012;
+    end;
 
     if spot.Alpha < 0.3 then
     begin
@@ -298,8 +309,12 @@ begin
       spot.Alpha := 0.4
     end
     else
+    begin
       if spot.Alpha > 1 then
+      begin
         spot.FadeIn := False;
+      end;
+    end;
   end;
 end;
 
@@ -312,15 +327,15 @@ procedure TMainForm.WMTouch(var AMessage: TMessage);
 
   function TouchPointToPoint(const ATouchPoint: TTouchInput): TPoint;
   begin
-    { Result := Point(TouchPoint.x div 100, TouchPoint.y div 100);
-      PhysicalToLogicalPoint(Handle, Result); }
+    Result := Point(ATouchPoint.X div 100, ATouchPoint.Y div 100);
+    PhysicalToLogicalPoint(Handle, Result);
   end;
 
 var
   touch_inputs: array of TTouchInput;
   touch_input: TTouchInput;
   handled: Boolean;
-  point: TPoint;
+  Point: TPoint;
   spot: TGlowSpot;
 begin
   handled := False;
@@ -330,10 +345,10 @@ begin
     try
       for touch_input in touch_inputs do
       begin
-        point := TouchPointToPoint(touch_input);
+        Point := TouchPointToPoint(touch_input);
         spot := TGlowSpot.Create(Self);
-        spot.X := point.X;
-        spot.Y := point.Y;
+        spot.X := Point.X;
+        spot.Y := Point.Y;
         FSpots.Add(spot);
       end;
       handled := True;
