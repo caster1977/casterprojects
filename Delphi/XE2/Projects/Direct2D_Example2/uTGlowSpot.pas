@@ -61,7 +61,7 @@ begin
   inherited Create;
   Alpha := 1;
   Radius := 40;
-  FadeIn := True;
+  FadeIn := False;
   Randomize;
   Color := RGB(Random(255), Random(255), Random(255));
 end;
