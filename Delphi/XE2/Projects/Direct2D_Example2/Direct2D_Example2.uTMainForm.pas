@@ -16,7 +16,6 @@ uses
 
   Vcl.Direct2D,
   Winapi.D2D1,
-  Winapi.Manipulations,
   uTGlowSpotList;
 
 type

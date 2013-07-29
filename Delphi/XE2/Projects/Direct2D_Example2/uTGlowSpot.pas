@@ -3,12 +3,14 @@ unit uTGlowSpot;
 interface
 
 uses
+  Winapi.Manipulations,
+  Winapi.Windows,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Direct2D;
 
 type
-  TGlowSpot = class
+  TGlowSpot = class(TInterfacedObject, _IManipulationEvents)
   strict private
     FX: Integer;
     function GetX: Integer;
@@ -48,13 +50,33 @@ type
   public
     constructor Create(AParent: TWinControl);
     procedure Paint(Canvas: TDirect2DCanvas);
+  strict private
+    FInertia: IInertiaProcessor;
+    FManipulator: IManipulationProcessor;
+    FInertiaCookie: LongInt;
+    FManipulatorCookie: LongInt;
+    FCompleted: BOOL;
+  strict protected
+    procedure DoTouch(const APoint: TPoint; AID: Integer; ATouchMessage: TTouchMessage);
+    function ManipulationStarted(AX: Single; AY: Single): HRESULT; stdcall;
+    function ManipulationDelta(AX: Single; AY: Single; ATranslationDeltaX: Single;
+      ATranslationDeltaY: Single; AScaleDelta: Single; AExpansionDelta: Single;
+      ARotationDelta: Single; ACumulativeTranslationX: Single;
+      ACumulativeTranslationY: Single; ACumulativeScale: Single;
+      ACumulativeExpansion: Single; ACumulativeRotation: Single): HRESULT; stdcall;
+    function ManipulationCompleted(AX: Single; AY: Single;
+      ACumulativeTranslationX: Single; ACumulativeTranslationY: Single;
+      ACumulativeScale: Single; ACumulativeExpansion: Single;
+      ACumulativeRotation: Single): HRESULT; stdcall;
+  public
+    procedure Disconnect;
+    procedure ProcessInertia;
   end;
 
 implementation
 
 uses
-  Winapi.D2D1,
-  Winapi.Windows;
+  Winapi.D2D1;
 
 constructor TGlowSpot.Create(AParent: TWinControl);
 begin
