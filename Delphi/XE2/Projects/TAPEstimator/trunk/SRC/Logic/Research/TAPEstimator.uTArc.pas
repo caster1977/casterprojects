@@ -5,13 +5,10 @@ interface
 uses
   TAPEstimator.uTLineSegment,
   TAPEstimator.uIArc,
-  TAPEstimator.uILineSegment,
-  TAPEstimator.uIPoint,
-  TAPEstimator.uIFigure,
   TAPEstimator.uILocation;
 
 type
-  TArc = class(TLineSegment, IArc, ILineSegment, IPoint, IFigure)
+  TArc = class(TLineSegment, IArc)
   strict private
     function GetRadius: Double;
     function GetSkewAngle: Double;
@@ -26,5 +23,30 @@ type
   end;
 
 implementation
+
+function TArc.GetLocationC: ILocation;
+begin
+
+end;
+
+function TArc.GetRadius: Double;
+begin
+
+end;
+
+function TArc.GetSkewAngle: Double;
+begin
+
+end;
+
+procedure TArc.SetLocationC(const AValue: ILocation);
+begin
+
+end;
+
+function TArc.Valid: Boolean;
+begin
+
+end;
 
 end.

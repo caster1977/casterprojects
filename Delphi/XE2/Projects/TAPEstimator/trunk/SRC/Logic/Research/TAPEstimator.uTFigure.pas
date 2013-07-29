@@ -15,31 +15,36 @@ type
     procedure Initialize; virtual; abstract;
     procedure Finalize; virtual; abstract;
   public
-    constructor Create; reintroduce; overload; virtual;
-    constructor Create(const ALocations: TArray<ILocation>); overload; virtual;
+    constructor Create(const ALocations: TArray<ILocation>); virtual;
     destructor Destroy; override;
   end;
 
-
 implementation
 
-constructor TFigure.Create;
-var
-  a: TArray<ILocation>;
-begin
-  a := [0, 0, 0];
-  Create(a);
-end;
-
 constructor TFigure.Create(const ALocations: TArray<ILocation>);
+var
+  i : Integer;
 begin
-  inherited;
-
+  inherited Create;
+  SetLength(FLocations, Length(ALocations));
+  for i := 0 to Length(ALocations) - 1 do
+  begin
+    FLocations[i] := ALocations[i];
+  end;
 end;
 
 destructor TFigure.Destroy;
+var
+  i: Integer;
 begin
-
+  if Length(FLocations) > 0 then
+  begin
+    for i := 0 to Length(FLocations) - 1 do
+    begin
+      FLocations[i] := nil;
+    end;
+    SetLength(FLocations, 0);
+  end;
   inherited;
 end;
 
