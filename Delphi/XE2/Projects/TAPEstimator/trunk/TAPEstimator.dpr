@@ -15,17 +15,24 @@ uses
   TAPEstimator.Profile.uTProfile in 'SRC\Logic\Classes\TAPEstimator.Profile.uTProfile.pas',
   TAPEstimator.Profile.uEProfile in 'SRC\Logic\Classes\TAPEstimator.Profile.uEProfile.pas',
   TAPEstimator.uResourceStrings in 'SRC\Logic\Other\TAPEstimator.uResourceStrings.pas',
-  TAPEstimator.uIDrawable in 'SRC\Logic\Interfaces\TAPEstimator.uIDrawable.pas',
-  TAPEstimator.uIGenericFigure in 'SRC\Logic\Interfaces\TAPEstimator.uIGenericFigure.pas',
-  TAPEstimator.uTGenericFigure in 'SRC\Logic\Types\TAPEstimator.uTGenericFigure.pas',
-  TAPEstimator.uTGenericPoint in 'SRC\Logic\Types\TAPEstimator.uTGenericPoint.pas',
+  TAPEstimator.uIDrawable in 'SRC\Logic\Research\TAPEstimator.uIDrawable.pas',
   TAPEstimator.uTTAPCommandPrefixes in 'SRC\Logic\Types\TAPEstimator.uTTAPCommandPrefixes.pas',
   TAPEstimator.uTTAPNonCommandChars in 'SRC\Logic\Types\TAPEstimator.uTTAPNonCommandChars.pas',
   TAPEstimator.uTTAPStringRoutines in 'SRC\Logic\Classes\TAPEstimator.uTTAPStringRoutines.pas',
   TAPEstimator.uETAPWrongSymbol in 'SRC\Logic\Classes\TAPEstimator.uETAPWrongSymbol.pas',
   TAPEstimator.Configuration.uTInterfaceSection in 'SRC\Logic\Classes\TAPEstimator.Configuration.uTInterfaceSection.pas',
   TAPEstimator.Configuration.uTOtherSection in 'SRC\Logic\Classes\TAPEstimator.Configuration.uTOtherSection.pas',
-  TAPEstimator.Configuration.uEConfiguration in 'SRC\Logic\Classes\TAPEstimator.Configuration.uEConfiguration.pas';
+  TAPEstimator.Configuration.uEConfiguration in 'SRC\Logic\Classes\TAPEstimator.Configuration.uEConfiguration.pas',
+  TAPEstimator.uILocation in 'SRC\Logic\Research\TAPEstimator.uILocation.pas',
+  TAPEstimator.uTLocation in 'SRC\Logic\Research\TAPEstimator.uTLocation.pas',
+  TAPEstimator.uIFigure in 'SRC\Logic\Research\TAPEstimator.uIFigure.pas',
+  TAPEstimator.uIPoint in 'SRC\Logic\Research\TAPEstimator.uIPoint.pas',
+  TAPEstimator.uILineSegment in 'SRC\Logic\Research\TAPEstimator.uILineSegment.pas',
+  TAPEstimator.uIArc in 'SRC\Logic\Research\TAPEstimator.uIArc.pas',
+  TAPEstimator.uTFigure in 'SRC\Logic\Research\TAPEstimator.uTFigure.pas',
+  TAPEstimator.uTPoint in 'SRC\Logic\Research\TAPEstimator.uTPoint.pas',
+  TAPEstimator.uTLineSegment in 'SRC\Logic\Research\TAPEstimator.uTLineSegment.pas',
+  TAPEstimator.uTArc in 'SRC\Logic\Research\TAPEstimator.uTArc.pas';
 
 {$R *.res}
 
