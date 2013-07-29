@@ -10,20 +10,37 @@ type
   TLocation = class(TInterfacedObject, ILocation)
   strict private
     FCoordinates: TList<Double>;
-    function GetCoordinate(AIndex: Int64): Double;
-    procedure SetCoordinate(AIndex: Int64; const AValue: Double);
+    function GetCoordinate(AIndex: Integer): Double;
+    procedure SetCoordinate(AIndex: Integer; const AValue: Double);
   public
-    property Coordinates[AIndex: Int64]: Double read GetCoordinate write SetCoordinate;
+    property Coordinates[AIndex: Integer]: Double read GetCoordinate write SetCoordinate;
+  strict private
+    function GetCoordinatesCount: Integer;
+  public
+    property CoordinatesCount: Integer read GetCoordinatesCount;
   public
     constructor Create; reintroduce; overload; virtual;
     constructor Create(const ACoordinates: TArray<Double>); overload; virtual;
     destructor Destroy; override;
   end;
 
+function GetILocation: ILocation; overload;
+function GetILocation(const ACoordinates: TArray<Double>): ILocation; overload;
+
 implementation
 
 uses
   System.SysUtils;
+
+function GetILocation: ILocation; overload;
+begin
+  Result := TLocation.Create;
+end;
+
+function GetILocation(const ACoordinates: TArray<Double>): ILocation; overload;
+begin
+  Result := TLocation.Create(ACoordinates);
+end;
 
 constructor TLocation.Create;
 var
@@ -53,7 +70,7 @@ begin
   inherited;
 end;
 
-function TLocation.GetCoordinate(AIndex: Int64): Double;
+function TLocation.GetCoordinate(AIndex: Integer): Double;
 begin
   if FCoordinates.Count - 1 < AIndex then
   begin
@@ -65,7 +82,12 @@ begin
   end;
 end;
 
-procedure TLocation.SetCoordinate(AIndex: Int64; const AValue: Double);
+function TLocation.GetCoordinatesCount: Integer;
+begin
+  Result := FCoordinates.Count;
+end;
+
+procedure TLocation.SetCoordinate(AIndex: Integer; const AValue: Double);
 begin
   if FCoordinates.Count - 1 < AIndex then
   begin
