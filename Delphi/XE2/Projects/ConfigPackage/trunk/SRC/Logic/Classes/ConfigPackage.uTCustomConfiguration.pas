@@ -6,10 +6,11 @@ uses
   System.Generics.Collections,
   ConfigPackage.uTCustomSection,
   ConfigPackage.uTCustomSectionClass,
+  CastersPackage.uIInitializable,
   System.IniFiles;
 
 type
-  TCustomConfiguration = class(TInterfacedObject)
+  TCustomConfiguration = class(TInterfacedObject, IInitializable)
   strict private
     FSections: TObjectList<TCustomSection>;
     FFileName: string;
