@@ -1,11 +1,11 @@
-unit TAPEstimator.uIRecents;
+unit TAPEstimator.Configuration.uIRecents;
 
 interface
 
 uses
-  CastersPackage.uIInterfaceListOfGivenType,
   System.Classes,
-  TAPEstimator.uIRecent;
+  CastersPackage.uIInterfaceListOfGivenType,
+  TAPEstimator.Configuration.uIRecent;
 
 type
   IRecents = interface(IInterfaceListOfGivenType<IRecent>)

@@ -86,8 +86,8 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>52</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для расчёта времени выполнения TAP-файлов;FileVersion=0.1.0.52;InternalName=TAP Estimator;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Anton Zhevnyak, Ilya Kuzmenkov;LegalTrademarks=;OriginalFilename=TAPEstimator.exe;ProductName=TAPEstimator;ProductVersion=0.1.0.0;Comments=Idea: Ilya Kuzmenkov. Developing: Vlad Ivanov, Anton Zhevnyak.</VerInfo_Keys>
+        <VerInfo_Build>59</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для расчёта времени выполнения TAP-файлов;FileVersion=0.1.0.59;InternalName=TAP Estimator;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Anton Zhevnyak, Ilya Kuzmenkov;LegalTrademarks=;OriginalFilename=TAPEstimator.exe;ProductName=TAPEstimator;ProductVersion=0.1.0.0;Comments=Idea: Ilya Kuzmenkov. Developing: Vlad Ivanov, Anton Zhevnyak.</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
@@ -108,29 +108,26 @@
             <Form>MainForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="SRC\UI\TAPEstimator.uTConfigurationForm.pas">
+        <DCCReference Include="SRC\UI\TAPEstimator.Configuration.uTConfigurationForm.pas">
             <Form>ConfigurationForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.uTConfiguration.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.uETaskThread.pas"/>
-        <DCCReference Include="SRC\UI\TAPEstimator.uTProfileForm.pas">
+        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Configuration.uTConfiguration.pas"/>
+        <DCCReference Include="SRC\UI\TAPEstimator.Profile.uTProfileForm.pas">
             <Form>ProfileForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="SRC\Logic\Other\TAPEstimator.uConsts.pas"/>
-        <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uIProfile.pas"/>
-        <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uIProfiles.pas"/>
-        <DCCReference Include="SRC\UI\TAPEstimator.uTRecentsPropertiesForm.pas">
+        <DCCReference Include="SRC\UI\TAPEstimator.Configuration.uTRecentsPropertiesForm.pas">
             <Form>RecentsPropertiesForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uIRecent.pas"/>
-        <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uIRecents.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.uTRecent.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.uTRecents.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.uTProfile.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.uEProfile.pas"/>
+        <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.Configuration.uIRecent.pas"/>
+        <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.Configuration.uIRecents.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Configuration.uTRecent.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Configuration.uTRecents.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Profile.uTProfile.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Profile.uEProfile.pas"/>
         <DCCReference Include="SRC\Logic\Other\TAPEstimator.uResourceStrings.pas"/>
         <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uIDrawable.pas"/>
         <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.uIGenericFigure.pas"/>
@@ -140,9 +137,9 @@
         <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTTAPNonCommandChars.pas"/>
         <DCCReference Include="SRC\Logic\Classes\TAPEstimator.uTTAPStringRoutines.pas"/>
         <DCCReference Include="SRC\Logic\Classes\TAPEstimator.uETAPWrongSymbol.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.uTInterfaceSection.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.uTOtherSection.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.uEConfiguration.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Configuration.uTInterfaceSection.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Configuration.uTOtherSection.pas"/>
+        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Configuration.uEConfiguration.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

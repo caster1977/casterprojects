@@ -1,4 +1,4 @@
-unit TAPEstimator.uTConfigurationForm;
+unit TAPEstimator.Configuration.uTConfigurationForm;
 
 interface
 
@@ -18,10 +18,10 @@ uses
   Vcl.ExtCtrls,
   CastersPackage.Actions.Classes,
   Vcl.StdActns,
-  System.Actions,
   Vcl.ActnList,
+  System.Actions,
   TAPEstimator.uConsts,
-  TAPEstimator.uTConfiguration;
+  TAPEstimator.Configuration.uTConfiguration;
 
 type
   TConfigurationForm = class(TForm)
@@ -68,7 +68,8 @@ type
   strict private
     function GetActivePage: Integer;
     procedure SetActivePage(const AValue: Integer);
-    property ActivePage: Integer read GetActivePage write SetActivePage default CONFIGURATION_DEFAULT_ACTIVE_PAGE;
+    property ActivePage: Integer read GetActivePage write SetActivePage
+      default CONFIGURATION_DEFAULT_ACTIVE_PAGE;
 
   strict private
     function GetPageCount: Integer;
@@ -80,51 +81,62 @@ type
     property Configuration: TConfiguration read GetConfiguration nodefault;
 
   public
-    constructor Create(AOwner: TComponent; const AConfiguration: TConfiguration; const AActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const AConfiguration: TConfiguration;
+      const AActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
 
   strict private
     function GetEnablePlaySoundOnComplete: Boolean;
     procedure SetEnablePlaySoundOnComplete(const AValue: Boolean);
-    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete write SetEnablePlaySoundOnComplete default CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
+    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete
+      write SetEnablePlaySoundOnComplete
+      default CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
 
   strict private
     function GetEnableQuitConfirmation: Boolean;
     procedure SetEnableQuitConfirmation(const AValue: Boolean);
-    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation write SetEnableQuitConfirmation default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
+    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation
+      write SetEnableQuitConfirmation default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
 
   strict private
     function GetEnableSplashAtStart: Boolean;
     procedure SetEnableSplashAtStart(const AValue: Boolean);
-    property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart default CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
+    property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart
+      default CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
 
   strict private
     function GetEnableStatusbar: Boolean;
     procedure SetEnableStatusbar(const AValue: Boolean);
-    property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar default CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
+    property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar
+      default CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
 
   strict private
     function GetEnableToolbar: Boolean;
     procedure SetEnableToolbar(const AValue: Boolean);
-    property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
+    property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar
+      default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
 
   strict private
     function GetEnableStoreMainFormSizesAndPosition: Boolean;
     procedure SetEnableStoreMainFormSizesAndPosition(const AValue: Boolean);
-    property EnableStoreMainFormSizesAndPosition: Boolean read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
+    property EnableStoreMainFormSizesAndPosition: Boolean
+      read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition
+      default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
   end;
 
 implementation
 
 uses
   CastersPackage.uRoutines,
-  TAPEstimator.uTInterfaceSection,
-  TAPEstimator.uTOtherSection;
+  TAPEstimator.Configuration.uTInterfaceSection,
+  TAPEstimator.Configuration.uTOtherSection;
 
 resourcestring
   RsAConfigurationIsNil = 'AConfiguration is nil.';
 
 {$R *.dfm}
-constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: TConfiguration; const AActivePage: Integer);
+
+constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: TConfiguration;
+  const AActivePage: Integer);
 
   procedure ApplyConfiguration;
   begin
@@ -134,7 +146,8 @@ constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: 
       EnableSplashAtStart := Configuration.Section<TInterfaceSection>.EnableSplashAtStart;
       EnableStatusbar := Configuration.Section<TInterfaceSection>.EnableStatusbar;
       EnableToolbar := Configuration.Section<TInterfaceSection>.EnableToolbar;
-      EnableStoreMainFormSizesAndPosition := Configuration.Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition;
+      EnableStoreMainFormSizesAndPosition :=
+        Configuration.Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition;
       EnablePlaySoundOnComplete := Configuration.Section<TOtherSection>.EnablePlaySoundOnComplete;
     end;
   end;
@@ -155,7 +168,8 @@ begin
     EnableSplashAtStart := CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
     EnableStatusbar := CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
     EnableToolbar := CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
-    EnableStoreMainFormSizesAndPosition := CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
+    EnableStoreMainFormSizesAndPosition :=
+      CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
   end;
   if PageControl.ActivePage = tsOther then
   begin
@@ -170,8 +184,12 @@ begin
   b := False;
   if PageControl.ActivePage = tsInterface then
   begin
-    b := not((EnableQuitConfirmation = CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION) and (EnableSplashAtStart = CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START) and (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and
-      (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR) and (EnableStoreMainFormSizesAndPosition = CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION));
+    b := not((EnableQuitConfirmation = CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION) and
+      (EnableSplashAtStart = CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START) and
+      (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and
+      (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR) and
+      (EnableStoreMainFormSizesAndPosition =
+      CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION));
   end;
   if PageControl.ActivePage = tsOther then
   begin
@@ -188,7 +206,8 @@ begin
     Configuration.Section<TInterfaceSection>.EnableSplashAtStart := EnableSplashAtStart;
     Configuration.Section<TInterfaceSection>.EnableStatusbar := EnableStatusbar;
     Configuration.Section<TInterfaceSection>.EnableToolbar := EnableToolbar;
-    Configuration.Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition := EnableStoreMainFormSizesAndPosition;
+    Configuration.Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition :=
+      EnableStoreMainFormSizesAndPosition;
     Configuration.Section<TOtherSection>.EnablePlaySoundOnComplete := EnablePlaySoundOnComplete;
   end;
   ModalResult := mrOk;
@@ -201,14 +220,14 @@ begin
   b := False;
   if Assigned(Configuration) then
   begin
-    b := not(
-      (Configuration.Section<TOtherSection>.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete) and
+    b := not((Configuration.Section<TOtherSection>.EnablePlaySoundOnComplete =
+      EnablePlaySoundOnComplete) and
       (Configuration.Section<TInterfaceSection>.EnableQuitConfirmation = EnableQuitConfirmation) and
       (Configuration.Section<TInterfaceSection>.EnableSplashAtStart = EnableSplashAtStart) and
       (Configuration.Section<TInterfaceSection>.EnableStatusbar = EnableStatusbar) and
       (Configuration.Section<TInterfaceSection>.EnableToolbar = EnableToolbar) and
-      (Configuration.Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition = EnableStoreMainFormSizesAndPosition)
-      );
+      (Configuration.Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition =
+      EnableStoreMainFormSizesAndPosition));
   end;
   actApply.Enabled := b;
   btnApply.Default := b;
@@ -252,7 +271,8 @@ end;
 
 function TConfigurationForm.GetEnableStoreMainFormSizesAndPosition: Boolean;
 begin
-  Result := chkEnableStoreMainFormSizesAndPosition.Enabled and chkEnableStoreMainFormSizesAndPosition.Checked;
+  Result := chkEnableStoreMainFormSizesAndPosition.Enabled and
+    chkEnableStoreMainFormSizesAndPosition.Checked;
 end;
 
 function TConfigurationForm.GetEnableToolbar: Boolean;

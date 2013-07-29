@@ -21,7 +21,7 @@ implementation
 constructor ETAPWrongSymbol.Create(const AMsg: string; const ASymbol: Char);
 begin
   FSymbol := ASymbol;
-  inherited Create(Format(AMsg, [ASymbol]));
+  inherited Create(Format(AMsg, [Symbol]));
 end;
 
 function ETAPWrongSymbol.GetSymbol: Char;

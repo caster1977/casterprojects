@@ -1,4 +1,4 @@
-unit TAPEstimator.uTOtherSection;
+unit TAPEstimator.Configuration.uTOtherSection;
 
 interface
 
@@ -9,6 +9,7 @@ uses
   TAPEstimator.uConsts;
 
 type
+
   [TSection(CONFIGURATION_OTHER_SECTION)]
   TOtherSection = class(TCustomSection)
   public

@@ -38,13 +38,20 @@ object MainForm: TMainForm
     object Image1: TImage
       Left = 6
       Top = 6
-      Width = 522
+      Width = 519
       Height = 453
       Align = alClient
       ExplicitLeft = 208
       ExplicitTop = 72
       ExplicitWidth = 105
       ExplicitHeight = 105
+    end
+    object Splitter1: TSplitter
+      Left = 525
+      Top = 6
+      Height = 453
+      Align = alRight
+      ExplicitTop = 0
     end
     object pnlButtons: TPanel
       Left = 6
@@ -56,6 +63,7 @@ object MainForm: TMainForm
       Constraints.MaxHeight = 31
       Constraints.MinHeight = 31
       TabOrder = 0
+      Visible = False
       DesignSize = (
         772
         31)
@@ -82,7 +90,7 @@ object MainForm: TMainForm
         Visible = False
       end
     end
-    object ListViewEx1: TListViewEx
+    object lvTAP: TListViewEx
       Left = 528
       Top = 6
       Width = 250
@@ -90,9 +98,7 @@ object MainForm: TMainForm
       Align = alRight
       Columns = <
         item
-          Width = -1
-          WidthType = (
-            -1)
+          AutoSize = True
         end>
       HideSelection = False
       MultiSelect = True
@@ -100,6 +106,7 @@ object MainForm: TMainForm
       ShowColumnHeaders = False
       TabOrder = 1
       ViewStyle = vsReport
+      OnCustomDrawItem = lvTAPCustomDrawItem
     end
   end
   object ToolBar: TActionToolBar
@@ -129,7 +136,7 @@ object MainForm: TMainForm
     Left = 64
     Top = 288
     Bitmap = {
-      494C01010E00A0001C0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010E00A000580210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -769,22 +776,6 @@ object MainForm: TMainForm
             Action = actConfiguration
             ImageIndex = 3
             ShortCut = 32888
-          end
-          item
-            Caption = '-'
-          end
-          item
-            Action = actProcess
-            ImageIndex = 4
-            ShortCut = 120
-          end
-          item
-            Caption = '-'
-          end
-          item
-            Action = actHelpContents
-            ImageIndex = 2
-            ShortCut = 112
           end
           item
             Caption = '-'

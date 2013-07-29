@@ -4,7 +4,7 @@ interface
 
 uses
   System.Classes,
-  CastersPackage.uICustomized,
+  CastersPackage.uIInitializable,
   TAPEstimator.uIGenericFigure,
   Generics.Collections;
 
@@ -15,7 +15,7 @@ type
   /// <typeparam name="T">
   /// тип данных координаты
   /// </typeparam>
-  TGenericFigure<T> = class(TInterfacedObject, ICustomized, IGenericFigure<T>)
+  TGenericFigure<T> = class(TInterfacedObject, IInitializable, IGenericFigure<T>)
   strict protected
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -32,7 +32,8 @@ type
     property DimensionCount: Integer read GetDimensionCount nodefault;
   public
     constructor Create(const ADimensionCount: Integer); reintroduce; overload; virtual;
-    constructor Create(const ADimensionCount: Integer; const ARawCoordinates: array of T); reintroduce; overload; virtual;
+    constructor Create(const ADimensionCount: Integer; const ARawCoordinates: array of T);
+      reintroduce; overload; virtual;
     destructor Destroy; override;
   end;
 
@@ -46,7 +47,8 @@ begin
   Create(ADimensionCount, []);
 end;
 
-constructor TGenericFigure<T>.Create(const ADimensionCount: Integer; const ARawCoordinates: array of T);
+constructor TGenericFigure<T>.Create(const ADimensionCount: Integer;
+  const ARawCoordinates: array of T);
 begin
   inherited Create;
   FDimensionCount := ADimensionCount;

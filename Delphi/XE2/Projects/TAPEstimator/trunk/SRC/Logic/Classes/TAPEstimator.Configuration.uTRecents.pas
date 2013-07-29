@@ -1,11 +1,11 @@
-unit TAPEstimator.uTRecents;
+unit TAPEstimator.Configuration.uTRecents;
 
 interface
 
 uses
   CastersPackage.uTInterfaceListOfGivenType,
-  TAPEstimator.uIRecents,
-  TAPEstimator.uIRecent;
+  TAPEstimator.Configuration.uIRecents,
+  TAPEstimator.Configuration.uIRecent;
 
 type
   TRecents = class(TInterfaceListOfGivenType<IRecent>, IRecents)
@@ -21,8 +21,10 @@ uses
   System.Classes;
 
 resourcestring
-  RsCantAddRecentToRecents = 'Не удалось добавить ранее открытый файл в список ранее открытых файлов.';
-  RsCantRemoveRecentFromRecents = 'Не удалось удалить ранее открытый файл из списка ранее открытых файлов.';
+  RsCantAddRecentToRecents =
+    'Не удалось добавить ранее открытый файл в список ранее открытых файлов.';
+  RsCantRemoveRecentFromRecents =
+    'Не удалось удалить ранее открытый файл из списка ранее открытых файлов.';
 
 function GetIRecents: IRecents;
 begin
@@ -34,12 +36,6 @@ begin
   inherited;
   AddItemErrorString := RsCantAddRecentToRecents;
   RemoveItemErrorString := RsCantRemoveRecentFromRecents;
-end;
-
-initialization
-
-begin
-  RegisterClass(TRecents);
 end;
 
 end.

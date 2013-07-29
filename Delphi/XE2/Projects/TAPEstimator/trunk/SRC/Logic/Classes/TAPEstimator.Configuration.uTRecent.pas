@@ -1,32 +1,35 @@
-unit TAPEstimator.uTRecent;
+unit TAPEstimator.Configuration.uTRecent;
 
 interface
 
 uses
-  TAPEstimator.uIRecent,
+  System.Classes,
+  CastersPackage.uIInitializable,
   TAPEstimator.uConsts,
-  CastersPackage.uICustomized,
-  System.Classes;
+  TAPEstimator.Configuration.uIRecent;
 
 type
-  TRecent = class(TInterfacedObject, IRecent, ICustomized)
+  TRecent = class(TInterfacedObject, IRecent, IInitializable)
   strict private
     FFullName: string;
     function GetFullName: string;
     procedure SetFullName(const AValue: string);
-  strict private
-    function GetExists: Boolean;
+  public
+    property FullName: string read GetFullName write SetFullName nodefault;
   strict private
     function GetShortName: string;
+  public
+    property ShortName: string read GetShortName nodefault;
+  strict private
+    function GetExists: Boolean;
+  public
+    property Exists: Boolean read GetExists nodefault;
   strict protected
     procedure Initialize; virtual;
     procedure Finalize; virtual;
   public
     constructor Create; virtual; final;
     destructor Destroy; override; final;
-    property FullName: string read GetFullName write SetFullName nodefault;
-    property ShortName: string read GetShortName nodefault;
-    property Exists: Boolean read GetExists nodefault;
   end;
 
 function GetIRecent: IRecent;

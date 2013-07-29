@@ -3,20 +3,17 @@ program TAPEstimator;
 uses
   Vcl.Forms,
   TAPEstimator.uTMainForm in 'SRC\UI\TAPEstimator.uTMainForm.pas' {MainForm},
-  TAPEstimator.uTConfigurationForm in 'SRC\UI\TAPEstimator.uTConfigurationForm.pas' {ConfigurationForm},
-  TAPEstimator.uTConfiguration in 'SRC\Logic\Classes\TAPEstimator.uTConfiguration.pas',
-  TAPEstimator.uETaskThread in 'SRC\Logic\Classes\TAPEstimator.uETaskThread.pas',
-  TAPEstimator.uTProfileForm in 'SRC\UI\TAPEstimator.uTProfileForm.pas' {ProfileForm},
+  TAPEstimator.Configuration.uTConfigurationForm in 'SRC\UI\TAPEstimator.Configuration.uTConfigurationForm.pas' {ConfigurationForm},
+  TAPEstimator.Configuration.uTConfiguration in 'SRC\Logic\Classes\TAPEstimator.Configuration.uTConfiguration.pas',
+  TAPEstimator.Profile.uTProfileForm in 'SRC\UI\TAPEstimator.Profile.uTProfileForm.pas' {ProfileForm},
   TAPEstimator.uConsts in 'SRC\Logic\Other\TAPEstimator.uConsts.pas',
-  TAPEstimator.uIProfile in 'SRC\Logic\Interfaces\TAPEstimator.uIProfile.pas',
-  TAPEstimator.uIProfiles in 'SRC\Logic\Interfaces\TAPEstimator.uIProfiles.pas',
-  TAPEstimator.uTRecentsPropertiesForm in 'SRC\UI\TAPEstimator.uTRecentsPropertiesForm.pas' {RecentsPropertiesForm},
-  TAPEstimator.uIRecent in 'SRC\Logic\Interfaces\TAPEstimator.uIRecent.pas',
-  TAPEstimator.uIRecents in 'SRC\Logic\Interfaces\TAPEstimator.uIRecents.pas',
-  TAPEstimator.uTRecent in 'SRC\Logic\Classes\TAPEstimator.uTRecent.pas',
-  TAPEstimator.uTRecents in 'SRC\Logic\Classes\TAPEstimator.uTRecents.pas',
-  TAPEstimator.uTProfile in 'SRC\Logic\Classes\TAPEstimator.uTProfile.pas',
-  TAPEstimator.uEProfile in 'SRC\Logic\Classes\TAPEstimator.uEProfile.pas',
+  TAPEstimator.Configuration.uTRecentsPropertiesForm in 'SRC\UI\TAPEstimator.Configuration.uTRecentsPropertiesForm.pas' {RecentsPropertiesForm},
+  TAPEstimator.Configuration.uIRecent in 'SRC\Logic\Interfaces\TAPEstimator.Configuration.uIRecent.pas',
+  TAPEstimator.Configuration.uIRecents in 'SRC\Logic\Interfaces\TAPEstimator.Configuration.uIRecents.pas',
+  TAPEstimator.Configuration.uTRecent in 'SRC\Logic\Classes\TAPEstimator.Configuration.uTRecent.pas',
+  TAPEstimator.Configuration.uTRecents in 'SRC\Logic\Classes\TAPEstimator.Configuration.uTRecents.pas',
+  TAPEstimator.Profile.uTProfile in 'SRC\Logic\Classes\TAPEstimator.Profile.uTProfile.pas',
+  TAPEstimator.Profile.uEProfile in 'SRC\Logic\Classes\TAPEstimator.Profile.uEProfile.pas',
   TAPEstimator.uResourceStrings in 'SRC\Logic\Other\TAPEstimator.uResourceStrings.pas',
   TAPEstimator.uIDrawable in 'SRC\Logic\Interfaces\TAPEstimator.uIDrawable.pas',
   TAPEstimator.uIGenericFigure in 'SRC\Logic\Interfaces\TAPEstimator.uIGenericFigure.pas',
@@ -26,9 +23,9 @@ uses
   TAPEstimator.uTTAPNonCommandChars in 'SRC\Logic\Types\TAPEstimator.uTTAPNonCommandChars.pas',
   TAPEstimator.uTTAPStringRoutines in 'SRC\Logic\Classes\TAPEstimator.uTTAPStringRoutines.pas',
   TAPEstimator.uETAPWrongSymbol in 'SRC\Logic\Classes\TAPEstimator.uETAPWrongSymbol.pas',
-  TAPEstimator.uTInterfaceSection in 'SRC\Logic\Classes\TAPEstimator.uTInterfaceSection.pas',
-  TAPEstimator.uTOtherSection in 'SRC\Logic\Classes\TAPEstimator.uTOtherSection.pas',
-  TAPEstimator.uEConfiguration in 'SRC\Logic\Classes\TAPEstimator.uEConfiguration.pas';
+  TAPEstimator.Configuration.uTInterfaceSection in 'SRC\Logic\Classes\TAPEstimator.Configuration.uTInterfaceSection.pas',
+  TAPEstimator.Configuration.uTOtherSection in 'SRC\Logic\Classes\TAPEstimator.Configuration.uTOtherSection.pas',
+  TAPEstimator.Configuration.uEConfiguration in 'SRC\Logic\Classes\TAPEstimator.Configuration.uEConfiguration.pas';
 
 {$R *.res}
 

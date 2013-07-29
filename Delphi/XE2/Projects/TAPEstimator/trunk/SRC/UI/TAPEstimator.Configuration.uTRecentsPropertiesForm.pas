@@ -1,10 +1,9 @@
-unit TAPEstimator.uTRecentsPropertiesForm;
+unit TAPEstimator.Configuration.uTRecentsPropertiesForm;
 
 interface
 
 uses
   CastersPackage.Actions.Classes,
-  TAPEstimator.uIRecents,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
@@ -21,7 +20,8 @@ uses
   System.Actions,
   Vcl.ActnList,
   Vcl.Samples.Spin,
-  Vcl.Menus;
+  Vcl.Menus,
+  TAPEstimator.Configuration.uIRecents;
 
 type
   TRecentsPropertiesForm = class(TForm)
@@ -65,8 +65,8 @@ type
     procedure actDeleteNotExistsExecute(Sender: TObject);
     procedure actDeleteNotExistsUpdate(Sender: TObject);
     procedure seRecentsSizeExit(Sender: TObject);
-    procedure lvRecentsListCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState;
-      var DefaultDraw: Boolean);
+    procedure lvRecentsListCustomDrawItem(Sender: TCustomListView; Item: TListItem;
+      State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure actSelectAllUpdate(Sender: TObject);
     procedure actSelectAllExecute(Sender: TObject);
   strict private
@@ -84,7 +84,8 @@ type
     property Recents: IRecents read GetRecents nodefault;
     property Size: Integer read GetSize write SetSize nodefault;
   public
-    constructor Create(AOwner: TComponent; const ARecents: IRecents; const ASize: Integer); reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const ARecents: IRecents; const ASize: Integer);
+      reintroduce; virtual;
   end;
 
 implementation
@@ -92,8 +93,8 @@ implementation
 {$R *.dfm}
 
 uses
-  TAPEstimator.uTRecents,
-  TAPEstimator.uIRecent;
+  TAPEstimator.Configuration.uTRecents,
+  TAPEstimator.Configuration.uIRecent;
 
 resourcestring
   RsARecentsIsNil = 'ARecents is nil.';
@@ -215,8 +216,8 @@ begin
   Result := seRecentsSize.Value;
 end;
 
-procedure TRecentsPropertiesForm.lvRecentsListCustomDrawItem(Sender: TCustomListView; Item: TListItem;
-  State: TCustomDrawState; var DefaultDraw: Boolean);
+procedure TRecentsPropertiesForm.lvRecentsListCustomDrawItem(Sender: TCustomListView;
+  Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
   lvRecentsList.Canvas.Font.Color := clBlack;
   if Assigned(Item.Data) then
@@ -249,7 +250,8 @@ procedure TRecentsPropertiesForm.RefreshRecentsList;
     lvRecentsList.FlatScrollBars := True;
     if (GetWindowLong(lvRecentsList.Handle, GWL_STYLE) and WS_VSCROLL) = WS_VSCROLL then
     begin
-      lvRecentsList.Column[0].Width := lvRecentsList.Column[0].Width - GetSystemMetrics(SM_CXVSCROLL);
+      lvRecentsList.Column[0].Width := lvRecentsList.Column[0].Width -
+        GetSystemMetrics(SM_CXVSCROLL);
     end;
   end;
 
@@ -289,7 +291,8 @@ begin
   seRecentsSize.Value := Size;
 end;
 
-procedure TRecentsPropertiesForm.seRecentsSizeKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TRecentsPropertiesForm.seRecentsSizeKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
 begin
   case Key of
     VK_ESCAPE:
@@ -334,7 +337,8 @@ begin
   Result := FOriginalSize;
 end;
 
-constructor TRecentsPropertiesForm.Create(AOwner: TComponent; const ARecents: IRecents; const ASize: Integer);
+constructor TRecentsPropertiesForm.Create(AOwner: TComponent; const ARecents: IRecents;
+  const ASize: Integer);
 begin
   Assert(Assigned(ARecents), RsARecentsIsNil);
   inherited Create(AOwner);
