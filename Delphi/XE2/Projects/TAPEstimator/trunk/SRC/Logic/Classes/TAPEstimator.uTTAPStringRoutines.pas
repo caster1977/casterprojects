@@ -85,10 +85,6 @@ uses
   TAPEstimator.uTTAPNonCommandChars,
   TAPEstimator.uETAPWrongSymbol;
 
-{var
-  sTAPString: string;
-  cWrongSymbol: Char;}
-
 class function TTAPStringRoutines.IsComment(const AValue: string): Boolean;
 var
   s: string;
@@ -186,24 +182,5 @@ begin
     end;
   end;
 end;
-
-{initialization
-
-sTAPString := ' G90G1Z0f350 y10z20 xyz ';
-try
-  if TTAPStringRoutines.Valid(TTAPStringRoutines.Normalize(sTAPString), cWrongSymbol) then
-  begin
-    ShowMessage(TTAPStringRoutines.Normalize(sTAPString));
-  end
-  else
-  begin
-    raise ETAPWrongSymbol.Create('Некорректный символ [%s] в строке.', cWrongSymbol);
-  end;
-except
-  on E: Exception do
-  begin
-    ShowMessage(E.Message);
-  end;
-end;}
 
 end.

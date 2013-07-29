@@ -27,12 +27,9 @@ uses
   Vcl.PlatformDefaultStyleActnCtrls,
   Vcl.ActnPopup,
   System.Actions,
-  TAPEstimator.uIProfile,
-  TAPEstimator.uIRecents,
   Data.DB,
   Data.Win.ADODB,
-  TAPEstimator.uTConfiguration,
-  CastersPackage.uICustomized,
+  CastersPackage.uIInitializable,
   AboutPackage.uTAboutWindow,
   Data.Bind.EngExt,
   Vcl.Bind.DBEngExt,
@@ -41,10 +38,13 @@ uses
   Vcl.Bind.Editors,
   Data.Bind.Components,
   Vcl.Touch.GestureCtrls,
-  CastersPackage.uTListViewEx;
+  CastersPackage.uTListViewEx,
+  TAPEstimator.Profile.uTProfile,
+  TAPEstimator.Configuration.uIRecents,
+  TAPEstimator.Configuration.uTConfiguration;
 
 type
-  TMainForm = class(TForm, ICustomized)
+  TMainForm = class(TForm, IInitializable)
     StatusBar: TStatusBar;
     ImageList: TImageList;
     actHelpMenuGroup: THelpMenuGroupAction;
@@ -102,8 +102,9 @@ type
     N12: TMenuItem;
     N13: TMenuItem;
     Image1: TImage;
-    ListViewEx1: TListViewEx;
+    lvTAP: TListViewEx;
     AboutWindow: TAboutWindow;
+    Splitter1: TSplitter;
     procedure actQuitExecute(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -122,6 +123,8 @@ type
     procedure actSaveProfileUpdate(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
     procedure actOpenExecute(Sender: TObject);
+    procedure lvTAPCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState;
+      var DefaultDraw: Boolean);
   strict private
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -133,19 +136,17 @@ type
   strict private
     procedure OnRecentsMenuItemClick(Sender: TObject);
   strict private
-    FProfile: IProfile;
-    function GetProfile: IProfile;
-    procedure SetProfile(const AValue: IProfile);
+    FProfile: TProfile;
+    function GetProfile: TProfile;
+    property Profile: TProfile read GetProfile nodefault;
   strict private
     FConfiguration: TConfiguration;
     function GetConfiguration: TConfiguration;
     property Configuration: TConfiguration read GetConfiguration nodefault;
+  strict private
+    procedure LoadTAPFile(const AFileName: string);
   public
-    property Profile: IProfile read GetProfile write SetProfile nodefault;
     destructor Destroy; override;
-  {strict private
-    FThreadMessage: Cardinal;
-    function RegisterThreadMessage: Boolean;}
   end;
 
 var
@@ -157,26 +158,28 @@ implementation
 
 uses
   TAPEstimator.uConsts,
-  TAPEstimator.uTConfigurationForm,
-  TAPEstimator.uTRecentsPropertiesForm,
-  TAPEstimator.uTProfileForm,
-  TAPEstimator.uTRecents,
-  TAPEstimator.uIRecent,
-  TAPEstimator.uTRecent,
-  TAPEstimator.uTProfile,
-  TAPEstimator.uEConfiguration,
+  TAPEstimator.Configuration.uTConfigurationForm,
+  TAPEstimator.Configuration.uEConfiguration,
+  TAPEstimator.Configuration.uTInterfaceSection,
+  TAPEstimator.Configuration.uTOtherSection,
+  TAPEstimator.Configuration.uTRecents,
+  TAPEstimator.Configuration.uIRecent,
+  TAPEstimator.Configuration.uTRecent,
+  TAPEstimator.Configuration.uTRecentsPropertiesForm,
+  TAPEstimator.Profile.uTProfileForm,
   TAPEstimator.uResourceStrings,
-  TAPEstimator.uTInterfaceSection,
-  TAPEstimator.uTOtherSection,
-  System.IniFiles;
+  TAPEstimator.uTTAPStringRoutines,
+  TAPEstimator.uETAPWrongSymbol;
 
 resourcestring
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
   RsExitConfirmationCaption = '%s - Подтверждение выхода';
   RsWarningCaption = '%s - Предупреждение';
-  RsCannotRegisterThreadMessage = 'Не удалось зарегистрировать оконное сообщение для дочерних потоков.';
+  RsCannotRegisterThreadMessage =
+    'Не удалось зарегистрировать оконное сообщение для дочерних потоков.';
   RsOpenRecent = 'Нажмите для загрузки файла профиля с указанным именем';
-  RsCreateProfileConfirmationMessage = 'Вы действительно хотите создать новый профиль, предварительно не сохранив текущий?';
+  RsCreateProfileConfirmationMessage =
+    'Вы действительно хотите создать новый профиль, предварительно не сохранив текущий?';
   RsCreateProfileConfirmationCaption = '%s - Подтверждение создания нового профиля';
   RsOpenProfileDefaultExt = 'profile';
   RsOpenProfileFilters = 'Файлы профилей (*.profile)|*.profile|Все файлы (*.*)|*.*';
@@ -235,54 +238,14 @@ begin
   inherited;
 end;
 
-{ procedure TMainForm.SaveConfiguration;
-  begin
-  Screen.Cursor := crHourGlass;
-  try
-  try
-  Configuration.Save;
-  finally
-  Screen.Cursor := crDefault;
-  end;
-  except
-  on E: EConfiguration do
-  begin
-  if MessageBox(Handle, PWideChar(Format(RsTryAgain, [E.Message])),
-  PWideChar(Format(RsWarningCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING_OK) = IDOK then
-  begin
-  try
-  Screen.Cursor := crHourGlass;
-  try
-  Configuration.Save;
-  finally
-  Screen.Cursor := crDefault;
-  end;
-  except
-  on E: EConfiguration do
-  begin
-  MessageBox(Handle, PWideChar(E.Message), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])),
-  MESSAGE_TYPE_ERROR);
-  end;
-  else
-  begin
-  Application.HandleException(Self);
-  end;
-  end;
-  end;
-  end;
-  else
-  begin
-  Application.HandleException(Self);
-  end;
-  end;
-  end; }
-
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   CanClose := True;
   if Configuration.Section<TInterfaceSection>.EnableQuitConfirmation then
   begin
-    CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage), PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
+    CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
+      PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])),
+      MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
   end;
 end;
 
@@ -301,11 +264,11 @@ begin
   Result := FConfiguration;
 end;
 
-function TMainForm.GetProfile: IProfile;
+function TMainForm.GetProfile: TProfile;
 begin
   if not Assigned(FProfile) then
   begin
-    FProfile := GetIProfile;
+    FProfile := TProfile.Create(True, ChangeFileExt(ExpandFileName(ParamStr(0)), '.profile'));
   end;
   Result := FProfile;
 end;
@@ -316,11 +279,6 @@ procedure TMainForm.Initialize;
 // i: Integer;
 begin
   Application.OnHint := OnHint;
-  {if not RegisterThreadMessage then
-  begin
-    MessageBox(Handle, PWideChar(RsCannotRegisterThreadMessage), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])), MESSAGE_TYPE_ERROR);
-    Application.Terminate;
-  end;}
   if Configuration.Section<TInterfaceSection>.EnableSplashAtStart then
   begin
     AboutWindow.Show(True);
@@ -338,40 +296,16 @@ begin
   RefreshRecentsMenu;
 end;
 
-{ procedure TMainForm.LoadConfiguration;
-  begin
-  try
-  Screen.Cursor := crHourGlass;
-  try
-  Configuration.Load;
-  finally
-  Screen.Cursor := crDefault;
-  end;
-  except
-  on E: Exception do
-  begin
-  MessageBox(Handle, PWideChar(E.Message), PWideChar(Format(RsErrorCaption, [APPLICATION_NAME])),
-  MESSAGE_TYPE_ERROR);
-  end;
-  end;
-  end; }
-
-procedure TMainForm.SetProfile(const AValue: IProfile);
-begin
-  if FProfile <> AValue then
-  begin
-    FProfile := AValue;
-  end;
-end;
-
 procedure TMainForm.actCreateProfileExecute(Sender: TObject);
 begin
   { TODO :
     добавить проверку сохранённости текущего профиля:
     если профиль был изменён и не сохранён, задать вопрос юзеру }
-  if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage), PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_WARNING_CANCEL) = IDOK then
+  if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage),
+    PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])),
+    MESSAGE_TYPE_CONFIRMATION_WARNING_CANCEL) = IDOK then
   begin
-    Profile := GetIProfile;
+    FProfile := TProfile.Create(True, ChangeFileExt(ExpandFileName(ParamStr(0)), '.profile'));
     { TODO : нужно как-то изменить алгоритм работы с именем файла }
   end;
 end;
@@ -387,12 +321,51 @@ begin
     form.Options := form.Options + [ofFileMustExist];
     if form.Execute(Handle) then
     begin
-      // TAPFile.Load;
-      // meTap.Lines.LoadFromFile(FileName);
-      // ListViewEx1.Items.
+      LoadTAPFile(form.FileName);
     end;
   finally
     form.Free;
+  end;
+end;
+
+procedure TMainForm.LoadTAPFile(const AFileName: string);
+var
+  sl: TStringList;
+  i: Integer;
+  s: string;
+  cWrongSymbol: Char;
+  li: TListItem;
+begin
+  sl := TStringList.Create;
+  try
+    sl.LoadFromFile(AFileName);
+    for i := 0 to sl.Count - 1 do
+    begin
+      try
+        s := TTAPStringRoutines.Normalize(sl[i]);
+        if TTAPStringRoutines.Valid(s, cWrongSymbol) then
+        begin
+          sl[i] := s;
+        end
+        else
+        begin
+          raise ETAPWrongSymbol.Create('Некорректный символ [%s] в строке.', cWrongSymbol);
+        end;
+      except
+        on E: Exception do
+        begin
+          ShowMessage(E.Message);
+        end;
+      end;
+    end;
+    lvTAP.Clear;
+    for i := 0 to sl.Count - 1 do
+    begin
+      li := lvTAP.Items.Add;
+      li.Caption := sl[i];
+    end;
+  finally
+    FreeAndNil(sl);
   end;
 end;
 
@@ -415,7 +388,7 @@ begin
     form.Options := form.Options + [ofFileMustExist];
     if form.Execute(Handle) then
     begin
-      Profile.Load;
+      // Profile.Load;
     end;
   finally
     form.Free;
@@ -519,12 +492,6 @@ begin
   end;
 end;
 
-{function TMainForm.RegisterThreadMessage: Boolean;
-begin
-  FThreadMessage := RegisterWindowMessage(PWideChar(WM_TASK_THREAD_MESSAGE));
-  Result := FThreadMessage > 0;
-end;}
-
 procedure TMainForm.actSaveProfileExecute(Sender: TObject);
 begin
   //
@@ -551,6 +518,16 @@ begin
   b := actToolBar.Checked;
   ToolBar.Visible := b;
   Configuration.Section<TInterfaceSection>.EnableToolbar := b;
+end;
+
+procedure TMainForm.lvTAPCustomDrawItem(Sender: TCustomListView; Item: TListItem;
+  State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  lvTAP.Canvas.Font.Color := clBlack;
+  if TTAPStringRoutines.IsComment(Item.Caption) then
+  begin
+    lvTAP.Canvas.Font.Color := clGreen;
+  end;
 end;
 
 end.

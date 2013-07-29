@@ -1,12 +1,12 @@
-unit TAPEstimator.uTConfiguration;
+unit TAPEstimator.Configuration.uTConfiguration;
 
 interface
 
 uses
   System.IniFiles,
   TAPEstimator.uConsts,
-  TAPEstimator.uIRecents,
-  ConfigPackage.uTCustomConfiguration;
+  ConfigPackage.uTCustomConfiguration,
+  TAPEstimator.Configuration.uIRecents;
 
 type
   TConfiguration = class(TCustomConfiguration)
@@ -24,12 +24,12 @@ implementation
 
 uses
   System.SysUtils,
-  TAPEstimator.uEConfiguration,
-  TAPEstimator.uTInterfaceSection,
-  TAPEstimator.uTOtherSection,
-  TAPEstimator.uTRecents,
-  TAPEstimator.uIRecent,
-  TAPEstimator.uTRecent;
+  TAPEstimator.Configuration.uEConfiguration,
+  TAPEstimator.Configuration.uTInterfaceSection,
+  TAPEstimator.Configuration.uTOtherSection,
+  TAPEstimator.Configuration.uTRecents,
+  TAPEstimator.Configuration.uIRecent,
+  TAPEstimator.Configuration.uTRecent;
 
 resourcestring
   RsInterface = 'Èםעונפויס';
@@ -61,18 +61,15 @@ begin
   Recents.Clear;
   if Assigned(FIniFile) then
   begin
-    with FIniFile do
+    Recents.Clear;
+    for i := 0 to FIniFile.ReadInteger(RsRecents, RsQuantity, RECENTS_DEFAULT_COUNT) - 1 do
     begin
-      Recents.Clear;
-      for i := 0 to ReadInteger(RsRecents, RsQuantity, RECENTS_DEFAULT_COUNT) - 1 do
+      s := Format(RsRecentProfile, [IntToStr(i)]);
+      r := GetIRecent;
+      r.FullName := FIniFile.ReadString(RsRecents, s, RECENT_DEFAULT_FULL_NAME);
+      if r.FullName <> RECENT_DEFAULT_FULL_NAME then
       begin
-        s := Format(RsRecentProfile, [IntToStr(i)]);
-        r := GetIRecent;
-        r.FullName := ReadString(RsRecents, s, RECENT_DEFAULT_FULL_NAME);
-        if r.FullName <> RECENT_DEFAULT_FULL_NAME then
-        begin
-          Recents.Add(r);
-        end;
+        Recents.Add(r);
       end;
     end;
   end;
@@ -87,31 +84,30 @@ begin
   inherited;
   if Assigned(FIniFile) then
   begin
-    with FIniFile do
-      try
-        if Recents.Count <> RECENTS_DEFAULT_COUNT then
+    try
+      if Recents.Count <> RECENTS_DEFAULT_COUNT then
+      begin
+        j := 0;
+        for i := 0 to Recents.Count - 1 do
         begin
-          j := 0;
-          for i := 0 to Recents.Count - 1 do
+          r := Recents.Items[i];
+          if Assigned(r) then
           begin
-            r := Recents.Items[i];
-            if Assigned(r) then
+            if r.FullName <> RECENT_DEFAULT_FULL_NAME then
             begin
-              if r.FullName <> RECENT_DEFAULT_FULL_NAME then
-              begin
-                WriteString(RsRecents, Format(RsRecentProfile, [IntToStr(j)]), r.FullName);
-                Inc(j);
-              end;
+              FIniFile.WriteString(RsRecents, Format(RsRecentProfile, [IntToStr(j)]), r.FullName);
+              Inc(j);
             end;
           end;
-          WriteInteger(RsRecents, RsQuantity, j);
         end;
-      except
-        on EIniFileException do
-        begin
-          raise EConfiguration.Create(RsConfigurationSaveError);
-        end;
+        FIniFile.WriteInteger(RsRecents, RsQuantity, j);
       end;
+    except
+      on EIniFileException do
+      begin
+        raise EConfiguration.Create(RsConfigurationSaveError);
+      end;
+    end;
   end;
 end;
 
