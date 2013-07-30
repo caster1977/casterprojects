@@ -12,7 +12,6 @@ uses
   Vcl.Controls,
   Vcl.Forms,
   Vcl.Dialogs,
-  CastersPackage.Actions.Classes,
   Vcl.ActnList,
   Vcl.ImgList,
   Vcl.Menus,
@@ -38,6 +37,7 @@ uses
   Vcl.Bind.Editors,
   Data.Bind.Components,
   Vcl.Touch.GestureCtrls,
+  CastersPackage.Actions.Classes,
   CastersPackage.uTListViewEx,
   TAPEstimator.Profile.uTProfile,
   TAPEstimator.Configuration.uIRecents,
@@ -99,7 +99,6 @@ type
     actOpen: TAction;
     N12: TMenuItem;
     N13: TMenuItem;
-    Image1: TImage;
     lvTAP: TListViewEx;
     AboutWindow: TAboutWindow;
     Splitter1: TSplitter;
@@ -126,6 +125,7 @@ type
     SpeedButton38: TSpeedButton;
     SpeedButton39: TSpeedButton;
     SpeedButton40: TSpeedButton;
+    PaintBox1: TPaintBox;
     procedure actQuitExecute(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -146,6 +146,7 @@ type
     procedure actOpenExecute(Sender: TObject);
     procedure lvTAPCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState;
       var DefaultDraw: Boolean);
+    procedure PaintBox1Paint(Sender: TObject);
   strict private
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -511,6 +512,25 @@ begin
     Configuration.Recents.Insert(0, r);
     RefreshRecentsMenu;
   end;
+end;
+
+procedure TMainForm.PaintBox1Paint(Sender: TObject);
+begin
+  PaintBox1.Canvas.Brush.Color := clWhite;
+  PaintBox1.Canvas.Pen.Color := clWindowFrame;
+  PaintBox1.Canvas.Rectangle(PaintBox1.ClientRect);
+  PaintBox1.Canvas.Pen.Color := clLtGray;
+  PaintBox1.Canvas.MoveTo(10, 10);
+  PaintBox1.Canvas.LineTo(10, PaintBox1.ClientRect.Bottom - 10);
+  PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
+  PaintBox1.Canvas.MoveTo(10, 10);
+  PaintBox1.Canvas.LineTo(5, 15);
+  PaintBox1.Canvas.MoveTo(10, 10);
+  PaintBox1.Canvas.LineTo(15, 15);
+  PaintBox1.Canvas.MoveTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
+  PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 15, PaintBox1.ClientRect.Bottom - 5);
+  PaintBox1.Canvas.MoveTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
+  PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 15, PaintBox1.ClientRect.Bottom - 15);
 end;
 
 procedure TMainForm.actSaveProfileExecute(Sender: TObject);
