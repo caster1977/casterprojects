@@ -41,7 +41,7 @@ uses
   CastersPackage.uTListViewEx,
   TAPEstimator.Profile.uTProfile,
   TAPEstimator.Configuration.uIRecents,
-  TAPEstimator.Configuration.uTConfiguration;
+  TAPEstimator.Configuration.uTConfiguration, Vcl.Buttons, Vcl.Imaging.jpeg;
 
 type
   TMainForm = class(TForm, IInitializable)
@@ -80,12 +80,10 @@ type
     MainMenu: TMainMenu;
     ToolBar: TActionToolBar;
     N7: TMenuItem;
-    N8: TMenuItem;
     N10: TMenuItem;
     N17: TMenuItem;
     N18: TMenuItem;
     N19: TMenuItem;
-    N20: TMenuItem;
     N27: TMenuItem;
     N28: TMenuItem;
     N29: TMenuItem;
@@ -105,6 +103,29 @@ type
     lvTAP: TListViewEx;
     AboutWindow: TAboutWindow;
     Splitter1: TSplitter;
+    GridPanel1: TGridPanel;
+    SpeedButton4: TSpeedButton;
+    SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    SpeedButton3: TSpeedButton;
+    SpeedButton5: TSpeedButton;
+    SpeedButton6: TSpeedButton;
+    SpeedButton7: TSpeedButton;
+    SpeedButton8: TSpeedButton;
+    SpeedButton9: TSpeedButton;
+    SpeedButton10: TSpeedButton;
+    SpeedButton29: TSpeedButton;
+    SpeedButton30: TSpeedButton;
+    SpeedButton31: TSpeedButton;
+    SpeedButton32: TSpeedButton;
+    SpeedButton33: TSpeedButton;
+    SpeedButton34: TSpeedButton;
+    SpeedButton35: TSpeedButton;
+    SpeedButton36: TSpeedButton;
+    SpeedButton37: TSpeedButton;
+    SpeedButton38: TSpeedButton;
+    SpeedButton39: TSpeedButton;
+    SpeedButton40: TSpeedButton;
     procedure actQuitExecute(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
