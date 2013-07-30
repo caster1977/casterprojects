@@ -1,4 +1,4 @@
-unit TAPEstimator.Configuration.uTConfigurationForm;
+unit TAPEstimator.uTConfigurationForm;
 
 interface
 

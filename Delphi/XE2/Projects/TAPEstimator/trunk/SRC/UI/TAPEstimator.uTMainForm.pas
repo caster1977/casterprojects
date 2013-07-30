@@ -158,15 +158,15 @@ implementation
 
 uses
   TAPEstimator.uConsts,
-  TAPEstimator.Configuration.uTConfigurationForm,
   TAPEstimator.Configuration.uEConfiguration,
   TAPEstimator.Configuration.uTInterfaceSection,
   TAPEstimator.Configuration.uTOtherSection,
   TAPEstimator.Configuration.uTRecents,
   TAPEstimator.Configuration.uIRecent,
   TAPEstimator.Configuration.uTRecent,
-  TAPEstimator.Configuration.uTRecentsPropertiesForm,
-  TAPEstimator.Profile.uTProfileForm,
+  TAPEstimator.uTConfigurationForm,
+  TAPEstimator.uTRecentsPropertiesForm,
+  TAPEstimator.uTProfileForm,
   TAPEstimator.uResourceStrings,
   TAPEstimator.uTTAPStringRoutines,
   TAPEstimator.uETAPWrongSymbol;

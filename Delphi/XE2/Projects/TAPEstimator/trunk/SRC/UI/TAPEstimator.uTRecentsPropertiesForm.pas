@@ -1,4 +1,4 @@
-unit TAPEstimator.Configuration.uTRecentsPropertiesForm;
+unit TAPEstimator.uTRecentsPropertiesForm;
 
 interface
 

@@ -13,6 +13,14 @@ type
   ///	</summary>
   IArc = interface(ILineSegment)
     ['{EF76CC51-040A-4FDD-9264-800E1454F013}']
+    function GetLocationC: ILocation;
+    procedure SetLocationC(const AValue: ILocation);
+
+    ///	<summary>
+    ///	  Точка C
+    ///	</summary>
+    property LocationC: ILocation read GetLocationC write SetLocationC;
+
     function GetRadius: Double;
 
     ///	<summary>
@@ -25,19 +33,6 @@ type
     ///	  B-&gt;C)
     ///	</summary>
     function Valid: Boolean;
-    function GetSkewAngle: Double;
-
-    ///	<summary>
-    ///	  Угол отклонения
-    ///	</summary>
-    property SkewAngle: Double read GetSkewAngle;
-    function GetLocationC: ILocation;
-    procedure SetLocationC(const AValue: ILocation);
-
-    ///	<summary>
-    ///	  Точка C
-    ///	</summary>
-    property LocationC: ILocation read GetLocationC write SetLocationC;
   end;
 
 
