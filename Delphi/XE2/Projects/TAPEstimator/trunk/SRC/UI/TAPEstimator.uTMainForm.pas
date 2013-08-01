@@ -41,7 +41,11 @@ uses
   CastersPackage.uTListViewEx,
   TAPEstimator.Profile.uTProfile,
   TAPEstimator.Configuration.uIRecents,
-  TAPEstimator.Configuration.uTConfiguration, Vcl.Buttons, Vcl.Imaging.jpeg;
+  TAPEstimator.Configuration.uTConfiguration,
+  Vcl.Buttons,
+  Vcl.Imaging.jpeg,
+  Winapi.Direct3D9,
+  Winapi.D3DX9;
 
 type
   TMainForm = class(TForm, IInitializable)
@@ -102,7 +106,7 @@ type
     lvTAP: TListViewEx;
     AboutWindow: TAboutWindow;
     Splitter1: TSplitter;
-    GridPanel1: TGridPanel;
+    gpToolBar: TGridPanel;
     SpeedButton4: TSpeedButton;
     SpeedButton1: TSpeedButton;
     SpeedButton2: TSpeedButton;
@@ -125,7 +129,7 @@ type
     SpeedButton38: TSpeedButton;
     SpeedButton39: TSpeedButton;
     SpeedButton40: TSpeedButton;
-    PaintBox1: TPaintBox;
+    pnlModel: TPanel;
     procedure actQuitExecute(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -146,7 +150,6 @@ type
     procedure actOpenExecute(Sender: TObject);
     procedure lvTAPCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState;
       var DefaultDraw: Boolean);
-    procedure PaintBox1Paint(Sender: TObject);
   strict private
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -169,6 +172,10 @@ type
     procedure LoadTAPFile(const AFileName: string);
   public
     destructor Destroy; override;
+  strict private
+    FDirect3D9: IDirect3D9;
+    function InitDirect3D(const AWindowHandle: HWND;
+      const AWindowWidth, AWindowHeight: Integer): Boolean;
   end;
 
 var
@@ -293,6 +300,12 @@ begin
     FProfile := TProfile.Create(True, ChangeFileExt(ExpandFileName(ParamStr(0)), '.profile'));
   end;
   Result := FProfile;
+end;
+
+function TMainForm.InitDirect3D(const AWindowHandle: HWND;
+  const AWindowWidth, AWindowHeight: Integer): Boolean;
+begin
+
 end;
 
 procedure TMainForm.Initialize;
@@ -514,25 +527,6 @@ begin
   end;
 end;
 
-procedure TMainForm.PaintBox1Paint(Sender: TObject);
-begin
-  PaintBox1.Canvas.Brush.Color := clWhite;
-  PaintBox1.Canvas.Pen.Color := clWindowFrame;
-  PaintBox1.Canvas.Rectangle(PaintBox1.ClientRect);
-  PaintBox1.Canvas.Pen.Color := clLtGray;
-  PaintBox1.Canvas.MoveTo(10, 10);
-  PaintBox1.Canvas.LineTo(10, PaintBox1.ClientRect.Bottom - 10);
-  PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
-  PaintBox1.Canvas.MoveTo(10, 10);
-  PaintBox1.Canvas.LineTo(5, 15);
-  PaintBox1.Canvas.MoveTo(10, 10);
-  PaintBox1.Canvas.LineTo(15, 15);
-  PaintBox1.Canvas.MoveTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
-  PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 15, PaintBox1.ClientRect.Bottom - 5);
-  PaintBox1.Canvas.MoveTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
-  PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 15, PaintBox1.ClientRect.Bottom - 15);
-end;
-
 procedure TMainForm.actSaveProfileExecute(Sender: TObject);
 begin
   //
@@ -571,4 +565,19 @@ begin
   end;
 end;
 
+//  PaintBox1.Canvas.Brush.Color := clWhite;
+//  PaintBox1.Canvas.Pen.Color := clWindowFrame;
+//  PaintBox1.Canvas.Rectangle(PaintBox1.ClientRect);
+//  PaintBox1.Canvas.Pen.Color := clLtGray;
+//  PaintBox1.Canvas.MoveTo(10, 10);
+//  PaintBox1.Canvas.LineTo(10, PaintBox1.ClientRect.Bottom - 10);
+//  PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
+//  PaintBox1.Canvas.MoveTo(10, 10);
+//  PaintBox1.Canvas.LineTo(5, 15);
+//  PaintBox1.Canvas.MoveTo(10, 10);
+//  PaintBox1.Canvas.LineTo(15, 15);
+//  PaintBox1.Canvas.MoveTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
+//  PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 15, PaintBox1.ClientRect.Bottom - 5);
+//  PaintBox1.Canvas.MoveTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
+//  PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 15, PaintBox1.ClientRect.Bottom - 15);
 end.

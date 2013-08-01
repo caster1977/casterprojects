@@ -36,23 +36,12 @@ object MainForm: TMainForm
     BorderWidth = 6
     TabOrder = 1
     object Splitter1: TSplitter
-      Left = 525
+      Left = 522
       Top = 6
+      Width = 6
       Height = 453
       Align = alRight
-      ExplicitTop = 0
-    end
-    object PaintBox1: TPaintBox
-      Left = 52
-      Top = 6
-      Width = 473
-      Height = 453
-      Align = alClient
-      OnPaint = PaintBox1Paint
-      ExplicitLeft = 280
-      ExplicitTop = 112
-      ExplicitWidth = 105
-      ExplicitHeight = 105
+      ExplicitLeft = 525
     end
     object pnlButtons: TPanel
       Left = 6
@@ -109,7 +98,7 @@ object MainForm: TMainForm
       ViewStyle = vsReport
       OnCustomDrawItem = lvTAPCustomDrawItem
     end
-    object GridPanel1: TGridPanel
+    object gpToolBar: TGridPanel
       Left = 6
       Top = 6
       Width = 46
@@ -117,7 +106,7 @@ object MainForm: TMainForm
       Align = alLeft
       BevelEdges = [beRight]
       BevelOuter = bvNone
-      Caption = 'GridPanel1'
+      Caption = 'gpToolBar'
       ColumnCollection = <
         item
           Value = 50.000000000000000000
@@ -632,6 +621,19 @@ object MainForm: TMainForm
         ExplicitTop = 63
       end
     end
+    object pnlModel: TPanel
+      Left = 52
+      Top = 6
+      Width = 470
+      Height = 453
+      Align = alClient
+      BevelKind = bkFlat
+      BevelOuter = bvNone
+      ParentColor = True
+      ShowCaption = False
+      TabOrder = 3
+      ExplicitWidth = 473
+    end
   end
   object ToolBar: TActionToolBar
     Left = 0
@@ -660,7 +662,7 @@ object MainForm: TMainForm
     Left = 208
     Top = 352
     Bitmap = {
-      494C01010E00A000D40210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010E00A000E40210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
