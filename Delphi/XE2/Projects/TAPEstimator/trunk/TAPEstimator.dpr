@@ -32,7 +32,8 @@ uses
   TAPEstimator.uTFigure in 'SRC\Logic\Research\TAPEstimator.uTFigure.pas',
   TAPEstimator.uTLineSegment in 'SRC\Logic\Research\TAPEstimator.uTLineSegment.pas',
   TAPEstimator.uTLocation in 'SRC\Logic\Research\TAPEstimator.uTLocation.pas',
-  TAPEstimator.uTPoint in 'SRC\Logic\Research\TAPEstimator.uTPoint.pas';
+  TAPEstimator.uTPoint in 'SRC\Logic\Research\TAPEstimator.uTPoint.pas',
+  TAPEstimator.uTDirect3D9Gear in 'SRC\Logic\Research\TAPEstimator.uTDirect3D9Gear.pas';
 
 {$R *.res}
 

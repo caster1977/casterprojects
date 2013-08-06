@@ -43,9 +43,8 @@ uses
   TAPEstimator.Configuration.uIRecents,
   TAPEstimator.Configuration.uTConfiguration,
   Vcl.Buttons,
-  Vcl.Imaging.jpeg,
-  Winapi.Direct3D9,
-  Winapi.D3DX9;
+  TAPEstimator.uTDirect3D9Gear,
+  Winapi.Direct3D9;
 
 type
   TMainForm = class(TForm, IInitializable)
@@ -150,6 +149,8 @@ type
     procedure actOpenExecute(Sender: TObject);
     procedure lvTAPCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState;
       var DefaultDraw: Boolean);
+    procedure FormPaint(Sender: TObject);
+    procedure FormResize(Sender: TObject);
   strict private
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -173,9 +174,11 @@ type
   public
     destructor Destroy; override;
   strict private
-    FDirect3D9: IDirect3D9;
-    function InitDirect3D(const AWindowHandle: HWND;
-      const AWindowWidth, AWindowHeight: Integer): Boolean;
+    FDirect3D9Gear: TDirect3D9Gear;
+    procedure InitializeDirect3D;
+    procedure FinalizeDirect3D;
+  strict private
+    procedure WMEraseBkgnd(var AMessage: TWMEraseBkgnd); message WM_ERASEBKGND;
   end;
 
 var
@@ -255,10 +258,16 @@ end;
 
 procedure TMainForm.Finalize;
 begin
+  FinalizeDirect3D;
   if Assigned(Configuration) then
   begin
     Configuration.Free;
   end;
+end;
+
+procedure TMainForm.FinalizeDirect3D;
+begin
+  FreeAndNil(FDirect3D9Gear);
 end;
 
 destructor TMainForm.Destroy;
@@ -284,6 +293,108 @@ begin
   Initialize;
 end;
 
+procedure TMainForm.FormPaint(Sender: TObject);
+type
+  TCustomVertex = packed record
+    x, y, z, rwh: Single;
+    color: DWORD;
+  end;
+var
+  vertex_buf: IDirect3DVertexBuffer9; // буфер вернин
+  Pixel: array [0 .. 11] of TCustomVertex;
+  pPixel: Pointer;
+  d3dviewport: td3dviewport9;
+begin
+  // inherited;
+  // получаем параметры окна вывода
+  FDirect3D9Gear.Direct3DDevice9.GetViewport(d3dviewport);
+  // связываем буфер вершин с потоком данных устройства
+  FDirect3D9Gear.Direct3DDevice9.CreateVertexBuffer(SizeOf(Pixel), 0,
+    D3DFVF_XYZRHW or D3DFVF_DIFFUSE, D3DPOOL_DEFAULT, vertex_buf, nil);
+  // установка параметров вершин
+  ZeroMemory(@Pixel, SizeOf(Pixel));
+
+  Pixel[0].x := 10;
+  Pixel[0].y := 10;
+  Pixel[0].rwh := 1;
+  Pixel[0].color := $00C0C0C0; // $AARRGGBB
+
+  Pixel[1].x := 10;
+  Pixel[1].y := d3dviewport.Height - 10;
+  Pixel[1].rwh := 1;
+  Pixel[1].color := $00C0C0C0; // $AARRGGBB
+
+  Pixel[2].x := 10;
+  Pixel[2].y := d3dviewport.Height - 10;
+  Pixel[2].rwh := 1;
+  Pixel[2].color := $00C0C0C0; // $AARRGGBB
+
+  Pixel[3].x := d3dviewport.Width - 10;
+  Pixel[3].y := d3dviewport.Height - 10;
+  Pixel[3].rwh := 1;
+  Pixel[3].color := $00C0C0C0; // $AARRGGBB
+
+  Pixel[4].x := 10;
+  Pixel[4].y := 10;
+  Pixel[4].rwh := 1;
+  Pixel[4].color := $00C0C0C0; // $AARRGGBB
+
+  Pixel[5].x := 15;
+  Pixel[5].y := 15;
+  Pixel[5].rwh := 1;
+  Pixel[5].color := $00C0C0C0; // $AARRGGBB
+
+  Pixel[6].x := 10;
+  Pixel[6].y := 10;
+  Pixel[6].rwh := 1;
+  Pixel[6].color := $00C0C0C0; // $AARRGGBB
+
+  Pixel[7].x := 5;
+  Pixel[7].y := 15;
+  Pixel[7].rwh := 1;
+  Pixel[7].color := $00C0C0C0; // $AARRGGBB
+
+  Pixel[8].x := d3dviewport.Width - 10;
+  Pixel[8].y := d3dviewport.Height - 10;
+  Pixel[8].rwh := 1;
+  Pixel[8].color := $00C0C0C0; // $AARRGGBB
+
+  Pixel[9].x := d3dviewport.Width - 15;
+  Pixel[9].y := d3dviewport.Height - 15;
+  Pixel[9].rwh := 1;
+  Pixel[9].color := $00C0C0C0; // $AARRGGBB
+
+  Pixel[10].x := d3dviewport.Width - 10;
+  Pixel[10].y := d3dviewport.Height - 10;
+  Pixel[10].rwh := 1;
+  Pixel[10].color := $00C0C0C0; // $AARRGGBB
+
+  Pixel[11].x := d3dviewport.Width - 15;
+  Pixel[11].y := d3dviewport.Height - 5;
+  Pixel[11].rwh := 1;
+  Pixel[11].color := $00C0C0C0; // $AARRGGBB
+  // блокировка доступа к буферу вершин
+  vertex_buf.Lock(0, SizeOf(Pixel), pPixel, 0);
+  // копируем в буфер данные
+  CopyMemory(pPixel, @Pixel, SizeOf(Pixel));
+  // разблокировка буфера
+  vertex_buf.Unlock;
+  // очищаем обслассть для рисования
+  FDirect3D9Gear.Direct3DDevice9.Clear(0, nil, D3DCLEAR_TARGET, D3DCOLOR_XRGB(255, 255, 255), 1, 0);
+  // начало сцены
+  FDirect3D9Gear.Direct3DDevice9.BeginScene;
+  // связываем буфер вершин с потоком данных устройства
+  FDirect3D9Gear.Direct3DDevice9.SetStreamSource(0, vertex_buf, 0, SizeOf(TCustomVertex));
+  // устанавливаем формат вершин
+  FDirect3D9Gear.Direct3DDevice9.SetFVF(D3DFVF_XYZRHW or D3DFVF_DIFFUSE);
+  // рисуем примитив
+  FDirect3D9Gear.Direct3DDevice9.DrawPrimitive(D3DPT_LINELIST, 0, 6);
+  // завершаем сцену
+  FDirect3D9Gear.Direct3DDevice9.EndScene;
+  // переключение буферов}
+  FDirect3D9Gear.Direct3DDevice9.Present(nil, nil, 0, nil);
+end;
+
 function TMainForm.GetConfiguration: TConfiguration;
 begin
   if not Assigned(FConfiguration) then
@@ -300,12 +411,6 @@ begin
     FProfile := TProfile.Create(True, ChangeFileExt(ExpandFileName(ParamStr(0)), '.profile'));
   end;
   Result := FProfile;
-end;
-
-function TMainForm.InitDirect3D(const AWindowHandle: HWND;
-  const AWindowWidth, AWindowHeight: Integer): Boolean;
-begin
-
 end;
 
 procedure TMainForm.Initialize;
@@ -329,6 +434,13 @@ begin
 
   ApplyConfiguration;
   RefreshRecentsMenu;
+  InitializeDirect3D;
+end;
+
+procedure TMainForm.InitializeDirect3D;
+begin
+  FDirect3D9Gear := TDirect3D9Gear.Create(pnlModel.Handle, pnlModel.ClientWidth,
+    pnlModel.ClientHeight, False);
 end;
 
 procedure TMainForm.actCreateProfileExecute(Sender: TObject);
@@ -511,6 +623,18 @@ begin
   end;
 end;
 
+procedure TMainForm.WMEraseBkgnd(var AMessage: TWMEraseBkgnd);
+begin
+  if (WindowFromDC(AMessage.DC)) = (pnlModel.Handle) then
+  begin
+    AMessage.Result := 1;
+  end
+  else
+  begin
+    inherited;
+  end;
+end;
+
 procedure TMainForm.OnRecentsMenuItemClick(Sender: TObject);
 var
   mi: TMenuItem;
@@ -558,26 +682,35 @@ end;
 procedure TMainForm.lvTAPCustomDrawItem(Sender: TCustomListView; Item: TListItem;
   State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
-  lvTAP.Canvas.Font.Color := clBlack;
+  lvTAP.Canvas.Font.color := clBlack;
   if TTAPStringRoutines.IsComment(Item.Caption) then
   begin
-    lvTAP.Canvas.Font.Color := clGreen;
+    lvTAP.Canvas.Font.color := clGreen;
   end;
 end;
 
-//  PaintBox1.Canvas.Brush.Color := clWhite;
-//  PaintBox1.Canvas.Pen.Color := clWindowFrame;
-//  PaintBox1.Canvas.Rectangle(PaintBox1.ClientRect);
-//  PaintBox1.Canvas.Pen.Color := clLtGray;
-//  PaintBox1.Canvas.MoveTo(10, 10);
-//  PaintBox1.Canvas.LineTo(10, PaintBox1.ClientRect.Bottom - 10);
-//  PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
-//  PaintBox1.Canvas.MoveTo(10, 10);
-//  PaintBox1.Canvas.LineTo(5, 15);
-//  PaintBox1.Canvas.MoveTo(10, 10);
-//  PaintBox1.Canvas.LineTo(15, 15);
-//  PaintBox1.Canvas.MoveTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
-//  PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 15, PaintBox1.ClientRect.Bottom - 5);
-//  PaintBox1.Canvas.MoveTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
-//  PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 15, PaintBox1.ClientRect.Bottom - 15);
+// PaintBox1.Canvas.Brush.Color := clWhite;
+// PaintBox1.Canvas.Pen.Color := clWindowFrame;
+// PaintBox1.Canvas.Rectangle(PaintBox1.ClientRect);
+// PaintBox1.Canvas.Pen.Color := clLtGray;
+// PaintBox1.Canvas.MoveTo(10, 10);
+// PaintBox1.Canvas.LineTo(10, PaintBox1.ClientRect.Bottom - 10);
+// PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
+// PaintBox1.Canvas.MoveTo(10, 10);
+// PaintBox1.Canvas.LineTo(5, 15);
+// PaintBox1.Canvas.MoveTo(10, 10);
+// PaintBox1.Canvas.LineTo(15, 15);
+// PaintBox1.Canvas.MoveTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
+// PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 15, PaintBox1.ClientRect.Bottom - 5);
+// PaintBox1.Canvas.MoveTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
+// PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 15, PaintBox1.ClientRect.Bottom - 15);
+procedure TMainForm.FormResize(Sender: TObject);
+begin
+  if Assigned(FDirect3D9Gear) then
+  begin
+    FDirect3D9Gear.CreateDirect3DDevice9(pnlModel.Handle, pnlModel.ClientWidth,
+      pnlModel.ClientHeight, False);
+  end;
+end;
+
 end.
