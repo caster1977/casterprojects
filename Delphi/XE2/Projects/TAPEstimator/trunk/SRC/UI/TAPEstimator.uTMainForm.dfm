@@ -15,6 +15,8 @@ object MainForm: TMainForm
   Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
+  OnPaint = FormPaint
+  OnResize = FormResize
   PixelsPerInch = 96
   TextHeight = 13
   object StatusBar: TStatusBar
@@ -629,10 +631,8 @@ object MainForm: TMainForm
       Align = alClient
       BevelKind = bkFlat
       BevelOuter = bvNone
-      ParentColor = True
       ShowCaption = False
       TabOrder = 3
-      ExplicitWidth = 473
     end
   end
   object ToolBar: TActionToolBar
@@ -662,7 +662,7 @@ object MainForm: TMainForm
     Left = 208
     Top = 352
     Bitmap = {
-      494C01010E00A000E40210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010E00A000280310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
