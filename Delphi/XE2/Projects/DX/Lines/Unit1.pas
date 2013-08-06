@@ -190,7 +190,7 @@ begin
   if Assigned(pD3DDevice) then
   begin
     // чистим устройство
-    pD3DDevice.Clear(0, nil, D3DCLEAR_TARGET, D3DCOLOR_XRGB(255, 255, 255), 1, 0);
+    pD3DDevice.Clear(0, nil, D3DCLEAR_TARGET, D3DCOLOR_XRGB(255, 0, 0), 1, 0);
     // начало сцены
     pD3DDevice.BeginScene;
     // связываем буфер вершин с потоком данных устройства
