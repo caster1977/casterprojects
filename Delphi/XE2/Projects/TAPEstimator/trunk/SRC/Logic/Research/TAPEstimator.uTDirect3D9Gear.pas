@@ -55,9 +55,11 @@ type
     function GetVertexProcessing: DWORD;
     property VertexProcessing: DWORD read GetVertexProcessing nodefault;
   public
-    constructor Create(const AHandle: HWND; const AWidth, AHeight: Integer; const AFullScreen: Boolean); reintroduce; virtual;
+    constructor Create(const AHandle: HWND; const AWidth, AHeight: Integer;
+      const AFullScreen: Boolean); reintroduce; virtual;
     destructor Destroy; override;
-    function CreateDirect3DDevice9(const AHandle: HWND; const AWidth, AHeight: Integer; const AFullScreen: Boolean): Boolean;
+    function CreateDirect3DDevice9(const AHandle: HWND; const AWidth, AHeight: Integer;
+      const AFullScreen: Boolean): Boolean;
   end;
 
 implementation
@@ -66,7 +68,8 @@ uses
   VCL.Dialogs,
   System.SysUtils;
 
-constructor TDirect3D9Gear.Create(const AHandle: HWND; const AWidth, AHeight: Integer; const AFullScreen: Boolean);
+constructor TDirect3D9Gear.Create(const AHandle: HWND; const AWidth, AHeight: Integer;
+  const AFullScreen: Boolean);
 begin
   inherited Create;
   if not CreateDirect3D9 then
@@ -79,8 +82,8 @@ begin
   end;
 end;
 
-function TDirect3D9Gear.CreateDirect3DDevice9(const AHandle: HWND; const AWidth,
-  AHeight: Integer; const AFullScreen: Boolean): Boolean;
+function TDirect3D9Gear.CreateDirect3DDevice9(const AHandle: HWND; const AWidth, AHeight: Integer;
+  const AFullScreen: Boolean): Boolean;
 begin
   FreeDirect3DDevice9;
   FHandle := AHandle;
@@ -184,12 +187,12 @@ begin
     d3d_present_parameters.SwapEffect := D3DSWAPEFFECT_DISCARD;
     Direct3D9.GetAdapterDisplayMode(D3DADAPTER_DEFAULT, d3d_display_mode);
     d3d_present_parameters.BackBufferFormat := d3d_display_mode.Format;
-//    GetWindowRect(Handle, window_rect);
-//    GetClientRect(Handle, client_rect);
-//    MoveWindow(Handle, client_rect.Left, client_rect.Top,
-//      Width + (window_rect.Right - window_rect.Left) - (client_rect.Right - client_rect.Left),
-//      Height + (window_rect.Bottom - window_rect.Top) -
-//      (client_rect.Bottom - client_rect.Top), True);
+    // GetWindowRect(Handle, window_rect);
+    // GetClientRect(Handle, client_rect);
+    // MoveWindow(Handle, client_rect.Left, client_rect.Top,
+    // Width + (window_rect.Right - window_rect.Left) - (client_rect.Right - client_rect.Left),
+    // Height + (window_rect.Bottom - window_rect.Top) -
+    // (client_rect.Bottom - client_rect.Top), True);
   end;
 
   Result := Succeeded(Direct3D9.CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, Handle,

@@ -53,7 +53,6 @@ type
     pnlTop: TPanel;
     tsInterface: TTabSheet;
     tsOther: TTabSheet;
-    chkEnableStoreMainFormSizesAndPosition: TCheckBox;
     procedure actCancelExecute(Sender: TObject);
     procedure actNextPageExecute(Sender: TObject);
     procedure actNextPageUpdate(Sender: TObject);
@@ -114,13 +113,6 @@ type
     procedure SetEnableToolbar(const AValue: Boolean);
     property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar
       default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
-
-  strict private
-    function GetEnableStoreMainFormSizesAndPosition: Boolean;
-    procedure SetEnableStoreMainFormSizesAndPosition(const AValue: Boolean);
-    property EnableStoreMainFormSizesAndPosition: Boolean
-      read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition
-      default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
   end;
 
 implementation
@@ -146,8 +138,6 @@ constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: 
       EnableSplashAtStart := Configuration.Section<TInterfaceSection>.EnableSplashAtStart;
       EnableStatusbar := Configuration.Section<TInterfaceSection>.EnableStatusbar;
       EnableToolbar := Configuration.Section<TInterfaceSection>.EnableToolbar;
-      EnableStoreMainFormSizesAndPosition :=
-        Configuration.Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition;
       EnablePlaySoundOnComplete := Configuration.Section<TOtherSection>.EnablePlaySoundOnComplete;
     end;
   end;
@@ -168,8 +158,6 @@ begin
     EnableSplashAtStart := CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
     EnableStatusbar := CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
     EnableToolbar := CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
-    EnableStoreMainFormSizesAndPosition :=
-      CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
   end;
   if PageControl.ActivePage = tsOther then
   begin
@@ -187,9 +175,7 @@ begin
     b := not((EnableQuitConfirmation = CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION) and
       (EnableSplashAtStart = CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START) and
       (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and
-      (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR) and
-      (EnableStoreMainFormSizesAndPosition =
-      CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION));
+      (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR));
   end;
   if PageControl.ActivePage = tsOther then
   begin
@@ -206,8 +192,6 @@ begin
     Configuration.Section<TInterfaceSection>.EnableSplashAtStart := EnableSplashAtStart;
     Configuration.Section<TInterfaceSection>.EnableStatusbar := EnableStatusbar;
     Configuration.Section<TInterfaceSection>.EnableToolbar := EnableToolbar;
-    Configuration.Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition :=
-      EnableStoreMainFormSizesAndPosition;
     Configuration.Section<TOtherSection>.EnablePlaySoundOnComplete := EnablePlaySoundOnComplete;
   end;
   ModalResult := mrOk;
@@ -225,9 +209,7 @@ begin
       (Configuration.Section<TInterfaceSection>.EnableQuitConfirmation = EnableQuitConfirmation) and
       (Configuration.Section<TInterfaceSection>.EnableSplashAtStart = EnableSplashAtStart) and
       (Configuration.Section<TInterfaceSection>.EnableStatusbar = EnableStatusbar) and
-      (Configuration.Section<TInterfaceSection>.EnableToolbar = EnableToolbar) and
-      (Configuration.Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition =
-      EnableStoreMainFormSizesAndPosition));
+      (Configuration.Section<TInterfaceSection>.EnableToolbar = EnableToolbar));
   end;
   actApply.Enabled := b;
   btnApply.Default := b;
@@ -267,12 +249,6 @@ end;
 function TConfigurationForm.GetEnableStatusbar: Boolean;
 begin
   Result := chkEnableStatusbar.Enabled and chkEnableStatusbar.Checked;
-end;
-
-function TConfigurationForm.GetEnableStoreMainFormSizesAndPosition: Boolean;
-begin
-  Result := chkEnableStoreMainFormSizesAndPosition.Enabled and
-    chkEnableStoreMainFormSizesAndPosition.Checked;
 end;
 
 function TConfigurationForm.GetEnableToolbar: Boolean;
@@ -334,11 +310,6 @@ end;
 procedure TConfigurationForm.SetEnableStatusbar(const AValue: Boolean);
 begin
   Routines.SetCheckBoxState(chkEnableStatusbar, AValue);
-end;
-
-procedure TConfigurationForm.SetEnableStoreMainFormSizesAndPosition(const AValue: Boolean);
-begin
-  Routines.SetCheckBoxState(chkEnableStoreMainFormSizesAndPosition, AValue);
 end;
 
 procedure TConfigurationForm.SetEnableToolbar(const AValue: Boolean);

@@ -21,9 +21,6 @@ type
     property EnableStatusbar: Boolean index 2 read GetBooleanValue write SetBooleanValue;
     [TDefaultValue(CONFIGURATION_DEFAULT_ENABLE_TOOLBAR)]
     property EnableToolbar: Boolean index 3 read GetBooleanValue write SetBooleanValue;
-    [TDefaultValue(CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION)]
-    property EnableStoreMainFormSizesAndPosition: Boolean index 4 read GetBooleanValue
-      write SetBooleanValue;
   end;
 
 implementation

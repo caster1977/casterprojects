@@ -27,6 +27,7 @@ uses
   TAPEstimator.Configuration.uEConfiguration,
   TAPEstimator.Configuration.uTInterfaceSection,
   TAPEstimator.Configuration.uTOtherSection,
+  TAPEstimator.Configuration.uTMainFormStateSection,
   TAPEstimator.Configuration.uTRecents,
   TAPEstimator.Configuration.uIRecent,
   TAPEstimator.Configuration.uTRecent;
@@ -58,6 +59,7 @@ begin
   inherited;
   RegisterSection(TInterfaceSection);
   RegisterSection(TOtherSection);
+  RegisterSection(TMainFormStateSection);
   Recents.Clear;
   if Assigned(FIniFile) then
   begin
