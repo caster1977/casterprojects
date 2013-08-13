@@ -29,7 +29,8 @@ package ConfigPackage;
 {$IMPLICITBUILD ON}
 
 requires
-  rtl;
+  rtl,
+  CastersPackage;
 
 contains
   ConfigPackage.uTSectionAttribute in 'Logic\Classes\ConfigPackage.uTSectionAttribute.pas',
