@@ -108,6 +108,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="rtl.dcp"/>
+        <DCCReference Include="CastersPackage.dcp"/>
         <DCCReference Include="Logic\Classes\ConfigPackage.uTSectionAttribute.pas"/>
         <DCCReference Include="Logic\Classes\ConfigPackage.uTDefaultValueAttribute.pas"/>
         <DCCReference Include="Logic\Classes\ConfigPackage.uTCustomSection.pas"/>
