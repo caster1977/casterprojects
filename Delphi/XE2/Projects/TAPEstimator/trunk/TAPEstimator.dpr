@@ -33,7 +33,8 @@ uses
   TAPEstimator.uTLineSegment in 'SRC\Logic\Research\TAPEstimator.uTLineSegment.pas',
   TAPEstimator.uTLocation in 'SRC\Logic\Research\TAPEstimator.uTLocation.pas',
   TAPEstimator.uTPoint in 'SRC\Logic\Research\TAPEstimator.uTPoint.pas',
-  TAPEstimator.uTDirect3D9Gear in 'SRC\Logic\Research\TAPEstimator.uTDirect3D9Gear.pas';
+  TAPEstimator.uTDirect3D9Gear in 'SRC\Logic\Research\TAPEstimator.uTDirect3D9Gear.pas',
+  TAPEstimator.Configuration.uTMainFormStateSection in 'SRC\Logic\Classes\TAPEstimator.Configuration.uTMainFormStateSection.pas';
 
 {$R *.res}
 

@@ -68,7 +68,7 @@ begin
     if ALocationA.CoordinatesCount = ALocationB.CoordinatesCount then
     begin
       // обнуляем сумму квардатов координат вектора
-      current := 0.0;
+      total := 0.0;
       for i := 0 to ALocationA.CoordinatesCount - 1 do
       begin
         // вычисляем очередную координату вектора

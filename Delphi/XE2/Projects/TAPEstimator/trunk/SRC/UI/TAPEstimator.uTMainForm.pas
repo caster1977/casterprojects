@@ -44,7 +44,8 @@ uses
   TAPEstimator.Configuration.uTConfiguration,
   Vcl.Buttons,
   TAPEstimator.uTDirect3D9Gear,
-  Winapi.Direct3D9;
+  Winapi.Direct3D9,
+  Vcl.AppEvnts;
 
 type
   TMainForm = class(TForm, IInitializable)
@@ -129,22 +130,18 @@ type
     SpeedButton39: TSpeedButton;
     SpeedButton40: TSpeedButton;
     pnlModel: TPanel;
+    ApplicationEvents1: TApplicationEvents;
     procedure actQuitExecute(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actConfigurationExecute(Sender: TObject);
-    procedure actProcessUpdate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure actRecentProfilesPropertiesExecute(Sender: TObject);
-    procedure actProfilePropertiesUpdate(Sender: TObject);
     procedure actProfilePropertiesExecute(Sender: TObject);
     procedure actCreateProfileExecute(Sender: TObject);
-    procedure actProcessExecute(Sender: TObject);
     procedure actLoadProfileExecute(Sender: TObject);
     procedure actStatusBarExecute(Sender: TObject);
     procedure actToolBarExecute(Sender: TObject);
-    procedure actSaveProfileExecute(Sender: TObject);
-    procedure actSaveProfileUpdate(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
     procedure actOpenExecute(Sender: TObject);
     procedure lvTAPCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState;
@@ -154,9 +151,7 @@ type
   strict private
     procedure Initialize; virtual;
     procedure Finalize; virtual;
-    // procedure LoadConfiguration;
     procedure ApplyConfiguration;
-    // procedure SaveConfiguration;
     procedure OnHint(ASender: TObject);
     procedure RefreshRecentsMenu;
   strict private
@@ -169,16 +164,28 @@ type
     FConfiguration: TConfiguration;
     function GetConfiguration: TConfiguration;
     property Configuration: TConfiguration read GetConfiguration nodefault;
+
   strict private
-    procedure LoadTAPFile(const AFileName: string);
+    procedure CreateProfile(const AProfileName: string = '');
+    procedure FreeProfile;
+    procedure FreeConfiguration;
+  private
+    FWindowStateLoaded: Boolean;
+    procedure SaveWindowState;
+    procedure LoadWindowState;
   public
     destructor Destroy; override;
+
+  strict private
+    procedure LoadTAPFile(const AFileName: string);
   strict private
     FDirect3D9Gear: TDirect3D9Gear;
     procedure InitializeDirect3D;
     procedure FinalizeDirect3D;
   strict private
     procedure WMEraseBkgnd(var AMessage: TWMEraseBkgnd); message WM_ERASEBKGND;
+  protected
+    procedure WndProc(var AMessage: TMessage); override;
   end;
 
 var
@@ -189,16 +196,19 @@ implementation
 {$R *.dfm}
 
 uses
+  Winapi.DXTypes,
   TAPEstimator.uConsts,
   TAPEstimator.Configuration.uEConfiguration,
   TAPEstimator.Configuration.uTInterfaceSection,
   TAPEstimator.Configuration.uTOtherSection,
+  TAPEstimator.Configuration.uTMainFormStateSection,
   TAPEstimator.Configuration.uTRecents,
   TAPEstimator.Configuration.uIRecent,
   TAPEstimator.Configuration.uTRecent,
   TAPEstimator.uTConfigurationForm,
   TAPEstimator.uTRecentsPropertiesForm,
   TAPEstimator.uTProfileForm,
+  TAPEstimator.Profile.uEProfile,
   TAPEstimator.uResourceStrings,
   TAPEstimator.uTTAPStringRoutines,
   TAPEstimator.uETAPWrongSymbol;
@@ -219,6 +229,7 @@ resourcestring
   RsOpenFilters = 'Файлы TAP (*.tap)|*.tap|Все файлы (*.*)|*.*';
   RsTryAgain = '%s.' + sLineBreak + 'Вы желаете повторить попытку?';
   RsConfigurationSaveError = 'Не удалось выполнить запись настроек программы в файл.';
+  RsEmptyProfileName = 'Не задано имя файла профиля.';
 
 procedure TMainForm.actAboutExecute(Sender: TObject);
 begin
@@ -256,20 +267,6 @@ begin
   StatusBar.SimpleText := GetLongHint(Application.Hint);
 end;
 
-procedure TMainForm.Finalize;
-begin
-  FinalizeDirect3D;
-  if Assigned(Configuration) then
-  begin
-    Configuration.Free;
-  end;
-end;
-
-procedure TMainForm.FinalizeDirect3D;
-begin
-  FreeAndNil(FDirect3D9Gear);
-end;
-
 destructor TMainForm.Destroy;
 begin
   Finalize;
@@ -291,6 +288,290 @@ procedure TMainForm.FormCreate(Sender: TObject);
 begin
   inherited;
   Initialize;
+end;
+
+function TMainForm.GetConfiguration: TConfiguration;
+begin
+  if not Assigned(FConfiguration) then
+  begin
+    FConfiguration := TConfiguration.Create;
+  end;
+  Result := FConfiguration;
+end;
+
+procedure TMainForm.FreeConfiguration;
+begin
+  if Assigned(FConfiguration) then
+  begin
+    FreeAndNil(FConfiguration);
+  end;
+end;
+
+procedure TMainForm.CreateProfile(const AProfileName: string);
+begin
+  FProfile := TProfile.Create(True, AProfileName);
+end;
+
+procedure TMainForm.FreeProfile;
+begin
+  if Assigned(FProfile) then
+  begin
+    FreeAndNil(FProfile);
+  end;
+end;
+
+function TMainForm.GetProfile: TProfile;
+begin
+  if not Assigned(FProfile) then
+  begin
+    CreateProfile;
+  end;
+  Result := FProfile;
+end;
+
+procedure TMainForm.actCreateProfileExecute(Sender: TObject);
+begin
+  { TODO :
+    добавить проверку сохранённости текущего профиля:
+    если профиль был изменён и не сохранён, задать вопрос юзеру }
+  if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage),
+    PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])),
+    MESSAGE_TYPE_CONFIRMATION_WARNING_CANCEL) = IDOK then
+  begin
+    FreeProfile;
+  end;
+end;
+
+procedure TMainForm.actLoadProfileExecute(Sender: TObject);
+var
+  form: TOpenDialog;
+begin
+  form := TOpenDialog.Create(Self);
+  try
+    form.DefaultExt := RsOpenProfileDefaultExt;
+    form.Filter := RsOpenProfileFilters;
+    form.Options := form.Options + [ofFileMustExist];
+    if form.Execute(Handle) then
+    begin
+      FreeProfile;
+      CreateProfile(form.FileName);
+      // Profile.Load;
+    end;
+  finally
+    form.Free;
+  end;
+end;
+
+procedure TMainForm.actProfilePropertiesExecute(Sender: TObject);
+var
+  form: TProfileForm;
+begin
+  form := TProfileForm.Create(Self);
+  try
+    form.ShowModal;
+    if form.ModalResult = mrOk then
+    begin
+    end;
+  finally
+    form.Free;
+  end;
+end;
+
+procedure TMainForm.actRecentProfilesPropertiesExecute(Sender: TObject);
+var
+  form: TRecentsPropertiesForm;
+begin
+  form := TRecentsPropertiesForm.Create(Self, Configuration.Recents, 20);
+  try
+    form.ShowModal;
+    if form.ModalResult = mrOk then
+    begin
+      RefreshRecentsMenu;
+    end;
+  finally
+    form.Free;
+  end;
+end;
+
+procedure TMainForm.RefreshRecentsMenu;
+var
+  i: Integer;
+  Item: TMenuItem;
+begin
+  for i := miRecents.Count - 3 downto 0 do
+  begin
+    miRecents.Items[i].Free;
+  end;
+  for i := Configuration.Recents.Count - 1 downto 0 do
+  begin
+    Item := TMenuItem.Create(Self);
+    Item.Caption := Configuration.Recents.Items[i].FullName;
+    Item.Enabled := Configuration.Recents.Items[i].Exists;
+    Item.OnClick := OnRecentsMenuItemClick;
+    Item.Hint := RsOpenRecent;
+    miRecents.Insert(0, Item);
+  end;
+end;
+
+procedure TMainForm.OnRecentsMenuItemClick(Sender: TObject);
+var
+  mi: TMenuItem;
+  r: IRecent;
+begin
+  if Sender is TMenuItem then
+  begin
+    mi := Sender as TMenuItem;
+    ShowMessage(mi.Caption);
+    r := Configuration.Recents[mi.MenuIndex];
+    Configuration.Recents.Delete(mi.MenuIndex);
+    Configuration.Recents.Insert(0, r);
+    RefreshRecentsMenu;
+  end;
+end;
+
+procedure TMainForm.actStatusBarExecute(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := actStatusBar.Checked;
+  StatusBar.Visible := b;
+  Configuration.Section<TInterfaceSection>.EnableStatusbar := b;
+end;
+
+procedure TMainForm.actToolBarExecute(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := actToolBar.Checked;
+  ToolBar.Visible := b;
+  Configuration.Section<TInterfaceSection>.EnableToolbar := b;
+end;
+
+procedure TMainForm.lvTAPCustomDrawItem(Sender: TCustomListView; Item: TListItem;
+  State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  lvTAP.Canvas.Font.color := clBlack;
+  if TTAPStringRoutines.IsComment(Item.Caption) then
+  begin
+    lvTAP.Canvas.Font.color := clGreen;
+  end;
+end;
+
+procedure TMainForm.InitializeDirect3D;
+begin
+  FDirect3D9Gear := TDirect3D9Gear.Create(pnlModel.Handle, pnlModel.ClientWidth,
+    pnlModel.ClientHeight, False);
+end;
+
+procedure TMainForm.WMEraseBkgnd(var AMessage: TWMEraseBkgnd);
+begin
+  if (WindowFromDC(AMessage.DC)) = (pnlModel.Handle) then
+  begin
+    AMessage.Result := 1;
+  end
+  else
+  begin
+    inherited;
+  end;
+end;
+
+procedure TMainForm.actOpenExecute(Sender: TObject);
+var
+  form: TOpenDialog;
+begin
+  form := TOpenDialog.Create(Self);
+  try
+    form.DefaultExt := RsOpenDefaultExt;
+    form.Filter := RsOpenFilters;
+    form.Options := form.Options + [ofFileMustExist];
+    if form.Execute(Handle) then
+    begin
+      LoadTAPFile(form.FileName);
+    end;
+  finally
+    form.Free;
+  end;
+end;
+
+procedure TMainForm.LoadTAPFile(const AFileName: string);
+var
+  sl: TStringList;
+  i: Integer;
+  s: string;
+  cWrongSymbol: Char;
+  li: TListItem;
+begin
+  sl := TStringList.Create;
+  try
+    sl.LoadFromFile(AFileName);
+    for i := 0 to sl.Count - 1 do
+    begin
+      try
+        s := TTAPStringRoutines.Normalize(sl[i]);
+        if TTAPStringRoutines.Valid(s, cWrongSymbol) then
+        begin
+          sl[i] := s;
+        end
+        else
+        begin
+          raise ETAPWrongSymbol.Create('Некорректный символ [%s] в строке.', cWrongSymbol);
+        end;
+      except
+        on E: Exception do
+        begin
+          ShowMessage(E.Message);
+        end;
+      end;
+    end;
+    lvTAP.Clear;
+    for i := 0 to sl.Count - 1 do
+    begin
+      li := lvTAP.Items.Add;
+      li.Caption := sl[i];
+    end;
+  finally
+    FreeAndNil(sl);
+  end;
+end;
+
+procedure TMainForm.Initialize;
+// var
+// r: IRecent;
+// i: Integer;
+begin
+  FWindowStateLoaded := False;
+  Application.OnHint := OnHint;
+  if Configuration.Section<TInterfaceSection>.EnableSplashAtStart then
+  begin
+    AboutWindow.Show(True);
+  end;
+
+  // Configuration.Recents.Clear;
+  // for i := 0 to 19 do
+  // begin
+  // r := GetIRecent;
+  // r.FullName := IntToStr(i);
+  // Configuration.Recents.Add(r);
+  // end;
+
+  ApplyConfiguration;
+  LoadWindowState;
+
+  RefreshRecentsMenu;
+  InitializeDirect3D;
+end;
+
+procedure TMainForm.Finalize;
+begin
+  FinalizeDirect3D;
+  FreeProfile;
+  SaveWindowState;
+  FreeConfiguration;
+end;
+
+procedure TMainForm.FinalizeDirect3D;
+begin
+  FreeAndNil(FDirect3D9Gear);
 end;
 
 procedure TMainForm.FormPaint(Sender: TObject);
@@ -395,127 +676,6 @@ begin
   FDirect3D9Gear.Direct3DDevice9.Present(nil, nil, 0, nil);
 end;
 
-function TMainForm.GetConfiguration: TConfiguration;
-begin
-  if not Assigned(FConfiguration) then
-  begin
-    FConfiguration := TConfiguration.Create;
-  end;
-  Result := FConfiguration;
-end;
-
-function TMainForm.GetProfile: TProfile;
-begin
-  if not Assigned(FProfile) then
-  begin
-    FProfile := TProfile.Create(True, ChangeFileExt(ExpandFileName(ParamStr(0)), '.profile'));
-  end;
-  Result := FProfile;
-end;
-
-procedure TMainForm.Initialize;
-// var
-// r: IRecent;
-// i: Integer;
-begin
-  Application.OnHint := OnHint;
-  if Configuration.Section<TInterfaceSection>.EnableSplashAtStart then
-  begin
-    AboutWindow.Show(True);
-  end;
-
-  // Configuration.Recents.Clear;
-  // for i := 0 to 19 do
-  // begin
-  // r := GetIRecent;
-  // r.FullName := IntToStr(i);
-  // Configuration.Recents.Add(r);
-  // end;
-
-  ApplyConfiguration;
-  RefreshRecentsMenu;
-  InitializeDirect3D;
-end;
-
-procedure TMainForm.InitializeDirect3D;
-begin
-  FDirect3D9Gear := TDirect3D9Gear.Create(pnlModel.Handle, pnlModel.ClientWidth,
-    pnlModel.ClientHeight, False);
-end;
-
-procedure TMainForm.actCreateProfileExecute(Sender: TObject);
-begin
-  { TODO :
-    добавить проверку сохранённости текущего профиля:
-    если профиль был изменён и не сохранён, задать вопрос юзеру }
-  if MessageBox(Handle, PWideChar(RsCreateProfileConfirmationMessage),
-    PWideChar(Format(RsCreateProfileConfirmationCaption, [APPLICATION_NAME])),
-    MESSAGE_TYPE_CONFIRMATION_WARNING_CANCEL) = IDOK then
-  begin
-    FProfile := TProfile.Create(True, ChangeFileExt(ExpandFileName(ParamStr(0)), '.profile'));
-    { TODO : нужно как-то изменить алгоритм работы с именем файла }
-  end;
-end;
-
-procedure TMainForm.actOpenExecute(Sender: TObject);
-var
-  form: TOpenDialog;
-begin
-  form := TOpenDialog.Create(Self);
-  try
-    form.DefaultExt := RsOpenDefaultExt;
-    form.Filter := RsOpenFilters;
-    form.Options := form.Options + [ofFileMustExist];
-    if form.Execute(Handle) then
-    begin
-      LoadTAPFile(form.FileName);
-    end;
-  finally
-    form.Free;
-  end;
-end;
-
-procedure TMainForm.LoadTAPFile(const AFileName: string);
-var
-  sl: TStringList;
-  i: Integer;
-  s: string;
-  cWrongSymbol: Char;
-  li: TListItem;
-begin
-  sl := TStringList.Create;
-  try
-    sl.LoadFromFile(AFileName);
-    for i := 0 to sl.Count - 1 do
-    begin
-      try
-        s := TTAPStringRoutines.Normalize(sl[i]);
-        if TTAPStringRoutines.Valid(s, cWrongSymbol) then
-        begin
-          sl[i] := s;
-        end
-        else
-        begin
-          raise ETAPWrongSymbol.Create('Некорректный символ [%s] в строке.', cWrongSymbol);
-        end;
-      except
-        on E: Exception do
-        begin
-          ShowMessage(E.Message);
-        end;
-      end;
-    end;
-    lvTAP.Clear;
-    for i := 0 to sl.Count - 1 do
-    begin
-      li := lvTAP.Items.Add;
-      li.Caption := sl[i];
-    end;
-  finally
-    FreeAndNil(sl);
-  end;
-end;
-
 procedure TMainForm.ApplyConfiguration;
 begin
   actStatusBar.Checked := Configuration.Section<TInterfaceSection>.EnableStatusbar;
@@ -524,186 +684,6 @@ begin
   ToolBar.Visible := Configuration.Section<TInterfaceSection>.EnableToolbar;
 end;
 
-procedure TMainForm.actLoadProfileExecute(Sender: TObject);
-var
-  form: TOpenDialog;
-begin
-  form := TOpenDialog.Create(Self);
-  try
-    form.DefaultExt := RsOpenProfileDefaultExt;
-    form.Filter := RsOpenProfileFilters;
-    form.Options := form.Options + [ofFileMustExist];
-    if form.Execute(Handle) then
-    begin
-      // Profile.Load;
-    end;
-  finally
-    form.Free;
-  end;
-end;
-
-procedure TMainForm.actProcessExecute(Sender: TObject);
-begin
-  { TODO : реализовать функционал выполнения выбранных тестов в параллельных тредах }
-  // Profile.Tasks.Run(Profile.ADOConnectionString);
-end;
-
-procedure TMainForm.actProcessUpdate(Sender: TObject);
-var
-  // i: Integer;
-  b: Boolean;
-begin
-  b := False;
-  { TODO : переписать алгоритм с использованием Profile.Tasks }
-  { for i := 0 to lvTaskList.Items.Count - 1 do
-    begin
-    if lvTaskList.Items[i].Checked then
-    begin
-    b := True;
-    Break;
-    end;
-    end; }
-  actProcess.Enabled := b; // and (not FProcessActive);
-  btnProcess.Default := actProcess.Enabled;
-end;
-
-procedure TMainForm.actProfilePropertiesExecute(Sender: TObject);
-var
-  form: TProfileForm;
-begin
-  form := TProfileForm.Create(Self);
-  try
-    form.ShowModal;
-    if form.ModalResult = mrOk then
-    begin
-    end;
-  finally
-    form.Free;
-  end;
-end;
-
-procedure TMainForm.actProfilePropertiesUpdate(Sender: TObject);
-begin
-  // actProfileProperties.Enabled := not FProcessActive;
-end;
-
-procedure TMainForm.actRecentProfilesPropertiesExecute(Sender: TObject);
-var
-  form: TRecentsPropertiesForm;
-begin
-  form := TRecentsPropertiesForm.Create(Self, Configuration.Recents, 20);
-  try
-    form.ShowModal;
-    if form.ModalResult = mrOk then
-    begin
-      RefreshRecentsMenu;
-    end;
-  finally
-    form.Free;
-  end;
-end;
-
-procedure TMainForm.RefreshRecentsMenu;
-var
-  i: Integer;
-  Item: TMenuItem;
-begin
-  for i := miRecents.Count - 3 downto 0 do
-  begin
-    miRecents.Items[i].Free;
-  end;
-  for i := Configuration.Recents.Count - 1 downto 0 do
-  begin
-    Item := TMenuItem.Create(Self);
-    Item.Caption := Configuration.Recents.Items[i].FullName;
-    Item.Enabled := Configuration.Recents.Items[i].Exists;
-    Item.OnClick := OnRecentsMenuItemClick;
-    Item.Hint := RsOpenRecent;
-    miRecents.Insert(0, Item);
-  end;
-end;
-
-procedure TMainForm.WMEraseBkgnd(var AMessage: TWMEraseBkgnd);
-begin
-  if (WindowFromDC(AMessage.DC)) = (pnlModel.Handle) then
-  begin
-    AMessage.Result := 1;
-  end
-  else
-  begin
-    inherited;
-  end;
-end;
-
-procedure TMainForm.OnRecentsMenuItemClick(Sender: TObject);
-var
-  mi: TMenuItem;
-  r: IRecent;
-begin
-  if Sender is TMenuItem then
-  begin
-    mi := Sender as TMenuItem;
-    ShowMessage(mi.Caption);
-    r := Configuration.Recents[mi.MenuIndex];
-    Configuration.Recents.Delete(mi.MenuIndex);
-    Configuration.Recents.Insert(0, r);
-    RefreshRecentsMenu;
-  end;
-end;
-
-procedure TMainForm.actSaveProfileExecute(Sender: TObject);
-begin
-  //
-end;
-
-procedure TMainForm.actSaveProfileUpdate(Sender: TObject);
-begin
-  // actSaveProfile.Enabled := Configuration.Modified;
-end;
-
-procedure TMainForm.actStatusBarExecute(Sender: TObject);
-var
-  b: Boolean;
-begin
-  b := actStatusBar.Checked;
-  StatusBar.Visible := b;
-  Configuration.Section<TInterfaceSection>.EnableStatusbar := b;
-end;
-
-procedure TMainForm.actToolBarExecute(Sender: TObject);
-var
-  b: Boolean;
-begin
-  b := actToolBar.Checked;
-  ToolBar.Visible := b;
-  Configuration.Section<TInterfaceSection>.EnableToolbar := b;
-end;
-
-procedure TMainForm.lvTAPCustomDrawItem(Sender: TCustomListView; Item: TListItem;
-  State: TCustomDrawState; var DefaultDraw: Boolean);
-begin
-  lvTAP.Canvas.Font.color := clBlack;
-  if TTAPStringRoutines.IsComment(Item.Caption) then
-  begin
-    lvTAP.Canvas.Font.color := clGreen;
-  end;
-end;
-
-// PaintBox1.Canvas.Brush.Color := clWhite;
-// PaintBox1.Canvas.Pen.Color := clWindowFrame;
-// PaintBox1.Canvas.Rectangle(PaintBox1.ClientRect);
-// PaintBox1.Canvas.Pen.Color := clLtGray;
-// PaintBox1.Canvas.MoveTo(10, 10);
-// PaintBox1.Canvas.LineTo(10, PaintBox1.ClientRect.Bottom - 10);
-// PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
-// PaintBox1.Canvas.MoveTo(10, 10);
-// PaintBox1.Canvas.LineTo(5, 15);
-// PaintBox1.Canvas.MoveTo(10, 10);
-// PaintBox1.Canvas.LineTo(15, 15);
-// PaintBox1.Canvas.MoveTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
-// PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 15, PaintBox1.ClientRect.Bottom - 5);
-// PaintBox1.Canvas.MoveTo(PaintBox1.ClientRect.Right - 10, PaintBox1.ClientRect.Bottom - 10);
-// PaintBox1.Canvas.LineTo(PaintBox1.ClientRect.Right - 15, PaintBox1.ClientRect.Bottom - 15);
 procedure TMainForm.FormResize(Sender: TObject);
 begin
   if Assigned(FDirect3D9Gear) then
@@ -711,6 +691,61 @@ begin
     FDirect3D9Gear.CreateDirect3DDevice9(pnlModel.Handle, pnlModel.ClientWidth,
       pnlModel.ClientHeight, False);
   end;
+end;
+
+procedure TMainForm.LoadWindowState;
+begin
+  // установка позиции и размеров главного окна в соответсвии с параметрами конфигурации
+  WindowState := wsNormal;
+  if (Configuration.Section<TMainFormStateSection>.State = CONFIGURATION_DEFAULT_MAINFORM_STATE) and
+    (Configuration.Section<TMainFormStateSection>.Left = CONFIGURATION_DEFAULT_MAINFORM_LEFT) and
+    (Configuration.Section<TMainFormStateSection>.Top = CONFIGURATION_DEFAULT_MAINFORM_TOP) and
+    (Configuration.Section<TMainFormStateSection>.Width = CONFIGURATION_DEFAULT_MAINFORM_WIDTH) and
+    (Configuration.Section<TMainFormStateSection>.Height = CONFIGURATION_DEFAULT_MAINFORM_HEIGHT)
+  then
+  begin
+    Position := poScreenCenter;
+{$REGION}
+    // Configuration.Section<TMainFormStateSection>.Left := Left;
+    // Configuration.Section<TMainFormStateSection>.Top := Top;
+    // Configuration.Section<TMainFormStateSection>.Width := Width;
+    // Configuration.Section<TMainFormStateSection>.Height := Height;
+{$ENDREGION}
+  end
+  else
+  begin
+    Position := poDesigned;
+    Left := Configuration.Section<TMainFormStateSection>.Left;
+    Top := Configuration.Section<TMainFormStateSection>.Top;
+    Width := Configuration.Section<TMainFormStateSection>.Width;
+    Height := Configuration.Section<TMainFormStateSection>.Height;
+  end;
+  WindowState := TWindowState(Configuration.Section<TMainFormStateSection>.State);
+  FWindowStateLoaded := True;
+end;
+
+procedure TMainForm.SaveWindowState;
+begin
+  if WindowState = wsNormal then
+  begin
+    Configuration.Section<TMainFormStateSection>.Left := Left;
+    Configuration.Section<TMainFormStateSection>.Top := Top;
+    Configuration.Section<TMainFormStateSection>.Width := Width;
+    Configuration.Section<TMainFormStateSection>.Height := Height;
+  end;
+  Configuration.Section<TMainFormStateSection>.State := Integer(WindowState);
+end;
+
+procedure TMainForm.WndProc(var AMessage: TMessage);
+begin
+  if FWindowStateLoaded then
+  begin
+    if AMessage.Msg = WM_WINDOWPOSCHANGED then
+    begin
+      SaveWindowState;
+    end;
+  end;
+  inherited;
 end;
 
 end.

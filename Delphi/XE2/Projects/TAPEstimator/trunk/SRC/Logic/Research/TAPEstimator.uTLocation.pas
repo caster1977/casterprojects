@@ -50,8 +50,6 @@ begin
 end;
 
 constructor TLocation.Create(const ACoordinates: TArray<Double>);
-var
-  i: Integer;
 begin
   inherited Create;
   FCoordinates.Create;
