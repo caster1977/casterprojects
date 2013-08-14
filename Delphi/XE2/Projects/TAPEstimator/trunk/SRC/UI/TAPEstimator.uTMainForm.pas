@@ -273,17 +273,6 @@ begin
   inherited;
 end;
 
-procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-begin
-  CanClose := True;
-  if Configuration.Section<TInterfaceSection>.EnableQuitConfirmation then
-  begin
-    CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
-      PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])),
-      MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
-  end;
-end;
-
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   inherited;
@@ -429,24 +418,6 @@ begin
   end;
 end;
 
-procedure TMainForm.actStatusBarExecute(Sender: TObject);
-var
-  b: Boolean;
-begin
-  b := actStatusBar.Checked;
-  StatusBar.Visible := b;
-  Configuration.Section<TInterfaceSection>.EnableStatusbar := b;
-end;
-
-procedure TMainForm.actToolBarExecute(Sender: TObject);
-var
-  b: Boolean;
-begin
-  b := actToolBar.Checked;
-  ToolBar.Visible := b;
-  Configuration.Section<TInterfaceSection>.EnableToolbar := b;
-end;
-
 procedure TMainForm.lvTAPCustomDrawItem(Sender: TCustomListView; Item: TListItem;
   State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
@@ -532,33 +503,6 @@ begin
   finally
     FreeAndNil(sl);
   end;
-end;
-
-procedure TMainForm.Initialize;
-// var
-// r: IRecent;
-// i: Integer;
-begin
-  FWindowStateLoaded := False;
-  Application.OnHint := OnHint;
-  if Configuration.Section<TInterfaceSection>.EnableSplashAtStart then
-  begin
-    AboutWindow.Show(True);
-  end;
-
-  // Configuration.Recents.Clear;
-  // for i := 0 to 19 do
-  // begin
-  // r := GetIRecent;
-  // r.FullName := IntToStr(i);
-  // Configuration.Recents.Add(r);
-  // end;
-
-  ApplyConfiguration;
-  LoadWindowState;
-
-  RefreshRecentsMenu;
-  InitializeDirect3D;
 end;
 
 procedure TMainForm.Finalize;
@@ -676,14 +620,6 @@ begin
   FDirect3D9Gear.Direct3DDevice9.Present(nil, nil, 0, nil);
 end;
 
-procedure TMainForm.ApplyConfiguration;
-begin
-  actStatusBar.Checked := Configuration.Section<TInterfaceSection>.EnableStatusbar;
-  StatusBar.Visible := Configuration.Section<TInterfaceSection>.EnableStatusbar;
-  actToolBar.Checked := Configuration.Section<TInterfaceSection>.EnableToolbar;
-  ToolBar.Visible := Configuration.Section<TInterfaceSection>.EnableToolbar;
-end;
-
 procedure TMainForm.FormResize(Sender: TObject);
 begin
   if Assigned(FDirect3D9Gear) then
@@ -693,9 +629,72 @@ begin
   end;
 end;
 
+procedure TMainForm.Initialize;
+// var
+// r: IRecent;
+// i: Integer;
+begin
+  FWindowStateLoaded := False;
+  Application.OnHint := OnHint;
+  if Configuration.Section<TInterfaceSection>.EnableSplashAtStart then
+  begin
+    AboutWindow.Show(True);
+  end;
+
+  // Configuration.Recents.Clear;
+  // for i := 0 to 19 do
+  // begin
+  // r := GetIRecent;
+  // r.FullName := IntToStr(i);
+  // Configuration.Recents.Add(r);
+  // end;
+
+  ApplyConfiguration;
+  LoadWindowState;
+
+  RefreshRecentsMenu;
+  InitializeDirect3D;
+end;
+
+procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  CanClose := True;
+  if Configuration.Section<TInterfaceSection>.EnableQuitConfirmation then
+  begin
+    CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
+      PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])),
+      MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
+  end;
+end;
+
+procedure TMainForm.actStatusBarExecute(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := actStatusBar.Checked;
+  StatusBar.Visible := b;
+  Configuration.Section<TInterfaceSection>.EnableStatusbar := b;
+end;
+
+procedure TMainForm.actToolBarExecute(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := actToolBar.Checked;
+  ToolBar.Visible := b;
+  Configuration.Section<TInterfaceSection>.EnableToolbar := b;
+end;
+
+procedure TMainForm.ApplyConfiguration;
+begin
+  actStatusBar.Checked := Configuration.Section<TInterfaceSection>.EnableStatusbar;
+  StatusBar.Visible := Configuration.Section<TInterfaceSection>.EnableStatusbar;
+  actToolBar.Checked := Configuration.Section<TInterfaceSection>.EnableToolbar;
+  ToolBar.Visible := Configuration.Section<TInterfaceSection>.EnableToolbar;
+end;
+
 procedure TMainForm.LoadWindowState;
 begin
-  // установка позиции и размеров главного окна в соответсвии с параметрами конфигурации
   WindowState := wsNormal;
   if (Configuration.Section<TMainFormStateSection>.State = CONFIGURATION_DEFAULT_MAINFORM_STATE) and
     (Configuration.Section<TMainFormStateSection>.Left = CONFIGURATION_DEFAULT_MAINFORM_LEFT) and
@@ -705,12 +704,6 @@ begin
   then
   begin
     Position := poScreenCenter;
-{$REGION}
-    // Configuration.Section<TMainFormStateSection>.Left := Left;
-    // Configuration.Section<TMainFormStateSection>.Top := Top;
-    // Configuration.Section<TMainFormStateSection>.Width := Width;
-    // Configuration.Section<TMainFormStateSection>.Height := Height;
-{$ENDREGION}
   end
   else
   begin
