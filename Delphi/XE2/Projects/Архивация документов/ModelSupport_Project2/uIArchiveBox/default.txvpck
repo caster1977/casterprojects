@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="nx0yu0ofhak_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:Project2:uIArchiveBox.IArchiveBox">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,166,503" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.CompanyId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetCompanyId(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetCompanyId()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.CompanyName" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetCompanyName()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Year" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetYear(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetYear()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Number" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetNumber()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetName()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Barcode" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetBarcode()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Id" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetId(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Name" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetBarcode(System.string)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetNumber(System.string)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetCompanyName(System.string)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.DeleteLastDocument()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.TypeId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetTypeId(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetTypeId()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.TypeName" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetTypeName()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetTypeName(System.string)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.AddDocument(uICustomDocument.ICustomDocument)" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uIArchiveBox.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+  </view>
+</nodeSet>
