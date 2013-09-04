@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="z0ohx5ff1ct_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:Project2:uTShipmentBSO.TShipmentBSO">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,145,113" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTShipmentBSO.TShipmentBSO.Initialize()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTShipmentBSO.TShipmentBSO.GetLoadSQL()" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uTShipmentBSO.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+  </view>
+</nodeSet>

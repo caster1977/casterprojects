@@ -3,10 +3,10 @@ unit uTShipmentBSO;
 interface
 
 uses
-  uTCustomBSODocument;
+  uTCustomBSO;
 
 type
-  TShipmentBSO = class sealed(TCustomBSODocument)
+  TShipmentBSO = class sealed(TCustomBSO)
   protected
     procedure Initialize; override;
   public

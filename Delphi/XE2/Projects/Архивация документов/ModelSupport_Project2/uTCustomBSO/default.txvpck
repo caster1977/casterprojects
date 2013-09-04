@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="0km08meepso_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:lib:DelphiWin32:uTCustomBSODocument.TCustomBSODocument">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,196,432" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTCustomBSO.TCustomBSODocument.FBarcode" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSODocument.GetBarcode()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSODocument.SetBarcode(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTCustomBSO.TCustomBSODocument.Barcode" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTCustomBSO.TCustomBSODocument.FCompanyId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSODocument.GetCompanyId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSODocument.SetCompanyId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTCustomBSO.TCustomBSODocument.CompanyId" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTCustomBSO.TCustomBSODocument.FCompanyName" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSODocument.GetCompanyName()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSODocument.SetCompanyName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTCustomBSO.TCustomBSODocument.CompanyName" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTCustomBSO.TCustomBSODocument.FSeries" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSODocument.GetSeries()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSODocument.SetSeries(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTCustomBSO.TCustomBSODocument.Series" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTCustomBSO.TCustomBSODocument.FNumber" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSODocument.GetNumber()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSODocument.SetNumber(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTCustomBSO.TCustomBSODocument.Number" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSODocument.Initialize()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSODocument.Load(Data.DB.TDataSet)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSODocument.Show(Vcl.Controls.TCustomControl)" />
+    </reference>
+    <reference referencedUin="delphi:e_class:lib:DelphiWin32:uTCustomBSODocument.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uTCustomBSO.TCustomBSO">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uTCustomBSO.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+  </view>
+</nodeSet>

@@ -5,10 +5,10 @@ interface
 uses
   DB,
   Controls,
-  uTCustomBSODocument;
+  uTCustomBSO;
 
 type
-  TDamagedBSO = class sealed(TCustomBSODocument)
+  TDamagedBSO = class sealed(TCustomBSO)
   private
     FCauseOfDamageId: Integer;
     function GetCauseOfDamageId: Integer;

@@ -1,4 +1,4 @@
-unit uTCustomBSODocument;
+unit uTCustomBSO;
 
 interface
 
@@ -10,7 +10,7 @@ uses
   uTCustomDocument;
 
 type
-  TCustomBSODocument = class abstract(TCustomDocument)
+  TCustomBSO = class abstract(TCustomDocument)
   private
     FBarcode: string;
     function GetBarcode: string;
@@ -60,32 +60,32 @@ uses
   SysUtils,
   uCommonRoutines;
 
-function TCustomBSODocument.GetBarcode: string;
+function TCustomBSO.GetBarcode: string;
 begin
   Result := FBarcode;
 end;
 
-function TCustomBSODocument.GetCompanyId: Integer;
+function TCustomBSO.GetCompanyId: Integer;
 begin
   Result := FCompanyId;
 end;
 
-function TCustomBSODocument.GetCompanyName: string;
+function TCustomBSO.GetCompanyName: string;
 begin
   Result := FCompanyName;
 end;
 
-function TCustomBSODocument.GetNumber: string;
+function TCustomBSO.GetNumber: string;
 begin
   Result := FNumber;
 end;
 
-function TCustomBSODocument.GetSeries: string;
+function TCustomBSO.GetSeries: string;
 begin
   Result := FSeries;
 end;
 
-procedure TCustomBSODocument.SetBarcode(const AValue: string);
+procedure TCustomBSO.SetBarcode(const AValue: string);
 var
   s: string;
 begin
@@ -96,7 +96,7 @@ begin
   end;
 end;
 
-procedure TCustomBSODocument.SetCompanyId(const AValue: Integer);
+procedure TCustomBSO.SetCompanyId(const AValue: Integer);
 begin
   if FCompanyId <> AValue then
   begin
@@ -104,7 +104,7 @@ begin
   end;
 end;
 
-procedure TCustomBSODocument.SetCompanyName(const AValue: string);
+procedure TCustomBSO.SetCompanyName(const AValue: string);
 var
   s: string;
 begin
@@ -115,7 +115,7 @@ begin
   end;
 end;
 
-procedure TCustomBSODocument.SetNumber(const AValue: string);
+procedure TCustomBSO.SetNumber(const AValue: string);
 var
   s: string;
 begin
@@ -126,7 +126,7 @@ begin
   end;
 end;
 
-procedure TCustomBSODocument.SetSeries(const AValue: string);
+procedure TCustomBSO.SetSeries(const AValue: string);
 var
   s: string;
 begin
@@ -137,7 +137,7 @@ begin
   end;
 end;
 
-procedure TCustomBSODocument.Initialize;
+procedure TCustomBSO.Initialize;
 begin
   inherited;
   Barcode := EmptyStr;
@@ -147,7 +147,7 @@ begin
   Number := EmptyStr;
 end;
 
-procedure TCustomBSODocument.Load(const ADataSet: TDataSet);
+procedure TCustomBSO.Load(const ADataSet: TDataSet);
 begin
   inherited;
   if Assigned(ADataSet) then
@@ -160,7 +160,7 @@ begin
   end;
 end;
 
-procedure TCustomBSODocument.Show(const AParentControl: TCustomControl);
+procedure TCustomBSO.Show(const AParentControl: TCustomControl);
 begin
   inherited;
   SetLabelCaption(FParentControl, 'lblDocumentBarcode', Barcode);

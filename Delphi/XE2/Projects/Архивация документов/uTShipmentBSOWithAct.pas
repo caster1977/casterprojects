@@ -5,10 +5,10 @@ interface
 uses
   Vcl.Controls,
   Data.DB,
-  uTCustomBSODocument;
+  uTCustomBSO;
 
 type
-  TShipmentBSOWithAct = class sealed(TCustomBSODocument)
+  TShipmentBSOWithAct = class sealed(TCustomBSO)
   private
     FActId: Integer;
     function GetActId: Integer;

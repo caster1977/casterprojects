@@ -86,7 +86,7 @@
             <Form>Form3</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="uTCustomBSODocument.pas"/>
+        <DCCReference Include="uTCustomBSO.pas"/>
         <DCCReference Include="uICustomDocument.pas"/>
         <DCCReference Include="uTCustomDocument.pas"/>
         <DCCReference Include="uTDamagedBSO.pas"/>
@@ -106,7 +106,6 @@
         <None Include="ModelSupport_Project2\uICustomDocument\default.txvpck"/>
         <None Include="ModelSupport_Project2\Project2\default.txvpck"/>
         <None Include="ModelSupport_Project2\uTDamagedBSO\default.txvpck"/>
-        <None Include="ModelSupport_Project2\uTCustomBSODocument\default.txvpck"/>
         <None Include="ModelSupport_Project2\Unit3\default.txvpck"/>
         <None Include="ModelSupport_Project2\uTCustomDocument\default.txvpck"/>
         <None Include="ModelSupport_Project2\uIArchiveBox\default.txvpck"/>
@@ -114,7 +113,6 @@
         <None Include="ModelSupport_Project2\Class Diagram.txvcls"/>
         <None Include="ModelSupport_Project2\uTArchiveBox\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uTArchiveBox\default.txvpck"/>
-        <None Include="ModelSupport_Project2\uTCustomBSODocument\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uCommonRoutines\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uCommonRoutines\default.txvpck"/>
         <None Include="ModelSupport_Project2\uICustomDocument\default.txaPackage"/>
@@ -135,6 +133,8 @@
         <None Include="ModelSupport_Project2\uTDocumentArchivingLogic\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uTDocumentArchivingLogic\default.txvpck"/>
         <None Include="ModelSupport_Project2\Unit3\default.txaPackage"/>
+        <None Include="ModelSupport_Project2\uTCustomBSO\default.txaPackage"/>
+        <None Include="ModelSupport_Project2\uTCustomBSO\default.txvpck"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
