@@ -4,23 +4,23 @@ interface
 
 uses
   Controls,
-  DB;
+  DB,
+  SqlExpr,
+  ADODB;
 
 type
   ICustomDocument = interface
     ['{90EEBE6E-BE2C-41DC-B186-079F95C9B558}']
 
     /// <summary>
-    /// Функция получения строки запроса SQL, выбирающего данные для
-    /// заполнения полей объекта
+    /// Процедура загрузки данных для заполнения полей объекта
     /// </summary>
-    function GetSQLForLoad: string;
+    procedure Load(const AADOConnection: TADOConnection); overload;
 
     /// <summary>
-    /// Процедура загрузки данных для заполнения полей объекта из набора
-    /// данных
+    /// Процедура загрузки данных для заполнения полей объекта
     /// </summary>
-    procedure Load(const ASource: TDataSet);
+    procedure Load(const ASQLConnection: TSQLConnection); overload;
 
     /// <summary>
     /// Процедура отображения данных объекта

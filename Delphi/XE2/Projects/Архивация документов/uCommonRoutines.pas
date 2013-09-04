@@ -7,6 +7,8 @@ uses
   StdCtrls,
   SysUtils;
 
+function GetControlByName(const AName: string; const AParent: TCustomControl): TControl;
+
 /// <summary>
 /// Процедура установки текста компонента типа "метка" с указанным именем
 /// </summary>
@@ -21,26 +23,7 @@ uses
 /// </param>
 procedure SetLabelCaption(const AParentControl: TCustomControl; const ALabelName, ACaption: string);
 
-function GetControlByName(const AName: string; const AParent: TCustomControl): TControl;
-
 implementation
-
-procedure SetLabelCaption(const AParentControl: TCustomControl; const ALabelName, ACaption: string);
-var
-  cc: TControl;
-begin
-  if Assigned(AParentControl) then
-  begin
-    cc := AParentControl.FindChildControl(Trim(ALabelName));
-    if Assigned(cc) then
-    begin
-      if cc is TLabel then
-      begin
-        (cc as TLabel).Caption := ACaption;
-      end;
-    end;
-  end;
-end;
 
 function GetControlByName(const AName: string; const AParent: TCustomControl): TControl;
 var
@@ -54,6 +37,23 @@ begin
     begin
       Result := AParent.Controls[k];
       Break;
+    end;
+  end;
+end;
+
+procedure SetLabelCaption(const AParentControl: TCustomControl; const ALabelName, ACaption: string);
+var
+  cc: TControl;
+begin
+  if Assigned(AParentControl) then
+  begin
+    cc := GetControlByName(Trim(ALabelName), AParentControl);
+    if Assigned(cc) then
+    begin
+      if cc is TLabel then
+      begin
+        (cc as TLabel).Caption := ACaption;
+      end;
     end;
   end;
 end;

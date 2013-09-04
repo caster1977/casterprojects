@@ -15,7 +15,14 @@ uses
   Vcl.StdCtrls,
   uIArchiveBox,
   Vcl.ExtCtrls,
-  uTCustomDocumentClass;
+  uTCustomDocumentClass,
+  System.Actions,
+  Vcl.ActnList,
+  Data.DB,
+  Data.Win.ADODB,
+  Data.DBXMSSQL,
+  Data.FMTBcd,
+  Data.SqlExpr;
 
 type
   TForm3 = class(TForm)
@@ -25,13 +32,21 @@ type
     Panel2: TPanel;
     Button2: TButton;
     Button3: TButton;
-    procedure Button1Click(Sender: TObject);
+    ActionList: TActionList;
+    actDeleteLastDocument: TAction;
+    ADOConnection: TADOConnection;
+    SQLConnection: TSQLConnection;
+    Button4: TButton;
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure actDeleteLastDocumentExecute(Sender: TObject);
+    procedure actDeleteLastDocumentUpdate(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
   private
     FBox: IArchiveBox;
   private
-    procedure AddAndShowDocument(const ADocumentClass: TCustomDocumentClass; const AParent: TCustomControl);
+    procedure AddAndShowDocument(const ADocumentClass: TCustomDocumentClass;
+      const AParent: TCustomControl);
   end;
 
 var
@@ -44,16 +59,30 @@ implementation
 uses
   uTArchiveBox,
   uICustomDocument,
-  uTDamagedBSO;
+  uTDamagedBSO,
+  uTShipmentBSO,
+  uTShipmentBSOWithAct;
 
-procedure TForm3.Button1Click(Sender: TObject);
+procedure TForm3.AddAndShowDocument(const ADocumentClass: TCustomDocumentClass;
+  const AParent: TCustomControl);
 var
-  doc: ICustomDocument;
+  i: Integer;
 begin
-  FBox.DeleteLastDocument;
-  if FBox.DocumentCount > 0 then
+  if not Assigned(FBox) then
   begin
-    FBox.Documents[FBox.DocumentCount - 1].Show;
+    FBox := TAcriveBox.Create;
+  end;
+  i := FBox.AddDocument(ADocumentClass.Create);
+  if i > -1 then
+  begin
+    ADOConnection.Connected := True;
+    try
+      FBox.Documents[i].Load(ADOConnection);
+    finally
+      ADOConnection.Connected := False;
+    end;
+    FBox.Documents[i].Show(AParent);
+    AutoSize := True;
   end;
 end;
 
@@ -64,18 +93,33 @@ end;
 
 procedure TForm3.Button3Click(Sender: TObject);
 begin
-  AddAndShowDocument(TDamagedBSO, Panel1);
+  AddAndShowDocument(TShipmentBSO, GroupBox1);
 end;
 
-procedure TForm3.AddAndShowDocument(const ADocumentClass: TCustomDocumentClass; const AParent: TCustomControl);
+procedure TForm3.Button4Click(Sender: TObject);
 begin
-  if not Assigned(FBox) then
+  AddAndShowDocument(TShipmentBSOWithAct, GroupBox1);
+end;
+
+procedure TForm3.actDeleteLastDocumentExecute(Sender: TObject);
+begin
+  FBox.DeleteLastDocument;
+  if FBox.DocumentCount > 0 then
   begin
-    FBox := TAcriveBox.Create;
+    FBox.Documents[FBox.DocumentCount - 1].Show;
   end;
-  FBox.AddDocument(ADocumentClass.Create);
-  FBox.Documents[FBox.DocumentCount - 1].Show(AParent);
-  AutoSize := True;
+end;
+
+procedure TForm3.actDeleteLastDocumentUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  if Assigned(FBox) then
+  begin
+    b := FBox.DocumentCount > 0;
+  end;
+  actDeleteLastDocument.Enabled := b;
 end;
 
 end.

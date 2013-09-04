@@ -67,16 +67,62 @@
     <reference referencedUin="design:view:::u25tksbfoyc5h24do_v">
       <property name="$shortcutReference" value="true" />
       <property name="@__package_fqn" value="uCommonRoutines" />
+      <property name="bounds" value="453,232,161,134" />
       <reference referencedUin="delphi:e_class:src:Project2:uCommonRoutines.@unitclass" />
     </reference>
     <reference referencedUin="design:view:::ili20yq3nnt_v">
       <property name="$shortcutReference" value="true" />
       <property name="@__package_fqn" value="uTDocumentField" />
+      <property name="bounds" value="453,385,153,151" />
       <reference referencedUin="delphi:e_class:src:Project2:uTDocumentField.@unitclass" />
       <reference referencedUin="delphi:e_class:src:Project2:uTDocumentField.TDocumentField" />
     </reference>
     <reference referencedUin="design:view:::s8byscmphgcozvq5p_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="61,389,149,151" />
+      <reference referencedUin="delphi:e_class:src:Project2:uIDocumentField.IDocumentField" />
+      <reference referencedUin="delphi:e_class:src:Project2:uIDocumentField.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::on536udyol_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="652,1,199,151" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTCustomDocumentClass.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTCustomDocumentClass.TCustomDocumentClass" />
+    </reference>
+    <reference referencedUin="design:view:::zqkqwg5mg7jp47j3t_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="@__package_fqn" value="uTShipmentBSO" />
+      <property name="bounds" value="652,171,148,151" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTShipmentBSO.TShipmentBSO" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTShipmentBSO.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::gl1fo69t0s_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="@__package_fqn" value="uTShipmentBSOWithAct" />
+      <property name="bounds" value="602,578,191,151" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTShipmentBSOWithAct.TShipmentBSOWithAct" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTShipmentBSOWithAct.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::b1kpuntduwh_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="@__package_fqn" value="uTDocumentArchivingLogic" />
+      <property name="bounds" value="889,1,206,151" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTDocumentArchivingLogic.TDocumentArchivingLogic" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTDocumentArchivingLogic.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::jun99xneicq8atqxl_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="@__package_fqn" value="uTOnShowMessage" />
+      <property name="bounds" value="344,389,167,166" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTOnShowMessage.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTOnShowMessage.TOnShowMessage" />
+    </reference>
+    <reference referencedUin="design:view:::5aft9lhs8pm_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="@__package_fqn" value="uTMessageType" />
+      <property name="bounds" value="652,341,147,166" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTMessageType.TMessageType" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTMessageType.@unitclass" />
     </reference>
   </view>
 </nodeSet>

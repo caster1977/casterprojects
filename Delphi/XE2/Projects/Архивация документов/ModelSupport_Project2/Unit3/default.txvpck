@@ -1,8 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <nodeSet version="1.0">
-  <view uin="aglx72q5nuq_v">
+  <view uin="4am7q1n386m_v">
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:Project2:Unit3.@unitclass">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_field:src:Project2:Unit3.@unitclass.Form3" />
+      <reference referencedUin="delphi:l_ast:src:Project2:Unit3.@unitclass.Form3" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:Unit3.TForm3">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,213,355" />
+      <reference referencedUin="delphi:e_field:src:Project2:Unit3.TForm3.GroupBox1" />
+      <reference referencedUin="delphi:e_field:src:Project2:Unit3.TForm3.Button1" />
+      <reference referencedUin="delphi:e_field:src:Project2:Unit3.TForm3.Panel1" />
+      <reference referencedUin="delphi:e_field:src:Project2:Unit3.TForm3.Panel2" />
+      <reference referencedUin="delphi:e_field:src:Project2:Unit3.TForm3.Button2" />
+      <reference referencedUin="delphi:e_field:src:Project2:Unit3.TForm3.Button3" />
+      <reference referencedUin="delphi:e_field:src:Project2:Unit3.TForm3.ActionList" />
+      <reference referencedUin="delphi:e_field:src:Project2:Unit3.TForm3.actDeleteLastDocument" />
+      <reference referencedUin="delphi:e_field:src:Project2:Unit3.TForm3.ADOConnection" />
+      <reference referencedUin="delphi:e_field:src:Project2:Unit3.TForm3.SQLConnection" />
+      <reference referencedUin="delphi:e_field:src:Project2:Unit3.TForm3.Button4" />
+      <reference referencedUin="delphi:e_method:src:Project2:Unit3.TForm3.Button2Click(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:Project2:Unit3.TForm3.Button3Click(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:Project2:Unit3.TForm3.actDeleteLastDocumentExecute(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:Project2:Unit3.TForm3.actDeleteLastDocumentUpdate(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:Project2:Unit3.TForm3.Button4Click(System.TObject)" />
+      <reference referencedUin="delphi:e_field:src:Project2:Unit3.TForm3.FBox" />
+      <reference referencedUin="delphi:e_method:src:Project2:Unit3.TForm3.AddAndShowDocument(uTCustomDocumentClass.TCustomDocumentClass,Vcl.Controls.TCustomControl)" />
+    </reference>
   </view>
 </nodeSet>

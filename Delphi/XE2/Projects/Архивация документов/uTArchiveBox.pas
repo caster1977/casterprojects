@@ -86,14 +86,7 @@ type
     property DocumentCount: Integer read GetDocumentCount;
 
   public
-    /// <summary>
-    /// Процедура добавления документа в короб
-    /// </summary>
-    procedure AddDocument(const AValue: ICustomDocument);
-
-    /// <summary>
-    /// Процедура удаления последнего документа из короба
-    /// </summary>
+    function AddDocument(const AValue: ICustomDocument): Integer;
     procedure DeleteLastDocument;
   public
     constructor Create;
@@ -266,13 +259,14 @@ begin
   inherited;
 end;
 
-procedure TAcriveBox.AddDocument(const AValue: ICustomDocument);
+function TAcriveBox.AddDocument(const AValue: ICustomDocument): Integer;
 begin
+  Result := -1;
   if Assigned(AValue) then
   begin
     if Assigned(FDocuments) then
     begin
-      FDocuments.Add(AValue);
+      Result := FDocuments.Add(AValue);
     end;
   end;
 end;

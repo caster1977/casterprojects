@@ -5,11 +5,13 @@ interface
 uses
   Classes,
   Controls,
+  ADODB,
+  SqlExpr,
   DB,
   uICustomDocument;
 
 type
-  TCustomDocument = class(TInterfacedObject, ICustomDocument)
+  TCustomDocument = class abstract(TInterfacedObject, ICustomDocument)
   private
     FId: Integer;
     function GetId: Integer;
@@ -37,12 +39,16 @@ type
   protected
     procedure Initialize; virtual;
     procedure Finalize; virtual;
-    procedure Load(const ASource: TDataSet); virtual;
-    procedure AddField(const ACaption, AName: string);
-    procedure ClearFields;
-    function GetSQLForLoad: string; virtual; abstract;
+    function GetLoadSQL: string; virtual; abstract;
+  public
+    procedure Load(const AADOConnection: TADOConnection); overload;
+    procedure Load(const ASQLConnection: TSQLConnection); overload;
+    procedure Load(const ADataSet: TDataSet); overload; virtual;
   protected
-    FFields: TInterfaceList;
+    procedure AddVisualizableField(const ACaption, AName: string);
+    procedure ClearVisualizableFields;
+  protected
+    FVisualizableFields: TInterfaceList;
     FParentControl: TCustomControl;
   public
     procedure Show(const AParentControl: TCustomControl = nil); virtual;
@@ -51,7 +57,6 @@ type
     destructor Destroy; override;
   private
     procedure ClearParentControl;
-
   end;
 
 implementation
@@ -138,14 +143,14 @@ begin
   Initialize;
 end;
 
-procedure TCustomDocument.Load(const ASource: TDataSet);
+procedure TCustomDocument.Load(const ADataSet: TDataSet);
 begin
-  if Assigned(ASource) then
+  if Assigned(ADataSet) then
   begin
-    Id := ASource.FieldByName('Id').AsInteger;
-    ArchiveBoxId := ASource.FieldByName('ArchiveBoxId').AsInteger;
-    TypeId := ASource.FieldByName('TypeId').AsInteger;
-    TypeName := ASource.FieldByName('TypeName').AsString;
+    Id := ADataSet.FieldByName('Id').AsInteger;
+    ArchiveBoxId := ADataSet.FieldByName('ArchiveBoxId').AsInteger;
+    TypeId := ADataSet.FieldByName('TypeId').AsInteger;
+    TypeName := ADataSet.FieldByName('TypeName').AsString;
   end;
 end;
 
@@ -189,11 +194,11 @@ begin
 
   if Assigned(FParentControl) then
   begin
-    if Assigned(FFields) then
+    if Assigned(FVisualizableFields) then
     begin
-      for j := 0 to FFields.Count - 1 do
+      for j := 0 to FVisualizableFields.Count - 1 do
       begin
-        c := GetControlByName('lblDocument' + IDocumentField(FFields[j]).Name + 'Caption',
+        c := GetControlByName('lblDocument' + IDocumentField(FVisualizableFields[j]).Name + 'Caption',
           FParentControl);
         if Assigned(c) then
         begin
@@ -206,16 +211,16 @@ begin
         if j = 0 then
         begin
           FParentControl.Height := Integer(FParentControl is TGroupBox) * 10 + l1.Margins.Top +
-            l1.Margins.Bottom + FFields.Count * (17 + l1.Margins.Top);;
+            l1.Margins.Bottom + FVisualizableFields.Count * (17 + l1.Margins.Top);;
         end;
-        l1.Name := 'lblDocument' + IDocumentField(FFields[j]).Name + 'Caption';
+        l1.Name := 'lblDocument' + IDocumentField(FVisualizableFields[j]).Name + 'Caption';
         l1.Parent := FParentControl;
-        l1.Caption := IDocumentField(FFields[j]).Caption;
+        l1.Caption := IDocumentField(FVisualizableFields[j]).Caption;
         l1.Left := 8;
         l1.Top := Integer(FParentControl is TGroupBox) * 10 + FParentControl.Margins.Top +
           FParentControl.Margins.Top + j * (17 + FParentControl.Margins.Top);
 
-        c := GetControlByName('lblDocument' + IDocumentField(FFields[j]).Name, FParentControl);
+        c := GetControlByName('lblDocument' + IDocumentField(FVisualizableFields[j]).Name, FParentControl);
         if Assigned(c) then
         begin
           l2 := c as TLabel;
@@ -227,11 +232,11 @@ begin
         if j = 0 then
         begin
           FParentControl.Height := Integer(FParentControl is TGroupBox) * 10 + l2.Margins.Top +
-            l2.Margins.Bottom + FFields.Count * (17 + l2.Margins.Top);;
+            l2.Margins.Bottom + FVisualizableFields.Count * (17 + l2.Margins.Top);;
         end;
-        l2.Name := 'lblDocument' + IDocumentField(FFields[j]).Name;
+        l2.Name := 'lblDocument' + IDocumentField(FVisualizableFields[j]).Name;
         l2.Parent := FParentControl;
-        // l2.Caption := IDocumentField(FFields[j]).Caption;
+        // l2.Caption := IDocumentField(FVisualizableFields[j]).Caption;
         l2.Left := FParentControl.ClientWidth div 2 + 8;
         l2.Top := Integer(FParentControl is TGroupBox) * 10 + FParentControl.Margins.Top +
           FParentControl.Margins.Top + j * (17 + FParentControl.Margins.Top);
@@ -245,26 +250,26 @@ begin
   SetLabelCaption(FParentControl, 'lblDocumentArchiveBoxId', IntToStr(ArchiveBoxId));
 end;
 
-procedure TCustomDocument.AddField(const ACaption, AName: string);
+procedure TCustomDocument.AddVisualizableField(const ACaption, AName: string);
 var
   f: IDocumentField;
 begin
-  if not Assigned(FFields) then
+  if not Assigned(FVisualizableFields) then
   begin
-    FFields := TInterfaceList.Create;
+    FVisualizableFields := TInterfaceList.Create;
   end;
-  if Assigned(FFields) then
+  if Assigned(FVisualizableFields) then
   begin
     f := TDocumentField.Create(Trim(ACaption), Trim(AName));
-    FFields.Add(f);
+    FVisualizableFields.Add(f);
   end;
 end;
 
-procedure TCustomDocument.ClearFields;
+procedure TCustomDocument.ClearVisualizableFields;
 begin
-  if Assigned(FFields) then
+  if Assigned(FVisualizableFields) then
   begin
-    FreeAndNil(FFields);
+    FreeAndNil(FVisualizableFields);
   end;
 end;
 
@@ -272,8 +277,61 @@ destructor TCustomDocument.Destroy;
 begin
   Finalize;
   ClearParentControl;
-  ClearFields;
+  ClearVisualizableFields;
   inherited;
+end;
+
+procedure TCustomDocument.Load(const AADOConnection: TADOConnection);
+var
+  q: TADOQuery;
+begin
+  if Assigned(AADOConnection) then
+  begin
+    if AADOConnection.Connected then
+    begin
+      q := TADOQuery.Create(nil);
+      try
+        q.Connection := AADOConnection;
+        q.CommandTimeout := 60000;
+        q.LockType := ltReadOnly;
+        q.CursorType := ctOpenForwardOnly;
+        q.SQL.Add(GetLoadSQL);
+        q.Open;
+        try
+          Load(q);
+        finally
+          q.Close;
+        end;
+      finally
+        FreeAndNil(q);
+      end;
+    end;
+  end;
+end;
+
+procedure TCustomDocument.Load(const ASQLConnection: TSQLConnection);
+var
+  q: TSQLQuery;
+begin
+  if Assigned(ASQLConnection) then
+  begin
+    if ASQLConnection.Connected then
+    begin
+      q := TSQLQuery.Create(nil);
+      try
+        q.SQLConnection := ASQLConnection;
+        q.SQL.Add(GetLoadSQL);
+        q.Open;
+        try
+          Load(q);
+        finally
+          q.Close;
+        end;
+      finally
+        FreeAndNil(q);
+      end;
+    end;
+  end;
 end;
 
 end.

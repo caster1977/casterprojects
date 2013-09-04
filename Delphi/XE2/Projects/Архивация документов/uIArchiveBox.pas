@@ -87,9 +87,9 @@ type
     property CompanyName: string read GetCompanyName write SetCompanyName;
 
     /// <summary>
-    /// Процедура добавления документа в короб
+    /// Функция добавления документа в короб
     /// </summary>
-    procedure AddDocument(const AValue: ICustomDocument);
+    function AddDocument(const AValue: ICustomDocument): Integer;
 
     /// <summary>
     /// Процедура удаления последнего документа из короба
