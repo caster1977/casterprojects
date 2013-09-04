@@ -8,7 +8,7 @@ uses
   uTCustomBSODocument;
 
 type
-  TDamagedBSO = class(TCustomBSODocument)
+  TDamagedBSO = class sealed(TCustomBSODocument)
   private
     FCauseOfDamageId: Integer;
     function GetCauseOfDamageId: Integer;
@@ -20,13 +20,12 @@ type
     function GetCauseOfDamageName: string;
     procedure SetCauseOfDamageName(const AValue: string);
   public
-    property CauseOfDamageName: string read GetCauseOfDamageName
-      write SetCauseOfDamageName nodefault;
+    property CauseOfDamageName: string read GetCauseOfDamageName write SetCauseOfDamageName nodefault;
   protected
     procedure Initialize; override;
+    function GetLoadSQL: string; override;
   public
-    function GetSQLForLoad: string; override;
-    procedure Load(const ASource: TDataSet); override;
+    procedure Load(const ADataSet: TDataSet); override;
     procedure Show(const AParentControl: TCustomControl); override;
   end;
 
@@ -68,16 +67,18 @@ begin
   end;
 end;
 
-function TDamagedBSO.GetSQLForLoad: string;
+function TDamagedBSO.GetLoadSQL: string;
 begin
-  Result := '';
+  Result := 'SELECT 1 AS Id, 2 AS ArchiveBoxId, 3 AS TypeId, 4 AS TypeName, ' +
+    '5 AS Barcode, 6 AS CompanyId, 7 AS CompanyName, 8 AS Series, 9 AS Number, ' +
+    '10 AS CauseOfDamageId, 11 AS CauseOfDamageName';
 end;
 
 procedure TDamagedBSO.Show(const AParentControl: TCustomControl);
 begin
   inherited;
-  SetLabelCaption(AParentControl, 'lblDocumentCauseOfDamageId', IntToStr(CauseOfDamageId));
-  SetLabelCaption(AParentControl, 'lblDocumentCauseOfDamageName', CauseOfDamageName);
+  SetLabelCaption(FParentControl, 'lblDocumentCauseOfDamageId', IntToStr(CauseOfDamageId));
+  SetLabelCaption(FParentControl, 'lblDocumentCauseOfDamageName', CauseOfDamageName);
 end;
 
 procedure TDamagedBSO.Initialize;
@@ -85,21 +86,21 @@ begin
   inherited;
   CauseOfDamageId := -1;
   CauseOfDamageName := EmptyStr;
-  AddField('Компания:', 'CompanyName');
-  AddField('Тип документа:', 'TypeName');
-  AddField('Серия:', 'Series');
-  AddField('Номер:', 'Number');
-  AddField('Штрих-код:', 'Barcode');
-  AddField('Причина порчи:', 'CauseOfDamageName');
+  AddVisualizableField('Компания:', 'CompanyName');
+  AddVisualizableField('Тип документа:', 'TypeName');
+  AddVisualizableField('Серия:', 'Series');
+  AddVisualizableField('Номер:', 'Number');
+  AddVisualizableField('Штрих-код:', 'Barcode');
+  AddVisualizableField('Причина порчи:', 'CauseOfDamageName');
 end;
 
-procedure TDamagedBSO.Load(const ASource: TDataSet);
+procedure TDamagedBSO.Load(const ADataSet: TDataSet);
 begin
   inherited;
-  if Assigned(ASource) then
+  if Assigned(ADataSet) then
   begin
-    CauseOfDamageId := ASource.FieldByName('CauseOfDamageId').AsInteger;
-    CauseOfDamageName := ASource.FieldByName('CauseOfDamageName').AsString;
+    CauseOfDamageId := ADataSet.FieldByName('CauseOfDamageId').AsInteger;
+    CauseOfDamageName := ADataSet.FieldByName('CauseOfDamageName').AsString;
   end;
 end;
 

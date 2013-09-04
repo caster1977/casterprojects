@@ -96,6 +96,11 @@
         <DCCReference Include="uTDocumentField.pas"/>
         <DCCReference Include="uIDocumentField.pas"/>
         <DCCReference Include="uTCustomDocumentClass.pas"/>
+        <DCCReference Include="uTShipmentBSO.pas"/>
+        <DCCReference Include="uTShipmentBSOWithAct.pas"/>
+        <DCCReference Include="uTDocumentArchivingLogic.pas"/>
+        <DCCReference Include="uTOnShowMessage.pas"/>
+        <DCCReference Include="uTMessageType.pas"/>
         <None Include="ModelSupport_Project2\default.txaPackage"/>
         <None Include="ModelSupport_Project2\default.txvpck"/>
         <None Include="ModelSupport_Project2\uICustomDocument\default.txvpck"/>
@@ -119,6 +124,17 @@
         <None Include="ModelSupport_Project2\uIDocumentField\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uTCustomDocumentClass\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uTCustomDocumentClass\default.txvpck"/>
+        <None Include="ModelSupport_Project2\uTShipmentBSO\default.txaPackage"/>
+        <None Include="ModelSupport_Project2\uTShipmentBSO\default.txvpck"/>
+        <None Include="ModelSupport_Project2\uTShipmentBSOWithAct\default.txaPackage"/>
+        <None Include="ModelSupport_Project2\uTShipmentBSOWithAct\default.txvpck"/>
+        <None Include="ModelSupport_Project2\uTOnShowMessage\default.txaPackage"/>
+        <None Include="ModelSupport_Project2\uTOnShowMessage\default.txvpck"/>
+        <None Include="ModelSupport_Project2\uTMessageType\default.txaPackage"/>
+        <None Include="ModelSupport_Project2\uTMessageType\default.txvpck"/>
+        <None Include="ModelSupport_Project2\uTDocumentArchivingLogic\default.txaPackage"/>
+        <None Include="ModelSupport_Project2\uTDocumentArchivingLogic\default.txvpck"/>
+        <None Include="ModelSupport_Project2\Unit3\default.txaPackage"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

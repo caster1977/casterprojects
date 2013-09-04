@@ -12,7 +12,12 @@ uses
   uCommonRoutines in 'uCommonRoutines.pas',
   uTDocumentField in 'uTDocumentField.pas',
   uIDocumentField in 'uIDocumentField.pas',
-  uTCustomDocumentClass in 'uTCustomDocumentClass.pas';
+  uTCustomDocumentClass in 'uTCustomDocumentClass.pas',
+  uTShipmentBSO in 'uTShipmentBSO.pas',
+  uTShipmentBSOWithAct in 'uTShipmentBSOWithAct.pas',
+  uTDocumentArchivingLogic in 'uTDocumentArchivingLogic.pas',
+  uTOnShowMessage in 'uTOnShowMessage.pas',
+  uTMessageType in 'uTMessageType.pas';
 
 {$R *.res}
 

@@ -1,8 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <nodeSet version="1.0">
-  <view uin="5rsrssct0fm_v">
+  <view uin="apltlxuvc0n_v">
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:Project2:uTArchiveBox.TAcriveBox">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,198,774" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TAcriveBox.FId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.GetId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.SetId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TAcriveBox.Id" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TAcriveBox.FName" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.GetName()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.SetName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TAcriveBox.name" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TAcriveBox.FTypeId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.GetTypeId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.SetTypeId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TAcriveBox.TypeId" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TAcriveBox.FTypeName" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.GetTypeName()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.SetTypeName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TAcriveBox.TypeName" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TAcriveBox.FBarcode" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.GetBarcode()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.SetBarcode(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TAcriveBox.Barcode" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TAcriveBox.FYear" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.GetYear()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.SetYear(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TAcriveBox.Year" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TAcriveBox.FNumber" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.GetNumber()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.SetNumber(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TAcriveBox.Number" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TAcriveBox.FCompanyId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.GetCompanyId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.SetCompanyId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TAcriveBox.CompanyId" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TAcriveBox.FCompanyName" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.GetCompanyName()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.SetCompanyName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TAcriveBox.CompanyName" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TAcriveBox.FDocuments" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.GetDocument(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TAcriveBox.Documents[System.Integer]" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.GetDocumentCount()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TAcriveBox.DocumentCount" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.AddDocument(uICustomDocument.ICustomDocument)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.DeleteLastDocument()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.Create()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.Destroy()" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uTArchiveBox.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
   </view>
 </nodeSet>

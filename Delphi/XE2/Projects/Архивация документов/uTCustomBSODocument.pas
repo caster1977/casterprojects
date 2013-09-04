@@ -10,7 +10,7 @@ uses
   uTCustomDocument;
 
 type
-  TCustomBSODocument = class(TCustomDocument)
+  TCustomBSODocument = class abstract(TCustomDocument)
   private
     FBarcode: string;
     function GetBarcode: string;
@@ -48,9 +48,9 @@ type
 
   protected
     procedure Initialize; override;
-    procedure Load(const ASource: TDataSet); override;
 
   public
+    procedure Load(const ADataSet: TDataSet); override;
     procedure Show(const AParentControl: TCustomControl); override;
   end;
 
@@ -147,27 +147,27 @@ begin
   Number := EmptyStr;
 end;
 
-procedure TCustomBSODocument.Load(const ASource: TDataSet);
+procedure TCustomBSODocument.Load(const ADataSet: TDataSet);
 begin
   inherited;
-  if Assigned(ASource) then
+  if Assigned(ADataSet) then
   begin
-    Barcode := ASource.FieldByName('Barcode').AsString;
-    CompanyId := ASource.FieldByName('CompanyId').AsInteger;
-    CompanyName := ASource.FieldByName('CompanyName').AsString;
-    Series := ASource.FieldByName('Series').AsString;
-    Number := ASource.FieldByName('Number').AsString;
+    Barcode := ADataSet.FieldByName('Barcode').AsString;
+    CompanyId := ADataSet.FieldByName('CompanyId').AsInteger;
+    CompanyName := ADataSet.FieldByName('CompanyName').AsString;
+    Series := ADataSet.FieldByName('Series').AsString;
+    Number := ADataSet.FieldByName('Number').AsString;
   end;
 end;
 
 procedure TCustomBSODocument.Show(const AParentControl: TCustomControl);
 begin
   inherited;
-  SetLabelCaption(AParentControl, 'lblDocumentBarcode', Barcode);
-  SetLabelCaption(AParentControl, 'lblDocumentCompanyId', IntToStr(CompanyId));
-  SetLabelCaption(AParentControl, 'lblDocumentCompanyName', CompanyName);
-  SetLabelCaption(AParentControl, 'lblDocumentSeries', Series);
-  SetLabelCaption(AParentControl, 'lblDocumentNumber', Number);
+  SetLabelCaption(FParentControl, 'lblDocumentBarcode', Barcode);
+  SetLabelCaption(FParentControl, 'lblDocumentCompanyId', IntToStr(CompanyId));
+  SetLabelCaption(FParentControl, 'lblDocumentCompanyName', CompanyName);
+  SetLabelCaption(FParentControl, 'lblDocumentSeries', Series);
+  SetLabelCaption(FParentControl, 'lblDocumentNumber', Number);
 end;
 
 end.
