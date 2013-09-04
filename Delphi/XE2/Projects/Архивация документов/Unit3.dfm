@@ -24,7 +24,6 @@ object Form3: TForm3
     Align = alTop
     Caption = 'GroupBox1'
     TabOrder = 0
-    ExplicitWidth = 470
   end
   object Panel1: TPanel
     Left = 0
@@ -36,7 +35,6 @@ object Form3: TForm3
     Caption = 'Panel1'
     ShowCaption = False
     TabOrder = 1
-    ExplicitWidth = 470
   end
   object Panel2: TPanel
     Left = 0
@@ -50,7 +48,6 @@ object Form3: TForm3
     Caption = 'Panel2'
     ShowCaption = False
     TabOrder = 2
-    ExplicitWidth = 470
     DesignSize = (
       672
       29)
@@ -62,7 +59,6 @@ object Form3: TForm3
       Action = actDeleteLastDocument
       Anchors = [akTop, akRight]
       TabOrder = 2
-      ExplicitLeft = 336
     end
     object Button2: TButton
       Left = 0

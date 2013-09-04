@@ -3,7 +3,7 @@ program Project2;
 uses
   Vcl.Forms,
   Unit3 in 'Unit3.pas' {Form3},
-  uTCustomBSODocument in 'uTCustomBSODocument.pas',
+  uTCustomBSO in 'uTCustomBSO.pas',
   uICustomDocument in 'uICustomDocument.pas',
   uTCustomDocument in 'uTCustomDocument.pas',
   uTDamagedBSO in 'uTDamagedBSO.pas',
