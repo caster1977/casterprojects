@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="3lovw2b6ers_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:Project2:uIDocument.IDocument">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,120,111" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocument.ICustomDocument.Load(Data.Win.ADODB.TADOConnection)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocument.ICustomDocument.Load(Data.SqlExpr.TSQLConnection)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocument.ICustomDocument.Show(Vcl.Controls.TCustomControl)" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uIDocument.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+  </view>
+</nodeSet>

@@ -8,10 +8,10 @@ uses
   ADODB,
   SqlExpr,
   DB,
-  uICustomDocument;
+  uIDocument;
 
 type
-  TCustomDocument = class abstract(TInterfacedObject, ICustomDocument)
+  TCustomDocument = class abstract(TInterfacedObject, IDocument)
   private
     FId: Integer;
     function GetId: Integer;
@@ -41,8 +41,7 @@ type
     procedure Finalize; virtual;
     function GetLoadSQL: string; virtual; abstract;
   public
-    procedure Load(const AADOConnection: TADOConnection); overload;
-    procedure Load(const ASQLConnection: TSQLConnection); overload;
+    procedure Load(const AConnection: TCustomConnection); overload;
     procedure Load(const ADataSet: TDataSet); overload; virtual;
   protected
     procedure AddVisualizableField(const ACaption, AName: string);
@@ -173,7 +172,6 @@ end;
 
 procedure TCustomDocument.Show(const AParentControl: TCustomControl);
 var
-  s: string;
   l1, l2: TLabel;
   j: Integer;
   c: TControl;
@@ -198,8 +196,8 @@ begin
     begin
       for j := 0 to FVisualizableFields.Count - 1 do
       begin
-        c := GetControlByName('lblDocument' + IDocumentField(FVisualizableFields[j]).Name + 'Caption',
-          FParentControl);
+        c := GetControlByName('lblDocument' + IDocumentField(FVisualizableFields[j]).Name +
+          'Caption', FParentControl);
         if Assigned(c) then
         begin
           l1 := c as TLabel;
@@ -220,7 +218,8 @@ begin
         l1.Top := Integer(FParentControl is TGroupBox) * 10 + FParentControl.Margins.Top +
           FParentControl.Margins.Top + j * (17 + FParentControl.Margins.Top);
 
-        c := GetControlByName('lblDocument' + IDocumentField(FVisualizableFields[j]).Name, FParentControl);
+        c := GetControlByName('lblDocument' + IDocumentField(FVisualizableFields[j]).Name,
+          FParentControl);
         if Assigned(c) then
         begin
           l2 := c as TLabel;
@@ -281,54 +280,36 @@ begin
   inherited;
 end;
 
-procedure TCustomDocument.Load(const AADOConnection: TADOConnection);
+procedure TCustomDocument.Load(const AConnection: TCustomConnection);
 var
-  q: TADOQuery;
+  ds: TDataSet;
 begin
-  if Assigned(AADOConnection) then
+  if Assigned(AConnection) then
   begin
-    if AADOConnection.Connected then
+    if AConnection.Connected then
     begin
-      q := TADOQuery.Create(nil);
-      try
-        q.Connection := AADOConnection;
-        q.CommandTimeout := 60000;
-        q.LockType := ltReadOnly;
-        q.CursorType := ctOpenForwardOnly;
-        q.SQL.Add(GetLoadSQL);
-        q.Open;
-        try
-          Load(q);
-        finally
-          q.Close;
-        end;
-      finally
-        FreeAndNil(q);
+      if AConnection is TADOConnection then
+      begin
+        ds := TADOQuery.Create(nil);
+        (ds as TADOQuery).Connection := AConnection as TADOConnection;
+        (ds as TADOQuery).CommandTimeout := 60000;
+        (ds as TADOQuery).LockType := ltReadOnly;
+        (ds as TADOQuery).CursorType := ctOpenForwardOnly;
+      end
+      else
+      begin
+        ds := TSQLQuery.Create(nil);
+        (ds as TSQLQuery).SQLConnection := AConnection as TSQLConnection;
       end;
-    end;
-  end;
-end;
-
-procedure TCustomDocument.Load(const ASQLConnection: TSQLConnection);
-var
-  q: TSQLQuery;
-begin
-  if Assigned(ASQLConnection) then
-  begin
-    if ASQLConnection.Connected then
-    begin
-      q := TSQLQuery.Create(nil);
       try
-        q.SQLConnection := ASQLConnection;
-        q.SQL.Add(GetLoadSQL);
-        q.Open;
+        SetSQL(ds, GetLoadSQL, True);
         try
-          Load(q);
+          Load(ds);
         finally
-          q.Close;
+          ds.Close;
         end;
       finally
-        FreeAndNil(q);
+        FreeAndNil(ds);
       end;
     end;
   end;

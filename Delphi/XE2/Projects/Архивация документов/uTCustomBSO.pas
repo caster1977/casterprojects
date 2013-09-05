@@ -6,7 +6,7 @@ uses
   System.Classes,
   Data.DB,
   Vcl.Controls,
-  uICustomDocument,
+  uIDocument,
   uTCustomDocument;
 
 type

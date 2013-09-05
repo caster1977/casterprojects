@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="ypw8fp05snj1551ne_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:Project2:uIArchiveCompanies.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uIArchiveCompanies.IArchiveCompanies">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,266,128" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveCompanies.IArchiveCompanies.GetArchiveCompanyById(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveCompanies.IArchiveCompanies.Load(Data.DB.TCustomConnection)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveCompanies.IArchiveCompanies.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveCompanies.IArchiveCompanies.Items[System.Integer]" />
+    </reference>
+  </view>
+</nodeSet>

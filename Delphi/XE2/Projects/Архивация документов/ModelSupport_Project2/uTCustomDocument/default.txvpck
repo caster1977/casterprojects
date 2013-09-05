@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="u1w74836sko_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:Project2:uTCustomDocument.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uTCustomDocument.TCustomDocument">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,198,534" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTCustomDocument.TCustomDocument.FId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.GetId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.SetId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTCustomDocument.TCustomDocument.Id" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTCustomDocument.TCustomDocument.FArchiveBoxId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.GetArchiveBoxId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.SetArchiveBoxId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTCustomDocument.TCustomDocument.ArchiveBoxId" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTCustomDocument.TCustomDocument.FTypeId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.GetTypeId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.SetTypeId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTCustomDocument.TCustomDocument.TypeId" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTCustomDocument.TCustomDocument.FTypeName" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.GetTypeName()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.SetTypeName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTCustomDocument.TCustomDocument.TypeName" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.Initialize()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.Finalize()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.GetLoadSQL()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.Load(Data.DB.TCustomConnection)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.Load(Data.DB.TDataSet)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.AddVisualizableField(System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.ClearVisualizableFields()" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTCustomDocument.TCustomDocument.FVisualizableFields" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTCustomDocument.TCustomDocument.FParentControl" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.Show(Vcl.Controls.TCustomControl)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.Create()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.Destroy()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTCustomDocument.TCustomDocument.ClearParentControl()" />
+    </reference>
+  </view>
+</nodeSet>

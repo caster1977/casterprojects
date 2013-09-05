@@ -3,61 +3,68 @@ unit uTDocumentArchivingLogic;
 interface
 
 uses
-  Classes,
-  DB,
-  SqlExpr,
-  ADODB,
-  uTOnShowMessage;
+  uTCustomBusinessLogic,
+  uIDocumentArchivingLogic,
+  uIDocument,
+  uIArchiveBox;
 
 type
-  TDocumentArchivingLogic = class abstract(TInterfacedObject)
+  TDocumentArchivingLogic = class abstract(TCustomBusinessLogic, IDocumentArchivingLogic)
   private
-    FConnection: TCustomConnection;
-    function GetConnection: TCustomConnection;
+    FCurrentBox: IArchiveBox;
+    function GetCurrentBox: IArchiveBox;
   public
-    property Connection: TCustomConnection read GetConnection nodefault;
-
-  private
-    FOnShowMessage: TOnShowMessage;
-    function GetOnShowMessage: TOnShowMessage;
-    procedure SetOnShowMessage(const AValue: TOnShowMessage);
+    property CurrentBox: IArchiveBox read GetCurrentBox nodefault;
+    // private
+    // FForceNewArchiveBox: Boolean;
   public
-    property OnShowMessage: TOnShowMessage read GetOnShowMessage write SetOnShowMessage nodefault;
-
-  public
-    constructor Create(const AADOConnection: TADOConnection; const AOnShowMessage: TOnShowMessage = nil);
-      overload; virtual;
-    constructor Create(const ASQLConnection: TSQLConnection; const AOnShowMessage: TOnShowMessage = nil);
-      overload; virtual;
+    function GetBoxCapacity(const AType: Integer): Integer; overload;
+    function GetBoxCapacity(const ABox: IArchiveBox): Integer; overload;
+    procedure TryAddDocument(const ADocument: IDocument); virtual;
   end;
 
 implementation
 
-function TDocumentArchivingLogic.GetConnection: TCustomConnection;
+uses
+  uCommonRoutines,
+  SysUtils;
+
+function TDocumentArchivingLogic.GetBoxCapacity(const AType: Integer): Integer;
 begin
-  Result := FConnection;
+  try
+    SetSQL(Query,
+      Format('SELECT abt.Capacity AS Capacity FROM ArchiveBoxTypes abt WHERE abt.Id_ArchiveBoxType = %d',
+      [AType]), True);
+    Result := Query.FieldByName('Capacity').AsInteger;
+  finally
+    CloseQuery;
+  end;
 end;
 
-function TDocumentArchivingLogic.GetOnShowMessage: TOnShowMessage;
+function TDocumentArchivingLogic.GetBoxCapacity(const ABox: IArchiveBox): Integer;
 begin
-  Result := FOnShowMessage;
+  Result := -1;
+  if Assigned(ABox) then
+  begin
+    try
+      SetSQL(Query,
+        Format('SELECT abt.Capacity AS Capacity FROM ArchiveBoxTypes abt WHERE abt.Id_ArchiveBoxType = %d',
+        [ABox.TypeId]), True);
+      Result := Query.FieldByName('Capacity').AsInteger;
+    finally
+      CloseQuery;
+    end;
+  end;
 end;
 
-procedure TDocumentArchivingLogic.SetOnShowMessage(const AValue: TOnShowMessage);
+function TDocumentArchivingLogic.GetCurrentBox: IArchiveBox;
 begin
-  FOnShowMessage := AValue;
+  Result := FCurrentBox;
 end;
 
-constructor TDocumentArchivingLogic.Create(const AADOConnection: TADOConnection; const AOnShowMessage: TOnShowMessage);
+procedure TDocumentArchivingLogic.TryAddDocument(const ADocument: IDocument);
 begin
-  FConnection := AADOConnection;
-  FOnShowMessage := AOnShowMessage;
-end;
-
-constructor TDocumentArchivingLogic.Create(const ASQLConnection: TSQLConnection; const AOnShowMessage: TOnShowMessage);
-begin
-  FConnection := ASQLConnection;
-  FOnShowMessage := AOnShowMessage;
+  DisplayInfoMessage('TryAddDocument');
 end;
 
 end.

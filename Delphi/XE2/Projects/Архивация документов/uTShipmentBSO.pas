@@ -18,7 +18,7 @@ implementation
 function TShipmentBSO.GetLoadSQL: string;
 begin
   Result := 'SELECT 1 AS Id, 2 AS ArchiveBoxId, 3 AS TypeId, 4 AS TypeName, ' +
-    '5 AS Barcode, 6 AS CompanyId, 7 AS CompanyName, 8 AS Series, 9 AS Number';
+    '5 AS Barcode, 7 AS CompanyId, 6 AS CompanyName, 8 AS Series, 9 AS Number';
 end;
 
 procedure TShipmentBSO.Initialize;

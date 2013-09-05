@@ -48,7 +48,7 @@
       <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TAcriveBox.Documents[System.Integer]" />
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.GetDocumentCount()" />
       <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TAcriveBox.DocumentCount" />
-      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.AddDocument(uICustomDocument.ICustomDocument)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.AddDocument(uIDocument.IDocument)" />
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.DeleteLastDocument()" />
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.Create()" />
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.Destroy()" />

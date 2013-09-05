@@ -1,11 +1,11 @@
-object Form3: TForm3
+object MainForm: TMainForm
   Left = 0
   Top = 0
   BorderStyle = bsDialog
   BorderWidth = 6
-  Caption = 'Form3'
+  Caption = 'MainForm'
   ClientHeight = 233
-  ClientWidth = 672
+  ClientWidth = 720
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object Form3: TForm3
   object GroupBox1: TGroupBox
     Left = 0
     Top = 0
-    Width = 672
+    Width = 720
     Height = 105
     Align = alTop
     Caption = 'GroupBox1'
@@ -28,7 +28,7 @@ object Form3: TForm3
   object Panel1: TPanel
     Left = 0
     Top = 105
-    Width = 672
+    Width = 720
     Height = 97
     Align = alTop
     BevelOuter = bvNone
@@ -39,7 +39,7 @@ object Form3: TForm3
   object Panel2: TPanel
     Left = 0
     Top = 202
-    Width = 672
+    Width = 720
     Height = 31
     Align = alTop
     BevelEdges = [beTop]
@@ -49,10 +49,10 @@ object Form3: TForm3
     ShowCaption = False
     TabOrder = 2
     DesignSize = (
-      672
+      720
       29)
     object Button1: TButton
-      Left = 538
+      Left = 586
       Top = 5
       Width = 134
       Height = 25
@@ -80,21 +80,34 @@ object Form3: TForm3
     end
     object Button4: TButton
       Left = 280
-      Top = 4
+      Top = 5
       Width = 169
       Height = 25
       Caption = 'Create shipment BSO with act'
-      TabOrder = 3
+      TabOrder = 4
       OnClick = Button4Click
+    end
+    object Button5: TButton
+      Left = 455
+      Top = 5
+      Width = 125
+      Height = 25
+      Action = actTestLogic
+      TabOrder = 3
     end
   end
   object ActionList: TActionList
-    Left = 352
+    Left = 376
     Top = 112
     object actDeleteLastDocument: TAction
       Caption = 'Delete Last Document'
       OnExecute = actDeleteLastDocumentExecute
       OnUpdate = actDeleteLastDocumentUpdate
+    end
+    object actTestLogic: TAction
+      Caption = 'Test Logic'
+      OnExecute = actTestLogicExecute
+      OnUpdate = actTestLogicUpdate
     end
   end
   object ADOConnection: TADOConnection

@@ -4,7 +4,7 @@ interface
 
 uses
   Classes,
-  uICustomDocument,
+  uIDocument,
   uIArchiveBox;
 
 type
@@ -14,42 +14,40 @@ type
     function GetId: Integer;
     procedure SetId(const AValue: Integer);
   public
-    property Id: Integer read GetId write SetId;
+    property Id: Integer read GetId write SetId nodefault;
 
   private
-    FName: string;
     function GetName: string;
-    procedure SetName(const AValue: string);
   public
-    property name: string read GetName write SetName;
+    property name: string read GetName nodefault;
 
   private
     FTypeId: Integer;
     function GetTypeId: Integer;
     procedure SetTypeId(const AValue: Integer);
   public
-    property TypeId: Integer read GetTypeId write SetTypeId;
+    property TypeId: Integer read GetTypeId write SetTypeId nodefault;
 
   private
     FTypeName: string;
     function GetTypeName: string;
     procedure SetTypeName(const AValue: string);
   public
-    property TypeName: string read GetTypeName write SetTypeName;
+    property TypeName: string read GetTypeName write SetTypeName nodefault;
 
   private
     FBarcode: string;
     function GetBarcode: string;
     procedure SetBarcode(const AValue: string);
   public
-    property Barcode: string read GetBarcode write SetBarcode;
+    property Barcode: string read GetBarcode write SetBarcode nodefault;
 
   private
     FYear: Integer;
     function GetYear: Integer;
     procedure SetYear(const AValue: Integer);
   public
-    property Year: Integer read GetYear write SetYear;
+    property Year: Integer read GetYear write SetYear nodefault;
 
   private
     FNumber: string;
@@ -57,7 +55,7 @@ type
     procedure SetNumber(const AValue: string);
 
   public
-    property Number: string read GetNumber write SetNumber;
+    property Number: string read GetNumber write SetNumber nodefault;
 
   private
     FCompanyId: Integer;
@@ -65,32 +63,28 @@ type
     procedure SetCompanyId(const AValue: Integer);
 
   public
-    property CompanyId: Integer read GetCompanyId write SetCompanyId;
+    property CompanyId: Integer read GetCompanyId write SetCompanyId nodefault;
 
   private
     FCompanyName: string;
     function GetCompanyName: string;
     procedure SetCompanyName(const AValue: string);
   public
-    property CompanyName: string read GetCompanyName write SetCompanyName;
+    property CompanyName: string read GetCompanyName write SetCompanyName nodefault;
 
   private
-    FDocuments: TInterfaceList;
-    function GetDocument(const AIndex: Integer): ICustomDocument;
+    FDocuments: IInterfaceList;
+    function GetDocument(const AIndex: Integer): IDocument;
   public
-    property Documents[const AIndex: Integer]: ICustomDocument read GetDocument; default;
-
+    property Documents[const AIndex: Integer]: IDocument read GetDocument; default;
   private
     function GetDocumentCount: Integer;
   public
-    property DocumentCount: Integer read GetDocumentCount;
+    property DocumentCount: Integer read GetDocumentCount nodefault;
 
   public
-    function AddDocument(const AValue: ICustomDocument): Integer;
+    function AddDocument(const AValue: IDocument): Integer;
     procedure DeleteLastDocument;
-  public
-    constructor Create;
-    destructor Destroy; override;
   end;
 
 implementation
@@ -113,14 +107,21 @@ begin
   Result := FCompanyName;
 end;
 
-function TAcriveBox.GetDocument(const AIndex: Integer): ICustomDocument;
+function TAcriveBox.GetDocument(const AIndex: Integer): IDocument;
 begin
   Result := nil;
-  if Assigned(FDocuments) then
+  if AIndex > -1 then
   begin
-    if FDocuments.Count > AIndex then
+    if not Assigned(FDocuments) then
     begin
-      Result := ICustomDocument(FDocuments[AIndex]);
+      FDocuments := TInterfaceList.Create;
+    end;
+    if Assigned(FDocuments) then
+    begin
+      if FDocuments.Count > AIndex then
+      begin
+        Result := IDocument(FDocuments[AIndex]);
+      end;
     end;
   end;
 end;
@@ -133,11 +134,6 @@ end;
 function TAcriveBox.GetId: Integer;
 begin
   Result := FId;
-end;
-
-function TAcriveBox.GetName: string;
-begin
-  Result := FName;
 end;
 
 function TAcriveBox.GetNumber: string;
@@ -198,17 +194,6 @@ begin
   end;
 end;
 
-procedure TAcriveBox.SetName(const AValue: string);
-var
-  s: string;
-begin
-  s := Trim(AValue);
-  if FName <> s then
-  begin
-    FName := s;
-  end;
-end;
-
 procedure TAcriveBox.SetNumber(const AValue: string);
 var
   s: string;
@@ -247,23 +232,15 @@ begin
   end;
 end;
 
-constructor TAcriveBox.Create;
-begin
-  inherited Create;
-  FDocuments := TInterfaceList.Create;
-end;
-
-destructor TAcriveBox.Destroy;
-begin
-  FreeAndNil(FDocuments);
-  inherited;
-end;
-
-function TAcriveBox.AddDocument(const AValue: ICustomDocument): Integer;
+function TAcriveBox.AddDocument(const AValue: IDocument): Integer;
 begin
   Result := -1;
   if Assigned(AValue) then
   begin
+    if not Assigned(FDocuments) then
+    begin
+      FDocuments := TInterfaceList.Create;
+    end;
     if Assigned(FDocuments) then
     begin
       Result := FDocuments.Add(AValue);
@@ -280,6 +257,11 @@ begin
       FDocuments.Delete(FDocuments.Count - 1);
     end;
   end;
+end;
+
+function TAcriveBox.GetName: string;
+begin
+  Result := EmptyStr;
 end;
 
 end.

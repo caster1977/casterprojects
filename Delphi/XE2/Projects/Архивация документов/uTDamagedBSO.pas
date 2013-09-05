@@ -20,7 +20,8 @@ type
     function GetCauseOfDamageName: string;
     procedure SetCauseOfDamageName(const AValue: string);
   public
-    property CauseOfDamageName: string read GetCauseOfDamageName write SetCauseOfDamageName nodefault;
+    property CauseOfDamageName: string read GetCauseOfDamageName
+      write SetCauseOfDamageName nodefault;
   protected
     procedure Initialize; override;
     function GetLoadSQL: string; override;
@@ -69,8 +70,8 @@ end;
 
 function TDamagedBSO.GetLoadSQL: string;
 begin
-  Result := 'SELECT 1 AS Id, 2 AS ArchiveBoxId, 3 AS TypeId, 4 AS TypeName, ' +
-    '5 AS Barcode, 6 AS CompanyId, 7 AS CompanyName, 8 AS Series, 9 AS Number, ' +
+  Result := 'SELECT 1 AS Id, 3 AS ArchiveBoxId, 2 AS TypeId, 4 AS TypeName, ' +
+    '5 AS Barcode, 3 AS CompanyId, 7 AS CompanyName, 8 AS Series, 9 AS Number, ' +
     '10 AS CauseOfDamageId, 11 AS CauseOfDamageName';
 end;
 
