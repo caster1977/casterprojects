@@ -9,13 +9,11 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uIArchiveBox.IArchiveBox">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="10,10,208,563" />
+      <property name="bounds" value="10,10,154,263" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetId()" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetId(System.Integer)" />
       <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Id" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetName()" />
-      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetName(System.string)" />
-      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.name" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetTypeId()" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetTypeId(System.Integer)" />
       <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.TypeId" />
@@ -37,12 +35,13 @@
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetCompanyName()" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetCompanyName(System.string)" />
       <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.CompanyName" />
-      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.AddDocument(uICustomDocument.ICustomDocument)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.AddDocument(uIDocument.IDocument)" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.DeleteLastDocument()" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetDocument(System.Integer)" />
       <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Documents[System.Integer]" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetDocumentCount()" />
       <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.DocumentCount" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Name" />
     </reference>
   </view>
 </nodeSet>

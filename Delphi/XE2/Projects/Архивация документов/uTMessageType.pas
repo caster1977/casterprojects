@@ -3,7 +3,7 @@ unit uTMessageType;
 interface
 
 type
-  TMessageType = (mtInfo, mtSuccess, mtError);
+  TMessageType = (mtNone, mtInfo, mtSuccess, mtError);
 
 implementation
 

@@ -2,9 +2,9 @@ program Project2;
 
 uses
   Vcl.Forms,
-  Unit3 in 'Unit3.pas' {Form3},
+  uTMainForm in 'uTMainForm.pas' {MainForm},
   uTCustomBSO in 'uTCustomBSO.pas',
-  uICustomDocument in 'uICustomDocument.pas',
+  uIDocument in 'uIDocument.pas',
   uTCustomDocument in 'uTCustomDocument.pas',
   uTDamagedBSO in 'uTDamagedBSO.pas',
   uIArchiveBox in 'uIArchiveBox.pas',
@@ -15,16 +15,25 @@ uses
   uTCustomDocumentClass in 'uTCustomDocumentClass.pas',
   uTShipmentBSO in 'uTShipmentBSO.pas',
   uTShipmentBSOWithAct in 'uTShipmentBSOWithAct.pas',
+  uTCustomBusinessLogic in 'uTCustomBusinessLogic.pas',
+  uTOnDisplayMessage in 'uTOnDisplayMessage.pas',
+  uTMessageType in 'uTMessageType.pas',
   uTDocumentArchivingLogic in 'uTDocumentArchivingLogic.pas',
-  uTOnShowMessage in 'uTOnShowMessage.pas',
-  uTMessageType in 'uTMessageType.pas';
+  uIDocumentArchivingLogic in 'uIDocumentArchivingLogic.pas',
+  uIBSOArchivingLogic in 'uIBSOArchivingLogic.pas',
+  uTBSOArchivingLogic in 'uTBSOArchivingLogic.pas',
+  uICustomBusinessLogic in 'uICustomBusinessLogic.pas',
+  uIArchiveCompany in 'uIArchiveCompany.pas',
+  uTArchiveCompany in 'uTArchiveCompany.pas',
+  uTArchiveCompanies in 'uTArchiveCompanies.pas',
+  uIArchiveCompanies in 'uIArchiveCompanies.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TForm3, Form3);
+  Application.CreateForm(TMainForm, MainForm);
   Application.Run;
 
 end.

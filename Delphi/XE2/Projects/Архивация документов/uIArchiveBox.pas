@@ -6,7 +6,7 @@ unit uIArchiveBox;
 interface
 
 uses
-  uICustomDocument;
+  uIDocument;
 
 type
   /// <summary>
@@ -23,12 +23,14 @@ type
     property Id: Integer read GetId write SetId;
 
     function GetName: string;
-    procedure SetName(const AValue: string);
 
-    /// <summary>
-    /// Наименование (код) короба
-    /// </summary>
-    property name: string read GetName write SetName;
+    ///	<summary>
+    ///	  Наименование (код) короба
+    ///	</summary>
+    ///	<remarks>
+    ///	  Генерируется на основе значений полей TypeId, CompanyId, Year, Number
+    ///	</remarks>
+    property Name: string read GetName;
 
     function GetTypeId: Integer;
     procedure SetTypeId(const AValue: Integer);
@@ -89,17 +91,30 @@ type
     /// <summary>
     /// Функция добавления документа в короб
     /// </summary>
-    function AddDocument(const AValue: ICustomDocument): Integer;
-
+    /// <param name="AValue">
+    /// Документ
+    /// </param>
+    function AddDocument(const AValue: IDocument): Integer;
     /// <summary>
     /// Процедура удаления последнего документа из короба
     /// </summary>
     procedure DeleteLastDocument;
 
-    function GetDocument(const AIndex: Integer): ICustomDocument;
-    property Documents[const AIndex: Integer]: ICustomDocument read GetDocument; default;
+    function GetDocument(const AIndex: Integer): IDocument;
+
+    /// <summary>
+    /// Список документов в коробе
+    /// </summary>
+    /// <param name="AIndex">
+    /// Индекс документа в коробе
+    /// </param>
+    property Documents[const AIndex: Integer]: IDocument read GetDocument; default;
 
     function GetDocumentCount: Integer;
+
+    /// <summary>
+    /// Количество документов в коробе
+    /// </summary>
     property DocumentCount: Integer read GetDocumentCount;
   end;
 

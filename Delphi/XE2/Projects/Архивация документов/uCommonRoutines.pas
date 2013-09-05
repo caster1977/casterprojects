@@ -5,8 +5,39 @@ interface
 uses
   Controls,
   StdCtrls,
-  SysUtils;
+  SysUtils,
+  DB,
+  ADODB,
+  SQLExpr;
 
+///	<summary>
+///	  Процедура, получающая результирующую выборку на основе текста запроса,
+///	  переданного указанному объекту запроса
+///	</summary>
+///	<param name="AQuery">
+///	  Объект запроса типа <b>TADOQuery</b> или <b>TSQLQuery</b>
+///	</param>
+///	<param name="ASQL">
+///	  Текст запроса
+///	</param>
+///	<param name="AOpen">
+///	  Необходимо ли выполнить получение результирующей выборки
+///	</param>
+procedure SetSQL(const AQuery: TDataSet; const ASQL: string; const AOpen: Boolean = False);
+
+///	<summary>
+///	  Функция получения ссылки на контрол по имени контрола
+///	</summary>
+///	<param name="AName">
+///	  Имя контрола
+///	</param>
+///	<param name="AParent">
+///	  Оконный элемент, среди дочерних элементов которого нужно производить
+///	  поиск контрола
+///	</param>
+///	<returns>
+///	  Ссылка на искомый контрол
+///	</returns>
 function GetControlByName(const AName: string; const AParent: TCustomControl): TControl;
 
 /// <summary>
@@ -28,7 +59,6 @@ implementation
 function GetControlByName(const AName: string; const AParent: TCustomControl): TControl;
 var
   k: Integer;
-  c: TControl;
 begin
   Result := nil;
   for k := 0 to AParent.ControlCount - 1 do
@@ -55,6 +85,32 @@ begin
         (cc as TLabel).Caption := ACaption;
       end;
     end;
+  end;
+end;
+
+procedure SetSQL(const AQuery: TDataSet; const ASQL: string; const AOpen: Boolean);
+begin
+  if AQuery is TADOQuery then
+  begin
+    (AQuery as TADOQuery).SQL.Clear;
+    (AQuery as TADOQuery).SQL.Append(ASQL);
+    if not AOpen then
+    begin
+      (AQuery as TADOQuery).ExecSQL;
+    end;
+  end
+  else
+  begin
+    (AQuery as TSQLQuery).SQL.Clear;
+    (AQuery as TSQLQuery).SQL.Append(ASQL);
+    if not AOpen then
+    begin
+      (AQuery as TSQLQuery).ExecSQL;
+    end;
+  end;
+  if AOpen then
+  begin
+    AQuery.Open;
   end;
 end;
 
