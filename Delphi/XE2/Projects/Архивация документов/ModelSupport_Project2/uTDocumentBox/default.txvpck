@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="xkkfq58ccei_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:Project2:uTDocumentBox.TDocumentBox">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="240,160,168,208" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTDocumentBox.TDocumentBox.FId">
+        <property name="bounds" value="64,5,0,0" />
+      </reference>
+      <reference referencedUin="delphi:l_impl:src:Project2:uTDocumentBox.TDocumentBox:uIDocumentBox.IDocumentBox">
+        <property name="sourceAnchor" value="240,246" />
+        <property name="targetAnchor" value="193,246" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="delphi:e_method:src:Project2:uTDocumentBox.TDocumentBox.AddDocument(uIDocument.IDocument)">
+        <property name="bounds" value="93,-21,0,0" />
+      </reference>
+      <reference referencedUin="delphi:e_method:src:Project2:uTDocumentBox.TDocumentBox.DeleteLastDocument()">
+        <property name="bounds" value="85,-43,0,0" />
+      </reference>
+      <reference referencedUin="delphi:e_property:src:Project2:uTDocumentBox.TDocumentBox.Id">
+        <property name="bounds" value="111,-80,0,0" />
+      </reference>
+      <reference referencedUin="delphi:e_property:src:Project2:uTDocumentBox.TDocumentBox.Documents">
+        <property name="bounds" value="111,-80,0,0" />
+      </reference>
+      <reference referencedUin="delphi:e_method:src:Project2:uTDocumentBox.TDocumentBox.GetId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTDocumentBox.TDocumentBox.SetId(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTDocumentBox.TDocumentBox.GetDocuments()" />
+      <reference referencedUin="delphi:l_gnt:src:Project2:uTDocumentBox.TDocumentBox:uTLoadableItem.TLoadableItem">
+        <property name="sourceAnchor" value="324,160" />
+        <property name="targetAnchor" value="324,113" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="delphi:e_method:src:Project2:uTDocumentBox.TDocumentBox.Create()" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uTDocumentBox.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uIDocumentBox.IDocumentBox">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="0,160,193,173" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocumentBox.IDocumentBox.GetId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocumentBox.IDocumentBox.SetId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIDocumentBox.IDocumentBox.Id" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocumentBox.IDocumentBox.AddDocument(uIDocument.IDocument)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocumentBox.IDocumentBox.DeleteLastDocument()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocumentBox.IDocumentBox.GetDocuments()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIDocumentBox.IDocumentBox.Documents" />
+      <reference referencedUin="delphi:l_gnt:src:Project2:uIDocumentBox.IDocumentBox:uILoadableItem.ILoadableItem">
+        <property name="sourceAnchor" value="94,160" />
+        <property name="targetAnchor" value="94,81" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uIArchiveBox.IArchiveBox">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="0,420,166,413" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetName()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Name" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetTypeId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetTypeId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.TypeId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetTypeName()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetTypeName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.TypeName" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetBarcode()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetBarcode(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Barcode" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetYear()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetYear(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Year" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetNumber()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetNumber(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Number" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetCompanyId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetCompanyId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.CompanyId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetCompanyName()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetCompanyName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.CompanyName" />
+      <reference referencedUin="delphi:l_gnt:src:Project2:uIArchiveBox.IArchiveBox:uIDocumentBox.IDocumentBox">
+        <property name="sourceAnchor" value="83,420" />
+        <property name="targetAnchor" value="83,333" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uTArchiveBox.TArchiveBox">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="240,420,171,523" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetName()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.Name" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FTypeId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetTypeId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetTypeId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.TypeId" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FTypeName" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetTypeName()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetTypeName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.TypeName" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FBarcode" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetBarcode()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetBarcode(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.Barcode" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FYear" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetYear()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetYear(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.Year" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FNumber" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetNumber()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetNumber(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.Number" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FCompanyId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetCompanyId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetCompanyId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.CompanyId" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FCompanyName" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetCompanyName()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetCompanyName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.CompanyName" />
+      <reference referencedUin="delphi:l_impl:src:Project2:uTArchiveBox.TArchiveBox:uIArchiveBox.IArchiveBox">
+        <property name="sourceAnchor" value="240,626" />
+        <property name="targetAnchor" value="166,626" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="delphi:l_gnt:src:Project2:uTArchiveBox.TArchiveBox:uTDocumentBox.TDocumentBox">
+        <property name="sourceAnchor" value="324,420" />
+        <property name="targetAnchor" value="324,368" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uILoadableItem.ILoadableItem">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="0,0,188,81" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:Project2:uILoadableItem.ILoadableItem.Load(Data.DB.TDataSet)" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uTLoadableItem.TLoadableItem">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="240,0,197,113" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTLoadableItem.TLoadableItem.Create()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTLoadableItem.TLoadableItem.Load(Data.DB.TDataSet)" />
+      <reference referencedUin="delphi:l_impl:src:Project2:uTLoadableItem.TLoadableItem:uILoadableItem.ILoadableItem">
+        <property name="sourceAnchor" value="240,40" />
+        <property name="targetAnchor" value="188,40" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+  </view>
+</nodeSet>

@@ -89,40 +89,40 @@ end;
 
 procedure TMainForm.Button2Click(Sender: TObject);
 begin
-  AddAndShowDocument(TDamagedBSO, GroupBox1);
+//  AddAndShowDocument(TDamagedBSO, GroupBox1);
 end;
 
 procedure TMainForm.Button3Click(Sender: TObject);
 begin
-  AddAndShowDocument(TShipmentBSO, GroupBox1);
+//  AddAndShowDocument(TShipmentBSO, GroupBox1);
 end;
 
 procedure TMainForm.Button4Click(Sender: TObject);
 begin
-  AddAndShowDocument(TShipmentBSOWithAct, GroupBox1);
+//  AddAndShowDocument(TShipmentBSOWithAct, GroupBox1);
 end;
 
 procedure TMainForm.AddAndShowDocument(const ADocumentClass: TDocumentClass;
   const AParent: TCustomControl);
-var
-  i: Integer;
+//var
+//  i: Integer;
 begin
-  if not Assigned(FBox) then
-  begin
-    FBox := TAcriveBox.Create;
-  end;
-  i := FBox.AddDocument(ADocumentClass.Create);
-  if i > -1 then
-  begin
-    Logic.Connection.Connected := True;
-    try
-      //FBox.Documents[i].Load(Logic.Connection);
-    finally
-      Logic.Connection.Connected := False;
-    end;
-    FBox.Document[i].Show(AParent);
-    AutoSize := True;
-  end;
+//  if not Assigned(FBox) then
+//  begin
+//    FBox := TAcriveBox.Create;
+//  end;
+//  i := FBox.AddDocument(ADocumentClass.Create);
+//  if i > -1 then
+//  begin
+//    Logic.Connection.Connected := True;
+//    try
+//      //FBox.Documents[i].Load(Logic.Connection);
+//    finally
+//      Logic.Connection.Connected := False;
+//    end;
+//    FBox.Document[i].Show(AParent);
+//    AutoSize := True;
+//  end;
 end;
 
 procedure TMainForm.DisplayMessage(const AType: TMessageType; const AText: string);
@@ -149,59 +149,59 @@ end;
 
 procedure TMainForm.actDeleteLastDocumentExecute(Sender: TObject);
 begin
-  FBox.DeleteLastDocument;
-  if FBox.DocumentCount > 0 then
-  begin
-    FBox.Document[FBox.DocumentCount - 1].Show;
-  end;
+//  FBox.DeleteLastDocument;
+//  if FBox.DocumentCount > 0 then
+//  begin
+//    FBox.Document[FBox.DocumentCount - 1].Show;
+//  end;
 end;
 
 procedure TMainForm.actDeleteLastDocumentUpdate(Sender: TObject);
-var
-  b: Boolean;
+//var
+//  b: Boolean;
 begin
-  b := False;
-  if Assigned(FBox) then
-  begin
-    b := FBox.DocumentCount > 0;
-  end;
-  actDeleteLastDocument.Enabled := b;
+//  b := False;
+//  if Assigned(FBox) then
+//  begin
+//    b := FBox.DocumentCount > 0;
+//  end;
+//  actDeleteLastDocument.Enabled := b;
 end;
 
 procedure TMainForm.actTestLogicExecute(Sender: TObject);
-var
-  ac: IArchiveCompany;
-  doc: IDocument;
+//var
+//  ac: IArchiveCompany;
+//  doc: IDocument;
 begin
-  Logic.Connection.Connected := True;
-  try
-    ShowMessage(IntToStr(Logic.GetBoxCapacity(1)));
-    ShowMessage(IntToStr(Logic.GetOpenedBoxQuantity(FBox.Document[FBox.DocumentCount - 1])));
-    Logic.TryAddDocument(FBox.Document[FBox.DocumentCount - 1]);
-    doc := FBox.Document[FBox.DocumentCount - 1];
-    if doc is TCustomBSO then
-    begin
-      ac := Logic.ArchiveCompanies.GetItemById((doc as TCustomBSO).CompanyId);
-      if Assigned(ac) then
-      begin
-        ShowMessage(ac.Code);
-      end;
-    end;
-  finally
-    Logic.Connection.Connected := False;
-  end;
+//  Logic.Connection.Connected := True;
+//  try
+//    ShowMessage(IntToStr(Logic.GetBoxCapacity(1)));
+//    ShowMessage(IntToStr(Logic.GetOpenedBoxQuantity(FBox.Document[FBox.DocumentCount - 1])));
+//    Logic.TryAddDocument(FBox.Document[FBox.DocumentCount - 1]);
+//    doc := FBox.Document[FBox.DocumentCount - 1];
+//    if doc is TCustomBSO then
+//    begin
+//      ac := Logic.ArchiveCompanies.GetItemById((doc as TCustomBSO).CompanyId);
+//      if Assigned(ac) then
+//      begin
+//        ShowMessage(ac.Code);
+//      end;
+//    end;
+//  finally
+//    Logic.Connection.Connected := False;
+//  end;
 end;
 
 procedure TMainForm.actTestLogicUpdate(Sender: TObject);
-var
-  b: Boolean;
+//var
+//  b: Boolean;
 begin
-  b := False;
-  if Assigned(FBox) then
-  begin
-    b := FBox.DocumentCount > 0;
-  end;
-  actTestLogic.Enabled := b;
+//  b := False;
+//  if Assigned(FBox) then
+//  begin
+//    b := FBox.DocumentCount > 0;
+//  end;
+//  actTestLogic.Enabled := b;
 end;
 
 end.

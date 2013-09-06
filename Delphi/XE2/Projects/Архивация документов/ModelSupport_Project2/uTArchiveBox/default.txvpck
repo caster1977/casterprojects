@@ -4,7 +4,7 @@
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
-    <reference referencedUin="delphi:e_class:src:Project2:uTArchiveBox.TAcriveBox">
+    <reference referencedUin="delphi:e_class:src:Project2:uTArchiveBox.TArchiveBox">
       <property name="$shortcutReference" value="true" />
       <property name="bounds" value="10,10,198,774" />
       <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TAcriveBox.FId" />
@@ -52,6 +52,36 @@
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.DeleteLastDocument()" />
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.Create()" />
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.Destroy()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetName()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.Name" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FTypeId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetTypeId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetTypeId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.TypeId" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FTypeName" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetTypeName()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetTypeName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.TypeName" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FBarcode" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetBarcode()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetBarcode(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.Barcode" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FYear" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetYear()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetYear(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.Year" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FNumber" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetNumber()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetNumber(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.Number" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FCompanyId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetCompanyId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetCompanyId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.CompanyId" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FCompanyName" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetCompanyName()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetCompanyName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.CompanyName" />
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uTArchiveBox.@unitclass">
       <property name="$shortcutReference" value="true" />

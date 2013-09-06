@@ -2,7 +2,7 @@
 <nodeSet version="1.0">
   <view uin="rzhxa7b2jrr_v">
     <property name="$metaclass" value="Class Diagram" />
-    <property name="$name" value="Class Diagram" />
+    <property name="$name" value="Items Diagram" />
     <reference referencedUin="delphi:e_class:src:Project2:uIArchiveCompany.IArchiveCompany">
       <property name="$shortcutReference" value="true" />
       <property name="bounds" value="620,160,228,98" />

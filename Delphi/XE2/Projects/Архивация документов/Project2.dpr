@@ -39,7 +39,9 @@ uses
   uTLoadableListClass in 'uTLoadableListClass.pas',
   uTShipmentBSOList in 'uTShipmentBSOList.pas',
   uTShipmentBSOWithActList in 'uTShipmentBSOWithActList.pas',
-  uTDamagedBSOList in 'uTDamagedBSOList.pas';
+  uTDamagedBSOList in 'uTDamagedBSOList.pas',
+  uIDocumentBox in 'uIDocumentBox.pas',
+  uTDocumentBox in 'uTDocumentBox.pas';
 
 {$R *.res}
 
