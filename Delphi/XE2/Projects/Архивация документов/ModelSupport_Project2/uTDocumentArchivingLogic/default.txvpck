@@ -12,6 +12,8 @@
       <reference referencedUin="delphi:e_method:src:Project2:uTDocumentArchivingLogic.TDocumentArchivingLogic.GetBoxCapacity(uIArchiveBox.IArchiveBox)" />
       <reference referencedUin="delphi:e_field:src:Project2:uTDocumentArchivingLogic.TDocumentArchivingLogic.FCurrentBox" />
       <reference referencedUin="delphi:e_method:src:Project2:uTDocumentArchivingLogic.TDocumentArchivingLogic.TryAddDocument(uIDocument.IDocument)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTDocumentArchivingLogic.TDocumentArchivingLogic.GetCurrentBox()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTDocumentArchivingLogic.TDocumentArchivingLogic.CurrentBox" />
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uTDocumentArchivingLogic.@unitclass">
       <property name="$shortcutReference" value="true" />

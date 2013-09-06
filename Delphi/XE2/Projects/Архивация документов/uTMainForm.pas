@@ -15,7 +15,7 @@ uses
   Vcl.StdCtrls,
   uIArchiveBox,
   Vcl.ExtCtrls,
-  uTCustomDocumentClass,
+  uTDocumentClass,
   System.Actions,
   Vcl.ActnList,
   Data.DB,
@@ -53,7 +53,7 @@ type
     function GetLogic: IBSOArchivingLogic;
     property Logic: IBSOArchivingLogic read GetLogic nodefault;
   private
-    procedure AddAndShowDocument(const ADocumentClass: TCustomDocumentClass;
+    procedure AddAndShowDocument(const ADocumentClass: TDocumentClass;
       const AParent: TCustomControl);
     procedure DisplayMessage(const AType: TMessageType; const AText: string);
   private
@@ -102,7 +102,7 @@ begin
   AddAndShowDocument(TShipmentBSOWithAct, GroupBox1);
 end;
 
-procedure TMainForm.AddAndShowDocument(const ADocumentClass: TCustomDocumentClass;
+procedure TMainForm.AddAndShowDocument(const ADocumentClass: TDocumentClass;
   const AParent: TCustomControl);
 var
   i: Integer;
@@ -116,11 +116,11 @@ begin
   begin
     Logic.Connection.Connected := True;
     try
-      FBox.Documents[i].Load(Logic.Connection);
+      //FBox.Documents[i].Load(Logic.Connection);
     finally
       Logic.Connection.Connected := False;
     end;
-    FBox.Documents[i].Show(AParent);
+    FBox.Document[i].Show(AParent);
     AutoSize := True;
   end;
 end;
@@ -152,7 +152,7 @@ begin
   FBox.DeleteLastDocument;
   if FBox.DocumentCount > 0 then
   begin
-    FBox.Documents[FBox.DocumentCount - 1].Show;
+    FBox.Document[FBox.DocumentCount - 1].Show;
   end;
 end;
 
@@ -176,12 +176,12 @@ begin
   Logic.Connection.Connected := True;
   try
     ShowMessage(IntToStr(Logic.GetBoxCapacity(1)));
-    ShowMessage(IntToStr(Logic.GetOpenedBoxQuantity(FBox.Documents[FBox.DocumentCount - 1])));
-    Logic.TryAddDocument(FBox.Documents[FBox.DocumentCount - 1]);
-    doc := FBox.Documents[FBox.DocumentCount - 1];
+    ShowMessage(IntToStr(Logic.GetOpenedBoxQuantity(FBox.Document[FBox.DocumentCount - 1])));
+    Logic.TryAddDocument(FBox.Document[FBox.DocumentCount - 1]);
+    doc := FBox.Document[FBox.DocumentCount - 1];
     if doc is TCustomBSO then
     begin
-      ac := Logic.ArchiveCompanies.GetArchiveCompanyById((doc as TCustomBSO).CompanyId);
+      ac := Logic.ArchiveCompanies.GetItemById((doc as TCustomBSO).CompanyId);
       if Assigned(ac) then
       begin
         ShowMessage(ac.Code);

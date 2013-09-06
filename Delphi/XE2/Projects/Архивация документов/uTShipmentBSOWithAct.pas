@@ -3,8 +3,8 @@ unit uTShipmentBSOWithAct;
 interface
 
 uses
-  Vcl.Controls,
-  Data.DB,
+  Controls,
+  DB,
   uTCustomBSO;
 
 type
@@ -16,12 +16,10 @@ type
   public
     property ActId: Integer read GetActId write SetActId nodefault;
 
-  protected
-    procedure Initialize; override;
   public
-    function GetLoadSQL: string; override;
-    procedure Load(const ADataSet: TDataSet); override;
-    procedure Show(const AParentControl: TCustomControl); override;
+    constructor Create; override; final;
+    procedure Load(const ADataSet: TDataSet); override; final;
+    procedure Show(const AParentControl: TCustomControl); override; final;
   end;
 
 implementation
@@ -30,20 +28,17 @@ uses
   SysUtils,
   uCommonRoutines;
 
-procedure TShipmentBSOWithAct.Initialize;
+function TShipmentBSOWithAct.GetActId: Integer;
 begin
-  inherited;
-  AddVisualizableField('Компания:', 'CompanyName');
-  AddVisualizableField('Тип документа:', 'TypeName');
-  AddVisualizableField('Серия:', 'Series');
-  AddVisualizableField('Номер:', 'Number');
-  AddVisualizableField('Штрих-код:', 'Barcode');
+  Result := FActId;
 end;
 
-function TShipmentBSOWithAct.GetLoadSQL: string;
+procedure TShipmentBSOWithAct.SetActId(const AValue: Integer);
 begin
-  Result := 'SELECT 1 AS Id, 2 AS ArchiveBoxId, 3 AS TypeId, 4 AS TypeName, ' +
-    '5 AS Barcode, 6 AS CompanyId, 7 AS CompanyName, 8 AS Series, 9 AS Number, 10 AS ActId';
+  if FActId <> AValue then
+  begin
+    FActId := AValue;
+  end;
 end;
 
 procedure TShipmentBSOWithAct.Load(const ADataSet: TDataSet);
@@ -61,17 +56,14 @@ begin
   SetLabelCaption(FParentControl, 'lblDocumentActId', IntToStr(ActId));
 end;
 
-function TShipmentBSOWithAct.GetActId: Integer;
+constructor TShipmentBSOWithAct.Create;
 begin
-  Result := FActId;
-end;
-
-procedure TShipmentBSOWithAct.SetActId(const AValue: Integer);
-begin
-  if FActId <> AValue then
-  begin
-    FActId := AValue;
-  end;
+  inherited;
+  AddVisualizableField('Компания:', 'CompanyName');
+  AddVisualizableField('Тип документа:', 'TypeName');
+  AddVisualizableField('Серия:', 'Series');
+  AddVisualizableField('Номер:', 'Number');
+  AddVisualizableField('Штрих-код:', 'Barcode');
 end;
 
 end.

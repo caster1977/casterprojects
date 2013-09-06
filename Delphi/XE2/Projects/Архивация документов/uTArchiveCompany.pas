@@ -4,10 +4,11 @@ interface
 
 uses
   uIArchiveCompany,
+  uTLoadableItem,
   DB;
 
 type
-  TArchiveCompany = class(TInterfacedObject, IArchiveCompany)
+  TArchiveCompany = class sealed(TLoadableItem, IArchiveCompany)
   private
     FId: Integer;
     function GetId: Integer;
@@ -21,10 +22,8 @@ type
     property Code: string read GetCode;
 
   public
-    procedure Load(const ADataSet: TDataSet);
-
-  public
-    constructor Create;
+    constructor Create; override; final;
+    procedure Load(const ADataSet: TDataSet); override; final;
   end;
 
 implementation

@@ -76,7 +76,7 @@ type
     FDocuments: IInterfaceList;
     function GetDocument(const AIndex: Integer): IDocument;
   public
-    property Documents[const AIndex: Integer]: IDocument read GetDocument; default;
+    property Document[const AIndex: Integer]: IDocument read GetDocument; default;
   private
     function GetDocumentCount: Integer;
   public

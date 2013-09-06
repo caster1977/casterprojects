@@ -3,14 +3,14 @@ unit uTCustomBSO;
 interface
 
 uses
-  System.Classes,
-  Data.DB,
+  Classes,
+  DB,
   Vcl.Controls,
   uIDocument,
-  uTCustomDocument;
+  uTDocument;
 
 type
-  TCustomBSO = class abstract(TCustomDocument)
+  TCustomBSO = class abstract(TDocument)
   private
     FBarcode: string;
     function GetBarcode: string;
@@ -46,10 +46,8 @@ type
   public
     property Number: string read GetNumber write SetNumber nodefault;
 
-  protected
-    procedure Initialize; override;
-
   public
+    constructor Create; override;
     procedure Load(const ADataSet: TDataSet); override;
     procedure Show(const AParentControl: TCustomControl); override;
   end;
@@ -59,6 +57,16 @@ implementation
 uses
   SysUtils,
   uCommonRoutines;
+
+constructor TCustomBSO.Create;
+begin
+  inherited;
+  Barcode := EmptyStr;
+  CompanyId := -1;
+  CompanyName := EmptyStr;
+  Series := EmptyStr;
+  Number := EmptyStr;
+end;
 
 function TCustomBSO.GetBarcode: string;
 begin
@@ -135,16 +143,6 @@ begin
   begin
     FSeries := s;
   end;
-end;
-
-procedure TCustomBSO.Initialize;
-begin
-  inherited;
-  Barcode := EmptyStr;
-  CompanyId := -1;
-  CompanyName := EmptyStr;
-  Series := EmptyStr;
-  Number := EmptyStr;
 end;
 
 procedure TCustomBSO.Load(const ADataSet: TDataSet);

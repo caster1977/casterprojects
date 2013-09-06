@@ -19,9 +19,9 @@
       <reference referencedUin="delphi:e_method:src:Project2:uTDamagedBSO.TDamagedBSO.SetCauseOfDamageName(System.string)" />
       <reference referencedUin="delphi:e_property:src:Project2:uTDamagedBSO.TDamagedBSO.CauseOfDamageName" />
       <reference referencedUin="delphi:e_method:src:Project2:uTDamagedBSO.TDamagedBSO.Initialize()" />
-      <reference referencedUin="delphi:e_method:src:Project2:uTDamagedBSO.TDamagedBSO.GetLoadSQL()" />
       <reference referencedUin="delphi:e_method:src:Project2:uTDamagedBSO.TDamagedBSO.Load(Data.DB.TDataSet)" />
       <reference referencedUin="delphi:e_method:src:Project2:uTDamagedBSO.TDamagedBSO.Show(Vcl.Controls.TCustomControl)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTDamagedBSO.TDamagedBSO.Create()" />
     </reference>
   </view>
 </nodeSet>

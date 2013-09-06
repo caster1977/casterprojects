@@ -10,6 +10,12 @@
       <reference referencedUin="delphi:e_method:src:Project2:uIDocument.ICustomDocument.Load(Data.Win.ADODB.TADOConnection)" />
       <reference referencedUin="delphi:e_method:src:Project2:uIDocument.ICustomDocument.Load(Data.SqlExpr.TSQLConnection)" />
       <reference referencedUin="delphi:e_method:src:Project2:uIDocument.ICustomDocument.Show(Vcl.Controls.TCustomControl)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocument.IDocument.Load(Data.DB.TCustomConnection)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocument.IDocument.Load(Data.DB.TDataSet)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocument.IDocument.Show(Vcl.Controls.TCustomControl)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocument.IDocument.GetId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocument.IDocument.SetId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIDocument.IDocument.Id" />
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uIDocument.@unitclass">
       <property name="$shortcutReference" value="true" />

@@ -8,7 +8,9 @@
       <property name="$shortcutReference" value="true" />
       <property name="bounds" value="10,10,145,113" />
       <reference referencedUin="delphi:e_method:src:Project2:uTShipmentBSO.TShipmentBSO.Initialize()" />
-      <reference referencedUin="delphi:e_method:src:Project2:uTShipmentBSO.TShipmentBSO.GetLoadSQL()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTShipmentBSO.TShipmentBSO.Create()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTShipmentBSO.TShipmentBSO.Load(Data.DB.TDataSet)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTShipmentBSO.TShipmentBSO.Show(Vcl.Controls.TCustomControl)" />
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uTShipmentBSO.@unitclass">
       <property name="$shortcutReference" value="true" />
