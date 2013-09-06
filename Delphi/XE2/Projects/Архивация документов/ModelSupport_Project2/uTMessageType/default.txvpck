@@ -4,5 +4,16 @@
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:Project2:uTMessageType.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uTMessageType.TMessageType">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,103,113" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTMessageType.TMessageType.mtNone" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTMessageType.TMessageType.mtInfo" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTMessageType.TMessageType.mtSuccess" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTMessageType.TMessageType.mtError" />
+    </reference>
   </view>
 </nodeSet>

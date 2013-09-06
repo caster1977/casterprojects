@@ -3,13 +3,12 @@ unit uIArchiveCompanies;
 interface
 
 uses
-  DB,
+  uILoadableList,
   uIArchiveCompany;
 
 type
-  IArchiveCompanies = interface
-  ['{4F99D11B-9566-4B7A-B728-B9FB97C6E9D8}']
-
+  IArchiveCompanies = interface(ILoadableList)
+    ['{4F99D11B-9566-4B7A-B728-B9FB97C6E9D8}']
     ///	<summary>
     ///	  Функция получения ссылки на компанию с указанным идентификатором
     ///	</summary>
@@ -19,15 +18,7 @@ type
     ///	<returns>
     ///	  Компания
     ///	</returns>
-    function GetArchiveCompanyById(const AId: Integer): IArchiveCompany;
-
-    ///	<summary>
-    ///	  Процедура загрузки списка из базы данных
-    ///	</summary>
-    ///	<param name="AConnection">
-    ///	  Объект подключения к базе данных
-    ///	</param>
-    procedure Load(const AConnection: TCustomConnection); overload;
+    function GetItemById(const AId: Integer): IArchiveCompany;
 
     function GetItem(const AIndex: Integer): IArchiveCompany;
 

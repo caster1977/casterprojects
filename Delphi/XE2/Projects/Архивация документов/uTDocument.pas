@@ -1,9 +1,10 @@
-unit uTCustomDocument;
+unit uTDocument;
 
 interface
 
 uses
   Classes,
+  uTLoadableItem,
   Controls,
   ADODB,
   SqlExpr,
@@ -11,7 +12,7 @@ uses
   uIDocument;
 
 type
-  TCustomDocument = class abstract(TInterfacedObject, IDocument)
+  TDocument = class abstract(TLoadableItem, IDocument)
   private
     FId: Integer;
     function GetId: Integer;
@@ -36,13 +37,8 @@ type
     procedure SetTypeName(const AValue: string);
   public
     property TypeName: string read GetTypeName write SetTypeName nodefault;
-  protected
-    procedure Initialize; virtual;
-    procedure Finalize; virtual;
-    function GetLoadSQL: string; virtual; abstract;
   public
-    procedure Load(const AConnection: TCustomConnection); overload;
-    procedure Load(const ADataSet: TDataSet); overload; virtual;
+    procedure Load(const ADataSet: TDataSet); override;
   protected
     procedure AddVisualizableField(const ACaption, AName: string);
     procedure ClearVisualizableFields;
@@ -52,7 +48,7 @@ type
   public
     procedure Show(const AParentControl: TCustomControl = nil); virtual;
   public
-    constructor Create; virtual;
+    constructor Create; override;
     destructor Destroy; override;
   private
     procedure ClearParentControl;
@@ -68,31 +64,27 @@ uses
   uIDocumentField,
   uTDocumentField;
 
-procedure TCustomDocument.Finalize;
-begin
-end;
-
-function TCustomDocument.GetArchiveBoxId: Integer;
+function TDocument.GetArchiveBoxId: Integer;
 begin
   Result := FArchiveBoxId;
 end;
 
-function TCustomDocument.GetId: Integer;
+function TDocument.GetId: Integer;
 begin
   Result := FId;
 end;
 
-function TCustomDocument.GetTypeId: Integer;
+function TDocument.GetTypeId: Integer;
 begin
   Result := FTypeId;
 end;
 
-function TCustomDocument.GetTypeName: string;
+function TDocument.GetTypeName: string;
 begin
   Result := FTypeName;
 end;
 
-procedure TCustomDocument.SetArchiveBoxId(const AValue: Integer);
+procedure TDocument.SetArchiveBoxId(const AValue: Integer);
 begin
   if FArchiveBoxId <> AValue then
   begin
@@ -100,7 +92,7 @@ begin
   end;
 end;
 
-procedure TCustomDocument.SetId(const AValue: Integer);
+procedure TDocument.SetId(const AValue: Integer);
 begin
   if FId <> AValue then
   begin
@@ -108,7 +100,7 @@ begin
   end;
 end;
 
-procedure TCustomDocument.SetTypeId(const AValue: Integer);
+procedure TDocument.SetTypeId(const AValue: Integer);
 begin
   if FTypeId <> AValue then
   begin
@@ -116,7 +108,7 @@ begin
   end;
 end;
 
-procedure TCustomDocument.SetTypeName(const AValue: string);
+procedure TDocument.SetTypeName(const AValue: string);
 var
   s: string;
 begin
@@ -127,22 +119,17 @@ begin
   end;
 end;
 
-procedure TCustomDocument.Initialize;
+constructor TDocument.Create;
 begin
+  inherited;
+  FParentControl := nil;
   Id := -1;
   ArchiveBoxId := -1;
   TypeId := -1;
   TypeName := EmptyStr;
 end;
 
-constructor TCustomDocument.Create;
-begin
-  inherited;
-  FParentControl := nil;
-  Initialize;
-end;
-
-procedure TCustomDocument.Load(const ADataSet: TDataSet);
+procedure TDocument.Load(const ADataSet: TDataSet);
 begin
   if Assigned(ADataSet) then
   begin
@@ -153,7 +140,7 @@ begin
   end;
 end;
 
-procedure TCustomDocument.ClearParentControl;
+procedure TDocument.ClearParentControl;
 var
   i: Integer;
   c: TControl;
@@ -170,7 +157,7 @@ begin
   FParentControl := nil;
 end;
 
-procedure TCustomDocument.Show(const AParentControl: TCustomControl);
+procedure TDocument.Show(const AParentControl: TCustomControl);
 var
   l1, l2: TLabel;
   j: Integer;
@@ -249,7 +236,7 @@ begin
   SetLabelCaption(FParentControl, 'lblDocumentArchiveBoxId', IntToStr(ArchiveBoxId));
 end;
 
-procedure TCustomDocument.AddVisualizableField(const ACaption, AName: string);
+procedure TDocument.AddVisualizableField(const ACaption, AName: string);
 var
   f: IDocumentField;
 begin
@@ -264,7 +251,7 @@ begin
   end;
 end;
 
-procedure TCustomDocument.ClearVisualizableFields;
+procedure TDocument.ClearVisualizableFields;
 begin
   if Assigned(FVisualizableFields) then
   begin
@@ -272,47 +259,11 @@ begin
   end;
 end;
 
-destructor TCustomDocument.Destroy;
+destructor TDocument.Destroy;
 begin
-  Finalize;
   ClearParentControl;
   ClearVisualizableFields;
   inherited;
-end;
-
-procedure TCustomDocument.Load(const AConnection: TCustomConnection);
-var
-  ds: TDataSet;
-begin
-  if Assigned(AConnection) then
-  begin
-    if AConnection.Connected then
-    begin
-      if AConnection is TADOConnection then
-      begin
-        ds := TADOQuery.Create(nil);
-        (ds as TADOQuery).Connection := AConnection as TADOConnection;
-        (ds as TADOQuery).CommandTimeout := 60000;
-        (ds as TADOQuery).LockType := ltReadOnly;
-        (ds as TADOQuery).CursorType := ctOpenForwardOnly;
-      end
-      else
-      begin
-        ds := TSQLQuery.Create(nil);
-        (ds as TSQLQuery).SQLConnection := AConnection as TSQLConnection;
-      end;
-      try
-        SetSQL(ds, GetLoadSQL, True);
-        try
-          Load(ds);
-        finally
-          ds.Close;
-        end;
-      finally
-        FreeAndNil(ds);
-      end;
-    end;
-  end;
 end;
 
 end.

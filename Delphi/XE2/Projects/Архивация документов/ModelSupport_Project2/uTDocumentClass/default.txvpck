@@ -4,10 +4,10 @@
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
-    <reference referencedUin="delphi:e_class:src:Project2:uTCustomDocumentClass.@unitclass">
+    <reference referencedUin="delphi:e_class:src:Project2:uTDocumentClass.@unitclass">
       <property name="$shortcutReference" value="true" />
     </reference>
-    <reference referencedUin="delphi:e_class:src:Project2:uTCustomDocumentClass.TCustomDocumentClass">
+    <reference referencedUin="delphi:e_class:src:Project2:uTDocumentClass.TCustomDocumentClass">
       <property name="$shortcutReference" value="true" />
       <property name="bounds" value="10,10,157,67" />
     </reference>

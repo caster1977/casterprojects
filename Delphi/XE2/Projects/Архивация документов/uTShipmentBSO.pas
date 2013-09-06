@@ -3,25 +3,21 @@ unit uTShipmentBSO;
 interface
 
 uses
+  DB,
+  Controls,
   uTCustomBSO;
 
 type
   TShipmentBSO = class sealed(TCustomBSO)
-  protected
-    procedure Initialize; override;
   public
-    function GetLoadSQL: string; override;
+    constructor Create; override; final;
+    procedure Load(const ADataSet: TDataSet); override; final;
+    procedure Show(const AParentControl: TCustomControl); override; final;
   end;
 
 implementation
 
-function TShipmentBSO.GetLoadSQL: string;
-begin
-  Result := 'SELECT 1 AS Id, 2 AS ArchiveBoxId, 3 AS TypeId, 4 AS TypeName, ' +
-    '5 AS Barcode, 7 AS CompanyId, 6 AS CompanyName, 8 AS Series, 9 AS Number';
-end;
-
-procedure TShipmentBSO.Initialize;
+constructor TShipmentBSO.Create;
 begin
   inherited;
   AddVisualizableField('Компания:', 'CompanyName');
@@ -29,6 +25,16 @@ begin
   AddVisualizableField('Серия:', 'Series');
   AddVisualizableField('Номер:', 'Number');
   AddVisualizableField('Штрих-код:', 'Barcode');
+end;
+
+procedure TShipmentBSO.Load(const ADataSet: TDataSet);
+begin
+  inherited;
+end;
+
+procedure TShipmentBSO.Show(const AParentControl: TCustomControl);
+begin
+  inherited;
 end;
 
 end.

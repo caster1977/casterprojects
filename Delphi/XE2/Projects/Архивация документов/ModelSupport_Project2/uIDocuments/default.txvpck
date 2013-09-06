@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="3jtgjeoffai0l2w4m_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:Project2:uIDocuments.IDocuments">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,158,127" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocuments.IDocuments.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIDocuments.IDocuments.Items[System.Integer]" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocuments.IDocuments.GetItemById(System.Integer)" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uIDocuments.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+  </view>
+</nodeSet>

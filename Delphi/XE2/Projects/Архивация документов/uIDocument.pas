@@ -4,23 +4,18 @@ interface
 
 uses
   Controls,
-  DB,
-  SqlExpr,
-  ADODB;
+  uILoadableItem;
 
 type
-  IDocument = interface
+  IDocument = interface(ILoadableItem)
     ['{90EEBE6E-BE2C-41DC-B186-079F95C9B558}']
+    function GetId: Integer;
+    procedure SetId(const AValue: Integer);
 
     /// <summary>
-    /// Процедура загрузки данных для заполнения полей объекта
+    /// Идентификатор документа
     /// </summary>
-    procedure Load(const AConnection: TCustomConnection); overload;
-
-    /// <summary>
-    /// Процедура загрузки данных для заполнения полей объекта
-    /// </summary>
-    procedure Load(const ADataSet: TDataSet); overload;
+    property Id: Integer read GetId write SetId;
 
     /// <summary>
     /// Процедура отображения данных объекта

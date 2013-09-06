@@ -5,14 +5,14 @@ uses
   uTMainForm in 'uTMainForm.pas' {MainForm},
   uTCustomBSO in 'uTCustomBSO.pas',
   uIDocument in 'uIDocument.pas',
-  uTCustomDocument in 'uTCustomDocument.pas',
+  uTDocument in 'uTDocument.pas',
   uTDamagedBSO in 'uTDamagedBSO.pas',
   uIArchiveBox in 'uIArchiveBox.pas',
   uTArchiveBox in 'uTArchiveBox.pas',
   uCommonRoutines in 'uCommonRoutines.pas',
   uTDocumentField in 'uTDocumentField.pas',
   uIDocumentField in 'uIDocumentField.pas',
-  uTCustomDocumentClass in 'uTCustomDocumentClass.pas',
+  uTDocumentClass in 'uTDocumentClass.pas',
   uTShipmentBSO in 'uTShipmentBSO.pas',
   uTShipmentBSOWithAct in 'uTShipmentBSOWithAct.pas',
   uTCustomBusinessLogic in 'uTCustomBusinessLogic.pas',
@@ -26,7 +26,20 @@ uses
   uIArchiveCompany in 'uIArchiveCompany.pas',
   uTArchiveCompany in 'uTArchiveCompany.pas',
   uTArchiveCompanies in 'uTArchiveCompanies.pas',
-  uIArchiveCompanies in 'uIArchiveCompanies.pas';
+  uIArchiveCompanies in 'uIArchiveCompanies.pas',
+  uIDocuments in 'uIDocuments.pas',
+  uTDocuments in 'uTDocuments.pas',
+  uICustomList in 'uICustomList.pas',
+  uTCustomList in 'uTCustomList.pas',
+  uILoadableItem in 'uILoadableItem.pas',
+  uILoadableList in 'uILoadableList.pas',
+  uTLoadableList in 'uTLoadableList.pas',
+  uTLoadableItemClass in 'uTLoadableItemClass.pas',
+  uTLoadableItem in 'uTLoadableItem.pas',
+  uTLoadableListClass in 'uTLoadableListClass.pas',
+  uTShipmentBSOList in 'uTShipmentBSOList.pas',
+  uTShipmentBSOWithActList in 'uTShipmentBSOWithActList.pas',
+  uTDamagedBSOList in 'uTDamagedBSOList.pas';
 
 {$R *.res}
 

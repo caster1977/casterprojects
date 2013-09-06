@@ -108,7 +108,7 @@ type
     /// <param name="AIndex">
     /// Индекс документа в коробе
     /// </param>
-    property Documents[const AIndex: Integer]: IDocument read GetDocument; default;
+    property Document[const AIndex: Integer]: IDocument read GetDocument; default;
 
     function GetDocumentCount: Integer;
 
