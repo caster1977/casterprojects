@@ -123,11 +123,12 @@
         <DCCReference Include="uTShipmentBSOList.pas"/>
         <DCCReference Include="uTShipmentBSOWithActList.pas"/>
         <DCCReference Include="uTDamagedBSOList.pas"/>
+        <DCCReference Include="uIDocumentBox.pas"/>
+        <DCCReference Include="uTDocumentBox.pas"/>
         <None Include="ModelSupport_Project2\default.txaPackage"/>
         <None Include="ModelSupport_Project2\default.txvpck"/>
         <None Include="ModelSupport_Project2\Project2\default.txvpck"/>
         <None Include="ModelSupport_Project2\uTDamagedBSO\default.txvpck"/>
-        <None Include="ModelSupport_Project2\Unit3\default.txvpck"/>
         <None Include="ModelSupport_Project2\uIArchiveBox\default.txvpck"/>
         <None Include="ModelSupport_Project2\uIArchiveBox\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uTArchiveBox\default.txaPackage"/>
@@ -144,7 +145,6 @@
         <None Include="ModelSupport_Project2\uTShipmentBSOWithAct\default.txvpck"/>
         <None Include="ModelSupport_Project2\uTMessageType\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uTMessageType\default.txvpck"/>
-        <None Include="ModelSupport_Project2\Unit3\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uTCustomBSO\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uTCustomBSO\default.txvpck"/>
         <None Include="ModelSupport_Project2\uTCustomBusinessLogic\default.txaPackage"/>
@@ -199,13 +199,17 @@
         <None Include="ModelSupport_Project2\uTLoadableListClass\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uTLoadableListClass\default.txvpck"/>
         <None Include="ModelSupport_Project2\Logic Diagram.txvcls"/>
-        <None Include="ModelSupport_Project2\Class Diagram.txvcls"/>
         <None Include="ModelSupport_Project2\uTShipmentBSOList\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uTShipmentBSOList\default.txvpck"/>
         <None Include="ModelSupport_Project2\uTShipmentBSOWithActList\default.txvpck"/>
         <None Include="ModelSupport_Project2\uTShipmentBSOWithActList\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uTDamagedBSOList\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uTDamagedBSOList\default.txvpck"/>
+        <None Include="ModelSupport_Project2\uIDocumentBox\default.txaPackage"/>
+        <None Include="ModelSupport_Project2\uIDocumentBox\default.txvpck"/>
+        <None Include="ModelSupport_Project2\Items Diagram.txvcls"/>
+        <None Include="ModelSupport_Project2\uTDocumentBox\default.txaPackage"/>
+        <None Include="ModelSupport_Project2\uTDocumentBox\default.txvpck"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

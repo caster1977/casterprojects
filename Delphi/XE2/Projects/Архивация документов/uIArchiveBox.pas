@@ -6,22 +6,13 @@ unit uIArchiveBox;
 interface
 
 uses
-  uIDocument;
+  uIDocument,
+  uIDocumentBox,
+  uILoadableList;
 
 type
-  /// <summary>
-  /// Интерфейс "<b>Архивный короб</b>"
-  /// </summary>
-  IArchiveBox = interface
+  IArchiveBox = interface(IDocumentBox)
     ['{C2984458-D3DF-4EB2-9D28-8756E9DD51F4}']
-    function GetId: Integer;
-    procedure SetId(const AValue: Integer);
-
-    /// <summary>
-    /// Идентификатор архивного короба
-    /// </summary>
-    property Id: Integer read GetId write SetId;
-
     function GetName: string;
 
     ///	<summary>
@@ -87,35 +78,6 @@ type
     /// Наименование компании короба
     /// </summary>
     property CompanyName: string read GetCompanyName write SetCompanyName;
-
-    /// <summary>
-    /// Функция добавления документа в короб
-    /// </summary>
-    /// <param name="AValue">
-    /// Документ
-    /// </param>
-    function AddDocument(const AValue: IDocument): Integer;
-    /// <summary>
-    /// Процедура удаления последнего документа из короба
-    /// </summary>
-    procedure DeleteLastDocument;
-
-    function GetDocument(const AIndex: Integer): IDocument;
-
-    /// <summary>
-    /// Список документов в коробе
-    /// </summary>
-    /// <param name="AIndex">
-    /// Индекс документа в коробе
-    /// </param>
-    property Document[const AIndex: Integer]: IDocument read GetDocument; default;
-
-    function GetDocumentCount: Integer;
-
-    /// <summary>
-    /// Количество документов в коробе
-    /// </summary>
-    property DocumentCount: Integer read GetDocumentCount;
   end;
 
 implementation
