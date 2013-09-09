@@ -394,5 +394,14 @@
       <reference referencedUin="delphi:e_class:src:Project2:uTDocumentBox.TDocumentBox" />
       <reference referencedUin="delphi:e_class:src:Project2:uTDocumentBox.@unitclass" />
     </reference>
+    <reference referencedUin="design:view:::6gmc9wcf8uk_v">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="design:view:::4rr6rqe75fkddpnp_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="@__package_fqn" value="uTDocumentListClass" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTDocumentListClass.TDocumentListClass" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTDocumentListClass.@unitclass" />
+    </reference>
   </view>
 </nodeSet>

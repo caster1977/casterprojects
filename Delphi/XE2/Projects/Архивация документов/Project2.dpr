@@ -41,7 +41,8 @@ uses
   uTShipmentBSOWithActList in 'uTShipmentBSOWithActList.pas',
   uTDamagedBSOList in 'uTDamagedBSOList.pas',
   uIDocumentBox in 'uIDocumentBox.pas',
-  uTDocumentBox in 'uTDocumentBox.pas';
+  uTDocumentBox in 'uTDocumentBox.pas',
+  uTDocumentListClass in 'uTDocumentListClass.pas';
 
 {$R *.res}
 

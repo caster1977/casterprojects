@@ -3,11 +3,12 @@ unit uTDocumentBox;
 interface
 
 uses
-  utloadableitem,
-  uidocuments,
-  uidocument,
+  DB,
+  uTLoadableItem,
+  uIDocuments,
+  uIDocument,
   uIDocumentBox,
-  uTDocumentClass;
+  uTDocumentListClass;
 
 type
   TDocumentBox = class abstract(TLoadableItem, IDocumentBox)
@@ -18,58 +19,49 @@ type
   public
     property Id: Integer read GetId write SetId;
 
+  public
+    procedure Load(const ADataSet: TDataSet); override;
+
   private
+    FDocuments: IDocuments;
     function GetDocuments: IDocuments;
   public
     property Documents: IDocuments read GetDocuments;
 
-  public
-    function AddDocument(const AValue: IDocument): Integer;
-    procedure DeleteLastDocument;
   private
-    FDocumentClass: TDocumentClass;
+    FConnection: TCustomConnection;
+    function GetConnection: TCustomConnection;
   protected
-    constructor Create(const ADocumentClass: TDocumentClass); override;
+    property Connection: TCustomConnection read GetConnection nodefault;
+  public
+    constructor Create(const AConnection: TCustomConnection;
+      const ADocumentsClass: TDocumentListClass); reintroduce; virtual;
+
+  private
+    FDocumentsClass: TDocumentListClass;
+    function GetDocumentsClass: TDocumentListClass;
+  protected
+    property DocumentsClass: TDocumentListClass read GetDocumentsClass nodefault;
   end;
 
 implementation
 
-function TDocumentBox.AddDocument(const AValue: IDocument): Integer;
-begin
-//  Result := -1;
-//  if Assigned(AValue) then
-//  begin
-//    if not Assigned(FDocuments) then
-//    begin
-//      FDocuments := TInterfaceList.Create;
-//    end;
-//    if Assigned(FDocuments) then
-//    begin
-//      Result := FDocuments.Add(AValue);
-//    end;
-//  end;
-end;
-
-constructor TDocumentBox.Create;
-begin
-  inherited;
-  FId := -1;
-end;
-
-procedure TDocumentBox.DeleteLastDocument;
-begin
-//  if Assigned(FDocuments) then
-//  begin
-//    if FDocuments.Count > 0 then
-//    begin
-//      FDocuments.Delete(FDocuments.Count - 1);
-//    end;
-//  end;
-end;
-
 function TDocumentBox.GetId: Integer;
 begin
   Result := FId;
+end;
+
+procedure TDocumentBox.Load(const ADataSet: TDataSet);
+begin
+  inherited;
+  if Assigned(ADataSet) then
+  begin
+    Id := ADataSet.FieldByName('Id').AsInteger;
+    if Assigned(Connection) then
+    begin
+      Documents.Load(Connection);
+    end;
+  end;
 end;
 
 procedure TDocumentBox.SetId(const AValue: Integer);
@@ -80,12 +72,33 @@ begin
   end;
 end;
 
+function TDocumentBox.GetDocumentsClass: TDocumentListClass;
+begin
+  Result := FDocumentsClass;
+end;
+
+constructor TDocumentBox.Create(const AConnection: TCustomConnection;
+  const ADocumentsClass: TDocumentListClass);
+begin
+  inherited Create;
+  FId := -1;
+  FDocumentsClass := ADocumentsClass;
+  FConnection := AConnection;
+end;
+
+function TDocumentBox.GetConnection: TCustomConnection;
+begin
+  Result := FConnection;
+end;
+
 function TDocumentBox.GetDocuments: IDocuments;
 begin
   if not Assigned(FDocuments) then
   begin
-    FDocuments := TArchiveCompanies.Create;
-    FDocuments.Load(Connection);
+    if Assigned(DocumentsClass) then
+    begin
+      FDocuments := DocumentsClass.Create // NewInstance?
+    end;
   end;
   Result := FDocuments;
 end;

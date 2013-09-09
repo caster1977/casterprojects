@@ -22,6 +22,8 @@
         <property name="targetAnchor" value="177,281" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocuments.IDocuments.Add(uIDocument.IDocument)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocuments.IDocuments.DeleteLast()" />
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uILoadableList.ILoadableList">
       <property name="$shortcutReference" value="true" />
@@ -99,6 +101,8 @@
         <property name="targetAnchor" value="753,348" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:Project2:uTDocuments.TDocuments.Add(uIDocument.IDocument)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTDocuments.TDocuments.DeleteLast()" />
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uTLoadableList.TLoadableList">
       <property name="$shortcutReference" value="true" />

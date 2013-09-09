@@ -9,7 +9,6 @@ uses
 type
   IDocuments = interface(ILoadableList)
     ['{7CE6B5BB-CBB6-4E35-9A29-0BE6DE8FC655}']
-
     /// <summary>
     /// Функция получения ссылки на документ с указанным идентификатором
     /// </summary>
@@ -30,6 +29,17 @@ type
     /// Порядковый номер элемента в массиве
     /// </param>
     property Items[const AIndex: Integer]: IDocument read GetItem; default;
+
+
+    ///	<summary>
+    ///	  Функция добавления документа в короб
+    ///	</summary>
+    function Add(const AValue: IDocument): Integer;
+
+    /// <summary>
+    /// Процедура удаления последнего документа из короба
+    /// </summary>
+    procedure DeleteLast;
   end;
 
 implementation

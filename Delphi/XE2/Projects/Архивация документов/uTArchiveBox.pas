@@ -3,8 +3,9 @@ unit uTArchiveBox;
 interface
 
 uses
-  uTDocumentBox,
+  DB,
   Classes,
+  uTDocumentBox,
   uIDocument,
   uIArchiveBox,
   uTLoadableItem;
@@ -14,7 +15,7 @@ type
   private
     function GetName: string;
   public
-    property Name: string read GetName nodefault;
+    property name: string read GetName nodefault;
 
   private
     FTypeId: Integer;
@@ -66,6 +67,9 @@ type
     procedure SetCompanyName(const AValue: string);
   public
     property CompanyName: string read GetCompanyName write SetCompanyName nodefault;
+
+  public
+    procedure Load(const ADataSet: TDataSet); override;
   end;
 
 implementation
@@ -178,7 +182,23 @@ end;
 
 function TArchiveBox.GetName: string;
 begin
-  Result := '';
+  Result := 'Дописать метод TArchiveBox.GetName';
+end;
+
+procedure TArchiveBox.Load(const ADataSet: TDataSet);
+begin
+  if Assigned(ADataSet) then
+  begin
+    // Id := ADataSet.FieldByName('Id').AsInteger;
+    TypeId := ADataSet.FieldByName('TypeId').AsInteger;
+    TypeName := ADataSet.FieldByName('TypeName').AsString;
+    Barcode := ADataSet.FieldByName('Barcode').AsString;
+    Year := ADataSet.FieldByName('Year').AsInteger;
+    Number := ADataSet.FieldByName('Number').AsString;
+    CompanyId := ADataSet.FieldByName('CompanyId').AsInteger;
+    CompanyName := ADataSet.FieldByName('CompanyName').AsString;
+  end;
+  inherited;
 end;
 
 end.

@@ -18,19 +18,6 @@ type
     /// </summary>
     property Id: Integer read GetId write SetId;
 
-    /// <summary>
-    /// Функция добавления документа в короб
-    /// </summary>
-    /// <param name="AValue">
-    /// Документ
-    /// </param>
-    function AddDocument(const AValue: IDocument): Integer;
-
-    /// <summary>
-    /// Процедура удаления последнего документа из короба
-    /// </summary>
-    procedure DeleteLastDocument;
-
     function GetDocuments: IDocuments;
 
     /// <summary>
