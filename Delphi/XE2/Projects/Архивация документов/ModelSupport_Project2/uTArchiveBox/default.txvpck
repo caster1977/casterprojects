@@ -6,7 +6,7 @@
     <property name="$name" value="default" />
     <reference referencedUin="delphi:e_class:src:Project2:uTArchiveBox.TArchiveBox">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="10,10,198,774" />
+      <property name="bounds" value="10,10,160,564" />
       <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TAcriveBox.FId" />
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.GetId()" />
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.SetId(System.Integer)" />
@@ -53,7 +53,6 @@
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.Create()" />
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TAcriveBox.Destroy()" />
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetName()" />
-      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.Name" />
       <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FTypeId" />
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetTypeId()" />
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetTypeId(System.Integer)" />
@@ -82,6 +81,8 @@
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetCompanyName()" />
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.SetCompanyName(System.string)" />
       <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.CompanyName" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBox.TArchiveBox.name" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.Load(Data.DB.TDataSet)" />
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uTArchiveBox.@unitclass">
       <property name="$shortcutReference" value="true" />

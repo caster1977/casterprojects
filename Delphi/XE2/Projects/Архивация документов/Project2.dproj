@@ -125,6 +125,7 @@
         <DCCReference Include="uTDamagedBSOList.pas"/>
         <DCCReference Include="uIDocumentBox.pas"/>
         <DCCReference Include="uTDocumentBox.pas"/>
+        <DCCReference Include="uTDocumentListClass.pas"/>
         <None Include="ModelSupport_Project2\default.txaPackage"/>
         <None Include="ModelSupport_Project2\default.txvpck"/>
         <None Include="ModelSupport_Project2\Project2\default.txvpck"/>
@@ -210,6 +211,9 @@
         <None Include="ModelSupport_Project2\Items Diagram.txvcls"/>
         <None Include="ModelSupport_Project2\uTDocumentBox\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uTDocumentBox\default.txvpck"/>
+        <None Include="ModelSupport_Project2\Box Diagram.txvcls"/>
+        <None Include="ModelSupport_Project2\uTDocumentListClass\default.txaPackage"/>
+        <None Include="ModelSupport_Project2\uTDocumentListClass\default.txvpck"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -72,10 +72,19 @@ uses
   uTArchiveBox,
   uIArchiveCompany,
   uIDocument,
+  uTLoadableListClass,
   uTCustomBSO,
   uTDamagedBSO,
+  uIDocuments,
+  uTDocuments,
+  uTLoadableItem,
+  uTLoadableItemClass,
   uTShipmentBSO,
-  uTShipmentBSOWithAct;
+  uTShipmentBSOWithAct,
+  uTDamagedBSOList,
+  uTShipmentBSOList,
+  uTLoadableList,
+  uTShipmentBSOWithActList;
 
 function TMainForm.GetLogic: IBSOArchivingLogic;
 begin
@@ -169,27 +178,18 @@ begin
 end;
 
 procedure TMainForm.actTestLogicExecute(Sender: TObject);
-//var
-//  ac: IArchiveCompany;
-//  doc: IDocument;
+var
+  ac: IArchiveCompany;
+  doc: IDocument;
+  box: TArchiveBox;
+  idocl: TLoadableItemClass;
+  ll: TLoadableItem;
 begin
-//  Logic.Connection.Connected := True;
-//  try
-//    ShowMessage(IntToStr(Logic.GetBoxCapacity(1)));
-//    ShowMessage(IntToStr(Logic.GetOpenedBoxQuantity(FBox.Document[FBox.DocumentCount - 1])));
-//    Logic.TryAddDocument(FBox.Document[FBox.DocumentCount - 1]);
-//    doc := FBox.Document[FBox.DocumentCount - 1];
-//    if doc is TCustomBSO then
-//    begin
-//      ac := Logic.ArchiveCompanies.GetItemById((doc as TCustomBSO).CompanyId);
-//      if Assigned(ac) then
-//      begin
-//        ShowMessage(ac.Code);
-//      end;
-//    end;
-//  finally
-//    Logic.Connection.Connected := False;
-//  end;
+  Logic.Connection.Connected := True;
+  try
+  finally
+    Logic.Connection.Connected := False;
+  end;
 end;
 
 procedure TMainForm.actTestLogicUpdate(Sender: TObject);

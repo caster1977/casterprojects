@@ -13,20 +13,20 @@ type
   private
     FCurrentBox: IArchiveBox;
     function GetCurrentBox: IArchiveBox;
+    procedure SetCurrentBox(const AValue: IArchiveBox);
   public
-    property CurrentBox: IArchiveBox read GetCurrentBox nodefault;
-    // private
-    // FForceNewArchiveBox: Boolean;
+    property CurrentBox: IArchiveBox read GetCurrentBox write SetCurrentBox nodefault;
   public
     function GetBoxCapacity(const AType: Integer): Integer; overload;
     function GetBoxCapacity(const ABox: IArchiveBox): Integer; overload;
-    procedure TryAddDocument(const ADocument: IDocument); virtual;
   end;
 
 implementation
 
 uses
   uCommonRoutines,
+  uTDocument,
+  uTArchiveBox,
   SysUtils;
 
 function TDocumentArchivingLogic.GetBoxCapacity(const AType: Integer): Integer;
@@ -62,9 +62,12 @@ begin
   Result := FCurrentBox;
 end;
 
-procedure TDocumentArchivingLogic.TryAddDocument(const ADocument: IDocument);
+procedure TDocumentArchivingLogic.SetCurrentBox(const AValue: IArchiveBox);
 begin
-  DisplayInfoMessage('TryAddDocument');
+  if FCurrentBox <> AValue then
+  begin
+    FCurrentBox := AValue;
+  end;
 end;
 
 end.

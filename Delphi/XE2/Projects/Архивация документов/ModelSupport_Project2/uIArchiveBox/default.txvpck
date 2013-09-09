@@ -45,8 +45,6 @@
       <property name="$shortcutReference" value="true" />
       <property name="bounds" value="0,120,193,128" />
       <property name="location_set_by_user" value="True" />
-      <reference referencedUin="delphi:e_method:src:Project2:uIDocumentBox.IDocumentBox.AddDocument(uIDocument.IDocument)" />
-      <reference referencedUin="delphi:e_method:src:Project2:uIDocumentBox.IDocumentBox.DeleteLastDocument()" />
       <reference referencedUin="delphi:l_gnt:src:Project2:uIDocumentBox.IDocumentBox:uILoadableItem.ILoadableItem">
         <property name="sourceAnchor" value="94,120" />
         <property name="targetAnchor" value="94,81" />

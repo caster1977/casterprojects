@@ -11,10 +11,11 @@ type
   IDocumentArchivingLogic = interface(ICustomBusinessLogic)
     ['{B4D4317B-5679-4A31-9F53-F31CFFD99A6F}']
     function GetCurrentBox: IArchiveBox;
+    procedure SetCurrentBox(const AValue: IArchiveBox);
     /// <summary>
     /// Текущий архивный короб
     /// </summary>
-    property CurrentBox: IArchiveBox read GetCurrentBox;
+    property CurrentBox: IArchiveBox read GetCurrentBox write SetCurrentBox;
     /// <summary>
     /// Функция определения вместимости указанного типа короба
     /// указанного типа
@@ -37,13 +38,6 @@ type
     /// Количество документов в данном типе короба
     /// </returns>
     function GetBoxCapacity(const ABox: IArchiveBox): Integer; overload;
-    /// <summary>
-    /// Процедура добавления документа в короб (с проверкой)
-    /// </summary>
-    /// <param name="ADocument">
-    /// Документ
-    /// </param>
-    procedure TryAddDocument(const ADocument: IDocument);
   end;
 
 implementation

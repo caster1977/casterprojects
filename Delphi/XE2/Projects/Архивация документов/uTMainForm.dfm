@@ -59,6 +59,7 @@ object MainForm: TMainForm
       Action = actDeleteLastDocument
       Anchors = [akTop, akRight]
       TabOrder = 2
+      Visible = False
     end
     object Button2: TButton
       Left = 0
@@ -67,6 +68,7 @@ object MainForm: TMainForm
       Height = 25
       Caption = 'Create damaged BSO'
       TabOrder = 0
+      Visible = False
       OnClick = Button2Click
     end
     object Button3: TButton
@@ -76,6 +78,7 @@ object MainForm: TMainForm
       Height = 25
       Caption = 'Create shipment BSO'
       TabOrder = 1
+      Visible = False
       OnClick = Button3Click
     end
     object Button4: TButton
@@ -85,6 +88,7 @@ object MainForm: TMainForm
       Height = 25
       Caption = 'Create shipment BSO with act'
       TabOrder = 4
+      Visible = False
       OnClick = Button4Click
     end
     object Button5: TButton

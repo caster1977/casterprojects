@@ -10,6 +10,8 @@
       <reference referencedUin="delphi:e_method:src:Project2:uIDocuments.IDocuments.GetItem(System.Integer)" />
       <reference referencedUin="delphi:e_property:src:Project2:uIDocuments.IDocuments.Items[System.Integer]" />
       <reference referencedUin="delphi:e_method:src:Project2:uIDocuments.IDocuments.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocuments.IDocuments.Add(uIDocument.IDocument)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocuments.IDocuments.DeleteLast()" />
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uIDocuments.@unitclass">
       <property name="$shortcutReference" value="true" />
