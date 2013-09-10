@@ -54,9 +54,13 @@ implementation
 {$R *.dfm}
 
 uses
+  uCommonRoutines,
   uTBSOArchivingLogic,
   uTArchiveBox,
+  uIArchiveBoxType,
+  uTArchiveBoxType,
   uIArchiveCompany,
+  uTArchiveCompany,
   uIDocument,
   uTLoadableListClass,
   uTCustomBSO,
@@ -106,20 +110,22 @@ end;
 
 procedure TMainForm.actTestLogicExecute(Sender: TObject);
 var
-  doc: TShipmentBSO;
+  ac: IArchiveCompany;
+  abt: IArchiveBoxType;
 begin
   Logic.Connection.Connected := True;
   try
-    Logic.CurrentBox := TArchiveBox.Create(Logic.Connection, TShipmentBSOList);
-    doc := TShipmentBSO.Create;
-    doc.CompanyName := '1';
-    doc.Series := '2';
-    doc.Barcode := '3';
-    doc.Number := '4';
-    doc.TypeName := '5';
-    doc.Id := 6;
-    Logic.CurrentBox.Documents.Add(doc);
-    Logic.CurrentBox.Documents.Items[0].Show(GroupBox1);
+    {Logic.CurrentBox := TArchiveBox.Create(Logic.Connection, TShipmentBSOList);
+    Logic.CurrentBox.Id := 1;
+    SetSQLForQuery(Logic.Query, Format('BSOArchiving_sel_ArchiveBox %d', [Logic.CurrentBox.Id]), True);
+    Logic.CurrentBox.Load(Logic.Query);
+    Logic.CurrentBox.Documents.Item[0].Show(GroupBox1);}
+    ShowMessage(Logic.ArchiveCompanies.GetItemById(1).Name);
+    ac := TArchiveCompany.Create(Logic.Connection, 2);
+    ShowMessage(ac.Name);
+    ShowMessage(Logic.ArchiveBoxTypes.GetItemById(1).Name);
+    abt := TArchiveBoxType.Create(Logic.Connection, 2);
+    ShowMessage(abt.Name);
     AutoSize := True;
     AutoSize := False;
   finally

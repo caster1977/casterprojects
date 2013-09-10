@@ -15,8 +15,6 @@ type
   public
     function GetItemById(const AId: Integer): IArchiveCompany;
     property Item[const AIndex: Integer]: IArchiveCompany read GetItem; default;
-  protected
-    function GetLoadSQL: string; override; final;
   public
     constructor Create; reintroduce; virtual; final;
   end;
@@ -39,9 +37,9 @@ begin
     begin
       if Assigned(Items[i]) then
       begin
-        if IArchiveCompany(Items[i]).Id = AId then
+        if (Items[i] as IArchiveCompany).Id = AId then
         begin
-          Result := IArchiveCompany(Items[i]);
+          Result := Items[i] as IArchiveCompany;
           Break;
         end;
       end;
@@ -64,15 +62,10 @@ begin
     begin
       if Count > AIndex then
       begin
-        Result := IArchiveCompany(Items[AIndex]);
+        Result := Items[AIndex] as IArchiveCompany;
       end;
     end;
   end;
-end;
-
-function TArchiveCompanies.GetLoadSQL: string;
-begin
-  Result := 'SELECT ac.Id_Company AS Id, ac.Code AS Code FROM ArchiveCompanies ac ORDER BY Id';
 end;
 
 end.

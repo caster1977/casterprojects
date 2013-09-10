@@ -9,6 +9,9 @@ uses
 
 type
   TShipmentBSOWithAct = class sealed(TCustomBSO)
+  public
+    class function GetLoadSQL(const AId: Integer): string; override; final;
+
   private
     FActId: Integer;
     function GetActId: Integer;
@@ -31,6 +34,11 @@ uses
 function TShipmentBSOWithAct.GetActId: Integer;
 begin
   Result := FActId;
+end;
+
+class function TShipmentBSOWithAct.GetLoadSQL(const AId: Integer): string;
+begin
+  Result := Format('BSOArchiving_sel_ %d', [AId]);
 end;
 
 procedure TShipmentBSOWithAct.SetActId(const AValue: Integer);

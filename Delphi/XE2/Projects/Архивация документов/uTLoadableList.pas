@@ -15,7 +15,7 @@ type
     function GetItemClass: TLoadableItemClass;
     procedure SetItemClass(const AValue: TLoadableItemClass);
   protected
-    function GetLoadSQL: string; virtual; abstract;
+    function GetLoadSQL: string; virtual; final;
     property ItemClass: TLoadableItemClass read GetItemClass write SetItemClass nodefault;
   public
     constructor Create; reintroduce; virtual;
@@ -34,7 +34,7 @@ uses
 
 constructor TLoadableList.Create;
 begin
-  inherited Create;
+  inherited;
 end;
 
 function TLoadableList.GetItemClass: TLoadableItemClass;
@@ -42,45 +42,35 @@ begin
   Result := FItemClass;
 end;
 
+function TLoadableList.GetLoadSQL: string;
+begin
+  Result := ItemClass.GetLoadSQL;
+end;
+
 procedure TLoadableList.Load(const AConnection: TCustomConnection);
 var
   ds: TDataSet;
   ic: TLoadableItem;
 begin
-  if Assigned(AConnection) then
+  ds := GetQuery(AConnection);
+  if Assigned(ds) then
   begin
-    if AConnection.Connected then
-    begin
-      if AConnection is TADOConnection then
-      begin
-        ds := TADOQuery.Create(nil);
-        (ds as TADOQuery).Connection := AConnection as TADOConnection;
-        (ds as TADOQuery).CommandTimeout := 60000;
-        (ds as TADOQuery).LockType := ltReadOnly;
-        (ds as TADOQuery).CursorType := ctOpenForwardOnly;
-      end
-      else
-      begin
-        ds := TSQLQuery.Create(nil);
-        (ds as TSQLQuery).SQLConnection := AConnection as TSQLConnection;
-      end;
+    try
+      SetSQLForQuery(ds, GetLoadSQL, True);
       try
-        SetSQL(ds, GetLoadSQL, True);
-        try
-          Items.Clear;
-          while not ds.Eof do
-          begin
-            ic := ItemClass.Create;
-            ic.Load(ds);
-            Items.Add(ic);
-            ds.Next;
-          end;
-        finally
-          ds.Close;
+        Items.Clear;
+        while not ds.Eof do
+        begin
+          ic := ItemClass.Create;
+          ic.Load(ds);
+          Items.Add(ic);
+          ds.Next;
         end;
       finally
-        FreeAndNil(ds);
+        ds.Close;
       end;
+    finally
+      FreeAndNil(ds);
     end;
   end;
 end;

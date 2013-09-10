@@ -28,7 +28,7 @@ type
     /// <param name="AIndex">
     /// Порядковый номер элемента в массиве
     /// </param>
-    property Items[const AIndex: Integer]: IDocument read GetItem; default;
+    property Item[const AIndex: Integer]: IDocument read GetItem; default;
 
 
     ///	<summary>

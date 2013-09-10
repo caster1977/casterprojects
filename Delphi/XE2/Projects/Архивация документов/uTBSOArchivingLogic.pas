@@ -6,15 +6,21 @@ uses
   uTDocumentArchivingLogic,
   uIBSOArchivingLogic,
   uIDocument,
-  uIArchiveCompanies;
+  uIArchiveCompanies,
+  uIArchiveBoxTypes;
 
 type
   TBSOArchivingLogic = class(TDocumentArchivingLogic, IBSOArchivingLogic)
   private
+    FArchiveCompanies: IArchiveCompanies;
     function GetArchiveCompanies: IArchiveCompanies;
   public
-    FArchiveCompanies: IArchiveCompanies;
     property ArchiveCompanies: IArchiveCompanies read GetArchiveCompanies nodefault;
+  private
+    FArchiveBoxTypes: IArchiveBoxTypes;
+    function GetArchiveBoxTypes: IArchiveBoxTypes;
+  public
+    property ArchiveBoxTypes: IArchiveBoxTypes read GetArchiveBoxTypes;
   public
     function GetOpenedBoxQuantity(const AType, ACompanyId: Integer): Integer; overload;
     function GetOpenedBoxQuantity(const ADocument: IDocument): Integer; overload;
@@ -26,18 +32,29 @@ uses
   uCommonRoutines,
   SysUtils,
   uTCustomBSO,
-  uTArchiveCompanies;
+  uTArchiveCompanies,
+  uTArchiveBoxTypes;
 
 function TBSOArchivingLogic.GetOpenedBoxQuantity(const AType, ACompanyId: Integer): Integer;
 begin
   try
-    SetSQL(Query,
+    SetSQLForQuery(Query,
       Format('SELECT COUNT(1) AS Quantity FROM ArchiveBoxes ab WHERE ab.Id_ArchiveBoxType = %d AND ab.Id_Company = %d AND ab.Closed = 0',
       [AType, ACompanyId]), True);
     Result := Query.FieldByName('Quantity').AsInteger;
   finally
     CloseQuery;
   end;
+end;
+
+function TBSOArchivingLogic.GetArchiveBoxTypes: IArchiveBoxTypes;
+begin
+  if not Assigned(FArchiveBoxTypes) then
+  begin
+    FArchiveBoxTypes := TArchiveBoxTypes.Create;
+    FArchiveBoxTypes.Load(Connection);
+  end;
+  Result := FArchiveBoxTypes;
 end;
 
 function TBSOArchivingLogic.GetArchiveCompanies: IArchiveCompanies;

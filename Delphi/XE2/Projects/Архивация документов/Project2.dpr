@@ -42,7 +42,11 @@ uses
   uTDamagedBSOList in 'uTDamagedBSOList.pas',
   uIDocumentBox in 'uIDocumentBox.pas',
   uTDocumentBox in 'uTDocumentBox.pas',
-  uTDocumentListClass in 'uTDocumentListClass.pas';
+  uTDocumentListClass in 'uTDocumentListClass.pas',
+  uIArchiveBoxTypes in 'uIArchiveBoxTypes.pas',
+  uIArchiveBoxType in 'uIArchiveBoxType.pas',
+  uTArchiveBoxType in 'uTArchiveBoxType.pas',
+  uTArchiveBoxTypes in 'uTArchiveBoxTypes.pas';
 
 {$R *.res}
 

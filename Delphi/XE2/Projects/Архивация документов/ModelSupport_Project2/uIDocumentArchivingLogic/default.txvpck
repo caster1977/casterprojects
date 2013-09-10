@@ -4,5 +4,55 @@
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:Project2:uIDocumentArchivingLogic.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uIDocumentArchivingLogic.IDocumentArchivingLogic">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="520,20,228,157" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocumentArchivingLogic.IDocumentArchivingLogic.GetCurrentBox()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocumentArchivingLogic.IDocumentArchivingLogic.SetCurrentBox(uIArchiveBox.IArchiveBox)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIDocumentArchivingLogic.IDocumentArchivingLogic.CurrentBox" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocumentArchivingLogic.IDocumentArchivingLogic.GetBoxCapacity(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIDocumentArchivingLogic.IDocumentArchivingLogic.GetBoxCapacity(uIArchiveBox.IArchiveBox)" />
+      <reference referencedUin="delphi:l_ast:src:Project2:uIDocumentArchivingLogic.IDocumentArchivingLogic.CurrentBox">
+        <property name="sourceAnchor" value="520,98" />
+        <property name="targetAnchor" value="480,98" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uIArchiveBox.IArchiveBox">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="300,20,180,502" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetTypeId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetTypeId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.TypeId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetBarcode()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetBarcode(System.string)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Barcode" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetYear()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetYear(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Year" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetNumber()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Number" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetCompanyId()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetCompanyId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.CompanyId" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetClosureDate()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetClosureDate(System.TDateTime)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.ClosureDate" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetClosed()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetClosed(System.Boolean)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Closed" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetRegistryPrinted()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetRegistryPrinted(System.Boolean)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.RegistryPrinted" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetStickerPrinted()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetStickerPrinted(System.Boolean)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.StickerPrinted" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetNumber(System.Integer)" />
+    </reference>
   </view>
 </nodeSet>

@@ -403,5 +403,26 @@
       <reference referencedUin="delphi:e_class:src:Project2:uTDocumentListClass.TDocumentListClass" />
       <reference referencedUin="delphi:e_class:src:Project2:uTDocumentListClass.@unitclass" />
     </reference>
+    <reference referencedUin="design:view:::z57evbpua7nzefzfs_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:Project2:uIArchiveBoxTypes.IArchiveBoxTypes" />
+      <reference referencedUin="delphi:e_class:src:Project2:uIArchiveBoxTypes.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::ktr8e69s0dl_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:Project2:uIArchiveBoxType.IArchiveBoxType" />
+      <reference referencedUin="delphi:e_class:src:Project2:uIArchiveBoxType.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::s9bh2u54bd9ipc29g_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTArchiveBoxType.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTArchiveBoxType.TArchiveBoxType" />
+    </reference>
+    <reference referencedUin="design:view:::fpbq7gf9egt_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="@__package_fqn" value="uTArchiveBoxTypes" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTArchiveBoxTypes.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:Project2:uTArchiveBoxTypes.TArchiveBoxTypes" />
+    </reference>
   </view>
 </nodeSet>

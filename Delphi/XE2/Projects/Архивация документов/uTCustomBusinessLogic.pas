@@ -44,16 +44,15 @@ type
   protected
     procedure CloseQuery;
   public
-    constructor Create(const AADOConnection: TADOConnection;
-      const AOnDisplayMessage: TOnDisplayMessage = nil); overload; virtual;
-    constructor Create(const ASQLConnection: TSQLConnection;
-      const AOnDisplayMessage: TOnDisplayMessage = nil); overload; virtual;
+    constructor Create(const AConnection: TCustomConnection;
+      const AOnDisplayMessage: TOnDisplayMessage = nil); virtual;
     destructor Destroy; override;
   end;
 
 implementation
 
 uses
+  uCommonRoutines,
   SysUtils;
 
 function TCustomBusinessLogic.GetConnection: TCustomConnection;
@@ -76,16 +75,12 @@ begin
   FOnDisplayMessage := AValue;
 end;
 
-constructor TCustomBusinessLogic.Create(const AADOConnection: TADOConnection;
+constructor TCustomBusinessLogic.Create(const AConnection: TCustomConnection;
   const AOnDisplayMessage: TOnDisplayMessage);
 begin
   OnDisplayMessage := AOnDisplayMessage;
-  FConnection := AADOConnection;
-  FQuery := TADOQuery.Create(nil);
-  (Query as TADOQuery).Connection := (Connection as TADOConnection);
-  (Query as TADOQuery).CommandTimeout := 60000;
-  (Query as TADOQuery).LockType := ltReadOnly;
-  (Query as TADOQuery).CursorType := ctOpenForwardOnly;
+  FConnection := AConnection;
+  FQuery := uCommonRoutines.GetQuery(Connection);
 end;
 
 procedure TCustomBusinessLogic.ClearMessage;
@@ -102,15 +97,6 @@ begin
       Query.Close;
     end;
   end;
-end;
-
-constructor TCustomBusinessLogic.Create(const ASQLConnection: TSQLConnection;
-  const AOnDisplayMessage: TOnDisplayMessage);
-begin
-  OnDisplayMessage := AOnDisplayMessage;
-  FConnection := ASQLConnection;
-  FQuery := TSQLQuery.Create(nil);
-  (Query as TSQLQuery).SQLConnection := (Connection as TSQLConnection);
 end;
 
 destructor TCustomBusinessLogic.Destroy;

@@ -9,9 +9,8 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uIArchiveBox.IArchiveBox">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="0,280,143,188" />
+      <property name="bounds" value="0,280,156,203" />
       <property name="location_set_by_user" value="True" />
-      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetName()" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetTypeId()" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetTypeId(System.Integer)" />
       <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.TypeId" />
@@ -25,7 +24,6 @@
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetYear(System.Integer)" />
       <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Year" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetNumber()" />
-      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetNumber(System.string)" />
       <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Number" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetCompanyId()" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetCompanyId(System.Integer)" />
@@ -37,13 +35,26 @@
       <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Name" />
       <reference referencedUin="delphi:l_gnt:src:Project2:uIArchiveBox.IArchiveBox:uIDocumentBox.IDocumentBox">
         <property name="sourceAnchor" value="71,280" />
-        <property name="targetAnchor" value="71,248" />
+        <property name="targetAnchor" value="71,218" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetClosureDate()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetClosureDate(System.TDateTime)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.ClosureDate" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetClosed()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetClosed(System.Boolean)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Closed" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetRegistryPrinted()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetRegistryPrinted(System.Boolean)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.RegistryPrinted" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetStickerPrinted()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetStickerPrinted(System.Boolean)" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.StickerPrinted" />
+      <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.SetNumber(System.Integer)" />
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uIDocumentBox.IDocumentBox">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="0,120,193,128" />
+      <property name="bounds" value="0,120,193,98" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:l_gnt:src:Project2:uIDocumentBox.IDocumentBox:uILoadableItem.ILoadableItem">
         <property name="sourceAnchor" value="94,120" />
@@ -61,6 +72,7 @@
       <property name="bounds" value="0,0,188,81" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:Project2:uILoadableItem.ILoadableItem.Load(Data.DB.TDataSet)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uILoadableItem.ILoadableItem.Load(Data.DB.TCustomConnection,System.Integer)" />
     </reference>
   </view>
 </nodeSet>
