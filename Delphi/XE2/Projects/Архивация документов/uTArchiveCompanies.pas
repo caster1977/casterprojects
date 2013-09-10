@@ -51,7 +51,8 @@ end;
 
 constructor TArchiveCompanies.Create;
 begin
-  inherited Create(TArchiveCompany);
+  inherited;
+  ItemClass := TArchiveCompany;
 end;
 
 function TArchiveCompanies.GetItem(const AIndex: Integer): IArchiveCompany;

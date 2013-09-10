@@ -48,56 +48,13 @@ object MainForm: TMainForm
     Caption = 'Panel2'
     ShowCaption = False
     TabOrder = 2
-    DesignSize = (
-      720
-      29)
-    object Button1: TButton
-      Left = 586
-      Top = 5
-      Width = 134
-      Height = 25
-      Action = actDeleteLastDocument
-      Anchors = [akTop, akRight]
-      TabOrder = 2
-      Visible = False
-    end
-    object Button2: TButton
-      Left = 0
-      Top = 5
-      Width = 134
-      Height = 25
-      Caption = 'Create damaged BSO'
-      TabOrder = 0
-      Visible = False
-      OnClick = Button2Click
-    end
-    object Button3: TButton
-      Left = 140
-      Top = 5
-      Width = 134
-      Height = 25
-      Caption = 'Create shipment BSO'
-      TabOrder = 1
-      Visible = False
-      OnClick = Button3Click
-    end
-    object Button4: TButton
-      Left = 280
-      Top = 5
-      Width = 169
-      Height = 25
-      Caption = 'Create shipment BSO with act'
-      TabOrder = 4
-      Visible = False
-      OnClick = Button4Click
-    end
     object Button5: TButton
-      Left = 455
-      Top = 5
+      Left = 0
+      Top = 4
       Width = 125
       Height = 25
       Action = actTestLogic
-      TabOrder = 3
+      TabOrder = 0
     end
   end
   object ActionList: TActionList
@@ -105,13 +62,10 @@ object MainForm: TMainForm
     Top = 112
     object actDeleteLastDocument: TAction
       Caption = 'Delete Last Document'
-      OnExecute = actDeleteLastDocumentExecute
-      OnUpdate = actDeleteLastDocumentUpdate
     end
     object actTestLogic: TAction
       Caption = 'Test Logic'
       OnExecute = actTestLogicExecute
-      OnUpdate = actTestLogicUpdate
     end
   end
   object ADOConnection: TADOConnection

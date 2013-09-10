@@ -10,7 +10,7 @@ type
   protected
     function GetLoadSQL: string; override; final;
   public
-    constructor Create; reintroduce; virtual; final;
+    constructor Create; override; final;
   end;
 
 implementation
@@ -20,7 +20,8 @@ uses
 
 constructor TShipmentBSOList.Create;
 begin
-  inherited Create(TShipmentBSO);
+  inherited;
+  ItemClass := TShipmentBSO;
 end;
 
 function TShipmentBSOList.GetLoadSQL: string;

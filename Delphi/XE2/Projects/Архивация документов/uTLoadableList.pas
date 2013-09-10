@@ -13,11 +13,12 @@ type
   private
     FItemClass: TLoadableItemClass;
     function GetItemClass: TLoadableItemClass;
+    procedure SetItemClass(const AValue: TLoadableItemClass);
   protected
     function GetLoadSQL: string; virtual; abstract;
-    property ItemClass: TLoadableItemClass read GetItemClass nodefault;
-    constructor Create(const AItemClass: TLoadableItemClass); reintroduce; virtual;
+    property ItemClass: TLoadableItemClass read GetItemClass write SetItemClass nodefault;
   public
+    constructor Create; reintroduce; virtual;
     procedure Load(const AConnection: TCustomConnection);
   end;
 
@@ -31,10 +32,9 @@ uses
   uTLoadableItem,
   SysUtils;
 
-constructor TLoadableList.Create(const AItemClass: TLoadableItemClass);
+constructor TLoadableList.Create;
 begin
-  Assert(Assigned(AItemClass), 'AItemClass is nil!');
-  FItemClass := AItemClass;
+  inherited Create;
 end;
 
 function TLoadableList.GetItemClass: TLoadableItemClass;
@@ -82,6 +82,14 @@ begin
         FreeAndNil(ds);
       end;
     end;
+  end;
+end;
+
+procedure TLoadableList.SetItemClass(const AValue: TLoadableItemClass);
+begin
+  if FItemClass <> AValue then
+  begin
+    FItemClass := AValue;
   end;
 end;
 

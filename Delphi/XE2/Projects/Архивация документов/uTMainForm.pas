@@ -29,35 +29,21 @@ uses
 type
   TMainForm = class(TForm)
     GroupBox1: TGroupBox;
-    Button1: TButton;
     Panel1: TPanel;
     Panel2: TPanel;
-    Button2: TButton;
-    Button3: TButton;
     ActionList: TActionList;
     actDeleteLastDocument: TAction;
     ADOConnection: TADOConnection;
     SQLConnection: TSQLConnection;
-    Button4: TButton;
     Button5: TButton;
     actTestLogic: TAction;
-    procedure Button2Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
-    procedure actDeleteLastDocumentExecute(Sender: TObject);
-    procedure actDeleteLastDocumentUpdate(Sender: TObject);
-    procedure Button4Click(Sender: TObject);
-    procedure actTestLogicUpdate(Sender: TObject);
     procedure actTestLogicExecute(Sender: TObject);
   private
     FLogic: IBSOArchivingLogic;
     function GetLogic: IBSOArchivingLogic;
     property Logic: IBSOArchivingLogic read GetLogic nodefault;
   private
-    procedure AddAndShowDocument(const ADocumentClass: TDocumentClass;
-      const AParent: TCustomControl);
     procedure DisplayMessage(const AType: TMessageType; const AText: string);
-  private
-    FBox: IArchiveBox;
   end;
 
 var
@@ -96,44 +82,6 @@ begin
   Result := FLogic;
 end;
 
-procedure TMainForm.Button2Click(Sender: TObject);
-begin
-//  AddAndShowDocument(TDamagedBSO, GroupBox1);
-end;
-
-procedure TMainForm.Button3Click(Sender: TObject);
-begin
-//  AddAndShowDocument(TShipmentBSO, GroupBox1);
-end;
-
-procedure TMainForm.Button4Click(Sender: TObject);
-begin
-//  AddAndShowDocument(TShipmentBSOWithAct, GroupBox1);
-end;
-
-procedure TMainForm.AddAndShowDocument(const ADocumentClass: TDocumentClass;
-  const AParent: TCustomControl);
-//var
-//  i: Integer;
-begin
-//  if not Assigned(FBox) then
-//  begin
-//    FBox := TAcriveBox.Create;
-//  end;
-//  i := FBox.AddDocument(ADocumentClass.Create);
-//  if i > -1 then
-//  begin
-//    Logic.Connection.Connected := True;
-//    try
-//      //FBox.Documents[i].Load(Logic.Connection);
-//    finally
-//      Logic.Connection.Connected := False;
-//    end;
-//    FBox.Document[i].Show(AParent);
-//    AutoSize := True;
-//  end;
-end;
-
 procedure TMainForm.DisplayMessage(const AType: TMessageType; const AText: string);
 begin
   case AType of
@@ -156,52 +104,27 @@ begin
   end;
 end;
 
-procedure TMainForm.actDeleteLastDocumentExecute(Sender: TObject);
-begin
-//  FBox.DeleteLastDocument;
-//  if FBox.DocumentCount > 0 then
-//  begin
-//    FBox.Document[FBox.DocumentCount - 1].Show;
-//  end;
-end;
-
-procedure TMainForm.actDeleteLastDocumentUpdate(Sender: TObject);
-//var
-//  b: Boolean;
-begin
-//  b := False;
-//  if Assigned(FBox) then
-//  begin
-//    b := FBox.DocumentCount > 0;
-//  end;
-//  actDeleteLastDocument.Enabled := b;
-end;
-
 procedure TMainForm.actTestLogicExecute(Sender: TObject);
 var
-  ac: IArchiveCompany;
-  doc: IDocument;
-  box: TArchiveBox;
-  idocl: TLoadableItemClass;
-  ll: TLoadableItem;
+  doc: TShipmentBSO;
 begin
   Logic.Connection.Connected := True;
   try
+    Logic.CurrentBox := TArchiveBox.Create(Logic.Connection, TShipmentBSOList);
+    doc := TShipmentBSO.Create;
+    doc.CompanyName := '1';
+    doc.Series := '2';
+    doc.Barcode := '3';
+    doc.Number := '4';
+    doc.TypeName := '5';
+    doc.Id := 6;
+    Logic.CurrentBox.Documents.Add(doc);
+    Logic.CurrentBox.Documents.Items[0].Show(GroupBox1);
+    AutoSize := True;
+    AutoSize := False;
   finally
     Logic.Connection.Connected := False;
   end;
-end;
-
-procedure TMainForm.actTestLogicUpdate(Sender: TObject);
-//var
-//  b: Boolean;
-begin
-//  b := False;
-//  if Assigned(FBox) then
-//  begin
-//    b := FBox.DocumentCount > 0;
-//  end;
-//  actTestLogic.Enabled := b;
 end;
 
 end.

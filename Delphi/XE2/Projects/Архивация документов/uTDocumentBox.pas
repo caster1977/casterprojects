@@ -97,7 +97,7 @@ begin
   begin
     if Assigned(DocumentsClass) then
     begin
-      FDocuments := DocumentsClass.Create // NewInstance?
+      FDocuments := DocumentsClass.Create;
     end;
   end;
   Result := FDocuments;

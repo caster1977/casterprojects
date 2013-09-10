@@ -6,7 +6,7 @@
     <property name="$name" value="default" />
     <reference referencedUin="delphi:e_class:src:Project2:uTShipmentBSO.TShipmentBSO">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="10,10,145,113" />
+      <property name="bounds" value="10,10,145,128" />
       <reference referencedUin="delphi:e_method:src:Project2:uTShipmentBSO.TShipmentBSO.Initialize()" />
       <reference referencedUin="delphi:e_method:src:Project2:uTShipmentBSO.TShipmentBSO.Create()" />
       <reference referencedUin="delphi:e_method:src:Project2:uTShipmentBSO.TShipmentBSO.Load(Data.DB.TDataSet)" />
