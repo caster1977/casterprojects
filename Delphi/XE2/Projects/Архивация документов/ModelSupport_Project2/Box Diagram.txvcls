@@ -5,7 +5,7 @@
     <property name="$name" value="Box Diagram" />
     <reference referencedUin="delphi:e_class:src:Project2:uIDocumentBox.IDocumentBox">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="0,160,193,98" />
+      <property name="bounds" value="0,160,193,113" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:Project2:uIDocumentBox.IDocumentBox.GetId()" />
       <reference referencedUin="delphi:e_method:src:Project2:uIDocumentBox.IDocumentBox.SetId(System.Integer)" />
@@ -18,14 +18,14 @@
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:l_ast:src:Project2:uIDocumentBox.IDocumentBox.Documents">
-        <property name="sourceAnchor" value="178,258" />
+        <property name="sourceAnchor" value="193,268" />
         <property name="targetAnchor" value="240,294" />
         <property name="bendpoints" value="" />
       </reference>
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uIArchiveBox.IArchiveBox">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="0,560,163,188" />
+      <property name="bounds" value="0,560,163,293" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveBox.IArchiveBox.GetName()" />
       <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.Name" />
@@ -52,7 +52,7 @@
       <reference referencedUin="delphi:e_property:src:Project2:uIArchiveBox.IArchiveBox.CompanyName" />
       <reference referencedUin="delphi:l_gnt:src:Project2:uIArchiveBox.IArchiveBox:uIDocumentBox.IDocumentBox">
         <property name="sourceAnchor" value="81,560" />
-        <property name="targetAnchor" value="81,258" />
+        <property name="targetAnchor" value="81,273" />
         <property name="bendpoints" value="" />
       </reference>
     </reference>
@@ -76,7 +76,7 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uTArchiveBox.TArchiveBox">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="540,560,171,313" />
+      <property name="bounds" value="540,560,171,418" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBox.TArchiveBox.GetName()" />
       <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBox.TArchiveBox.FTypeId" />
@@ -174,32 +174,34 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uIDocuments.IDocuments">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="240,280,162,142" />
+      <property name="bounds" value="240,280,162,157" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:Project2:uIDocuments.IDocuments.GetItemById(System.Integer)" />
       <reference referencedUin="delphi:e_method:src:Project2:uIDocuments.IDocuments.GetItem(System.Integer)" />
       <reference referencedUin="delphi:e_property:src:Project2:uIDocuments.IDocuments.Items[System.Integer]" />
       <reference referencedUin="delphi:e_method:src:Project2:uIDocuments.IDocuments.Add(uIDocument.IDocument)" />
       <reference referencedUin="delphi:e_method:src:Project2:uIDocuments.IDocuments.DeleteLast()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uIDocuments.IDocuments.Items[Integer]" />
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uTDocuments.TDocuments">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="240,440,170,145" />
+      <property name="bounds" value="240,240,170,160" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:Project2:uTDocuments.TDocuments.GetItem(System.Integer)" />
       <reference referencedUin="delphi:e_method:src:Project2:uTDocuments.TDocuments.GetItemById(System.Integer)" />
       <reference referencedUin="delphi:e_property:src:Project2:uTDocuments.TDocuments.Item[System.Integer]" />
       <reference referencedUin="delphi:l_impl:src:Project2:uTDocuments.TDocuments:uIDocuments.IDocuments">
-        <property name="sourceAnchor" value="321,440" />
-        <property name="targetAnchor" value="321,422" />
+        <property name="sourceAnchor" value="321,360" />
+        <property name="targetAnchor" value="321,360" />
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:e_method:src:Project2:uTDocuments.TDocuments.Add(uIDocument.IDocument)" />
       <reference referencedUin="delphi:e_method:src:Project2:uTDocuments.TDocuments.DeleteLast()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTDocuments.TDocuments.Item[Integer]" />
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uTDocumentListClass.TDocumentListClass">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="820,300,262,67" />
+      <property name="bounds" value="820,300,262,81" />
       <property name="location_set_by_user" value="True" />
     </reference>
   </view>

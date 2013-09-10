@@ -60,21 +60,21 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uIDocument.IDocument">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="140,160,149,98" />
+      <property name="bounds" value="140,160,149,113" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:Project2:uIDocument.IDocument.GetId()" />
       <reference referencedUin="delphi:e_method:src:Project2:uIDocument.IDocument.SetId(System.Integer)" />
       <reference referencedUin="delphi:e_property:src:Project2:uIDocument.IDocument.Id" />
       <reference referencedUin="delphi:e_method:src:Project2:uIDocument.IDocument.Show(Vcl.Controls.TCustomControl)" />
       <reference referencedUin="delphi:l_gnt:src:Project2:uIDocument.IDocument:uILoadableItem.ILoadableItem">
-        <property name="sourceAnchor" value="283,160" />
+        <property name="sourceAnchor" value="289,164" />
         <property name="targetAnchor" value="396,81" />
         <property name="bendpoints" value="" />
       </reference>
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uTDocument.TDocument">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="360,160,198,328" />
+      <property name="bounds" value="360,160,198,388" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_field:src:Project2:uTDocument.TDocument.FId" />
       <reference referencedUin="delphi:e_method:src:Project2:uTDocument.TDocument.GetId()" />
@@ -112,39 +112,9 @@
         <property name="bendpoints" value="" />
       </reference>
     </reference>
-    <reference referencedUin="delphi:e_class:src:Project2:uIDocumentField.IDocumentField">
-      <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="920,400,205,98" />
-      <property name="location_set_by_user" value="True" />
-      <reference referencedUin="delphi:e_method:src:Project2:uIDocumentField.IDocumentField.GetCaption()" />
-      <reference referencedUin="delphi:e_method:src:Project2:uIDocumentField.IDocumentField.SetCaption(System.string)" />
-      <reference referencedUin="delphi:e_property:src:Project2:uIDocumentField.IDocumentField.Caption" />
-      <reference referencedUin="delphi:e_method:src:Project2:uIDocumentField.IDocumentField.GetName()" />
-      <reference referencedUin="delphi:e_method:src:Project2:uIDocumentField.IDocumentField.SetName(System.string)" />
-      <reference referencedUin="delphi:e_property:src:Project2:uIDocumentField.IDocumentField.name" />
-    </reference>
-    <reference referencedUin="delphi:e_class:src:Project2:uTDocumentField.TDocumentField">
-      <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="920,560,214,162" />
-      <property name="location_set_by_user" value="True" />
-      <reference referencedUin="delphi:e_field:src:Project2:uTDocumentField.TDocumentField.FName" />
-      <reference referencedUin="delphi:e_method:src:Project2:uTDocumentField.TDocumentField.GetName()" />
-      <reference referencedUin="delphi:e_method:src:Project2:uTDocumentField.TDocumentField.SetName(System.string)" />
-      <reference referencedUin="delphi:e_property:src:Project2:uTDocumentField.TDocumentField.name" />
-      <reference referencedUin="delphi:e_field:src:Project2:uTDocumentField.TDocumentField.FCaption" />
-      <reference referencedUin="delphi:e_method:src:Project2:uTDocumentField.TDocumentField.GetCaption()" />
-      <reference referencedUin="delphi:e_method:src:Project2:uTDocumentField.TDocumentField.SetCaption(System.string)" />
-      <reference referencedUin="delphi:e_property:src:Project2:uTDocumentField.TDocumentField.Caption" />
-      <reference referencedUin="delphi:e_method:src:Project2:uTDocumentField.TDocumentField.Create(System.string,System.string)" />
-      <reference referencedUin="delphi:l_impl:src:Project2:uTDocumentField.TDocumentField:uIDocumentField.IDocumentField">
-        <property name="sourceAnchor" value="1022,560" />
-        <property name="targetAnchor" value="1022,498" />
-        <property name="bendpoints" value="" />
-      </reference>
-    </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uTCustomBSO.TCustomBSO">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="360,560,183,268" />
+      <property name="bounds" value="360,580,183,343" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_field:src:Project2:uTCustomBSO.TCustomBSO.FBarcode" />
       <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSO.GetBarcode()" />
@@ -170,14 +140,14 @@
       <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSO.Load(Data.DB.TDataSet)" />
       <reference referencedUin="delphi:e_method:src:Project2:uTCustomBSO.TCustomBSO.Show(Vcl.Controls.TCustomControl)" />
       <reference referencedUin="delphi:l_gnt:src:Project2:uTCustomBSO.TCustomBSO:uTDocument.TDocument">
-        <property name="sourceAnchor" value="451,560" />
-        <property name="targetAnchor" value="451,488" />
+        <property name="sourceAnchor" value="451,580" />
+        <property name="targetAnchor" value="451,548" />
         <property name="bendpoints" value="" />
       </reference>
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uTDamagedBSO.TDamagedBSO">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="720,900,205,178" />
+      <property name="bounds" value="720,980,205,208" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_field:src:Project2:uTDamagedBSO.TDamagedBSO.FCauseOfDamageId" />
       <reference referencedUin="delphi:e_method:src:Project2:uTDamagedBSO.TDamagedBSO.GetCauseOfDamageId()" />
@@ -191,29 +161,29 @@
       <reference referencedUin="delphi:e_method:src:Project2:uTDamagedBSO.TDamagedBSO.Load(Data.DB.TDataSet)" />
       <reference referencedUin="delphi:e_method:src:Project2:uTDamagedBSO.TDamagedBSO.Show(Vcl.Controls.TCustomControl)" />
       <reference referencedUin="delphi:l_gnt:src:Project2:uTDamagedBSO.TDamagedBSO:uTCustomBSO.TCustomBSO">
-        <property name="sourceAnchor" value="720,912" />
-        <property name="targetAnchor" value="543,769" />
+        <property name="sourceAnchor" value="720,992" />
+        <property name="targetAnchor" value="543,833" />
         <property name="bendpoints" value="" />
       </reference>
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uTDocumentClass.TDocumentClass">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="-140,160,222,67" />
+      <property name="bounds" value="-140,160,222,81" />
       <property name="location_set_by_user" value="True" />
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uTLoadableItemClass.TLoadableItemClass">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="920,0,261,67" />
+      <property name="bounds" value="920,0,261,81" />
       <property name="location_set_by_user" value="True" />
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uTShipmentBSO.TShipmentBSO">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="100,900,203,114" />
+      <property name="bounds" value="100,980,203,114" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:Project2:uTShipmentBSO.TShipmentBSO.Create()" />
       <reference referencedUin="delphi:l_gnt:src:Project2:uTShipmentBSO.TShipmentBSO:uTCustomBSO.TCustomBSO">
-        <property name="sourceAnchor" value="254,900" />
-        <property name="targetAnchor" value="360,789" />
+        <property name="sourceAnchor" value="250,980" />
+        <property name="targetAnchor" value="360,854" />
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:e_method:src:Project2:uTShipmentBSO.TShipmentBSO.Load(Data.DB.TDataSet)" />
@@ -221,7 +191,7 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uTShipmentBSOWithAct.TShipmentBSOWithAct">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="360,900,292,148" />
+      <property name="bounds" value="360,980,292,163" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_field:src:Project2:uTShipmentBSOWithAct.TShipmentBSOWithAct.FActId" />
       <reference referencedUin="delphi:e_method:src:Project2:uTShipmentBSOWithAct.TShipmentBSOWithAct.GetActId()" />
@@ -231,8 +201,8 @@
       <reference referencedUin="delphi:e_method:src:Project2:uTShipmentBSOWithAct.TShipmentBSOWithAct.Load(Data.DB.TDataSet)" />
       <reference referencedUin="delphi:e_method:src:Project2:uTShipmentBSOWithAct.TShipmentBSOWithAct.Show(Vcl.Controls.TCustomControl)" />
       <reference referencedUin="delphi:l_gnt:src:Project2:uTShipmentBSOWithAct.TShipmentBSOWithAct:uTCustomBSO.TCustomBSO">
-        <property name="sourceAnchor" value="451,900" />
-        <property name="targetAnchor" value="451,828" />
+        <property name="sourceAnchor" value="451,980" />
+        <property name="targetAnchor" value="451,923" />
         <property name="bendpoints" value="" />
       </reference>
     </reference>

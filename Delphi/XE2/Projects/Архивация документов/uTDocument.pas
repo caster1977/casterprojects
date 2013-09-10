@@ -12,7 +12,7 @@ uses
   uIDocument;
 
 type
-  TDocument = class abstract(TLoadableItem, IDocument)
+  TDocument = class(TLoadableItem, IDocument)
   private
     FId: Integer;
     function GetId: Integer;

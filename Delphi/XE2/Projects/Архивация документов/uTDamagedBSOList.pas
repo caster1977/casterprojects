@@ -20,7 +20,8 @@ uses
 
 constructor TDamagedBSOList.Create;
 begin
-  inherited Create(TDamagedBSO);
+  inherited;
+  ItemClass := TDamagedBSO;
 end;
 
 function TDamagedBSOList.GetLoadSQL: string;

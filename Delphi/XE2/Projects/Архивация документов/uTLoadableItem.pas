@@ -7,10 +7,9 @@ uses
   uILoadableItem;
 
 type
-  TLoadableItem = class abstract(TInterfacedObject, ILoadableItem)
-  protected
-    constructor Create; reintroduce; virtual;
+  TLoadableItem = class(TInterfacedObject, ILoadableItem)
   public
+    constructor Create; virtual;
     procedure Load(const ADataSet: TDataSet); virtual; abstract;
   end;
 
