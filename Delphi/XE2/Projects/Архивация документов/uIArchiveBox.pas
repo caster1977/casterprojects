@@ -13,16 +13,6 @@ uses
 type
   IArchiveBox = interface(IDocumentBox)
     ['{C2984458-D3DF-4EB2-9D28-8756E9DD51F4}']
-    function GetName: string;
-
-    ///	<summary>
-    ///	  Наименование (код) короба
-    ///	</summary>
-    ///	<remarks>
-    ///	  Генерируется на основе значений полей TypeId, CompanyId, Year, Number
-    ///	</remarks>
-    property Name: string read GetName;
-
     function GetTypeId: Integer;
     procedure SetTypeId(const AValue: Integer);
 
@@ -30,14 +20,6 @@ type
     /// Идентификатор типа короба
     /// </summary>
     property TypeId: Integer read GetTypeId write SetTypeId;
-
-    function GetTypeName: string;
-    procedure SetTypeName(const AValue: string);
-
-    /// <summary>
-    /// Наименование типа короба
-    /// </summary>
-    property TypeName: string read GetTypeName write SetTypeName;
 
     function GetBarcode: string;
     procedure SetBarcode(const AValue: string);
@@ -55,13 +37,13 @@ type
     /// </summary>
     property Year: Integer read GetYear write SetYear;
 
-    function GetNumber: string;
-    procedure SetNumber(const AValue: string);
+    function GetNumber: Integer;
+    procedure SetNumber(const AValue: Integer);
 
     /// <summary>
     /// Порядковый номер короба в году
     /// </summary>
-    property Number: string read GetNumber write SetNumber;
+    property Number: Integer read GetNumber write SetNumber;
 
     function GetCompanyId: Integer;
     procedure SetCompanyId(const AValue: Integer);
@@ -71,13 +53,38 @@ type
     /// </summary>
     property CompanyId: Integer read GetCompanyId write SetCompanyId;
 
-    function GetCompanyName: string;
-    procedure SetCompanyName(const AValue: string);
+    function GetClosureDate: TDateTime;
+    procedure SetClosureDate(const AValue: TDateTime);
 
-    /// <summary>
-    /// Наименование компании короба
-    /// </summary>
-    property CompanyName: string read GetCompanyName write SetCompanyName;
+    ///	<summary>
+    ///	  Дата и время закрытия короба
+    ///	</summary>
+    property ClosureDate: TDateTime read GetClosureDate write SetClosureDate;
+
+    function GetClosed: Boolean;
+    procedure SetClosed(const AValue: Boolean);
+
+    ///	<summary>
+    ///	  Закрыт ли короб
+    ///	</summary>
+    property Closed: Boolean read GetClosed write SetClosed;
+
+    function GetRegistryPrinted: Boolean;
+    procedure SetRegistryPrinted(const AValue: Boolean);
+
+    ///	<summary>
+    ///	  Был ли распечатан реестр короба
+    ///	</summary>
+    property RegistryPrinted: Boolean read GetRegistryPrinted write SetRegistryPrinted;
+
+    function GetStickerPrinted: Boolean;
+    procedure SetStickerPrinted(const AValue: Boolean);
+
+    ///	<summary>
+    ///	  Был ли распечатан стикер короба
+    ///	</summary>
+    property StickerPrinted: Boolean read GetStickerPrinted write SetStickerPrinted;
+
   end;
 
 implementation

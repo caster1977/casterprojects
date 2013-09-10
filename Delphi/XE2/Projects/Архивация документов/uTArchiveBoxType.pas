@@ -1,14 +1,14 @@
-unit uTArchiveCompany;
+unit uTArchiveBoxType;
 
 interface
 
 uses
-  uIArchiveCompany,
-  uTLoadableItem,
-  DB;
+  DB,
+  uIArchiveBoxType,
+  uTLoadableItem;
 
 type
-  TArchiveCompany = class sealed(TLoadableItem, IArchiveCompany)
+  TArchiveBoxType = class(TLoadableItem, IArchiveBoxType)
   public
     class function GetLoadSQL(const AId: Integer): string; override; final;
 
@@ -30,6 +30,11 @@ type
   public
     property Code: string read GetCode;
 
+  private
+    FCapacity: Integer;
+    function GetCapacity: Integer;
+  public
+    property Capacity: Integer read GetCapacity;
   public
     constructor Create; override; final;
     procedure Load(const ADataSet: TDataSet); override; final;
@@ -40,41 +45,49 @@ implementation
 uses
   SysUtils;
 
-constructor TArchiveCompany.Create;
+constructor TArchiveBoxType.Create;
 begin
   inherited;
   FId := -1;
   FName := EmptyStr;
   FCode := EmptyStr;
+  FCapacity := -1;
 end;
 
-function TArchiveCompany.GetId: Integer;
+function TArchiveBoxType.GetCapacity: Integer;
 begin
-  Result := FId;
+  Result := FCapacity;
 end;
 
-class function TArchiveCompany.GetLoadSQL(const AId: Integer): string;
-begin
-  Result := Format('BSOArchiving_sel_ArchiveCompanies %d', [AId]);
-end;
-
-function TArchiveCompany.GetName: string;
-begin
-  Result := FName;
-end;
-
-function TArchiveCompany.GetCode: string;
+function TArchiveBoxType.GetCode: string;
 begin
   Result := FCode;
 end;
 
-procedure TArchiveCompany.Load(const ADataSet: TDataSet);
+function TArchiveBoxType.GetId: Integer;
 begin
+  Result := FId;
+end;
+
+class function TArchiveBoxType.GetLoadSQL(const AId: Integer): string;
+begin
+  Result := Format('BSOArchiving_sel_ArchiveBoxTypes %d', [AId]);
+end;
+
+function TArchiveBoxType.GetName: string;
+begin
+  Result := FName;
+end;
+
+procedure TArchiveBoxType.Load(const ADataSet: TDataSet);
+begin
+  inherited;
   if Assigned(ADataSet) then
   begin
     FId := ADataSet.FieldByName('Id').AsInteger;
     FName := ADataSet.FieldByName('Name').AsString;
     FCode := ADataSet.FieldByName('Code').AsString;
+    FCapacity := ADataSet.FieldByName('Capacity').AsInteger;
   end;
 end;
 

@@ -9,7 +9,7 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:Project2:uIArchiveCompanies.IArchiveCompanies">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="10,10,266,128" />
+      <property name="bounds" value="10,10,196,127" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveCompanies.IArchiveCompanies.Load(Data.DB.TCustomConnection)" />
       <reference referencedUin="delphi:e_method:src:Project2:uIArchiveCompanies.IArchiveCompanies.GetItem(System.Integer)" />
       <reference referencedUin="delphi:e_property:src:Project2:uIArchiveCompanies.IArchiveCompanies.Items[System.Integer]" />

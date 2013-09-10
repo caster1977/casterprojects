@@ -7,8 +7,6 @@ uses
 
 type
   TDamagedBSOList = class sealed(TDocuments)
-  protected
-    function GetLoadSQL: string; override; final;
   public
     constructor Create; reintroduce; virtual; final;
   end;
@@ -22,11 +20,6 @@ constructor TDamagedBSOList.Create;
 begin
   inherited;
   ItemClass := TDamagedBSO;
-end;
-
-function TDamagedBSOList.GetLoadSQL: string;
-begin
-  Result := 'SELECT ...';
 end;
 
 end.

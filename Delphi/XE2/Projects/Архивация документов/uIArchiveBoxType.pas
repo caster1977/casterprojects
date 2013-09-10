@@ -1,4 +1,4 @@
-unit uIArchiveCompany;
+unit uIArchiveBoxType;
 
 interface
 
@@ -7,28 +7,35 @@ uses
   uILoadableItem;
 
 type
-  IArchiveCompany = interface(ILoadableItem)
-    ['{07B55416-6B9A-4F7F-82D7-59C773D296A8}']
+  IArchiveBoxType = interface(ILoadableItem)
+    ['{09801B9D-D9D9-4E1B-BD4A-F22F935308E3}']
     function GetId: Integer;
 
     /// <summary>
-    /// Идентификатор компании
+    /// Идентификатор типа архивного короба
     /// </summary>
     property Id: Integer read GetId;
 
     function GetName: string;
 
     /// <summary>
-    /// Наименование компании
+    /// Наименование типа архивного короба
     /// </summary>
     property Name: string read GetName;
 
     function GetCode: string;
 
     /// <summary>
-    /// Код компании
+    /// Код типа архивного короба
     /// </summary>
     property Code: string read GetCode;
+
+    function GetCapacity: Integer;
+
+    /// <summary>
+    /// Вместимость типа архивного короба
+    /// </summary>
+    property Capacity: Integer read GetCapacity;
   end;
 
 implementation

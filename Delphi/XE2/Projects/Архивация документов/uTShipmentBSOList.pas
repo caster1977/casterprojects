@@ -7,8 +7,6 @@ uses
 
 type
   TShipmentBSOList = class sealed(TDocuments)
-  protected
-    function GetLoadSQL: string; override; final;
   public
     constructor Create; override; final;
   end;
@@ -22,11 +20,6 @@ constructor TShipmentBSOList.Create;
 begin
   inherited;
   ItemClass := TShipmentBSO;
-end;
-
-function TShipmentBSOList.GetLoadSQL: string;
-begin
-  Result := 'SELECT ...';
 end;
 
 end.

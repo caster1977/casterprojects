@@ -10,34 +10,34 @@ uses
   ADODB,
   SQLExpr;
 
-///	<summary>
-///	  Процедура, получающая результирующую выборку на основе текста запроса,
-///	  переданного указанному объекту запроса
-///	</summary>
-///	<param name="AQuery">
-///	  Объект запроса типа <b>TADOQuery</b> или <b>TSQLQuery</b>
-///	</param>
-///	<param name="ASQL">
-///	  Текст запроса
-///	</param>
-///	<param name="AOpen">
-///	  Необходимо ли выполнить получение результирующей выборки
-///	</param>
-procedure SetSQL(const AQuery: TDataSet; const ASQL: string; const AOpen: Boolean = False);
+/// <summary>
+/// Процедура, получающая результирующую выборку на основе текста запроса,
+/// переданного указанному объекту запроса
+/// </summary>
+/// <param name="AQuery">
+/// Объект запроса типа <b>TADOQuery</b> или <b>TSQLQuery</b>
+/// </param>
+/// <param name="ASQL">
+/// Текст запроса
+/// </param>
+/// <param name="AOpen">
+/// Необходимо ли выполнить получение результирующей выборки
+/// </param>
+procedure SetSQLForQuery(const AQuery: TDataSet; const ASQL: string; const AOpen: Boolean = False);
 
-///	<summary>
-///	  Функция получения ссылки на контрол по имени контрола
-///	</summary>
-///	<param name="AName">
-///	  Имя контрола
-///	</param>
-///	<param name="AParent">
-///	  Оконный элемент, среди дочерних элементов которого нужно производить
-///	  поиск контрола
-///	</param>
-///	<returns>
-///	  Ссылка на искомый контрол
-///	</returns>
+/// <summary>
+/// Функция получения ссылки на контрол по имени контрола
+/// </summary>
+/// <param name="AName">
+/// Имя контрола
+/// </param>
+/// <param name="AParent">
+/// Оконный элемент, среди дочерних элементов которого нужно производить
+/// поиск контрола
+/// </param>
+/// <returns>
+/// Ссылка на искомый контрол
+/// </returns>
 function GetControlByName(const AName: string; const AParent: TCustomControl): TControl;
 
 /// <summary>
@@ -53,6 +53,8 @@ function GetControlByName(const AName: string; const AParent: TCustomControl): T
 /// Текст, который нужно присвоить метке
 /// </param>
 procedure SetLabelCaption(const AParentControl: TCustomControl; const ALabelName, ACaption: string);
+
+function GetQuery(const AConnection: TCustomConnection): TDataSet;
 
 implementation
 
@@ -88,7 +90,7 @@ begin
   end;
 end;
 
-procedure SetSQL(const AQuery: TDataSet; const ASQL: string; const AOpen: Boolean);
+procedure SetSQLForQuery(const AQuery: TDataSet; const ASQL: string; const AOpen: Boolean);
 begin
   if AQuery is TADOQuery then
   begin
@@ -111,6 +113,40 @@ begin
   if AOpen then
   begin
     AQuery.Open;
+  end;
+end;
+
+function GetADOQuery(const AConnection: TCustomConnection): TADOQuery;
+begin
+  Result := TADOQuery.Create(nil);
+  Result.Connection := AConnection as TADOConnection;
+  Result.CommandTimeout := 60000;
+  Result.LockType := ltReadOnly;
+  Result.CursorType := ctOpenForwardOnly;
+end;
+
+function GetSQLQuery(const AConnection: TCustomConnection): TSQLQuery;
+begin
+  Result := TSQLQuery.Create(nil);
+  Result.SQLConnection := AConnection as TSQLConnection;
+end;
+
+function GetQuery(const AConnection: TCustomConnection): TDataSet;
+begin
+  Result := nil;
+  if Assigned(AConnection) then
+  begin
+    if AConnection.Connected then
+    begin
+      if AConnection is TADOConnection then
+      begin
+        Result := GetADOQuery(AConnection);
+      end
+      else
+      begin
+        Result := GetSQLQuery(AConnection);
+      end;
+    end;
   end;
 end;
 

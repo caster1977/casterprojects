@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="s9bh2u54bd9ipc29g_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:Project2:uTArchiveBoxType.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project2:uTArchiveBoxType.TArchiveBoxType">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,174,324" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBoxType.TArchiveBoxType.GetId()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBoxType.TArchiveBoxType.Id" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBoxType.TArchiveBoxType.GetName()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBoxType.TArchiveBoxType.GetCode()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBoxType.TArchiveBoxType.Code" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBoxType.TArchiveBoxType.GetCapacity()" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBoxType.TArchiveBoxType.Capacity" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBoxType.TArchiveBoxType.FId" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBoxType.TArchiveBoxType.FName" />
+      <reference referencedUin="delphi:e_property:src:Project2:uTArchiveBoxType.TArchiveBoxType.Name" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBoxType.TArchiveBoxType.FCode" />
+      <reference referencedUin="delphi:e_field:src:Project2:uTArchiveBoxType.TArchiveBoxType.FCapacity" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBoxType.TArchiveBoxType.Create()" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBoxType.TArchiveBoxType.Load(Data.DB.TDataSet)" />
+      <reference referencedUin="delphi:e_method:src:Project2:uTArchiveBoxType.TArchiveBoxType.GetLoadSQL(System.Integer)" />
+    </reference>
+  </view>
+</nodeSet>

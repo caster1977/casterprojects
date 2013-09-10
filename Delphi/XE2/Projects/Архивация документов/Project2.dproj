@@ -126,6 +126,10 @@
         <DCCReference Include="uIDocumentBox.pas"/>
         <DCCReference Include="uTDocumentBox.pas"/>
         <DCCReference Include="uTDocumentListClass.pas"/>
+        <DCCReference Include="uIArchiveBoxTypes.pas"/>
+        <DCCReference Include="uIArchiveBoxType.pas"/>
+        <DCCReference Include="uTArchiveBoxType.pas"/>
+        <DCCReference Include="uTArchiveBoxTypes.pas"/>
         <None Include="ModelSupport_Project2\default.txaPackage"/>
         <None Include="ModelSupport_Project2\default.txvpck"/>
         <None Include="ModelSupport_Project2\Project2\default.txvpck"/>
@@ -214,6 +218,14 @@
         <None Include="ModelSupport_Project2\Box Diagram.txvcls"/>
         <None Include="ModelSupport_Project2\uTDocumentListClass\default.txaPackage"/>
         <None Include="ModelSupport_Project2\uTDocumentListClass\default.txvpck"/>
+        <None Include="ModelSupport_Project2\uIArchiveBoxTypes\default.txaPackage"/>
+        <None Include="ModelSupport_Project2\uIArchiveBoxTypes\default.txvpck"/>
+        <None Include="ModelSupport_Project2\uIArchiveBoxType\default.txaPackage"/>
+        <None Include="ModelSupport_Project2\uIArchiveBoxType\default.txvpck"/>
+        <None Include="ModelSupport_Project2\uTArchiveBoxType\default.txaPackage"/>
+        <None Include="ModelSupport_Project2\uTArchiveBoxType\default.txvpck"/>
+        <None Include="ModelSupport_Project2\uTArchiveBoxTypes\default.txaPackage"/>
+        <None Include="ModelSupport_Project2\uTArchiveBoxTypes\default.txvpck"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -12,10 +12,8 @@ uses
 
 type
   TArchiveBox = class(TDocumentBox, IArchiveBox)
-  private
-    function GetName: string;
-  public
-    property name: string read GetName nodefault;
+  protected
+    class function GetLoadSQL(const AId: Integer): string; override; final;
 
   private
     FTypeId: Integer;
@@ -23,13 +21,6 @@ type
     procedure SetTypeId(const AValue: Integer);
   public
     property TypeId: Integer read GetTypeId write SetTypeId nodefault;
-
-  private
-    FTypeName: string;
-    function GetTypeName: string;
-    procedure SetTypeName(const AValue: string);
-  public
-    property TypeName: string read GetTypeName write SetTypeName nodefault;
 
   private
     FBarcode: string;
@@ -46,27 +37,46 @@ type
     property Year: Integer read GetYear write SetYear nodefault;
 
   private
-    FNumber: string;
-    function GetNumber: string;
-    procedure SetNumber(const AValue: string);
-
+    FNumber: Integer;
+    function GetNumber: Integer;
+    procedure SetNumber(const AValue: Integer);
   public
-    property Number: string read GetNumber write SetNumber nodefault;
+    property Number: Integer read GetNumber write SetNumber nodefault;
 
   private
     FCompanyId: Integer;
     function GetCompanyId: Integer;
     procedure SetCompanyId(const AValue: Integer);
-
   public
     property CompanyId: Integer read GetCompanyId write SetCompanyId nodefault;
 
   private
-    FCompanyName: string;
-    function GetCompanyName: string;
-    procedure SetCompanyName(const AValue: string);
+    FClosed: Boolean;
+    function GetClosed: Boolean;
+    procedure SetClosed(const AValue: Boolean);
   public
-    property CompanyName: string read GetCompanyName write SetCompanyName nodefault;
+    property Closed: Boolean read GetClosed write SetClosed;
+
+  private
+    FClosureDate: TDateTime;
+    function GetClosureDate: TDateTime;
+    procedure SetClosureDate(const AValue: TDateTime);
+  public
+    property ClosureDate: TDateTime read GetClosureDate write SetClosureDate;
+
+  private
+    FRegistryPrinted: Boolean;
+    function GetRegistryPrinted: Boolean;
+    procedure SetRegistryPrinted(const AValue: Boolean);
+  public
+    property RegistryPrinted: Boolean read GetRegistryPrinted write SetRegistryPrinted;
+
+  private
+    FStickerPrinted: Boolean;
+    function GetStickerPrinted: Boolean;
+    procedure SetStickerPrinted(const AValue: Boolean);
+  public
+    property StickerPrinted: Boolean read GetStickerPrinted write SetStickerPrinted;
 
   public
     procedure Load(const ADataSet: TDataSet); override;
@@ -87,12 +97,12 @@ begin
   Result := FCompanyId;
 end;
 
-function TArchiveBox.GetCompanyName: string;
+class function TArchiveBox.GetLoadSQL(const AId: Integer): string;
 begin
-  Result := FCompanyName;
+  // дописать
 end;
 
-function TArchiveBox.GetNumber: string;
+function TArchiveBox.GetNumber: Integer;
 begin
   Result := FNumber;
 end;
@@ -100,11 +110,6 @@ end;
 function TArchiveBox.GetTypeId: Integer;
 begin
   Result := FTypeId;
-end;
-
-function TArchiveBox.GetTypeName: string;
-begin
-  Result := FTypeName;
 end;
 
 function TArchiveBox.GetYear: Integer;
@@ -131,25 +136,11 @@ begin
   end;
 end;
 
-procedure TArchiveBox.SetCompanyName(const AValue: string);
-var
-  s: string;
+procedure TArchiveBox.SetNumber(const AValue: Integer);
 begin
-  s := Trim(AValue);
-  if FCompanyName <> s then
+  if FNumber <> AValue then
   begin
-    FCompanyName := s;
-  end;
-end;
-
-procedure TArchiveBox.SetNumber(const AValue: string);
-var
-  s: string;
-begin
-  s := Trim(AValue);
-  if FNumber <> s then
-  begin
-    FNumber := s;
+    FNumber := AValue;
   end;
 end;
 
@@ -161,17 +152,6 @@ begin
   end;
 end;
 
-procedure TArchiveBox.SetTypeName(const AValue: string);
-var
-  s: string;
-begin
-  s := Trim(AValue);
-  if FTypeName <> s then
-  begin
-    FTypeName := s;
-  end;
-end;
-
 procedure TArchiveBox.SetYear(const AValue: Integer);
 begin
   if FYear <> AValue then
@@ -180,23 +160,71 @@ begin
   end;
 end;
 
-function TArchiveBox.GetName: string;
+function TArchiveBox.GetClosed: Boolean;
 begin
-  Result := 'Дописать метод TArchiveBox.GetName';
+  Result := FClosed;
+end;
+
+procedure TArchiveBox.SetClosed(const AValue: Boolean);
+begin
+  if FClosed <> AValue then
+  begin
+    FClosed := AValue;
+  end;
+end;
+
+function TArchiveBox.GetClosureDate: TDateTime;
+begin
+  Result := FClosureDate;
+end;
+
+procedure TArchiveBox.SetClosureDate(const AValue: TDateTime);
+begin
+  if FClosureDate <> AValue then
+  begin
+    FClosureDate := AValue;
+  end;
+end;
+
+function TArchiveBox.GetRegistryPrinted: Boolean;
+begin
+  Result := FRegistryPrinted;
+end;
+
+procedure TArchiveBox.SetRegistryPrinted(const AValue: Boolean);
+begin
+  if FRegistryPrinted <> AValue then
+  begin
+    FRegistryPrinted := AValue;
+  end;
+end;
+
+function TArchiveBox.GetStickerPrinted: Boolean;
+begin
+  Result := FStickerPrinted;
+end;
+
+procedure TArchiveBox.SetStickerPrinted(const AValue: Boolean);
+begin
+  if FStickerPrinted <> AValue then
+  begin
+    FStickerPrinted := AValue;
+  end;
 end;
 
 procedure TArchiveBox.Load(const ADataSet: TDataSet);
 begin
   if Assigned(ADataSet) then
   begin
-    // Id := ADataSet.FieldByName('Id').AsInteger;
-    TypeId := ADataSet.FieldByName('TypeId').AsInteger;
-    TypeName := ADataSet.FieldByName('TypeName').AsString;
     Barcode := ADataSet.FieldByName('Barcode').AsString;
-    Year := ADataSet.FieldByName('Year').AsInteger;
-    Number := ADataSet.FieldByName('Number').AsString;
+    Closed := ADataSet.FieldByName('Closed').AsBoolean;
+    ClosureDate := ADataSet.FieldByName('ClosureDate').AsDateTime;
     CompanyId := ADataSet.FieldByName('CompanyId').AsInteger;
-    CompanyName := ADataSet.FieldByName('CompanyName').AsString;
+    Number := ADataSet.FieldByName('Number').AsInteger;
+    RegistryPrinted := ADataSet.FieldByName('RegistryPrinted').AsBoolean;
+    StickerPrinted := ADataSet.FieldByName('StickerPrinted').AsBoolean;
+    TypeId := ADataSet.FieldByName('TypeId').AsInteger;
+    Year := ADataSet.FieldByName('Year').AsInteger;
   end;
   inherited;
 end;

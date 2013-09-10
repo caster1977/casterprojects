@@ -38,9 +38,9 @@ begin
     begin
       if Assigned(Items[i]) then
       begin
-        if IDocument(Items[i]).Id = AId then
+        if (Items[i] as IDocument).Id = AId then
         begin
-          Result := IDocument(Items[i]);
+          Result := Items[i] as IDocument;
           Break;
         end;
       end;
@@ -86,7 +86,7 @@ begin
     begin
       if Count > AIndex then
       begin
-        Result := IDocument(Items[AIndex]);
+        Result := Items[AIndex] as IDocument;
       end;
     end;
   end;

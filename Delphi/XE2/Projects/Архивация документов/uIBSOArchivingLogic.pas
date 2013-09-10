@@ -6,7 +6,8 @@ uses
   uIDocumentArchivingLogic,
   uIDocument,
   uIArchiveBox,
-  uIArchiveCompanies;
+  uIArchiveCompanies,
+  uIArchiveBoxTypes;
 
 type
   IBSOArchivingLogic = interface(IDocumentArchivingLogic)
@@ -43,6 +44,13 @@ type
     ///	  Список архивных компаний
     ///	</summary>
     property ArchiveCompanies: IArchiveCompanies read GetArchiveCompanies;
+
+    function GetArchiveBoxTypes: IArchiveBoxTypes;
+
+    ///	<summary>
+    ///	  Список типов архивных коробов
+    ///	</summary>
+    property ArchiveBoxTypes: IArchiveBoxTypes read GetArchiveBoxTypes;
   end;
 
 implementation

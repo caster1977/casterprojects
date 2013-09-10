@@ -32,7 +32,7 @@ uses
 function TDocumentArchivingLogic.GetBoxCapacity(const AType: Integer): Integer;
 begin
   try
-    SetSQL(Query,
+    SetSQLForQuery(Query,
       Format('SELECT abt.Capacity AS Capacity FROM ArchiveBoxTypes abt WHERE abt.Id_ArchiveBoxType = %d',
       [AType]), True);
     Result := Query.FieldByName('Capacity').AsInteger;
@@ -47,7 +47,7 @@ begin
   if Assigned(ABox) then
   begin
     try
-      SetSQL(Query,
+      SetSQLForQuery(Query,
         Format('SELECT abt.Capacity AS Capacity FROM ArchiveBoxTypes abt WHERE abt.Id_ArchiveBoxType = %d',
         [ABox.TypeId]), True);
       Result := Query.FieldByName('Capacity').AsInteger;
