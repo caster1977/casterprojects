@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="ufcniqjfk4p_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uIDocumentField.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uIDocumentField.IDocumentField">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,123,158" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uIDocumentField.IDocumentField.GetCaption()" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uIDocumentField.IDocumentField.SetCaption(System.string)" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uIDocumentField.IDocumentField.Caption" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uIDocumentField.IDocumentField.GetName()" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uIDocumentField.IDocumentField.SetName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uIDocumentField.IDocumentField.name" />
+    </reference>
+  </view>
+</nodeSet>

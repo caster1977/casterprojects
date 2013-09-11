@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="p1velqjxgsh_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uICustomBusinessLogic.ICustomBusinessLogic">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,272,188" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uICustomBusinessLogic.ICustomBusinessLogic.GetOnDisplayMessage()" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uICustomBusinessLogic.ICustomBusinessLogic.SetOnDisplayMessage(uTOnDisplayMessage.TOnDisplayMessage)" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uICustomBusinessLogic.ICustomBusinessLogic.OnDisplayMessage" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uICustomBusinessLogic.ICustomBusinessLogic.GetQuery()" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uICustomBusinessLogic.ICustomBusinessLogic.Query" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uICustomBusinessLogic.ICustomBusinessLogic.GetConnection()" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uICustomBusinessLogic.ICustomBusinessLogic.Connection" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uICustomBusinessLogic.ICustomBusinessLogic.CloseQuery()" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uICustomBusinessLogic.ICustomBusinessLogic.DisplayInfoMessage(System.string)" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uICustomBusinessLogic.ICustomBusinessLogic.DisplayErrorMessage(System.string)" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uICustomBusinessLogic.ICustomBusinessLogic.DisplaySuccessMessage(System.string)" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uICustomBusinessLogic.ICustomBusinessLogic.ClearMessage()" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uICustomBusinessLogic.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+  </view>
+</nodeSet>

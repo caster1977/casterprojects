@@ -7,7 +7,8 @@ uses
   uIBSOArchivingLogic,
   uIDocument,
   uIArchiveCompanies,
-  uIArchiveBoxTypes;
+  uIArchiveBoxTypes,
+  uIArchiveBox;
 
 type
   TBSOArchivingLogic = class(TDocumentArchivingLogic, IBSOArchivingLogic)
@@ -24,6 +25,7 @@ type
   public
     function GetOpenedBoxQuantity(const AType, ACompanyId: Integer): Integer; overload;
     function GetOpenedBoxQuantity(const ADocument: IDocument): Integer; overload;
+    procedure CloseCurrentBox;
   end;
 
 implementation
@@ -44,6 +46,14 @@ begin
     Result := Query.FieldByName('Quantity').AsInteger;
   finally
     CloseQuery;
+  end;
+end;
+
+procedure TBSOArchivingLogic.CloseCurrentBox;
+begin
+  if Assigned(CurrentBox) then
+  begin
+    CurrentBox.Close;
   end;
 end;
 

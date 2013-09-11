@@ -51,6 +51,11 @@ type
     ///	  Список типов архивных коробов
     ///	</summary>
     property ArchiveBoxTypes: IArchiveBoxTypes read GetArchiveBoxTypes;
+
+    ///	<summary>
+    ///	  Процедура закрытия текущего короба
+    ///	</summary>
+    procedure CloseCurrentBox;
   end;
 
 implementation

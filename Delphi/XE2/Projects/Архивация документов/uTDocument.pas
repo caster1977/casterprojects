@@ -13,6 +13,10 @@ uses
 
 type
   TDocument = class(TLoadableItem, IDocument)
+  protected
+    class function GetDocumentType: Integer; virtual;
+  public
+    class function GetLoadSQL(const AId: Integer): string; override; final;
   private
     FId: Integer;
     function GetId: Integer;
@@ -69,9 +73,19 @@ begin
   Result := FArchiveBoxId;
 end;
 
+class function TDocument.GetDocumentType: Integer;
+begin
+  Result := -1;
+end;
+
 function TDocument.GetId: Integer;
 begin
   Result := FId;
+end;
+
+class function TDocument.GetLoadSQL(const AId: Integer): string;
+begin
+  Result := Format('BSOArchiving_sel_ArchiveDocuments %d, %d', [AId, GetDocumentType]);
 end;
 
 function TDocument.GetTypeId: Integer;
@@ -222,7 +236,6 @@ begin
         end;
         l2.Name := 'lblDocument' + IDocumentField(FVisualizableFields[j]).Name;
         l2.Parent := FParentControl;
-        // l2.Caption := IDocumentField(FVisualizableFields[j]).Caption;
         l2.Left := FParentControl.ClientWidth div 2 + 8;
         l2.Top := Integer(FParentControl is TGroupBox) * 10 + FParentControl.Margins.Top +
           FParentControl.Margins.Top + j * (17 + FParentControl.Margins.Top);

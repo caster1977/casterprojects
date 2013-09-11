@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="rhat3yu3qxddmoirq_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uIBSOArchivingLogic.IBSOArchivingLogic">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,261,142" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uIBSOArchivingLogic.IBSOArchivingLogic.GetOpenedBoxQuantity(uIDocument.IDocument)" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uIBSOArchivingLogic.IBSOArchivingLogic.GetOpenedBoxQuantity(System.Integer,System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uIBSOArchivingLogic.IBSOArchivingLogic.ArchiveCompanies" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uIBSOArchivingLogic.IBSOArchivingLogic.GetArchiveCompanies()" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uIBSOArchivingLogic.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+  </view>
+</nodeSet>

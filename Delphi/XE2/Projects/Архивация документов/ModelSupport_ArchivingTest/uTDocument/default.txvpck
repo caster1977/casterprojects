@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="u1w74836sko_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uTDocument.TDocument">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_field:src:ArchivingTest:uTDocument.TDocument.FId" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTDocument.TDocument.GetId()" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTDocument.TDocument.SetId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uTDocument.TDocument.Id" />
+      <reference referencedUin="delphi:e_field:src:ArchivingTest:uTDocument.TDocument.FArchiveBoxId" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTDocument.TDocument.GetArchiveBoxId()" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTDocument.TDocument.SetArchiveBoxId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uTDocument.TDocument.ArchiveBoxId" />
+      <reference referencedUin="delphi:e_field:src:ArchivingTest:uTDocument.TDocument.FTypeId" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTDocument.TDocument.GetTypeId()" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTDocument.TDocument.SetTypeId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uTDocument.TDocument.TypeId" />
+      <reference referencedUin="delphi:e_field:src:ArchivingTest:uTDocument.TDocument.FTypeName" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTDocument.TDocument.GetTypeName()" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTDocument.TDocument.SetTypeName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uTDocument.TDocument.TypeName" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTDocument.TDocument.Load(Data.DB.TDataSet)" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTDocument.TDocument.AddVisualizableField(System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTDocument.TDocument.ClearVisualizableFields()" />
+      <reference referencedUin="delphi:e_field:src:ArchivingTest:uTDocument.TDocument.FVisualizableFields" />
+      <reference referencedUin="delphi:e_field:src:ArchivingTest:uTDocument.TDocument.FParentControl" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTDocument.TDocument.Show(Vcl.Controls.TCustomControl)" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTDocument.TDocument.Create()" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTDocument.TDocument.Destroy()" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTDocument.TDocument.ClearParentControl()" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uTDocument.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+  </view>
+</nodeSet>

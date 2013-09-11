@@ -85,6 +85,21 @@ type
     ///	</summary>
     property StickerPrinted: Boolean read GetStickerPrinted write SetStickerPrinted;
 
+    function GetUserId: Integer;
+    procedure SetUserId(const AValue: Integer);
+
+    /// <summary>
+    /// Идентификатор пользователя, работающего с коробом
+    /// </summary>
+    property UserId: Integer read GetUserId write SetUserId;
+
+    ///	<summary>
+    ///	  Процедура закрытия короба
+    ///	</summary>
+    ///	<remarks>
+    ///	  Срабатывает только для открытых коробов
+    ///	</remarks>
+    procedure Close;
   end;
 
 implementation
