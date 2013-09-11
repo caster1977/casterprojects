@@ -9,8 +9,8 @@ uses
 
 type
   TShipmentBSO = class sealed(TCustomBSO)
-  public
-    class function GetLoadSQL(const AId: Integer): string; override; final;
+  protected
+    class function GetDocumentType: Integer; override; final;
   public
     constructor Create; override; final;
     procedure Load(const ADataSet: TDataSet); override; final;
@@ -32,9 +32,9 @@ begin
   AddVisualizableField('Штрих-код:', 'Barcode');
 end;
 
-class function TShipmentBSO.GetLoadSQL(const AId: Integer): string;
+class function TShipmentBSO.GetDocumentType: Integer;
 begin
-  Result := Format('BSOArchiving_sel_ %d', [AId]);
+  Result := 1;
 end;
 
 procedure TShipmentBSO.Load(const ADataSet: TDataSet);

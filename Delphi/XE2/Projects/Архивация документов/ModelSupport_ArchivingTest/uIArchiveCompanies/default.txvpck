@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="ypw8fp05snj1551ne_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uIArchiveCompanies.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uIArchiveCompanies.IArchiveCompanies">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,196,127" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uIArchiveCompanies.IArchiveCompanies.Load(Data.DB.TCustomConnection)" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uIArchiveCompanies.IArchiveCompanies.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uIArchiveCompanies.IArchiveCompanies.Items[System.Integer]" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uIArchiveCompanies.IArchiveCompanies.Count" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uIArchiveCompanies.IArchiveCompanies.GetCount()" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uIArchiveCompanies.IArchiveCompanies.GetItemById(System.Integer)" />
+    </reference>
+  </view>
+</nodeSet>

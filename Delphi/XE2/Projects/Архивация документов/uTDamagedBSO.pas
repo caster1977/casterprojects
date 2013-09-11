@@ -10,7 +10,7 @@ uses
 type
   TDamagedBSO = class sealed(TCustomBSO)
   protected
-    class function GetLoadSQL(const AId: Integer): string; override; final;
+    class function GetDocumentType: Integer; override; final;
 
   private
     FCauseOfDamageId: Integer;
@@ -51,9 +51,9 @@ begin
   Result := FCauseOfDamageName;
 end;
 
-class function TDamagedBSO.GetLoadSQL(const AId: Integer): string;
+class function TDamagedBSO.GetDocumentType: Integer;
 begin
-  Result := Format('BSOArchiving_sel_ %d', [AId]);
+  Result := 5;
 end;
 
 procedure TDamagedBSO.SetCauseOfDamageId(const AValue: Integer);

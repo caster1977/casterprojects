@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="gczxi983x2n_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uTArchiveCompany.TArchiveCompany">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,129,162" />
+      <reference referencedUin="delphi:l_impl:src:ArchivingTest:uTArchiveCompany.TArchiveCompany:uIArchiveCompany.IArchiveCompany">
+        <property name="sourceAnchor" value="139,58" />
+        <property name="targetAnchor" value="250,58" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="delphi:e_field:src:ArchivingTest:uTArchiveCompany.TArchiveCompany.FId" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTArchiveCompany.TArchiveCompany.GetId()" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uTArchiveCompany.TArchiveCompany.Id" />
+      <reference referencedUin="delphi:e_field:src:ArchivingTest:uTArchiveCompany.TArchiveCompany.FCode" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTArchiveCompany.TArchiveCompany.GetCode()" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uTArchiveCompany.TArchiveCompany.Code" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTArchiveCompany.TArchiveCompany.Load(Data.DB.TDataSet)" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uTArchiveCompany.TArchiveCompany.Create()" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uTArchiveCompany.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uIArchiveCompany.IArchiveCompany">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="250,26,228,113" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uIArchiveCompany.IArchiveCompany.GetCode()" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uIArchiveCompany.IArchiveCompany.Code" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uIArchiveCompany.IArchiveCompany.GetId()" />
+      <reference referencedUin="delphi:e_property:src:ArchivingTest:uIArchiveCompany.IArchiveCompany.Id" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uIArchiveCompany.IArchiveCompany.Load(Data.DB.TDataSet)" />
+    </reference>
+  </view>
+</nodeSet>

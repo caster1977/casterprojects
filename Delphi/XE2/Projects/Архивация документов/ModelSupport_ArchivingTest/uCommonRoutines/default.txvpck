@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="lnmo2r5paus_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uCommonRoutines.@unitclass">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uCommonRoutines.@unitclass.GetControlByName(System.string,Vcl.Controls.TCustomControl)" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uCommonRoutines.@unitclass.SetLabelCaption(Vcl.Controls.TCustomControl,System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uCommonRoutines.@unitclass.GetADOQuery(Data.DB.TCustomConnection)" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uCommonRoutines.@unitclass.GetSQLQuery(Data.DB.TCustomConnection)" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uCommonRoutines.@unitclass.SetSQLForQuery(Data.DB.TDataSet,System.string,System.Boolean)" />
+      <reference referencedUin="delphi:e_method:src:ArchivingTest:uCommonRoutines.@unitclass.GetQuery(Data.DB.TCustomConnection)" />
+    </reference>
+  </view>
+</nodeSet>

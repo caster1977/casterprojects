@@ -115,11 +115,9 @@ var
 begin
   Logic.Connection.Connected := True;
   try
-    {Logic.CurrentBox := TArchiveBox.Create(Logic.Connection, TShipmentBSOList);
-    Logic.CurrentBox.Id := 1;
-    SetSQLForQuery(Logic.Query, Format('BSOArchiving_sel_ArchiveBox %d', [Logic.CurrentBox.Id]), True);
-    Logic.CurrentBox.Load(Logic.Query);
-    Logic.CurrentBox.Documents.Item[0].Show(GroupBox1);}
+    Logic.CurrentBox := TArchiveBox.Create(Logic.Connection, TShipmentBSOList);
+    Logic.CurrentBox.Load(Logic.Connection, 1);
+    Logic.CurrentBox.Documents.Item[0].Show(GroupBox1);
     ShowMessage(Logic.ArchiveCompanies.GetItemById(1).Name);
     ac := TArchiveCompany.Create(Logic.Connection, 2);
     ShowMessage(ac.Name);

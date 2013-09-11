@@ -12,7 +12,7 @@ uses
 
 type
   TArchiveBox = class(TDocumentBox, IArchiveBox)
-  protected
+  public
     class function GetLoadSQL(const AId: Integer): string; override; final;
 
   private
@@ -78,8 +78,16 @@ type
   public
     property StickerPrinted: Boolean read GetStickerPrinted write SetStickerPrinted;
 
+  private
+    FUserId: Integer;
+    function GetUserId: Integer;
+    procedure SetUserId(const AValue: Integer);
+  public
+    property UserId: Integer read GetUserId write SetUserId;
+
   public
     procedure Load(const ADataSet: TDataSet); override;
+    procedure Close;
   end;
 
 implementation
@@ -97,11 +105,6 @@ begin
   Result := FCompanyId;
 end;
 
-class function TArchiveBox.GetLoadSQL(const AId: Integer): string;
-begin
-  // дописать
-end;
-
 function TArchiveBox.GetNumber: Integer;
 begin
   Result := FNumber;
@@ -110,6 +113,11 @@ end;
 function TArchiveBox.GetTypeId: Integer;
 begin
   Result := FTypeId;
+end;
+
+function TArchiveBox.GetUserId: Integer;
+begin
+  Result := FUserId;
 end;
 
 function TArchiveBox.GetYear: Integer;
@@ -149,6 +157,14 @@ begin
   if FTypeId <> AValue then
   begin
     FTypeId := AValue;
+  end;
+end;
+
+procedure TArchiveBox.SetUserId(const AValue: Integer);
+begin
+  if FUserId <> AValue then
+  begin
+    FUserId := AValue;
   end;
 end;
 
@@ -225,8 +241,24 @@ begin
     StickerPrinted := ADataSet.FieldByName('StickerPrinted').AsBoolean;
     TypeId := ADataSet.FieldByName('TypeId').AsInteger;
     Year := ADataSet.FieldByName('Year').AsInteger;
+    UserId := ADataSet.FieldByName('UserId').AsInteger;
   end;
   inherited;
+end;
+
+class function TArchiveBox.GetLoadSQL(const AId: Integer): string;
+begin
+  Result := Format('BSOArchiving_sel_ArchiveBoxes %d', [AId]);
+end;
+
+procedure TArchiveBox.Close;
+begin
+  if not Closed then
+  begin
+    Closed := True;
+    ClosureDate := Now;
+    UserId := -1;
+  end;
 end;
 
 end.

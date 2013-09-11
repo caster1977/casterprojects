@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="b2xnisdk90k_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uTOnDisplayMessage.TOnDisplayMessage">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,133,36" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ArchivingTest:uTOnDisplayMessage.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+  </view>
+</nodeSet>
