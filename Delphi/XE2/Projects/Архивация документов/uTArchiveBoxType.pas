@@ -9,14 +9,10 @@ uses
 
 type
   TArchiveBoxType = class(TLoadableItem, IArchiveBoxType)
+  protected
+    function GetSaveSQL: string; override; final;
   public
-    class function GetLoadSQL(const AId: Integer): string; override; final;
-
-  private
-    FId: Integer;
-    function GetId: Integer;
-  public
-    property Id: Integer read GetId;
+    function GetLoadSQL: string; override; final;
 
   private
     FName: string;
@@ -35,6 +31,7 @@ type
     function GetCapacity: Integer;
   public
     property Capacity: Integer read GetCapacity;
+
   public
     constructor Create; override; final;
     procedure Load(const ADataSet: TDataSet); override; final;
@@ -45,18 +42,9 @@ implementation
 uses
   SysUtils;
 
-constructor TArchiveBoxType.Create;
+function TArchiveBoxType.GetName: string;
 begin
-  inherited;
-  FId := -1;
-  FName := EmptyStr;
-  FCode := EmptyStr;
-  FCapacity := -1;
-end;
-
-function TArchiveBoxType.GetCapacity: Integer;
-begin
-  Result := FCapacity;
+  Result := FName;
 end;
 
 function TArchiveBoxType.GetCode: string;
@@ -64,19 +52,22 @@ begin
   Result := FCode;
 end;
 
-function TArchiveBoxType.GetId: Integer;
+function TArchiveBoxType.GetCapacity: Integer;
 begin
-  Result := FId;
+  Result := FCapacity;
 end;
 
-class function TArchiveBoxType.GetLoadSQL(const AId: Integer): string;
+constructor TArchiveBoxType.Create;
 begin
-  Result := Format('BSOArchiving_sel_ArchiveBoxTypes %d', [AId]);
+  inherited;
+  FName := EmptyStr;
+  FCode := EmptyStr;
+  FCapacity := -1;
 end;
 
-function TArchiveBoxType.GetName: string;
+function TArchiveBoxType.GetLoadSQL: string;
 begin
-  Result := FName;
+  Result := Format('BSOArchiving_sel_ArchiveBoxType %d', [Id]);
 end;
 
 procedure TArchiveBoxType.Load(const ADataSet: TDataSet);
@@ -84,11 +75,15 @@ begin
   inherited;
   if Assigned(ADataSet) then
   begin
-    FId := ADataSet.FieldByName('Id').AsInteger;
     FName := ADataSet.FieldByName('Name').AsString;
     FCode := ADataSet.FieldByName('Code').AsString;
     FCapacity := ADataSet.FieldByName('Capacity').AsInteger;
   end;
+end;
+
+function TArchiveBoxType.GetSaveSQL: string;
+begin
+  Result := EmptyStr;
 end;
 
 end.

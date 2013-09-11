@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{3C05524A-2207-450B-A531-9BF9118A2A05}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="ArchivingTest.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="TestLogic.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ArchivingTest">
+        <MSBuild Projects="ArchivingTest.dproj"/>
+    </Target>
+    <Target Name="ArchivingTest:Clean">
+        <MSBuild Projects="ArchivingTest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ArchivingTest:Make">
+        <MSBuild Projects="ArchivingTest.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TestLogic">
+        <MSBuild Projects="TestLogic.dproj"/>
+    </Target>
+    <Target Name="TestLogic:Clean">
+        <MSBuild Projects="TestLogic.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TestLogic:Make">
+        <MSBuild Projects="TestLogic.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ArchivingTest;TestLogic"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ArchivingTest:Clean;TestLogic:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ArchivingTest:Make;TestLogic:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

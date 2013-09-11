@@ -3,19 +3,69 @@ unit uILoadableList;
 interface
 
 uses
-  uICustomList,
+  uILoadableItem,
   DB;
 
 type
-  ILoadableList = interface(ICustomList)
+  /// <summary>
+  /// Интерфейс для доступа к объектам списка объектов, умеющих загружаться и записываться в БД
+  /// </summary>
+  ILoadableList = interface
   ['{6592595D-9B17-4BCD-9167-BC94B31A5687}']
-      /// <summary>
+    function GetCount: Integer;
+
+    /// <summary>
+    /// Количество элементов в списке
+    /// </summary>
+    property Count: Integer read GetCount;
+
+    /// <summary>
+    /// Процедура очистки спика
+    /// </summary>
+    procedure Clear;
+
+    /// <summary>
+    /// Процедура удаления указанного элемента списка
+    /// </summary>
+    procedure Delete(const AIndex: Integer);
+
+    /// <summary>
+    /// Функция получения порядкового номера указанного элемента списка
+    /// </summary>
+    function IndexOf(const AItem: ILoadableItem): Integer;
+
+    /// <summary>
     /// Процедура загрузки элементов списка из базы данных
     /// </summary>
     /// <param name="AConnection">
     /// Объект подключения к базе данных
     /// </param>
     procedure Load(const AConnection: TCustomConnection);
+
+    /// <summary>
+    /// Функция для создания нового элемента списка
+    /// </summary>
+    function Add: Integer; overload;
+
+    /// <summary>
+    /// Функция для добавления указанного элемента в список
+    /// </summary>
+    function Add(const AItem: ILoadableItem): Integer; overload;
+
+    ///	<summary>
+    ///	  Процедура записи значений полей элементов списка в базу данных
+    ///	</summary>
+    ///	<param name="AConnection">
+    ///	  Объект подключения к базе данных
+    ///	</param>
+    ///	<returns>
+    ///	  Удалось ли выполнить запись в БД
+    ///	</returns>
+    ///	<remarks>
+    ///	  Работает только для списка объектов, у которых свойство
+    ///	  <b>Saveable</b> установлено в <b>True</b>
+    ///	</remarks>
+    function Save(const AConnection: TCustomConnection): Boolean;
   end;
 
 implementation
