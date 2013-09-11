@@ -5,7 +5,7 @@
     <property name="$name" value="Lists Diagram" />
     <reference referencedUin="delphi:e_class:src:TestLogic:uILoadableList.ILoadableList">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="0,0,179,203" />
+      <property name="bounds" value="0,0,179,188" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uILoadableList.ILoadableList.Load(Data.DB.TCustomConnection)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uILoadableList.ILoadableList.Add()" />
@@ -18,22 +18,30 @@
       <reference referencedUin="delphi:e_method:src:TestLogic:uILoadableList.ILoadableList.IndexOf(System.IInterface)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uILoadableList.ILoadableList.IndexOf(uILoadableItem.ILoadableItem)" />
     </reference>
-    <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompanies.IArchiveCompanies">
+    <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompanyList.IArchiveCompanyList">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="0,260,248,113" />
+      <property name="bounds" value="0,260,268,98" />
       <property name="location_set_by_user" value="True" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveCompanies.IArchiveCompanies.GetItemById(System.Integer)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveCompanies.IArchiveCompanies.GetItem(System.Integer)" />
-      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveCompanies.IArchiveCompanies.Item[System.Integer]" />
-      <reference referencedUin="delphi:l_gnt:src:TestLogic:uIArchiveCompanies.IArchiveCompanies:uILoadableList.ILoadableList">
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveCompanyList.IArchiveCompanies.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveCompanyList.IArchiveCompanies.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveCompanyList.IArchiveCompanies.Item[System.Integer]" />
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uIArchiveCompanyList.IArchiveCompanies:uILoadableList.ILoadableList">
         <property name="sourceAnchor" value="89,260" />
         <property name="targetAnchor" value="89,203" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveCompanyList.IArchiveCompanyList.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveCompanyList.IArchiveCompanyList.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveCompanyList.IArchiveCompanyList.Item[System.Integer]" />
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uIArchiveCompanyList.IArchiveCompanyList:uILoadableList.ILoadableList">
+        <property name="sourceAnchor" value="89,260" />
+        <property name="targetAnchor" value="89,188" />
         <property name="bendpoints" value="" />
       </reference>
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableList.TLoadableList">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="540,0,208,357" />
+      <property name="bounds" value="900,0,192,297" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_field:src:TestLogic:uTLoadableList.TLoadableList.FItemClass" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.GetItemClass()" />
@@ -46,7 +54,7 @@
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.Load(Data.DB.TCustomConnection)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.Save(Data.DB.TCustomConnection)" />
       <reference referencedUin="delphi:l_impl:src:TestLogic:uTLoadableList.TLoadableList:uILoadableList.ILoadableList">
-        <property name="sourceAnchor" value="540,101" />
+        <property name="sourceAnchor" value="900,101" />
         <property name="targetAnchor" value="179,101" />
         <property name="bendpoints" value="" />
       </reference>
@@ -60,61 +68,129 @@
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.IndexOf(System.IInterface)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.IndexOf(uILoadableItem.ILoadableItem)" />
     </reference>
-    <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanies.TArchiveCompanies">
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="0,440,256,131" />
+      <property name="bounds" value="0,440,277,116" />
       <property name="location_set_by_user" value="True" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanies.TArchiveCompanies.GetItem(System.Integer)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanies.TArchiveCompanies.GetItemById(System.Integer)" />
-      <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveCompanies.TArchiveCompanies.Item[System.Integer]" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanies.TArchiveCompanies.Create()" />
-      <reference referencedUin="delphi:l_impl:src:TestLogic:uTArchiveCompanies.TArchiveCompanies:uIArchiveCompanies.IArchiveCompanies">
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyList.TArchiveCompanies.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyList.TArchiveCompanies.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveCompanyList.TArchiveCompanies.Item[System.Integer]" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyList.TArchiveCompanies.Create()" />
+      <reference referencedUin="delphi:l_impl:src:TestLogic:uTArchiveCompanyList.TArchiveCompanies:uIArchiveCompanies.IArchiveCompanies">
         <property name="sourceAnchor" value="124,440" />
         <property name="targetAnchor" value="124,373" />
         <property name="bendpoints" value="" />
       </reference>
-      <reference referencedUin="delphi:l_gnt:src:TestLogic:uTArchiveCompanies.TArchiveCompanies:uTLoadableList.TLoadableList">
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uTArchiveCompanyList.TArchiveCompanies:uTLoadableList.TLoadableList">
         <property name="sourceAnchor" value="230,440" />
         <property name="targetAnchor" value="540,243" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList.Item[System.Integer]" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList.Create()" />
+      <reference referencedUin="delphi:l_impl:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList:uIArchiveCompanyList.IArchiveCompanyList">
+        <property name="sourceAnchor" value="134,440" />
+        <property name="targetAnchor" value="134,358" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList:uTLoadableList.TLoadableList">
+        <property name="sourceAnchor" value="277,452" />
+        <property name="targetAnchor" value="900,216" />
+        <property name="bendpoints" value="" />
+      </reference>
     </reference>
-    <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxTypes.IArchiveBoxTypes">
+    <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxTypeList.IArchiveBoxTypeList">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="280,260,232,113" />
+      <property name="bounds" value="300,260,260,98" />
       <property name="location_set_by_user" value="True" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxTypes.IArchiveBoxTypes.GetItemById(System.Integer)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxTypes.IArchiveBoxTypes.GetItem(System.Integer)" />
-      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxTypes.IArchiveBoxTypes.Items[System.Integer]" />
-      <reference referencedUin="delphi:l_gnt:src:TestLogic:uIArchiveBoxTypes.IArchiveBoxTypes:uILoadableList.ILoadableList">
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxTypeList.IArchiveBoxTypes.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxTypeList.IArchiveBoxTypes.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxTypeList.IArchiveBoxTypes.Items[System.Integer]" />
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uIArchiveBoxTypeList.IArchiveBoxTypes:uILoadableList.ILoadableList">
         <property name="sourceAnchor" value="316,260" />
         <property name="targetAnchor" value="179,163" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxTypeList.IArchiveBoxTypeList.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxTypeList.IArchiveBoxTypeList.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxTypeList.IArchiveBoxTypeList.Items[System.Integer]" />
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uIArchiveBoxTypeList.IArchiveBoxTypeList:uILoadableList.ILoadableList">
+        <property name="sourceAnchor" value="341,260" />
+        <property name="targetAnchor" value="179,157" />
+        <property name="bendpoints" value="" />
+      </reference>
     </reference>
-    <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypes.TArchiveBoxTypes">
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="280,440,241,131" />
+      <property name="bounds" value="300,440,268,116" />
       <property name="location_set_by_user" value="True" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypes.TArchiveBoxTypes.GetItem(System.Integer)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypes.TArchiveBoxTypes.GetItemById(System.Integer)" />
-      <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveBoxTypes.TArchiveBoxTypes.Item[System.Integer]" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypes.TArchiveBoxTypes.Create()" />
-      <reference referencedUin="delphi:l_impl:src:TestLogic:uTArchiveBoxTypes.TArchiveBoxTypes:uIArchiveBoxTypes.IArchiveBoxTypes">
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypes.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypes.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypes.Item[System.Integer]" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypes.Create()" />
+      <reference referencedUin="delphi:l_impl:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypes:uIArchiveBoxTypes.IArchiveBoxTypes">
         <property name="sourceAnchor" value="396,440" />
         <property name="targetAnchor" value="396,373" />
         <property name="bendpoints" value="" />
       </reference>
-      <reference referencedUin="delphi:l_gnt:src:TestLogic:uTArchiveBoxTypes.TArchiveBoxTypes:uTLoadableList.TLoadableList">
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypes:uTLoadableList.TLoadableList">
         <property name="sourceAnchor" value="448,440" />
         <property name="targetAnchor" value="540,316" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList.Item[System.Integer]" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList.Create()" />
+      <reference referencedUin="delphi:l_impl:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList:uIArchiveBoxTypeList.IArchiveBoxTypeList">
+        <property name="sourceAnchor" value="430,440" />
+        <property name="targetAnchor" value="430,358" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList:uTLoadableList.TLoadableList">
+        <property name="sourceAnchor" value="537,440" />
+        <property name="targetAnchor" value="900,236" />
         <property name="bendpoints" value="" />
       </reference>
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableListClass.TLoadableListClass">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="780,0,251,81" />
+      <property name="bounds" value="240,0,251,81" />
       <property name="location_set_by_user" value="True" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTCauseOfDamageList.TCauseOfDamageList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="600,440,279,116" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uTCauseOfDamageList.TCauseOfDamageList:uTLoadableList.TLoadableList">
+        <property name="sourceAnchor" value="781,440" />
+        <property name="targetAnchor" value="900,278" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageList.TCauseOfDamageList.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageList.TCauseOfDamageList.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTCauseOfDamageList.TCauseOfDamageList.Item[System.Integer]" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageList.TCauseOfDamageList.Create()" />
+      <reference referencedUin="delphi:l_impl:src:TestLogic:uTCauseOfDamageList.TCauseOfDamageList:uICauseOfDamageList.ICauseOfDamageList">
+        <property name="sourceAnchor" value="735,440" />
+        <property name="targetAnchor" value="735,358" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uICauseOfDamageList.ICauseOfDamageList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="600,260,270,98" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uICauseOfDamageList.ICauseOfDamageList:uILoadableList.ILoadableList">
+        <property name="sourceAnchor" value="600,270" />
+        <property name="targetAnchor" value="179,130" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uICauseOfDamageList.ICauseOfDamageList.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uICauseOfDamageList.ICauseOfDamageList.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uICauseOfDamageList.ICauseOfDamageList.Item[System.Integer]" />
     </reference>
   </view>
 </nodeSet>
