@@ -3,9 +3,22 @@ unit uTTestLogicMainForm;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
-  Data.DBXMSSQL, System.Actions, Vcl.ActnList, Data.Win.ADODB, Data.DB,
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.ExtCtrls,
+  Vcl.StdCtrls,
+  Data.DBXMSSQL,
+  System.Actions,
+  Vcl.ActnList,
+  Data.Win.ADODB,
+  Data.DB,
   Data.SqlExpr;
 
 type
@@ -28,27 +41,27 @@ implementation
 {$R *.dfm}
 
 uses
-  uIArchiveCompany,
-  uTArchiveCompany,
-  uIArchiveCompanies,
-  uTArchiveCompanies;
+  uIArchiveCompanyItem,
+  uTArchiveCompanyItem,
+  uIArchiveCompanyList,
+  uTArchiveCompanyList;
 
 procedure TTestLogicMainForm.actTestLogicExecute(Sender: TObject);
 var
-  ac: IArchiveCompany;
-  acs: IArchiveCompanies;
+  ac: IArchiveCompanyItem;
+  acs: IArchiveCompanyList;
 begin
   ADOConnection.Connected := True;
   try
-    acs := TArchiveCompanies.Create;
+    acs := TArchiveCompanyList.Create;
     acs.Load(ADOConnection);
-    ac := TArchiveCompany.Create(ADOConnection, 1);
-//    acs.Add;
+    ac := TArchiveCompanyItem.Create(ADOConnection, 1);
+    // acs.Add;
     acs.Add(ac);
     ShowMessage(IntToStr(acs.IndexOf(ac)));
-//    acs.GetItemById(1).Save(ADOConnection);
+    // acs.GetItemById(1).Save(ADOConnection);
     ShowMessage(acs.GetItemById(1).Name);
-    ac := TArchiveCompany.Create(ADOConnection, 2);
+    ac := TArchiveCompanyItem.Create(ADOConnection, 2);
     ShowMessage(ac.Name);
   finally
     ADOConnection.Connected := False;

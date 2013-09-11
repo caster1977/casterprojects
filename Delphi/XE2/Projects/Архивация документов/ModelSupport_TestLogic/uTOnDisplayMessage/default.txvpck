@@ -4,5 +4,12 @@
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTOnDisplayMessage.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTOnDisplayMessage.TOnDisplayMessage">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,133,36" />
+    </reference>
   </view>
 </nodeSet>

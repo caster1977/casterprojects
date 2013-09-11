@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="mp0y2uktcbf_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,216,157" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList.Item[System.Integer]" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList.Create()" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypeList.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+  </view>
+</nodeSet>

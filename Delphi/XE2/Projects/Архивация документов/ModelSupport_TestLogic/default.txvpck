@@ -15,13 +15,15 @@
     </reference>
     <reference referencedUin="design:view:::1refcef6g8j_v">
       <property name="$shortcutReference" value="true" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompanies.IArchiveCompanies" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompanies.@unitclass" />
+      <property name="@__package_fqn" value="uIArchiveCompanyList" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompanyList.IArchiveCompanyList" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompanyList.@unitclass" />
     </reference>
     <reference referencedUin="design:view:::wz081w9npci_v">
       <property name="$shortcutReference" value="true" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanies.@unitclass" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanies.TArchiveCompanies" />
+      <property name="@__package_fqn" value="uTArchiveCompanyList" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanyList.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList" />
     </reference>
     <reference referencedUin="design:view:::xqfhlh2fu9g_v">
       <property name="$shortcutReference" value="true" />
@@ -30,8 +32,9 @@
     </reference>
     <reference referencedUin="design:view:::bq2hl01vuqt_v">
       <property name="$shortcutReference" value="true" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompany.IArchiveCompany" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompany.@unitclass" />
+      <property name="@__package_fqn" value="uIArchiveCompanyItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompanyItem.IArchiveCompanyItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompanyItem.@unitclass" />
     </reference>
     <reference referencedUin="design:view:::i7cguacjbin_v">
       <property name="$shortcutReference" value="true" />
@@ -54,8 +57,9 @@
     </reference>
     <reference referencedUin="design:view:::8nnhicmwtqq_v">
       <property name="$shortcutReference" value="true" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompany.@unitclass" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompany.TArchiveCompany" />
+      <property name="@__package_fqn" value="uTArchiveCompanyItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanyItem.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanyItem.TArchiveCompanyItem" />
     </reference>
     <reference referencedUin="design:view:::6ztqce3ln0f_v">
       <property name="$shortcutReference" value="true" />
@@ -72,23 +76,27 @@
     </reference>
     <reference referencedUin="design:view:::mp0y2uktcbf_v">
       <property name="$shortcutReference" value="true" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypes.@unitclass" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypes.TArchiveBoxTypes" />
+      <property name="@__package_fqn" value="uTArchiveBoxTypeList" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypeList.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList" />
     </reference>
     <reference referencedUin="design:view:::nhucei8af3m02zb0r_v">
       <property name="$shortcutReference" value="true" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxType.@unitclass" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxType.IArchiveBoxType" />
+      <property name="@__package_fqn" value="uIArchiveBoxTypeItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxTypeItem.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxTypeItem.IArchiveBoxTypeItem" />
     </reference>
     <reference referencedUin="design:view:::ip0kn6zgwimahectg_v">
       <property name="$shortcutReference" value="true" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxTypes.@unitclass" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxTypes.IArchiveBoxTypes" />
+      <property name="@__package_fqn" value="uIArchiveBoxTypeList" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxTypeList.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxTypeList.IArchiveBoxTypeList" />
     </reference>
     <reference referencedUin="design:view:::72q0380mo7o7m5xve_v">
       <property name="$shortcutReference" value="true" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxType.@unitclass" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxType.TArchiveBoxType" />
+      <property name="@__package_fqn" value="uTArchiveBoxTypeItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypeItem.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem" />
     </reference>
     <reference referencedUin="design:view:::z4ndtx0kqfpg3bnik_v">
       <property name="$shortcutReference" value="true" />

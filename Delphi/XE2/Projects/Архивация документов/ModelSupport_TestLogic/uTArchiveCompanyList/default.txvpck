@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="wz081w9npci_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanyList.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList.Item[System.Integer]" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList.Create()" />
+    </reference>
+  </view>
+</nodeSet>

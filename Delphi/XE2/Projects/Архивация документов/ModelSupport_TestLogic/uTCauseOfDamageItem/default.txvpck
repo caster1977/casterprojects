@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="sq3aoa8dn1j_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.GetName()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.GetBarcode()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.Barcode" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.FName" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.FBarcode" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.Name" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.GetSaveSQL()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.GetLoadSQL()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.Create()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.Load(Data.DB.TDataSet)" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTCauseOfDamageItem.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+  </view>
+</nodeSet>

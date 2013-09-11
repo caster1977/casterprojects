@@ -87,12 +87,9 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="uTCustomBSO.pas"/>
-        <DCCReference Include="uIDocument.pas"/>
-        <DCCReference Include="uTDocument.pas"/>
         <DCCReference Include="uTDamagedBSO.pas"/>
         <DCCReference Include="uIArchiveBox.pas"/>
         <DCCReference Include="uTArchiveBox.pas"/>
-        <DCCReference Include="uTDocumentClass.pas"/>
         <DCCReference Include="uTShipmentBSO.pas"/>
         <DCCReference Include="uTShipmentBSOWithAct.pas"/>
         <DCCReference Include="uTDocumentArchivingLogic.pas"/>

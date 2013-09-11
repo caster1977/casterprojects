@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="72q0380mo7o7m5xve_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,214,294" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.GetSaveSQL()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.GetLoadSQL()" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.FName" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.GetName()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.Name" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.FCode" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.GetCode()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.Code" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.FCapacity" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.GetCapacity()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.Capacity" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.Create()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.Load(Data.DB.TDataSet)" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypeItem.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+  </view>
+</nodeSet>

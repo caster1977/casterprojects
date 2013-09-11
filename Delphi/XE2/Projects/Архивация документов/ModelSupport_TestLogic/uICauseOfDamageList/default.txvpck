@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="f74e4x4ck5l_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:TestLogic:uICauseOfDamageList.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uICauseOfDamageList.ICauseOfDamageList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,221,127" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uICauseOfDamageList.ICauseOfDamageList.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uICauseOfDamageList.ICauseOfDamageList.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uICauseOfDamageList.ICauseOfDamageList.Item[System.Integer]" />
+    </reference>
+  </view>
+</nodeSet>
