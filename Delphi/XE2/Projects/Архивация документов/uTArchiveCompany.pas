@@ -9,20 +9,16 @@ uses
 
 type
   TArchiveCompany = class sealed(TLoadableItem, IArchiveCompany)
+  protected
+    function GetSaveSQL: string; override; final;
   public
-    class function GetLoadSQL(const AId: Integer): string; override; final;
-
-  private
-    FId: Integer;
-    function GetId: Integer;
-  public
-    property Id: Integer read GetId;
+    function GetLoadSQL: string; override; final;
 
   private
     FName: string;
     function GetName: string;
   public
-    property Name: string read GetName;
+    property name: string read GetName;
 
   private
     FCode: string;
@@ -38,25 +34,8 @@ type
 implementation
 
 uses
-  SysUtils;
-
-constructor TArchiveCompany.Create;
-begin
-  inherited;
-  FId := -1;
-  FName := EmptyStr;
-  FCode := EmptyStr;
-end;
-
-function TArchiveCompany.GetId: Integer;
-begin
-  Result := FId;
-end;
-
-class function TArchiveCompany.GetLoadSQL(const AId: Integer): string;
-begin
-  Result := Format('BSOArchiving_sel_ArchiveCompanies %d', [AId]);
-end;
+  SysUtils,
+  uCommonRoutines;
 
 function TArchiveCompany.GetName: string;
 begin
@@ -68,14 +47,31 @@ begin
   Result := FCode;
 end;
 
+constructor TArchiveCompany.Create;
+begin
+  inherited;
+  FName := EmptyStr;
+  FCode := EmptyStr;
+end;
+
+function TArchiveCompany.GetLoadSQL: string;
+begin
+  Result := Format('BSOArchiving_sel_ArchiveCompany %d', [Id]);
+end;
+
 procedure TArchiveCompany.Load(const ADataSet: TDataSet);
 begin
+  inherited;
   if Assigned(ADataSet) then
   begin
-    FId := ADataSet.FieldByName('Id').AsInteger;
     FName := ADataSet.FieldByName('Name').AsString;
     FCode := ADataSet.FieldByName('Code').AsString;
   end;
+end;
+
+function TArchiveCompany.GetSaveSQL: string;
+begin
+  Result := EmptyStr;
 end;
 
 end.

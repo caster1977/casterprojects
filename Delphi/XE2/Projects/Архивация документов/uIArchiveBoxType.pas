@@ -9,13 +9,6 @@ uses
 type
   IArchiveBoxType = interface(ILoadableItem)
     ['{09801B9D-D9D9-4E1B-BD4A-F22F935308E3}']
-    function GetId: Integer;
-
-    /// <summary>
-    /// Идентификатор типа архивного короба
-    /// </summary>
-    property Id: Integer read GetId;
-
     function GetName: string;
 
     /// <summary>

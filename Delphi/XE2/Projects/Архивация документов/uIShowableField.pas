@@ -1,9 +1,9 @@
-unit uIDocumentField;
+unit uIShowableField;
 
 interface
 
 type
-  IDocumentField = interface
+  IShowableField = interface
     ['{0EDC1B3E-4F99-483A-911F-37DAD5EC2104}']
     function GetCaption: string;
     procedure SetCaption(const AValue: string);
@@ -22,7 +22,7 @@ type
     /// <remarks>
     /// Используется для именования меток
     /// </remarks>
-    property name: string read GetName write SetName;
+    property Name: string read GetName write SetName;
   end;
 
 implementation

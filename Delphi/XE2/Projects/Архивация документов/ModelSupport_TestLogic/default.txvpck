@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="2zuoc7ojvdj_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="design:view:::lhk6h0u9a9g_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uILoadableItem.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uILoadableItem.ILoadableItem" />
+    </reference>
+    <reference referencedUin="design:view:::ecevkyx0rso_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:TestLogic.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::1refcef6g8j_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompanies.IArchiveCompanies" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompanies.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::wz081w9npci_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanies.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanies.TArchiveCompanies" />
+    </reference>
+    <reference referencedUin="design:view:::xqfhlh2fu9g_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableListClass.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableListClass.TLoadableListClass" />
+    </reference>
+    <reference referencedUin="design:view:::bq2hl01vuqt_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompany.IArchiveCompany" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompany.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::i7cguacjbin_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableItem.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableItem.TLoadableItem" />
+    </reference>
+    <reference referencedUin="design:view:::fi6jn7f0zme_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uCommonRoutines.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::0p0mq11ji7l_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uILoadableList.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uILoadableList.ILoadableList" />
+    </reference>
+    <reference referencedUin="design:view:::5cttmcq9ve_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableList.TLoadableList" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableList.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::8nnhicmwtqq_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompany.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompany.TArchiveCompany" />
+    </reference>
+    <reference referencedUin="design:view:::6ztqce3ln0f_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableItemClass.TLoadableItemClass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableItemClass.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::ls7j6u2q2vm_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTTestLogicMainForm.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTTestLogicMainForm.TTestLogicMainForm" />
+    </reference>
+    <reference referencedUin="design:view:::lcajv567c9h_v">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="design:view:::mp0y2uktcbf_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypes.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypes.TArchiveBoxTypes" />
+    </reference>
+    <reference referencedUin="design:view:::nhucei8af3m02zb0r_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxType.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxType.IArchiveBoxType" />
+    </reference>
+    <reference referencedUin="design:view:::ip0kn6zgwimahectg_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxTypes.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxTypes.IArchiveBoxTypes" />
+    </reference>
+    <reference referencedUin="design:view:::72q0380mo7o7m5xve_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxType.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxType.TArchiveBoxType" />
+    </reference>
+    <reference referencedUin="design:view:::z4ndtx0kqfpg3bnik_v">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="design:view:::elaypqcqc3g_v">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="design:view:::oabsa2hadjt_v">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="design:view:::y1cwd94xz6l_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="@__package_fqn" value="uIShowableField" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIShowableField.IShowableField" />
+    </reference>
+    <reference referencedUin="design:view:::2ibu8h7klbk_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="@__package_fqn" value="uTShowableField" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTShowableField.TShowableField" />
+    </reference>
+    <reference referencedUin="design:view:::i6rbm6jyj1d3loiwg_v">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="design:view:::a7nk4ql7rsr_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uICustomBusinessLogic.ICustomBusinessLogic" />
+    </reference>
+    <reference referencedUin="design:view:::00mqwi2i9vj_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic" />
+    </reference>
+    <reference referencedUin="design:view:::oww14qca7pj_v">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+  </view>
+</nodeSet>

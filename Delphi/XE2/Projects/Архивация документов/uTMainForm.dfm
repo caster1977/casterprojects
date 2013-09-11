@@ -60,9 +60,6 @@ object MainForm: TMainForm
   object ActionList: TActionList
     Left = 376
     Top = 112
-    object actDeleteLastDocument: TAction
-      Caption = 'Delete Last Document'
-    end
     object actTestLogic: TAction
       Caption = 'Test Logic'
       OnExecute = actTestLogicExecute

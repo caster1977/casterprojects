@@ -7,6 +7,9 @@ uses
   uILoadableItem;
 
 type
+  /// <summary>
+  /// Интерфейс для доступа к объктам архивных компаний
+  /// </summary>
   IArchiveCompany = interface(ILoadableItem)
     ['{07B55416-6B9A-4F7F-82D7-59C773D296A8}']
     function GetId: Integer;
@@ -21,7 +24,7 @@ type
     /// <summary>
     /// Наименование компании
     /// </summary>
-    property Name: string read GetName;
+    property name: string read GetName;
 
     function GetCode: string;
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="5cttmcq9ve_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableList.TLoadableList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,208,249" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTLoadableList.TLoadableList.FItemClass" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.GetItemClass()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.SetItemClass(uTLoadableItemClass.TLoadableItemClass)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTLoadableList.TLoadableList.ItemClass" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.GetLoadSQL()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.Create()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.Add()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.Add(uILoadableItem.ILoadableItem)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.Load(Data.DB.TCustomConnection)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.Save(Data.DB.TCustomConnection)" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableList.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+  </view>
+</nodeSet>

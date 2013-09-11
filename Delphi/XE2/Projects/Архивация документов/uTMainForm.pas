@@ -32,7 +32,6 @@ type
     Panel1: TPanel;
     Panel2: TPanel;
     ActionList: TActionList;
-    actDeleteLastDocument: TAction;
     ADOConnection: TADOConnection;
     SQLConnection: TSQLConnection;
     Button5: TButton;
