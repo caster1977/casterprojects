@@ -41,7 +41,7 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableList.TLoadableList">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="900,0,192,297" />
+      <property name="bounds" value="1380,0,192,297" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_field:src:TestLogic:uTLoadableList.TLoadableList.FItemClass" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.GetItemClass()" />
@@ -54,8 +54,8 @@
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.Load(Data.DB.TCustomConnection)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.Save(Data.DB.TCustomConnection)" />
       <reference referencedUin="delphi:l_impl:src:TestLogic:uTLoadableList.TLoadableList:uILoadableList.ILoadableList">
-        <property name="sourceAnchor" value="900,101" />
-        <property name="targetAnchor" value="179,101" />
+        <property name="sourceAnchor" value="1380,94" />
+        <property name="targetAnchor" value="179,94" />
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:e_field:src:TestLogic:uTLoadableList.TLoadableList.FItems" />
@@ -96,8 +96,8 @@
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:l_gnt:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList:uTLoadableList.TLoadableList">
-        <property name="sourceAnchor" value="277,452" />
-        <property name="targetAnchor" value="900,216" />
+        <property name="sourceAnchor" value="277,461" />
+        <property name="targetAnchor" value="1380,172" />
         <property name="bendpoints" value="" />
       </reference>
     </reference>
@@ -150,8 +150,8 @@
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:l_gnt:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList:uTLoadableList.TLoadableList">
-        <property name="sourceAnchor" value="537,440" />
-        <property name="targetAnchor" value="900,236" />
+        <property name="sourceAnchor" value="568,452" />
+        <property name="targetAnchor" value="1380,179" />
         <property name="bendpoints" value="" />
       </reference>
     </reference>
@@ -165,8 +165,8 @@
       <property name="bounds" value="600,440,279,116" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:l_gnt:src:TestLogic:uTCauseOfDamageList.TCauseOfDamageList:uTLoadableList.TLoadableList">
-        <property name="sourceAnchor" value="781,440" />
-        <property name="targetAnchor" value="900,278" />
+        <property name="sourceAnchor" value="860,440" />
+        <property name="targetAnchor" value="1380,193" />
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageList.TCauseOfDamageList.GetItem(System.Integer)" />
@@ -191,6 +191,75 @@
       <reference referencedUin="delphi:e_method:src:TestLogic:uICauseOfDamageList.ICauseOfDamageList.GetItemById(System.Integer)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uICauseOfDamageList.ICauseOfDamageList.GetItem(System.Integer)" />
       <reference referencedUin="delphi:e_property:src:TestLogic:uICauseOfDamageList.ICauseOfDamageList.Item[System.Integer]" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveDocumentList.IArchiveDocumentList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="920,260,276,98" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveDocumentList.IArchiveDocumentList.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveDocumentList.IArchiveDocumentList.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveDocumentList.IArchiveDocumentList.Item[System.Integer]" />
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uIArchiveDocumentList.IArchiveDocumentList:uILoadableList.ILoadableList">
+        <property name="sourceAnchor" value="920,277" />
+        <property name="targetAnchor" value="179,114" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveDocumentList.TArchiveDocumentList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="920,440,284,101" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveDocumentList.TArchiveDocumentList.GetItem(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveDocumentList.TArchiveDocumentList.GetItemById(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveDocumentList.TArchiveDocumentList.Item[System.Integer]" />
+      <reference referencedUin="delphi:l_impl:src:TestLogic:uTArchiveDocumentList.TArchiveDocumentList:uIArchiveDocumentList.IArchiveDocumentList">
+        <property name="sourceAnchor" value="1058,440" />
+        <property name="targetAnchor" value="1058,358" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uTArchiveDocumentList.TArchiveDocumentList:uTLoadableList.TLoadableList">
+        <property name="sourceAnchor" value="1121,440" />
+        <property name="targetAnchor" value="1380,227" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveDocumentListClass.TArchiveDocumentListClass">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1260,440,348,81" />
+      <property name="location_set_by_user" value="True" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTDamagedBSOList.TDamagedBSOList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="920,600,246,84" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOList.TDamagedBSOList.Create()" />
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uTDamagedBSOList.TDamagedBSOList:uTArchiveDocumentList.TArchiveDocumentList">
+        <property name="sourceAnchor" value="1043,600" />
+        <property name="targetAnchor" value="1043,541" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOList.TShipmentBSOList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="660,600,243,84" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOList.TShipmentBSOList.Create()" />
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uTShipmentBSOList.TShipmentBSOList:uTArchiveDocumentList.TArchiveDocumentList">
+        <property name="sourceAnchor" value="858,600" />
+        <property name="targetAnchor" value="967,541" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOWithActList.TShipmentBSOWithActList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1180,600,332,84" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOWithActList.TShipmentBSOWithActList.Create()" />
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uTShipmentBSOWithActList.TShipmentBSOWithActList:uTArchiveDocumentList.TArchiveDocumentList">
+        <property name="sourceAnchor" value="1192,600" />
+        <property name="targetAnchor" value="1192,541" />
+        <property name="bendpoints" value="" />
+      </reference>
     </reference>
   </view>
 </nodeSet>

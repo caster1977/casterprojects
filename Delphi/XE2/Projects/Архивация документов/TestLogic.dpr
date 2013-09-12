@@ -28,9 +28,23 @@ uses
   uICauseOfDamageList in 'uICauseOfDamageList.pas',
   uTCauseOfDamageItem in 'uTCauseOfDamageItem.pas',
   uTCauseOfDamageList in 'uTCauseOfDamageList.pas',
-  uIDocumentItem in 'uIDocumentItem.pas',
-  uTDocumentItem in 'uTDocumentItem.pas',
-  uTDocumentItemClass in 'uTDocumentItemClass.pas';
+  uIArchiveDocumentItem in 'uIArchiveDocumentItem.pas',
+  uTArchiveDocumentItem in 'uTArchiveDocumentItem.pas',
+  uTArchiveDocumentItemClass in 'uTArchiveDocumentItemClass.pas',
+  uTCustomBSOItem in 'uTCustomBSOItem.pas',
+  uICustomBSOItem in 'uICustomBSOItem.pas',
+  uIArchiveDocumentList in 'uIArchiveDocumentList.pas',
+  uTArchiveDocumentList in 'uTArchiveDocumentList.pas',
+  uTArchiveDocumentListClass in 'uTArchiveDocumentListClass.pas',
+  uTShipmentBSOItem in 'uTShipmentBSOItem.pas',
+  uIShipmentBSOItem in 'uIShipmentBSOItem.pas',
+  uTShipmentBSOWithActItem in 'uTShipmentBSOWithActItem.pas',
+  uIShipmentBSOWithActItem in 'uIShipmentBSOWithActItem.pas',
+  uTDamagedBSOItem in 'uTDamagedBSOItem.pas',
+  uIDamagedBSOItem in 'uIDamagedBSOItem.pas',
+  uTDamagedBSOList in 'uTDamagedBSOList.pas',
+  uTShipmentBSOList in 'uTShipmentBSOList.pas',
+  uTShipmentBSOWithActList in 'uTShipmentBSOWithActList.pas';
 
 {$R *.res}
 

@@ -4,5 +4,30 @@
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,261,369" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.FOnDisplayMessage" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.GetOnDisplayMessage()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.SetOnDisplayMessage(uTOnDisplayMessage.TOnDisplayMessage)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.OnDisplayMessage" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.FConnection" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.GetConnection()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.Connection" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.FQuery" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.GetQuery()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.Query" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.DisplayMessage(uTMessageType.TMessageType,System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.DisplayInfoMessage(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.DisplayErrorMessage(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.DisplaySuccessMessage(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.ClearMessage()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.CloseQuery()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.Create(Data.DB.TCustomConnection,uTOnDisplayMessage.TOnDisplayMessage)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic.Destroy()" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTCustomBusinessLogic.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
   </view>
 </nodeSet>

@@ -10,19 +10,23 @@ type
   private
     FName: string;
     function GetName: string;
-    procedure SetName(const AValue: string);
   public
-    property Name: string read GetName write SetName nodefault;
+    property Name: string read GetName nodefault;
 
   private
     FCaption: string;
     function GetCaption: string;
-    procedure SetCaption(const AValue: string);
   public
-    property Caption: string read GetCaption write SetCaption nodefault;
+    property Caption: string read GetCaption nodefault;
+
+  private
+    FValue: string;
+    function GetValue: string;
+  public
+    property Value: string read GetValue nodefault;
 
   public
-    constructor Create(const ACaption, AName: string); reintroduce;
+    constructor Create(const ACaption, AName, AValue: string); reintroduce;
   end;
 
 implementation
@@ -30,10 +34,11 @@ implementation
 uses
   SysUtils;
 
-constructor TShowableField.Create(const ACaption, AName: string);
+constructor TShowableField.Create(const ACaption, AName, AValue: string);
 begin
-  name := AName;
-  Caption := ACaption;
+  FName := Trim(AName);
+  FCaption := Trim(ACaption);
+  FValue := Trim(AValue);
 end;
 
 function TShowableField.GetCaption: string;
@@ -46,26 +51,9 @@ begin
   Result := FName;
 end;
 
-procedure TShowableField.SetCaption(const AValue: string);
-var
-  s: string;
+function TShowableField.GetValue: string;
 begin
-  s := Trim(AValue);
-  if FCaption <> s then
-  begin
-    FCaption := s;
-  end;
-end;
-
-procedure TShowableField.SetName(const AValue: string);
-var
-  s: string;
-begin
-  s := Trim(AValue);
-  if FName <> s then
-  begin
-    FName := s;
-  end;
+  Result := FValue;
 end;
 
 end.
