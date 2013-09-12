@@ -86,24 +86,14 @@
             <Form>MainForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="uTCustomBSO.pas"/>
-        <DCCReference Include="uTDamagedBSO.pas"/>
         <DCCReference Include="uIArchiveBox.pas"/>
         <DCCReference Include="uTArchiveBox.pas"/>
-        <DCCReference Include="uTShipmentBSO.pas"/>
-        <DCCReference Include="uTShipmentBSOWithAct.pas"/>
         <DCCReference Include="uTDocumentArchivingLogic.pas"/>
         <DCCReference Include="uIDocumentArchivingLogic.pas"/>
         <DCCReference Include="uIBSOArchivingLogic.pas"/>
         <DCCReference Include="uTBSOArchivingLogic.pas"/>
-        <DCCReference Include="uIDocuments.pas"/>
-        <DCCReference Include="uTDocuments.pas"/>
-        <DCCReference Include="uTShipmentBSOList.pas"/>
-        <DCCReference Include="uTShipmentBSOWithActList.pas"/>
-        <DCCReference Include="uTDamagedBSOList.pas"/>
         <DCCReference Include="uIDocumentBox.pas"/>
         <DCCReference Include="uTDocumentBox.pas"/>
-        <DCCReference Include="uTDocumentListClass.pas"/>
         <None Include="ModelSupport_ArchivingTest\Box Diagram.txvcls"/>
         <None Include="ModelSupport_ArchivingTest\default.txaPackage"/>
         <None Include="ModelSupport_ArchivingTest\default.txvpck"/>
@@ -269,7 +259,7 @@
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">False</Platform>
             </Platforms>
-            <ModelSupport>True</ModelSupport>
+            <ModelSupport>False</ModelSupport>
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>

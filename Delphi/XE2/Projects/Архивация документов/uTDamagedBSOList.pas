@@ -3,10 +3,10 @@ unit uTDamagedBSOList;
 interface
 
 uses
-  uTDocuments;
+  uTArchiveDocumentList;
 
 type
-  TDamagedBSOList = class sealed(TDocuments)
+  TDamagedBSOList = class sealed(TArchiveDocumentList)
   public
     constructor Create; reintroduce; virtual; final;
   end;
@@ -14,12 +14,12 @@ type
 implementation
 
 uses
-  uTDamagedBSO;
+  uTDamagedBSOItem;
 
 constructor TDamagedBSOList.Create;
 begin
   inherited;
-  ItemClass := TDamagedBSO;
+  ItemClass := TDamagedBSOItem;
 end;
 
 end.

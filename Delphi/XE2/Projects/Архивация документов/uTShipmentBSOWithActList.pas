@@ -3,10 +3,10 @@ unit uTShipmentBSOWithActList;
 interface
 
 uses
-  uTDocuments;
+  uTArchiveDocumentList;
 
 type
-  TShipmentBSOWithActList = class sealed(TDocuments)
+  TShipmentBSOWithActList = class sealed(TArchiveDocumentList)
   public
     constructor Create; override; final;
   end;
@@ -14,12 +14,12 @@ type
 implementation
 
 uses
-  uTShipmentBSOWithAct;
+  uTShipmentBSOWithActItem;
 
 constructor TShipmentBSOWithActList.Create;
 begin
   inherited;
-  ItemClass := TShipmentBSOWithAct;
+  ItemClass := TShipmentBSOWithActItem;
 end;
 
 end.

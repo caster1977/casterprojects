@@ -4,5 +4,24 @@
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:TestLogic:uICustomBusinessLogic.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uICustomBusinessLogic.ICustomBusinessLogic">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,272,248" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uICustomBusinessLogic.ICustomBusinessLogic.GetOnDisplayMessage()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uICustomBusinessLogic.ICustomBusinessLogic.SetOnDisplayMessage(uTOnDisplayMessage.TOnDisplayMessage)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uICustomBusinessLogic.ICustomBusinessLogic.OnDisplayMessage" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uICustomBusinessLogic.ICustomBusinessLogic.DisplayInfoMessage(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uICustomBusinessLogic.ICustomBusinessLogic.DisplayErrorMessage(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uICustomBusinessLogic.ICustomBusinessLogic.DisplaySuccessMessage(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uICustomBusinessLogic.ICustomBusinessLogic.ClearMessage()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uICustomBusinessLogic.ICustomBusinessLogic.GetQuery()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uICustomBusinessLogic.ICustomBusinessLogic.Query" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uICustomBusinessLogic.ICustomBusinessLogic.GetConnection()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uICustomBusinessLogic.ICustomBusinessLogic.Connection" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uICustomBusinessLogic.ICustomBusinessLogic.CloseQuery()" />
+    </reference>
   </view>
 </nodeSet>

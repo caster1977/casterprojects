@@ -6,130 +6,281 @@
     <property name="$name" value="default" />
     <reference referencedUin="design:view:::lhk6h0u9a9g_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,140,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uILoadableItem.@unitclass" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uILoadableItem.ILoadableItem" />
     </reference>
     <reference referencedUin="design:view:::ecevkyx0rso_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="169,1,109,134" />
       <reference referencedUin="delphi:e_class:src:TestLogic:TestLogic.@unitclass" />
     </reference>
     <reference referencedUin="design:view:::1refcef6g8j_v">
       <property name="$shortcutReference" value="true" />
       <property name="@__package_fqn" value="uIArchiveCompanyList" />
+      <property name="bounds" value="297,1,179,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompanyList.IArchiveCompanyList" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompanyList.@unitclass" />
     </reference>
     <reference referencedUin="design:view:::wz081w9npci_v">
       <property name="$shortcutReference" value="true" />
       <property name="@__package_fqn" value="uTArchiveCompanyList" />
+      <property name="bounds" value="297,171,183,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanyList.@unitclass" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList" />
     </reference>
     <reference referencedUin="design:view:::xqfhlh2fu9g_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="68,180,220,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableListClass.@unitclass" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableListClass.TLoadableListClass" />
     </reference>
     <reference referencedUin="design:view:::bq2hl01vuqt_v">
       <property name="$shortcutReference" value="true" />
       <property name="@__package_fqn" value="uIArchiveCompanyItem" />
+      <property name="bounds" value="518,1,184,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompanyItem.IArchiveCompanyItem" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompanyItem.@unitclass" />
     </reference>
     <reference referencedUin="design:view:::i7cguacjbin_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="518,171,144,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableItem.@unitclass" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableItem.TLoadableItem" />
     </reference>
     <reference referencedUin="design:view:::fi6jn7f0zme_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="518,341,161,134" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uCommonRoutines.@unitclass" />
     </reference>
     <reference referencedUin="design:view:::0p0mq11ji7l_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="379,369,136,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uILoadableList.@unitclass" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uILoadableList.ILoadableList" />
     </reference>
     <reference referencedUin="design:view:::5cttmcq9ve_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="230,369,140,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableList.TLoadableList" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableList.@unitclass" />
     </reference>
     <reference referencedUin="design:view:::8nnhicmwtqq_v">
       <property name="$shortcutReference" value="true" />
       <property name="@__package_fqn" value="uTArchiveCompanyItem" />
+      <property name="bounds" value="41,369,188,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanyItem.@unitclass" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanyItem.TArchiveCompanyItem" />
     </reference>
     <reference referencedUin="design:view:::6ztqce3ln0f_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="740,1,224,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableItemClass.TLoadableItemClass" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableItemClass.@unitclass" />
     </reference>
     <reference referencedUin="design:view:::ls7j6u2q2vm_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="740,171,179,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTTestLogicMainForm.@unitclass" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTTestLogicMainForm.TTestLogicMainForm" />
     </reference>
     <reference referencedUin="design:view:::lcajv567c9h_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="553,494,93,42" />
     </reference>
     <reference referencedUin="design:view:::mp0y2uktcbf_v">
       <property name="$shortcutReference" value="true" />
       <property name="@__package_fqn" value="uTArchiveBoxTypeList" />
+      <property name="bounds" value="740,341,179,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypeList.@unitclass" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList" />
     </reference>
     <reference referencedUin="design:view:::nhucei8af3m02zb0r_v">
       <property name="$shortcutReference" value="true" />
       <property name="@__package_fqn" value="uIArchiveBoxTypeItem" />
+      <property name="bounds" value="740,511,179,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxTypeItem.@unitclass" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxTypeItem.IArchiveBoxTypeItem" />
     </reference>
     <reference referencedUin="design:view:::ip0kn6zgwimahectg_v">
       <property name="$shortcutReference" value="true" />
       <property name="@__package_fqn" value="uIArchiveBoxTypeList" />
+      <property name="bounds" value="561,574,175,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxTypeList.@unitclass" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxTypeList.IArchiveBoxTypeList" />
     </reference>
     <reference referencedUin="design:view:::72q0380mo7o7m5xve_v">
       <property name="$shortcutReference" value="true" />
       <property name="@__package_fqn" value="uTArchiveBoxTypeItem" />
+      <property name="bounds" value="372,574,184,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypeItem.@unitclass" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem" />
     </reference>
     <reference referencedUin="design:view:::z4ndtx0kqfpg3bnik_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="273,558,98,42" />
     </reference>
     <reference referencedUin="design:view:::elaypqcqc3g_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="124,574,147,166" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTMessageType.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTMessageType.TMessageType" />
     </reference>
     <reference referencedUin="design:view:::oabsa2hadjt_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1002,1,177,166" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTOnDisplayMessage.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTOnDisplayMessage.TOnDisplayMessage" />
     </reference>
     <reference referencedUin="design:view:::y1cwd94xz6l_v">
       <property name="$shortcutReference" value="true" />
       <property name="@__package_fqn" value="uIShowableField" />
+      <property name="bounds" value="1002,186,147,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uIShowableField.IShowableField" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIShowableField.@unitclass" />
     </reference>
     <reference referencedUin="design:view:::2ibu8h7klbk_v">
       <property name="$shortcutReference" value="true" />
       <property name="@__package_fqn" value="uTShowableField" />
+      <property name="bounds" value="1002,356,151,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTShowableField.TShowableField" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTShowableField.@unitclass" />
     </reference>
     <reference referencedUin="design:view:::i6rbm6jyj1d3loiwg_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="15,558,99,42" />
     </reference>
     <reference referencedUin="design:view:::a7nk4ql7rsr_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1002,526,188,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uICustomBusinessLogic.ICustomBusinessLogic" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uICustomBusinessLogic.@unitclass" />
     </reference>
     <reference referencedUin="design:view:::00mqwi2i9vj_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1002,696,192,151" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTCustomBusinessLogic.TCustomBusinessLogic" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTCustomBusinessLogic.@unitclass" />
     </reference>
     <reference referencedUin="design:view:::oww14qca7pj_v">
       <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="774,681,97,42" />
+    </reference>
+    <reference referencedUin="design:view:::wtiyujj7fuo_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="813,778,184,151" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTCauseOfDamageList.TCauseOfDamageList" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTCauseOfDamageList.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::f74e4x4ck5l_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="624,778,180,151" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uICauseOfDamageList.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uICauseOfDamageList.ICauseOfDamageList" />
+    </reference>
+    <reference referencedUin="design:view:::sq3aoa8dn1j_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="276,778,189,151" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTCauseOfDamageItem.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::zpvvqb1scesgw6mcr_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="87,778,185,151" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uICauseOfDamageItem.ICauseOfDamageItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uICauseOfDamageItem.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::o57mhro9sjj_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1232,1,182,151" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveDocumentList.IArchiveDocumentList" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveDocumentList.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::c09tw0klyfgnq3qlr_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1217,171,271,151" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveDocumentItemClass.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveDocumentItemClass.TArchiveDocumentItemClass" />
+    </reference>
+    <reference referencedUin="design:view:::moa2cvwkwlf_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1232,341,186,151" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveDocumentList.TArchiveDocumentList" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveDocumentList.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::1epc4u8h769b60lfm_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1232,511,187,151" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveDocumentItem.IArchiveDocumentItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveDocumentItem.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::ie5i2ogr305ogl89m_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1232,681,162,151" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTCustomBSOItem.TCustomBSOItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTCustomBSOItem.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::jajvsjweal0xbxyjq_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1232,851,191,151" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveDocumentItem.TArchiveDocumentItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveDocumentItem.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::zc6ohkm0pyg_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1526,1,266,151" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveDocumentListClass.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveDocumentListClass.TArchiveDocumentListClass" />
+    </reference>
+    <reference referencedUin="design:view:::32jgorwmtx5h8eept_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1053,967,172,151" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOItem.TShipmentBSOItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOItem.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::mtlvi8b0z77yk0yjo_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="894,967,158,151" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uICustomBSOItem.ICustomBSOItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uICustomBSOItem.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::v9lbe133u6n01aeuq_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="@__package_fqn" value="uIShipmentBSOItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIShipmentBSOItem.IShipmentBSOItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIShipmentBSOItem.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::0c1oehe3odllntail_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIShipmentBSOWithActItem.IShipmentBSOWithActItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIShipmentBSOWithActItem.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::mhnkyfi1sdlzp8ggo_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOWithActItem.TShipmentBSOWithActItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOWithActItem.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::rr5qnr1oobq_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTDamagedBSOItem.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::vn066n3t5dyhphym_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uIDamagedBSOItem.IDamagedBSOItem" />
+    </reference>
+    <reference referencedUin="design:view:::ztvo2tyw50i_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTDamagedBSOList.TDamagedBSOList" />
+    </reference>
+    <reference referencedUin="design:view:::qi5yepy86qm_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOList.TShipmentBSOList" />
+    </reference>
+    <reference referencedUin="design:view:::a8ahjbi0ys_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOWithActList.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOWithActList.TShipmentBSOWithActList" />
     </reference>
   </view>
 </nodeSet>
