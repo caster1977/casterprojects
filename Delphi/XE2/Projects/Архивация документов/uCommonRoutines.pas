@@ -8,7 +8,9 @@ uses
   SysUtils,
   DB,
   ADODB,
-  SQLExpr;
+  SQLExpr,
+  uIArchiveDocumentList,
+  uTArchiveDocumentList;
 
 /// <summary>
 /// Процедура, получающая результирующую выборку на основе текста запроса,
@@ -54,9 +56,34 @@ function GetControlByName(const AName: string; const AParent: TCustomControl): T
 /// </param>
 procedure SetLabelCaption(const AParentControl: TCustomControl; const ALabelName, ACaption: string);
 
+///	<summary>
+///	  Функция создания объекта запроса <b>TADOQuery</b> или <b>TSQLQuery</b> и
+///	  получения ссылки на него в виде ссылки на датасет
+///	</summary>
+///	<param name="AConnection">
+///	  Объект подключения к БД
+///	</param>
+///	<returns>
+///	  Ссылка на объект запроса
+///	</returns>
 function GetQuery(const AConnection: TCustomConnection): TDataSet;
 
+///	<summary>
+///	  Фабричная функция, предназначенная для создания получения ссылки на
+///	  список документов нужного типа в зависимости от типа архивного короба
+///	</summary>
+///	<param name="ATypeId">
+///	  Идентификатор типа архивного короба
+///	</param>
+function GetDocumentListByTypeId(const ATypeId: Integer): IArchiveDocumentList;
+
 implementation
+
+uses
+  uTArchiveDocumentListClass,
+  uTShipmentBSOList,
+  uTShipmentBSOWithActList,
+  uTDamagedBSOList;
 
 function GetControlByName(const AName: string; const AParent: TCustomControl): TControl;
 var
@@ -147,6 +174,35 @@ begin
         Result := GetSQLQuery(AConnection);
       end;
     end;
+  end;
+end;
+
+function GetDocumentListByTypeId(const ATypeId: Integer): IArchiveDocumentList;
+var
+  item_class: TArchiveDocumentListClass;
+begin
+  Result := nil;
+  case ATypeId of
+    1:
+      begin
+        item_class := TShipmentBSOList;
+      end;
+    2:
+      begin
+        item_class := TShipmentBSOWithActList;
+      end;
+    5:
+      begin
+        item_class := TDamagedBSOList;
+      end;
+  else
+    begin
+      item_class := nil;
+    end;
+  end;
+  if Assigned(item_class) then
+  begin
+    Result := item_class.Create;
   end;
 end;
 
