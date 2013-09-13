@@ -360,9 +360,9 @@ end;
 
 function TArchiveBoxItem.GetSaveSQL: string;
 begin
-  Result := Format('BSOArchiving_upd_ArchiveBox %d, %d, %d, %d, %s, %d, %d, %s, %d, %s, %d, %d',
+  Result := Format('BSOArchiving_upd_ArchiveBox %d, %d, %d, %d, "%s", %d, %d, "%s", %d, "%s", %d, %d',
     [Id, TypeId, CompanyId, UserId, Barcode, Year, Number, FormatDateTime('yyyy-mm-dd hh:nn:ss',
-    CreationDate), Closed, FormatDateTime('yyyy-mm-dd hh:nn:ss', ClosureDate),
+    CreationDate), Integer(Closed), FormatDateTime('yyyy-mm-dd hh:nn:ss', ClosureDate),
     Integer(StickerPrinted), Integer(RegistryPrinted)]);
 end;
 
@@ -391,7 +391,10 @@ begin
   inherited;
   if Assigned(AConnection) then
   begin
-    Documents.Load(AConnection);
+    if Assigned(Documents) then
+    begin
+      Documents.Load(AConnection);
+    end;
   end;
 end;
 

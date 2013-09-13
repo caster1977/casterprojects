@@ -35,8 +35,8 @@ end;
 
 function TShipmentBSOItem.GetSaveSQL: string;
 begin
-  Result := Format('BSOArchiving_upd_ShipmentBSO %d, %d, %d, %s, %d, %d, %s, %d',
-    [Id, ArchiveBoxId, ArchivedByUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate), Issued,
+  Result := Format('BSOArchiving_upd_ShipmentBSO %d, %d, %d, "%s", %d, %d, "%s", %d',
+    [Id, ArchiveBoxId, ArchivedByUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate), Integer(Issued),
     IssuedToUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', IssuanceDate), BSOId]);
 end;
 

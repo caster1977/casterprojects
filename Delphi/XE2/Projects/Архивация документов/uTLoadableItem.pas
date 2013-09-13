@@ -80,7 +80,10 @@ constructor TLoadableItem.Create(const AConnection: TCustomConnection; const AId
 begin
   Create;
   FId := AId;
-  Load(AConnection);
+  if AId <> -1 then
+  begin
+    Load(AConnection);
+  end;
 end;
 
 procedure TLoadableItem.Load(const AConnection: TCustomConnection);
@@ -109,6 +112,7 @@ end;
 function TLoadableItem.Save(const AConnection: TCustomConnection): Boolean;
 var
   ds: TDataSet;
+  i: Integer;
 begin
   Result := False;
   if Saveable then
@@ -121,7 +125,12 @@ begin
         try
           if not ds.Eof then
           begin
-            Result := ds.Fields[0].AsInteger = 0;
+            i := ds.Fields[0].AsInteger;
+            Result := i > -1;
+            if Result then
+            begin
+              FId := i; // получение идентификатора записи в случае вставки/апдейта
+            end;
           end;
         finally
           ds.Close;

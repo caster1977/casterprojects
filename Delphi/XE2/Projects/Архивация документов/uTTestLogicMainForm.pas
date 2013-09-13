@@ -21,18 +21,37 @@ uses
   Data.DB,
   Data.SqlExpr,
   uIDocumentArchivingBusinessLogic,
-  uTMessageType;
+  uTMessageType,
+  Vcl.ImgList,
+  Vcl.ComCtrls,
+  Vcl.ToolWin;
 
 type
   TTestLogicMainForm = class(TForm)
-    Button1: TButton;
-    GroupBox1: TGroupBox;
-    Panel1: TPanel;
+    btnTestLogic: TButton;
+    gbInfo: TGroupBox;
+    pnlButtons: TPanel;
     SQLConnection: TSQLConnection;
     ADOConnection: TADOConnection;
     ActionList: TActionList;
     actTestLogic: TAction;
+    ToolBar: TToolBar;
+    tbPrintSticker: TToolButton;
+    tbDeleteLastDocument: TToolButton;
+    tbSeparator: TToolButton;
+    actPrintSticker: TAction;
+    actDeleteLastDocument: TAction;
+    ImageList: TImageList;
+    gbCurrentBox: TGroupBox;
+    gbLastDocument: TGroupBox;
+    gbBarcode: TGroupBox;
+    edBarcode: TEdit;
+    gbHint: TGroupBox;
+    btnClose: TButton;
+    actClose: TAction;
+    lblHint: TLabel;
     procedure actTestLogicExecute(Sender: TObject);
+    procedure actCloseExecute(Sender: TObject);
   private
     FLogic: IDocumentArchivingBusinessLogic;
     function GetLogic: IDocumentArchivingBusinessLogic;
@@ -49,63 +68,83 @@ implementation
 {$R *.dfm}
 
 uses
-  uIArchiveCompanyItem,
-  uTArchiveCompanyItem,
-  uIArchiveCompanyList,
-  uTArchiveCompanyList;
+  uCommonRoutines,
+  uIArchiveBoxItem,
+  uTArchiveBoxItem,
+  uIArchiveDocumentList,
+  uTDocumentArchivingBusinessLogic;
 
-procedure TTestLogicMainForm.DisplayMessage(const AType: TMessageType;
-  const AText: string);
+procedure TTestLogicMainForm.DisplayMessage(const AType: TMessageType; const AText: string);
+var
+  s: string;
 begin
   case AType of
     mtInfo:
       begin
-        Caption := Trim('Info' + ' ' + Trim(AText));
+        s := Trim('Info: ' + Trim(AText));
       end;
     mtSuccess:
       begin
-        Caption := Trim('Success' + ' ' + Trim(AText));
+        s := Trim('Success: ' + Trim(AText));
       end;
     mtError:
       begin
-        Caption := Trim('Error' + ' ' + Trim(AText));
+        s := Trim('Error: ' + Trim(AText));
       end;
-    mtNone:
-      begin
-        Caption := EmptyStr;
-      end;
+  else
+    begin
+      s := EmptyStr;
+    end;
   end;
+  lblHint.Caption := s;
 end;
 
 function TTestLogicMainForm.GetLogic: IDocumentArchivingBusinessLogic;
 begin
   if not Assigned(FLogic) then
   begin
-    //FLogic := TBSOArchivingLogic.Create(ADOConnection);
-    FLogic.OnDisplayMessage := DisplayMessage;
+    FLogic := TDocumentArchivingBusinessLogic.Create(ADOConnection, DisplayMessage);
   end;
   Result := FLogic;
 end;
 
+procedure TTestLogicMainForm.actCloseExecute(Sender: TObject);
+begin
+  Close;
+end;
+
 procedure TTestLogicMainForm.actTestLogicExecute(Sender: TObject);
 var
-  ac: IArchiveCompanyItem;
-  acs: IArchiveCompanyList;
+  box: IArchiveBoxItem;
+  doc_list: IArchiveDocumentList;
 begin
-  ADOConnection.Connected := True;
+  Logic.Connection.Connected := True;
   try
-    acs := TArchiveCompanyList.Create;
-    acs.Load(ADOConnection);
-    ac := TArchiveCompanyItem.Create(ADOConnection, 1);
-    // acs.Add;
-    acs.Add(ac);
-    ShowMessage(IntToStr(acs.IndexOf(ac)));
-    // acs.GetItemById(1).Save(ADOConnection);
-    ShowMessage(acs.GetItemById(1).Name);
-    ac := TArchiveCompanyItem.Create(ADOConnection, 2);
-    ShowMessage(ac.Name);
+    box := TArchiveBoxItem.Create;
+    box.TypeId := 1;
+    if box.Save(Logic.Connection) then
+      begin
+        Logic.DisplaySuccessMessage('Saving box ok.');
+      end
+      else
+      begin
+        Logic.DisplayErrorMessage('Error saving box!');
+      end;
+    if Assigned(doc_list) then
+    begin
+      box.Documents.Add;
+      box.Documents.Add;
+      if box.Documents.Save(Logic.Connection) then
+      begin
+        Logic.DisplaySuccessMessage('Saving docs ok.');
+      end
+      else
+      begin
+        Logic.DisplayErrorMessage('Error saving docs!');
+      end;
+    end;
   finally
-    ADOConnection.Connected := False;
+    Logic.Connection.Connected := False;
   end;
 end;
 
