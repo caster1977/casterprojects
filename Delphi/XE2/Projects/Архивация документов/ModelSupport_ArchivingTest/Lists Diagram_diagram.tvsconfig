@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<TgConfig Version="3" SubLevelDisabled="False">
-  <Option Name="DiagramView.ZoomFactor" Type="System.Single" Value="0.8254092" Category="Diagram" IsBrowsable="False" />
-  <Option Name="ViewManag.ShowImplementationLinks" Type="System.Boolean" Value="True" Category="View Management" SubCategory="LinksFilters" />
-  <Option Name="ViewManag.ShowPropertyAccessors" Type="System.Boolean" Value="False" Category="View Management" SubCategory="MemberFilters" />
-  <Option Name="ViewManag.ShowNonPublicMembers" Type="System.Boolean" Value="True" Category="View Management" SubCategory="MemberFilters" />
-  <Option Name="Diagram.DetailLevel" Type="Borland.Together.OpenAPI3.Config.DiagramDetail" Value="Implementation" Category="Diagram" />
-</TgConfig>

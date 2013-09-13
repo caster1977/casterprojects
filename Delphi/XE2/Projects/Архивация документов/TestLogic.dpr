@@ -47,7 +47,10 @@ uses
   uTShipmentBSOWithActList in 'uTShipmentBSOWithActList.pas',
   uIArchiveBoxItem in 'uIArchiveBoxItem.pas',
   uTArchiveBoxItem in 'uTArchiveBoxItem.pas',
-  uIShowable in 'uIShowable.pas';
+  uIShowable in 'uIShowable.pas',
+  uIArchiveBoxList in 'uIArchiveBoxList.pas',
+  uTArchiveBoxList in 'uTArchiveBoxList.pas',
+  uIDocumentArchivingBusinessLogic in 'uIDocumentArchivingBusinessLogic.pas';
 
 {$R *.res}
 

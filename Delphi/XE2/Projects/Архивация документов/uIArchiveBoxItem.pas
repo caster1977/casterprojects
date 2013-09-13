@@ -116,14 +116,6 @@ type
     /// </summary>
     property UserId: Integer read GetUserId write SetUserId;
 
-    /// <summary>
-    /// Процедура закрытия короба
-    /// </summary>
-    /// <remarks>
-    /// Срабатывает только для открытых коробов
-    /// </remarks>
-    procedure Close;
-
     function GetDocuments: IArchiveDocumentList;
 
     /// <summary>
