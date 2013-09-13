@@ -86,14 +86,10 @@
             <Form>MainForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="uIArchiveBox.pas"/>
-        <DCCReference Include="uTArchiveBox.pas"/>
         <DCCReference Include="uTDocumentArchivingLogic.pas"/>
         <DCCReference Include="uIDocumentArchivingLogic.pas"/>
         <DCCReference Include="uIBSOArchivingLogic.pas"/>
         <DCCReference Include="uTBSOArchivingLogic.pas"/>
-        <DCCReference Include="uIDocumentBox.pas"/>
-        <DCCReference Include="uTDocumentBox.pas"/>
         <None Include="ModelSupport_ArchivingTest\Box Diagram.txvcls"/>
         <None Include="ModelSupport_ArchivingTest\default.txaPackage"/>
         <None Include="ModelSupport_ArchivingTest\default.txvpck"/>

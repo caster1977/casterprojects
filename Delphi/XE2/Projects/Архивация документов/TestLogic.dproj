@@ -128,6 +128,9 @@
         <DCCReference Include="uTDamagedBSOList.pas"/>
         <DCCReference Include="uTShipmentBSOList.pas"/>
         <DCCReference Include="uTShipmentBSOWithActList.pas"/>
+        <DCCReference Include="uIArchiveBoxItem.pas"/>
+        <DCCReference Include="uTArchiveBoxItem.pas"/>
+        <DCCReference Include="uIShowable.pas"/>
         <None Include="ModelSupport_TestLogic\default.txaPackage"/>
         <None Include="ModelSupport_TestLogic\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uILoadableItem\default.txvpck"/>
@@ -213,6 +216,11 @@
         <None Include="ModelSupport_TestLogic\uTShipmentBSOWithActList\default.txaPackage"/>
         <None Include="ModelSupport_TestLogic\uTShipmentBSOList\default.txaPackage"/>
         <None Include="ModelSupport_TestLogic\uTDamagedBSOList\default.txaPackage"/>
+        <None Include="ModelSupport_TestLogic\uIArchiveBoxItem\default.txvpck"/>
+        <None Include="ModelSupport_TestLogic\uTArchiveBoxItem\default.txaPackage"/>
+        <None Include="ModelSupport_TestLogic\uTArchiveBoxItem\default.txvpck"/>
+        <None Include="ModelSupport_TestLogic\uIShowable\default.txaPackage"/>
+        <None Include="ModelSupport_TestLogic\uIShowable\default.txvpck"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

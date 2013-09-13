@@ -17,26 +17,28 @@ object TestLogicMainForm: TTestLogicMainForm
   TextHeight = 13
   object GroupBox1: TGroupBox
     Left = 0
-    Top = 31
+    Top = 0
     Width = 372
     Height = 218
     Align = alClient
     Caption = 'GroupBox1'
     TabOrder = 0
+    ExplicitTop = 31
   end
   object Panel1: TPanel
     Left = 0
-    Top = 0
+    Top = 218
     Width = 372
     Height = 31
-    Align = alTop
+    Align = alBottom
     BevelOuter = bvNone
     Caption = 'Panel1'
     ShowCaption = False
     TabOrder = 1
+    ExplicitTop = 0
     object Button1: TButton
-      Left = 0
-      Top = 0
+      Left = 297
+      Top = 6
       Width = 75
       Height = 25
       Action = actTestLogic

@@ -44,7 +44,10 @@ uses
   uIDamagedBSOItem in 'uIDamagedBSOItem.pas',
   uTDamagedBSOList in 'uTDamagedBSOList.pas',
   uTShipmentBSOList in 'uTShipmentBSOList.pas',
-  uTShipmentBSOWithActList in 'uTShipmentBSOWithActList.pas';
+  uTShipmentBSOWithActList in 'uTShipmentBSOWithActList.pas',
+  uIArchiveBoxItem in 'uIArchiveBoxItem.pas',
+  uTArchiveBoxItem in 'uTArchiveBoxItem.pas',
+  uIShowable in 'uIShowable.pas';
 
 {$R *.res}
 
