@@ -7,10 +7,11 @@ uses
   Controls,
   Classes,
   uTLoadableItem,
-  uIArchiveDocumentItem;
+  uIArchiveDocumentItem,
+  uIShowable;
 
 type
-  TArchiveDocumentItem = class abstract(TLoadableItem, IArchiveDocumentItem)
+  TArchiveDocumentItem = class abstract(TLoadableItem, IArchiveDocumentItem, IShowable)
   private
     FArchiveBoxId: Integer;
     function GetArchiveBoxId: Integer;
@@ -206,7 +207,7 @@ end;
 
 function TArchiveDocumentItem.GetLoadSQL: string;
 begin
-  Result := Format('BSOArchiving_sel_ArchiveDocument %d, %d', [Id, ArchiveBoxId]);
+  Result := Format('BSOArchiving_sel_ArchiveDocument %d, %d', [ArchiveBoxId, Id]);
 end;
 
 end.

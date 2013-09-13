@@ -60,14 +60,6 @@ type
     /// Дата выдачи документа из архива
     /// </summary>
     property IssuanceDate: TDateTime read GetIssuanceDate write SetIssuanceDate;
-
-    function GetShowableFields: IInterfaceList;
-
-    /// <summary>
-    /// Список полей архивного документа, которые необходимо отображать при
-    /// выводе при помощи вызова метода <b>Show</b> бизнес-объекта
-    /// </summary>
-    property ShowableFields: IInterfaceList read GetShowableFields;
   end;
 
 implementation
