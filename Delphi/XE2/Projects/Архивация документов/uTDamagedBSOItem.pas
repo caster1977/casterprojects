@@ -85,9 +85,9 @@ end;
 
 function TDamagedBSOItem.GetSaveSQL: string;
 begin
-  Result := Format('BSOArchiving_upd_DamagedBSO %d, %d, %d, %s, %d, %d, %s, %d, %d',
-    [Id, ArchiveBoxId, ArchivedByUser, FormatDateTime('"yyyy-mm-dd hh:nn:ss"', ArchivingDate), Issued,
-    IssuedToUser, FormatDateTime('"yyyy-mm-dd hh:nn:ss"', IssuanceDate), BSOId, CauseOfDamageId]);
+  Result := Format('BSOArchiving_upd_DamagedBSO %d, %d, %d, "%s", %d, %d, "%s", %d, %d',
+    [Id, ArchiveBoxId, ArchivedByUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate), Integer(Issued),
+    IssuedToUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', IssuanceDate), BSOId, CauseOfDamageId]);
 end;
 
 procedure TDamagedBSOItem.FillShowableFieldsList;

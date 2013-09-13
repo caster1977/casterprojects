@@ -50,7 +50,8 @@ uses
   uIShowable in 'uIShowable.pas',
   uIArchiveBoxList in 'uIArchiveBoxList.pas',
   uTArchiveBoxList in 'uTArchiveBoxList.pas',
-  uIDocumentArchivingBusinessLogic in 'uIDocumentArchivingBusinessLogic.pas';
+  uIDocumentArchivingBusinessLogic in 'uIDocumentArchivingBusinessLogic.pas',
+  uTDocumentArchivingBusinessLogic in 'uTDocumentArchivingBusinessLogic.pas';
 
 {$R *.res}
 

@@ -1,4 +1,4 @@
-unit uTArchiveDocumentListClass;
+unit uTDocumentListClass;
 
 interface
 

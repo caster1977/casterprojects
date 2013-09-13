@@ -69,7 +69,7 @@ type
     /// <summary>
     /// Процедура отображения данных указанного "отображаемого" объекта
     /// </summary>
-    procedure ShowShowableItem(const AParentControl: TCustomControl; const AShowableItem: IShowable);
+    //procedure ShowShowableItem(const AParentControl: TCustomControl; const AShowableItem: IShowable);
 
     ///	<summary>
     ///	  Процедура "откладывания" указанного короба
