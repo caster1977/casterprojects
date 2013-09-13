@@ -23,7 +23,6 @@ object TestLogicMainForm: TTestLogicMainForm
     Align = alClient
     Caption = 'GroupBox1'
     TabOrder = 0
-    ExplicitTop = 31
   end
   object Panel1: TPanel
     Left = 0
@@ -35,7 +34,6 @@ object TestLogicMainForm: TTestLogicMainForm
     Caption = 'Panel1'
     ShowCaption = False
     TabOrder = 1
-    ExplicitTop = 0
     object Button1: TButton
       Left = 297
       Top = 6

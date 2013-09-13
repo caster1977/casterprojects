@@ -27,11 +27,6 @@ type
     procedure CloseQuery;
   end;
 
-    /// <summary>
-    /// Процедура отображения данных объекта
-    /// </summary>
-    //procedure Show(const AParentControl: TCustomControl = nil);
-
 implementation
 
 end.

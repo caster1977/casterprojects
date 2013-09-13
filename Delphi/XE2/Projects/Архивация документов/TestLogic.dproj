@@ -131,6 +131,9 @@
         <DCCReference Include="uIArchiveBoxItem.pas"/>
         <DCCReference Include="uTArchiveBoxItem.pas"/>
         <DCCReference Include="uIShowable.pas"/>
+        <DCCReference Include="uIArchiveBoxList.pas"/>
+        <DCCReference Include="uTArchiveBoxList.pas"/>
+        <DCCReference Include="uIDocumentArchivingBusinessLogic.pas"/>
         <None Include="ModelSupport_TestLogic\default.txaPackage"/>
         <None Include="ModelSupport_TestLogic\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uILoadableItem\default.txvpck"/>
@@ -221,6 +224,12 @@
         <None Include="ModelSupport_TestLogic\uTArchiveBoxItem\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uIShowable\default.txaPackage"/>
         <None Include="ModelSupport_TestLogic\uIShowable\default.txvpck"/>
+        <None Include="ModelSupport_TestLogic\uIArchiveBoxList\default.txaPackage"/>
+        <None Include="ModelSupport_TestLogic\uIArchiveBoxList\default.txvpck"/>
+        <None Include="ModelSupport_TestLogic\uTArchiveBoxList\default.txaPackage"/>
+        <None Include="ModelSupport_TestLogic\uTArchiveBoxList\default.txvpck"/>
+        <None Include="ModelSupport_TestLogic\uIDocumentArchivingBusinessLogic\default.txaPackage"/>
+        <None Include="ModelSupport_TestLogic\uIDocumentArchivingBusinessLogic\default.txvpck"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -19,7 +19,9 @@ uses
   Vcl.ActnList,
   Data.Win.ADODB,
   Data.DB,
-  Data.SqlExpr;
+  Data.SqlExpr,
+  uIDocumentArchivingBusinessLogic,
+  uTMessageType;
 
 type
   TTestLogicMainForm = class(TForm)
@@ -31,6 +33,12 @@ type
     ActionList: TActionList;
     actTestLogic: TAction;
     procedure actTestLogicExecute(Sender: TObject);
+  private
+    FLogic: IDocumentArchivingBusinessLogic;
+    function GetLogic: IDocumentArchivingBusinessLogic;
+    property Logic: IDocumentArchivingBusinessLogic read GetLogic nodefault;
+  private
+    procedure DisplayMessage(const AType: TMessageType; const AText: string);
   end;
 
 var
@@ -45,6 +53,39 @@ uses
   uTArchiveCompanyItem,
   uIArchiveCompanyList,
   uTArchiveCompanyList;
+
+procedure TTestLogicMainForm.DisplayMessage(const AType: TMessageType;
+  const AText: string);
+begin
+  case AType of
+    mtInfo:
+      begin
+        Caption := Trim('Info' + ' ' + Trim(AText));
+      end;
+    mtSuccess:
+      begin
+        Caption := Trim('Success' + ' ' + Trim(AText));
+      end;
+    mtError:
+      begin
+        Caption := Trim('Error' + ' ' + Trim(AText));
+      end;
+    mtNone:
+      begin
+        Caption := EmptyStr;
+      end;
+  end;
+end;
+
+function TTestLogicMainForm.GetLogic: IDocumentArchivingBusinessLogic;
+begin
+  if not Assigned(FLogic) then
+  begin
+    //FLogic := TBSOArchivingLogic.Create(ADOConnection);
+    FLogic.OnDisplayMessage := DisplayMessage;
+  end;
+  Result := FLogic;
+end;
 
 procedure TTestLogicMainForm.actTestLogicExecute(Sender: TObject);
 var

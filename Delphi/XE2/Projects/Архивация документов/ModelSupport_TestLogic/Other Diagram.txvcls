@@ -13,10 +13,12 @@
       <reference referencedUin="delphi:e_method:src:TestLogic:uIShowableField.IShowableField.GetName()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uIShowableField.IShowableField.SetName(System.string)" />
       <reference referencedUin="delphi:e_property:src:TestLogic:uIShowableField.IShowableField.Name" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIShowableField.IShowableField.GetValue()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIShowableField.IShowableField.Value" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTShowableField.TShowableField">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="260,0,210,222" />
+      <property name="bounds" value="260,0,210,237" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_field:src:TestLogic:uTShowableField.TShowableField.FName" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTShowableField.TShowableField.GetName()" />
@@ -32,6 +34,10 @@
         <property name="targetAnchor" value="201,79" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTShowableField.TShowableField.FValue" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTShowableField.TShowableField.GetValue()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTShowableField.TShowableField.Value" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTShowableField.TShowableField.Create(System.string,System.string,System.string)" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTMessageType.TMessageType">
       <property name="$shortcutReference" value="true" />
@@ -46,6 +52,15 @@
       <property name="$shortcutReference" value="true" />
       <property name="bounds" value="760,0,263,36" />
       <property name="location_set_by_user" value="True" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uIShowable.IShowable">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="0,280,208,128" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIShowable.IShowable.GetShowableFields()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIShowable.IShowable.ShowableFields" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIShowable.IShowable.AddShowableField(System.string,System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIShowable.IShowable.FillShowableFieldsList()" />
     </reference>
   </view>
 </nodeSet>

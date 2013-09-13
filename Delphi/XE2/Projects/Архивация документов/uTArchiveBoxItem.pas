@@ -103,9 +103,6 @@ type
   public
     property UserId: Integer read GetUserId write SetUserId nodefault;
 
-  public
-    procedure Close;
-
   private
     FDocuments: IArchiveDocumentList;
     function GetDocuments: IArchiveDocumentList;
@@ -386,15 +383,6 @@ begin
     TypeName := ADataSet.FieldByName('TypeName').AsString;
     Year := ADataSet.FieldByName('Year').AsInteger;
     UserId := ADataSet.FieldByName('UserId').AsInteger;
-  end;
-end;
-
-procedure TArchiveBoxItem.Close;
-begin
-  if not Closed then
-  begin
-    Closed := True;
-    ClosureDate := Now;
   end;
 end;
 
