@@ -109,9 +109,8 @@ type
   private
     FDocuments: IArchiveDocumentList;
     function GetDocuments: IArchiveDocumentList;
-    procedure SetDocuments(const AValue: IArchiveDocumentList);
   public
-    property Documents: IArchiveDocumentList read GetDocuments write SetDocuments nodefault;
+    property Documents: IArchiveDocumentList read GetDocuments nodefault;
 
   private
     FShowableFields: IInterfaceList;
@@ -126,6 +125,8 @@ type
   protected
     function GetSaveSQL: string; override; final;
   public
+    constructor Create; override; final;
+    constructor Create(const AConnection: TCustomConnection; const AId: Integer); override; final;
     function GetLoadSQL: string; override; final;
     procedure Load(const ADataSet: TDataSet); override; final;
   end;
@@ -134,6 +135,7 @@ implementation
 
 uses
   SysUtils,
+  uCommonRoutines,
   uIShowableField,
   uTShowableField;
 
@@ -169,6 +171,10 @@ end;
 
 function TArchiveBoxItem.GetDocuments: IArchiveDocumentList;
 begin
+  if not Assigned(FDocuments) then
+  begin
+    FDocuments := GetDocumentListByTypeId(TypeId);
+  end;
   Result := FDocuments;
 end;
 
@@ -259,11 +265,6 @@ begin
   begin
     FCreationDate := AValue;
   end;
-end;
-
-procedure TArchiveBoxItem.SetDocuments(const AValue: IArchiveDocumentList);
-begin
-  FDocuments := AValue;
 end;
 
 procedure TArchiveBoxItem.SetNumber(const AValue: Integer);
@@ -395,6 +396,33 @@ begin
     Closed := True;
     ClosureDate := Now;
   end;
+end;
+
+constructor TArchiveBoxItem.Create(const AConnection: TCustomConnection; const AId: Integer);
+begin
+  inherited;
+  if Assigned(AConnection) then
+  begin
+    Documents.Load(AConnection);
+  end;
+end;
+
+constructor TArchiveBoxItem.Create;
+begin
+  inherited;
+  Saveable := True;
+  Barcode := EmptyStr;
+  Closed := False;
+  ClosureDate := 0;
+  CompanyId := -1;
+  CompanyName := EmptyStr;
+  Number := -1;
+  RegistryPrinted := False;
+  StickerPrinted := False;
+  TypeId := -1;
+  TypeName := EmptyStr;
+  Year := -1;
+  UserId := -1;
 end;
 
 end.
