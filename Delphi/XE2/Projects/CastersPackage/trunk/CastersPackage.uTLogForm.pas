@@ -60,7 +60,8 @@ implementation
 {$R *.dfm}
 
 uses
-  CastersPackage.uRoutines;
+  CastersPackage.uRoutines,
+  StrUtils;
 
 resourcestring
   RsContextHelpProcedure = 'Процедура вызова контекстной справки';
@@ -134,7 +135,7 @@ begin
   if Assigned(AAction) then
   begin
     Result := Format(RsActionStateChanged,
-      [AAction.Caption, Routines.GetConditionalString(AAction.Enabled, RsActionOn, RsActionOff)]);
+      [AAction.Caption, IfThen(AAction.Enabled, RsActionOn, RsActionOff)]);
   end;
 end;
 
