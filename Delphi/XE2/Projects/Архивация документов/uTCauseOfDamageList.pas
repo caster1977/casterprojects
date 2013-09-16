@@ -3,6 +3,7 @@ unit uTCauseOfDamageList;
 interface
 
 uses
+  DB,
   uTLoadableList,
   uICauseOfDamageList,
   uICauseOfDamageItem;
@@ -15,7 +16,7 @@ type
     function GetItemById(const AId: Integer): ICauseOfDamageItem;
     property Item[const AIndex: Integer]: ICauseOfDamageItem read GetItem; default;
   public
-    constructor Create; reintroduce; virtual; final;
+    constructor Create(const AConnection: TCustomConnection); override; final;
   end;
 
 implementation
@@ -44,7 +45,7 @@ begin
   end;
 end;
 
-constructor TCauseOfDamageList.Create;
+constructor TCauseOfDamageList.Create(const AConnection: TCustomConnection);
 begin
   inherited;
   ItemClass := TCauseOfDamageItem;

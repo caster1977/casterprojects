@@ -28,6 +28,7 @@ type
 
   public
     constructor Create; override; final;
+    constructor Create(const AConnection: TCustomConnection; const AId: Integer); override; final;
     procedure Load(const ADataSet: TDataSet); override; final;
   end;
 
@@ -56,6 +57,11 @@ begin
   inherited;
   FName := EmptyStr;
   FBarcode := EmptyStr;
+end;
+
+constructor TCauseOfDamageItem.Create(const AConnection: TCustomConnection; const AId: Integer);
+begin
+  inherited;
 end;
 
 function TCauseOfDamageItem.GetLoadSQL: string;

@@ -48,7 +48,7 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="340,400,278,223" />
+      <property name="bounds" value="340,400,278,238" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.GetSaveSQL()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.GetLoadSQL()" />
@@ -61,7 +61,6 @@
       <reference referencedUin="delphi:e_field:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.FCapacity" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.GetCapacity()" />
       <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.Capacity" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.Create()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.Load(Data.DB.TDataSet)" />
       <reference referencedUin="delphi:l_impl:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem:uIArchiveBoxTypeItem.IArchiveBoxTypeItem">
         <property name="sourceAnchor" value="464,400" />
@@ -73,10 +72,12 @@
         <property name="targetAnchor" value="1320,187" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.Create(Data.DB.TCustomConnection,System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeItem.TArchiveBoxTypeItem.Create()" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanyItem.TArchiveCompanyItem">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="0,400,286,193" />
+      <property name="bounds" value="0,400,286,208" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyItem.TArchiveCompanyItem.GetSaveSQL()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyItem.TArchiveCompanyItem.GetLoadSQL()" />
@@ -86,7 +87,6 @@
       <reference referencedUin="delphi:e_field:src:TestLogic:uTArchiveCompanyItem.TArchiveCompanyItem.FCode" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyItem.TArchiveCompanyItem.GetCode()" />
       <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveCompanyItem.TArchiveCompanyItem.Code" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyItem.TArchiveCompanyItem.Create()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyItem.TArchiveCompanyItem.Load(Data.DB.TDataSet)" />
       <reference referencedUin="delphi:l_impl:src:TestLogic:uTArchiveCompanyItem.TArchiveCompanyItem:uIArchiveCompanyItem.IArchiveCompanyItem">
         <property name="sourceAnchor" value="139,400" />
@@ -99,6 +99,8 @@
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveCompanyItem.TArchiveCompanyItem.name" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyItem.TArchiveCompanyItem.Create(Data.DB.TCustomConnection,System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyItem.TArchiveCompanyItem.Create()" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableItemClass.TLoadableItemClass">
       <property name="$shortcutReference" value="true" />
@@ -107,7 +109,7 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableItem.TLoadableItem">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="1320,0,197,252" />
+      <property name="bounds" value="1320,0,199,282" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_field:src:TestLogic:uTLoadableItem.TLoadableItem.FId" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableItem.TLoadableItem.GetId()" />
@@ -120,7 +122,6 @@
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableItem.TLoadableItem.Load(Data.DB.TCustomConnection)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableItem.TLoadableItem.Save(Data.DB.TCustomConnection)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableItem.TLoadableItem.GetLoadSQL()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableItem.TLoadableItem.Create()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableItem.TLoadableItem.Create(Data.DB.TCustomConnection,System.Integer)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableItem.TLoadableItem.Load(Data.DB.TDataSet)" />
       <reference referencedUin="delphi:l_impl:src:TestLogic:uTLoadableItem.TLoadableItem:uILoadableItem.ILoadableItem">
@@ -128,6 +129,11 @@
         <property name="targetAnchor" value="188,71" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTLoadableItem.TLoadableItem.FConnection" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableItem.TLoadableItem.GetConnection()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTLoadableItem.TLoadableItem.Connection" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableItem.TLoadableItem.SetConnection(Data.DB.TCustomConnection)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableItem.TLoadableItem.Create()" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uICauseOfDamageItem.ICauseOfDamageItem">
       <property name="$shortcutReference" value="true" />
@@ -145,7 +151,7 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="640,400,288,193" />
+      <property name="bounds" value="640,400,288,208" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:l_impl:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem:uICauseOfDamageItem.ICauseOfDamageItem">
         <property name="sourceAnchor" value="780,400" />
@@ -167,12 +173,13 @@
       <reference referencedUin="delphi:e_property:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.Name" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.GetSaveSQL()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.GetLoadSQL()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.Create()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.Load(Data.DB.TDataSet)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.Create(Data.DB.TCustomConnection,System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageItem.TCauseOfDamageItem.Create()" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveDocumentItem.TArchiveDocumentItem">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="980,400,293,372" />
+      <property name="bounds" value="980,400,293,387" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveDocumentItem.TArchiveDocumentItem.AddShowableField(System.string,System.string,System.string)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveDocumentItem.TArchiveDocumentItem.FillShowableFieldsList()" />
@@ -185,10 +192,9 @@
       <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveDocumentItem.TArchiveDocumentItem.ArchiveBoxId" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveDocumentItem.TArchiveDocumentItem.GetLoadSQL()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveDocumentItem.TArchiveDocumentItem.Load(Data.DB.TDataSet)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveDocumentItem.TArchiveDocumentItem.Create()" />
       <reference referencedUin="delphi:l_gnt:src:TestLogic:uTArchiveDocumentItem.TArchiveDocumentItem:uTLoadableItem.TLoadableItem">
-        <property name="sourceAnchor" value="1237,400" />
-        <property name="targetAnchor" value="1327,252" />
+        <property name="sourceAnchor" value="1250,400" />
+        <property name="targetAnchor" value="1326,282" />
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:l_impl:src:TestLogic:uTArchiveDocumentItem.TArchiveDocumentItem:uIArchiveDocumentItem.IArchiveDocumentItem">
@@ -216,6 +222,8 @@
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveDocumentItem.TArchiveDocumentItem.GetIssuanceDate()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveDocumentItem.TArchiveDocumentItem.SetIssuanceDate(System.TDateTime)" />
       <reference referencedUin="delphi:e_property:src:TestLogic:uTArchiveDocumentItem.TArchiveDocumentItem.IssuanceDate" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveDocumentItem.TArchiveDocumentItem.Create(Data.DB.TCustomConnection,System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveDocumentItem.TArchiveDocumentItem.Create()" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveDocumentItem.IArchiveDocumentItem">
       <property name="$shortcutReference" value="true" />
@@ -249,7 +257,7 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTCustomBSOItem.TCustomBSOItem">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="1320,800,233,283" />
+      <property name="bounds" value="1320,800,233,298" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_field:src:TestLogic:uTCustomBSOItem.TCustomBSOItem.FBarcode" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBSOItem.TCustomBSOItem.GetBarcode()" />
@@ -271,7 +279,6 @@
       <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBSOItem.TCustomBSOItem.GetNumber()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBSOItem.TCustomBSOItem.SetNumber(System.string)" />
       <reference referencedUin="delphi:e_property:src:TestLogic:uTCustomBSOItem.TCustomBSOItem.Number" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBSOItem.TCustomBSOItem.Create()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBSOItem.TCustomBSOItem.Load(Data.DB.TDataSet)" />
       <reference referencedUin="delphi:l_gnt:src:TestLogic:uTCustomBSOItem.TCustomBSOItem:uTArchiveDocumentItem.TArchiveDocumentItem">
         <property name="sourceAnchor" value="1320,805" />
@@ -287,6 +294,8 @@
         <property name="targetAnchor" value="1204,879" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBSOItem.TCustomBSOItem.Create(Data.DB.TCustomConnection,System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCustomBSOItem.TCustomBSOItem.Create()" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveDocumentItemClass.TArchiveDocumentItemClass">
       <property name="$shortcutReference" value="true" />
@@ -333,11 +342,10 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOItem.TShipmentBSOItem">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="580,1280,253,129" />
+      <property name="bounds" value="580,1280,253,144" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOItem.TShipmentBSOItem.GetSaveSQL()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOItem.TShipmentBSOItem.FillShowableFieldsList()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOItem.TShipmentBSOItem.Create()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOItem.TShipmentBSOItem.Load(Data.DB.TDataSet)" />
       <reference referencedUin="delphi:l_impl:src:TestLogic:uTShipmentBSOItem.TShipmentBSOItem:uIShipmentBSOItem.IShipmentBSOItem">
         <property name="sourceAnchor" value="702,1280" />
@@ -345,22 +353,23 @@
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:l_gnt:src:TestLogic:uTShipmentBSOItem.TShipmentBSOItem:uTCustomBSOItem.TCustomBSOItem">
-        <property name="sourceAnchor" value="821,1280" />
-        <property name="targetAnchor" value="1320,1004" />
+        <property name="sourceAnchor" value="832,1281" />
+        <property name="targetAnchor" value="1320,1012" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOItem.TShipmentBSOItem.Create(Data.DB.TCustomConnection,System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOItem.TShipmentBSOItem.Create()" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOWithActItem.TShipmentBSOWithActItem">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="920,1280,342,129" />
+      <property name="bounds" value="920,1280,342,144" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOWithActItem.TShipmentBSOWithActItem.GetSaveSQL()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOWithActItem.TShipmentBSOWithActItem.FillShowableFieldsList()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOWithActItem.TShipmentBSOWithActItem.Create()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOWithActItem.TShipmentBSOWithActItem.Load(Data.DB.TDataSet)" />
       <reference referencedUin="delphi:l_gnt:src:TestLogic:uTShipmentBSOWithActItem.TShipmentBSOWithActItem:uTCustomBSOItem.TCustomBSOItem">
-        <property name="sourceAnchor" value="1146,1280" />
-        <property name="targetAnchor" value="1320,1076" />
+        <property name="sourceAnchor" value="1152,1280" />
+        <property name="targetAnchor" value="1320,1084" />
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:l_impl:src:TestLogic:uTShipmentBSOWithActItem.TShipmentBSOWithActItem:uIShipmentBSOWithActItem.IShipmentBSOWithActItem">
@@ -368,6 +377,8 @@
         <property name="targetAnchor" value="1086,1204" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOWithActItem.TShipmentBSOWithActItem.Create(Data.DB.TCustomConnection,System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOWithActItem.TShipmentBSOWithActItem.Create()" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uIShipmentBSOWithActItem.IShipmentBSOWithActItem">
       <property name="$shortcutReference" value="true" />
@@ -381,11 +392,11 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="1320,1280,255,193" />
+      <property name="bounds" value="1320,1280,255,208" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:l_gnt:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem:uTCustomBSOItem.TCustomBSOItem">
         <property name="sourceAnchor" value="1436,1280" />
-        <property name="targetAnchor" value="1436,1083" />
+        <property name="targetAnchor" value="1436,1098" />
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:e_field:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.FCauseOfDamageId" />
@@ -398,13 +409,14 @@
       <reference referencedUin="delphi:e_property:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.CauseOfDamageName" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.GetSaveSQL()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.FillShowableFieldsList()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.Create()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.Load(Data.DB.TDataSet)" />
       <reference referencedUin="delphi:l_impl:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem:uIDamagedBSOItem.IDamagedBSOItem">
         <property name="sourceAnchor" value="1444,1280" />
         <property name="targetAnchor" value="1444,1238" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.Create(Data.DB.TCustomConnection,System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.Create()" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uIDamagedBSOItem.IDamagedBSOItem">
       <property name="$shortcutReference" value="true" />
@@ -424,7 +436,7 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="1720,180,213,293" />
+      <property name="bounds" value="1720,180,213,278" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.GetBarcode()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.SetBarcode(System.string)" />
@@ -475,16 +487,16 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveBoxItem.TArchiveBoxItem">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="1720,560,221,657" />
+      <property name="bounds" value="1720,560,221,642" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:l_impl:src:TestLogic:uTArchiveBoxItem.TArchiveBoxItem:uIArchiveBoxItem.IArchiveBoxItem">
         <property name="sourceAnchor" value="1827,560" />
-        <property name="targetAnchor" value="1827,473" />
+        <property name="targetAnchor" value="1827,458" />
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:l_gnt:src:TestLogic:uTArchiveBoxItem.TArchiveBoxItem:uTLoadableItem.TLoadableItem">
-        <property name="sourceAnchor" value="1720,684" />
-        <property name="targetAnchor" value="1486,252" />
+        <property name="sourceAnchor" value="1720,683" />
+        <property name="targetAnchor" value="1497,282" />
         <property name="bendpoints" value="" />
       </reference>
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxItem.TArchiveBoxItem.GetBarcode()" />
@@ -553,9 +565,9 @@
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxItem.TArchiveBoxItem.AddShowableField(System.string,System.string,System.string)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxItem.TArchiveBoxItem.FillShowableFieldsList()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxItem.TArchiveBoxItem.GetSaveSQL()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxItem.TArchiveBoxItem.Create()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxItem.TArchiveBoxItem.Create(Data.DB.TCustomConnection,System.Integer)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxItem.TArchiveBoxItem.GetLoadSQL()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxItem.TArchiveBoxItem.Create()" />
     </reference>
   </view>
 </nodeSet>

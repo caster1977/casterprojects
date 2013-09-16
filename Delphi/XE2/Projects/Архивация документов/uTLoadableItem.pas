@@ -9,10 +9,18 @@ uses
 type
   TLoadableItem = class(TInterfacedObject, ILoadableItem)
   private
+    FConnection: TCustomConnection;
+    function GetConnection: TCustomConnection;
+    procedure SetConnection(const AValue: TCustomConnection);
+  protected
+    property Connection: TCustomConnection read GetConnection write SetConnection nodefault;
+
+  private
     FId: Integer;
     function GetId: Integer;
   public
     property Id: Integer read GetId nodefault;
+
   private
     FSaveable: Boolean;
     function GetSaveable: Boolean;
@@ -26,12 +34,13 @@ type
     function GetLoadSQL: string; virtual; abstract;
 
   public
-    procedure Load(const AConnection: TCustomConnection); overload;
     procedure Load(const ADataSet: TDataSet); overload; virtual;
-    function Save(const AConnection: TCustomConnection): Boolean;
+    procedure Load(const AConnection: TCustomConnection = nil); overload;
+    function Save(const AConnection: TCustomConnection = nil): Boolean;
 
-    constructor Create; overload; virtual;
-    constructor Create(const AConnection: TCustomConnection; const AId: Integer); overload; virtual;
+    constructor Create; reintroduce; overload; virtual;
+    constructor Create(const AConnection: TCustomConnection; const AId: Integer);
+      reintroduce; overload; virtual;
   end;
 
 implementation
@@ -42,6 +51,11 @@ uses
   SqlExpr,
   Dialogs,
   SysUtils;
+
+function TLoadableItem.GetConnection: TCustomConnection;
+begin
+  Result := FConnection;
+end;
 
 function TLoadableItem.GetId: Integer;
 begin
@@ -58,6 +72,14 @@ begin
   if Assigned(ADataSet) then
   begin
     FId := ADataSet.FieldByName('Id').AsInteger;
+  end;
+end;
+
+procedure TLoadableItem.SetConnection(const AValue: TCustomConnection);
+begin
+  if FConnection <> AValue then
+  begin
+    FConnection := AValue;
   end;
 end;
 
@@ -79,10 +101,11 @@ end;
 constructor TLoadableItem.Create(const AConnection: TCustomConnection; const AId: Integer);
 begin
   Create;
+  Connection := AConnection;
   FId := AId;
   if AId <> -1 then
   begin
-    Load(AConnection);
+    Load;
   end;
 end;
 
@@ -90,21 +113,28 @@ procedure TLoadableItem.Load(const AConnection: TCustomConnection);
 var
   ds: TDataSet;
 begin
-  ds := GetQuery(AConnection);
-  if Assigned(ds) then
+  if Assigned(AConnection) then
   begin
-    try
-      SetSQLForQuery(ds, GetLoadSQL, True);
+    Connection := AConnection;
+  end;
+  if Assigned(Connection) then
+  begin
+    ds := GetQuery(Connection);
+    if Assigned(ds) then
+    begin
       try
-        if not ds.Eof then
-        begin
-          Load(ds);
+        SetSQLForQuery(ds, GetLoadSQL, True);
+        try
+          if not ds.Eof then
+          begin
+            Load(ds);
+          end;
+        finally
+          ds.Close;
         end;
       finally
-        ds.Close;
+        FreeAndNil(ds);
       end;
-    finally
-      FreeAndNil(ds);
     end;
   end;
 end;
@@ -117,28 +147,35 @@ begin
   Result := False;
   if Saveable then
   begin
-    ds := GetQuery(AConnection);
-    if Assigned(ds) then
+    if Assigned(AConnection) then
     begin
-      try
-        SetSQLForQuery(ds, GetSaveSQL, True);
+      Connection := AConnection;
+    end;
+    if Assigned(Connection) then
+    begin
+      ds := GetQuery(Connection);
+      if Assigned(ds) then
+      begin
         try
-          if not ds.Eof then
-          begin
-            i := ds.Fields[0].AsInteger;
-            Result := i > -1;
-            if Result then
+          SetSQLForQuery(ds, GetSaveSQL, True);
+          try
+            if not ds.Eof then
             begin
-              FId := i; // получение идентификатора записи в случае вставки/апдейта
+              i := ds.Fields[0].AsInteger;
+              Result := i > -1;
+              if Result then
+              begin
+                FId := i; // получение идентификатора записи в случае вставки/апдейта
+              end;
             end;
+          finally
+            ds.Close;
           end;
         finally
-          ds.Close;
+          FreeAndNil(ds);
         end;
-      finally
-        FreeAndNil(ds);
       end;
-    end
+    end;
   end
   else
   begin

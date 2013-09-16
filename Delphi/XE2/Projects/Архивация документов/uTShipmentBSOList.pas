@@ -3,12 +3,13 @@ unit uTShipmentBSOList;
 interface
 
 uses
+  DB,
   uTArchiveDocumentList;
 
 type
   TShipmentBSOList = class sealed(TArchiveDocumentList)
   public
-    constructor Create; override; final;
+    constructor Create(const AConnection: TCustomConnection); override; final;
   end;
 
 implementation

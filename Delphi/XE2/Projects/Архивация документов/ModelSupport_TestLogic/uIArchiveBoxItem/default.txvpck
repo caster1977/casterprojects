@@ -4,5 +4,53 @@
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,209,292" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.GetCreationDate()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.SetCreationDate(System.TDateTime)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.CreationDate" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.GetBarcode()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.SetBarcode(System.string)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.Barcode" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.GetClosed()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.SetClosed(System.Boolean)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.Closed" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.GetClosureDate()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.SetClosureDate(System.TDateTime)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.ClosureDate" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.GetCompanyId()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.SetCompanyId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.CompanyId" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.GetCompanyName()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.SetCompanyName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.CompanyName" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.GetNumber()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.SetNumber(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.Number" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.GetRegistryPrinted()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.SetRegistryPrinted(System.Boolean)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.RegistryPrinted" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.GetStickerPrinted()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.SetStickerPrinted(System.Boolean)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.StickerPrinted" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.GetTypeId()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.SetTypeId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.TypeId" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.GetTypeName()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.SetTypeName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.TypeName" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.GetYear()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.SetYear(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.Year" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.GetUserId()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.SetUserId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.UserId" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.GetDocuments()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIArchiveBoxItem.IArchiveBoxItem.Documents" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxItem.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
   </view>
 </nodeSet>

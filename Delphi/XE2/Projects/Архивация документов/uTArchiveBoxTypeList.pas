@@ -16,7 +16,7 @@ type
     function GetItemById(const AId: Integer): IArchiveBoxTypeItem;
     property Item[const AIndex: Integer]: IArchiveBoxTypeItem read GetItem; default;
   public
-    constructor Create; reintroduce; virtual; final;
+    constructor Create(const AConnection: TCustomConnection); override; final;
   end;
 
 implementation
@@ -47,7 +47,7 @@ begin
   end;
 end;
 
-constructor TArchiveBoxTypeList.Create;
+constructor TArchiveBoxTypeList.Create(const AConnection: TCustomConnection);
 begin
   inherited;
   ItemClass := TArchiveBoxTypeItem;

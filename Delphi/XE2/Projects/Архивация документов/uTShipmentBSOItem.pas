@@ -15,6 +15,7 @@ type
     procedure FillShowableFieldsList; override; final;
   public
     constructor Create; override; final;
+    constructor Create(const AConnection: TCustomConnection; const AId: Integer); override; final;
     procedure Load(const ADataSet: TDataSet); override; final;
   end;
 
@@ -23,7 +24,7 @@ implementation
 uses
   SysUtils;
 
-constructor TShipmentBSOItem.Create;
+constructor TShipmentBSOItem.Create(const AConnection: TCustomConnection; const AId: Integer);
 begin
   inherited;
 end;
@@ -35,9 +36,14 @@ end;
 
 function TShipmentBSOItem.GetSaveSQL: string;
 begin
-  Result := Format('BSOArchiving_upd_ShipmentBSO %d, %d, %d, "%s", %d, %d, "%s", %d',
+  Result := Format('BSOArchiving_upd_ShipmentBSO %d, %d, %d, ''%s'', %d, %d, ''%s'', %d',
     [Id, ArchiveBoxId, ArchivedByUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate), Integer(Issued),
     IssuedToUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', IssuanceDate), BSOId]);
+end;
+
+constructor TShipmentBSOItem.Create;
+begin
+  inherited;
 end;
 
 procedure TShipmentBSOItem.FillShowableFieldsList;

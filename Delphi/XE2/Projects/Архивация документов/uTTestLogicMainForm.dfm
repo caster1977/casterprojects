@@ -3,7 +3,7 @@ object TestLogicMainForm: TTestLogicMainForm
   Top = 0
   BorderWidth = 6
   Caption = 'TestLogicMainForm'
-  ClientHeight = 497
+  ClientHeight = 492
   ClientWidth = 412
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,18 +19,15 @@ object TestLogicMainForm: TTestLogicMainForm
     Left = 0
     Top = 29
     Width = 412
-    Height = 239
+    Height = 272
     Align = alTop
     Caption = ' '#1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '
     TabOrder = 1
-    DesignSize = (
-      412
-      239)
     object gbCurrentBox: TGroupBox
       Left = 8
       Top = 16
       Width = 397
-      Height = 105
+      Height = 116
       Align = alCustom
       Anchors = [akLeft, akTop, akRight]
       Caption = ' '#1058#1077#1082#1091#1097#1080#1081' '#1082#1086#1088#1086#1073' '
@@ -38,17 +35,17 @@ object TestLogicMainForm: TTestLogicMainForm
     end
     object gbLastDocument: TGroupBox
       Left = 8
-      Top = 127
+      Top = 138
       Width = 397
-      Height = 105
-      Anchors = [akLeft, akTop, akRight]
+      Height = 126
+      Align = alCustom
       Caption = ' '#1055#1086#1089#1083#1077#1076#1085#1080#1081' '#1076#1086#1082#1091#1084#1077#1085#1090' '
       TabOrder = 1
     end
   end
   object pnlButtons: TPanel
     Left = 0
-    Top = 466
+    Top = 461
     Width = 412
     Height = 31
     Align = alBottom
@@ -110,7 +107,7 @@ object TestLogicMainForm: TTestLogicMainForm
   end
   object gbBarcode: TGroupBox
     Left = 0
-    Top = 268
+    Top = 301
     Width = 412
     Height = 54
     Align = alTop
@@ -126,9 +123,9 @@ object TestLogicMainForm: TTestLogicMainForm
   end
   object gbHint: TGroupBox
     Left = 0
-    Top = 322
+    Top = 355
     Width = 412
-    Height = 144
+    Height = 106
     Align = alClient
     Caption = ' '#1057#1086#1086#1073#1097#1077#1085#1080#1077' '
     TabOrder = 3
@@ -136,9 +133,10 @@ object TestLogicMainForm: TTestLogicMainForm
       Left = 8
       Top = 16
       Width = 395
-      Height = 122
+      Height = 82
       Align = alCustom
       Alignment = taCenter
+      Anchors = [akLeft, akTop, akRight, akBottom]
       AutoSize = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -206,7 +204,7 @@ object TestLogicMainForm: TTestLogicMainForm
     Left = 336
     Top = 376
     Bitmap = {
-      494C010102000800200010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000800340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

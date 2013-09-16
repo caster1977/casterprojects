@@ -4,5 +4,25 @@
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTDamagedBSOItem.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,198,279" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.FCauseOfDamageId" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.GetCauseOfDamageId()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.SetCauseOfDamageId(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.CauseOfDamageId" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.FCauseOfDamageName" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.GetCauseOfDamageName()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.SetCauseOfDamageName(System.string)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.CauseOfDamageName" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.GetSaveSQL()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.FillShowableFieldsList()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.Create(Data.DB.TCustomConnection,System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.Load(Data.DB.TDataSet)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOItem.TDamagedBSOItem.Create()" />
+    </reference>
   </view>
 </nodeSet>

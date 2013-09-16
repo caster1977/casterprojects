@@ -29,6 +29,7 @@ type
     procedure FillShowableFieldsList; override; final;
   public
     constructor Create; override; final;
+    constructor Create(const AConnection: TCustomConnection; const AId: Integer); override; final;
     procedure Load(const ADataSet: TDataSet); override; final;
   end;
 
@@ -66,11 +67,9 @@ begin
   end;
 end;
 
-constructor TDamagedBSOItem.Create;
+constructor TDamagedBSOItem.Create(const AConnection: TCustomConnection; const AId: Integer);
 begin
   inherited;
-  CauseOfDamageId := -1;
-  CauseOfDamageName := EmptyStr;
 end;
 
 procedure TDamagedBSOItem.Load(const ADataSet: TDataSet);
@@ -85,9 +84,16 @@ end;
 
 function TDamagedBSOItem.GetSaveSQL: string;
 begin
-  Result := Format('BSOArchiving_upd_DamagedBSO %d, %d, %d, "%s", %d, %d, "%s", %d, %d',
+  Result := Format('BSOArchiving_upd_DamagedBSO %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, %d',
     [Id, ArchiveBoxId, ArchivedByUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate), Integer(Issued),
     IssuedToUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', IssuanceDate), BSOId, CauseOfDamageId]);
+end;
+
+constructor TDamagedBSOItem.Create;
+begin
+  inherited;
+  CauseOfDamageId := -1;
+  CauseOfDamageName := EmptyStr;
 end;
 
 procedure TDamagedBSOItem.FillShowableFieldsList;

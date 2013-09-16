@@ -26,7 +26,7 @@ type
     /// <summary>
     /// Процедура загрузки данных из соединения для заполнения полей объекта
     /// </summary>
-    procedure Load(const AConnection: TCustomConnection); overload;
+    procedure Load(const AConnection: TCustomConnection = nil); overload;
 
     /// <summary>
     /// Функция записи данных полей объекта в БД
@@ -41,7 +41,7 @@ type
     /// Работает только для объектов, у которых свойство <b>Saveable</b>
     /// установлено в <b>True</b>
     /// </remarks>
-    function Save(const AConnection: TCustomConnection): Boolean;
+    function Save(const AConnection: TCustomConnection = nil): Boolean;
   end;
 
 implementation

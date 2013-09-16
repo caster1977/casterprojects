@@ -41,7 +41,7 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableList.TLoadableList">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="1520,0,192,297" />
+      <property name="bounds" value="1520,0,199,327" />
       <property name="location_set_by_user" value="True" />
       <reference referencedUin="delphi:e_field:src:TestLogic:uTLoadableList.TLoadableList.FItemClass" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.GetItemClass()" />
@@ -67,6 +67,11 @@
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.Delete(System.Integer)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.IndexOf(System.IInterface)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.IndexOf(uILoadableItem.ILoadableItem)" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTLoadableList.TLoadableList.FConnection" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.GetConnection()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTLoadableList.TLoadableList.Connection" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.Create(Data.DB.TCustomConnection)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.SetConnection(Data.DB.TCustomConnection)" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList">
       <property name="$shortcutReference" value="true" />
@@ -100,6 +105,7 @@
         <property name="targetAnchor" value="1520,170" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList.Create(Data.DB.TCustomConnection)" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxTypeList.IArchiveBoxTypeList">
       <property name="$shortcutReference" value="true" />
@@ -154,6 +160,7 @@
         <property name="targetAnchor" value="1520,175" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxTypeList.TArchiveBoxTypeList.Create(Data.DB.TCustomConnection)" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTLoadableListClass.TLoadableListClass">
       <property name="$shortcutReference" value="true" />
@@ -178,6 +185,7 @@
         <property name="targetAnchor" value="735,358" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageList.TCauseOfDamageList.Create(Data.DB.TCustomConnection)" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uICauseOfDamageList.ICauseOfDamageList">
       <property name="$shortcutReference" value="true" />
@@ -238,6 +246,7 @@
         <property name="targetAnchor" value="1422,541" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOList.TDamagedBSOList.Create(Data.DB.TCustomConnection)" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOList.TShipmentBSOList">
       <property name="$shortcutReference" value="true" />
@@ -249,6 +258,7 @@
         <property name="targetAnchor" value="1214,541" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOList.TShipmentBSOList.Create(Data.DB.TCustomConnection)" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOWithActList.TShipmentBSOWithActList">
       <property name="$shortcutReference" value="true" />
@@ -260,6 +270,7 @@
         <property name="targetAnchor" value="1322,541" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOWithActList.TShipmentBSOWithActList.Create(Data.DB.TCustomConnection)" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveBoxList.IArchiveBoxList">
       <property name="$shortcutReference" value="true" />
@@ -292,6 +303,7 @@
         <property name="targetAnchor" value="1520,204" />
         <property name="bendpoints" value="" />
       </reference>
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTArchiveBoxList.TArchiveBoxList.Create(Data.DB.TCustomConnection)" />
     </reference>
   </view>
 </nodeSet>
