@@ -133,6 +133,7 @@ implementation
 {$R *.dfm}
 
 uses
+  StrUtils,
   CastersPackage.uResourceStrings,
   System.IOUtils,
   Winapi.CommCtrl,
@@ -150,7 +151,6 @@ uses
   OA5.uTViewMessageForm,
   OA5.uTViewMessagesForm,
   OA5.uTAddEditPhoneForm,
-  CastersPackage.uRoutines,
   CastersPackage.uMysql,
   OA5.uTPhone,
   OA5.uICustomPhone,
@@ -197,12 +197,12 @@ var
   b: Boolean;
 begin
   b := GlobalBusyCounter = 0;
-  Log.SendDebug('Установлен режим "' + Routines.GetConditionalString(b, 'Готово', 'Занято') + '".');
+  Log.SendDebug('Установлен режим "' + IfThen(b, 'Готово', 'Занято') + '".');
   ilStates.GetIcon(Integer(b), imState.Picture.Icon);
   if Configuration.EnableStatusbar then
   begin
     StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text :=
-      Routines.GetConditionalString(GlobalBusyCounter > 0, 'Пожалуйста, подождите...', 'Готово');
+      IfThen(GlobalBusyCounter > 0, 'Пожалуйста, подождите...', 'Готово');
   end
   else
   begin
@@ -269,7 +269,7 @@ begin
 
   StatusBar.Visible := b;
   Configuration.EnableStatusbar := b;
-  Log.SendInfo('Панель статуса ' + Routines.GetConditionalString(b, 'в', 'от') + 'ключена.');
+  Log.SendInfo('Панель статуса ' + IfThen(b, 'в', 'от') + 'ключена.');
 
   ProcedureFooter;
 end;
@@ -284,7 +284,7 @@ begin
 
   // StatusBar.Visible:=b;
   Configuration.EnableToolbar := b;
-  Log.SendInfo('Панель кнопок ' + Routines.GetConditionalString(b, 'в', 'от') + 'ключена.');
+  Log.SendInfo('Панель кнопок ' + IfThen(b, 'в', 'от') + 'ключена.');
 
   ProcedureFooter;
 end;
