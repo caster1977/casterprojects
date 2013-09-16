@@ -14,6 +14,7 @@
       <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageList.TCauseOfDamageList.GetItemById(System.Integer)" />
       <reference referencedUin="delphi:e_property:src:TestLogic:uTCauseOfDamageList.TCauseOfDamageList.Item[System.Integer]" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageList.TCauseOfDamageList.Create()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTCauseOfDamageList.TCauseOfDamageList.Create(Data.DB.TCustomConnection)" />
     </reference>
   </view>
 </nodeSet>

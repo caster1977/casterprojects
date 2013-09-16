@@ -1,2 +1,4 @@
 <?xml version="1.0"?>
-<TgConfig Version="3" SubLevelDisabled="False" />
+<TgConfig Version="3" SubLevelDisabled="False">
+  <Option Name="ViewManag.ShowPropertyAccessors" Type="System.Boolean" Value="False" Category="View Management" SubCategory="MemberFilters" />
+</TgConfig>

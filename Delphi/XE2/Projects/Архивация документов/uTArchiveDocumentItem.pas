@@ -65,9 +65,10 @@ type
     procedure FillShowableFieldsList; virtual; abstract;
 
   public
-    constructor Create; override;
     function GetLoadSQL: string; override; final;
     procedure Load(const ADataSet: TDataSet); override;
+    constructor Create; override;
+    constructor Create(const AConnection: TCustomConnection; const AId: Integer); override;
   end;
 
 implementation
@@ -79,6 +80,23 @@ uses
   uCommonRoutines,
   uIShowableField,
   uTShowableField;
+
+constructor TArchiveDocumentItem.Create;
+begin
+  inherited;
+  Saveable := True;
+  ArchiveBoxId := -1;
+  ArchivedByUser := -1;
+  ArchivingDate := 0;
+  Issued := False;
+  IssuedToUser := -1;
+  IssuanceDate := 0;
+end;
+
+constructor TArchiveDocumentItem.Create(const AConnection: TCustomConnection; const AId: Integer);
+begin
+  inherited;
+end;
 
 function TArchiveDocumentItem.GetArchiveBoxId: Integer;
 begin
@@ -177,18 +195,6 @@ begin
       FShowableFields.Add(f);
     end;
   end;
-end;
-
-constructor TArchiveDocumentItem.Create;
-begin
-  inherited;
-  Saveable := True;
-  ArchiveBoxId := -1;
-  ArchivedByUser := -1;
-  ArchivingDate := 0;
-  Issued := False;
-  IssuedToUser := -1;
-  IssuanceDate := 0;
 end;
 
 procedure TArchiveDocumentItem.Load(const ADataSet: TDataSet);

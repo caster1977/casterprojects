@@ -9,85 +9,78 @@ uses
   uIShowable;
 
 type
-  ///	<summary>
-  ///	  Интерфейс доступа к объекту бизнес-логики процесса архивации документов
-  ///	</summary>
+  /// <summary>
+  /// Интерфейс доступа к объекту бизнес-логики процесса архивации документов
+  /// </summary>
   IDocumentArchivingBusinessLogic = interface(ICustomBusinessLogic)
     ['{B4D4317B-5679-4A31-9F53-F31CFFD99A6F}']
+
     function GetCurrentBox: IArchiveBoxItem;
+    procedure SetCurrentBox(const AValue: IArchiveBoxItem);
+
     /// <summary>
     /// Текущий архивный короб
     /// </summary>
-    property CurrentBox: IArchiveBoxItem read GetCurrentBox;
-    /// <summary>
-    /// Функция определения вместимости указанного типа короба
-    /// указанного типа
-    /// </summary>
-    /// <param name="AType">
-    /// Тип короба
-    /// </param>
-    /// <returns>
-    /// Количество документов в данном типе короба
-    /// </returns>
-    function GetBoxCapacity(const AType: Integer): Integer; overload;
-    /// <summary>
-    /// Функция определения вместимости указанного типа короба
-    /// указанного типа
-    /// </summary>
-    /// <param name="ABox">
-    /// Короб
-    /// </param>
-    /// <returns>
-    /// Количество документов в данном типе короба
-    /// </returns>
-    function GetBoxCapacity(const ABox: IArchiveBoxItem): Integer; overload;
-    /// <summary>
-    /// Функция получения количества открытых коробов для типа и компании
-    /// соответствующих указанному документу
-    /// </summary>
-    /// <param name="ADocument">
-    /// Документ
-    /// </param>
-    /// <returns>
-    /// Количество коробов
-    /// </returns>
-    //function GetOpenedBoxQuantity(const ADocument: IDocument): Integer; overload;
+    property CurrentBox: IArchiveBoxItem read GetCurrentBox write SetCurrentBox;
+
+    function GetCurrentBoxInfoControl: TCustomControl;
+    procedure SetCurrentBoxInfoControl(const AValue: TCustomControl);
 
     /// <summary>
-    /// Функция получения количества открытых коробов для типа и компании
+    /// Контрол, в который будет выводится информация о текущем коробе
     /// </summary>
-    /// <param name="AType">
-    /// Тип короба
-    /// </param>
-    /// <param name="ACompanyId">
-    /// Идентификатор компании
-    /// </param>
-    /// <returns>
-    /// Количество коробов
-    /// </returns>
-    //function GetOpenedBoxQuantity(const AType, ACompanyId: Integer): Integer; overload;
+    property CurrentBoxInfoControl: TCustomControl read GetCurrentBoxInfoControl
+      write SetCurrentBoxInfoControl;
+
+    function GetLastDocumentInfoControl: TCustomControl;
+    procedure SetLastDocumentInfoControl(const AValue: TCustomControl);
+
     /// <summary>
-    /// Процедура отображения данных указанного "отображаемого" объекта
+    /// Контрол, в который будет выводится информация о последнем документе
     /// </summary>
-    //procedure ShowShowableItem(const AParentControl: TCustomControl; const AShowableItem: IShowable);
+    property LastDocumentInfoControl: TCustomControl read GetLastDocumentInfoControl
+      write SetLastDocumentInfoControl;
 
-    ///	<summary>
-    ///	  Процедура "откладывания" указанного короба
-    ///	</summary>
-    ///	<param name="ABox">
-    ///	  Короб
-    ///	</param>
-//    procedure PutBoxAside(const ABox: IArchiveBoxItem);
+    /// <summary>
+    /// Процедура, выполняющая вывод в контрол данных о текущем коробе
+    /// </summary>
+    /// <param name="AControl">
+    /// Родительский контрол, в котором будут выведены данные
+    /// </param>
+    procedure ShowCurrentBoxInfo;
 
-    ///	<summary>
-    ///	  Процедура закрытия указанного короба
-    ///	</summary>
-    ///	<param name="ABox">
-    ///	  Короб
-    ///	</param>
-//    procedure CloseBox(const ABox: IArchiveBoxItem);
+    /// <summary>
+    /// Процедура, выполняющая вывод в контрол данных о последнем документе
+    /// </summary>
+    /// <param name="AControl">
+    /// Родительский контрол, в котором будут выведены данные
+    /// </param>
+    procedure ShowLastDocumentInfo;
 
-//    procedure DeleteBox(const ABox: IArchiveBoxItem);
+    /// <summary>
+    /// Функция печати стикера для текущего архивного короба
+    /// </summary>
+    function PrintCurrentBoxSticker: Boolean;
+
+    /// <summary>
+    /// Функция "откладывания" текущего короба
+    /// </summary>
+    function PutCurrentBoxAside: Boolean;
+
+    /// <summary>
+    /// Функция закрытия текущего короба
+    /// </summary>
+    function CloseCurrentBox: Boolean;
+
+    /// <summary>
+    /// Функция удаления текущего короба
+    /// </summary>
+    function DeleteCurrentBox: Boolean;
+
+    /// <summary>
+    /// Функция определения "заполненности" текущего короба
+    /// </summary>
+    function CurrentBoxIsFull: Boolean;
   end;
 
 implementation

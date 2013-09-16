@@ -72,7 +72,8 @@ uses
   uIArchiveBoxItem,
   uTArchiveBoxItem,
   uIArchiveDocumentList,
-  uTDocumentArchivingBusinessLogic;
+  uTDocumentArchivingBusinessLogic,
+  uIShowable;
 
 procedure TTestLogicMainForm.DisplayMessage(const AType: TMessageType; const AText: string);
 var
@@ -104,6 +105,8 @@ begin
   if not Assigned(FLogic) then
   begin
     FLogic := TDocumentArchivingBusinessLogic.Create(ADOConnection, DisplayMessage);
+    Logic.CurrentBoxInfoControl := gbCurrentBox;
+    Logic.LastDocumentInfoControl := gbLastDocument;
   end;
   Result := FLogic;
 end;
@@ -114,35 +117,32 @@ begin
 end;
 
 procedure TTestLogicMainForm.actTestLogicExecute(Sender: TObject);
-var
-  box: IArchiveBoxItem;
-  doc_list: IArchiveDocumentList;
 begin
   Logic.Connection.Connected := True;
   try
-    box := TArchiveBoxItem.Create;
-    box.TypeId := 1;
-    if box.Save(Logic.Connection) then
-      begin
-        Logic.DisplaySuccessMessage('Saving box ok.');
-      end
-      else
-      begin
-        Logic.DisplayErrorMessage('Error saving box!');
-      end;
-    if Assigned(doc_list) then
-    begin
-      box.Documents.Add;
-      box.Documents.Add;
-      if box.Documents.Save(Logic.Connection) then
-      begin
-        Logic.DisplaySuccessMessage('Saving docs ok.');
-      end
-      else
-      begin
-        Logic.DisplayErrorMessage('Error saving docs!');
-      end;
-    end;
+    Logic.CurrentBox := TArchiveBoxItem.Create(Logic.Connection, 10);
+    Logic.ShowCurrentBoxInfo;
+    Logic.PrintCurrentBoxSticker;
+    ShowMessage('ShowCurrentBoxInfo');
+
+    Logic.CurrentBox := TArchiveBoxItem.Create(Logic.Connection, 11);
+    Logic.ShowCurrentBoxInfo;
+    Logic.PutCurrentBoxAside;
+    ShowMessage('PutCurrentBoxAside');
+
+    Logic.CurrentBox := TArchiveBoxItem.Create(Logic.Connection, 12);
+    Logic.ShowCurrentBoxInfo;
+    Logic.CloseCurrentBox;
+    ShowMessage('CloseCurrentBox');
+
+    Logic.CurrentBox := TArchiveBoxItem.Create(Logic.Connection, 16);
+    Logic.ShowCurrentBoxInfo;
+    Logic.DeleteCurrentBox;
+    ShowMessage('DeleteCurrentBox');
+
+    Logic.CurrentBox := TArchiveBoxItem.Create(Logic.Connection, 17);
+    Logic.ShowCurrentBoxInfo;
+    ShowMessage('CurrentBoxIsFull = ' + BoolToStr(Logic.CurrentBoxIsFull, True));
   finally
     Logic.Connection.Connected := False;
   end;

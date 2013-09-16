@@ -56,6 +56,7 @@ type
 
   public
     constructor Create; override;
+    constructor Create(const AConnection: TCustomConnection; const AId: Integer); override;
     procedure Load(const ADataSet: TDataSet); override;
   end;
 
@@ -164,6 +165,11 @@ begin
   Barcode := EmptyStr;
   Series := EmptyStr;
   Number := EmptyStr;
+end;
+
+constructor TCustomBSOItem.Create(const AConnection: TCustomConnection; const AId: Integer);
+begin
+  inherited;
 end;
 
 procedure TCustomBSOItem.Load(const ADataSet: TDataSet);

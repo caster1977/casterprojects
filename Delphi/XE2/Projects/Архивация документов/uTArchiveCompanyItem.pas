@@ -28,6 +28,7 @@ type
 
   public
     constructor Create; override; final;
+    constructor Create(const AConnection: TCustomConnection; const AId: Integer); override; final;
     procedure Load(const ADataSet: TDataSet); override; final;
   end;
 
@@ -42,16 +43,21 @@ begin
   Result := FName;
 end;
 
-function TArchiveCompanyItem.GetCode: string;
-begin
-  Result := FCode;
-end;
-
 constructor TArchiveCompanyItem.Create;
 begin
   inherited;
   FName := EmptyStr;
   FCode := EmptyStr;
+end;
+
+function TArchiveCompanyItem.GetCode: string;
+begin
+  Result := FCode;
+end;
+
+constructor TArchiveCompanyItem.Create(const AConnection: TCustomConnection; const AId: Integer);
+begin
+  inherited;
 end;
 
 function TArchiveCompanyItem.GetLoadSQL: string;

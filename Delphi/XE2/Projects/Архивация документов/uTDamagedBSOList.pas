@@ -3,12 +3,13 @@ unit uTDamagedBSOList;
 interface
 
 uses
+  DB,
   uTArchiveDocumentList;
 
 type
   TDamagedBSOList = class sealed(TArchiveDocumentList)
   public
-    constructor Create; reintroduce; virtual; final;
+    constructor Create(const AConnection: TCustomConnection); override; final;
   end;
 
 implementation
@@ -16,7 +17,7 @@ implementation
 uses
   uTDamagedBSOItem;
 
-constructor TDamagedBSOList.Create;
+constructor TDamagedBSOList.Create(const AConnection: TCustomConnection);
 begin
   inherited;
   ItemClass := TDamagedBSOItem;

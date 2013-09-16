@@ -134,7 +134,8 @@ uses
   SysUtils,
   uCommonRoutines,
   uIShowableField,
-  uTShowableField;
+  uTShowableField,
+  StrUtils;
 
 function TArchiveBoxItem.GetBarcode: string;
 begin
@@ -170,7 +171,7 @@ function TArchiveBoxItem.GetDocuments: IArchiveDocumentList;
 begin
   if not Assigned(FDocuments) then
   begin
-    FDocuments := GetDocumentListByTypeId(TypeId);
+    FDocuments := GetDocumentListByTypeId(Connection, TypeId);
   end;
   Result := FDocuments;
 end;
@@ -348,8 +349,8 @@ procedure TArchiveBoxItem.FillShowableFieldsList;
 begin
   AddShowableField('Компания:', 'CompanyName', CompanyName);
   AddShowableField('Тип документов:', 'TypeName', TypeName);
-  AddShowableField('Год:', 'Year', IntToStr(Year));
-  AddShowableField('Номер:', 'Number', IntToStr(Number));
+  AddShowableField('Год:', 'Year', IfThen(Year <> -1, IntToStr(Year)));
+  AddShowableField('Номер:', 'Number', IfThen(Number <> -1, IntToStr(Number)));
   AddShowableField('Штрих-код:', 'Barcode', Barcode);
 end;
 
@@ -360,7 +361,7 @@ end;
 
 function TArchiveBoxItem.GetSaveSQL: string;
 begin
-  Result := Format('BSOArchiving_upd_ArchiveBox %d, %d, %d, %d, "%s", %d, %d, "%s", %d, "%s", %d, %d',
+  Result := Format('BSOArchiving_upd_ArchiveBox %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, ''%s'', %d, %d',
     [Id, TypeId, CompanyId, UserId, Barcode, Year, Number, FormatDateTime('yyyy-mm-dd hh:nn:ss',
     CreationDate), Integer(Closed), FormatDateTime('yyyy-mm-dd hh:nn:ss', ClosureDate),
     Integer(StickerPrinted), Integer(RegistryPrinted)]);
@@ -386,18 +387,6 @@ begin
   end;
 end;
 
-constructor TArchiveBoxItem.Create(const AConnection: TCustomConnection; const AId: Integer);
-begin
-  inherited;
-  if Assigned(AConnection) then
-  begin
-    if Assigned(Documents) then
-    begin
-      Documents.Load(AConnection);
-    end;
-  end;
-end;
-
 constructor TArchiveBoxItem.Create;
 begin
   inherited;
@@ -414,6 +403,18 @@ begin
   TypeName := EmptyStr;
   Year := -1;
   UserId := -1;
+end;
+
+constructor TArchiveBoxItem.Create(const AConnection: TCustomConnection; const AId: Integer);
+begin
+  inherited;
+  if Assigned(Connection) then
+  begin
+    if Assigned(Documents) then
+    begin
+      Documents.Load;
+    end;
+  end;
 end;
 
 end.

@@ -56,26 +56,27 @@ function GetControlByName(const AName: string; const AParent: TCustomControl): T
 /// </param>
 procedure SetLabelCaption(const AParentControl: TCustomControl; const ALabelName, ACaption: string);
 
-///	<summary>
-///	  Функция создания объекта запроса <b>TADOQuery</b> или <b>TSQLQuery</b> и
-///	  получения ссылки на него в виде ссылки на датасет
-///	</summary>
-///	<param name="AConnection">
-///	  Объект подключения к БД
-///	</param>
-///	<returns>
-///	  Ссылка на объект запроса
-///	</returns>
+/// <summary>
+/// Функция создания объекта запроса <b>TADOQuery</b> или <b>TSQLQuery</b> и
+/// получения ссылки на него в виде ссылки на датасет
+/// </summary>
+/// <param name="AConnection">
+/// Объект подключения к БД
+/// </param>
+/// <returns>
+/// Ссылка на объект запроса
+/// </returns>
 function GetQuery(const AConnection: TCustomConnection): TDataSet;
 
-///	<summary>
-///	  Фабричная функция, предназначенная для создания получения ссылки на
-///	  список документов нужного типа в зависимости от типа архивного короба
-///	</summary>
-///	<param name="ATypeId">
-///	  Идентификатор типа архивного короба
-///	</param>
-function GetDocumentListByTypeId(const ATypeId: Integer): IArchiveDocumentList;
+/// <summary>
+/// Фабричная функция, предназначенная для создания получения ссылки на
+/// список документов нужного типа в зависимости от типа архивного короба
+/// </summary>
+/// <param name="ATypeId">
+/// Идентификатор типа архивного короба
+/// </param>
+function GetDocumentListByTypeId(const AConnection: TCustomConnection; const ATypeId: Integer)
+  : IArchiveDocumentList;
 
 implementation
 
@@ -163,21 +164,19 @@ begin
   Result := nil;
   if Assigned(AConnection) then
   begin
-    if AConnection.Connected then
+    if AConnection is TADOConnection then
     begin
-      if AConnection is TADOConnection then
-      begin
-        Result := GetADOQuery(AConnection);
-      end
-      else
-      begin
-        Result := GetSQLQuery(AConnection);
-      end;
+      Result := GetADOQuery(AConnection);
+    end
+    else
+    begin
+      Result := GetSQLQuery(AConnection);
     end;
   end;
 end;
 
-function GetDocumentListByTypeId(const ATypeId: Integer): IArchiveDocumentList;
+function GetDocumentListByTypeId(const AConnection: TCustomConnection; const ATypeId: Integer)
+  : IArchiveDocumentList;
 var
   item_class: TArchiveDocumentListClass;
 begin
@@ -202,7 +201,7 @@ begin
   end;
   if Assigned(item_class) then
   begin
-    Result := item_class.Create;
+    Result := item_class.Create(AConnection);
   end;
 end;
 

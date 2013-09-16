@@ -40,7 +40,7 @@ type
     /// <param name="AConnection">
     /// Объект подключения к базе данных
     /// </param>
-    procedure Load(const AConnection: TCustomConnection);
+    procedure Load(const AConnection: TCustomConnection = nil);
 
     /// <summary>
     /// Функция для создания нового элемента списка
@@ -65,7 +65,7 @@ type
     ///	  Работает только для списка объектов, у которых свойство
     ///	  <b>Saveable</b> установлено в <b>True</b>
     ///	</remarks>
-    function Save(const AConnection: TCustomConnection): Boolean;
+    function Save(const AConnection: TCustomConnection = nil): Boolean;
   end;
 
 implementation
