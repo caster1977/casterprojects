@@ -11,7 +11,8 @@ uses
   Vcl.Controls,
   Vcl.StdCtrls,
   Vcl.ComCtrls,
-  Vcl.CheckLst, System.Actions;
+  Vcl.CheckLst,
+  System.Actions;
 
 type
   TReportForm = class(TOA5PositionedLogForm)
@@ -100,7 +101,7 @@ uses
   Vcl.Forms,
   System.SysUtils,
   System.DateUtils,
-  CastersPackage.uRoutines;
+  StrUtils;
 
 const
   ICON_STATISTIC = 0;
@@ -439,8 +440,7 @@ begin
   chkbxShowSQLQueries.Enabled := b;
   if not b then
     chkbxShowSQLQueries.Checked := False;
-  Log.SendDebug('Флажок "' + chkbxDetailed.Caption + '" ' + Routines.GetConditionalString(b, 'в',
-    'от') + 'ключен.');
+  Log.SendDebug('Флажок "' + chkbxDetailed.Caption + '" ' + IfThen(b, 'в', 'от') + 'ключен.');
 
   ProcedureFooter;
 end;
