@@ -42,6 +42,17 @@ type
     /// установлено в <b>True</b>
     /// </remarks>
     function Save(const AConnection: TCustomConnection = nil): Boolean;
+
+    ///	<summary>
+    ///	  Функция удаления данных об объекте из БД
+    ///	</summary>
+    ///	<param name="AConnection">
+    ///	  Объект подключения к БД
+    ///	</param>
+    ///	<returns>
+    ///	  Удалось ли выполнить удаление из БД
+    ///	</returns>
+    function Delete(const AConnection: TCustomConnection = nil): Boolean;
   end;
 
 implementation

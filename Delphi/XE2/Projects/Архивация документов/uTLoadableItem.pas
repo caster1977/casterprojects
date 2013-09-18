@@ -30,6 +30,7 @@ type
 
   protected
     function GetSaveSQL: string; virtual; abstract;
+    function GetDeleteSQL: string; virtual; abstract;
   public
     function GetLoadSQL: string; virtual; abstract;
 
@@ -37,6 +38,7 @@ type
     procedure Load(const ADataSet: TDataSet); overload; virtual;
     procedure Load(const AConnection: TCustomConnection = nil); overload;
     function Save(const AConnection: TCustomConnection = nil): Boolean;
+    function Delete(const AConnection: TCustomConnection = nil): Boolean;
 
     constructor Create; reintroduce; overload; virtual;
     constructor Create(const AConnection: TCustomConnection; const AId: Integer);
@@ -180,6 +182,45 @@ begin
   else
   begin
     ShowMessage(Format('%s item cannot be saved cause it''s not saveable.', [ClassName]));
+  end;
+end;
+
+function TLoadableItem.Delete(const AConnection: TCustomConnection): Boolean;
+var
+  ds: TDataSet;
+  i: Integer;
+begin
+  Result := False;
+  if Saveable then
+  begin
+    if Assigned(AConnection) then
+    begin
+      Connection := AConnection;
+    end;
+    if Assigned(Connection) then
+    begin
+      ds := GetQuery(Connection);
+      if Assigned(ds) then
+      begin
+        try
+          SetSQLForQuery(ds, GetDeleteSQL, True);
+          try
+            if not ds.Eof then
+            begin
+              Result := ds.Fields[0].AsInteger > -1;
+            end;
+          finally
+            ds.Close;
+          end;
+        finally
+          FreeAndNil(ds);
+        end;
+      end;
+    end;
+  end
+  else
+  begin
+    Result := True;
   end;
 end;
 

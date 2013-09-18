@@ -63,8 +63,10 @@ type
   protected
     procedure AddShowableField(const ACaption, AName, AValue: string);
     procedure FillShowableFieldsList; virtual; abstract;
+    function GetDeleteSQL: string; override; final;
 
   public
+    function FromString(const AValue: string): Boolean; virtual; abstract;
     function GetLoadSQL: string; override; final;
     procedure Load(const ADataSet: TDataSet); override;
     constructor Create; override;
@@ -214,6 +216,11 @@ end;
 function TArchiveDocumentItem.GetLoadSQL: string;
 begin
   Result := Format('BSOArchiving_sel_ArchiveDocument %d, %d', [ArchiveBoxId, Id]);
+end;
+
+function TArchiveDocumentItem.GetDeleteSQL: string;
+begin
+  Result := Format('BSOArchiving_del_ArchiveDocument %d', [Id]);
 end;
 
 end.

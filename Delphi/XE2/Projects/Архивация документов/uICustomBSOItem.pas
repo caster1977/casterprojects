@@ -35,14 +35,6 @@ type
     /// </summary>
     property BSOId: Integer read GetBSOId write SetBSOId;
 
-    function GetBarcode: string;
-    procedure SetBarcode(const AValue: string);
-
-    /// <summary>
-    /// Штрих-код БСО
-    /// </summary>
-    property Barcode: string read GetBarcode write SetBarcode;
-
     function GetSeries: string;
     procedure SetSeries(const AValue: string);
 
@@ -58,6 +50,14 @@ type
     /// Номер БСО
     /// </summary>
     property Number: string read GetNumber write SetNumber;
+
+    function GetBarcode: string;
+    procedure SetBarcode(const AValue: string);
+
+    /// <summary>
+    /// Штрих-код документа
+    /// </summary>
+    property Barcode: string read GetBarcode write SetBarcode;
   end;
 
 implementation

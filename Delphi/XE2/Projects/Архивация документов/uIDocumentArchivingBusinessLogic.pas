@@ -6,7 +6,10 @@ uses
   Controls,
   uICustomBusinessLogic,
   uIArchiveBoxItem,
-  uIShowable;
+  uIShowable,
+  uIArchiveDocumentItem,
+  uICustomBSOItem,
+  uTDocumentArchivingBarcodeType;
 
 type
   /// <summary>
@@ -40,6 +43,18 @@ type
     /// </summary>
     property LastDocumentInfoControl: TCustomControl read GetLastDocumentInfoControl
       write SetLastDocumentInfoControl;
+
+    function GetCurrentUserId: Integer;
+    ///	<summary>
+    ///	  Идентификатор текущего пользователя
+    ///	</summary>
+    property CurrentUserId: Integer read GetCurrentUserId;
+
+    function GetArchiveBoxTypeId: Integer;
+    ///	<summary>
+    ///	  Идентификатор типа архивного короба
+    ///	</summary>
+    property ArchiveBoxTypeId: Integer read GetArchiveBoxTypeId;
 
     /// <summary>
     /// Процедура, выполняющая вывод в контрол данных о текущем коробе
@@ -81,6 +96,22 @@ type
     /// Функция определения "заполненности" текущего короба
     /// </summary>
     function CurrentBoxIsFull: Boolean;
+
+    /// <summary>
+    /// Отметка указанного документа в реестре приёмки с ЛП
+    /// </summary>
+    /// <param name="ABSO">
+    /// БСО
+    /// </param>
+    procedure AcceptBSOByAcceptanceRegister(const ABSO: ICustomBSOItem);
+
+    /// <summary>
+    /// Функция обработки введённого штрих-кода
+    /// </summary>
+    /// <param name="ABarcode">
+    /// Штрих-код
+    /// </param>
+    procedure ProcessBarcode(const ABarcode: string);
   end;
 
 implementation

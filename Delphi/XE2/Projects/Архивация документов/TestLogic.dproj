@@ -135,6 +135,7 @@
         <DCCReference Include="uTArchiveBoxList.pas"/>
         <DCCReference Include="uIDocumentArchivingBusinessLogic.pas"/>
         <DCCReference Include="uTDocumentArchivingBusinessLogic.pas"/>
+        <DCCReference Include="uTDocumentArchivingBarcodeType.pas"/>
         <None Include="ModelSupport_TestLogic\default.txaPackage"/>
         <None Include="ModelSupport_TestLogic\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uILoadableItem\default.txvpck"/>
@@ -233,6 +234,8 @@
         <None Include="ModelSupport_TestLogic\uIDocumentArchivingBusinessLogic\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uTDocumentArchivingBusinessLogic\default.txaPackage"/>
         <None Include="ModelSupport_TestLogic\uTDocumentArchivingBusinessLogic\default.txvpck"/>
+        <None Include="ModelSupport_TestLogic\uTDocumentArchivingBarcodeType\default.txaPackage"/>
+        <None Include="ModelSupport_TestLogic\uTDocumentArchivingBarcodeType\default.txvpck"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

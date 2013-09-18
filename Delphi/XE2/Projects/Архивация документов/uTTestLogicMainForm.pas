@@ -28,13 +28,11 @@ uses
 
 type
   TTestLogicMainForm = class(TForm)
-    btnTestLogic: TButton;
     gbInfo: TGroupBox;
     pnlButtons: TPanel;
     SQLConnection: TSQLConnection;
     ADOConnection: TADOConnection;
     ActionList: TActionList;
-    actTestLogic: TAction;
     ToolBar: TToolBar;
     tbPrintSticker: TToolButton;
     tbDeleteLastDocument: TToolButton;
@@ -50,12 +48,52 @@ type
     btnClose: TButton;
     actClose: TAction;
     lblHint: TLabel;
-    procedure actTestLogicExecute(Sender: TObject);
+    ToolButton1: TToolButton;
+    actTestCloseCurrentBox: TAction;
+    actTestPutCurrentBoxAside: TAction;
+    actTestDeleteCurrentBox: TAction;
+    actTestCurrentBoxIsFull: TAction;
+    actTestDeleteLastDocument: TAction;
+    actTestPrintSticker: TAction;
+    tbTestPrintSticker: TToolButton;
+    tbTestCloseCurrentBox: TToolButton;
+    actTestAddDocument: TAction;
+    actTestForceNewBox: TAction;
+    tbTestDeleteLastDocument: TToolButton;
+    tbTestAddDocument: TToolButton;
+    tbTestCurrentBoxIsFull: TToolButton;
+    tbTestPutCurrentBoxAside: TToolButton;
+    tbTestForceNewBox: TToolButton;
+    tbTestDeleteCurrentBox: TToolButton;
+    actTestAcceptBSOByAcceptanceRegister: TAction;
+    tbTestAcceptBSOByAcceptanceRegister: TToolButton;
     procedure actCloseExecute(Sender: TObject);
+    procedure actTestPrintStickerUpdate(Sender: TObject);
+    procedure actTestPrintStickerExecute(Sender: TObject);
+    procedure actPrintStickerExecute(Sender: TObject);
+    procedure actPrintStickerUpdate(Sender: TObject);
+    procedure actTestCloseCurrentBoxExecute(Sender: TObject);
+    procedure actTestCloseCurrentBoxUpdate(Sender: TObject);
+    procedure actTestPutCurrentBoxAsideExecute(Sender: TObject);
+    procedure actTestPutCurrentBoxAsideUpdate(Sender: TObject);
+    procedure actTestDeleteCurrentBoxUpdate(Sender: TObject);
+    procedure actTestDeleteCurrentBoxExecute(Sender: TObject);
+    procedure actTestCurrentBoxIsFullExecute(Sender: TObject);
+    procedure actTestCurrentBoxIsFullUpdate(Sender: TObject);
+    procedure actTestDeleteLastDocumentUpdate(Sender: TObject);
+    procedure actTestDeleteLastDocumentExecute(Sender: TObject);
+    procedure actTestAcceptBSOByAcceptanceRegisterExecute(Sender: TObject);
+    procedure actTestAcceptBSOByAcceptanceRegisterUpdate(Sender: TObject);
+    procedure edBarcodeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure actTestAddDocumentExecute(Sender: TObject);
   private
     FLogic: IDocumentArchivingBusinessLogic;
     function GetLogic: IDocumentArchivingBusinessLogic;
     property Logic: IDocumentArchivingBusinessLogic read GetLogic nodefault;
+  private
+    function GetBarcode: string;
+    procedure SetBarcode(const AValue: string);
+    property Barcode: string read GetBarcode write SetBarcode nodefault;
   private
     procedure DisplayMessage(const AType: TMessageType; const AText: string);
   end;
@@ -68,47 +106,71 @@ implementation
 {$R *.dfm}
 
 uses
+  uTDocumentArchivingBarcodeType,
   uCommonRoutines,
   uIArchiveBoxItem,
   uTArchiveBoxItem,
   uIArchiveDocumentList,
   uTDocumentArchivingBusinessLogic,
-  uIShowable;
+  uIShowable,
+  uICustomBSOItem;
 
 procedure TTestLogicMainForm.DisplayMessage(const AType: TMessageType; const AText: string);
 var
   s: string;
+  c: TColor;
 begin
   case AType of
     mtInfo:
       begin
-        s := Trim('Info: ' + Trim(AText));
+        s := Trim(AText);
+        c := clBlack;
       end;
     mtSuccess:
       begin
-        s := Trim('Success: ' + Trim(AText));
+        s := Trim(AText);
+        c := clGreen;
       end;
     mtError:
       begin
-        s := Trim('Error: ' + Trim(AText));
+        s := Trim(AText);
+        c := clRed;
       end;
   else
     begin
       s := EmptyStr;
+      c := clBlack;
     end;
   end;
+  lblHint.Font.Color := c;
   lblHint.Caption := s;
+end;
+
+function TTestLogicMainForm.GetBarcode: string;
+begin
+  Result := Trim(edBarcode.Text);
 end;
 
 function TTestLogicMainForm.GetLogic: IDocumentArchivingBusinessLogic;
 begin
   if not Assigned(FLogic) then
   begin
-    FLogic := TDocumentArchivingBusinessLogic.Create(ADOConnection, DisplayMessage);
+    FLogic := TDocumentArchivingBusinessLogic.Create(ADOConnection, -1, 5, DisplayMessage);
     Logic.CurrentBoxInfoControl := gbCurrentBox;
     Logic.LastDocumentInfoControl := gbLastDocument;
   end;
   Result := FLogic;
+end;
+
+procedure TTestLogicMainForm.SetBarcode(const AValue: string);
+var
+  s: string;
+begin
+  s := Trim(AValue);
+  if edBarcode.Text <> s then
+  begin
+    edBarcode.Text := s;
+  end;
 end;
 
 procedure TTestLogicMainForm.actCloseExecute(Sender: TObject);
@@ -116,33 +178,212 @@ begin
   Close;
 end;
 
-procedure TTestLogicMainForm.actTestLogicExecute(Sender: TObject);
+procedure TTestLogicMainForm.actPrintStickerExecute(Sender: TObject);
+begin
+  Logic.PrintCurrentBoxSticker;
+end;
+
+procedure TTestLogicMainForm.actPrintStickerUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  if Assigned(Logic) then
+  begin
+    if Assigned(Logic.CurrentBox) then
+    begin
+      if Assigned(Logic.CurrentBox.Documents) then
+      begin
+        b := Logic.CurrentBox.Documents.Count > 1;
+      end;
+    end;
+  end;
+  (Sender as TAction).Enabled := b;
+end;
+
+procedure TTestLogicMainForm.actTestAcceptBSOByAcceptanceRegisterUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  if Assigned(Logic) then
+  begin
+    if Assigned(Logic.CurrentBox) then
+    begin
+      if Assigned(Logic.CurrentBox.Documents) then
+      begin
+        b := (Logic.CurrentBox.Documents.Count > 0) and
+          Supports(Logic.CurrentBox.Documents.Item[Logic.CurrentBox.Documents.Count - 1],
+          ICustomBSOItem);
+      end;
+    end;
+  end;
+  (Sender as TAction).Enabled := b;
+end;
+
+procedure TTestLogicMainForm.actTestCloseCurrentBoxExecute(Sender: TObject);
 begin
   Logic.Connection.Connected := True;
   try
-    Logic.CurrentBox := TArchiveBoxItem.Create(Logic.Connection, 10);
-    Logic.ShowCurrentBoxInfo;
-    Logic.PrintCurrentBoxSticker;
-    ShowMessage('ShowCurrentBoxInfo');
-
-    Logic.CurrentBox := TArchiveBoxItem.Create(Logic.Connection, 11);
-    Logic.ShowCurrentBoxInfo;
-    Logic.PutCurrentBoxAside;
-    ShowMessage('PutCurrentBoxAside');
-
-    Logic.CurrentBox := TArchiveBoxItem.Create(Logic.Connection, 12);
-    Logic.ShowCurrentBoxInfo;
     Logic.CloseCurrentBox;
-    ShowMessage('CloseCurrentBox');
+  finally
+    Logic.Connection.Connected := False;
+  end;
+end;
 
-    Logic.CurrentBox := TArchiveBoxItem.Create(Logic.Connection, 16);
-    Logic.ShowCurrentBoxInfo;
+procedure TTestLogicMainForm.actTestCloseCurrentBoxUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  if Assigned(Logic) then
+  begin
+    b := Assigned(Logic.CurrentBox);
+  end;
+  (Sender as TAction).Enabled := b;
+end;
+
+procedure TTestLogicMainForm.actTestCurrentBoxIsFullExecute(Sender: TObject);
+begin
+  Logic.Connection.Connected := True;
+  try
+    Logic.CurrentBoxIsFull;
+  finally
+    Logic.Connection.Connected := False;
+  end;
+end;
+
+procedure TTestLogicMainForm.actTestCurrentBoxIsFullUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  if Assigned(Logic) then
+  begin
+    b := Assigned(Logic.CurrentBox);
+  end;
+  (Sender as TAction).Enabled := b;
+end;
+
+procedure TTestLogicMainForm.actTestDeleteCurrentBoxExecute(Sender: TObject);
+begin
+  Logic.Connection.Connected := True;
+  try
     Logic.DeleteCurrentBox;
-    ShowMessage('DeleteCurrentBox');
+  finally
+    Logic.Connection.Connected := False;
+  end;
+end;
 
-    Logic.CurrentBox := TArchiveBoxItem.Create(Logic.Connection, 17);
-    Logic.ShowCurrentBoxInfo;
-    ShowMessage('CurrentBoxIsFull = ' + BoolToStr(Logic.CurrentBoxIsFull, True));
+procedure TTestLogicMainForm.actTestDeleteCurrentBoxUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  if Assigned(Logic) then
+  begin
+    b := Assigned(Logic.CurrentBox);
+  end;
+  (Sender as TAction).Enabled := b;
+end;
+
+procedure TTestLogicMainForm.actTestDeleteLastDocumentExecute(Sender: TObject);
+begin
+  Logic.CurrentBox.Documents.Delete(Logic.CurrentBox.Documents.Count - 1);
+end;
+
+procedure TTestLogicMainForm.actTestDeleteLastDocumentUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  if Assigned(Logic) then
+  begin
+    if Assigned(Logic.CurrentBox) then
+    begin
+      if Assigned(Logic.CurrentBox.Documents) then
+      begin
+        b := Logic.CurrentBox.Documents.Count > 0;
+      end;
+    end;
+  end;
+  (Sender as TAction).Enabled := b;
+end;
+
+procedure TTestLogicMainForm.actTestPrintStickerExecute(Sender: TObject);
+begin
+  Logic.Connection.Connected := True;
+  try
+    Logic.PrintCurrentBoxSticker;
+  finally
+    Logic.Connection.Connected := False;
+  end;
+end;
+
+procedure TTestLogicMainForm.actTestPrintStickerUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  if Assigned(Logic) then
+  begin
+    b := Assigned(Logic.CurrentBox);
+  end;
+  (Sender as TAction).Enabled := b;
+end;
+
+procedure TTestLogicMainForm.actTestPutCurrentBoxAsideExecute(Sender: TObject);
+begin
+  Logic.Connection.Connected := True;
+  try
+    Logic.PutCurrentBoxAside;
+  finally
+    Logic.Connection.Connected := False;
+  end;
+end;
+
+procedure TTestLogicMainForm.actTestPutCurrentBoxAsideUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  if Assigned(Logic) then
+  begin
+    b := Assigned(Logic.CurrentBox);
+  end;
+  (Sender as TAction).Enabled := b;
+end;
+
+procedure TTestLogicMainForm.actTestAcceptBSOByAcceptanceRegisterExecute(Sender: TObject);
+begin
+  Logic.Connection.Connected := True;
+  try
+    Logic.AcceptBSOByAcceptanceRegister(Logic.CurrentBox.Documents.Item
+      [Logic.CurrentBox.Documents.Count - 1] as ICustomBSOItem);
+  finally
+    Logic.Connection.Connected := False;
+  end;
+end;
+
+procedure TTestLogicMainForm.edBarcodeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = VK_RETURN then
+  begin
+    Logic.Connection.Connected := True;
+    try
+      Logic.ProcessBarcode(Barcode);
+      Barcode := EmptyStr;
+    finally
+      Logic.Connection.Connected := False;
+    end;
+    Key := 0;
+  end;
+end;
+
+procedure TTestLogicMainForm.actTestAddDocumentExecute(Sender: TObject);
+begin
+  Logic.Connection.Connected := True;
+  try
   finally
     Logic.Connection.Connected := False;
   end;

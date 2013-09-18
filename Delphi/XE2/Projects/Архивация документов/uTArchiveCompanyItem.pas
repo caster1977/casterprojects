@@ -11,6 +11,7 @@ type
   TArchiveCompanyItem = class sealed(TLoadableItem, IArchiveCompanyItem)
   protected
     function GetSaveSQL: string; override; final;
+    function GetDeleteSQL: string; override; final;
   public
     function GetLoadSQL: string; override; final;
 
@@ -63,6 +64,11 @@ end;
 function TArchiveCompanyItem.GetLoadSQL: string;
 begin
   Result := Format('BSOArchiving_sel_ArchiveCompany %d', [Id]);
+end;
+
+function TArchiveCompanyItem.GetDeleteSQL: string;
+begin
+  Result := EmptyStr;
 end;
 
 procedure TArchiveCompanyItem.Load(const ADataSet: TDataSet);

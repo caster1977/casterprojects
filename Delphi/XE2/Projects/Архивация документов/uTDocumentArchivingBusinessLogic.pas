@@ -6,13 +6,52 @@ uses
   uTCustomBusinessLogic,
   uIDocumentArchivingBusinessLogic,
   uIArchiveBoxItem,
-  uIArchiveDocumentItem,
+  uICustomBSOItem,
   Controls,
-  uIShowable;
+  DB,
+  uTOnDisplayMessage,
+  uIShowable,
+  uIArchiveDocumentItem,
+  uTDocumentArchivingBarcodeType;
 
 type
   TDocumentArchivingBusinessLogic = class sealed(TCustomBusinessLogic,
     IDocumentArchivingBusinessLogic)
+  private
+    FCurrentBox: IArchiveBoxItem;
+    function GetCurrentBox: IArchiveBoxItem;
+    procedure SetCurrentBox(const AValue: IArchiveBoxItem);
+  public
+    property CurrentBox: IArchiveBoxItem read GetCurrentBox write SetCurrentBox nodefault;
+
+  private
+    FCurrentBoxInfoControl: TCustomControl;
+    function GetCurrentBoxInfoControl: TCustomControl;
+    procedure SetCurrentBoxInfoControl(const AValue: TCustomControl);
+  public
+    property CurrentBoxInfoControl: TCustomControl read GetCurrentBoxInfoControl
+      write SetCurrentBoxInfoControl nodefault;
+
+  private
+    FLastDocumentInfoControl: TCustomControl;
+    function GetLastDocumentInfoControl: TCustomControl;
+    procedure SetLastDocumentInfoControl(const AValue: TCustomControl);
+  public
+    property LastDocumentInfoControl: TCustomControl read GetLastDocumentInfoControl
+      write SetLastDocumentInfoControl nodefault;
+
+  private
+    FCurrentUserId: Integer;
+    function GetCurrentUserId: Integer;
+  public
+    property CurrentUserId: Integer read GetCurrentUserId nodefault;
+
+  private
+    FArchiveBoxTypeId: Integer;
+    function GetArchiveBoxTypeId: Integer;
+  public
+    property ArchiveBoxTypeId: Integer read GetArchiveBoxTypeId nodefault;
+
   private
     /// <summary>
     /// Функция определения вместимости указанного типа короба
@@ -72,31 +111,20 @@ type
     /// <returns>
     /// Количество коробов
     /// </returns>
-    function GetOpenedBoxQuantity(const AType, ACompanyId: Integer): Integer; overload;
+    function GetOpenedBoxQuantity(const ATypeId, ACompanyId: Integer): Integer; overload;
 
-  private
-    FCurrentBox: IArchiveBoxItem;
-    function GetCurrentBox: IArchiveBoxItem;
-    procedure SetCurrentBox(const AValue: IArchiveBoxItem);
-  public
-    property CurrentBox: IArchiveBoxItem read GetCurrentBox write SetCurrentBox nodefault;
+    function CloseBox(const ABox: IArchiveBoxItem): Boolean;
+    function PutBoxAside(const ABox: IArchiveBoxItem): Boolean;
+    function PrintBoxSticker(const ABox: IArchiveBoxItem): Boolean;
+    function BoxIsFull(const ABox: IArchiveBoxItem): Boolean;
+    function GetDocumentsCount(const ABox: IArchiveBoxItem): Integer;
 
-  private
-    FCurrentBoxInfoControl: TCustomControl;
-    function GetCurrentBoxInfoControl: TCustomControl;
-    procedure SetCurrentBoxInfoControl(const AValue: TCustomControl);
-  public
-    property CurrentBoxInfoControl: TCustomControl read GetCurrentBoxInfoControl
-      write SetCurrentBoxInfoControl nodefault;
+    function AnalizeBarcode(const ABarcode: string): TDocumentArchivingBarcodeType;
 
-  private
-    FLastDocumentInfoControl: TCustomControl;
-    function GetLastDocumentInfoControl: TCustomControl;
-    procedure SetLastDocumentInfoControl(const AValue: TCustomControl);
-  public
-    property LastDocumentInfoControl: TCustomControl read GetLastDocumentInfoControl
-      write SetLastDocumentInfoControl nodefault;
-
+    function IsArchiveBoxBarcode(const ABarcode: string): Boolean;
+    function IsBSOBarcode(const ABarcode: string): Boolean;
+    function IsForceNewBoxCommandBarcode(const ABarcode: string): Boolean;
+    function IsPutBoxAsideCommandBarcode(const ABarcode: string): Boolean;
   public
     procedure ShowCurrentBoxInfo;
     procedure ShowLastDocumentInfo;
@@ -105,22 +133,28 @@ type
     function CloseCurrentBox: Boolean;
     function DeleteCurrentBox: Boolean;
     function CurrentBoxIsFull: Boolean;
+    procedure AcceptBSOByAcceptanceRegister(const ABSO: ICustomBSOItem);
+    procedure ProcessBarcode(const ABarcode: string);
+  public
+    constructor Create(const AConnection: TCustomConnection;
+      const ACurrentUserId, AArchiveBoxTypeId: Integer;
+      const AOnDisplayMessage: TOnDisplayMessage = nil); reintroduce; virtual;
   private
-    function CloseBox(const ABox: IArchiveBoxItem): Boolean;
-    function PutBoxAside(const ABox: IArchiveBoxItem): Boolean;
-    function PrintBoxSticker(const ABox: IArchiveBoxItem): Boolean;
-    function BoxIsFull(const ABox: IArchiveBoxItem): Boolean;
-    function GetDocumentsCount(const ABox: IArchiveBoxItem): Integer;
+    function CreateDocumentItemByBarcode(const ABarcode: string): IArchiveDocumentItem;
+    function CreateArchiveBoxItemByDocument(const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
   end;
 
 implementation
 
 uses
+  uTArchiveDocumentListClass,
+  uCommonRoutines,
   uIArchiveBoxTypeItem,
   uTArchiveBoxTypeItem,
+  uTArchiveDocumentItemClass,
+  uTArchiveBoxItem,
   SysUtils,
   StdCtrls,
-  uCommonRoutines,
   uIShowableField;
 
 function TDocumentArchivingBusinessLogic.GetBoxCapacity(const AType: Integer): Integer;
@@ -160,8 +194,12 @@ begin
   Result := FCurrentBoxInfoControl;
 end;
 
-function TDocumentArchivingBusinessLogic.GetDocumentsCount(
-  const ABox: IArchiveBoxItem): Integer;
+function TDocumentArchivingBusinessLogic.GetCurrentUserId: Integer;
+begin
+  Result := FCurrentUserId;
+end;
+
+function TDocumentArchivingBusinessLogic.GetDocumentsCount(const ABox: IArchiveBoxItem): Integer;
 begin
   Result := -1;
   if Assigned(ABox) then
@@ -224,6 +262,8 @@ var
   l1, l2: TLabel;
   j: Integer;
   c: TControl;
+  old_height: Integer;
+  wc: TWinControl;
 begin
   if (not Assigned(AParentControl)) or (not Assigned(AShowableItem)) then
   begin
@@ -231,6 +271,7 @@ begin
   end;
 
   ClearControl(AParentControl);
+  old_height := AParentControl.Height;
 
   if Assigned(AShowableItem.ShowableFields) then
   begin
@@ -271,7 +312,13 @@ begin
       if j = 0 then
       begin
         AParentControl.Height := Integer(AParentControl is TGroupBox) * 10 + l2.Margins.Top +
-          l2.Margins.Bottom + AShowableItem.ShowableFields.Count * (17 + l2.Margins.Top);;
+          l2.Margins.Bottom + AShowableItem.ShowableFields.Count * (17 + l2.Margins.Top);
+        wc := AParentControl.Parent;
+        while Assigned(wc) do
+        begin
+          wc.Height := wc.Height - (old_height - AParentControl.Height);
+          wc := wc.Parent;
+        end;
       end;
       l2.Name := 'lblDocument' + IShowableField(AShowableItem.ShowableFields[j]).Name;
       l2.Caption := IShowableField(AShowableItem.ShowableFields[j]).Value;
@@ -301,18 +348,6 @@ begin
   begin
     Show(LastDocumentInfoControl, showable);
   end;
-end;
-
-function TDocumentArchivingBusinessLogic.GetOpenedBoxQuantity(const ADocument
-  : IArchiveDocumentItem): Integer;
-begin
-
-end;
-
-function TDocumentArchivingBusinessLogic.GetOpenedBoxQuantity(const AType,
-  ACompanyId: Integer): Integer;
-begin
-
 end;
 
 function TDocumentArchivingBusinessLogic.CloseBox(const ABox: IArchiveBoxItem): Boolean;
@@ -355,6 +390,14 @@ begin
       end;
     end;
   end;
+end;
+
+constructor TDocumentArchivingBusinessLogic.Create(const AConnection: TCustomConnection;
+  const ACurrentUserId, AArchiveBoxTypeId: Integer; const AOnDisplayMessage: TOnDisplayMessage);
+begin
+  inherited Create(AConnection, AOnDisplayMessage);
+  FCurrentUserId := ACurrentUserId;
+  FArchiveBoxTypeId := AArchiveBoxTypeId;
 end;
 
 function TDocumentArchivingBusinessLogic.PrintBoxSticker(const ABox: IArchiveBoxItem): Boolean;
@@ -441,15 +484,7 @@ begin
     if Result then
     begin
       // удаляем данные из базы
-      SetSQLForQuery(Query, Format('BSOArchiving_del_ArchiveBox %d', [CurrentBox.Id]), True);
-      try
-        if not Query.Eof then
-        begin
-          Result := Query.Fields[0].AsInteger > -1;
-        end;
-      finally
-        Query.Close;
-      end;
+      Result := CurrentBox.Delete;
       if Result then
       begin
         ClearControl(CurrentBoxInfoControl);
@@ -464,15 +499,38 @@ begin
   end;
 end;
 
-function TDocumentArchivingBusinessLogic.BoxIsFull(
-  const ABox: IArchiveBoxItem): Boolean;
+procedure TDocumentArchivingBusinessLogic.AcceptBSOByAcceptanceRegister(const ABSO: ICustomBSOItem);
+begin
+  if Assigned(ABSO) then
+  begin
+    SetSQLForQuery(Query, Format('BSOArchiving_upd_AcceptanceRegister %d', [ABSO.BSOId]));
+    try
+      if not Query.Eof then
+      begin
+        if Query.Fields[0].AsInteger > -1 then
+        begin
+          DisplaySuccessMessage('Документ принят по реестру ЛП');
+        end
+        else
+        begin
+          DisplayErrorMessage('Документ не принят по реестру ЛП');
+        end;
+      end;
+    finally
+      Query.Close;
+    end;
+  end;
+end;
+
+function TDocumentArchivingBusinessLogic.BoxIsFull(const ABox: IArchiveBoxItem): Boolean;
 var
   box_capacity: Integer;
   box_documents_count: Integer;
 begin
   box_capacity := GetBoxCapacity(ABox);
   box_documents_count := GetDocumentsCount(ABox);
-  Result := ((box_capacity > -1) and (box_documents_count > -1)) and (box_documents_count >= box_capacity);
+  Result := ((box_capacity > -1) and (box_documents_count > -1)) and
+    (box_documents_count >= box_capacity);
 end;
 
 function TDocumentArchivingBusinessLogic.CurrentBoxIsFull: Boolean;
@@ -485,6 +543,177 @@ begin
   else
   begin
     DisplayErrorMessage('Текущий короб не заполнен');
+  end;
+end;
+
+function TDocumentArchivingBusinessLogic.AnalizeBarcode(const ABarcode: string)
+  : TDocumentArchivingBarcodeType;
+var
+  s: string;
+begin
+  s := Trim(ABarcode);
+
+  if IsArchiveBoxBarcode(s) then
+  begin
+    Result := dabtArchiveBox;
+  end
+  else
+  begin
+    if IsBSOBarcode(s) then
+    begin
+      Result := dabtBSO;
+    end
+    else
+    begin
+      if IsForceNewBoxCommandBarcode(s) then
+      begin
+        Result := dabtForceNewBoxCommand
+      end
+      else
+      begin
+        if IsPutBoxAsideCommandBarcode(s) then
+        begin
+          Result := dabtPutBoxAsideCommand;
+        end
+        else
+        begin
+          Result := dabtUnknown;
+        end;
+      end;
+    end;
+  end;
+end;
+
+function TDocumentArchivingBusinessLogic.IsArchiveBoxBarcode(const ABarcode: string): Boolean;
+begin
+  Result := Length(Trim(ABarcode)) = 12;
+end;
+
+function TDocumentArchivingBusinessLogic.IsBSOBarcode(const ABarcode: string): Boolean;
+begin
+  Result := Length(Trim(ABarcode)) >= 14;
+end;
+
+function TDocumentArchivingBusinessLogic.IsForceNewBoxCommandBarcode
+  (const ABarcode: string): Boolean;
+begin
+  Result := Trim(ABarcode) = '010001';
+end;
+
+function TDocumentArchivingBusinessLogic.IsPutBoxAsideCommandBarcode
+  (const ABarcode: string): Boolean;
+begin
+  Result := Trim(ABarcode) = '010002';
+end;
+
+function TDocumentArchivingBusinessLogic.GetOpenedBoxQuantity(const ADocument
+  : IArchiveDocumentItem): Integer;
+var
+  box: IArchiveBoxItem;
+begin
+  Result := -1;
+  if Assigned(ADocument) then
+  begin
+    if ADocument.ArchiveBoxId > -1 then
+    begin
+      box := TArchiveBoxItem.Create(Connection, ADocument.ArchiveBoxId);
+      if Assigned(box) then
+      begin
+        if (box.TypeId > -1) and (box.CompanyId > -1) then
+        begin
+          Result := GetOpenedBoxQuantity(box.TypeId, box.CompanyId);
+        end;
+      end;
+    end;
+  end;
+end;
+
+function TDocumentArchivingBusinessLogic.GetOpenedBoxQuantity(const ATypeId,
+  ACompanyId: Integer): Integer;
+begin
+  Result := -1;
+  if (ATypeId > -1) and (ACompanyId > -1) then
+  begin
+    SetSQLForQuery(Query, Format('BSOArchiving_sel_OpenedArchiveBoxCount %d, %d',
+      [ATypeId, ACompanyId]));
+    try
+      if not Query.Eof then
+      begin
+        Result := Query.Fields[0].AsInteger;
+      end;
+    finally
+      Query.Close;
+    end;
+  end;
+end;
+
+function TDocumentArchivingBusinessLogic.GetArchiveBoxTypeId: Integer;
+begin
+  Result := FArchiveBoxTypeId;
+end;
+
+procedure TDocumentArchivingBusinessLogic.ProcessBarcode(const ABarcode: string);
+var
+  doc: IArchiveDocumentItem;
+begin
+  case AnalizeBarcode(ABarcode) of
+    dabtUnknown:
+      DisplayErrorMessage('Введён неизвестный штрих-код');
+    dabtBSO:
+      begin
+        DisplaySuccessMessage('Введён штрих-код БСО');
+        doc := CreateDocumentItemByBarcode(ABarcode);
+        if Assigned(doc) then
+        begin
+          if Supports(doc, IShowable) then
+          begin
+            Show(LastDocumentInfoControl, doc as IShowable);
+          end;
+        end;
+      end;
+    dabtArchiveBox:
+      DisplaySuccessMessage('Введён штрих-код архивного короба');
+    dabtForceNewBoxCommand:
+      begin
+        DisplaySuccessMessage('Введён штрих-код команды создания нового короба');
+        CloseCurrentBox;
+      end;
+    dabtPutBoxAsideCommand:
+      begin
+        DisplaySuccessMessage('Введён штрих-код команды откладывания короба');
+        PutCurrentBoxAside;
+      end;
+  end;
+end;
+
+function TDocumentArchivingBusinessLogic.CreateDocumentItemByBarcode(const ABarcode: string)
+  : IArchiveDocumentItem;
+var
+  item: TArchiveDocumentItemClass;
+begin
+  Result := nil;
+  if IsBSOBarcode(ABarcode) then
+  begin
+    item := GetArchiveDocumentItemClassByTypeId(ArchiveBoxTypeId);
+    Result := item.Create(Connection, -1);
+    Result.FromString(ABarcode);
+  end;
+end;
+
+function TDocumentArchivingBusinessLogic.CreateArchiveBoxItemByDocument
+  (const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
+begin
+  if Assigned(ADocument) then
+  begin
+    Result := TArchiveBoxItem.Create;
+    Result.TypeId := ArchiveBoxTypeId;
+    Result.CompanyId := 1; //ADocument.CompanyId;
+    Result.Number := 1; // GetNewArchiveBoxNumber(ArchiveBoxTypeId, CompanyId);
+    Result.Year := 2013; // ADocument.Year;
+    Result.Barcode := '';
+    Result.CreationDate := Now;
+    Result.Save(Connection);
+    Result.Load;
   end;
 end;
 
