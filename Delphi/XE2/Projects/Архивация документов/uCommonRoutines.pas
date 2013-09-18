@@ -9,6 +9,10 @@ uses
   DB,
   ADODB,
   SQLExpr,
+  uTArchiveDocumentItemClass,
+  uIArchiveDocumentItem,
+  uTArchiveDocumentItem,
+  uTArchiveDocumentListClass,
   uIArchiveDocumentList,
   uTArchiveDocumentList;
 
@@ -69,19 +73,21 @@ procedure SetLabelCaption(const AParentControl: TCustomControl; const ALabelName
 function GetQuery(const AConnection: TCustomConnection): TDataSet;
 
 /// <summary>
-/// Фабричная функция, предназначенная для создания получения ссылки на
-/// список документов нужного типа в зависимости от типа архивного короба
+/// Функция, возвращающая класс документа по указанному типу
 /// </summary>
-/// <param name="ATypeId">
-/// Идентификатор типа архивного короба
-/// </param>
-function GetDocumentListByTypeId(const AConnection: TCustomConnection; const ATypeId: Integer)
-  : IArchiveDocumentList;
+function GetArchiveDocumentItemClassByTypeId(const ATypeId: Integer): TArchiveDocumentItemClass;
+
+/// <summary>
+/// Функция, возвращающая класс списка документов по указанному типу
+/// </summary>
+function GetArchiveDocumentListClassByTypeId(const ATypeId: Integer): TArchiveDocumentListClass;
 
 implementation
 
 uses
-  uTArchiveDocumentListClass,
+  uTShipmentBSOItem,
+  uTShipmentBSOWithActItem,
+  uTDamagedBSOItem,
   uTShipmentBSOList,
   uTShipmentBSOWithActList,
   uTDamagedBSOList;
@@ -175,33 +181,47 @@ begin
   end;
 end;
 
-function GetDocumentListByTypeId(const AConnection: TCustomConnection; const ATypeId: Integer)
-  : IArchiveDocumentList;
-var
-  item_class: TArchiveDocumentListClass;
+function GetArchiveDocumentItemClassByTypeId(const ATypeId: Integer): TArchiveDocumentItemClass;
 begin
-  Result := nil;
   case ATypeId of
     1:
       begin
-        item_class := TShipmentBSOList;
+        Result := TShipmentBSOItem;
       end;
     2:
       begin
-        item_class := TShipmentBSOWithActList;
+        Result := TShipmentBSOWithActItem;
       end;
     5:
       begin
-        item_class := TDamagedBSOList;
+        Result := TDamagedBSOItem;
       end;
   else
     begin
-      item_class := nil;
+      Result := nil;
     end;
   end;
-  if Assigned(item_class) then
-  begin
-    Result := item_class.Create(AConnection);
+end;
+
+function GetArchiveDocumentListClassByTypeId(const ATypeId: Integer): TArchiveDocumentListClass;
+begin
+  case ATypeId of
+    1:
+      begin
+        Result := TShipmentBSOList;
+      end;
+    2:
+      begin
+        Result := TShipmentBSOWithActList;
+      end;
+    5:
+      begin
+        Result := TDamagedBSOList;
+      end;
+  else
+    begin
+      Result := nil;
+    end;
   end;
 end;
 

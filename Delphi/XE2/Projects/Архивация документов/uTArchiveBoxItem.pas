@@ -121,6 +121,7 @@ type
 
   protected
     function GetSaveSQL: string; override; final;
+    function GetDeleteSQL: string; override; final;
   public
     constructor Create; override; final;
     constructor Create(const AConnection: TCustomConnection; const AId: Integer); override; final;
@@ -132,6 +133,7 @@ implementation
 
 uses
   SysUtils,
+  uTArchiveDocumentListClass,
   uCommonRoutines,
   uIShowableField,
   uTShowableField,
@@ -168,10 +170,16 @@ begin
 end;
 
 function TArchiveBoxItem.GetDocuments: IArchiveDocumentList;
+var
+  item_class: TArchiveDocumentListClass;
 begin
   if not Assigned(FDocuments) then
   begin
-    FDocuments := GetDocumentListByTypeId(Connection, TypeId);
+    item_class := GetArchiveDocumentListClassByTypeId(TypeId);
+    if Assigned(item_class) then
+    begin
+      FDocuments := item_class.Create(Connection);
+    end;
   end;
   Result := FDocuments;
 end;
@@ -359,9 +367,15 @@ begin
   Result := Format('BSOArchiving_sel_ArchiveBox %d', [Id]);
 end;
 
+function TArchiveBoxItem.GetDeleteSQL: string;
+begin
+  Result := Format('BSOArchiving_del_ArchiveBox %d', [Id]);
+end;
+
 function TArchiveBoxItem.GetSaveSQL: string;
 begin
-  Result := Format('BSOArchiving_upd_ArchiveBox %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, ''%s'', %d, %d',
+  Result := Format
+    ('BSOArchiving_upd_ArchiveBox %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, ''%s'', %d, %d',
     [Id, TypeId, CompanyId, UserId, Barcode, Year, Number, FormatDateTime('yyyy-mm-dd hh:nn:ss',
     CreationDate), Integer(Closed), FormatDateTime('yyyy-mm-dd hh:nn:ss', ClosureDate),
     Integer(StickerPrinted), Integer(RegistryPrinted)]);

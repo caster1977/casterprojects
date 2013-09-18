@@ -36,10 +36,6 @@ type
   protected
     property ItemClass: TLoadableItemClass read GetItemClass write SetItemClass nodefault;
 
-  public
-    procedure Clear;
-    procedure Delete(const AIndex: Integer);
-    function IndexOf(const AItem: ILoadableItem): Integer;
   protected
     function GetLoadSQL: string;
   public
@@ -48,6 +44,9 @@ type
     function Add(const AItem: ILoadableItem): Integer; overload;
     procedure Load(const AConnection: TCustomConnection = nil);
     function Save(const AConnection: TCustomConnection = nil): Boolean;
+    procedure Clear;
+    function Delete(const AIndex: Integer; const AConnection: TCustomConnection = nil): Boolean;
+    function IndexOf(const AItem: ILoadableItem): Integer;
   end;
 
 implementation
@@ -85,14 +84,6 @@ constructor TLoadableList.Create(const AConnection: TCustomConnection);
 begin
   inherited Create;
   FConnection := AConnection;
-end;
-
-procedure TLoadableList.Delete(const AIndex: Integer);
-begin
-  if Assigned(FItems) then
-  begin
-    FItems.Delete(AIndex);
-  end;
 end;
 
 function TLoadableList.GetConnection: TCustomConnection;
@@ -213,6 +204,35 @@ begin
       if not Result then
       begin
         Break;
+      end;
+    end;
+  end;
+end;
+
+function TLoadableList.Delete(const AIndex: Integer; const AConnection: TCustomConnection): Boolean;
+var
+  i: Integer;
+begin
+  Result := False;
+  if Assigned(FItems) then
+  begin
+    if Assigned(AConnection) then
+    begin
+      Connection := AConnection;
+    end;
+    if Assigned(Connection) then
+    begin
+      for i := 0 to Count - 1 do
+      begin
+        Result := (Items[i] as ItemClass).Delete(Connection);
+        if Result then
+        begin
+          FItems.Delete(AIndex);
+        end
+        else
+        begin
+          Break;
+        end;
       end;
     end;
   end;

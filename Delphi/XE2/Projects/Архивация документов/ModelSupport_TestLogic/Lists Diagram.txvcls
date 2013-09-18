@@ -17,6 +17,7 @@
       <reference referencedUin="delphi:e_method:src:TestLogic:uILoadableList.ILoadableList.Delete(System.Integer)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uILoadableList.ILoadableList.IndexOf(System.IInterface)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uILoadableList.ILoadableList.IndexOf(uILoadableItem.ILoadableItem)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uILoadableList.ILoadableList.Delete(System.Integer,Data.DB.TCustomConnection)" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uIArchiveCompanyList.IArchiveCompanyList">
       <property name="$shortcutReference" value="true" />
@@ -72,6 +73,7 @@
       <reference referencedUin="delphi:e_property:src:TestLogic:uTLoadableList.TLoadableList.Connection" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.Create(Data.DB.TCustomConnection)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.SetConnection(Data.DB.TCustomConnection)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTLoadableList.TLoadableList.Delete(System.Integer,Data.DB.TCustomConnection)" />
     </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uTArchiveCompanyList.TArchiveCompanyList">
       <property name="$shortcutReference" value="true" />

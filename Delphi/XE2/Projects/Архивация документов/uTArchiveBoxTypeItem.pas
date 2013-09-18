@@ -11,6 +11,7 @@ type
   TArchiveBoxTypeItem = class(TLoadableItem, IArchiveBoxTypeItem)
   protected
     function GetSaveSQL: string; override; final;
+    function GetDeleteSQL: string; override; final;
   public
     function GetLoadSQL: string; override; final;
 
@@ -51,6 +52,11 @@ end;
 function TArchiveBoxTypeItem.GetCode: string;
 begin
   Result := FCode;
+end;
+
+function TArchiveBoxTypeItem.GetDeleteSQL: string;
+begin
+  Result := EmptyStr;
 end;
 
 constructor TArchiveBoxTypeItem.Create;

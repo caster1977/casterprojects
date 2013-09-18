@@ -51,7 +51,8 @@ uses
   uIArchiveBoxList in 'uIArchiveBoxList.pas',
   uTArchiveBoxList in 'uTArchiveBoxList.pas',
   uIDocumentArchivingBusinessLogic in 'uIDocumentArchivingBusinessLogic.pas',
-  uTDocumentArchivingBusinessLogic in 'uTDocumentArchivingBusinessLogic.pas';
+  uTDocumentArchivingBusinessLogic in 'uTDocumentArchivingBusinessLogic.pas',
+  uTDocumentArchivingBarcodeType in 'uTDocumentArchivingBarcodeType.pas';
 
 {$R *.res}
 

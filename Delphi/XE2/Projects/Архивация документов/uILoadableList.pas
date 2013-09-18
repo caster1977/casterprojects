@@ -25,11 +25,6 @@ type
     procedure Clear;
 
     /// <summary>
-    /// Процедура удаления указанного элемента списка
-    /// </summary>
-    procedure Delete(const AIndex: Integer);
-
-    /// <summary>
     /// Функция получения порядкового номера указанного элемента списка
     /// </summary>
     function IndexOf(const AItem: ILoadableItem): Integer;
@@ -66,6 +61,20 @@ type
     ///	  <b>Saveable</b> установлено в <b>True</b>
     ///	</remarks>
     function Save(const AConnection: TCustomConnection = nil): Boolean;
+
+    ///	<summary>
+    ///	  Процедура удаления указанного элемента списка
+    ///	</summary>
+    ///	<param name="AIndex">
+    ///	  Индекс элемента списка
+    ///	</param>
+    ///	<param name="AConnection">
+    ///	  Объект подключения к БД
+    ///	</param>
+    ///	<returns>
+    ///	  Удалось ли удалить элемент списка
+    ///	</returns>
+    function Delete(const AIndex: Integer; const AConnection: TCustomConnection = nil): Boolean;
   end;
 
 implementation

@@ -6,8 +6,6 @@ uses
   uICustomBusinessLogic,
   Classes,
   DB,
-  SqlExpr,
-  ADODB,
   uTOnDisplayMessage,
   uTMessageType;
 
