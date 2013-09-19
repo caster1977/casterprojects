@@ -10,23 +10,7 @@ type
   /// ИНтерфейс для доступа к объектам типа БСО
   /// </summary>
   ICustomBSOItem = interface(IArchiveDocumentItem)
-    ['{745F9853-8503-45F4-94B7-DD295579CEC4}']
-    function GetCompanyId: Integer;
-    procedure SetCompanyId(const AValue: Integer);
-
-    /// <summary>
-    /// Идентификатор компании
-    /// </summary>
-    property CompanyId: Integer read GetCompanyId write SetCompanyId;
-
-    function GetCompanyName: string;
-    procedure SetCompanyName(const AValue: string);
-
-    /// <summary>
-    /// Наименование компании
-    /// </summary>
-    property CompanyName: string read GetCompanyName write SetCompanyName;
-
+  ['{745F9853-8503-45F4-94B7-DD295579CEC4}']
     function GetBSOId: Integer;
     procedure SetBSOId(const AValue: Integer);
 
@@ -50,14 +34,6 @@ type
     /// Номер БСО
     /// </summary>
     property Number: string read GetNumber write SetNumber;
-
-    function GetBarcode: string;
-    procedure SetBarcode(const AValue: string);
-
-    /// <summary>
-    /// Штрих-код документа
-    /// </summary>
-    property Barcode: string read GetBarcode write SetBarcode;
   end;
 
 implementation

@@ -20,11 +20,9 @@ type
     property CreationDate: TDateTime read GetCreationDate write SetCreationDate nodefault;
 
   private
-    FBarcode: string;
     function GetBarcode: string;
-    procedure SetBarcode(const AValue: string);
   public
-    property Barcode: string read GetBarcode write SetBarcode nodefault;
+    property Barcode: string read GetBarcode nodefault;
 
   private
     FClosed: Boolean;
@@ -124,9 +122,9 @@ type
     function GetDeleteSQL: string; override; final;
   public
     constructor Create; override; final;
-    constructor Create(const AConnection: TCustomConnection; const AId: Integer); override; final;
     function GetLoadSQL: string; override; final;
     procedure Load(const ADataSet: TDataSet); override; final;
+    function Delete(const AConnection: TCustomConnection = nil): Boolean; override;
   end;
 
 implementation
@@ -140,8 +138,15 @@ uses
   StrUtils;
 
 function TArchiveBoxItem.GetBarcode: string;
+var
+  s: string;
 begin
-  Result := FBarcode;
+  Result := EmptyStr;
+  s := Format('%.2d%.2d%s%.6d', [CompanyId, TypeId, RightStr(IntToStr(Year), 2), Number]);
+  if Length(s) = 12 then
+  begin
+    Result := s;
+  end;
 end;
 
 function TArchiveBoxItem.GetClosed: Boolean;
@@ -167,21 +172,6 @@ end;
 function TArchiveBoxItem.GetCreationDate: TDateTime;
 begin
   Result := FCreationDate;
-end;
-
-function TArchiveBoxItem.GetDocuments: IArchiveDocumentList;
-var
-  item_class: TArchiveDocumentListClass;
-begin
-  if not Assigned(FDocuments) then
-  begin
-    item_class := GetArchiveDocumentListClassByTypeId(TypeId);
-    if Assigned(item_class) then
-    begin
-      FDocuments := item_class.Create(Connection);
-    end;
-  end;
-  Result := FDocuments;
 end;
 
 function TArchiveBoxItem.GetNumber: Integer;
@@ -217,17 +207,6 @@ end;
 function TArchiveBoxItem.GetYear: Integer;
 begin
   Result := FYear;
-end;
-
-procedure TArchiveBoxItem.SetBarcode(const AValue: string);
-var
-  s: string;
-begin
-  s := Trim(AValue);
-  if FBarcode <> s then
-  begin
-    FBarcode := s;
-  end;
 end;
 
 procedure TArchiveBoxItem.SetClosed(const AValue: Boolean);
@@ -386,7 +365,6 @@ begin
   inherited;
   if Assigned(ADataSet) then
   begin
-    Barcode := ADataSet.FieldByName('Barcode').AsString;
     Closed := ADataSet.FieldByName('Closed').AsBoolean;
     ClosureDate := ADataSet.FieldByName('ClosureDate').AsDateTime;
     CompanyId := ADataSet.FieldByName('CompanyId').AsInteger;
@@ -405,7 +383,6 @@ constructor TArchiveBoxItem.Create;
 begin
   inherited;
   Saveable := True;
-  Barcode := EmptyStr;
   Closed := False;
   ClosureDate := 0;
   CompanyId := -1;
@@ -419,15 +396,37 @@ begin
   UserId := -1;
 end;
 
-constructor TArchiveBoxItem.Create(const AConnection: TCustomConnection; const AId: Integer);
+function TArchiveBoxItem.GetDocuments: IArchiveDocumentList;
+var
+  item_class: TArchiveDocumentListClass;
 begin
-  inherited;
-  if Assigned(Connection) then
+  if not Assigned(FDocuments) then
   begin
-    if Assigned(Documents) then
+    item_class := GetArchiveDocumentListClassByTypeId(TypeId);
+    if Assigned(item_class) then
     begin
-      Documents.Load;
+      FDocuments := item_class.Create(Connection);
+      if Assigned(FDocuments) then
+      begin
+        FDocuments.ArchiveBoxId := Id;
+        FDocuments.Load;
+      end;
     end;
+  end;
+  Result := FDocuments;
+end;
+
+function TArchiveBoxItem.Delete(const AConnection: TCustomConnection): Boolean;
+begin
+  // нельзя удалять короб, пока в нём имеются документы
+  Result := False;
+  if Assigned(Documents) then
+  begin
+    Result := Documents.Count = 0;
+  end;
+  if Result then
+  begin
+    Result := inherited Delete(AConnection);
   end;
 end;
 

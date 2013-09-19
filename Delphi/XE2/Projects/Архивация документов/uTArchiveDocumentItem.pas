@@ -8,7 +8,8 @@ uses
   Classes,
   uTLoadableItem,
   uIArchiveDocumentItem,
-  uIShowable;
+  uIShowable,
+  uIArchiveBoxItem;
 
 type
   TArchiveDocumentItem = class abstract(TLoadableItem, IArchiveDocumentItem, IShowable)
@@ -55,6 +56,27 @@ type
     property IssuanceDate: TDateTime read GetIssuanceDate write SetIssuanceDate nodefault;
 
   private
+    FCompanyId: Integer;
+    function GetCompanyId: Integer;
+    procedure SetCompanyId(const AValue: Integer);
+  public
+    property CompanyId: Integer read GetCompanyId write SetCompanyId nodefault;
+
+  private
+    FCompanyName: string;
+    function GetCompanyName: string;
+    procedure SetCompanyName(const AValue: string);
+  public
+    property CompanyName: string read GetCompanyName write SetCompanyName nodefault;
+
+  private
+    FBarcode: string;
+    function GetBarcode: string;
+    procedure SetBarcode(const AValue: string);
+  public
+    property Barcode: string read GetBarcode write SetBarcode nodefault;
+
+  private
     FShowableFields: IInterfaceList;
     function GetShowableFields: IInterfaceList;
   public
@@ -70,7 +92,6 @@ type
     function GetLoadSQL: string; override; final;
     procedure Load(const ADataSet: TDataSet); override;
     constructor Create; override;
-    constructor Create(const AConnection: TCustomConnection; const AId: Integer); override;
   end;
 
 implementation
@@ -82,23 +103,6 @@ uses
   uCommonRoutines,
   uIShowableField,
   uTShowableField;
-
-constructor TArchiveDocumentItem.Create;
-begin
-  inherited;
-  Saveable := True;
-  ArchiveBoxId := -1;
-  ArchivedByUser := -1;
-  ArchivingDate := 0;
-  Issued := False;
-  IssuedToUser := -1;
-  IssuanceDate := 0;
-end;
-
-constructor TArchiveDocumentItem.Create(const AConnection: TCustomConnection; const AId: Integer);
-begin
-  inherited;
-end;
 
 function TArchiveDocumentItem.GetArchiveBoxId: Integer;
 begin
@@ -113,6 +117,21 @@ end;
 function TArchiveDocumentItem.GetArchivingDate: TDateTime;
 begin
   Result := FArchivingDate;
+end;
+
+function TArchiveDocumentItem.GetBarcode: string;
+begin
+  Result := FBarcode;
+end;
+
+function TArchiveDocumentItem.GetCompanyId: Integer;
+begin
+  Result := FCompanyId;
+end;
+
+function TArchiveDocumentItem.GetCompanyName: string;
+begin
+  Result := FCompanyName;
 end;
 
 function TArchiveDocumentItem.GetIssuanceDate: TDateTime;
@@ -151,6 +170,36 @@ begin
   if FArchivingDate <> AValue then
   begin
     FArchivingDate := AValue;
+  end;
+end;
+
+procedure TArchiveDocumentItem.SetBarcode(const AValue: string);
+var
+  s: string;
+begin
+  s := Trim(AValue);
+  if FBarcode <> s then
+  begin
+    FBarcode := s;
+  end;
+end;
+
+procedure TArchiveDocumentItem.SetCompanyId(const AValue: Integer);
+begin
+  if FCompanyId <> AValue then
+  begin
+    FCompanyId := AValue;
+  end;
+end;
+
+procedure TArchiveDocumentItem.SetCompanyName(const AValue: string);
+var
+  s: string;
+begin
+  s := Trim(AValue);
+  if FCompanyName <> s then
+  begin
+    FCompanyName := s;
   end;
 end;
 
@@ -199,6 +248,21 @@ begin
   end;
 end;
 
+constructor TArchiveDocumentItem.Create;
+begin
+  inherited;
+  Saveable := True;
+  ArchiveBoxId := -1;
+  ArchivedByUser := -1;
+  ArchivingDate := 0;
+  Issued := False;
+  IssuedToUser := -1;
+  IssuanceDate := 0;
+  CompanyId := -1;
+  CompanyName := EmptyStr;
+  Barcode := EmptyStr;
+end;
+
 procedure TArchiveDocumentItem.Load(const ADataSet: TDataSet);
 begin
   inherited;
@@ -210,6 +274,9 @@ begin
     Issued := ADataSet.FieldByName('Issued').AsBoolean;
     IssuedToUser := ADataSet.FieldByName('IssuedToUser').AsInteger;
     IssuanceDate := ADataSet.FieldByName('IssuanceDate').AsDateTime;
+    CompanyId := ADataSet.FieldByName('CompanyId').AsInteger;
+    CompanyName := ADataSet.FieldByName('CompanyName').AsString;
+    Barcode := ADataSet.FieldByName('Barcode').AsString;
   end;
 end;
 

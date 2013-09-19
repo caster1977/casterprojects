@@ -20,11 +20,6 @@ type
     property Count: Integer read GetCount;
 
     /// <summary>
-    /// Процедура очистки спика
-    /// </summary>
-    procedure Clear;
-
-    /// <summary>
     /// Функция получения порядкового номера указанного элемента списка
     /// </summary>
     function IndexOf(const AItem: ILoadableItem): Integer;
@@ -75,6 +70,17 @@ type
     ///	  Удалось ли удалить элемент списка
     ///	</returns>
     function Delete(const AIndex: Integer; const AConnection: TCustomConnection = nil): Boolean;
+
+    /// <summary>
+    /// Функция очистки списка
+    /// </summary>
+    ///	<param name="AConnection">
+    ///	  Объект подключения к БД
+    ///	</param>
+    ///	<returns>
+    ///	  Удалось ли выполнить очистку списка
+    ///	</returns>
+    function Clear(const AConnection: TCustomConnection = nil): Boolean;
   end;
 
 implementation

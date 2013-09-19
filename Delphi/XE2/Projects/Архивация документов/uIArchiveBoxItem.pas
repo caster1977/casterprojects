@@ -21,12 +21,11 @@ type
     property CreationDate: TDateTime read GetCreationDate write SetCreationDate;
 
     function GetBarcode: string;
-    procedure SetBarcode(const AValue: string);
 
     /// <summary>
     /// Штрих-код короба
     /// </summary>
-    property Barcode: string read GetBarcode write SetBarcode;
+    property Barcode: string read GetBarcode;
 
     function GetClosed: Boolean;
     procedure SetClosed(const AValue: Boolean);

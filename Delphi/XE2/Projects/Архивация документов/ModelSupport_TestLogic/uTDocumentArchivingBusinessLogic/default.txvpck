@@ -19,9 +19,9 @@
       <reference referencedUin="delphi:e_property:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.CurrentBox" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.SetCurrentBox(uIArchiveBoxItem.IArchiveBoxItem)" />
       <reference referencedUin="delphi:e_field:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.FCurrentBoxInfoControl" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.GetCurrentBoxInfoControl()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.SetCurrentBoxInfoControl(Vcl.Controls.TCustomControl)" />
-      <reference referencedUin="delphi:e_property:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.CurrentBoxInfoControl" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.GetArchiveBoxInfoControl()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.SetArchiveBoxInfoControl(Vcl.Controls.TCustomControl)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.ArchiveBoxInfoControl" />
       <reference referencedUin="delphi:e_field:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.FLastDocumentInfoControl" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.GetLastDocumentInfoControl()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.SetLastDocumentInfoControl(Vcl.Controls.TCustomControl)" />
