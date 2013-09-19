@@ -35,7 +35,6 @@ type
 
   public
     constructor Create; override; final;
-    constructor Create(const AConnection: TCustomConnection; const AId: Integer); override; final;
     procedure Load(const ADataSet: TDataSet); override; final;
   end;
 
@@ -70,11 +69,6 @@ end;
 function TArchiveBoxTypeItem.GetCapacity: Integer;
 begin
   Result := FCapacity;
-end;
-
-constructor TArchiveBoxTypeItem.Create(const AConnection: TCustomConnection; const AId: Integer);
-begin
-  inherited;
 end;
 
 function TArchiveBoxTypeItem.GetLoadSQL: string;

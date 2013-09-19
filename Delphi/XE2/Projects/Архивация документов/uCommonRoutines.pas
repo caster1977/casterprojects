@@ -29,7 +29,7 @@ uses
 /// <param name="AOpen">
 /// Необходимо ли выполнить получение результирующей выборки
 /// </param>
-procedure SetSQLForQuery(const AQuery: TDataSet; const ASQL: string; const AOpen: Boolean = False);
+procedure SetSQLForQuery(const AQuery: TDataSet; const ASQL: string; const AOpen: Boolean);
 
 /// <summary>
 /// Функция получения ссылки на контрол по имени контрола

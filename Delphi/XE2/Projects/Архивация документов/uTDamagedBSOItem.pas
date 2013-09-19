@@ -29,7 +29,6 @@ type
     procedure FillShowableFieldsList; override; final;
   public
     constructor Create; override; final;
-    constructor Create(const AConnection: TCustomConnection; const AId: Integer); override; final;
     procedure Load(const ADataSet: TDataSet); override; final;
   end;
 
@@ -65,11 +64,6 @@ begin
   begin
     FCauseOfDamageName := s;
   end;
-end;
-
-constructor TDamagedBSOItem.Create(const AConnection: TCustomConnection; const AId: Integer);
-begin
-  inherited;
 end;
 
 procedure TDamagedBSOItem.Load(const ADataSet: TDataSet);

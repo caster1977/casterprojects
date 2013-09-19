@@ -38,11 +38,11 @@ type
     procedure Load(const ADataSet: TDataSet); overload; virtual;
     procedure Load(const AConnection: TCustomConnection = nil); overload;
     function Save(const AConnection: TCustomConnection = nil): Boolean;
-    function Delete(const AConnection: TCustomConnection = nil): Boolean;
+    function Delete(const AConnection: TCustomConnection = nil): Boolean; virtual;
 
     constructor Create; reintroduce; overload; virtual;
     constructor Create(const AConnection: TCustomConnection; const AId: Integer);
-      reintroduce; overload; virtual;
+      reintroduce; overload;
   end;
 
 implementation

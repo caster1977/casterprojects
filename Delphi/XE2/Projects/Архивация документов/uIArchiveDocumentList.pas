@@ -12,6 +12,14 @@ type
   /// </summary>
   IArchiveDocumentList = interface(ILoadableList)
     ['{7CE6B5BB-CBB6-4E35-9A29-0BE6DE8FC655}']
+    function GetArchiveBoxId: Integer;
+    procedure SetArchiveBoxId(const AValue: Integer);
+
+    ///	<summary>
+    ///	  Идентификатор архивного короба
+    ///	</summary>
+    property ArchiveBoxId: Integer read GetArchiveBoxId write SetArchiveBoxId;
+
     /// <summary>
     /// Функция получения ссылки на документ с указанным идентификатором
     /// </summary>

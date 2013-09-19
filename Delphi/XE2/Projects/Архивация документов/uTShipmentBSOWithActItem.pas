@@ -15,7 +15,6 @@ type
     procedure FillShowableFieldsList; override; final;
   public
     constructor Create; override; final;
-    constructor Create(const AConnection: TCustomConnection; const AId: Integer); override; final;
     procedure Load(const ADataSet: TDataSet); override; final;
   end;
 
@@ -23,11 +22,6 @@ implementation
 
 uses
   SysUtils;
-
-constructor TShipmentBSOWithActItem.Create(const AConnection: TCustomConnection; const AId: Integer);
-begin
-  inherited;
-end;
 
 procedure TShipmentBSOWithActItem.Load(const ADataSet: TDataSet);
 begin

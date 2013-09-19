@@ -6,7 +6,8 @@ uses
   DB,
   Controls,
   uTCustomBSOItem,
-  uIShipmentBSOItem;
+  uIShipmentBSOItem,
+  uIArchiveBoxItem;
 
 type
   TShipmentBSOItem = class sealed(TCustomBSOItem, IShipmentBSOItem)
@@ -15,7 +16,6 @@ type
     procedure FillShowableFieldsList; override; final;
   public
     constructor Create; override; final;
-    constructor Create(const AConnection: TCustomConnection; const AId: Integer); override; final;
     procedure Load(const ADataSet: TDataSet); override; final;
   end;
 
@@ -23,12 +23,9 @@ implementation
 
 uses
   uCommonRoutines,
-  SysUtils;
-
-constructor TShipmentBSOItem.Create(const AConnection: TCustomConnection; const AId: Integer);
-begin
-  inherited;
-end;
+  SysUtils,
+  DateUtils,
+  uTArchiveBoxItem;
 
 procedure TShipmentBSOItem.Load(const ADataSet: TDataSet);
 begin

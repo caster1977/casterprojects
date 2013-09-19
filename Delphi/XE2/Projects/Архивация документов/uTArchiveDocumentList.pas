@@ -4,11 +4,20 @@ interface
 
 uses
   uTLoadableList,
+  uILoadableItem,
   uIArchiveDocumentList,
   uIArchiveDocumentItem;
 
 type
   TArchiveDocumentList = class abstract(TLoadableList, IArchiveDocumentList)
+  private
+    FArchiveBoxId: Integer;
+    function GetArchiveBoxId: Integer;
+    procedure SetArchiveBoxId(const AValue: Integer);
+  protected
+    procedure BeforeLoad(const AItem: ILoadableItem); override; final;
+  public
+    property ArchiveBoxId: Integer read GetArchiveBoxId write SetArchiveBoxId nodefault;
   private
     function GetItem(const AIndex: Integer): IArchiveDocumentItem;
   public
@@ -17,6 +26,11 @@ type
   end;
 
 implementation
+
+uses
+  uTLoadableItem,
+  uTArchiveDocumentItem,
+  SysUtils;
 
 function TArchiveDocumentList.GetItemById(const AId: Integer): IArchiveDocumentItem;
 var
@@ -39,6 +53,19 @@ begin
   end;
 end;
 
+function TArchiveDocumentList.GetArchiveBoxId: Integer;
+begin
+  Result := FArchiveBoxId;
+end;
+
+procedure TArchiveDocumentList.SetArchiveBoxId(const AValue: Integer);
+begin
+  if FArchiveBoxId <> AValue then
+  begin
+    FArchiveBoxId := AValue;
+  end;
+end;
+
 function TArchiveDocumentList.GetItem(const AIndex: Integer): IArchiveDocumentItem;
 begin
   Result := nil;
@@ -51,6 +78,14 @@ begin
         Result := Items[AIndex] as IArchiveDocumentItem;
       end;
     end;
+  end;
+end;
+
+procedure TArchiveDocumentList.BeforeLoad(const AItem: ILoadableItem);
+begin
+  if Assigned(AItem) then
+  begin
+    (AItem as TArchiveDocumentItem).ArchiveBoxId := ArchiveBoxId;
   end;
 end;
 

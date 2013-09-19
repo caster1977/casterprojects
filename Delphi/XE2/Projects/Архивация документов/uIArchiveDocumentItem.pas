@@ -61,6 +61,29 @@ type
     /// </summary>
     property IssuanceDate: TDateTime read GetIssuanceDate write SetIssuanceDate;
 
+    function GetCompanyId: Integer;
+    procedure SetCompanyId(const AValue: Integer);
+
+    /// <summary>
+    /// Идентификатор компании
+    /// </summary>
+    property CompanyId: Integer read GetCompanyId write SetCompanyId;
+
+    function GetCompanyName: string;
+    procedure SetCompanyName(const AValue: string);
+
+    /// <summary>
+    /// Наименование компании
+    /// </summary>
+    property CompanyName: string read GetCompanyName write SetCompanyName;
+
+    function GetBarcode: string;
+    procedure SetBarcode(const AValue: string);
+
+    /// <summary>
+    /// Штрих-код документа
+    /// </summary>
+    property Barcode: string read GetBarcode write SetBarcode;
 
     ///	<summary>
     ///	  Функция инициализации полей объекта значениями, содержащимися в
@@ -76,8 +99,6 @@ type
     ///	  Работает по принципу парсера
     ///	</remarks>
     function FromString(const AValue: string): Boolean;
-
-    function CreateArchiveBoxByDocument: IArchiveBoxItem;
   end;
 
 implementation

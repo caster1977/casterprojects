@@ -155,7 +155,7 @@ function TTestLogicMainForm.GetLogic: IDocumentArchivingBusinessLogic;
 begin
   if not Assigned(FLogic) then
   begin
-    FLogic := TDocumentArchivingBusinessLogic.Create(ADOConnection, -1, 5, DisplayMessage);
+    FLogic := TDocumentArchivingBusinessLogic.Create(ADOConnection, 222, 1, DisplayMessage);
     Logic.CurrentBoxInfoControl := gbCurrentBox;
     Logic.LastDocumentInfoControl := gbLastDocument;
   end;
@@ -175,6 +175,10 @@ end;
 
 procedure TTestLogicMainForm.actCloseExecute(Sender: TObject);
 begin
+  if Assigned(Logic) then
+  begin
+    Logic.PutCurrentBoxAside;
+  end;
   Close;
 end;
 
@@ -238,7 +242,13 @@ begin
   b := False;
   if Assigned(Logic) then
   begin
-    b := Assigned(Logic.CurrentBox);
+    if Assigned(Logic.CurrentBox) then
+    begin
+      if Assigned(Logic.CurrentBox.Documents) then
+      begin
+        b := Logic.CurrentBox.Documents.Count > 0;
+      end;
+    end;
   end;
   (Sender as TAction).Enabled := b;
 end;
@@ -247,7 +257,7 @@ procedure TTestLogicMainForm.actTestCurrentBoxIsFullExecute(Sender: TObject);
 begin
   Logic.Connection.Connected := True;
   try
-    Logic.CurrentBoxIsFull;
+    Logic.ArchiveBoxIsFull;
   finally
     Logic.Connection.Connected := False;
   end;
@@ -289,7 +299,12 @@ end;
 
 procedure TTestLogicMainForm.actTestDeleteLastDocumentExecute(Sender: TObject);
 begin
-  Logic.CurrentBox.Documents.Delete(Logic.CurrentBox.Documents.Count - 1);
+  Logic.Connection.Connected := True;
+  try
+    Logic.DeleteLastDocument;
+  finally
+    Logic.Connection.Connected := False;
+  end;
 end;
 
 procedure TTestLogicMainForm.actTestDeleteLastDocumentUpdate(Sender: TObject);

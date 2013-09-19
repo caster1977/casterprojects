@@ -9,7 +9,8 @@ uses
   uIShowable,
   uIArchiveDocumentItem,
   uICustomBSOItem,
-  uTDocumentArchivingBarcodeType;
+  uTDocumentArchivingBarcodeType,
+  uIArchiveDocumentList;
 
 type
   /// <summary>
@@ -17,7 +18,6 @@ type
   /// </summary>
   IDocumentArchivingBusinessLogic = interface(ICustomBusinessLogic)
     ['{B4D4317B-5679-4A31-9F53-F31CFFD99A6F}']
-
     function GetCurrentBox: IArchiveBoxItem;
     procedure SetCurrentBox(const AValue: IArchiveBoxItem);
 
@@ -93,9 +93,14 @@ type
     function DeleteCurrentBox: Boolean;
 
     /// <summary>
+    /// Функция удаления полседнего документа из текущего короба
+    /// </summary>
+    function DeleteLastDocument: Boolean;
+
+    /// <summary>
     /// Функция определения "заполненности" текущего короба
     /// </summary>
-    function CurrentBoxIsFull: Boolean;
+    function ArchiveBoxIsFull: Boolean;
 
     /// <summary>
     /// Отметка указанного документа в реестре приёмки с ЛП

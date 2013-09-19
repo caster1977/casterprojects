@@ -37,14 +37,14 @@ type
     property ItemClass: TLoadableItemClass read GetItemClass write SetItemClass nodefault;
 
   protected
-    function GetLoadSQL: string;
+    procedure BeforeLoad(const AItem: ILoadableItem); virtual;
   public
     constructor Create(const AConnection: TCustomConnection = nil); reintroduce; virtual;
     function Add: Integer; overload;
     function Add(const AItem: ILoadableItem): Integer; overload;
     procedure Load(const AConnection: TCustomConnection = nil);
     function Save(const AConnection: TCustomConnection = nil): Boolean;
-    procedure Clear;
+    function Clear(const AConnection: TCustomConnection = nil): Boolean;
     function Delete(const AIndex: Integer; const AConnection: TCustomConnection = nil): Boolean;
     function IndexOf(const AItem: ILoadableItem): Integer;
   end;
@@ -69,14 +69,6 @@ begin
   if AItem is ItemClass then
   begin
     Result := Items.Add(AItem);
-  end;
-end;
-
-procedure TLoadableList.Clear;
-begin
-  if Assigned(FItems) then
-  begin
-    FItems.Clear;
   end;
 end;
 
@@ -130,19 +122,6 @@ begin
   end;
 end;
 
-function TLoadableList.GetLoadSQL: string;
-var
-  ic: TLoadableItem;
-begin
-  Result := EmptyStr;
-  ic := ItemClass.Create(Connection, -1);
-  try
-    Result := ic.GetLoadSQL;
-  finally
-    FreeAndNil(ic);
-  end;
-end;
-
 function TLoadableList.IndexOf(const AItem: ILoadableItem): Integer;
 begin
   Result := -1;
@@ -152,10 +131,15 @@ begin
   end;
 end;
 
+procedure TLoadableList.BeforeLoad(const AItem: ILoadableItem);
+begin
+end;
+
 procedure TLoadableList.Load(const AConnection: TCustomConnection);
 var
   ds: TDataSet;
   ic: TLoadableItem;
+  s: string;
 begin
   if Assigned(AConnection) then
   begin
@@ -163,11 +147,19 @@ begin
   end;
   if Assigned(Connection) then
   begin
-    ds := GetQuery(AConnection);
+    ds := GetQuery(Connection);
     if Assigned(ds) then
     begin
       try
-        SetSQLForQuery(ds, GetLoadSQL, True);
+        s := EmptyStr;
+        ic := ItemClass.Create(Connection, -1);
+        try
+          BeforeLoad(ic);
+          s := ic.GetLoadSQL;
+        finally
+          FreeAndNil(ic);
+        end;
+        SetSQLForQuery(ds, s, True);
         try
           Items.Clear;
           while not ds.Eof do
@@ -210,10 +202,29 @@ begin
 end;
 
 function TLoadableList.Delete(const AIndex: Integer; const AConnection: TCustomConnection): Boolean;
+begin
+  Result := False;
+  if Assigned(FItems) then
+  begin
+    if Assigned(AConnection) then
+    begin
+      Connection := AConnection;
+    end;
+    if Assigned(Connection) then
+    begin
+      Result := (Items[AIndex] as ItemClass).Delete(Connection);
+      if Result then
+      begin
+        FItems.Delete(AIndex);
+      end;
+    end;
+  end;
+end;
+
+function TLoadableList.Clear(const AConnection: TCustomConnection = nil): Boolean;
 var
   i: Integer;
 begin
-  Result := False;
   if Assigned(FItems) then
   begin
     if Assigned(AConnection) then
@@ -227,7 +238,7 @@ begin
         Result := (Items[i] as ItemClass).Delete(Connection);
         if Result then
         begin
-          FItems.Delete(AIndex);
+          FItems.Delete(i);
         end
         else
         begin
