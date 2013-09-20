@@ -204,18 +204,21 @@ end;
 function TLoadableList.Delete(const AIndex: Integer; const AConnection: TCustomConnection): Boolean;
 begin
   Result := False;
-  if Assigned(FItems) then
+  if AIndex > -1 then
   begin
-    if Assigned(AConnection) then
+    if Assigned(FItems) then
     begin
-      Connection := AConnection;
-    end;
-    if Assigned(Connection) then
-    begin
-      Result := (Items[AIndex] as ItemClass).Delete(Connection);
-      if Result then
+      if Assigned(AConnection) then
       begin
-        FItems.Delete(AIndex);
+        Connection := AConnection;
+      end;
+      if Assigned(Connection) then
+      begin
+        Result := (Items[AIndex] as ItemClass).Delete(Connection);
+        if Result then
+        begin
+          FItems.Delete(AIndex);
+        end;
       end;
     end;
   end;

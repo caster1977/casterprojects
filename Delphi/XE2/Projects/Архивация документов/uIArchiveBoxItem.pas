@@ -43,6 +43,22 @@ type
     /// </summary>
     property ClosureDate: TDateTime read GetClosureDate write SetClosureDate;
 
+    function GetArchived: Boolean;
+    procedure SetArchived(const AValue: Boolean);
+
+    /// <summary>
+    /// Принят ли короб в архив
+    /// </summary>
+    property Archived: Boolean read GetArchived write SetArchived;
+
+    function GetArchivingDate: TDateTime;
+    procedure SetArchivingDate(const AValue: TDateTime);
+
+    /// <summary>
+    /// Дата и время приёмки короба в архив
+    /// </summary>
+    property ArchivingDate: TDateTime read GetArchivingDate write SetArchivingDate;
+
     function GetCompanyId: Integer;
     procedure SetCompanyId(const AValue: Integer);
 

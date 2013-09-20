@@ -30,7 +30,12 @@ type
     /// <summary>
     /// Ўтрих-код команды откладывани€ текущего короба
     /// </summary>
-    dabtPutBoxAsideCommand);
+    dabtPutBoxAsideCommand,
+
+    /// <summary>
+    /// Ўтрих-код команды передачи последнего документа
+    /// </summary>
+    dabtGiveDocumentAway);
 
 implementation
 

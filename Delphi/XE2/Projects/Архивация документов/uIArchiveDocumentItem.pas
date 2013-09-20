@@ -85,20 +85,28 @@ type
     /// </summary>
     property Barcode: string read GetBarcode write SetBarcode;
 
-    ///	<summary>
-    ///	  Функция инициализации полей объекта значениями, содержащимися в
-    ///	  входящей строке
-    ///	</summary>
-    ///	<param name="AValue">
-    ///	  Строка, содержащая значения для инициализации полей объекта
-    ///	</param>
-    ///	<returns>
-    ///	  Удалось ли выполнить инициализацию
-    ///	</returns>
-    ///	<remarks>
-    ///	  Работает по принципу парсера
-    ///	</remarks>
+    /// <summary>
+    /// Функция инициализации полей объекта значениями, содержащимися в
+    /// входящей строке
+    /// </summary>
+    /// <param name="AValue">
+    /// Строка, содержащая значения для инициализации полей объекта
+    /// </param>
+    /// <returns>
+    /// Удалось ли выполнить инициализацию
+    /// </returns>
+    /// <remarks>
+    /// Работает по принципу парсера
+    /// </remarks>
     function FromString(const AValue: string): Boolean;
+
+    function GetSequenceNumber: Integer;
+    procedure SetSequenceNumber(const AValue: Integer);
+
+    /// <summary>
+    /// Порядковый номер в архивном коробе
+    /// </summary>
+    property SequenceNumber: Integer read GetSequenceNumber write SetSequenceNumber;
   end;
 
 implementation

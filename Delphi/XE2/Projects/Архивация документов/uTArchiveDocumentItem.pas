@@ -77,6 +77,13 @@ type
     property Barcode: string read GetBarcode write SetBarcode nodefault;
 
   private
+    FSequenceNumber: Integer;
+    function GetSequenceNumber: Integer;
+    procedure SetSequenceNumber(const AValue: Integer);
+  public
+    property SequenceNumber: Integer read GetSequenceNumber write SetSequenceNumber;
+
+  private
     FShowableFields: IInterfaceList;
     function GetShowableFields: IInterfaceList;
   public
@@ -227,6 +234,19 @@ begin
   end;
 end;
 
+function TArchiveDocumentItem.GetSequenceNumber: Integer;
+begin
+  Result := FSequenceNumber;
+end;
+
+procedure TArchiveDocumentItem.SetSequenceNumber(const AValue: Integer);
+begin
+  if FSequenceNumber <> AValue then
+  begin
+    FSequenceNumber := AValue;
+  end;
+end;
+
 function TArchiveDocumentItem.GetShowableFields: IInterfaceList;
 begin
   FShowableFields := TInterfaceList.Create;
@@ -261,6 +281,7 @@ begin
   CompanyId := -1;
   CompanyName := EmptyStr;
   Barcode := EmptyStr;
+  SequenceNumber := -1;
 end;
 
 procedure TArchiveDocumentItem.Load(const ADataSet: TDataSet);
@@ -277,6 +298,7 @@ begin
     CompanyId := ADataSet.FieldByName('CompanyId').AsInteger;
     CompanyName := ADataSet.FieldByName('CompanyName').AsString;
     Barcode := ADataSet.FieldByName('Barcode').AsString;
+    SequenceNumber := ADataSet.FieldByName('SequenceNumber').AsInteger;
   end;
 end;
 

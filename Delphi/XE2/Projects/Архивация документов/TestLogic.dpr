@@ -52,7 +52,8 @@ uses
   uTArchiveBoxList in 'uTArchiveBoxList.pas',
   uIDocumentArchivingBusinessLogic in 'uIDocumentArchivingBusinessLogic.pas',
   uTDocumentArchivingBusinessLogic in 'uTDocumentArchivingBusinessLogic.pas',
-  uTDocumentArchivingBarcodeType in 'uTDocumentArchivingBarcodeType.pas';
+  uTDocumentArchivingBarcodeType in 'uTDocumentArchivingBarcodeType.pas',
+  uTReportDataModule in 'uTReportDataModule.pas' {ReportDataModule: TDataModule};
 
 {$R *.res}
 

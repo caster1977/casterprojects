@@ -39,6 +39,20 @@ type
     property ClosureDate: TDateTime read GetClosureDate write SetClosureDate nodefault;
 
   private
+    FArchived: Boolean;
+    function GetArchived: Boolean;
+    procedure SetArchived(const AValue: Boolean);
+  public
+    property Archived: Boolean read GetArchived write SetArchived;
+
+  private
+    FArchivingDate: TDateTime;
+    function GetArchivingDate: TDateTime;
+    procedure SetArchivingDate(const AValue: TDateTime);
+  public
+    property ArchivingDate: TDateTime read GetArchivingDate write SetArchivingDate;
+
+  private
     FCompanyId: Integer;
     function GetCompanyId: Integer;
     procedure SetCompanyId(const AValue: Integer);
@@ -137,6 +151,16 @@ uses
   uTShowableField,
   StrUtils;
 
+function TArchiveBoxItem.GetArchived: Boolean;
+begin
+  Result := FArchived;
+end;
+
+function TArchiveBoxItem.GetArchivingDate: TDateTime;
+begin
+  Result := FArchivingDate;
+end;
+
 function TArchiveBoxItem.GetBarcode: string;
 var
   s: string;
@@ -207,6 +231,22 @@ end;
 function TArchiveBoxItem.GetYear: Integer;
 begin
   Result := FYear;
+end;
+
+procedure TArchiveBoxItem.SetArchived(const AValue: Boolean);
+begin
+  if FArchived <> AValue then
+  begin
+    FArchived := AValue;
+  end;
+end;
+
+procedure TArchiveBoxItem.SetArchivingDate(const AValue: TDateTime);
+begin
+  if FArchivingDate <> AValue then
+  begin
+    FArchivingDate := AValue;
+  end;
 end;
 
 procedure TArchiveBoxItem.SetClosed(const AValue: Boolean);
@@ -339,6 +379,10 @@ begin
   AddShowableField('Год:', 'Year', IfThen(Year <> -1, IntToStr(Year)));
   AddShowableField('Номер:', 'Number', IfThen(Number <> -1, IntToStr(Number)));
   AddShowableField('Штрих-код:', 'Barcode', Barcode);
+  if Assigned(Documents) then
+  begin
+    AddShowableField('Количество документов:', 'DocumentsCount', IntToStr(Documents.Count));
+  end;
 end;
 
 function TArchiveBoxItem.GetLoadSQL: string;
@@ -367,6 +411,8 @@ begin
   begin
     Closed := ADataSet.FieldByName('Closed').AsBoolean;
     ClosureDate := ADataSet.FieldByName('ClosureDate').AsDateTime;
+    Archived := ADataSet.FieldByName('Archived').AsBoolean;
+    ArchivingDate := ADataSet.FieldByName('ArchivingDate').AsDateTime;
     CompanyId := ADataSet.FieldByName('CompanyId').AsInteger;
     CompanyName := ADataSet.FieldByName('CompanyName').AsString;
     Number := ADataSet.FieldByName('Number').AsInteger;
@@ -385,6 +431,8 @@ begin
   Saveable := True;
   Closed := False;
   ClosureDate := 0;
+  Archived := False;
+  ArchivingDate := -1;
   CompanyId := -1;
   CompanyName := EmptyStr;
   Number := -1;

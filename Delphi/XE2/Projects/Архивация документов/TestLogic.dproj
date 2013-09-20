@@ -70,6 +70,8 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -136,6 +138,11 @@
         <DCCReference Include="uIDocumentArchivingBusinessLogic.pas"/>
         <DCCReference Include="uTDocumentArchivingBusinessLogic.pas"/>
         <DCCReference Include="uTDocumentArchivingBarcodeType.pas"/>
+        <DCCReference Include="uTReportDataModule.pas">
+            <Form>ReportDataModule</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <None Include="ModelSupport_TestLogic\default.txaPackage"/>
         <None Include="ModelSupport_TestLogic\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uILoadableItem\default.txvpck"/>
@@ -297,6 +304,10 @@
                 <Source>
                     <Source Name="MainSource">TestLogic.dpr</Source>
                 </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k180.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp180.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment/>
             <Platforms>
