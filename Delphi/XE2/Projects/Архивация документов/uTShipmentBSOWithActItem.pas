@@ -30,8 +30,8 @@ end;
 
 function TShipmentBSOWithActItem.GetSaveSQL: string;
 begin
-  Result := Format('BSOArchiving_upd_ShipmentBSOWithAct %d, %d, %d, ''%s'', %d, %d, ''%s'', %d',
-    [Id, ArchiveBoxId, ArchivedByUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate), Integer(Issued),
+  Result := Format('BSOArchiving_upd_ShipmentBSOWithAct %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d',
+    [Id, ArchiveBoxId, SequenceNumber, ArchivedByUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate), Integer(Issued),
     IssuedToUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', IssuanceDate), BSOId]);
 end;
 

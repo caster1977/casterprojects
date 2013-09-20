@@ -16,8 +16,7 @@ uses
   uIArchiveDocumentList;
 
 type
-  TDocumentArchivingBusinessLogic = class sealed(TCustomBusinessLogic,
-    IDocumentArchivingBusinessLogic)
+  TDocumentArchivingBusinessLogic = class sealed(TCustomBusinessLogic, IDocumentArchivingBusinessLogic)
   private
     FCurrentBox: IArchiveBoxItem;
     function GetCurrentBox: IArchiveBoxItem;
@@ -32,6 +31,7 @@ type
   public
     property CurrentBoxInfoControl: TCustomControl read GetCurrentBoxInfoControl
       write SetCurrentBoxInfoControl nodefault;
+
   private
     FLastDocumentInfoControl: TCustomControl;
     function GetLastDocumentInfoControl: TCustomControl;
@@ -52,6 +52,21 @@ type
   public
     property ArchiveBoxTypeId: Integer read GetArchiveBoxTypeId nodefault;
 
+  public
+    procedure ShowCurrentBoxInfo;
+    procedure ShowLastDocumentInfo;
+    function PrintCurrentBoxSticker: Boolean;
+    function PutCurrentBoxAside: Boolean;
+    function GiveLastDocumentAway: Boolean;
+    function CloseCurrentBox: Boolean;
+    function DeleteCurrentBox: Boolean;
+    function DeleteLastDocument: Boolean;
+    function ArchiveBoxIsFull: Boolean;
+    procedure AcceptBSOByAcceptanceRegister(const ABSO: ICustomBSOItem);
+    procedure ProcessBarcode(const ABarcode: string);
+    constructor Create(const AConnection: TCustomConnection; const ACurrentUserId, AArchiveBoxTypeId: Integer;
+      const AOnDisplayMessage: TOnDisplayMessage = nil); reintroduce; virtual;
+    destructor Destroy; override;
   private
     /// <summary>
     /// Функция определения вместимости указанного типа короба
@@ -118,37 +133,19 @@ type
     function PrintBoxSticker(const ABox: IArchiveBoxItem): Boolean;
     function BoxIsFull(const ABox: IArchiveBoxItem): Boolean;
     function GetDocumentsCount(const ABox: IArchiveBoxItem): Integer;
-
     function AnalizeBarcode(const ABarcode: string): TDocumentArchivingBarcodeType;
-
     function IsArchiveBoxBarcode(const ABarcode: string): Boolean;
     function IsBSOBarcode(const ABarcode: string): Boolean;
     function IsForceNewBoxCommandBarcode(const ABarcode: string): Boolean;
     function IsPutBoxAsideCommandBarcode(const ABarcode: string): Boolean;
-  public
-    procedure ShowCurrentBoxInfo;
-    procedure ShowLastDocumentInfo;
-    function PrintCurrentBoxSticker: Boolean;
-    function PutCurrentBoxAside: Boolean;
-    function CloseCurrentBox: Boolean;
-    function DeleteCurrentBox: Boolean;
-    function DeleteLastDocument: Boolean;
-    function ArchiveBoxIsFull: Boolean;
-    procedure AcceptBSOByAcceptanceRegister(const ABSO: ICustomBSOItem);
-    procedure ProcessBarcode(const ABarcode: string);
-  public
-    constructor Create(const AConnection: TCustomConnection;
-      const ACurrentUserId, AArchiveBoxTypeId: Integer;
-      const AOnDisplayMessage: TOnDisplayMessage = nil); reintroduce; virtual;
-    destructor Destroy; override;
-  private
+    function IsGiveLastDocumentAwayBarcode(const ABarcode: string): Boolean;
     function CreateDocumentItemByBarcode(const ABarcode: string): IArchiveDocumentItem;
     function CreateArchiveBoxByDocument(const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
     function AddDocumentToCurrentBox(const ADocument: IArchiveDocumentItem): Boolean;
     function GetNewArchiveBoxNumber(const ATypeId, ACompanyId, AYear: Integer): Integer;
-    function AddDocumentToOldestOpenedArchiveBox(const ADocument: IArchiveDocumentItem)
-      : IArchiveBoxItem;
+    function AddDocumentToOldestOpenedArchiveBox(const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
     function ReleaseBox(const AArchiveBoxItem: IArchiveBoxItem): Boolean;
+    function AutoPrintCurrentBoxSticker: Boolean;
   end;
 
 implementation
@@ -162,7 +159,10 @@ uses
   uTArchiveBoxItem,
   SysUtils,
   StdCtrls,
-  uIShowableField;
+  uIShowableField,
+  uTReportDataModule,
+  uIArchiveCompanyItem,
+  uTArchiveCompanyItem;
 
 function TDocumentArchivingBusinessLogic.GetBoxCapacity(const AType: Integer): Integer;
 var
@@ -258,8 +258,7 @@ begin
   end;
 end;
 
-procedure TDocumentArchivingBusinessLogic.Show(const AParentControl: TCustomControl;
-  const AShowableItem: IShowable);
+procedure TDocumentArchivingBusinessLogic.Show(const AParentControl: TCustomControl; const AShowableItem: IShowable);
 var
   l1, l2: TLabel;
   j: Integer;
@@ -279,8 +278,8 @@ begin
   begin
     for j := 0 to AShowableItem.ShowableFields.Count - 1 do
     begin
-      c := GetControlByName('lblDocument' + IShowableField(AShowableItem.ShowableFields[j]).Name +
-        'Caption', AParentControl);
+      c := GetControlByName('lblDocument' + IShowableField(AShowableItem.ShowableFields[j]).Name + 'Caption',
+        AParentControl);
       if Assigned(c) then
       begin
         l1 := c as TLabel;
@@ -291,18 +290,17 @@ begin
       end;
       if j = 0 then
       begin
-        AParentControl.Height := Integer(AParentControl is TGroupBox) * 10 + l1.Margins.Top +
-          l1.Margins.Bottom + AShowableItem.ShowableFields.Count * (17 + l1.Margins.Top);;
+        AParentControl.Height := Integer(AParentControl is TGroupBox) * 10 + l1.Margins.Top + l1.Margins.Bottom +
+          AShowableItem.ShowableFields.Count * (17 + l1.Margins.Top);;
       end;
       l1.Name := 'lblDocument' + IShowableField(AShowableItem.ShowableFields[j]).Name + 'Caption';
       l1.Parent := AParentControl;
       l1.Caption := IShowableField(AShowableItem.ShowableFields[j]).Caption;
       l1.Left := 8;
-      l1.Top := Integer(AParentControl is TGroupBox) * 10 + AParentControl.Margins.Top +
-        AParentControl.Margins.Top + j * (17 + AParentControl.Margins.Top);
+      l1.Top := Integer(AParentControl is TGroupBox) * 10 + AParentControl.Margins.Top + AParentControl.Margins.Top + j
+        * (17 + AParentControl.Margins.Top);
 
-      c := GetControlByName('lblDocument' + IShowableField(AShowableItem.ShowableFields[j]).Name,
-        AParentControl);
+      c := GetControlByName('lblDocument' + IShowableField(AShowableItem.ShowableFields[j]).Name, AParentControl);
       if Assigned(c) then
       begin
         l2 := c as TLabel;
@@ -313,8 +311,8 @@ begin
       end;
       if j = 0 then
       begin
-        AParentControl.Height := Integer(AParentControl is TGroupBox) * 10 + l2.Margins.Top +
-          l2.Margins.Bottom + AShowableItem.ShowableFields.Count * (17 + l2.Margins.Top);
+        AParentControl.Height := Integer(AParentControl is TGroupBox) * 10 + l2.Margins.Top + l2.Margins.Bottom +
+          AShowableItem.ShowableFields.Count * (17 + l2.Margins.Top);
         wc := AParentControl.Parent;
         while Assigned(wc) do
         begin
@@ -326,8 +324,8 @@ begin
       l2.Caption := IShowableField(AShowableItem.ShowableFields[j]).Value;
       l2.Parent := AParentControl;
       l2.Left := AParentControl.ClientWidth div 2 + 8;
-      l2.Top := Integer(AParentControl is TGroupBox) * 10 + AParentControl.Margins.Top +
-        AParentControl.Margins.Top + j * (17 + AParentControl.Margins.Top);
+      l2.Top := Integer(AParentControl is TGroupBox) * 10 + AParentControl.Margins.Top + AParentControl.Margins.Top + j
+        * (17 + AParentControl.Margins.Top);
     end;
   end;
 end;
@@ -368,14 +366,20 @@ begin
   Result := False;
   if Assigned(ABox) then
   begin
-    Result := PutBoxAside(ABox);
-    if Result then
+    if Assigned(ABox.Documents) then
     begin
-      // закрываем короб
-      if not ABox.Closed then
+      if ABox.Documents.Count > 0 then
       begin
-        ABox.ClosureDate := Now;
-        ABox.Closed := True;
+        Result := PutBoxAside(ABox);
+        if Result then
+        begin
+          // закрываем короб
+          if not ABox.Closed then
+          begin
+            ABox.ClosureDate := Now;
+            ABox.Closed := True;
+          end;
+        end;
       end;
     end;
   end;
@@ -415,12 +419,21 @@ begin
 end;
 
 function TDocumentArchivingBusinessLogic.PrintBoxSticker(const ABox: IArchiveBoxItem): Boolean;
+var
+  ac: IArchiveCompanyItem;
+  abt: IArchiveBoxTypeItem;
 begin
   Result := False;
   if Assigned(ABox) then
   begin
-    ABox.StickerPrinted := True;
-    Result := True;
+    ac := TArchiveCompanyItem.Create(Connection, ABox.CompanyId);
+    abt := TArchiveBoxTypeItem.Create(Connection, ABox.TypeId);
+    Result := PrintSticker(ABox.CompanyName, abt.Code, ac.Code, IntToStr(ABox.Year), Format('%.6d', [ABox.Number]),
+      ABox.Barcode, True);
+    if Result then
+    begin
+      ABox.StickerPrinted := True;
+    end;
   end;
 end;
 
@@ -433,18 +446,18 @@ begin
     if Result then
     begin
       // записываем данные в базу
-      Result := CurrentBox.Save;
+      Result := CurrentBox.Save(Connection);
       if Result then
       begin
-        CurrentBox.Load;
+        CurrentBox.Load(Connection);
         ShowCurrentBoxInfo;
         DisplaySuccessMessage('Стикер на текущий короб распечатан');
-      end
-      else
-      begin
-        DisplayErrorMessage('Не удалось распечатать стикер на текущий короб');
       end;
     end;
+  end;
+  if not Result then
+  begin
+    DisplayErrorMessage('Не удалось распечатать стикер на текущий короб');
   end;
 end;
 
@@ -493,8 +506,7 @@ begin
   end;
 end;
 
-function TDocumentArchivingBusinessLogic.ReleaseBox(const AArchiveBoxItem: IArchiveBoxItem)
-  : Boolean;
+function TDocumentArchivingBusinessLogic.ReleaseBox(const AArchiveBoxItem: IArchiveBoxItem): Boolean;
 begin
   Result := False;
   if Assigned(AArchiveBoxItem) then
@@ -552,8 +564,7 @@ begin
   end;
 end;
 
-function TDocumentArchivingBusinessLogic.AnalizeBarcode(const ABarcode: string)
-  : TDocumentArchivingBarcodeType;
+function TDocumentArchivingBusinessLogic.AnalizeBarcode(const ABarcode: string): TDocumentArchivingBarcodeType;
 var
   s: string;
 begin
@@ -583,7 +594,14 @@ begin
         end
         else
         begin
-          Result := dabtUnknown;
+          if IsGiveLastDocumentAwayBarcode(s) then
+          begin
+            Result := dabtGiveDocumentAway;
+          end
+          else
+          begin
+            Result := dabtUnknown;
+          end;
         end;
       end;
     end;
@@ -600,20 +618,22 @@ begin
   Result := Length(Trim(ABarcode)) >= 14;
 end;
 
-function TDocumentArchivingBusinessLogic.IsForceNewBoxCommandBarcode
-  (const ABarcode: string): Boolean;
+function TDocumentArchivingBusinessLogic.IsForceNewBoxCommandBarcode(const ABarcode: string): Boolean;
 begin
   Result := Trim(ABarcode) = '010001';
 end;
 
-function TDocumentArchivingBusinessLogic.IsPutBoxAsideCommandBarcode
-  (const ABarcode: string): Boolean;
+function TDocumentArchivingBusinessLogic.IsPutBoxAsideCommandBarcode(const ABarcode: string): Boolean;
 begin
   Result := Trim(ABarcode) = '010002';
 end;
 
-function TDocumentArchivingBusinessLogic.GetOpenedBoxQuantity(const ADocument
-  : IArchiveDocumentItem): Integer;
+function TDocumentArchivingBusinessLogic.IsGiveLastDocumentAwayBarcode(const ABarcode: string): Boolean;
+begin
+  Result := Trim(ABarcode) = '010003';
+end;
+
+function TDocumentArchivingBusinessLogic.GetOpenedBoxQuantity(const ADocument: IArchiveDocumentItem): Integer;
 var
   box: IArchiveBoxItem;
 begin
@@ -634,14 +654,12 @@ begin
   end;
 end;
 
-function TDocumentArchivingBusinessLogic.GetOpenedBoxQuantity(const ATypeId,
-  ACompanyId: Integer): Integer;
+function TDocumentArchivingBusinessLogic.GetOpenedBoxQuantity(const ATypeId, ACompanyId: Integer): Integer;
 begin
   Result := -1;
   if (ATypeId > -1) and (ACompanyId > -1) then
   begin
-    SetSQLForQuery(Query, Format('BSOArchiving_sel_OpenedArchiveBoxCount %d, %d',
-      [ATypeId, ACompanyId]), True);
+    SetSQLForQuery(Query, Format('BSOArchiving_sel_OpenedArchiveBoxCount %d, %d', [ATypeId, ACompanyId]), True);
     try
       if not Query.Eof then
       begin
@@ -658,8 +676,7 @@ begin
   Result := FArchiveBoxTypeId;
 end;
 
-function TDocumentArchivingBusinessLogic.CreateDocumentItemByBarcode(const ABarcode: string)
-  : IArchiveDocumentItem;
+function TDocumentArchivingBusinessLogic.CreateDocumentItemByBarcode(const ABarcode: string): IArchiveDocumentItem;
 var
   item: TArchiveDocumentItemClass;
 begin
@@ -727,6 +744,7 @@ begin
               DisplayErrorMessage('Не удалось добавить документ в текущий архивный короб');
             end;
           end;
+          AutoPrintCurrentBoxSticker;
         end;
       end;
     dabtArchiveBox:
@@ -741,17 +759,20 @@ begin
         DisplaySuccessMessage('Введён штрих-код команды откладывания короба');
         PutCurrentBoxAside;
       end;
+    dabtGiveDocumentAway:
+      begin
+        DisplaySuccessMessage('Введён штрих-код команды передачи последнего документа');
+        GiveLastDocumentAway;
+      end;
   end;
   ShowCurrentBoxInfo;
   ShowLastDocumentInfo;
 end;
 
-function TDocumentArchivingBusinessLogic.GetNewArchiveBoxNumber(const ATypeId, ACompanyId,
-  AYear: Integer): Integer;
+function TDocumentArchivingBusinessLogic.GetNewArchiveBoxNumber(const ATypeId, ACompanyId, AYear: Integer): Integer;
 begin
   Result := -1;
-  SetSQLForQuery(Query, Format('BSOArchiving_GetNewArchiveBoxNimber %d, %d, %d',
-    [ATypeId, ACompanyId, AYear]), True);
+  SetSQLForQuery(Query, Format('BSOArchiving_GetNewArchiveBoxNumber %d, %d, %d', [ATypeId, ACompanyId, AYear]), True);
   try
     if not Query.Eof then
     begin
@@ -789,8 +810,7 @@ var
 begin
   box_capacity := GetBoxCapacity(ABox);
   box_documents_count := GetDocumentsCount(ABox);
-  Result := ((box_capacity > -1) and (box_documents_count > -1)) and
-    (box_documents_count >= box_capacity);
+  Result := ((box_capacity > -1) and (box_documents_count > -1)) and (box_documents_count >= box_capacity);
 end;
 
 function TDocumentArchivingBusinessLogic.ArchiveBoxIsFull: Boolean;
@@ -803,6 +823,21 @@ begin
   else
   begin
     DisplayErrorMessage('Текущий короб не заполнен');
+  end;
+end;
+
+function TDocumentArchivingBusinessLogic.AutoPrintCurrentBoxSticker: Boolean;
+begin
+  Result := False;
+  if Assigned(CurrentBox) then
+  begin
+    if Assigned(CurrentBox.Documents) then
+    begin
+      if (CurrentBox.Documents.Count = 2) and (not CurrentBox.StickerPrinted) then
+      begin
+        Result := PrintCurrentBoxSticker;
+      end;
+    end;
   end;
 end;
 
@@ -837,8 +872,8 @@ begin
   inherited;
 end;
 
-function TDocumentArchivingBusinessLogic.CreateArchiveBoxByDocument
-  (const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
+function TDocumentArchivingBusinessLogic.CreateArchiveBoxByDocument(const ADocument: IArchiveDocumentItem)
+  : IArchiveBoxItem;
 begin
   Result := nil;
   if Assigned(ADocument) then
@@ -857,6 +892,7 @@ begin
         Result.Save(Connection);
         Result.Load;
         ADocument.ArchiveBoxId := Result.Id;
+        ADocument.SequenceNumber := 1; // первый бланк в новом коробе
         Result.Documents.Add(ADocument);
         Result.Documents.Save;
       end
@@ -868,8 +904,7 @@ begin
   end;
 end;
 
-function TDocumentArchivingBusinessLogic.AddDocumentToCurrentBox(const ADocument
-  : IArchiveDocumentItem): Boolean;
+function TDocumentArchivingBusinessLogic.AddDocumentToCurrentBox(const ADocument: IArchiveDocumentItem): Boolean;
 begin
   Result := False;
   if Assigned(ADocument) and Assigned(CurrentBox) then
@@ -880,6 +915,7 @@ begin
         ADocument.ArchiveBoxId := CurrentBox.Id;
         if Assigned(CurrentBox.Documents) then
         begin
+          ADocument.SequenceNumber := CurrentBox.Documents.Count + 1;
           if CurrentBox.Documents.Add(ADocument) > -1 then
           begin
             Result := CurrentBox.Documents.Save;
@@ -898,8 +934,8 @@ begin
   end;
 end;
 
-function TDocumentArchivingBusinessLogic.AddDocumentToOldestOpenedArchiveBox
-  (const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
+function TDocumentArchivingBusinessLogic.AddDocumentToOldestOpenedArchiveBox(const ADocument: IArchiveDocumentItem)
+  : IArchiveBoxItem;
 var
   old_box_id: Integer;
 begin
@@ -908,7 +944,7 @@ begin
   if Assigned(ADocument) then
   begin
     old_box_id := -1;
-    SetSQLForQuery(Query, Format('BSOArchiving_sel_OliestOpenedArchiveBox %d, %d',
+    SetSQLForQuery(Query, Format('BSOArchiving_sel_OldestOpenedArchiveBox %d, %d',
       [ArchiveBoxTypeId, ADocument.CompanyId]), True);
     try
       if not Query.Eof then
@@ -935,14 +971,35 @@ begin
         Result.Save(Connection);
         Result.Load;
         ADocument.ArchiveBoxId := Result.Id;
-        Result.Documents.Add(ADocument);
-        Result.Documents.Save;
+        if Assigned(Result.Documents) then
+        begin
+          ADocument.SequenceNumber := Result.Documents.Count + 1;
+          Result.Documents.Add(ADocument);
+          Result.Documents.Save;
+        end
+        else
+        begin
+          Result := nil;
+        end;
       end
       else
       begin
         Result := nil;
       end;
     end;
+  end;
+end;
+
+function TDocumentArchivingBusinessLogic.GiveLastDocumentAway: Boolean;
+begin
+  Result := DeleteLastDocument;
+  if Result then
+  begin
+    DisplaySuccessMessage('Последний документ передан');
+  end
+  else
+  begin
+    DisplayErrorMessage('Не удалось передать последний документ');
   end;
 end;
 
