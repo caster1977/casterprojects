@@ -10,7 +10,7 @@ type
   /// ИНтерфейс для доступа к объектам типа БСО
   /// </summary>
   ICustomBSOItem = interface(IArchiveDocumentItem)
-  ['{745F9853-8503-45F4-94B7-DD295579CEC4}']
+    ['{745F9853-8503-45F4-94B7-DD295579CEC4}']
     function GetBSOId: Integer;
     procedure SetBSOId(const AValue: Integer);
 

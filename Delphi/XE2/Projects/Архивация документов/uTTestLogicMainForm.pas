@@ -24,7 +24,9 @@ uses
   uTMessageType,
   Vcl.ImgList,
   Vcl.ComCtrls,
-  Vcl.ToolWin, frxClass, frxBarcode;
+  Vcl.ToolWin,
+  frxClass,
+  frxBarcode;
 
 type
   TTestLogicMainForm = class(TForm)
@@ -231,8 +233,7 @@ begin
       if Assigned(Logic.CurrentBox.Documents) then
       begin
         b := (Logic.CurrentBox.Documents.Count > 0) and
-          Supports(Logic.CurrentBox.Documents.Item[Logic.CurrentBox.Documents.Count - 1],
-          ICustomBSOItem);
+          Supports(Logic.CurrentBox.Documents.Item[Logic.CurrentBox.Documents.Count - 1], ICustomBSOItem);
       end;
     end;
   end;
@@ -337,8 +338,8 @@ procedure TTestLogicMainForm.actTestAcceptBSOByAcceptanceRegisterExecute(Sender:
 begin
   Logic.Connection.Connected := True;
   try
-    Logic.AcceptBSOByAcceptanceRegister(Logic.CurrentBox.Documents.Item
-      [Logic.CurrentBox.Documents.Count - 1] as ICustomBSOItem);
+    Logic.AcceptBSOByAcceptanceRegister(Logic.CurrentBox.Documents.Item[Logic.CurrentBox.Documents.Count - 1]
+      as ICustomBSOItem);
   finally
     Logic.Connection.Connected := False;
   end;
@@ -359,8 +360,7 @@ begin
   end;
 end;
 
-procedure TTestLogicMainForm.FormCloseQuery(Sender: TObject;
-  var CanClose: Boolean);
+procedure TTestLogicMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   if Assigned(Logic) then
   begin

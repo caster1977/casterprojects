@@ -24,7 +24,7 @@ type
     /// <summary>
     /// Наименование компании
     /// </summary>
-    property Name: string read GetName;
+    property name: string read GetName;
     function GetCode: string;
 
     /// <summary>

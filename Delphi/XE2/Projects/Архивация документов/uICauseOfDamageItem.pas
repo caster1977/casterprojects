@@ -16,7 +16,7 @@ type
     /// <summary>
     /// Наименование причины "порчи" документа
     /// </summary>
-    property Name: string read GetName;
+    property name: string read GetName;
 
     function GetBarcode: string;
 

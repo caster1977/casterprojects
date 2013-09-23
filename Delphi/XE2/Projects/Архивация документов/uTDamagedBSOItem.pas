@@ -79,8 +79,8 @@ end;
 function TDamagedBSOItem.GetSaveSQL: string;
 begin
   Result := Format('BSOArchiving_upd_DamagedBSO %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, %d',
-    [Id, ArchiveBoxId, SequenceNumber, ArchivedByUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate), Integer(Issued),
-    IssuedToUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', IssuanceDate), BSOId, CauseOfDamageId]);
+    [Id, ArchiveBoxId, SequenceNumber, ArchivedByUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate),
+    Integer(Issued), IssuedToUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', IssuanceDate), BSOId, CauseOfDamageId]);
 end;
 
 constructor TDamagedBSOItem.Create;
@@ -92,6 +92,7 @@ end;
 
 procedure TDamagedBSOItem.FillShowableFieldsList;
 begin
+  AddShowableField('Порядковый номер в коробе:', 'SequenceNumber', IntToStr(SequenceNumber));
   AddShowableField('Штрих-код:', 'Barcode', Barcode);
   AddShowableField('Компания:', 'CompanyName', CompanyName);
   AddShowableField('Серия:', 'Series', Series);

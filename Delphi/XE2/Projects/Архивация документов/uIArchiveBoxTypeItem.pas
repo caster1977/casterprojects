@@ -17,7 +17,7 @@ type
     /// <summary>
     /// Ќаименование типа архивного короба
     /// </summary>
-    property Name: string read GetName;
+    property name: string read GetName;
 
     function GetCode: string;
 

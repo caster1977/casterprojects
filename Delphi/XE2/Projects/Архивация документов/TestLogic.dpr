@@ -2,7 +2,7 @@ program TestLogic;
 
 uses
   Vcl.Forms,
-  uTTestLogicMainForm in 'uTTestLogicMainForm.pas' {TestLogicMainForm},
+  uTTestLogicMainForm in 'uTTestLogicMainForm.pas' {TestLogicMainForm} ,
   uCommonRoutines in 'uCommonRoutines.pas',
   uIArchiveCompanyList in 'uIArchiveCompanyList.pas',
   uIArchiveCompanyItem in 'uIArchiveCompanyItem.pas',
@@ -62,4 +62,5 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TTestLogicMainForm, TestLogicMainForm);
   Application.Run;
+
 end.

@@ -32,8 +32,7 @@ type
     /// <summary>
     /// Контрол, в который будет выводится информация о текущем коробе
     /// </summary>
-    property CurrentBoxInfoControl: TCustomControl read GetCurrentBoxInfoControl
-      write SetCurrentBoxInfoControl;
+    property CurrentBoxInfoControl: TCustomControl read GetCurrentBoxInfoControl write SetCurrentBoxInfoControl;
 
     function GetLastDocumentInfoControl: TCustomControl;
     procedure SetLastDocumentInfoControl(const AValue: TCustomControl);
@@ -41,19 +40,18 @@ type
     /// <summary>
     /// Контрол, в который будет выводится информация о последнем документе
     /// </summary>
-    property LastDocumentInfoControl: TCustomControl read GetLastDocumentInfoControl
-      write SetLastDocumentInfoControl;
+    property LastDocumentInfoControl: TCustomControl read GetLastDocumentInfoControl write SetLastDocumentInfoControl;
 
     function GetCurrentUserId: Integer;
-    ///	<summary>
-    ///	  Идентификатор текущего пользователя
-    ///	</summary>
+    /// <summary>
+    /// Идентификатор текущего пользователя
+    /// </summary>
     property CurrentUserId: Integer read GetCurrentUserId;
 
     function GetArchiveBoxTypeId: Integer;
-    ///	<summary>
-    ///	  Идентификатор типа архивного короба
-    ///	</summary>
+    /// <summary>
+    /// Идентификатор типа архивного короба
+    /// </summary>
     property ArchiveBoxTypeId: Integer read GetArchiveBoxTypeId;
 
     /// <summary>
