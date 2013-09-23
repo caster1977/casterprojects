@@ -19,7 +19,7 @@ type
     FName: string;
     function GetName: string;
   public
-    property Name: string read GetName;
+    property name: string read GetName;
 
   private
     FCode: string;

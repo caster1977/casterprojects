@@ -16,8 +16,7 @@ type
     function GetOnDisplayMessage: TOnDisplayMessage;
     procedure SetOnDisplayMessage(const AValue: TOnDisplayMessage);
   public
-    property OnDisplayMessage: TOnDisplayMessage read GetOnDisplayMessage
-      write SetOnDisplayMessage nodefault;
+    property OnDisplayMessage: TOnDisplayMessage read GetOnDisplayMessage write SetOnDisplayMessage nodefault;
 
   private
     FConnection: TCustomConnection;
@@ -42,8 +41,7 @@ type
   protected
     procedure CloseQuery;
   public
-    constructor Create(const AConnection: TCustomConnection;
-      const AOnDisplayMessage: TOnDisplayMessage = nil); virtual;
+    constructor Create(const AConnection: TCustomConnection; const AOnDisplayMessage: TOnDisplayMessage = nil); virtual;
     destructor Destroy; override;
   end;
 

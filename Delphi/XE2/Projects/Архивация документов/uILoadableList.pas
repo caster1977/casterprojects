@@ -11,7 +11,7 @@ type
   /// Интерфейс для доступа к объектам списка объектов, умеющих загружаться и записываться в БД
   /// </summary>
   ILoadableList = interface
-  ['{6592595D-9B17-4BCD-9167-BC94B31A5687}']
+    ['{6592595D-9B17-4BCD-9167-BC94B31A5687}']
     function GetCount: Integer;
 
     /// <summary>
@@ -42,44 +42,44 @@ type
     /// </summary>
     function Add(const AItem: ILoadableItem): Integer; overload;
 
-    ///	<summary>
-    ///	  Процедура записи значений полей элементов списка в базу данных
-    ///	</summary>
-    ///	<param name="AConnection">
-    ///	  Объект подключения к базе данных
-    ///	</param>
-    ///	<returns>
-    ///	  Удалось ли выполнить запись в БД
-    ///	</returns>
-    ///	<remarks>
-    ///	  Работает только для списка объектов, у которых свойство
-    ///	  <b>Saveable</b> установлено в <b>True</b>
-    ///	</remarks>
+    /// <summary>
+    /// Процедура записи значений полей элементов списка в базу данных
+    /// </summary>
+    /// <param name="AConnection">
+    /// Объект подключения к базе данных
+    /// </param>
+    /// <returns>
+    /// Удалось ли выполнить запись в БД
+    /// </returns>
+    /// <remarks>
+    /// Работает только для списка объектов, у которых свойство
+    /// <b>Saveable</b> установлено в <b>True</b>
+    /// </remarks>
     function Save(const AConnection: TCustomConnection = nil): Boolean;
 
-    ///	<summary>
-    ///	  Процедура удаления указанного элемента списка
-    ///	</summary>
-    ///	<param name="AIndex">
-    ///	  Индекс элемента списка
-    ///	</param>
-    ///	<param name="AConnection">
-    ///	  Объект подключения к БД
-    ///	</param>
-    ///	<returns>
-    ///	  Удалось ли удалить элемент списка
-    ///	</returns>
+    /// <summary>
+    /// Процедура удаления указанного элемента списка
+    /// </summary>
+    /// <param name="AIndex">
+    /// Индекс элемента списка
+    /// </param>
+    /// <param name="AConnection">
+    /// Объект подключения к БД
+    /// </param>
+    /// <returns>
+    /// Удалось ли удалить элемент списка
+    /// </returns>
     function Delete(const AIndex: Integer; const AConnection: TCustomConnection = nil): Boolean;
 
     /// <summary>
     /// Функция очистки списка
     /// </summary>
-    ///	<param name="AConnection">
-    ///	  Объект подключения к БД
-    ///	</param>
-    ///	<returns>
-    ///	  Удалось ли выполнить очистку списка
-    ///	</returns>
+    /// <param name="AConnection">
+    /// Объект подключения к БД
+    /// </param>
+    /// <returns>
+    /// Удалось ли выполнить очистку списка
+    /// </returns>
     function Clear(const AConnection: TCustomConnection = nil): Boolean;
   end;
 

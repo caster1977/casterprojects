@@ -397,11 +397,10 @@ end;
 
 function TArchiveBoxItem.GetSaveSQL: string;
 begin
-  Result := Format
-    ('BSOArchiving_upd_ArchiveBox %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, ''%s'', %d, %d',
-    [Id, TypeId, CompanyId, UserId, Barcode, Year, Number, FormatDateTime('yyyy-mm-dd hh:nn:ss',
-    CreationDate), Integer(Closed), FormatDateTime('yyyy-mm-dd hh:nn:ss', ClosureDate),
-    Integer(StickerPrinted), Integer(RegistryPrinted)]);
+  Result := Format('BSOArchiving_upd_ArchiveBox %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, ''%s'', %d, %d',
+    [Id, TypeId, CompanyId, UserId, Barcode, Year, Number, FormatDateTime('yyyy-mm-dd hh:nn:ss', CreationDate),
+    Integer(Closed), FormatDateTime('yyyy-mm-dd hh:nn:ss', ClosureDate), Integer(StickerPrinted),
+    Integer(RegistryPrinted)]);
 end;
 
 procedure TArchiveBoxItem.Load(const ADataSet: TDataSet);
@@ -409,19 +408,20 @@ begin
   inherited;
   if Assigned(ADataSet) then
   begin
+    CreationDate := ADataSet.FieldByName('CreationDate').AsDateTime;
     Closed := ADataSet.FieldByName('Closed').AsBoolean;
     ClosureDate := ADataSet.FieldByName('ClosureDate').AsDateTime;
     Archived := ADataSet.FieldByName('Archived').AsBoolean;
     ArchivingDate := ADataSet.FieldByName('ArchivingDate').AsDateTime;
+    UserId := ADataSet.FieldByName('UserId').AsInteger;
     CompanyId := ADataSet.FieldByName('CompanyId').AsInteger;
     CompanyName := ADataSet.FieldByName('CompanyName').AsString;
-    Number := ADataSet.FieldByName('Number').AsInteger;
-    RegistryPrinted := ADataSet.FieldByName('RegistryPrinted').AsBoolean;
-    StickerPrinted := ADataSet.FieldByName('StickerPrinted').AsBoolean;
     TypeId := ADataSet.FieldByName('TypeId').AsInteger;
     TypeName := ADataSet.FieldByName('TypeName').AsString;
     Year := ADataSet.FieldByName('Year').AsInteger;
-    UserId := ADataSet.FieldByName('UserId').AsInteger;
+    Number := ADataSet.FieldByName('Number').AsInteger;
+    RegistryPrinted := ADataSet.FieldByName('RegistryPrinted').AsBoolean;
+    StickerPrinted := ADataSet.FieldByName('StickerPrinted').AsBoolean;
   end;
 end;
 

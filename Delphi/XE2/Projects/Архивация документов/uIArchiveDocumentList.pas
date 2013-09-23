@@ -15,9 +15,9 @@ type
     function GetArchiveBoxId: Integer;
     procedure SetArchiveBoxId(const AValue: Integer);
 
-    ///	<summary>
-    ///	  Идентификатор архивного короба
-    ///	</summary>
+    /// <summary>
+    /// Идентификатор архивного короба
+    /// </summary>
     property ArchiveBoxId: Integer read GetArchiveBoxId write SetArchiveBoxId;
 
     /// <summary>

@@ -20,13 +20,13 @@ type
     /// <remarks>
     /// Используется для именования меток
     /// </remarks>
-    property Name: string read GetName;
+    property name: string read GetName;
 
     function GetValue: string;
 
-    ///	<summary>
-    ///	Значение поля в виде текстовой строки
-    ///	</summary>
+    /// <summary>
+    /// Значение поля в виде текстовой строки
+    /// </summary>
     property Value: string read GetValue;
   end;
 

@@ -41,8 +41,7 @@ type
     function Delete(const AConnection: TCustomConnection = nil): Boolean; virtual;
 
     constructor Create; reintroduce; overload; virtual;
-    constructor Create(const AConnection: TCustomConnection; const AId: Integer);
-      reintroduce; overload;
+    constructor Create(const AConnection: TCustomConnection; const AId: Integer); reintroduce; overload;
   end;
 
 implementation

@@ -146,6 +146,17 @@ type
     function AddDocumentToOldestOpenedArchiveBox(const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
     function ReleaseBox(const AArchiveBoxItem: IArchiveBoxItem): Boolean;
     function AutoPrintCurrentBoxSticker: Boolean;
+    /// <summary>
+    /// Функция, проверяющая возможность добавления нового документа в короб
+    /// </summary>
+    /// <returns>
+    /// Возвращает <b>True</b> в случае, если можно добавлять документ в короб
+    /// </returns>
+    /// <remarks>
+    /// Проверяет, не идёт ли в данный момент процедура настройки вместимости
+    /// коробов
+    /// </remarks>
+    function CanAddDocument: Boolean;
   end;
 
 implementation
@@ -691,84 +702,6 @@ begin
   end;
 end;
 
-procedure TDocumentArchivingBusinessLogic.ProcessBarcode(const ABarcode: string);
-var
-  doc: IArchiveDocumentItem;
-  i: Integer;
-begin
-  case AnalizeBarcode(ABarcode) of
-    dabtUnknown:
-      DisplayErrorMessage('Введён неизвестный штрих-код');
-    dabtBSO:
-      begin
-        DisplaySuccessMessage('Введён штрих-код БСО');
-        doc := CreateDocumentItemByBarcode(ABarcode);
-        if Assigned(doc) then
-        begin
-          if not Assigned(CurrentBox) then
-          begin
-            i := GetOpenedBoxQuantity(ArchiveBoxTypeId, doc.CompanyId);
-            if i = 0 then
-            begin
-              CurrentBox := CreateArchiveBoxByDocument(doc);
-              if Assigned(CurrentBox) then
-              begin
-                DisplaySuccessMessage('Документ добавлен в новый архивный короб');
-              end
-              else
-              begin
-                DisplayErrorMessage('Не удалось создать новый архивный короб для документа');
-              end;
-            end
-            else
-            begin
-              CurrentBox := AddDocumentToOldestOpenedArchiveBox(doc);
-              if Assigned(CurrentBox) then
-              begin
-                DisplaySuccessMessage('Документ добавлен в существующий архивный короб');
-              end
-              else
-              begin
-                DisplayErrorMessage('Не удалось добавить документ в сущестувующий архивный короб');
-              end;
-            end;
-          end
-          else
-          begin
-            if AddDocumentToCurrentBox(doc) then
-            begin
-              DisplaySuccessMessage('Документ добавлен в текущий архивный короб');
-            end
-            else
-            begin
-              DisplayErrorMessage('Не удалось добавить документ в текущий архивный короб');
-            end;
-          end;
-          AutoPrintCurrentBoxSticker;
-        end;
-      end;
-    dabtArchiveBox:
-      DisplaySuccessMessage('Введён штрих-код архивного короба');
-    dabtForceNewBoxCommand:
-      begin
-        DisplaySuccessMessage('Введён штрих-код команды создания нового короба');
-        CloseCurrentBox;
-      end;
-    dabtPutBoxAsideCommand:
-      begin
-        DisplaySuccessMessage('Введён штрих-код команды откладывания короба');
-        PutCurrentBoxAside;
-      end;
-    dabtGiveDocumentAway:
-      begin
-        DisplaySuccessMessage('Введён штрих-код команды передачи последнего документа');
-        GiveLastDocumentAway;
-      end;
-  end;
-  ShowCurrentBoxInfo;
-  ShowLastDocumentInfo;
-end;
-
 function TDocumentArchivingBusinessLogic.GetNewArchiveBoxNumber(const ATypeId, ACompanyId, AYear: Integer): Integer;
 begin
   Result := -1;
@@ -849,6 +782,13 @@ begin
     if Assigned(CurrentBox.Documents) then
     begin
       Result := CurrentBox.Documents.Delete(CurrentBox.Documents.Count - 1);
+      if Result then
+      begin
+        if (CurrentBox.Documents.Count = 0) and (not CurrentBox.StickerPrinted) then
+        begin
+          Result := DeleteCurrentBox;
+        end;
+      end;
     end;
   end;
   if Result then
@@ -878,27 +818,30 @@ begin
   Result := nil;
   if Assigned(ADocument) then
   begin
-    Result := TArchiveBoxItem.Create;
-    if Assigned(Result) then
+    if CanAddDocument then
     begin
-      Result.UserId := CurrentUserId;
-      Result.CreationDate := Now;
-      Result.TypeId := ArchiveBoxTypeId;
-      Result.CompanyId := ADocument.CompanyId;
-      Result.Year := CurrentYear;
-      Result.Number := GetNewArchiveBoxNumber(Result.TypeId, Result.CompanyId, Result.Year);
-      if Result.Number > 0 then
+      Result := TArchiveBoxItem.Create;
+      if Assigned(Result) then
       begin
-        Result.Save(Connection);
-        Result.Load;
-        ADocument.ArchiveBoxId := Result.Id;
-        ADocument.SequenceNumber := 1; // первый бланк в новом коробе
-        Result.Documents.Add(ADocument);
-        Result.Documents.Save;
-      end
-      else
-      begin
-        Result := nil;
+        Result.UserId := CurrentUserId;
+        Result.CreationDate := Now;
+        Result.TypeId := ArchiveBoxTypeId;
+        Result.CompanyId := ADocument.CompanyId;
+        Result.Year := CurrentYear;
+        Result.Number := GetNewArchiveBoxNumber(Result.TypeId, Result.CompanyId, Result.Year);
+        if Result.Number > 0 then
+        begin
+          Result.Save(Connection);
+          Result.Load;
+          ADocument.ArchiveBoxId := Result.Id;
+          ADocument.SequenceNumber := 1; // первый бланк в новом коробе
+          Result.Documents.Add(ADocument);
+          Result.Documents.Save;
+        end
+        else
+        begin
+          Result := nil;
+        end;
       end;
     end;
   end;
@@ -909,6 +852,7 @@ begin
   Result := False;
   if Assigned(ADocument) and Assigned(CurrentBox) then
   begin
+    if CanAddDocument then
     begin
       if ADocument.CompanyId = CurrentBox.CompanyId then
       begin
@@ -940,51 +884,54 @@ var
   old_box_id: Integer;
 begin
   Result := nil;
-  Result := nil;
   if Assigned(ADocument) then
   begin
-    old_box_id := -1;
-    SetSQLForQuery(Query, Format('BSOArchiving_sel_OldestOpenedArchiveBox %d, %d',
-      [ArchiveBoxTypeId, ADocument.CompanyId]), True);
-    try
-      if not Query.Eof then
-      begin
-        old_box_id := Query.Fields[0].AsInteger;
-        if old_box_id > -1 then
-        begin
-          DisplaySuccessMessage('Получен идентифкатор старейшего открытого короба');
-        end
-        else
-        begin
-          DisplayErrorMessage('Не удалось получить идентифкатор старейшего открытого короба');
-        end;
-      end;
-    finally
-      Query.Close;
-    end;
-    if old_box_id > -1 then
+    if CanAddDocument then
     begin
-      Result := TArchiveBoxItem.Create(Connection, old_box_id);
-      if Assigned(Result) then
-      begin
-        Result.UserId := CurrentUserId;
-        Result.Save(Connection);
-        Result.Load;
-        ADocument.ArchiveBoxId := Result.Id;
-        if Assigned(Result.Documents) then
+
+      old_box_id := -1;
+      SetSQLForQuery(Query, Format('BSOArchiving_sel_OldestOpenedArchiveBox %d, %d',
+        [ArchiveBoxTypeId, ADocument.CompanyId]), True);
+      try
+        if not Query.Eof then
         begin
-          ADocument.SequenceNumber := Result.Documents.Count + 1;
-          Result.Documents.Add(ADocument);
-          Result.Documents.Save;
+          old_box_id := Query.Fields[0].AsInteger;
+          if old_box_id > -1 then
+          begin
+            DisplaySuccessMessage('Получен идентифкатор старейшего открытого короба');
+          end
+          else
+          begin
+            DisplayErrorMessage('Не удалось получить идентифкатор старейшего открытого короба');
+          end;
+        end;
+      finally
+        Query.Close;
+      end;
+      if old_box_id > -1 then
+      begin
+        Result := TArchiveBoxItem.Create(Connection, old_box_id);
+        if Assigned(Result) then
+        begin
+          Result.UserId := CurrentUserId;
+          Result.Save(Connection);
+          Result.Load;
+          ADocument.ArchiveBoxId := Result.Id;
+          if Assigned(Result.Documents) then
+          begin
+            ADocument.SequenceNumber := Result.Documents.Count + 1;
+            Result.Documents.Add(ADocument);
+            Result.Documents.Save;
+          end
+          else
+          begin
+            Result := nil;
+          end;
         end
         else
         begin
           Result := nil;
         end;
-      end
-      else
-      begin
-        Result := nil;
       end;
     end;
   end;
@@ -1001,6 +948,90 @@ begin
   begin
     DisplayErrorMessage('Не удалось передать последний документ');
   end;
+end;
+
+function TDocumentArchivingBusinessLogic.CanAddDocument: Boolean;
+begin
+  { TODO -ov_ivanov : Реализовать }
+  Result := True;
+end;
+
+procedure TDocumentArchivingBusinessLogic.ProcessBarcode(const ABarcode: string);
+var
+  doc: IArchiveDocumentItem;
+  i: Integer;
+begin
+  case AnalizeBarcode(ABarcode) of
+    dabtUnknown:
+      DisplayErrorMessage('Введён неизвестный штрих-код');
+    dabtBSO:
+      begin
+        DisplaySuccessMessage('Введён штрих-код БСО');
+        doc := CreateDocumentItemByBarcode(ABarcode);
+        if Assigned(doc) then
+        begin
+          if not Assigned(CurrentBox) then
+          begin
+            i := GetOpenedBoxQuantity(ArchiveBoxTypeId, doc.CompanyId);
+            if i = 0 then
+            begin
+              CurrentBox := CreateArchiveBoxByDocument(doc);
+              if Assigned(CurrentBox) then
+              begin
+                DisplaySuccessMessage('Документ добавлен в новый архивный короб');
+              end
+              else
+              begin
+                DisplayErrorMessage('Не удалось создать новый архивный короб для документа');
+              end;
+            end
+            else
+            begin
+              CurrentBox := AddDocumentToOldestOpenedArchiveBox(doc);
+              if Assigned(CurrentBox) then
+              begin
+                DisplaySuccessMessage('Документ добавлен в существующий архивный короб');
+              end
+              else
+              begin
+                DisplayErrorMessage('Не удалось добавить документ в существующий архивный короб');
+              end;
+            end;
+          end
+          else
+          begin
+            if AddDocumentToCurrentBox(doc) then
+            begin
+              DisplaySuccessMessage('Документ добавлен в текущий архивный короб');
+            end
+            else
+            begin
+              DisplayErrorMessage('Не удалось добавить документ в текущий архивный короб');
+            end;
+          end;
+          AutoPrintCurrentBoxSticker;
+        end;
+      end;
+    dabtArchiveBox:
+      DisplaySuccessMessage('Введён штрих-код архивного короба');
+    dabtForceNewBoxCommand:
+      begin
+        DisplaySuccessMessage('Введён штрих-код команды создания нового короба');
+        CloseCurrentBox;
+      end;
+    dabtPutBoxAsideCommand:
+      begin
+        DisplaySuccessMessage('Введён штрих-код команды откладывания короба');
+        PutCurrentBoxAside;
+      end;
+    dabtGiveDocumentAway:
+      begin
+        DisplaySuccessMessage('Введён штрих-код команды передачи последнего документа');
+        GiveLastDocumentAway;
+      end;
+  end;
+  ShowCurrentBoxInfo;
+  ShowLastDocumentInfo;
 end;
 
 end.

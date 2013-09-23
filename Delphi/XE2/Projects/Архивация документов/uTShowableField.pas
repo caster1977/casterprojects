@@ -11,7 +11,7 @@ type
     FName: string;
     function GetName: string;
   public
-    property Name: string read GetName nodefault;
+    property name: string read GetName nodefault;
 
   private
     FCaption: string;
