@@ -46,11 +46,11 @@ end;
 
 procedure TShipmentBSOItem.FillShowableFieldsList;
 begin
-  AddShowableField('Порядковый номер в коробе:', 'SequenceNumber', IntToStr(SequenceNumber));
   AddShowableField('Штрих-код:', 'Barcode', Barcode);
-  AddShowableField('Компания:', 'CompanyName', CompanyName);
+  //AddShowableField('Компания:', 'CompanyName', CompanyName);
   AddShowableField('Серия:', 'Series', Series);
   AddShowableField('Номер:', 'Number', Number);
+  AddShowableField('Порядковый номер в коробе:', 'SequenceNumber', IntToStr(SequenceNumber));
 end;
 
 end.

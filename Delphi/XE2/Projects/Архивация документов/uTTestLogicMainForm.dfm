@@ -16,34 +16,6 @@ object TestLogicMainForm: TTestLogicMainForm
   OnCloseQuery = FormCloseQuery
   PixelsPerInch = 96
   TextHeight = 13
-  object gbInfo: TGroupBox
-    Left = 0
-    Top = 29
-    Width = 412
-    Height = 272
-    Align = alTop
-    Caption = ' '#1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '
-    TabOrder = 1
-    object gbCurrentBox: TGroupBox
-      Left = 8
-      Top = 16
-      Width = 397
-      Height = 136
-      Align = alCustom
-      Anchors = [akLeft, akTop, akRight]
-      Caption = ' '#1058#1077#1082#1091#1097#1080#1081' '#1082#1086#1088#1086#1073' '
-      TabOrder = 0
-    end
-    object gbLastDocument: TGroupBox
-      Left = 8
-      Top = 154
-      Width = 397
-      Height = 109
-      Align = alCustom
-      Caption = ' '#1055#1086#1089#1083#1077#1076#1085#1080#1081' '#1076#1086#1082#1091#1084#1077#1085#1090' '
-      TabOrder = 1
-    end
-  end
   object pnlButtons: TPanel
     Left = 0
     Top = 461
@@ -52,7 +24,7 @@ object TestLogicMainForm: TTestLogicMainForm
     Align = alBottom
     BevelOuter = bvNone
     ShowCaption = False
-    TabOrder = 4
+    TabOrder = 3
     DesignSize = (
       412
       31)
@@ -108,50 +80,8 @@ object TestLogicMainForm: TTestLogicMainForm
       ImageIndex = 2
       Style = tbsSeparator
     end
-    object tbTestAddDocument: TToolButton
-      Left = 62
-      Top = 0
-      Action = actTestAddDocument
-      ParentShowHint = False
-      ShowHint = True
-    end
-    object tbTestForceNewBox: TToolButton
-      Left = 85
-      Top = 0
-      Action = actTestForceNewBox
-      ParentShowHint = False
-      ShowHint = True
-    end
-    object tbTestDeleteCurrentBox: TToolButton
-      Left = 108
-      Top = 0
-      Action = actTestDeleteCurrentBox
-      ParentShowHint = False
-      ShowHint = True
-    end
-    object tbTestPutCurrentBoxAside: TToolButton
-      Left = 131
-      Top = 0
-      Action = actTestPutCurrentBoxAside
-      ParentShowHint = False
-      ShowHint = True
-    end
-    object tbTestCloseCurrentBox: TToolButton
-      Left = 154
-      Top = 0
-      Action = actTestCloseCurrentBox
-      ParentShowHint = False
-      ShowHint = True
-    end
-    object tbTestCurrentBoxIsFull: TToolButton
-      Left = 177
-      Top = 0
-      Action = actTestCurrentBoxIsFull
-      ParentShowHint = False
-      ShowHint = True
-    end
     object tbTestAcceptBSOByAcceptanceRegister: TToolButton
-      Left = 200
+      Left = 62
       Top = 0
       Action = actTestAcceptBSOByAcceptanceRegister
       ParentShowHint = False
@@ -160,12 +90,13 @@ object TestLogicMainForm: TTestLogicMainForm
   end
   object gbBarcode: TGroupBox
     Left = 0
-    Top = 301
+    Top = 274
     Width = 412
     Height = 54
     Align = alTop
     Caption = ' '#1064#1090#1088#1080#1093'-'#1082#1086#1076' '
-    TabOrder = 2
+    TabOrder = 1
+    ExplicitTop = 301
     object edBarcode: TEdit
       Left = 8
       Top = 24
@@ -177,17 +108,19 @@ object TestLogicMainForm: TTestLogicMainForm
   end
   object gbHint: TGroupBox
     Left = 0
-    Top = 355
+    Top = 328
     Width = 412
-    Height = 106
+    Height = 133
     Align = alClient
     Caption = ' '#1057#1086#1086#1073#1097#1077#1085#1080#1077' '
-    TabOrder = 3
+    TabOrder = 2
+    ExplicitTop = 355
+    ExplicitHeight = 106
     object lblHint: TLabel
       Left = 8
       Top = 16
       Width = 395
-      Height = 82
+      Height = 109
       Align = alCustom
       Alignment = taCenter
       Anchors = [akLeft, akTop, akRight, akBottom]
@@ -200,7 +133,32 @@ object TestLogicMainForm: TTestLogicMainForm
       ParentFont = False
       Layout = tlCenter
       WordWrap = True
+      ExplicitHeight = 82
     end
+  end
+  object gbCurrentBox: TGroupBox
+    Left = 0
+    Top = 29
+    Width = 412
+    Height = 136
+    Align = alTop
+    Caption = ' '#1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1090#1077#1082#1091#1097#1077#1084' '#1082#1086#1088#1086#1073#1077' '
+    TabOrder = 4
+    ExplicitLeft = 8
+    ExplicitTop = 16
+    ExplicitWidth = 397
+  end
+  object gbLastDocument: TGroupBox
+    Left = 0
+    Top = 165
+    Width = 412
+    Height = 109
+    Align = alTop
+    Caption = ' '#1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1087#1086#1089#1083#1077#1076#1085#1077#1084' '#1076#1086#1082#1091#1084#1077#1085#1090#1077' '#1074' '#1090#1077#1082#1091#1097#1077#1084' '#1082#1086#1088#1086#1073#1077' '
+    TabOrder = 5
+    ExplicitLeft = 8
+    ExplicitTop = 154
+    ExplicitWidth = 397
   end
   object SQLConnection: TSQLConnection
     ConnectionName = 'MSSQLConnection'
@@ -244,47 +202,14 @@ object TestLogicMainForm: TTestLogicMainForm
       OnUpdate = actPrintStickerUpdate
     end
     object actDeleteLastDocument: TAction
-      Hint = #1059#1076#1072#1083#1080#1090#1100' '#1087#1086#1089#1083#1077#1076#1085#1080#1081' '#1076#1086#1082#1091#1084#1077#1085#1090
-      ImageIndex = 2
+      Hint = #1059#1076#1072#1083#1077#1085#1080#1077' '#1087#1086#1089#1083#1077#1076#1085#1077#1075#1086' '#1076#1086#1082#1091#1084#1077#1085#1090#1072' '#1080#1079' '#1090#1077#1082#1091#1097#1077#1075#1086' '#1082#1086#1088#1086#1073#1072
+      ImageIndex = 5
       OnExecute = actDeleteLastDocumentExecute
       OnUpdate = actDeleteLastDocumentUpdate
     end
     object actClose: TAction
       Caption = #1047#1072#1082#1088#1099#1090#1100
       OnExecute = actCloseExecute
-    end
-    object actTestCloseCurrentBox: TAction
-      Hint = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1092#1091#1085#1082#1094#1080#1080' '#1079#1072#1082#1088#1099#1090#1080#1103' '#1090#1077#1082#1091#1097#1077#1075#1086' '#1082#1086#1088#1086#1073#1072
-      ImageIndex = 3
-      OnExecute = actTestCloseCurrentBoxExecute
-      OnUpdate = actTestCloseCurrentBoxUpdate
-    end
-    object actTestPutCurrentBoxAside: TAction
-      Hint = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1092#1091#1085#1082#1094#1080#1080' "'#1086#1090#1082#1083#1072#1076#1099#1074#1072#1085#1080#1103'" '#1090#1077#1082#1091#1097#1077#1075#1086' '#1082#1086#1088#1086#1073#1072
-      ImageIndex = 9
-      OnExecute = actTestPutCurrentBoxAsideExecute
-      OnUpdate = actTestPutCurrentBoxAsideUpdate
-    end
-    object actTestDeleteCurrentBox: TAction
-      Hint = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1092#1091#1085#1082#1094#1080#1080' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1090#1077#1082#1091#1097#1077#1075#1086' '#1082#1086#1088#1086#1073#1072
-      ImageIndex = 8
-      OnExecute = actTestDeleteCurrentBoxExecute
-      OnUpdate = actTestDeleteCurrentBoxUpdate
-    end
-    object actTestCurrentBoxIsFull: TAction
-      Hint = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1092#1091#1085#1082#1094#1080#1080' '#1087#1088#1086#1074#1077#1088#1082#1080' '#1085#1072' '#1079#1072#1087#1086#1083#1085#1077#1085#1080#1077' '#1090#1077#1082#1091#1097#1077#1075#1086' '#1082#1086#1088#1086#1073#1072
-      ImageIndex = 4
-      OnExecute = actTestCurrentBoxIsFullExecute
-      OnUpdate = actTestCurrentBoxIsFullUpdate
-    end
-    object actTestAddDocument: TAction
-      Hint = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1092#1091#1085#1082#1094#1080#1080' '#1076#1086#1073#1072#1074#1083#1077#1085#1080#1103' '#1076#1086#1082#1091#1084#1077#1085#1090#1072
-      ImageIndex = 1
-      OnExecute = actTestAddDocumentExecute
-    end
-    object actTestForceNewBox: TAction
-      Hint = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1092#1091#1085#1082#1094#1080#1080' '#1080#1085#1080#1094#1080#1072#1094#1080#1080' '#1089#1086#1079#1076#1072#1085#1080#1103' '#1085#1086#1074#1086#1075#1086' '#1082#1086#1088#1086#1073#1072
-      ImageIndex = 6
     end
     object actTestAcceptBSOByAcceptanceRegister: TAction
       Caption = 'actTestAcceptBSOByAcceptanceRegister'
@@ -298,7 +223,7 @@ object TestLogicMainForm: TTestLogicMainForm
     Left = 336
     Top = 376
     Bitmap = {
-      494C01010B008800940010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B008800A40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000F6F6F609ECECEC13E9E9E916E9E9E916F0F0F00FFCFCFC030000

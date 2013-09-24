@@ -18,9 +18,9 @@ type
   /// </summary>
   IDocumentArchivingBusinessLogic = interface(ICustomBusinessLogic)
     ['{B4D4317B-5679-4A31-9F53-F31CFFD99A6F}']
+
     function GetCurrentBox: IArchiveBoxItem;
     procedure SetCurrentBox(const AValue: IArchiveBoxItem);
-
     /// <summary>
     /// Текущий архивный короб
     /// </summary>
@@ -28,7 +28,6 @@ type
 
     function GetCurrentBoxInfoControl: TCustomControl;
     procedure SetCurrentBoxInfoControl(const AValue: TCustomControl);
-
     /// <summary>
     /// Контрол, в который будет выводится информация о текущем коробе
     /// </summary>
@@ -36,44 +35,15 @@ type
 
     function GetLastDocumentInfoControl: TCustomControl;
     procedure SetLastDocumentInfoControl(const AValue: TCustomControl);
-
     /// <summary>
     /// Контрол, в который будет выводится информация о последнем документе
     /// </summary>
     property LastDocumentInfoControl: TCustomControl read GetLastDocumentInfoControl write SetLastDocumentInfoControl;
 
-    function GetCurrentUserId: Integer;
     /// <summary>
-    /// Идентификатор текущего пользователя
+    /// Функция печати стикера для текущего архивного короба в ручном режиме
     /// </summary>
-    property CurrentUserId: Integer read GetCurrentUserId;
-
-    function GetArchiveBoxTypeId: Integer;
-    /// <summary>
-    /// Идентификатор типа архивного короба
-    /// </summary>
-    property ArchiveBoxTypeId: Integer read GetArchiveBoxTypeId;
-
-    /// <summary>
-    /// Процедура, выполняющая вывод в контрол данных о текущем коробе
-    /// </summary>
-    /// <param name="AControl">
-    /// Родительский контрол, в котором будут выведены данные
-    /// </param>
-    procedure ShowCurrentBoxInfo;
-
-    /// <summary>
-    /// Процедура, выполняющая вывод в контрол данных о последнем документе
-    /// </summary>
-    /// <param name="AControl">
-    /// Родительский контрол, в котором будут выведены данные
-    /// </param>
-    procedure ShowLastDocumentInfo;
-
-    /// <summary>
-    /// Функция печати стикера для текущего архивного короба
-    /// </summary>
-    function PrintCurrentBoxSticker: Boolean;
+    function ManualPrintCurrentBoxSticker: Boolean;
 
     /// <summary>
     /// Функция "откладывания" текущего короба
@@ -81,24 +51,17 @@ type
     function PutCurrentBoxAside: Boolean;
 
     /// <summary>
-    /// Функция закрытия текущего короба
+    /// Функция удаления последнего документа из текущего короба
     /// </summary>
-    function CloseCurrentBox: Boolean;
+    function DeleteLastDocumentInCurrentBox: Boolean;
 
     /// <summary>
-    /// Функция удаления текущего короба
+    /// Функция обработки введённой строки
     /// </summary>
-    function DeleteCurrentBox: Boolean;
-
-    /// <summary>
-    /// Функция удаления полседнего документа из текущего короба
-    /// </summary>
-    function DeleteLastDocument: Boolean;
-
-    /// <summary>
-    /// Функция определения "заполненности" текущего короба
-    /// </summary>
-    function ArchiveBoxIsFull: Boolean;
+    /// <param name="AString">
+    /// Штрих-код или другие строковые данные
+    /// </param>
+    procedure ProcessString(const AString: string);
 
     /// <summary>
     /// Отметка указанного документа в реестре приёмки с ЛП
@@ -107,14 +70,6 @@ type
     /// БСО
     /// </param>
     procedure AcceptBSOByAcceptanceRegister(const ABSO: ICustomBSOItem);
-
-    /// <summary>
-    /// Функция обработки введённого штрих-кода
-    /// </summary>
-    /// <param name="ABarcode">
-    /// Штрих-код
-    /// </param>
-    procedure ProcessBarcode(const ABarcode: string);
   end;
 
 implementation

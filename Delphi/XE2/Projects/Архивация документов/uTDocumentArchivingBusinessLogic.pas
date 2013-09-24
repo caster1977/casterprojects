@@ -17,6 +17,18 @@ uses
 
 type
   TDocumentArchivingBusinessLogic = class sealed(TCustomBusinessLogic, IDocumentArchivingBusinessLogic)
+  public
+    function ManualPrintCurrentBoxSticker: Boolean;
+    function PutCurrentBoxAside: Boolean;
+    function DeleteLastDocumentInCurrentBox: Boolean;
+    function GiveLastDocumentInCurrentBoxAway: Boolean;
+
+    procedure AcceptBSOByAcceptanceRegister(const ABSO: ICustomBSOItem);
+    procedure ProcessString(const AString: string);
+    constructor Create(const AConnection: TCustomConnection; const ACurrentUserId, AArchiveBoxTypeId: Integer;
+      const AOnDisplayMessage: TOnDisplayMessage = nil); reintroduce; virtual;
+    destructor Destroy; override;
+
   private
     FCurrentBox: IArchiveBoxItem;
     function GetCurrentBox: IArchiveBoxItem;
@@ -41,33 +53,54 @@ type
       write SetLastDocumentInfoControl nodefault;
 
   private
+    FArchiveBoxTypeId: Integer;
+    function GetArchiveBoxTypeId: Integer;
+    /// <summary>
+    /// Идентификатор типа архивного короба
+    /// </summary>
+    property ArchiveBoxTypeId: Integer read GetArchiveBoxTypeId nodefault;
+
+  private
     FCurrentUserId: Integer;
     function GetCurrentUserId: Integer;
-  public
+    /// <summary>
+    /// Идентификатор текущего пользователя
+    /// </summary>
     property CurrentUserId: Integer read GetCurrentUserId nodefault;
 
   private
-    FArchiveBoxTypeId: Integer;
-    function GetArchiveBoxTypeId: Integer;
-  public
-    property ArchiveBoxTypeId: Integer read GetArchiveBoxTypeId nodefault;
+    FCurrentDocument: IArchiveDocumentItem;
+    function GetCurrentDocument: IArchiveDocumentItem;
+    procedure SetCurrentDocument(const AValue: IArchiveDocumentItem);
+    /// <summary>
+    /// Текущий документ - документ, данные о котором ещё только вводятся
+    /// </summary>
+    /// <remarks>
+    /// Не одно и то же, что последний документ в текущем коробе!
+    /// </remarks>
+    property CurrentDocument: IArchiveDocumentItem read GetCurrentDocument write SetCurrentDocument nodefault;
 
-  public
-    procedure ShowCurrentBoxInfo;
-    procedure ShowLastDocumentInfo;
-    function PrintCurrentBoxSticker: Boolean;
-    function PutCurrentBoxAside: Boolean;
-    function GiveLastDocumentAway: Boolean;
-    function CloseCurrentBox: Boolean;
-    function DeleteCurrentBox: Boolean;
-    function DeleteLastDocument: Boolean;
-    function ArchiveBoxIsFull: Boolean;
-    procedure AcceptBSOByAcceptanceRegister(const ABSO: ICustomBSOItem);
-    procedure ProcessBarcode(const ABarcode: string);
-    constructor Create(const AConnection: TCustomConnection; const ACurrentUserId, AArchiveBoxTypeId: Integer;
-      const AOnDisplayMessage: TOnDisplayMessage = nil); reintroduce; virtual;
-    destructor Destroy; override;
   private
+    /// <summary>
+    /// Процедура, выполняющая вывод данных о текущем коробе и последнем документе в текущем коробе
+    /// </summary>
+    procedure UpdateCurrentInfo;
+
+    /// <summary>
+    /// Функция закрытия текущего короба
+    /// </summary>
+    function CloseCurrentBox: Boolean;
+
+    /// <summary>
+    /// Функция удаления текущего короба
+    /// </summary>
+    function DeleteCurrentBox: Boolean;
+
+    /// <summary>
+    /// Функция определения "заполненности" текущего короба
+    /// </summary>
+    function CurrentBoxIsFull: Boolean;
+
     /// <summary>
     /// Функция определения вместимости указанного типа короба
     /// указанного типа
@@ -96,11 +129,6 @@ type
     /// Процедура отображения данных указанного "отображаемого" объекта
     /// </summary>
     procedure Show(const AParentControl: TCustomControl; const AShowableItem: IShowable);
-
-    /// <summary>
-    /// Процедура очистки указанного контрола
-    /// </summary>
-    procedure ClearControl(const AControl: TCustomControl);
 
     /// <summary>
     /// Функция получения количества открытых коробов для типа и компании
@@ -145,7 +173,7 @@ type
     function GetNewArchiveBoxNumber(const ATypeId, ACompanyId, AYear: Integer): Integer;
     function AddDocumentToOldestOpenedArchiveBox(const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
     function ReleaseBox(const AArchiveBoxItem: IArchiveBoxItem): Boolean;
-    function AutoPrintCurrentBoxSticker: Boolean;
+    function PrintCurrentBoxSticker: Boolean;
     /// <summary>
     /// Функция, проверяющая возможность добавления нового документа в короб
     /// </summary>
@@ -212,6 +240,11 @@ begin
   Result := FCurrentBoxInfoControl;
 end;
 
+function TDocumentArchivingBusinessLogic.GetCurrentDocument: IArchiveDocumentItem;
+begin
+  Result := FCurrentDocument;
+end;
+
 function TDocumentArchivingBusinessLogic.GetCurrentUserId: Integer;
 begin
   Result := FCurrentUserId;
@@ -220,22 +253,6 @@ end;
 function TDocumentArchivingBusinessLogic.GetLastDocumentInfoControl: TCustomControl;
 begin
   Result := FLastDocumentInfoControl;
-end;
-
-procedure TDocumentArchivingBusinessLogic.ClearControl(const AControl: TCustomControl);
-var
-  i: Integer;
-  c: TControl;
-begin
-  if Assigned(AControl) then
-  begin
-    for i := AControl.ControlCount - 1 downto 0 do
-    begin
-      c := AControl.Controls[i];
-      c.Parent := nil;
-      FreeAndNil(c);
-    end;
-  end;
 end;
 
 procedure TDocumentArchivingBusinessLogic.SetCurrentBox(const AValue: IArchiveBoxItem);
@@ -261,6 +278,14 @@ begin
   end;
 end;
 
+procedure TDocumentArchivingBusinessLogic.SetCurrentDocument(const AValue: IArchiveDocumentItem);
+begin
+  if FCurrentDocument <> AValue then
+  begin
+    FCurrentDocument := AValue;
+  end;
+end;
+
 procedure TDocumentArchivingBusinessLogic.SetLastDocumentInfoControl(const AValue: TCustomControl);
 begin
   if FLastDocumentInfoControl <> AValue then
@@ -282,7 +307,7 @@ begin
     Exit;
   end;
 
-  ClearControl(AParentControl);
+  EmptyControl(AParentControl);
   old_height := AParentControl.Height;
 
   if Assigned(AShowableItem.ShowableFields) then
@@ -341,24 +366,20 @@ begin
   end;
 end;
 
-procedure TDocumentArchivingBusinessLogic.ShowCurrentBoxInfo;
+procedure TDocumentArchivingBusinessLogic.UpdateCurrentInfo;
 var
   showable: IShowable;
 begin
-  ClearControl(CurrentBoxInfoControl);
-  if Supports(CurrentBox, IShowable, showable) then
-  begin
-    Show(CurrentBoxInfoControl, showable);
-  end;
-end;
+  EmptyControl(CurrentBoxInfoControl);
+  EmptyControl(LastDocumentInfoControl);
 
-procedure TDocumentArchivingBusinessLogic.ShowLastDocumentInfo;
-var
-  showable: IShowable;
-begin
-  ClearControl(LastDocumentInfoControl);
   if Assigned(CurrentBox) then
   begin
+    if Supports(CurrentBox, IShowable, showable) then
+    begin
+      Show(CurrentBoxInfoControl, showable);
+    end;
+
     if Assigned(CurrentBox.Documents) then
     begin
       if CurrentBox.Documents.Count > 0 then
@@ -409,13 +430,7 @@ begin
       if Result then
       begin
         CurrentBox := nil;
-        ShowCurrentBoxInfo;
-        ShowLastDocumentInfo;
-        DisplaySuccessMessage('Короб закрыт');
-      end
-      else
-      begin
-        DisplayErrorMessage('Не удалось закрыть короб');
+        UpdateCurrentInfo;
       end;
     end;
   end;
@@ -461,12 +476,20 @@ begin
       if Result then
       begin
         CurrentBox.Load(Connection);
-        ShowCurrentBoxInfo;
-        DisplaySuccessMessage('Стикер на текущий короб распечатан');
+        UpdateCurrentInfo;
       end;
     end;
   end;
-  if not Result then
+end;
+
+function TDocumentArchivingBusinessLogic.ManualPrintCurrentBoxSticker: Boolean;
+begin
+  Result := PrintCurrentBoxSticker;
+  if Result then
+  begin
+    DisplaySuccessMessage('Стикер на текущий короб распечатан');
+  end
+  else
   begin
     DisplayErrorMessage('Не удалось распечатать стикер на текущий короб');
   end;
@@ -505,13 +528,7 @@ begin
       if Result then
       begin
         CurrentBox := nil;
-        ShowCurrentBoxInfo;
-        ShowLastDocumentInfo;
-        DisplaySuccessMessage('Текущий короб отложен');
-      end
-      else
-      begin
-        DisplayErrorMessage('Не удалось отложить текущий короб');
+        UpdateCurrentInfo;
       end;
     end;
   end;
@@ -540,8 +557,7 @@ begin
       if Result then
       begin
         CurrentBox := nil;
-        ShowCurrentBoxInfo;
-        ShowLastDocumentInfo;
+        UpdateCurrentInfo;
         DisplaySuccessMessage('Текущий короб удалён');
       end
       else
@@ -746,35 +762,12 @@ begin
   Result := ((box_capacity > -1) and (box_documents_count > -1)) and (box_documents_count >= box_capacity);
 end;
 
-function TDocumentArchivingBusinessLogic.ArchiveBoxIsFull: Boolean;
+function TDocumentArchivingBusinessLogic.CurrentBoxIsFull: Boolean;
 begin
   Result := BoxIsFull(CurrentBox);
-  if Result then
-  begin
-    DisplaySuccessMessage('Текущий короб заполнен');
-  end
-  else
-  begin
-    DisplayErrorMessage('Текущий короб не заполнен');
-  end;
 end;
 
-function TDocumentArchivingBusinessLogic.AutoPrintCurrentBoxSticker: Boolean;
-begin
-  Result := False;
-  if Assigned(CurrentBox) then
-  begin
-    if Assigned(CurrentBox.Documents) then
-    begin
-      if (CurrentBox.Documents.Count = 2) and (not CurrentBox.StickerPrinted) then
-      begin
-        Result := PrintCurrentBoxSticker;
-      end;
-    end;
-  end;
-end;
-
-function TDocumentArchivingBusinessLogic.DeleteLastDocument: Boolean;
+function TDocumentArchivingBusinessLogic.DeleteLastDocumentInCurrentBox: Boolean;
 begin
   Result := False;
   if Assigned(CurrentBox) then
@@ -793,8 +786,7 @@ begin
   end;
   if Result then
   begin
-    ShowCurrentBoxInfo;
-    ShowLastDocumentInfo;
+    UpdateCurrentInfo;
     DisplaySuccessMessage('Последний документ удалён');
   end
   else
@@ -820,6 +812,7 @@ begin
   begin
     if CanAddDocument then
     begin
+      DisplaySuccessMessage('Документ можно добавлять');
       Result := TArchiveBoxItem.Create;
       if Assigned(Result) then
       begin
@@ -827,7 +820,7 @@ begin
         Result.CreationDate := Now;
         Result.TypeId := ArchiveBoxTypeId;
         Result.CompanyId := ADocument.CompanyId;
-        Result.Year := CurrentYear;
+        Result.Year := CurrentYear; { TODO -ov_ivanov : изменить алгоритм инициализации года короба }
         Result.Number := GetNewArchiveBoxNumber(Result.TypeId, Result.CompanyId, Result.Year);
         if Result.Number > 0 then
         begin
@@ -854,6 +847,7 @@ begin
   begin
     if CanAddDocument then
     begin
+      DisplaySuccessMessage('Документ можно добавлять');
       if ADocument.CompanyId = CurrentBox.CompanyId then
       begin
         ADocument.ArchiveBoxId := CurrentBox.Id;
@@ -888,7 +882,7 @@ begin
   begin
     if CanAddDocument then
     begin
-
+      DisplaySuccessMessage('Документ можно добавлять');
       old_box_id := -1;
       SetSQLForQuery(Query, Format('BSOArchiving_sel_OldestOpenedArchiveBox %d, %d',
         [ArchiveBoxTypeId, ADocument.CompanyId]), True);
@@ -933,83 +927,132 @@ begin
           Result := nil;
         end;
       end;
+    end
+    else
+    begin
+      DisplayErrorMessage('Компания документа не соответствует компании короба');
     end;
   end;
 end;
 
-function TDocumentArchivingBusinessLogic.GiveLastDocumentAway: Boolean;
+function TDocumentArchivingBusinessLogic.GiveLastDocumentInCurrentBoxAway: Boolean;
 begin
-  Result := DeleteLastDocument;
-  if Result then
-  begin
-    DisplaySuccessMessage('Последний документ передан');
-  end
-  else
-  begin
-    DisplayErrorMessage('Не удалось передать последний документ');
-  end;
+  Result := DeleteLastDocumentInCurrentBox;
 end;
 
 function TDocumentArchivingBusinessLogic.CanAddDocument: Boolean;
 begin
-  { TODO -ov_ivanov : Реализовать }
-  Result := True;
+  Result := False;
+  SetSQLForQuery(Query, Format('sys_sel_FlagValueInt %d', [79]), True);
+  try
+    if not Query.Eof then
+    begin
+      Result := Query.FieldByName('Value_Int').AsInteger = 0;
+    end;
+  finally
+    Query.Close;
+  end;
 end;
 
-procedure TDocumentArchivingBusinessLogic.ProcessBarcode(const ABarcode: string);
+procedure TDocumentArchivingBusinessLogic.ProcessString(const AString: string);
 var
   doc: IArchiveDocumentItem;
   i: Integer;
 begin
-  case AnalizeBarcode(ABarcode) of
+  case ArchiveBoxTypeId of
+    1:
+      ;
+    2:
+      ;
+    5:
+      ;
+  else
+    begin
+      Exit;
+    end;
+  end;
+
+  case AnalizeBarcode(AString) of
     dabtUnknown:
       DisplayErrorMessage('Введён неизвестный штрих-код');
     dabtBSO:
       begin
         DisplaySuccessMessage('Введён штрих-код БСО');
-        doc := CreateDocumentItemByBarcode(ABarcode);
-        if Assigned(doc) then
+        if CanAddDocument then
         begin
-          if not Assigned(CurrentBox) then
+          doc := CreateDocumentItemByBarcode(AString);
+          if Assigned(doc) then
           begin
-            i := GetOpenedBoxQuantity(ArchiveBoxTypeId, doc.CompanyId);
-            if i = 0 then
+            if not Assigned(CurrentBox) then
             begin
-              CurrentBox := CreateArchiveBoxByDocument(doc);
-              if Assigned(CurrentBox) then
+              i := GetOpenedBoxQuantity(ArchiveBoxTypeId, doc.CompanyId);
+              if i = 0 then
               begin
-                DisplaySuccessMessage('Документ добавлен в новый архивный короб');
+                CurrentBox := CreateArchiveBoxByDocument(doc);
+                if Assigned(CurrentBox) then
+                begin
+                  DisplaySuccessMessage('Документ добавлен в новый архивный короб');
+                end
+                else
+                begin
+                  DisplayErrorMessage('Не удалось создать новый архивный короб для документа');
+                end;
               end
               else
               begin
-                DisplayErrorMessage('Не удалось создать новый архивный короб для документа');
+                CurrentBox := AddDocumentToOldestOpenedArchiveBox(doc);
+                if Assigned(CurrentBox) then
+                begin
+                  DisplaySuccessMessage('Документ добавлен в существующий архивный короб');
+                end
+                else
+                begin
+                  DisplayErrorMessage('Не удалось добавить документ в существующий архивный короб');
+                end;
               end;
             end
             else
             begin
-              CurrentBox := AddDocumentToOldestOpenedArchiveBox(doc);
-              if Assigned(CurrentBox) then
+              if AddDocumentToCurrentBox(doc) then
               begin
-                DisplaySuccessMessage('Документ добавлен в существующий архивный короб');
-              end
-              else
-              begin
-                DisplayErrorMessage('Не удалось добавить документ в существующий архивный короб');
+                DisplaySuccessMessage('Документ добавлен в текущий архивный короб');
               end;
             end;
-          end
-          else
-          begin
-            if AddDocumentToCurrentBox(doc) then
+
+            if Assigned(CurrentBox) then
             begin
-              DisplaySuccessMessage('Документ добавлен в текущий архивный короб');
-            end
-            else
+              if Assigned(CurrentBox.Documents) then
+              begin
+                if (CurrentBox.Documents.Count = 2) and (not CurrentBox.StickerPrinted) then
+                begin
+                  if PrintCurrentBoxSticker then
+                  begin
+                    DisplaySuccessMessage('Стикер на текущий короб распечатан автоматически');
+                  end
+                  else
+                  begin
+                    DisplayErrorMessage('Не удалось распечатать стикер на текущий короб автоматически');
+                  end;
+                end;
+              end;
+            end;
+
+            if CurrentBoxIsFull then
             begin
-              DisplayErrorMessage('Не удалось добавить документ в текущий архивный короб');
+              if CloseCurrentBox then
+              begin
+                DisplaySuccessMessage('Текущий короб заполнен и был закрыт');
+              end
+              else
+              begin
+                DisplayErrorMessage('Текущий короб заполнен, но закрыть его не удалось');
+              end;
             end;
           end;
-          AutoPrintCurrentBoxSticker;
+        end
+        else
+        begin
+          DisplayErrorMessage('Документ нельзя добавлять, поскольку идёт настройка вместимости коробов');
         end;
       end;
     dabtArchiveBox:
@@ -1017,21 +1060,41 @@ begin
     dabtForceNewBoxCommand:
       begin
         DisplaySuccessMessage('Введён штрих-код команды создания нового короба');
-        CloseCurrentBox;
+        if CloseCurrentBox then
+        begin
+          DisplaySuccessMessage('Текущий короб был закрыт');
+        end
+        else
+        begin
+          DisplayErrorMessage('Не удалось закрыть текущий короб');
+        end;
       end;
     dabtPutBoxAsideCommand:
       begin
         DisplaySuccessMessage('Введён штрих-код команды откладывания короба');
-        PutCurrentBoxAside;
+        if PutCurrentBoxAside then
+        begin
+          DisplaySuccessMessage('Текущий короб отложен');
+        end
+        else
+        begin
+          DisplayErrorMessage('Не удалось отложить текущий короб');
+        end;
       end;
     dabtGiveDocumentAway:
       begin
         DisplaySuccessMessage('Введён штрих-код команды передачи последнего документа');
-        GiveLastDocumentAway;
+        if GiveLastDocumentInCurrentBoxAway then
+        begin
+          DisplaySuccessMessage('Последний документ передан');
+        end
+        else
+        begin
+          DisplayErrorMessage('Не удалось передать последний документ');
+        end;
       end;
   end;
-  ShowCurrentBoxInfo;
-  ShowLastDocumentInfo;
+  UpdateCurrentInfo;
 end;
 
 end.

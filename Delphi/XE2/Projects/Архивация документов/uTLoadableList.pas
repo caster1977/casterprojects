@@ -224,10 +224,11 @@ begin
   end;
 end;
 
-function TLoadableList.Clear(const AConnection: TCustomConnection = nil): Boolean;
+function TLoadableList.Clear(const AConnection: TCustomConnection): Boolean;
 var
   i: Integer;
 begin
+  Result := True;
   if Assigned(FItems) then
   begin
     if Assigned(AConnection) then
