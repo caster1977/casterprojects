@@ -187,7 +187,6 @@ end;
 function TLoadableItem.Delete(const AConnection: TCustomConnection): Boolean;
 var
   ds: TDataSet;
-  i: Integer;
 begin
   Result := False;
   if Saveable then

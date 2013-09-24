@@ -82,6 +82,11 @@ function GetArchiveDocumentItemClassByTypeId(const ATypeId: Integer): TArchiveDo
 /// </summary>
 function GetArchiveDocumentListClassByTypeId(const ATypeId: Integer): TArchiveDocumentListClass;
 
+/// <summary>
+/// Процедура удаления всех дочерних элементов из указанного контрола
+/// </summary>
+procedure EmptyControl(const AControl: TCustomControl);
+
 implementation
 
 uses
@@ -221,6 +226,22 @@ begin
   else
     begin
       Result := nil;
+    end;
+  end;
+end;
+
+procedure EmptyControl(const AControl: TCustomControl);
+var
+  i: Integer;
+  c: TControl;
+begin
+  if Assigned(AControl) then
+  begin
+    for i := AControl.ControlCount - 1 downto 0 do
+    begin
+      c := AControl.Controls[i];
+      c.Parent := nil;
+      FreeAndNil(c);
     end;
   end;
 end;
