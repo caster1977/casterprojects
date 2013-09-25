@@ -58,19 +58,19 @@ type
     procedure actTestAcceptBSOByAcceptanceRegisterExecute(Sender: TObject);
     procedure actTestAcceptBSOByAcceptanceRegisterUpdate(Sender: TObject);
     procedure edBarcodeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure actDeleteLastDocumentExecute(Sender: TObject);
     procedure actDeleteLastDocumentUpdate(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     FLogic: IDocumentArchivingBusinessLogic;
     function GetLogic: IDocumentArchivingBusinessLogic;
     property Logic: IDocumentArchivingBusinessLogic read GetLogic nodefault;
   private
+    procedure DisplayMessage(const AType: TMessageType; const AText: string);
+  private
     function GetBarcode: string;
     procedure SetBarcode(const AValue: string);
     property Barcode: string read GetBarcode write SetBarcode nodefault;
-  private
-    procedure DisplayMessage(const AType: TMessageType; const AText: string);
   end;
 
 var
@@ -131,8 +131,8 @@ begin
   if not Assigned(FLogic) then
   begin
     FLogic := TDocumentArchivingBusinessLogic.Create(ADOConnection, 222, 1, DisplayMessage);
-    Logic.CurrentBoxInfoControl := gbCurrentBox;
-    Logic.LastDocumentInfoControl := gbLastDocument;
+    Logic.SetCurrentBoxInfoControl(gbCurrentBox);
+    Logic.SetLastDocumentInfoControl(gbLastDocument);
   end;
   Result := FLogic;
 end;
@@ -153,11 +153,6 @@ begin
   Close;
 end;
 
-procedure TTestLogicMainForm.actDeleteLastDocumentExecute(Sender: TObject);
-begin
-  Logic.DeleteLastDocumentInCurrentBox;
-end;
-
 procedure TTestLogicMainForm.actDeleteLastDocumentUpdate(Sender: TObject);
 var
   b: Boolean;
@@ -165,15 +160,14 @@ begin
   b := False;
   if Assigned(Logic) then
   begin
-    if Assigned(Logic.CurrentBox) then
-    begin
-      if Assigned(Logic.CurrentBox.Documents) then
-      begin
-        b := Logic.CurrentBox.Documents.Count > 0;
-      end;
-    end;
+    b := Logic.GetCurrentBoxDocumentCount > 0;
   end;
   (Sender as TAction).Enabled := b;
+end;
+
+procedure TTestLogicMainForm.actDeleteLastDocumentExecute(Sender: TObject);
+begin
+  Logic.ManualDeleteLastDocumentFromCurrentBox;
 end;
 
 procedure TTestLogicMainForm.actPrintStickerExecute(Sender: TObject);
@@ -188,23 +182,44 @@ begin
   b := False;
   if Assigned(Logic) then
   begin
-    if Assigned(Logic.CurrentBox) then
-    begin
-      if Assigned(Logic.CurrentBox.Documents) then
-      begin
-        b := Logic.CurrentBox.Documents.Count > 1;
-      end;
-    end;
+    b := Logic.GetCurrentBoxDocumentCount > 1;
   end;
   (Sender as TAction).Enabled := b;
+end;
+
+procedure TTestLogicMainForm.edBarcodeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = VK_RETURN then
+  begin
+    Logic.Connection.Connected := True;
+    try
+      Logic.ProcessString(Barcode);
+      Barcode := EmptyStr;
+    finally
+      Logic.Connection.Connected := False;
+    end;
+    Key := 0;
+  end;
+end;
+
+procedure TTestLogicMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  FLogic := nil; // не убирать!
 end;
 
 procedure TTestLogicMainForm.actTestAcceptBSOByAcceptanceRegisterExecute(Sender: TObject);
 begin
   Logic.Connection.Connected := True;
   try
-    Logic.AcceptBSOByAcceptanceRegister(Logic.CurrentBox.Documents.Item[Logic.CurrentBox.Documents.Count - 1]
-      as ICustomBSOItem);
+    if Logic.AcceptBSOByAcceptanceRegister(Logic.CurrentBox.Documents.Item[Logic.CurrentBox.Documents.Count - 1]
+      as ICustomBSOItem) then
+    begin
+      Logic.DisplaySuccessMessage('Документ принят по реестру ЛП');
+    end
+    else
+    begin
+      Logic.DisplayErrorMessage('Документ не принят по реестру ЛП');
+    end;
   finally
     Logic.Connection.Connected := False;
   end;
@@ -227,29 +242,6 @@ begin
     end;
   end;
   (Sender as TAction).Enabled := b;
-end;
-
-procedure TTestLogicMainForm.edBarcodeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-  if Key = VK_RETURN then
-  begin
-    Logic.Connection.Connected := True;
-    try
-      Logic.ProcessString(Barcode);
-      Barcode := EmptyStr;
-    finally
-      Logic.Connection.Connected := False;
-    end;
-    Key := 0;
-  end;
-end;
-
-procedure TTestLogicMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-begin
-  if Assigned(Logic) then
-  begin
-    Logic.PutCurrentBoxAside;
-  end;
 end;
 
 end.
