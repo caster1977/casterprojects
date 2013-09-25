@@ -143,6 +143,7 @@
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
+        <DCCReference Include="uTTestedDocumentArchivingLogic.pas"/>
         <None Include="ModelSupport_TestLogic\default.txaPackage"/>
         <None Include="ModelSupport_TestLogic\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uILoadableItem\default.txvpck"/>
@@ -243,6 +244,8 @@
         <None Include="ModelSupport_TestLogic\uTDocumentArchivingBusinessLogic\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uTDocumentArchivingBarcodeType\default.txaPackage"/>
         <None Include="ModelSupport_TestLogic\uTDocumentArchivingBarcodeType\default.txvpck"/>
+        <None Include="ModelSupport_TestLogic\uTTestedDocumentArchivingLogic\default.txaPackage"/>
+        <None Include="ModelSupport_TestLogic\uTTestedDocumentArchivingLogic\default.txvpck"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

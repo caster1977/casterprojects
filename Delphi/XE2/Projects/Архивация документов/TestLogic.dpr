@@ -2,7 +2,7 @@ program TestLogic;
 
 uses
   Vcl.Forms,
-  uTTestLogicMainForm in 'uTTestLogicMainForm.pas' {TestLogicMainForm} ,
+  uTTestLogicMainForm in 'uTTestLogicMainForm.pas' {TestLogicMainForm},
   uCommonRoutines in 'uCommonRoutines.pas',
   uIArchiveCompanyList in 'uIArchiveCompanyList.pas',
   uIArchiveCompanyItem in 'uIArchiveCompanyItem.pas',
@@ -53,7 +53,8 @@ uses
   uIDocumentArchivingBusinessLogic in 'uIDocumentArchivingBusinessLogic.pas',
   uTDocumentArchivingBusinessLogic in 'uTDocumentArchivingBusinessLogic.pas',
   uTDocumentArchivingBarcodeType in 'uTDocumentArchivingBarcodeType.pas',
-  uTReportDataModule in 'uTReportDataModule.pas' {ReportDataModule: TDataModule};
+  uTReportDataModule in 'uTReportDataModule.pas' {ReportDataModule: TDataModule},
+  uTTestedDocumentArchivingLogic in 'uTTestedDocumentArchivingLogic.pas';
 
 {$R *.res}
 

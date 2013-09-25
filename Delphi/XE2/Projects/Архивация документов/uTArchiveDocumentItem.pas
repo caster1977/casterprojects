@@ -99,6 +99,7 @@ type
     function GetLoadSQL: string; override; final;
     procedure Load(const ADataSet: TDataSet); override;
     constructor Create; override;
+    function AlreadyArchived(const AConnection: TCustomConnection = nil): Integer; virtual; abstract;
   end;
 
 implementation

@@ -87,6 +87,11 @@ function GetArchiveDocumentListClassByTypeId(const ATypeId: Integer): TArchiveDo
 /// </summary>
 procedure EmptyControl(const AControl: TCustomControl);
 
+/// <summary>
+/// Функция определения, состоит ли указанная строка из цифр
+/// </summary>
+function IsNumericString(const AString: string): Boolean;
+
 implementation
 
 uses
@@ -242,6 +247,22 @@ begin
       c := AControl.Controls[i];
       c.Parent := nil;
       FreeAndNil(c);
+    end;
+  end;
+end;
+
+function IsNumericString(const AString: string): Boolean;
+var
+  s: string;
+  i: Integer;
+begin
+  Result := True;
+  for i := 1 to Length(s) do
+  begin
+    if not CharInSet(s[i], ['0' .. '9']) then
+    begin
+      Result := False;
+      Break;
     end;
   end;
 end;

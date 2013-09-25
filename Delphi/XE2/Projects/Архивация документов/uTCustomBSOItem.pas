@@ -37,6 +37,7 @@ type
     constructor Create; override;
     procedure Load(const ADataSet: TDataSet); override;
     function FromString(const AValue: string): Boolean; override; final;
+    function AlreadyArchived(const AConnection: TCustomConnection = nil): Integer; override; final;
   end;
 
 implementation
@@ -148,6 +149,37 @@ begin
     BSOId := ADataSet.FieldByName('BSOId').AsInteger;
     Series := ADataSet.FieldByName('Series').AsString;
     Number := ADataSet.FieldByName('Number').AsString;
+  end;
+end;
+
+function TCustomBSOItem.AlreadyArchived(const AConnection: TCustomConnection): Integer;
+var
+  ds: TDataSet;
+begin
+  Result := -1;
+  if Assigned(AConnection) then
+  begin
+    Connection := AConnection;
+  end;
+  if Assigned(Connection) then
+  begin
+    ds := GetQuery(Connection);
+    if Assigned(ds) then
+    begin
+      try
+        SetSQLForQuery(ds, Format('BSOArchiving_sel_BSOAlreadyArchived %d, %d', [Id, BSOId]), True);
+        try
+          if not ds.Eof then
+          begin
+            Result := ds.Fields[0].AsInteger;
+          end;
+        finally
+          ds.Close;
+        end;
+      finally
+        FreeAndNil(ds);
+      end;
+    end;
   end;
 end;
 
