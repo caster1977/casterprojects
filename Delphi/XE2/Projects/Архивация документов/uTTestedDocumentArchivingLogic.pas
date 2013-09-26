@@ -205,6 +205,9 @@ type
     function AnalizeBarcode(const ABarcode: string): TDocumentArchivingBarcodeType;
 
     function CreateDocumentItemByBarcode(const ABarcode: string): IArchiveDocumentItem;
+    function CreateArchiveBoxByDocument(const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
+    function AddDocumentToCurrentBox(const ADocument: IArchiveDocumentItem): Boolean;
+    function AddDocumentToOldestOpenedArchiveBox(const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
 
     function IsArchiveBoxBarcode(const ABarcode: string): Boolean;
     function IsBSOBarcode(const ABarcode: string): Boolean;
@@ -864,6 +867,123 @@ begin
     end;
   finally
     Query.Close;
+  end;
+end;
+
+function TTestedDocumentArchivingLogic.AddDocumentToOldestOpenedArchiveBox(const ADocument: IArchiveDocumentItem)
+  : IArchiveBoxItem;
+var
+  old_box_id: Integer;
+begin
+  Result := nil;
+  if Assigned(ADocument) then
+  begin
+    if CanAddDocument then
+    begin
+      old_box_id := -1;
+      SetSQLForQuery(Query, Format('BSOArchiving_sel_OldestOpenedArchiveBox %d, %d',
+        [ArchiveBoxTypeId, ADocument.CompanyId]), True);
+      try
+        if not Query.Eof then
+        begin
+          old_box_id := Query.Fields[0].AsInteger;
+        end;
+      finally
+        Query.Close;
+      end;
+      if old_box_id > -1 then
+      begin
+        Result := TArchiveBoxItem.Create(Connection, old_box_id);
+        if Assigned(Result) then
+        begin
+          Result.UserId := CurrentUserId;
+          Result.Save(Connection);
+          Result.Load;
+          ADocument.ArchiveBoxId := Result.Id;
+          if Assigned(Result.Documents) then
+          begin
+            ADocument.SequenceNumber := Result.Documents.Count + 1;
+            if Result.Documents.Add(ADocument) > -1 then
+            begin
+              if not Result.Documents.Save then
+              begin
+                Result := nil;
+              end;
+            end
+            else
+            begin
+              Result := nil;
+            end;
+          end
+          else
+          begin
+            Result := nil;
+          end;
+        end;
+      end;
+    end;
+  end;
+end;
+
+function TTestedDocumentArchivingLogic.AddDocumentToCurrentBox(const ADocument: IArchiveDocumentItem): Boolean;
+begin
+  Result := False;
+  if Assigned(ADocument) and Assigned(CurrentBox) then
+  begin
+    if CanAddDocument then
+    begin
+      if ADocument.CompanyId = CurrentBox.CompanyId then
+      begin
+        ADocument.ArchiveBoxId := CurrentBox.Id;
+        if Assigned(CurrentBox.Documents) then
+        begin
+          ADocument.SequenceNumber := CurrentBox.Documents.Count + 1;
+          if CurrentBox.Documents.Add(ADocument) > -1 then
+          begin
+            Result := CurrentBox.Documents.Save;
+          end;
+        end;
+      end
+      else
+      begin
+        DisplayErrorMessage('Компания документа не соответствует компании короба');
+      end;
+    end;
+  end;
+end;
+
+function TTestedDocumentArchivingLogic.CreateArchiveBoxByDocument(const ADocument: IArchiveDocumentItem)
+  : IArchiveBoxItem;
+begin
+  Result := nil;
+  if Assigned(ADocument) then
+  begin
+    if CanAddDocument then
+    begin
+      Result := TArchiveBoxItem.Create;
+      if Assigned(Result) then
+      begin
+        Result.UserId := CurrentUserId;
+        Result.CreationDate := Now;
+        Result.TypeId := ArchiveBoxTypeId;
+        Result.CompanyId := ADocument.CompanyId;
+        Result.Year := CurrentYear; { TODO -ov_ivanov : изменить алгоритм инициализации года короба }
+        Result.Number := GetNewArchiveBoxNumber(Result.TypeId, Result.CompanyId, Result.Year);
+        if Result.Number > 0 then
+        begin
+          Result.Save(Connection);
+          Result.Load;
+          ADocument.ArchiveBoxId := Result.Id;
+          ADocument.SequenceNumber := 1; // номер первого бланка в новом коробе
+          Result.Documents.Add(ADocument);
+          Result.Documents.Save;
+        end
+        else
+        begin
+          Result := nil;
+        end;
+      end;
+    end;
   end;
 end;
 
