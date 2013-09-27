@@ -1,10 +1,12 @@
 object TestLogicMainForm: TTestLogicMainForm
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
   BorderWidth = 6
   Caption = 'TestLogicMainForm'
-  ClientHeight = 492
-  ClientWidth = 412
+  ClientHeight = 502
+  ClientWidth = 422
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,18 +20,20 @@ object TestLogicMainForm: TTestLogicMainForm
   TextHeight = 13
   object pnlButtons: TPanel
     Left = 0
-    Top = 461
-    Width = 412
+    Top = 471
+    Width = 422
     Height = 31
     Align = alBottom
     BevelOuter = bvNone
     ShowCaption = False
     TabOrder = 3
+    ExplicitTop = 461
+    ExplicitWidth = 412
     DesignSize = (
-      412
+      422
       31)
     object btnClose: TButton
-      Left = 337
+      Left = 347
       Top = 6
       Width = 75
       Height = 25
@@ -38,16 +42,18 @@ object TestLogicMainForm: TTestLogicMainForm
       Anchors = [akTop, akRight]
       Cancel = True
       TabOrder = 0
+      ExplicitLeft = 337
     end
   end
   object ToolBar: TToolBar
     Left = 0
     Top = 0
-    Width = 412
+    Width = 422
     Height = 33
     Caption = 'ToolBar'
     Images = ImageList
     TabOrder = 0
+    ExplicitWidth = 412
     object tbPrintSticker: TToolButton
       Left = 0
       Top = 0
@@ -91,33 +97,41 @@ object TestLogicMainForm: TTestLogicMainForm
   object gbBarcode: TGroupBox
     Left = 0
     Top = 278
-    Width = 412
+    Width = 422
     Height = 54
     Align = alTop
     Caption = ' '#1064#1090#1088#1080#1093'-'#1082#1086#1076' '
     TabOrder = 1
+    ExplicitWidth = 412
+    DesignSize = (
+      422
+      54)
     object edBarcode: TEdit
       Left = 8
       Top = 24
-      Width = 395
+      Width = 405
       Height = 21
+      Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
       OnKeyDown = edBarcodeKeyDown
+      ExplicitWidth = 395
     end
   end
   object gbHint: TGroupBox
     Left = 0
     Top = 332
-    Width = 412
-    Height = 129
+    Width = 422
+    Height = 139
     Align = alClient
     Caption = ' '#1057#1086#1086#1073#1097#1077#1085#1080#1077' '
     TabOrder = 2
+    ExplicitWidth = 412
+    ExplicitHeight = 129
     object lblHint: TLabel
       Left = 8
       Top = 16
-      Width = 395
-      Height = 105
+      Width = 405
+      Height = 115
       Align = alCustom
       Alignment = taCenter
       Anchors = [akLeft, akTop, akRight, akBottom]
@@ -130,26 +144,29 @@ object TestLogicMainForm: TTestLogicMainForm
       ParentFont = False
       Layout = tlCenter
       WordWrap = True
+      ExplicitWidth = 395
       ExplicitHeight = 82
     end
   end
   object gbCurrentBox: TGroupBox
     Left = 0
     Top = 33
-    Width = 412
+    Width = 422
     Height = 136
     Align = alTop
     Caption = ' '#1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1090#1077#1082#1091#1097#1077#1084' '#1082#1086#1088#1086#1073#1077' '
     TabOrder = 4
+    ExplicitWidth = 412
   end
   object gbLastDocument: TGroupBox
     Left = 0
     Top = 169
-    Width = 412
+    Width = 422
     Height = 109
     Align = alTop
     Caption = ' '#1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1087#1086#1089#1083#1077#1076#1085#1077#1084' '#1076#1086#1082#1091#1084#1077#1085#1090#1077' '#1074' '#1090#1077#1082#1091#1097#1077#1084' '#1082#1086#1088#1086#1073#1077' '
     TabOrder = 5
+    ExplicitWidth = 412
   end
   object SQLConnection: TSQLConnection
     ConnectionName = 'MSSQLConnection'
@@ -214,7 +231,7 @@ object TestLogicMainForm: TTestLogicMainForm
     Left = 336
     Top = 376
     Bitmap = {
-      494C01010B008800B40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B008800BC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000F6F6F609ECECEC13E9E9E916E9E9E916F0F0F00FFCFCFC030000

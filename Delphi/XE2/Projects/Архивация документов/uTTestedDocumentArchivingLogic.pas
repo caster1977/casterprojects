@@ -214,6 +214,12 @@ type
     function IsForceNewBoxCommandBarcode(const ABarcode: string): Boolean;
     function IsPutBoxAsideCommandBarcode(const ABarcode: string): Boolean;
     function IsGiveLastDocumentAwayBarcode(const ABarcode: string): Boolean;
+    function IsCauseOfDamageBarcode(const ABarcode: string): Boolean;
+
+  public
+    procedure ManualPrintCurrentBoxSticker;
+    procedure ManualDeleteLastDocumentFromCurrentBox;
+    function GetCurrentBoxDocumentCount: Integer;
 
   private
     FCurrentBox: IArchiveBoxItem;
@@ -279,6 +285,13 @@ type
   protected
     property CurrentUserId: Integer read GetCurrentUserId nodefault;
 
+  private
+    FStep: Integer;
+    function GetStep: Integer;
+    procedure SetStep(const AValue: Integer);
+  protected
+    property Step: Integer read GetStep write SetStep nodefault;
+
   public
     constructor Create(const AConnection: TCustomConnection; const ACurrentUserId, AArchiveBoxTypeId: Integer;
       const AOnDisplayMessage: TOnDisplayMessage = nil); reintroduce; virtual;
@@ -298,6 +311,8 @@ uses
   uIArchiveBoxTypeItem,
   uTArchiveCompanyItem,
   uTArchiveBoxTypeItem,
+  uICauseOfDamageList,
+  uTCauseOfDamageList,
   uTArchiveDocumentItemClass;
 
 function TTestedDocumentArchivingLogic.GetArchiveBoxIdByDocument(const ADocument: IArchiveDocumentItem): Integer;
@@ -389,6 +404,11 @@ begin
   end;
 end;
 
+function TTestedDocumentArchivingLogic.GetStep: Integer;
+begin
+  Result := FStep;
+end;
+
 function TTestedDocumentArchivingLogic.GiveLastDocumentInCurrentBoxAway: Boolean;
 begin
   Result := DeleteLastDocumentFromCurrentBox;
@@ -424,6 +444,18 @@ begin
   if FLastDocumentInfoControl <> AValue then
   begin
     FLastDocumentInfoControl := AValue;
+  end;
+end;
+
+procedure TTestedDocumentArchivingLogic.SetStep(const AValue: Integer);
+begin
+  if FStep <> AValue then
+  begin
+    FStep := AValue;
+  end;
+  if FStep = 0 then
+  begin
+    CurrentDocument := nil;
   end;
 end;
 
@@ -463,7 +495,14 @@ begin
           end
           else
           begin
-            Result := dabtUnknown;
+            if IsCauseOfDamageBarcode(s) then
+            begin
+              Result := dabtCauseOfDamage;
+            end
+            else
+            begin
+              Result := dabtUnknown;
+            end;
           end;
         end;
       end;
@@ -778,6 +817,8 @@ begin
   inherited Create(AConnection, AOnDisplayMessage);
   FCurrentUserId := ACurrentUserId;
   FArchiveBoxTypeId := AArchiveBoxTypeId;
+  Step := 0;
+  DisplayInfoMessage('Введите штрих-код документа или команды');
 end;
 
 function TTestedDocumentArchivingLogic.CurrentBoxIsFull: Boolean;
@@ -820,6 +861,29 @@ begin
   Result := (Length(s) >= 14) and IsNumericString(s);
 end;
 
+function TTestedDocumentArchivingLogic.IsCauseOfDamageBarcode(const ABarcode: string): Boolean;
+var
+  s: string;
+  codl: ICauseOfDamageList;
+  i: Integer;
+begin
+  Result := False;
+  s := Trim(ABarcode);
+  codl := TCauseOfDamageList.Create(Connection);
+  if Assigned(codl) then
+  begin
+    codl.Load;
+    for i := 0 to codl.Count - 1 do
+    begin
+      if codl.Item[i].Barcode = s then
+      begin
+        Result := True;
+        Break;
+      end;
+    end;
+  end;
+end;
+
 function TTestedDocumentArchivingLogic.IsForceNewBoxCommandBarcode(const ABarcode: string): Boolean;
 begin
   Result := Trim(ABarcode) = '010001';
@@ -837,15 +901,15 @@ end;
 
 function TTestedDocumentArchivingLogic.CreateDocumentItemByBarcode(const ABarcode: string): IArchiveDocumentItem;
 var
-  item: TArchiveDocumentItemClass;
+  Item: TArchiveDocumentItemClass;
 begin
   Result := nil;
   if IsBSOBarcode(ABarcode) then
   begin
-    item := GetArchiveDocumentItemClassByTypeId(ArchiveBoxTypeId);
-    if Assigned(item) then
+    Item := GetArchiveDocumentItemClassByTypeId(ArchiveBoxTypeId);
+    if Assigned(Item) then
     begin
-      Result := item.Create(Connection, -1);
+      Result := Item.Create(Connection, -1);
       if Assigned(Result) then
       begin
         Result.FromString(ABarcode);
@@ -946,7 +1010,7 @@ begin
       end
       else
       begin
-        DisplayErrorMessage('Компания документа не соответствует компании короба');
+        DisplayErrorMessage('Компания документа не соответствует компании короба' + sLineBreak + 'Введите штрих-код документа или команды');
       end;
     end;
   end;
@@ -985,6 +1049,27 @@ begin
       end;
     end;
   end;
+end;
+
+function TTestedDocumentArchivingLogic.GetCurrentBoxDocumentCount: Integer;
+begin
+  Result := GetDocumentCount(CurrentBox);
+end;
+
+procedure TTestedDocumentArchivingLogic.ManualPrintCurrentBoxSticker;
+begin
+  if PrintCurrentBoxSticker then
+    DisplaySuccessMessage('Стикер на текущий короб распечатан' + sLineBreak + 'Введите штрих-код документа или команды')
+  else
+    DisplayErrorMessage('Не удалось распечатать стикер на текущий короб' + sLineBreak + 'Введите штрих-код документа или команды');
+end;
+
+procedure TTestedDocumentArchivingLogic.ManualDeleteLastDocumentFromCurrentBox;
+begin
+  if DeleteLastDocumentFromCurrentBox then
+    DisplaySuccessMessage('Последний документ из текущего короба удалён' + sLineBreak + 'Введите штрих-код документа или команды')
+  else
+    DisplayErrorMessage('Не удалось удалить последний документ из текущего короба' + sLineBreak + 'Введите штрих-код документа или команды');
 end;
 
 end.

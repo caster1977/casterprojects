@@ -93,7 +93,6 @@ end;
 procedure TDamagedBSOItem.FillShowableFieldsList;
 begin
   AddShowableField('Штрих-код:', 'Barcode', Barcode);
-  //AddShowableField('Компания:', 'CompanyName', CompanyName);
   AddShowableField('Серия:', 'Series', Series);
   AddShowableField('Номер:', 'Number', Number);
   AddShowableField('Порядковый номер в коробе:', 'SequenceNumber', IntToStr(SequenceNumber));
