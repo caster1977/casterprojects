@@ -35,7 +35,12 @@ type
     /// <summary>
     /// Штрих-код команды передачи последнего документа
     /// </summary>
-    dabtGiveDocumentAway);
+    dabtGiveDocumentAway,
+
+    /// <summary>
+    /// Штрих-код порчи БСО
+    /// </summary>
+    dabtCauseOfDamage);
 
 implementation
 

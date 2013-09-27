@@ -30,7 +30,7 @@ end;
 
 function TShipmentBSOWithActItem.GetSaveSQL: string;
 begin
-  Result := Format('BSOArchiving_upd_ShipmentBSOWithAct %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d',
+  Result := Format('BSOArchiving_upd_ShipmentBSO %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d',
     [Id, ArchiveBoxId, SequenceNumber, ArchivedByUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate),
     Integer(Issued), IssuedToUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', IssuanceDate), BSOId]);
 end;
@@ -43,7 +43,6 @@ end;
 procedure TShipmentBSOWithActItem.FillShowableFieldsList;
 begin
   AddShowableField('Штрих-код:', 'Barcode', Barcode);
-  //AddShowableField('Компания:', 'CompanyName', CompanyName);
   AddShowableField('Серия:', 'Series', Series);
   AddShowableField('Номер:', 'Number', Number);
   AddShowableField('Порядковый номер в коробе:', 'SequenceNumber', IntToStr(SequenceNumber));

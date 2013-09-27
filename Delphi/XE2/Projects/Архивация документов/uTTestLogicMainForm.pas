@@ -130,7 +130,7 @@ function TTestLogicMainForm.GetLogic: IDocumentArchivingBusinessLogic;
 begin
   if not Assigned(FLogic) then
   begin
-    FLogic := TDocumentArchivingBusinessLogic.Create(ADOConnection, 222, 1, DisplayMessage);
+    FLogic := TDocumentArchivingBusinessLogic.Create(ADOConnection, 222, 5, DisplayMessage);
     Logic.SetCurrentBoxInfoControl(gbCurrentBox);
     Logic.SetLastDocumentInfoControl(gbLastDocument);
   end;
