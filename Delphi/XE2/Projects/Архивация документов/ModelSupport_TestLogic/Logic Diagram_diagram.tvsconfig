@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <TgConfig Version="3" SubLevelDisabled="False">
   <Option Name="ViewManag.ShowPropertyAccessors" Type="System.Boolean" Value="False" Category="View Management" SubCategory="MemberFilters" />
-  <Option Name="DiagramView.ZoomFactor" Type="System.Single" Value="0.633502543" Category="Diagram" IsBrowsable="False" />
+  <Option Name="DiagramView.ZoomFactor" Type="System.Single" Value="0.645338237" Category="Diagram" IsBrowsable="False" />
 </TgConfig>

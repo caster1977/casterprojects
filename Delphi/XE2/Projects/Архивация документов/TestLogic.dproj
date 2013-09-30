@@ -136,14 +136,17 @@
         <DCCReference Include="uIArchiveBoxList.pas"/>
         <DCCReference Include="uTArchiveBoxList.pas"/>
         <DCCReference Include="uIDocumentArchivingBusinessLogic.pas"/>
-        <DCCReference Include="uTDocumentArchivingBusinessLogic.pas"/>
         <DCCReference Include="uTDocumentArchivingBarcodeType.pas"/>
         <DCCReference Include="uTReportDataModule.pas">
             <Form>ReportDataModule</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="uTTestedDocumentArchivingLogic.pas"/>
+        <DCCReference Include="uTDocumentArchivingBusinessLogic.pas"/>
+        <DCCReference Include="uTShipmentBSOArchivingBusinessLogic.pas"/>
+        <DCCReference Include="uTDamagedBSOArchivingBusinessLogic.pas"/>
+        <DCCReference Include="uTShipmentBSOWithActArchivingBusinessLogic.pas"/>
+        <DCCReference Include="uTDocumentArchivingBusinessLogicClass.pas"/>
         <None Include="ModelSupport_TestLogic\default.txaPackage"/>
         <None Include="ModelSupport_TestLogic\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uILoadableItem\default.txvpck"/>
@@ -240,12 +243,18 @@
         <None Include="ModelSupport_TestLogic\uTArchiveBoxList\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uIDocumentArchivingBusinessLogic\default.txaPackage"/>
         <None Include="ModelSupport_TestLogic\uIDocumentArchivingBusinessLogic\default.txvpck"/>
-        <None Include="ModelSupport_TestLogic\uTDocumentArchivingBusinessLogic\default.txaPackage"/>
-        <None Include="ModelSupport_TestLogic\uTDocumentArchivingBusinessLogic\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uTDocumentArchivingBarcodeType\default.txaPackage"/>
         <None Include="ModelSupport_TestLogic\uTDocumentArchivingBarcodeType\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uTTestedDocumentArchivingLogic\default.txaPackage"/>
         <None Include="ModelSupport_TestLogic\uTTestedDocumentArchivingLogic\default.txvpck"/>
+        <None Include="ModelSupport_TestLogic\uTShipmentBSOArchivingBusinessLogic\default.txaPackage"/>
+        <None Include="ModelSupport_TestLogic\uTShipmentBSOArchivingBusinessLogic\default.txvpck"/>
+        <None Include="ModelSupport_TestLogic\uTDocumentArchivingBusinessLogicClass\default.txaPackage"/>
+        <None Include="ModelSupport_TestLogic\uTShipmentBSOWithActArchivingBusinessLogic\default.txaPackage"/>
+        <None Include="ModelSupport_TestLogic\uTDamagedBSOArchivingBusinessLogic\default.txaPackage"/>
+        <None Include="ModelSupport_TestLogic\uTDocumentArchivingBusinessLogicClass\default.txvpck"/>
+        <None Include="ModelSupport_TestLogic\uTShipmentBSOWithActArchivingBusinessLogic\default.txvpck"/>
+        <None Include="ModelSupport_TestLogic\uTDamagedBSOArchivingBusinessLogic\default.txvpck"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -4,5 +4,19 @@
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTDocumentArchivingBarcodeType.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTDocumentArchivingBarcodeType.TDocumentArchivingBarcodeType">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,210,158" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTDocumentArchivingBarcodeType.TDocumentArchivingBarcodeType.dabtUnknown" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTDocumentArchivingBarcodeType.TDocumentArchivingBarcodeType.dabtBSO" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTDocumentArchivingBarcodeType.TDocumentArchivingBarcodeType.dabtArchiveBox" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTDocumentArchivingBarcodeType.TDocumentArchivingBarcodeType.dabtForceNewBoxCommand" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTDocumentArchivingBarcodeType.TDocumentArchivingBarcodeType.dabtPutBoxAsideCommand" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTDocumentArchivingBarcodeType.TDocumentArchivingBarcodeType.dabtGiveDocumentAway" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTDocumentArchivingBarcodeType.TDocumentArchivingBarcodeType.dabtCauseOfDamage" />
+    </reference>
   </view>
 </nodeSet>

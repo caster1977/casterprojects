@@ -1,0 +1,126 @@
+unit uTDamagedBSOArchivingBusinessLogic;
+
+interface
+
+uses
+  uTDocumentArchivingBusinessLogic;
+
+type
+  TDamagedBSOArchivingBusinessLogic = class sealed(TDocumentArchivingBusinessLogic)
+  protected
+    procedure ProcessDocument(const AString: string); override; final;
+    function GetArchiveBoxTypeId: Integer; override; final;
+  end;
+
+implementation
+
+uses
+  SysUtils,
+  uTDocumentArchivingBarcodeType,
+  uIArchiveBoxItem,
+  uTArchiveBoxItem,
+  uICauseOfDamageList,
+  uTCauseOfDamageList,
+  uTDamagedBSOItem;
+
+function TDamagedBSOArchivingBusinessLogic.GetArchiveBoxTypeId: Integer;
+begin
+  Result := 5;
+end;
+
+procedure TDamagedBSOArchivingBusinessLogic.ProcessDocument(const AString: string);
+var
+  codl: ICauseOfDamageList;
+  i: Integer;
+  box: IArchiveBoxItem;
+begin
+  case Step of
+    0:
+      begin
+        CurrentDocument := CreateDocumentItemByBarcode(AString);
+        if Assigned(CurrentDocument) then
+        begin
+          i := GetArchiveBoxIdByDocument(CurrentDocument);
+          if i = -1 then
+          begin
+            Step := 1;
+            DisplayInfoMessage('Введите штрих-код порчи документа');
+          end
+          else
+          begin
+            box := TArchiveBoxItem.Create(Connection, i);
+            if Assigned(box) then
+            begin
+              DisplayErrorMessage(Format('Документ уже был заархивирован ранее (штрих-код короба - %s)' + sLineBreak + 'Введите штрих-код документа или команды',
+                [box.Barcode]));
+            end;
+          end;
+        end
+        else
+        begin
+          Step := 0;
+          DisplayInfoMessage('Документ с указанным штрих-кодом не найден в базе данных' + sLineBreak + 'Введите штрих-код документа или команды');
+        end;
+      end;
+    1:
+      begin
+        if Assigned(CurrentDocument) then
+        begin
+          if AnalizeBarcode(AString) = dabtCauseOfDamage then
+          begin
+            codl := TCauseOfDamageList.Create(Connection);
+            if Assigned(codl) then
+            begin
+              codl.Load;
+              for i := 0 to codl.Count - 1 do
+              begin
+                if codl.Item[i].Barcode = AString then
+                begin
+                  (CurrentDocument as TDamagedBSOItem).CauseOfDamageId := codl.Item[i].Id;
+                  (CurrentDocument as TDamagedBSOItem).CauseOfDamageName := codl.Item[i].name;
+                  if not Assigned(CurrentBox) then
+                  begin
+                    if GetOpenedBoxQuantity(ArchiveBoxTypeId, CurrentDocument.CompanyId) = 0 then
+                    begin
+                      CurrentBox := CreateArchiveBoxByDocument(CurrentDocument);
+                      if Assigned(CurrentBox) then
+                      begin
+                        DisplaySuccessMessage('Документ добавлен в новый архивный короб' + sLineBreak + 'Введите штрих-код документа или команды');
+                      end;
+                    end
+                    else
+                    begin
+                      CurrentBox := AddDocumentToOldestOpenedArchiveBox(CurrentDocument);
+                      if Assigned(CurrentBox) then
+                      begin
+                        DisplaySuccessMessage('Документ добавлен в существующий архивный короб' + sLineBreak + 'Введите штрих-код документа или команды');
+                      end;
+                    end;
+                  end
+                  else
+                  begin
+                    if AddDocumentToCurrentBox(CurrentDocument) then
+                    begin
+                      DisplaySuccessMessage('Документ добавлен в текущий архивный короб' + sLineBreak + 'Введите штрих-код документа или команды');
+                    end;
+                  end;
+                  Break;
+                end;
+              end;
+            end;
+          end
+          else
+          begin
+            DisplayErrorMessage('Документ не был добавлен, т.к. не был введён штрих-код порчи документа' + sLineBreak + 'Введите штрих-код документа или команды');
+          end;
+        end
+        else
+        begin
+          DisplayInfoMessage('Введите штрих-код документа или команды');
+        end;
+        Step := 0;
+      end;
+  end;
+end;
+
+end.

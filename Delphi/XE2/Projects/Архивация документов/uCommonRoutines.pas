@@ -14,7 +14,8 @@ uses
   uTArchiveDocumentItem,
   uTArchiveDocumentListClass,
   uIArchiveDocumentList,
-  uTArchiveDocumentList;
+  uTArchiveDocumentList,
+  uTDocumentArchivingBusinessLogicClass;
 
 /// <summary>
 /// Процедура, получающая результирующую выборку на основе текста запроса,
@@ -83,6 +84,11 @@ function GetArchiveDocumentItemClassByTypeId(const ATypeId: Integer): TArchiveDo
 function GetArchiveDocumentListClassByTypeId(const ATypeId: Integer): TArchiveDocumentListClass;
 
 /// <summary>
+/// Функция, возвращающая класс бизнесс-логики по указанному типу
+/// </summary>
+function GetArchiveDocumentBusinessLogicClassByTypeId(const ATypeId: Integer): TDocumentArchivingBusinessLogicClass;
+
+/// <summary>
 /// Процедура удаления всех дочерних элементов из указанного контрола
 /// </summary>
 procedure EmptyControl(const AControl: TCustomControl);
@@ -100,7 +106,12 @@ uses
   uTDamagedBSOItem,
   uTShipmentBSOList,
   uTShipmentBSOWithActList,
-  uTDamagedBSOList;
+  uTDamagedBSOList,
+  uTShipmentBSOArchivingBusinessLogic,
+  uTShipmentBSOWithActArchivingBusinessLogic,
+  uTDamagedBSOArchivingBusinessLogic;
+
+
 
 function GetControlByName(const AName: string; const AParent: TCustomControl): TControl;
 var
@@ -227,6 +238,28 @@ begin
     5:
       begin
         Result := TDamagedBSOList;
+      end;
+  else
+    begin
+      Result := nil;
+    end;
+  end;
+end;
+
+function GetArchiveDocumentBusinessLogicClassByTypeId(const ATypeId: Integer): TDocumentArchivingBusinessLogicClass;
+begin
+  case ATypeId of
+    1:
+      begin
+        Result := TShipmentBSOArchivingBusinessLogic;
+      end;
+    2:
+      begin
+        Result := TShipmentBSOWithActArchivingBusinessLogic;
+      end;
+    5:
+      begin
+        Result := TDamagedBSOArchivingBusinessLogic;
       end;
   else
     begin

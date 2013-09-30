@@ -86,7 +86,7 @@ uses
   uIArchiveBoxItem,
   uTArchiveBoxItem,
   uIArchiveDocumentList,
-  uTDocumentArchivingBusinessLogic,
+  uTDocumentArchivingBusinessLogicClass,
   uIShowable,
   uICustomBSOItem;
 
@@ -127,12 +127,21 @@ begin
 end;
 
 function TTestLogicMainForm.GetLogic: IDocumentArchivingBusinessLogic;
+var
+  lc: TDocumentArchivingBusinessLogicClass;
 begin
   if not Assigned(FLogic) then
   begin
-    FLogic := TDocumentArchivingBusinessLogic.Create(ADOConnection, 222, 5, DisplayMessage);
-    Logic.SetCurrentBoxInfoControl(gbCurrentBox);
-    Logic.SetLastDocumentInfoControl(gbLastDocument);
+    lc := GetArchiveDocumentBusinessLogicClassByTypeId(5);
+    if Assigned(lc) then
+    begin
+      FLogic := lc.Create(ADOConnection, 222, DisplayMessage);
+      if Assigned(FLogic) then
+      begin
+        FLogic.SetCurrentBoxInfoControl(gbCurrentBox);
+        FLogic.SetLastDocumentInfoControl(gbLastDocument);
+      end;
+    end;
   end;
   Result := FLogic;
 end;
