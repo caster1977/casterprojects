@@ -341,5 +341,38 @@
       <reference referencedUin="delphi:e_class:src:TestLogic:uTDocumentArchivingBusinessLogic.@unitclass" />
       <reference referencedUin="delphi:e_class:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic" />
     </reference>
+    <reference referencedUin="design:view:::h3ui081j7dkqu6ii_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTReportDataModule.TReportDataModule" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTReportDataModule.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::w8sfw13pw1l_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOWithActArchivingBusinessLogic.TShipmentBSOWithActArchivingBusinessLogic" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOWithActArchivingBusinessLogic.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::tkrfyi4d15l_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTDamagedBSOArchivingBusinessLogic.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTDamagedBSOArchivingBusinessLogic.TDamagedBSOArchivingBusinessLogic" />
+    </reference>
+    <reference referencedUin="design:view:::5eqn6ja6pwr_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTDocumentArchivingBusinessLogicClass.TDocumentArchivingBusinessLogicClass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTDocumentArchivingBusinessLogicClass.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::34l2al9k9d5zeq4wp_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOArchivingBusinessLogic.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOArchivingBusinessLogic.TShipmentBSOArchivingBusinessLogic" />
+    </reference>
+    <reference referencedUin="design:view:::f0f6uv8efrctadi8i_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uTDocumentArchivingBusinessLogic.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::9r75phbx6vsabtlnn_v">
+      <property name="$shortcutReference" value="true" />
+    </reference>
   </view>
 </nodeSet>

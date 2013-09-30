@@ -16,7 +16,7 @@ uses
 
 type
   TDocumentArchivingBusinessLogic = class abstract(TCustomBusinessLogic, IDocumentArchivingBusinessLogic)
-  protected
+  private
     /// <summary>
     /// Функция "освобождения" указанного короба
     /// </summary>
@@ -128,8 +128,14 @@ type
     /// </summary>
     function PutCurrentBoxAside: Boolean;
 
+    /// <summary>
+    /// Функция передачи последнего документа из текущего короба
+    /// </summary>
     function GiveLastDocumentInCurrentBoxAway: Boolean;
 
+    /// <summary>
+    /// Функция удаления последнего документа из текущего короба
+    /// </summary>
     function DeleteLastDocumentFromCurrentBox: Boolean;
 
     /// <summary>
@@ -142,6 +148,55 @@ type
     /// Количество документов
     /// </returns>
     function GetDocumentCount(const ABox: IArchiveBoxItem): Integer;
+
+    /// <summary>
+    /// Функция, проверяющая возможность добавления нового документа в короб
+    /// </summary>
+    /// <returns>
+    /// Возвращает <b>True</b> в случае, если можно добавлять документ в короб
+    /// </returns>
+    /// <remarks>
+    /// Проверяет, не идёт ли в данный момент процедура настройки вместимости
+    /// коробов
+    /// </remarks>
+    function CanAddDocument: Boolean;
+
+    /// <summary>
+    /// Функция получения нового номера для короба по указанным типу,
+    /// компании и году
+    /// </summary>
+    /// <param name="ATypeId">
+    /// Тип короба
+    /// </param>
+    /// <param name="ACompanyId">
+    /// Идентификатор компании
+    /// </param>
+    /// <param name="AYear">
+    /// Год
+    /// </param>
+    /// <returns>
+    /// Порядковый номер архивного короба c начала указанного года
+    /// </returns>
+    function GetNewArchiveBoxNumber(const ATypeId, ACompanyId, AYear: Integer): Integer;
+
+    function IsArchiveBoxBarcode(const ABarcode: string): Boolean;
+    function IsBSOBarcode(const ABarcode: string): Boolean;
+    function IsForceNewBoxCommandBarcode(const ABarcode: string): Boolean;
+    function IsPutBoxAsideCommandBarcode(const ABarcode: string): Boolean;
+    function IsGiveLastDocumentAwayBarcode(const ABarcode: string): Boolean;
+    function IsCauseOfDamageBarcode(const ABarcode: string): Boolean;
+
+  protected
+    function AnalizeBarcode(const ABarcode: string): TDocumentArchivingBarcodeType;
+    function CreateDocumentItemByBarcode(const ABarcode: string): IArchiveDocumentItem;
+    function CreateArchiveBoxByDocument(const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
+    function AddDocumentToCurrentBox(const ADocument: IArchiveDocumentItem): Boolean;
+    function AddDocumentToOldestOpenedArchiveBox(const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
+
+    /// <summary>
+    /// Функция получения идентификатора короба по указанному документу
+    /// </summary>
+    function GetArchiveBoxIdByDocument(const ADocument: IArchiveDocumentItem): Integer;
 
     /// <summary>
     /// Функция получения количества открытых коробов для типа и компании
@@ -170,58 +225,12 @@ type
     function GetOpenedBoxQuantity(const ATypeId, ACompanyId: Integer): Integer; overload;
 
     /// <summary>
-    /// Функция, проверяющая возможность добавления нового документа в короб
+    /// Процедура добавления в текущий короб документа с указанным штрих-кодом
     /// </summary>
-    /// <returns>
-    /// Возвращает <b>True</b> в случае, если можно добавлять документ в короб
-    /// </returns>
-    /// <remarks>
-    /// Проверяет, не идёт ли в данный момент процедура настройки вместимости
-    /// коробов
-    /// </remarks>
-    function CanAddDocument: Boolean;
-
-    /// <summary>
-    /// Функция получения идентификатора короба по указанному документу
-    /// </summary>
-    function GetArchiveBoxIdByDocument(const ADocument: IArchiveDocumentItem): Integer;
-
-    /// <summary>
-    /// Функция получения нового номера для короба по указанным типу,
-    /// компании и году
-    /// </summary>
-    /// <param name="ATypeId">
-    /// Тип короба
+    /// <param name="AString">
+    /// Штрих-код документа
     /// </param>
-    /// <param name="ACompanyId">
-    /// Идентификатор компании
-    /// </param>
-    /// <param name="AYear">
-    /// Год
-    /// </param>
-    /// <returns>
-    /// Порядковый номер архивного короба c начала указанного года
-    /// </returns>
-    function GetNewArchiveBoxNumber(const ATypeId, ACompanyId, AYear: Integer): Integer;
-
-    function AnalizeBarcode(const ABarcode: string): TDocumentArchivingBarcodeType;
-
-    function CreateDocumentItemByBarcode(const ABarcode: string): IArchiveDocumentItem;
-    function CreateArchiveBoxByDocument(const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
-    function AddDocumentToCurrentBox(const ADocument: IArchiveDocumentItem): Boolean;
-    function AddDocumentToOldestOpenedArchiveBox(const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
-
-    function IsArchiveBoxBarcode(const ABarcode: string): Boolean;
-    function IsBSOBarcode(const ABarcode: string): Boolean;
-    function IsForceNewBoxCommandBarcode(const ABarcode: string): Boolean;
-    function IsPutBoxAsideCommandBarcode(const ABarcode: string): Boolean;
-    function IsGiveLastDocumentAwayBarcode(const ABarcode: string): Boolean;
-    function IsCauseOfDamageBarcode(const ABarcode: string): Boolean;
-
-  public
-    procedure ManualPrintCurrentBoxSticker;
-    procedure ManualDeleteLastDocumentFromCurrentBox;
-    function GetCurrentBoxDocumentCount: Integer;
+    procedure AddDocument(const AString: string); virtual; abstract;
 
   private
     FCurrentBox: IArchiveBoxItem;
@@ -238,20 +247,20 @@ type
     FCurrentDocument: IArchiveDocumentItem;
     function GetCurrentDocument: IArchiveDocumentItem;
     procedure SetCurrentDocument(const AValue: IArchiveDocumentItem);
+  protected
     /// <summary>
     /// Текущий документ - документ, данные о котором ещё только вводятся
     /// </summary>
     /// <remarks>
     /// Не одно и то же, что последний документ в текущем коробе!
     /// </remarks>
-  protected
     property CurrentDocument: IArchiveDocumentItem read GetCurrentDocument write SetCurrentDocument nodefault;
 
   private
     FCurrentBoxInfoControl: TCustomControl;
     function GetCurrentBoxInfoControl: TCustomControl;
-  protected
     procedure SetCurrentBoxInfoControl(const AValue: TCustomControl);
+  protected
     /// <summary>
     /// Контрол, в который будет выводится информация о текущем коробе
     /// </summary>
@@ -261,29 +270,21 @@ type
   private
     FLastDocumentInfoControl: TCustomControl;
     function GetLastDocumentInfoControl: TCustomControl;
-  protected
     procedure SetLastDocumentInfoControl(const AValue: TCustomControl);
+  protected
     /// <summary>
     /// Контрол, в который будет выводится информация о последнем документе
     /// </summary>
     property LastDocumentInfoControl: TCustomControl read GetLastDocumentInfoControl
       write SetLastDocumentInfoControl nodefault;
 
-  protected
-    function GetArchiveBoxTypeId: Integer; virtual; abstract;
-    /// <summary>
-    /// Идентификатор типа архивного короба
-    /// </summary>
-  protected
-    property ArchiveBoxTypeId: Integer read GetArchiveBoxTypeId nodefault;
-
   private
     FCurrentUserId: Integer;
     function GetCurrentUserId: Integer;
+  protected
     /// <summary>
     /// Идентификатор текущего пользователя
     /// </summary>
-  protected
     property CurrentUserId: Integer read GetCurrentUserId nodefault;
 
   private
@@ -293,17 +294,27 @@ type
   protected
     property Step: Integer read GetStep write SetStep nodefault;
 
+  protected
+    function GetArchiveBoxTypeId: Integer; virtual; abstract;
+    /// <summary>
+    /// Идентификатор типа архивного короба
+    /// </summary>
+    property ArchiveBoxTypeId: Integer read GetArchiveBoxTypeId nodefault;
+
   public
     constructor Create(const AConnection: TCustomConnection; const ACurrentUserId: Integer;
       const AOnDisplayMessage: TOnDisplayMessage = nil); reintroduce; virtual;
     destructor Destroy; override;
-  protected
-    procedure ProcessDocument(const AString: string); virtual; abstract;
-  public
+    procedure ManualPrintCurrentBoxSticker;
+    procedure ManualDeleteLastDocumentFromCurrentBox;
+    function GetCurrentBoxDocumentCount: Integer;
     procedure ProcessString(const AString: string);
 
     function AcceptBSOByAcceptanceRegister(const ABSO: ICustomBSOItem): Boolean;
   end;
+
+resourcestring
+  RsEnterBarcodeOfDocumentOrCommand = 'Введите штрих-код документа или команды';
 
 implementation
 
@@ -743,7 +754,6 @@ begin
     Result := PrintBoxSticker(CurrentBox);
     if Result then
     begin
-      // записываем данные в базу
       Result := CurrentBox.Save(Connection);
       if Result then
       begin
@@ -813,16 +823,16 @@ end;
 destructor TDocumentArchivingBusinessLogic.Destroy;
 begin
   PutCurrentBoxAside;
-  // CurrentBox := nil;
   inherited;
 end;
 
-constructor TDocumentArchivingBusinessLogic.Create(const AConnection: TCustomConnection; const ACurrentUserId: Integer; const AOnDisplayMessage: TOnDisplayMessage);
+constructor TDocumentArchivingBusinessLogic.Create(const AConnection: TCustomConnection; const ACurrentUserId: Integer;
+  const AOnDisplayMessage: TOnDisplayMessage);
 begin
   inherited Create(AConnection, AOnDisplayMessage);
   FCurrentUserId := ACurrentUserId;
   Step := 0;
-  DisplayInfoMessage('Введите штрих-код документа или команды');
+  DisplayInfoMessage(RsEnterBarcodeOfDocumentOrCommand);
 end;
 
 function TDocumentArchivingBusinessLogic.CurrentBoxIsFull: Boolean;
@@ -838,7 +848,6 @@ begin
     Result := PutBoxAside(CurrentBox);
     if Result then
     begin
-      // записываем данные в базу
       Result := CurrentBox.Save(Connection);
       if Result then
       begin
@@ -938,7 +947,8 @@ begin
   end;
 end;
 
-function TDocumentArchivingBusinessLogic.AddDocumentToOldestOpenedArchiveBox(const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
+function TDocumentArchivingBusinessLogic.AddDocumentToOldestOpenedArchiveBox(const ADocument: IArchiveDocumentItem)
+  : IArchiveBoxItem;
 var
   old_box_id: Integer;
 begin
@@ -1013,13 +1023,15 @@ begin
       end
       else
       begin
-        DisplayErrorMessage('Компания документа не соответствует компании короба' + sLineBreak + 'Введите штрих-код документа или команды');
+        DisplayErrorMessage('Компания документа не соответствует компании короба' + sLineBreak +
+          RsEnterBarcodeOfDocumentOrCommand);
       end;
     end;
   end;
 end;
 
-function TDocumentArchivingBusinessLogic.CreateArchiveBoxByDocument(const ADocument: IArchiveDocumentItem): IArchiveBoxItem;
+function TDocumentArchivingBusinessLogic.CreateArchiveBoxByDocument(const ADocument: IArchiveDocumentItem)
+  : IArchiveBoxItem;
 begin
   Result := nil;
   if Assigned(ADocument) then
@@ -1061,17 +1073,20 @@ end;
 procedure TDocumentArchivingBusinessLogic.ManualPrintCurrentBoxSticker;
 begin
   if PrintCurrentBoxSticker then
-    DisplaySuccessMessage('Стикер на текущий короб распечатан' + sLineBreak + 'Введите штрих-код документа или команды')
+    DisplaySuccessMessage('Стикер на текущий короб распечатан' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand)
   else
-    DisplayErrorMessage('Не удалось распечатать стикер на текущий короб' + sLineBreak + 'Введите штрих-код документа или команды');
+    DisplayErrorMessage('Не удалось распечатать стикер на текущий короб' + sLineBreak +
+      RsEnterBarcodeOfDocumentOrCommand);
 end;
 
 procedure TDocumentArchivingBusinessLogic.ManualDeleteLastDocumentFromCurrentBox;
 begin
   if DeleteLastDocumentFromCurrentBox then
-    DisplaySuccessMessage('Последний документ из текущего короба удалён' + sLineBreak + 'Введите штрих-код документа или команды')
+    DisplaySuccessMessage('Последний документ из текущего короба удалён' + sLineBreak +
+      RsEnterBarcodeOfDocumentOrCommand)
   else
-    DisplayErrorMessage('Не удалось удалить последний документ из текущего короба' + sLineBreak + 'Введите штрих-код документа или команды');
+    DisplayErrorMessage('Не удалось удалить последний документ из текущего короба' + sLineBreak +
+      RsEnterBarcodeOfDocumentOrCommand);
 end;
 
 function TDocumentArchivingBusinessLogic.AcceptBSOByAcceptanceRegister(const ABSO: ICustomBSOItem): Boolean;
@@ -1099,29 +1114,31 @@ begin
     case AnalizeBarcode(AString) of
       dabtUnknown:
         begin
-          DisplayErrorMessage('Введён неизвестный штрих-код' + sLineBreak + 'Введите штрих-код документа или команды');
+          DisplayErrorMessage('Введён неизвестный штрих-код' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
           Exit;
         end;
       dabtForceNewBoxCommand:
         begin
           if CloseCurrentBox then
-            DisplaySuccessMessage('Текущий короб был закрыт' + sLineBreak + 'Введите штрих-код документа или команды')
+            DisplaySuccessMessage('Текущий короб был закрыт' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand)
           else
-            DisplayErrorMessage('Не удалось закрыть текущий короб' + sLineBreak + 'Введите штрих-код документа или команды');
+            DisplayErrorMessage('Не удалось закрыть текущий короб' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
         end;
       dabtPutBoxAsideCommand:
         begin
           if PutCurrentBoxAside then
-            DisplaySuccessMessage('Текущий короб отложен' + sLineBreak + 'Введите штрих-код документа или команды')
+            DisplaySuccessMessage('Текущий короб отложен' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand)
           else
-            DisplayErrorMessage('Не удалось отложить текущий короб' + sLineBreak + 'Введите штрих-код документа или команды');
+            DisplayErrorMessage('Не удалось отложить текущий короб' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
         end;
       dabtGiveDocumentAway:
         begin
           if GiveLastDocumentInCurrentBoxAway then
-            DisplaySuccessMessage('Последний документ из текущего короба передан' + sLineBreak + 'Введите штрих-код документа или команды')
+            DisplaySuccessMessage('Последний документ из текущего короба передан' + sLineBreak +
+              RsEnterBarcodeOfDocumentOrCommand)
           else
-            DisplayErrorMessage('Не удалось передать последний документ из текущего короба' + sLineBreak + 'Введите штрих-код документа или команды');
+            DisplayErrorMessage('Не удалось передать последний документ из текущего короба' + sLineBreak +
+              RsEnterBarcodeOfDocumentOrCommand);
         end;
     end
   end
@@ -1129,7 +1146,7 @@ begin
   begin
     if CanAddDocument then
     begin
-      ProcessDocument(AString);
+      AddDocument(AString);
 
       if Assigned(CurrentBox) then
       begin
@@ -1139,7 +1156,8 @@ begin
           begin
             if PrintCurrentBoxSticker then
             begin
-              DisplaySuccessMessage('Документ был успешно добавлен в текущий короб' + sLineBreak + 'Стикер на текущий короб распечатан автоматически' + sLineBreak + 'Введите штрих-код документа или команды');
+              DisplaySuccessMessage('Документ был успешно добавлен в текущий короб' + sLineBreak +
+                'Стикер на текущий короб распечатан автоматически' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
             end;
           end;
         end;
@@ -1149,14 +1167,15 @@ begin
       begin
         if CloseCurrentBox then
         begin
-          DisplaySuccessMessage('Текущий короб заполнен и был закрыт' + sLineBreak + 'Введите штрих-код документа или команды');
+          DisplaySuccessMessage('Текущий короб заполнен и был закрыт' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
         end;
       end;
     end
     else
     begin
       Step := 0;
-      DisplayErrorMessage('Документ нельзя добавлять, поскольку идёт настройка вместимости коробов' + sLineBreak + 'Дождитесь окончания настройки, затем введите штрих-код документа или команды');
+      DisplayErrorMessage('Документ нельзя добавлять, поскольку идёт настройка вместимости коробов' + sLineBreak +
+        'Дождитесь окончания настройки, затем введите штрих-код документа или команды');
     end;
   end;
   UpdateCurrentInfo;

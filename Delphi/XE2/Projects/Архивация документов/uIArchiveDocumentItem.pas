@@ -109,16 +109,16 @@ type
     /// </summary>
     property SequenceNumber: Integer read GetSequenceNumber write SetSequenceNumber;
 
-    ///	<summary>
-    ///	  Функция для определения архивного короба, в который помещён документ
-    ///	</summary>
-    ///	<param name="AConnection">
-    ///	  Объект подключения к БД
-    ///	</param>
-    ///	<returns>
-    ///	  Идентификатор короба в котором содержится указанный документ, либо -1
-    ///	  (если документ ещё не был заархивирован)
-    ///	</returns>
+    /// <summary>
+    /// Функция для определения архивного короба, в который помещён документ
+    /// </summary>
+    /// <param name="AConnection">
+    /// Объект подключения к БД
+    /// </param>
+    /// <returns>
+    /// Идентификатор короба в котором содержится указанный документ, либо -1
+    /// (если документ ещё не был заархивирован)
+    /// </returns>
     function AlreadyArchived(const AConnection: TCustomConnection = nil): Integer;
   end;
 

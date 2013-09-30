@@ -8,7 +8,7 @@ uses
 type
   TDamagedBSOArchivingBusinessLogic = class sealed(TDocumentArchivingBusinessLogic)
   protected
-    procedure ProcessDocument(const AString: string); override; final;
+    procedure AddDocument(const AString: string); override; final;
     function GetArchiveBoxTypeId: Integer; override; final;
   end;
 
@@ -28,7 +28,7 @@ begin
   Result := 5;
 end;
 
-procedure TDamagedBSOArchivingBusinessLogic.ProcessDocument(const AString: string);
+procedure TDamagedBSOArchivingBusinessLogic.AddDocument(const AString: string);
 var
   codl: ICauseOfDamageList;
   i: Integer;
@@ -37,29 +37,33 @@ begin
   case Step of
     0:
       begin
-        CurrentDocument := CreateDocumentItemByBarcode(AString);
-        if Assigned(CurrentDocument) then
+        if AnalizeBarcode(AString) = dabtBSO then
         begin
-          i := GetArchiveBoxIdByDocument(CurrentDocument);
-          if i = -1 then
+          CurrentDocument := CreateDocumentItemByBarcode(AString);
+          if Assigned(CurrentDocument) then
           begin
-            Step := 1;
-            DisplayInfoMessage('Введите штрих-код порчи документа');
+            i := GetArchiveBoxIdByDocument(CurrentDocument);
+            if i = -1 then
+            begin
+              Step := 1;
+              DisplayInfoMessage('Введите штрих-код порчи документа');
+            end
+            else
+            begin
+              box := TArchiveBoxItem.Create(Connection, i);
+              if Assigned(box) then
+              begin
+                DisplayErrorMessage(Format('Документ уже был заархивирован ранее (штрих-код короба - %s)' + sLineBreak +
+                  RsEnterBarcodeOfDocumentOrCommand, [box.Barcode]));
+              end;
+            end;
           end
           else
           begin
-            box := TArchiveBoxItem.Create(Connection, i);
-            if Assigned(box) then
-            begin
-              DisplayErrorMessage(Format('Документ уже был заархивирован ранее (штрих-код короба - %s)' + sLineBreak + 'Введите штрих-код документа или команды',
-                [box.Barcode]));
-            end;
+            Step := 0;
+            DisplayInfoMessage('Документ с указанным штрих-кодом не найден в базе данных' + sLineBreak +
+              RsEnterBarcodeOfDocumentOrCommand);
           end;
-        end
-        else
-        begin
-          Step := 0;
-          DisplayInfoMessage('Документ с указанным штрих-кодом не найден в базе данных' + sLineBreak + 'Введите штрих-код документа или команды');
         end;
       end;
     1:
@@ -85,7 +89,8 @@ begin
                       CurrentBox := CreateArchiveBoxByDocument(CurrentDocument);
                       if Assigned(CurrentBox) then
                       begin
-                        DisplaySuccessMessage('Документ добавлен в новый архивный короб' + sLineBreak + 'Введите штрих-код документа или команды');
+                        DisplaySuccessMessage('Документ добавлен в новый архивный короб' + sLineBreak +
+                          RsEnterBarcodeOfDocumentOrCommand);
                       end;
                     end
                     else
@@ -93,7 +98,8 @@ begin
                       CurrentBox := AddDocumentToOldestOpenedArchiveBox(CurrentDocument);
                       if Assigned(CurrentBox) then
                       begin
-                        DisplaySuccessMessage('Документ добавлен в существующий архивный короб' + sLineBreak + 'Введите штрих-код документа или команды');
+                        DisplaySuccessMessage('Документ добавлен в существующий архивный короб' + sLineBreak +
+                          RsEnterBarcodeOfDocumentOrCommand);
                       end;
                     end;
                   end
@@ -101,7 +107,8 @@ begin
                   begin
                     if AddDocumentToCurrentBox(CurrentDocument) then
                     begin
-                      DisplaySuccessMessage('Документ добавлен в текущий архивный короб' + sLineBreak + 'Введите штрих-код документа или команды');
+                      DisplaySuccessMessage('Документ добавлен в текущий архивный короб' + sLineBreak +
+                        RsEnterBarcodeOfDocumentOrCommand);
                     end;
                   end;
                   Break;
@@ -111,12 +118,13 @@ begin
           end
           else
           begin
-            DisplayErrorMessage('Документ не был добавлен, т.к. не был введён штрих-код порчи документа' + sLineBreak + 'Введите штрих-код документа или команды');
+            DisplayErrorMessage('Документ не был добавлен, т.к. не был введён штрих-код порчи документа' + sLineBreak +
+              RsEnterBarcodeOfDocumentOrCommand);
           end;
         end
         else
         begin
-          DisplayInfoMessage('Введите штрих-код документа или команды');
+          DisplayInfoMessage(RsEnterBarcodeOfDocumentOrCommand);
         end;
         Step := 0;
       end;

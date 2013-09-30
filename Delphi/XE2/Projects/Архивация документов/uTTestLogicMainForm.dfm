@@ -27,8 +27,6 @@ object TestLogicMainForm: TTestLogicMainForm
     BevelOuter = bvNone
     ShowCaption = False
     TabOrder = 3
-    ExplicitTop = 461
-    ExplicitWidth = 412
     DesignSize = (
       422
       31)
@@ -42,7 +40,6 @@ object TestLogicMainForm: TTestLogicMainForm
       Anchors = [akTop, akRight]
       Cancel = True
       TabOrder = 0
-      ExplicitLeft = 337
     end
   end
   object ToolBar: TToolBar
@@ -53,7 +50,6 @@ object TestLogicMainForm: TTestLogicMainForm
     Caption = 'ToolBar'
     Images = ImageList
     TabOrder = 0
-    ExplicitWidth = 412
     object tbPrintSticker: TToolButton
       Left = 0
       Top = 0
@@ -102,7 +98,6 @@ object TestLogicMainForm: TTestLogicMainForm
     Align = alTop
     Caption = ' '#1064#1090#1088#1080#1093'-'#1082#1086#1076' '
     TabOrder = 1
-    ExplicitWidth = 412
     DesignSize = (
       422
       54)
@@ -114,7 +109,6 @@ object TestLogicMainForm: TTestLogicMainForm
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
       OnKeyDown = edBarcodeKeyDown
-      ExplicitWidth = 395
     end
   end
   object gbHint: TGroupBox
@@ -125,8 +119,6 @@ object TestLogicMainForm: TTestLogicMainForm
     Align = alClient
     Caption = ' '#1057#1086#1086#1073#1097#1077#1085#1080#1077' '
     TabOrder = 2
-    ExplicitWidth = 412
-    ExplicitHeight = 129
     object lblHint: TLabel
       Left = 8
       Top = 16
@@ -156,7 +148,6 @@ object TestLogicMainForm: TTestLogicMainForm
     Align = alTop
     Caption = ' '#1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1090#1077#1082#1091#1097#1077#1084' '#1082#1086#1088#1086#1073#1077' '
     TabOrder = 4
-    ExplicitWidth = 412
   end
   object gbLastDocument: TGroupBox
     Left = 0
@@ -166,7 +157,6 @@ object TestLogicMainForm: TTestLogicMainForm
     Align = alTop
     Caption = ' '#1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1087#1086#1089#1083#1077#1076#1085#1077#1084' '#1076#1086#1082#1091#1084#1077#1085#1090#1077' '#1074' '#1090#1077#1082#1091#1097#1077#1084' '#1082#1086#1088#1086#1073#1077' '
     TabOrder = 5
-    ExplicitWidth = 412
   end
   object SQLConnection: TSQLConnection
     ConnectionName = 'MSSQLConnection'
@@ -231,7 +221,7 @@ object TestLogicMainForm: TTestLogicMainForm
     Left = 336
     Top = 376
     Bitmap = {
-      494C01010B008800BC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B008800C40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000F6F6F609ECECEC13E9E9E916E9E9E916F0F0F00FFCFCFC030000
