@@ -8,7 +8,7 @@ uses
 type
   TShipmentBSOWithActArchivingBusinessLogic = class sealed(TDocumentArchivingBusinessLogic)
   protected
-    procedure ProcessDocument(const AString: string); override; final;
+    procedure AddDocument(const AString: string); override; final;
     function GetArchiveBoxTypeId: Integer; override; final;
   end;
 
@@ -25,7 +25,7 @@ begin
   Result := 2;
 end;
 
-procedure TShipmentBSOWithActArchivingBusinessLogic.ProcessDocument(const AString: string);
+procedure TShipmentBSOWithActArchivingBusinessLogic.AddDocument(const AString: string);
 var
   i: Integer;
   box: IArchiveBoxItem;
@@ -42,8 +42,8 @@ begin
             box := TArchiveBoxItem.Create(Connection, i);
             if Assigned(box) then
             begin
-              DisplayErrorMessage(Format('Документ уже был заархивирован ранее (штрих-код короба - %s)' + sLineBreak + 'Введите штрих-код документа или команды',
-                [box.Barcode]));
+              DisplayErrorMessage(Format('Документ уже был заархивирован ранее (штрих-код короба - %s)' + sLineBreak +
+                RsEnterBarcodeOfDocumentOrCommand, [box.Barcode]));
             end;
           end
           else
@@ -56,7 +56,8 @@ begin
                 CurrentBox := CreateArchiveBoxByDocument(CurrentDocument);
                 if Assigned(CurrentBox) then
                 begin
-                  DisplaySuccessMessage('Документ добавлен в новый архивный короб' + sLineBreak + 'Введите штрих-код документа или команды');
+                  DisplaySuccessMessage('Документ добавлен в новый архивный короб' + sLineBreak +
+                    RsEnterBarcodeOfDocumentOrCommand);
                 end;
               end
               else
@@ -64,7 +65,8 @@ begin
                 CurrentBox := AddDocumentToOldestOpenedArchiveBox(CurrentDocument);
                 if Assigned(CurrentBox) then
                 begin
-                  DisplaySuccessMessage('Документ добавлен в существующий архивный короб' + sLineBreak + 'Введите штрих-код документа или команды');
+                  DisplaySuccessMessage('Документ добавлен в существующий архивный короб' + sLineBreak +
+                    RsEnterBarcodeOfDocumentOrCommand);
                 end;
               end;
             end
@@ -72,7 +74,8 @@ begin
             begin
               if AddDocumentToCurrentBox(CurrentDocument) then
               begin
-                DisplaySuccessMessage('Документ добавлен в текущий архивный короб' + sLineBreak + 'Введите штрих-код документа или команды');
+                DisplaySuccessMessage('Документ добавлен в текущий архивный короб' + sLineBreak +
+                  RsEnterBarcodeOfDocumentOrCommand);
               end;
             end;
           end;

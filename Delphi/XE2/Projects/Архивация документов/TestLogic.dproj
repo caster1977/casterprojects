@@ -255,6 +255,8 @@
         <None Include="ModelSupport_TestLogic\uTDocumentArchivingBusinessLogicClass\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uTShipmentBSOWithActArchivingBusinessLogic\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uTDamagedBSOArchivingBusinessLogic\default.txvpck"/>
+        <None Include="ModelSupport_TestLogic\uTDocumentArchivingBusinessLogic\default.txvpck"/>
+        <None Include="ModelSupport_TestLogic\uTReportDataModule\default.txvpck"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

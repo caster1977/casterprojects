@@ -111,8 +111,6 @@ uses
   uTShipmentBSOWithActArchivingBusinessLogic,
   uTDamagedBSOArchivingBusinessLogic;
 
-
-
 function GetControlByName(const AName: string; const AParent: TCustomControl): TControl;
 var
   k: Integer;
