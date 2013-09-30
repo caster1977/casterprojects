@@ -4,5 +4,21 @@
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:TestLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,274,217" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic.GetCurrentBoxDocumentCount()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic.SetCurrentBoxInfoControl(Vcl.Controls.TCustomControl)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic.SetLastDocumentInfoControl(Vcl.Controls.TCustomControl)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic.GetCurrentBox()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic.CurrentBox" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic.ManualDeleteLastDocumentFromCurrentBox()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic.ManualPrintCurrentBoxSticker()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic.ProcessString(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic.AcceptBSOByAcceptanceRegister(uICustomBSOItem.ICustomBSOItem)" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uIDocumentArchivingBusinessLogic.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
   </view>
 </nodeSet>

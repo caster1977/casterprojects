@@ -48,61 +48,6 @@
         <property name="bendpoints" value="" />
       </reference>
     </reference>
-    <reference referencedUin="delphi:e_class:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic">
-      <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="480,340,430,793" />
-      <property name="location_set_by_user" value="True" />
-      <reference referencedUin="delphi:e_field:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.FCurrentUserId" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.GetCurrentUserId()" />
-      <reference referencedUin="delphi:e_property:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.CurrentUserId" />
-      <reference referencedUin="delphi:e_field:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.FArchiveBoxTypeId" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.GetArchiveBoxTypeId()" />
-      <reference referencedUin="delphi:e_property:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.ArchiveBoxTypeId" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.GetBoxCapacity(System.Integer)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.GetBoxCapacity(uIArchiveBoxItem.IArchiveBoxItem)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.ClearControl(Vcl.Controls.TCustomControl)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.GetOpenedBoxQuantity(uIArchiveDocumentItem.IArchiveDocumentItem)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.GetOpenedBoxQuantity(System.Integer,System.Integer)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.BoxIsFull(uIArchiveBoxItem.IArchiveBoxItem)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.GetDocumentsCount(uIArchiveBoxItem.IArchiveBoxItem)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.AnalizeBarcode(System.string)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.IsArchiveBoxBarcode(System.string)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.IsBSOBarcode(System.string)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.IsForceNewBoxCommandBarcode(System.string)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.IsPutBoxAsideCommandBarcode(System.string)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.ShowCurrentBoxInfo()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.ShowLastDocumentInfo()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.PutCurrentBoxAside()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.DeleteCurrentBox()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.CurrentBoxIsFull()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.AcceptBSOByAcceptanceRegister(uICustomBSOItem.ICustomBSOItem)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.ProcessBarcode(System.string)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.Create(Data.DB.TCustomConnection,System.Integer,System.Integer,uTOnDisplayMessage.TOnDisplayMessage)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.GetBSOItemByBarcode(System.string)" />
-      <reference referencedUin="delphi:l_impl:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic">
-        <property name="sourceAnchor" value="480,479" />
-        <property name="targetAnchor" value="421,479" />
-        <property name="bendpoints" value="" />
-      </reference>
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.ManualPrintCurrentBoxSticker()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.DeleteLastDocumentInCurrentBox()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.GiveLastDocumentInCurrentBoxAway()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.ProcessString(System.string)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.Destroy()" />
-      <reference referencedUin="delphi:e_field:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.FCurrentDocument" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.GetCurrentDocument()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.SetCurrentDocument(uIArchiveDocumentItem.IArchiveDocumentItem)" />
-      <reference referencedUin="delphi:e_property:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.CurrentDocument" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.IsGiveLastDocumentAwayBarcode(System.string)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.CreateDocumentItemByBarcode(System.string)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.CreateArchiveBoxByDocument(uIArchiveDocumentItem.IArchiveDocumentItem)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.AddDocumentToCurrentBox(uIArchiveDocumentItem.IArchiveDocumentItem)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.GetNewArchiveBoxNumber(System.Integer,System.Integer,System.Integer)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.AddDocumentToOldestOpenedArchiveBox(uIArchiveDocumentItem.IArchiveDocumentItem)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.CanAddDocument()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic.GetCurrentBoxDocumentCount()" />
-      <reference referencedUin="delphi:l_gnt:src:TestLogic:uTDocumentArchivingBusinessLogic.TDocumentArchivingBusinessLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic" />
-    </reference>
     <reference referencedUin="delphi:e_class:src:TestLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic">
       <property name="$shortcutReference" value="true" />
       <property name="bounds" value="0,340,421,188" />
@@ -138,35 +83,110 @@
       <reference referencedUin="delphi:e_method:src:TestLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic.DeleteLastDocumentInCurrentBox()" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic.ProcessString(System.string)" />
       <reference referencedUin="delphi:e_method:src:TestLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic.GetCurrentBoxDocumentCount()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic.ManualDeleteLastDocumentFromCurrentBox()" />
     </reference>
-    <reference referencedUin="delphi:e_class:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic">
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="1062,167,404,67" />
-      <reference referencedUin="delphi:l_gnt:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic:uTCustomBusinessLogic.TCustomBusinessLogic">
-        <property name="sourceAnchor" value="1062,200" />
-        <property name="targetAnchor" value="775,200" />
+      <property name="bounds" value="1220,60,404,838" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:l_gnt:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic:uTCustomBusinessLogic.TCustomBusinessLogic">
+        <property name="sourceAnchor" value="1220,178" />
+        <property name="targetAnchor" value="775,178" />
         <property name="bendpoints" value="" />
       </reference>
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.ReleaseBox(uIArchiveBoxItem.IArchiveBoxItem)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.PutBoxAside(uIArchiveBoxItem.IArchiveBoxItem)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.PrintBoxSticker(uIArchiveBoxItem.IArchiveBoxItem)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.CloseBox(uIArchiveBoxItem.IArchiveBoxItem)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.Show(Vcl.Controls.TCustomControl,uIShowable.IShowable)" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.UpdateCurrentInfo()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.CloseCurrentBox()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.PrintCurrentBoxSticker()" />
-      <reference referencedUin="delphi:e_field:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.FCurrentBox" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.GetCurrentBox()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.SetCurrentBox(uIArchiveBoxItem.IArchiveBoxItem)" />
-      <reference referencedUin="delphi:e_property:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.CurrentBox" />
-      <reference referencedUin="delphi:e_field:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.FCurrentBoxInfoControl" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.GetCurrentBoxInfoControl()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.SetCurrentBoxInfoControl(Vcl.Controls.TCustomControl)" />
-      <reference referencedUin="delphi:e_property:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.CurrentBoxInfoControl" />
-      <reference referencedUin="delphi:e_field:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.FLastDocumentInfoControl" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.GetLastDocumentInfoControl()" />
-      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.SetLastDocumentInfoControl(Vcl.Controls.TCustomControl)" />
-      <reference referencedUin="delphi:e_property:src:TestLogic:uTTestedDocumentArchivingLogic.TTestedDocumentArchivingLogic.LastDocumentInfoControl" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.ReleaseBox(uIArchiveBoxItem.IArchiveBoxItem)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.PutBoxAside(uIArchiveBoxItem.IArchiveBoxItem)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.PrintBoxSticker(uIArchiveBoxItem.IArchiveBoxItem)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.CloseBox(uIArchiveBoxItem.IArchiveBoxItem)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.Show(Vcl.Controls.TCustomControl,uIShowable.IShowable)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.UpdateCurrentInfo()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.CloseCurrentBox()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.PrintCurrentBoxSticker()" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.FCurrentBox" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GetCurrentBox()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.SetCurrentBox(uIArchiveBoxItem.IArchiveBoxItem)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.CurrentBox" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.FCurrentBoxInfoControl" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GetCurrentBoxInfoControl()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.SetCurrentBoxInfoControl(Vcl.Controls.TCustomControl)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.CurrentBoxInfoControl" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.FLastDocumentInfoControl" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GetLastDocumentInfoControl()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.SetLastDocumentInfoControl(Vcl.Controls.TCustomControl)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.LastDocumentInfoControl" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.BoxIsFull(uIArchiveBoxItem.IArchiveBoxItem)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GetBoxCapacity(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GetBoxCapacity(uIArchiveBoxItem.IArchiveBoxItem)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.DeleteCurrentBox()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.CurrentBoxIsFull()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.PutCurrentBoxAside()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GiveLastDocumentInCurrentBoxAway()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.DeleteLastDocumentFromCurrentBox()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GetDocumentCount(uIArchiveBoxItem.IArchiveBoxItem)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GetOpenedBoxQuantity(uIArchiveDocumentItem.IArchiveDocumentItem)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GetOpenedBoxQuantity(System.Integer,System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.CanAddDocument()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GetArchiveBoxIdByDocument(uIArchiveDocumentItem.IArchiveDocumentItem)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GetNewArchiveBoxNumber(System.Integer,System.Integer,System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.AnalizeBarcode(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.CreateDocumentItemByBarcode(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.CreateArchiveBoxByDocument(uIArchiveDocumentItem.IArchiveDocumentItem)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.AddDocumentToCurrentBox(uIArchiveDocumentItem.IArchiveDocumentItem)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.AddDocumentToOldestOpenedArchiveBox(uIArchiveDocumentItem.IArchiveDocumentItem)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.IsArchiveBoxBarcode(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.IsBSOBarcode(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.IsForceNewBoxCommandBarcode(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.IsPutBoxAsideCommandBarcode(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.IsGiveLastDocumentAwayBarcode(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.IsCauseOfDamageBarcode(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.ManualPrintCurrentBoxSticker()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.ManualDeleteLastDocumentFromCurrentBox()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GetCurrentBoxDocumentCount()" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.FCurrentDocument" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GetCurrentDocument()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.SetCurrentDocument(uIArchiveDocumentItem.IArchiveDocumentItem)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.CurrentDocument" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GetArchiveBoxTypeId()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.ArchiveBoxTypeId" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.FCurrentUserId" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GetCurrentUserId()" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.CurrentUserId" />
+      <reference referencedUin="delphi:e_field:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.FStep" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.GetStep()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.SetStep(System.Integer)" />
+      <reference referencedUin="delphi:e_property:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.Step" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.Destroy()" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.Create(Data.DB.TCustomConnection,System.Integer,uTOnDisplayMessage.TOnDisplayMessage)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.ProcessDocument(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.ProcessString(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic.AcceptBSOByAcceptanceRegister(uICustomBSOItem.ICustomBSOItem)" />
+      <reference referencedUin="delphi:l_impl:src:TestLogic:uTTestedDocumentArchivingLogic.TDocumentArchivingBusinessLogic:uIDocumentArchivingBusinessLogic.IDocumentArchivingBusinessLogic" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOArchivingBusinessLogic.TShipmentBSOArchivingBusinessLogic">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="720,540,475,99" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOArchivingBusinessLogic.TShipmentBSOArchivingBusinessLogic.ProcessDocument(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOArchivingBusinessLogic.TShipmentBSOArchivingBusinessLogic.GetArchiveBoxTypeId()" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTDocumentArchivingBusinessLogicClass.TDocumentArchivingBusinessLogicClass">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="20,580,494,81" />
+      <property name="location_set_by_user" value="True" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTShipmentBSOWithActArchivingBusinessLogic.TShipmentBSOWithActArchivingBusinessLogic">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="480,800,564,99" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOWithActArchivingBusinessLogic.TShipmentBSOWithActArchivingBusinessLogic.ProcessDocument(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTShipmentBSOWithActArchivingBusinessLogic.TShipmentBSOWithActArchivingBusinessLogic.GetArchiveBoxTypeId()" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:TestLogic:uTDamagedBSOArchivingBusinessLogic.TDamagedBSOArchivingBusinessLogic">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="180,680,477,99" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOArchivingBusinessLogic.TDamagedBSOArchivingBusinessLogic.ProcessDocument(System.string)" />
+      <reference referencedUin="delphi:e_method:src:TestLogic:uTDamagedBSOArchivingBusinessLogic.TDamagedBSOArchivingBusinessLogic.GetArchiveBoxTypeId()" />
     </reference>
   </view>
 </nodeSet>
