@@ -88,7 +88,10 @@ uses
   uIArchiveDocumentList,
   uTDocumentArchivingBusinessLogicClass,
   uIShowable,
-  uICustomBSOItem;
+  uICustomBSOItem,
+  uTShipmentBSOArchivingBusinessLogic,
+  uTShipmentBSOWithActArchivingBusinessLogic,
+  uTDamagedBSOArchivingBusinessLogic;
 
 procedure TTestLogicMainForm.DisplayMessage(const AType: TMessageType; const AText: string);
 var
@@ -132,7 +135,7 @@ var
 begin
   if not Assigned(FLogic) then
   begin
-    lc := GetArchiveDocumentBusinessLogicClassByTypeId(5);
+    lc := GetArchiveDocumentBusinessLogicClassByTypeId(1);
     if Assigned(lc) then
     begin
       FLogic := lc.Create(ADOConnection, 222, DisplayMessage);

@@ -3,13 +3,15 @@ unit uTDamagedBSOArchivingBusinessLogic;
 interface
 
 uses
-  uTDocumentArchivingBusinessLogic;
+  uTDocumentArchivingBusinessLogic,
+  uTArchiveDocumentItemClass;
 
 type
   TDamagedBSOArchivingBusinessLogic = class sealed(TDocumentArchivingBusinessLogic)
   protected
     procedure AddDocument(const AString: string); override; final;
     function GetArchiveBoxTypeId: Integer; override; final;
+    function GetArchiveDocumentItemClass: TArchiveDocumentItemClass; override; final;
   end;
 
 implementation
@@ -26,6 +28,11 @@ uses
 function TDamagedBSOArchivingBusinessLogic.GetArchiveBoxTypeId: Integer;
 begin
   Result := 5;
+end;
+
+function TDamagedBSOArchivingBusinessLogic.GetArchiveDocumentItemClass: TArchiveDocumentItemClass;
+begin
+  Result := TDamagedBSOItem;
 end;
 
 procedure TDamagedBSOArchivingBusinessLogic.AddDocument(const AString: string);

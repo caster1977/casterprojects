@@ -3,13 +3,15 @@ unit uTShipmentBSOWithActArchivingBusinessLogic;
 interface
 
 uses
-  uTDocumentArchivingBusinessLogic;
+  uTDocumentArchivingBusinessLogic,
+  uTArchiveDocumentItemClass;
 
 type
   TShipmentBSOWithActArchivingBusinessLogic = class sealed(TDocumentArchivingBusinessLogic)
   protected
     procedure AddDocument(const AString: string); override; final;
     function GetArchiveBoxTypeId: Integer; override; final;
+    function GetArchiveDocumentItemClass: TArchiveDocumentItemClass; override; final;
   end;
 
 implementation
@@ -18,11 +20,17 @@ uses
   SysUtils,
   uTDocumentArchivingBarcodeType,
   uIArchiveBoxItem,
-  uTArchiveBoxItem;
+  uTArchiveBoxItem,
+  uTShipmentBSOWithActItem;
 
 function TShipmentBSOWithActArchivingBusinessLogic.GetArchiveBoxTypeId: Integer;
 begin
   Result := 2;
+end;
+
+function TShipmentBSOWithActArchivingBusinessLogic.GetArchiveDocumentItemClass: TArchiveDocumentItemClass;
+begin
+  Result := TShipmentBSOWithActItem;
 end;
 
 procedure TShipmentBSOWithActArchivingBusinessLogic.AddDocument(const AString: string);

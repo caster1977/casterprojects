@@ -74,17 +74,12 @@ procedure SetLabelCaption(const AParentControl: TCustomControl; const ALabelName
 function GetQuery(const AConnection: TCustomConnection): TDataSet;
 
 /// <summary>
-/// Функция, возвращающая класс документа по указанному типу
-/// </summary>
-function GetArchiveDocumentItemClassByTypeId(const ATypeId: Integer): TArchiveDocumentItemClass;
-
-/// <summary>
 /// Функция, возвращающая класс списка документов по указанному типу
 /// </summary>
 function GetArchiveDocumentListClassByTypeId(const ATypeId: Integer): TArchiveDocumentListClass;
 
 /// <summary>
-/// Функция, возвращающая класс бизнесс-логики по указанному типу
+/// Функция, возвращающая класс бизнес-логики по указанному типу архивного короба
 /// </summary>
 function GetArchiveDocumentBusinessLogicClassByTypeId(const ATypeId: Integer): TDocumentArchivingBusinessLogicClass;
 
@@ -196,28 +191,6 @@ begin
     else
     begin
       Result := GetSQLQuery(AConnection);
-    end;
-  end;
-end;
-
-function GetArchiveDocumentItemClassByTypeId(const ATypeId: Integer): TArchiveDocumentItemClass;
-begin
-  case ATypeId of
-    1:
-      begin
-        Result := TShipmentBSOItem;
-      end;
-    2:
-      begin
-        Result := TShipmentBSOWithActItem;
-      end;
-    5:
-      begin
-        Result := TDamagedBSOItem;
-      end;
-  else
-    begin
-      Result := nil;
     end;
   end;
 end;

@@ -12,7 +12,8 @@ uses
   uIArchiveDocumentItem,
   uIDocumentArchivingBusinessLogic,
   uICustomBSOItem,
-  uTDocumentArchivingBarcodeType;
+  uTDocumentArchivingBarcodeType,
+  uTArchiveDocumentItemClass;
 
 type
   TDocumentArchivingBusinessLogic = class abstract(TCustomBusinessLogic, IDocumentArchivingBusinessLogic)
@@ -301,6 +302,13 @@ type
     /// </summary>
     property ArchiveBoxTypeId: Integer read GetArchiveBoxTypeId nodefault;
 
+  protected
+    function GetArchiveDocumentItemClass: TArchiveDocumentItemClass; virtual; abstract;
+    /// <summary>
+    /// Тип класса документов, участвующих в данном бизнес-процессе
+    /// </summary>
+    property ArchiveDocumentItemClass: TArchiveDocumentItemClass read GetArchiveDocumentItemClass nodefault;
+
   public
     constructor Create(const AConnection: TCustomConnection; const ACurrentUserId: Integer;
       const AOnDisplayMessage: TOnDisplayMessage = nil); reintroduce; virtual;
@@ -332,7 +340,6 @@ uses
   uICauseOfDamageList,
   uTCauseOfDamageList,
   uTArchiveDocumentListClass,
-  uTArchiveDocumentItemClass,
   uIDamagedBSOItem,
   uTDamagedBSOItem,
   uTDamagedBSOList;
@@ -913,16 +920,13 @@ begin
 end;
 
 function TDocumentArchivingBusinessLogic.CreateDocumentItemByBarcode(const ABarcode: string): IArchiveDocumentItem;
-var
-  Item: TArchiveDocumentItemClass;
 begin
   Result := nil;
   if IsBSOBarcode(ABarcode) then
   begin
-    Item := GetArchiveDocumentItemClassByTypeId(ArchiveBoxTypeId);
-    if Assigned(Item) then
+    if Assigned(ArchiveDocumentItemClass) then
     begin
-      Result := Item.Create(Connection, -1);
+      Result := ArchiveDocumentItemClass.Create(Connection, -1);
       if Assigned(Result) then
       begin
         Result.FromString(ABarcode);
@@ -1089,23 +1093,6 @@ begin
       RsEnterBarcodeOfDocumentOrCommand);
 end;
 
-function TDocumentArchivingBusinessLogic.AcceptBSOByAcceptanceRegister(const ABSO: ICustomBSOItem): Boolean;
-begin
-  Result := False;
-  if Assigned(ABSO) then
-  begin
-    SetSQLForQuery(Query, Format('BSOArchiving_upd_AcceptanceRegister %d', [ABSO.BSOId]), True);
-    try
-      if not Query.Eof then
-      begin
-        Result := Query.Fields[0].AsInteger > -1;
-      end;
-    finally
-      Query.Close;
-    end;
-  end;
-end;
-
 procedure TDocumentArchivingBusinessLogic.ProcessString(const AString: string);
 begin
   if AnalizeBarcode(AString) in [dabtUnknown, dabtForceNewBoxCommand, dabtPutBoxAsideCommand, dabtGiveDocumentAway] then
@@ -1179,6 +1166,23 @@ begin
     end;
   end;
   UpdateCurrentInfo;
+end;
+
+function TDocumentArchivingBusinessLogic.AcceptBSOByAcceptanceRegister(const ABSO: ICustomBSOItem): Boolean;
+begin
+  Result := False;
+  if Assigned(ABSO) then
+  begin
+    SetSQLForQuery(Query, Format('BSOArchiving_upd_AcceptanceRegister %d', [ABSO.BSOId]), True);
+    try
+      if not Query.Eof then
+      begin
+        Result := Query.Fields[0].AsInteger > -1;
+      end;
+    finally
+      Query.Close;
+    end;
+  end;
 end;
 
 end.
