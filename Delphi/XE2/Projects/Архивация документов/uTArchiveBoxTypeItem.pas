@@ -53,14 +53,10 @@ begin
   Result := FCode;
 end;
 
-function TArchiveBoxTypeItem.GetDeleteSQL: string;
-begin
-  Result := EmptyStr;
-end;
-
 constructor TArchiveBoxTypeItem.Create;
 begin
   inherited;
+  Saveable := True;
   FName := EmptyStr;
   FCode := EmptyStr;
   FCapacity := -1;
@@ -88,6 +84,11 @@ begin
 end;
 
 function TArchiveBoxTypeItem.GetSaveSQL: string;
+begin
+  Result := Format('BSOArchiving_upd_ArchiveBoxType %d, ''%s'', ''%s'', %d', [Id, Name, Code, Capacity]);
+end;
+
+function TArchiveBoxTypeItem.GetDeleteSQL: string;
 begin
   Result := EmptyStr;
 end;
