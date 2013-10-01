@@ -74,21 +74,6 @@ object TestLogicMainForm: TTestLogicMainForm
       ParentShowHint = False
       ShowHint = True
     end
-    object ToolButton1: TToolButton
-      Left = 54
-      Top = 0
-      Width = 8
-      Caption = 'ToolButton1'
-      ImageIndex = 2
-      Style = tbsSeparator
-    end
-    object tbTestAcceptBSOByAcceptanceRegister: TToolButton
-      Left = 62
-      Top = 0
-      Action = actTestAcceptBSOByAcceptanceRegister
-      ParentShowHint = False
-      ShowHint = True
-    end
   end
   object gbBarcode: TGroupBox
     Left = 0
@@ -210,19 +195,12 @@ object TestLogicMainForm: TTestLogicMainForm
       Caption = #1047#1072#1082#1088#1099#1090#1100
       OnExecute = actCloseExecute
     end
-    object actTestAcceptBSOByAcceptanceRegister: TAction
-      Caption = 'actTestAcceptBSOByAcceptanceRegister'
-      Hint = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1092#1091#1085#1082#1094#1080#1080' '#1086#1090#1084#1077#1090#1082#1080' '#1041#1057#1054' '#1087#1086' '#1088#1077#1077#1089#1090#1088#1091' '#1087#1088#1080#1105#1084#1082#1080
-      ImageIndex = 10
-      OnExecute = actTestAcceptBSOByAcceptanceRegisterExecute
-      OnUpdate = actTestAcceptBSOByAcceptanceRegisterUpdate
-    end
   end
   object ImageList: TImageList
     Left = 336
     Top = 376
     Bitmap = {
-      494C01010B008800CC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B008800D00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000F6F6F609ECECEC13E9E9E916E9E9E916F0F0F00FFCFCFC030000
