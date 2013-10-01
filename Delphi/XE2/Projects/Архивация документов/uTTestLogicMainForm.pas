@@ -49,14 +49,9 @@ type
     btnClose: TButton;
     actClose: TAction;
     lblHint: TLabel;
-    ToolButton1: TToolButton;
-    actTestAcceptBSOByAcceptanceRegister: TAction;
-    tbTestAcceptBSOByAcceptanceRegister: TToolButton;
     procedure actCloseExecute(Sender: TObject);
     procedure actPrintStickerExecute(Sender: TObject);
     procedure actPrintStickerUpdate(Sender: TObject);
-    procedure actTestAcceptBSOByAcceptanceRegisterExecute(Sender: TObject);
-    procedure actTestAcceptBSOByAcceptanceRegisterUpdate(Sender: TObject);
     procedure edBarcodeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure actDeleteLastDocumentExecute(Sender: TObject);
     procedure actDeleteLastDocumentUpdate(Sender: TObject);
@@ -217,43 +212,6 @@ end;
 procedure TTestLogicMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   FLogic := nil; // не убирать!
-end;
-
-procedure TTestLogicMainForm.actTestAcceptBSOByAcceptanceRegisterExecute(Sender: TObject);
-begin
-  Logic.Connection.Connected := True;
-  try
-    if Logic.AcceptBSOByAcceptanceRegister(Logic.CurrentBox.Documents.Item[Logic.CurrentBox.Documents.Count - 1]
-      as ICustomBSOItem) then
-    begin
-      Logic.DisplaySuccessMessage('Документ принят по реестру ЛП');
-    end
-    else
-    begin
-      Logic.DisplayErrorMessage('Документ не принят по реестру ЛП');
-    end;
-  finally
-    Logic.Connection.Connected := False;
-  end;
-end;
-
-procedure TTestLogicMainForm.actTestAcceptBSOByAcceptanceRegisterUpdate(Sender: TObject);
-var
-  b: Boolean;
-begin
-  b := False;
-  if Assigned(Logic) then
-  begin
-    if Assigned(Logic.CurrentBox) then
-    begin
-      if Assigned(Logic.CurrentBox.Documents) then
-      begin
-        b := (Logic.CurrentBox.Documents.Count > 0) and
-          Supports(Logic.CurrentBox.Documents.Item[Logic.CurrentBox.Documents.Count - 1], ICustomBSOItem);
-      end;
-    end;
-  end;
-  (Sender as TAction).Enabled := b;
 end;
 
 end.

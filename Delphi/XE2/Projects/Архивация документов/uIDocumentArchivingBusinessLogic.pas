@@ -67,14 +67,6 @@ type
     /// Штрих-код или другие строковые данные
     /// </param>
     procedure ProcessString(const AString: string);
-
-    /// <summary>
-    /// Отметка указанного документа в реестре приёмки с ЛП
-    /// </summary>
-    /// <param name="ABSO">
-    /// БСО
-    /// </param>
-    function AcceptBSOByAcceptanceRegister(const ABSO: ICustomBSOItem): Boolean;
   end;
 
 implementation

@@ -232,7 +232,17 @@ type
     /// Штрих-код документа
     /// </param>
     procedure AddDocument(const AString: string); virtual; abstract;
-
+  public
+    /// <summary>
+    /// Функция приёмки БСО по реестру
+    /// </summary>
+    /// <param name="ABarcode">
+    /// Штрих-код БСО
+    /// </param>
+    /// <returns>
+    /// Удалось ли принять по реестру
+    /// </returns>
+    function AcceptBSOByAcceptanceRegister(const ABarcode: string): Boolean;
   private
     FCurrentBox: IArchiveBoxItem;
   protected
@@ -308,7 +318,6 @@ type
     /// Тип класса документов, участвующих в данном бизнес-процессе
     /// </summary>
     property ArchiveDocumentItemClass: TArchiveDocumentItemClass read GetArchiveDocumentItemClass nodefault;
-
   public
     constructor Create(const AConnection: TCustomConnection; const ACurrentUserId: Integer;
       const AOnDisplayMessage: TOnDisplayMessage = nil); reintroduce; virtual;
@@ -317,8 +326,6 @@ type
     procedure ManualDeleteLastDocumentFromCurrentBox;
     function GetCurrentBoxDocumentCount: Integer;
     procedure ProcessString(const AString: string);
-
-    function AcceptBSOByAcceptanceRegister(const ABSO: ICustomBSOItem): Boolean;
   end;
 
 resourcestring
@@ -1133,6 +1140,17 @@ begin
   begin
     if CanAddDocument then
     begin
+      if AnalizeBarcode(AString) = dabtBSO then
+      begin
+        if AcceptBSOByAcceptanceRegister(AString) then
+        begin
+          DisplaySuccessMessage('Документ принят по реестру ЛП');
+        end
+        else
+        begin
+          DisplayErrorMessage('Документ не принят по реестру ЛП');
+        end;
+      end;
       AddDocument(AString);
 
       if Assigned(CurrentBox) then
@@ -1168,12 +1186,15 @@ begin
   UpdateCurrentInfo;
 end;
 
-function TDocumentArchivingBusinessLogic.AcceptBSOByAcceptanceRegister(const ABSO: ICustomBSOItem): Boolean;
+function TDocumentArchivingBusinessLogic.AcceptBSOByAcceptanceRegister(const ABarcode: string): Boolean;
+var
+  s: string;
 begin
   Result := False;
-  if Assigned(ABSO) then
+  s := Trim(ABarcode);
+  if AnalizeBarcode(s) = dabtBSO then
   begin
-    SetSQLForQuery(Query, Format('BSOArchiving_upd_AcceptanceRegister %d', [ABSO.BSOId]), True);
+    SetSQLForQuery(Query, Format('BSOArchiving_upd_AcceptanceRegister ''%s''', [s]), True);
     try
       if not Query.Eof then
       begin
