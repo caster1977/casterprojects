@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2013.10.07 15:34:10.607,=rtl.dcp</Transaction>
+    <Transaction>2013.10.07 15:35:34.532,C:\Users\v_ivanov\Documents\RAD Studio\Projects\ArchivingObjects.dproj=C:\Users\v_ivanov\Documents\RAD Studio\Projects\Package1.dproj</Transaction>
+    <Transaction>2013.10.07 15:48:13.071,C:\Users\v_ivanov\Documents\RAD Studio\Projects\ArchivingCommons.dproj=C:\Users\v_ivanov\Documents\RAD Studio\Projects\ArchivingObjects.dproj</Transaction>
+    <Transaction>2013.10.07 15:49:38.572,C:\Users\v_ivanov\Documents\RAD Studio\Projects\ArchivingCommons\Src\ArchivingCommons.dproj=C:\Users\v_ivanov\Documents\RAD Studio\Projects\ArchivingCommons.dproj</Transaction>
+  </Transactions>
+</BorlandProject>
