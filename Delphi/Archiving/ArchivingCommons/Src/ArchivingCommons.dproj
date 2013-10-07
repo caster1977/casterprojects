@@ -3,7 +3,7 @@
         <ProjectGuid>{34BE7689-E0CE-4001-8CF0-0E91B283EF9E}</ProjectGuid>
         <MainSource>ArchivingCommons.dpk</MainSource>
         <ProjectVersion>14.6</ProjectVersion>
-        <FrameworkType>None</FrameworkType>
+        <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -35,11 +35,16 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_BplOutput>..\..\$(Platform)\$(Config)\Packages</DCC_BplOutput>
+        <VerInfo_Locale>1049</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <DCC_UnitSearchPath>..\..\$(Platform)\$(Config)\Packages;..\..\$(Platform)\$(Config)\DCU;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_DcpOutput>..\..\$(Platform)\$(Config)\DCP</DCC_DcpOutput>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <GenDll>true</GenDll>
         <GenPackage>true</GenPackage>
         <DCC_CBuilderOutput>All</DCC_CBuilderOutput>
-        <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
+        <DCC_DcuOutput>..\..\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
         <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
         <DCC_E>false</DCC_E>
         <DCC_N>false</DCC_N>
@@ -62,6 +67,8 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -75,6 +82,72 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="rtl.dcp"/>
+        <DCCReference Include="vcl.dcp"/>
+        <DCCReference Include="dbrtl.dcp"/>
+        <DCCReference Include="DbxCommonDriver.dcp"/>
+        <DCCReference Include="dbexpress.dcp"/>
+        <DCCReference Include="adortl.dcp"/>
+        <DCCReference Include="vclimg.dcp"/>
+        <DCCReference Include="vclx.dcp"/>
+        <DCCReference Include="frx18.dcp"/>
+        <DCCReference Include="fs18.dcp"/>
+        <DCCReference Include="Logic\Types\uTDocumentArchivingBarcodeType.pas"/>
+        <DCCReference Include="Logic\Types\uTMessageType.pas"/>
+        <DCCReference Include="Logic\Types\uTOnDisplayMessage.pas"/>
+        <DCCReference Include="Logic\Interfaces\uIArchiveBoxItem.pas"/>
+        <DCCReference Include="Logic\Interfaces\uIArchiveBoxList.pas"/>
+        <DCCReference Include="Logic\Interfaces\uIArchiveBoxTypeItem.pas"/>
+        <DCCReference Include="Logic\Interfaces\uIArchiveBoxTypeList.pas"/>
+        <DCCReference Include="Logic\Interfaces\uIArchiveCompanyItem.pas"/>
+        <DCCReference Include="Logic\Interfaces\uIArchiveCompanyList.pas"/>
+        <DCCReference Include="Logic\Interfaces\uIArchiveDocumentItem.pas"/>
+        <DCCReference Include="Logic\Interfaces\uIArchiveDocumentList.pas"/>
+        <DCCReference Include="Logic\Interfaces\uIArchiveDocumentTypeItem.pas"/>
+        <DCCReference Include="Logic\Interfaces\uIArchiveDocumentTypeList.pas"/>
+        <DCCReference Include="Logic\Interfaces\uICauseOfArchiveDocumentDamageItem.pas"/>
+        <DCCReference Include="Logic\Interfaces\uICauseOfArchiveDocumentDamageList.pas"/>
+        <DCCReference Include="Logic\Interfaces\uICustomBSOItem.pas"/>
+        <DCCReference Include="Logic\Interfaces\uIDamagedBSOItem.pas"/>
+        <DCCReference Include="Logic\Interfaces\uILoadableItem.pas"/>
+        <DCCReference Include="Logic\Interfaces\uILoadableList.pas"/>
+        <DCCReference Include="Logic\Interfaces\uIShipmentBSOItem.pas"/>
+        <DCCReference Include="Logic\Interfaces\uIShipmentBSOWithActItem.pas"/>
+        <DCCReference Include="Logic\Interfaces\uIShowable.pas"/>
+        <DCCReference Include="Logic\Interfaces\uIShowableField.pas"/>
+        <DCCReference Include="Logic\Classes\uTArchiveBoxItem.pas"/>
+        <DCCReference Include="Logic\Classes\uTArchiveBoxList.pas"/>
+        <DCCReference Include="Logic\Classes\uTArchiveBoxTypeItem.pas"/>
+        <DCCReference Include="Logic\Classes\uTArchiveBoxTypeList.pas"/>
+        <DCCReference Include="Logic\Classes\uTArchiveCompanyItem.pas"/>
+        <DCCReference Include="Logic\Classes\uTArchiveCompanyList.pas"/>
+        <DCCReference Include="Logic\Classes\uTArchiveDocumentItem.pas"/>
+        <DCCReference Include="Logic\Classes\uTArchiveDocumentItemClass.pas"/>
+        <DCCReference Include="Logic\Classes\uTArchiveDocumentList.pas"/>
+        <DCCReference Include="Logic\Classes\uTArchiveDocumentListClass.pas"/>
+        <DCCReference Include="Logic\Classes\uTArchiveDocumentTypeItem.pas"/>
+        <DCCReference Include="Logic\Classes\uTArchiveDocumentTypeList.pas"/>
+        <DCCReference Include="Logic\Classes\uTCauseOfArchiveDocumentDamageItem.pas"/>
+        <DCCReference Include="Logic\Classes\uTCauseOfArchiveDocumentDamageList.pas"/>
+        <DCCReference Include="Logic\Classes\uTCustomBSOItem.pas"/>
+        <DCCReference Include="Logic\Classes\uTDamagedBSOItem.pas"/>
+        <DCCReference Include="Logic\Classes\uTDamagedBSOList.pas"/>
+        <DCCReference Include="Logic\Classes\uTLoadableItem.pas"/>
+        <DCCReference Include="Logic\Classes\uTLoadableItemClass.pas"/>
+        <DCCReference Include="Logic\Classes\uTLoadableList.pas"/>
+        <DCCReference Include="Logic\Classes\uTLoadableListClass.pas"/>
+        <DCCReference Include="Logic\Classes\uTShipmentBSOItem.pas"/>
+        <DCCReference Include="Logic\Classes\uTShipmentBSOList.pas"/>
+        <DCCReference Include="Logic\Classes\uTShipmentBSOWithActItem.pas"/>
+        <DCCReference Include="Logic\Classes\uTShipmentBSOWithActList.pas"/>
+        <DCCReference Include="Logic\Classes\uTShowableField.pas"/>
+        <DCCReference Include="Common\uArchivingCommonRoutines.pas"/>
+        <DCCReference Include="Logic\Classes\uTCustomBusinessLogic.pas"/>
+        <DCCReference Include="Logic\Interfaces\uICustomBusinessLogic.pas"/>
+        <DCCReference Include="UI\uTReportDataModule.pas">
+            <Form>ReportDataModule</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -136,6 +209,10 @@
                     <VersionInfoKeys Name="CFBundleInfoDictionaryVersion"/>
                     <VersionInfoKeys Name="CFBundleDevelopmentRegion"/>
                 </VersionInfoKeys>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k180.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp180.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment/>
             <Platforms>
