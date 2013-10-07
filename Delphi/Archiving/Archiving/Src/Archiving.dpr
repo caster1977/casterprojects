@@ -2,7 +2,7 @@ program Archiving;
 
 uses
   Vcl.Forms,
-  uTTestLogicMainForm in 'UI\uTTestLogicMainForm.pas' {TestLogicMainForm},
+  uTArchivingMainForm in 'UI\uTArchivingMainForm.pas' {ArchivingMainForm},
   uTDamagedBSOArchivingBusinessLogic in 'Logic\Classes\uTDamagedBSOArchivingBusinessLogic.pas',
   uTDocumentArchivingBusinessLogic in 'Logic\Classes\uTDocumentArchivingBusinessLogic.pas',
   uTDocumentArchivingBusinessLogicClass in 'Logic\Classes\uTDocumentArchivingBusinessLogicClass.pas',
@@ -15,6 +15,6 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TTestLogicMainForm, TestLogicMainForm);
+  Application.CreateForm(TArchivingMainForm, ArchivingMainForm);
   Application.Run;
 end.

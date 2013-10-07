@@ -100,8 +100,8 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="UI\uTTestLogicMainForm.pas">
-            <Form>TestLogicMainForm</Form>
+        <DCCReference Include="UI\uTArchivingMainForm.pas">
+            <Form>ArchivingMainForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Logic\Classes\uTDamagedBSOArchivingBusinessLogic.pas"/>
