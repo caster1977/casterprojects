@@ -6,7 +6,7 @@
         <Projects Include="TestLogic.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="..\ArchivingCommons\Src\ArchivingCommons.dproj">
+        <Projects Include="..\Archiving\ArchivingCommons\Src\ArchivingCommons.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -27,13 +27,13 @@
         <MSBuild Projects="TestLogic.dproj" Targets="Make"/>
     </Target>
     <Target Name="ArchivingCommons">
-        <MSBuild Projects="..\ArchivingCommons\Src\ArchivingCommons.dproj"/>
+        <MSBuild Projects="..\Archiving\ArchivingCommons\Src\ArchivingCommons.dproj"/>
     </Target>
     <Target Name="ArchivingCommons:Clean">
-        <MSBuild Projects="..\ArchivingCommons\Src\ArchivingCommons.dproj" Targets="Clean"/>
+        <MSBuild Projects="..\Archiving\ArchivingCommons\Src\ArchivingCommons.dproj" Targets="Clean"/>
     </Target>
     <Target Name="ArchivingCommons:Make">
-        <MSBuild Projects="..\ArchivingCommons\Src\ArchivingCommons.dproj" Targets="Make"/>
+        <MSBuild Projects="..\Archiving\ArchivingCommons\Src\ArchivingCommons.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
         <CallTarget Targets="TestLogic;ArchivingCommons"/>

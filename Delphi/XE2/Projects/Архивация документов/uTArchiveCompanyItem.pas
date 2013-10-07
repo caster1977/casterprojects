@@ -36,7 +36,7 @@ implementation
 
 uses
   SysUtils,
-  uCommonRoutines;
+  uArchivingCommonRoutines;
 
 function TArchiveCompanyItem.GetName: string;
 begin

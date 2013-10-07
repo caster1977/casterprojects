@@ -77,7 +77,7 @@ implementation
 
 uses
   uTDocumentArchivingBarcodeType,
-  uCommonRoutines,
+  uArchivingCommonRoutines,
   uIArchiveBoxItem,
   uTArchiveBoxItem,
   uIArchiveDocumentList,

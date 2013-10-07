@@ -22,7 +22,7 @@ type
 implementation
 
 uses
-  uCommonRoutines,
+  uArchivingCommonRoutines,
   uTArchiveDocumentTypeItem,
   SysUtils;
 

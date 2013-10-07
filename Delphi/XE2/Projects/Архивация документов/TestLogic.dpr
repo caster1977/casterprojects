@@ -3,7 +3,7 @@ program TestLogic;
 uses
   Vcl.Forms,
   uTTestLogicMainForm in 'uTTestLogicMainForm.pas' {TestLogicMainForm},
-  uCommonRoutines in 'uCommonRoutines.pas',
+  uArchivingCommonRoutines in 'uArchivingCommonRoutines.pas',
   uIArchiveCompanyList in 'uIArchiveCompanyList.pas',
   uIArchiveCompanyItem in 'uIArchiveCompanyItem.pas',
   uILoadableItem in 'uILoadableItem.pas',

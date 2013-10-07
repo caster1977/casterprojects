@@ -1,14 +1,14 @@
-unit uTCauseOfDamageItem;
+unit uTCauseOfArchiveDocumentDamageItem;
 
 interface
 
 uses
   uTLoadableItem,
-  uICauseOfDamageItem,
+  uICauseOfArchiveDocumentDamageItem,
   DB;
 
 type
-  TCauseOfDamageItem = class(TLoadableItem, ICauseOfDamageItem)
+  TCauseOfDamageItem = class(TLoadableItem, ICauseOfArchiveDocumentDamageItem)
   protected
     function GetSaveSQL: string; override; final;
   public

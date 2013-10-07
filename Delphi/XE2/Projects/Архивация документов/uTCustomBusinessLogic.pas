@@ -48,7 +48,7 @@ type
 implementation
 
 uses
-  uCommonRoutines,
+  uArchivingCommonRoutines,
   SysUtils;
 
 function TCustomBusinessLogic.GetConnection: TCustomConnection;
@@ -76,7 +76,7 @@ constructor TCustomBusinessLogic.Create(const AConnection: TCustomConnection;
 begin
   OnDisplayMessage := AOnDisplayMessage;
   FConnection := AConnection;
-  FQuery := uCommonRoutines.GetQuery(Connection);
+  FQuery := uArchivingCommonRoutines.GetQuery(Connection);
 end;
 
 procedure TCustomBusinessLogic.ClearMessage;

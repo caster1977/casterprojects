@@ -88,7 +88,7 @@
             <Form>TestLogicMainForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="uCommonRoutines.pas"/>
+        <DCCReference Include="uArchivingCommonRoutines.pas"/>
         <DCCReference Include="uIArchiveCompanyList.pas"/>
         <DCCReference Include="uIArchiveCompanyItem.pas"/>
         <DCCReference Include="uILoadableItem.pas"/>
@@ -157,7 +157,6 @@
         <None Include="ModelSupport_TestLogic\TestLogic\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uTLoadableListClass\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uTLoadableItem\default.txvpck"/>
-        <None Include="ModelSupport_TestLogic\uCommonRoutines\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uILoadableList\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uTLoadableList\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uTLoadableItemClass\default.txvpck"/>
@@ -263,6 +262,8 @@
         <None Include="ModelSupport_TestLogic\uTReportDataModule\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uIArchiveDocumentTypeItem\default.txvpck"/>
         <None Include="ModelSupport_TestLogic\uIArchiveDocumentTypeItem\default.txaPackage"/>
+        <None Include="ModelSupport_TestLogic\uArchivingCommonRoutines\default.txvpck"/>
+        <None Include="ModelSupport_TestLogic\uArchivingCommonRoutines\default.txaPackage"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

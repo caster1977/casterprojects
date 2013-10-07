@@ -50,8 +50,9 @@
     </reference>
     <reference referencedUin="design:view:::fi6jn7f0zme_v">
       <property name="$shortcutReference" value="true" />
+      <property name="@__package_fqn" value="uArchivingCommonRoutines" />
       <property name="bounds" value="518,341,161,134" />
-      <reference referencedUin="delphi:e_class:src:TestLogic:uCommonRoutines.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:TestLogic:uArchivingCommonRoutines.@unitclass" />
     </reference>
     <reference referencedUin="design:view:::0p0mq11ji7l_v">
       <property name="$shortcutReference" value="true" />

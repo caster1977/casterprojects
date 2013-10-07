@@ -21,8 +21,8 @@ uses
   uTDocumentArchivingBarcodeType,
   uIArchiveBoxItem,
   uTArchiveBoxItem,
-  uICauseOfDamageList,
-  uTCauseOfDamageList,
+  uICauseOfArchiveDocumentDamageList,
+  uTCauseOfArchiveDocumentDamageList,
   uTDamagedBSOItem;
 
 function TDamagedBSOArchivingBusinessLogic.GetArchiveBoxTypeId: Integer;
@@ -37,7 +37,7 @@ end;
 
 procedure TDamagedBSOArchivingBusinessLogic.AddDocument(const AString: string);
 var
-  codl: ICauseOfDamageList;
+  codl: ICauseOfArchiveDocumentDamageList;
   i: Integer;
   box: IArchiveBoxItem;
 begin
@@ -79,7 +79,7 @@ begin
         begin
           if AnalizeBarcode(AString) = dabtCauseOfDamage then
           begin
-            codl := TCauseOfDamageList.Create(Connection);
+            codl := TCauseOfArchiveDocumentDamageList.Create(Connection);
             if Assigned(codl) then
             begin
               codl.Load;
