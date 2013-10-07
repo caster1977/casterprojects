@@ -6,6 +6,9 @@
         <Projects Include="TestLogic.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="..\ArchivingCommons\Src\ArchivingCommons.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -23,14 +26,23 @@
     <Target Name="TestLogic:Make">
         <MSBuild Projects="TestLogic.dproj" Targets="Make"/>
     </Target>
+    <Target Name="ArchivingCommons">
+        <MSBuild Projects="..\ArchivingCommons\Src\ArchivingCommons.dproj"/>
+    </Target>
+    <Target Name="ArchivingCommons:Clean">
+        <MSBuild Projects="..\ArchivingCommons\Src\ArchivingCommons.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ArchivingCommons:Make">
+        <MSBuild Projects="..\ArchivingCommons\Src\ArchivingCommons.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="TestLogic"/>
+        <CallTarget Targets="TestLogic;ArchivingCommons"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="TestLogic:Clean"/>
+        <CallTarget Targets="TestLogic:Clean;ArchivingCommons:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="TestLogic:Make"/>
+        <CallTarget Targets="TestLogic:Make;ArchivingCommons:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

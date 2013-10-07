@@ -2,7 +2,7 @@ program TestLogic;
 
 uses
   Vcl.Forms,
-  uTTestLogicMainForm in 'uTTestLogicMainForm.pas' {TestLogicMainForm} ,
+  uTTestLogicMainForm in 'uTTestLogicMainForm.pas' {TestLogicMainForm},
   uCommonRoutines in 'uCommonRoutines.pas',
   uIArchiveCompanyList in 'uIArchiveCompanyList.pas',
   uIArchiveCompanyItem in 'uIArchiveCompanyItem.pas',
@@ -52,12 +52,16 @@ uses
   uTArchiveBoxList in 'uTArchiveBoxList.pas',
   uIDocumentArchivingBusinessLogic in 'uIDocumentArchivingBusinessLogic.pas',
   uTDocumentArchivingBarcodeType in 'uTDocumentArchivingBarcodeType.pas',
-  uTReportDataModule in 'uTReportDataModule.pas' {ReportDataModule: TDataModule} ,
+  uTReportDataModule in 'uTReportDataModule.pas' {ReportDataModule: TDataModule},
   uTDocumentArchivingBusinessLogic in 'uTDocumentArchivingBusinessLogic.pas',
   uTShipmentBSOArchivingBusinessLogic in 'uTShipmentBSOArchivingBusinessLogic.pas',
   uTDamagedBSOArchivingBusinessLogic in 'uTDamagedBSOArchivingBusinessLogic.pas',
   uTShipmentBSOWithActArchivingBusinessLogic in 'uTShipmentBSOWithActArchivingBusinessLogic.pas',
-  uTDocumentArchivingBusinessLogicClass in 'uTDocumentArchivingBusinessLogicClass.pas';
+  uTDocumentArchivingBusinessLogicClass in 'uTDocumentArchivingBusinessLogicClass.pas',
+  uTArchiveDocumentTypeItem in 'uTArchiveDocumentTypeItem.pas',
+  uIArchiveDocumentTypeItem in 'uIArchiveDocumentTypeItem.pas',
+  uIArchiveDocumentTypeList in 'uIArchiveDocumentTypeList.pas',
+  uTArchiveDocumentTypeList in 'uTArchiveDocumentTypeList.pas';
 
 {$R *.res}
 
