@@ -45,7 +45,7 @@ implementation
 uses
   SysUtils,
   StrUtils,
-  uCommonRoutines;
+  uArchivingCommonRoutines;
 
 function TCustomBSOItem.GetBSOId: Integer;
 begin

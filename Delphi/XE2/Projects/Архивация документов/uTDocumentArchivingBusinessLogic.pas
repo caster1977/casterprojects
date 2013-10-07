@@ -336,7 +336,7 @@ implementation
 uses
   StdCtrls,
   SysUtils,
-  uCommonRoutines,
+  uArchivingCommonRoutines,
   uIShowableField,
   uTArchiveBoxItem,
   uTReportDataModule,
@@ -344,8 +344,8 @@ uses
   uIArchiveBoxTypeItem,
   uTArchiveCompanyItem,
   uTArchiveBoxTypeItem,
-  uICauseOfDamageList,
-  uTCauseOfDamageList,
+  uICauseOfArchiveDocumentDamageList,
+  uTCauseOfArchiveDocumentDamageList,
   uTArchiveDocumentListClass,
   uIDamagedBSOItem,
   uTDamagedBSOItem,
@@ -891,12 +891,12 @@ end;
 function TDocumentArchivingBusinessLogic.IsCauseOfDamageBarcode(const ABarcode: string): Boolean;
 var
   s: string;
-  codl: ICauseOfDamageList;
+  codl: ICauseOfArchiveDocumentDamageList;
   i: Integer;
 begin
   Result := False;
   s := Trim(ABarcode);
-  codl := TCauseOfDamageList.Create(Connection);
+  codl := TCauseOfArchiveDocumentDamageList.Create(Connection);
   if Assigned(codl) then
   begin
     codl.Load;

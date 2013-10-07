@@ -1,10 +1,10 @@
-unit uICauseOfDamageList;
+unit uICauseOfArchiveDocumentDamageList;
 
 interface
 
 uses
   uILoadableList,
-  uICauseOfDamageItem;
+  uICauseOfArchiveDocumentDamageItem;
 
 type
   /// <summary>
