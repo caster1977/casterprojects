@@ -10,10 +10,9 @@ uses
 type
   TCauseOfArchiveDocumentDamageItem = class(TLoadableItem, ICauseOfArchiveDocumentDamageItem)
   protected
-    function GetSaveSQL: string; override; final;
+    function GetSaveSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
   public
-    function GetLoadSQL: string; override; final;
-
+    function GetLoadSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
   private
     FName: string;
     function GetName: string;
@@ -27,8 +26,8 @@ type
     property Barcode: string read GetBarcode;
 
   public
-    constructor Create; override; final;
-    procedure Load(const ADataSet: TDataSet); override; final;
+    constructor Create; override; {$IFNDEF VER150} final; {$ENDIF}
+    procedure Load(const ADataSet: TDataSet); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation

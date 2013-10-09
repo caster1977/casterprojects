@@ -3,6 +3,7 @@ unit uArchivingCommonRoutines;
 interface
 
 uses
+  Windows,
   Controls,
   StdCtrls,
   SysUtils,
@@ -86,6 +87,11 @@ procedure EmptyControl(const AControl: TCustomControl);
 /// Функция определения, состоит ли указанная строка из цифр
 /// </summary>
 function IsNumericString(const AString: string): Boolean;
+
+/// <summary>
+/// Процедура включения только цифрового ввода для указанной строки ввода
+/// </summary>
+procedure SetNumbersOnly(const Handle: HWND);
 
 implementation
 
@@ -232,12 +238,30 @@ begin
   Result := True;
   for i := 1 to Length(s) do
   begin
+{$IFDEF VER150}
+    case s[i] of
+      '0' .. '9':
+        begin
+        end;
+    else
+      begin
+        Result := False;
+        Break;
+      end;
+    end;
+{$ELSE}
     if not CharInSet(s[i], ['0' .. '9']) then
     begin
       Result := False;
       Break;
     end;
+{$ENDIF}
   end;
+end;
+
+procedure SetNumbersOnly(const Handle: HWND);
+begin
+  SetWindowLong(Handle, GWL_STYLE, GetWindowLong(Handle, GWL_STYLE) or ES_NUMBER);
 end;
 
 end.

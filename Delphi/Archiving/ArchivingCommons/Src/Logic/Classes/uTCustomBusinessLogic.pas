@@ -10,9 +10,12 @@ uses
   uTMessageType;
 
 type
-  TCustomBusinessLogic = class abstract(TInterfacedObject, ICustomBusinessLogic)
+  TCustomBusinessLogic = class {$IFNDEF VER150} abstract {$ENDIF}(TInterfacedObject, ICustomBusinessLogic)
   private
     FOnDisplayMessage: TOnDisplayMessage;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetOnDisplayMessage: TOnDisplayMessage;
     procedure SetOnDisplayMessage(const AValue: TOnDisplayMessage);
   public
@@ -20,12 +23,18 @@ type
 
   private
     FConnection: TCustomConnection;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetConnection: TCustomConnection;
   public
     property Connection: TCustomConnection read GetConnection nodefault;
 
   private
     FQuery: TDataSet;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetQuery: TDataSet;
   protected
     property Query: TDataSet read GetQuery nodefault;
@@ -123,7 +132,7 @@ procedure TCustomBusinessLogic.DisplayMessage(const AType: TMessageType; const A
 begin
   if Assigned(OnDisplayMessage) then
   begin
-    OnDisplayMessage(AType, AText);
+    FOnDisplayMessage(AType, AText);
   end;
 end;
 

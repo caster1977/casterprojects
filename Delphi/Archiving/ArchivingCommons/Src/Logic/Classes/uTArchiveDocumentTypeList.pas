@@ -9,14 +9,14 @@ uses
   uIArchiveDocumentTypeList;
 
 type
-  TArchiveDocumentTypeList = class sealed(TLoadableList, IArchiveDocumentTypeList)
+  TArchiveDocumentTypeList = class {$IFNDEF VER150} sealed {$ENDIF}(TLoadableList, IArchiveDocumentTypeList)
   private
     function GetItem(const AIndex: Integer): IArchiveDocumentTypeItem;
   public
     function GetItemById(const AId: Integer): IArchiveDocumentTypeItem;
     property Item[const AIndex: Integer]: IArchiveDocumentTypeItem read GetItem; default;
   public
-    constructor Create(const AConnection: TCustomConnection); override; final;
+    constructor Create(const AConnection: TCustomConnection); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation

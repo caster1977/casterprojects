@@ -7,11 +7,11 @@ uses
   uTArchiveDocumentItemClass;
 
 type
-  TDamagedBSOArchivingBusinessLogic = class sealed(TDocumentArchivingBusinessLogic)
+  TDamagedBSOArchivingBusinessLogic = class {$IFNDEF VER150} sealed {$ENDIF}(TDocumentArchivingBusinessLogic)
   protected
-    procedure AddDocument(const AString: string); override; final;
-    function GetArchiveBoxTypeId: Integer; override; final;
-    function GetArchiveDocumentItemClass: TArchiveDocumentItemClass; override; final;
+    procedure AddDocument(const AString: string); override; {$IFNDEF VER150} final; {$ENDIF}
+    function GetArchiveBoxTypeId: Integer; override; {$IFNDEF VER150} final; {$ENDIF}
+    function GetArchiveDocumentItemClass: TArchiveDocumentItemClass; override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation
@@ -23,6 +23,7 @@ uses
   uTArchiveBoxItem,
   uICauseOfArchiveDocumentDamageList,
   uTCauseOfArchiveDocumentDamageList,
+  uIDamagedBSOItem,
   uTDamagedBSOItem;
 
 function TDamagedBSOArchivingBusinessLogic.GetArchiveBoxTypeId: Integer;
@@ -40,6 +41,7 @@ var
   codl: ICauseOfArchiveDocumentDamageList;
   i: Integer;
   box: IArchiveBoxItem;
+  idbsoi: IDamagedBSOItem;
 begin
   case Step of
     0:
@@ -87,8 +89,11 @@ begin
               begin
                 if codl.Item[i].Barcode = AString then
                 begin
-                  (CurrentDocument as TDamagedBSOItem).CauseOfDamageId := codl.Item[i].Id;
-                  (CurrentDocument as TDamagedBSOItem).CauseOfDamageName := codl.Item[i].name;
+                  if Supports(CurrentDocument, IDamagedBSOItem, idbsoi) then
+                  begin
+                    idbsoi.CauseOfDamageId := codl.Item[i].Id;
+                    idbsoi.CauseOfDamageName := codl.Item[i].name;
+                  end;
                   if not Assigned(CurrentBox) then
                   begin
                     if GetOpenedBoxQuantity(ArchiveBoxTypeId, CurrentDocument.CompanyId) = 0 then

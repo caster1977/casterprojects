@@ -7,11 +7,11 @@ uses
   uTArchiveDocumentItemClass;
 
 type
-  TShipmentBSOWithActArchivingBusinessLogic = class sealed(TDocumentArchivingBusinessLogic)
+  TShipmentBSOWithActArchivingBusinessLogic = class {$IFNDEF VER150} sealed {$ENDIF}(TDocumentArchivingBusinessLogic)
   protected
-    procedure AddDocument(const AString: string); override; final;
-    function GetArchiveBoxTypeId: Integer; override; final;
-    function GetArchiveDocumentItemClass: TArchiveDocumentItemClass; override; final;
+    procedure AddDocument(const AString: string); override; {$IFNDEF VER150} final; {$ENDIF}
+    function GetArchiveBoxTypeId: Integer; override; {$IFNDEF VER150} final; {$ENDIF}
+    function GetArchiveDocumentItemClass: TArchiveDocumentItemClass; override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation

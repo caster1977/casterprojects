@@ -4,18 +4,18 @@ interface
 
 uses
   uTLoadableList,
-  uILoadableItem,
+  uTLoadableItem,
   uIArchiveDocumentList,
   uIArchiveDocumentItem;
 
 type
-  TArchiveDocumentList = class abstract(TLoadableList, IArchiveDocumentList)
+  TArchiveDocumentList = class {$IFNDEF VER150}abstract{$ENDIF}(TLoadableList, IArchiveDocumentList)
   private
     FArchiveBoxId: Integer;
     function GetArchiveBoxId: Integer;
     procedure SetArchiveBoxId(const AValue: Integer);
   protected
-    procedure BeforeLoad(const AItem: ILoadableItem); override; final;
+    procedure BeforeLoad(const AItem: TLoadableItem); override; {$IFNDEF VER150}final; {$ENDIF}
   public
     property ArchiveBoxId: Integer read GetArchiveBoxId write SetArchiveBoxId nodefault;
   private
@@ -28,7 +28,6 @@ type
 implementation
 
 uses
-  uTLoadableItem,
   uTArchiveDocumentItem,
   SysUtils;
 
@@ -81,11 +80,11 @@ begin
   end;
 end;
 
-procedure TArchiveDocumentList.BeforeLoad(const AItem: ILoadableItem);
+procedure TArchiveDocumentList.BeforeLoad(const AItem: TLoadableItem);
 begin
   if Assigned(AItem) then
   begin
-    (AItem as TArchiveDocumentItem).ArchiveBoxId := ArchiveBoxId;
+    TArchiveDocumentItem(AItem).ArchiveBoxId := ArchiveBoxId;
   end;
 end;
 

@@ -17,7 +17,7 @@ type
     /// <summary>
     /// Ќаименование типа архивного документа
     /// </summary>
-    property Name: string read GetName;
+    property name: string read GetName;
   end;
 
 implementation

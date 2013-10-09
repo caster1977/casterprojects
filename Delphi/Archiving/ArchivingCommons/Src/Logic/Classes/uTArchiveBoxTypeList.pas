@@ -9,14 +9,14 @@ uses
   uIArchiveBoxTypeList;
 
 type
-  TArchiveBoxTypeList = class sealed(TLoadableList, IArchiveBoxTypeList)
+  TArchiveBoxTypeList = class {$IFNDEF VER150} sealed {$ENDIF}(TLoadableList, IArchiveBoxTypeList)
   private
     function GetItem(const AIndex: Integer): IArchiveBoxTypeItem;
   public
     function GetItemById(const AId: Integer): IArchiveBoxTypeItem;
     property Item[const AIndex: Integer]: IArchiveBoxTypeItem read GetItem; default;
   public
-    constructor Create(const AConnection: TCustomConnection); override; final;
+    constructor Create(const AConnection: TCustomConnection); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation

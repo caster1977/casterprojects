@@ -12,9 +12,12 @@ uses
   uIArchiveBoxItem;
 
 type
-  TArchiveDocumentItem = class abstract(TLoadableItem, IArchiveDocumentItem, IShowable)
+  TArchiveDocumentItem = class {$IFNDEF VER150} abstract {$ENDIF}(TLoadableItem, IArchiveDocumentItem, IShowable)
   private
     FArchiveBoxId: Integer;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetArchiveBoxId: Integer;
     procedure SetArchiveBoxId(const AValue: Integer);
   public
@@ -22,6 +25,9 @@ type
 
   private
     FArchivedByUser: Integer;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetArchivedByUser: Integer;
     procedure SetArchivedByUser(const AValue: Integer);
   public
@@ -29,6 +35,9 @@ type
 
   private
     FArchivingDate: TDateTime;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetArchivingDate: TDateTime;
     procedure SetArchivingDate(const AValue: TDateTime);
   public
@@ -36,6 +45,9 @@ type
 
   private
     FIssued: Boolean;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetIssued: Boolean;
     procedure SetIssued(const AValue: Boolean);
   public
@@ -43,6 +55,9 @@ type
 
   private
     FIssuedToUser: Integer;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetIssuedToUser: Integer;
     procedure SetIssuedToUser(const AValue: Integer);
   public
@@ -50,6 +65,9 @@ type
 
   private
     FIssuanceDate: TDateTime;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetIssuanceDate: TDateTime;
     procedure SetIssuanceDate(const AValue: TDateTime);
   public
@@ -57,6 +75,9 @@ type
 
   private
     FCompanyId: Integer;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetCompanyId: Integer;
     procedure SetCompanyId(const AValue: Integer);
   public
@@ -64,6 +85,9 @@ type
 
   private
     FCompanyName: string;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetCompanyName: string;
     procedure SetCompanyName(const AValue: string);
   public
@@ -71,6 +95,9 @@ type
 
   private
     FBarcode: string;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetBarcode: string;
     procedure SetBarcode(const AValue: string);
   public
@@ -78,13 +105,29 @@ type
 
   private
     FSequenceNumber: Integer;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetSequenceNumber: Integer;
     procedure SetSequenceNumber(const AValue: Integer);
   public
     property SequenceNumber: Integer read GetSequenceNumber write SetSequenceNumber;
 
   private
+    FYear: Integer;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
+    function GetYear: Integer;
+    procedure SetYear(const AValue: Integer);
+  public
+    property Year: Integer read GetYear write SetYear nodefault;
+
+  private
     FShowableFields: IInterfaceList;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetShowableFields: IInterfaceList;
   public
     property ShowableFields: IInterfaceList read GetShowableFields nodefault;
@@ -92,11 +135,10 @@ type
   protected
     procedure AddShowableField(const ACaption, AName, AValue: string);
     procedure FillShowableFieldsList; virtual; abstract;
-    function GetDeleteSQL: string; override; final;
-
+    function GetDeleteSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
   public
     function FromString(const AValue: string): Boolean; virtual; abstract;
-    function GetLoadSQL: string; override; final;
+    function GetLoadSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
     procedure Load(const ADataSet: TDataSet); override;
     constructor Create; override;
     function AlreadyArchived(const AConnection: TCustomConnection = nil): Integer; virtual; abstract;
@@ -248,11 +290,24 @@ begin
   end;
 end;
 
+procedure TArchiveDocumentItem.SetYear(const AValue: Integer);
+begin
+  if FYear <> AValue then
+  begin
+    FYear := AValue;
+  end;
+end;
+
 function TArchiveDocumentItem.GetShowableFields: IInterfaceList;
 begin
   FShowableFields := TInterfaceList.Create;
   FillShowableFieldsList;
   Result := FShowableFields;
+end;
+
+function TArchiveDocumentItem.GetYear: Integer;
+begin
+  Result := FYear;
 end;
 
 procedure TArchiveDocumentItem.AddShowableField(const ACaption, AName, AValue: string);
@@ -283,6 +338,7 @@ begin
   CompanyName := EmptyStr;
   Barcode := EmptyStr;
   SequenceNumber := -1;
+  Year := -1;
 end;
 
 procedure TArchiveDocumentItem.Load(const ADataSet: TDataSet);
@@ -300,6 +356,7 @@ begin
     CompanyName := ADataSet.FieldByName('CompanyName').AsString;
     Barcode := ADataSet.FieldByName('Barcode').AsString;
     SequenceNumber := ADataSet.FieldByName('SequenceNumber').AsInteger;
+    Year := ADataSet.FieldByName('Year').AsInteger;
   end;
 end;
 

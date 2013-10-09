@@ -9,14 +9,15 @@ uses
   uICauseOfArchiveDocumentDamageItem;
 
 type
-  TCauseOfArchiveDocumentDamageList = class sealed(TLoadableList, ICauseOfArchiveDocumentDamageList)
+  TCauseOfArchiveDocumentDamageList = class {$IFNDEF VER150} sealed
+{$ENDIF}(TLoadableList, ICauseOfArchiveDocumentDamageList)
   private
     function GetItem(const AIndex: Integer): ICauseOfArchiveDocumentDamageItem;
   public
     function GetItemById(const AId: Integer): ICauseOfArchiveDocumentDamageItem;
     property Item[const AIndex: Integer]: ICauseOfArchiveDocumentDamageItem read GetItem; default;
   public
-    constructor Create(const AConnection: TCustomConnection); override; final;
+    constructor Create(const AConnection: TCustomConnection); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation

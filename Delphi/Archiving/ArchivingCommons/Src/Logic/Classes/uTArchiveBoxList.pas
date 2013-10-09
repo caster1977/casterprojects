@@ -9,14 +9,14 @@ uses
   uIArchiveBoxList;
 
 type
-  TArchiveBoxList = class sealed(TLoadableList, IArchiveBoxList)
+  TArchiveBoxList = class {$IFNDEF VER150} sealed {$ENDIF}(TLoadableList, IArchiveBoxList)
   private
     function GetItem(const AIndex: Integer): IArchiveBoxItem;
   public
     function GetItemById(const AId: Integer): IArchiveBoxItem;
     property Item[const AIndex: Integer]: IArchiveBoxItem read GetItem; default;
   public
-    constructor Create(const AConnection: TCustomConnection); override; final;
+    constructor Create(const AConnection: TCustomConnection); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation
@@ -37,9 +37,9 @@ begin
     begin
       if Assigned(Items[i]) then
       begin
-        if (Items[i] as IArchiveBoxItem).Id = AId then
+        if (IArchiveBoxItem(Items[i])).Id = AId then
         begin
-          Result := Items[i] as IArchiveBoxItem;
+          Result := IArchiveBoxItem(Items[i]);
           Break;
         end;
       end;

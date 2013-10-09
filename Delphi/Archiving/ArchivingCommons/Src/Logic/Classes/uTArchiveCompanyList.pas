@@ -9,14 +9,14 @@ uses
   uIArchiveCompanyList;
 
 type
-  TArchiveCompanyList = class sealed(TLoadableList, IArchiveCompanyList)
+  TArchiveCompanyList = class {$IFNDEF VER150} sealed {$ENDIF}(TLoadableList, IArchiveCompanyList)
   private
     function GetItem(const AIndex: Integer): IArchiveCompanyItem;
   public
     function GetItemById(const AId: Integer): IArchiveCompanyItem;
     property Item[const AIndex: Integer]: IArchiveCompanyItem read GetItem; default;
   public
-    constructor Create(const AConnection: TCustomConnection); override; final;
+    constructor Create(const AConnection: TCustomConnection); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation

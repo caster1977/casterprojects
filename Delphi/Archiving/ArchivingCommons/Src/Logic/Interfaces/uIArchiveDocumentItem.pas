@@ -109,6 +109,13 @@ type
     /// </summary>
     property SequenceNumber: Integer read GetSequenceNumber write SetSequenceNumber;
 
+    function GetYear: Integer;
+    procedure SetYear(const AValue: Integer);
+    /// <summary>
+    /// Год документа
+    /// </summary>
+    property Year: Integer read GetYear write SetYear;
+
     /// <summary>
     /// Функция для определения архивного короба, в который помещён документ
     /// </summary>

@@ -7,9 +7,9 @@ uses
   uTArchiveDocumentList;
 
 type
-  TShipmentBSOList = class sealed(TArchiveDocumentList)
+  TShipmentBSOList = class {$IFNDEF VER150} sealed {$ENDIF}(TArchiveDocumentList)
   public
-    constructor Create(const AConnection: TCustomConnection); override; final;
+    constructor Create(const AConnection: TCustomConnection); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation
