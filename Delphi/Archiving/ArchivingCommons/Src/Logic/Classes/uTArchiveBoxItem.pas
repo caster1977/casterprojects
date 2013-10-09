@@ -11,7 +11,7 @@ uses
   uIShowable;
 
 type
-  TArchiveBoxItem = class sealed(TLoadableItem, IArchiveBoxItem, IShowable)
+  TArchiveBoxItem = class {$IFNDEF VER150} sealed {$ENDIF}(TLoadableItem, IArchiveBoxItem, IShowable)
   private
     FCreationDate: TDateTime;
     function GetCreationDate: TDateTime;
@@ -132,12 +132,12 @@ type
     procedure FillShowableFieldsList;
 
   protected
-    function GetSaveSQL: string; override; final;
-    function GetDeleteSQL: string; override; final;
+    function GetSaveSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
+    function GetDeleteSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
   public
-    constructor Create; override; final;
-    function GetLoadSQL: string; override; final;
-    procedure Load(const ADataSet: TDataSet); override; final;
+    constructor Create; override; {$IFNDEF VER150} final; {$ENDIF}
+    function GetLoadSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
+    procedure Load(const ADataSet: TDataSet); override; {$IFNDEF VER150} final; {$ENDIF}
     function Delete(const AConnection: TCustomConnection = nil): Boolean; override;
   end;
 

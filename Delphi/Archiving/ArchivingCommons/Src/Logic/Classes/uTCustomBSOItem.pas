@@ -5,15 +5,19 @@ interface
 uses
   Classes,
   DB,
-  Vcl.Controls,
+  Controls,
   uIArchiveDocumentItem,
   uTArchiveDocumentItem,
   uICustomBSOItem;
 
 type
-  TCustomBSOItem = class abstract(TArchiveDocumentItem, ICustomBSOItem)
+
+  TCustomBSOItem = class {$IFNDEF VER150} abstract {$ENDIF}(TArchiveDocumentItem, ICustomBSOItem)
   private
     FBSOId: Integer;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetBSOId: Integer;
     procedure SetBSOId(const AValue: Integer);
   public
@@ -21,6 +25,9 @@ type
 
   private
     FSeries: string;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetSeries: string;
     procedure SetSeries(const AValue: string);
   public
@@ -28,6 +35,9 @@ type
 
   private
     FNumber: string;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetNumber: string;
     procedure SetNumber(const AValue: string);
   public
@@ -36,8 +46,9 @@ type
   public
     constructor Create; override;
     procedure Load(const ADataSet: TDataSet); override;
-    function FromString(const AValue: string): Boolean; override; final;
-    function AlreadyArchived(const AConnection: TCustomConnection = nil): Integer; override; final;
+    function FromString(const AValue: string): Boolean; override; {$IFNDEF VER150} final; {$ENDIF}
+    function AlreadyArchived(const AConnection: TCustomConnection = nil): Integer; override; {$IFNDEF VER150} final;
+{$ENDIF}
   end;
 
 implementation
@@ -112,10 +123,22 @@ begin
   begin
     for i := 1 to Length(s) do
     begin
+{$IFDEF VER150}
+      case s[i] of
+        '0' .. '9':
+          begin
+          end;
+      else
+        begin
+          Exit;
+        end;
+      end;
+{$ELSE}
       if not CharInSet(s[i], ['0' .. '9']) then
       begin
         Exit;
       end;
+{$ENDIF}
     end;
     if Assigned(Connection) then
     begin
@@ -123,7 +146,7 @@ begin
       if Assigned(ds) then
       begin
         try
-          SetSQLForQuery(ds, Format('Archiving_sel_ArchiveDocumentDataByBarcode ''%s''', [s]), True);
+          SetSQLForQuery(ds, Format('Archiving_sel_ArchiveDocumentDataForBSOByBarcode ''%s''', [s]), True);
           try
             if not ds.Eof then
             begin

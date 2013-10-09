@@ -10,11 +10,10 @@ uses
 type
   TArchiveBoxTypeItem = class(TLoadableItem, IArchiveBoxTypeItem)
   protected
-    function GetSaveSQL: string; override; final;
-    function GetDeleteSQL: string; override; final;
+    function GetSaveSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
+    function GetDeleteSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
   public
-    function GetLoadSQL: string; override; final;
-
+    function GetLoadSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
   private
     FName: string;
     function GetName: string;
@@ -34,8 +33,8 @@ type
     property Capacity: Integer read GetCapacity;
 
   public
-    constructor Create; override; final;
-    procedure Load(const ADataSet: TDataSet); override; final;
+    constructor Create; override; {$IFNDEF VER150} final; {$ENDIF}
+    procedure Load(const ADataSet: TDataSet); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation
@@ -85,7 +84,7 @@ end;
 
 function TArchiveBoxTypeItem.GetSaveSQL: string;
 begin
-  Result := Format('Archiving_upd_ArchiveBoxType %d, ''%s'', ''%s'', %d', [Id, Name, Code, Capacity]);
+  Result := Format('Archiving_upd_ArchiveBoxType %d, ''%s'', ''%s'', %d', [Id, name, Code, Capacity]);
 end;
 
 function TArchiveBoxTypeItem.GetDeleteSQL: string;

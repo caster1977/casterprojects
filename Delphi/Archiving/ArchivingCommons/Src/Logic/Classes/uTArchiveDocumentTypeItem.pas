@@ -10,20 +10,19 @@ uses
 type
   TArchiveDocumentTypeItem = class(TLoadableItem, IArchiveDocumentTypeItem)
   protected
-    function GetSaveSQL: string; override; final;
-    function GetDeleteSQL: string; override; final;
+    function GetSaveSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
+    function GetDeleteSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
   public
-    function GetLoadSQL: string; override; final;
-
+    function GetLoadSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
   private
     FName: string;
     function GetName: string;
   public
-    property Name: string read GetName;
+    property name: string read GetName;
 
   public
-    constructor Create; override; final;
-    procedure Load(const ADataSet: TDataSet); override; final;
+    constructor Create; override; {$IFNDEF VER150} final; {$ENDIF}
+    procedure Load(const ADataSet: TDataSet); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation

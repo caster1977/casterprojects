@@ -17,6 +17,9 @@ type
 
   private
     FId: Integer;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetId: Integer;
   public
     property Id: Integer read GetId nodefault;

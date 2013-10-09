@@ -7,7 +7,8 @@ uses
   Classes,
   uILoadableList,
   uTLoadableItemClass,
-  uILoadableItem;
+  uILoadableItem,
+  uTLoadableItem;
 
 type
   TLoadableList = class(TInterfacedObject, ILoadableList)
@@ -24,7 +25,11 @@ type
   protected
     property Items: IInterfaceList read GetItems nodefault;
 
+{$IFDEF VER150}
+  protected
+{$ELSE}
   private
+{$ENDIF}
     function GetCount: Integer;
   public
     property Count: Integer read GetCount nodefault;
@@ -37,7 +42,7 @@ type
     property ItemClass: TLoadableItemClass read GetItemClass write SetItemClass nodefault;
 
   protected
-    procedure BeforeLoad(const AItem: ILoadableItem); virtual;
+    procedure BeforeLoad(const AItem: TLoadableItem); virtual;
   public
     constructor Create(const AConnection: TCustomConnection = nil); reintroduce; virtual;
     function Add: Integer; overload;
@@ -55,21 +60,24 @@ uses
   uArchivingCommonRoutines,
   ADODB,
   SqlExpr,
-  uTLoadableItem,
   SysUtils;
 
 function TLoadableList.Add: Integer;
 begin
-  Result := Items.Add(ItemClass.Create(Connection, -1));
+  Result := Items.Add(IInterface(ItemClass.Create(Connection, -1)));
 end;
 
 function TLoadableList.Add(const AItem: ILoadableItem): Integer;
 begin
+{$IFNDEF VER150}
   Result := -1;
   if AItem is ItemClass then
   begin
-    Result := Items.Add(AItem);
+{$ENDIF}
+    Result := Items.Add(IInterface(AItem));
+{$IFNDEF VER150}
   end;
+{$ENDIF}
 end;
 
 constructor TLoadableList.Create(const AConnection: TCustomConnection);
@@ -127,18 +135,19 @@ begin
   Result := -1;
   if Assigned(AItem) and Assigned(FItems) then
   begin
-    Result := FItems.IndexOf(AItem);
+    Result := FItems.IndexOf(IInterface(AItem));
   end;
 end;
 
-procedure TLoadableList.BeforeLoad(const AItem: ILoadableItem);
+procedure TLoadableList.BeforeLoad(const AItem: TLoadableItem);
 begin
 end;
 
 procedure TLoadableList.Load(const AConnection: TCustomConnection);
 var
   ds: TDataSet;
-  ic: TLoadableItem;
+  tli: TLoadableItem;
+  ili: ILoadableItem;
   s: string;
 begin
   if Assigned(AConnection) then
@@ -152,21 +161,27 @@ begin
     begin
       try
         s := EmptyStr;
-        ic := ItemClass.Create(Connection, -1);
-        try
-          BeforeLoad(ic);
-          s := ic.GetLoadSQL;
-        finally
-          FreeAndNil(ic);
+        tli := ItemClass.Create(Connection, -1);
+        if Assigned(tli) then
+        begin
+          try
+            BeforeLoad(tli);
+            s := tli.GetLoadSQL;
+          finally
+            FreeAndNil(tli);
+          end;
         end;
         SetSQLForQuery(ds, s, True);
         try
           Items.Clear;
           while not ds.Eof do
           begin
-            ic := ItemClass.Create(Connection, -1);
-            ic.Load(ds);
-            Items.Add(ic);
+            ili := ItemClass.Create(Connection, -1);
+            if Assigned(ili) then
+            begin
+              ili.Load(ds);
+              Items.Add(ili);
+            end;
             ds.Next;
           end;
         finally
@@ -192,7 +207,7 @@ begin
   begin
     for i := 0 to Count - 1 do
     begin
-      Result := (Items[i] as ItemClass).Save(Connection);
+      Result := ILoadableItem(Items[i]).Save(Connection);
       if not Result then
       begin
         Break;
@@ -214,7 +229,7 @@ begin
       end;
       if Assigned(Connection) then
       begin
-        Result := (Items[AIndex] as ItemClass).Delete(Connection);
+        Result := ILoadableItem(Items[AIndex]).Delete(Connection);
         if Result then
         begin
           FItems.Delete(AIndex);
@@ -239,7 +254,7 @@ begin
     begin
       for i := 0 to Count - 1 do
       begin
-        Result := (Items[i] as ItemClass).Delete(Connection);
+        Result := ILoadableItem(Items[i]).Delete(Connection);
         if Result then
         begin
           FItems.Delete(i);

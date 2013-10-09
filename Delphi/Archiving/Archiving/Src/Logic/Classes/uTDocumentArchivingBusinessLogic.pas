@@ -16,7 +16,8 @@ uses
   uTArchiveDocumentItemClass;
 
 type
-  TDocumentArchivingBusinessLogic = class abstract(TCustomBusinessLogic, IDocumentArchivingBusinessLogic)
+  TDocumentArchivingBusinessLogic = class {$IFNDEF VER150} abstract
+{$ENDIF}(TCustomBusinessLogic, IDocumentArchivingBusinessLogic)
   private
     /// <summary>
     /// Функция "освобождения" указанного короба
@@ -720,15 +721,19 @@ begin
       end;
       if j = 0 then
       begin
-        AParentControl.Height := Integer(AParentControl is TGroupBox) * 10 + l1.Margins.Top + l1.Margins.Bottom +
-          AShowableItem.ShowableFields.Count * (17 + l1.Margins.Top);;
+        AParentControl.Height := Integer(AParentControl is TGroupBox) * 10 +
+{$IFDEF VER150}3{$ELSE}l1.Margins.Top{$ENDIF} +
+{$IFDEF VER150}3{$ELSE}l1.Margins.Bottom{$ENDIF} + AShowableItem.ShowableFields.Count * (17 +
+{$IFDEF VER150}3{$ELSE}l1.Margins.Top{$ENDIF});
       end;
       l1.Name := 'lblDocument' + IShowableField(AShowableItem.ShowableFields[j]).Name + 'Caption';
       l1.Parent := AParentControl;
       l1.Caption := IShowableField(AShowableItem.ShowableFields[j]).Caption;
       l1.Left := 8;
-      l1.Top := Integer(AParentControl is TGroupBox) * 10 + AParentControl.Margins.Top + AParentControl.Margins.Top + j
-        * (17 + AParentControl.Margins.Top);
+      l1.Top := Integer(AParentControl is TGroupBox) * 10 +
+{$IFDEF VER150}3{$ELSE}AParentControl.Margins.Top{$ENDIF} +
+{$IFDEF VER150}3{$ELSE}AParentControl.Margins.Bottom{$ENDIF} + j * (17 +
+{$IFDEF VER150}3{$ELSE}AParentControl.Margins.Top{$ENDIF});
 
       c := GetControlByName('lblDocument' + IShowableField(AShowableItem.ShowableFields[j]).Name, AParentControl);
       if Assigned(c) then
@@ -741,8 +746,10 @@ begin
       end;
       if j = 0 then
       begin
-        AParentControl.Height := Integer(AParentControl is TGroupBox) * 10 + l2.Margins.Top + l2.Margins.Bottom +
-          AShowableItem.ShowableFields.Count * (17 + l2.Margins.Top);
+        AParentControl.Height := Integer(AParentControl is TGroupBox) * 10 +
+{$IFDEF VER150}3{$ELSE}l2.Margins.Top{$ENDIF} +
+{$IFDEF VER150}3{$ELSE}l2.Margins.Bottom{$ENDIF} + AShowableItem.ShowableFields.Count * (17 +
+{$IFDEF VER150}3{$ELSE}l2.Margins.Top{$ENDIF});
         wc := AParentControl.Parent;
         while Assigned(wc) do
         begin
@@ -754,8 +761,10 @@ begin
       l2.Caption := IShowableField(AShowableItem.ShowableFields[j]).Value;
       l2.Parent := AParentControl;
       l2.Left := AParentControl.ClientWidth div 2 + 8;
-      l2.Top := Integer(AParentControl is TGroupBox) * 10 + AParentControl.Margins.Top + AParentControl.Margins.Top + j
-        * (17 + AParentControl.Margins.Top);
+      l2.Top := Integer(AParentControl is TGroupBox) * 10 +
+{$IFDEF VER150}3{$ELSE}AParentControl.Margins.Top{$ENDIF} +
+{$IFDEF VER150}3{$ELSE}AParentControl.Margins.Bottom{$ENDIF} + j * (17 +
+{$IFDEF VER150}3{$ELSE}AParentControl.Margins.Top{$ENDIF});
     end;
   end;
 end;
@@ -969,8 +978,8 @@ begin
     if CanAddDocument then
     begin
       old_box_id := -1;
-      SetSQLForQuery(Query, Format('Archiving_sel_OldestOpenedArchiveBox %d, %d',
-        [ArchiveBoxTypeId, ADocument.CompanyId]), True);
+      SetSQLForQuery(Query, Format('Archiving_sel_OldestOpenedArchiveBox %d, %d, %d',
+        [ArchiveBoxTypeId, ADocument.CompanyId, ADocument.Year]), True);
       try
         if not Query.Eof then
         begin
@@ -986,13 +995,14 @@ begin
         begin
           Result.UserId := CurrentUserId;
           Result.Save(Connection);
-          Result.Load;
+          Result.Load(Connection);
           ADocument.ArchiveBoxId := Result.Id;
           if Assigned(Result.Documents) then
           begin
             ADocument.SequenceNumber := Result.Documents.Count + 1;
             if Result.Documents.Add(ADocument) > -1 then
             begin
+              // if not ADocument.Save(Connection) then
               if not Result.Documents.Save then
               begin
                 Result := nil;
@@ -1022,14 +1032,22 @@ begin
     begin
       if ADocument.CompanyId = CurrentBox.CompanyId then
       begin
-        ADocument.ArchiveBoxId := CurrentBox.Id;
-        if Assigned(CurrentBox.Documents) then
+        if ADocument.Year = CurrentBox.Year then
         begin
-          ADocument.SequenceNumber := CurrentBox.Documents.Count + 1;
-          if CurrentBox.Documents.Add(ADocument) > -1 then
+          ADocument.ArchiveBoxId := CurrentBox.Id;
+          if Assigned(CurrentBox.Documents) then
           begin
-            Result := CurrentBox.Documents.Save;
+            ADocument.SequenceNumber := CurrentBox.Documents.Count + 1;
+            if CurrentBox.Documents.Add(ADocument) > -1 then
+            begin
+              Result := CurrentBox.Documents.Save;
+            end;
           end;
+        end
+        else
+        begin
+          DisplayErrorMessage('Год документа не соответствует году короба' + sLineBreak +
+            RsEnterBarcodeOfDocumentOrCommand);
         end;
       end
       else
@@ -1056,7 +1074,7 @@ begin
         Result.CreationDate := Now;
         Result.TypeId := ArchiveBoxTypeId;
         Result.CompanyId := ADocument.CompanyId;
-        Result.Year := CurrentYear; { TODO -ov_ivanov : изменить алгоритм инициализации года короба }
+        Result.Year := ADocument.Year;
         Result.Number := GetNewArchiveBoxNumber(Result.TypeId, Result.CompanyId, Result.Year);
         if Result.Number > 0 then
         begin
