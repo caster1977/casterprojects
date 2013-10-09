@@ -337,6 +337,8 @@ implementation
 uses
   StdCtrls,
   SysUtils,
+  Windows,
+  Forms,
   uArchivingCommonRoutines,
   uIShowableField,
   uTArchiveBoxItem,
@@ -1131,17 +1133,41 @@ begin
         end;
       dabtForceNewBoxCommand:
         begin
-          if CloseCurrentBox then
-            DisplaySuccessMessage('Текущий короб был закрыт' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand)
+          if Assigned(CurrentBox) then
+          begin
+            if MessageBox(Application.Handle, 'Вы действительно хотите закрыть текущий короб?', 'Подтверждение',
+              MB_OKCANCEL + MB_ICONQUESTION + MB_DEFBUTTON2) = IDOK then
+            begin
+              if CloseCurrentBox then
+                DisplaySuccessMessage('Текущий короб был закрыт' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand)
+              else
+                DisplayErrorMessage('Не удалось закрыть текущий короб' + sLineBreak +
+                  RsEnterBarcodeOfDocumentOrCommand);
+            end
+            else
+              DisplayInfoMessage('Закрытие текущего короба было отменено' + sLineBreak +
+                RsEnterBarcodeOfDocumentOrCommand);
+          end
           else
-            DisplayErrorMessage('Не удалось закрыть текущий короб' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
+          begin
+            DisplayErrorMessage('Нельзя закрыть текущий короб, т.к. нет текущего короба' + sLineBreak +
+              RsEnterBarcodeOfDocumentOrCommand);
+          end;
         end;
       dabtPutBoxAsideCommand:
         begin
-          if PutCurrentBoxAside then
-            DisplaySuccessMessage('Текущий короб отложен' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand)
+          if Assigned(CurrentBox) then
+          begin
+            if PutCurrentBoxAside then
+              DisplaySuccessMessage('Текущий короб отложен' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand)
+            else
+              DisplayErrorMessage('Не удалось отложить текущий короб' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
+          end
           else
-            DisplayErrorMessage('Не удалось отложить текущий короб' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
+          begin
+            DisplayErrorMessage('Нельзя отложить текущий короб, т.к. нет текущего короба' + sLineBreak +
+              RsEnterBarcodeOfDocumentOrCommand);
+          end;
         end;
       dabtGiveDocumentAway:
         begin
@@ -1169,7 +1195,16 @@ begin
           DisplayErrorMessage('Документ не принят по реестру ЛП');
         end;
       end;
-      AddDocument(AString);
+
+      if not CurrentBoxIsFull then
+      begin
+        AddDocument(AString);
+      end
+      else
+      begin
+        DisplayErrorMessage('Нельзя добавлять документы в короб, т.к. текущий короб был заполнен' + sLineBreak +
+          RsEnterBarcodeOfDocumentOrCommand);
+      end;
 
       if Assigned(CurrentBox) then
       begin
@@ -1188,9 +1223,14 @@ begin
 
       if CurrentBoxIsFull then
       begin
-        if CloseCurrentBox then
+        if MessageBox(Application.Handle, 'Текущий короб заполнен. Вы хотите закрыть текущий короб?', 'Подтверждение',
+          MB_OKCANCEL + MB_ICONWARNING + MB_DEFBUTTON1) = IDOK then
         begin
-          DisplaySuccessMessage('Текущий короб заполнен и был закрыт' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
+          if CloseCurrentBox then
+          begin
+            DisplaySuccessMessage('Текущий короб заполнен и был закрыт' + sLineBreak +
+              RsEnterBarcodeOfDocumentOrCommand);
+          end;
         end;
       end;
     end
