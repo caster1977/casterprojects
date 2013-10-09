@@ -71,8 +71,8 @@ begin
   inherited;
   if Assigned(ADataSet) then
   begin
-    CauseOfDamageId := ADataSet.FieldByName('CauseOfDamageId').AsInteger;
-    CauseOfDamageName := ADataSet.FieldByName('CauseOfDamageName').AsString;
+    CauseOfDamageId := ADataSet.FieldByName('CauseOfArchiveDocumentDamageId').AsInteger;
+    CauseOfDamageName := ADataSet.FieldByName('CauseOfArchiveDocumentDamageName').AsString;
   end;
 end;
 
