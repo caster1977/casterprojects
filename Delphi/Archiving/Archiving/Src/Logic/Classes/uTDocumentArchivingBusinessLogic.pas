@@ -585,7 +585,7 @@ begin
   try
     if not Query.Eof then
     begin
-      Result := Query.FieldByName('Value_Int').AsInteger = 0;
+      Result := Query.FieldByName('Value_Int').AsInteger = 1;
     end;
   finally
     Query.Close;
