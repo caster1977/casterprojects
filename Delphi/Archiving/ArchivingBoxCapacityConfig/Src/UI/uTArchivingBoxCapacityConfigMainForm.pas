@@ -39,10 +39,13 @@ type
     procedure actCancelExecute(Sender: TObject);
     procedure actSaveUpdate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure vleArchiveBoxCapacityValidate(Sender: TObject; ACol, ARow: Integer; const KeyName, KeyValue: string);
   private
     FLogic: IArchivingBoxCapacityConfigBusinessLogic;
     function GetLogic: IArchivingBoxCapacityConfigBusinessLogic;
     property Logic: IArchivingBoxCapacityConfigBusinessLogic read GetLogic nodefault;
+  private
+    procedure SetCaptions;
   public
     constructor Create(AOwner: TComponent); override;
   end;
@@ -76,13 +79,12 @@ end;
 constructor TArchivingBoxCapacityConfigMainForm.Create(AOwner: TComponent);
 begin
   inherited;
-  //SetCaptions;
+  SetCaptions;
   Logic.DisableDocumentArchiving;
   Logic.LoadData;
 end;
 
-procedure TArchivingBoxCapacityConfigMainForm.FormClose(Sender: TObject;
-  var Action: TCloseAction);
+procedure TArchivingBoxCapacityConfigMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Logic.EnableDocumentArchiving;
 end;
@@ -94,6 +96,27 @@ begin
     FLogic := TArchivingBoxCapacityConfigBusinessLogic.Create(ADOConnection, vleArchiveBoxCapacity);
   end;
   Result := FLogic;
+end;
+
+procedure TArchivingBoxCapacityConfigMainForm.SetCaptions;
+resourcestring
+  RsSave = 'Применить';
+  RsCancel = 'Отмена';
+  RsTypes = 'Тип архивного короба';
+  RsCapacity = 'Кол-во документов';
+  RsCaption = 'Настройка объёма архивных коробов';
+begin
+  Caption := RsCaption;
+  actSave.Caption := RsSave;
+  actCancel.Caption := RsCancel;
+  vleArchiveBoxCapacity.TitleCaptions.Strings[0] := RsTypes;
+  vleArchiveBoxCapacity.TitleCaptions.Strings[1] := RsCapacity;
+end;
+
+procedure TArchivingBoxCapacityConfigMainForm.vleArchiveBoxCapacityValidate(Sender: TObject; ACol, ARow: Integer;
+  const KeyName, KeyValue: string);
+begin
+  vleArchiveBoxCapacity.Values[KeyName] := IntToStr(StrToIntDef(Trim(KeyValue), 0));
 end;
 
 end.

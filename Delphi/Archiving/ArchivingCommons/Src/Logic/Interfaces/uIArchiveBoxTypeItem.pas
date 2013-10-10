@@ -27,11 +27,12 @@ type
     property Code: string read GetCode;
 
     function GetCapacity: Integer;
+    procedure SetCapacity(const AValue: Integer);
 
     /// <summary>
     /// Вместимость типа архивного короба
     /// </summary>
-    property Capacity: Integer read GetCapacity;
+    property Capacity: Integer read GetCapacity write SetCapacity;
   end;
 
 implementation

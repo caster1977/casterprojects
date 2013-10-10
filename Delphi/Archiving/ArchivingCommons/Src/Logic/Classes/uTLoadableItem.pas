@@ -36,6 +36,7 @@ type
     function GetDeleteSQL: string; virtual; abstract;
   public
     function GetLoadSQL: string; virtual; abstract;
+    procedure Assign(const AValue: ILoadableItem); virtual;
 
   public
     procedure Load(const ADataSet: TDataSet); overload; virtual;
@@ -100,6 +101,15 @@ begin
   inherited;
   FId := -1;
   Saveable := False;
+end;
+
+procedure TLoadableItem.Assign(const AValue: ILoadableItem);
+begin
+  if not Assigned(AValue) then
+  begin
+    raise EArgumentNilException.Create('Попытка копирования несуществующего объекта');
+  end;
+  FId := AValue.Id;
 end;
 
 constructor TLoadableItem.Create(const AConnection: TCustomConnection; const AId: Integer);

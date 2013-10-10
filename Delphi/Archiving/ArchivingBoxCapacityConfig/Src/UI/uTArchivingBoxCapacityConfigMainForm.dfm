@@ -13,6 +13,7 @@ object ArchivingBoxCapacityConfigMainForm: TArchivingBoxCapacityConfigMainForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
   OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
@@ -24,7 +25,6 @@ object ArchivingBoxCapacityConfigMainForm: TArchivingBoxCapacityConfigMainForm
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 216
     DesignSize = (
       470
       31)
@@ -62,6 +62,7 @@ object ArchivingBoxCapacityConfigMainForm: TArchivingBoxCapacityConfigMainForm
     TitleCaptions.Strings = (
       'RsTypes'
       'RsCapacity')
+    OnValidate = vleArchiveBoxCapacityValidate
     ColWidths = (
       384
       80)

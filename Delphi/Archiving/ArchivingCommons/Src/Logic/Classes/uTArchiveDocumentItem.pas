@@ -9,7 +9,8 @@ uses
   uTLoadableItem,
   uIArchiveDocumentItem,
   uIShowable,
-  uIArchiveBoxItem;
+  uIArchiveBoxItem,
+  uILoadableItem;
 
 type
   TArchiveDocumentItem = class {$IFNDEF VER150} abstract {$ENDIF}(TLoadableItem, IArchiveDocumentItem, IShowable)
@@ -142,6 +143,7 @@ type
     procedure Load(const ADataSet: TDataSet); override;
     constructor Create; override;
     function AlreadyArchived(const AConnection: TCustomConnection = nil): Integer; virtual; abstract;
+    procedure Assign(const AValue: ILoadableItem); override;
   end;
 
 implementation
@@ -321,6 +323,27 @@ begin
     begin
       FShowableFields.Add(f);
     end;
+  end;
+end;
+
+procedure TArchiveDocumentItem.Assign(const AValue: ILoadableItem);
+var
+  a: IArchiveDocumentItem;
+begin
+  inherited;
+  if Supports(AValue, IArchiveDocumentItem, a) then
+  begin
+    ArchiveBoxId := a.ArchiveBoxId;
+    ArchivedByUser := a.ArchivedByUser;
+    ArchivingDate := a.ArchivingDate;
+    Issued := a.Issued;
+    IssuedToUser := a.IssuedToUser;
+    IssuanceDate := a.IssuanceDate;
+    CompanyId := a.CompanyId;
+    CompanyName := a.CompanyName;
+    Barcode := a.Barcode;
+    SequenceNumber := a.SequenceNumber;
+    Year := a.Year;
   end;
 end;
 

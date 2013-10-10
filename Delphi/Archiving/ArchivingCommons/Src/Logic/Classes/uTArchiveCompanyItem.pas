@@ -5,7 +5,8 @@ interface
 uses
   uIArchiveCompanyItem,
   uTLoadableItem,
-  DB;
+  DB,
+  uILoadableItem;
 
 type
   TArchiveCompanyItem = class {$IFNDEF VER150} sealed {$ENDIF}(TLoadableItem, IArchiveCompanyItem)
@@ -29,6 +30,7 @@ type
   public
     constructor Create; override; {$IFNDEF VER150} final; {$ENDIF}
     procedure Load(const ADataSet: TDataSet); override; {$IFNDEF VER150} final; {$ENDIF}
+    procedure Assign(const AValue: ILoadableItem); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation
@@ -40,6 +42,18 @@ uses
 function TArchiveCompanyItem.GetName: string;
 begin
   Result := FName;
+end;
+
+procedure TArchiveCompanyItem.Assign(const AValue: ILoadableItem);
+var
+  a: IArchiveCompanyItem;
+begin
+  inherited;
+  if Supports(AValue, IArchiveCompanyItem, a) then
+  begin
+    FName := a.Name;
+    FCode := a.Code;
+  end;
 end;
 
 constructor TArchiveCompanyItem.Create;

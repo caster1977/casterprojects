@@ -8,7 +8,8 @@ uses
   uTLoadableItem,
   uIArchiveBoxItem,
   uIArchiveDocumentList,
-  uIShowable;
+  uIShowable,
+  uILoadableItem;
 
 type
   TArchiveBoxItem = class {$IFNDEF VER150} sealed {$ENDIF}(TLoadableItem, IArchiveBoxItem, IShowable)
@@ -139,6 +140,7 @@ type
     function GetLoadSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
     procedure Load(const ADataSet: TDataSet); override; {$IFNDEF VER150} final; {$ENDIF}
     function Delete(const AConnection: TCustomConnection = nil): Boolean; override;
+    procedure Assign(const AValue: ILoadableItem); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation
@@ -422,6 +424,30 @@ begin
     Number := ADataSet.FieldByName('Number').AsInteger;
     RegistryPrinted := ADataSet.FieldByName('RegistryPrinted').AsBoolean;
     StickerPrinted := ADataSet.FieldByName('StickerPrinted').AsBoolean;
+  end;
+end;
+
+procedure TArchiveBoxItem.Assign(const AValue: ILoadableItem);
+var
+  a: IArchiveBoxItem;
+begin
+  inherited;
+  if Supports(AValue, IArchiveBoxItem, a) then
+  begin
+    CreationDate := a.CreationDate;
+    Closed := a.Closed;
+    ClosureDate := a.ClosureDate;
+    Archived := a.Archived;
+    ArchivingDate := a.ArchivingDate;
+    UserId := a.UserId;
+    CompanyId := a.CompanyId;
+    CompanyName := a.CompanyName;
+    TypeId := a.TypeId;
+    TypeName := a.TypeName;
+    Year := a.Year;
+    Number := a.Number;
+    RegistryPrinted := a.RegistryPrinted;
+    StickerPrinted := a.StickerPrinted;
   end;
 end;
 
