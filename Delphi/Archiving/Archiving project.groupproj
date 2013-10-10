@@ -9,6 +9,9 @@
         <Projects Include="Archiving\Src\Archiving.dproj">
             <Dependencies>ArchivingCommons\Src\ArchivingCommons.dproj</Dependencies>
         </Projects>
+        <Projects Include="ArchivingBoxCapacityConfig\Src\ArchivingBoxCapacityConfig.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -35,14 +38,23 @@
     <Target Name="Archiving:Make" DependsOnTargets="ArchivingCommons:Make">
         <MSBuild Projects="Archiving\Src\Archiving.dproj" Targets="Make"/>
     </Target>
+    <Target Name="ArchivingBoxCapacityConfig">
+        <MSBuild Projects="ArchivingBoxCapacityConfig\Src\ArchivingBoxCapacityConfig.dproj"/>
+    </Target>
+    <Target Name="ArchivingBoxCapacityConfig:Clean">
+        <MSBuild Projects="ArchivingBoxCapacityConfig\Src\ArchivingBoxCapacityConfig.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ArchivingBoxCapacityConfig:Make">
+        <MSBuild Projects="ArchivingBoxCapacityConfig\Src\ArchivingBoxCapacityConfig.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="ArchivingCommons;Archiving"/>
+        <CallTarget Targets="ArchivingCommons;Archiving;ArchivingBoxCapacityConfig"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ArchivingCommons:Clean;Archiving:Clean"/>
+        <CallTarget Targets="ArchivingCommons:Clean;Archiving:Clean;ArchivingBoxCapacityConfig:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ArchivingCommons:Make;Archiving:Make"/>
+        <CallTarget Targets="ArchivingCommons:Make;Archiving:Make;ArchivingBoxCapacityConfig:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
