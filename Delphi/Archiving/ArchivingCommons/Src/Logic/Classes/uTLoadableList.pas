@@ -30,6 +30,16 @@ type
 {$ELSE}
   private
 {$ENDIF}
+    function GetItem(const AIndex: Integer): ILoadableItem;
+    procedure PutItem(const AIndex: Integer; const AItem: ILoadableItem);
+  public
+    property Item[const AIndex: Integer]: ILoadableItem read GetItem write PutItem; default;
+
+{$IFDEF VER150}
+  protected
+{$ELSE}
+  private
+{$ENDIF}
     function GetCount: Integer;
   public
     property Count: Integer read GetCount nodefault;
@@ -52,11 +62,13 @@ type
     function Clear(const AConnection: TCustomConnection = nil): Boolean;
     function Delete(const AIndex: Integer; const AConnection: TCustomConnection = nil): Boolean;
     function IndexOf(const AItem: ILoadableItem): Integer;
+    procedure Assign(const AValue: ILoadableList);
   end;
 
 implementation
 
 uses
+  Dialogs,
   uArchivingCommonRoutines,
   ADODB,
   SqlExpr,
@@ -80,6 +92,29 @@ begin
 {$ENDIF}
 end;
 
+procedure TLoadableList.Assign(const AValue: ILoadableList);
+var
+  i: Integer;
+  j: Integer;
+begin
+  Items.Clear;
+  if Assigned(AValue) then
+  begin
+    for i := 0 to AValue.Count - 1 do
+    begin
+      j := Add;
+      if j > -1 then
+      begin
+        Item[j].Assign(AValue[j]);
+      end;
+    end;
+    if Count <> AValue.Count then
+    begin
+      raise EListError.Create('Ќе удалось выполнить копирование списка');
+    end;
+  end;
+end;
+
 constructor TLoadableList.Create(const AConnection: TCustomConnection);
 begin
   inherited Create;
@@ -97,6 +132,20 @@ begin
   if Assigned(FItems) then
   begin
     Result := FItems.Count;
+  end;
+end;
+
+function TLoadableList.GetItem(const AIndex: Integer): ILoadableItem;
+var
+  a: ILoadableItem;
+begin
+  Result := nil;
+  if Assigned(Items) then
+  begin
+    if Supports(Items[AIndex], ILoadableItem, a) then
+    begin
+      Result := a;
+    end;
   end;
 end;
 
@@ -190,6 +239,17 @@ begin
       finally
         FreeAndNil(ds);
       end;
+    end;
+  end;
+end;
+
+procedure TLoadableList.PutItem(const AIndex: Integer; const AItem: ILoadableItem);
+begin
+  if (AIndex >= 0) or (AIndex < Count) then
+  begin
+    if Assigned(FItems) then
+    begin
+      FItems[AIndex] := IInterface(AItem);
     end;
   end;
 end;

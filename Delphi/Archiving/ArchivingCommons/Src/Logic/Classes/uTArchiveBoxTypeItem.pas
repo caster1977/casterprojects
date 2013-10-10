@@ -5,7 +5,8 @@ interface
 uses
   DB,
   uIArchiveBoxTypeItem,
-  uTLoadableItem;
+  uTLoadableItem,
+  uILoadableItem;
 
 type
   TArchiveBoxTypeItem = class(TLoadableItem, IArchiveBoxTypeItem)
@@ -18,29 +19,44 @@ type
     FName: string;
     function GetName: string;
   public
-    property name: string read GetName;
+    property name: string read GetName nodefault;
 
   private
     FCode: string;
     function GetCode: string;
   public
-    property Code: string read GetCode;
+    property Code: string read GetCode nodefault;
 
   private
     FCapacity: Integer;
     function GetCapacity: Integer;
   public
-    property Capacity: Integer read GetCapacity;
+    procedure SetCapacity(const AValue: Integer);
+    property Capacity: Integer read GetCapacity write SetCapacity nodefault;
 
   public
     constructor Create; override; {$IFNDEF VER150} final; {$ENDIF}
     procedure Load(const ADataSet: TDataSet); override; {$IFNDEF VER150} final; {$ENDIF}
+    procedure Assign(const AValue: ILoadableItem); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation
 
 uses
   SysUtils;
+
+procedure TArchiveBoxTypeItem.Assign(const AValue: ILoadableItem);
+var
+  a: IArchiveBoxTypeItem;
+begin
+  inherited;
+  if Supports(AValue, IArchiveBoxTypeItem, a) then
+  begin
+    FName := a.name;
+    FCode := a.Code;
+    FCapacity := a.Capacity;
+  end;
+end;
 
 function TArchiveBoxTypeItem.GetName: string;
 begin
@@ -79,6 +95,14 @@ begin
     FName := ADataSet.FieldByName('Name').AsString;
     FCode := ADataSet.FieldByName('Code').AsString;
     FCapacity := ADataSet.FieldByName('Capacity').AsInteger;
+  end;
+end;
+
+procedure TArchiveBoxTypeItem.SetCapacity(const AValue: Integer);
+begin
+  if FCapacity <> AValue then
+  begin
+    FCapacity := AValue;
   end;
 end;
 

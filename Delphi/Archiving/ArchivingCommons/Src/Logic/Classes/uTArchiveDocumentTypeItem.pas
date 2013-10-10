@@ -5,7 +5,8 @@ interface
 uses
   DB,
   uIArchiveDocumentTypeItem,
-  uTLoadableItem;
+  uTLoadableItem,
+  uILoadableItem;
 
 type
   TArchiveDocumentTypeItem = class(TLoadableItem, IArchiveDocumentTypeItem)
@@ -23,6 +24,7 @@ type
   public
     constructor Create; override; {$IFNDEF VER150} final; {$ENDIF}
     procedure Load(const ADataSet: TDataSet); override; {$IFNDEF VER150} final; {$ENDIF}
+    procedure Assign(const AValue: ILoadableItem); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation
@@ -33,6 +35,17 @@ uses
 function TArchiveDocumentTypeItem.GetName: string;
 begin
   Result := FName;
+end;
+
+procedure TArchiveDocumentTypeItem.Assign(const AValue: ILoadableItem);
+var
+  a: IArchiveDocumentTypeItem;
+begin
+  inherited;
+  if Supports(AValue, IArchiveDocumentTypeItem, a) then
+  begin
+    FName := a.name;
+  end;
 end;
 
 constructor TArchiveDocumentTypeItem.Create;

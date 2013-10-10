@@ -6,7 +6,8 @@ uses
   DB,
   Controls,
   uTCustomBSOItem,
-  uIDamagedBSOItem;
+  uIDamagedBSOItem,
+  uILoadableItem;
 
 type
   TDamagedBSOItem = class {$IFNDEF VER150} sealed {$ENDIF}(TCustomBSOItem, IDamagedBSOItem)
@@ -30,6 +31,7 @@ type
   public
     constructor Create; override; {$IFNDEF VER150} final; {$ENDIF}
     procedure Load(const ADataSet: TDataSet); override; {$IFNDEF VER150} final; {$ENDIF}
+    procedure Assign(const AValue: ILoadableItem); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation
@@ -81,6 +83,18 @@ begin
   Result := Format('Archiving_upd_DamagedBSO %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, %d, %d',
     [Id, ArchiveBoxId, SequenceNumber, ArchivedByUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate),
     Integer(Issued), IssuedToUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', IssuanceDate), Year, BSOId, CauseOfDamageId]);
+end;
+
+procedure TDamagedBSOItem.Assign(const AValue: ILoadableItem);
+var
+  a: IDamagedBSOItem;
+begin
+  inherited;
+  if Supports(AValue, IDamagedBSOItem, a) then
+  begin
+    CauseOfDamageId := a.CauseOfDamageId;
+    CauseOfDamageName := a.CauseOfDamageName;
+  end;
 end;
 
 constructor TDamagedBSOItem.Create;

@@ -10,7 +10,7 @@
             <Dependencies>ArchivingCommons\Src\ArchivingCommons.dproj</Dependencies>
         </Projects>
         <Projects Include="ArchivingBoxCapacityConfig\Src\ArchivingBoxCapacityConfig.dproj">
-            <Dependencies/>
+            <Dependencies>ArchivingCommons\Src\ArchivingCommons.dproj</Dependencies>
         </Projects>
     </ItemGroup>
     <ProjectExtensions>
@@ -38,13 +38,13 @@
     <Target Name="Archiving:Make" DependsOnTargets="ArchivingCommons:Make">
         <MSBuild Projects="Archiving\Src\Archiving.dproj" Targets="Make"/>
     </Target>
-    <Target Name="ArchivingBoxCapacityConfig">
+    <Target Name="ArchivingBoxCapacityConfig" DependsOnTargets="ArchivingCommons">
         <MSBuild Projects="ArchivingBoxCapacityConfig\Src\ArchivingBoxCapacityConfig.dproj"/>
     </Target>
-    <Target Name="ArchivingBoxCapacityConfig:Clean">
+    <Target Name="ArchivingBoxCapacityConfig:Clean" DependsOnTargets="ArchivingCommons:Clean">
         <MSBuild Projects="ArchivingBoxCapacityConfig\Src\ArchivingBoxCapacityConfig.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ArchivingBoxCapacityConfig:Make">
+    <Target Name="ArchivingBoxCapacityConfig:Make" DependsOnTargets="ArchivingCommons:Make">
         <MSBuild Projects="ArchivingBoxCapacityConfig\Src\ArchivingBoxCapacityConfig.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">

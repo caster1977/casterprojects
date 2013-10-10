@@ -8,7 +8,8 @@ uses
   Controls,
   uIArchiveDocumentItem,
   uTArchiveDocumentItem,
-  uICustomBSOItem;
+  uICustomBSOItem,
+  uILoadableItem;
 
 type
 
@@ -49,6 +50,7 @@ type
     function FromString(const AValue: string): Boolean; override; {$IFNDEF VER150} final; {$ENDIF}
     function AlreadyArchived(const AConnection: TCustomConnection = nil): Integer; override; {$IFNDEF VER150} final;
 {$ENDIF}
+    procedure Assign(const AValue: ILoadableItem); override;
   end;
 
 implementation
@@ -100,6 +102,19 @@ begin
   if FSeries <> s then
   begin
     FSeries := s;
+  end;
+end;
+
+procedure TCustomBSOItem.Assign(const AValue: ILoadableItem);
+var
+  a: ICustomBSOItem;
+begin
+  inherited;
+  if Supports(AValue, ICustomBSOItem, a) then
+  begin
+    BSOId := a.BSOId;
+    Series := a.Series;
+    Number := a.Number;
   end;
 end;
 

@@ -81,6 +81,29 @@ type
     /// Удалось ли выполнить очистку списка
     /// </returns>
     function Clear(const AConnection: TCustomConnection = nil): Boolean;
+
+    /// <summary>
+    /// Процедура копирования объектов исходного списка в текущий список
+    /// текущего объекта
+    /// </summary>
+    /// <param name="AValue">
+    /// Исходный список
+    /// </param>
+    /// <remarks>
+    /// Создаётся дубликат объектов исходного списка
+    /// </remarks>
+    procedure Assign(const AValue: ILoadableList);
+
+    function GetItem(const AIndex: Integer): ILoadableItem;
+    procedure PutItem(const AIndex: Integer; const AItem: ILoadableItem);
+
+    /// <summary>
+    /// Свойство доступа к массиву элементов списка
+    /// </summary>
+    /// <param name="AIndex">
+    /// Индекс элемента в списке
+    /// </param>
+    property Item[const AIndex: Integer]: ILoadableItem read GetItem write PutItem; default;
   end;
 
 implementation

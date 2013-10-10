@@ -5,7 +5,8 @@ interface
 uses
   uTLoadableItem,
   uICauseOfArchiveDocumentDamageItem,
-  DB;
+  DB,
+  uILoadableItem;
 
 type
   TCauseOfArchiveDocumentDamageItem = class(TLoadableItem, ICauseOfArchiveDocumentDamageItem)
@@ -28,6 +29,7 @@ type
   public
     constructor Create; override; {$IFNDEF VER150} final; {$ENDIF}
     procedure Load(const ADataSet: TDataSet); override; {$IFNDEF VER150} final; {$ENDIF}
+    procedure Assign(const AValue: ILoadableItem); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
 implementation
@@ -48,6 +50,18 @@ end;
 function TCauseOfArchiveDocumentDamageItem.GetSaveSQL: string;
 begin
   Result := EmptyStr;
+end;
+
+procedure TCauseOfArchiveDocumentDamageItem.Assign(const AValue: ILoadableItem);
+var
+  a: ICauseOfArchiveDocumentDamageItem;
+begin
+  inherited;
+  if Supports(AValue, ICauseOfArchiveDocumentDamageItem, a) then
+  begin
+    FName := a.name;
+    FBarcode := a.Barcode;
+  end;
 end;
 
 constructor TCauseOfArchiveDocumentDamageItem.Create;

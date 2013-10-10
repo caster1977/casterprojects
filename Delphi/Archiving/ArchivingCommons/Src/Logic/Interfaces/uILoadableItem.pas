@@ -53,6 +53,15 @@ type
     /// Удалось ли выполнить удаление из БД
     /// </returns>
     function Delete(const AConnection: TCustomConnection = nil): Boolean;
+
+    /// <summary>
+    /// Процедура копирования значений полей исходного объекта в поля
+    /// текущего объекта
+    /// </summary>
+    /// <param name="AValue">
+    /// Исходный объект
+    /// </param>
+    procedure Assign(const AValue: ILoadableItem);
   end;
 
 implementation
