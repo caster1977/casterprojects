@@ -19,14 +19,14 @@ type
     /// Короб
     /// </returns>
     function GetItemById(const AId: Integer): IArchiveBoxItem;
-    function GetItem(const AIndex: Integer): IArchiveBoxItem;
-    /// <summary>
-    /// Массив архивных коробов
-    /// </summary>
-    /// <param name="AIndex">
-    /// Порядковый номер элемента в массиве
-    /// </param>
-    property Items[const AIndex: Integer]: IArchiveBoxItem read GetItem; default;
+    // function GetItem(const AIndex: Integer): IArchiveBoxItem;
+    // /// <summary>
+    // /// Массив архивных коробов
+    // /// </summary>
+    // /// <param name="AIndex">
+    // /// Порядковый номер элемента в массиве
+    // /// </param>
+    // property Items[const AIndex: Integer]: IArchiveBoxItem read GetItem; default;
   end;
 
 implementation

@@ -18,11 +18,11 @@ type
     procedure BeforeLoad(const AItem: TLoadableItem); override; {$IFNDEF VER150}final; {$ENDIF}
   public
     property ArchiveBoxId: Integer read GetArchiveBoxId write SetArchiveBoxId nodefault;
-  private
-    function GetItem(const AIndex: Integer): IArchiveDocumentItem;
+    // private
+    // function GetItem(const AIndex: Integer): IArchiveDocumentItem;
   public
     function GetItemById(const AId: Integer): IArchiveDocumentItem;
-    property Item[const AIndex: Integer]: IArchiveDocumentItem read GetItem; default;
+    // property Item[const AIndex: Integer]: IArchiveDocumentItem read GetItem; default;
   end;
 
 implementation
@@ -65,20 +65,20 @@ begin
   end;
 end;
 
-function TArchiveDocumentList.GetItem(const AIndex: Integer): IArchiveDocumentItem;
-begin
-  Result := nil;
-  if AIndex > -1 then
-  begin
-    if Assigned(Items) then
-    begin
-      if Count > AIndex then
-      begin
-        Result := Items[AIndex] as IArchiveDocumentItem;
-      end;
-    end;
-  end;
-end;
+// function TArchiveDocumentList.GetItem(const AIndex: Integer): IArchiveDocumentItem;
+// begin
+// Result := nil;
+// if AIndex > -1 then
+// begin
+// if Assigned(Items) then
+// begin
+// if Count > AIndex then
+// begin
+// Result := Items[AIndex] as IArchiveDocumentItem;
+// end;
+// end;
+// end;
+// end;
 
 procedure TArchiveDocumentList.BeforeLoad(const AItem: TLoadableItem);
 begin

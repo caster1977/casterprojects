@@ -19,14 +19,14 @@ type
     /// Тип короба
     /// </returns>
     function GetItemById(const AId: Integer): IArchiveBoxTypeItem;
-    function GetItem(const AIndex: Integer): IArchiveBoxTypeItem;
-    /// <summary>
-    /// Массив типов архивных коробов
-    /// </summary>
-    /// <param name="AIndex">
-    /// Порядковый номер элемента в массиве
-    /// </param>
-    property Items[const AIndex: Integer]: IArchiveBoxTypeItem read GetItem; default;
+    // function GetItem(const AIndex: Integer): IArchiveBoxTypeItem;
+    // /// <summary>
+    // /// Массив типов архивных коробов
+    // /// </summary>
+    // /// <param name="AIndex">
+    // /// Порядковый номер элемента в массиве
+    // /// </param>
+    // property Items[const AIndex: Integer]: IArchiveBoxTypeItem read GetItem; default;
   end;
 
 implementation

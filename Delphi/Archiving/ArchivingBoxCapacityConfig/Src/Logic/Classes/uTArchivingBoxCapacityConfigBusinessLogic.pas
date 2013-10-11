@@ -3,10 +3,10 @@ unit uTArchivingBoxCapacityConfigBusinessLogic;
 interface
 
 uses
+  DB,
+  ValEdit,
   uTCustomBusinessLogic,
   uIArchivingBoxCapacityConfigBusinessLogic,
-  ValEdit,
-  DB,
   uTOnDisplayMessage,
   uIArchiveBoxTypeList;
 
@@ -22,11 +22,8 @@ type
     function GetArchiveBoxTypes: IArchiveBoxTypeList;
     property ArchiveBoxTypes: IArchiveBoxTypeList read GetArchiveBoxTypes nodefault;
   private
-    FNewArchiveBoxTypes: IArchiveBoxTypeList;
-    function GetNewArchiveBoxTypes: IArchiveBoxTypeList;
-    property NewArchiveBoxTypes: IArchiveBoxTypeList read GetNewArchiveBoxTypes nodefault;
-  private
     procedure SetDocumentArchiving(const AValue: Boolean);
+    function CapacityChanged(const ARow: Integer): Boolean;
   public
     procedure EnableDocumentArchiving;
     procedure DisableDocumentArchiving;
@@ -37,6 +34,9 @@ type
       const AOnDisplayMessage: TOnDisplayMessage = nil); reintroduce;
   end;
 
+const
+  SP_SYS_SET_FLAG_VALUE_INT = 'sys_set_FlagValueInt';
+
 implementation
 
 uses
@@ -44,15 +44,10 @@ uses
   Forms,
   Controls,
   uArchivingCommonRoutines,
+  uIArchiveBoxTypeItem,
   uTArchiveBoxTypeList;
 
 const
-  LIB_GUID = '{7EE9065F-E757-435C-B7EA-08CC70025DE4}';
-
-  SP_ARCHIVING_SEL_ARHIVE_BOX_TYPE = 'Archiving_sel_ArchiveBoxType';
-  SP_ARCHIVING_UPD_ARHIVE_BOX_TYPE_CAPACITY = 'Archiving_upd_ArchiveBoxType_Capacity';
-  SP_SYS_SET_FLAG_VALUE_INT = 'sys_set_FlagValueInt';
-
   FIELD_ID = 'Id';
   FIELD_NAME = 'Name';
   FIELD_CAPACITY = 'Capacity';
@@ -63,6 +58,8 @@ const
 resourcestring
   RsAConnectionIsNil = 'AConnection is nil';
   RsAValueListEditorIsNil = 'AValueListEditor is nil';
+  RsCantSaveCapacity = 'Не удалось сохранить объём архивного короба для типа "%s"';
+  RsSuccessfullySaved = 'Изменения сохранены';
 
 constructor TArchivingBoxCapacityConfigBusinessLogic.Create(const AConnection: TCustomConnection;
   const AValueListEditor: TValueListEditor; const AOnDisplayMessage: TOnDisplayMessage);
@@ -71,21 +68,6 @@ begin
   Assert(Assigned(AValueListEditor), RsAValueListEditorIsNil);
   inherited Create(AConnection, AOnDisplayMessage);
   FValueListEditor := AValueListEditor;
-  FArchiveBoxTypes := TArchiveBoxTypeList.Create(Connection);
-  if Assigned(FArchiveBoxTypes) then
-  begin
-    FArchiveBoxTypes.Load;
-    FNewArchiveBoxTypes := TArchiveBoxTypeList.Create(Connection);
-    if Assigned(NewArchiveBoxTypes) then
-    begin
-      NewArchiveBoxTypes.Assign(ArchiveBoxTypes);
-    end;
-  end;
-end;
-
-function TArchivingBoxCapacityConfigBusinessLogic.DataWasChanged: Boolean;
-begin
-  Result := True;
 end;
 
 procedure TArchivingBoxCapacityConfigBusinessLogic.DisableDocumentArchiving;
@@ -100,12 +82,15 @@ end;
 
 function TArchivingBoxCapacityConfigBusinessLogic.GetArchiveBoxTypes: IArchiveBoxTypeList;
 begin
+  if not Assigned(FArchiveBoxTypes) then
+  begin
+    FArchiveBoxTypes := TArchiveBoxTypeList.Create(Connection);
+    if Assigned(FArchiveBoxTypes) then
+    begin
+      FArchiveBoxTypes.Load;
+    end;
+  end;
   Result := FArchiveBoxTypes;
-end;
-
-function TArchivingBoxCapacityConfigBusinessLogic.GetNewArchiveBoxTypes: IArchiveBoxTypeList;
-begin
-  Result := FNewArchiveBoxTypes;
 end;
 
 function TArchivingBoxCapacityConfigBusinessLogic.GetValueListEditor: TValueListEditor;
@@ -151,6 +136,7 @@ var
   old_cursor: TCursor;
   i: Integer;
   j: Integer;
+  a: IArchiveBoxTypeItem;
 begin
   old_cursor := Screen.Cursor;
   Screen.Cursor := crHourGlass;
@@ -162,11 +148,13 @@ begin
       try
         for i := 0 to ArchiveBoxTypes.Count - 1 do
         begin
-          j := ValueListEditor.Strings.AddObject(ArchiveBoxTypes[i].name + '=' + IntToStr(ArchiveBoxTypes[i].Capacity),
-            Pointer(ArchiveBoxTypes[i].Id));
-          if j > -1 then
+          if Supports(ArchiveBoxTypes[i], IArchiveBoxTypeItem, a) then
           begin
-            ValueListEditor.ItemProps[j].EditMask := EDIT_MASK;
+            j := ValueListEditor.Strings.AddObject(a.name + '=' + IntToStr(a.Capacity), Pointer(a.Id));
+            if j > -1 then
+            begin
+              ValueListEditor.ItemProps[j].EditMask := EDIT_MASK;
+            end;
           end;
         end;
       finally
@@ -184,9 +172,9 @@ procedure TArchivingBoxCapacityConfigBusinessLogic.SaveData;
 var
   old_cursor: TCursor;
   i: Integer;
-//  b: Boolean;
-//  s: string;
+  s: string;
 begin
+  s := EmptyStr;
   old_cursor := Screen.Cursor;
   Screen.Cursor := crHourGlass;
   try
@@ -194,49 +182,58 @@ begin
     begin
       for i := 0 to ValueListEditor.Strings.Count - 1 do
       begin
-        ArchiveBoxTypes.GetItemById(Integer(ValueListEditor.Strings.Objects[i])).Capacity :=
-          StrToInt(Trim(ValueListEditor.Values[ValueListEditor.Keys[i + 1]]));
-        ArchiveBoxTypes.Item[i].Save;
+        if CapacityChanged(i) then
+        begin
+          ArchiveBoxTypes.GetItemById(Integer(ValueListEditor.Strings.Objects[i])).Capacity :=
+            StrToInt(Trim(ValueListEditor.Values[ValueListEditor.Keys[i + 1]]));
+          Screen.Cursor := crSQLWait;
+          try
+            if not ArchiveBoxTypes.Item[i].Save then
+            begin
+              s := Format(RsCantSaveCapacity, [ValueListEditor.Keys[i]]);
+              Break;
+            end;
+          finally
+            Screen.Cursor := crHourGlass;
+          end;
+        end;
       end;
     end;
   finally
     Screen.Cursor := old_cursor;
+    if s <> EmptyStr then
+    begin
+      DisplayErrorMessage(s);
+    end
+    else
+    begin
+      DisplaySuccessMessage(RsSuccessfullySaved);
+    end;
   end;
 end;
 
-{Screen.Cursor := crSQLWait;
-try
-  if vleArchiveBoxCapacity.Strings.Count - 1 > 0 then
+function TArchivingBoxCapacityConfigBusinessLogic.DataWasChanged: Boolean;
+var
+  i: Integer;
+begin
+  Result := False;
+  if ValueListEditor.Strings.Count - 1 > 0 then
   begin
-    for i := 0 to vleArchiveBoxCapacity.Strings.Count - 1 do
+    for i := 0 to ValueListEditor.Strings.Count - 1 do
     begin
-      if vleArchiveBoxCapacity.Strings[i] <> FOriginalValues.Strings[i] then
+      if CapacityChanged(i) then
       begin
-        try
-          b := False;
-          afSetCommandText(Query, SP_ARCHIVING_UPD_ARHIVE_BOX_TYPE_CAPACITY,
-            [Integer(vleArchiveBoxCapacity.Strings.Objects[i]),
-            StrToInt(Trim(vleArchiveBoxCapacity.Values[vleArchiveBoxCapacity.Keys[i + 1]]))], True);
-          if not Query.Eof then
-          begin
-            s := Query.Fields[0].AsString;
-            b := Query.Fields[1].AsInteger = 0;
-          end;
-          if not b then
-          begin
-            raise Exception.Create(Format(RsCantSaveCapacity, [vleArchiveBoxCapacity.Keys[i]]) + sLineBreak + s);
-          end;
-        finally
-          Query.Close;
-          Query.SQL.Clear;
-        end;
+        Result := True;
+        Break;
       end;
     end;
-    if s <> EmptyStr then
-    begin
-      ShowMes(s);
-    end;
   end;
-end;}
+end;
+
+function TArchivingBoxCapacityConfigBusinessLogic.CapacityChanged(const ARow: Integer): Boolean;
+begin
+  Result := ArchiveBoxTypes.GetItemById(Integer(ValueListEditor.Strings.Objects[ARow])).Capacity <>
+    StrToIntDef(Trim(ValueListEditor.Values[ValueListEditor.Keys[ARow + 1]]), 0);
+end;
 
 end.

@@ -60,6 +60,13 @@ implementation
 uses
   uTArchivingBoxCapacityConfigBusinessLogic;
 
+resourcestring
+  RsSave = 'Применить';
+  RsCancel = 'Отмена';
+  RsTypes = 'Тип архивного короба';
+  RsCapacity = 'Кол-во документов';
+  RsCaption = 'Настройка объёма архивных коробов';
+
 procedure TArchivingBoxCapacityConfigMainForm.actCancelExecute(Sender: TObject);
 begin
   Close;
@@ -99,12 +106,6 @@ begin
 end;
 
 procedure TArchivingBoxCapacityConfigMainForm.SetCaptions;
-resourcestring
-  RsSave = 'Применить';
-  RsCancel = 'Отмена';
-  RsTypes = 'Тип архивного короба';
-  RsCapacity = 'Кол-во документов';
-  RsCaption = 'Настройка объёма архивных коробов';
 begin
   Caption := RsCaption;
   actSave.Caption := RsSave;

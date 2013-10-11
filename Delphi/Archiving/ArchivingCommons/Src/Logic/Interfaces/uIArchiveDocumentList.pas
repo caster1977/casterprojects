@@ -31,15 +31,15 @@ type
     /// </returns>
     function GetItemById(const AId: Integer): IArchiveDocumentItem;
 
-    function GetItem(const AIndex: Integer): IArchiveDocumentItem;
-
-    /// <summary>
-    /// Массив документов
-    /// </summary>
-    /// <param name="AIndex">
-    /// Порядковый номер элемента в массиве
-    /// </param>
-    property Item[const AIndex: Integer]: IArchiveDocumentItem read GetItem; default;
+    // function GetItem(const AIndex: Integer): IArchiveDocumentItem;
+    //
+    // /// <summary>
+    // /// Массив документов
+    // /// </summary>
+    // /// <param name="AIndex">
+    // /// Порядковый номер элемента в массиве
+    // /// </param>
+    // property Item[const AIndex: Integer]: IArchiveDocumentItem read GetItem; default;
   end;
 
 implementation

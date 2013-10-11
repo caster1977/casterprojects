@@ -17,21 +17,30 @@ type
     function GetLoadSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
   private
     FName: string;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetName: string;
   public
     property name: string read GetName nodefault;
 
   private
     FCode: string;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetCode: string;
   public
     property Code: string read GetCode nodefault;
 
   private
     FCapacity: Integer;
+{$IFDEF VER150}
+  protected
+{$ENDIF}
     function GetCapacity: Integer;
-  public
     procedure SetCapacity(const AValue: Integer);
+  public
     property Capacity: Integer read GetCapacity write SetCapacity nodefault;
 
   public
@@ -39,6 +48,10 @@ type
     procedure Load(const ADataSet: TDataSet); override; {$IFNDEF VER150} final; {$ENDIF}
     procedure Assign(const AValue: ILoadableItem); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
+
+const
+  SP_ARCHIVING_UPD_ARHIVE_BOX_TYPE = 'Archiving_upd_ArchiveBoxType';
+  SP_ARCHIVING_SEL_ARHIVE_BOX_TYPE = 'Archiving_sel_ArchiveBoxType';
 
 implementation
 
@@ -84,7 +97,7 @@ end;
 
 function TArchiveBoxTypeItem.GetLoadSQL: string;
 begin
-  Result := Format('Archiving_sel_ArchiveBoxType %d', [Id]);
+  Result := Format(SP_ARCHIVING_SEL_ARHIVE_BOX_TYPE + ' %d', [Id]);
 end;
 
 procedure TArchiveBoxTypeItem.Load(const ADataSet: TDataSet);
@@ -108,7 +121,7 @@ end;
 
 function TArchiveBoxTypeItem.GetSaveSQL: string;
 begin
-  Result := Format('Archiving_upd_ArchiveBoxType %d, ''%s'', ''%s'', %d', [Id, name, Code, Capacity]);
+  Result := Format(SP_ARCHIVING_UPD_ARHIVE_BOX_TYPE + ' %d, ''%s'', ''%s'', %d', [Id, name, Code, Capacity]);
 end;
 
 function TArchiveBoxTypeItem.GetDeleteSQL: string;
