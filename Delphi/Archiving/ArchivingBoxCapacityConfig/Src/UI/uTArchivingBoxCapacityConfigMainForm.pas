@@ -74,8 +74,10 @@ end;
 
 procedure TArchivingBoxCapacityConfigMainForm.actSaveExecute(Sender: TObject);
 begin
-  Logic.SaveData;
-  actCancel.Execute;
+  if Logic.SaveData then
+  begin
+    actCancel.Execute;
+  end;
 end;
 
 procedure TArchivingBoxCapacityConfigMainForm.actSaveUpdate(Sender: TObject);
