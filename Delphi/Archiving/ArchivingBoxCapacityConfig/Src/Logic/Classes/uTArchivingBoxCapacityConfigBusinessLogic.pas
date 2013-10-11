@@ -24,11 +24,12 @@ type
   private
     procedure SetDocumentArchiving(const AValue: Boolean);
     function CapacityChanged(const ARow: Integer): Boolean;
+    function GetCurrentMinimumArchiveBoxCapacity(const AArchiveBoxTypeId: Integer): Integer;
   public
     procedure EnableDocumentArchiving;
     procedure DisableDocumentArchiving;
     procedure LoadData;
-    procedure SaveData;
+    function SaveData: Boolean;
     function DataWasChanged: Boolean;
     constructor Create(const AConnection: TCustomConnection; const AValueListEditor: TValueListEditor;
       const AOnDisplayMessage: TOnDisplayMessage = nil); reintroduce;
@@ -168,12 +169,17 @@ begin
   end;
 end;
 
-procedure TArchivingBoxCapacityConfigBusinessLogic.SaveData;
+function TArchivingBoxCapacityConfigBusinessLogic.SaveData: Boolean;
 var
   old_cursor: TCursor;
   i: Integer;
   s: string;
+  min_capacity: Integer;
+  archive_box_type_id: Integer;
+  a: IArchiveBoxTypeItem;
+  new_capacity: Integer;
 begin
+  Result := True;
   s := EmptyStr;
   old_cursor := Screen.Cursor;
   Screen.Cursor := crHourGlass;
@@ -184,17 +190,41 @@ begin
       begin
         if CapacityChanged(i) then
         begin
-          ArchiveBoxTypes.GetItemById(Integer(ValueListEditor.Strings.Objects[i])).Capacity :=
-            StrToInt(Trim(ValueListEditor.Values[ValueListEditor.Keys[i + 1]]));
-          Screen.Cursor := crSQLWait;
-          try
-            if not ArchiveBoxTypes.Item[i].Save then
+          archive_box_type_id := Integer(ValueListEditor.Strings.Objects[i]);
+          min_capacity := GetCurrentMinimumArchiveBoxCapacity(archive_box_type_id);
+          if min_capacity > -1 then
+          begin
+            a := ArchiveBoxTypes.GetItemById(archive_box_type_id);
+            if Assigned(a) then
             begin
-              s := Format(RsCantSaveCapacity, [ValueListEditor.Keys[i]]);
-              Break;
+              new_capacity := StrToInt(Trim(ValueListEditor.Values[ValueListEditor.Keys[i + 1]]));
+              if min_capacity <= new_capacity then
+              begin
+                a.Capacity := new_capacity;
+                Screen.Cursor := crSQLWait;
+                try
+                  if not a.Save then
+                  begin
+                    s := Format(RsCantSaveCapacity, [a.name]);
+                    Break;
+                  end;
+                finally
+                  Screen.Cursor := crHourGlass;
+                end;
+              end
+              else
+              begin
+                s := Format('Минимальное количество документов' + sLineBreak + 'для типа короба ''%d'' равно %d',
+                  [a.name, min_capacity]);
+              end;
             end;
-          finally
-            Screen.Cursor := crHourGlass;
+          end
+          else
+          begin
+            s := Format('Произошла ошибка при попытке получения' + sLineBreak +
+              'минимального количества документов для типа короба ''%s''', [a.name]);
+            Break;
+            Result := False;
           end;
         end;
       end;
@@ -234,6 +264,34 @@ function TArchivingBoxCapacityConfigBusinessLogic.CapacityChanged(const ARow: In
 begin
   Result := ArchiveBoxTypes.GetItemById(Integer(ValueListEditor.Strings.Objects[ARow])).Capacity <>
     StrToIntDef(Trim(ValueListEditor.Values[ValueListEditor.Keys[ARow + 1]]), 0);
+end;
+
+function TArchivingBoxCapacityConfigBusinessLogic.GetCurrentMinimumArchiveBoxCapacity(const AArchiveBoxTypeId
+  : Integer): Integer;
+var
+  b: Boolean;
+  s: string;
+  old_cursor: TCursor;
+begin
+  Result := -1;
+  old_cursor := Screen.Cursor;
+  Screen.Cursor := crSQLWait;
+  try
+    SetSQLForQuery(Query, Format('Archiving_sel_CurrentMinimumArchiveBoxCapacity %d', [AArchiveBoxTypeId]), True);
+    try
+      if not Query.Eof then
+      begin
+        if not Query.Eof then
+        begin
+          Result := Query.Fields[0].AsInteger;
+        end;
+      end;
+    finally
+      Query.Close;
+    end;
+  finally
+    Screen.Cursor := old_cursor;
+  end;
 end;
 
 end.
