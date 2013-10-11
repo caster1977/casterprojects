@@ -107,7 +107,7 @@ procedure TLoadableItem.Assign(const AValue: ILoadableItem);
 begin
   if not Assigned(AValue) then
   begin
-    raise EArgumentNilException.Create('Попытка копирования несуществующего объекта');
+    raise EInvalidPointer.Create('Попытка копирования несуществующего объекта');
   end;
   FId := AValue.Id;
 end;

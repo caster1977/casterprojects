@@ -223,7 +223,6 @@ procedure TArchivingMainForm.edBarcodeKeyDown(Sender: TObject; var Key: Word; Sh
 begin
   if Key = VK_RETURN then
   begin
-    Logic.Connection.Connected := True;
     try
       Logic.ProcessString(Barcode);
       Barcode := EmptyStr;

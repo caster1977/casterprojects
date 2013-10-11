@@ -11,11 +11,11 @@ uses
 type
   TCauseOfArchiveDocumentDamageList = class {$IFNDEF VER150} sealed
 {$ENDIF}(TLoadableList, ICauseOfArchiveDocumentDamageList)
-  private
-    function GetItem(const AIndex: Integer): ICauseOfArchiveDocumentDamageItem;
+    // private
+    // function GetItem(const AIndex: Integer): ICauseOfArchiveDocumentDamageItem;
   public
     function GetItemById(const AId: Integer): ICauseOfArchiveDocumentDamageItem;
-    property Item[const AIndex: Integer]: ICauseOfArchiveDocumentDamageItem read GetItem; default;
+    // property Item[const AIndex: Integer]: ICauseOfArchiveDocumentDamageItem read GetItem; default;
   public
     constructor Create(const AConnection: TCustomConnection); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
@@ -52,19 +52,19 @@ begin
   ItemClass := TCauseOfArchiveDocumentDamageItem;
 end;
 
-function TCauseOfArchiveDocumentDamageList.GetItem(const AIndex: Integer): ICauseOfArchiveDocumentDamageItem;
-begin
-  Result := nil;
-  if AIndex > -1 then
-  begin
-    if Assigned(Items) then
-    begin
-      if Count > AIndex then
-      begin
-        Result := Items[AIndex] as ICauseOfArchiveDocumentDamageItem;
-      end;
-    end;
-  end;
-end;
+// function TCauseOfArchiveDocumentDamageList.GetItem(const AIndex: Integer): ICauseOfArchiveDocumentDamageItem;
+// begin
+// Result := nil;
+// if AIndex > -1 then
+// begin
+// if Assigned(Items) then
+// begin
+// if Count > AIndex then
+// begin
+// Result := Items[AIndex] as ICauseOfArchiveDocumentDamageItem;
+// end;
+// end;
+// end;
+// end;
 
 end.

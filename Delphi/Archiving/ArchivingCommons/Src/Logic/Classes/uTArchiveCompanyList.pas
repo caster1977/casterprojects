@@ -10,11 +10,11 @@ uses
 
 type
   TArchiveCompanyList = class {$IFNDEF VER150} sealed {$ENDIF}(TLoadableList, IArchiveCompanyList)
-  private
-    function GetItem(const AIndex: Integer): IArchiveCompanyItem;
+    // private
+    // function GetItem(const AIndex: Integer): IArchiveCompanyItem;
   public
     function GetItemById(const AId: Integer): IArchiveCompanyItem;
-    property Item[const AIndex: Integer]: IArchiveCompanyItem read GetItem; default;
+    // property Item[const AIndex: Integer]: IArchiveCompanyItem read GetItem; default;
   public
     constructor Create(const AConnection: TCustomConnection); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
@@ -51,19 +51,19 @@ begin
   ItemClass := TArchiveCompanyItem;
 end;
 
-function TArchiveCompanyList.GetItem(const AIndex: Integer): IArchiveCompanyItem;
-begin
-  Result := nil;
-  if AIndex > -1 then
-  begin
-    if Assigned(Items) then
-    begin
-      if Count > AIndex then
-      begin
-        Result := Items[AIndex] as IArchiveCompanyItem;
-      end;
-    end;
-  end;
-end;
+// function TArchiveCompanyList.GetItem(const AIndex: Integer): IArchiveCompanyItem;
+// begin
+// Result := nil;
+// if AIndex > -1 then
+// begin
+// if Assigned(Items) then
+// begin
+// if Count > AIndex then
+// begin
+// Result := Items[AIndex] as IArchiveCompanyItem;
+// end;
+// end;
+// end;
+// end;
 
 end.

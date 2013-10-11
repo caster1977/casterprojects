@@ -23,6 +23,7 @@ uses
   uTArchiveBoxItem,
   uICauseOfArchiveDocumentDamageList,
   uTCauseOfArchiveDocumentDamageList,
+  uICauseOfArchiveDocumentDamageItem,
   uIDamagedBSOItem,
   uTDamagedBSOItem;
 
@@ -39,6 +40,7 @@ end;
 procedure TDamagedBSOArchivingBusinessLogic.AddDocument(const AString: string);
 var
   codl: ICauseOfArchiveDocumentDamageList;
+  a: ICauseOfArchiveDocumentDamageItem;
   i: Integer;
   box: IArchiveBoxItem;
   idbsoi: IDamagedBSOItem;
@@ -87,43 +89,46 @@ begin
               codl.Load;
               for i := 0 to codl.Count - 1 do
               begin
-                if codl.Item[i].Barcode = AString then
+                if Supports(codl.Item[i], ICauseOfArchiveDocumentDamageItem, a) then
                 begin
-                  if Supports(CurrentDocument, IDamagedBSOItem, idbsoi) then
+                  if a.Barcode = AString then
                   begin
-                    idbsoi.CauseOfDamageId := codl.Item[i].Id;
-                    idbsoi.CauseOfDamageName := codl.Item[i].name;
-                  end;
-                  if not Assigned(CurrentBox) then
-                  begin
-                    if GetOpenedBoxQuantity(ArchiveBoxTypeId, CurrentDocument.CompanyId) = 0 then
+                    if Supports(CurrentDocument, IDamagedBSOItem, idbsoi) then
                     begin
-                      CurrentBox := CreateArchiveBoxByDocument(CurrentDocument);
-                      if Assigned(CurrentBox) then
+                      idbsoi.CauseOfDamageId := a.Id;
+                      idbsoi.CauseOfDamageName := a.name;
+                    end;
+                    if not Assigned(CurrentBox) then
+                    begin
+                      if GetOpenedBoxQuantity(ArchiveBoxTypeId, CurrentDocument.CompanyId) = 0 then
                       begin
-                        DisplaySuccessMessage('ƒокумент добавлен в новый архивный короб' + sLineBreak +
-                          RsEnterBarcodeOfDocumentOrCommand);
+                        CurrentBox := CreateArchiveBoxByDocument(CurrentDocument);
+                        if Assigned(CurrentBox) then
+                        begin
+                          DisplaySuccessMessage('ƒокумент добавлен в новый архивный короб' + sLineBreak +
+                            RsEnterBarcodeOfDocumentOrCommand);
+                        end;
+                      end
+                      else
+                      begin
+                        CurrentBox := AddDocumentToOldestOpenedArchiveBox(CurrentDocument);
+                        if Assigned(CurrentBox) then
+                        begin
+                          DisplaySuccessMessage('ƒокумент добавлен в существующий архивный короб' + sLineBreak +
+                            RsEnterBarcodeOfDocumentOrCommand);
+                        end;
                       end;
                     end
                     else
                     begin
-                      CurrentBox := AddDocumentToOldestOpenedArchiveBox(CurrentDocument);
-                      if Assigned(CurrentBox) then
+                      if AddDocumentToCurrentBox(CurrentDocument) then
                       begin
-                        DisplaySuccessMessage('ƒокумент добавлен в существующий архивный короб' + sLineBreak +
+                        DisplaySuccessMessage('ƒокумент добавлен в текущий архивный короб' + sLineBreak +
                           RsEnterBarcodeOfDocumentOrCommand);
                       end;
                     end;
-                  end
-                  else
-                  begin
-                    if AddDocumentToCurrentBox(CurrentDocument) then
-                    begin
-                      DisplaySuccessMessage('ƒокумент добавлен в текущий архивный короб' + sLineBreak +
-                        RsEnterBarcodeOfDocumentOrCommand);
-                    end;
+                    Break;
                   end;
-                  Break;
                 end;
               end;
             end;

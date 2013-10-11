@@ -22,14 +22,14 @@ type
     /// Компания
     /// </returns>
     function GetItemById(const AId: Integer): IArchiveCompanyItem;
-    function GetItem(const AIndex: Integer): IArchiveCompanyItem;
-    /// <summary>
-    /// Массив архивных компаний
-    /// </summary>
-    /// <param name="AIndex">
-    /// Порядковый номер элемента в массиве
-    /// </param>
-    property Item[const AIndex: Integer]: IArchiveCompanyItem read GetItem; default;
+    // function GetItem(const AIndex: Integer): IArchiveCompanyItem;
+    // /// <summary>
+    // /// Массив архивных компаний
+    // /// </summary>
+    // /// <param name="AIndex">
+    // /// Порядковый номер элемента в массиве
+    // /// </param>
+    // property Item[const AIndex: Integer]: IArchiveCompanyItem read GetItem; default;
   end;
 
 implementation

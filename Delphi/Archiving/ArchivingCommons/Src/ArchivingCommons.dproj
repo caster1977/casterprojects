@@ -102,8 +102,6 @@
         <DCCReference Include="Logic\Interfaces\uIArchiveCompanyList.pas"/>
         <DCCReference Include="Logic\Interfaces\uIArchiveDocumentItem.pas"/>
         <DCCReference Include="Logic\Interfaces\uIArchiveDocumentList.pas"/>
-        <DCCReference Include="Logic\Interfaces\uIArchiveDocumentTypeItem.pas"/>
-        <DCCReference Include="Logic\Interfaces\uIArchiveDocumentTypeList.pas"/>
         <DCCReference Include="Logic\Interfaces\uICauseOfArchiveDocumentDamageItem.pas"/>
         <DCCReference Include="Logic\Interfaces\uICauseOfArchiveDocumentDamageList.pas"/>
         <DCCReference Include="Logic\Interfaces\uICustomBSOItem.pas"/>
@@ -124,8 +122,6 @@
         <DCCReference Include="Logic\Classes\uTArchiveDocumentItemClass.pas"/>
         <DCCReference Include="Logic\Classes\uTArchiveDocumentList.pas"/>
         <DCCReference Include="Logic\Classes\uTArchiveDocumentListClass.pas"/>
-        <DCCReference Include="Logic\Classes\uTArchiveDocumentTypeItem.pas"/>
-        <DCCReference Include="Logic\Classes\uTArchiveDocumentTypeList.pas"/>
         <DCCReference Include="Logic\Classes\uTCauseOfArchiveDocumentDamageItem.pas"/>
         <DCCReference Include="Logic\Classes\uTCauseOfArchiveDocumentDamageList.pas"/>
         <DCCReference Include="Logic\Classes\uTCustomBSOItem.pas"/>

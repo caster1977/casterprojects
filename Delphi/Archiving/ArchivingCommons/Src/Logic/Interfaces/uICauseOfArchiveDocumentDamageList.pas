@@ -24,15 +24,15 @@ type
     /// Причина "порчи"
     /// </returns>
     function GetItemById(const AId: Integer): ICauseOfArchiveDocumentDamageItem;
-    function GetItem(const AIndex: Integer): ICauseOfArchiveDocumentDamageItem;
-
-    /// <summary>
-    /// Массив причин "порчи" документов
-    /// </summary>
-    /// <param name="AIndex">
-    /// Порядковый номер элемента в массиве
-    /// </param>
-    property Item[const AIndex: Integer]: ICauseOfArchiveDocumentDamageItem read GetItem; default;
+    // function GetItem(const AIndex: Integer): ICauseOfArchiveDocumentDamageItem;
+    //
+    // /// <summary>
+    // /// Массив причин "порчи" документов
+    // /// </summary>
+    // /// <param name="AIndex">
+    // /// Порядковый номер элемента в массиве
+    // /// </param>
+    // property Item[const AIndex: Integer]: ICauseOfArchiveDocumentDamageItem read GetItem; default;
   end;
 
 implementation
