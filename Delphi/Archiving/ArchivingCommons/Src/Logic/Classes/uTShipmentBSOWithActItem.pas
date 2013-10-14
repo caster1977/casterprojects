@@ -12,6 +12,7 @@ type
   TShipmentBSOWithActItem = class {$IFNDEF VER150} sealed {$ENDIF}(TCustomBSOItem, IShipmentBSOWithActItem)
   protected
     function GetSaveSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
+    function GetValidateSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
     procedure FillShowableFieldsList; override; {$IFNDEF VER150} final; {$ENDIF}
   public
     constructor Create; override; {$IFNDEF VER150} final; {$ENDIF}
@@ -33,6 +34,11 @@ begin
   Result := Format('Archiving_upd_ShipmentBSO %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, %d',
     [Id, ArchiveBoxId, SequenceNumber, ArchivedByUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate),
     Integer(Issued), IssuedToUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', IssuanceDate), Year, BSOId]);
+end;
+
+function TShipmentBSOWithActItem.GetValidateSQL: string;
+begin
+  Result := Format('Archiving_sel_ValidateShipmentBSOWithAct %d', [BSOId]);
 end;
 
 constructor TShipmentBSOWithActItem.Create;

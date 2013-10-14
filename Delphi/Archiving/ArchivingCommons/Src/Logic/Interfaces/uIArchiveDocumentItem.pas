@@ -127,6 +127,15 @@ type
     /// (если документ ещё не был заархивирован)
     /// </returns>
     function AlreadyArchived(const AConnection: TCustomConnection = nil): Integer;
+
+    /// <summary>
+    /// Функция для проверки статусов и параметров документа заявленному типу
+    /// документа
+    /// </summary>
+    /// <param name="AConnection">
+    /// Объект подключения к БД
+    /// </param>
+    function Valid(const AConnection: TCustomConnection = nil): Boolean;
   end;
 
 implementation
