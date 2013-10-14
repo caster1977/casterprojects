@@ -53,20 +53,27 @@ begin
           CurrentDocument := CreateDocumentItemByBarcode(AString);
           if Assigned(CurrentDocument) then
           begin
-            i := GetArchiveBoxIdByDocument(CurrentDocument);
-            if i = -1 then
+            if CurrentDocument.Valid(Connection) then
             begin
-              Step := 1;
-              DisplayInfoMessage('Введите штрих-код порчи документа');
+              i := GetArchiveBoxIdByDocument(CurrentDocument);
+              if i = -1 then
+              begin
+                Step := 1;
+                DisplayInfoMessage('Введите штрих-код порчи документа');
+              end
+              else
+              begin
+                box := TArchiveBoxItem.Create(Connection, i);
+                if Assigned(box) then
+                begin
+                  DisplayErrorMessage(Format('Документ уже был заархивирован ранее (штрих-код короба - %s)' + sLineBreak
+                    + RsEnterBarcodeOfDocumentOrCommand, [box.Barcode]));
+                end;
+              end;
             end
             else
             begin
-              box := TArchiveBoxItem.Create(Connection, i);
-              if Assigned(box) then
-              begin
-                DisplayErrorMessage(Format('Документ уже был заархивирован ранее (штрих-код короба - %s)' + sLineBreak +
-                  RsEnterBarcodeOfDocumentOrCommand, [box.Barcode]));
-              end;
+              DisplayErrorMessage('Неверный тип документа' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
             end;
           end
           else
@@ -116,6 +123,11 @@ begin
                         begin
                           DisplaySuccessMessage('Документ добавлен в существующий архивный короб' + sLineBreak +
                             RsEnterBarcodeOfDocumentOrCommand);
+                        end
+                        else
+                        begin
+                          DisplayErrorMessage('Не удалось добавить документ в существующий архивный короб' + sLineBreak
+                            + RsEnterBarcodeOfDocumentOrCommand);
                         end;
                       end;
                     end

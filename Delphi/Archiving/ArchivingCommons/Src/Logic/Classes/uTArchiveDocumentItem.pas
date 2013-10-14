@@ -137,6 +137,7 @@ type
     procedure AddShowableField(const ACaption, AName, AValue: string);
     procedure FillShowableFieldsList; virtual; abstract;
     function GetDeleteSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
+    function GetValidateSQL: string; virtual; abstract;
   public
     function FromString(const AValue: string): Boolean; virtual; abstract;
     function GetLoadSQL: string; override; {$IFNDEF VER150} final; {$ENDIF}
@@ -144,6 +145,7 @@ type
     constructor Create; override;
     function AlreadyArchived(const AConnection: TCustomConnection = nil): Integer; virtual; abstract;
     procedure Assign(const AValue: ILoadableItem); override;
+    function Valid(const AConnection: TCustomConnection = nil): Boolean;
   end;
 
 implementation
@@ -391,6 +393,37 @@ end;
 function TArchiveDocumentItem.GetDeleteSQL: string;
 begin
   Result := Format('Archiving_del_ArchiveDocument %d', [Id]);
+end;
+
+function TArchiveDocumentItem.Valid(const AConnection: TCustomConnection): Boolean;
+var
+  ds: TDataSet;
+begin
+  Result := False;
+  if Assigned(AConnection) then
+  begin
+    Connection := AConnection;
+  end;
+  if Assigned(Connection) then
+  begin
+    ds := GetQuery(Connection);
+    if Assigned(ds) then
+    begin
+      try
+        SetSQLForQuery(ds, GetValidateSQL, True);
+        try
+          if not ds.Eof then
+          begin
+            Result := ds.Fields[0].AsInteger > -1;
+          end;
+        finally
+          ds.Close;
+        end;
+      finally
+        FreeAndNil(ds);
+      end;
+    end;
+  end;
 end;
 
 end.

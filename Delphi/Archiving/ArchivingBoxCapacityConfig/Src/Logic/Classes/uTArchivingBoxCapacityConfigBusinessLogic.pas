@@ -214,8 +214,11 @@ begin
               end
               else
               begin
-                s := Format('Минимальное количество документов' + sLineBreak + 'для типа короба ''%d'' равно %d',
+                s := Format('Минимальное количество документов' + sLineBreak + 'для типа короба ''%s'' равно %d',
                   [a.name, min_capacity]);
+                ValueListEditor.Values[ValueListEditor.Keys[i + 1]] := IntToStr(min_capacity);
+                Result := False;
+                Break;
               end;
             end;
           end
@@ -223,8 +226,8 @@ begin
           begin
             s := Format('Произошла ошибка при попытке получения' + sLineBreak +
               'минимального количества документов для типа короба ''%s''', [a.name]);
-            Break;
             Result := False;
+            Break;
           end;
         end;
       end;
@@ -269,8 +272,6 @@ end;
 function TArchivingBoxCapacityConfigBusinessLogic.GetCurrentMinimumArchiveBoxCapacity(const AArchiveBoxTypeId
   : Integer): Integer;
 var
-  b: Boolean;
-  s: string;
   old_cursor: TCursor;
 begin
   Result := -1;

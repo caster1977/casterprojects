@@ -110,7 +110,12 @@
         <DCCReference Include="Logic\Classes\uTShipmentBSOArchivingBusinessLogic.pas"/>
         <DCCReference Include="Logic\Classes\uTShipmentBSOWithActArchivingBusinessLogic.pas"/>
         <DCCReference Include="Logic\Interfaces\uIDocumentArchivingBusinessLogic.pas"/>
+        <DCCReference Include="UI\uTEnterStringForm.pas">
+            <Form>EnterStringForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <None Include="ModelSupport_Archiving\default.txaPackage"/>
+        <None Include="ModelSupport_Archiving\default.txvpck"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -22,7 +22,8 @@ uses
   SqlExpr,
   DB,
   ADODB,
-  uIArchivingBoxCapacityConfigBusinessLogic;
+  uIArchivingBoxCapacityConfigBusinessLogic,
+  uTMessageType;
 
 type
   TArchivingBoxCapacityConfigMainForm = class(TForm)
@@ -46,6 +47,7 @@ type
     property Logic: IArchivingBoxCapacityConfigBusinessLogic read GetLogic nodefault;
   private
     procedure SetCaptions;
+    procedure DisplayMessage(const AType: TMessageType; const AText: string);
   public
     constructor Create(AOwner: TComponent); override;
   end;
@@ -93,6 +95,30 @@ begin
   Logic.LoadData;
 end;
 
+procedure TArchivingBoxCapacityConfigMainForm.DisplayMessage(const AType: TMessageType; const AText: string);
+var
+  old_cursor: TCursor;
+  s: string;
+begin
+  old_cursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;
+  s := Trim(AText);
+  try
+    case AType of
+      mtInfo, mtSuccess:
+        begin
+          ShowMessage(s);
+        end;
+      mtError:
+        begin
+          ShowMessage(s);
+        end;
+    end;
+  finally
+    Screen.Cursor := old_cursor;
+  end;
+end;
+
 procedure TArchivingBoxCapacityConfigMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Logic.EnableDocumentArchiving;
@@ -102,7 +128,7 @@ function TArchivingBoxCapacityConfigMainForm.GetLogic: IArchivingBoxCapacityConf
 begin
   if not Assigned(FLogic) then
   begin
-    FLogic := TArchivingBoxCapacityConfigBusinessLogic.Create(ADOConnection, vleArchiveBoxCapacity);
+    FLogic := TArchivingBoxCapacityConfigBusinessLogic.Create(ADOConnection, vleArchiveBoxCapacity, DisplayMessage);
   end;
   Result := FLogic;
 end;

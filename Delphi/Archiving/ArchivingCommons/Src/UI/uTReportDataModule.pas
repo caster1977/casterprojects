@@ -11,12 +11,15 @@ uses
 
 type
   TReportDataModule = class(TDataModule)
-    frxArchiveBoxSticker: TfrxReport;
-    procedure frxArchiveBoxStickerAfterPrintReport(Sender: TObject);
+    frxArchiveBoxSticker10x10: TfrxReport;
+    frxArchiveBoxSticker20x10: TfrxReport;
+    procedure frxArchiveBoxSticker10x10AfterPrintReport(Sender: TObject);
   end;
 
+  TStickerType = (st10x10, st20x10);
+
 function PrintSticker(const ACompanyName, ATypeCode, ACompanyCode, AYear, ANumber, ABarcode: string;
-  const ASilent: Boolean = True): Boolean;
+  const AStickerType: TStickerType; const ASilent: Boolean = True): Boolean;
 
 exports PrintSticker;
 
@@ -35,7 +38,7 @@ var
   FStickerWasPrinted: Boolean;
 
 function PrintSticker(const ACompanyName, ATypeCode, ACompanyCode, AYear, ANumber, ABarcode: string;
-  const ASilent: Boolean): Boolean;
+  const AStickerType: TStickerType; const ASilent: Boolean): Boolean;
 var
   form: TReportDataModule;
   memo: TfrxMemoView;
@@ -43,43 +46,89 @@ var
 begin
   form := TReportDataModule.Create(Application.Mainform);
   try
-    memo := TfrxMemoView(form.frxArchiveBoxSticker.FindObject('CompanyName'));
-    memo.memo.Clear;
-    memo.memo.Add(ACompanyName);
+    case AStickerType of
+      st10x10:
+        begin
+          memo := TfrxMemoView(form.frxArchiveBoxSticker10x10.FindObject('CompanyName'));
+          memo.memo.Clear;
+          memo.memo.Add(ACompanyName);
 
-    memo := TfrxMemoView(form.frxArchiveBoxSticker.FindObject('TypeCode'));
-    memo.memo.Clear;
-    memo.memo.Add(ATypeCode);
+          memo := TfrxMemoView(form.frxArchiveBoxSticker10x10.FindObject('TypeCode'));
+          memo.memo.Clear;
+          memo.memo.Add(ATypeCode);
 
-    memo := TfrxMemoView(form.frxArchiveBoxSticker.FindObject('CompanyCode'));
-    memo.memo.Clear;
-    memo.memo.Add(ACompanyCode);
+          memo := TfrxMemoView(form.frxArchiveBoxSticker10x10.FindObject('CompanyCode'));
+          memo.memo.Clear;
+          memo.memo.Add(ACompanyCode);
 
-    memo := TfrxMemoView(form.frxArchiveBoxSticker.FindObject('Year'));
-    memo.memo.Clear;
-    memo.memo.Add(AYear);
+          memo := TfrxMemoView(form.frxArchiveBoxSticker10x10.FindObject('Year'));
+          memo.memo.Clear;
+          memo.memo.Add(AYear);
 
-    memo := TfrxMemoView(form.frxArchiveBoxSticker.FindObject('Number'));
-    memo.memo.Clear;
-    memo.memo.Add(ANumber);
+          memo := TfrxMemoView(form.frxArchiveBoxSticker10x10.FindObject('Number'));
+          memo.memo.Clear;
+          memo.memo.Add(ANumber);
 
-    barcode := TfrxBarcodeView(form.frxArchiveBoxSticker.FindObject('BarCode'));
-    barcode.Text := ABarcode;
+          barcode := TfrxBarcodeView(form.frxArchiveBoxSticker10x10.FindObject('BarCode'));
+          barcode.Text := ABarcode;
 
-    form.frxArchiveBoxSticker.PrepareReport;
-    form.frxArchiveBoxSticker.PrintOptions.Duplex := dmNone;
-    form.frxArchiveBoxSticker.PrintOptions.ShowDialog := not ASilent;
-    form.frxArchiveBoxSticker.PrintOptions.Copies := 1;
+          form.frxArchiveBoxSticker10x10.PrepareReport;
+          form.frxArchiveBoxSticker10x10.PrintOptions.Duplex := dmNone;
+          form.frxArchiveBoxSticker10x10.PrintOptions.ShowDialog := not ASilent;
+          form.frxArchiveBoxSticker10x10.PrintOptions.Copies := 1;
 {$IFNDEF NOPRINT}
-    if ASilent then
-    begin
-      form.frxArchiveBoxSticker.Print;
-    end
-    else
-    begin
-      form.frxArchiveBoxSticker.ShowPreparedReport;
-    end;
+          if ASilent then
+          begin
+            form.frxArchiveBoxSticker10x10.Print;
+          end
+          else
+          begin
+            form.frxArchiveBoxSticker10x10.ShowPreparedReport;
+          end;
 {$ENDIF}
+        end;
+      st20x10:
+        begin
+          memo := TfrxMemoView(form.frxArchiveBoxSticker20x10.FindObject('CompanyName'));
+          memo.memo.Clear;
+          memo.memo.Add(ACompanyName);
+
+          memo := TfrxMemoView(form.frxArchiveBoxSticker20x10.FindObject('TypeCode'));
+          memo.memo.Clear;
+          memo.memo.Add(ATypeCode);
+
+          memo := TfrxMemoView(form.frxArchiveBoxSticker20x10.FindObject('CompanyCode'));
+          memo.memo.Clear;
+          memo.memo.Add(ACompanyCode);
+
+          memo := TfrxMemoView(form.frxArchiveBoxSticker20x10.FindObject('Year'));
+          memo.memo.Clear;
+          memo.memo.Add(AYear);
+
+          memo := TfrxMemoView(form.frxArchiveBoxSticker20x10.FindObject('Number'));
+          memo.memo.Clear;
+          memo.memo.Add(ANumber);
+
+          barcode := TfrxBarcodeView(form.frxArchiveBoxSticker20x10.FindObject('BarCode'));
+          barcode.Text := ABarcode;
+
+          form.frxArchiveBoxSticker20x10.PrepareReport;
+          form.frxArchiveBoxSticker20x10.PrintOptions.Duplex := dmNone;
+          form.frxArchiveBoxSticker20x10.PrintOptions.ShowDialog := not ASilent;
+          form.frxArchiveBoxSticker20x10.PrintOptions.Copies := 1;
+
+{$IFNDEF NOPRINT}
+          if ASilent then
+          begin
+            form.frxArchiveBoxSticker20x10.Print;
+          end
+          else
+          begin
+            form.frxArchiveBoxSticker20x10.ShowPreparedReport;
+          end;
+{$ENDIF}
+        end;
+    end;
   finally
 {$IFDEF NOPRINT}
     Result := True;
@@ -90,7 +139,7 @@ begin
   end;
 end;
 
-procedure TReportDataModule.frxArchiveBoxStickerAfterPrintReport(Sender: TObject);
+procedure TReportDataModule.frxArchiveBoxSticker10x10AfterPrintReport(Sender: TObject);
 begin
   FStickerWasPrinted := True;
 end;
