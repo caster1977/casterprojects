@@ -60,7 +60,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         HotZoneClassName = 'TcxMediaPlayer9Style'
         AlignSplitter = salBottom
         Control = cxGroupBox1
-        ExplicitTop = 311
       end
       object cxGroupBox1: TcxGroupBox
         AlignWithMargins = True
@@ -71,8 +70,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         Align = alBottom
         Caption = ' '#1044#1086#1082#1091#1084#1077#1085#1090#1099' '#1074' '#1082#1086#1088#1086#1073#1077' '
         TabOrder = 1
-        ExplicitTop = 319
-        ExplicitWidth = 758
         Height = 157
         Width = 756
         object cxGrid1: TcxGrid
@@ -87,7 +84,6 @@ object ArchivariusMainForm: TArchivariusMainForm
           Margins.Bottom = 6
           Align = alClient
           TabOrder = 0
-          ExplicitWidth = 742
           object cxGrid1DBTableView1: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             DataController.Summary.DefaultGroupSummaryItems = <>
@@ -247,8 +243,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         Align = alClient
         Caption = ' '#1050#1086#1088#1086#1073#1072' '
         TabOrder = 2
-        ExplicitWidth = 758
-        ExplicitHeight = 311
         Height = 308
         Width = 756
         object cxGrid2: TcxGrid
@@ -263,8 +257,6 @@ object ArchivariusMainForm: TArchivariusMainForm
           Margins.Bottom = 6
           Align = alClient
           TabOrder = 0
-          ExplicitWidth = 742
-          ExplicitHeight = 260
           object cxGridDBTableView1: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             DataController.Summary.DefaultGroupSummaryItems = <>
@@ -436,7 +428,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         Align = alClient
         Caption = ' '#1047#1072#1087#1088#1086#1089#1099' '
         TabOrder = 0
-        ExplicitWidth = 758
         Height = 311
         Width = 756
         object cxGrid3: TcxGrid
@@ -451,7 +442,6 @@ object ArchivariusMainForm: TArchivariusMainForm
           Margins.Bottom = 6
           Align = alClient
           TabOrder = 0
-          ExplicitWidth = 742
           object cxGridDBTableView2: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             DataController.Summary.DefaultGroupSummaryItems = <>
@@ -619,8 +609,7 @@ object ArchivariusMainForm: TArchivariusMainForm
         Margins.Bottom = 0
         HotZoneClassName = 'TcxMediaPlayer9Style'
         AlignSplitter = salBottom
-        ExplicitLeft = -18
-        ExplicitTop = 303
+        Control = cxPageControl2
       end
       object cxPageControl2: TcxPageControl
         AlignWithMargins = True
@@ -633,9 +622,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         TabOrder = 2
         Properties.ActivePage = cxTabSheet5
         Properties.CustomButtons.Buttons = <>
-        ExplicitLeft = 5
-        ExplicitTop = 312
-        ExplicitWidth = 748
         ClientRectBottom = 147
         ClientRectLeft = 4
         ClientRectRight = 753
@@ -643,7 +629,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         object cxTabSheet5: TcxTabSheet
           Caption = #1050#1086#1088#1086#1073#1072' '#1074' '#1079#1072#1087#1088#1086#1089#1077
           ImageIndex = 1
-          ExplicitWidth = 750
           object ToolBar10: TToolBar
             AlignWithMargins = True
             Left = 6
@@ -711,7 +696,6 @@ object ArchivariusMainForm: TArchivariusMainForm
             Margins.Bottom = 6
             Align = alClient
             TabOrder = 1
-            ExplicitWidth = 738
             object cxGridDBTableView8: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.Summary.DefaultGroupSummaryItems = <>
@@ -771,7 +755,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         object cxTabSheet6: TcxTabSheet
           Caption = #1044#1086#1082#1091#1084#1077#1085#1090#1099' '#1074' '#1079#1072#1087#1088#1086#1089#1077
           ImageIndex = 2
-          ExplicitWidth = 750
           object ToolBar11: TToolBar
             AlignWithMargins = True
             Left = 6
@@ -839,7 +822,6 @@ object ArchivariusMainForm: TArchivariusMainForm
             Margins.Bottom = 6
             Align = alClient
             TabOrder = 1
-            ExplicitWidth = 738
             object cxGridDBTableView9: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.Summary.DefaultGroupSummaryItems = <>
@@ -932,8 +914,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         Align = alClient
         Caption = ' '#1047#1072#1076#1072#1085#1080#1103' '
         TabOrder = 0
-        ExplicitWidth = 758
-        ExplicitHeight = 152
         Height = 311
         Width = 756
         object cxGrid5: TcxGrid
@@ -948,7 +928,6 @@ object ArchivariusMainForm: TArchivariusMainForm
           Margins.Bottom = 6
           Align = alClient
           TabOrder = 0
-          ExplicitWidth = 742
           object cxGridDBTableView4: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             DataController.Summary.DefaultGroupSummaryItems = <>
@@ -1135,7 +1114,7 @@ object ArchivariusMainForm: TArchivariusMainForm
         Margins.Bottom = 0
         HotZoneClassName = 'TcxMediaPlayer9Style'
         AlignSplitter = salBottom
-        ExplicitTop = 283
+        Control = cxPageControl1
       end
       object cxPageControl1: TcxPageControl
         AlignWithMargins = True
@@ -1148,7 +1127,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         TabOrder = 2
         Properties.ActivePage = cxTabSheet4
         Properties.CustomButtons.Buttons = <>
-        ExplicitWidth = 758
         ClientRectBottom = 147
         ClientRectLeft = 4
         ClientRectRight = 753
@@ -1282,8 +1260,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         object cxTabSheet2: TcxTabSheet
           Caption = #1050#1086#1088#1086#1073#1072' '#1074' '#1079#1072#1076#1072#1085#1080#1080
           ImageIndex = 1
-          ExplicitWidth = 756
-          ExplicitHeight = 165
           object ToolBar9: TToolBar
             AlignWithMargins = True
             Left = 6
@@ -1351,10 +1327,6 @@ object ArchivariusMainForm: TArchivariusMainForm
             Margins.Bottom = 6
             Align = alClient
             TabOrder = 1
-            ExplicitLeft = 12
-            ExplicitTop = 31
-            ExplicitWidth = 744
-            ExplicitHeight = 110
             object cxGridDBTableView7: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.Summary.DefaultGroupSummaryItems = <>
@@ -1414,8 +1386,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         object cxTabSheet3: TcxTabSheet
           Caption = #1044#1086#1082#1091#1084#1077#1085#1090#1099' '#1074' '#1079#1072#1076#1072#1085#1080#1080
           ImageIndex = 2
-          ExplicitWidth = 756
-          ExplicitHeight = 165
           object ToolBar8: TToolBar
             AlignWithMargins = True
             Left = 6
@@ -1483,10 +1453,6 @@ object ArchivariusMainForm: TArchivariusMainForm
             Margins.Bottom = 6
             Align = alClient
             TabOrder = 1
-            ExplicitLeft = 12
-            ExplicitTop = 31
-            ExplicitWidth = 744
-            ExplicitHeight = 110
             object cxGridDBTableView5: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.Summary.DefaultGroupSummaryItems = <>
@@ -1578,10 +1544,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         Align = alClient
         Caption = ' '#1044#1086#1082#1091#1084#1077#1085#1090#1099' '
         TabOrder = 0
-        ExplicitLeft = 6
-        ExplicitTop = 319
-        ExplicitWidth = 758
-        ExplicitHeight = 157
         Height = 473
         Width = 756
         object ToolBar5: TToolBar
@@ -1685,10 +1647,6 @@ object ArchivariusMainForm: TArchivariusMainForm
           Align = alClient
           TabOrder = 1
           LookAndFeel.Kind = lfUltraFlat
-          ExplicitLeft = 0
-          ExplicitTop = 28
-          ExplicitWidth = 881
-          ExplicitHeight = 500
           object cxGridDBTableView3: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             DataController.Summary.DefaultGroupSummaryItems = <>
@@ -1806,8 +1764,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         Align = alClient
         Caption = ' '#1047#1072#1076#1072#1085#1080#1103' '
         TabOrder = 0
-        ExplicitLeft = 8
-        ExplicitHeight = 476
         Height = 311
         Width = 756
         object cxGrid11: TcxGrid
@@ -1822,7 +1778,6 @@ object ArchivariusMainForm: TArchivariusMainForm
           Margins.Bottom = 6
           Align = alClient
           TabOrder = 0
-          ExplicitHeight = 425
           object cxGridDBTableView10: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             DataController.Summary.DefaultGroupSummaryItems = <>
@@ -2008,7 +1963,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         TabOrder = 1
         Properties.ActivePage = cxTabSheet7
         Properties.CustomButtons.Buttons = <>
-        ExplicitLeft = -6
         ClientRectBottom = 147
         ClientRectLeft = 4
         ClientRectRight = 753
@@ -2299,7 +2253,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         HotZoneClassName = 'TcxMediaPlayer9Style'
         AlignSplitter = salBottom
         Control = cxPageControl3
-        ExplicitTop = 314
       end
     end
     object TabSheet6: TTabSheet
@@ -2313,12 +2266,8 @@ object ArchivariusMainForm: TArchivariusMainForm
         Height = 470
         Align = alClient
         TabOrder = 0
-        Properties.ActivePage = cxTabSheet10
+        Properties.ActivePage = cxTabSheet1
         Properties.CustomButtons.Buttons = <>
-        ExplicitLeft = 496
-        ExplicitTop = 96
-        ExplicitWidth = 289
-        ExplicitHeight = 193
         ClientRectBottom = 466
         ClientRectLeft = 4
         ClientRectRight = 754
@@ -2337,9 +2286,6 @@ object ArchivariusMainForm: TArchivariusMainForm
             TabOrder = 0
             Properties.ActivePage = cxTabSheet11
             Properties.CustomButtons.Buttons = <>
-            ExplicitLeft = 5
-            ExplicitTop = 312
-            ExplicitWidth = 748
             ClientRectBottom = 147
             ClientRectLeft = 4
             ClientRectRight = 739
@@ -2347,7 +2293,6 @@ object ArchivariusMainForm: TArchivariusMainForm
             object cxTabSheet11: TcxTabSheet
               Caption = #1050#1086#1088#1086#1073#1072' '#1074' '#1079#1072#1087#1088#1086#1089#1077
               ImageIndex = 1
-              ExplicitWidth = 749
               object ToolBar16: TToolBar
                 AlignWithMargins = True
                 Left = 6
@@ -2363,7 +2308,6 @@ object ArchivariusMainForm: TArchivariusMainForm
                 GradientDrawingOptions = [gdoHotTrack]
                 TabOrder = 0
                 Transparent = True
-                ExplicitWidth = 737
                 object ToolButton100: TToolButton
                   Left = 0
                   Top = 0
@@ -2416,7 +2360,6 @@ object ArchivariusMainForm: TArchivariusMainForm
                 Margins.Bottom = 6
                 Align = alClient
                 TabOrder = 1
-                ExplicitWidth = 737
                 object cxGridDBTableView15: TcxGridDBTableView
                   Navigator.Buttons.CustomButtons = <>
                   DataController.Summary.DefaultGroupSummaryItems = <>
@@ -2476,6 +2419,10 @@ object ArchivariusMainForm: TArchivariusMainForm
             object cxTabSheet12: TcxTabSheet
               Caption = #1044#1086#1082#1091#1084#1077#1085#1090#1099' '#1074' '#1079#1072#1087#1088#1086#1089#1077
               ImageIndex = 2
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object ToolBar17: TToolBar
                 AlignWithMargins = True
                 Left = 6
@@ -2633,7 +2580,6 @@ object ArchivariusMainForm: TArchivariusMainForm
             HotZoneClassName = 'TcxMediaPlayer9Style'
             AlignSplitter = salBottom
             Control = cxPageControl5
-            ExplicitTop = 280
           end
           object cxGroupBox7: TcxGroupBox
             AlignWithMargins = True
@@ -2645,8 +2591,6 @@ object ArchivariusMainForm: TArchivariusMainForm
             Align = alClient
             Caption = ' '#1047#1072#1087#1088#1086#1089#1099' '
             TabOrder = 2
-            ExplicitLeft = 8
-            ExplicitTop = 8
             Height = 277
             Width = 742
             object cxGrid18: TcxGrid
@@ -2830,8 +2774,6 @@ object ArchivariusMainForm: TArchivariusMainForm
             Align = alClient
             Caption = ' '#1047#1072#1076#1072#1085#1080#1103' '
             TabOrder = 0
-            ExplicitLeft = 8
-            ExplicitHeight = 442
             Height = 277
             Width = 742
             object cxGrid19: TcxGrid
@@ -3041,7 +2983,10 @@ object ArchivariusMainForm: TArchivariusMainForm
             object cxTabSheet14: TcxTabSheet
               Caption = #1047#1072#1087#1088#1086#1089#1099' '#1074' '#1079#1072#1076#1072#1085#1080#1080
               ImageIndex = 0
+              ExplicitLeft = 0
+              ExplicitTop = 0
               ExplicitWidth = 749
+              ExplicitHeight = 0
               object ToolBar20: TToolBar
                 AlignWithMargins = True
                 Left = 6
@@ -3170,6 +3115,10 @@ object ArchivariusMainForm: TArchivariusMainForm
             object cxTabSheet15: TcxTabSheet
               Caption = #1050#1086#1088#1086#1073#1072' '#1074' '#1079#1072#1076#1072#1085#1080#1080
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object ToolBar21: TToolBar
                 AlignWithMargins = True
                 Left = 6
@@ -3296,6 +3245,10 @@ object ArchivariusMainForm: TArchivariusMainForm
             object cxTabSheet16: TcxTabSheet
               Caption = #1044#1086#1082#1091#1084#1077#1085#1090#1099' '#1074' '#1079#1072#1076#1072#1085#1080#1080
               ImageIndex = 2
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object ToolBar22: TToolBar
                 AlignWithMargins = True
                 Left = 6
@@ -3459,6 +3412,10 @@ object ArchivariusMainForm: TArchivariusMainForm
         object cxTabSheet9: TcxTabSheet
           Caption = #1042#1099#1076#1072#1085#1085#1099#1077' '#1076#1086#1082#1091#1084#1077#1085#1090#1099
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object ToolBar7: TToolBar
             AlignWithMargins = True
             Left = 6
@@ -3675,9 +3632,6 @@ object ArchivariusMainForm: TArchivariusMainForm
             Align = alClient
             TabOrder = 0
             LookAndFeel.Kind = lfUltraFlat
-            ExplicitLeft = 0
-            ExplicitWidth = 750
-            ExplicitHeight = 439
             object cxGridDBTableView6: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.Summary.DefaultGroupSummaryItems = <>
@@ -3799,8 +3753,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         TabOrder = 0
         Properties.ActivePage = cxTabSheet24
         Properties.CustomButtons.Buttons = <>
-        ExplicitLeft = 6
-        ExplicitTop = 6
         ClientRectBottom = 466
         ClientRectLeft = 4
         ClientRectRight = 754
@@ -4014,10 +3966,6 @@ object ArchivariusMainForm: TArchivariusMainForm
         object cxTabSheet20: TcxTabSheet
           Caption = #1047#1072#1076#1072#1085#1080#1103' '#1085#1072' '#1088#1072#1089#1082#1083#1072#1076#1082#1091
           ImageIndex = 3
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object cxGroupBox9: TcxGroupBox
             AlignWithMargins = True
             Left = 3
@@ -4028,8 +3976,6 @@ object ArchivariusMainForm: TArchivariusMainForm
             Align = alClient
             Caption = ' '#1047#1072#1076#1072#1085#1080#1103' '
             TabOrder = 0
-            ExplicitLeft = 8
-            ExplicitHeight = 442
             Height = 277
             Width = 742
             object cxGrid23: TcxGrid
@@ -4044,7 +3990,6 @@ object ArchivariusMainForm: TArchivariusMainForm
               Margins.Bottom = 6
               Align = alClient
               TabOrder = 0
-              ExplicitHeight = 391
               object cxGridDBTableView22: TcxGridDBTableView
                 Navigator.Buttons.CustomButtons = <>
                 DataController.Summary.DefaultGroupSummaryItems = <>
@@ -4232,7 +4177,6 @@ object ArchivariusMainForm: TArchivariusMainForm
             HotZoneClassName = 'TcxMediaPlayer9Style'
             AlignSplitter = salBottom
             Control = cxPageControl8
-            ExplicitTop = 280
           end
           object cxPageControl8: TcxPageControl
             AlignWithMargins = True
@@ -4245,8 +4189,6 @@ object ArchivariusMainForm: TArchivariusMainForm
             TabOrder = 2
             Properties.ActivePage = cxTabSheet17
             Properties.CustomButtons.Buttons = <>
-            ExplicitLeft = 7
-            ExplicitTop = 291
             ClientRectBottom = 147
             ClientRectLeft = 4
             ClientRectRight = 739
@@ -4254,7 +4196,6 @@ object ArchivariusMainForm: TArchivariusMainForm
             object cxTabSheet17: TcxTabSheet
               Caption = #1050#1086#1088#1086#1073#1072' '#1074' '#1079#1072#1076#1072#1085#1080#1080
               ImageIndex = 1
-              ExplicitWidth = 749
               object ToolBar24: TToolBar
                 AlignWithMargins = True
                 Left = 6
@@ -4270,7 +4211,6 @@ object ArchivariusMainForm: TArchivariusMainForm
                 GradientDrawingOptions = [gdoHotTrack]
                 TabOrder = 0
                 Transparent = True
-                ExplicitWidth = 737
                 object ToolButton153: TToolButton
                   Left = 0
                   Top = 0
@@ -4323,7 +4263,6 @@ object ArchivariusMainForm: TArchivariusMainForm
                 Margins.Bottom = 6
                 Align = alClient
                 TabOrder = 1
-                ExplicitWidth = 737
                 object cxGridDBTableView23: TcxGridDBTableView
                   Navigator.Buttons.CustomButtons = <>
                   DataController.Summary.DefaultGroupSummaryItems = <>
@@ -4607,7 +4546,7 @@ object ArchivariusMainForm: TArchivariusMainForm
     Left = 296
     Top = 296
     Bitmap = {
-      494C0101180018023C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010118001802400110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000007000000001002000000000000070
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
