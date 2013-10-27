@@ -72,14 +72,15 @@ object RequestListForm: TRequestListForm
     end
     object Label2: TLabel
       AlignWithMargins = True
-      Left = 418
+      Left = 459
       Top = 3
-      Width = 113
+      Width = 72
       Height = 22
       Margins.Left = 6
       Align = alRight
-      Caption = #1044#1072#1090#1072' '#1087#1086#1076#1072#1095#1080' '#1079#1072#1087#1088#1086#1089#1072':'
+      Caption = #1044#1072#1090#1072' '#1074#1099#1076#1072#1095#1080':'
       Layout = tlCenter
+      ExplicitLeft = 465
       ExplicitHeight = 13
     end
     object Label6: TLabel
@@ -208,51 +209,51 @@ object RequestListForm: TRequestListForm
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
-      OptionsView.NoDataToDisplayInfoText = '<'#1044#1072#1085#1085#1099#1077' '#1085#1077' '#1085#1072#1081#1076#1077#1085#1099'>'
+      OptionsView.NoDataToDisplayInfoText = #1057#1087#1080#1089#1086#1082' '#1074#1099#1076#1072#1085#1085#1099#1093' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074
       OptionsView.GroupByBox = False
       Bands = <
         item
-          Caption = #1047#1072#1087#1088#1086#1089
+          Caption = #1044#1086#1082#1091#1084#1077#1085#1090
         end
         item
           Caption = #1050#1086#1088#1086#1073
         end
         item
-          Caption = #1044#1086#1082#1091#1084#1077#1085#1090
+          Caption = #1047#1072#1087#1088#1086#1089
         end
         item
           Caption = #1053#1086#1084#1077#1088
-          Position.BandIndex = 0
-          Position.ColIndex = 0
+          Position.BandIndex = 2
+          Position.ColIndex = 1
         end
         item
           Caption = #1044#1072#1090#1072' '#1087#1086#1076#1072#1095#1080
-          Position.BandIndex = 0
+          Position.BandIndex = 2
           Position.ColIndex = 2
           Width = 72
         end
         item
           Caption = #1044#1072#1090#1072' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103
-          Position.BandIndex = 0
+          Position.BandIndex = 2
           Position.ColIndex = 3
           Width = 97
         end
         item
           Caption = #1044#1072#1090#1072' '#1087#1086#1083#1091#1095#1077#1085#1080#1103
-          Position.BandIndex = 2
+          Position.BandIndex = 0
           Position.ColIndex = 2
           Width = 89
         end
         item
           Caption = #1048#1085#1080#1094#1080#1072#1090#1086#1088
-          Position.BandIndex = 0
+          Position.BandIndex = 2
           Position.ColIndex = 4
           Width = 61
         end
         item
           Caption = #1057#1090#1072#1090#1091#1089
-          Position.BandIndex = 0
-          Position.ColIndex = 1
+          Position.BandIndex = 2
+          Position.ColIndex = 0
         end
         item
           Caption = #1053#1086#1084#1077#1088
@@ -283,18 +284,18 @@ object RequestListForm: TRequestListForm
         end
         item
           Caption = #1053#1086#1084#1077#1088
-          Position.BandIndex = 2
+          Position.BandIndex = 0
           Position.ColIndex = 0
         end
         item
           Caption = #1057#1090#1072#1090#1091#1089' '#1074#1086#1079#1074#1088#1072#1090#1072
-          Position.BandIndex = 2
+          Position.BandIndex = 0
           Position.ColIndex = 3
           Width = 92
         end
         item
           Caption = #1058#1080#1087
-          Position.BandIndex = 2
+          Position.BandIndex = 0
           Position.ColIndex = 1
         end>
     end
@@ -306,7 +307,7 @@ object RequestListForm: TRequestListForm
     Left = 344
     Top = 152
     Bitmap = {
-      494C010104001800540010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104001800580010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -581,7 +582,7 @@ object RequestListForm: TRequestListForm
     Left = 408
     Top = 152
     Bitmap = {
-      494C010104001800280010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101040018002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

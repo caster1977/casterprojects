@@ -13,6 +13,6 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TArchivariusMainForm, ArchivariusMainForm);
+  Application.CreateForm(TRequestListForm, RequestListForm);
   Application.Run;
 end.
