@@ -1,9 +1,9 @@
 object RequestForm: TRequestForm
   Left = 0
   Top = 0
-  BorderStyle = bsSingle
+  BorderStyle = bsDialog
   BorderWidth = 6
-  Caption = #1047#1072#1087#1088#1086#1089#1099' '#1085#1072' '#1087#1086#1083#1091#1095#1077#1085#1080#1077' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1080#1079' '#1072#1088#1093#1080#1074#1072
+  Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1079#1072#1087#1088#1086#1089#1072' '#1085#1072' '#1087#1086#1083#1091#1095#1077#1085#1080#1077' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1080#1079' '#1072#1088#1093#1080#1074#1072
   ClientHeight = 560
   ClientWidth = 782
   Color = clBtnFace
@@ -37,9 +37,9 @@ object RequestForm: TRequestForm
       object GroupBox4: TGroupBox
         AlignWithMargins = True
         Left = 8
-        Top = 368
+        Top = 275
         Width = 341
-        Height = 162
+        Height = 255
         Margins.Left = 6
         Margins.Top = 0
         Margins.Right = 6
@@ -52,38 +52,66 @@ object RequestForm: TRequestForm
           Left = 8
           Top = 15
           Width = 325
-          Height = 139
+          Height = 232
           Margins.Left = 6
           Margins.Top = 0
           Margins.Right = 6
           Margins.Bottom = 6
           Align = alClient
           TabOrder = 0
+          ExplicitTop = 14
+          ExplicitHeight = 231
           object cxGridDBTableView3: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             DataController.Summary.DefaultGroupSummaryItems = <>
             DataController.Summary.FooterSummaryItems = <>
             DataController.Summary.SummaryGroups = <>
-            OptionsView.NoDataToDisplayInfoText = '<'#1044#1072#1085#1085#1099#1077' '#1085#1077' '#1085#1072#1081#1076#1077#1085#1099'>'
+            OptionsView.NoDataToDisplayInfoText = ' '
+            OptionsView.ColumnAutoWidth = True
             OptionsView.GroupByBox = False
             object cxGridDBTableView3Column1: TcxGridDBColumn
               Caption = #1058#1080#1087
+              FooterAlignmentHorz = taCenter
+              GroupSummaryAlignment = taCenter
+              HeaderAlignmentHorz = taCenter
+              HeaderAlignmentVert = vaCenter
+              HeaderGlyphAlignmentHorz = taCenter
               Width = 43
             end
             object cxGridDBTableView3Column3: TcxGridDBColumn
               Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077
+              FooterAlignmentHorz = taCenter
+              GroupSummaryAlignment = taCenter
+              HeaderAlignmentHorz = taCenter
+              HeaderAlignmentVert = vaCenter
+              HeaderGlyphAlignmentHorz = taCenter
               Width = 79
             end
             object cxGridDBTableView3Column2: TcxGridDBColumn
               Caption = #1044#1072#1090#1072
+              FooterAlignmentHorz = taCenter
+              GroupSummaryAlignment = taCenter
+              HeaderAlignmentHorz = taCenter
+              HeaderAlignmentVert = vaCenter
+              HeaderGlyphAlignmentHorz = taCenter
               Width = 32
             end
             object cxGridDBTableView3Column4: TcxGridDBColumn
               Caption = #1058#1077#1082#1091#1097#1080#1081' '#1089#1090#1072#1090#1091#1089
+              FooterAlignmentHorz = taCenter
+              GroupSummaryAlignment = taCenter
+              HeaderAlignmentHorz = taCenter
+              HeaderAlignmentVert = vaCenter
+              HeaderGlyphAlignmentHorz = taCenter
               Width = 88
             end
             object cxGridDBTableView3Column5: TcxGridDBColumn
               Caption = #1055#1088#1080#1084#1077#1095#1072#1085#1080#1103
+              FooterAlignmentHorz = taCenter
+              GroupSummaryAlignment = taCenter
+              HeaderAlignmentHorz = taCenter
+              HeaderAlignmentVert = vaCenter
+              HeaderGlyphAlignmentHorz = taCenter
               Width = 80
             end
           end
@@ -97,7 +125,7 @@ object RequestForm: TRequestForm
         Left = 8
         Top = 15
         Width = 341
-        Height = 353
+        Height = 260
         Margins.Left = 6
         Margins.Top = 0
         Margins.Right = 6
@@ -105,242 +133,11 @@ object RequestForm: TRequestForm
         Align = alClient
         Caption = ' '#1055#1072#1088#1072#1084#1077#1090#1088#1099' '#1087#1086#1080#1089#1082#1072' '
         TabOrder = 1
-        object Label2: TLabel
-          AlignWithMargins = True
-          Left = 11
-          Top = 18
-          Width = 322
-          Height = 13
-          Margins.Left = 9
-          Margins.Right = 6
-          Align = alTop
-          Caption = #1058#1080#1087' '#1076#1086#1082#1091#1084#1077#1085#1090#1072':'
-          ExplicitWidth = 80
-        end
-        object PageControl1: TPageControl
-          AlignWithMargins = True
-          Left = 5
-          Top = 55
-          Width = 333
-          Height = 265
-          Margins.Top = 0
-          Margins.Right = 1
-          Margins.Bottom = 0
-          ActivePage = TabSheet1
-          Align = alClient
-          Style = tsFlatButtons
-          TabOrder = 2
-          TabStop = False
-          StyleElements = [seFont, seClient]
-          object TabSheet1: TTabSheet
-            Margins.Left = 0
-            Margins.Top = 0
-            Margins.Right = 0
-            Margins.Bottom = 0
-            Caption = 'TabSheet1'
-            TabVisible = False
-            object RadioButton1: TRadioButton
-              AlignWithMargins = True
-              Left = 0
-              Top = 3
-              Width = 319
-              Height = 17
-              Margins.Left = 0
-              Margins.Right = 6
-              Align = alTop
-              Caption = #1087#1086' '#1089#1077#1088#1080#1080'/'#1085#1086#1084#1077#1088#1091
-              Checked = True
-              TabOrder = 0
-              TabStop = True
-            end
-            object RadioButton2: TRadioButton
-              AlignWithMargins = True
-              Left = 0
-              Top = 62
-              Width = 319
-              Height = 17
-              Margins.Left = 0
-              Margins.Top = 0
-              Margins.Right = 6
-              Align = alTop
-              Caption = #1087#1086' '#1087#1088#1086#1095#1080#1084' '#1082#1088#1080#1090#1077#1088#1080#1103#1084
-              TabOrder = 1
-            end
-            object GroupBox6: TGroupBox
-              AlignWithMargins = True
-              Left = 15
-              Top = 23
-              Width = 310
-              Height = 36
-              Margins.Left = 15
-              Margins.Top = 0
-              Margins.Right = 0
-              Align = alTop
-              TabOrder = 2
-              object Panel2: TPanel
-                Left = 6
-                Top = 8
-                Width = 297
-                Height = 21
-                Align = alCustom
-                BevelOuter = bvNone
-                Caption = 'Panel1'
-                ShowCaption = False
-                TabOrder = 0
-                object Label3: TLabel
-                  AlignWithMargins = True
-                  Left = 97
-                  Top = 3
-                  Width = 35
-                  Height = 15
-                  Margins.Left = 6
-                  Align = alLeft
-                  Caption = #1053#1086#1084#1077#1088':'
-                  Layout = tlCenter
-                  ExplicitHeight = 13
-                end
-                object Label4: TLabel
-                  AlignWithMargins = True
-                  Left = 0
-                  Top = 3
-                  Width = 35
-                  Height = 15
-                  Margins.Left = 0
-                  Align = alLeft
-                  Caption = #1057#1077#1088#1080#1103':'
-                  Layout = tlCenter
-                  ExplicitHeight = 13
-                end
-                object Edit1: TEdit
-                  AlignWithMargins = True
-                  Left = 41
-                  Top = 0
-                  Width = 50
-                  Height = 21
-                  Margins.Top = 0
-                  Margins.Right = 0
-                  Margins.Bottom = 0
-                  Align = alLeft
-                  TabOrder = 0
-                end
-                object Edit2: TEdit
-                  AlignWithMargins = True
-                  Left = 138
-                  Top = 0
-                  Width = 159
-                  Height = 21
-                  Margins.Top = 0
-                  Margins.Right = 0
-                  Margins.Bottom = 0
-                  Align = alClient
-                  TabOrder = 1
-                end
-              end
-            end
-            object GroupBox7: TGroupBox
-              AlignWithMargins = True
-              Left = 15
-              Top = 82
-              Width = 310
-              Height = 170
-              Margins.Left = 15
-              Margins.Top = 0
-              Margins.Right = 0
-              Align = alClient
-              TabOrder = 3
-              object Panel3: TPanel
-                Left = 6
-                Top = 8
-                Width = 297
-                Height = 21
-                Align = alCustom
-                BevelOuter = bvNone
-                Caption = 'Panel1'
-                ShowCaption = False
-                TabOrder = 0
-                object Label7: TLabel
-                  AlignWithMargins = True
-                  Left = 171
-                  Top = 3
-                  Width = 16
-                  Height = 15
-                  Margins.Left = 6
-                  Align = alLeft
-                  Caption = #1087#1086':'
-                  Layout = tlCenter
-                  ExplicitHeight = 13
-                end
-                object Label8: TLabel
-                  AlignWithMargins = True
-                  Left = 0
-                  Top = 3
-                  Width = 64
-                  Height = 15
-                  Margins.Left = 0
-                  Align = alLeft
-                  Caption = #1047#1072' '#1087#1077#1088#1080#1086#1076' '#1089':'
-                  Layout = tlCenter
-                  ExplicitHeight = 13
-                end
-                object DateTimePicker1: TDateTimePicker
-                  AlignWithMargins = True
-                  Left = 190
-                  Top = 0
-                  Width = 98
-                  Height = 21
-                  Margins.Left = 0
-                  Margins.Top = 0
-                  Margins.Right = 0
-                  Margins.Bottom = 0
-                  Align = alLeft
-                  Date = 41548.543762164350000000
-                  Time = 41548.543762164350000000
-                  TabOrder = 0
-                end
-                object DateTimePicker2: TDateTimePicker
-                  AlignWithMargins = True
-                  Left = 67
-                  Top = 0
-                  Width = 98
-                  Height = 21
-                  Margins.Left = 0
-                  Margins.Top = 0
-                  Margins.Right = 0
-                  Margins.Bottom = 0
-                  Align = alLeft
-                  Date = 41548.543762164350000000
-                  Time = 41548.543762164350000000
-                  TabOrder = 1
-                end
-              end
-              object PageControl2: TPageControl
-                AlignWithMargins = True
-                Left = 6
-                Top = 35
-                Width = 298
-                Height = 129
-                Margins.Left = 4
-                Margins.Top = 20
-                Margins.Right = 4
-                Margins.Bottom = 4
-                ActivePage = TabSheet2
-                Align = alClient
-                TabOrder = 1
-                object TabSheet2: TTabSheet
-                  Caption = #1055#1086' '#1082#1086#1084#1087#1072#1085#1080#1103#1084
-                end
-                object TabSheet3: TTabSheet
-                  Caption = #1055#1086' '#1082#1083#1080#1077#1085#1090#1072#1084
-                  ImageIndex = 1
-                end
-              end
-            end
-          end
-        end
+        ExplicitHeight = 353
         object Panel1: TPanel
           AlignWithMargins = True
           Left = 8
-          Top = 320
+          Top = 227
           Width = 325
           Height = 25
           Margins.Left = 6
@@ -352,6 +149,7 @@ object RequestForm: TRequestForm
           Caption = 'Panel1'
           ShowCaption = False
           TabOrder = 0
+          ExplicitTop = 320
           object Button1: TButton
             AlignWithMargins = True
             Left = 250
@@ -367,59 +165,303 @@ object RequestForm: TRequestForm
             TabOrder = 0
           end
         end
-        object Panel7: TPanel
+        object RadioButton1: TRadioButton
           AlignWithMargins = True
-          Left = 11
-          Top = 34
-          Width = 322
-          Height = 21
-          Margins.Left = 9
+          Left = 2
+          Top = 18
+          Width = 331
+          Height = 17
+          Margins.Left = 0
+          Margins.Right = 6
+          Align = alTop
+          Caption = #1087#1086' '#1089#1077#1088#1080#1080'/'#1085#1086#1084#1077#1088#1091
+          Checked = True
+          TabOrder = 1
+          TabStop = True
+          ExplicitLeft = -5
+          ExplicitTop = 10
+        end
+        object RadioButton2: TRadioButton
+          AlignWithMargins = True
+          Left = 2
+          Top = 77
+          Width = 331
+          Height = 17
+          Margins.Left = 0
           Margins.Top = 0
           Margins.Right = 6
-          Margins.Bottom = 0
           Align = alTop
-          BevelOuter = bvNone
-          Caption = 'Panel1'
-          ShowCaption = False
-          TabOrder = 1
-          object ComboBox2: TComboBox
-            AlignWithMargins = True
-            Left = 168
-            Top = 0
-            Width = 154
+          Caption = #1087#1086' '#1087#1088#1086#1095#1080#1084' '#1082#1088#1080#1090#1077#1088#1080#1103#1084
+          TabOrder = 2
+          ExplicitLeft = 0
+          ExplicitTop = 39
+          ExplicitWidth = 319
+        end
+        object GroupBox6: TGroupBox
+          AlignWithMargins = True
+          Left = 17
+          Top = 38
+          Width = 322
+          Height = 36
+          Margins.Left = 15
+          Margins.Top = 0
+          Margins.Right = 0
+          Align = alTop
+          TabOrder = 3
+          ExplicitLeft = 15
+          ExplicitTop = 0
+          ExplicitWidth = 310
+          object Panel2: TPanel
+            Left = 6
+            Top = 8
+            Width = 310
             Height = 21
-            Margins.Left = 6
-            Margins.Top = 0
-            Margins.Right = 0
-            Align = alRight
-            Style = csDropDownList
-            ItemIndex = 0
+            Align = alCustom
+            BevelOuter = bvNone
+            Caption = 'Panel1'
+            ShowCaption = False
             TabOrder = 0
-            Text = '<'#1074#1089#1077'>'
-            Items.Strings = (
-              '<'#1074#1089#1077'>'
-              #1073#1077#1079' '#1072#1082#1090#1072
-              #1089' '#1072#1082#1090#1086#1084
-              #1080#1089#1087#1086#1088#1095#1077#1085#1085#1099#1077)
+            object Label3: TLabel
+              AlignWithMargins = True
+              Left = 97
+              Top = 3
+              Width = 35
+              Height = 15
+              Margins.Left = 6
+              Align = alLeft
+              Caption = #1053#1086#1084#1077#1088':'
+              Layout = tlCenter
+              ExplicitHeight = 13
+            end
+            object Label4: TLabel
+              AlignWithMargins = True
+              Left = 0
+              Top = 3
+              Width = 35
+              Height = 15
+              Margins.Left = 0
+              Align = alLeft
+              Caption = #1057#1077#1088#1080#1103':'
+              Layout = tlCenter
+              ExplicitHeight = 13
+            end
+            object Edit1: TEdit
+              AlignWithMargins = True
+              Left = 41
+              Top = 0
+              Width = 50
+              Height = 21
+              Margins.Top = 0
+              Margins.Right = 0
+              Margins.Bottom = 0
+              Align = alLeft
+              TabOrder = 0
+            end
+            object Edit2: TEdit
+              AlignWithMargins = True
+              Left = 138
+              Top = 0
+              Width = 172
+              Height = 21
+              Margins.Top = 0
+              Margins.Right = 0
+              Margins.Bottom = 0
+              Align = alClient
+              TabOrder = 1
+              ExplicitWidth = 159
+            end
           end
-          object ComboBox1: TComboBox
-            AlignWithMargins = True
-            Left = 0
-            Top = 0
-            Width = 162
+        end
+        object GroupBox7: TGroupBox
+          AlignWithMargins = True
+          Left = 17
+          Top = 97
+          Width = 322
+          Height = 127
+          Margins.Left = 15
+          Margins.Top = 0
+          Margins.Right = 0
+          Align = alClient
+          TabOrder = 4
+          ExplicitLeft = 15
+          ExplicitTop = 158
+          ExplicitHeight = 36
+          object Panel3: TPanel
+            Left = 6
+            Top = 8
+            Width = 310
             Height = 21
-            Margins.Left = 0
-            Margins.Top = 0
-            Margins.Right = 0
-            Align = alClient
-            Style = csDropDownList
-            ItemIndex = 0
+            Align = alCustom
+            BevelOuter = bvNone
+            Caption = 'Panel1'
+            ShowCaption = False
+            TabOrder = 0
+            object Label7: TLabel
+              AlignWithMargins = True
+              Left = 193
+              Top = 3
+              Width = 16
+              Height = 15
+              Margins.Left = 6
+              Align = alRight
+              Caption = #1087#1086':'
+              Layout = tlCenter
+              ExplicitLeft = 171
+              ExplicitHeight = 13
+            end
+            object Label1: TLabel
+              AlignWithMargins = True
+              Left = 77
+              Top = 3
+              Width = 9
+              Height = 15
+              Margins.Left = 6
+              Align = alRight
+              Caption = 'c:'
+              Layout = tlCenter
+              ExplicitLeft = 81
+              ExplicitHeight = 13
+            end
+            object DateTimePicker1: TDateTimePicker
+              AlignWithMargins = True
+              Left = 212
+              Top = 0
+              Width = 98
+              Height = 21
+              Margins.Left = 0
+              Margins.Top = 0
+              Margins.Right = 0
+              Margins.Bottom = 0
+              Align = alRight
+              Date = 41548.543762164350000000
+              Time = 41548.543762164350000000
+              TabOrder = 0
+              ExplicitLeft = 207
+              ExplicitTop = 3
+            end
+            object DateTimePicker2: TDateTimePicker
+              AlignWithMargins = True
+              Left = 89
+              Top = 0
+              Width = 98
+              Height = 21
+              Margins.Left = 0
+              Margins.Top = 0
+              Margins.Right = 0
+              Margins.Bottom = 0
+              Align = alRight
+              Date = 41548.543762164350000000
+              Time = 41548.543762164350000000
+              TabOrder = 1
+              ExplicitLeft = 67
+            end
+            object CheckBox1: TCheckBox
+              AlignWithMargins = True
+              Left = 3
+              Top = 3
+              Width = 78
+              Height = 15
+              Align = alLeft
+              Caption = #1079#1072' '#1087#1077#1088#1080#1086#1076
+              TabOrder = 2
+            end
+          end
+          object Panel7: TPanel
+            Left = 6
+            Top = 95
+            Width = 310
+            Height = 25
+            Align = alCustom
+            BevelOuter = bvNone
+            Caption = 'Panel1'
+            ShowCaption = False
             TabOrder = 1
-            Text = #1056#1072#1089#1093#1086#1076#1085#1099#1081' '#1041#1057#1054
-            Items.Strings = (
-              #1056#1072#1089#1093#1086#1076#1085#1099#1081' '#1041#1057#1054
-              #1055#1088#1080#1093#1086#1076#1085#1099#1081' '#1041#1057#1054
-              #1042#1086#1079#1074#1088#1072#1090#1085#1099#1081' '#1041#1057#1054)
+            object CheckBox2: TCheckBox
+              AlignWithMargins = True
+              Left = 3
+              Top = 3
+              Width = 229
+              Height = 19
+              Align = alClient
+              Caption = #1087#1086' '#1082#1083#1080#1077#1085#1090#1072#1084':'
+              TabOrder = 0
+              ExplicitWidth = 78
+              ExplicitHeight = 15
+            end
+            object Button4: TButton
+              Left = 235
+              Top = 0
+              Width = 75
+              Height = 25
+              Align = alRight
+              Caption = #1042#1099#1073#1088#1072#1090#1100'...'
+              TabOrder = 1
+              ExplicitLeft = 112
+              ExplicitTop = 8
+            end
+          end
+          object Panel8: TPanel
+            Left = 6
+            Top = 37
+            Width = 310
+            Height = 25
+            Align = alCustom
+            BevelOuter = bvNone
+            Caption = 'Panel1'
+            ShowCaption = False
+            TabOrder = 2
+            object CheckBox3: TCheckBox
+              AlignWithMargins = True
+              Left = 3
+              Top = 3
+              Width = 229
+              Height = 19
+              Align = alClient
+              Caption = #1087#1086' '#1090#1080#1087#1072#1084':'
+              TabOrder = 0
+              ExplicitWidth = 78
+            end
+            object Button5: TButton
+              Left = 235
+              Top = 0
+              Width = 75
+              Height = 25
+              Align = alRight
+              Caption = #1042#1099#1073#1088#1072#1090#1100'...'
+              TabOrder = 1
+              ExplicitLeft = 222
+            end
+          end
+          object Panel9: TPanel
+            Left = 6
+            Top = 66
+            Width = 310
+            Height = 25
+            Align = alCustom
+            BevelOuter = bvNone
+            Caption = 'Panel1'
+            ShowCaption = False
+            TabOrder = 3
+            object CheckBox4: TCheckBox
+              AlignWithMargins = True
+              Left = 3
+              Top = 3
+              Width = 229
+              Height = 19
+              Align = alClient
+              Caption = #1087#1086' '#1082#1086#1084#1087#1072#1085#1080#1103#1084':'
+              TabOrder = 0
+              ExplicitWidth = 110
+            end
+            object Button6: TButton
+              Left = 235
+              Top = 0
+              Width = 75
+              Height = 25
+              Align = alRight
+              Caption = #1042#1099#1073#1088#1072#1090#1100'...'
+              TabOrder = 1
+            end
           end
         end
       end
@@ -436,20 +478,21 @@ object RequestForm: TRequestForm
       object Button2: TButton
         AlignWithMargins = True
         Left = 4
-        Top = 453
+        Top = 413
         Width = 24
         Height = 25
         Margins.Left = 4
         Margins.Right = 4
-        Margins.Bottom = 60
+        Margins.Bottom = 100
         Align = alBottom
         Caption = '<<'
         TabOrder = 0
+        ExplicitLeft = 1
       end
       object Button3: TButton
         AlignWithMargins = True
         Left = 4
-        Top = 422
+        Top = 382
         Width = 24
         Height = 25
         Margins.Left = 4
@@ -457,6 +500,7 @@ object RequestForm: TRequestForm
         Align = alBottom
         Caption = '<'
         TabOrder = 1
+        ExplicitLeft = 1
       end
     end
   end
@@ -469,54 +513,78 @@ object RequestForm: TRequestForm
     BevelOuter = bvNone
     ShowCaption = False
     TabOrder = 1
-    ExplicitWidth = 390
     object GroupBox2: TGroupBox
       Left = 0
-      Top = 243
+      Top = 248
       Width = 385
-      Height = 295
+      Height = 290
       Align = alBottom
       Caption = ' '#1057#1087#1080#1089#1086#1082' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1074' '#1079#1072#1087#1088#1086#1089#1077' '
       TabOrder = 0
-      ExplicitWidth = 390
       object cxGrid1: TcxGrid
         AlignWithMargins = True
         Left = 8
         Top = 42
         Width = 369
-        Height = 245
+        Height = 240
         Margins.Left = 6
         Margins.Top = 2
         Margins.Right = 6
         Margins.Bottom = 6
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 374
+        ExplicitHeight = 245
         object cxGridDBTableView2: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
-          OptionsView.NoDataToDisplayInfoText = '<'#1044#1072#1085#1085#1099#1077' '#1085#1077' '#1085#1072#1081#1076#1077#1085#1099'>'
+          OptionsView.NoDataToDisplayInfoText = ' '
+          OptionsView.ColumnAutoWidth = True
           OptionsView.GroupByBox = False
           object cxGridDBTableView2Column1: TcxGridDBColumn
             Caption = #1053#1086#1084#1077#1088
+            FooterAlignmentHorz = taCenter
+            GroupSummaryAlignment = taCenter
+            HeaderAlignmentHorz = taCenter
+            HeaderAlignmentVert = vaCenter
+            HeaderGlyphAlignmentHorz = taCenter
             Width = 61
           end
           object cxGridDBTableView2Column2: TcxGridDBColumn
             Caption = #1058#1080#1087
+            FooterAlignmentHorz = taCenter
+            GroupSummaryAlignment = taCenter
+            HeaderAlignmentHorz = taCenter
+            HeaderAlignmentVert = vaCenter
+            HeaderGlyphAlignmentHorz = taCenter
             Width = 80
           end
           object cxGridDBTableView2Column3: TcxGridDBColumn
             Caption = #1044#1072#1090#1072' '#1087#1086#1083#1091#1095#1077#1085#1080#1103
+            FooterAlignmentHorz = taCenter
+            GroupSummaryAlignment = taCenter
+            HeaderAlignmentHorz = taCenter
+            HeaderAlignmentVert = vaCenter
+            HeaderGlyphAlignmentHorz = taCenter
             Width = 89
           end
           object cxGridDBTableView2Column5: TcxGridDBColumn
             Caption = #1050#1086#1087#1080#1103
+            FooterAlignmentHorz = taCenter
+            GroupSummaryAlignment = taCenter
+            HeaderAlignmentHorz = taCenter
+            HeaderAlignmentVert = vaCenter
+            HeaderGlyphAlignmentHorz = taCenter
             Width = 37
           end
           object cxGridDBTableView2Column6: TcxGridDBColumn
             Caption = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' '#1082#1086#1087#1080#1081
+            FooterAlignmentHorz = taCenter
+            GroupSummaryAlignment = taCenter
+            HeaderAlignmentHorz = taCenter
+            HeaderAlignmentVert = vaCenter
+            HeaderGlyphAlignmentHorz = taCenter
             Width = 99
           end
         end
@@ -536,12 +604,11 @@ object RequestForm: TRequestForm
         Caption = 'ToolBar1'
         Images = ImageList1
         TabOrder = 1
-        ExplicitWidth = 374
         object ToolButton2: TToolButton
           Left = 0
           Top = 0
           Caption = 'ToolButton2'
-          ImageIndex = 11
+          ImageIndex = 2
         end
         object ToolButton12: TToolButton
           Left = 23
@@ -557,24 +624,17 @@ object RequestForm: TRequestForm
           Caption = 'ToolButton1'
           ImageIndex = 8
         end
-        object ToolButton13: TToolButton
-          Left = 54
-          Top = 0
-          Caption = 'ToolButton13'
-          ImageIndex = 9
-        end
       end
     end
     object GroupBox3: TGroupBox
       Left = 0
       Top = 0
       Width = 385
-      Height = 235
+      Height = 240
       Align = alClient
       Caption = ' '#1057#1087#1080#1089#1086#1082' '#1079#1072#1087#1088#1086#1089#1086#1074' '
       TabOrder = 1
-      ExplicitWidth = 390
-      ExplicitHeight = 240
+      ExplicitHeight = 235
       object ToolBar2: TToolBar
         AlignWithMargins = True
         Left = 8
@@ -587,7 +647,7 @@ object RequestForm: TRequestForm
         Caption = 'ToolBar1'
         Images = ImageList1
         TabOrder = 0
-        ExplicitWidth = 374
+        Visible = False
         object ToolButton3: TToolButton
           Left = 0
           Top = 0
@@ -618,7 +678,7 @@ object RequestForm: TRequestForm
           Left = 77
           Top = 0
           Caption = 'ToolButton7'
-          ImageIndex = 10
+          ImageIndex = 4
         end
         object ToolButton8: TToolButton
           Left = 100
@@ -654,40 +714,65 @@ object RequestForm: TRequestForm
         Left = 8
         Top = 42
         Width = 369
-        Height = 185
+        Height = 190
         Margins.Left = 6
         Margins.Top = 2
         Margins.Right = 6
         Margins.Bottom = 6
         Align = alClient
         TabOrder = 1
-        ExplicitWidth = 374
-        ExplicitHeight = 190
+        ExplicitHeight = 185
         object cxGridDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
-          OptionsView.NoDataToDisplayInfoText = '<'#1044#1072#1085#1085#1099#1077' '#1085#1077' '#1085#1072#1081#1076#1077#1085#1099'>'
+          OptionsView.NoDataToDisplayInfoText = ' '
+          OptionsView.ColumnAutoWidth = True
           OptionsView.GroupByBox = False
           object cxGridDBTableView1Column1: TcxGridDBColumn
             Caption = #1053#1086#1084#1077#1088
+            FooterAlignmentHorz = taCenter
+            GroupSummaryAlignment = taCenter
+            HeaderAlignmentHorz = taCenter
+            HeaderAlignmentVert = vaCenter
+            HeaderGlyphAlignmentHorz = taCenter
             Width = 60
           end
           object cxGridDBTableView1Column2: TcxGridDBColumn
             Caption = #1057#1090#1072#1090#1091#1089
+            FooterAlignmentHorz = taCenter
+            GroupSummaryAlignment = taCenter
+            HeaderAlignmentHorz = taCenter
+            HeaderAlignmentVert = vaCenter
+            HeaderGlyphAlignmentHorz = taCenter
             Width = 69
           end
           object cxGridDBTableView1Column3: TcxGridDBColumn
             Caption = #1044#1072#1090#1072' '#1087#1086#1076#1072#1095#1080
+            FooterAlignmentHorz = taCenter
+            GroupSummaryAlignment = taCenter
+            HeaderAlignmentHorz = taCenter
+            HeaderAlignmentVert = vaCenter
+            HeaderGlyphAlignmentHorz = taCenter
             Width = 72
           end
           object cxGridDBTableView1Column4: TcxGridDBColumn
             Caption = #1044#1072#1090#1072' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103
+            FooterAlignmentHorz = taCenter
+            GroupSummaryAlignment = taCenter
+            HeaderAlignmentHorz = taCenter
+            HeaderAlignmentVert = vaCenter
+            HeaderGlyphAlignmentHorz = taCenter
             Width = 102
           end
           object cxGridDBTableView1Column5: TcxGridDBColumn
             Caption = #1048#1085#1080#1094#1080#1072#1090#1086#1088
+            FooterAlignmentHorz = taCenter
+            GroupSummaryAlignment = taCenter
+            HeaderAlignmentHorz = taCenter
+            HeaderAlignmentVert = vaCenter
+            HeaderGlyphAlignmentHorz = taCenter
             Width = 61
           end
         end
@@ -698,14 +783,13 @@ object RequestForm: TRequestForm
     end
     object cxSplitter2: TcxSplitter
       Left = 0
-      Top = 235
+      Top = 240
       Width = 385
       Height = 8
       HotZoneClassName = 'TcxSimpleStyle'
       AlignSplitter = salBottom
-      ExplicitLeft = 377
-      ExplicitTop = 0
-      ExplicitWidth = 243
+      Control = GroupBox2
+      ExplicitTop = 235
     end
   end
   object StatusBar1: TStatusBar
@@ -726,14 +810,13 @@ object RequestForm: TRequestForm
     Height = 538
     HotZoneClassName = 'TcxSimpleStyle'
     AlignSplitter = salRight
-    ExplicitLeft = 431
-    ExplicitTop = -16
+    Control = Panel4
   end
   object ImageList1: TImageList
     Left = 296
     Top = 296
     Bitmap = {
-      494C01010C001800A00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010C001800A80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
