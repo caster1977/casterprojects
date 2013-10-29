@@ -53,7 +53,6 @@ type
     cxGridDBTableView2Column3: TcxGridDBColumn;
     GroupBox5: TGroupBox;
     StatusBar1: TStatusBar;
-    Label2: TLabel;
     Panel1: TPanel;
     Button1: TButton;
     RadioButton1: TRadioButton;
@@ -65,7 +64,6 @@ type
     RadioButton2: TRadioButton;
     Panel3: TPanel;
     Label7: TLabel;
-    Label8: TLabel;
     DateTimePicker1: TDateTimePicker;
     DateTimePicker2: TDateTimePicker;
     cxGridDBTableView3Column1: TcxGridDBColumn;
@@ -73,24 +71,26 @@ type
     cxGridDBTableView3Column2: TcxGridDBColumn;
     cxGridDBTableView3Column4: TcxGridDBColumn;
     cxGridDBTableView3Column5: TcxGridDBColumn;
-    Panel7: TPanel;
-    ComboBox2: TComboBox;
-    ComboBox1: TComboBox;
     ToolButton12: TToolButton;
-    PageControl1: TPageControl;
-    TabSheet1: TTabSheet;
     GroupBox6: TGroupBox;
-    GroupBox7: TGroupBox;
-    PageControl2: TPageControl;
-    TabSheet2: TTabSheet;
-    TabSheet3: TTabSheet;
     Button2: TButton;
     Button3: TButton;
-    ToolButton13: TToolButton;
     cxSplitter1: TcxSplitter;
     cxSplitter2: TcxSplitter;
     cxGridDBTableView2Column5: TcxGridDBColumn;
     cxGridDBTableView2Column6: TcxGridDBColumn;
+    GroupBox7: TGroupBox;
+    CheckBox1: TCheckBox;
+    Panel7: TPanel;
+    CheckBox2: TCheckBox;
+    Button4: TButton;
+    Panel8: TPanel;
+    CheckBox3: TCheckBox;
+    Button5: TButton;
+    Label1: TLabel;
+    Panel9: TPanel;
+    CheckBox4: TCheckBox;
+    Button6: TButton;
     procedure FormCreate(Sender: TObject);
   end;
 
@@ -103,7 +103,7 @@ implementation
 
 procedure TRequestForm.FormCreate(Sender: TObject);
 begin
-  PageControl1.ActivePageIndex := 0;
+  //PageControl1.ActivePageIndex := 0;
 end;
 
 end.
