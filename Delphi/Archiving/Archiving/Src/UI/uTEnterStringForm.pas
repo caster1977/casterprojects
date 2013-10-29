@@ -32,7 +32,7 @@ type
   private
     function GetValue: string;
   public
-    constructor Create(const ACaption, ATitle: string; const AMaxLength: Integer; const ANumeric: Boolean);
+    constructor Create(const ACaption, ATitle: string; const AMaxLength: Integer; const ANumeric: Boolean); reintroduce;
     property Value: string read GetValue nodefault;
   end;
 

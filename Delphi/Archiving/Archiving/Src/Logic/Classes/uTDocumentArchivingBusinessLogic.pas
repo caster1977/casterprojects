@@ -635,7 +635,21 @@ begin
     Result := ABox.StickerPrinted;
     if not Result then
     begin
-      Result := PrintBoxSticker(ABox);
+      if Assigned(ABox.Documents) then
+      begin
+        if ABox.Documents.Count > 0 then
+        begin
+          Result := PrintBoxSticker(ABox);
+        end
+        else
+        begin
+          Result := True;
+        end;
+      end
+      else
+      begin
+        Result := True;
+      end;
     end;
     if Result then
     begin
@@ -944,9 +958,15 @@ begin
       Result := ArchiveDocumentItemClass.Create(Connection, -1);
       if Assigned(Result) then
       begin
-        Result.FromString(ABarcode);
-        Result.ArchivedByUser := CurrentUserId;
-        Result.ArchivingDate := Now;
+        if Result.FromString(ABarcode) then
+        begin
+          Result.ArchivedByUser := CurrentUserId;
+          Result.ArchivingDate := Now;
+        end
+        else
+        begin
+          Result := nil;
+        end;
       end;
     end;
   end;

@@ -79,7 +79,7 @@ begin
           else
           begin
             Step := 0;
-            DisplayInfoMessage('Документ с указанным штрих-кодом не найден в базе данных' + sLineBreak +
+            DisplayErrorMessage('Документ с указанным штрих-кодом не найден в базе данных' + sLineBreak +
               RsEnterBarcodeOfDocumentOrCommand);
           end;
         end;
