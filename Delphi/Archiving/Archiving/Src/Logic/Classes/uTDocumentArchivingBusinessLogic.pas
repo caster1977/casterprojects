@@ -96,11 +96,6 @@ type
     function GetBoxCapacity(const ABox: IArchiveBoxItem): Integer; overload;
 
     /// <summary>
-    /// Процедура отображения данных указанного "отображаемого" объекта
-    /// </summary>
-    procedure Show(const AParentControl: TCustomControl; const AShowableItem: IShowable);
-
-    /// <summary>
     /// Процедура, выполняющая вывод данных о текущем коробе и последнем документе в текущем коробе
     /// </summary>
     procedure UpdateCurrentInfo;
@@ -688,7 +683,7 @@ begin
   begin
     if Supports(CurrentBox, IShowable, showable) then
     begin
-      Show(CurrentBoxInfoControl, showable);
+      ShowShowableItem(CurrentBoxInfoControl, showable);
     end;
 
     if Assigned(CurrentBox.Documents) then
@@ -697,89 +692,9 @@ begin
       begin
         if Supports(CurrentBox.Documents[CurrentBox.Documents.Count - 1], IShowable, showable) then
         begin
-          Show(LastDocumentInfoControl, showable);
+          ShowShowableItem(LastDocumentInfoControl, showable);
         end;
       end;
-    end;
-  end;
-end;
-
-procedure TDocumentArchivingBusinessLogic.Show(const AParentControl: TCustomControl; const AShowableItem: IShowable);
-var
-  l1, l2: TLabel;
-  j: Integer;
-  c: TControl;
-  old_height: Integer;
-  wc: TWinControl;
-begin
-  if (not Assigned(AParentControl)) or (not Assigned(AShowableItem)) then
-  begin
-    Exit;
-  end;
-
-  EmptyControl(AParentControl);
-  old_height := AParentControl.Height;
-
-  if Assigned(AShowableItem.ShowableFields) then
-  begin
-    for j := 0 to AShowableItem.ShowableFields.Count - 1 do
-    begin
-      c := GetControlByName('lblDocument' + IShowableField(AShowableItem.ShowableFields[j]).Name + 'Caption',
-        AParentControl);
-      if Assigned(c) then
-      begin
-        l1 := c as TLabel;
-      end
-      else
-      begin
-        l1 := TLabel.Create(AParentControl);
-      end;
-      if j = 0 then
-      begin
-        AParentControl.Height := Integer(AParentControl is TGroupBox) * 10 +
-{$IFDEF VER150}3{$ELSE}l1.Margins.Top{$ENDIF} +
-{$IFDEF VER150}3{$ELSE}l1.Margins.Bottom{$ENDIF} + AShowableItem.ShowableFields.Count * (17 +
-{$IFDEF VER150}3{$ELSE}l1.Margins.Top{$ENDIF});
-      end;
-      l1.Name := 'lblDocument' + IShowableField(AShowableItem.ShowableFields[j]).Name + 'Caption';
-      l1.Parent := AParentControl;
-      l1.Caption := IShowableField(AShowableItem.ShowableFields[j]).Caption;
-      l1.Left := 8;
-      l1.Top := Integer(AParentControl is TGroupBox) * 10 +
-{$IFDEF VER150}3{$ELSE}AParentControl.Margins.Top{$ENDIF} +
-{$IFDEF VER150}3{$ELSE}AParentControl.Margins.Bottom{$ENDIF} + j * (17 +
-{$IFDEF VER150}3{$ELSE}AParentControl.Margins.Top{$ENDIF});
-
-      c := GetControlByName('lblDocument' + IShowableField(AShowableItem.ShowableFields[j]).Name, AParentControl);
-      if Assigned(c) then
-      begin
-        l2 := c as TLabel;
-      end
-      else
-      begin
-        l2 := TLabel.Create(AParentControl);
-      end;
-      if j = 0 then
-      begin
-        AParentControl.Height := Integer(AParentControl is TGroupBox) * 10 +
-{$IFDEF VER150}3{$ELSE}l2.Margins.Top{$ENDIF} +
-{$IFDEF VER150}3{$ELSE}l2.Margins.Bottom{$ENDIF} + AShowableItem.ShowableFields.Count * (17 +
-{$IFDEF VER150}3{$ELSE}l2.Margins.Top{$ENDIF});
-        wc := AParentControl.Parent;
-        while Assigned(wc) do
-        begin
-          wc.Height := wc.Height - (old_height - AParentControl.Height);
-          wc := wc.Parent;
-        end;
-      end;
-      l2.Name := 'lblDocument' + IShowableField(AShowableItem.ShowableFields[j]).Name;
-      l2.Caption := IShowableField(AShowableItem.ShowableFields[j]).Value;
-      l2.Parent := AParentControl;
-      l2.Left := AParentControl.ClientWidth div 2 + 8;
-      l2.Top := Integer(AParentControl is TGroupBox) * 10 +
-{$IFDEF VER150}3{$ELSE}AParentControl.Margins.Top{$ENDIF} +
-{$IFDEF VER150}3{$ELSE}AParentControl.Margins.Bottom{$ENDIF} + j * (17 +
-{$IFDEF VER150}3{$ELSE}AParentControl.Margins.Top{$ENDIF});
     end;
   end;
 end;

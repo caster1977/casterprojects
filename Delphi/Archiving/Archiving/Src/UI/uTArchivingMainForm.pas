@@ -3,28 +3,28 @@ unit uTArchivingMainForm;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
-  System.Variants,
-  System.Classes,
-  Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.ExtCtrls,
-  Vcl.StdCtrls,
-  Data.DBXMSSQL,
-  System.Actions,
-  Vcl.ActnList,
-  Data.Win.ADODB,
-  Data.DB,
-  Data.SqlExpr,
+  Windows,
+  Messages,
+  SysUtils,
+  Variants,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  ExtCtrls,
+  StdCtrls,
+  DBXMSSQL,
+  Actions,
+  ActnList,
+  ADODB,
+  DB,
+  SqlExpr,
   uIDocumentArchivingBusinessLogic,
   uTMessageType,
-  Vcl.ImgList,
-  Vcl.ComCtrls,
-  Vcl.ToolWin,
+  ImgList,
+  ComCtrls,
+  ToolWin,
   frxClass,
   frxBarcode;
 
@@ -223,12 +223,8 @@ procedure TArchivingMainForm.edBarcodeKeyDown(Sender: TObject; var Key: Word; Sh
 begin
   if Key = VK_RETURN then
   begin
-    try
-      Logic.ProcessString(Barcode);
-      Barcode := EmptyStr;
-    finally
-      Logic.Connection.Connected := False;
-    end;
+    Logic.ProcessString(Barcode);
+    Barcode := EmptyStr;
     Key := 0;
   end;
 end;

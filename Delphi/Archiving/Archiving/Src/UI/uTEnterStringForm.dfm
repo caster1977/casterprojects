@@ -25,7 +25,6 @@ object EnterStringForm: TEnterStringForm
     BevelOuter = bvNone
     ShowCaption = False
     TabOrder = 0
-    ExplicitWidth = 357
     DesignSize = (
       387
       31)
@@ -40,7 +39,6 @@ object EnterStringForm: TEnterStringForm
       Cancel = True
       ModalResult = 2
       TabOrder = 0
-      ExplicitLeft = 282
     end
     object btnOk: TButton
       Left = 231
@@ -52,7 +50,6 @@ object EnterStringForm: TEnterStringForm
       Anchors = [akTop, akRight]
       ModalResult = 1
       TabOrder = 1
-      ExplicitLeft = 201
     end
   end
   object gbEnterString: TGroupBox
@@ -62,7 +59,6 @@ object EnterStringForm: TEnterStringForm
     Height = 51
     Align = alClient
     TabOrder = 1
-    ExplicitWidth = 357
     DesignSize = (
       387
       51)
@@ -73,7 +69,6 @@ object EnterStringForm: TEnterStringForm
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
-      ExplicitWidth = 338
     end
   end
   object ActionList1: TActionList
