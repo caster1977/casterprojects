@@ -141,6 +141,7 @@ type
     procedure Load(const ADataSet: TDataSet); override; {$IFNDEF VER150} final; {$ENDIF}
     function Delete(const AConnection: TCustomConnection = nil): Boolean; override;
     procedure Assign(const AValue: ILoadableItem); override; {$IFNDEF VER150} final; {$ENDIF}
+    function FromString(const AValue: string): Boolean;
   end;
 
 implementation
@@ -501,6 +502,59 @@ begin
   if Result then
   begin
     Result := inherited Delete(AConnection);
+  end;
+end;
+
+function TArchiveBoxItem.FromString(const AValue: string): Boolean;
+var
+  s: string;
+  ds: TDataSet;
+  i: Integer;
+begin
+  Result := False;
+  s := Trim(AValue);
+  if Length(s) = 12 then
+  begin
+    for i := 1 to Length(s) do
+    begin
+{$IFDEF VER150}
+      case s[i] of
+        '0' .. '9':
+          begin
+          end;
+      else
+        begin
+          Exit;
+        end;
+      end;
+{$ELSE}
+      if not CharInSet(s[i], ['0' .. '9']) then
+      begin
+        Exit;
+      end;
+{$ENDIF}
+    end;
+    if Assigned(Connection) then
+    begin
+      ds := GetQuery(Connection);
+      if Assigned(ds) then
+      begin
+        try
+          SetSQLForQuery(ds, Format('Archiving_sel_ArchiveBoxByBarcode ''%s''', [s]), True);
+          try
+            if not ds.Eof then
+            begin
+              Load(ds);
+              Result := True;
+            end;
+          finally
+            ds.Close;
+          end;
+        finally
+          FreeAndNil(ds);
+        end;
+      end;
+    end;
   end;
 end;
 

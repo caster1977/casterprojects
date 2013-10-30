@@ -137,6 +137,21 @@ type
     /// Список документов в коробе
     /// </summary>
     property Documents: IArchiveDocumentList read GetDocuments;
+
+    /// <summary>
+    /// Функция инициализации полей объекта значениями, содержащимися в
+    /// входящей строке
+    /// </summary>
+    /// <param name="AValue">
+    /// Строка, содержащая значения для инициализации полей объекта
+    /// </param>
+    /// <returns>
+    /// Удалось ли выполнить инициализацию
+    /// </returns>
+    /// <remarks>
+    /// Работает по принципу парсера
+    /// </remarks>
+    function FromString(const AValue: string): Boolean;
   end;
 
 implementation
