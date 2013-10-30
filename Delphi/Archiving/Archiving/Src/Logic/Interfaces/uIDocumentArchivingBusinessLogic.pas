@@ -44,12 +44,6 @@ type
     /// </param>
     procedure SetLastDocumentInfoControl(const AValue: TCustomControl);
 
-    function GetCurrentBox: IArchiveBoxItem;
-    /// <summary>
-    /// Текущий короб
-    /// </summary>
-    property CurrentBox: IArchiveBoxItem read GetCurrentBox;
-
     /// <summary>
     /// Процедура удаления последнего документа из текущего короба
     /// </summary>

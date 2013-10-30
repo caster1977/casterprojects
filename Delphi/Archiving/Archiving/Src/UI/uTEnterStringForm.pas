@@ -13,7 +13,8 @@ uses
   Dialogs,
   StdCtrls,
   ExtCtrls,
-  ActnList;
+  ActnList,
+  Actions;
 
 type
   TEnterStringForm = class(TForm)

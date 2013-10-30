@@ -12,6 +12,9 @@
         <Projects Include="Archiving\Src\Archiving.dproj">
             <Dependencies>ArchivingCommons\Src\ArchivingCommons.dproj</Dependencies>
         </Projects>
+        <Projects Include="AcceptanceOfBoxesToArchive\Src\AcceptanceOfBoxesToArchive.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -47,14 +50,23 @@
     <Target Name="Archiving:Make" DependsOnTargets="ArchivingCommons:Make">
         <MSBuild Projects="Archiving\Src\Archiving.dproj" Targets="Make"/>
     </Target>
+    <Target Name="AcceptanceOfBoxesToArchive">
+        <MSBuild Projects="AcceptanceOfBoxesToArchive\Src\AcceptanceOfBoxesToArchive.dproj"/>
+    </Target>
+    <Target Name="AcceptanceOfBoxesToArchive:Clean">
+        <MSBuild Projects="AcceptanceOfBoxesToArchive\Src\AcceptanceOfBoxesToArchive.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="AcceptanceOfBoxesToArchive:Make">
+        <MSBuild Projects="AcceptanceOfBoxesToArchive\Src\AcceptanceOfBoxesToArchive.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="ArchivingCommons;ArchivingBoxCapacityConfig;Archiving"/>
+        <CallTarget Targets="ArchivingCommons;ArchivingBoxCapacityConfig;Archiving;AcceptanceOfBoxesToArchive"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ArchivingCommons:Clean;ArchivingBoxCapacityConfig:Clean;Archiving:Clean"/>
+        <CallTarget Targets="ArchivingCommons:Clean;ArchivingBoxCapacityConfig:Clean;Archiving:Clean;AcceptanceOfBoxesToArchive:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ArchivingCommons:Make;ArchivingBoxCapacityConfig:Make;Archiving:Make"/>
+        <CallTarget Targets="ArchivingCommons:Make;ArchivingBoxCapacityConfig:Make;Archiving:Make;AcceptanceOfBoxesToArchive:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
