@@ -3,18 +3,17 @@ unit uTEnterStringForm;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.Variants,
-  System.Classes,
-  Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.StdCtrls,
-  Vcl.ExtCtrls,
-  System.Actions,
-  Vcl.ActnList;
+  Windows,
+  Messages,
+  Variants,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  StdCtrls,
+  ExtCtrls,
+  ActnList;
 
 type
   TEnterStringForm = class(TForm)
