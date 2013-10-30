@@ -99,6 +99,11 @@ procedure SetNumbersOnly(const Handle: HWND);
 /// </summary>
 procedure ShowShowableItem(const AParentControl: TCustomControl; const AShowableItem: IShowable);
 
+/// <summary>
+/// Функция проверки строки на соответсвие штрих-коду короба
+/// </summary>
+function IsArchiveBoxBarcode(const ABarcode: string): Boolean;
+
 implementation
 
 uses
@@ -109,6 +114,10 @@ uses
   uTShipmentBSOWithActList,
   uTDamagedBSOList,
   uIShowableField;
+
+const
+  LABEL_PREFIX = 'lblShowInfo';
+  CAPTION_SUFFIX = 'Caption';
 
 function GetControlByName(const AName: string; const AParent: TCustomControl): TControl;
 var
@@ -291,7 +300,7 @@ begin
   begin
     for j := 0 to AShowableItem.ShowableFields.Count - 1 do
     begin
-      c := GetControlByName('lblShowInfo' + IShowableField(AShowableItem.ShowableFields[j]).Name + 'Caption',
+      c := GetControlByName(LABEL_PREFIX + IShowableField(AShowableItem.ShowableFields[j]).Name + CAPTION_SUFFIX,
         AParentControl);
       if Assigned(c) then
       begin
@@ -308,7 +317,7 @@ begin
 {$IFDEF VER150}3{$ELSE}l1.Margins.Bottom{$ENDIF} + AShowableItem.ShowableFields.Count * (17 +
 {$IFDEF VER150}3{$ELSE}l1.Margins.Top{$ENDIF});
       end;
-      l1.Name := 'lblShowInfo' + IShowableField(AShowableItem.ShowableFields[j]).Name + 'Caption';
+      l1.Name := LABEL_PREFIX + IShowableField(AShowableItem.ShowableFields[j]).Name + CAPTION_SUFFIX;
       l1.Parent := AParentControl;
       l1.Caption := IShowableField(AShowableItem.ShowableFields[j]).Caption;
       l1.Left := 8;
@@ -317,7 +326,7 @@ begin
 {$IFDEF VER150}3{$ELSE}AParentControl.Margins.Bottom{$ENDIF} + j * (17 +
 {$IFDEF VER150}3{$ELSE}AParentControl.Margins.Top{$ENDIF});
 
-      c := GetControlByName('lblShowInfo' + IShowableField(AShowableItem.ShowableFields[j]).Name, AParentControl);
+      c := GetControlByName(LABEL_PREFIX + IShowableField(AShowableItem.ShowableFields[j]).Name, AParentControl);
       if Assigned(c) then
       begin
         l2 := c as TLabel;
@@ -339,7 +348,7 @@ begin
           wc := wc.Parent;
         end;
       end;
-      l2.Name := 'lblShowInfo' + IShowableField(AShowableItem.ShowableFields[j]).Name;
+      l2.Name := LABEL_PREFIX + IShowableField(AShowableItem.ShowableFields[j]).Name;
       l2.Caption := IShowableField(AShowableItem.ShowableFields[j]).Value;
       l2.Parent := AParentControl;
       l2.Left := AParentControl.ClientWidth div 2 + 8;
@@ -349,6 +358,14 @@ begin
 {$IFDEF VER150}3{$ELSE}AParentControl.Margins.Top{$ENDIF});
     end;
   end;
+end;
+
+function IsArchiveBoxBarcode(const ABarcode: string): Boolean;
+var
+  s: string;
+begin
+  s := Trim(ABarcode);
+  Result := (Length(s) = 12) and IsNumericString(s);
 end;
 
 end.

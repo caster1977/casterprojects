@@ -70,31 +70,31 @@ uses
 procedure TAcceptanceOfBoxesToArchiveMainForm.DisplayMessage(const AType: TMessageType; const AText: string);
 var
   s: string;
-  c: TColor;
+  C: TColor;
 begin
   case AType of
     mtInfo:
       begin
         s := Trim(AText);
-        c := clBlack;
+        C := clBlack;
       end;
     mtSuccess:
       begin
         s := Trim(AText);
-        c := clGreen;
+        C := clGreen;
       end;
     mtError:
       begin
         s := Trim(AText);
-        c := clRed;
+        C := clRed;
       end;
   else
     begin
       s := EmptyStr;
-      c := clBlack;
+      C := clBlack;
     end;
   end;
-  lblHint.Font.Color := c;
+  lblHint.Font.color := C;
   lblHint.Caption := s;
 end;
 
@@ -107,7 +107,7 @@ function TAcceptanceOfBoxesToArchiveMainForm.GetLogic: IAcceptanceOfBoxesToArchi
 begin
   if not Assigned(FLogic) then
   begin
-    FLogic := TAcceptanceOfBoxesToArchiveBusinessLogic.Create(ADOConnection, 222, DisplayMessage);
+    FLogic := TAcceptanceOfBoxesToArchiveBusinessLogic.Create(ADOConnection, DisplayMessage);
     if Assigned(FLogic) then
     begin
       FLogic.SetLastBoxInfoControl(gbLastBox);

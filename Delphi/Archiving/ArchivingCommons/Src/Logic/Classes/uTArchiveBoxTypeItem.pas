@@ -58,6 +58,11 @@ implementation
 uses
   SysUtils;
 
+const
+  FIELD_NAME = 'Name';
+  FIELD_CODE = 'Code';
+  FIELD_CAPACITY = 'Capacity';
+
 procedure TArchiveBoxTypeItem.Assign(const AValue: ILoadableItem);
 var
   a: IArchiveBoxTypeItem;
@@ -105,9 +110,9 @@ begin
   inherited;
   if Assigned(ADataSet) then
   begin
-    FName := ADataSet.FieldByName('Name').AsString;
-    FCode := ADataSet.FieldByName('Code').AsString;
-    FCapacity := ADataSet.FieldByName('Capacity').AsInteger;
+    FName := ADataSet.FieldByName(FIELD_NAME).AsString;
+    FCode := ADataSet.FieldByName(FIELD_CODE).AsString;
+    FCapacity := ADataSet.FieldByName(FIELD_CAPACITY).AsInteger;
   end;
 end;
 

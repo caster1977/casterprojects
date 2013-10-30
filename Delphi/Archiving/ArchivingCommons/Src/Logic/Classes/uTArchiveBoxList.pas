@@ -10,11 +10,8 @@ uses
 
 type
   TArchiveBoxList = class {$IFNDEF VER150} sealed {$ENDIF}(TLoadableList, IArchiveBoxList)
-    // private
-    // function GetItem(const AIndex: Integer): IArchiveBoxItem;
   public
     function GetItemById(const AId: Integer): IArchiveBoxItem;
-    // property Item[const AIndex: Integer]: IArchiveBoxItem read GetItem; default;
   public
     constructor Create(const AConnection: TCustomConnection); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
@@ -52,20 +49,5 @@ begin
   inherited;
   ItemClass := TArchiveBoxItem;
 end;
-
-// function TArchiveBoxList.GetItem(const AIndex: Integer): IArchiveBoxItem;
-// begin
-// Result := nil;
-// if AIndex > -1 then
-// begin
-// if Assigned(Items) then
-// begin
-// if Count > AIndex then
-// begin
-// Result := Items[AIndex] as IArchiveBoxItem;
-// end;
-// end;
-// end;
-// end;
 
 end.

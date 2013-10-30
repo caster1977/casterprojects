@@ -4,13 +4,7 @@ interface
 
 uses
   Controls,
-  uICustomBusinessLogic,
-  uIArchiveBoxItem,
-  uIShowable,
-  uIArchiveDocumentItem,
-  uICustomBSOItem,
-  uTDocumentArchivingBarcodeType,
-  uIArchiveDocumentList;
+  uICustomBusinessLogic;
 
 type
   /// <summary>
