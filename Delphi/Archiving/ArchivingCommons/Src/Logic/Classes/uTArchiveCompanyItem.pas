@@ -33,11 +33,18 @@ type
     procedure Assign(const AValue: ILoadableItem); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
+const
+  SP_ARCHIVING_SEL_ARCHIVE_COMPANY = 'Archiving_sel_ArchiveCompany';
+
 implementation
 
 uses
   SysUtils,
   uArchivingCommonRoutines;
+
+const
+  FIELD_NAME = 'Name';
+  FIELD_CODE = 'Code';
 
 function TArchiveCompanyItem.GetName: string;
 begin
@@ -70,7 +77,7 @@ end;
 
 function TArchiveCompanyItem.GetLoadSQL: string;
 begin
-  Result := Format('Archiving_sel_ArchiveCompany %d', [Id]);
+  Result := Format(SP_ARCHIVING_SEL_ARCHIVE_COMPANY + ' %d', [Id]);
 end;
 
 function TArchiveCompanyItem.GetDeleteSQL: string;
@@ -83,8 +90,8 @@ begin
   inherited;
   if Assigned(ADataSet) then
   begin
-    FName := ADataSet.FieldByName('Name').AsString;
-    FCode := ADataSet.FieldByName('Code').AsString;
+    FName := ADataSet.FieldByName(FIELD_NAME).AsString;
+    FCode := ADataSet.FieldByName(FIELD_CODE).AsString;
   end;
 end;
 

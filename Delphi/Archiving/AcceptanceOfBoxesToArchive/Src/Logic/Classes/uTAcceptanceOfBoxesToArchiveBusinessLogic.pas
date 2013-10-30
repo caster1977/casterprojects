@@ -5,9 +5,8 @@ interface
 uses
   uIArchiveBoxItem,
   uTCustomBusinessLogic,
-  uIShowable,
-  Controls,
   DB,
+  Controls,
   uTOnDisplayMessage,
   uIAcceptanceOfBoxesToArchiveBusinessLogic,
   uTDocumentArchivingBarcodeType;
@@ -29,8 +28,6 @@ type
     /// </summary>
     procedure UpdateInfo;
 
-    function IsArchiveBoxBarcode(const ABarcode: string): Boolean;
-  private
     /// <summary>
     /// Функция анализа введённого штрих-кода
     /// </summary>
@@ -52,9 +49,9 @@ type
     /// Объект короба
     /// </returns>
     function GetBoxItemByBarcode(const ABarcode: string): IArchiveBoxItem;
+
   private
     FLastBox: IArchiveBoxItem;
-  protected
     function GetLastBox: IArchiveBoxItem;
     procedure SetLastBox(const AValue: IArchiveBoxItem);
   public
@@ -67,23 +64,15 @@ type
     FLastBoxInfoControl: TCustomControl;
     function GetLastBoxInfoControl: TCustomControl;
     procedure SetLastBoxInfoControl(const AValue: TCustomControl);
-  protected
+  public
     /// <summary>
     /// Контрол, в который будет выводится информация о последнем приянтом в архив коробе
     /// </summary>
-    property LastBoxInfoControl: TCustomControl read GetLastBoxInfoControl write SetLastBoxInfoControl nodefault;
-
-  private
-    FCurrentUserId: Integer;
-    function GetCurrentUserId: Integer;
-  protected
-    /// <summary>
-    /// Идентификатор текущего пользователя
-    /// </summary>
-    property CurrentUserId: Integer read GetCurrentUserId nodefault;
+    property LastBoxInfoControl: TCustomControl read GetLastBoxInfoControl
+      write SetLastBoxInfoControl nodefault;
 
   public
-    constructor Create(const AConnection: TCustomConnection; const ACurrentUserId: Integer;
+    constructor Create(const AConnection: TCustomConnection;
       const AOnDisplayMessage: TOnDisplayMessage = nil); reintroduce; virtual;
     procedure ProcessString(const AString: string);
   end;
@@ -94,12 +83,9 @@ resourcestring
 implementation
 
 uses
-  StdCtrls,
+  uIShowable,
   SysUtils,
-  Windows,
-  Forms,
   uArchivingCommonRoutines,
-  uIShowableField,
   uTArchiveBoxItem;
 
 function TAcceptanceOfBoxesToArchiveBusinessLogic.GetLastBox: IArchiveBoxItem;
@@ -112,11 +98,6 @@ begin
   Result := FLastBoxInfoControl;
 end;
 
-function TAcceptanceOfBoxesToArchiveBusinessLogic.GetCurrentUserId: Integer;
-begin
-  Result := FCurrentUserId;
-end;
-
 procedure TAcceptanceOfBoxesToArchiveBusinessLogic.SetLastBox(const AValue: IArchiveBoxItem);
 begin
   if FLastBox <> AValue then
@@ -125,7 +106,8 @@ begin
   end;
 end;
 
-procedure TAcceptanceOfBoxesToArchiveBusinessLogic.SetLastBoxInfoControl(const AValue: TCustomControl);
+procedure TAcceptanceOfBoxesToArchiveBusinessLogic.SetLastBoxInfoControl
+  (const AValue: TCustomControl);
 begin
   if FLastBoxInfoControl <> AValue then
   begin
@@ -133,7 +115,8 @@ begin
   end;
 end;
 
-function TAcceptanceOfBoxesToArchiveBusinessLogic.AnalizeBarcode(const ABarcode: string): TDocumentArchivingBarcodeType;
+function TAcceptanceOfBoxesToArchiveBusinessLogic.AnalizeBarcode(const ABarcode: string)
+  : TDocumentArchivingBarcodeType;
 var
   s: string;
 begin
@@ -165,19 +148,10 @@ begin
 end;
 
 constructor TAcceptanceOfBoxesToArchiveBusinessLogic.Create(const AConnection: TCustomConnection;
-  const ACurrentUserId: Integer; const AOnDisplayMessage: TOnDisplayMessage);
+  const AOnDisplayMessage: TOnDisplayMessage);
 begin
   inherited Create(AConnection, AOnDisplayMessage);
-  FCurrentUserId := ACurrentUserId;
   DisplayInfoMessage(RsEnterBoxBarcode);
-end;
-
-function TAcceptanceOfBoxesToArchiveBusinessLogic.IsArchiveBoxBarcode(const ABarcode: string): Boolean;
-var
-  s: string;
-begin
-  s := Trim(ABarcode);
-  Result := (Length(s) = 12) and IsNumericString(s);
 end;
 
 procedure TAcceptanceOfBoxesToArchiveBusinessLogic.ProcessString(const AString: string);
@@ -200,23 +174,26 @@ begin
           end
           else
           begin
-            DisplayErrorMessage('Не удалось принять короб в архив' + sLineBreak + RsEnterBoxBarcode);
+            DisplayErrorMessage('Не удалось принять короб в архив' + sLineBreak +
+              RsEnterBoxBarcode);
           end;
         end
         else
         begin
-          DisplayErrorMessage('Данный короб уже был принят в архив ранее' + sLineBreak + RsEnterBoxBarcode);
+          DisplayErrorMessage('Данный короб уже был принят в архив ранее' + sLineBreak +
+            RsEnterBoxBarcode);
         end;
       end
       else
       begin
-        DisplayErrorMessage('Короб с указанным штрих-кодом не подготовлен для сдачи в архив' + sLineBreak +
-          RsEnterBoxBarcode);
+        DisplayErrorMessage('Короб с указанным штрих-кодом не подготовлен для сдачи в архив' +
+          sLineBreak + RsEnterBoxBarcode);
       end;
     end
     else
     begin
-      DisplayErrorMessage('Не удалось найти данные по коробу с указанным штрих-кодом' + sLineBreak + RsEnterBoxBarcode);
+      DisplayErrorMessage('Не удалось найти данные по коробу с указанным штрих-кодом' + sLineBreak +
+        RsEnterBoxBarcode);
     end;
   end
   else
@@ -227,7 +204,8 @@ begin
   UpdateInfo;
 end;
 
-function TAcceptanceOfBoxesToArchiveBusinessLogic.GetBoxItemByBarcode(const ABarcode: string): IArchiveBoxItem;
+function TAcceptanceOfBoxesToArchiveBusinessLogic.GetBoxItemByBarcode(const ABarcode: string)
+  : IArchiveBoxItem;
 begin
   Result := nil;
   if IsArchiveBoxBarcode(ABarcode) then

@@ -144,6 +144,12 @@ type
     function FromString(const AValue: string): Boolean;
   end;
 
+const
+  SP_ARCHIVING_SEL_ARCHIVE_BOX = 'Archiving_sel_ArchiveBox';
+  SP_ARCHIVING_DEL_ARCHIVE_BOX = 'Archiving_del_ArchiveBox';
+  SP_ARCHIVING_UPD_ARCHIVE_BOX = 'Archiving_upd_ArchiveBox';
+  SP_ARCHIVING_SEL_ARCHIVE_BOX_BY_BARCODE = 'Archiving_sel_ArchiveBoxByBarcode';
+
 implementation
 
 uses
@@ -153,6 +159,36 @@ uses
   uIShowableField,
   uTShowableField,
   StrUtils;
+
+const
+  BOX_BARCODE_FORMAT = '%.2d%.2d%s%.6d';
+  DATE_TIME_FORMAT = 'yyyy-mm-dd hh:nn:ss';
+
+  LABEL_BARCODE = 'Barcode';
+  LABEL_DOCUMENT_COUNT = 'DocumentCount';
+
+  FIELD_CREATION_DATE = 'CreationDate';
+  FIELD_CLOSED = 'Closed';
+  FIELD_CLOSURE_DATE = 'ClosureDate';
+  FIELD_ARCHIVED = 'Archived';
+  FIELD_ARCHIVING_DATE = 'ArchivingDate';
+  FIELD_USER_ID = 'UserId';
+  FIELD_COMPANY_ID = 'CompanyId';
+  FIELD_COMPANY_NAME = 'CompanyName';
+  FIELD_TYPE_ID = 'TypeId';
+  FIELD_TYPE_NAME = 'TypeName';
+  FIELD_YEAR = 'Year';
+  FIELD_NUMBER = 'Number';
+  FIELD_REGISTRY_PRINTED = 'RegistryPrinted';
+  FIELD_STICKER_PRINTED = 'StickerPrinted';
+
+resourcestring
+  RsCompany = 'Компания:';
+  RsTypeName = 'Тип документов:';
+  RsYear = 'Год:';
+  RsNumber = 'Номер:';
+  RsBarcode = 'Штрих-код:';
+  RsDocumentCount = 'Количество документов:';
 
 function TArchiveBoxItem.GetArchived: Boolean;
 begin
@@ -169,7 +205,7 @@ var
   s: string;
 begin
   Result := EmptyStr;
-  s := Format('%.2d%.2d%s%.6d', [CompanyId, TypeId, RightStr(IntToStr(Year), 2), Number]);
+  s := Format(BOX_BARCODE_FORMAT, [CompanyId, TypeId, RightStr(IntToStr(Year), 2), Number]);
   if Length(s) = 12 then
   begin
     Result := s;
@@ -377,33 +413,34 @@ end;
 
 procedure TArchiveBoxItem.FillShowableFieldsList;
 begin
-  AddShowableField('Компания:', 'CompanyName', CompanyName);
-  AddShowableField('Тип документов:', 'TypeName', TypeName);
-  AddShowableField('Год:', 'Year', IfThen(Year <> -1, IntToStr(Year)));
-  AddShowableField('Номер:', 'Number', IfThen(Number <> -1, IntToStr(Number)));
-  AddShowableField('Штрих-код:', 'Barcode', Barcode);
+  AddShowableField(RsCompany, FIELD_COMPANY_NAME, CompanyName);
+  AddShowableField(RsTypeName, FIELD_TYPE_NAME, TypeName);
+  AddShowableField(RsYear, FIELD_YEAR, IfThen(Year <> -1, IntToStr(Year)));
+  AddShowableField(RsNumber, FIELD_NUMBER, IfThen(Number <> -1, IntToStr(Number)));
+  AddShowableField(RsBarcode, LABEL_BARCODE, Barcode);
   if Assigned(Documents) then
   begin
-    AddShowableField('Количество документов:', 'DocumentsCount', IntToStr(Documents.Count));
+    AddShowableField(RsDocumentCount, LABEL_DOCUMENT_COUNT, IntToStr(Documents.Count));
   end;
 end;
 
 function TArchiveBoxItem.GetLoadSQL: string;
 begin
-  Result := Format('Archiving_sel_ArchiveBox %d', [Id]);
+  Result := Format(SP_ARCHIVING_SEL_ARCHIVE_BOX + ' %d', [Id]);
 end;
 
 function TArchiveBoxItem.GetDeleteSQL: string;
 begin
-  Result := Format('Archiving_del_ArchiveBox %d', [Id]);
+  Result := Format(SP_ARCHIVING_DEL_ARCHIVE_BOX + ' %d', [Id]);
 end;
 
 function TArchiveBoxItem.GetSaveSQL: string;
 begin
-  Result := Format('Archiving_upd_ArchiveBox %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, ''%s'', %d, ''%s'', %d, %d',
-    [Id, TypeId, CompanyId, UserId, Barcode, Year, Number, FormatDateTime('yyyy-mm-dd hh:nn:ss', CreationDate),
-    Integer(Closed), FormatDateTime('yyyy-mm-dd hh:nn:ss', ClosureDate), Integer(Archived),
-    FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate), Integer(StickerPrinted), Integer(RegistryPrinted)]);
+  Result := Format(SP_ARCHIVING_UPD_ARCHIVE_BOX +
+    ' %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, ''%s'', %d, ''%s'', %d, %d', [Id, TypeId, CompanyId, UserId, Barcode,
+    Year, Number, FormatDateTime(DATE_TIME_FORMAT, CreationDate), Integer(Closed),
+    FormatDateTime(DATE_TIME_FORMAT, ClosureDate), Integer(Archived), FormatDateTime(DATE_TIME_FORMAT,
+    ArchivingDate), Integer(StickerPrinted), Integer(RegistryPrinted)]);
 end;
 
 procedure TArchiveBoxItem.Load(const ADataSet: TDataSet);
@@ -411,20 +448,20 @@ begin
   inherited;
   if Assigned(ADataSet) then
   begin
-    CreationDate := ADataSet.FieldByName('CreationDate').AsDateTime;
-    Closed := ADataSet.FieldByName('Closed').AsBoolean;
-    ClosureDate := ADataSet.FieldByName('ClosureDate').AsDateTime;
-    Archived := ADataSet.FieldByName('Archived').AsBoolean;
-    ArchivingDate := ADataSet.FieldByName('ArchivingDate').AsDateTime;
-    UserId := ADataSet.FieldByName('UserId').AsInteger;
-    CompanyId := ADataSet.FieldByName('CompanyId').AsInteger;
-    CompanyName := ADataSet.FieldByName('CompanyName').AsString;
-    TypeId := ADataSet.FieldByName('TypeId').AsInteger;
-    TypeName := ADataSet.FieldByName('TypeName').AsString;
-    Year := ADataSet.FieldByName('Year').AsInteger;
-    Number := ADataSet.FieldByName('Number').AsInteger;
-    RegistryPrinted := ADataSet.FieldByName('RegistryPrinted').AsBoolean;
-    StickerPrinted := ADataSet.FieldByName('StickerPrinted').AsBoolean;
+    CreationDate := ADataSet.FieldByName(FIELD_CREATION_DATE).AsDateTime;
+    Closed := ADataSet.FieldByName(FIELD_CLOSED).AsBoolean;
+    ClosureDate := ADataSet.FieldByName(FIELD_CLOSURE_DATE).AsDateTime;
+    Archived := ADataSet.FieldByName(FIELD_ARCHIVED).AsBoolean;
+    ArchivingDate := ADataSet.FieldByName(FIELD_ARCHIVING_DATE).AsDateTime;
+    UserId := ADataSet.FieldByName(FIELD_USER_ID).AsInteger;
+    CompanyId := ADataSet.FieldByName(FIELD_COMPANY_ID).AsInteger;
+    CompanyName := ADataSet.FieldByName(FIELD_COMPANY_NAME).AsString;
+    TypeId := ADataSet.FieldByName(FIELD_TYPE_ID).AsInteger;
+    TypeName := ADataSet.FieldByName(FIELD_TYPE_NAME).AsString;
+    Year := ADataSet.FieldByName(FIELD_YEAR).AsInteger;
+    Number := ADataSet.FieldByName(FIELD_NUMBER).AsInteger;
+    RegistryPrinted := ADataSet.FieldByName(FIELD_REGISTRY_PRINTED).AsBoolean;
+    StickerPrinted := ADataSet.FieldByName(FIELD_STICKER_PRINTED).AsBoolean;
   end;
 end;
 
@@ -540,7 +577,7 @@ begin
       if Assigned(ds) then
       begin
         try
-          SetSQLForQuery(ds, Format('Archiving_sel_ArchiveBoxByBarcode ''%s''', [s]), True);
+          SetSQLForQuery(ds, Format(SP_ARCHIVING_SEL_ARCHIVE_BOX_BY_BARCODE + ' ''%s''', [s]), True);
           try
             if not ds.Eof then
             begin

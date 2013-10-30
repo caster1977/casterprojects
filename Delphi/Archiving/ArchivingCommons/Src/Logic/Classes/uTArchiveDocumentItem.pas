@@ -148,6 +148,10 @@ type
     function Valid(const AConnection: TCustomConnection = nil): Boolean;
   end;
 
+const
+  SP_ARCHIVING_SEL_ARCHIVE_DOCUMENT = 'Archiving_sel_ArchiveDocument';
+  SP_ARCHIVING_DEL_ARCHIVE_DOCUMENT = 'Archiving_del_ArchiveDocument';
+
 implementation
 
 uses
@@ -157,6 +161,19 @@ uses
   uArchivingCommonRoutines,
   uIShowableField,
   uTShowableField;
+
+const
+  FIELD_ARCHIVE_BOX_ID = 'ArchiveBoxId';
+  FIELD_ARCHIVED_BY_USER = 'ArchivedByUser';
+  FIELD_ARCHIVING_DATE = 'ArchivingDate';
+  FIELD_ISSUED = 'Issued';
+  FIELD_ISSUED_TO_USER = 'IssuedToUser';
+  FIELD_ISSUANCE_DATE = 'IssuanceDate';
+  FIELD_COMPANY_ID = 'CompanyId';
+  FIELD_COMPANY_NAME = 'CompanyName';
+  FIELD_BARCODE = 'Barcode';
+  FIELD_SEQUENCE_NUMBER = 'SequenceNumber';
+  FIELD_YEAR = 'Year';
 
 function TArchiveDocumentItem.GetArchiveBoxId: Integer;
 begin
@@ -371,28 +388,28 @@ begin
   inherited;
   if Assigned(ADataSet) then
   begin
-    ArchiveBoxId := ADataSet.FieldByName('ArchiveBoxId').AsInteger;
-    ArchivedByUser := ADataSet.FieldByName('ArchivedByUser').AsInteger;
-    ArchivingDate := ADataSet.FieldByName('ArchivingDate').AsDateTime;
-    Issued := ADataSet.FieldByName('Issued').AsBoolean;
-    IssuedToUser := ADataSet.FieldByName('IssuedToUser').AsInteger;
-    IssuanceDate := ADataSet.FieldByName('IssuanceDate').AsDateTime;
-    CompanyId := ADataSet.FieldByName('CompanyId').AsInteger;
-    CompanyName := ADataSet.FieldByName('CompanyName').AsString;
-    Barcode := ADataSet.FieldByName('Barcode').AsString;
-    SequenceNumber := ADataSet.FieldByName('SequenceNumber').AsInteger;
-    Year := ADataSet.FieldByName('Year').AsInteger;
+    ArchiveBoxId := ADataSet.FieldByName(FIELD_ARCHIVE_BOX_ID).AsInteger;
+    ArchivedByUser := ADataSet.FieldByName(FIELD_ARCHIVED_BY_USER).AsInteger;
+    ArchivingDate := ADataSet.FieldByName(FIELD_ARCHIVING_DATE).AsDateTime;
+    Issued := ADataSet.FieldByName(FIELD_ISSUED).AsBoolean;
+    IssuedToUser := ADataSet.FieldByName(FIELD_ISSUED_TO_USER).AsInteger;
+    IssuanceDate := ADataSet.FieldByName(FIELD_ISSUANCE_DATE).AsDateTime;
+    CompanyId := ADataSet.FieldByName(FIELD_COMPANY_ID).AsInteger;
+    CompanyName := ADataSet.FieldByName(FIELD_COMPANY_NAME).AsString;
+    Barcode := ADataSet.FieldByName(FIELD_BARCODE).AsString;
+    SequenceNumber := ADataSet.FieldByName(FIELD_SEQUENCE_NUMBER).AsInteger;
+    Year := ADataSet.FieldByName(FIELD_YEAR).AsInteger;
   end;
 end;
 
 function TArchiveDocumentItem.GetLoadSQL: string;
 begin
-  Result := Format('Archiving_sel_ArchiveDocument %d, %d', [ArchiveBoxId, Id]);
+  Result := Format(SP_ARCHIVING_SEL_ARCHIVE_DOCUMENT + ' %d, %d', [ArchiveBoxId, Id]);
 end;
 
 function TArchiveDocumentItem.GetDeleteSQL: string;
 begin
-  Result := Format('Archiving_del_ArchiveDocument %d', [Id]);
+  Result := Format(SP_ARCHIVING_DEL_ARCHIVE_DOCUMENT + ' %d', [Id]);
 end;
 
 function TArchiveDocumentItem.Valid(const AConnection: TCustomConnection): Boolean;
