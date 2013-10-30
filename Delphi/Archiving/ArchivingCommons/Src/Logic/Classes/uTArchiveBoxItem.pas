@@ -400,10 +400,10 @@ end;
 
 function TArchiveBoxItem.GetSaveSQL: string;
 begin
-  Result := Format('Archiving_upd_ArchiveBox %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, ''%s'', %d, %d',
+  Result := Format('Archiving_upd_ArchiveBox %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, ''%s'', %d, ''%s'', %d, %d',
     [Id, TypeId, CompanyId, UserId, Barcode, Year, Number, FormatDateTime('yyyy-mm-dd hh:nn:ss', CreationDate),
-    Integer(Closed), FormatDateTime('yyyy-mm-dd hh:nn:ss', ClosureDate), Integer(StickerPrinted),
-    Integer(RegistryPrinted)]);
+    Integer(Closed), FormatDateTime('yyyy-mm-dd hh:nn:ss', ClosureDate), Integer(Archived),
+    FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate), Integer(StickerPrinted), Integer(RegistryPrinted)]);
 end;
 
 procedure TArchiveBoxItem.Load(const ADataSet: TDataSet);
