@@ -13,7 +13,7 @@
             <Dependencies>ArchivingCommons\Src\ArchivingCommons.dproj</Dependencies>
         </Projects>
         <Projects Include="AcceptanceOfBoxesToArchive\Src\AcceptanceOfBoxesToArchive.dproj">
-            <Dependencies/>
+            <Dependencies>ArchivingCommons\Src\ArchivingCommons.dproj</Dependencies>
         </Projects>
     </ItemGroup>
     <ProjectExtensions>
@@ -50,13 +50,13 @@
     <Target Name="Archiving:Make" DependsOnTargets="ArchivingCommons:Make">
         <MSBuild Projects="Archiving\Src\Archiving.dproj" Targets="Make"/>
     </Target>
-    <Target Name="AcceptanceOfBoxesToArchive">
+    <Target Name="AcceptanceOfBoxesToArchive" DependsOnTargets="ArchivingCommons">
         <MSBuild Projects="AcceptanceOfBoxesToArchive\Src\AcceptanceOfBoxesToArchive.dproj"/>
     </Target>
-    <Target Name="AcceptanceOfBoxesToArchive:Clean">
+    <Target Name="AcceptanceOfBoxesToArchive:Clean" DependsOnTargets="ArchivingCommons:Clean">
         <MSBuild Projects="AcceptanceOfBoxesToArchive\Src\AcceptanceOfBoxesToArchive.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="AcceptanceOfBoxesToArchive:Make">
+    <Target Name="AcceptanceOfBoxesToArchive:Make" DependsOnTargets="ArchivingCommons:Make">
         <MSBuild Projects="AcceptanceOfBoxesToArchive\Src\AcceptanceOfBoxesToArchive.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
