@@ -145,7 +145,7 @@
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="Common\uArchivingCommonConsts.pas"/>
-        <DCCReference Include="Common\uArchivingCommonResources.pas"/>
+        <DCCReference Include="Common\uArchivingCommonResourceStrings.pas"/>
         <None Include="ModelSupport_ArchivingCommons\default.txaPackage"/>
         <None Include="ModelSupport_ArchivingCommons\default.txvpck"/>
         <None Include="ModelSupport_ArchivingCommons\uTArchiveDocumentItem\default.txvpck"/>

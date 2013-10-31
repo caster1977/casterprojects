@@ -1,4 +1,4 @@
-unit uArchivingCommonConsts;
+unit uArchivingCommonResourceStrings;
 
 interface
 
