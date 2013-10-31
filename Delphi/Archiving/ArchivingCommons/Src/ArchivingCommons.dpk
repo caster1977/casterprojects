@@ -90,6 +90,6 @@ contains
   uICustomBusinessLogic in 'Logic\Interfaces\uICustomBusinessLogic.pas',
   uTReportDataModule in 'UI\uTReportDataModule.pas' {ReportDataModule: TDataModule},
   uArchivingCommonConsts in 'Common\uArchivingCommonConsts.pas',
-  uArchivingCommonResources in 'Common\uArchivingCommonResources.pas';
+  uArchivingCommonResourceStrings in 'Common\uArchivingCommonResourceStrings.pas';
 
 end.
