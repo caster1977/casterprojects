@@ -38,11 +38,8 @@ const
 implementation
 
 uses
-  SysUtils;
-
-const
-  FIELD_NAME = 'Name';
-  FIELD_BARCODE = 'Barcode';
+  SysUtils,
+  uArchivingCommonConsts;
 
 function TCauseOfArchiveDocumentDamageItem.GetName: string;
 begin
@@ -88,8 +85,8 @@ begin
   inherited;
   if Assigned(ADataSet) then
   begin
-    FName := ADataSet.FieldByName(FIELD_NAME).AsString;
-    FBarcode := ADataSet.FieldByName(FIELD_BARCODE).AsString;
+    FName := ADataSet.FieldByName(CONST_NAME).AsString;
+    FBarcode := ADataSet.FieldByName(CONST_BARCODE).AsString;
   end;
 end;
 

@@ -56,12 +56,8 @@ const
 implementation
 
 uses
+  uArchivingCommonConsts,
   SysUtils;
-
-const
-  FIELD_NAME = 'Name';
-  FIELD_CODE = 'Code';
-  FIELD_CAPACITY = 'Capacity';
 
 procedure TArchiveBoxTypeItem.Assign(const AValue: ILoadableItem);
 var
@@ -110,9 +106,9 @@ begin
   inherited;
   if Assigned(ADataSet) then
   begin
-    FName := ADataSet.FieldByName(FIELD_NAME).AsString;
-    FCode := ADataSet.FieldByName(FIELD_CODE).AsString;
-    FCapacity := ADataSet.FieldByName(FIELD_CAPACITY).AsInteger;
+    FName := ADataSet.FieldByName(CONST_NAME).AsString;
+    FCode := ADataSet.FieldByName(CONST_CODE).AsString;
+    FCapacity := ADataSet.FieldByName(CONST_CAPACITY).AsInteger;
   end;
 end;
 

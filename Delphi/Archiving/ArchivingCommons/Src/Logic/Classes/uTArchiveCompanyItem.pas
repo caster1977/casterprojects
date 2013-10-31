@@ -40,11 +40,8 @@ implementation
 
 uses
   SysUtils,
+  uArchivingCommonConsts,
   uArchivingCommonRoutines;
-
-const
-  FIELD_NAME = 'Name';
-  FIELD_CODE = 'Code';
 
 function TArchiveCompanyItem.GetName: string;
 begin
@@ -90,8 +87,8 @@ begin
   inherited;
   if Assigned(ADataSet) then
   begin
-    FName := ADataSet.FieldByName(FIELD_NAME).AsString;
-    FCode := ADataSet.FieldByName(FIELD_CODE).AsString;
+    FName := ADataSet.FieldByName(CONST_NAME).AsString;
+    FCode := ADataSet.FieldByName(CONST_CODE).AsString;
   end;
 end;
 

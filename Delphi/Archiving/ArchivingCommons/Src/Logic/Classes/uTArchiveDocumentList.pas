@@ -25,8 +25,7 @@ type
 implementation
 
 uses
-  uTArchiveDocumentItem,
-  SysUtils;
+  uTArchiveDocumentItem;
 
 function TArchiveDocumentList.GetItemById(const AId: Integer): IArchiveDocumentItem;
 var
