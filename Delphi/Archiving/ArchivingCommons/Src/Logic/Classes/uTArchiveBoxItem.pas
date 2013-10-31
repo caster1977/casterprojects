@@ -155,40 +155,12 @@ implementation
 uses
   SysUtils,
   uTArchiveDocumentListClass,
+  uArchivingCommonConsts,
+  uArchivingCommonResourceStrings,
   uArchivingCommonRoutines,
   uIShowableField,
   uTShowableField,
   StrUtils;
-
-const
-  BOX_BARCODE_FORMAT = '%.2d%.2d%s%.6d';
-  DATE_TIME_FORMAT = 'yyyy-mm-dd hh:nn:ss';
-
-  LABEL_BARCODE = 'Barcode';
-  LABEL_DOCUMENT_COUNT = 'DocumentCount';
-
-  FIELD_CREATION_DATE = 'CreationDate';
-  FIELD_CLOSED = 'Closed';
-  FIELD_CLOSURE_DATE = 'ClosureDate';
-  FIELD_ARCHIVED = 'Archived';
-  FIELD_ARCHIVING_DATE = 'ArchivingDate';
-  FIELD_USER_ID = 'UserId';
-  FIELD_COMPANY_ID = 'CompanyId';
-  FIELD_COMPANY_NAME = 'CompanyName';
-  FIELD_TYPE_ID = 'TypeId';
-  FIELD_TYPE_NAME = 'TypeName';
-  FIELD_YEAR = 'Year';
-  FIELD_NUMBER = 'Number';
-  FIELD_REGISTRY_PRINTED = 'RegistryPrinted';
-  FIELD_STICKER_PRINTED = 'StickerPrinted';
-
-resourcestring
-  RsCompany = 'Компания:';
-  RsTypeName = 'Тип документов:';
-  RsYear = 'Год:';
-  RsNumber = 'Номер:';
-  RsBarcode = 'Штрих-код:';
-  RsDocumentCount = 'Количество документов:';
 
 function TArchiveBoxItem.GetArchived: Boolean;
 begin
@@ -413,14 +385,14 @@ end;
 
 procedure TArchiveBoxItem.FillShowableFieldsList;
 begin
-  AddShowableField(RsCompany, FIELD_COMPANY_NAME, CompanyName);
-  AddShowableField(RsTypeName, FIELD_TYPE_NAME, TypeName);
-  AddShowableField(RsYear, FIELD_YEAR, IfThen(Year <> -1, IntToStr(Year)));
-  AddShowableField(RsNumber, FIELD_NUMBER, IfThen(Number <> -1, IntToStr(Number)));
-  AddShowableField(RsBarcode, LABEL_BARCODE, Barcode);
+  AddShowableField(RsCompany, CONST_COMPANY_NAME, CompanyName);
+  AddShowableField(RsTypeName, CONST_TYPE_NAME, TypeName);
+  AddShowableField(RsYear, CONST_YEAR, IfThen(Year <> -1, IntToStr(Year)));
+  AddShowableField(RsNumber, CONST_NUMBER, IfThen(Number <> -1, IntToStr(Number)));
+  AddShowableField(RsBarcode, CONST_BARCODE, Barcode);
   if Assigned(Documents) then
   begin
-    AddShowableField(RsDocumentCount, LABEL_DOCUMENT_COUNT, IntToStr(Documents.Count));
+    AddShowableField(RsDocumentCount, CONST_DOCUMENT_COUNT, IntToStr(Documents.Count));
   end;
 end;
 
@@ -448,20 +420,20 @@ begin
   inherited;
   if Assigned(ADataSet) then
   begin
-    CreationDate := ADataSet.FieldByName(FIELD_CREATION_DATE).AsDateTime;
-    Closed := ADataSet.FieldByName(FIELD_CLOSED).AsBoolean;
-    ClosureDate := ADataSet.FieldByName(FIELD_CLOSURE_DATE).AsDateTime;
-    Archived := ADataSet.FieldByName(FIELD_ARCHIVED).AsBoolean;
-    ArchivingDate := ADataSet.FieldByName(FIELD_ARCHIVING_DATE).AsDateTime;
-    UserId := ADataSet.FieldByName(FIELD_USER_ID).AsInteger;
-    CompanyId := ADataSet.FieldByName(FIELD_COMPANY_ID).AsInteger;
-    CompanyName := ADataSet.FieldByName(FIELD_COMPANY_NAME).AsString;
-    TypeId := ADataSet.FieldByName(FIELD_TYPE_ID).AsInteger;
-    TypeName := ADataSet.FieldByName(FIELD_TYPE_NAME).AsString;
-    Year := ADataSet.FieldByName(FIELD_YEAR).AsInteger;
-    Number := ADataSet.FieldByName(FIELD_NUMBER).AsInteger;
-    RegistryPrinted := ADataSet.FieldByName(FIELD_REGISTRY_PRINTED).AsBoolean;
-    StickerPrinted := ADataSet.FieldByName(FIELD_STICKER_PRINTED).AsBoolean;
+    CreationDate := ADataSet.FieldByName(CONST_CREATION_DATE).AsDateTime;
+    Closed := ADataSet.FieldByName(CONST_CLOSED).AsBoolean;
+    ClosureDate := ADataSet.FieldByName(CONST_CLOSURE_DATE).AsDateTime;
+    Archived := ADataSet.FieldByName(CONST_ARCHIVED).AsBoolean;
+    ArchivingDate := ADataSet.FieldByName(CONST_ARCHIVING_DATE).AsDateTime;
+    UserId := ADataSet.FieldByName(CONST_USER_ID).AsInteger;
+    CompanyId := ADataSet.FieldByName(CONST_COMPANY_ID).AsInteger;
+    CompanyName := ADataSet.FieldByName(CONST_COMPANY_NAME).AsString;
+    TypeId := ADataSet.FieldByName(CONST_TYPE_ID).AsInteger;
+    TypeName := ADataSet.FieldByName(CONST_TYPE_NAME).AsString;
+    Year := ADataSet.FieldByName(CONST_YEAR).AsInteger;
+    Number := ADataSet.FieldByName(CONST_NUMBER).AsInteger;
+    RegistryPrinted := ADataSet.FieldByName(CONST_REGISTRY_PRINTED).AsBoolean;
+    StickerPrinted := ADataSet.FieldByName(CONST_STICKER_PRINTED).AsBoolean;
   end;
 end;
 

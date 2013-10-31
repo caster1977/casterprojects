@@ -4,12 +4,10 @@ interface
 
 uses
   DB,
-  Controls,
   Classes,
   uTLoadableItem,
   uIArchiveDocumentItem,
   uIShowable,
-  uIArchiveBoxItem,
   uILoadableItem;
 
 type
@@ -156,24 +154,10 @@ implementation
 
 uses
   SysUtils,
-  StdCtrls,
-  Types,
+  uArchivingCommonConsts,
   uArchivingCommonRoutines,
   uIShowableField,
   uTShowableField;
-
-const
-  FIELD_ARCHIVE_BOX_ID = 'ArchiveBoxId';
-  FIELD_ARCHIVED_BY_USER = 'ArchivedByUser';
-  FIELD_ARCHIVING_DATE = 'ArchivingDate';
-  FIELD_ISSUED = 'Issued';
-  FIELD_ISSUED_TO_USER = 'IssuedToUser';
-  FIELD_ISSUANCE_DATE = 'IssuanceDate';
-  FIELD_COMPANY_ID = 'CompanyId';
-  FIELD_COMPANY_NAME = 'CompanyName';
-  FIELD_BARCODE = 'Barcode';
-  FIELD_SEQUENCE_NUMBER = 'SequenceNumber';
-  FIELD_YEAR = 'Year';
 
 function TArchiveDocumentItem.GetArchiveBoxId: Integer;
 begin
@@ -388,17 +372,17 @@ begin
   inherited;
   if Assigned(ADataSet) then
   begin
-    ArchiveBoxId := ADataSet.FieldByName(FIELD_ARCHIVE_BOX_ID).AsInteger;
-    ArchivedByUser := ADataSet.FieldByName(FIELD_ARCHIVED_BY_USER).AsInteger;
-    ArchivingDate := ADataSet.FieldByName(FIELD_ARCHIVING_DATE).AsDateTime;
-    Issued := ADataSet.FieldByName(FIELD_ISSUED).AsBoolean;
-    IssuedToUser := ADataSet.FieldByName(FIELD_ISSUED_TO_USER).AsInteger;
-    IssuanceDate := ADataSet.FieldByName(FIELD_ISSUANCE_DATE).AsDateTime;
-    CompanyId := ADataSet.FieldByName(FIELD_COMPANY_ID).AsInteger;
-    CompanyName := ADataSet.FieldByName(FIELD_COMPANY_NAME).AsString;
-    Barcode := ADataSet.FieldByName(FIELD_BARCODE).AsString;
-    SequenceNumber := ADataSet.FieldByName(FIELD_SEQUENCE_NUMBER).AsInteger;
-    Year := ADataSet.FieldByName(FIELD_YEAR).AsInteger;
+    ArchiveBoxId := ADataSet.FieldByName(CONST_ARCHIVE_BOX_ID).AsInteger;
+    ArchivedByUser := ADataSet.FieldByName(CONST_ARCHIVED_BY_USER).AsInteger;
+    ArchivingDate := ADataSet.FieldByName(CONST_ARCHIVING_DATE).AsDateTime;
+    Issued := ADataSet.FieldByName(CONST_ISSUED).AsBoolean;
+    IssuedToUser := ADataSet.FieldByName(CONST_ISSUED_TO_USER).AsInteger;
+    IssuanceDate := ADataSet.FieldByName(CONST_ISSUANCE_DATE).AsDateTime;
+    CompanyId := ADataSet.FieldByName(CONST_COMPANY_ID).AsInteger;
+    CompanyName := ADataSet.FieldByName(CONST_COMPANY_NAME).AsString;
+    Barcode := ADataSet.FieldByName(CONST_BARCODE).AsString;
+    SequenceNumber := ADataSet.FieldByName(CONST_SEQUENCE_NUMBER).AsInteger;
+    Year := ADataSet.FieldByName(CONST_YEAR).AsInteger;
   end;
 end;
 

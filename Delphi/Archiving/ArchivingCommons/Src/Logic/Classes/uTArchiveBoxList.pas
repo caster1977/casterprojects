@@ -19,9 +19,7 @@ type
 implementation
 
 uses
-  uArchivingCommonRoutines,
-  uTArchiveBoxItem,
-  SysUtils;
+  uTArchiveBoxItem;
 
 function TArchiveBoxList.GetItemById(const AId: Integer): IArchiveBoxItem;
 var
