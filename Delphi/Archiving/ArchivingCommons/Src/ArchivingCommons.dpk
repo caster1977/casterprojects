@@ -88,6 +88,8 @@ contains
   uArchivingCommonRoutines in 'Common\uArchivingCommonRoutines.pas',
   uTCustomBusinessLogic in 'Logic\Classes\uTCustomBusinessLogic.pas',
   uICustomBusinessLogic in 'Logic\Interfaces\uICustomBusinessLogic.pas',
-  uTReportDataModule in 'UI\uTReportDataModule.pas' {ReportDataModule: TDataModule};
+  uTReportDataModule in 'UI\uTReportDataModule.pas' {ReportDataModule: TDataModule},
+  uArchivingCommonConsts in 'Common\uArchivingCommonConsts.pas',
+  uArchivingCommonResources in 'Common\uArchivingCommonResources.pas';
 
 end.
