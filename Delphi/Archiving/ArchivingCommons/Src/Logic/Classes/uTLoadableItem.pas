@@ -51,11 +51,14 @@ type
 implementation
 
 uses
+  uArchivingCommonConsts,
   uArchivingCommonRoutines,
-  ADODB,
-  SqlExpr,
   Dialogs,
   SysUtils;
+
+resourcestring
+  RsAssignItemError = 'Попытка копирования несуществующего объекта';
+  RsSaveItemError = '%s item cannot be saved cause it''s not saveable.';
 
 function TLoadableItem.GetConnection: TCustomConnection;
 begin
@@ -76,7 +79,7 @@ procedure TLoadableItem.Load(const ADataSet: TDataSet);
 begin
   if Assigned(ADataSet) then
   begin
-    FId := ADataSet.FieldByName('Id').AsInteger;
+    FId := ADataSet.FieldByName(CONST_ID).AsInteger;
   end;
 end;
 
@@ -107,7 +110,7 @@ procedure TLoadableItem.Assign(const AValue: ILoadableItem);
 begin
   if not Assigned(AValue) then
   begin
-    raise EInvalidPointer.Create('Попытка копирования несуществующего объекта');
+    raise EInvalidPointer.Create(RsAssignItemError);
   end;
   FId := AValue.Id;
 end;
@@ -193,7 +196,7 @@ begin
   end
   else
   begin
-    ShowMessage(Format('%s item cannot be saved cause it''s not saveable.', [ClassName]));
+    ShowMessage(Format(RsSaveItemError, [ClassName]));
   end;
 end;
 

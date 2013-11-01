@@ -3,9 +3,9 @@ unit uTLoadableList;
 interface
 
 uses
-  DB,
   Classes,
   uILoadableList,
+  DB,
   uTLoadableItemClass,
   uILoadableItem,
   uTLoadableItem;
@@ -68,11 +68,11 @@ type
 implementation
 
 uses
-  Dialogs,
   uArchivingCommonRoutines,
-  ADODB,
-  SqlExpr,
   SysUtils;
+
+resourcestring
+  RsAssignListError = 'Ќе удалось выполнить копирование списка';
 
 function TLoadableList.Add: Integer;
 begin
@@ -110,7 +110,7 @@ begin
     end;
     if Count <> AValue.Count then
     begin
-      raise EListError.Create('Ќе удалось выполнить копирование списка');
+      raise EListError.Create(RsAssignListError);
     end;
   end;
 end;

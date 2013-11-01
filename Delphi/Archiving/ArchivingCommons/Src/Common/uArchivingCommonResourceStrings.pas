@@ -9,6 +9,9 @@ resourcestring
   RsNumber = 'Номер:';
   RsBarcode = 'Штрих-код:';
   RsDocumentCount = 'Количество документов:';
+  RsSeries = 'Серия:';
+  RsSequenceNumber = 'Порядковый номер в коробе:';
+  RsCauseOfDamage = 'Причина порчи:';
 
 implementation
 

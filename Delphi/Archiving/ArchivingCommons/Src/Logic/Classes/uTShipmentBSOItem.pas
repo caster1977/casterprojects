@@ -3,11 +3,9 @@ unit uTShipmentBSOItem;
 interface
 
 uses
-  DB,
-  Controls,
   uTCustomBSOItem,
   uIShipmentBSOItem,
-  uIArchiveBoxItem;
+  DB;
 
 type
   TShipmentBSOItem = class {$IFNDEF VER150} sealed {$ENDIF}(TCustomBSOItem, IShipmentBSOItem)
@@ -20,13 +18,16 @@ type
     procedure Load(const ADataSet: TDataSet); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
+const
+  SP_ARCHIVING_UPD_SHIPMENT_BSO = 'Archiving_upd_ShipmentBSO';
+  SP_ARCHIVING_SEL_VALIDATE_SHIPMENT_BSO = 'Archiving_sel_ValidateShipmentBSO';
+
 implementation
 
 uses
-  uArchivingCommonRoutines,
-  SysUtils,
-  DateUtils,
-  uTArchiveBoxItem;
+  uArchivingCommonConsts,
+  uArchivingCommonResourceStrings,
+  SysUtils;
 
 procedure TShipmentBSOItem.Load(const ADataSet: TDataSet);
 begin
@@ -35,14 +36,14 @@ end;
 
 function TShipmentBSOItem.GetSaveSQL: string;
 begin
-  Result := Format('Archiving_upd_ShipmentBSO %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, %d',
-    [Id, ArchiveBoxId, SequenceNumber, ArchivedByUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate),
-    Integer(Issued), IssuedToUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', IssuanceDate), Year, BSOId]);
+  Result := Format(SP_ARCHIVING_UPD_SHIPMENT_BSO + ' %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, %d',
+    [Id, ArchiveBoxId, SequenceNumber, ArchivedByUser, FormatDateTime(DATE_TIME_FORMAT, ArchivingDate),
+    Integer(Issued), IssuedToUser, FormatDateTime(DATE_TIME_FORMAT, IssuanceDate), Year, BSOId]);
 end;
 
 function TShipmentBSOItem.GetValidateSQL: string;
 begin
-  Result := Format('Archiving_sel_ValidateShipmentBSO %d', [BSOId]);
+  Result := Format(SP_ARCHIVING_SEL_VALIDATE_SHIPMENT_BSO + ' %d', [BSOId]);
 end;
 
 constructor TShipmentBSOItem.Create;
@@ -52,11 +53,11 @@ end;
 
 procedure TShipmentBSOItem.FillShowableFieldsList;
 begin
-  AddShowableField('Штрих-код:', 'Barcode', Barcode);
-  AddShowableField('Год:', 'Year', IntToStr(Year));
-  AddShowableField('Серия:', 'Series', Series);
-  AddShowableField('Номер:', 'Number', Number);
-  AddShowableField('Порядковый номер в коробе:', 'SequenceNumber', IntToStr(SequenceNumber));
+  AddShowableField(RsBarcode, CONST_BARCODE, Barcode);
+  AddShowableField(RsYear, CONST_YEAR, IntToStr(Year));
+  AddShowableField(RsSeries, CONST_SERIES, Series);
+  AddShowableField(RsNumber, CONST_NUMBER, Number);
+  AddShowableField(RsSequenceNumber, CONST_SEQUENCE_NUMBER, IntToStr(SequenceNumber));
 end;
 
 end.

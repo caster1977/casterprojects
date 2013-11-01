@@ -3,8 +3,8 @@ unit uTCustomBusinessLogic;
 interface
 
 uses
-  uICustomBusinessLogic,
   Classes,
+  uICustomBusinessLogic,
   DB,
   uTOnDisplayMessage,
   uTMessageType;
