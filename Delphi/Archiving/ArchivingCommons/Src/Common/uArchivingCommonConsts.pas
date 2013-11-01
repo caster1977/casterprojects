@@ -21,6 +21,7 @@ const
   CONST_TYPE_NAME = 'TypeName';
   CONST_YEAR = 'Year';
   CONST_NUMBER = 'Number';
+  CONST_SERIES = 'Series';
   CONST_REGISTRY_PRINTED = 'RegistryPrinted';
   CONST_STICKER_PRINTED = 'StickerPrinted';
   CONST_NAME = 'Name';
@@ -32,6 +33,12 @@ const
   CONST_ISSUED_TO_USER = 'IssuedToUser';
   CONST_ISSUANCE_DATE = 'IssuanceDate';
   CONST_SEQUENCE_NUMBER = 'SequenceNumber';
+  CONST_BSO_ID = 'BSOId';
+  CONST_CAUSE_OF_ARCHIVE_DOCUMENT_DAMAGE_ID = 'CauseOfArchiveDocumentDamageId';
+  CONST_CAUSE_OF_ARCHIVE_DOCUMENT_DAMAGE_NAME = 'CauseOfArchiveDocumentDamageName';
+  CONST_CAUSE_OF_DAMAGE_NAME = 'CauseOfDamageName';
+  CONST_ID = 'Id';
+
 
 implementation
 

@@ -4,7 +4,6 @@ interface
 
 uses
   DB,
-  Controls,
   uTCustomBSOItem,
   uIDamagedBSOItem,
   uILoadableItem;
@@ -35,9 +34,15 @@ type
     procedure Assign(const AValue: ILoadableItem); override; {$IFNDEF VER150} final; {$ENDIF}
   end;
 
+const
+  SP_ARCHIVING_UPD_DAMAGED_BSO = 'Archiving_upd_DamagedBSO';
+  SP_ARCHIVING_SEL_VALIDATE_DAMAGED_BSO = 'Archiving_sel_ValidateDamagedBSO';
+
 implementation
 
 uses
+  uArchivingCommonConsts,
+  uArchivingCommonResourceStrings,
   SysUtils;
 
 function TDamagedBSOItem.GetCauseOfDamageId: Integer;
@@ -74,21 +79,21 @@ begin
   inherited;
   if Assigned(ADataSet) then
   begin
-    CauseOfDamageId := ADataSet.FieldByName('CauseOfArchiveDocumentDamageId').AsInteger;
-    CauseOfDamageName := ADataSet.FieldByName('CauseOfArchiveDocumentDamageName').AsString;
+    CauseOfDamageId := ADataSet.FieldByName(CONST_CAUSE_OF_ARCHIVE_DOCUMENT_DAMAGE_ID).AsInteger;
+    CauseOfDamageName := ADataSet.FieldByName(CONST_CAUSE_OF_ARCHIVE_DOCUMENT_DAMAGE_NAME).AsString;
   end;
 end;
 
 function TDamagedBSOItem.GetSaveSQL: string;
 begin
-  Result := Format('Archiving_upd_DamagedBSO %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, %d, %d',
-    [Id, ArchiveBoxId, SequenceNumber, ArchivedByUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', ArchivingDate),
-    Integer(Issued), IssuedToUser, FormatDateTime('yyyy-mm-dd hh:nn:ss', IssuanceDate), Year, BSOId, CauseOfDamageId]);
+  Result := Format(SP_ARCHIVING_UPD_DAMAGED_BSO + ' %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, %d, %d',
+    [Id, ArchiveBoxId, SequenceNumber, ArchivedByUser, FormatDateTime(DATE_TIME_FORMAT, ArchivingDate),
+    Integer(Issued), IssuedToUser, FormatDateTime(DATE_TIME_FORMAT, IssuanceDate), Year, BSOId, CauseOfDamageId]);
 end;
 
 function TDamagedBSOItem.GetValidateSQL: string;
 begin
-  Result := Format('Archiving_sel_ValidateDamagedBSO %d', [BSOId]);
+  Result := Format(SP_ARCHIVING_SEL_VALIDATE_DAMAGED_BSO + ' %d', [BSOId]);
 end;
 
 procedure TDamagedBSOItem.Assign(const AValue: ILoadableItem);
@@ -112,12 +117,12 @@ end;
 
 procedure TDamagedBSOItem.FillShowableFieldsList;
 begin
-  AddShowableField('Штрих-код:', 'Barcode', Barcode);
-  AddShowableField('Год:', 'Year', IntToStr(Year));
-  AddShowableField('Серия:', 'Series', Series);
-  AddShowableField('Номер:', 'Number', Number);
-  AddShowableField('Порядковый номер в коробе:', 'SequenceNumber', IntToStr(SequenceNumber));
-  AddShowableField('Причина порчи:', 'CauseOfDamageName', CauseOfDamageName);
+  AddShowableField(RsBarcode, CONST_BARCODE, Barcode);
+  AddShowableField(RsYear, CONST_YEAR, IntToStr(Year));
+  AddShowableField(RsSeries, CONST_SERIES, Series);
+  AddShowableField(RsNumber, CONST_NUMBER, Number);
+  AddShowableField(RsSequenceNumber, CONST_SEQUENCE_NUMBER, IntToStr(SequenceNumber));
+  AddShowableField(RsCauseOfDamage, CONST_CAUSE_OF_DAMAGE_NAME, CauseOfDamageName);
 end;
 
 end.

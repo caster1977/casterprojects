@@ -3,10 +3,7 @@ unit uTCustomBSOItem;
 interface
 
 uses
-  Classes,
   DB,
-  Controls,
-  uIArchiveDocumentItem,
   uTArchiveDocumentItem,
   uICustomBSOItem,
   uILoadableItem;
@@ -53,11 +50,15 @@ type
     procedure Assign(const AValue: ILoadableItem); override;
   end;
 
+const
+  SP_ARCHIVING_SEL_ARCHIVE_DOCUMENT_DATA_FOR_BSO_BY_BARCODE = 'Archiving_sel_ArchiveDocumentDataForBSOByBarcode';
+  SP_ARCHIVING_SEL_BSO_ALREADY_ARCHIVED_IN_BOX = 'Archiving_sel_BSOAlreadyArchivedInBox';
+
 implementation
 
 uses
   SysUtils,
-  StrUtils,
+  uArchivingCommonConsts,
   uArchivingCommonRoutines;
 
 function TCustomBSOItem.GetBSOId: Integer;
@@ -161,7 +162,7 @@ begin
       if Assigned(ds) then
       begin
         try
-          SetSQLForQuery(ds, Format('Archiving_sel_ArchiveDocumentDataForBSOByBarcode ''%s''', [s]), True);
+          SetSQLForQuery(ds, Format(SP_ARCHIVING_SEL_ARCHIVE_DOCUMENT_DATA_FOR_BSO_BY_BARCODE + ' ''%s''', [s]), True);
           try
             if not ds.Eof then
             begin
@@ -184,9 +185,9 @@ begin
   inherited;
   if Assigned(ADataSet) then
   begin
-    BSOId := ADataSet.FieldByName('BSOId').AsInteger;
-    Series := ADataSet.FieldByName('Series').AsString;
-    Number := ADataSet.FieldByName('Number').AsString;
+    BSOId := ADataSet.FieldByName(CONST_BSO_ID).AsInteger;
+    Series := ADataSet.FieldByName(CONST_SERIES).AsString;
+    Number := ADataSet.FieldByName(CONST_NUMBER).AsString;
   end;
 end;
 
@@ -205,7 +206,7 @@ begin
     if Assigned(ds) then
     begin
       try
-        SetSQLForQuery(ds, Format('Archiving_sel_BSOAlreadyArchivedInBox %d, %d', [Id, BSOId]), True);
+        SetSQLForQuery(ds, Format(SP_ARCHIVING_SEL_BSO_ALREADY_ARCHIVED_IN_BOX + ' %d, %d', [Id, BSOId]), True);
         try
           if not ds.Eof then
           begin
