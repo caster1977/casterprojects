@@ -324,6 +324,13 @@ type
     procedure ProcessString(const AString: string);
   end;
 
+const
+  SP_ARCHIVING_SEL_OPENED_ARCHIVE_BOX_COUNT = 'Archiving_sel_OpenedArchiveBoxCount';
+  SP_SYS_SEL_FLAG_VALUE_INT = 'sys_sel_FlagValueInt';
+  SP_ARCHIVING_UPD_ACCEPTANCE_REGISTER = 'Archiving_upd_AcceptanceRegister';
+  SP_ARCHIVING_SEL_OLDEST_OPENED_ARCHIVE_BOX = 'Archiving_sel_OldestOpenedArchiveBox';
+  SP_ARCHIVING_GET_NEW_ARCHIVE_BOX_NUMBER = 'Archiving_GetNewArchiveBoxNumber';
+
 resourcestring
   RsEnterBarcodeOfDocumentOrCommand = 'Введите штрих-код документа или команды';
 
@@ -347,9 +354,49 @@ uses
   uICauseOfArchiveDocumentDamageList,
   uTCauseOfArchiveDocumentDamageList,
   uTArchiveDocumentListClass,
+  uArchivingCommonConsts,
   uIDamagedBSOItem,
   uTDamagedBSOItem,
   uTDamagedBSOList;
+
+resourcestring
+  RsWrongYear = 'Год документа не соответствует году короба';
+  RsWrongCompany = 'Компания документа не соответствует компании короба';
+  RsStickerWasPrinted = 'Стикер на текущий короб распечатан';
+  RsCantPrintSticker = 'Не удалось распечатать стикер на текущий короб';
+  RsLastDocumentWasDeleted = 'Последний документ из текущего короба удалён';
+  RsCantDeleteLastDocument = 'Не удалось удалить последний документ из текущего короба';
+  RsUnknownBarcode = 'Введён неизвестный штрих-код';
+  RsCurrentBoxNotFull = 'Текущий короб не полон. Вы действительно хотите закрыть текущий короб?';
+  RsConfirmation = 'Подтверждение';
+  RsCurrentBoxWasClosed = 'Текущий короб был закрыт';
+  RsCantCloseCurrentBox = 'Не удалось закрыть текущий короб';
+  RsClosureOfCurrentBoxWasCancelled = 'Закрытие текущего короба было отменено';
+  RsCantCloseCurrentBoxCauseNoneOfCurrentBox = 'Нельзя закрыть текущий короб, т.к. нет текущего короба';
+  RsCantPutCurrentBoxAsideCauseItIsFull = 'Текущий короб нельзя отложить, т.к. он заполнен';
+  RsCurrentBoxWasPuttedAside = 'Текущий короб отложен';
+  RsCantPutCurrentBoxAside = 'Не удалось отложить текущий короб';
+  RsCantPutCurrentBoxAsideCauseNoneOfCurrentBox = 'Нельзя отложить текущий короб, т.к. нет текущего короба';
+  RsLastDocumentWasGivedAway = 'Последний документ из текущего короба передан';
+  RsCantGiveLastDocumentAway = 'Не удалось передать последний документ из текущего короба';
+  RsDocumentAcceptedByAcceptanceRegister = 'Документ принят по реестру ЛП';
+  RsDocumentNotAcceptedByAcceptanceRegister = 'Документ не принят по реестру ЛП';
+  RsCantAddDocumentToTheCurrentBoxCauseCurrentBoxIsFull =
+    'Нельзя добавлять документы в короб, т.к. текущий короб был заполнен';
+  RsDocumentSuccessfullyAddedToCurrentBox = 'Документ был успешно добавлен втекущий короб';
+  RsStickerWasAutoPrinted = 'Стикер на текущий короб распечатан автоматически';
+  RsDoYouWantToCloseCurrentBoxCauseItIsFull = 'Текущий короб заполнен. Вы хотите закрыть текущий короб?';
+  RsCurrentBoxWasFilledAndClosed = 'Текущий короб заполнен и был закрыт';
+  RsInformation = 'Информация';
+  RsSeekBoxAndEnterBarcode = 'Найдите короб со штрих-кодом %s и введите штрих-код';
+  RsCurrentBoxWasPutedAsideCauseIsIsNotFull = 'Текущий короб был отложен, т.к. он не был заполнен.';
+  RsCurrentBoxWasClosedCauseItIsFull = 'Текущий короб был закрыт, т.к. он заполнен.';
+  RsPackCurrentBox = 'Упакуйте короб.';
+  RsWarning = 'Предупреждение';
+  RsCantAddDocumentCauseCapacityConfigurationInProgress =
+    'Документ нельзя добавлять, поскольку идёт настройка вместимости коробов';
+  RsWaitUntilCapacityConfigurationFinish =
+    'Дождитесь окончания настройки, затем введите штрих-код документа или команды';
 
 function TDocumentArchivingBusinessLogic.GetArchiveBoxIdByDocument(const ADocument: IArchiveDocumentItem): Integer;
 begin
@@ -423,7 +470,7 @@ begin
   Result := -1;
   if (ATypeId > -1) and (ACompanyId > -1) then
   begin
-    SetSQLForQuery(Query, Format('Archiving_sel_OpenedArchiveBoxCount %d, %d', [ATypeId, ACompanyId]), True);
+    SetSQLForQuery(Query, Format(SP_ARCHIVING_SEL_OPENED_ARCHIVE_BOX_COUNT + ' %d, %d', [ATypeId, ACompanyId]), True);
     try
       if not Query.Eof then
       begin
@@ -578,11 +625,11 @@ end;
 function TDocumentArchivingBusinessLogic.CanAddDocument: Boolean;
 begin
   Result := False;
-  SetSQLForQuery(Query, Format('sys_sel_FlagValueInt %d', [79]), True);
+  SetSQLForQuery(Query, Format(SP_SYS_SEL_FLAG_VALUE_INT + ' %d', [79]), True);
   try
     if not Query.Eof then
     begin
-      Result := Query.FieldByName('Value_Int').AsInteger = 1;
+      Result := Query.FieldByName(CONST_VALUE_INT).AsInteger = 1;
     end;
   finally
     Query.Close;
@@ -850,17 +897,17 @@ end;
 
 function TDocumentArchivingBusinessLogic.IsForceNewBoxCommandBarcode(const ABarcode: string): Boolean;
 begin
-  Result := Trim(ABarcode) = '001001';
+  Result := Trim(ABarcode) = CONST_CLOSE_CURRENT_BOX_COMMAND_BARCODE;
 end;
 
 function TDocumentArchivingBusinessLogic.IsPutBoxAsideCommandBarcode(const ABarcode: string): Boolean;
 begin
-  Result := Trim(ABarcode) = '001002';
+  Result := Trim(ABarcode) = CONST_PUT_CURRENT_BOX_ASIDE_COMMAND_BARCODE;
 end;
 
 function TDocumentArchivingBusinessLogic.IsGiveLastDocumentAwayBarcode(const ABarcode: string): Boolean;
 begin
-  Result := Trim(ABarcode) = '001003';
+  Result := Trim(ABarcode) = CONST_GIVE_LAST_DOCUMENT_AWAY_COMMAND_BARCODE;
 end;
 
 function TDocumentArchivingBusinessLogic.CreateDocumentItemByBarcode(const ABarcode: string): IArchiveDocumentItem;
@@ -890,7 +937,8 @@ end;
 function TDocumentArchivingBusinessLogic.GetNewArchiveBoxNumber(const ATypeId, ACompanyId, AYear: Integer): Integer;
 begin
   Result := -1;
-  SetSQLForQuery(Query, Format('Archiving_GetNewArchiveBoxNumber %d, %d, %d', [ATypeId, ACompanyId, AYear]), True);
+  SetSQLForQuery(Query, Format(SP_ARCHIVING_GET_NEW_ARCHIVE_BOX_NUMBER + ' %d, %d, %d',
+    [ATypeId, ACompanyId, AYear]), True);
   try
     if not Query.Eof then
     begin
@@ -912,7 +960,7 @@ begin
     if CanAddDocument then
     begin
       old_box_id := -1;
-      SetSQLForQuery(Query, Format('Archiving_sel_OldestOpenedArchiveBox %d, %d, %d',
+      SetSQLForQuery(Query, Format(SP_ARCHIVING_SEL_OLDEST_OPENED_ARCHIVE_BOX + ' %d, %d, %d',
         [ArchiveBoxTypeId, ADocument.CompanyId, ADocument.Year]), True);
       try
         if not Query.Eof then
@@ -986,14 +1034,12 @@ begin
         end
         else
         begin
-          DisplayErrorMessage('Год документа не соответствует году короба' + sLineBreak +
-            RsEnterBarcodeOfDocumentOrCommand);
+          DisplayErrorMessage(RsWrongYear + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
         end;
       end
       else
       begin
-        DisplayErrorMessage('Компания документа не соответствует компании короба' + sLineBreak +
-          RsEnterBarcodeOfDocumentOrCommand);
+        DisplayErrorMessage(RsWrongCompany + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
       end;
     end;
   end;
@@ -1051,20 +1097,17 @@ end;
 procedure TDocumentArchivingBusinessLogic.ManualPrintCurrentBoxSticker;
 begin
   if PrintCurrentBoxSticker then
-    DisplaySuccessMessage('Стикер на текущий короб распечатан' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand)
+    DisplaySuccessMessage(RsStickerWasPrinted + sLineBreak + RsEnterBarcodeOfDocumentOrCommand)
   else
-    DisplayErrorMessage('Не удалось распечатать стикер на текущий короб' + sLineBreak +
-      RsEnterBarcodeOfDocumentOrCommand);
+    DisplayErrorMessage(RsCantPrintSticker + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
 end;
 
 procedure TDocumentArchivingBusinessLogic.ManualDeleteLastDocumentFromCurrentBox;
 begin
   if DeleteLastDocumentFromCurrentBox then
-    DisplaySuccessMessage('Последний документ из текущего короба удалён' + sLineBreak +
-      RsEnterBarcodeOfDocumentOrCommand)
+    DisplaySuccessMessage(RsLastDocumentWasDeleted + sLineBreak + RsEnterBarcodeOfDocumentOrCommand)
   else
-    DisplayErrorMessage('Не удалось удалить последний документ из текущего короба' + sLineBreak +
-      RsEnterBarcodeOfDocumentOrCommand);
+    DisplayErrorMessage(RsCantDeleteLastDocument + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
 end;
 
 procedure TDocumentArchivingBusinessLogic.ProcessString(const AString: string);
@@ -1077,7 +1120,7 @@ begin
     case AnalizeBarcode(AString) of
       dabtUnknown:
         begin
-          DisplayErrorMessage('Введён неизвестный штрих-код' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
+          DisplayErrorMessage(RsUnknownBarcode + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
           Exit;
         end;
       dabtForceNewBoxCommand:
@@ -1090,25 +1133,23 @@ begin
             end
             else
             begin
-              b := MessageBox(Application.Handle,
-                'Текущий короб не полон. Вы действительно хотите закрыть текущий короб?', 'Подтверждение',
-                MB_OKCANCEL + MB_ICONQUESTION + MB_DEFBUTTON2) = IDOK;
+              b := MessageBox(Application.Handle, {$IFNDEF VER150} PWideChar {$ELSE} PChar
+{$ENDIF}(RsCurrentBoxNotFull), {$IFNDEF VER150} PWideChar {$ELSE} PChar
+{$ENDIF}(RsConfirmation), MB_OKCANCEL + MB_ICONQUESTION + MB_DEFBUTTON2) = IDOK;
             end;
             if b then
             begin
               if CloseCurrentBox then
-                DisplaySuccessMessage('Текущий короб был закрыт' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand)
+                DisplaySuccessMessage(RsCurrentBoxWasClosed + sLineBreak + RsEnterBarcodeOfDocumentOrCommand)
               else
-                DisplayErrorMessage('Не удалось закрыть текущий короб' + sLineBreak +
-                  RsEnterBarcodeOfDocumentOrCommand);
+                DisplayErrorMessage(RsCantCloseCurrentBox + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
             end
             else
-              DisplayInfoMessage('Закрытие текущего короба было отменено' + sLineBreak +
-                RsEnterBarcodeOfDocumentOrCommand);
+              DisplayInfoMessage(RsClosureOfCurrentBoxWasCancelled + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
           end
           else
           begin
-            DisplayErrorMessage('Нельзя закрыть текущий короб, т.к. нет текущего короба' + sLineBreak +
+            DisplayErrorMessage(RsCantCloseCurrentBoxCauseNoneOfCurrentBox + sLineBreak +
               RsEnterBarcodeOfDocumentOrCommand);
           end;
         end;
@@ -1118,32 +1159,29 @@ begin
           begin
             if CurrentBoxIsFull then
             begin
-              DisplayErrorMessage('Текущий короб нельзя отложить, т.к. он заполнен' + sLineBreak +
+              DisplayErrorMessage(RsCantPutCurrentBoxAsideCauseItIsFull + sLineBreak +
                 RsEnterBarcodeOfDocumentOrCommand);
             end
             else
             begin
               if PutCurrentBoxAside then
-                DisplaySuccessMessage('Текущий короб отложен' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand)
+                DisplaySuccessMessage(RsCurrentBoxWasPuttedAside + sLineBreak + RsEnterBarcodeOfDocumentOrCommand)
               else
-                DisplayErrorMessage('Не удалось отложить текущий короб' + sLineBreak +
-                  RsEnterBarcodeOfDocumentOrCommand);
+                DisplayErrorMessage(RsCantPutCurrentBoxAside + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
             end;
           end
           else
           begin
-            DisplayErrorMessage('Нельзя отложить текущий короб, т.к. нет текущего короба' + sLineBreak +
+            DisplayErrorMessage(RsCantPutCurrentBoxAsideCauseNoneOfCurrentBox + sLineBreak +
               RsEnterBarcodeOfDocumentOrCommand);
           end;
         end;
       dabtGiveDocumentAway:
         begin
           if GiveLastDocumentInCurrentBoxAway then
-            DisplaySuccessMessage('Последний документ из текущего короба передан' + sLineBreak +
-              RsEnterBarcodeOfDocumentOrCommand)
+            DisplaySuccessMessage(RsLastDocumentWasGivedAway + sLineBreak + RsEnterBarcodeOfDocumentOrCommand)
           else
-            DisplayErrorMessage('Не удалось передать последний документ из текущего короба' + sLineBreak +
-              RsEnterBarcodeOfDocumentOrCommand);
+            DisplayErrorMessage(RsCantGiveLastDocumentAway + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
         end;
     end
   end
@@ -1155,11 +1193,11 @@ begin
       begin
         if AcceptBSOByAcceptanceRegister(AString) then
         begin
-          DisplaySuccessMessage('Документ принят по реестру ЛП');
+          DisplaySuccessMessage(RsDocumentAcceptedByAcceptanceRegister);
         end
         else
         begin
-          DisplayErrorMessage('Документ не принят по реестру ЛП');
+          DisplayErrorMessage(RsDocumentNotAcceptedByAcceptanceRegister);
         end;
       end;
 
@@ -1169,7 +1207,7 @@ begin
       end
       else
       begin
-        DisplayErrorMessage('Нельзя добавлять документы в короб, т.к. текущий короб был заполнен' + sLineBreak +
+        DisplayErrorMessage(RsCantAddDocumentToTheCurrentBoxCauseCurrentBoxIsFull + sLineBreak +
           RsEnterBarcodeOfDocumentOrCommand);
       end;
 
@@ -1181,8 +1219,8 @@ begin
           begin
             if PrintCurrentBoxSticker then
             begin
-              DisplaySuccessMessage('Документ был успешно добавлен в текущий короб' + sLineBreak +
-                'Стикер на текущий короб распечатан автоматически' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
+              DisplaySuccessMessage(RsDocumentSuccessfullyAddedToCurrentBox + sLineBreak + RsStickerWasAutoPrinted +
+                sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
             end;
           end;
         end;
@@ -1191,13 +1229,14 @@ begin
       if CurrentBoxIsFull then
       begin
         UpdateCurrentInfo;
-        if MessageBox(Application.Handle, 'Текущий короб заполнен. Вы хотите закрыть текущий короб?', 'Подтверждение',
-          MB_OKCANCEL + MB_ICONWARNING + MB_DEFBUTTON1) = IDOK then
+        if MessageBox(Application.Handle, {$IFNDEF VER150} PWideChar {$ELSE} PChar
+{$ENDIF}(RsDoYouWantToCloseCurrentBoxCauseItIsFull),
+{$IFNDEF VER150} PWideChar {$ELSE} PChar
+{$ENDIF}(RsConfirmation), MB_OKCANCEL + MB_ICONWARNING + MB_DEFBUTTON1) = IDOK then
         begin
           if CloseCurrentBox then
           begin
-            DisplaySuccessMessage('Текущий короб заполнен и был закрыт' + sLineBreak +
-              RsEnterBarcodeOfDocumentOrCommand);
+            DisplaySuccessMessage(RsCurrentBoxWasFilledAndClosed + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
           end;
         end;
       end;
@@ -1205,8 +1244,8 @@ begin
     else
     begin
       Step := 0;
-      DisplayErrorMessage('Документ нельзя добавлять, поскольку идёт настройка вместимости коробов' + sLineBreak +
-        'Дождитесь окончания настройки, затем введите штрих-код документа или команды');
+      DisplayErrorMessage(RsCantAddDocumentCauseCapacityConfigurationInProgress + sLineBreak +
+        RsWaitUntilCapacityConfigurationFinish);
     end;
   end;
   UpdateCurrentInfo;
@@ -1220,7 +1259,7 @@ begin
   s := Trim(ABarcode);
   if AnalizeBarcode(s) = dabtBSO then
   begin
-    SetSQLForQuery(Query, Format('Archiving_upd_AcceptanceRegister ''%s''', [s]), True);
+    SetSQLForQuery(Query, Format(SP_ARCHIVING_UPD_ACCEPTANCE_REGISTER + ' ''%s''', [s]), True);
     try
       if not Query.Eof then
       begin
@@ -1238,16 +1277,19 @@ begin
   begin
     if CloseCurrentBox then
     begin
-      MessageBox(Application.Handle, 'Текущий короб был закрыт, т.к. он заполнен.' + sLineBreak + 'Упакуйте короб.',
-        'Предупреждение', MB_OK + MB_ICONWARNING + MB_DEFBUTTON1);
+      MessageBox(Application.Handle, {$IFNDEF VER150} PWideChar {$ELSE} PChar
+{$ENDIF}(RsCurrentBoxWasClosedCauseItIsFull + sLineBreak + RsPackCurrentBox), {$IFNDEF VER150} PWideChar
+{$ELSE} PChar
+{$ENDIF}(RsWarning), MB_OK + MB_ICONWARNING + MB_DEFBUTTON1);
     end;
   end
   else
   begin
     if PutCurrentBoxAside then
     begin
-      MessageBox(Application.Handle, 'Текущий короб был отложен, т.к. он не был заполнен.', 'Информация',
-        MB_OK + MB_ICONINFORMATION + MB_DEFBUTTON1);
+      MessageBox(Application.Handle, {$IFNDEF VER150} PWideChar {$ELSE} PChar
+{$ENDIF}(RsCurrentBoxWasPutedAsideCauseIsIsNotFull), {$IFNDEF VER150} PWideChar {$ELSE} PChar
+{$ENDIF}(RsInformation), MB_OK + MB_ICONINFORMATION + MB_DEFBUTTON1);
     end;
   end;
   inherited;
@@ -1258,8 +1300,7 @@ var
   form: TEnterStringForm;
 begin
   Result := EmptyStr;
-  form := TEnterStringForm.Create('Подтверждение', Format('Найдите короб со штрих-кодом %s и введите штрих-код',
-    [ABoxBarcode]), 12, True);
+  form := TEnterStringForm.Create(RsConfirmation, Format(RsSeekBoxAndEnterBarcode, [ABoxBarcode]), 12, True);
   try
     form.ShowModal;
     if form.ModalResult = mrOk then

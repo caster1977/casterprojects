@@ -18,6 +18,7 @@ implementation
 
 uses
   SysUtils,
+  uArchivingCommonResourceStrings,
   uTDocumentArchivingBarcodeType,
   uIArchiveBoxItem,
   uTArchiveBoxItem,
@@ -26,6 +27,11 @@ uses
   uICauseOfArchiveDocumentDamageItem,
   uIDamagedBSOItem,
   uTDamagedBSOItem;
+
+resourcestring
+  RsEnterCauseOfDamageBarcode = 'Введите штрих-код порчи документа';
+  RsCantAddDocumentWithoutCauseOfDamageBarcode =
+    'Документ не был добавлен, т.к. не был введён штрих-код порчи документа';
 
 function TDamagedBSOArchivingBusinessLogic.GetArchiveBoxTypeId: Integer;
 begin
@@ -59,28 +65,27 @@ begin
               if i = -1 then
               begin
                 Step := 1;
-                DisplayInfoMessage('Введите штрих-код порчи документа');
+                DisplayInfoMessage(RsEnterCauseOfDamageBarcode);
               end
               else
               begin
                 box := TArchiveBoxItem.Create(Connection, i);
                 if Assigned(box) then
                 begin
-                  DisplayErrorMessage(Format('Документ уже был заархивирован ранее (штрих-код короба - %s)' + sLineBreak
-                    + RsEnterBarcodeOfDocumentOrCommand, [box.Barcode]));
+                  DisplayErrorMessage(Format(RsDocumentAlreadyArchived + sLineBreak + RsEnterBarcodeOfDocumentOrCommand,
+                    [box.Barcode]));
                 end;
               end;
             end
             else
             begin
-              DisplayErrorMessage('Неверный тип документа' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
+              DisplayErrorMessage(RsWrongDocumentType + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
             end;
           end
           else
           begin
             Step := 0;
-            DisplayErrorMessage('Документ с указанным штрих-кодом не найден в базе данных' + sLineBreak +
-              RsEnterBarcodeOfDocumentOrCommand);
+            DisplayErrorMessage(RsDocumentNotFound + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
           end;
         end;
       end;
@@ -112,7 +117,7 @@ begin
                         CurrentBox := CreateArchiveBoxByDocument(CurrentDocument);
                         if Assigned(CurrentBox) then
                         begin
-                          DisplaySuccessMessage('Документ добавлен в новый архивный короб' + sLineBreak +
+                          DisplaySuccessMessage(RsDocumentAddedToTheNewBox + sLineBreak +
                             RsEnterBarcodeOfDocumentOrCommand);
                         end;
                       end
@@ -121,13 +126,13 @@ begin
                         CurrentBox := AddDocumentToOldestOpenedArchiveBox(CurrentDocument);
                         if Assigned(CurrentBox) then
                         begin
-                          DisplaySuccessMessage('Документ добавлен в существующий архивный короб' + sLineBreak +
+                          DisplaySuccessMessage(RsDocumentAddedToExistingBox + sLineBreak +
                             RsEnterBarcodeOfDocumentOrCommand);
                         end
                         else
                         begin
-                          DisplayErrorMessage('Не удалось добавить документ в существующий архивный короб' + sLineBreak
-                            + RsEnterBarcodeOfDocumentOrCommand);
+                          DisplayErrorMessage(RsCantAddDocumentToTheExisingBox + sLineBreak +
+                            RsEnterBarcodeOfDocumentOrCommand);
                         end;
                       end;
                     end
@@ -135,7 +140,7 @@ begin
                     begin
                       if AddDocumentToCurrentBox(CurrentDocument) then
                       begin
-                        DisplaySuccessMessage('Документ добавлен в текущий архивный короб' + sLineBreak +
+                        DisplaySuccessMessage(RsDocumentAddedToTheCurrentBox + sLineBreak +
                           RsEnterBarcodeOfDocumentOrCommand);
                       end;
                     end;
@@ -147,7 +152,7 @@ begin
           end
           else
           begin
-            DisplayErrorMessage('Документ не был добавлен, т.к. не был введён штрих-код порчи документа' + sLineBreak +
+            DisplayErrorMessage(RsCantAddDocumentWithoutCauseOfDamageBarcode + sLineBreak +
               RsEnterBarcodeOfDocumentOrCommand);
           end;
         end
