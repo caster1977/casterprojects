@@ -87,8 +87,8 @@ end;
 function TDamagedBSOItem.GetSaveSQL: string;
 begin
   Result := Format(SP_ARCHIVING_UPD_DAMAGED_BSO + ' %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, %d, %d',
-    [Id, ArchiveBoxId, SequenceNumber, ArchivedByUser, FormatDateTime(DATE_TIME_FORMAT, ArchivingDate),
-    Integer(Issued), IssuedToUser, FormatDateTime(DATE_TIME_FORMAT, IssuanceDate), Year, BSOId, CauseOfDamageId]);
+    [Id, ArchiveBoxId, SequenceNumber, ArchivedByUser, FormatDateTime(DATE_TIME_FORMAT, ArchivingDate), Integer(Issued),
+    IssuedToUser, FormatDateTime(DATE_TIME_FORMAT, IssuanceDate), Year, BSOId, CauseOfDamageId]);
 end;
 
 function TDamagedBSOItem.GetValidateSQL: string;

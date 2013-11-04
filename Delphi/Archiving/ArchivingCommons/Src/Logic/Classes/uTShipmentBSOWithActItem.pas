@@ -37,8 +37,8 @@ end;
 function TShipmentBSOWithActItem.GetSaveSQL: string;
 begin
   Result := Format(SP_ARCHIVING_UPD_SHIPMENT_BSO_WITH_ACT + ' %d, %d, %d, %d, ''%s'', %d, %d, ''%s'', %d, %d',
-    [Id, ArchiveBoxId, SequenceNumber, ArchivedByUser, FormatDateTime(DATE_TIME_FORMAT, ArchivingDate),
-    Integer(Issued), IssuedToUser, FormatDateTime(DATE_TIME_FORMAT, IssuanceDate), Year, BSOId]);
+    [Id, ArchiveBoxId, SequenceNumber, ArchivedByUser, FormatDateTime(DATE_TIME_FORMAT, ArchivingDate), Integer(Issued),
+    IssuedToUser, FormatDateTime(DATE_TIME_FORMAT, IssuanceDate), Year, BSOId]);
 end;
 
 function TShipmentBSOWithActItem.GetValidateSQL: string;

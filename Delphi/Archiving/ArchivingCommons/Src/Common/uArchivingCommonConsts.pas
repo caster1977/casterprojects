@@ -39,7 +39,6 @@ const
   CONST_CAUSE_OF_DAMAGE_NAME = 'CauseOfDamageName';
   CONST_ID = 'Id';
 
-
 implementation
 
 end.
