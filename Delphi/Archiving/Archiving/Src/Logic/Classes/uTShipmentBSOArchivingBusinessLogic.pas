@@ -18,6 +18,7 @@ implementation
 
 uses
   SysUtils,
+  uArchivingCommonResourceStrings,
   uTDocumentArchivingBarcodeType,
   uIArchiveBoxItem,
   uTArchiveBoxItem,
@@ -51,8 +52,8 @@ begin
           box := TArchiveBoxItem.Create(Connection, i);
           if Assigned(box) then
           begin
-            DisplayErrorMessage(Format('Документ уже был заархивирован ранее (штрих-код короба - %s)' + sLineBreak +
-              RsEnterBarcodeOfDocumentOrCommand, [box.Barcode]));
+            DisplayErrorMessage(Format(RsDocumentAlreadyArchived + sLineBreak + RsEnterBarcodeOfDocumentOrCommand,
+              [box.Barcode]));
           end;
         end
         else
@@ -65,8 +66,7 @@ begin
               CurrentBox := CreateArchiveBoxByDocument(CurrentDocument);
               if Assigned(CurrentBox) then
               begin
-                DisplaySuccessMessage('Документ добавлен в новый архивный короб' + sLineBreak +
-                  RsEnterBarcodeOfDocumentOrCommand);
+                DisplaySuccessMessage(RsDocumentAddedToTheNewBox + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
               end;
             end
             else
@@ -74,13 +74,11 @@ begin
               CurrentBox := AddDocumentToOldestOpenedArchiveBox(CurrentDocument);
               if Assigned(CurrentBox) then
               begin
-                DisplaySuccessMessage('Документ добавлен в существующий архивный короб' + sLineBreak +
-                  RsEnterBarcodeOfDocumentOrCommand);
+                DisplaySuccessMessage(RsDocumentAddedToExistingBox + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
               end
               else
               begin
-                DisplayErrorMessage('Не удалось добавить документ в существующий архивный короб' + sLineBreak +
-                  RsEnterBarcodeOfDocumentOrCommand);
+                DisplayErrorMessage(RsCantAddDocumentToTheExisingBox + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
               end;
             end;
           end
@@ -88,21 +86,19 @@ begin
           begin
             if AddDocumentToCurrentBox(CurrentDocument) then
             begin
-              DisplaySuccessMessage('Документ добавлен в текущий архивный короб' + sLineBreak +
-                RsEnterBarcodeOfDocumentOrCommand);
+              DisplaySuccessMessage(RsDocumentAddedToTheCurrentBox + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
             end;
           end;
         end;
       end
       else
       begin
-        DisplayErrorMessage('Неверный тип документа' + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
+        DisplayErrorMessage(RsWrongDocumentType + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
       end;
     end
     else
     begin
-      DisplayErrorMessage('Документ с указанным штрих-кодом не найден в базе данных' + sLineBreak +
-        RsEnterBarcodeOfDocumentOrCommand);
+      DisplayErrorMessage(RsDocumentNotFound + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
     end;
   end;
 end;

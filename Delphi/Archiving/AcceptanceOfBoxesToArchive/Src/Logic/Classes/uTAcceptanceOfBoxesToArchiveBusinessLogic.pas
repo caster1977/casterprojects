@@ -77,9 +77,6 @@ type
     procedure ProcessString(const AString: string);
   end;
 
-resourcestring
-  RsEnterBoxBarcode = 'Введите штрих-код короба';
-
 implementation
 
 uses
@@ -87,6 +84,15 @@ uses
   SysUtils,
   uArchivingCommonRoutines,
   uTArchiveBoxItem;
+
+resourcestring
+  RsEnterBoxBarcode = 'Введите штрих-код короба';
+  RsBoxAccepted = 'Короб принят в архив';
+  RsBoxNotAccepted = 'Не удалось принять короб в архив';
+  RsBoxAlreadyAccepted = 'Данный короб уже был принят в архив ранее';
+  RsBoxNotReadyToAcceptance = 'Короб с указанным штрих-кодом не подготовлен для сдачи в архив';
+  RsBarcodeNotFound = 'Не удалось найти данные по коробу с указанным штрих-кодом';
+  RsWrongBarcode = 'Введён неизвестный штрих-код';
 
 function TAcceptanceOfBoxesToArchiveBusinessLogic.GetLastBox: IArchiveBoxItem;
 begin
@@ -170,35 +176,35 @@ begin
           if AcceptBox(box) then
           begin
             LastBox := box;
-            DisplaySuccessMessage('Короб принят в архив' + sLineBreak + RsEnterBoxBarcode);
+            DisplaySuccessMessage(RsBoxAccepted + sLineBreak + RsEnterBoxBarcode);
           end
           else
           begin
-            DisplayErrorMessage('Не удалось принять короб в архив' + sLineBreak +
+            DisplayErrorMessage(RsBoxNotAccepted + sLineBreak +
               RsEnterBoxBarcode);
           end;
         end
         else
         begin
-          DisplayErrorMessage('Данный короб уже был принят в архив ранее' + sLineBreak +
+          DisplayErrorMessage(RsBoxAlreadyAccepted + sLineBreak +
             RsEnterBoxBarcode);
         end;
       end
       else
       begin
-        DisplayErrorMessage('Короб с указанным штрих-кодом не подготовлен для сдачи в архив' +
+        DisplayErrorMessage(RsBoxNotReadyToAcceptance +
           sLineBreak + RsEnterBoxBarcode);
       end;
     end
     else
     begin
-      DisplayErrorMessage('Не удалось найти данные по коробу с указанным штрих-кодом' + sLineBreak +
+      DisplayErrorMessage(RsBarcodeNotFound + sLineBreak +
         RsEnterBoxBarcode);
     end;
   end
   else
   begin
-    DisplayErrorMessage('Введён неизвестный штрих-код' + sLineBreak + RsEnterBoxBarcode);
+    DisplayErrorMessage(RsWrongBarcode + sLineBreak + RsEnterBoxBarcode);
     Exit;
   end;
   UpdateInfo;

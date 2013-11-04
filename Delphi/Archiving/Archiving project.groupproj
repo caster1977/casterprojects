@@ -9,10 +9,10 @@
         <Projects Include="ArchivingBoxCapacityConfig\Src\ArchivingBoxCapacityConfig.dproj">
             <Dependencies>ArchivingCommons\Src\ArchivingCommons.dproj</Dependencies>
         </Projects>
-        <Projects Include="Archiving\Src\Archiving.dproj">
+        <Projects Include="AcceptanceOfBoxesToArchive\Src\AcceptanceOfBoxesToArchive.dproj">
             <Dependencies>ArchivingCommons\Src\ArchivingCommons.dproj</Dependencies>
         </Projects>
-        <Projects Include="AcceptanceOfBoxesToArchive\Src\AcceptanceOfBoxesToArchive.dproj">
+        <Projects Include="Archiving\Src\Archiving.dproj">
             <Dependencies>ArchivingCommons\Src\ArchivingCommons.dproj</Dependencies>
         </Projects>
     </ItemGroup>
@@ -41,15 +41,6 @@
     <Target Name="ArchivingBoxCapacityConfig:Make" DependsOnTargets="ArchivingCommons:Make">
         <MSBuild Projects="ArchivingBoxCapacityConfig\Src\ArchivingBoxCapacityConfig.dproj" Targets="Make"/>
     </Target>
-    <Target Name="Archiving" DependsOnTargets="ArchivingCommons">
-        <MSBuild Projects="Archiving\Src\Archiving.dproj"/>
-    </Target>
-    <Target Name="Archiving:Clean" DependsOnTargets="ArchivingCommons:Clean">
-        <MSBuild Projects="Archiving\Src\Archiving.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="Archiving:Make" DependsOnTargets="ArchivingCommons:Make">
-        <MSBuild Projects="Archiving\Src\Archiving.dproj" Targets="Make"/>
-    </Target>
     <Target Name="AcceptanceOfBoxesToArchive" DependsOnTargets="ArchivingCommons">
         <MSBuild Projects="AcceptanceOfBoxesToArchive\Src\AcceptanceOfBoxesToArchive.dproj"/>
     </Target>
@@ -59,14 +50,23 @@
     <Target Name="AcceptanceOfBoxesToArchive:Make" DependsOnTargets="ArchivingCommons:Make">
         <MSBuild Projects="AcceptanceOfBoxesToArchive\Src\AcceptanceOfBoxesToArchive.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Archiving" DependsOnTargets="ArchivingCommons">
+        <MSBuild Projects="Archiving\Src\Archiving.dproj"/>
+    </Target>
+    <Target Name="Archiving:Clean" DependsOnTargets="ArchivingCommons:Clean">
+        <MSBuild Projects="Archiving\Src\Archiving.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Archiving:Make" DependsOnTargets="ArchivingCommons:Make">
+        <MSBuild Projects="Archiving\Src\Archiving.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="ArchivingCommons;ArchivingBoxCapacityConfig;Archiving;AcceptanceOfBoxesToArchive"/>
+        <CallTarget Targets="ArchivingCommons;ArchivingBoxCapacityConfig;AcceptanceOfBoxesToArchive;Archiving"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ArchivingCommons:Clean;ArchivingBoxCapacityConfig:Clean;Archiving:Clean;AcceptanceOfBoxesToArchive:Clean"/>
+        <CallTarget Targets="ArchivingCommons:Clean;ArchivingBoxCapacityConfig:Clean;AcceptanceOfBoxesToArchive:Clean;Archiving:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ArchivingCommons:Make;ArchivingBoxCapacityConfig:Make;Archiving:Make;AcceptanceOfBoxesToArchive:Make"/>
+        <CallTarget Targets="ArchivingCommons:Make;ArchivingBoxCapacityConfig:Make;AcceptanceOfBoxesToArchive:Make;Archiving:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
