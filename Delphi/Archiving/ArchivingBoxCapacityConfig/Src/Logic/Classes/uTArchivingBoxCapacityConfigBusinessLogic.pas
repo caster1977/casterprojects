@@ -37,6 +37,7 @@ type
 
 const
   SP_SYS_SET_FLAG_VALUE_INT = 'sys_set_FlagValueInt';
+  SP_ARCHIVING_SEL_CURRENT_MINIMUM_ARCHIVE_BOX_CAPACITY = 'Archiving_sel_CurrentMinimumArchiveBoxCapacity';
 
 implementation
 
@@ -44,16 +45,12 @@ uses
   SysUtils,
   Forms,
   Controls,
+  uArchivingCommonConsts,
   uArchivingCommonRoutines,
   uIArchiveBoxTypeItem,
   uTArchiveBoxTypeList;
 
 const
-  FIELD_ID = 'Id';
-  FIELD_NAME = 'Name';
-  FIELD_CAPACITY = 'Capacity';
-  FIELD_RESULT = 'Result';
-
   EDIT_MASK = '9999;0; ';
 
 resourcestring
@@ -278,7 +275,7 @@ begin
   old_cursor := Screen.Cursor;
   Screen.Cursor := crSQLWait;
   try
-    SetSQLForQuery(Query, Format('Archiving_sel_CurrentMinimumArchiveBoxCapacity %d', [AArchiveBoxTypeId]), True);
+    SetSQLForQuery(Query, Format(SP_ARCHIVING_SEL_CURRENT_MINIMUM_ARCHIVE_BOX_CAPACITY + ' %d', [AArchiveBoxTypeId]), True);
     try
       if not Query.Eof then
       begin
