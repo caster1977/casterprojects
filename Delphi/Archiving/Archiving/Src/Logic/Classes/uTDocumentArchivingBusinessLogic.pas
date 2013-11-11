@@ -1201,42 +1201,49 @@ begin
         end;
       end;
 
-      if not CurrentBoxIsFull then
+      if (Step = 0) and (AnalizeBarcode(AString) = dabtCauseOfDamage) then
       begin
-        AddDocument(AString);
+        DisplayErrorMessage(RsEnterBarcodeOfDocumentOrCommand);
       end
       else
       begin
-        DisplayErrorMessage(RsCantAddDocumentToTheCurrentBoxCauseCurrentBoxIsFull + sLineBreak +
-          RsEnterBarcodeOfDocumentOrCommand);
-      end;
-
-      if Assigned(CurrentBox) then
-      begin
-        if Assigned(CurrentBox.Documents) then
+        if not CurrentBoxIsFull then
         begin
-          if (CurrentBox.Documents.Count = 2) and (not CurrentBox.StickerPrinted) then
+          AddDocument(AString);
+        end
+        else
+        begin
+          DisplayErrorMessage(RsCantAddDocumentToTheCurrentBoxCauseCurrentBoxIsFull + sLineBreak +
+            RsEnterBarcodeOfDocumentOrCommand);
+        end;
+
+        if Assigned(CurrentBox) then
+        begin
+          if Assigned(CurrentBox.Documents) then
           begin
-            if PrintCurrentBoxSticker then
+            if (CurrentBox.Documents.Count = 2) and (not CurrentBox.StickerPrinted) then
             begin
-              DisplaySuccessMessage(RsDocumentSuccessfullyAddedToCurrentBox + sLineBreak + RsStickerWasAutoPrinted +
-                sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
+              if PrintCurrentBoxSticker then
+              begin
+                DisplaySuccessMessage(RsDocumentSuccessfullyAddedToCurrentBox + sLineBreak + RsStickerWasAutoPrinted +
+                  sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
+              end;
             end;
           end;
         end;
-      end;
 
-      if CurrentBoxIsFull then
-      begin
-        UpdateCurrentInfo;
-        if MessageBox(Application.Handle, {$IFNDEF VER150} PWideChar {$ELSE} PChar
+        if CurrentBoxIsFull then
+        begin
+          UpdateCurrentInfo;
+          if MessageBox(Application.Handle, {$IFNDEF VER150} PWideChar {$ELSE} PChar
 {$ENDIF}(RsDoYouWantToCloseCurrentBoxCauseItIsFull),
 {$IFNDEF VER150} PWideChar {$ELSE} PChar
 {$ENDIF}(RsConfirmation), MB_OKCANCEL + MB_ICONWARNING + MB_DEFBUTTON1) = IDOK then
-        begin
-          if CloseCurrentBox then
           begin
-            DisplaySuccessMessage(RsCurrentBoxWasFilledAndClosed + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
+            if CloseCurrentBox then
+            begin
+              DisplaySuccessMessage(RsCurrentBoxWasFilledAndClosed + sLineBreak + RsEnterBarcodeOfDocumentOrCommand);
+            end;
           end;
         end;
       end;
