@@ -60,7 +60,7 @@ begin
         begin
           if not Assigned(CurrentBox) then
           begin
-            i := GetOpenedBoxQuantity(ArchiveBoxTypeId, CurrentDocument.CompanyId);
+            i := GetOpenedBoxQuantity(ArchiveBoxTypeId, CurrentDocument.CompanyId, CurrentDocument.Year);
             if i = 0 then
             begin
               CurrentBox := CreateArchiveBoxByDocument(CurrentDocument);
@@ -102,5 +102,9 @@ begin
     end;
   end;
 end;
+
+{ TODO :
+реализовать простановку статуса "отгружена" с датой отгрузки равной дате ТТН
+для накладных типа 1 }
 
 end.

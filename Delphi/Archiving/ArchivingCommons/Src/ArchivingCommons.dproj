@@ -146,6 +146,10 @@
         </DCCReference>
         <DCCReference Include="Common\uArchivingCommonConsts.pas"/>
         <DCCReference Include="Common\uArchivingCommonResourceStrings.pas"/>
+        <DCCReference Include="UI\uTItemSelectionForm.pas">
+            <Form>ItemSelectionForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <None Include="ModelSupport_ArchivingCommons\default.txaPackage"/>
         <None Include="ModelSupport_ArchivingCommons\default.txvpck"/>
         <None Include="ModelSupport_ArchivingCommons\uTArchiveDocumentItem\default.txvpck"/>

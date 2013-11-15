@@ -112,7 +112,8 @@ begin
                     end;
                     if not Assigned(CurrentBox) then
                     begin
-                      if GetOpenedBoxQuantity(ArchiveBoxTypeId, CurrentDocument.CompanyId) = 0 then
+                      if GetOpenedBoxQuantity(ArchiveBoxTypeId, CurrentDocument.CompanyId, CurrentDocument.Year) = 0
+                      then
                       begin
                         CurrentBox := CreateArchiveBoxByDocument(CurrentDocument);
                         if Assigned(CurrentBox) then

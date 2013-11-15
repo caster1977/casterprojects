@@ -49,6 +49,7 @@ type
     btnClose: TButton;
     actClose: TAction;
     lblHint: TLabel;
+    Button1: TButton;
     procedure actCloseExecute(Sender: TObject);
     procedure actPrintStickerExecute(Sender: TObject);
     procedure actPrintStickerUpdate(Sender: TObject);
@@ -56,6 +57,7 @@ type
     procedure actDeleteLastDocumentExecute(Sender: TObject);
     procedure actDeleteLastDocumentUpdate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure Button1Click(Sender: TObject);
   private
     FLogic: IDocumentArchivingBusinessLogic;
     function GetLogic: IDocumentArchivingBusinessLogic;
@@ -76,6 +78,8 @@ implementation
 {$R *.dfm}
 
 uses
+  uTItemSelectionForm,
+  uTArchiveCompanyItem,
   uTDocumentArchivingBarcodeType,
   uArchivingCommonRoutines,
   uIArchiveBoxItem,
@@ -217,6 +221,11 @@ begin
     b := Logic.GetCurrentBoxDocumentCount > 1;
   end;
   (Sender as TAction).Enabled := b;
+end;
+
+procedure TArchivingMainForm.Button1Click(Sender: TObject);
+begin
+//  ShowItemSelectionForm(ADOConnection, 'Список компаний', , '#tmp_archive_companies');
 end;
 
 procedure TArchivingMainForm.edBarcodeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
