@@ -216,10 +216,13 @@ type
     /// <param name="ACompanyId">
     /// Идентификатор компании
     /// </param>
+    /// <param name="AYear">
+    /// Год короба
+    /// </param>
     /// <returns>
     /// Количество коробов
     /// </returns>
-    function GetOpenedBoxQuantity(const ATypeId, ACompanyId: Integer): Integer; overload;
+    function GetOpenedBoxQuantity(const ATypeId, ACompanyId, AYear: Integer): Integer; overload;
 
     /// <summary>
     /// Процедура добавления в текущий короб документа с указанным штрих-кодом
@@ -456,21 +459,22 @@ begin
       box := TArchiveBoxItem.Create(Connection, ADocument.ArchiveBoxId);
       if Assigned(box) then
       begin
-        if (box.TypeId > -1) and (box.CompanyId > -1) then
+        if (box.TypeId > -1) and (box.CompanyId > -1) and (box.Year > -1) then
         begin
-          Result := GetOpenedBoxQuantity(box.TypeId, box.CompanyId);
+          Result := GetOpenedBoxQuantity(box.TypeId, box.CompanyId, box.Year);
         end;
       end;
     end;
   end;
 end;
 
-function TDocumentArchivingBusinessLogic.GetOpenedBoxQuantity(const ATypeId, ACompanyId: Integer): Integer;
+function TDocumentArchivingBusinessLogic.GetOpenedBoxQuantity(const ATypeId, ACompanyId, AYear: Integer): Integer;
 begin
   Result := -1;
   if (ATypeId > -1) and (ACompanyId > -1) then
   begin
-    SetSQLForQuery(Query, Format(SP_ARCHIVING_SEL_OPENED_ARCHIVE_BOX_COUNT + ' %d, %d', [ATypeId, ACompanyId]), True);
+    SetSQLForQuery(Query, Format(SP_ARCHIVING_SEL_OPENED_ARCHIVE_BOX_COUNT + ' %d, %d, %d',
+      [ATypeId, ACompanyId, AYear]), True);
     try
       if not Query.Eof then
       begin
@@ -1318,5 +1322,7 @@ begin
     FreeAndNil(form);
   end;
 end;
+
+{ TODO : реализовать перенумерацию документов в коробе в обратном порядке при закрытии короба }
 
 end.

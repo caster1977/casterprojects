@@ -41,6 +41,15 @@ object ArchivingMainForm: TArchivingMainForm
       Cancel = True
       TabOrder = 0
     end
+    object Button1: TButton
+      Left = 176
+      Top = 6
+      Width = 75
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 1
+      OnClick = Button1Click
+    end
   end
   object ToolBar: TToolBar
     Left = 0
@@ -199,7 +208,7 @@ object ArchivingMainForm: TArchivingMainForm
     Left = 336
     Top = 376
     Bitmap = {
-      494C01010B008800E00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B008800200110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000F6F6F609ECECEC13E9E9E916E9E9E916F0F0F00FFCFCFC030000

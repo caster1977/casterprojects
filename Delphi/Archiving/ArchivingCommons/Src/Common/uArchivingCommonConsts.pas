@@ -5,6 +5,7 @@ interface
 const
   BOX_BARCODE_FORMAT = '%.2d%.2d%s%.6d';
   DATE_TIME_FORMAT = 'yyyy-mm-dd hh:nn:ss';
+  CONST_TMP_TABLE_PREFIX = '#tmp';
 
   CONST_BARCODE = 'Barcode';
   CONST_DOCUMENT_COUNT = 'DocumentCount';
