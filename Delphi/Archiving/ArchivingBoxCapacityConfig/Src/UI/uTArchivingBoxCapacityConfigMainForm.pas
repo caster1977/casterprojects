@@ -144,8 +144,15 @@ end;
 
 procedure TArchivingBoxCapacityConfigMainForm.vleArchiveBoxCapacityValidate(Sender: TObject; ACol, ARow: Integer;
   const KeyName, KeyValue: string);
+var
+  i: Integer;
 begin
-  vleArchiveBoxCapacity.Values[KeyName] := IntToStr(StrToIntDef(Trim(KeyValue), 0));
+  i := StrToIntDef(Trim(KeyValue), 1);
+  if i < 1 then
+  begin
+    i := 1;
+  end;
+  vleArchiveBoxCapacity.Values[KeyName] := IntToStr(i);
 end;
 
 { TODO : запретить устанавливать объём короба равным нулю }
