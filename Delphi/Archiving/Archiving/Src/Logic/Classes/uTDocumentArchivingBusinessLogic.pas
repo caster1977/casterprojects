@@ -386,7 +386,7 @@ resourcestring
   RsDocumentNotAcceptedByAcceptanceRegister = 'Документ не принят по реестру ЛП';
   RsCantAddDocumentToTheCurrentBoxCauseCurrentBoxIsFull =
     'Нельзя добавлять документы в короб, т.к. текущий короб был заполнен';
-  RsDocumentSuccessfullyAddedToCurrentBox = 'Документ был успешно добавлен втекущий короб';
+  RsDocumentSuccessfullyAddedToCurrentBox = 'Документ был успешно добавлен в текущий короб';
   RsStickerWasAutoPrinted = 'Стикер на текущий короб распечатан автоматически';
   RsDoYouWantToCloseCurrentBoxCauseItIsFull = 'Текущий короб заполнен. Вы хотите закрыть текущий короб?';
   RsCurrentBoxWasFilledAndClosed = 'Текущий короб заполнен и был закрыт';
@@ -641,6 +641,10 @@ begin
 end;
 
 function TDocumentArchivingBusinessLogic.CloseBox(const ABox: IArchiveBoxItem): Boolean;
+var
+  i: Integer;
+  j: Integer;
+  a: ICustomBSOItem;
 begin
   Result := False;
   if Assigned(ABox) then
@@ -656,6 +660,14 @@ begin
           begin
             ABox.ClosureDate := Now;
             ABox.Closed := True;
+            j := ABox.Documents.Count;
+            for i := 0 to j - 1 do
+            begin
+              if Supports(ABox.Documents[i], ICustomBSOItem, a) then
+              begin
+                a.SequenceNumber := j - (a.SequenceNumber - 1);
+              end;
+            end;
           end;
         end;
       end;
@@ -779,8 +791,15 @@ begin
       Result := CurrentBox.Save;
       if Result then
       begin
-        CurrentBox := nil;
-        UpdateCurrentInfo;
+        if Assigned(CurrentBox.Documents) then
+        begin
+          Result := CurrentBox.Documents.Save;
+          if Result then
+          begin
+            CurrentBox := nil;
+            UpdateCurrentInfo;
+          end;
+        end;
       end;
     end;
   end;

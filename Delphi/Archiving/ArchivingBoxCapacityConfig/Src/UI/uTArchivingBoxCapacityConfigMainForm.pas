@@ -155,6 +155,4 @@ begin
   vleArchiveBoxCapacity.Values[KeyName] := IntToStr(i);
 end;
 
-{ TODO : запретить устанавливать объём короба равным нулю }
-
 end.
