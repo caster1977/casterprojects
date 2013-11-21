@@ -29,6 +29,8 @@ type
     ToolButton12: TToolButton;
     ToolButton14: TToolButton;
     ToolButton16: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton4: TToolButton;
   private
     { Private declarations }
   public

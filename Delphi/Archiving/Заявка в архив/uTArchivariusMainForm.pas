@@ -3,263 +3,72 @@ unit uTArchivariusMainForm;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ToolWin, cxGraphics,
-  cxControls, cxLookAndFeels, cxLookAndFeelPainters, cxStyles, cxCustomData,
-  cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData,
-  cxContainer, cxGroupBox, cxSplitter, cxGridLevel, cxClasses, cxGridCustomView,
-  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid, Vcl.ImgList,
-  Vcl.ExtCtrls, cxPCdxBarPopupMenu, cxPC, cxGridBandedTableView,
-  cxGridDBBandedTableView;
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.ComCtrls,
+  Vcl.ToolWin,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxEdit,
+  cxNavigator,
+  Data.DB,
+  cxDBData,
+  cxContainer,
+  cxGroupBox,
+  cxSplitter,
+  cxGridLevel,
+  cxClasses,
+  cxGridCustomView,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxGrid,
+  Vcl.ImgList,
+  Vcl.ExtCtrls,
+  cxPCdxBarPopupMenu,
+  cxPC,
+  cxGridBandedTableView,
+  cxGridDBBandedTableView,
+  System.Actions,
+  Vcl.ActnList;
 
 type
   TArchivariusMainForm = class(TForm)
     StatusBar1: TStatusBar;
-    PageControl1: TPageControl;
-    TabSheet1: TTabSheet;
-    TabSheet2: TTabSheet;
-    TabSheet3: TTabSheet;
-    TabSheet4: TTabSheet;
-    cxGrid2: TcxGrid;
-    cxGridDBTableView1: TcxGridDBTableView;
-    cxGridLevel1: TcxGridLevel;
-    cxGroupBox2: TcxGroupBox;
-    cxGridDBTableView1Column1: TcxGridDBColumn;
-    cxGridDBTableView1Column2: TcxGridDBColumn;
-    cxGridDBTableView1Column3: TcxGridDBColumn;
-    cxGridDBTableView1Column4: TcxGridDBColumn;
-    cxGridDBTableView1Column5: TcxGridDBColumn;
     ImageList1: TImageList;
-    ToolBar1: TToolBar;
-    ToolButton7: TToolButton;
-    ToolButton4: TToolButton;
-    ToolButton5: TToolButton;
-    ToolButton2: TToolButton;
-    ToolButton11: TToolButton;
-    ToolButton8: TToolButton;
-    cxGridDBTableView1Column6: TcxGridDBColumn;
-    ToolBar3: TToolBar;
-    ToolButton17: TToolButton;
-    ToolButton18: TToolButton;
-    ToolButton19: TToolButton;
-    ToolButton21: TToolButton;
-    ToolButton22: TToolButton;
-    ToolButton23: TToolButton;
-    ToolButton13: TToolButton;
-    cxGroupBox3: TcxGroupBox;
-    cxGrid3: TcxGrid;
-    cxGridDBTableView2: TcxGridDBTableView;
-    cxGridDBColumn1: TcxGridDBColumn;
-    cxGridDBColumn2: TcxGridDBColumn;
-    cxGridDBColumn3: TcxGridDBColumn;
-    cxGridDBColumn4: TcxGridDBColumn;
-    cxGridDBColumn5: TcxGridDBColumn;
-    cxGridDBColumn6: TcxGridDBColumn;
-    cxGridLevel2: TcxGridLevel;
-    ToolBar4: TToolBar;
-    ToolButton20: TToolButton;
-    ToolButton24: TToolButton;
-    ToolButton25: TToolButton;
-    ToolButton26: TToolButton;
-    ToolButton27: TToolButton;
-    ToolButton29: TToolButton;
-    ToolButton30: TToolButton;
-    ToolButton31: TToolButton;
-    cxSplitter2: TcxSplitter;
-    TabSheet5: TTabSheet;
-    ToolButton28: TToolButton;
-    cxGroupBox5: TcxGroupBox;
-    cxGrid5: TcxGrid;
-    cxGridDBTableView4: TcxGridDBTableView;
-    cxGridDBColumn14: TcxGridDBColumn;
-    cxGridDBColumn15: TcxGridDBColumn;
-    cxGridDBColumn16: TcxGridDBColumn;
-    cxGridDBColumn17: TcxGridDBColumn;
-    cxGridDBColumn19: TcxGridDBColumn;
-    cxGridLevel4: TcxGridLevel;
-    ToolBar6: TToolBar;
-    ToolButton34: TToolButton;
-    ToolButton35: TToolButton;
-    ToolButton36: TToolButton;
-    ToolButton39: TToolButton;
-    ToolButton40: TToolButton;
-    ToolButton41: TToolButton;
-    ToolButton42: TToolButton;
-    ToolButton43: TToolButton;
-    ToolButton44: TToolButton;
-    cxSplitter3: TcxSplitter;
-    ToolButton49: TToolButton;
-    ToolButton50: TToolButton;
-    ToolButton51: TToolButton;
-    cxPageControl1: TcxPageControl;
-    cxTabSheet2: TcxTabSheet;
-    cxTabSheet3: TcxTabSheet;
-    ToolBar9: TToolBar;
-    ToolButton56: TToolButton;
-    ToolButton57: TToolButton;
-    ToolButton58: TToolButton;
-    ToolButton59: TToolButton;
-    cxGrid8: TcxGrid;
-    cxGridDBTableView7: TcxGridDBTableView;
-    cxGridDBColumn26: TcxGridDBColumn;
-    cxGridDBColumn32: TcxGridDBColumn;
-    cxGridDBColumn33: TcxGridDBColumn;
-    cxGridDBColumn34: TcxGridDBColumn;
-    cxGridDBColumn35: TcxGridDBColumn;
-    cxGridDBColumn36: TcxGridDBColumn;
-    cxGridLevel7: TcxGridLevel;
-    ToolBar8: TToolBar;
-    ToolButton52: TToolButton;
-    ToolButton53: TToolButton;
-    ToolButton54: TToolButton;
-    ToolButton55: TToolButton;
-    cxGrid6: TcxGrid;
-    cxGridDBTableView5: TcxGridDBTableView;
-    cxGridDBColumn20: TcxGridDBColumn;
-    cxGridDBColumn21: TcxGridDBColumn;
-    cxGridDBColumn22: TcxGridDBColumn;
-    cxGridDBColumn23: TcxGridDBColumn;
-    cxGridDBColumn24: TcxGridDBColumn;
-    cxGridDBColumn25: TcxGridDBColumn;
-    cxGridDBColumn37: TcxGridDBColumn;
-    cxGridLevel5: TcxGridLevel;
-    cxPageControl2: TcxPageControl;
-    cxTabSheet5: TcxTabSheet;
-    ToolBar10: TToolBar;
-    ToolButton60: TToolButton;
-    ToolButton61: TToolButton;
-    ToolButton62: TToolButton;
-    ToolButton63: TToolButton;
-    cxGrid9: TcxGrid;
-    cxGridDBTableView8: TcxGridDBTableView;
-    cxGridDBColumn13: TcxGridDBColumn;
-    cxGridDBColumn38: TcxGridDBColumn;
-    cxGridDBColumn39: TcxGridDBColumn;
-    cxGridDBColumn40: TcxGridDBColumn;
-    cxGridDBColumn41: TcxGridDBColumn;
-    cxGridDBColumn42: TcxGridDBColumn;
-    cxGridLevel8: TcxGridLevel;
-    cxTabSheet6: TcxTabSheet;
-    ToolBar11: TToolBar;
-    ToolButton64: TToolButton;
-    ToolButton65: TToolButton;
-    ToolButton66: TToolButton;
-    ToolButton67: TToolButton;
-    cxGrid10: TcxGrid;
-    cxGridDBTableView9: TcxGridDBTableView;
-    cxGridDBColumn43: TcxGridDBColumn;
-    cxGridDBColumn44: TcxGridDBColumn;
-    cxGridDBColumn45: TcxGridDBColumn;
-    cxGridDBColumn46: TcxGridDBColumn;
-    cxGridDBColumn47: TcxGridDBColumn;
-    cxGridDBColumn48: TcxGridDBColumn;
-    cxGridDBColumn49: TcxGridDBColumn;
-    cxGridLevel9: TcxGridLevel;
-    cxGroupBox4: TcxGroupBox;
-    ToolBar5: TToolBar;
-    ToolButton32: TToolButton;
-    ToolButton33: TToolButton;
-    ToolButton37: TToolButton;
-    ToolButton68: TToolButton;
-    ToolButton69: TToolButton;
-    ToolButton70: TToolButton;
-    cxGrid4: TcxGrid;
-    cxGridDBTableView3: TcxGridDBTableView;
-    cxGrid1DBBandedTableView1: TcxGridDBBandedTableView;
-    cxGridLevel3: TcxGridLevel;
-    cxGrid1DBBandedTableView1Column1: TcxGridDBBandedColumn;
-    cxGroupBox6: TcxGroupBox;
-    cxGrid11: TcxGrid;
-    cxGridDBTableView10: TcxGridDBTableView;
-    cxGridDBColumn7: TcxGridDBColumn;
-    cxGridDBColumn8: TcxGridDBColumn;
-    cxGridDBColumn9: TcxGridDBColumn;
-    cxGridDBColumn10: TcxGridDBColumn;
-    cxGridDBColumn11: TcxGridDBColumn;
-    cxGridLevel10: TcxGridLevel;
-    ToolBar12: TToolBar;
-    ToolButton38: TToolButton;
-    ToolButton71: TToolButton;
-    ToolButton72: TToolButton;
-    ToolButton73: TToolButton;
-    ToolButton74: TToolButton;
-    ToolButton75: TToolButton;
-    ToolButton76: TToolButton;
-    ToolButton77: TToolButton;
-    ToolButton78: TToolButton;
-    ToolButton79: TToolButton;
-    ToolButton80: TToolButton;
-    ToolButton81: TToolButton;
-    cxPageControl3: TcxPageControl;
-    cxTabSheet7: TcxTabSheet;
-    ToolBar14: TToolBar;
-    ToolButton86: TToolButton;
-    ToolButton87: TToolButton;
-    ToolButton88: TToolButton;
-    ToolButton89: TToolButton;
-    cxGrid13: TcxGrid;
-    cxGridDBTableView12: TcxGridDBTableView;
-    cxGridDBColumn55: TcxGridDBColumn;
-    cxGridDBColumn56: TcxGridDBColumn;
-    cxGridDBColumn57: TcxGridDBColumn;
-    cxGridDBColumn58: TcxGridDBColumn;
-    cxGridDBColumn59: TcxGridDBColumn;
-    cxGridDBColumn60: TcxGridDBColumn;
-    cxGridLevel12: TcxGridLevel;
-    cxTabSheet8: TcxTabSheet;
-    ToolBar15: TToolBar;
-    ToolButton90: TToolButton;
-    ToolButton91: TToolButton;
-    ToolButton92: TToolButton;
-    ToolButton93: TToolButton;
-    cxGrid14: TcxGrid;
-    cxGridDBTableView13: TcxGridDBTableView;
-    cxGridDBColumn61: TcxGridDBColumn;
-    cxGridDBColumn62: TcxGridDBColumn;
-    cxGridDBColumn63: TcxGridDBColumn;
-    cxGridDBColumn64: TcxGridDBColumn;
-    cxGridDBColumn65: TcxGridDBColumn;
-    cxGridDBColumn66: TcxGridDBColumn;
-    cxGridDBColumn67: TcxGridDBColumn;
-    cxGridLevel13: TcxGridLevel;
-    cxSplitter4: TcxSplitter;
-    cxTabSheet4: TcxTabSheet;
-    ToolBar13: TToolBar;
-    ToolButton82: TToolButton;
-    ToolButton83: TToolButton;
-    ToolButton84: TToolButton;
-    ToolButton85: TToolButton;
-    cxGrid12: TcxGrid;
-    cxGridDBTableView11: TcxGridDBTableView;
-    cxGridDBColumn12: TcxGridDBColumn;
-    cxGridDBColumn50: TcxGridDBColumn;
-    cxGridDBColumn51: TcxGridDBColumn;
-    cxGridDBColumn52: TcxGridDBColumn;
-    cxGridDBColumn53: TcxGridDBColumn;
-    cxGridDBColumn54: TcxGridDBColumn;
-    cxGridLevel11: TcxGridLevel;
-    ToolButton45: TToolButton;
-    ToolButton46: TToolButton;
-    TabSheet6: TTabSheet;
     cxPageControl4: TcxPageControl;
-    cxTabSheet9: TcxTabSheet;
-    ToolBar7: TToolBar;
-    ToolButton47: TToolButton;
-    ToolButton48: TToolButton;
-    ToolButton94: TToolButton;
-    ToolButton95: TToolButton;
-    ToolButton96: TToolButton;
-    ToolButton97: TToolButton;
-    ToolButton98: TToolButton;
-    ToolButton99: TToolButton;
-    cxGrid15: TcxGrid;
-    cxGridDBTableView14: TcxGridDBTableView;
-    cxGridDBBandedTableView2: TcxGridDBBandedTableView;
-    cxGridDBBandedColumn1: TcxGridDBBandedColumn;
-    cxGridLevel14: TcxGridLevel;
     cxTabSheet10: TcxTabSheet;
     cxTabSheet13: TcxTabSheet;
-    cxGroupBox8: TcxGroupBox;
+    ToolBar18: TToolBar;
+    ToolButton108: TToolButton;
+    ToolButton109: TToolButton;
+    ToolButton112: TToolButton;
+    ToolButton113: TToolButton;
+    ToolButton114: TToolButton;
+    ToolButton116: TToolButton;
+    cxGrid18: TcxGrid;
+    cxGridDBTableView17: TcxGridDBTableView;
+    cxGridDBColumn75: TcxGridDBColumn;
+    cxGridDBColumn76: TcxGridDBColumn;
+    cxGridDBColumn77: TcxGridDBColumn;
+    cxGridDBColumn78: TcxGridDBColumn;
+    cxGridDBColumn79: TcxGridDBColumn;
+    cxGridDBColumn80: TcxGridDBColumn;
+    cxGridLevel17: TcxGridLevel;
     cxGrid19: TcxGrid;
     cxGridDBTableView18: TcxGridDBTableView;
     cxGridDBColumn81: TcxGridDBColumn;
@@ -271,87 +80,24 @@ type
     ToolBar19: TToolBar;
     ToolButton117: TToolButton;
     ToolButton118: TToolButton;
-    ToolButton119: TToolButton;
-    ToolButton120: TToolButton;
     ToolButton121: TToolButton;
-    ToolButton122: TToolButton;
     ToolButton123: TToolButton;
-    ToolButton124: TToolButton;
-    ToolButton125: TToolButton;
-    ToolButton126: TToolButton;
-    ToolButton127: TToolButton;
     ToolButton128: TToolButton;
-    cxPageControl6: TcxPageControl;
-    cxTabSheet14: TcxTabSheet;
-    ToolBar20: TToolBar;
-    ToolButton129: TToolButton;
-    ToolButton130: TToolButton;
-    ToolButton131: TToolButton;
-    ToolButton132: TToolButton;
-    cxGrid20: TcxGrid;
-    cxGridDBTableView19: TcxGridDBTableView;
-    cxGridDBColumn86: TcxGridDBColumn;
-    cxGridDBColumn87: TcxGridDBColumn;
-    cxGridDBColumn88: TcxGridDBColumn;
-    cxGridDBColumn89: TcxGridDBColumn;
-    cxGridDBColumn90: TcxGridDBColumn;
-    cxGridDBColumn91: TcxGridDBColumn;
-    cxGridLevel19: TcxGridLevel;
-    cxTabSheet15: TcxTabSheet;
-    ToolBar21: TToolBar;
-    ToolButton133: TToolButton;
-    ToolButton134: TToolButton;
-    ToolButton135: TToolButton;
-    ToolButton136: TToolButton;
-    cxGrid21: TcxGrid;
-    cxGridDBTableView20: TcxGridDBTableView;
-    cxGridDBColumn92: TcxGridDBColumn;
-    cxGridDBColumn93: TcxGridDBColumn;
-    cxGridDBColumn94: TcxGridDBColumn;
-    cxGridDBColumn95: TcxGridDBColumn;
-    cxGridDBColumn96: TcxGridDBColumn;
-    cxGridDBColumn97: TcxGridDBColumn;
-    cxGridLevel20: TcxGridLevel;
-    cxTabSheet16: TcxTabSheet;
-    ToolBar22: TToolBar;
-    ToolButton137: TToolButton;
-    ToolButton138: TToolButton;
-    ToolButton139: TToolButton;
-    ToolButton140: TToolButton;
-    cxGrid22: TcxGrid;
-    cxGridDBTableView21: TcxGridDBTableView;
-    cxGridDBColumn98: TcxGridDBColumn;
-    cxGridDBColumn99: TcxGridDBColumn;
-    cxGridDBColumn100: TcxGridDBColumn;
-    cxGridDBColumn101: TcxGridDBColumn;
-    cxGridDBColumn102: TcxGridDBColumn;
-    cxGridDBColumn103: TcxGridDBColumn;
-    cxGridDBColumn104: TcxGridDBColumn;
-    cxGridLevel21: TcxGridLevel;
-    cxSplitter6: TcxSplitter;
-    ToolBar18: TToolBar;
-    ToolButton108: TToolButton;
-    ToolButton109: TToolButton;
-    ToolButton110: TToolButton;
-    ToolButton111: TToolButton;
-    ToolButton112: TToolButton;
-    ToolButton113: TToolButton;
-    ToolButton114: TToolButton;
-    ToolButton115: TToolButton;
-    ToolButton116: TToolButton;
-    cxGrid18: TcxGrid;
-    cxGridDBTableView17: TcxGridDBTableView;
-    cxGridDBColumn75: TcxGridDBColumn;
-    cxGridDBColumn76: TcxGridDBColumn;
-    cxGridDBColumn77: TcxGridDBColumn;
-    cxGridDBColumn78: TcxGridDBColumn;
-    cxGridDBColumn79: TcxGridDBColumn;
-    cxGridDBColumn80: TcxGridDBColumn;
-    cxGridLevel17: TcxGridLevel;
-  private
-    { Private declarations }
-  public
-    { Public declarations }
+    ActionList1: TActionList;
+    actRejectQuery: TAction;
+    actIssuanceByQuery: TAction;
+    actDeleteSelectionJob: TAction;
+    actDocumentSelectionBySelectionJob: TAction;
+    actRefresh: TAction;
+    actExportToExcel: TAction;
+    ToolButton2: TToolButton;
+    ToolButton4: TToolButton;
+    procedure actRejectQueryExecute(Sender: TObject);
+    procedure actIssuanceByQueryExecute(Sender: TObject);
+    procedure actDeleteSelectionJobExecute(Sender: TObject);
+    procedure actRefreshExecute(Sender: TObject);
+    procedure actExportToExcelExecute(Sender: TObject);
+    procedure actDocumentSelectionBySelectionJobExecute(Sender: TObject);
   end;
 
 var
@@ -360,5 +106,39 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TArchivariusMainForm.actDeleteSelectionJobExecute(Sender: TObject);
+begin
+  MessageBox(Handle, PWideChar('Вы действительно хотите удалить выделенное задание на отбор документов?'),
+    PWideChar('Подтверждение удаления задания на отбор документов'), MB_OKCANCEL + MB_ICONWARNING + MB_DEFBUTTON2);
+end;
+
+procedure TArchivariusMainForm.actDocumentSelectionBySelectionJobExecute(
+  Sender: TObject);
+begin
+  //
+end;
+
+procedure TArchivariusMainForm.actExportToExcelExecute(Sender: TObject);
+begin
+  //
+end;
+
+procedure TArchivariusMainForm.actIssuanceByQueryExecute(Sender: TObject);
+begin
+  MessageBox(Handle, PWideChar('Вы действительно хотите выдать документы из архива согласно выделенному запросу?'),
+    PWideChar('Подтверждение выдачи документов согласно запроса'), MB_OKCANCEL + MB_ICONWARNING + MB_DEFBUTTON2);
+end;
+
+procedure TArchivariusMainForm.actRefreshExecute(Sender: TObject);
+begin
+  //
+end;
+
+procedure TArchivariusMainForm.actRejectQueryExecute(Sender: TObject);
+begin
+  MessageBox(Handle, PWideChar('Вы действительно хотите отклонить выделенный запрос на выдачу документов из архива?'),
+    PWideChar('Подтверждение отклонения запроса на выдачу'), MB_OKCANCEL + MB_ICONWARNING + MB_DEFBUTTON2);
+end;
 
 end.

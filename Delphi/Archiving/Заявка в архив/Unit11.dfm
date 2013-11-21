@@ -1,11 +1,10 @@
-object Form6: TForm6
+object Form11: TForm11
   Left = 0
   Top = 0
-  BorderStyle = bsDialog
   BorderWidth = 6
-  Caption = #1057#1087#1080#1089#1086#1082' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1074' '#1082#1086#1088#1086#1073#1077
-  ClientHeight = 560
-  ClientWidth = 782
+  Caption = #1057#1087#1080#1089#1086#1082' '#1082#1086#1088#1086#1073#1086#1074' '#1074' '#1072#1088#1093#1080#1074#1077
+  ClientHeight = 550
+  ClientWidth = 772
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,98 +15,23 @@ object Form6: TForm6
   Position = poScreenCenter
   PixelsPerInch = 96
   TextHeight = 13
-  object cxGrid1: TcxGrid
+  object StatusBar1: TStatusBar
+    AlignWithMargins = True
     Left = 0
-    Top = 25
-    Width = 782
-    Height = 535
-    Margins.Left = 6
-    Margins.Top = 0
-    Margins.Right = 6
-    Margins.Bottom = 6
-    Align = alClient
-    TabOrder = 0
-    object cxGrid1DBTableView1: TcxGridDBTableView
-      Navigator.Buttons.CustomButtons = <>
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      OptionsView.NoDataToDisplayInfoText = #1057#1087#1080#1089#1086#1082' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1074' '#1082#1086#1088#1086#1073#1077
-      OptionsView.ColumnAutoWidth = True
-      OptionsView.GroupByBox = False
-      object cxGrid1DBTableView1Column4: TcxGridDBColumn
-        Caption = #8470' '#1087'/'#1087
-        FooterAlignmentHorz = taCenter
-        GroupSummaryAlignment = taCenter
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-        HeaderGlyphAlignmentHorz = taCenter
-        Width = 105
-      end
-      object cxGrid1DBTableView1Column2: TcxGridDBColumn
-        Caption = #1058#1080#1087
-        FooterAlignmentHorz = taCenter
-        GroupSummaryAlignment = taCenter
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-        HeaderGlyphAlignmentHorz = taCenter
-        Width = 105
-      end
-      object cxGrid1DBTableView1Column1: TcxGridDBColumn
-        Caption = #1053#1086#1084#1077#1088
-        FooterAlignmentHorz = taCenter
-        GroupSummaryAlignment = taCenter
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-        HeaderGlyphAlignmentHorz = taCenter
-        Width = 105
-      end
-      object cxGrid1DBTableView1Column3: TcxGridDBColumn
-        Caption = #1040#1088#1093#1080#1074#1072#1090#1086#1088
-        FooterAlignmentHorz = taCenter
-        GroupSummaryAlignment = taCenter
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-        HeaderGlyphAlignmentHorz = taCenter
-        Width = 105
-      end
-      object cxGrid1DBTableView1Column5: TcxGridDBColumn
-        Caption = #1044#1072#1090#1072' '#1072#1088#1093#1080#1074#1072#1094#1080#1080
-        FooterAlignmentHorz = taCenter
-        GroupSummaryAlignment = taCenter
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-        HeaderGlyphAlignmentHorz = taCenter
-        Width = 105
-      end
-      object cxGrid1DBTableView1Column6: TcxGridDBColumn
-        Caption = #1057#1090#1072#1090#1091#1089
-        FooterAlignmentHorz = taCenter
-        GroupSummaryAlignment = taCenter
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-        HeaderGlyphAlignmentHorz = taCenter
-        Width = 105
-      end
-      object cxGrid1DBTableView1Column7: TcxGridDBColumn
-        Caption = #1055#1088#1080#1084#1077#1095#1072#1085#1080#1103
-        FooterAlignmentHorz = taCenter
-        GroupSummaryAlignment = taCenter
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-        HeaderGlyphAlignmentHorz = taCenter
-        Width = 105
-      end
-    end
-    object cxGrid1Level1: TcxGridLevel
-      GridView = cxGrid1DBTableView1
-    end
+    Top = 531
+    Width = 772
+    Height = 19
+    Margins.Left = 0
+    Margins.Top = 2
+    Margins.Right = 0
+    Margins.Bottom = 0
+    Panels = <>
   end
-  object ToolBar2: TToolBar
+  object ToolBar3: TToolBar
     AlignWithMargins = True
     Left = 0
     Top = 0
-    Width = 782
+    Width = 772
     Height = 22
     Margins.Left = 0
     Margins.Top = 0
@@ -118,73 +42,158 @@ object Form6: TForm6
     GradientDrawingOptions = [gdoHotTrack]
     TabOrder = 1
     Transparent = True
-    object ToolButton2: TToolButton
+    object ToolButton8: TToolButton
       Left = 0
       Top = 0
-      Hint = #1055#1086#1084#1077#1090#1080#1090#1100' '#1076#1086#1082#1091#1084#1077#1085#1090', '#1082#1072#1082' '#1091#1090#1077#1088#1103#1085#1085#1099#1081
-      Caption = 'ToolButton2'
-      ImageIndex = 13
-    end
-    object ToolButton4: TToolButton
-      Left = 23
-      Top = 0
-      Width = 8
-      Caption = 'ToolButton4'
-      ImageIndex = 8
-      Style = tbsSeparator
-    end
-    object ToolButton12: TToolButton
-      Left = 31
-      Top = 0
-      Cursor = crHandPoint
-      Hint = #1048#1085#1074#1077#1085#1090#1072#1088#1080#1079#1072#1094#1080#1103' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1074' '#1082#1086#1088#1086#1073#1077
-      Caption = 'ToolButton5'
-      ImageIndex = 16
-      ParentShowHint = False
-      ShowHint = True
-    end
-    object ToolButton14: TToolButton
-      Left = 54
-      Top = 0
-      Width = 8
-      Caption = 'ToolButton11'
-      ImageIndex = 8
-      Style = tbsSeparator
-    end
-    object ToolButton16: TToolButton
-      Left = 62
-      Top = 0
-      Cursor = crHandPoint
-      Hint = #1069#1082#1089#1087#1086#1088#1090' '#1089#1087#1080#1089#1082#1072' '#1074' Microsoft Office Excel'
       Caption = 'ToolButton8'
-      ImageIndex = 6
-      ParentShowHint = False
-      ShowHint = True
+      ImageIndex = 8
     end
     object ToolButton9: TToolButton
-      Left = 85
+      Left = 23
+      Top = 0
+      Hint = #1055#1086#1084#1077#1090#1082#1072' '#1082#1086#1088#1086#1073#1072', '#1082#1072#1082' '#1091#1090#1077#1088#1103#1085#1085#1086#1075#1086
+      Caption = 'ToolButton9'
+      ImageIndex = 13
+    end
+    object ToolButton10: TToolButton
+      Left = 46
       Top = 0
       Width = 8
-      Caption = 'ToolButton4'
-      ImageIndex = 3
+      Caption = 'ToolButton10'
+      ImageIndex = 9
+      Style = tbsSeparator
+    end
+    object ToolButton1: TToolButton
+      Left = 54
+      Top = 0
+      Caption = 'ToolButton1'
+      ImageIndex = 1
+    end
+    object ToolButton2: TToolButton
+      Left = 77
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton2'
+      ImageIndex = 4
       Style = tbsSeparator
     end
     object ToolButton3: TToolButton
-      Left = 93
+      Left = 85
       Top = 0
-      Cursor = crHandPoint
-      Hint = #1054#1073#1085#1086#1074#1083#1077#1085#1080#1077' '#1089#1087#1080#1089#1082#1072
-      Caption = 'ToolButton7'
+      Caption = 'ToolButton3'
+      ImageIndex = 16
+      OnClick = ToolButton3Click
+    end
+    object ToolButton4: TToolButton
+      Left = 108
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton4'
       ImageIndex = 5
-      ParentShowHint = False
-      ShowHint = True
+      Style = tbsSeparator
+    end
+    object ToolButton5: TToolButton
+      Left = 116
+      Top = 0
+      Caption = 'ToolButton5'
+      ImageIndex = 5
+    end
+    object ToolButton6: TToolButton
+      Left = 139
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton6'
+      ImageIndex = 6
+      Style = tbsSeparator
+    end
+    object ToolButton7: TToolButton
+      Left = 147
+      Top = 0
+      Caption = 'ToolButton7'
+      ImageIndex = 6
+    end
+  end
+  object cxGrid2: TcxGrid
+    Left = 0
+    Top = 25
+    Width = 772
+    Height = 504
+    Margins.Left = 6
+    Margins.Top = 0
+    Margins.Right = 6
+    Margins.Bottom = 6
+    Align = alClient
+    TabOrder = 2
+    object cxGridDBTableView1: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      OptionsView.NoDataToDisplayInfoText = #1057#1087#1080#1089#1086#1082' '#1082#1086#1088#1086#1073#1086#1074' '#1074' '#1072#1088#1093#1080#1074#1077
+      OptionsView.ColumnAutoWidth = True
+      OptionsView.GroupByBox = False
+      object cxGridDBTableView1Column1: TcxGridDBColumn
+        Caption = #1064#1090#1088#1080#1093'-'#1082#1086#1076
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        HeaderGlyphAlignmentHorz = taCenter
+        Width = 118
+      end
+      object cxGridDBTableView1Column2: TcxGridDBColumn
+        Caption = #1050#1086#1084#1087#1072#1085#1080#1103
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        HeaderGlyphAlignmentHorz = taCenter
+        Width = 96
+      end
+      object cxGridDBTableView1Column3: TcxGridDBColumn
+        Caption = #1058#1080#1087
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        HeaderGlyphAlignmentHorz = taCenter
+        Width = 80
+      end
+      object cxGridDBTableView1Column4: TcxGridDBColumn
+        Caption = #1043#1086#1076
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        HeaderGlyphAlignmentHorz = taCenter
+        Width = 88
+      end
+      object cxGridDBTableView1Column5: TcxGridDBColumn
+        Caption = #1053#1086#1084#1077#1088
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        HeaderGlyphAlignmentHorz = taCenter
+        Width = 112
+      end
+      object cxGridDBTableView1Column6: TcxGridDBColumn
+        Caption = #1057#1090#1072#1090#1091#1089
+        FooterAlignmentHorz = taCenter
+        GroupSummaryAlignment = taCenter
+        HeaderAlignmentHorz = taCenter
+        HeaderGlyphAlignmentHorz = taCenter
+        Width = 114
+      end
+      object cxGridDBTableView1Column7: TcxGridDBColumn
+        Caption = #1052#1077#1089#1090#1086#1085#1072#1093#1086#1078#1076#1077#1085#1080#1077
+        FooterAlignmentHorz = taCenter
+        GroupSummaryAlignment = taCenter
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        HeaderGlyphAlignmentHorz = taCenter
+        Width = 162
+      end
+    end
+    object cxGridLevel1: TcxGridLevel
+      GridView = cxGridDBTableView1
     end
   end
   object ImageList1: TImageList
     Left = 296
     Top = 296
     Bitmap = {
-      494C010118001802540110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010118001802740110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000007000000001002000000000000070
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
