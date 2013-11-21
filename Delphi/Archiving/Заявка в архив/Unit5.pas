@@ -32,15 +32,11 @@ type
     cxTabSheet20: TcxTabSheet;
     ToolButton1: TToolButton;
     ToolBar23: TToolBar;
-    ToolButton143: TToolButton;
-    ToolButton144: TToolButton;
     ToolButton145: TToolButton;
     ToolButton142: TToolButton;
     ToolButton141: TToolButton;
-    ToolButton146: TToolButton;
     ToolButton147: TToolButton;
     ToolButton148: TToolButton;
-    ToolButton149: TToolButton;
     ToolButton150: TToolButton;
     ToolButton152: TToolButton;
     cxGrid23: TcxGrid;
@@ -51,6 +47,8 @@ type
     cxGridDBColumn108: TcxGridDBColumn;
     cxGridDBColumn109: TcxGridDBColumn;
     cxGridLevel22: TcxGridLevel;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
   private
     { Private declarations }
   public

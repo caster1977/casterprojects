@@ -8,7 +8,7 @@ uses
   cxLookAndFeelPainters, cxStyles, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, cxGridLevel,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxClasses,
-  cxGridCustomView, cxGrid;
+  cxGridCustomView, cxGrid, Vcl.ImgList, Vcl.ComCtrls, Vcl.ToolWin;
 
 type
   TForm1 = class(TForm)
@@ -20,6 +20,11 @@ type
     cxGridDBTableView2Column5: TcxGridDBColumn;
     cxGridDBTableView2Column6: TcxGridDBColumn;
     cxGridLevel2: TcxGridLevel;
+    ToolBar2: TToolBar;
+    ToolButton3: TToolButton;
+    ToolButton14: TToolButton;
+    ToolButton16: TToolButton;
+    ImageList1: TImageList;
   private
     { Private declarations }
   public

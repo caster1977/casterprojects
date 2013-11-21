@@ -17,11 +17,9 @@ type
     StatusBar1: TStatusBar;
     ToolBar1: TToolBar;
     ToolButton5: TToolButton;
-    ToolButton6: TToolButton;
     ImageList1: TImageList;
     ToolButton9: TToolButton;
     ToolButton10: TToolButton;
-    ToolButton11: TToolButton;
     Panel1: TPanel;
     SpeedButton1: TSpeedButton;
     ImageList2: TImageList;

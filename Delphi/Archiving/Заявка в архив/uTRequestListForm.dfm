@@ -4,7 +4,7 @@ object RequestListForm: TRequestListForm
   BorderWidth = 6
   Caption = #1048#1089#1090#1086#1088#1080#1103' '#1074#1099#1076#1072#1095#1080' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1080#1079' '#1072#1088#1093#1080#1074#1072
   ClientHeight = 550
-  ClientWidth = 881
+  ClientWidth = 772
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,14 +18,14 @@ object RequestListForm: TRequestListForm
   object StatusBar1: TStatusBar
     Left = 0
     Top = 531
-    Width = 881
+    Width = 772
     Height = 19
     Panels = <>
   end
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 881
+    Width = 772
     Height = 28
     Align = alTop
     BevelOuter = bvNone
@@ -34,7 +34,7 @@ object RequestListForm: TRequestListForm
     TabOrder = 1
     object SpeedButton1: TSpeedButton
       AlignWithMargins = True
-      Left = 855
+      Left = 746
       Top = 3
       Width = 23
       Height = 22
@@ -72,7 +72,7 @@ object RequestListForm: TRequestListForm
     end
     object Label2: TLabel
       AlignWithMargins = True
-      Left = 459
+      Left = 350
       Top = 3
       Width = 72
       Height = 22
@@ -80,12 +80,11 @@ object RequestListForm: TRequestListForm
       Align = alRight
       Caption = #1044#1072#1090#1072' '#1074#1099#1076#1072#1095#1080':'
       Layout = tlCenter
-      ExplicitLeft = 465
       ExplicitHeight = 13
     end
     object Label6: TLabel
       AlignWithMargins = True
-      Left = 537
+      Left = 428
       Top = 3
       Width = 5
       Height = 22
@@ -96,7 +95,7 @@ object RequestListForm: TRequestListForm
     end
     object Label5: TLabel
       AlignWithMargins = True
-      Left = 652
+      Left = 543
       Top = 3
       Width = 12
       Height = 22
@@ -109,7 +108,7 @@ object RequestListForm: TRequestListForm
       AlignWithMargins = True
       Left = 0
       Top = 3
-      Width = 85
+      Width = 54
       Height = 22
       Margins.Left = 0
       Margins.Right = 0
@@ -118,28 +117,14 @@ object RequestListForm: TRequestListForm
       Caption = 'ToolBar1'
       Images = ImageList1
       TabOrder = 0
-      object ToolButton11: TToolButton
-        Left = 0
-        Top = 0
-        Caption = 'ToolButton11'
-        ImageIndex = 3
-      end
-      object ToolButton6: TToolButton
-        Left = 23
-        Top = 0
-        Width = 8
-        Caption = 'ToolButton6'
-        ImageIndex = 4
-        Style = tbsSeparator
-      end
       object ToolButton9: TToolButton
-        Left = 31
+        Left = 0
         Top = 0
         Caption = 'ToolButton9'
         ImageIndex = 2
       end
       object ToolButton10: TToolButton
-        Left = 54
+        Left = 23
         Top = 0
         Width = 8
         Caption = 'ToolButton10'
@@ -147,7 +132,7 @@ object RequestListForm: TRequestListForm
         Style = tbsSeparator
       end
       object ToolButton5: TToolButton
-        Left = 62
+        Left = 31
         Top = 0
         Caption = 'ToolButton5'
         ImageIndex = 1
@@ -155,7 +140,7 @@ object RequestListForm: TRequestListForm
     end
     object DateTimePicker2: TDateTimePicker
       AlignWithMargins = True
-      Left = 670
+      Left = 561
       Top = 3
       Width = 98
       Height = 22
@@ -166,7 +151,7 @@ object RequestListForm: TRequestListForm
     end
     object DateTimePicker1: TDateTimePicker
       AlignWithMargins = True
-      Left = 548
+      Left = 439
       Top = 3
       Width = 98
       Height = 22
@@ -177,7 +162,7 @@ object RequestListForm: TRequestListForm
     end
     object Button5: TButton
       AlignWithMargins = True
-      Left = 774
+      Left = 665
       Top = 3
       Width = 75
       Height = 22
@@ -190,7 +175,7 @@ object RequestListForm: TRequestListForm
     AlignWithMargins = True
     Left = 0
     Top = 28
-    Width = 881
+    Width = 772
     Height = 500
     Margins.Left = 0
     Margins.Top = 0
@@ -210,93 +195,69 @@ object RequestListForm: TRequestListForm
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
       OptionsView.NoDataToDisplayInfoText = #1057#1087#1080#1089#1086#1082' '#1074#1099#1076#1072#1085#1085#1099#1093' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074
+      OptionsView.ColumnAutoWidth = True
       OptionsView.GroupByBox = False
       Bands = <
         item
           Caption = #1044#1086#1082#1091#1084#1077#1085#1090
         end
         item
-          Caption = #1050#1086#1088#1086#1073
-        end
-        item
           Caption = #1047#1072#1087#1088#1086#1089
         end
         item
           Caption = #1053#1086#1084#1077#1088
-          Position.BandIndex = 2
+          Position.BandIndex = 1
           Position.ColIndex = 1
         end
         item
           Caption = #1044#1072#1090#1072' '#1087#1086#1076#1072#1095#1080
-          Position.BandIndex = 2
+          Position.BandIndex = 1
           Position.ColIndex = 2
           Width = 72
         end
         item
           Caption = #1044#1072#1090#1072' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103
-          Position.BandIndex = 2
+          Position.BandIndex = 1
           Position.ColIndex = 3
           Width = 97
         end
         item
           Caption = #1044#1072#1090#1072' '#1087#1086#1083#1091#1095#1077#1085#1080#1103
           Position.BandIndex = 0
-          Position.ColIndex = 2
+          Position.ColIndex = 3
           Width = 89
         end
         item
           Caption = #1048#1085#1080#1094#1080#1072#1090#1086#1088
-          Position.BandIndex = 2
+          Position.BandIndex = 1
           Position.ColIndex = 4
           Width = 61
         end
         item
           Caption = #1057#1090#1072#1090#1091#1089
-          Position.BandIndex = 2
+          Position.BandIndex = 1
           Position.ColIndex = 0
         end
         item
           Caption = #1053#1086#1084#1077#1088
-          Position.BandIndex = 1
-          Position.ColIndex = 4
-        end
-        item
-          Caption = #1050#1086#1084#1087#1072#1085#1080#1103
-          Position.BandIndex = 1
+          Position.BandIndex = 0
           Position.ColIndex = 1
-          Width = 55
         end
         item
-          Caption = #1058#1080#1087
-          Position.BandIndex = 1
-          Position.ColIndex = 2
-        end
-        item
-          Caption = #1064#1090#1088#1080#1093'-'#1082#1086#1076
-          Position.BandIndex = 1
-          Position.ColIndex = 0
-          Width = 63
-        end
-        item
-          Caption = #1043#1086#1076
-          Position.BandIndex = 1
-          Position.ColIndex = 3
-        end
-        item
-          Caption = #1053#1086#1084#1077#1088
+          Caption = #1044#1072#1090#1072' '#1074#1086#1079#1074#1088#1072#1090#1072
           Position.BandIndex = 0
-          Position.ColIndex = 0
-        end
-        item
-          Caption = #1057#1090#1072#1090#1091#1089' '#1074#1086#1079#1074#1088#1072#1090#1072
-          Position.BandIndex = 0
-          Position.ColIndex = 3
+          Position.ColIndex = 4
           Width = 92
         end
         item
           Caption = #1058#1080#1087
           Position.BandIndex = 0
-          Position.ColIndex = 1
+          Position.ColIndex = 2
+        end
+        item
+          Caption = #1057#1090#1072#1090#1091#1089
+          Position.BandIndex = 0
+          Position.ColIndex = 0
         end>
     end
     object cxGrid1Level1: TcxGridLevel
@@ -307,7 +268,7 @@ object RequestListForm: TRequestListForm
     Left = 344
     Top = 152
     Bitmap = {
-      494C010104001800580010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104001800600010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -582,7 +543,7 @@ object RequestListForm: TRequestListForm
     Left = 408
     Top = 152
     Bitmap = {
-      494C0101040018002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104001800340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -1,11 +1,11 @@
-object BoxAcceptanceToArchiveMainForm: TBoxAcceptanceToArchiveMainForm
+object Form15: TForm15
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   BorderWidth = 6
-  Caption = #1048#1085#1074#1077#1085#1090#1072#1088#1080#1079#1072#1094#1080#1103' '#1082#1086#1088#1086#1073#1086#1074' '#1074' '#1072#1088#1093#1080#1074#1077
-  ClientHeight = 331
+  Caption = #1048#1085#1074#1077#1085#1090#1072#1088#1080#1079#1072#1094#1080#1103' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1074' '#1082#1086#1088#1086#1073#1077
+  ClientHeight = 462
   ClientWidth = 422
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,18 +15,18 @@ object BoxAcceptanceToArchiveMainForm: TBoxAcceptanceToArchiveMainForm
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
-  OnCloseQuery = FormCloseQuery
   PixelsPerInch = 96
   TextHeight = 13
   object pnlButtons: TPanel
     Left = 0
-    Top = 300
+    Top = 431
     Width = 422
     Height = 31
     Align = alBottom
     BevelOuter = bvNone
     ShowCaption = False
     TabOrder = 2
+    ExplicitTop = 471
     DesignSize = (
       422
       31)
@@ -44,12 +44,13 @@ object BoxAcceptanceToArchiveMainForm: TBoxAcceptanceToArchiveMainForm
   end
   object gbBarcode: TGroupBox
     Left = 0
-    Top = 136
+    Top = 245
     Width = 422
     Height = 54
     Align = alTop
-    Caption = ' '#1064#1090#1088#1080#1093'-'#1082#1086#1076' '#1082#1086#1088#1086#1073#1072' '
+    Caption = ' '#1064#1090#1088#1080#1093'-'#1082#1086#1076' '
     TabOrder = 0
+    ExplicitTop = 278
     DesignSize = (
       422
       54)
@@ -60,32 +61,35 @@ object BoxAcceptanceToArchiveMainForm: TBoxAcceptanceToArchiveMainForm
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
-      OnKeyDown = edBarcodeKeyDown
     end
   end
   object gbHint: TGroupBox
     Left = 0
-    Top = 190
+    Top = 299
     Width = 422
-    Height = 110
+    Height = 132
     Align = alClient
     Caption = ' '#1057#1086#1086#1073#1097#1077#1085#1080#1077' '
     TabOrder = 1
+    ExplicitTop = 332
+    ExplicitHeight = 139
     object lblHint: TLabel
       Left = 8
       Top = 16
       Width = 405
-      Height = 86
+      Height = 108
       Align = alCustom
       Alignment = taCenter
       Anchors = [akLeft, akTop, akRight, akBottom]
       AutoSize = False
-      Caption = #1050#1086#1088#1086#1073' '#1080#1085#1074#1077#1085#1090#1072#1088#1080#1079#1080#1088#1086#1074#1072#1085
+      Caption = #1044#1086#1082#1091#1084#1077#1085#1090' '#1080#1085#1074#1077#1085#1090#1072#1088#1080#1079#1080#1088#1086#1074#1072#1085
+      Color = clBtnFace
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clGreen
       Font.Height = -19
       Font.Name = 'Tahoma'
       Font.Style = []
+      ParentColor = False
       ParentFont = False
       Layout = tlCenter
       WordWrap = True
@@ -99,8 +103,19 @@ object BoxAcceptanceToArchiveMainForm: TBoxAcceptanceToArchiveMainForm
     Width = 422
     Height = 136
     Align = alTop
-    Caption = ' '#1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1087#1086#1089#1083#1077#1076#1085#1077#1084' '#1080#1085#1074#1077#1085#1090#1072#1088#1080#1079#1080#1088#1086#1074#1072#1085#1085#1086#1084' '#1082#1086#1088#1086#1073#1077' '
+    Caption = ' '#1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1082#1086#1088#1086#1073#1077' '
     TabOrder = 3
+    ExplicitTop = -6
+  end
+  object gbLastDocument: TGroupBox
+    Left = 0
+    Top = 136
+    Width = 422
+    Height = 109
+    Align = alTop
+    Caption = ' '#1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1087#1086#1089#1083#1077#1076#1085#1077#1084' '#1076#1086#1082#1091#1084#1077#1085#1090#1077' '#1074' '#1082#1086#1088#1086#1073#1077' '
+    TabOrder = 4
+    ExplicitTop = 169
   end
   object SQLConnection: TSQLConnection
     ConnectionName = 'MSSQLConnection'
@@ -121,8 +136,8 @@ object BoxAcceptanceToArchiveMainForm: TBoxAcceptanceToArchiveMainForm
       'Prepare SQL=False'
       'ConnectTimeout=60'
       'Mars_Connection=False')
-    Left = 176
-    Top = 32
+    Left = 256
+    Top = 376
   end
   object ADOConnection: TADOConnection
     ConnectionString = 
@@ -130,13 +145,13 @@ object BoxAcceptanceToArchiveMainForm: TBoxAcceptanceToArchiveMainForm
       'nfo=False;User ID="";Initial Catalog=RTL;Data Source=MOSTRA-822;' +
       'Initial File Name="";Server SPN=""'
     Provider = 'SQLNCLI10.1'
-    Left = 104
-    Top = 32
+    Left = 168
+    Top = 376
   end
   object ActionList: TActionList
     Images = ImageList
-    Left = 48
-    Top = 32
+    Left = 80
+    Top = 376
     object actPrintSticker: TAction
       Hint = #1055#1077#1095#1072#1090#1100' '#1089#1090#1080#1082#1077#1088#1072' '#1076#1083#1103' '#1090#1077#1082#1091#1097#1077#1075#1086' '#1082#1086#1088#1086#1073#1072
       ImageIndex = 0
@@ -147,14 +162,13 @@ object BoxAcceptanceToArchiveMainForm: TBoxAcceptanceToArchiveMainForm
     end
     object actClose: TAction
       Caption = #1047#1072#1082#1088#1099#1090#1100
-      OnExecute = actCloseExecute
     end
   end
   object ImageList: TImageList
-    Left = 240
-    Top = 32
+    Left = 336
+    Top = 376
     Bitmap = {
-      494C01010B008800E80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B008800280110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000F6F6F609ECECEC13E9E9E916E9E9E916F0F0F00FFCFCFC030000
