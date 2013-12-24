@@ -228,7 +228,7 @@ end;
 
 procedure TMainForm.actRecentProfilesExecute(Sender: TObject);
 begin
-  // заглушка, необзодимая для того, чтобы пункт меню был активным
+  // заглушка, необходимая для того, чтобы пункт меню был активным
 end;
 
 procedure TMainForm.OnHint(ASender: TObject);
