@@ -231,7 +231,7 @@ type
     /// Штрих-код документа
     /// </param>
     procedure AddDocument(const AString: string); virtual; abstract;
-  public
+
     /// <summary>
     /// Функция приёмки БСО по реестру
     /// </summary>
@@ -242,6 +242,14 @@ type
     /// Удалось ли принять по реестру
     /// </returns>
     function AcceptBSOByAcceptanceRegister(const ABarcode: string): Boolean;
+
+    /// <summary>
+    /// Процедура присвоения накладной статуса "отгружена"
+    /// </summary>
+    /// <param name="ABarcode">
+    /// Штрих-код БСО
+    /// </param>
+    procedure MarkBSOAsShipped(const ABarcode: string);
   private
     FCurrentBox: IArchiveBoxItem;
   protected
@@ -1137,6 +1145,19 @@ procedure TDocumentArchivingBusinessLogic.ProcessString(const AString: string);
 var
   b: Boolean;
 begin
+  if AnalizeBarcode(AString) = dabtBSO then
+  begin
+    if AcceptBSOByAcceptanceRegister(AString) then
+    begin
+      DisplaySuccessMessage(RsDocumentAcceptedByAcceptanceRegister);
+    end
+    else
+    begin
+      DisplayErrorMessage(RsDocumentNotAcceptedByAcceptanceRegister);
+    end;
+
+    MarkBSOAsShipped(AString);
+  end;
   if AnalizeBarcode(AString) in [dabtUnknown, dabtForceNewBoxCommand, dabtPutBoxAsideCommand, dabtGiveDocumentAway] then
   begin
     Step := 0;
@@ -1212,18 +1233,6 @@ begin
   begin
     if CanAddDocument then
     begin
-      if AnalizeBarcode(AString) = dabtBSO then
-      begin
-        if AcceptBSOByAcceptanceRegister(AString) then
-        begin
-          DisplaySuccessMessage(RsDocumentAcceptedByAcceptanceRegister);
-        end
-        else
-        begin
-          DisplayErrorMessage(RsDocumentNotAcceptedByAcceptanceRegister);
-        end;
-      end;
-
       if (Step = 0) and (AnalizeBarcode(AString) = dabtCauseOfDamage) then
       begin
         DisplayErrorMessage(RsEnterBarcodeOfDocumentOrCommand);
@@ -1281,26 +1290,6 @@ begin
   UpdateCurrentInfo;
 end;
 
-function TDocumentArchivingBusinessLogic.AcceptBSOByAcceptanceRegister(const ABarcode: string): Boolean;
-var
-  s: string;
-begin
-  Result := False;
-  s := Trim(ABarcode);
-  if AnalizeBarcode(s) = dabtBSO then
-  begin
-    SetSQLForQuery(Query, Format(SP_ARCHIVING_UPD_ACCEPTANCE_REGISTER + ' ''%s''', [s]), True);
-    try
-      if not Query.Eof then
-      begin
-        Result := Query.Fields[0].AsInteger > -1;
-      end;
-    finally
-      Query.Close;
-    end;
-  end;
-end;
-
 destructor TDocumentArchivingBusinessLogic.Destroy;
 begin
   if CurrentBoxIsFull then
@@ -1340,6 +1329,31 @@ begin
   finally
     FreeAndNil(form);
   end;
+end;
+
+function TDocumentArchivingBusinessLogic.AcceptBSOByAcceptanceRegister(const ABarcode: string): Boolean;
+var
+  s: string;
+begin
+  Result := False;
+  s := Trim(ABarcode);
+  if AnalizeBarcode(s) = dabtBSO then
+  begin
+    SetSQLForQuery(Query, Format(SP_ARCHIVING_UPD_ACCEPTANCE_REGISTER + ' ''%s''', [s]), True);
+    try
+      if not Query.Eof then
+      begin
+        Result := Query.Fields[0].AsInteger > -1;
+      end;
+    finally
+      Query.Close;
+    end;
+  end;
+end;
+
+procedure TDocumentArchivingBusinessLogic.MarkBSOAsShipped(const ABarcode: string);
+begin
+
 end;
 
 end.
