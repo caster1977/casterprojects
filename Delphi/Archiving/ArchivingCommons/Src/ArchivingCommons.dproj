@@ -150,6 +150,7 @@
             <Form>ItemSelectionForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="uISearchedBSOItem.pas"/>
         <None Include="ModelSupport_ArchivingCommons\default.txaPackage"/>
         <None Include="ModelSupport_ArchivingCommons\default.txvpck"/>
         <None Include="ModelSupport_ArchivingCommons\uTArchiveDocumentItem\default.txvpck"/>
@@ -159,6 +160,55 @@
         <None Include="ModelSupport_ArchivingCommons\uIArchiveBoxItem\default.txvpck"/>
         <None Include="ModelSupport_ArchivingCommons\uIShowable\default.txvpck"/>
         <None Include="ModelSupport_ArchivingCommons\uILoadableItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uIArchiveDocumentItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTCustomBSOItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uICustomBSOItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTCustomBusinessLogic\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTArchiveCompanyItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTOnDisplayMessage\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTDamagedBSOList\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTArchiveBoxTypeItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uIShowableField\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTArchiveDocumentItemClass\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTCauseOfArchiveDocumentDamageItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTShipmentBSOList\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uArchivingCommonConsts\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uICustomBusinessLogic\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTDocumentArchivingBarcodeType\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTReportDataModule\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uIArchiveCompanyList\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTLoadableItemClass\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTDamagedBSOItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uIShipmentBSOItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTCauseOfArchiveDocumentDamageList\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uIArchiveBoxTypeList\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTShipmentBSOWithActItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uArchivingCommonRoutines\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uICauseOfArchiveDocumentDamageList\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTShipmentBSOItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTLoadableList\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uIArchiveBoxList\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uILoadableList\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTArchiveBoxList\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTLoadableListClass\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uIArchiveCompanyItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTArchiveBoxTypeList\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uIShipmentBSOWithActItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTArchiveDocumentListClass\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTLoadableItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTShipmentBSOWithActList\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uIDamagedBSOItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTMessageType\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uIArchiveDocumentList\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uICauseOfArchiveDocumentDamageItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTArchiveCompanyList\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uArchivingCommonResourceStrings\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uIArchiveBoxTypeItem\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTArchiveDocumentList\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTItemSelectionForm\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uTShowableField\default.txvpck"/>
+        <None Include="ModelSupport_ArchivingCommons\uISearchedBSOItem\default.txaPackage"/>
+        <None Include="ModelSupport_ArchivingCommons\uISearchedBSOItem\default.txvpck"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

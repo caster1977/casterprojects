@@ -91,6 +91,7 @@ contains
   uTReportDataModule in 'UI\uTReportDataModule.pas' {ReportDataModule: TDataModule},
   uArchivingCommonConsts in 'Common\uArchivingCommonConsts.pas',
   uArchivingCommonResourceStrings in 'Common\uArchivingCommonResourceStrings.pas',
-  uTItemSelectionForm in 'UI\uTItemSelectionForm.pas' {ItemSelectionForm};
+  uTItemSelectionForm in 'UI\uTItemSelectionForm.pas' {ItemSelectionForm},
+  uISearchedBSOItem in 'uISearchedBSOItem.pas';
 
 end.

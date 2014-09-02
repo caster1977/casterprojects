@@ -78,6 +78,7 @@ implementation
 {$R *.dfm}
 
 uses
+  uTEnterStringForm,
   uTItemSelectionForm,
   uTArchiveCompanyItem,
   uTDocumentArchivingBarcodeType,
@@ -224,8 +225,16 @@ begin
 end;
 
 procedure TArchivingMainForm.Button1Click(Sender: TObject);
+var
+  form: TEnterStringForm;
 begin
-//  ShowItemSelectionForm(ADOConnection, 'Список компаний', , '#tmp_archive_companies');
+  ShowItemSelectionForm(ADOConnection, 'Список компаний', '', '#tmp_archive_companies');
+//  form := TEnterStringForm.Create('Редактирование короба 030113000001', 'Местонахождение:', 1, False);
+//  try
+//    form.ShowModal;
+//  finally
+//    FreeAndNil(form);
+//  end;
 end;
 
 procedure TArchivingMainForm.edBarcodeKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
