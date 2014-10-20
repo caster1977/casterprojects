@@ -51,6 +51,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
+        <DCC_UnitSearchPath>..\..\Packages\$(Platform)\$(Config);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)</DCC_DcpOutput>
         <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)</DCC_BplOutput>
         <VerInfo_Locale>1049</VerInfo_Locale>
@@ -71,7 +72,7 @@
         <DCC_UsePackage>rtl;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
-        <DCC_UsePackage>rtl;vcl;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_UsePackage>rtl;vcl;CastersPackage;$(DCC_UsePackage)</DCC_UsePackage>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_Define>Platform32bit;$(DCC_Define)</DCC_Define>
@@ -169,12 +170,13 @@
                     <VersionInfoKeys Name="CFBundleAllowMixedLocalizations"/>
                     <VersionInfoKeys Name="CFBundleExecutable"/>
                 </VersionInfoKeys>
-                <Excluded_Packages/>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k180.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp180.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment/>
             <Platforms>
-                <Platform value="iOSDevice">False</Platform>
-                <Platform value="iOSSimulator">False</Platform>
                 <Platform value="OSX32">False</Platform>
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">False</Platform>
