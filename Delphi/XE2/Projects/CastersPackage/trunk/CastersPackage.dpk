@@ -71,7 +71,9 @@ contains
   CastersPackage.uISerilizator in 'CastersPackage.uISerilizator.pas',
   CastersPackage.uTObjectMethod in 'CastersPackage.uTObjectMethod.pas',
   CastersPackage.uTIniFileSerilizator in 'CastersPackage.uTIniFileSerilizator.pas',
-  CastersPackage.uICustomized in 'CastersPackage.uICustomized.pas';
+  CastersPackage.uICustomized in 'CastersPackage.uICustomized.pas',
+  CastersPackage.uTSingletonAppSession in 'CastersPackage.uTSingletonAppSession.pas',
+  CastersPackage.uISingletonAppSession in 'CastersPackage.uISingletonAppSession.pas';
 
 end.
 
