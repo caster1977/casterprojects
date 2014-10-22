@@ -1,9 +1,10 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
+  BorderWidth = 2
   Caption = 'DBU Server Manager'
-  ClientHeight = 402
-  ClientWidth = 624
+  ClientHeight = 418
+  ClientWidth = 620
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,17 +20,19 @@ object MainForm: TMainForm
   TextHeight = 13
   object statMain: TStatusBar
     Left = 0
-    Top = 383
-    Width = 624
+    Top = 399
+    Width = 620
     Height = 19
     Hint = #1055#1072#1085#1077#1083#1100' '#1089#1090#1072#1090#1091#1089#1072
     Panels = <>
     SimplePanel = True
+    ExplicitTop = 383
+    ExplicitWidth = 624
   end
   object acttbToolBar: TActionToolBar
     Left = 0
     Top = 0
-    Width = 624
+    Width = 620
     Height = 26
     ActionManager = ActionManager
     Caption = 'acttbToolBar'
@@ -45,6 +48,50 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
     Spacing = 0
+    ExplicitWidth = 624
+  end
+  object lvLog: TListView
+    AlignWithMargins = True
+    Left = 0
+    Top = 26
+    Width = 620
+    Height = 371
+    Margins.Left = 0
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 2
+    Align = alClient
+    Columns = <
+      item
+        Width = 130
+      end
+      item
+        Width = 245
+      end
+      item
+        Width = 0
+      end
+      item
+        Width = 0
+      end
+      item
+        AutoSize = True
+      end>
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ReadOnly = True
+    RowSelect = True
+    ParentFont = False
+    ShowColumnHeaders = False
+    TabOrder = 2
+    ViewStyle = vsReport
+    ExplicitLeft = -129
+    ExplicitTop = 15
+    ExplicitWidth = 753
+    ExplicitHeight = 57
   end
   object AboutWindow: TAboutWindow
     EMail = 'v_ivanov@rtl.by'
@@ -56,7 +103,7 @@ object MainForm: TMainForm
     Left = 440
     Top = 128
     Bitmap = {
-      494C01010D00A000B00210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010D00A000B40210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -921,5 +968,9 @@ object MainForm: TMainForm
     object mniQuit: TMenuItem
       Action = actQuit
     end
+  end
+  object gsflvrsnfMain: TGSFileVersionInfo
+    Left = 496
+    Top = 80
   end
 end

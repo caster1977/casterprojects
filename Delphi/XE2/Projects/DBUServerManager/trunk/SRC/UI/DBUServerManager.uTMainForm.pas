@@ -16,7 +16,8 @@ uses
   System.Actions,
   Vcl.ActnMan,
   Vcl.ActnCtrls, Vcl.StdActns, System.Classes,
-  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ImgList, Vcl.ToolWin;
+  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ImgList, Vcl.ToolWin,
+  AboutPackage.uTGSFileVersionInfo;
 
 type
   TMainForm = class(TForm)
@@ -62,6 +63,8 @@ type
     mniO1: TMenuItem;
     mniN3: TMenuItem;
     mniQuit: TMenuItem;
+    lvLog: TListView;
+    gsflvrsnfMain: TGSFileVersionInfo;
     procedure actAboutExecute(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -216,6 +219,8 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   Application.OnHint := OnHint;
+  gsflvrsnfMain.Filename := Application.ExeName;
+  Caption := gsflvrsnfMain.InternalName;
   RegisterWindowMessages;
   ApplyConfiguration;
 
