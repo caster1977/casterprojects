@@ -39,11 +39,25 @@
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+        <Cfg_2_Win32>true</Cfg_2_Win32>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
+        <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1049</VerInfo_Locale>
+        <DCC_BplOutput>..\$(Platform)\$(Config)\</DCC_BplOutput>
+        <DCC_UnitSearchPath>..\..\Packages\$(Platform)\$(Config);..\..\AboutPackage\SRC\UI;..\..\CastersPackage;..\..\ConfigPackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
-        <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
-        <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=DBU Server Manager;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <DCC_DcpOutput>..\$(Platform)\$(Config)\</DCC_DcpOutput>
+        <Manifest_File>None</Manifest_File>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_DcuOutput>..\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
+        <DCC_ExeOutput>..\$(Platform)\$(Config)\</DCC_ExeOutput>
         <DCC_E>false</DCC_E>
         <DCC_N>false</DCC_N>
         <DCC_S>false</DCC_S>
@@ -51,17 +65,17 @@
         <DCC_K>false</DCC_K>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=DBU Server Manager x86;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager x86;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_UsePackage>bindcompfmx;ConfigPackage;DBXSqliteDriver;frxDB18;vcldbx;fmx;rtl;dbrtl;DbxClientDriver;IndySystem;TeeDB;bindcomp;inetdb;frx18;vclib;inetdbbde;DBXInterBaseDriver;DataSnapClient;DataSnapCommon;DBXOdbcDriver;DataSnapServer;Tee;DataSnapProviderClient;xmlrtl;svnui;ibxpress;DbxCommonDriver;DBXSybaseASEDriver;vclimg;IndyProtocols;dbxcds;DBXMySQLDriver;DatasnapConnectorsFreePascal;MetropolisUILiveTile;frxe18;vclactnband;bindengine;vcldb;soaprtl;bindcompdbx;vcldsnap;bindcompvcl;FMXTee;TeeUI;vclie;vcltouch;DBXDb2Driver;CastersPackage;DBXOracleDriver;CustomIPTransport;VclSmp;dsnap;IndyIPServer;DBXInformixDriver;Intraweb;fmxase;vcl;IndyCore;DataSnapConnectors;IndyIPCommon;CloudService;DBXMSSQLDriver;dsnapcon;DBXFirebirdDriver;FmxTeeUI;inet;CodeSiteExpressPkg;fmxobj;AboutPackage;vclx;inetdbxpress;webdsnap;svn;DBXSybaseASADriver;fmxdae;bdertl;dbexpress;adortl;DataSnapIndy10ServerTransport;IndyIPClient;$(DCC_UsePackage)</DCC_UsePackage>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
-        <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
         <DCC_UsePackage>bindcompfmx;DBXSqliteDriver;fmx;rtl;dbrtl;DbxClientDriver;IndySystem;TeeDB;bindcomp;inetdb;vclib;DBXInterBaseDriver;DataSnapClient;DataSnapCommon;DBXOdbcDriver;DataSnapServer;Tee;DataSnapProviderClient;xmlrtl;ibxpress;DbxCommonDriver;DBXSybaseASEDriver;vclimg;IndyProtocols;dbxcds;DBXMySQLDriver;DatasnapConnectorsFreePascal;MetropolisUILiveTile;vclactnband;bindengine;vcldb;soaprtl;bindcompdbx;vcldsnap;bindcompvcl;FMXTee;TeeUI;vclie;vcltouch;DBXDb2Driver;DBXOracleDriver;CustomIPTransport;VclSmp;dsnap;IndyIPServer;DBXInformixDriver;Intraweb;fmxase;vcl;IndyCore;DataSnapConnectors;IndyIPCommon;CloudService;DBXMSSQLDriver;dsnapcon;DBXFirebirdDriver;FmxTeeUI;inet;fmxobj;vclx;inetdbxpress;webdsnap;DBXSybaseASADriver;fmxdae;dbexpress;adortl;DataSnapIndy10ServerTransport;IndyIPClient;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=DBU Server Manager Debug;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager Debug;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Debug>true</VerInfo_Debug>
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
         <DCC_DebugDCUs>true</DCC_DebugDCUs>
         <DCC_Optimize>false</DCC_Optimize>
@@ -70,21 +84,40 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <VerInfo_Build>15</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.15;InternalName=DBU Server Manager x86 Debug;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager x86 Debug;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=DBU Server Manager Release;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager Release;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
         <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
         <DCC_DebugInformation>false</DCC_DebugInformation>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=DBU Server Manager x86 Release;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager x86 Release;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="UI\DBUServerManager.uTMainForm.pas">
-            <Form>Form5</Form>
-            <FormType>dfm</FormType>
+            <Form>MainForm</Form>
+        </DCCReference>
+        <DCCReference Include="Logic\Other\DBUServerManager.uConsts.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerManager.Configuration.uTInterface.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerManager.Configuration.uTConnection.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerManager.Configuration.uTOther.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerManager.uTConfiguration.pas"/>
+        <DCCReference Include="Logic\Interfaces\DBUServerManager.uIRecents.pas"/>
+        <DCCReference Include="Logic\Interfaces\DBUServerManager.uIRecent.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerManager.uEConfiguration.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerManager.uTRecent.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerManager.uTRecents.pas"/>
+        <DCCReference Include="UI\DBUServerManager.uTConfigurationForm.pas">
+            <Form>Form1</Form>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -147,6 +180,10 @@
                 <Source>
                     <Source Name="MainSource">DBUServerManager.dpr</Source>
                 </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k180.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp180.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment/>
             <Platforms>
