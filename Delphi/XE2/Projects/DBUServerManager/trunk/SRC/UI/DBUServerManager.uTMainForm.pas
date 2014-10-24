@@ -15,16 +15,22 @@ uses
   Vcl.ActnList,
   System.Actions,
   Vcl.ActnMan,
-  Vcl.ActnCtrls, Vcl.StdActns, System.Classes,
-  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ImgList, Vcl.ToolWin,
-  AboutPackage.uTGSFileVersionInfo;
+  Vcl.ActnCtrls,
+  Vcl.StdActns,
+  System.Classes,
+  Vcl.PlatformDefaultStyleActnCtrls,
+  Vcl.ImgList,
+  Vcl.ToolWin,
+  AboutPackage.uTGSFileVersionInfo, IdContext, IdBaseComponent, IdComponent,
+  IdCustomTCPServer, IdTCPServer, IdCmdTCPServer, IdCommandHandlers,
+  IdTCPConnection, IdTCPClient, IdCmdTCPClient, Web.Win.Sockets;
 
 type
   TMainForm = class(TForm)
     statMain: TStatusBar;
     AboutWindow: TAboutWindow;
     ilActions: TImageList;
-    ActionManager: TActionManager;
+    actmgrMain: TActionManager;
     actHelpMenuGroup: THelpMenuGroupAction;
     actFileMenuGroup: TFileMenuGroupAction;
     actHelpContents: THelpContentsAction;
@@ -42,7 +48,7 @@ type
     actStatusBar: TAction;
     actToolBar: TAction;
     TrayIcon: TTrayIcon;
-    MainMenu: TMainMenu;
+    mmMain: TMainMenu;
     N7: TMenuItem;
     N27: TMenuItem;
     N28: TMenuItem;
@@ -64,7 +70,12 @@ type
     mniN3: TMenuItem;
     mniQuit: TMenuItem;
     lvLog: TListView;
-    gsflvrsnfMain: TGSFileVersionInfo;
+    gsfviMain: TGSFileVersionInfo;
+    IdTCPClient: TIdTCPClient;
+    actConnect: TAction;
+    actDisconnect: TAction;
+    actTestConnection: TAction;
+    actActionMenuGroupAction: TActionMenuGroupAction;
     procedure actAboutExecute(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -76,6 +87,15 @@ type
     procedure TrayIconDblClick(Sender: TObject);
     procedure actRestoreUpdate(Sender: TObject);
     procedure TrayIconClick(Sender: TObject);
+    procedure CmdTCPServerCommandHandlers1Command(ASender: TIdCommand);
+    procedure IdTCPClientDisconnected(Sender: TObject);
+    procedure IdTCPClientConnected(Sender: TObject);
+    procedure actTestConnectionExecute(Sender: TObject);
+    procedure actConnectExecute(Sender: TObject);
+    procedure actDisconnectExecute(Sender: TObject);
+    procedure actTestConnectionUpdate(Sender: TObject);
+    procedure actDisconnectUpdate(Sender: TObject);
+    procedure actConnectUpdate(Sender: TObject);
 
   strict private
     FConfiguration: TConfiguration;
@@ -105,6 +125,7 @@ implementation
 
 uses
   System.SysUtils,
+  Vcl.Dialogs,
   Winapi.Windows,
   DBUServerManager.uConsts,
   DBUServerManager.Configuration.uTInterface,
@@ -143,6 +164,39 @@ begin
   end;
 end;
 
+procedure TMainForm.actConnectExecute(Sender: TObject);
+begin
+  try
+    IdTCPClient.Connect;
+    if IdTCPClient.Connected then
+    begin
+      while IdTCPClient.IOHandler.InputBuffer.Size > 0 do
+      begin
+        ShowMessage(IdTCPClient.IOHandler.ReadLn);
+      end;
+    end;
+  except
+    ShowMessage('Не удалось подключиться к серверу');
+  end;
+end;
+
+procedure TMainForm.actConnectUpdate(Sender: TObject);
+begin
+  actConnect.Enabled := not IdTCPClient.Connected;
+end;
+
+procedure TMainForm.actDisconnectExecute(Sender: TObject);
+begin
+  IdTCPClient.IOHandler.InputBuffer.Clear;
+  IdTCPClient.Disconnect;
+  ShowMessage(BoolToStr(IdTCPClient.Connected, True));
+end;
+
+procedure TMainForm.actDisconnectUpdate(Sender: TObject);
+begin
+  actDisconnect.Enabled := IdTCPClient.Connected;
+end;
+
 procedure TMainForm.actQuitExecute(Sender: TObject);
 begin
   Close;
@@ -163,6 +217,27 @@ begin
   begin
     Configuration.Section<TInterface>.EnableStatusbar := b;
   end;
+
+  if actStatusBar.Checked then
+  begin
+    IdTCPClient.Connect;
+  end
+  else
+  begin
+    IdTCPClient.IOHandler.InputBuffer.Clear;
+    IdTCPClient.Disconnect;
+  end;
+end;
+
+procedure TMainForm.actTestConnectionExecute(Sender: TObject);
+begin
+  IdTCPClient.SendCmd('TCP_CONNECTION_TEST');
+  ShowMessage(IdTCPClient.IOHandler.ReadLn);
+end;
+
+procedure TMainForm.actTestConnectionUpdate(Sender: TObject);
+begin
+  actTestConnection.Enabled := IdTCPClient.Connected;
 end;
 
 procedure TMainForm.actToolBarExecute(Sender: TObject);
@@ -193,10 +268,23 @@ begin
   b := Configuration.Section<TInterface>.EnableToolbar;
   actToolBar.Checked := b;
   acttbToolBar.Visible := b;
+
+  TrayIcon.Visible := (not Visible) or Configuration.Section<TInterface>.EnableAlwaysShowTrayIcon;
+end;
+
+procedure TMainForm.CmdTCPServerCommandHandlers1Command(ASender: TIdCommand);
+begin
+  ASender.SendReply;
 end;
 
 destructor TMainForm.Destroy;
 begin
+  if IdTCPClient.Connected then
+  begin
+    IdTCPClient.IOHandler.InputBuffer.Clear;
+    IdTCPClient.Disconnect;
+  end;
+
   if Assigned(Configuration) then
   begin
     Configuration.Free;
@@ -217,10 +305,12 @@ begin
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
+var
+  b: Boolean;
 begin
   Application.OnHint := OnHint;
-  gsflvrsnfMain.Filename := Application.ExeName;
-  Caption := gsflvrsnfMain.InternalName;
+  gsfviMain.Filename := Application.ExeName;
+  Caption := gsfviMain.InternalName;
   RegisterWindowMessages;
   ApplyConfiguration;
 
@@ -228,6 +318,10 @@ begin
   begin
     AboutWindow.Show(True);
   end;
+
+  b := Configuration.Section<TInterface>.EnableStartAtTray;
+  Application.ShowMainForm := not b;
+  Visible := not b;
 end;
 
 function TMainForm.GetConfiguration: TConfiguration;
@@ -265,7 +359,7 @@ end;
 procedure TMainForm.TrayIconDblClick(Sender: TObject);
 begin
   AboutWindow.Hide;
-  TrayIcon.Visible := False;
+  TrayIcon.Visible := Configuration.Section<TInterface>.EnableAlwaysShowTrayIcon;
   Visible := True;
   SetForegroundWindow(Handle);
   Application.Restore;
@@ -310,13 +404,23 @@ procedure TMainForm.actRestoreExecute(Sender: TObject);
 begin
   AboutWindow.Hide;
   Visible := True;
-  TrayIcon.Visible := False;
+  TrayIcon.Visible := Configuration.Section<TInterface>.EnableAlwaysShowTrayIcon;
   SetForegroundWindow(Handle);
 end;
 
 procedure TMainForm.actRestoreUpdate(Sender: TObject);
 begin
   actRestore.Enabled := not Visible;
+end;
+
+procedure TMainForm.IdTCPClientConnected(Sender: TObject);
+begin
+  ShowMessage('Connected');
+end;
+
+procedure TMainForm.IdTCPClientDisconnected(Sender: TObject);
+begin
+  ShowMessage('Disconnected');
 end;
 
 end.

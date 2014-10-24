@@ -83,6 +83,8 @@ type
     btnRefreshServers: TButton;
     btnRefreshDatabases: TButton;
     ImageList: TImageList;
+    chkEnableAlwaysShowTrayIcon: TCheckBox;
+    chkEnableStartAtTray: TCheckBox;
     procedure actCancelExecute(Sender: TObject);
     procedure actNextPageExecute(Sender: TObject);
     procedure actNextPageUpdate(Sender: TObject);
@@ -155,6 +157,16 @@ type
     property EnableStoreMainFormSizesAndPosition: Boolean read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
 
   strict private
+    function GetEnableAlwaysShowTrayIcon: Boolean;
+    procedure SetEnableAlwaysShowTrayIcon(const AValue: Boolean);
+    property EnableAlwaysShowTrayIcon: Boolean read GetEnableAlwaysShowTrayIcon write SetEnableAlwaysShowTrayIcon default CONFIGURATION_DEFAULT_ENABLE_ALWAYS_SHOW_TRAY_ICON;
+
+  strict private
+    function GetEnableStartAtTray: Boolean;
+    procedure SetEnableStartAtTray(const AValue: Boolean);
+    property EnableStartAtTray: Boolean read GetEnableStartAtTray write SetEnableStartAtTray default CONFIGURATION_DEFAULT_ENABLE_START_AT_TRAY;
+
+  strict private
     FRefreshingServers: Boolean;
     FRefreshingDatabases: Boolean;
     procedure GetServerList(const aList: TStrings; var ARefreshing: Boolean);
@@ -222,6 +234,8 @@ constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: 
       EnableStatusbar := Configuration.Section<TInterface>.EnableStatusbar;
       EnableToolbar := Configuration.Section<TInterface>.EnableToolbar;
       EnableStoreMainFormSizesAndPosition := Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition;
+      EnableAlwaysShowTrayIcon := Configuration.Section<TInterface>.EnableAlwaysShowTrayIcon;
+      EnableStartAtTray := Configuration.Section<TInterface>.EnableStartAtTray;
       EnablePlaySoundOnComplete := Configuration.Section<TOther>.EnablePlaySoundOnComplete;
       Server := Configuration.Section<TConnection>.Server;
       WinNTSecurity := Configuration.Section<TConnection>.WinNTSecurity;
@@ -259,6 +273,8 @@ begin
     EnableStatusbar := CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
     EnableToolbar := CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
     EnableStoreMainFormSizesAndPosition := CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
+    EnableAlwaysShowTrayIcon := CONFIGURATION_DEFAULT_ENABLE_ALWAYS_SHOW_TRAY_ICON;
+    EnableStartAtTray := CONFIGURATION_DEFAULT_ENABLE_START_AT_TRAY;
   end;
   if PageControl.ActivePage = tsResults then
   begin
@@ -288,7 +304,9 @@ begin
     (EnableSplashAtStart = CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START) and
     (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and
     (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR) and
-    (EnableStoreMainFormSizesAndPosition = CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION));
+    (EnableStoreMainFormSizesAndPosition = CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION) and
+    (EnableAlwaysShowTrayIcon = CONFIGURATION_DEFAULT_ENABLE_ALWAYS_SHOW_TRAY_ICON) and
+    (EnableStartAtTray = CONFIGURATION_DEFAULT_ENABLE_START_AT_TRAY));
   end;
   if PageControl.ActivePage = tsResults then
   begin
@@ -364,6 +382,8 @@ begin
     Configuration.Section<TInterface>.EnableStatusbar := EnableStatusbar;
     Configuration.Section<TInterface>.EnableToolbar := EnableToolbar;
     Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition := EnableStoreMainFormSizesAndPosition;
+    Configuration.Section<TInterface>.EnableAlwaysShowTrayIcon := EnableAlwaysShowTrayIcon;
+    Configuration.Section<TInterface>.EnableStartAtTray := EnableStartAtTray;
     Configuration.Section<TConnection>.Server := Server;
     Configuration.Section<TConnection>.WinNTSecurity := WinNTSecurity;
     Configuration.Section<TConnection>.Login := Login;
@@ -386,6 +406,8 @@ begin
     b := not((Configuration.Section<TOther>.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete) and (Configuration.Section<TInterface>.EnableQuitConfirmation = EnableQuitConfirmation) and
       (Configuration.Section<TInterface>.EnableSplashAtStart = EnableSplashAtStart) and (Configuration.Section<TInterface>.EnableStatusbar = EnableStatusbar) and (Configuration.Section<TInterface>.EnableToolbar = EnableToolbar)
       and (Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition = EnableStoreMainFormSizesAndPosition) and
+      (Configuration.Section<TInterface>.EnableAlwaysShowTrayIcon = EnableAlwaysShowTrayIcon) and
+      (Configuration.Section<TInterface>.EnableStartAtTray = EnableStartAtTray) and
 
       (Configuration.Section<TConnection>.Server = Server) and (Configuration.Section<TConnection>.WinNTSecurity = WinNTSecurity) and (Configuration.Section<TConnection>.Login = Login) and
       (Configuration.Section<TConnection>.Password = Password) and (Configuration.Section<TConnection>.EnableStorePassword = EnableStorePassword) and
@@ -480,6 +502,11 @@ begin
   end;
 end;
 
+function TConfigurationForm.GetEnableAlwaysShowTrayIcon: Boolean;
+begin
+  Result := chkEnableAlwaysShowTrayIcon.Checked and chkEnableAlwaysShowTrayIcon.Enabled;
+end;
+
 function TConfigurationForm.GetEnableEmptyPassword: Boolean;
 begin
   Result := chkEnableEmptyPassword.Checked and chkEnableEmptyPassword.Enabled;
@@ -498,6 +525,11 @@ end;
 function TConfigurationForm.GetEnableSplashAtStart: Boolean;
 begin
   Result := chkEnableSplashAtStart.Enabled and chkEnableSplashAtStart.Checked;
+end;
+
+function TConfigurationForm.GetEnableStartAtTray: Boolean;
+begin
+  Result := chkEnableStartAtTray.Enabled and chkEnableStartAtTray.Checked;
 end;
 
 function TConfigurationForm.GetEnableStatusbar: Boolean;
@@ -646,6 +678,11 @@ begin
   end;
 end;
 
+procedure TConfigurationForm.SetEnableAlwaysShowTrayIcon(const AValue: Boolean);
+begin
+  Routines.SetCheckBoxState(chkEnableAlwaysShowTrayIcon, AValue);
+end;
+
 procedure TConfigurationForm.SetEnableEmptyPassword(const AValue: Boolean);
 begin
 
@@ -664,6 +701,11 @@ end;
 procedure TConfigurationForm.SetEnableSplashAtStart(const AValue: Boolean);
 begin
   Routines.SetCheckBoxState(chkEnableSplashAtStart, AValue);
+end;
+
+procedure TConfigurationForm.SetEnableStartAtTray(const AValue: Boolean);
+begin
+  Routines.SetCheckBoxState(chkEnableStartAtTray, AValue);
 end;
 
 procedure TConfigurationForm.SetEnableStatusbar(const AValue: Boolean);
