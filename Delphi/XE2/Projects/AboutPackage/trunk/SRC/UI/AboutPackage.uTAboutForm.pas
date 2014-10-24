@@ -34,17 +34,19 @@ type
     procedure actCloseUpdate(Sender: TObject);
     procedure lblEMailAddressClick(Sender: TObject);
     procedure actCloseExecute(Sender: TObject);
+
   strict private
     FSplash: Boolean;
     function GetSplash: Boolean;
     property Splash: Boolean read GetSplash nodefault;
+
   strict private
     FEMail: string;
     function GetEMail: string;
     property EMail: string read GetEMail nodefault;
+
   public
-    constructor Create(AOwner: TComponent; const ASplash: Boolean; const AEMail: string);
-      reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const ASplash: Boolean; const AEMail: string); reintroduce; virtual;
   end;
 
 implementation
@@ -61,6 +63,8 @@ resourcestring
   RsCaption = 'О программе "%s"';
 
 constructor TAboutForm.Create(AOwner: TComponent; const ASplash: Boolean; const AEMail: string);
+var
+  s: string;
 begin
   inherited Create(AOwner);
   FSplash := ASplash;
@@ -69,8 +73,9 @@ begin
   if not(csDesigning in ComponentState) then
   begin
     GSFileVersionInfo.Filename := Application.ExeName;
-    Caption := Format(RsCaption, [GSFileVersionInfo.InternalName]);
-    lblTitle.Caption := GSFileVersionInfo.InternalName;
+    s := GSFileVersionInfo.InternalName;
+    Caption := Format(RsCaption, [s]);
+    lblTitle.Caption := s;
     imgApplicationIcon.Picture.Icon.Assign(Application.Icon);
     lblVersion.Caption := Format(RsVersionInfo, [GSFileVersionInfo.ModuleVersion.Major,
       GSFileVersionInfo.ModuleVersion.Minor, GSFileVersionInfo.ModuleVersion.Release,
