@@ -22,6 +22,10 @@ type
     property EnableToolbar: Boolean index 3 read GetBooleanValue write SetBooleanValue;
     [TDefaultValue(CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION)]
     property EnableStoreMainFormSizesAndPosition: Boolean index 4 read GetBooleanValue write SetBooleanValue;
+    [TDefaultValue(CONFIGURATION_DEFAULT_ENABLE_ALWAYS_SHOW_TRAY_ICON)]
+    property EnableAlwaysShowTrayIcon: Boolean index 5 read GetBooleanValue write SetBooleanValue;
+    [TDefaultValue(CONFIGURATION_DEFAULT_ENABLE_START_AT_TRAY)]
+    property EnableStartAtTray: Boolean index 6 read GetBooleanValue write SetBooleanValue;
   end;
 
 implementation

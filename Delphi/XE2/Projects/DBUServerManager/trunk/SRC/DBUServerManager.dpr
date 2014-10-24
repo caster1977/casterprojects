@@ -47,7 +47,6 @@ begin
   end;
 
   Application.HelpFile := EmptyStr;
-  Application.ShowMainForm := True;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMainForm, MainForm);
   Application.Run;

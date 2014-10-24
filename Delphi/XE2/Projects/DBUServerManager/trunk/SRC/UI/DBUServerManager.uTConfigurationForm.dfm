@@ -148,7 +148,7 @@ object ConfigurationForm: TConfigurationForm
     Top = 53
     Width = 462
     Height = 240
-    ActivePage = tsOther
+    ActivePage = tsInterface
     Align = alClient
     Style = tsButtons
     TabOrder = 1
@@ -202,6 +202,22 @@ object ConfigurationForm: TConfigurationForm
           Height = 17
           Caption = #1057#1086#1093#1088#1072#1085#1103#1090#1100' '#1087#1086#1083#1086#1078#1077#1085#1080#1077' '#1080' '#1088#1072#1079#1084#1077#1088#1099' '#1075#1083#1072#1074#1085#1086#1075#1086' '#1086#1082#1085#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
           TabOrder = 4
+        end
+        object chkEnableAlwaysShowTrayIcon: TCheckBox
+          Left = 10
+          Top = 125
+          Width = 435
+          Height = 17
+          Caption = #1042#1089#1077#1075#1076#1072' '#1086#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1080#1082#1086#1085#1082#1091' '#1074' '#1090#1088#1077#1077
+          TabOrder = 5
+        end
+        object chkEnableStartAtTray: TCheckBox
+          Left = 10
+          Top = 148
+          Width = 435
+          Height = 17
+          Caption = #1057#1074#1086#1088#1072#1095#1080#1074#1072#1090#1100' '#1074' '#1090#1088#1077#1081' '#1087#1088#1080' '#1079#1072#1087#1091#1089#1082#1077
+          TabOrder = 6
         end
       end
     end
@@ -509,10 +525,10 @@ object ConfigurationForm: TConfigurationForm
   end
   object ImageList: TImageList
     AllocBy = 3
-    Left = 16
-    Top = 184
+    Left = 336
+    Top = 64
     Bitmap = {
-      494C0101040008008C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800940010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
