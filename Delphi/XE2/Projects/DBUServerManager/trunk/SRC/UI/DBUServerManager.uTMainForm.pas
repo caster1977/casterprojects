@@ -21,13 +21,21 @@ uses
   Vcl.PlatformDefaultStyleActnCtrls,
   Vcl.ImgList,
   Vcl.ToolWin,
-  AboutPackage.uTGSFileVersionInfo, IdContext, IdBaseComponent, IdComponent,
-  IdCustomTCPServer, IdTCPServer, IdCmdTCPServer, IdCommandHandlers,
-  IdTCPConnection, IdTCPClient, IdCmdTCPClient, Web.Win.Sockets;
+  AboutPackage.uTGSFileVersionInfo,
+  IdContext,
+  IdBaseComponent,
+  IdComponent,
+  IdCustomTCPServer,
+  IdTCPServer,
+  IdCmdTCPServer,
+  IdCommandHandlers,
+  IdTCPConnection,
+  IdTCPClient,
+  IdCmdTCPClient,
+  Web.Win.Sockets, CastersPackage.uTStateImage, Vcl.Graphics;
 
 type
   TMainForm = class(TForm)
-    statMain: TStatusBar;
     AboutWindow: TAboutWindow;
     ilActions: TImageList;
     actmgrMain: TActionManager;
@@ -76,6 +84,10 @@ type
     actDisconnect: TAction;
     actTestConnection: TAction;
     actActionMenuGroupAction: TActionMenuGroupAction;
+    ilStates: TImageList;
+    pbMain: TProgressBar;
+    StatusBar: TStatusBar;
+    simg1: TStateImage;
     procedure actAboutExecute(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -87,15 +99,14 @@ type
     procedure TrayIconDblClick(Sender: TObject);
     procedure actRestoreUpdate(Sender: TObject);
     procedure TrayIconClick(Sender: TObject);
-    procedure CmdTCPServerCommandHandlers1Command(ASender: TIdCommand);
     procedure IdTCPClientDisconnected(Sender: TObject);
     procedure IdTCPClientConnected(Sender: TObject);
     procedure actTestConnectionExecute(Sender: TObject);
     procedure actConnectExecute(Sender: TObject);
     procedure actDisconnectExecute(Sender: TObject);
-    procedure actTestConnectionUpdate(Sender: TObject);
-    procedure actDisconnectUpdate(Sender: TObject);
     procedure actConnectUpdate(Sender: TObject);
+    procedure actDisconnectUpdate(Sender: TObject);
+    procedure actTestConnectionUpdate(Sender: TObject);
 
   strict private
     FConfiguration: TConfiguration;
@@ -125,8 +136,10 @@ implementation
 
 uses
   System.SysUtils,
+  Winapi.CommCtrl,
   Vcl.Dialogs,
   Winapi.Windows,
+  CastersPackage.uTHackControl,
   DBUServerManager.uConsts,
   DBUServerManager.Configuration.uTInterface,
   DBUServerManager.uTConfigurationForm;
@@ -164,39 +177,6 @@ begin
   end;
 end;
 
-procedure TMainForm.actConnectExecute(Sender: TObject);
-begin
-  try
-    IdTCPClient.Connect;
-    if IdTCPClient.Connected then
-    begin
-      while IdTCPClient.IOHandler.InputBuffer.Size > 0 do
-      begin
-        ShowMessage(IdTCPClient.IOHandler.ReadLn);
-      end;
-    end;
-  except
-    ShowMessage('Не удалось подключиться к серверу');
-  end;
-end;
-
-procedure TMainForm.actConnectUpdate(Sender: TObject);
-begin
-  actConnect.Enabled := not IdTCPClient.Connected;
-end;
-
-procedure TMainForm.actDisconnectExecute(Sender: TObject);
-begin
-  IdTCPClient.IOHandler.InputBuffer.Clear;
-  IdTCPClient.Disconnect;
-  ShowMessage(BoolToStr(IdTCPClient.Connected, True));
-end;
-
-procedure TMainForm.actDisconnectUpdate(Sender: TObject);
-begin
-  actDisconnect.Enabled := IdTCPClient.Connected;
-end;
-
 procedure TMainForm.actQuitExecute(Sender: TObject);
 begin
   Close;
@@ -208,9 +188,9 @@ var
 begin
   b := actStatusBar.Checked;
 
-  if statMain.Visible <> b then
+  if StatusBar.Visible <> b then
   begin
-    statMain.Visible := b;
+    StatusBar.Visible := b;
   end;
 
   if Configuration.Section<TInterface>.EnableStatusbar <> b then
@@ -227,17 +207,6 @@ begin
     IdTCPClient.IOHandler.InputBuffer.Clear;
     IdTCPClient.Disconnect;
   end;
-end;
-
-procedure TMainForm.actTestConnectionExecute(Sender: TObject);
-begin
-  IdTCPClient.SendCmd('TCP_CONNECTION_TEST');
-  ShowMessage(IdTCPClient.IOHandler.ReadLn);
-end;
-
-procedure TMainForm.actTestConnectionUpdate(Sender: TObject);
-begin
-  actTestConnection.Enabled := IdTCPClient.Connected;
 end;
 
 procedure TMainForm.actToolBarExecute(Sender: TObject);
@@ -263,18 +232,13 @@ var
 begin
   b := Configuration.Section<TInterface>.EnableStatusbar;
   actStatusBar.Checked := b;
-  statMain.Visible := b;
+  StatusBar.Visible := b;
 
   b := Configuration.Section<TInterface>.EnableToolbar;
   actToolBar.Checked := b;
   acttbToolBar.Visible := b;
 
   TrayIcon.Visible := (not Visible) or Configuration.Section<TInterface>.EnableAlwaysShowTrayIcon;
-end;
-
-procedure TMainForm.CmdTCPServerCommandHandlers1Command(ASender: TIdCommand);
-begin
-  ASender.SendReply;
 end;
 
 destructor TMainForm.Destroy;
@@ -307,10 +271,23 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 var
   b: Boolean;
+
+  procedure BindProgressBarToStatusBar;
+  var
+    r: TRect;
+  begin
+    THackControl(pbMain).SetParent(StatusBar);
+    SendMessage(StatusBar.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@r));
+    pbMain.SetBounds(r.Left, r.Top, r.Right - r.Left, r.Bottom - r.Top - 1);
+  end;
+
 begin
   Application.OnHint := OnHint;
   gsfviMain.Filename := Application.ExeName;
   Caption := gsfviMain.InternalName;
+
+  BindProgressBarToStatusBar;
+
   RegisterWindowMessages;
   ApplyConfiguration;
 
@@ -335,7 +312,11 @@ end;
 
 procedure TMainForm.OnHint(ASender: TObject);
 begin
-  statMain.SimpleText := GetLongHint(Application.Hint);
+  if Configuration.Section<TInterface>.EnableStatusbar then
+  begin
+    StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := GetLongHint(Application.Hint);
+  end;
+  StatusBar.SimpleText := GetLongHint(Application.Hint);
 end;
 
 procedure TMainForm.RegisterWindowMessages;
@@ -415,12 +396,58 @@ end;
 
 procedure TMainForm.IdTCPClientConnected(Sender: TObject);
 begin
-  ShowMessage('Connected');
+  // ShowMessage('Connected');
 end;
 
 procedure TMainForm.IdTCPClientDisconnected(Sender: TObject);
 begin
-  ShowMessage('Disconnected');
+  // ShowMessage('Disconnected');
+end;
+
+procedure TMainForm.actConnectExecute(Sender: TObject);
+begin
+  try
+    IdTCPClient.Connect;
+    if IdTCPClient.Connected then
+    begin
+      while IdTCPClient.IOHandler.InputBuffer.Size > 0 do
+      begin
+        ShowMessage(IdTCPClient.IOHandler.ReadLn);
+      end;
+    end;
+  except
+    ShowMessage('Не удалось подключиться к серверу');
+  end;
+end;
+
+procedure TMainForm.actConnectUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := not IdTCPClient.Connected;
+end;
+
+procedure TMainForm.actDisconnectExecute(Sender: TObject);
+begin
+  IdTCPClient.IOHandler.InputBuffer.Clear;
+  IdTCPClient.Disconnect;
+end;
+
+procedure TMainForm.actDisconnectUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := IdTCPClient.Connected;
+end;
+
+procedure TMainForm.actTestConnectionExecute(Sender: TObject);
+var
+  s: string;
+begin
+  IdTCPClient.SendCmd('TCP_CONNECTION_TEST');
+  s := IdTCPClient.IOHandler.ReadLn;
+  ShowMessage(s);
+end;
+
+procedure TMainForm.actTestConnectionUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := IdTCPClient.Connected;
 end;
 
 end.
