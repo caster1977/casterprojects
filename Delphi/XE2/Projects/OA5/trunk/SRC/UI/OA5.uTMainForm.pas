@@ -159,10 +159,8 @@ uses
   OA5.uTStationaryProviders,
   OA5.uTPhoneListForm,
   OA5.uTMobilePhone,
-  OA5.uTMobileProviders;
-
-type
-  THackControl = class(TControl);
+  OA5.uTMobileProviders,
+  CastersPackage.uTHackControl;
 
 const
   STATUSBAR_STATE_PANEL_NUMBER: Integer = 0;
