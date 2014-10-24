@@ -73,7 +73,9 @@ contains
   CastersPackage.uTIniFileSerilizator in 'CastersPackage.uTIniFileSerilizator.pas',
   CastersPackage.uICustomized in 'CastersPackage.uICustomized.pas',
   CastersPackage.uTSingletonAppSession in 'CastersPackage.uTSingletonAppSession.pas',
-  CastersPackage.uISingletonAppSession in 'CastersPackage.uISingletonAppSession.pas';
+  CastersPackage.uISingletonAppSession in 'CastersPackage.uISingletonAppSession.pas',
+  CastersPackage.uTHackControl in 'CastersPackage.uTHackControl.pas',
+  CastersPackage.uTStateImage in 'CastersPackage.uTStateImage.pas';
 
 end.
 
