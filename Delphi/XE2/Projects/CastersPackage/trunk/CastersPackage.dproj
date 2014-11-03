@@ -94,6 +94,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="CastersPackage.fisSysMenu.dcr"/>
+        <DCCReference Include="CastersPackage.uTStateImage.dcr"/>
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="vcl.dcp"/>
         <DCCReference Include="xmlrtl.dcp"/>
@@ -142,6 +143,8 @@
         <DCCReference Include="CastersPackage.uISingletonAppSession.pas"/>
         <DCCReference Include="CastersPackage.uTHackControl.pas"/>
         <DCCReference Include="CastersPackage.uTStateImage.pas"/>
+        <DCCReference Include="CastersPackage.uTStateProgressBar.pas"/>
+        <DCCReference Include="CastersPackage.uTStatusBarEx.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -2,6 +2,7 @@ package CastersPackage;
 
 {$R *.res}
 {$R 'CastersPackage.fisSysMenu.dcr'}
+{$R 'CastersPackage.uTStateImage.dcr'}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -75,7 +76,9 @@ contains
   CastersPackage.uTSingletonAppSession in 'CastersPackage.uTSingletonAppSession.pas',
   CastersPackage.uISingletonAppSession in 'CastersPackage.uISingletonAppSession.pas',
   CastersPackage.uTHackControl in 'CastersPackage.uTHackControl.pas',
-  CastersPackage.uTStateImage in 'CastersPackage.uTStateImage.pas';
+  CastersPackage.uTStateImage in 'CastersPackage.uTStateImage.pas',
+  CastersPackage.uTStateProgressBar in 'CastersPackage.uTStateProgressBar.pas',
+  CastersPackage.uTStatusBarEx in 'CastersPackage.uTStatusBarEx.pas';
 
 end.
 
