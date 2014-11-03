@@ -82,6 +82,8 @@ object MainForm: TMainForm
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
     Spacing = 0
   end
   object lvLog: TListView
@@ -127,19 +129,6 @@ object MainForm: TMainForm
     TabOrder = 1
     ViewStyle = vsReport
   end
-  object pbMain: TProgressBar
-    Left = 48
-    Top = 196
-    Width = 98
-    Height = 17
-    Hint = #1048#1085#1076#1080#1082#1072#1090#1086#1088' '#1087#1088#1086#1075#1088#1077#1089#1089#1072' '#1074#1099#1087#1086#1083#1085#1103#1077#1084#1086#1081' '#1086#1087#1077#1088#1072#1094#1080#1080
-    Constraints.MaxHeight = 17
-    Constraints.MaxWidth = 98
-    Constraints.MinHeight = 17
-    Constraints.MinWidth = 98
-    Step = 1
-    TabOrder = 2
-  end
   object StatusBar: TStatusBar
     Left = 0
     Top = 398
@@ -163,6 +152,26 @@ object MainForm: TMainForm
         Width = 50
       end>
   end
+  object statpb1: TStateProgressBar
+    Left = 518
+    Top = 304
+    Constraints.MaxHeight = 17
+    Constraints.MaxWidth = 98
+    Constraints.MinHeight = 17
+    Constraints.MinWidth = 98
+    TabOrder = 3
+    StatusBar = StatusBar
+    BindPanelIndex = 1
+  end
+  object stsbrx1: TStatusBarEx
+    Left = 0
+    Top = 378
+    Width = 620
+    Panels = <>
+    SimplePanel = True
+    Options = [sboeShowHint]
+    ExplicitTop = 372
+  end
   object AboutWindow: TAboutWindow
     EMail = 'v_ivanov@rtl.by'
     Left = 168
@@ -173,7 +182,7 @@ object MainForm: TMainForm
     Left = 168
     Top = 128
     Bitmap = {
-      494C01010F00A0003C0310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010F00A000940310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -840,12 +849,10 @@ object MainForm: TMainForm
           end
           item
             Action = actConnect
-            Caption = '&actConnect'
             ImageIndex = 13
           end
           item
             Action = actDisconnect
-            Caption = 'a&ctDisconnect'
             ImageIndex = 14
           end
           item
@@ -853,7 +860,6 @@ object MainForm: TMainForm
           end
           item
             Action = actTestConnection
-            Caption = 'ac&tTestConnection'
             ImageIndex = 4
           end
           item
@@ -888,7 +894,7 @@ object MainForm: TMainForm
     end
     object actHelpContents: THelpContentsAction
       Category = #1057#1087#1088#1072#1074#1082#1072
-      Caption = '&'#1054#1075#1083#1072#1074#1083#1077#1085#1080#1077
+      Caption = #1054'&'#1075#1083#1072#1074#1083#1077#1085#1080#1077
       Enabled = False
       Hint = 
         #1054#1075#1083#1072#1074#1083#1077#1085#1080#1077' '#1089#1087#1088#1072#1074#1082#1080'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1086#1082#1085#1072' '#1086#1075#1083#1072#1074#1083#1077#1085#1080#1103' '#1089#1087#1088#1072#1074 +
@@ -968,13 +974,15 @@ object MainForm: TMainForm
       Caption = '&'#1042#1080#1076
     end
     object actStatusBar: TAction
+      Category = #1042#1080#1076
       AutoCheck = True
-      Caption = #1055#1072#1085#1077#1083#1100' &'#1089#1090#1072#1090#1091#1089#1072
+      Caption = #1055#1072#1085#1077#1083#1100' '#1089'&'#1090#1072#1090#1091#1089#1072
       Checked = True
       Hint = #1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1074#1082#1083#1102#1095#1077#1085#1080#1103'/'#1086#1090#1082#1083#1102#1095#1077#1085#1080#1103' '#1087#1072#1085#1077#1083#1080' '#1089#1090#1072#1090#1091#1089#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
       OnExecute = actStatusBarExecute
     end
     object actToolBar: TAction
+      Category = #1042#1080#1076
       AutoCheck = True
       Caption = #1055#1072#1085#1077#1083#1100' &'#1080#1085#1089#1090#1088#1091#1084#1077#1085#1090#1086#1074
       Checked = True
@@ -982,8 +990,11 @@ object MainForm: TMainForm
       OnExecute = actToolBarExecute
     end
     object actRestore: TAction
-      Caption = '&'#1042#1086#1089#1089#1090#1072#1085#1086#1074#1080#1090#1100
-      Hint = #1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1075#1083#1072#1074#1085#1086#1075#1086' '#1086#1082#1085#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+      Category = #1042#1080#1076
+      Caption = #1042#1086#1089#1089'&'#1090#1072#1085#1086#1074#1080#1090#1100
+      Hint = 
+        #1042#1086#1089#1089#1090#1072#1085#1086#1074#1080#1090#1100' '#1086#1082#1085#1086'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1075#1083#1072#1074#1085#1086#1075#1086' '#1086#1082#1085#1072' '#1087#1088#1086#1075#1088#1072#1084#1084 +
+        #1099
       OnExecute = actRestoreExecute
       OnUpdate = actRestoreUpdate
     end
@@ -993,22 +1004,31 @@ object MainForm: TMainForm
     end
     object actConnect: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      Caption = 'actConnect'
+      Caption = '&'#1055#1086#1076#1082#1083#1102#1095#1080#1090#1100#1089#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091
+      Hint = 
+        #1055#1086#1076#1082#1083#1102#1095#1080#1090#1100#1089#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1084#1077#1085#1077#1076#1078#1077#1088#1072' '#1082' '#1089#1077#1088#1074#1077 +
+        #1088#1091
       ImageIndex = 13
       OnExecute = actConnectExecute
       OnUpdate = actConnectUpdate
     end
     object actDisconnect: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      Caption = 'actDisconnect'
+      Caption = '&'#1054#1090#1082#1083#1102#1095#1080#1090#1100#1089#1103' '#1086#1090' '#1089#1077#1088#1074#1077#1088#1072
       Enabled = False
+      Hint = 
+        #1054#1090#1082#1083#1102#1095#1080#1090#1100#1089#1103' '#1086#1090' '#1089#1077#1088#1074#1077#1088#1072'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1083#1102#1095#1077#1085#1080#1103' '#1084#1077#1085#1077#1076#1078#1077#1088#1072' '#1086#1090' '#1089#1077#1088#1074#1077 +
+        #1088#1072
       ImageIndex = 14
       OnExecute = actDisconnectExecute
       OnUpdate = actDisconnectUpdate
     end
     object actTestConnection: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      Caption = 'actTestConnection'
+      Caption = #1055#1088#1086#1074#1077#1088#1080#1090#1100' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1077
+      Hint = 
+        #1055#1088#1086#1074#1077#1088#1080#1090#1100' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1088#1086#1074#1077#1088#1082#1080' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1084#1077#1085#1077#1076#1078#1077#1088#1072 +
+        ' '#1082' '#1089#1077#1088#1074#1077#1088#1091
       ImageIndex = 4
       OnExecute = actTestConnectionExecute
       OnUpdate = actTestConnectionUpdate
@@ -1026,38 +1046,47 @@ object MainForm: TMainForm
     Images = ilActions
     Left = 272
     Top = 128
-    object N7: TMenuItem
+    object mniFileMenuGroup: TMenuItem
       Action = actFileMenuGroup
-      object N27: TMenuItem
+      object mniConfiguration: TMenuItem
         Action = actConfiguration
       end
       object N28: TMenuItem
         Caption = '-'
       end
-      object N29: TMenuItem
+      object mniQuit: TMenuItem
         Action = actQuit
       end
     end
-    object N5: TMenuItem
+    object mniActionMenuGroupAction: TMenuItem
+      Action = actActionMenuGroupAction
+      object mniConnect: TMenuItem
+        Action = actConnect
+      end
+      object mniDisconnect: TMenuItem
+        Action = actDisconnect
+      end
+    end
+    object mniViewMenuGroupAction: TMenuItem
       Action = actViewMenuGroupAction
-      object N9: TMenuItem
+      object mniToolBar: TMenuItem
         Action = actToolBar
         AutoCheck = True
       end
-      object N11: TMenuItem
+      object mniStatusBar: TMenuItem
         Action = actStatusBar
         AutoCheck = True
       end
     end
-    object N10: TMenuItem
+    object mniHelpMenuGroup: TMenuItem
       Action = actHelpMenuGroup
-      object N17: TMenuItem
+      object mniHelpContents: TMenuItem
         Action = actHelpContents
       end
       object N18: TMenuItem
         Caption = '-'
       end
-      object N19: TMenuItem
+      object mniAbout: TMenuItem
         Action = actAbout
       end
     end
@@ -1066,23 +1095,20 @@ object MainForm: TMainForm
     Images = ilActions
     Left = 368
     Top = 128
-    object mniActionRestore: TMenuItem
+    object mniTrayRestore: TMenuItem
       Action = actRestore
       Default = True
     end
     object mniN1: TMenuItem
       Caption = '-'
     end
-    object mniN2: TMenuItem
-      Action = actHelpContents
-    end
-    object mniO1: TMenuItem
+    object mniTrayAbout: TMenuItem
       Action = actAbout
     end
     object mniN3: TMenuItem
       Caption = '-'
     end
-    object mniQuit: TMenuItem
+    object mniTrayQuit: TMenuItem
       Action = actQuit
     end
   end
@@ -1106,7 +1132,7 @@ object MainForm: TMainForm
     Left = 64
     Top = 288
     Bitmap = {
-      494C010102000400600510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400B80510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
