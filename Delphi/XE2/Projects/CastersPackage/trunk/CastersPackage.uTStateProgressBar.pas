@@ -1,4 +1,4 @@
-unit CastersPackage.uTStateImage;
+unit CastersPackage.uTStateProgressBar;
 
 interface
 
@@ -8,24 +8,15 @@ uses
   Vcl.ComCtrls;
 
 type
-  TStateImage = class(TImage)
+  TStateProgressBar = class(TProgressBar)
   protected
     procedure Loaded; override;
   public
     constructor Create(AOwner: TComponent); override;
   published
     property AutoSize default True;
-    property Transparent default True;
-    property Width default 16;
-    property Height default 16;
-
-  strict private
-    FState: Boolean;
-  strict protected
-    function GetState: Boolean;
-    procedure SetState(const AValue: Boolean);
-  published
-    property State: Boolean read GetState write SetState default True;
+    property Width default 98;
+    property Height default 17;
 
   private
     FStatusBar: TStatusBar;
@@ -42,7 +33,6 @@ type
     property BindPanelIndex: Integer read GetBindPanelIndex write SetBindPanelIndex default -1;
 
   strict private
-    procedure PaintState(const AValue: Boolean);
     procedure Bind;
   end;
 
@@ -50,7 +40,7 @@ procedure Register;
 
 implementation
 
-{$R *.dcr}
+//{$R *.dcr}
 
 uses
   System.Types,
@@ -60,10 +50,10 @@ uses
 
 procedure Register;
 begin
-  RegisterComponents('CasterComponents', [TStateImage]);
+  RegisterComponents('CasterComponents', [TStateProgressBar]);
 end;
 
-procedure TStateImage.Bind;
+procedure TStateProgressBar.Bind;
 var
   r: TRect;
 begin
@@ -81,41 +71,34 @@ begin
 
     THackControl(Self).SetParent(StatusBar);
     SendMessage(StatusBar.Handle, SB_GETRECT, BindPanelIndex, Integer(@r));
-    SetBounds(r.Left + 2, r.Top + 1, r.Right - r.Left - 4, r.Bottom - r.Top - 4);
+    SetBounds(r.Left, r.Top, r.Right - r.Left, r.Bottom - r.Top - 1);
   end;
 end;
 
-constructor TStateImage.Create(AOwner: TComponent);
+constructor TStateProgressBar.Create(AOwner: TComponent);
 begin
   inherited;
   AutoSize := True;
-  Transparent := True;
-  Width := 16;
-  Height := 16;
-  Constraints.MaxHeight := 16;
-  Constraints.MaxWidth := 16;
-  Constraints.MinHeight := 16;
-  Constraints.MinWidth := 16;
-  FState := True;
+  Width := 98;
+  Height := 17;
+  Constraints.MaxHeight := 17;
+  Constraints.MaxWidth := 98;
+  Constraints.MinHeight := 17;
+  Constraints.MinWidth := 98;
   BindPanelIndex := -1;
 end;
 
-function TStateImage.GetBindPanelIndex: Integer;
+function TStateProgressBar.GetBindPanelIndex: Integer;
 begin
   Result := FBindPanelIndex;
 end;
 
-function TStateImage.GetState: Boolean;
-begin
-  Result := FState;
-end;
-
-function TStateImage.GetStatusBar: TStatusBar;
+function TStateProgressBar.GetStatusBar: TStatusBar;
 begin
   Result := FStatusBar;
 end;
 
-procedure TStateImage.Loaded;
+procedure TStateProgressBar.Loaded;
 begin
   inherited;
   if not(csDesigning in ComponentState) then
@@ -124,7 +107,7 @@ begin
   end;
 end;
 
-procedure TStateImage.SetBindPanelIndex(const AValue: Integer);
+procedure TStateProgressBar.SetBindPanelIndex(const AValue: Integer);
 begin
   if FBindPanelIndex <> AValue then
   begin
@@ -132,26 +115,12 @@ begin
   end;
 end;
 
-procedure TStateImage.SetState(const AValue: Boolean);
-begin
-  if FState <> AValue then
-  begin
-    FState := AValue;
-    PaintState(FState);
-  end;
-end;
-
-procedure TStateImage.SetStatusBar(const AValue: TStatusBar);
+procedure TStateProgressBar.SetStatusBar(const AValue: TStatusBar);
 begin
   if FStatusBar <> AValue then
   begin
     FStatusBar := AValue;
   end;
-end;
-
-procedure TStateImage.PaintState(const AValue: Boolean);
-begin
-  // FStateImages.GetIcon(Integer(AValue), Picture.Icon);
 end;
 
 end.
