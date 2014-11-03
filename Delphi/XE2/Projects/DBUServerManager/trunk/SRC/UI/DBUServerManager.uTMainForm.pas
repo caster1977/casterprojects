@@ -32,7 +32,8 @@ uses
   IdTCPConnection,
   IdTCPClient,
   IdCmdTCPClient,
-  Web.Win.Sockets, CastersPackage.uTStateImage, Vcl.Graphics;
+  Web.Win.Sockets, CastersPackage.uTStateImage, Vcl.Graphics,
+  CastersPackage.uTStateProgressBar, CastersPackage.uTStatusBarEx;
 
 type
   TMainForm = class(TForm)
@@ -57,26 +58,25 @@ type
     actToolBar: TAction;
     TrayIcon: TTrayIcon;
     mmMain: TMainMenu;
-    N7: TMenuItem;
-    N27: TMenuItem;
+    mniFileMenuGroup: TMenuItem;
+    mniConfiguration: TMenuItem;
     N28: TMenuItem;
-    N29: TMenuItem;
-    N5: TMenuItem;
-    N9: TMenuItem;
-    N11: TMenuItem;
-    N10: TMenuItem;
-    N17: TMenuItem;
+    mniQuit: TMenuItem;
+    mniViewMenuGroupAction: TMenuItem;
+    mniToolBar: TMenuItem;
+    mniStatusBar: TMenuItem;
+    mniHelpMenuGroup: TMenuItem;
+    mniHelpContents: TMenuItem;
     N18: TMenuItem;
-    N19: TMenuItem;
+    mniAbout: TMenuItem;
     acttbToolBar: TActionToolBar;
     actRestore: TAction;
     pmTray: TPopupMenu;
-    mniActionRestore: TMenuItem;
+    mniTrayRestore: TMenuItem;
     mniN1: TMenuItem;
-    mniN2: TMenuItem;
-    mniO1: TMenuItem;
+    mniTrayAbout: TMenuItem;
     mniN3: TMenuItem;
-    mniQuit: TMenuItem;
+    mniTrayQuit: TMenuItem;
     lvLog: TListView;
     gsfviMain: TGSFileVersionInfo;
     IdTCPClient: TIdTCPClient;
@@ -85,9 +85,13 @@ type
     actTestConnection: TAction;
     actActionMenuGroupAction: TActionMenuGroupAction;
     ilStates: TImageList;
-    pbMain: TProgressBar;
     StatusBar: TStatusBar;
     simg1: TStateImage;
+    mniActionMenuGroupAction: TMenuItem;
+    mniDisconnect: TMenuItem;
+    mniConnect: TMenuItem;
+    statpb1: TStateProgressBar;
+    stsbrx1: TStatusBarEx;
     procedure actAboutExecute(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -117,7 +121,6 @@ type
     FWindowMessage: Cardinal;
     procedure RegisterWindowMessages;
     procedure ApplyConfiguration;
-    procedure OnHint(ASender: TObject);
     procedure WMGetSysCommand(var AMessage: TMessage); message WM_SYSCOMMAND;
 
   protected
@@ -272,21 +275,9 @@ procedure TMainForm.FormCreate(Sender: TObject);
 var
   b: Boolean;
 
-  procedure BindProgressBarToStatusBar;
-  var
-    r: TRect;
-  begin
-    THackControl(pbMain).SetParent(StatusBar);
-    SendMessage(StatusBar.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@r));
-    pbMain.SetBounds(r.Left, r.Top, r.Right - r.Left, r.Bottom - r.Top - 1);
-  end;
-
 begin
-  Application.OnHint := OnHint;
   gsfviMain.Filename := Application.ExeName;
   Caption := gsfviMain.InternalName;
-
-  BindProgressBarToStatusBar;
 
   RegisterWindowMessages;
   ApplyConfiguration;
@@ -308,15 +299,6 @@ begin
     FConfiguration := TConfiguration.Create;
   end;
   Result := FConfiguration;
-end;
-
-procedure TMainForm.OnHint(ASender: TObject);
-begin
-  if Configuration.Section<TInterface>.EnableStatusbar then
-  begin
-    StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := GetLongHint(Application.Hint);
-  end;
-  StatusBar.SimpleText := GetLongHint(Application.Hint);
 end;
 
 procedure TMainForm.RegisterWindowMessages;

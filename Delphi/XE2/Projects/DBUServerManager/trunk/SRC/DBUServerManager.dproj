@@ -86,8 +86,8 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-        <VerInfo_Build>60</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.60;InternalName=DBU Server Manager x86 Debug;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager x86 Debug;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Build>70</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.70;InternalName=DBU Server Manager x86 Debug;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager x86 Debug;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
