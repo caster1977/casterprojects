@@ -4,7 +4,8 @@ interface
 
 uses
   System.Classes,
-  Vcl.StdCtrls;
+  Vcl.StdCtrls,
+  Winapi.Windows;
 
 type
   Routines = class
@@ -25,10 +26,9 @@ type
     /// </remarks>
     class function GetLocalIP: string; static;
     class procedure CopyStringToClipboard(const Value: string); static;
-    class procedure CutStringByLimiterToStringList(const Source: string;
-      var Destination: TStringList; const Limiter: char); static;
-    class procedure GenerateError(const aMessage: string; out aErrorMessage: string;
-      out aErrorFlag: Boolean); static;
+    class procedure CutStringByLimiterToStringList(const Source: string; var Destination: TStringList;
+      const Limiter: char); static;
+    class procedure GenerateError(const aMessage: string; out aErrorMessage: string; out aErrorFlag: Boolean); static;
     class function ValidatePhoneString(const Value: string): string; static;
     class function IsStringIsPhone(const aString: string): Boolean; static;
     class procedure AddApplicationToRunKey(const RunName, ApplicationName: string); static;
@@ -66,12 +66,13 @@ type
     class procedure SetField(const AValue: TDate; var AField: TDate); overload; static;
 
     class procedure SetCheckBoxState(const ACheckBox: TCheckBox; const AValue: Boolean); static;
+
+    (*class function LoadBitmap256(const AHInstance: HWND; const ABitmapName: PChar): HBITMAP; static;*)
   end;
 
 implementation
 
 uses
-  Winapi.Windows,
   Winapi.WinSock,
   CastersPackage.uMysql,
   System.DateUtils,
@@ -107,8 +108,8 @@ begin
   ClipBoard.SetTextBuf(PWideChar(Value));
 end;
 
-class procedure Routines.CutStringByLimiterToStringList(const Source: string;
-  var Destination: TStringList; const Limiter: char);
+class procedure Routines.CutStringByLimiterToStringList(const Source: string; var Destination: TStringList;
+  const Limiter: char);
 var
   i: Integer;
   s, s1: string;
@@ -138,8 +139,7 @@ begin
   end;
 end;
 
-class procedure Routines.GenerateError(const aMessage: string; out aErrorMessage: string;
-  out aErrorFlag: Boolean);
+class procedure Routines.GenerateError(const aMessage: string; out aErrorMessage: string; out aErrorFlag: Boolean);
 begin
   aErrorMessage := aMessage;
   aErrorFlag := True;
@@ -298,12 +298,9 @@ begin
   for j := 0 to 9 do
     for i := 0 to 9 do
     begin
-      new_s := StringReplace(new_s, IntToStr(j) + '- ' + IntToStr(i),
-        IntToStr(j) + '-' + IntToStr(i), [rfReplaceAll]);
-      new_s := StringReplace(new_s, IntToStr(j) + ': ' + IntToStr(i),
-        IntToStr(j) + ':' + IntToStr(i), [rfReplaceAll]);
-      new_s := StringReplace(new_s, IntToStr(j) + '. ' + IntToStr(i),
-        IntToStr(j) + ':' + IntToStr(i), [rfReplaceAll]);
+      new_s := StringReplace(new_s, IntToStr(j) + '- ' + IntToStr(i), IntToStr(j) + '-' + IntToStr(i), [rfReplaceAll]);
+      new_s := StringReplace(new_s, IntToStr(j) + ': ' + IntToStr(i), IntToStr(j) + ':' + IntToStr(i), [rfReplaceAll]);
+      new_s := StringReplace(new_s, IntToStr(j) + '. ' + IntToStr(i), IntToStr(j) + ':' + IntToStr(i), [rfReplaceAll]);
     end;
   // замена символа """
   new_s := StringReplace(new_s, ' "', '"', [rfReplaceAll]);
@@ -559,8 +556,7 @@ begin
     AField := AValue;
 end;
 
-class procedure Routines.SetCheckBoxState(const ACheckBox: TCheckBox;
-  const AValue: Boolean);
+class procedure Routines.SetCheckBoxState(const ACheckBox: TCheckBox; const AValue: Boolean);
 begin
   if ACheckBox.Checked <> AValue then
   begin
@@ -615,5 +611,43 @@ begin
   if AField <> AValue then
     AField := AValue;
 end;
+
+(*class function Routines.LoadBitmap256(const AHInstance: HWND; const ABitmapName: PChar): HBITMAP;
+var
+  hPal, hRes, hResInfo: THandle;
+  pBitmap: PBitmapInfo;
+  nColorData: Integer;
+  pPalette: PLogPalette;
+  x: Integer;
+  hPalette: THandle;
+begin
+  hRes := LoadResource(AHInstance, FindResource(AHInstance, ABitmapName, RT_BITMAP));
+  try
+    pBitmap := LockResource(hRes);
+    nColorData := pBitmap^.bmiHeader.biClrUsed;
+    hPal := GlobalAlloc(GMEM_MOVEABLE, (16 * nColorData));
+    try
+      { hPal := GlobalAlloc( GMEM_MOVEABLE, ( SizeOf( LOGPALETTE ) +
+        (nColorData * SizeOf( PALETTEENTRY ))); }
+      pPalette := GlobalLock(hPal);
+      pPalette^.palVersion := $300;
+      pPalette^.palNumEntries := nColorData;
+
+      for x := 0 to nColorData do
+      begin
+        pPalette^.palPalentry[x].peRed := pBitmap^.bmiColors[x].rgbRed;
+        pPalette^.palPalentry[x].peGreen := pBitmap^.bmiColors[x].rgbGreen;
+        pPalette^.palPalentry[x].peBlue := pBitmap^.bmiColors[x].rgbBlue;
+      end;
+
+      hPalette := CreatePalette(pPalette^);
+    finally
+      GlobalUnlock(hPal);
+      GlobalFree(hPal);
+    end;
+  finally
+    GlobalUnlock(hRes);
+  end;
+end;*)
 
 end.
