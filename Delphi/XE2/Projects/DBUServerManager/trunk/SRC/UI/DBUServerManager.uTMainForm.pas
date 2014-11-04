@@ -32,8 +32,12 @@ uses
   IdTCPConnection,
   IdTCPClient,
   IdCmdTCPClient,
-  Web.Win.Sockets, CastersPackage.uTStateImage, Vcl.Graphics,
-  CastersPackage.uTStateProgressBar, CastersPackage.uTStatusBarEx;
+  Web.Win.Sockets,
+  CastersPackage.uTStateImage,
+  Vcl.Graphics,
+  CastersPackage.uTStateProgressBar,
+  CastersPackage.uTStatusBarEx,
+  CastersPackage.uTApplicationOnHint;
 
 type
   TMainForm = class(TForm)
@@ -86,12 +90,12 @@ type
     actActionMenuGroupAction: TActionMenuGroupAction;
     ilStates: TImageList;
     StatusBar: TStatusBar;
-    simg1: TStateImage;
     mniActionMenuGroupAction: TMenuItem;
     mniDisconnect: TMenuItem;
     mniConnect: TMenuItem;
-    statpb1: TStateProgressBar;
-    stsbrx1: TStatusBarEx;
+    ProgressBar: TStateProgressBar;
+    StateImage: TStateImage;
+    aplctnhnt1: TApplicationOnHint;
     procedure actAboutExecute(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -392,6 +396,7 @@ begin
     IdTCPClient.Connect;
     if IdTCPClient.Connected then
     begin
+      StateImage.State := True;
       while IdTCPClient.IOHandler.InputBuffer.Size > 0 do
       begin
         ShowMessage(IdTCPClient.IOHandler.ReadLn);
@@ -411,6 +416,7 @@ procedure TMainForm.actDisconnectExecute(Sender: TObject);
 begin
   IdTCPClient.IOHandler.InputBuffer.Clear;
   IdTCPClient.Disconnect;
+  StateImage.State := False;
 end;
 
 procedure TMainForm.actDisconnectUpdate(Sender: TObject);
