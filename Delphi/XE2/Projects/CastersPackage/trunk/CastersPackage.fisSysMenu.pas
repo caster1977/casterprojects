@@ -62,6 +62,8 @@ procedure register;
 
 implementation
 
+{$R *.dcr}
+
 procedure register;
 begin
   RegisterComponents('CasterComponents', [TfisSysMenu]);

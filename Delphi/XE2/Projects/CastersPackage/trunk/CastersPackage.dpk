@@ -1,8 +1,6 @@
 package CastersPackage;
 
 {$R *.res}
-{$R 'CastersPackage.fisSysMenu.dcr'}
-{$R 'CastersPackage.uTStateImage.dcr'}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -78,12 +76,7 @@ contains
   CastersPackage.uTHackControl in 'CastersPackage.uTHackControl.pas',
   CastersPackage.uTStateImage in 'CastersPackage.uTStateImage.pas',
   CastersPackage.uTStateProgressBar in 'CastersPackage.uTStateProgressBar.pas',
-  CastersPackage.uTStatusBarEx in 'CastersPackage.uTStatusBarEx.pas';
+  CastersPackage.uTStatusBarEx in 'CastersPackage.uTStatusBarEx.pas',
+  CastersPackage.uTApplicationOnHint in 'CastersPackage.uTApplicationOnHint.pas';
 
 end.
-
-
-
-
-
-
