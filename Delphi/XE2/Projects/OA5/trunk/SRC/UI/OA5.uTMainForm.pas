@@ -22,17 +22,16 @@ uses
   Vcl.Menus,
   Winapi.Windows,
   Vcl.StdCtrls,
-  System.Actions;
+  System.Actions, CastersPackage.uTStateProgressBar, Vcl.Graphics,
+  CastersPackage.uTStateImage, CastersPackage.uTApplicationOnHint;
 
 type
   TMainForm = class(TOA5LogForm)
     MainMenu: TMainMenu;
-    imState: TImage;
     ilSmall: TImageList;
     ilLarge: TImageList;
     ilStates: TImageList;
     StatusBar: TStatusBar;
-    pbMain: TProgressBar;
     ActionList: TActionList;
     actQuit: TAction;
     actAbout: TAction;
@@ -80,6 +79,9 @@ type
     actToolBar: TAction;
     actViewPhones: TAction;
     N21: TMenuItem;
+    StateImage: TStateImage;
+    ProgressBar: TStateProgressBar;
+    aplctnhnt1: TApplicationOnHint;
     procedure FormCreate(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
@@ -102,7 +104,6 @@ type
   strict private
     FMultiBuffer: IMeasureList;
     function GetMultiBuffer: IMeasureList;
-    procedure ApplicationOnHint(Sender: TObject);
     procedure _About(const AButtonVisible: Boolean);
     procedure _Configuration;
     procedure _Report;
@@ -196,7 +197,7 @@ var
 begin
   b := GlobalBusyCounter = 0;
   Log.SendDebug('Установлен режим "' + IfThen(b, 'Готово', 'Занято') + '".');
-  ilStates.GetIcon(Integer(b), imState.Picture.Icon);
+  StateImage.State := b;
   if Configuration.EnableStatusbar then
   begin
     StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text :=
@@ -222,7 +223,7 @@ begin
   ProcedureHeader(Format(RsShowWindowProcedure, [RsAboutFormSuffix]),
     '{754C2801-ED59-4595-AC3E-20DBF98F6779}');
   with TAboutForm.Create(Self, AButtonVisible, Addr(GlobalBusyCounter), _RefreshBusyState,
-    pbMain) do
+    ProgressBar) do
   begin
     try
       ShowModal;
@@ -288,32 +289,11 @@ begin
 end;
 
 procedure TMainForm.Initialize;
-var
-  PanelRect: TRect;
-
-  procedure BindProgressBarToStatusBar;
-  begin
-    THackControl(pbMain).SetParent(StatusBar);
-    SendMessage(StatusBar.Handle, SB_GETRECT, STATUSBAR_PROGRESS_PANEL_NUMBER, Integer(@PanelRect));
-    pbMain.SetBounds(PanelRect.Left, PanelRect.Top, PanelRect.Right - PanelRect.Left,
-      PanelRect.Bottom - PanelRect.Top - 1);
-  end;
-
-  procedure BindStateImageToStatusBar;
-  begin
-    THackControl(imState).SetParent(StatusBar);
-    SendMessage(StatusBar.Handle, SB_GETRECT, STATUSBAR_STATE_PANEL_NUMBER, Integer(@PanelRect));
-    imState.SetBounds(PanelRect.Left + 2, PanelRect.Top + 1, PanelRect.Right - PanelRect.Left - 4,
-      PanelRect.Bottom - PanelRect.Top - 4);
-  end;
 
 begin
   _RefreshBusyState;
   Configuration.DBServer.LogProvider := Log;
   Configuration.MessageServer.LogProvider := Log;
-  BindProgressBarToStatusBar; // привязка прогрессбара к позиции на строке статуса
-  BindStateImageToStatusBar; // привязка иконки готовности к позиции на строке статуса
-  Application.OnHint := ApplicationOnHint;
   _LoadConfiguration; // загрузка настроек из файла
   inherited;
   _ApplyConfiguration; // применение настроек к интерфейсу
@@ -352,14 +332,6 @@ begin
   if Configuration.EnableAutoLogon then
   begin
     _Logon;
-  end;
-end;
-
-procedure TMainForm.ApplicationOnHint(Sender: TObject);
-begin
-  if Configuration.EnableStatusbar then
-  begin
-    StatusBar.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := GetLongHint(Application.Hint);
   end;
 end;
 
@@ -453,7 +425,7 @@ begin
     '{886B460D-4C73-46BE-829E-E4421B7C4378}');
 
   with TConfigurationForm.Create(Self, Configuration.ConfigurationFormPosition, @GlobalBusyCounter,
-    _RefreshBusyState, pbMain, Configuration, CurrentUser) do
+    _RefreshBusyState, ProgressBar, Configuration, CurrentUser) do
   begin
     try
       ShowModal;
@@ -569,7 +541,7 @@ begin
     '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
 
   with TReportForm.Create(Self, Configuration.ReportFormPosition, @GlobalBusyCounter,
-    _RefreshBusyState, pbMain, Configuration, CurrentUser) do
+    _RefreshBusyState, ProgressBar, Configuration, CurrentUser) do
   begin
     try
       ShowModal;
@@ -593,7 +565,7 @@ begin
     '{0B2728D4-5577-4D1E-9F51-3F40A61BA774}');
 
   with TMultiBufferForm.Create(Self, Configuration.MultibufferFormPosition, @GlobalBusyCounter,
-    _RefreshBusyState, pbMain, Configuration, CurrentUser, MultiBuffer) do
+    _RefreshBusyState, ProgressBar, Configuration, CurrentUser, MultiBuffer) do
   begin
     try
       for i := 0 to MultiBuffer.Count - 1 do
@@ -623,7 +595,7 @@ begin
     '{347244A6-22DF-44DF-873B-2B55FC5112B9}');
 
   with TViewMessageForm.Create(Self, Configuration.ViewMessageFormPosition, @GlobalBusyCounter,
-    _RefreshBusyState, pbMain, Configuration, CurrentUser) do
+    _RefreshBusyState, ProgressBar, Configuration, CurrentUser) do
   begin
     try
       ShowModal;
@@ -644,7 +616,7 @@ begin
     '{5CFCDFBC-34DF-4A16-A725-A4B388B9EC97}');
 
   with TPhoneListForm.Create(Self, Configuration.PhoneListFormPosition, @GlobalBusyCounter,
-    _RefreshBusyState, pbMain, Configuration, CurrentUser) do
+    _RefreshBusyState, ProgressBar, Configuration, CurrentUser) do
   begin
     try
       ShowModal;
@@ -665,7 +637,7 @@ begin
     '{F356F5DA-5FF7-4F78-A80E-1C563B96AF6D}');
 
   with TCreateMessageForm.Create(Self, Configuration.CreateMessageFormPosition, @GlobalBusyCounter,
-    _RefreshBusyState, pbMain, Configuration, CurrentUser) do
+    _RefreshBusyState, ProgressBar, Configuration, CurrentUser) do
   begin
     try
       ShowModal;
@@ -686,7 +658,7 @@ begin
     '{83D61BCA-0CB5-4542-9D0A-9137AE9C733C}');
 
   with TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition, @GlobalBusyCounter,
-    _RefreshBusyState, pbMain, Configuration, CurrentUser) do
+    _RefreshBusyState, ProgressBar, Configuration, CurrentUser) do
   begin
     try
       Caption := RsAddPhoneFormCaption;
@@ -708,7 +680,7 @@ begin
     '{36EA36F5-EDE2-4A3A-A7DE-BB9790D3F50F}');
 
   with TAddEditPhoneForm.Create(Self, Configuration.AddEditPhoneFormPosition, @GlobalBusyCounter,
-    _RefreshBusyState, pbMain, Configuration, CurrentUser) do
+    _RefreshBusyState, ProgressBar, Configuration, CurrentUser) do
   begin
     try
       Caption := RsEditPhoneFormCaption;
@@ -824,7 +796,7 @@ begin
   if not bPassLoginForm then
   begin
     LoginForm := TLoginForm.Create(Self, Configuration.LoginFormPosition, @GlobalBusyCounter,
-      _RefreshBusyState, pbMain, Configuration, CurrentUser);
+      _RefreshBusyState, ProgressBar, Configuration, CurrentUser);
     with LoginForm do
       try
         if Configuration.EnableStoreLogin then
