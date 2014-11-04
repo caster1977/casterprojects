@@ -33,7 +33,7 @@ uses
   CastersPackage.uICustomized,
   DBAutoTest.uTProfile,
   DBAutoTest.uTConfiguration,
-  AboutPackage.uTAboutWindow;
+  AboutPackage.uTAboutWindow, CastersPackage.uTApplicationOnHint;
 
 type
   TMainForm = class(TForm, ICustomized)
@@ -103,6 +103,7 @@ type
     actMoveUp: TAction;
     AboutWindow: TAboutWindow;
     ilStatuses: TImageList;
+    aplctnhnt1: TApplicationOnHint;
     procedure actQuitExecute(Sender: TObject);
     procedure actRecentProfilesExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -140,7 +141,6 @@ type
     // procedure LoadConfiguration;
     procedure ApplyConfiguration;
     // procedure SaveConfiguration;
-    procedure OnHint(ASender: TObject);
     procedure RefreshRecentsMenu;
     procedure AddEditTask(const AIndex: Integer = -1);
     procedure RefreshTaskList;
@@ -229,11 +229,6 @@ end;
 procedure TMainForm.actRecentProfilesExecute(Sender: TObject);
 begin
   // заглушка, необходимая для того, чтобы пункт меню был активным
-end;
-
-procedure TMainForm.OnHint(ASender: TObject);
-begin
-  StatusBar.SimpleText := GetLongHint(Application.Hint);
 end;
 
 procedure TMainForm.WndProc(var Message: TMessage);
@@ -367,7 +362,6 @@ procedure TMainForm.Initialize;
 // r: IRecent;
 // i: Integer;
 begin
-  Application.OnHint := OnHint;
   if not RegisterThreadMessage then
   begin
     MessageBox(Handle, PWideChar(RsCannotRegisterThreadMessage),
