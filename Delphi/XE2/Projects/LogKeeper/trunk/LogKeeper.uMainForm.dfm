@@ -195,7 +195,6 @@ object MainForm: TMainForm
   end
   object ApplicationEvents1: TApplicationEvents
     OnIdle = ApplicationEvents1Idle
-    OnHint = ApplicationEvents1Hint
     OnMessage = ApplicationEvents1Message
     OnMinimize = ApplicationEvents1Minimize
     Left = 752
@@ -505,7 +504,7 @@ object MainForm: TMainForm
     Left = 56
     Top = 8
     Bitmap = {
-      494C01011F002400A40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01011F002400A80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000008000000001002000000000000080
       0000000000000000000000000000000000000000000080808000406060008080
       8000000000000000000000000000000000000000000000000000000000000000
@@ -1638,5 +1637,11 @@ object MainForm: TMainForm
     OnTimer = ExitTimerTimer
     Left = 136
     Top = 8
+  end
+  object aplctnhnt1: TApplicationOnHint
+    StatusBar = StatusBar1
+    BindPanelIndex = 4
+    Left = 256
+    Top = 64
   end
 end
