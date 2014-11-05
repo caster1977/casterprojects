@@ -27,7 +27,7 @@ uses
   LogKeeper.uMysql,
   LogKeeper.uConsts,
   LogKeeper.uTypes,
-  System.Actions;
+  System.Actions, CastersPackage.uTApplicationOnHint;
 
 type
   THackControl = class(TControl);
@@ -109,9 +109,9 @@ type
     N18: TMenuItem;
     N19: TMenuItem;
     N20: TMenuItem;
+    aplctnhnt1: TApplicationOnHint;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ApplicationEvents1Minimize(Sender: TObject);
-    procedure ApplicationEvents1Hint(Sender: TObject);
     procedure Action_HelpExecute(Sender: TObject);
     procedure Action_AboutExecute(Sender: TObject);
     procedure Action_QuitExecute(Sender: TObject);
@@ -1432,16 +1432,6 @@ begin
   // ProcedureHeader('Процедура отправления сообщений на MySQL-сервер во время простоя',LogGroupGUID,False,False);
   if (ListBox1.Items.Count > 0) and Configuration.LogServer.bConnected then
     Do_TransferMessageToDB;
-  // ProcedureFooter(LogGroupGUID,False,False);
-end;
-
-procedure TMainForm.ApplicationEvents1Hint(Sender: TObject);
-// const
-// LogGroupGUID: string = '{9B0F5A08-CBA4-4993-8456-F944F6D289AD}';
-begin
-  // критичная по количеству выполнений процедура - в целях незасорения лога заголовок отключён
-  // ProcedureHeader('Процедура отображения строки контекстной подсказки в панели статуса',LogGroupGUID,False,False);
-  StatusBar1.Panels[STATUSBAR_HINT_PANEL_NUMBER].Text := GetLongHint(Application.Hint);
   // ProcedureFooter(LogGroupGUID,False,False);
 end;
 
