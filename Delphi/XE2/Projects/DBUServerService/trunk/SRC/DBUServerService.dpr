@@ -2,7 +2,8 @@ program DBUServerService;
 
 uses
   Vcl.SvcMgr,
-  DBUServerService.uTDBUServer in 'UI\DBUServerService.uTDBUServer.pas' {DBUServer: TService};
+  DBUServerService.uTDBUServer in 'UI\DBUServerService.uTDBUServer.pas' {DBUServer: TService},
+  DBUServerService.uDBUServerUtils in 'Logic\Other\DBUServerService.uDBUServerUtils.pas';
 
 {$R *.RES}
 
