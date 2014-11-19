@@ -216,14 +216,14 @@ procedure TDBUServer.GetSqlSubjItemsCommand(ASender: TIdCommand);
 var
   sl: TStrings;
   i: Integer;
-  aFN: string;
+  file_name: string;
 begin
   sl := TStringList.Create;
   try
-    aFN := GetAppConfigFolder + 'SqlSubjItems.lst';
-    if FileExists(aFN) then
+    file_name := GetAppConfigFolder + 'SqlSubjItems.lst';
+    if FileExists(file_name) then
     begin
-      sl.LoadFromFile(aFN);
+      sl.LoadFromFile(file_name);
     end;
     ASender.Context.Connection.IOHandler.Write(sl.Count);
     for i := 0 to Pred(sl.Count) do
@@ -244,7 +244,8 @@ begin
   db_type := ASender.Context.Connection.IOHandler.ReadLn;
   sl := TStringList.Create;
   try
-    sl.Text := EmptyStr; // SaveGridToStr(cgListTV);
+    sl.Text := Format('Log data for DB type = "%s"', [db_type]);
+    { TODO : добавить выгрузку данных по указанному типу DB из списка лога }
     ASender.Context.Connection.IOHandler.Write(sl.Count);
     ASender.Context.Connection.IOHandler.WriteLn(sl[0]);
     for i := Pred(sl.Count) downto 1 do
