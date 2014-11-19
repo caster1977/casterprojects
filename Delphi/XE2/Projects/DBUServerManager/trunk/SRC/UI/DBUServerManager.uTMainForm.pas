@@ -102,6 +102,12 @@ type
     mniReserveNewDBUNUmber: TMenuItem;
     actGetSQLActionList: TAction;
     mniGetSQLActionList: TMenuItem;
+    actGetSQLSubjectList: TAction;
+    mniGetSQLSubjectList: TMenuItem;
+    actGetLogDataByDBType: TAction;
+    mniGetLogDataByDBType: TMenuItem;
+    actGetDBTypeList: TAction;
+    mniGetDBTypeList: TMenuItem;
     procedure actAboutExecute(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -125,6 +131,12 @@ type
     procedure actReserveNewDBUNUmberExecute(Sender: TObject);
     procedure actGetSQLActionListExecute(Sender: TObject);
     procedure actGetSQLActionListUpdate(Sender: TObject);
+    procedure actGetSQLSubjectListUpdate(Sender: TObject);
+    procedure actGetSQLSubjectListExecute(Sender: TObject);
+    procedure actGetLogDataByDBTypeUpdate(Sender: TObject);
+    procedure actGetLogDataByDBTypeExecute(Sender: TObject);
+    procedure actGetDBTypeListExecute(Sender: TObject);
+    procedure actGetDBTypeListUpdate(Sender: TObject);
 
   strict private
     FConfiguration: TConfiguration;
@@ -385,7 +397,7 @@ var
 begin
   IdTCPClient.SendCmd('TCP_RESERVE_NEW_DBUPDATE_NUMBER');
   IdTCPClient.IOHandler.WriteLn('db_type');
-  db_count := 1;
+  db_count := 3;
   IdTCPClient.IOHandler.Write(db_count);
   IdTCPClient.IOHandler.WriteLn('caster');
   new_number := IdTCPClient.IOHandler.ReadSmallInt;
@@ -454,6 +466,59 @@ begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
 end;
 
+procedure TMainForm.actGetDBTypeListExecute(Sender: TObject);
+var
+  type_count: Integer;
+  sl: TStringList;
+  i: Integer;
+begin
+  IdTCPClient.SendCmd('TCP_GET_DBU_DATABASE_TYPE_ITEMS');
+  type_count := IdTCPClient.IOHandler.ReadLongInt;
+  sl := TStringList.Create;
+  try
+    for i := 0 to Pred(type_count) do
+    begin
+      sl.AddObject(IdTCPClient.IOHandler.ReadLn, TObject(IdTCPClient.IOHandler.ReadLongInt));
+    end;
+    ShowMessage(Format('Список типов БД:' + sLineBreak + sLineBreak + '%s', [sl.Text]));
+  finally
+    sl.Free;
+  end;
+end;
+
+procedure TMainForm.actGetDBTypeListUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := IdTCPClient.Connected;
+end;
+
+procedure TMainForm.actGetLogDataByDBTypeExecute(Sender: TObject);
+var
+  log_count: Integer;
+  sl: TStringList;
+  i: Integer;
+  db_type: string;
+begin
+  IdTCPClient.SendCmd('TCP_GET_DBU_NEW_NUMBER_LOG_GRID');
+  db_type := 'db_type';
+  IdTCPClient.IOHandler.WriteLn(db_type);
+  log_count := IdTCPClient.IOHandler.ReadLongInt;
+  sl := TStringList.Create;
+  try
+    for i := 0 to Pred(log_count) do
+    begin
+      sl.Append(IdTCPClient.IOHandler.ReadLn);
+    end;
+    ShowMessage(Format('Лог работы сервера по типу DB "%s":' + sLineBreak + sLineBreak + '%s', [db_type, sl.Text]));
+  finally
+    sl.Free;
+  end;
+end;
+
+procedure TMainForm.actGetLogDataByDBTypeUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := IdTCPClient.Connected;
+end;
+
 procedure TMainForm.actGetSQLActionListExecute(Sender: TObject);
 var
   action_count: Integer;
@@ -475,6 +540,31 @@ begin
 end;
 
 procedure TMainForm.actGetSQLActionListUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := IdTCPClient.Connected;
+end;
+
+procedure TMainForm.actGetSQLSubjectListExecute(Sender: TObject);
+var
+  action_count: Integer;
+  sl: TStringList;
+  i: Integer;
+begin
+  IdTCPClient.SendCmd('TCP_GET_DBU_SQL_SUBJ_ITEMS');
+  action_count := IdTCPClient.IOHandler.ReadLongInt;
+  sl := TStringList.Create;
+  try
+    for i := 0 to Pred(action_count) do
+    begin
+      sl.Append(IdTCPClient.IOHandler.ReadLn);
+    end;
+    ShowMessage(Format('Список объектов:' + sLineBreak + sLineBreak + '%s', [sl.Text]));
+  finally
+    sl.Free;
+  end;
+end;
+
+procedure TMainForm.actGetSQLSubjectListUpdate(Sender: TObject);
 begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
 end;
