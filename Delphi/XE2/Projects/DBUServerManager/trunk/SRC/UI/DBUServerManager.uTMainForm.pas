@@ -96,6 +96,12 @@ type
     ProgressBar: TStateProgressBar;
     StateImage: TStateImage;
     aplctnhnt1: TApplicationOnHint;
+    mniN2: TMenuItem;
+    mniTestConnection: TMenuItem;
+    actReserveNewDBUNUmber: TAction;
+    mniReserveNewDBUNUmber: TMenuItem;
+    actGetSQLActionList: TAction;
+    mniGetSQLActionList: TMenuItem;
     procedure actAboutExecute(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -115,6 +121,10 @@ type
     procedure actConnectUpdate(Sender: TObject);
     procedure actDisconnectUpdate(Sender: TObject);
     procedure actTestConnectionUpdate(Sender: TObject);
+    procedure actReserveNewDBUNUmberUpdate(Sender: TObject);
+    procedure actReserveNewDBUNUmberExecute(Sender: TObject);
+    procedure actGetSQLActionListExecute(Sender: TObject);
+    procedure actGetSQLActionListUpdate(Sender: TObject);
 
   strict private
     FConfiguration: TConfiguration;
@@ -146,6 +156,7 @@ uses
   Winapi.CommCtrl,
   Vcl.Dialogs,
   Winapi.Windows,
+  IdGlobal,
   CastersPackage.uTHackControl,
   DBUServerManager.uConsts,
   DBUServerManager.Configuration.uTInterface,
@@ -367,6 +378,25 @@ begin
   end;
 end;
 
+procedure TMainForm.actReserveNewDBUNUmberExecute(Sender: TObject);
+var
+  db_count: SmallInt;
+  new_number: SmallInt;
+begin
+  IdTCPClient.SendCmd('TCP_RESERVE_NEW_DBUPDATE_NUMBER');
+  IdTCPClient.IOHandler.WriteLn('db_type');
+  db_count := 1;
+  IdTCPClient.IOHandler.Write(db_count);
+  IdTCPClient.IOHandler.WriteLn('caster');
+  new_number := IdTCPClient.IOHandler.ReadSmallInt;
+  ShowMessage(Format('Номер: %d', [new_number]));
+end;
+
+procedure TMainForm.actReserveNewDBUNUmberUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := IdTCPClient.Connected;
+end;
+
 procedure TMainForm.actRestoreExecute(Sender: TObject);
 begin
   AboutWindow.Hide;
@@ -424,12 +454,37 @@ begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
 end;
 
+procedure TMainForm.actGetSQLActionListExecute(Sender: TObject);
+var
+  action_count: Integer;
+  sl: TStringList;
+  i: Integer;
+begin
+  IdTCPClient.SendCmd('TCP_GET_DBU_SQL_ACTION_ITEMS');
+  action_count := IdTCPClient.IOHandler.ReadLongInt;
+  sl := TStringList.Create;
+  try
+    for i := 0 to Pred(action_count) do
+    begin
+      sl.Append(IdTCPClient.IOHandler.ReadLn);
+    end;
+    ShowMessage(Format('Список действий:' + sLineBreak + sLineBreak + '%s', [sl.Text]));
+  finally
+    sl.Free;
+  end;
+end;
+
+procedure TMainForm.actGetSQLActionListUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := IdTCPClient.Connected;
+end;
+
 procedure TMainForm.actTestConnectionExecute(Sender: TObject);
 var
   s: string;
 begin
   IdTCPClient.SendCmd('TCP_CONNECTION_TEST');
-  s := IdTCPClient.IOHandler.ReadLn;
+  s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_UTF8);
   ShowMessage(s);
 end;
 
