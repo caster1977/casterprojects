@@ -96,7 +96,7 @@ begin
     with FIniFile do
     begin
       Recents.Clear;
-      for i := 0 to ReadInteger(RsRecents, RsQuantity, RECENTS_DEFAULT_COUNT) - 1 do
+      for i := 0 to Pred(ReadInteger(RsRecents, RsQuantity, RECENTS_DEFAULT_COUNT)) do
       begin
         s := Format(RsRecentProfile, [IntToStr(i)]);
         r := GetIRecent;
@@ -124,7 +124,7 @@ begin
         if Recents.Count <> RECENTS_DEFAULT_COUNT then
         begin
           j := 0;
-          for i := 0 to Recents.Count - 1 do
+          for i := 0 to Pred(Recents.Count) do
           begin
             r := Recents.Items[i];
             if Assigned(r) then
