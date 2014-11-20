@@ -29,8 +29,7 @@ uses
   DBAutoTest.uTConfiguration in 'SRC\Logic\Classes\DBAutoTest.uTConfiguration.pas',
   DBAutoTest.Profile.uTConnection in 'SRC\Logic\Classes\DBAutoTest.Profile.uTConnection.pas',
   DBAutoTest.Profile.uTTaskSaving in 'SRC\Logic\Classes\DBAutoTest.Profile.uTTaskSaving.pas',
-  DBAutoTest.Configuration.uTConnection in 'SRC\Logic\Classes\DBAutoTest.Configuration.uTConnection.pas',
-  DBAutoTest.uEConfiguration in 'SRC\Logic\Classes\DBAutoTest.uEConfiguration.pas';
+  DBAutoTest.Configuration.uTConnection in 'SRC\Logic\Classes\DBAutoTest.Configuration.uTConnection.pas';
 
 {$R *.res}
 
