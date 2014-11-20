@@ -46,6 +46,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
+        <Icon_MainIcon>DBUServerService_Icon.ico</Icon_MainIcon>
         <Manifest_File>None</Manifest_File>
         <VerInfo_Locale>1049</VerInfo_Locale>
         <DCC_UnitSearchPath>..\..\Packages\$(Platform)\$(Config);..\..\AboutPackage\SRC\UI;..\..\CastersPackage;..\..\ConfigPackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
