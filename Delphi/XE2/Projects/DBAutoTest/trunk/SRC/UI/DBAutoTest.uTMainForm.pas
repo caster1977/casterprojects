@@ -184,7 +184,7 @@ uses
   DBAutoTest.uTRecents,
   DBAutoTest.uIRecent,
   DBAutoTest.uTRecent,
-  DBAutoTest.uEConfiguration,
+  ConfigPackage.uEConfiguration,
   DBAutoTest.uResourceStrings,
   DBAutoTest.Configuration.uTInterface,
   DBAutoTest.Configuration.uTConnection,

@@ -29,13 +29,15 @@ implementation
 uses
   CastersPackage.uIModified,
   System.SysUtils,
-  DBAutoTest.uEConfiguration,
+  System.Classes,
+  ConfigPackage.uEConfiguration,
   DBAutoTest.Configuration.uTInterface,
   DBAutoTest.Configuration.uTReports,
   DBAutoTest.Configuration.uTConnection,
   DBAutoTest.Configuration.uTOther,
   DBAutoTest.uTRecents,
   DBAutoTest.uIRecent,
+  Vcl.Dialogs,
   DBAutoTest.uTRecent;
 
 resourcestring

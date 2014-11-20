@@ -35,7 +35,7 @@ uses
   DBAutoTest.uITask,
   DBAutoTest.uTTask,
   DBAutoTest.uTTasks,
-  DBAutoTest.uEConfiguration,
+  ConfigPackage.uEConfiguration,
   DBAutoTest.Profile.uTConnection,
   DBAutoTest.Profile.uTTaskSaving,
   DBAutoTest.uEProfile;
