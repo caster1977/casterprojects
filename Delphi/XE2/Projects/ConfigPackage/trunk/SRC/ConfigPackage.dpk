@@ -37,7 +37,8 @@ contains
   ConfigPackage.uTDefaultValueAttribute in 'Logic\Classes\ConfigPackage.uTDefaultValueAttribute.pas',
   ConfigPackage.uTCustomSection in 'Logic\Classes\ConfigPackage.uTCustomSection.pas',
   ConfigPackage.uTCustomSectionClass in 'Logic\Classes\ConfigPackage.uTCustomSectionClass.pas',
-  ConfigPackage.uTCustomConfiguration in 'Logic\Classes\ConfigPackage.uTCustomConfiguration.pas';
+  ConfigPackage.uTCustomConfiguration in 'Logic\Classes\ConfigPackage.uTCustomConfiguration.pas',
+  ConfigPackage.uEConfiguration in 'Logic\Classes\ConfigPackage.uEConfiguration.pas';
 
 end.
 
