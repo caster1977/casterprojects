@@ -3,7 +3,12 @@ program DBUServerService;
 uses
   Vcl.SvcMgr,
   DBUServerService.uTDBUServer in 'UI\DBUServerService.uTDBUServer.pas' {DBUServer: TService},
-  DBUServerService.uDBUServerUtils in 'Logic\Other\DBUServerService.uDBUServerUtils.pas';
+  DBUServerService.uDBUServerUtils in 'Logic\Other\DBUServerService.uDBUServerUtils.pas',
+  DBUServerService.uTConfiguration in 'Logic\Classes\DBUServerService.uTConfiguration.pas',
+  DBUServerService.uISQLActions in 'Logic\Interfaces\DBUServerService.uISQLActions.pas',
+  DBUServerService.uISQLAction in 'Logic\Interfaces\DBUServerService.uISQLAction.pas',
+  DBUServerService.uTSQLActions in 'Logic\Classes\DBUServerService.uTSQLActions.pas',
+  DBUServerService.uTSQLAction in 'Logic\Classes\DBUServerService.uTSQLAction.pas';
 
 {$R *.RES}
 
