@@ -51,7 +51,7 @@
         <VerInfo_Locale>1049</VerInfo_Locale>
         <DCC_BplOutput>..\$(Platform)\$(Config)\</DCC_BplOutput>
         <DCC_UnitSearchPath>..\..\Packages\$(Platform)\$(Config);..\..\AboutPackage\SRC\UI;..\..\CastersPackage;..\..\ConfigPackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-        <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
+        <Icon_MainIcon>DBUServerManager_Icon.ico</Icon_MainIcon>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=DBU Server Manager;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_DcpOutput>..\$(Platform)\$(Config)\</DCC_DcpOutput>
         <Manifest_File>None</Manifest_File>
@@ -86,8 +86,8 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-        <VerInfo_Build>113</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.113;InternalName=DBU Server Manager x86 Debug;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager x86 Debug;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Build>121</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.121;InternalName=DBU Server Manager x86 Debug;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager x86 Debug;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">

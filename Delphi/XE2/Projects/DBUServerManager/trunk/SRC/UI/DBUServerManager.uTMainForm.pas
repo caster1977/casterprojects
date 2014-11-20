@@ -108,6 +108,12 @@ type
     mniGetLogDataByDBType: TMenuItem;
     actGetDBTypeList: TAction;
     mniGetDBTypeList: TMenuItem;
+    actGetDBUStateList: TAction;
+    mniGetDBUStateList: TMenuItem;
+    actAddDBType: TAction;
+    mniAddDBType: TMenuItem;
+    actGetLogData: TAction;
+    mniGetLogData: TMenuItem;
     procedure actAboutExecute(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -137,6 +143,12 @@ type
     procedure actGetLogDataByDBTypeExecute(Sender: TObject);
     procedure actGetDBTypeListExecute(Sender: TObject);
     procedure actGetDBTypeListUpdate(Sender: TObject);
+    procedure actGetDBUStateListUpdate(Sender: TObject);
+    procedure actGetDBUStateListExecute(Sender: TObject);
+    procedure actAddDBTypeUpdate(Sender: TObject);
+    procedure actAddDBTypeExecute(Sender: TObject);
+    procedure actGetLogDataUpdate(Sender: TObject);
+    procedure actGetLogDataExecute(Sender: TObject);
 
   strict private
     FConfiguration: TConfiguration;
@@ -180,6 +192,9 @@ resourcestring
   RsWarningCaption = '%s - Предупреждение';
   RsErrorCaption = '%s - Ошибка';
   RsErrorRegisterWindowMessage = 'Не удалось выполнить операцию регистрации оконного сообщения!';
+
+type
+  THackImageList = class(TImageList);
 
 procedure TMainForm.actAboutExecute(Sender: TObject);
 begin
@@ -519,6 +534,33 @@ begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
 end;
 
+procedure TMainForm.actGetLogDataExecute(Sender: TObject);
+var
+  log_count: SmallInt;
+  sl: TStringList;
+  i: Integer;
+begin
+  IdTCPClient.SendCmd('TCP_GET_DBU_NEW_NUMBER_LOG');
+  log_count := 20;
+  IdTCPClient.IOHandler.Write(log_count);
+  log_count := IdTCPClient.IOHandler.ReadSmallInt;
+  sl := TStringList.Create;
+  try
+    for i := 0 to Pred(log_count) do
+    begin
+      sl.Append(IdTCPClient.IOHandler.ReadLn);
+    end;
+    ShowMessage(Format('Лог работы сервера:' + sLineBreak + sLineBreak + '%s', [sl.Text]));
+  finally
+    sl.Free;
+  end;
+end;
+
+procedure TMainForm.actGetLogDataUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := IdTCPClient.Connected;
+end;
+
 procedure TMainForm.actGetSQLActionListExecute(Sender: TObject);
 var
   action_count: Integer;
@@ -579,6 +621,53 @@ begin
 end;
 
 procedure TMainForm.actTestConnectionUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := IdTCPClient.Connected;
+end;
+
+procedure TMainForm.actAddDBTypeExecute(Sender: TObject);
+var
+  index: SmallInt;
+  db_type: string;
+  s: string;
+begin
+  IdTCPClient.SendCmd('TCP_ADD_NEW_DATABASE_TYPE');
+  db_type := 'db_type';
+  IdTCPClient.IOHandler.WriteLn(db_type);
+  index := IdTCPClient.IOHandler.ReadSmallInt;
+  s := IdTCPClient.IOHandler.ReadLn;
+  ShowMessage(Format('Идентификатор созданного типа БД: %d' + sLineBreak + '%s', [index, s]));
+end;
+
+procedure TMainForm.actAddDBTypeUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := IdTCPClient.Connected;
+end;
+
+procedure TMainForm.actGetDBUStateListExecute(Sender: TObject);
+var
+  sl: TStringList;
+  st: TStream;
+begin
+  IdTCPClient.SendCmd('TCP_GET_DBU_STATES_ITEMS');
+  sl := TStringList.Create;
+  try
+    IdTCPClient.IOHandler.ReadStrings(sl, -1, IndyTextEncoding_UTF8);
+    st := TMemoryStream.Create;
+    try
+      IdTCPClient.IOHandler.ReadStream(st);
+      st.Position := 0;
+      THackImageList(ilActions).ReadData(st);
+    finally
+      st.Free;
+    end;
+    ShowMessage(sl.Text);
+  finally
+    sl.Free;
+  end;
+end;
+
+procedure TMainForm.actGetDBUStateListUpdate(Sender: TObject);
 begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
 end;
