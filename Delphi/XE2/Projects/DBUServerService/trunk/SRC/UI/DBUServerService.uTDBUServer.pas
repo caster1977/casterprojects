@@ -18,7 +18,8 @@ uses
   IdTCPServer,
   IdCmdTCPServer,
   IdCommandHandlers,
-  Vcl.ImgList;
+  Vcl.ImgList,
+  DBUServerService.uTConfiguration;
 
 type
   TDBUServer = class(TService)
@@ -41,12 +42,21 @@ type
     procedure GetDbuDatabaseTypeItemsCommand(ASender: TIdCommand);
     procedure GetDbuStatesItemsCommand(ASender: TIdCommand);
     procedure IdCmdTCPServerCommandHandlers1Command(ASender: TIdCommand);
+    procedure ServiceDestroy(Sender: TObject);
+    procedure ServiceCreate(Sender: TObject);
   public
     function GetServiceController: TServiceController; override;
   private
     procedure AddLogRecord(const ADBType: string; const AFirstNewDBNumber, ADBCount: Integer;
       const APersonName: string);
     function BuildDbuNewNumberLog(var ACount: SmallInt): string;
+
+  strict private
+    FConfiguration: TConfiguration;
+    function GetConfiguration: TConfiguration;
+    property Configuration: TConfiguration read GetConfiguration nodefault;
+  strict private
+    procedure ApplyConfiguration;
   end;
 
 var
@@ -146,6 +156,11 @@ begin
   end;
 end;
 
+procedure TDBUServer.ApplyConfiguration;
+begin
+
+end;
+
 function TDBUServer.BuildDbuNewNumberLog(var ACount: SmallInt): string;
 
   function BuildRecord(const AIndex: Integer): string;
@@ -172,25 +187,46 @@ begin
 end;
 
 procedure TDBUServer.GetSqlActionItemsCommand(ASender: TIdCommand);
-var
+{$REGION}
+{ var
   sl: TStrings;
   i: Integer;
   file_name: string;
-begin
+  begin
   sl := TStringList.Create;
   try
-    file_name := GetAppConfigFolder + 'SqlActionItems.lst';
-    if FileExists(file_name) then
-    begin
-      sl.LoadFromFile(file_name);
-    end;
-    ASender.Context.Connection.IOHandler.Write(sl.Count);
-    for i := 0 to Pred(sl.Count) do
-    begin
-      ASender.Context.Connection.IOHandler.WriteLn(sl[i]);
-    end;
+  file_name := GetAppConfigFolder + 'SqlActionItems.lst';
+  if FileExists(file_name) then
+  begin
+  sl.LoadFromFile(file_name);
+  end;
+  ASender.Context.Connection.IOHandler.Write(sl.Count);
+  for i := 0 to Pred(sl.Count) do
+  begin
+  ASender.Context.Connection.IOHandler.WriteLn(sl[i]);
+  end;
   finally
-    sl.Free;
+  sl.Free;
+  end;
+  end; }
+{$ENDREGION}
+var
+  i: Integer;
+begin
+  if not Assigned(Configuration) then
+  begin
+    Exit;
+  end;
+
+  if not Assigned(Configuration.SQLActions) then
+  begin
+    Exit;
+  end;
+
+  ASender.Context.Connection.IOHandler.Write(Configuration.SQLActions.Count);
+  for i := 0 to Pred(Configuration.SQLActions.Count) do
+  begin
+    ASender.Context.Connection.IOHandler.WriteLn(Configuration.SQLActions[i].ToString);
   end;
 end;
 
@@ -215,6 +251,15 @@ begin
   finally
     sl.Free;
   end;
+end;
+
+function TDBUServer.GetConfiguration: TConfiguration;
+begin
+  if not Assigned(FConfiguration) then
+  begin
+    FConfiguration := TConfiguration.Create;
+  end;
+  Result := FConfiguration;
 end;
 
 procedure TDBUServer.GetDbuDatabaseTypeItemsCommand(ASender: TIdCommand);
@@ -316,6 +361,21 @@ procedure TDBUServer.ServiceContinue(Sender: TService; var Continued: Boolean);
 begin
   { TODO : добавить загрузку лога из файла }
   IdCmdTCPServer.Active := True;
+end;
+
+procedure TDBUServer.ServiceCreate(Sender: TObject);
+begin
+  inherited;
+  ApplyConfiguration;
+end;
+
+procedure TDBUServer.ServiceDestroy(Sender: TObject);
+begin
+  if Assigned(Configuration) then
+  begin
+    Configuration.Free;
+  end;
+  inherited;
 end;
 
 procedure TDBUServer.ServicePause(Sender: TService; var Paused: Boolean);

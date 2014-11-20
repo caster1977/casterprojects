@@ -107,6 +107,11 @@
             <DesignClass>TService</DesignClass>
         </DCCReference>
         <DCCReference Include="Logic\Other\DBUServerService.uDBUServerUtils.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerService.uTConfiguration.pas"/>
+        <DCCReference Include="Logic\Interfaces\DBUServerService.uISQLActions.pas"/>
+        <DCCReference Include="Logic\Interfaces\DBUServerService.uISQLAction.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerService.uTSQLActions.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerService.uTSQLAction.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
