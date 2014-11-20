@@ -1,1 +1,6 @@
-﻿
+﻿[ilStates]
+Coordinates=0,0,50,33
+
+[IdCmdTCPServer]
+Coordinates=69,1,99,33
+

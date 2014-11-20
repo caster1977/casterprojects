@@ -33,7 +33,6 @@ type
     procedure ServiceContinue(Sender: TService; var Continued: Boolean);
     procedure ServiceShutdown(Sender: TService);
     procedure AddNewDatabaseTypeCommand(ASender: TIdCommand);
-    procedure ConnectionTestCommand(ASender: TIdCommand);
     procedure GetReserveNewDBUpdateNumbersCommand(ASender: TIdCommand);
     procedure NewNumberLogCommand(ASender: TIdCommand);
     procedure GetSqlActionItemsCommand(ASender: TIdCommand);
@@ -41,6 +40,7 @@ type
     procedure GetNewNumberLogGridCommand(ASender: TIdCommand);
     procedure GetDbuDatabaseTypeItemsCommand(ASender: TIdCommand);
     procedure GetDbuStatesItemsCommand(ASender: TIdCommand);
+    procedure IdCmdTCPServerCommandHandlers1Command(ASender: TIdCommand);
   public
     function GetServiceController: TServiceController; override;
   private
@@ -89,11 +89,6 @@ begin
     cgList.EndUpdate;
     end;
     SaveGridToFile(cgListTV, GetLogFileName); }
-end;
-
-procedure TDBUServer.ConnectionTestCommand(ASender: TIdCommand);
-begin
-  ASender.Context.Connection.IOHandler.WriteLn('ѕроверка соединени€ выполнена успешно.', IndyTextEncoding_UTF8);
 end;
 
 procedure TDBUServer.AddNewDatabaseTypeCommand(ASender: TIdCommand);
@@ -271,6 +266,11 @@ begin
   finally
     sl.Free;
   end;
+end;
+
+procedure TDBUServer.IdCmdTCPServerCommandHandlers1Command(ASender: TIdCommand);
+begin
+  ASender.Context.Connection.IOHandler.WriteLn('CONNECTION_TEST_OK');
 end;
 
 procedure TDBUServer.IdCmdTCPServerConnect(AContext: TIdContext);
