@@ -73,8 +73,8 @@ end;
 
 procedure TDBUServer.AddLogRecord(const ADBType: string; const AFirstNewDBNumber, ADBCount: Integer;
   const APersonName: string);
-var
-  i: Integer;
+{ var
+  i: Integer; }
 begin
   { cgList.BeginUpdate;
     try
@@ -134,7 +134,7 @@ begin
       else
       begin
         i := -1;
-        s := Format('DB type "%s = %d" already exists', [db_type_name, sl.Values[db_type_name]]);
+        s := Format('DB type "%s = %s" already exists', [db_type_name, sl.Values[db_type_name]]);
       end;
 
     except
@@ -154,38 +154,25 @@ end;
 function TDBUServer.BuildDbuNewNumberLog(var ACount: SmallInt): string;
 
   function BuildRecord(const AIndex: Integer): string;
-  { var
-    i: Integer; }
+  var
+    i: Integer;
   begin
     Result := EmptyStr;
-    { for i := 0 to Pred(cgListTV.ColumnCount) do
-      begin
-      Result := Result + VarToStr(cgListTV.DataController.Values[AIndex, i]) + #9;
-      end; }
+
+    for i := 0 to Pred(AIndex { cgListTV.ColumnCount } ) do
+    begin
+      Result := Result + { VarToStr(cgListTV.DataController.Values[AIndex, i]) } IntToStr(i) + #9;
+    end;
   end;
 
 var
   i: Integer;
 begin
   Result := EmptyStr;
-  { ACount := Min(ACount, cgListTV.DataController.RecordCount); }
+  ACount := Min(ACount, 10 { cgListTV.DataController.RecordCount } );
   for i := 0 to Pred(ACount) do
   begin
     Result := Result + BuildRecord(i) + sLineBreak;
-  end;
-end;
-
-procedure TDBUServer.NewNumberLogCommand(ASender: TIdCommand);
-var
-  dbu_count: SmallInt;
-  s: string;
-begin
-  dbu_count := ASender.Context.Connection.IOHandler.ReadSmallInt;
-  s := BuildDbuNewNumberLog(dbu_count);
-  ASender.Context.Connection.IOHandler.Write(dbu_count);
-  if dbu_count > 0 then
-  begin
-    ASender.Context.Connection.IOHandler.WriteLn(s);
   end;
 end;
 
@@ -235,28 +222,6 @@ begin
   end;
 end;
 
-procedure TDBUServer.GetNewNumberLogGridCommand(ASender: TIdCommand);
-var
-  db_type: string;
-  sl: TStrings;
-  i: Integer;
-begin
-  db_type := ASender.Context.Connection.IOHandler.ReadLn;
-  sl := TStringList.Create;
-  try
-    sl.Text := Format('Log data for DB type = "%s"', [db_type]);
-    { TODO : добавить выгрузку данных по указанному типу DB из списка лога }
-    ASender.Context.Connection.IOHandler.Write(sl.Count);
-    ASender.Context.Connection.IOHandler.WriteLn(sl[0]);
-    for i := Pred(sl.Count) downto 1 do
-    begin
-      ASender.Context.Connection.IOHandler.WriteLn(sl[i]);
-    end;
-  finally
-    sl.Free;
-  end;
-end;
-
 procedure TDBUServer.GetDbuDatabaseTypeItemsCommand(ASender: TIdCommand);
 var
   sl: TStrings;
@@ -294,16 +259,15 @@ begin
     begin
       sl.LoadFromFile(file_name);
     end;
-    ASender.Context.Connection.IOHandler.WriteRFCStrings(sl, True);
+    ASender.Context.Connection.IOHandler.Write(sl, True, IndyTextEncoding_UTF8);
 
     st := TMemoryStream.Create;
     try
       THackImageList(ilStates).WriteData(st);
-      ASender.Context.Connection.IOHandler.Write(st, st.Size, True);
+      ASender.Context.Connection.IOHandler.Write(st, 0, True);
     finally
       st.Free;
     end;
-
   finally
     sl.Free;
   end;
@@ -331,9 +295,9 @@ begin
   person_name := ASender.Context.Connection.IOHandler.ReadLn;
   first_new_db_number := GetFirstFreeDbUpdateNumber(db_type, db_count);
   ASender.Context.Connection.IOHandler.Write(first_new_db_number);
-  LogMessage(Format('Выделены новые номера для DBU.' + sLineBreak +
-  ' Тип: %s' + sLineBreak + ' Стартовый номер: %d' + sLineBreak + ' Количество номеров: %d' + sLineBreak + ' Инициатор: %s',
-    [db_type, first_new_db_number, db_count, person_name]), EVENTLOG_INFORMATION_TYPE);
+  LogMessage(Format('Выделены новые номера для DBU.' + sLineBreak + ' Тип: %s' + sLineBreak + ' Стартовый номер: %d' +
+    sLineBreak + ' Количество номеров: %d' + sLineBreak + ' Инициатор: %s', [db_type, first_new_db_number, db_count,
+    person_name]), EVENTLOG_INFORMATION_TYPE);
   AddLogRecord(db_type, first_new_db_number, db_count, person_name);
 end;
 
@@ -385,7 +349,44 @@ procedure TDBUServer.ServiceStop(Sender: TService; var Stopped: Boolean);
 begin
   IdCmdTCPServer.Active := False;
   { TODO : добавить сохранение лога в файл }
-  LogMessage(Format('Сервер DBU остановлен на "%s:%d"', [IdCmdTCPServer.Bindings[0].IP, IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE);
+  LogMessage(Format('Сервер DBU остановлен на "%s:%d"', [IdCmdTCPServer.Bindings[0].IP, IdCmdTCPServer.Bindings[0].Port]
+    ), EVENTLOG_INFORMATION_TYPE);
+end;
+
+procedure TDBUServer.GetNewNumberLogGridCommand(ASender: TIdCommand);
+var
+  db_type: string;
+  sl: TStrings;
+  i: Integer;
+begin
+  db_type := ASender.Context.Connection.IOHandler.ReadLn;
+  sl := TStringList.Create;
+  try
+    sl.Text := Format('Log data for DB type = "%s"', [db_type]);
+    { TODO : добавить выгрузку данных по указанному типу DB из списка лога }
+    ASender.Context.Connection.IOHandler.Write(sl.Count);
+    ASender.Context.Connection.IOHandler.WriteLn(sl[0]);
+    for i := Pred(sl.Count) downto 1 do
+    begin
+      ASender.Context.Connection.IOHandler.WriteLn(sl[i]);
+    end;
+  finally
+    sl.Free;
+  end;
+end;
+
+procedure TDBUServer.NewNumberLogCommand(ASender: TIdCommand);
+var
+  dbu_count: SmallInt;
+  s: string;
+begin
+  dbu_count := ASender.Context.Connection.IOHandler.ReadSmallInt;
+  s := BuildDbuNewNumberLog(dbu_count);
+  ASender.Context.Connection.IOHandler.Write(dbu_count);
+  if dbu_count > 0 then
+  begin
+    ASender.Context.Connection.IOHandler.WriteLn(s);
+  end;
 end;
 
 end.
