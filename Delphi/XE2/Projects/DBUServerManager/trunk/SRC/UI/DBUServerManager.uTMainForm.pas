@@ -37,7 +37,8 @@ uses
   Vcl.Graphics,
   CastersPackage.uTStateProgressBar,
   CastersPackage.uTStatusBarEx,
-  CastersPackage.uTApplicationOnHint;
+  CastersPackage.uTApplicationOnHint,
+  System.SyncObjs;
 
 type
   TMainForm = class(TForm)
@@ -161,6 +162,16 @@ type
     procedure ApplyConfiguration;
     procedure WMGetSysCommand(var AMessage: TMessage); message WM_SYSCOMMAND;
 
+    // strict private
+    // FSvcHandle: THandle;
+    // procedure ServiceStart;
+    // procedure ServiceStop;
+    //
+    // strict private
+    // FLock: TCriticalSection;
+    // procedure Lock;
+    // procedure UnLock;
+    //
   protected
     procedure WndProc(var AMessage: TMessage); override;
 
@@ -176,10 +187,11 @@ implementation
 {$R *.dfm}
 
 uses
+  Winapi.WinSvc,
   System.SysUtils,
   Winapi.CommCtrl,
-  Vcl.Dialogs,
   Winapi.Windows,
+  Vcl.Dialogs,
   IdGlobal,
   CastersPackage.uTHackControl,
   DBUServerManager.uConsts,
@@ -299,6 +311,8 @@ begin
     Configuration.Free;
   end;
 
+  // FLock.Free;
+
   inherited;
 end;
 
@@ -318,6 +332,7 @@ var
   b: Boolean;
 
 begin
+  // FLock := TCriticalSection.Create;
   gsfviMain.Filename := Application.ExeName;
   Caption := gsfviMain.InternalName;
 
@@ -353,6 +368,47 @@ begin
   end;
 end;
 
+{ procedure TMainForm.ServiceStart;
+  var
+  Args: PChar;
+  ServiceStatus: TServiceStatus;
+  begin
+  Lock;
+  try
+  try
+  StartService(FSvcHandle, 0, Args);
+  QueryServiceStatus(FSvcHandle, ServiceStatus);
+  if ServiceStatus.dwCurrentState = SERVICE_RUNNING then
+  begin
+  actConnect.Execute;
+  end;
+  except
+  on E: Exception do
+  ShowMessage(E.Message);
+  end;
+  finally
+  UnLock;
+  end;
+  end;
+
+  procedure TMainForm.ServiceStop;
+  var
+  ServiceStatus: TServiceStatus;
+  begin
+  Lock;
+  try
+  actDisconnect.Execute;
+  try
+  ControlService(FSvcHandle, SERVICE_CONTROL_STOP, ServiceStatus);
+  except
+  on E: Exception do
+  ShowMessage(E.Message);
+  end;
+  finally
+  UnLock;
+  end;
+  end; }
+
 procedure TMainForm.TrayIconClick(Sender: TObject);
 begin
   if Visible then
@@ -369,6 +425,11 @@ begin
   SetForegroundWindow(Handle);
   Application.Restore;
 end;
+
+{ procedure TMainForm.UnLock;
+  begin
+  FLock.Leave;
+  end; }
 
 procedure TMainForm.WMGetSysCommand(var AMessage: TMessage);
 begin
@@ -447,17 +508,23 @@ begin
   // ShowMessage('Disconnected');
 end;
 
+{ procedure TMainForm.Lock;
+  begin
+  FLock.Enter;
+  end; }
+
 procedure TMainForm.actConnectExecute(Sender: TObject);
+var
+  s: string;
+  b: Boolean;
 begin
   try
     IdTCPClient.Connect;
     if IdTCPClient.Connected then
     begin
       StateImage.State := True;
-      while IdTCPClient.IOHandler.InputBuffer.Size > 0 do
-      begin
-        ShowMessage(IdTCPClient.IOHandler.ReadLn);
-      end;
+      { s := IdTCPClient.IOHandler.ReadLn;
+        ShowMessage(s); }
     end;
   except
     ShowMessage('Не удалось подключиться к серверу');
@@ -615,9 +682,20 @@ procedure TMainForm.actTestConnectionExecute(Sender: TObject);
 var
   s: string;
 begin
-  IdTCPClient.SendCmd('TCP_CONNECTION_TEST');
-  s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_UTF8);
-  ShowMessage(s);
+  try
+    IdTCPClient.SendCmd('TCP_CONNECTION_TEST');
+    s := IdTCPClient.IOHandler.ReadLn;
+    if s = 'CONNECTION_TEST_OK' then
+    begin
+      s := 'Тестирование подключения выполнено успешно.'
+    end;
+    ShowMessage(s);
+  except
+    on E: Exception do
+    begin
+      ShowMessage(E.Message);
+    end;
+  end;
 end;
 
 procedure TMainForm.actTestConnectionUpdate(Sender: TObject);
