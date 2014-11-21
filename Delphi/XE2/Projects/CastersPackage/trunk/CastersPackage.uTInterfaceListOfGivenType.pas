@@ -50,8 +50,8 @@ type
   end;
 
 resourcestring
-  RsCantAddItemToList = 'Не могу добавить элемент в список!';
-  RsCantRemoveItemFromList = 'Не могу удалить элемент из списка!';
+  RsCantAddItemToList = 'Не могу добавить элемент в список.';
+  RsCantRemoveItemFromList = 'Не могу удалить элемент из списка.';
 
 implementation
 
