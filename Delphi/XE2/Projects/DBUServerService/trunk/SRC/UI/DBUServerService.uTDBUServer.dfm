@@ -1,6 +1,5 @@
 object DBUServer: TDBUServer
   OldCreateOrder = False
-  OnCreate = ServiceCreate
   OnDestroy = ServiceDestroy
   DisplayName = 'DBU Server Service'
   BeforeUninstall = ServiceBeforeUninstall
@@ -13,7 +12,7 @@ object DBUServer: TDBUServer
   Width = 215
   object IdCmdTCPServer: TIdCmdTCPServer
     Bindings = <>
-    DefaultPort = 6000
+    DefaultPort = 0
     OnConnect = IdCmdTCPServerConnect
     OnDisconnect = IdCmdTCPServerDisconnect
     CommandHandlers = <
@@ -142,7 +141,7 @@ object DBUServer: TDBUServer
     Left = 120
     Top = 16
     Bitmap = {
-      494C010109001800400010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101090018006C0010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

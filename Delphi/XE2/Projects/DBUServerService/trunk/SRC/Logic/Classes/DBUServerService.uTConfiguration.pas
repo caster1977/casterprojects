@@ -4,6 +4,7 @@ interface
 
 uses
   DBUServerService.uISQLActions,
+  DBUServerService.uISQLSubjects,
   ConfigPackage.uTCustomConfiguration;
 
 type
@@ -11,29 +12,40 @@ type
   strict protected
     procedure Initialize; override;
     procedure Finalize; override;
+
   strict private
     FSQLActions: ISQLActions;
     function GetSQLActions: ISQLActions;
   public
     property SQLActions: ISQLActions read GetSQLActions nodefault;
+
+  strict private
+    FSQLSubjects: ISQLSubjects;
+    function GetSQLSubjects: ISQLSubjects;
+  public
+    property SQLSubjects: ISQLSubjects read GetSQLSubjects nodefault;
   end;
 
 implementation
 
 uses
-  // CastersPackage.uIModified,
+  System.IniFiles,
   Vcl.SvcMgr,
   System.SysUtils,
   System.Classes,
   Vcl.Dialogs,
   ConfigPackage.uEConfiguration,
+  DBUServerService.Configuration.uTConnection,
   DBUServerService.uISQLAction,
   DBUServerService.uTSQLActions,
-  DBUServerService.uTSQLAction;
+  DBUServerService.uTSQLAction,
+  DBUServerService.uISQLSubject,
+  DBUServerService.uTSQLSubjects,
+  DBUServerService.uTSQLSubject;
 
 resourcestring
   RsSQLActions = 'Действия SQL';
-  RsQuantity = 'Количество';
+  RsSQLSubjects = 'Объекты SQL';
   RsConfigurationSaveError = 'Произошла ошибка при попытке записи настроек программы в файл.';
 
 function TConfiguration.GetSQLActions: ISQLActions;
@@ -45,33 +57,72 @@ begin
   Result := FSQLActions;
 end;
 
+function TConfiguration.GetSQLSubjects: ISQLSubjects;
+begin
+  if not Assigned(FSQLSubjects) then
+  begin
+    FSQLSubjects := GetISQLSubjects;
+  end;
+  Result := FSQLSubjects;
+end;
+
 procedure TConfiguration.Initialize;
 var
   i: Integer;
-  s: string;
-  a: ISQLAction;
+  isa: ISQLAction;
+  iss: ISQLSubject;
   sl: TStringList;
 begin
   inherited;
+  RegisterSection(TConnection);
+
   SQLActions.Clear;
+  SQLSubjects.Clear;
+
   if Assigned(FIniFile) then
   begin
     sl := TStringList.Create;
     try
-      FIniFile.ReadSectionValues(RsSQLActions, sl);
-      if sl.Count > 0 then
+      if FIniFile.SectionExists(RsSQLActions) then
       begin
-        for i := 0 to Pred(sl.Count) do
+        FIniFile.ReadSectionValues(RsSQLActions, sl);
+      end;
+
+      for i := 0 to Pred(sl.Count) do
+      begin
+        isa := GetISQLAction;
+        if Assigned(isa) then
         begin
-          a := GetISQLAction;
-          a.Name := sl.Names[i];
-          a.Abbreviation := sl.Values[a.Name];
-          if a.Name <> EmptyStr then
+          isa.Name := sl.Names[i];
+          isa.Abbreviation := sl.Values[isa.Name];
+          if isa.Name <> EmptyStr then
           begin
-            SQLActions.Add(a);
+            SQLActions.Add(isa);
           end;
         end;
       end;
+
+      sl.Clear;
+
+      if FIniFile.SectionExists(RsSQLSubjects) then
+      begin
+        FIniFile.ReadSectionValues(RsSQLSubjects, sl);
+      end;
+
+      for i := 0 to Pred(sl.Count) do
+      begin
+        iss := GetISQLSubject;
+        if Assigned(iss) then
+        begin
+          iss.Name := sl.Names[i];
+          iss.Abbreviation := sl.Values[iss.Name];
+          if iss.Name <> EmptyStr then
+          begin
+            SQLSubjects.Add(iss);
+          end;
+        end;
+      end;
+
     finally
       sl.Free;
     end;
@@ -79,44 +130,50 @@ begin
 end;
 
 procedure TConfiguration.Finalize;
-{var
+var
   i: Integer;
-  j: Integer;
-  a: ISQLAction;}
+  isa: ISQLAction;
+  iss: ISQLSubject;
 begin
   inherited;
-  // if Assigned(FIniFile) then
-  // begin
-  // with FIniFile do
-  // try
-  // if Recents.Count <> RECENTS_DEFAULT_COUNT then
-  // begin
-  // j := 0;
-  // for i := 0 to Pred(Recents.Count) do
-  // begin
-  // r := Recents.Items[i];
-  // if Assigned(r) then
-  // begin
-  // if r.FullName <> RECENT_DEFAULT_FULL_NAME then
-  // begin
-  // WriteString(RsRecents, Format(RsRecentProfile, [IntToStr(j)]), r.FullName);
-  // Inc(j);
-  // end
-  // else
-  // begin
-  // DeleteKey(RsRecents, Format(RsRecentProfile, [IntToStr(j)]));
-  // end;
-  // end;
-  // end;
-  // WriteInteger(RsRecents, RsQuantity, j);
-  // end;
-  // except
-  // on EIniFileException do
-  // begin
-  // raise EConfiguration.Create(RsConfigurationSaveError);
-  // end;
-  // end;
-  // end;
+
+  if Assigned(FIniFile) then
+  begin
+    try
+      if FIniFile.SectionExists(RsSQLActions) then
+      begin
+        FIniFile.EraseSection(RsSQLActions);
+      end;
+
+      for i := 0 to Pred(SQLActions.Count) do
+      begin
+        isa := SQLActions[i];
+        if Assigned(isa) then
+        begin
+          FIniFile.WriteString(RsSQLActions, isa.Name, isa.Abbreviation);
+        end;
+      end;
+
+      if FIniFile.SectionExists(RsSQLSubjects) then
+      begin
+        FIniFile.EraseSection(RsSQLSubjects);
+      end;
+
+      for i := 0 to Pred(SQLSubjects.Count) do
+      begin
+        iss := SQLSubjects[i];
+        if Assigned(iss) then
+        begin
+          FIniFile.WriteString(RsSQLSubjects, iss.Name, iss.Abbreviation);
+        end;
+      end;
+    except
+      on EIniFileException do
+      begin
+        raise EConfiguration.Create(RsConfigurationSaveError);
+      end;
+    end;
+  end;
 end;
 
 end.

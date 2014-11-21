@@ -43,7 +43,6 @@ type
     procedure GetDbuStatesItemsCommand(ASender: TIdCommand);
     procedure IdCmdTCPServerCommandHandlers1Command(ASender: TIdCommand);
     procedure ServiceDestroy(Sender: TObject);
-    procedure ServiceCreate(Sender: TObject);
   public
     function GetServiceController: TServiceController; override;
   private
@@ -55,8 +54,6 @@ type
     FConfiguration: TConfiguration;
     function GetConfiguration: TConfiguration;
     property Configuration: TConfiguration read GetConfiguration nodefault;
-  strict private
-    procedure ApplyConfiguration;
   end;
 
 var
@@ -69,7 +66,10 @@ implementation
 uses
   CastersPackage.uRoutines,
   DBUServerService.uDBUServerUtils,
+  DBUServerService.Configuration.uTConnection,
   System.Math,
+  System.StrUtils,
+  DBUServerService.uConsts,
   IdSocketHandle,
   IdGlobal;
 
@@ -156,11 +156,6 @@ begin
   end;
 end;
 
-procedure TDBUServer.ApplyConfiguration;
-begin
-
-end;
-
 function TDBUServer.BuildDbuNewNumberLog(var ACount: SmallInt): string;
 
   function BuildRecord(const AIndex: Integer): string;
@@ -187,29 +182,6 @@ begin
 end;
 
 procedure TDBUServer.GetSqlActionItemsCommand(ASender: TIdCommand);
-{$REGION}
-{ var
-  sl: TStrings;
-  i: Integer;
-  file_name: string;
-  begin
-  sl := TStringList.Create;
-  try
-  file_name := GetAppConfigFolder + 'SqlActionItems.lst';
-  if FileExists(file_name) then
-  begin
-  sl.LoadFromFile(file_name);
-  end;
-  ASender.Context.Connection.IOHandler.Write(sl.Count);
-  for i := 0 to Pred(sl.Count) do
-  begin
-  ASender.Context.Connection.IOHandler.WriteLn(sl[i]);
-  end;
-  finally
-  sl.Free;
-  end;
-  end; }
-{$ENDREGION}
 var
   i: Integer;
 begin
@@ -226,30 +198,30 @@ begin
   ASender.Context.Connection.IOHandler.Write(Configuration.SQLActions.Count);
   for i := 0 to Pred(Configuration.SQLActions.Count) do
   begin
-    ASender.Context.Connection.IOHandler.WriteLn(Configuration.SQLActions[i].ToString);
+    ASender.Context.Connection.IOHandler.WriteLn(Format('%s:%s', [Configuration.SQLActions[i].Name,
+      Configuration.SQLActions[i].Abbreviation]));
   end;
 end;
 
 procedure TDBUServer.GetSqlSubjItemsCommand(ASender: TIdCommand);
 var
-  sl: TStrings;
   i: Integer;
-  file_name: string;
 begin
-  sl := TStringList.Create;
-  try
-    file_name := GetAppConfigFolder + 'SqlSubjItems.lst';
-    if FileExists(file_name) then
-    begin
-      sl.LoadFromFile(file_name);
-    end;
-    ASender.Context.Connection.IOHandler.Write(sl.Count);
-    for i := 0 to Pred(sl.Count) do
-    begin
-      ASender.Context.Connection.IOHandler.WriteLn(sl[i]);
-    end;
-  finally
-    sl.Free;
+  if not Assigned(Configuration) then
+  begin
+    Exit;
+  end;
+
+  if not Assigned(Configuration.SQLSubjects) then
+  begin
+    Exit;
+  end;
+
+  ASender.Context.Connection.IOHandler.Write(Configuration.SQLSubjects.Count);
+  for i := 0 to Pred(Configuration.SQLSubjects.Count) do
+  begin
+    ASender.Context.Connection.IOHandler.WriteLn(Format('%s:%s', [Configuration.SQLSubjects[i].Name,
+      Configuration.SQLSubjects[i].Abbreviation]));
   end;
 end;
 
@@ -320,12 +292,14 @@ end;
 
 procedure TDBUServer.IdCmdTCPServerConnect(AContext: TIdContext);
 begin
-  LogMessage(Format('Клиент "%s" подключен', [AContext.Connection.Socket.Binding.PeerIP]), EVENTLOG_INFORMATION_TYPE);
+  LogMessage(Format('Клиент "%s" подключен к серверу "%s:%d"', [AContext.Connection.Socket.Binding.PeerIP,
+    IdCmdTCPServer.Bindings[0].IP, IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE);
 end;
 
 procedure TDBUServer.IdCmdTCPServerDisconnect(AContext: TIdContext);
 begin
-  LogMessage(Format('Клиент "%s" отключен', [AContext.Connection.Socket.Binding.PeerIP]), EVENTLOG_INFORMATION_TYPE);
+  LogMessage(Format('Клиент "%s" отключен от сервера "%s:%d"', [AContext.Connection.Socket.Binding.PeerIP,
+    IdCmdTCPServer.Bindings[0].IP, IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE);
 end;
 
 procedure TDBUServer.GetReserveNewDBUpdateNumbersCommand(ASender: TIdCommand);
@@ -363,12 +337,6 @@ begin
   IdCmdTCPServer.Active := True;
 end;
 
-procedure TDBUServer.ServiceCreate(Sender: TObject);
-begin
-  inherited;
-  ApplyConfiguration;
-end;
-
 procedure TDBUServer.ServiceDestroy(Sender: TObject);
 begin
   if Assigned(Configuration) then
@@ -399,7 +367,10 @@ begin
   sckt := IdCmdTCPServer.Bindings.Add;
   if Assigned(sckt) then
   begin
-    sckt.IP := Routines.GetLocalIP;
+    sckt.IP := IfThen(Configuration.Section<TConnection>.Host = CONFIGURATION_DEFAULT_HOST, Routines.GetLocalIP,
+      Configuration.Section<TConnection>.Host);
+    sckt.Port := IfThen(Configuration.Section<TConnection>.Port = CONFIGURATION_DEFAULT_PORT,
+      CONFIGURATION_DEFAULT_PORT, Configuration.Section<TConnection>.Port);
     IdCmdTCPServer.Active := True;
     LogMessage(Format('Сервер DBU запущен на "%s:%d"', [sckt.IP, sckt.Port]), EVENTLOG_INFORMATION_TYPE);
   end;

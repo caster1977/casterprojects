@@ -83,6 +83,8 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <Debugger_RunParams>start</Debugger_RunParams>
+        <Debugger_HostApplication>net</Debugger_HostApplication>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
@@ -107,11 +109,17 @@
             <DesignClass>TService</DesignClass>
         </DCCReference>
         <DCCReference Include="Logic\Other\DBUServerService.uDBUServerUtils.pas"/>
-        <DCCReference Include="Logic\Classes\DBUServerService.uTConfiguration.pas"/>
         <DCCReference Include="Logic\Interfaces\DBUServerService.uISQLActions.pas"/>
         <DCCReference Include="Logic\Interfaces\DBUServerService.uISQLAction.pas"/>
         <DCCReference Include="Logic\Classes\DBUServerService.uTSQLActions.pas"/>
         <DCCReference Include="Logic\Classes\DBUServerService.uTSQLAction.pas"/>
+        <DCCReference Include="Logic\Interfaces\DBUServerService.uISQLSubject.pas"/>
+        <DCCReference Include="Logic\Interfaces\DBUServerService.uISQLSubjects.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerService.uTSQLSubjects.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerService.uTSQLSubject.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerService.Configuration.uTConnection.pas"/>
+        <DCCReference Include="Logic\Other\DBUServerService.uConsts.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerService.uTConfiguration.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
