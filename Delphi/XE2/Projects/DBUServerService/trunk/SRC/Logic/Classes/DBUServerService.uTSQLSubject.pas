@@ -1,14 +1,14 @@
-unit DBUServerService.uTSQLAction;
+unit DBUServerService.uTSQLSubject;
 
 interface
 
 uses
-  DBUServerService.uISQLAction,
+  DBUServerService.uISQLSubject,
   CastersPackage.uICustomized,
   System.Classes;
 
 type
-  TSQLAction = class(TInterfacedObject, ISQLAction, ICustomized)
+  TSQLSubject = class(TInterfacedObject, ISQLSubject, ICustomized)
   strict protected
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -34,7 +34,7 @@ type
     function ToString: string; override;
   end;
 
-function GetISQLAction: ISQLAction;
+function GetISQLSubject: ISQLSubject;
 
 implementation
 
@@ -42,43 +42,43 @@ uses
   System.SysUtils,
   System.StrUtils;
 
-function GetISQLAction: ISQLAction;
+function GetISQLSubject: ISQLSubject;
 begin
-  Result := TSQLAction.Create;
+  Result := TSQLSubject.Create;
 end;
 
-constructor TSQLAction.Create;
+constructor TSQLSubject.Create;
 begin
   inherited;
   Initialize;
 end;
 
-destructor TSQLAction.Destroy;
+destructor TSQLSubject.Destroy;
 begin
   Finalize;
   inherited;
 end;
 
-procedure TSQLAction.Initialize;
+procedure TSQLSubject.Initialize;
 begin
   Name := EmptyStr;
 end;
 
-procedure TSQLAction.Finalize;
+procedure TSQLSubject.Finalize;
 begin
 end;
 
-function TSQLAction.GetAbbreviation: string;
+function TSQLSubject.GetAbbreviation: string;
 begin
   Result := FAbbreviation;
 end;
 
-function TSQLAction.GetName: string;
+function TSQLSubject.GetName: string;
 begin
   Result := FName;
 end;
 
-procedure TSQLAction.SetAbbreviation(const AValue: string);
+procedure TSQLSubject.SetAbbreviation(const AValue: string);
 var
   s: string;
 begin
@@ -89,7 +89,7 @@ begin
   end;
 end;
 
-procedure TSQLAction.SetName(const AValue: string);
+procedure TSQLSubject.SetName(const AValue: string);
 var
   s: string;
 begin
@@ -100,7 +100,7 @@ begin
   end;
 end;
 
-function TSQLAction.ToString: string;
+function TSQLSubject.ToString: string;
 begin
   Result := IfThen(inherited > EmptyStr, inherited + sLineBreak) +
     Format('[ClassName: %s] Name: %s, Abbreviation: %s', [ClassName, Name, Abbreviation]);
