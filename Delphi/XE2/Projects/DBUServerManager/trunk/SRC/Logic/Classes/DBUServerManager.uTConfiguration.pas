@@ -29,7 +29,7 @@ implementation
 uses
   CastersPackage.uIModified,
   System.SysUtils,
-  DBUServerManager.uEConfiguration,
+  ConfigPackage.uEConfiguration,
   DBUServerManager.Configuration.uTInterface,
   DBUServerManager.Configuration.uTConnection,
   DBUServerManager.Configuration.uTOther,
