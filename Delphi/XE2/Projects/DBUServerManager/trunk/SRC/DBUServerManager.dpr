@@ -14,7 +14,6 @@ uses
   DBUServerManager.uTConfiguration in 'Logic\Classes\DBUServerManager.uTConfiguration.pas',
   DBUServerManager.uIRecents in 'Logic\Interfaces\DBUServerManager.uIRecents.pas',
   DBUServerManager.uIRecent in 'Logic\Interfaces\DBUServerManager.uIRecent.pas',
-  DBUServerManager.uEConfiguration in 'Logic\Classes\DBUServerManager.uEConfiguration.pas',
   DBUServerManager.uTRecent in 'Logic\Classes\DBUServerManager.uTRecent.pas',
   DBUServerManager.uTRecents in 'Logic\Classes\DBUServerManager.uTRecents.pas',
   DBUServerManager.uTConfigurationForm in 'UI\DBUServerManager.uTConfigurationForm.pas' {Form1};

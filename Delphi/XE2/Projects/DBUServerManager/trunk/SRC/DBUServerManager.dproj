@@ -86,8 +86,8 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-        <VerInfo_Build>129</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.129;InternalName=DBU Server Manager x86 Debug;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager x86 Debug;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Build>131</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.131;InternalName=DBU Server Manager x86 Debug;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager x86 Debug;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -115,7 +115,6 @@
         <DCCReference Include="Logic\Classes\DBUServerManager.uTConfiguration.pas"/>
         <DCCReference Include="Logic\Interfaces\DBUServerManager.uIRecents.pas"/>
         <DCCReference Include="Logic\Interfaces\DBUServerManager.uIRecent.pas"/>
-        <DCCReference Include="Logic\Classes\DBUServerManager.uEConfiguration.pas"/>
         <DCCReference Include="Logic\Classes\DBUServerManager.uTRecent.pas"/>
         <DCCReference Include="Logic\Classes\DBUServerManager.uTRecents.pas"/>
         <DCCReference Include="UI\DBUServerManager.uTConfigurationForm.pas">

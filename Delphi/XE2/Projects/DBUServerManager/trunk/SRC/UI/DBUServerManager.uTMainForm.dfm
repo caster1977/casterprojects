@@ -176,7 +176,7 @@ object MainForm: TMainForm
     Left = 168
     Top = 128
     Bitmap = {
-      494C01011000A000740410001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01011000A000840410001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -846,6 +846,7 @@ object MainForm: TMainForm
   object actmgrMain: TActionManager
     ActionBars = <
       item
+        ChangesAllowed = []
         Items.CaptionOptions = coNone
         Items = <
           item
@@ -860,110 +861,6 @@ object MainForm: TMainForm
             Action = actConfiguration
             ImageIndex = 3
             ShortCut = 32888
-          end
-          item
-            Caption = '-'
-          end
-          item
-            Action = actHelpContents
-            ImageIndex = 2
-            ShortCut = 112
-          end
-          item
-            Action = actAbout
-            ImageIndex = 1
-            ShortCut = 123
-          end>
-      end
-      item
-        Items = <
-          item
-            Items = <
-              item
-                Action = actConfiguration
-                ImageIndex = 3
-                ShortCut = 32888
-              end
-              item
-                Caption = '-'
-              end
-              item
-                Action = actQuit
-                ImageIndex = 0
-                ShortCut = 32883
-              end>
-            Action = actFileMenuGroup
-          end
-          item
-            Items = <
-              item
-                Action = actHelpContents
-                ImageIndex = 2
-                ShortCut = 112
-              end
-              item
-                Action = actAbout
-                ImageIndex = 3
-                ShortCut = 123
-              end>
-            Action = actHelpMenuGroup
-          end>
-      end
-      item
-      end
-      item
-      end
-      item
-      end
-      item
-        Items.CaptionOptions = coNone
-        Items = <
-          item
-            Action = actQuit
-            ImageIndex = 0
-            ShortCut = 32883
-          end
-          item
-            Caption = '-'
-          end
-          item
-            Action = actConfiguration
-            ImageIndex = 3
-            ShortCut = 32888
-          end
-          item
-            Caption = '-'
-          end
-          item
-            Caption = '-'
-          end
-          item
-            Caption = '-'
-          end
-          item
-            Action = actHelpContents
-            ImageIndex = 2
-            ShortCut = 112
-          end
-          item
-            Caption = '-'
-          end
-          item
-            Action = actAbout
-            ImageIndex = 1
-            ShortCut = 123
-          end>
-      end
-      item
-        Items.CaptionOptions = coNone
-        Items = <
-          item
-            Action = actQuit
-            ImageIndex = 0
-            ShortCut = 32883
-          end
-          item
-            Caption = '-'
           end
           item
             Caption = '-'
@@ -1335,7 +1232,7 @@ object MainForm: TMainForm
     OnDisconnected = IdTCPClientDisconnected
     OnConnected = IdTCPClientConnected
     ConnectTimeout = 0
-    Host = '192.168.9.20'
+    Host = 'MOSTRA-822'
     IPVersion = Id_IPv4
     Port = 6000
     ReadTimeout = -1
@@ -1347,7 +1244,7 @@ object MainForm: TMainForm
     Left = 224
     Top = 184
     Bitmap = {
-      494C010102000400880610001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400980610001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
