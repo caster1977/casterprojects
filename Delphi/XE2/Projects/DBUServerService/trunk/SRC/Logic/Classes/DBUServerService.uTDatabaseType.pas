@@ -101,7 +101,7 @@ end;
 function TDatabaseType.ToString: string;
 begin
   Result := IfThen(inherited > EmptyStr, inherited + sLineBreak) +
-    Format('[ClassName: %s] Id: %d, Name: %s', [ClassName, Id, Name]);
+    Format('=> Id: %d, Name: %s', [Id, Name]);
 end;
 
 end.

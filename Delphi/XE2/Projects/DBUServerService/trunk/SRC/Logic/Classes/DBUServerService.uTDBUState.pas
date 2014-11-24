@@ -170,7 +170,7 @@ begin
   end;
 
   Result := IfThen(inherited > EmptyStr, inherited + sLineBreak) +
-    Format('[ClassName: %s] Id: %d, Name: %s, Flags: %d, Icon: %s', [ClassName, Id, Name, Flags, ico_s]);
+    Format('=> Id: %d, Name: %s, Flags: %d, Icon: %s', [Id, Name, Flags, ico_s]);
 end;
 
 end.
