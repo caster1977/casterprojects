@@ -514,9 +514,9 @@ end;
   end; }
 
 procedure TMainForm.actConnectExecute(Sender: TObject);
-var
+{var
   s: string;
-  b: Boolean;
+  b: Boolean;}
 begin
   try
     IdTCPClient.Connect;
@@ -730,7 +730,7 @@ begin
   IdTCPClient.SendCmd('TCP_GET_DBU_STATES_ITEMS');
   sl := TStringList.Create;
   try
-    IdTCPClient.IOHandler.ReadStrings(sl, -1, IndyTextEncoding_UTF8);
+    IdTCPClient.IOHandler.ReadStrings(sl, -1, IndyTextEncoding_OSDefault);
     st := TMemoryStream.Create;
     try
       IdTCPClient.IOHandler.ReadStream(st);
