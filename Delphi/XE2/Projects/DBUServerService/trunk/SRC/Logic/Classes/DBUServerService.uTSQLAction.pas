@@ -62,6 +62,7 @@ end;
 procedure TSQLAction.Initialize;
 begin
   Name := EmptyStr;
+  Abbreviation := EmptyStr;
 end;
 
 procedure TSQLAction.Finalize;
