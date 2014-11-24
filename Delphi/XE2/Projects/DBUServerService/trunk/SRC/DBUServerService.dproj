@@ -120,6 +120,14 @@
         <DCCReference Include="Logic\Classes\DBUServerService.Configuration.uTConnection.pas"/>
         <DCCReference Include="Logic\Other\DBUServerService.uConsts.pas"/>
         <DCCReference Include="Logic\Classes\DBUServerService.uTConfiguration.pas"/>
+        <DCCReference Include="Logic\Interfaces\DBUServerService.uIDatabaseType.pas"/>
+        <DCCReference Include="Logic\Interfaces\DBUServerService.uIDatabaseTypes.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerService.uTDatabaseTypes.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerService.uTDatabaseType.pas"/>
+        <DCCReference Include="Logic\Interfaces\DBUServerService.uIDBUState.pas"/>
+        <DCCReference Include="Logic\Interfaces\DBUServerService.uIDBUStates.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerService.uTDBUStates.pas"/>
+        <DCCReference Include="Logic\Classes\DBUServerService.uTDBUState.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

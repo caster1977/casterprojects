@@ -225,6 +225,105 @@ begin
   end;
 end;
 
+procedure TDBUServer.GetDbuDatabaseTypeItemsCommand(ASender: TIdCommand);
+var
+  i: Integer;
+begin
+  if not Assigned(Configuration) then
+  begin
+    Exit;
+  end;
+
+  if not Assigned(Configuration.DatabaseTypes) then
+  begin
+    Exit;
+  end;
+
+  ASender.Context.Connection.IOHandler.Write(Configuration.DatabaseTypes.Count);
+  for i := 0 to Pred(Configuration.DatabaseTypes.Count) do
+  begin
+    ASender.Context.Connection.IOHandler.WriteLn(Configuration.DatabaseTypes[i].Name);
+    ASender.Context.Connection.IOHandler.Write(Configuration.DatabaseTypes[i].Id);
+  end;
+end;
+
+procedure TDBUServer.GetDbuStatesItemsCommand(ASender: TIdCommand);
+var
+  sl: TStrings;
+  ms: TStream;
+  i: Integer;
+  s: string;
+  ico: TIcon;
+  il: TImageList;
+begin
+  if not Assigned(Configuration) then
+  begin
+    Exit;
+  end;
+
+  if not Assigned(Configuration.DBUStates) then
+  begin
+    Exit;
+  end;
+
+  sl := TStringList.Create;
+  try
+    for i := 0 to Pred(Configuration.DBUStates.Count) do
+    begin
+      s := Format('%d=%s:%d', [Configuration.DBUStates[i].Id, Configuration.DBUStates[i].Name,
+        Configuration.DBUStates[i].Flags]);
+      sl.Append(s);
+    end;
+    ASender.Context.Connection.IOHandler.Write(sl, True, IndyTextEncoding_OSDefault);
+
+    ms := TMemoryStream.Create;
+    try
+      ms.Seek(0, soFromBeginning);
+{$IFNDEF FROM_IMAGE_LIST}
+      il := TImageList.Create(Self);
+      try
+        il.ColorDepth := cd32Bit;
+        for i := 0 to Pred(Configuration.DBUStates.Count) do
+        begin
+          if Assigned(Configuration.DBUStates[i]) then
+          begin
+            ico := Configuration.DBUStates[i].Icon;
+            if Assigned(ico) then
+            begin
+              il.AddIcon(ico);
+            end;
+          end;
+        end;
+        THackImageList(il).WriteData(ms);
+      finally
+        il.Free;
+      end;
+{$ELSE}
+      THackImageList(ilStates).WriteData(ms);
+{$ENDIF}
+      ASender.Context.Connection.IOHandler.Write(ms, 0, True);
+    finally
+      ms.Free;
+    end;
+
+{$IFDEF FROM_IMAGE_LIST}
+    // для тестовой записи иконок состояний в файл конфигурации использовать DEFINE FROM_IMAGE_LIST
+    for i := 0 to Pred(Configuration.DBUStates.Count) do
+    begin
+      ico := TIcon.Create;
+      try
+        ilStates.GetIcon(i, ico);
+        Configuration.DBUStates[i].Icon := ico;
+      finally
+        ico.Free;
+      end;
+    end;
+{$ENDIF}
+  finally
+    sl.Free;
+  end;
+end;
+
 function TDBUServer.GetConfiguration: TConfiguration;
 begin
   if not Assigned(FConfiguration) then
@@ -232,57 +331,6 @@ begin
     FConfiguration := TConfiguration.Create;
   end;
   Result := FConfiguration;
-end;
-
-procedure TDBUServer.GetDbuDatabaseTypeItemsCommand(ASender: TIdCommand);
-var
-  sl: TStrings;
-  i: Integer;
-  file_name: string;
-begin
-  sl := TStringList.Create;
-  try
-    file_name := GetDatabaseTypesFileName;
-    if FileExists(file_name) then
-    begin
-      sl.LoadFromFile(file_name);
-    end;
-    ASender.Context.Connection.IOHandler.Write(sl.Count);
-    for i := 0 to Pred(sl.Count) do
-    begin
-      ASender.Context.Connection.IOHandler.WriteLn(sl.Names[i]);
-      ASender.Context.Connection.IOHandler.Write(StrToInt(sl.ValueFromIndex[i]));
-    end;
-  finally
-    sl.Free;
-  end;
-end;
-
-procedure TDBUServer.GetDbuStatesItemsCommand(ASender: TIdCommand);
-var
-  sl: TStrings;
-  file_name: string;
-  st: TStream;
-begin
-  sl := TStringList.Create;
-  try
-    file_name := GetAppConfigFolder + 'DbuStates.lst';
-    if FileExists(file_name) then
-    begin
-      sl.LoadFromFile(file_name);
-    end;
-    ASender.Context.Connection.IOHandler.Write(sl, True, IndyTextEncoding_UTF8);
-
-    st := TMemoryStream.Create;
-    try
-      THackImageList(ilStates).WriteData(st);
-      ASender.Context.Connection.IOHandler.Write(st, 0, True);
-    finally
-      st.Free;
-    end;
-  finally
-    sl.Free;
-  end;
 end;
 
 procedure TDBUServer.IdCmdTCPServerCommandHandlers1Command(ASender: TIdCommand);

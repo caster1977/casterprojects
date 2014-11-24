@@ -14,7 +14,15 @@ uses
   DBUServerService.uTSQLSubject in 'Logic\Classes\DBUServerService.uTSQLSubject.pas',
   DBUServerService.Configuration.uTConnection in 'Logic\Classes\DBUServerService.Configuration.uTConnection.pas',
   DBUServerService.uConsts in 'Logic\Other\DBUServerService.uConsts.pas',
-  DBUServerService.uTConfiguration in 'Logic\Classes\DBUServerService.uTConfiguration.pas';
+  DBUServerService.uTConfiguration in 'Logic\Classes\DBUServerService.uTConfiguration.pas',
+  DBUServerService.uIDatabaseType in 'Logic\Interfaces\DBUServerService.uIDatabaseType.pas',
+  DBUServerService.uIDatabaseTypes in 'Logic\Interfaces\DBUServerService.uIDatabaseTypes.pas',
+  DBUServerService.uTDatabaseTypes in 'Logic\Classes\DBUServerService.uTDatabaseTypes.pas',
+  DBUServerService.uTDatabaseType in 'Logic\Classes\DBUServerService.uTDatabaseType.pas',
+  DBUServerService.uIDBUState in 'Logic\Interfaces\DBUServerService.uIDBUState.pas',
+  DBUServerService.uIDBUStates in 'Logic\Interfaces\DBUServerService.uIDBUStates.pas',
+  DBUServerService.uTDBUStates in 'Logic\Classes\DBUServerService.uTDBUStates.pas',
+  DBUServerService.uTDBUState in 'Logic\Classes\DBUServerService.uTDBUState.pas';
 
 {$R *.RES}
 
