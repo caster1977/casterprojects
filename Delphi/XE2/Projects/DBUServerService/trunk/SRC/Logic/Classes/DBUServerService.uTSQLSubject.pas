@@ -104,7 +104,7 @@ end;
 function TSQLSubject.ToString: string;
 begin
   Result := IfThen(inherited > EmptyStr, inherited + sLineBreak) +
-    Format('[ClassName: %s] Name: %s, Abbreviation: %s', [ClassName, Name, Abbreviation]);
+    Format('=> Name: %s, Abbreviation: %s', [Name, Abbreviation]);
 end;
 
 end.
