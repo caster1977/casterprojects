@@ -106,7 +106,7 @@ begin
         ms := TMemoryStream.Create;
         try
           ReadBinaryStream(s, 'SQL', ms);
-          ms.Seek(0, soFromBeginning); // обязательно постувить курсок потока на начало !!!
+          ms.Seek(0, soFromBeginning); // обязательно поставить курсор потока на начало !!!
           t.SQL.LoadFromStream(ms);
         finally
           ms.Free;
@@ -194,13 +194,11 @@ begin
           end
           else
           begin
-            DeleteKey(RsTasks, RsQuantity);
             EraseSection(RsTasks);
           end;
         end
         else
         begin
-          DeleteKey(RsTasks, RsQuantity);
           EraseSection(RsTasks);
         end;
       except
