@@ -97,6 +97,7 @@ procedure TDBUServer.GetSqlActionItemsCommand(ASender: TIdCommand);
 var
   i: Integer;
 begin
+  LogMessage('Start GetSqlActionItemsCommand', EVENTLOG_INFORMATION_TYPE);
   if not Assigned(Configuration) then
   begin
     Exit;
@@ -111,14 +112,16 @@ begin
   for i := 0 to Pred(Configuration.SQLActions.Count) do
   begin
     ASender.Context.Connection.IOHandler.WriteLn(Format('%s:%s', [Configuration.SQLActions[i].Name,
-      Configuration.SQLActions[i].Abbreviation]));
+      Configuration.SQLActions[i].Abbreviation]), IndyTextEncoding_OSDefault);
   end;
+  LogMessage('Stop GetSqlActionItemsCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
 procedure TDBUServer.GetSqlSubjItemsCommand(ASender: TIdCommand);
 var
   i: Integer;
 begin
+  LogMessage('Start GetSqlSubjItemsCommand', EVENTLOG_INFORMATION_TYPE);
   if not Assigned(Configuration) then
   begin
     Exit;
@@ -133,14 +136,16 @@ begin
   for i := 0 to Pred(Configuration.SQLSubjects.Count) do
   begin
     ASender.Context.Connection.IOHandler.WriteLn(Format('%s:%s', [Configuration.SQLSubjects[i].Name,
-      Configuration.SQLSubjects[i].Abbreviation]));
+      Configuration.SQLSubjects[i].Abbreviation]), IndyTextEncoding_OSDefault);
   end;
+  LogMessage('Stop GetSqlSubjItemsCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
 procedure TDBUServer.GetDbuDatabaseTypeItemsCommand(ASender: TIdCommand);
 var
   i: Integer;
 begin
+  LogMessage('Start GetDbuDatabaseTypeItemsCommand', EVENTLOG_INFORMATION_TYPE);
   if not Assigned(Configuration) then
   begin
     Exit;
@@ -154,9 +159,10 @@ begin
   ASender.Context.Connection.IOHandler.Write(Configuration.DatabaseTypes.Count);
   for i := 0 to Pred(Configuration.DatabaseTypes.Count) do
   begin
-    ASender.Context.Connection.IOHandler.WriteLn(Configuration.DatabaseTypes[i].Name);
+    ASender.Context.Connection.IOHandler.WriteLn(Configuration.DatabaseTypes[i].Name, IndyTextEncoding_OSDefault);
     ASender.Context.Connection.IOHandler.Write(Configuration.DatabaseTypes[i].Id);
   end;
+  LogMessage('Stop GetDbuDatabaseTypeItemsCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
 procedure TDBUServer.GetDbuStatesItemsCommand(ASender: TIdCommand);
@@ -168,6 +174,7 @@ var
   ico: TIcon;
   il: TImageList;
 begin
+  LogMessage('Start GetDbuStatesItemsCommand', EVENTLOG_INFORMATION_TYPE);
   if not Assigned(Configuration) then
   begin
     Exit;
@@ -233,6 +240,7 @@ begin
   finally
     sl.Free;
   end;
+  LogMessage('Stop GetDbuStatesItemsCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
 function TDBUServer.GetConfiguration: TConfiguration;
@@ -246,19 +254,21 @@ end;
 
 procedure TDBUServer.IdCmdTCPServerCommandHandlers1Command(ASender: TIdCommand);
 begin
-  ASender.Context.Connection.IOHandler.WriteLn('CONNECTION_TEST_OK');
+  LogMessage('Start IdCmdTCPServerCommandHandlers1Command', EVENTLOG_INFORMATION_TYPE);
+  ASender.Context.Connection.IOHandler.WriteLn('CONNECTION_TEST_OK', IndyTextEncoding_OSDefault);
+  LogMessage('Stop IdCmdTCPServerCommandHandlers1Command', EVENTLOG_INFORMATION_TYPE);
 end;
 
 procedure TDBUServer.IdCmdTCPServerConnect(AContext: TIdContext);
 begin
   LogMessage(Format('Клиент "%s" подключен к серверу "%s:%d"', [AContext.Connection.Socket.Binding.PeerIP,
-    IdCmdTCPServer.Bindings[0].IP, IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE);
+    IdCmdTCPServer.Bindings[0].IP, IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE, 0, 1);
 end;
 
 procedure TDBUServer.IdCmdTCPServerDisconnect(AContext: TIdContext);
 begin
   LogMessage(Format('Клиент "%s" отключен от сервера "%s:%d"', [AContext.Connection.Socket.Binding.PeerIP,
-    IdCmdTCPServer.Bindings[0].IP, IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE);
+    IdCmdTCPServer.Bindings[0].IP, IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE, 0, 2);
 end;
 
 function TDBUServer.GetServiceController: TServiceController;
@@ -387,6 +397,7 @@ var
   first_new_db_number: SmallInt;
   a: IDBUServerLogRecord;
 begin
+  LogMessage('Start GetReserveNewDBUpdateNumbersCommand', EVENTLOG_INFORMATION_TYPE);
   db_type := ASender.Context.Connection.IOHandler.ReadLn;
   db_count := ASender.Context.Connection.IOHandler.ReadSmallInt;
   person_name := ASender.Context.Connection.IOHandler.ReadLn;
@@ -399,6 +410,7 @@ begin
     Log.Add(a);
     LogMessage('Выделены новые номера для DBU.' + sLineBreak + a.ToString, EVENTLOG_INFORMATION_TYPE);
   end;
+  LogMessage('Stop GetReserveNewDBUpdateNumbersCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
 procedure TDBUServer.GetNewNumberLogGridCommand(ASender: TIdCommand);
@@ -407,20 +419,22 @@ var
   sl: TStrings;
   i: Integer;
 begin
+  LogMessage('Start GetNewNumberLogGridCommand', EVENTLOG_INFORMATION_TYPE);
   db_type := ASender.Context.Connection.IOHandler.ReadLn;
   sl := TStringList.Create;
   try
     sl.Text := Format('Log data for DB type = "%s"', [db_type]);
     { TODO : добавить выгрузку данных по указанному типу DB из списка лога }
     ASender.Context.Connection.IOHandler.Write(sl.Count);
-    ASender.Context.Connection.IOHandler.WriteLn(sl[0]);
+    ASender.Context.Connection.IOHandler.WriteLn(sl[0], IndyTextEncoding_OSDefault);
     for i := Pred(sl.Count) downto 1 do
     begin
-      ASender.Context.Connection.IOHandler.WriteLn(sl[i]);
+      ASender.Context.Connection.IOHandler.WriteLn(sl[i], IndyTextEncoding_OSDefault);
     end;
   finally
     sl.Free;
   end;
+  LogMessage('Stop GetNewNumberLogGridCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
 procedure TDBUServer.NewNumberLogCommand(ASender: TIdCommand);
@@ -428,27 +442,29 @@ var
   dbu_count: SmallInt;
   s: string;
 begin
+  LogMessage('Start NewNumberLogCommand', EVENTLOG_INFORMATION_TYPE);
   dbu_count := ASender.Context.Connection.IOHandler.ReadSmallInt;
   s := BuildDbuNewNumberLog(dbu_count);
   ASender.Context.Connection.IOHandler.Write(dbu_count);
   if dbu_count > 0 then
   begin
-    ASender.Context.Connection.IOHandler.WriteLn(s);
+    ASender.Context.Connection.IOHandler.WriteLn(s, IndyTextEncoding_OSDefault);
   end;
+  LogMessage('Stop NewNumberLogCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
 procedure TDBUServer.AddNewDatabaseTypeCommand(ASender: TIdCommand);
 var
-  sl: TStrings;
   si: SmallInt;
   db_type_name: string;
-  // file_name: string;
   s: string;
-  i: Integer;
   dbt: IDatabaseType;
 begin
+  LogMessage('Start AddNewDatabaseTypeCommand', EVENTLOG_INFORMATION_TYPE);
   db_type_name := ASender.Context.Connection.IOHandler.ReadLn;
   db_type_name := Trim(db_type_name);
+  si := -1;
+  s := EmptyStr;
   try
     try
       dbt := Configuration.DatabaseTypes.GetItemByName(db_type_name);
@@ -457,29 +473,28 @@ begin
         dbt := GetIDatabaseType;
         if Assigned(dbt) then
         begin
-          dbt.Id := Configuration.DatabaseTypes.Count;
+          dbt.Id := Succ(Configuration.DatabaseTypes.Count);
           dbt.Name := db_type_name;
           Configuration.DatabaseTypes.Add(dbt);
-          s := Format('DB type "%s = %d" added successfully', [db_type_name, si]);
+          si := dbt.Id;
+          s := Format('DB type "%s = %d" added successfully', [db_type_name, dbt.Id]);
         end;
       end
       else
       begin
-        si := -1;
         s := Format('DB type "%s = %d" already exists', [dbt.Name, dbt.Id]);
       end;
     except
       on E: Exception do
       begin
-        si := -1;
         s := E.Message;
       end;
     end;
-    ASender.Context.Connection.IOHandler.Write(si);
-    ASender.Context.Connection.IOHandler.WriteLn(s);
   finally
-    sl.Free;
+    ASender.Context.Connection.IOHandler.Write(si);
+    ASender.Context.Connection.IOHandler.WriteLn(s, IndyTextEncoding_OSDefault);
   end;
+  LogMessage('Stop AddNewDatabaseTypeCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
 end.

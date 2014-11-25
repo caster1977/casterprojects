@@ -2,11 +2,11 @@ unit DBUServerService.uDBUServerUtils;
 
 interface
 
-//function GetAppConfigFolder: string;
-//function GetAppLogFolder: string;
+function GetAppConfigFolder: string;
+function GetAppLogFolder: string;
 function GetFirstFreeDbUpdateNumber(const ADBType: string; const AReservUpdateCount: Integer = 1): Integer;
 function GetDatabaseTypesFileName: string;
-//function GetLogFileName: string;
+function GetLogFileName: string;
 
 implementation
 
