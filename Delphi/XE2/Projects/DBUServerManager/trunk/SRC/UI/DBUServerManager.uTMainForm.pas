@@ -537,18 +537,15 @@ end;
   end; }
 
 procedure TMainForm.actConnectExecute(Sender: TObject);
-{var
-  s: string;
-  b: Boolean;}
 begin
   try
     IdTCPClient.Connect;
     if IdTCPClient.Connected then
     begin
       StateImage.State := True;
-      { s := IdTCPClient.IOHandler.ReadLn;
-        ShowMessage(s); }
+      //ShowMessage(IdTCPClient.IOHandler.ReadLn);
       actRefresh.Execute;
+      lvLog.Visible := True;
     end;
   except
     ShowMessage('Не удалось подключиться к серверу');
@@ -562,6 +559,14 @@ end;
 
 procedure TMainForm.actDisconnectExecute(Sender: TObject);
 begin
+  lvLog.Visible := False;
+  lvLog.Items.BeginUpdate;
+  try
+    lvLog.Clear;
+    FServerLog := nil;
+  finally
+    lvLog.Items.EndUpdate;
+  end;
   IdTCPClient.IOHandler.InputBuffer.Clear;
   IdTCPClient.Disconnect;
   StateImage.State := False;
@@ -600,28 +605,6 @@ end;
 procedure TMainForm.actGetLogDataByDBTypeUpdate(Sender: TObject);
 begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
-end;
-
-procedure TMainForm.actGetLogDataExecute(Sender: TObject);
-var
-  log_count: SmallInt;
-  sl: TStringList;
-  i: Integer;
-begin
-  IdTCPClient.SendCmd('TCP_GET_DBU_NEW_NUMBER_LOG');
-  log_count := 20;
-  IdTCPClient.IOHandler.Write(log_count);
-  log_count := IdTCPClient.IOHandler.ReadSmallInt;
-  sl := TStringList.Create;
-  try
-    for i := 0 to Pred(log_count) do
-    begin
-      sl.Append(IdTCPClient.IOHandler.ReadLn);
-    end;
-    ShowMessage(Format('Лог работы сервера:' + sLineBreak + sLineBreak + '%s', [sl.Text]));
-  finally
-    sl.Free;
-  end;
 end;
 
 procedure TMainForm.actGetLogDataUpdate(Sender: TObject);
@@ -768,6 +751,28 @@ begin
   db_type := 'db_type';
   IdTCPClient.IOHandler.WriteLn(db_type);
   log_count := IdTCPClient.IOHandler.ReadLongInt;
+  sl := TStringList.Create;
+  try
+    for i := 0 to Pred(log_count) do
+    begin
+      sl.Append(IdTCPClient.IOHandler.ReadLn);
+    end;
+    ShowMessage(Format('Лог работы сервера:' + sLineBreak + sLineBreak + '%s', [sl.Text]));
+  finally
+    sl.Free;
+  end;
+end;
+
+procedure TMainForm.actGetLogDataExecute(Sender: TObject);
+var
+  log_count: SmallInt;
+  sl: TStringList;
+  i: Integer;
+begin
+  IdTCPClient.SendCmd('TCP_GET_DBU_NEW_NUMBER_LOG');
+  log_count := 20;
+  IdTCPClient.IOHandler.Write(log_count);
+  log_count := IdTCPClient.IOHandler.ReadSmallInt;
   sl := TStringList.Create;
   try
     for i := 0 to Pred(log_count) do
