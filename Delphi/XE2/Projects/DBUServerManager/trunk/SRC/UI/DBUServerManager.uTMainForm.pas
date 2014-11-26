@@ -115,6 +115,9 @@ type
     mniAddDBType: TMenuItem;
     actGetLogData: TAction;
     mniGetLogData: TMenuItem;
+    actRefresh: TAction;
+    mniN4: TMenuItem;
+    mniRefresh: TMenuItem;
     procedure actAboutExecute(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -150,6 +153,8 @@ type
     procedure actAddDBTypeExecute(Sender: TObject);
     procedure actGetLogDataUpdate(Sender: TObject);
     procedure actGetLogDataExecute(Sender: TObject);
+    procedure actRefreshUpdate(Sender: TObject);
+    procedure actRefreshExecute(Sender: TObject);
 
   strict private
     FConfiguration: TConfiguration;
@@ -466,6 +471,11 @@ begin
   end;
 end;
 
+procedure TMainForm.actRefreshUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := IdTCPClient.Connected;
+end;
+
 procedure TMainForm.actReserveNewDBUNUmberExecute(Sender: TObject);
 var
   db_count: SmallInt;
@@ -525,6 +535,7 @@ begin
       StateImage.State := True;
       { s := IdTCPClient.IOHandler.ReadLn;
         ShowMessage(s); }
+      actRefresh.Execute;
     end;
   except
     ShowMessage('Не удалось подключиться к серверу');
@@ -571,29 +582,6 @@ end;
 procedure TMainForm.actGetDBTypeListUpdate(Sender: TObject);
 begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
-end;
-
-procedure TMainForm.actGetLogDataByDBTypeExecute(Sender: TObject);
-var
-  log_count: Integer;
-  sl: TStringList;
-  i: Integer;
-  db_type: string;
-begin
-  IdTCPClient.SendCmd('TCP_GET_DBU_NEW_NUMBER_LOG_GRID');
-  db_type := 'db_type';
-  IdTCPClient.IOHandler.WriteLn(db_type);
-  log_count := IdTCPClient.IOHandler.ReadLongInt;
-  sl := TStringList.Create;
-  try
-    for i := 0 to Pred(log_count) do
-    begin
-      sl.Append(IdTCPClient.IOHandler.ReadLn);
-    end;
-    ShowMessage(Format('Лог работы сервера по типу DB "%s":' + sLineBreak + sLineBreak + '%s', [db_type, sl.Text]));
-  finally
-    sl.Free;
-  end;
 end;
 
 procedure TMainForm.actGetLogDataByDBTypeUpdate(Sender: TObject);
@@ -705,16 +693,17 @@ end;
 
 procedure TMainForm.actAddDBTypeExecute(Sender: TObject);
 var
-  index: SmallInt;
+  //index: SmallInt;
   db_type: string;
   s: string;
 begin
   IdTCPClient.SendCmd('TCP_ADD_NEW_DATABASE_TYPE');
   db_type := 'db_type';
   IdTCPClient.IOHandler.WriteLn(db_type);
-  index := IdTCPClient.IOHandler.ReadSmallInt;
-  s := IdTCPClient.IOHandler.ReadLn;
-  ShowMessage(Format('Идентификатор созданного типа БД: %d' + sLineBreak + '%s', [index, s]));
+  //index :=
+  IdTCPClient.IOHandler.ReadSmallInt;
+  s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
+  ShowMessage(s);
 end;
 
 procedure TMainForm.actAddDBTypeUpdate(Sender: TObject);
@@ -748,6 +737,74 @@ end;
 procedure TMainForm.actGetDBUStateListUpdate(Sender: TObject);
 begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
+end;
+
+procedure TMainForm.actGetLogDataByDBTypeExecute(Sender: TObject);
+var
+  log_count: Integer;
+  sl: TStringList;
+  i: Integer;
+  db_type: string;
+begin
+  IdTCPClient.SendCmd('TCP_GET_DBU_NEW_NUMBER_LOG_GRID');
+  db_type := 'db_type';
+  IdTCPClient.IOHandler.WriteLn(db_type);
+  log_count := IdTCPClient.IOHandler.ReadLongInt;
+  sl := TStringList.Create;
+  try
+    for i := 0 to Pred(log_count) do
+    begin
+      sl.Append(IdTCPClient.IOHandler.ReadLn);
+    end;
+    ShowMessage(Format('Лог работы сервера:' + sLineBreak + sLineBreak + '%s', [sl.Text]));
+  finally
+    sl.Free;
+  end;
+end;
+
+procedure TMainForm.actRefreshExecute(Sender: TObject);
+var
+  line_count: Integer;
+  sl: TStrings;
+  i: Integer;
+  li: TListItem;
+begin
+  IdTCPClient.SendCmd('TCP_GET_DBU_NEW_NUMBER_LOG_GRID');
+
+  IdTCPClient.IOHandler.WriteLn;
+
+  line_count := IdTCPClient.IOHandler.ReadLongInt;
+
+  sl := TStringList.Create;
+  try
+    for i := 0 to Pred(line_count) do
+    begin
+      sl.Append(IdTCPClient.IOHandler.ReadLn);
+    end;
+
+    lvLog.Items.BeginUpdate;
+    try
+      lvLog.Clear;
+
+      if sl.Count < 2 then
+      begin
+        Exit;
+      end;
+
+      for i := 1 to Pred(sl.Count) do
+      begin
+        li := lvLog.Items.Add;
+        if Assigned(li) then
+        begin
+          li.Caption := sl[i];
+        end;
+      end;
+    finally
+      lvLog.Items.EndUpdate;
+    end;
+  finally
+    sl.Free;
+  end;
 end;
 
 end.
