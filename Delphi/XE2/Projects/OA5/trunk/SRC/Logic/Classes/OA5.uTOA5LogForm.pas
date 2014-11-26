@@ -14,7 +14,7 @@ uses
   Vcl.Forms,
   Vcl.Dialogs,
   CastersPackage.uTLogForm,
-  CastersPackage.uTRefreshBusyStateMethod,
+  CastersPackage.uTObjectMethod,
   Vcl.ComCtrls,
   OA5.uIConfiguration,
   OA5.uIAccount;
@@ -32,7 +32,7 @@ type
     property CurrentUser: IAccount read GetCurrentUser nodefault;
   public
     constructor Create(AOwner: TComponent; ABusyCounter: PInteger = nil;
-      ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil; AProgressBar: TProgressBar = nil;
+      ARefreshBusyStateMethod: TObjectMethod = nil; AProgressBar: TProgressBar = nil;
       const AConfiguration: IConfiguration = nil; const ACurrentUser: IAccount = nil);
       reintroduce; virtual;
   end;
@@ -42,7 +42,7 @@ implementation
 {$R *.dfm}
 
 constructor TOA5LogForm.Create(AOwner: TComponent; ABusyCounter: PInteger;
-  ARefreshBusyStateMethod: TRefreshBusyStateMethod; AProgressBar: TProgressBar;
+  ARefreshBusyStateMethod: TObjectMethod; AProgressBar: TProgressBar;
   const AConfiguration: IConfiguration; const ACurrentUser: IAccount);
 begin
   inherited Create(AOwner, ABusyCounter, ARefreshBusyStateMethod, AProgressBar);
