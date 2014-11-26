@@ -33,7 +33,8 @@ uses
   CastersPackage.uICustomized,
   DBAutoTest.uTProfile,
   DBAutoTest.uTConfiguration,
-  AboutPackage.uTAboutWindow, CastersPackage.uTApplicationOnHint;
+  AboutPackage.uTAboutWindow,
+  CastersPackage.uTApplicationOnHint;
 
 type
   TMainForm = class(TForm, ICustomized)
