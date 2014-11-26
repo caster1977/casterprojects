@@ -51,6 +51,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
+        <DCC_UnitSearchPath>..\..\Packages\$(Platform)\$(Config);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <GenPackage>true</GenPackage>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <DCC_CBuilderOutput>All</DCC_CBuilderOutput>
@@ -59,7 +60,7 @@
         <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)</DCC_BplOutput>
         <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)</DCC_DcpOutput>
         <VerInfo_Locale>1049</VerInfo_Locale>
-        <DCC_DcuOutput>..\..\Packages\$(Platform)\$(Config)</DCC_DcuOutput>
+        <DCC_DcuOutput>..\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
         <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
         <DCC_E>false</DCC_E>
         <DCC_N>false</DCC_N>
