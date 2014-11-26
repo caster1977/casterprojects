@@ -119,7 +119,7 @@ begin
   else
     Destination := TStringList.Create;
 
-  Destination.Sorted := False;
+  //Destination.Sorted := False;
   while Length(s) > 0 do
   begin
     i := Pos(Limiter, s);
