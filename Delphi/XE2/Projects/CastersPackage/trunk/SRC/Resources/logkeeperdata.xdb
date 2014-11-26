@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xdb="http://www.borland.com/schemas/delphi/10.0/XMLDataBinding">
+  <xs:element name="logkeeperdata" type="logkeeperdataType"/>
+  <xs:complexType name="logkeeperdataType"><xs:annotation>
+      <xs:appinfo xdb:docElement="logkeeperdata"/>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="message" type="messageType" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="messageType">
+    <xs:sequence>
+      <xs:element name="index" type="xs:integer"><xs:annotation>
+          <xs:appinfo xdb:dataType="LongWord"/>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="date" type="dateType"/>
+      <xs:element name="time" type="timeType"/>
+      <xs:element name="host" type="xs:string"/>
+      <xs:element name="application" type="applicationType"/>
+      <xs:element name="type" type="xs:string"><xs:annotation>
+          <xs:appinfo xdb:identifierName="MessageType" xdb:dataType="TMessageTypes"/>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="text" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="dateType">
+    <xs:sequence>
+      <xs:element name="day" type="xs:integer"><xs:annotation>
+          <xs:appinfo xdb:dataType="Word"/>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="month" type="xs:integer"><xs:annotation>
+          <xs:appinfo xdb:dataType="Word"/>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="year" type="xs:integer"><xs:annotation>
+          <xs:appinfo xdb:dataType="Word"/>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="timeType">
+    <xs:sequence>
+      <xs:element name="hour" type="xs:integer"><xs:annotation>
+          <xs:appinfo xdb:dataType="Word"/>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="minute" type="xs:integer"><xs:annotation>
+          <xs:appinfo xdb:dataType="Word"/>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="second" type="xs:integer"><xs:annotation>
+          <xs:appinfo xdb:dataType="Word"/>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="msecond" type="xs:integer"><xs:annotation>
+          <xs:appinfo xdb:dataType="Word"/>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="applicationType">
+    <xs:sequence>
+      <xs:element name="handle" type="xs:integer"><xs:annotation>
+          <xs:appinfo xdb:dataType="HWnd"/>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="filename" type="xs:string"/>
+      <xs:element name="filepath" type="xs:string"/>
+      <xs:element name="form" type="formType"/>
+      <xs:element name="method" type="methodType"/>
+      <xs:element name="user" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="formType">
+    <xs:sequence>
+      <xs:element name="handle" type="xs:integer"><xs:annotation>
+          <xs:appinfo xdb:dataType="HWnd"/>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="methodType">
+    <xs:sequence>
+      <xs:element name="guid" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

@@ -1,0 +1,81 @@
+package CastersPackage;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$DEFINE Platform32bit}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  xmlrtl;
+
+contains
+  CastersPackage.uTSysMenu in 'Logic\Classes\CastersPackage.uTSysMenu.pas',
+  CastersPackage.uTfisSysMenu in 'Logic\Classes\CastersPackage.uTfisSysMenu.pas',
+  CastersPackage.uTListViewEx in 'Logic\Classes\CastersPackage.uTListViewEx.pas',
+  CastersPackage.uLogProvider in 'Logic\Classes\CastersPackage.uLogProvider.pas',
+  CastersPackage.uLogKeeperData in 'Logic\Classes\CastersPackage.uLogKeeperData.pas',
+  CastersPackage.uTCOMInitClass in 'Logic\Classes\CastersPackage.uTCOMInitClass.pas',
+  CastersPackage.uLogClasses in 'Logic\Classes\CastersPackage.uLogClasses.pas',
+  CastersPackage.uRoutines in 'Logic\Classes\CastersPackage.uRoutines.pas',
+  CastersPackage.uMysql in 'Logic\Other\CastersPackage.uMysql.pas',
+  CastersPackage.uTSingleton in 'Logic\Classes\CastersPackage.uTSingleton.pas',
+  CastersPackage.uTStringGridEx in 'Logic\Classes\CastersPackage.uTStringGridEx.pas',
+  CastersPackage.uTIniFileDataStorage in 'Logic\Classes\CastersPackage.uTIniFileDataStorage.pas',
+  CastersPackage.Actions.Classes in 'Logic\Classes\CastersPackage.Actions.Classes.pas',
+  CastersPackage.Actions.DataModule in 'UI\CastersPackage.Actions.DataModule.pas',
+  CastersPackage.uIIniFileDataStorage in 'Logic\Interfaces\CastersPackage.uIIniFileDataStorage.pas',
+  CastersPackage.uTLogForm in 'UI\CastersPackage.uTLogForm.pas' {LogForm},
+  CastersPackage.uTDialogPosition in 'Logic\Types\CastersPackage.uTDialogPosition.pas',
+  CastersPackage.uIPositionedDialog in 'Logic\Interfaces\CastersPackage.uIPositionedDialog.pas',
+  CastersPackage.uTPositionedLogForm in 'UI\CastersPackage.uTPositionedLogForm.pas' {PositionedLogForm},
+  CastersPackage.uTLogMessagesType in 'Logic\Types\CastersPackage.uTLogMessagesType.pas',
+  CastersPackage.uTLogMessagesTypes in 'Logic\Types\CastersPackage.uTLogMessagesTypes.pas',
+  CastersPackage.uTReportFolder in 'Logic\Types\CastersPackage.uTReportFolder.pas',
+  CastersPackage.uIInitializable in 'Logic\Interfaces\CastersPackage.uIInitializable.pas',
+  CastersPackage.uINormalized in 'Logic\Interfaces\CastersPackage.uINormalized.pas',
+  CastersPackage.uResourceStrings in 'Logic\Other\CastersPackage.uResourceStrings.pas',
+  CastersPackage.uIInterfaceListOfGivenType in 'Logic\Interfaces\CastersPackage.uIInterfaceListOfGivenType.pas',
+  CastersPackage.uEInterfaceListOfGivenType in 'Logic\Classes\CastersPackage.uEInterfaceListOfGivenType.pas',
+  CastersPackage.uTInterfaceListOfGivenType in 'Logic\Classes\CastersPackage.uTInterfaceListOfGivenType.pas',
+  CastersPackage.UNetSrvList in 'Logic\Other\CastersPackage.UNetSrvList.pas',
+  CastersPackage.uIModified in 'Logic\Interfaces\CastersPackage.uIModified.pas',
+  CastersPackage.uTCustomProperties in 'Logic\Classes\CastersPackage.uTCustomProperties.pas',
+  CastersPackage.uISerilizator in 'Logic\Interfaces\CastersPackage.uISerilizator.pas',
+  CastersPackage.uTObjectMethod in 'Logic\Types\CastersPackage.uTObjectMethod.pas',
+  CastersPackage.uICustomized in 'Logic\Interfaces\CastersPackage.uICustomized.pas',
+  CastersPackage.uTSingletonAppSession in 'Logic\Classes\CastersPackage.uTSingletonAppSession.pas',
+  CastersPackage.uISingletonAppSession in 'Logic\Interfaces\CastersPackage.uISingletonAppSession.pas',
+  CastersPackage.uTHackControl in 'Logic\Classes\CastersPackage.uTHackControl.pas',
+  CastersPackage.uTStateImage in 'Logic\Classes\CastersPackage.uTStateImage.pas',
+  CastersPackage.uTStateProgressBar in 'Logic\Classes\CastersPackage.uTStateProgressBar.pas',
+  CastersPackage.uTStatusBarEx in 'Logic\Classes\CastersPackage.uTStatusBarEx.pas',
+  CastersPackage.uTApplicationOnHint in 'Logic\Classes\CastersPackage.uTApplicationOnHint.pas',
+  CastersPackage.uEIniFileDataStorage in 'Logic\Classes\CastersPackage.uEIniFileDataStorage.pas',
+  CastersPackage.uTIniFileDataStorageClass in 'Logic\Classes\CastersPackage.uTIniFileDataStorageClass.pas';
+
+end.
