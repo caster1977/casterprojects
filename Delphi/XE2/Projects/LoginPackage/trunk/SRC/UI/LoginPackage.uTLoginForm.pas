@@ -30,13 +30,12 @@ type
     mePassword: TMaskEdit;
     procedure actEnterExecute(Sender: TObject);
     procedure actCloseExecute(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure actHelpExecute(Sender: TObject);
     procedure actEnterUpdate(Sender: TObject);
     procedure actHelpUpdate(Sender: TObject);
+  public
+    constructor Create(const AOwner: TComponent; const ALogin, APassword: string); reintroduce; virtual;
   end;
-
-function ShowLoginForm(const ALogin: string = ''; const APassword: string = ''): TModalResult;
 
 implementation
 
@@ -90,8 +89,9 @@ begin
   end;
 end;
 
-procedure TLoginForm.FormCreate(Sender: TObject);
+constructor TLoginForm.Create(const AOwner: TComponent; const ALogin, APassword: string);
 begin
+  inherited Create(AOwner);
   ImageList.GetIcon(ICON_LOGIN, Icon);
 end;
 
