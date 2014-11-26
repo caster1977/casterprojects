@@ -110,6 +110,7 @@ object MainForm: TMainForm
         Width = 100
       end
       item
+        Alignment = taRightJustify
         Caption = #1053#1086#1084#1077#1088' DBU'
         Width = 100
       end
@@ -118,6 +119,7 @@ object MainForm: TMainForm
         Width = 100
       end
       item
+        Alignment = taRightJustify
         AutoSize = True
         Caption = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' DBU'
       end>
@@ -176,7 +178,7 @@ object MainForm: TMainForm
     Left = 168
     Top = 128
     Bitmap = {
-      494C01011100A000C00410001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01011100A000D80410001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1042,8 +1044,14 @@ object MainForm: TMainForm
       OnExecute = actDisconnectExecute
       OnUpdate = actDisconnectUpdate
     end
+    object actActionTesting: TAction
+      Category = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077
+      Caption = '&'#1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077
+      Visible = False
+      OnExecute = actActionTestingExecute
+    end
     object actTestConnection: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Category = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077
       Caption = '&1. '#1055#1088#1086#1074#1077#1088#1080#1090#1100' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1077
       Hint = 
         #1055#1088#1086#1074#1077#1088#1080#1090#1100' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1077'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1088#1086#1074#1077#1088#1082#1080' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1084#1077#1085#1077#1076#1078#1077#1088#1072 +
@@ -1052,7 +1060,7 @@ object MainForm: TMainForm
       OnUpdate = actTestConnectionUpdate
     end
     object actReserveNewDBUNUmber: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Category = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077
       Caption = '&2. '#1042#1099#1076#1077#1083#1077#1085#1080#1077' '#1085#1086#1074#1086#1075#1086' '#1085#1086#1084#1077#1088#1072' DBU'
       Hint = 
         #1042#1099#1076#1077#1083#1077#1085#1080#1077' '#1085#1086#1074#1086#1075#1086' '#1085#1086#1084#1077#1088#1072' DBU|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1074#1099#1076#1077#1083#1077#1085#1080#1103' '#1089#1077#1088#1074#1077#1088#1086#1084' '#1085#1086#1074#1086#1075 +
@@ -1061,7 +1069,7 @@ object MainForm: TMainForm
       OnUpdate = actReserveNewDBUNUmberUpdate
     end
     object actGetSQLActionList: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Category = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077
       Caption = '&3. '#1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1076#1077#1081#1089#1090#1074#1080#1081' SQL'
       Hint = 
         #1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1076#1077#1081#1089#1090#1074#1080#1081' SQL|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1089#1087#1080#1089#1082#1072' '#1074#1086#1079#1084#1086#1078 +
@@ -1070,7 +1078,7 @@ object MainForm: TMainForm
       OnUpdate = actGetSQLActionListUpdate
     end
     object actGetSQLSubjectList: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Category = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077
       Caption = '&4. '#1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1086#1073#1098#1077#1082#1090#1086#1074' SQL'
       Hint = 
         #1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1086#1073#1098#1077#1082#1090#1086#1074' SQL|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1089#1087#1080#1089#1082#1072' '#1090#1080#1087#1086#1074' ' +
@@ -1079,7 +1087,7 @@ object MainForm: TMainForm
       OnUpdate = actGetSQLSubjectListUpdate
     end
     object actGetLogDataByDBType: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Category = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077
       Caption = '&5. '#1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1083#1086#1075#1072' '#1087#1086' '#1091#1082#1072#1079#1072#1085#1085#1086#1084#1091' '#1090#1080#1087#1091' '#1041#1044
       Hint = 
         #1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1083#1086#1075#1072' '#1087#1086' '#1091#1082#1072#1079#1072#1085#1085#1086#1084#1091' '#1090#1080#1087#1091' '#1041#1044'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1083#1086#1075#1072' ' +
@@ -1088,7 +1096,7 @@ object MainForm: TMainForm
       OnUpdate = actGetLogDataByDBTypeUpdate
     end
     object actGetDBTypeList: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Category = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077
       Caption = '&6. '#1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1090#1080#1087#1086#1074' '#1041#1044
       Hint = 
         #1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1090#1080#1087#1086#1074' '#1041#1044'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1089#1087#1080#1089#1082#1072' '#1090#1080#1087#1086#1074' '#1073#1072#1079' ' +
@@ -1097,7 +1105,7 @@ object MainForm: TMainForm
       OnUpdate = actGetDBTypeListUpdate
     end
     object actGetDBUStateList: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Category = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077
       Caption = '&7. '#1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1089#1086#1089#1090#1086#1103#1085#1080#1081' DBU'
       Hint = 
         #1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1089#1086#1089#1090#1086#1103#1085#1080#1081' DBU|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1089#1087#1080#1089#1082#1072' '#1089#1086#1089#1090#1086 +
@@ -1106,7 +1114,7 @@ object MainForm: TMainForm
       OnUpdate = actGetDBUStateListUpdate
     end
     object actAddDBType: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Category = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077
       Caption = '&8. '#1057#1086#1079#1076#1072#1090#1100' '#1085#1086#1074#1099#1081' '#1090#1080#1087' '#1041#1044
       Hint = 
         #1057#1086#1079#1076#1072#1090#1100' '#1085#1086#1074#1099#1081' '#1090#1080#1087' '#1041#1044'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1076#1086#1073#1072#1074#1083#1077#1085#1080#1103' '#1085#1086#1074#1086#1075#1086' '#1101#1083#1077#1084#1077#1085#1090#1072' '#1074' '#1089#1087 +
@@ -1115,7 +1123,7 @@ object MainForm: TMainForm
       OnUpdate = actAddDBTypeUpdate
     end
     object actGetLogData: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Category = #1058#1077#1089#1090#1080#1088#1086#1074#1072#1085#1080#1077
       Caption = '&9. '#1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1083#1086#1075#1072
       Hint = 
         #1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1083#1086#1075#1072'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1091#1082#1072#1079#1072#1085#1085#1086#1075#1086' '#1082#1086#1083#1080#1095#1077#1089#1090#1074#1072' '#1087#1086#1089#1083#1077 +
@@ -1171,9 +1179,32 @@ object MainForm: TMainForm
       object mniRefresh: TMenuItem
         Action = actRefresh
       end
-      object mniN2: TMenuItem
+    end
+    object mniViewMenuGroupAction: TMenuItem
+      Action = actViewMenuGroupAction
+      object mniToolBar: TMenuItem
+        Action = actToolBar
+        AutoCheck = True
+      end
+      object mniStatusBar: TMenuItem
+        Action = actStatusBar
+        AutoCheck = True
+      end
+    end
+    object mniHelpMenuGroup: TMenuItem
+      Action = actHelpMenuGroup
+      object mniHelpContents: TMenuItem
+        Action = actHelpContents
+      end
+      object N18: TMenuItem
         Caption = '-'
       end
+      object mniAbout: TMenuItem
+        Action = actAbout
+      end
+    end
+    object mniActionTesting: TMenuItem
+      Action = actActionTesting
       object mniTestConnection: TMenuItem
         Action = actTestConnection
       end
@@ -1200,29 +1231,6 @@ object MainForm: TMainForm
       end
       object mniGetLogData: TMenuItem
         Action = actGetLogData
-      end
-    end
-    object mniViewMenuGroupAction: TMenuItem
-      Action = actViewMenuGroupAction
-      object mniToolBar: TMenuItem
-        Action = actToolBar
-        AutoCheck = True
-      end
-      object mniStatusBar: TMenuItem
-        Action = actStatusBar
-        AutoCheck = True
-      end
-    end
-    object mniHelpMenuGroup: TMenuItem
-      Action = actHelpMenuGroup
-      object mniHelpContents: TMenuItem
-        Action = actHelpContents
-      end
-      object N18: TMenuItem
-        Caption = '-'
-      end
-      object mniAbout: TMenuItem
-        Action = actAbout
       end
     end
   end
@@ -1267,7 +1275,7 @@ object MainForm: TMainForm
     Left = 224
     Top = 184
     Bitmap = {
-      494C010102000400CC0610001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400E40610001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
