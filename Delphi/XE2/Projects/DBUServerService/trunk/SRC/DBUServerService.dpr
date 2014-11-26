@@ -22,11 +22,7 @@ uses
   DBUServerService.uIDBUState in 'Logic\Interfaces\DBUServerService.uIDBUState.pas',
   DBUServerService.uIDBUStates in 'Logic\Interfaces\DBUServerService.uIDBUStates.pas',
   DBUServerService.uTDBUStates in 'Logic\Classes\DBUServerService.uTDBUStates.pas',
-  DBUServerService.uTDBUState in 'Logic\Classes\DBUServerService.uTDBUState.pas',
-  DBUServerService.uIDBUServerLogRecord in 'Logic\Interfaces\DBUServerService.uIDBUServerLogRecord.pas',
-  DBUServerService.uIDBUServerLogRecords in 'Logic\Interfaces\DBUServerService.uIDBUServerLogRecords.pas',
-  DBUServerService.uTDBUServerLogRecords in 'Logic\Classes\DBUServerService.uTDBUServerLogRecords.pas',
-  DBUServerService.uTDBUServerLogRecord in 'Logic\Classes\DBUServerService.uTDBUServerLogRecord.pas';
+  DBUServerService.uTDBUState in 'Logic\Classes\DBUServerService.uTDBUState.pas';
 
 {$R *.RES}
 

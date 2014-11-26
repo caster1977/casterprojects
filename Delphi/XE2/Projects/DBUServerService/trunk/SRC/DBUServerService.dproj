@@ -49,9 +49,9 @@
         <Icon_MainIcon>DBUServerService_Icon.ico</Icon_MainIcon>
         <Manifest_File>None</Manifest_File>
         <VerInfo_Locale>1049</VerInfo_Locale>
-        <DCC_UnitSearchPath>..\..\Packages\$(Platform)\$(Config);..\..\AboutPackage\SRC\UI;..\..\CastersPackage;..\..\ConfigPackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-        <DCC_DcpOutput>..\$(Platform)\$(Config)\</DCC_DcpOutput>
-        <DCC_BplOutput>..\$(Platform)\$(Config)\</DCC_BplOutput>
+        <DCC_UnitSearchPath>..\..\CastersPackage\$(Platform)\$(Config)\DCU;..\..\ConfigPackage\$(Platform)\$(Config)\DCU;..\..\AboutPackage\$(Platform)\$(Config)\DCU;..\..\AboutPackage\SRC\UI;..\..\CastersPackage\SRC\UI;..\..\CastersPackage\SRC\Logic\Classes;..\..\DBUShared\$(Platform)\$(Config)\DCU;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)</DCC_DcpOutput>
+        <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)</DCC_BplOutput>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <Icns_MainIcns>$(BDS)\bin\delphi_PROJECTICNS.icns</Icns_MainIcns>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
@@ -105,7 +105,6 @@
         </DelphiCompile>
         <DCCReference Include="UI\DBUServerService.uTDBUServer.pas">
             <Form>DBUServer</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TService</DesignClass>
         </DCCReference>
         <DCCReference Include="Logic\Other\DBUServerService.uDBUServerUtils.pas"/>
@@ -128,10 +127,6 @@
         <DCCReference Include="Logic\Interfaces\DBUServerService.uIDBUStates.pas"/>
         <DCCReference Include="Logic\Classes\DBUServerService.uTDBUStates.pas"/>
         <DCCReference Include="Logic\Classes\DBUServerService.uTDBUState.pas"/>
-        <DCCReference Include="Logic\Interfaces\DBUServerService.uIDBUServerLogRecord.pas"/>
-        <DCCReference Include="Logic\Interfaces\DBUServerService.uIDBUServerLogRecords.pas"/>
-        <DCCReference Include="Logic\Classes\DBUServerService.uTDBUServerLogRecords.pas"/>
-        <DCCReference Include="Logic\Classes\DBUServerService.uTDBUServerLogRecord.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
