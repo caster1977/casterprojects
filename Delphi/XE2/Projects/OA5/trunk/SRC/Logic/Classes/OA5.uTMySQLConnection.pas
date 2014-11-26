@@ -82,6 +82,9 @@ function GetIMySQLConnection: IMySQLConnection;
 
 implementation
 
+uses
+  System.AnsiStrings;
+
 resourcestring
   RsConnectionStarted = 'Выполняется операция подключения к MySQL-серверу "%s:%d"...';
   RsConnectionInitializationCompleteSuccessfully =
@@ -585,7 +588,7 @@ begin
     try
       mysql_escape_string(pac, PAnsiChar(AnsiString(ASource)),
         Length(PAnsiChar(AnsiString(ASource))));
-      Result := string(StrPas(pac));
+      Result := string(System.AnsiStrings.StrPas(pac));
       if AAddCommas then
       begin
         Result := RsCommas + Result + RsCommas;

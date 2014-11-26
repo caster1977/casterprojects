@@ -14,7 +14,7 @@ uses
   Vcl.Forms,
   Vcl.Dialogs,
   CastersPackage.uTPositionedLogForm,
-  CastersPackage.uTRefreshBusyStateMethod,
+  CastersPackage.uTObjectMethod,
   CastersPackage.uTDialogPosition,
   Vcl.ComCtrls,
   OA5.uIConfiguration,
@@ -33,7 +33,7 @@ type
     property CurrentUser: IAccount read GetCurrentUser nodefault;
   public
     constructor Create(AOwner: TComponent; const ADialogPosition: TDialogPosition;
-      ABusyCounter: PInteger = nil; ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil;
+      ABusyCounter: PInteger = nil; ARefreshBusyStateMethod: TObjectMethod = nil;
       AProgressBar: TProgressBar = nil; const AConfiguration: IConfiguration = nil;
       const ACurrentUser: IAccount = nil); reintroduce; virtual;
   end;
@@ -43,7 +43,7 @@ implementation
 {$R *.dfm}
 
 constructor TOA5PositionedLogForm.Create(AOwner: TComponent; const ADialogPosition: TDialogPosition;
-  ABusyCounter: PInteger; ARefreshBusyStateMethod: TRefreshBusyStateMethod;
+  ABusyCounter: PInteger; ARefreshBusyStateMethod: TObjectMethod;
   AProgressBar: TProgressBar; const AConfiguration: IConfiguration; const ACurrentUser: IAccount);
 begin
   inherited Create(AOwner, ADialogPosition, ABusyCounter, ARefreshBusyStateMethod, AProgressBar);

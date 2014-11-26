@@ -4,11 +4,11 @@ interface
 
 uses
   Vcl.ComCtrls,
-  CastersPackage.uTRefreshBusyStateMethod,
+  CastersPackage.uTObjectMethod,
   OA5.uTOA5LogForm,
   System.Classes,
   Vcl.ActnList,
-  CastersPackage.uTGSFileVersionInfo,
+  AboutPackage.uTGSFileVersionInfo,
   Vcl.ExtCtrls,
   Vcl.Controls,
   Vcl.StdCtrls,
@@ -39,7 +39,7 @@ type
     FFirstShow: Boolean;
   public
     constructor Create(AOwner: TComponent; const AShowCloseButton: Boolean;
-      ABusyCounter: PInteger = nil; ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil;
+      ABusyCounter: PInteger = nil; ARefreshBusyStateMethod: TObjectMethod = nil;
       AProgressBar: TProgressBar = nil); reintroduce; virtual;
   end;
 
@@ -61,7 +61,7 @@ resourcestring
     'Процедура-обработчик щелчка по метке адреса электронной почты';
 
 constructor TAboutForm.Create(AOwner: TComponent; const AShowCloseButton: Boolean;
-  ABusyCounter: PInteger; ARefreshBusyStateMethod: TRefreshBusyStateMethod;
+  ABusyCounter: PInteger; ARefreshBusyStateMethod: TObjectMethod;
   AProgressBar: TProgressBar);
 begin
   inherited Create(AOwner, ABusyCounter, ARefreshBusyStateMethod, AProgressBar);

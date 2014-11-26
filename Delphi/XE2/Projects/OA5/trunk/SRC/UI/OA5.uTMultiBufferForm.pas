@@ -11,7 +11,7 @@ uses
   Vcl.Controls,
   Vcl.StdCtrls,
   Vcl.ComCtrls,
-  CastersPackage.uTRefreshBusyStateMethod,
+  CastersPackage.uTObjectMethod,
   CastersPackage.uTDialogPosition,
   OA5.uIMeasureList,
   OA5.uIConfiguration,
@@ -51,7 +51,7 @@ type
     procedure _Clear;
   public
     constructor Create(AOwner: TComponent; const ADialogPosition: TDialogPosition;
-      ABusyCounter: PInteger = nil; ARefreshBusyStateMethod: TRefreshBusyStateMethod = nil;
+      ABusyCounter: PInteger = nil; ARefreshBusyStateMethod: TObjectMethod = nil;
       AProgressBar: TProgressBar = nil; const AConfiguration: IConfiguration = nil;
       const ACurrentUser: IAccount = nil; const AMultibuffer: IMeasureList = nil);
       reintroduce; virtual;
@@ -127,7 +127,7 @@ begin
 end;
 
 constructor TMultiBufferForm.Create(AOwner: TComponent; const ADialogPosition: TDialogPosition;
-  ABusyCounter: PInteger; ARefreshBusyStateMethod: TRefreshBusyStateMethod;
+  ABusyCounter: PInteger; ARefreshBusyStateMethod: TObjectMethod;
   AProgressBar: TProgressBar; const AConfiguration: IConfiguration; const ACurrentUser: IAccount;
   const AMultibuffer: IMeasureList);
 begin
