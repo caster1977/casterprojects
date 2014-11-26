@@ -38,6 +38,7 @@ uses
   CastersPackage.uTStateProgressBar,
   CastersPackage.uTStatusBarEx,
   CastersPackage.uTApplicationOnHint,
+  DBUShared.uIDBUServerLogRecords,
   System.SyncObjs;
 
 type
@@ -97,7 +98,6 @@ type
     ProgressBar: TStateProgressBar;
     StateImage: TStateImage;
     aplctnhnt1: TApplicationOnHint;
-    mniN2: TMenuItem;
     mniTestConnection: TMenuItem;
     actReserveNewDBUNUmber: TAction;
     mniReserveNewDBUNUmber: TMenuItem;
@@ -118,6 +118,8 @@ type
     actRefresh: TAction;
     mniN4: TMenuItem;
     mniRefresh: TMenuItem;
+    actActionTesting: TAction;
+    mniActionTesting: TMenuItem;
     procedure actAboutExecute(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -155,6 +157,7 @@ type
     procedure actGetLogDataExecute(Sender: TObject);
     procedure actRefreshUpdate(Sender: TObject);
     procedure actRefreshExecute(Sender: TObject);
+    procedure actActionTestingExecute(Sender: TObject);
 
   strict private
     FConfiguration: TConfiguration;
@@ -182,6 +185,9 @@ type
 
   public
     destructor Destroy; override;
+
+  strict private
+    FServerLog: IDBUServerLogRecords;
   end;
 
 var
@@ -201,7 +207,10 @@ uses
   CastersPackage.uTHackControl,
   DBUServerManager.uConsts,
   DBUServerManager.Configuration.uTInterface,
-  DBUServerManager.uTConfigurationForm;
+  DBUServerManager.uTConfigurationForm,
+  DBUShared.uConsts,
+  DBUShared.uTDBUServerLogRecords,
+  DBUShared.uIDBUServerLogRecord;
 
 resourcestring
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
@@ -352,6 +361,10 @@ begin
   b := Configuration.Section<TInterface>.EnableStartAtTray;
   Application.ShowMainForm := not b;
   Visible := not b;
+
+{$IFDEF DEBUG}
+  actActionTesting.Visible := True;
+{$ENDIF}
 end;
 
 function TMainForm.GetConfiguration: TConfiguration;
@@ -414,6 +427,11 @@ end;
   end;
   end; }
 
+{ procedure TMainForm.UnLock;
+  begin
+  FLock.Leave;
+  end; }
+
 procedure TMainForm.TrayIconClick(Sender: TObject);
 begin
   if Visible then
@@ -430,11 +448,6 @@ begin
   SetForegroundWindow(Handle);
   Application.Restore;
 end;
-
-{ procedure TMainForm.UnLock;
-  begin
-  FLock.Leave;
-  end; }
 
 procedure TMainForm.WMGetSysCommand(var AMessage: TMessage);
 begin
@@ -691,6 +704,11 @@ begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
 end;
 
+procedure TMainForm.actActionTestingExecute(Sender: TObject);
+begin
+  //
+end;
+
 procedure TMainForm.actAddDBTypeExecute(Sender: TObject);
 var
   //index: SmallInt;
@@ -768,6 +786,7 @@ var
   sl: TStrings;
   i: Integer;
   li: TListItem;
+  rec: IDBUServerLogRecord;
 begin
   IdTCPClient.SendCmd('TCP_GET_DBU_NEW_NUMBER_LOG_GRID');
 
@@ -785,18 +804,30 @@ begin
     lvLog.Items.BeginUpdate;
     try
       lvLog.Clear;
-
-      if sl.Count < 2 then
+      FServerLog := GetIDBUServerLogRecords(sl);
+      if not Assigned(FServerLog) then
       begin
         Exit;
       end;
 
-      for i := 1 to Pred(sl.Count) do
+      for i := 0 to Pred(FServerLog.Count) do
       begin
-        li := lvLog.Items.Add;
-        if Assigned(li) then
+        rec := FServerLog[i];
+        if Assigned(rec) then
         begin
-          li.Caption := sl[i];
+          li := lvLog.Items.Add;
+          if Assigned(li) then
+          begin
+            li.Caption := FormatDateTime(DATE_TIME_FORMAT_RU, rec.DateTime);
+            if Assigned(li.SubItems) then
+            begin
+              li.SubItems.Add(rec.DatabaseType);
+              li.SubItems.Add(Format('%d', [rec.FirstNumber]));
+              li.SubItems.Add(rec.Creator);
+              li.SubItems.Add(Format('%d', [rec.Quantity]));
+              li.Data := Pointer(rec);
+            end;
+          end;
         end;
       end;
     finally

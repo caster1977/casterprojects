@@ -200,9 +200,6 @@ Coordinates=1041,331,124,36
 [actToolBar]
 Coordinates=1041,386,77,36
 
-[mniN2]
-Coordinates=1041,441,51,36
-
 [mniAddDBType]
 Coordinates=1041,496,104,36
 
@@ -219,7 +216,7 @@ Coordinates=922,635,110,36
 Coordinates=773,635,141,36
 
 []
-Coordinates=674,635,91,36
+Coordinates=1041,441,51,36
 
 [(TMenuItem)]
 Coordinates=234,71,75,33
