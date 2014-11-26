@@ -13,6 +13,8 @@ const
   CONFIGURATION_DEFAULT_HOST = '';
   CONFIGURATION_DEFAULT_PORT = 6000;
 
+  DATE_TIME_FORMAT_RU = 'dd.mm.yyyy hh:nn:ss';
+
 implementation
 
 end.

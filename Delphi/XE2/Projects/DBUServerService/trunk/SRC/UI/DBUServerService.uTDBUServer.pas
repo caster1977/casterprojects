@@ -23,7 +23,7 @@ uses
   IdCommandHandlers,
   Vcl.ImgList,
   DBUServerService.uTConfiguration,
-  DBUServerService.uIDBUServerLogRecords;
+  DBUShared.uIDBUServerLogRecords;
 
 type
   TDBUServer = class(TService)
@@ -38,9 +38,9 @@ type
     procedure ServiceShutdown(Sender: TService);
     procedure AddNewDatabaseTypeCommand(ASender: TIdCommand);
     procedure GetReserveNewDBUpdateNumbersCommand(ASender: TIdCommand);
-    procedure NewNumberLogCommand(ASender: TIdCommand);
     procedure GetSqlActionItemsCommand(ASender: TIdCommand);
     procedure GetSqlSubjItemsCommand(ASender: TIdCommand);
+    procedure NewNumberLogCommand(ASender: TIdCommand); // не используется клиентом
     procedure GetNewNumberLogGridCommand(ASender: TIdCommand);
     procedure GetDbuDatabaseTypeItemsCommand(ASender: TIdCommand);
     procedure GetDbuStatesItemsCommand(ASender: TIdCommand);
@@ -74,9 +74,9 @@ uses
   CastersPackage.uRoutines,
   DBUServerService.uDBUServerUtils,
   DBUServerService.Configuration.uTConnection,
-  DBUServerService.uTDBUServerLogRecords,
-  DBUServerService.uIDBUServerLogRecord,
-  DBUServerService.uTDBUServerLogRecord,
+  DBUShared.uTDBUServerLogRecords,
+  DBUShared.uIDBUServerLogRecord,
+  DBUShared.uTDBUServerLogRecord,
   DBUServerService.uIDatabaseType,
   DBUServerService.uTDatabaseType,
   System.Math,
@@ -344,26 +344,6 @@ begin
   Result := FLog;
 end;
 
-{ procedure TDBUServer.AddLogRecord(const ADBType: string; const AFirstNewDBNumber, ADBCount: Integer;
-  const APersonName: string);
-  var
-  i: Integer;
-  begin
-  cgList.BeginUpdate;
-  try
-  i := cgListTV.DataController.AppendRecord;
-  cgListTV.DataController.Post;
-  cgListTV.DataController.Values[i, cgListDateTime.Index] := Now;
-  cgListTV.DataController.Values[i, cgListPerson.Index] := aPersonName;
-  cgListTV.DataController.Values[i, cgListDBCount.Index] := aDBCount;
-  cgListTV.DataController.Values[i, cgListFromNumber.Index] := aFirstNewDBNumber;
-  cgListTV.DataController.Values[i, cgListDBType.Index] := aDBType;
-  finally
-  cgList.EndUpdate;
-  end;
-  SaveGridToFile(cgListTV, GetLogFileName);
-  end; }
-
 function TDBUServer.BuildDbuNewNumberLog(var ACount: SmallInt): string;
 
   function BuildRecord(const AIndex: Integer): string;
@@ -413,46 +393,6 @@ begin
   LogMessage('Stop GetReserveNewDBUpdateNumbersCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
-procedure TDBUServer.GetNewNumberLogGridCommand(ASender: TIdCommand);
-var
-  db_type: string;
-  sl: TStrings;
-  i: Integer;
-begin
-  LogMessage('Start GetNewNumberLogGridCommand', EVENTLOG_INFORMATION_TYPE);
-  db_type := ASender.Context.Connection.IOHandler.ReadLn;
-  sl := TStringList.Create;
-  try
-    sl.Text := Format('Log data for DB type = "%s"', [db_type]);
-    { TODO : добавить выгрузку данных по указанному типу DB из списка лога }
-    ASender.Context.Connection.IOHandler.Write(sl.Count);
-    ASender.Context.Connection.IOHandler.WriteLn(sl[0], IndyTextEncoding_OSDefault);
-    for i := Pred(sl.Count) downto 1 do
-    begin
-      ASender.Context.Connection.IOHandler.WriteLn(sl[i], IndyTextEncoding_OSDefault);
-    end;
-  finally
-    sl.Free;
-  end;
-  LogMessage('Stop GetNewNumberLogGridCommand', EVENTLOG_INFORMATION_TYPE);
-end;
-
-procedure TDBUServer.NewNumberLogCommand(ASender: TIdCommand);
-var
-  dbu_count: SmallInt;
-  s: string;
-begin
-  LogMessage('Start NewNumberLogCommand', EVENTLOG_INFORMATION_TYPE);
-  dbu_count := ASender.Context.Connection.IOHandler.ReadSmallInt;
-  s := BuildDbuNewNumberLog(dbu_count);
-  ASender.Context.Connection.IOHandler.Write(dbu_count);
-  if dbu_count > 0 then
-  begin
-    ASender.Context.Connection.IOHandler.WriteLn(s, IndyTextEncoding_OSDefault);
-  end;
-  LogMessage('Stop NewNumberLogCommand', EVENTLOG_INFORMATION_TYPE);
-end;
-
 procedure TDBUServer.AddNewDatabaseTypeCommand(ASender: TIdCommand);
 var
   si: SmallInt;
@@ -477,12 +417,12 @@ begin
           dbt.Name := db_type_name;
           Configuration.DatabaseTypes.Add(dbt);
           si := dbt.Id;
-          s := Format('DB type "%s = %d" added successfully', [db_type_name, dbt.Id]);
+          s := Format('Новый тип БД "%s" добавлен успешно (ID = %d)', [db_type_name, dbt.Id]);
         end;
       end
       else
       begin
-        s := Format('DB type "%s = %d" already exists', [dbt.Name, dbt.Id]);
+        s := Format('Тип БД "%s" уже существует (ID = %d)', [dbt.Name, dbt.Id]);
       end;
     except
       on E: Exception do
@@ -495,6 +435,51 @@ begin
     ASender.Context.Connection.IOHandler.WriteLn(s, IndyTextEncoding_OSDefault);
   end;
   LogMessage('Stop AddNewDatabaseTypeCommand', EVENTLOG_INFORMATION_TYPE);
+end;
+
+procedure TDBUServer.NewNumberLogCommand(ASender: TIdCommand); // не используется клиентом
+var
+  dbu_count: SmallInt;
+  s: string;
+begin
+  { TODO : выкосить за ненадобностью всю связку? }
+  LogMessage('Start NewNumberLogCommand', EVENTLOG_INFORMATION_TYPE);
+  dbu_count := ASender.Context.Connection.IOHandler.ReadSmallInt;
+  s := BuildDbuNewNumberLog(dbu_count);
+  ASender.Context.Connection.IOHandler.Write(dbu_count);
+  if dbu_count > 0 then
+  begin
+    ASender.Context.Connection.IOHandler.WriteLn(s, IndyTextEncoding_OSDefault);
+  end;
+  LogMessage('Stop NewNumberLogCommand', EVENTLOG_INFORMATION_TYPE);
+end;
+
+procedure TDBUServer.GetNewNumberLogGridCommand(ASender: TIdCommand);
+var
+  db_type: string;
+  sl: TStrings;
+  i: Integer;
+begin
+  LogMessage('Start GetNewNumberLogGridCommand', EVENTLOG_INFORMATION_TYPE);
+  { TODO : косяк в сиходной проге - тип БД не используется при выгрузке }
+  db_type := ASender.Context.Connection.IOHandler.ReadLn;
+  sl := TStringList.Create;
+  try
+    if Assigned(Log) then
+    begin
+      Log.ToStringList(sl);
+    end;
+    ASender.Context.Connection.IOHandler.Write(sl.Count);
+    ASender.Context.Connection.IOHandler.WriteLn(sl[0], IndyTextEncoding_OSDefault);
+    { TODO : зачем выгрузка данных происходит задом наперёд? Оо }
+    for i := Pred(sl.Count) downto 1 do
+    begin
+      ASender.Context.Connection.IOHandler.WriteLn(sl[i], IndyTextEncoding_OSDefault);
+    end;
+  finally
+    sl.Free;
+  end;
+  LogMessage('Stop GetNewNumberLogGridCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
 end.
