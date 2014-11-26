@@ -33,6 +33,7 @@ requires
   vcl;
 
 contains
-  LoginPackage.uTLoginForm in 'UI\LoginPackage.uTLoginForm.pas' {Form2};
+  LoginPackage.uTLoginForm in 'UI\LoginPackage.uTLoginForm.pas' {Form2},
+  LoginPackage.uShowLoginForm in 'Logic\Other\LoginPackage.uShowLoginForm.pas';
 
 end.
