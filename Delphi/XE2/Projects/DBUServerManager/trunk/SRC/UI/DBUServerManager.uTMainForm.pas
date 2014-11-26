@@ -210,6 +210,7 @@ uses
   DBUServerManager.uTConfigurationForm,
   DBUShared.uConsts,
   DBUShared.uTDBUServerLogRecords,
+  LoginPackage.uShowLoginForm,
   DBUShared.uIDBUServerLogRecord;
 
 resourcestring
@@ -538,17 +539,20 @@ end;
 
 procedure TMainForm.actConnectExecute(Sender: TObject);
 begin
-  try
-    IdTCPClient.Connect;
-    if IdTCPClient.Connected then
-    begin
-      StateImage.State := True;
-      //ShowMessage(IdTCPClient.IOHandler.ReadLn);
-      actRefresh.Execute;
-      lvLog.Visible := True;
+  if ShowLoginForm(Self) = mrOk then
+  begin
+    try
+      IdTCPClient.Connect;
+      if IdTCPClient.Connected then
+      begin
+        StateImage.State := True;
+        //ShowMessage(IdTCPClient.IOHandler.ReadLn);
+        actRefresh.Execute;
+        lvLog.Visible := True;
+      end;
+    except
+      ShowMessage('Не удалось подключиться к серверу');
     end;
-  except
-    ShowMessage('Не удалось подключиться к серверу');
   end;
 end;
 
