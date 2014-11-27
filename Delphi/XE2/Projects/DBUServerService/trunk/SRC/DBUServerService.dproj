@@ -50,13 +50,13 @@
         <Icon_MainIcon>DBUServerService_Icon.ico</Icon_MainIcon>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <VerInfo_Locale>1049</VerInfo_Locale>
-        <DCC_UnitSearchPath>..\..\CastersPackage\$(Platform)\$(Config)\DCU;..\..\ConfigPackage\$(Platform)\$(Config)\DCU;..\..\AboutPackage\$(Platform)\$(Config)\DCU;..\..\AboutPackage\SRC\UI;..\..\CastersPackage\SRC\UI;..\..\DBUShared\$(Platform)\$(Config)\DCU;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-        <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)</DCC_DcpOutput>
-        <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)</DCC_BplOutput>
+        <DCC_UnitSearchPath>..\..\CastersPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\ConfigPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\AboutPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\DBUShared\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\CastersPackage\SRC\UI;..\..\AboutPackage\SRC\UI;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion)</DCC_DcpOutput>
+        <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion)</DCC_BplOutput>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <Icns_MainIcns>$(BDS)\bin\delphi_PROJECTICNS.icns</Icns_MainIcns>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
-        <DCC_DcuOutput>..\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
+        <DCC_DcuOutput>..\$(Platform)\$(Config)\$(ProductVersion)\DCU</DCC_DcuOutput>
         <DCC_ExeOutput>..\$(Platform)\$(Config)\</DCC_ExeOutput>
         <DCC_E>false</DCC_E>
         <DCC_N>false</DCC_N>
@@ -84,9 +84,9 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
         <Debugger_RunParams>start</Debugger_RunParams>
         <Debugger_HostApplication>net</Debugger_HostApplication>
-        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
