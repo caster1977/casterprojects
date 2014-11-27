@@ -2,8 +2,8 @@ program LogKeeper5;
 
 uses
   Forms,
-  LogKeeper5.uMainForm in 'LogKeeper5.uMainForm.pas' {MainForm},
-  LogKeeper5.uConsts in 'LogKeeper5.uConsts.pas';
+  LogKeeper5.uMainForm in 'UI\LogKeeper5.uMainForm.pas' {MainForm},
+  LogKeeper5.uConsts in 'Logic\Other\LogKeeper5.uConsts.pas';
 
 {$R *.res}
 
