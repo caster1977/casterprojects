@@ -20,7 +20,8 @@ uses
   Vcl.ExtCtrls,
   Vcl.ComCtrls,
   Vcl.ToolWin,
-  Vcl.ActnCtrls, AboutPackage.uTAboutWindow;
+  Vcl.ActnCtrls,
+  AboutPackage.uTAboutWindow;
 
 type
   TMainForm = class(TForm)

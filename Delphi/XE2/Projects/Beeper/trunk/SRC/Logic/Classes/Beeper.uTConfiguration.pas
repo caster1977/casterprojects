@@ -58,7 +58,7 @@ uses
   Beeper.uTSignal,
   Beeper.uTSignalList,
   Beeper.uTPeriodTypes,
-  Beeper.uEConfiguration,
+  ConfigPackage.uEConfiguration,
   CastersPackage.uRoutines;
 
 resourcestring
