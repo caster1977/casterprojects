@@ -49,10 +49,10 @@
     <PropertyGroup Condition="'$(Base)'!=''">
         <SanitizedProjectName>LogKeeper</SanitizedProjectName>
         <DCC_ExeOutput>..\$(Platform)\$(Config)</DCC_ExeOutput>
-        <Manifest_File>None</Manifest_File>
-        <DCC_DcuOutput>..\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
-        <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)</DCC_DcpOutput>
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <DCC_DcuOutput>..\$(Platform)\$(Config)\$(ProductVersion)\DCU</DCC_DcuOutput>
+        <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion)</DCC_BplOutput>
+        <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion)</DCC_DcpOutput>
         <Icon_MainIcon>LogKeeper_Icon.ico</Icon_MainIcon>
         <VerInfo_Keys>CompanyName=;FileDescription=Клиент-приёмник протокола работы программ;FileVersion=1.0.0.30;InternalName=Log Keeper;LegalCopyright=(C)opyright 2009  by Vlad DraCooLa;LegalTrademarks=;OriginalFilename=LogKeeper.exe;ProductName=Log Keeper;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1049</VerInfo_Locale>
@@ -61,7 +61,7 @@
         <VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
         <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <DCC_UnitSearchPath>..\..\CastersPackage\$(Platform)\$(Config)\DCU;..\..\AboutPackage\$(Platform)\$(Config)\DCU;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\..\CastersPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\AboutPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_UsePackage>vcl;rtl;vclx;vclactnband;dbrtl;vcldb;vcldbx;bdertl;dsnap;dsnapcon;TeeUI;TeeDB;Tee;dclado120;adortl120;IndyCore;IndySystem;IndyProtocols;xmlrtl;inet;intrawebdb_100_120;Intraweb_100_120;VclSmp;dbexpress;DbxCommonDriver;DataSnapIndy10ServerTransport;DataSnapProviderClient;DataSnapServer;DBXSybaseASADriver;DBXInterBaseDriver;DBXMySQLDriver;dbxcds;DbxClientDriver;DBXSybaseASEDriver;DBXOracleDriver;DBXMSSQLDriver;DBXInformixDriver;DBXDb2Driver;Package1;$(DCC_UsePackage)</DCC_UsePackage>
         <DCC_DependencyCheckOutputName>LogKeeper.exe</DCC_DependencyCheckOutputName>
         <DCC_ImageBase>00400000</DCC_ImageBase>
@@ -99,9 +99,10 @@
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
+        <VerInfo_AutoGenVersion>false</VerInfo_AutoGenVersion>
         <VerInfo_Build>0</VerInfo_Build>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <ItemGroup>
@@ -152,7 +153,7 @@
                     <VersionInfo Name="MajorVer">1</VersionInfo>
                     <VersionInfo Name="MinorVer">0</VersionInfo>
                     <VersionInfo Name="Release">0</VersionInfo>
-                    <VersionInfo Name="Build">51</VersionInfo>
+                    <VersionInfo Name="Build">53</VersionInfo>
                     <VersionInfo Name="Debug">True</VersionInfo>
                     <VersionInfo Name="PreRelease">False</VersionInfo>
                     <VersionInfo Name="Special">False</VersionInfo>
@@ -164,7 +165,7 @@
                 <VersionInfoKeys>
                     <VersionInfoKeys Name="CompanyName"/>
                     <VersionInfoKeys Name="FileDescription">Клиент-приёмник протокола работы программ</VersionInfoKeys>
-                    <VersionInfoKeys Name="FileVersion">1.0.0.51</VersionInfoKeys>
+                    <VersionInfoKeys Name="FileVersion">1.0.0.53</VersionInfoKeys>
                     <VersionInfoKeys Name="InternalName">Log Keeper</VersionInfoKeys>
                     <VersionInfoKeys Name="LegalCopyright">(C)opyright 2009  by Vlad DraCooLa</VersionInfoKeys>
                     <VersionInfoKeys Name="LegalTrademarks"/>
@@ -173,10 +174,7 @@
                     <VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
                     <VersionInfoKeys Name="Comments"/>
                 </VersionInfoKeys>
-                <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k180.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp180.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-                </Excluded_Packages>
+                <Excluded_Packages/>
             </Delphi.Personality>
             <Platforms>
                 <Platform value="Win32">True</Platform>
