@@ -48,9 +48,9 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
         <SanitizedProjectName>CastersPackage</SanitizedProjectName>
-        <DCC_DcuOutput>..\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
-        <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)</DCC_BplOutput>
-        <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)</DCC_DcpOutput>
+        <DCC_DcuOutput>..\$(Platform)\$(Config)\$(ProductVersion)\DCU</DCC_DcuOutput>
+        <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion)</DCC_BplOutput>
+        <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion)</DCC_DcpOutput>
         <DCC_UsePackage>rtl;xmlrtl;$(DCC_UsePackage)</DCC_UsePackage>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
@@ -193,10 +193,7 @@
                 <Source>
                     <Source Name="MainSource">CastersPackage.dpk</Source>
                 </Source>
-                <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k180.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp180.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-                </Excluded_Packages>
+                <Excluded_Packages/>
             </Delphi.Personality>
             <Platforms>
                 <Platform value="Win32">True</Platform>
