@@ -41,10 +41,10 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
         <SanitizedProjectName>DBUShared</SanitizedProjectName>
-        <DCC_DcuOutput>..\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
-        <DCC_UnitSearchPath>..\..\Packages\$(Platform)\$(Config);..\..\AboutPackage\SRC\UI;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-        <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)</DCC_DcpOutput>
-        <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)</DCC_BplOutput>
+        <DCC_DcuOutput>..\$(Platform)\$(Config)\$(ProductVersion)\DCU</DCC_DcuOutput>
+        <DCC_UnitSearchPath>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion);..\..\AboutPackage\SRC\UI;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion)</DCC_DcpOutput>
+        <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion)</DCC_BplOutput>
         <DCC_E>false</DCC_E>
         <DCC_N>false</DCC_N>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
