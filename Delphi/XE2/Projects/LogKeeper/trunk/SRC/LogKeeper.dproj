@@ -1,7 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{1082B3C1-DBEA-4776-8FC7-B6F75C72B830}</ProjectGuid>
-        <ProjectVersion>14.6</ProjectVersion>
+        <ProjectVersion>16.0</ProjectVersion>
         <MainSource>LogKeeper.dpr</MainSource>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
@@ -47,6 +47,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
+        <SanitizedProjectName>LogKeeper</SanitizedProjectName>
         <DCC_ExeOutput>..\$(Platform)\$(Config)</DCC_ExeOutput>
         <Manifest_File>None</Manifest_File>
         <DCC_DcuOutput>..\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
@@ -86,7 +87,7 @@
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
         <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
-        <DCC_DebugInformation>false</DCC_DebugInformation>
+        <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
@@ -151,7 +152,7 @@
                     <VersionInfo Name="MajorVer">1</VersionInfo>
                     <VersionInfo Name="MinorVer">0</VersionInfo>
                     <VersionInfo Name="Release">0</VersionInfo>
-                    <VersionInfo Name="Build">50</VersionInfo>
+                    <VersionInfo Name="Build">51</VersionInfo>
                     <VersionInfo Name="Debug">True</VersionInfo>
                     <VersionInfo Name="PreRelease">False</VersionInfo>
                     <VersionInfo Name="Special">False</VersionInfo>
@@ -163,7 +164,7 @@
                 <VersionInfoKeys>
                     <VersionInfoKeys Name="CompanyName"/>
                     <VersionInfoKeys Name="FileDescription">Клиент-приёмник протокола работы программ</VersionInfoKeys>
-                    <VersionInfoKeys Name="FileVersion">1.0.0.50</VersionInfoKeys>
+                    <VersionInfoKeys Name="FileVersion">1.0.0.51</VersionInfoKeys>
                     <VersionInfoKeys Name="InternalName">Log Keeper</VersionInfoKeys>
                     <VersionInfoKeys Name="LegalCopyright">(C)opyright 2009  by Vlad DraCooLa</VersionInfoKeys>
                     <VersionInfoKeys Name="LegalTrademarks"/>

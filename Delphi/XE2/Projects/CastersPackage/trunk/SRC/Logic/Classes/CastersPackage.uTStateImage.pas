@@ -59,7 +59,7 @@ procedure Register;
 
 implementation
 
-{$R *.dcr}
+//{$R *.dcr}
 
 uses
   Winapi.CommCtrl,

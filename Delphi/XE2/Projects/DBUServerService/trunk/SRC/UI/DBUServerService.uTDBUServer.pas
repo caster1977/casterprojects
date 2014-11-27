@@ -74,7 +74,6 @@ uses
   CastersPackage.uRoutines,
   DBUServerService.uDBUServerUtils,
   DBUServerService.Configuration.uTConnection,
-  DBUShared.uTDBUServerLogRecords,
   DBUShared.uIDBUServerLogRecord,
   DBUShared.uTDBUServerLogRecord,
   DBUServerService.uIDatabaseType,
@@ -83,7 +82,9 @@ uses
   System.StrUtils,
   DBUServerService.uConsts,
   IdSocketHandle,
-  IdGlobal;
+  IdGlobal,
+  DBUShared.uTDBUServerLogRecords;
+
 
 type
   THackImageList = class(TImageList);

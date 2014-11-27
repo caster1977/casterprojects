@@ -3,9 +3,9 @@ unit DBUShared.uTDBUServerLogRecords;
 interface
 
 uses
-  CastersPackage.uTInterfaceListOfGivenType,
   DBUShared.uIDBUServerLogRecords,
   DBUShared.uIDBUServerLogRecord,
+  CastersPackage.uTInterfaceListOfGivenType,
   System.Classes;
 
 type

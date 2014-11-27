@@ -1,7 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{90F3FD31-908E-4430-BC38-30087A138761}</ProjectGuid>
-        <ProjectVersion>14.6</ProjectVersion>
+        <ProjectVersion>16.0</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <MainSource>DBUServerManager.dpr</MainSource>
         <Base>True</Base>
@@ -46,15 +46,16 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
+        <SanitizedProjectName>DBUServerManager</SanitizedProjectName>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1049</VerInfo_Locale>
         <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)</DCC_BplOutput>
-        <DCC_UnitSearchPath>..\..\CastersPackage\$(Platform)\$(Config)\DCU;..\..\ConfigPackage\$(Platform)\$(Config)\DCU;..\..\AboutPackage\$(Platform)\$(Config)\DCU;..\..\AboutPackage\SRC\UI;..\..\CastersPackage\SRC\UI;..\..\CastersPackage\SRC\Logic\Classes;..\..\DBUShared\$(Platform)\$(Config)\DCU;..\..\LoginPackage\$(Platform)\$(Config)\DCU;..\..\LoginPackage\SRC\UI;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\..\CastersPackage\$(Platform)\$(Config)\DCU;..\..\ConfigPackage\$(Platform)\$(Config)\DCU;..\..\AboutPackage\$(Platform)\$(Config)\DCU;..\..\AboutPackage\SRC\UI;..\..\CastersPackage\SRC\UI;..\..\DBUShared\$(Platform)\$(Config)\DCU;..\..\LoginPackage\$(Platform)\$(Config)\DCU;..\..\LoginPackage\SRC\UI;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <Icon_MainIcon>DBUServerManager_Icon.ico</Icon_MainIcon>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=DBU Server Manager;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)</DCC_DcpOutput>
-        <Manifest_File>None</Manifest_File>
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <DCC_DcuOutput>..\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
         <DCC_ExeOutput>..\$(Platform)\$(Config)\</DCC_ExeOutput>
@@ -86,8 +87,8 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-        <VerInfo_Build>160</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.160;InternalName=DBU Server Manager x86 Debug;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager x86 Debug;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Build>162</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.162;InternalName=DBU Server Manager x86 Debug;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager x86 Debug;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -95,7 +96,7 @@
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
         <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
-        <DCC_DebugInformation>false</DCC_DebugInformation>
+        <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
