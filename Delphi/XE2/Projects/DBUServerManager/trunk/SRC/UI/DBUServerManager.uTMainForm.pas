@@ -32,7 +32,6 @@ uses
   IdTCPConnection,
   IdTCPClient,
   IdCmdTCPClient,
-  Web.Win.Sockets,
   CastersPackage.uTStateImage,
   Vcl.Graphics,
   CastersPackage.uTStateProgressBar,
@@ -209,8 +208,8 @@ uses
   DBUServerManager.Configuration.uTInterface,
   DBUServerManager.uTConfigurationForm,
   DBUShared.uConsts,
-  DBUShared.uTDBUServerLogRecords,
   LoginPackage.uShowLoginForm,
+  DBUShared.uTDBUServerLogRecords,
   DBUShared.uIDBUServerLogRecord;
 
 resourcestring

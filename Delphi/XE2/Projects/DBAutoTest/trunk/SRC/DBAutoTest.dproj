@@ -1,7 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{F7FE621A-5AFB-48CE-9BDE-45DE74225B26}</ProjectGuid>
-        <ProjectVersion>14.6</ProjectVersion>
+        <ProjectVersion>16.0</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <MainSource>DBAutoTest.dpr</MainSource>
         <Base>True</Base>
@@ -46,6 +46,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
+        <SanitizedProjectName>DBAutoTest</SanitizedProjectName>
         <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)</DCC_DcpOutput>
         <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)</DCC_BplOutput>
         <DCC_DcuOutput>..\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
@@ -86,8 +87,8 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>78</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для тестирования значений данных в таблицах БД;FileVersion=0.1.0.78;InternalName=DBAutoTest;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Sergey Shaporov;LegalTrademarks=;OriginalFilename=DBAutoTest.exe;ProductName=DBAutoTest;ProductVersion=0.1.0.0;Comments=Idea: Sergey Shaporov. Developing: Vlad Ivanov.</VerInfo_Keys>
+        <VerInfo_Build>81</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для тестирования значений данных в таблицах БД;FileVersion=0.1.0.81;InternalName=DBAutoTest;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Sergey Shaporov;LegalTrademarks=;OriginalFilename=DBAutoTest.exe;ProductName=DBAutoTest;ProductVersion=0.1.0.0;Comments=Idea: Sergey Shaporov. Developing: Vlad Ivanov.</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
@@ -95,7 +96,7 @@
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
         <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
-        <DCC_DebugInformation>false</DCC_DebugInformation>
+        <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>

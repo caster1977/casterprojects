@@ -2,7 +2,7 @@
     <PropertyGroup>
         <ProjectGuid>{97C1A7E5-9E35-49CE-98F2-CFD851B6D8EF}</ProjectGuid>
         <MainSource>CastersPackage.dpk</MainSource>
-        <ProjectVersion>14.6</ProjectVersion>
+        <ProjectVersion>16.0</ProjectVersion>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
         <Base>True</Base>
@@ -47,6 +47,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
+        <SanitizedProjectName>CastersPackage</SanitizedProjectName>
         <DCC_DcuOutput>..\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
         <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)</DCC_BplOutput>
         <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)</DCC_DcpOutput>
@@ -77,7 +78,7 @@
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
         <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
-        <DCC_DebugInformation>false</DCC_DebugInformation>
+        <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <VerInfo_Locale>1033</VerInfo_Locale>
