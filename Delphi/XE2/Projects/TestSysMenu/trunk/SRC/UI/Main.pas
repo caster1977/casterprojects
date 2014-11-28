@@ -18,13 +18,12 @@ uses
 
 type
   TMainForm = class(TForm)
-    PopupMenu1: TPopupMenu;
+    pmSysMenu: TPopupMenu;
     About1: TMenuItem;
     N2: TMenuItem;
     Options1: TMenuItem;
     CheckBox1: TCheckBox;
-    N3: TMenuItem;
-    fisSysMenu1: TfisSysMenu;
+    fisSysMenu: TfisSysMenu;
     procedure CheckBox1Click(Sender: TObject);
     procedure Options1Click(Sender: TObject);
     procedure About1Click(Sender: TObject);
@@ -51,7 +50,7 @@ end;
 
 procedure TMainForm.CheckBox1Click(Sender: TObject);
 begin
-  fisSysMenu1.Enabled := CheckBox1.Checked;
+  fisSysMenu.Enabled := CheckBox1.Checked;
 end;
 
 end.
