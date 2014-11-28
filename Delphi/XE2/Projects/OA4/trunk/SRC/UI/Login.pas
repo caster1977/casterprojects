@@ -3,8 +3,19 @@
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, StdCtrls, Mask, Main;
+  Windows,
+  Messages,
+  SysUtils,
+  Variants,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  ExtCtrls,
+  StdCtrls,
+  Mask,
+  Main;
 
 type
   TLoginForm = class(TForm)
@@ -29,24 +40,26 @@ implementation
 
 procedure TLoginForm.edbxLoginChange(Sender: TObject);
 begin
-  btnOk.Enabled:=edbxLogin.Text<>'';
-  btnOk.Default:=edbxLogin.Text<>'';
-  btnCancel.Default:=edbxLogin.Text='';
+  btnOk.Enabled := edbxLogin.Text <> '';
+  btnOk.Default := edbxLogin.Text <> '';
+  btnCancel.Default := edbxLogin.Text = '';
 end;
 
 procedure TLoginForm.FormCreate(Sender: TObject);
 var
   pwcGroupName: PWideChar;
 begin
-  GetMem(pwcGroupName, SizeOf(WideChar)*1000);
+  GetMem(pwcGroupName, SizeOf(WideChar) * 1000);
   try
-    SendMessage(edbxLogin.Handle,EM_SETCUEBANNER,WPARAM(0),LPARAM(StringToWideChar('Введите логин', pwcGroupName, 1000)));
+    SendMessage(edbxLogin.Handle, EM_SETCUEBANNER, WPARAM(0),
+      LPARAM(StringToWideChar('Введите логин', pwcGroupName, 1000)));
   finally
     FreeMem(pwcGroupName);
   end;
-  GetMem(pwcGroupName, SizeOf(WideChar)*1000);
+  GetMem(pwcGroupName, SizeOf(WideChar) * 1000);
   try
-    SendMessage(edbxPassword.Handle,EM_SETCUEBANNER,WPARAM(0),LPARAM(StringToWideChar('Введите пароль', pwcGroupName, 1000)));
+    SendMessage(edbxPassword.Handle, EM_SETCUEBANNER, WPARAM(0),
+      LPARAM(StringToWideChar('Введите пароль', pwcGroupName, 1000)));
   finally
     FreeMem(pwcGroupName);
   end;

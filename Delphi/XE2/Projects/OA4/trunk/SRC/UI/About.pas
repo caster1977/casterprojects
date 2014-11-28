@@ -19,7 +19,8 @@ uses
   PlatformDefaultStyleActnCtrls,
   ActnMan,
   jpeg,
-  AboutPackage.uTGSFileVersionInfo, System.Actions;
+  AboutPackage.uTGSFileVersionInfo,
+  System.Actions;
 
 type
   TAboutForm = class(TForm)
@@ -83,9 +84,9 @@ begin
     Timer2.Enabled := True;
   end;
   btnClose.default := Action_Close.Visible;
-  lblVersion.Caption := Format('Версия %d.%d Release %d Build %d', [gsFileVersionInfo1.ModuleVersion.Major,
-    gsFileVersionInfo1.ModuleVersion.Minor, gsFileVersionInfo1.ModuleVersion.Release,
-    gsFileVersionInfo1.ModuleVersion.Build]);
+  lblVersion.Caption := Format('Версия %d.%d Release %d Build %d',
+    [gsFileVersionInfo1.ModuleVersion.Major, gsFileVersionInfo1.ModuleVersion.Minor,
+    gsFileVersionInfo1.ModuleVersion.Release, gsFileVersionInfo1.ModuleVersion.Build]);
   lblLegalCopyright.Caption := gsFileVersionInfo1.LegalCopyright;
   // LogThis('Отображено окно "О программе...".', LogGroupGUID, lmtInfo);
   // ProcedureFooter(LogGroupGUID, False, False);
@@ -114,7 +115,8 @@ const
   LogGroupGUID: string = '{F2BC7A05-00DD-4BCA-83B9-1E0F2559B317}';
 begin
   // ProcedureHeader('Процедура-обработчик щелчка по метке адреса электронной почты', LogGroupGUID, True, True);
-  ShellExecute(Application.Handle, 'open', PWideChar('mailto:vlad_dracula@tut.by'), nil, nil, SW_MAXIMIZE);
+  ShellExecute(Application.Handle, 'open', PWideChar('mailto:vlad_dracula@tut.by'), nil, nil,
+    SW_MAXIMIZE);
   // ProcedureFooter(LogGroupGUID, True, True);
 end;
 
