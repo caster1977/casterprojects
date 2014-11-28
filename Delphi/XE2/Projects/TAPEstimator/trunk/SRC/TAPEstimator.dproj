@@ -1,7 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{F55E2852-106A-4E78-A9BB-90CA755E4D4E}</ProjectGuid>
-        <ProjectVersion>14.6</ProjectVersion>
+        <ProjectVersion>16.0</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <MainSource>TAPEstimator.dpr</MainSource>
         <Base>True</Base>
@@ -39,28 +39,23 @@
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
-    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
-        <Cfg_2_Win32>true</Cfg_2_Win32>
-        <CfgParent>Cfg_2</CfgParent>
-        <Cfg_2>true</Cfg_2>
-        <Base>true</Base>
-    </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
+        <VerInfo_Build>64</VerInfo_Build>
+        <SanitizedProjectName>TAPEstimator</SanitizedProjectName>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
         <VerInfo_MinorVer>1</VerInfo_MinorVer>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_MajorVer>0</VerInfo_MajorVer>
         <VerInfo_Locale>1049</VerInfo_Locale>
-        <DCC_UnitSearchPath>..\..\Packages\$(Platform)\$(Config);..\AboutPackage\SRC\UI;..\CastersPackage;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-        <Manifest_File>None</Manifest_File>
-        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для тестирования значений данных в таблицах БД;FileVersion=0.1.0.0;InternalName=DBAutoTest;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Sergey Shaporov;LegalTrademarks=;OriginalFilename=DBAutoTest.exe;ProductName=DBAutoTest;ProductVersion=0.1.0.0;Comments=Idea: Sergey Shaporov. Developing: Vlad Ivanov.</VerInfo_Keys>
-        <DCC_BplOutput>..\$(Platform)\$(Config)\Package</DCC_BplOutput>
-        <DCC_DcpOutput>.\$(Platform)\$(Config)\DCP</DCC_DcpOutput>
+        <DCC_UnitSearchPath>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion);..\..\CastersPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\ConfigPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\AboutPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\CastersPackage\SRC\UI;..\..\AboutPackage\SRC\UI;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для расчёта времени выполнения TAP-файлов;FileVersion=0.1.0.64;InternalName=TAP Estimator;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Ilya Kuzmenkov;LegalTrademarks=;OriginalFilename=TAPEstimator.exe;ProductName=TAP Estimator;ProductVersion=0.1.0.64;Comments=Idea: Ilya Kuzmenkov. Developing: Vlad Ivanov</VerInfo_Keys>
+        <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion)</DCC_BplOutput>
+        <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion)</DCC_DcpOutput>
         <DCC_UsePackage>bindcompfmx;fmx;rtl;dbrtl;IndySystem;DbxClientDriver;bindcomp;inetdb;DBXInterBaseDriver;DataSnapCommon;DataSnapClient;DataSnapServer;DataSnapProviderClient;xmlrtl;DbxCommonDriver;IndyProtocols;DBXMySQLDriver;dbxcds;soaprtl;FMXTee;bindengine;DBXOracleDriver;CustomIPTransport;dsnap;DBXInformixDriver;IndyCore;FmxTeeUI;DBXFirebirdDriver;inet;inetdbxpress;DBXSybaseASADriver;IPIndyImpl;dbexpress;DataSnapIndy10ServerTransport;$(DCC_UsePackage)</DCC_UsePackage>
-        <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
-        <DCC_DcuOutput>.\$(Platform)\$(Config)\DCU</DCC_DcuOutput>
-        <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+        <DCC_DcuOutput>..\$(Platform)\$(Config)\$(ProductVersion)\DCU</DCC_DcuOutput>
+        <DCC_ExeOutput>..\$(Platform)\$(Config)\$(ProductVersion)</DCC_ExeOutput>
         <DCC_E>false</DCC_E>
         <DCC_N>false</DCC_N>
         <DCC_S>false</DCC_S>
@@ -70,7 +65,6 @@
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Define>Platform32bit;$(DCC_Define)</DCC_Define>
         <DCC_UsePackage>fs17;frx17;DBXSqliteDriver;vcldbx;TeeDB;vclib;inetdbbde;DBXOdbcDriver;Tee;svnui;ibxpress;DBXSybaseASEDriver;vclimg;MetropolisUILiveTile;vclactnband;vcldb;bindcompdbx;vcldsnap;bindcompvcl;TeeUI;vclie;vcltouch;DBXDb2Driver;CastersPackage;websnap;VclSmp;IndyIPServer;fmxase;vcl;DataSnapConnectors;IndyIPCommon;CloudService;DBXMSSQLDriver;dsnapcon;fsDB17;fmxobj;frxDB17;CodeSiteExpressPkg;vclx;frxe17;webdsnap;svn;fmxdae;bdertl;adortl;IndyIPClient;$(DCC_UsePackage)</DCC_UsePackage>
-        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
@@ -86,69 +80,65 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>64</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для расчёта времени выполнения TAP-файлов;FileVersion=0.1.0.64;InternalName=TAP Estimator;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Anton Zhevnyak, Ilya Kuzmenkov;LegalTrademarks=;OriginalFilename=TAPEstimator.exe;ProductName=TAPEstimator;ProductVersion=0.1.0.0;Comments=Idea: Ilya Kuzmenkov. Developing: Vlad Ivanov, Anton Zhevnyak.</VerInfo_Keys>
-        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <VerInfo_Build>65</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=Утилита для расчёта времени выполнения TAP-файлов;FileVersion=0.1.0.65;InternalName=TAP Estimator;LegalCopyright=(C)opyright 2013 by Vlad Ivanov, Ilya Kuzmenkov;LegalTrademarks=;OriginalFilename=TAPEstimator.exe;ProductName=TAP Estimator;ProductVersion=0.1.0.64;Comments=Idea: Ilya Kuzmenkov. Developing: Vlad Ivanov</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
         <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
-        <DCC_DebugInformation>false</DCC_DebugInformation>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="SRC\UI\TAPEstimator.uTMainForm.pas">
+        <DCCReference Include="UI\TAPEstimator.uTMainForm.pas">
             <Form>MainForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="SRC\UI\TAPEstimator.uTConfigurationForm.pas">
+        <DCCReference Include="UI\TAPEstimator.uTConfigurationForm.pas">
             <Form>ConfigurationForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Configuration.uTConfiguration.pas"/>
-        <DCCReference Include="SRC\UI\TAPEstimator.uTProfileForm.pas">
+        <DCCReference Include="Logic\Classes\TAPEstimator.Configuration.uTConfiguration.pas"/>
+        <DCCReference Include="UI\TAPEstimator.uTProfileForm.pas">
             <Form>ProfileForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="SRC\Logic\Other\TAPEstimator.uConsts.pas"/>
-        <DCCReference Include="SRC\UI\TAPEstimator.uTRecentsPropertiesForm.pas">
+        <DCCReference Include="Logic\Other\TAPEstimator.uConsts.pas"/>
+        <DCCReference Include="UI\TAPEstimator.uTRecentsPropertiesForm.pas">
             <Form>RecentsPropertiesForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.Configuration.uIRecent.pas"/>
-        <DCCReference Include="SRC\Logic\Interfaces\TAPEstimator.Configuration.uIRecents.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Configuration.uTRecent.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Configuration.uTRecents.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Profile.uTProfile.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Profile.uEProfile.pas"/>
-        <DCCReference Include="SRC\Logic\Other\TAPEstimator.uResourceStrings.pas"/>
-        <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTTAPCommandPrefixes.pas"/>
-        <DCCReference Include="SRC\Logic\Types\TAPEstimator.uTTAPNonCommandChars.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.uTTAPStringRoutines.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.uETAPWrongSymbol.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Configuration.uTInterfaceSection.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Configuration.uTOtherSection.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Configuration.uEConfiguration.pas"/>
-        <DCCReference Include="SRC\Logic\Research\TAPEstimator.uIArc.pas"/>
-        <DCCReference Include="SRC\Logic\Research\TAPEstimator.uIDrawable.pas"/>
-        <DCCReference Include="SRC\Logic\Research\TAPEstimator.uIFigure.pas"/>
-        <DCCReference Include="SRC\Logic\Research\TAPEstimator.uILineSegment.pas"/>
-        <DCCReference Include="SRC\Logic\Research\TAPEstimator.uILocation.pas"/>
-        <DCCReference Include="SRC\Logic\Research\TAPEstimator.uIPoint.pas"/>
-        <DCCReference Include="SRC\Logic\Research\TAPEstimator.uTArc.pas"/>
-        <DCCReference Include="SRC\Logic\Research\TAPEstimator.uTFigure.pas"/>
-        <DCCReference Include="SRC\Logic\Research\TAPEstimator.uTLineSegment.pas"/>
-        <DCCReference Include="SRC\Logic\Research\TAPEstimator.uTLocation.pas"/>
-        <DCCReference Include="SRC\Logic\Research\TAPEstimator.uTPoint.pas"/>
-        <DCCReference Include="SRC\Logic\Research\TAPEstimator.uTDirect3D9Gear.pas"/>
-        <DCCReference Include="SRC\Logic\Classes\TAPEstimator.Configuration.uTMainFormStateSection.pas"/>
+        <DCCReference Include="Logic\Interfaces\TAPEstimator.Configuration.uIRecent.pas"/>
+        <DCCReference Include="Logic\Interfaces\TAPEstimator.Configuration.uIRecents.pas"/>
+        <DCCReference Include="Logic\Classes\TAPEstimator.Configuration.uTRecent.pas"/>
+        <DCCReference Include="Logic\Classes\TAPEstimator.Configuration.uTRecents.pas"/>
+        <DCCReference Include="Logic\Classes\TAPEstimator.Profile.uTProfile.pas"/>
+        <DCCReference Include="Logic\Classes\TAPEstimator.Profile.uEProfile.pas"/>
+        <DCCReference Include="Logic\Other\TAPEstimator.uResourceStrings.pas"/>
+        <DCCReference Include="Logic\Types\TAPEstimator.uTTAPCommandPrefixes.pas"/>
+        <DCCReference Include="Logic\Types\TAPEstimator.uTTAPNonCommandChars.pas"/>
+        <DCCReference Include="Logic\Classes\TAPEstimator.uTTAPStringRoutines.pas"/>
+        <DCCReference Include="Logic\Classes\TAPEstimator.uETAPWrongSymbol.pas"/>
+        <DCCReference Include="Logic\Classes\TAPEstimator.Configuration.uTInterfaceSection.pas"/>
+        <DCCReference Include="Logic\Classes\TAPEstimator.Configuration.uTOtherSection.pas"/>
+        <DCCReference Include="Logic\Classes\TAPEstimator.Configuration.uEConfiguration.pas"/>
+        <DCCReference Include="Logic\Research\TAPEstimator.uIArc.pas"/>
+        <DCCReference Include="Logic\Research\TAPEstimator.uIDrawable.pas"/>
+        <DCCReference Include="Logic\Research\TAPEstimator.uIFigure.pas"/>
+        <DCCReference Include="Logic\Research\TAPEstimator.uILineSegment.pas"/>
+        <DCCReference Include="Logic\Research\TAPEstimator.uILocation.pas"/>
+        <DCCReference Include="Logic\Research\TAPEstimator.uIPoint.pas"/>
+        <DCCReference Include="Logic\Research\TAPEstimator.uTArc.pas"/>
+        <DCCReference Include="Logic\Research\TAPEstimator.uTFigure.pas"/>
+        <DCCReference Include="Logic\Research\TAPEstimator.uTLineSegment.pas"/>
+        <DCCReference Include="Logic\Research\TAPEstimator.uTLocation.pas"/>
+        <DCCReference Include="Logic\Research\TAPEstimator.uTPoint.pas"/>
+        <DCCReference Include="Logic\Research\TAPEstimator.uTDirect3D9Gear.pas"/>
+        <DCCReference Include="Logic\Classes\TAPEstimator.Configuration.uTMainFormStateSection.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -216,4 +206,5 @@
     </ProjectExtensions>
     <Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
     <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
+    <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
 </Project>
