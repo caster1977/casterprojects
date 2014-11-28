@@ -15,8 +15,8 @@ object MainForm: TMainForm
   PixelsPerInch = 96
   TextHeight = 13
   object CheckBox1: TCheckBox
-    Left = 8
-    Top = 184
+    Left = 120
+    Top = 88
     Width = 113
     Height = 17
     Caption = #1052#1077#1085#1102' '#1076#1086#1073#1072#1074#1083#1077#1085#1086
@@ -25,12 +25,9 @@ object MainForm: TMainForm
     TabOrder = 0
     OnClick = CheckBox1Click
   end
-  object PopupMenu1: TPopupMenu
-    Left = 8
-    Top = 8
-    object N3: TMenuItem
-      Caption = '-'
-    end
+  object pmSysMenu: TPopupMenu
+    Left = 136
+    Top = 32
     object Options1: TMenuItem
       Caption = '&'#1053#1072#1089#1090#1088#1086#1081#1082#1080'...'
       OnClick = Options1Click
@@ -43,9 +40,9 @@ object MainForm: TMainForm
       OnClick = About1Click
     end
   end
-  object fisSysMenu1: TfisSysMenu
-    Menu = PopupMenu1
-    Left = 40
-    Top = 8
+  object fisSysMenu: TfisSysMenu
+    Menu = pmSysMenu
+    Left = 216
+    Top = 32
   end
 end
