@@ -2,7 +2,7 @@ program TestGSPA;
 
 uses
   Forms,
-  Main in '..\Main.pas' {MainForm};
+  Main in 'UI\Main.pas' {MainForm};
 
 {$R *.res}
 
