@@ -15,14 +15,14 @@ uses
   IniFiles;
 
 type
-  TMainForm= class(TForm)
+  TMainForm = class(TForm)
     procedure FormCreate(Sender: TObject);
   end;
 
-  ba= array [0..399] of byte;
+  ba = array [0 .. 399] of byte;
 
 var
-  graf: array [0..0] of ba;
+  graf: array [0 .. 0] of ba;
   MainForm: TMainForm;
 
 implementation
@@ -34,11 +34,11 @@ var
   b: TMemoryStream;
   i: integer;
 begin
-  for i:=0 to sizeof(ba) do
-    graf[0][i]:=ord('A');
-  b:=TMemoryStream.Create;
+  for i := 0 to sizeof(ba) do
+    graf[0][i] := ord('A');
+  b := TMemoryStream.Create;
   try
-    with TIniFile.Create(ExtractFilePath(Application.ExeName)+'inifile.ini') do
+    with TIniFile.Create(ExtractFilePath(Application.ExeName) + 'inifile.ini') do
       try
         b.write(graf[0], sizeof(ba));
         b.Seek(0, soFromBeginning); // обязательно постувить курсок потока на начало !!!
