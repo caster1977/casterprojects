@@ -27,7 +27,7 @@ uses
   SharedMemoryCommon.uChunkedFileClass,
   SharedMemoryCommon.uWatchThreadClass,
   SharedMemoryCommon.uCommon,
-  SharedMemoryCommon.SharedMemoryCOMLibrary_TLB;
+  SharedMemoryCommon.SharedMemoryCOMLibrary_TLB, System.Actions;
 
 type
   TMainForm = class(TForm)

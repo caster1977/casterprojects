@@ -1,60 +1,60 @@
-﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-		<PropertyGroup>
-			<ProjectGuid>{6481859F-3DF1-4280-AEA9-74CA8784B1B8}</ProjectGuid>
-		</PropertyGroup>
-		<ItemGroup>
-			<Projects Include="SharedMemoryServer\SharedMemoryServer.dproj">
-				<Dependencies/>
-			</Projects>
-			<Projects Include="SharedMemoryClient\SharedMemoryClient.dproj">
-				<Dependencies/>
-			</Projects>
-			<Projects Include="SharedMemoryCOM\SharedMemoryCOM.dproj">
-				<Dependencies/>
-			</Projects>
-		</ItemGroup>
-		<ProjectExtensions>
-			<Borland.Personality>Default.Personality.12</Borland.Personality>
-			<Borland.ProjectType/>
-			<BorlandProject>
-				<Default.Personality/>
-			</BorlandProject>
-		</ProjectExtensions>
-		<Target Name="SharedMemoryServer">
-			<MSBuild Projects="SharedMemoryServer\SharedMemoryServer.dproj"/>
-		</Target>
-		<Target Name="SharedMemoryServer:Clean">
-			<MSBuild Projects="SharedMemoryServer\SharedMemoryServer.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="SharedMemoryServer:Make">
-			<MSBuild Projects="SharedMemoryServer\SharedMemoryServer.dproj" Targets="Make"/>
-		</Target>
-		<Target Name="SharedMemoryClient">
-			<MSBuild Projects="SharedMemoryClient\SharedMemoryClient.dproj"/>
-		</Target>
-		<Target Name="SharedMemoryClient:Clean">
-			<MSBuild Projects="SharedMemoryClient\SharedMemoryClient.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="SharedMemoryClient:Make">
-			<MSBuild Projects="SharedMemoryClient\SharedMemoryClient.dproj" Targets="Make"/>
-		</Target>
-		<Target Name="SharedMemoryCOM">
-			<MSBuild Projects="SharedMemoryCOM\SharedMemoryCOM.dproj"/>
-		</Target>
-		<Target Name="SharedMemoryCOM:Clean">
-			<MSBuild Projects="SharedMemoryCOM\SharedMemoryCOM.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="SharedMemoryCOM:Make">
-			<MSBuild Projects="SharedMemoryCOM\SharedMemoryCOM.dproj" Targets="Make"/>
-		</Target>
-		<Target Name="Build">
-			<CallTarget Targets="SharedMemoryServer;SharedMemoryClient;SharedMemoryCOM"/>
-		</Target>
-		<Target Name="Clean">
-			<CallTarget Targets="SharedMemoryServer:Clean;SharedMemoryClient:Clean;SharedMemoryCOM:Clean"/>
-		</Target>
-		<Target Name="Make">
-			<CallTarget Targets="SharedMemoryServer:Make;SharedMemoryClient:Make;SharedMemoryCOM:Make"/>
-		</Target>
-		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
-	</Project>
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{6481859F-3DF1-4280-AEA9-74CA8784B1B8}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="SharedMemoryCOM\SharedMemoryCOM.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="SharedMemoryServer\SharedMemoryServer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="SharedMemoryClient\SharedMemoryClient.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="SharedMemoryCOM">
+        <MSBuild Projects="SharedMemoryCOM\SharedMemoryCOM.dproj"/>
+    </Target>
+    <Target Name="SharedMemoryCOM:Clean">
+        <MSBuild Projects="SharedMemoryCOM\SharedMemoryCOM.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SharedMemoryCOM:Make">
+        <MSBuild Projects="SharedMemoryCOM\SharedMemoryCOM.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SharedMemoryServer">
+        <MSBuild Projects="SharedMemoryServer\SharedMemoryServer.dproj"/>
+    </Target>
+    <Target Name="SharedMemoryServer:Clean">
+        <MSBuild Projects="SharedMemoryServer\SharedMemoryServer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SharedMemoryServer:Make">
+        <MSBuild Projects="SharedMemoryServer\SharedMemoryServer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SharedMemoryClient">
+        <MSBuild Projects="SharedMemoryClient\SharedMemoryClient.dproj"/>
+    </Target>
+    <Target Name="SharedMemoryClient:Clean">
+        <MSBuild Projects="SharedMemoryClient\SharedMemoryClient.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SharedMemoryClient:Make">
+        <MSBuild Projects="SharedMemoryClient\SharedMemoryClient.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="SharedMemoryCOM;SharedMemoryServer;SharedMemoryClient"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="SharedMemoryCOM:Clean;SharedMemoryServer:Clean;SharedMemoryClient:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="SharedMemoryCOM:Make;SharedMemoryServer:Make;SharedMemoryClient:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

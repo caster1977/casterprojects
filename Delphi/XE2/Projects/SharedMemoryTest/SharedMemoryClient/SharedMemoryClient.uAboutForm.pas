@@ -12,7 +12,8 @@ uses
   PlatformDefaultStyleActnCtrls,
   Controls,
   Graphics,
-  CastersPackage.uTGSFileVersionInfo;
+  AboutPackage.uTGSFileVersionInfo,
+  System.Actions;
 
 type
   TAboutForm = class(TForm)
