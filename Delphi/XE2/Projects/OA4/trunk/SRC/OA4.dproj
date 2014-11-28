@@ -72,6 +72,7 @@
         <DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <Icon_MainIcon>OA4_Icon.ico</Icon_MainIcon>
         <DCC_Define>Platform32bit;$(DCC_Define)</DCC_Define>
         <DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
     </PropertyGroup>
@@ -80,18 +81,20 @@
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
+        <Icon_MainIcon>OA4_Icon.ico</Icon_MainIcon>
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
         <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <Icon_MainIcon>OA4_Icon.ico</Icon_MainIcon>
         <VerInfo_Debug>true</VerInfo_Debug>
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <VerInfo_Build>140</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=АРМ оператора услуги &apos;&apos;Отдых и развлечения&apos;&apos;;FileVersion=4.1.0.140;InternalName=OA4;LegalCopyright=(C)opyright 2007-2011 by Vlad DraCooLa;LegalTrademarks=;OriginalFilename=OA4.exe;ProductName=OA4;ProductVersion=4.1.0.135;Comments=</VerInfo_Keys>
+        <VerInfo_Build>154</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=АРМ оператора услуги &apos;&apos;Отдых и развлечения&apos;&apos;;FileVersion=4.1.0.154;InternalName=OA4;LegalCopyright=(C)opyright 2007-2011 by Vlad DraCooLa;LegalTrademarks=;OriginalFilename=OA4.exe;ProductName=OA4;ProductVersion=4.1.0.135;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">

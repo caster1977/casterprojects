@@ -17,7 +17,7 @@ uses
   Mask;
 
 type
-  TSetPasswordForm=class(TForm)
+  TSetPasswordForm = class(TForm)
     Panel1: TPanel;
     edbxPassword: TEdit;
     edbxConfirmation: TMaskEdit;
@@ -37,21 +37,21 @@ implementation
 
 procedure TSetPasswordForm.chkbxChange(Sender: TObject);
 begin
-  btnOk.Enabled:=edbxPassword.Text=edbxConfirmation.Text;
+  btnOk.Enabled := edbxPassword.Text = edbxConfirmation.Text;
 end;
 
 procedure TSetPasswordForm.chkbxShowPasswordClick(Sender: TObject);
 begin
   if chkbxShowPassword.Checked then
-    begin
-      edbxPassword.PasswordChar:=#0;
-      edbxConfirmation.PasswordChar:=#0;
-    end
+  begin
+    edbxPassword.PasswordChar := #0;
+    edbxConfirmation.PasswordChar := #0;
+  end
   else
-    begin
-      edbxPassword.PasswordChar:='*';
-      edbxConfirmation.PasswordChar:='*';
-    end;
+  begin
+    edbxPassword.PasswordChar := '*';
+    edbxConfirmation.PasswordChar := '*';
+  end;
 end;
 
 end.

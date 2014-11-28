@@ -69,8 +69,10 @@ begin
 
   pbClearingTotal.Position := pbClearingTotal.Min;
   pbClearingTotal.Step := 1;
-  pbClearingTotal.Max := ((integer(chkbxClearingMeasureTable.Enabled and chkbxClearingMeasureTable.Checked)) * 4) +
-    ((integer(chkbxClearingOrganizationTable.Enabled and chkbxClearingOrganizationTable.Checked)) * 8);
+  pbClearingTotal.Max :=
+    ((integer(chkbxClearingMeasureTable.Enabled and chkbxClearingMeasureTable.Checked)) * 4) +
+    ((integer(chkbxClearingOrganizationTable.Enabled and
+    chkbxClearingOrganizationTable.Checked)) * 8);
 
   // добавление действий по очистке прочих таблиц делать тут
 
@@ -88,11 +90,13 @@ begin
         sbClearing.SimpleText := 'Попытка получения списка "пустых" удалённых мероприятий...';
         pbClearingMeasuresDetail.Position := pbClearingMeasuresDetail.Min;
         Application.ProcessMessages;
-        q := 'SELECT msr_id FROM ' + MainForm.Configuration.sMySQLDatabase + '._msr WHERE msr_erased="1" ' +
-          'AND ISNULL(msr_start_datetime) ' + 'AND ISNULL(msr_stop_datetime) ' + 'AND (msr_is_premier="0") ' +
-          'AND (msr_is_tour="0") ' + 'AND (msr_for_children="0") ' + 'AND (msr_for_teenagers="0") ' +
+        q := 'SELECT msr_id FROM ' + MainForm.Configuration.sMySQLDatabase +
+          '._msr WHERE msr_erased="1" ' + 'AND ISNULL(msr_start_datetime) ' +
+          'AND ISNULL(msr_stop_datetime) ' + 'AND (msr_is_premier="0") ' + 'AND (msr_is_tour="0") '
+          + 'AND (msr_for_children="0") ' + 'AND (msr_for_teenagers="0") ' +
           'AND (msr_for_adults_only="0") ' + 'AND (ISNULL(msr_type) OR (TRIM(msr_type)="")) ' +
-          'AND (ISNULL(msr_name) OR (TRIM(msr_name)="")) ' + 'AND (ISNULL(msr_author) OR (TRIM(msr_author)="")) ' +
+          'AND (ISNULL(msr_name) OR (TRIM(msr_name)="")) ' +
+          'AND (ISNULL(msr_author) OR (TRIM(msr_author)="")) ' +
           'AND (ISNULL(msr_producer) OR (TRIM(msr_producer)="")) ' +
           'AND (ISNULL(msr_performer) OR (TRIM(msr_performer)="")) ' +
           'AND (ISNULL(msr_organizer) OR (TRIM(msr_organizer)="")) ' +
@@ -111,22 +115,24 @@ begin
             i := mysql_num_rows(ResultSet);
             if i >= 0 then
             begin
-              MainForm.LogThis('Количество строк выборки равно ' + IntToStr(i) + '.', GroupGUID, lmtInfo);
+              MainForm.LogThis('Количество строк выборки равно ' + IntToStr(i) + '.',
+                GroupGUID, lmtInfo);
               pbClearingMeasuresDetail.Max := i;
               for j := 0 to i - 1 do
               begin
-                MainForm.LogThis('Получение очередной строки выборки (' + IntToStr(j) + ').', GroupGUID, lmtInfo);
+                MainForm.LogThis('Получение очередной строки выборки (' + IntToStr(j) + ').',
+                  GroupGUID, lmtInfo);
                 ResultRow := mysql_fetch_row(ResultSet);
                 if ResultRow <> nil then
                 begin
-                  MainForm.LogThis('Операция получения очередной строки выборки (' + IntToStr(j) + ') прошла успешно.',
-                    GroupGUID, lmtInfo);
+                  MainForm.LogThis('Операция получения очередной строки выборки (' + IntToStr(j) +
+                    ') прошла успешно.', GroupGUID, lmtInfo);
                   slTemp.Add(string(ResultRow[0]));
                 end
                 else
                 begin
-                  s := 'Возникла ошибка при загрузке данных строки выборки (порядковый номер строки равен ' +
-                    IntToStr(j) + ')!';
+                  s := 'Возникла ошибка при загрузке данных строки выборки (порядковый номер строки равен '
+                    + IntToStr(j) + ')!';
                   bError := True;
                 end;
                 pbClearingMeasuresDetail.StepIt;
@@ -145,7 +151,8 @@ begin
           end;
           if ResultSet <> nil then
           begin
-            MainForm.LogThis('Освобождение ресурсов, занятых результатом выборки...', GroupGUID, lmtInfo);
+            MainForm.LogThis('Освобождение ресурсов, занятых результатом выборки...',
+              GroupGUID, lmtInfo);
             mysql_free_result(ResultSet);
           end;
         end
@@ -159,7 +166,8 @@ begin
           MainForm.LogThis(s, GroupGUID, lmtError);
           Screen.Cursor := crDefault;
           Application.ProcessMessages;
-          MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'), MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
+          MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'),
+            MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
         end
         else
         begin
@@ -178,10 +186,11 @@ begin
             sbClearing.SimpleText :=
               'Составление списка помеченных на удаление "пустых" мероприятий на которых не числятся телефонные номера...';
             Application.ProcessMessages;
-            q := 'SELECT COUNT(*) FROM ' + MainForm.Configuration.sMySQLDatabase + '._phn WHERE phn_owner_id=' + slTemp[j] +
-              ' AND phn_owner_is_measure="1";';
+            q := 'SELECT COUNT(*) FROM ' + MainForm.Configuration.sMySQLDatabase +
+              '._phn WHERE phn_owner_id=' + slTemp[j] + ' AND phn_owner_is_measure="1";';
             MainForm.LogThis(q, GroupGUID, lmtSQL);
-            i := mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)), Length(q));
+            i := mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)),
+              Length(q));
             if i = 0 then
             begin
               MainForm.LogThis('Запрос выполнен успешно.', GroupGUID, lmtInfo);
@@ -192,19 +201,21 @@ begin
                 i := mysql_num_rows(ResultSet);
                 if i = 1 then
                 begin
-                  MainForm.LogThis('Количество строк выборки соответствует требуемому (1).', GroupGUID, lmtInfo);
+                  MainForm.LogThis('Количество строк выборки соответствует требуемому (1).',
+                    GroupGUID, lmtInfo);
                   ResultRow := mysql_fetch_row(ResultSet);
                   if ResultRow <> nil then
                   begin
-                    MainForm.LogThis('Операция получения строки выборки прошла успешно.', GroupGUID, lmtInfo);
+                    MainForm.LogThis('Операция получения строки выборки прошла успешно.',
+                      GroupGUID, lmtInfo);
                     k := StrToIntDef(string(ResultRow[0]), -1);
                     if k > -1 then
                     begin
                       if k = 0 then
                       begin
                         // подмена обработанной строки новым запросом
-                        slTemp[j] := 'DELETE FROM ' + MainForm.Configuration.sMySQLDatabase + '._msr WHERE msr_id=' +
-                          slTemp[j] + ';';
+                        slTemp[j] := 'DELETE FROM ' + MainForm.Configuration.sMySQLDatabase +
+                          '._msr WHERE msr_id=' + slTemp[j] + ';';
                       end
                       else
                       begin
@@ -221,14 +232,15 @@ begin
                   end
                   else
                   begin
-                    s := 'Возникла ошибка при загрузке данных строки выборки (порядковый номер строки равен ' +
-                      IntToStr(j) + ')!';
+                    s := 'Возникла ошибка при загрузке данных строки выборки (порядковый номер строки равен '
+                      + IntToStr(j) + ')!';
                     bError := True;
                   end;
                 end
                 else
                 begin
-                  s := 'Количество полученных строк (' + IntToStr(i) + ') не соответствует требуемому (1)!';
+                  s := 'Количество полученных строк (' + IntToStr(i) +
+                    ') не соответствует требуемому (1)!';
                   bError := True;
                 end;
               end
@@ -239,13 +251,15 @@ begin
               end;
               if ResultSet <> nil then
               begin
-                MainForm.LogThis('Освобождение ресурсов, занятых результатом выборки...', GroupGUID, lmtInfo);
+                MainForm.LogThis('Освобождение ресурсов, занятых результатом выборки...',
+                  GroupGUID, lmtInfo);
                 mysql_free_result(ResultSet);
               end;
             end
             else
             begin
-              s := 'Возникла ошибка попытке проверки мероприятия ID#' + slTemp[j] + ' на наличие номеров телефонов!';
+              s := 'Возникла ошибка попытке проверки мероприятия ID#' + slTemp[j] +
+                ' на наличие номеров телефонов!';
               bError := True;
             end;
           end;
@@ -256,7 +270,8 @@ begin
           MainForm.LogThis(s, GroupGUID, lmtError);
           Screen.Cursor := crDefault;
           Application.ProcessMessages;
-          MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'), MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
+          MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'),
+            MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
         end
         else
         begin
@@ -291,19 +306,23 @@ begin
             Application.ProcessMessages;
             q := slTemp[j];
             MainForm.LogThis(q, GroupGUID, lmtSQL);
-            i := mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)), Length(q));
+            i := mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)),
+              Length(q));
             if i = 0 then
             begin
               MainForm.LogThis('Запрос выполнен успешно.', GroupGUID, lmtInfo);
               i := mysql_affected_rows(MainForm.MySQLConnectionHandler);
-              MainForm.LogThis('Количество удалённых строк равно ' + IntToStr(i) + '.', GroupGUID, lmtInfo);
+              MainForm.LogThis('Количество удалённых строк равно ' + IntToStr(i) + '.',
+                GroupGUID, lmtInfo);
               if i = 1 then
               begin
-                MainForm.LogThis('Удаление записи таблицы мероприятий произведена успешно.', GroupGUID, lmtInfo)
+                MainForm.LogThis('Удаление записи таблицы мероприятий произведена успешно.',
+                  GroupGUID, lmtInfo)
               end
               else
               begin
-                s := 'Количество удалённых строк (' + IntToStr(i) + ') не соответствует требуемому (1)!';
+                s := 'Количество удалённых строк (' + IntToStr(i) +
+                  ') не соответствует требуемому (1)!';
                 bError := True;
               end
             end
@@ -320,7 +339,8 @@ begin
           MainForm.LogThis(s, GroupGUID, lmtError);
           Screen.Cursor := crDefault;
           Application.ProcessMessages;
-          MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'), MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
+          MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'),
+            MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
         end
         else
         begin
@@ -334,7 +354,8 @@ begin
   end;
 
   // очистка таблицы организаций
-  if (not bError) and chkbxClearingOrganizationTable.Enabled and chkbxClearingOrganizationTable.Checked then
+  if (not bError) and chkbxClearingOrganizationTable.Enabled and chkbxClearingOrganizationTable.Checked
+  then
   begin
     pbClearingOrganizationsDetail.Position := pbClearingOrganizationsDetail.Min;
     pbClearingOrganizationsDetail.Step := 1;
@@ -348,8 +369,9 @@ begin
         sbClearing.SimpleText := 'Попытка получения списка "пустых" удалённых организаций...';
         pbClearingOrganizationsDetail.Position := pbClearingOrganizationsDetail.Min;
         Application.ProcessMessages;
-        q := 'SELECT org_id FROM ' + MainForm.Configuration.sMySQLDatabase + '._org WHERE org_erased="1" ' +
-          'AND (ISNULL(_org_type) OR (TRIM(_org_type)="")) ' + 'AND (ISNULL(_org_name) OR (TRIM(_org_name)="")) ' +
+        q := 'SELECT org_id FROM ' + MainForm.Configuration.sMySQLDatabase +
+          '._org WHERE org_erased="1" ' + 'AND (ISNULL(_org_type) OR (TRIM(_org_type)="")) ' +
+          'AND (ISNULL(_org_name) OR (TRIM(_org_name)="")) ' +
           'AND (ISNULL(_org_address) OR (TRIM(_org_address)="")) ' +
           'AND (ISNULL(org_how_to_reach) OR (TRIM(org_how_to_reach)="")) ' +
           'AND (ISNULL(org_work_time) OR (TRIM(org_work_time)="")) ' +
@@ -367,22 +389,24 @@ begin
             i := mysql_num_rows(ResultSet);
             if i >= 0 then
             begin
-              MainForm.LogThis('Количество строк выборки равно ' + IntToStr(i) + '.', GroupGUID, lmtInfo);
+              MainForm.LogThis('Количество строк выборки равно ' + IntToStr(i) + '.',
+                GroupGUID, lmtInfo);
               pbClearingOrganizationsDetail.Max := i;
               for j := 0 to i - 1 do
               begin
-                MainForm.LogThis('Получение очередной строки выборки (' + IntToStr(j) + ').', GroupGUID, lmtInfo);
+                MainForm.LogThis('Получение очередной строки выборки (' + IntToStr(j) + ').',
+                  GroupGUID, lmtInfo);
                 ResultRow := mysql_fetch_row(ResultSet);
                 if ResultRow <> nil then
                 begin
-                  MainForm.LogThis('Операция получения очередной строки выборки (' + IntToStr(j) + ') прошла успешно.',
-                    GroupGUID, lmtInfo);
+                  MainForm.LogThis('Операция получения очередной строки выборки (' + IntToStr(j) +
+                    ') прошла успешно.', GroupGUID, lmtInfo);
                   slTemp.Add(string(ResultRow[0]));
                 end
                 else
                 begin
-                  s := 'Возникла ошибка при загрузке данных строки выборки (порядковый номер строки равен ' +
-                    IntToStr(j) + ')!';
+                  s := 'Возникла ошибка при загрузке данных строки выборки (порядковый номер строки равен '
+                    + IntToStr(j) + ')!';
                   bError := True;
                 end;
                 pbClearingOrganizationsDetail.StepIt;
@@ -401,7 +425,8 @@ begin
           end;
           if ResultSet <> nil then
           begin
-            MainForm.LogThis('Освобождение ресурсов, занятых результатом выборки...', GroupGUID, lmtInfo);
+            MainForm.LogThis('Освобождение ресурсов, занятых результатом выборки...',
+              GroupGUID, lmtInfo);
             mysql_free_result(ResultSet);
           end;
         end
@@ -415,7 +440,8 @@ begin
           MainForm.LogThis(s, GroupGUID, lmtError);
           Screen.Cursor := crDefault;
           Application.ProcessMessages;
-          MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'), MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
+          MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'),
+            MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
         end
         else
         begin
@@ -434,10 +460,11 @@ begin
             sbClearing.SimpleText :=
               'Составление списка помеченных на удаление "пустых" организаций на которых не числятся телефонные номера...';
             Application.ProcessMessages;
-            q := 'SELECT COUNT(*) FROM ' + MainForm.Configuration.sMySQLDatabase + '._phn WHERE phn_owner_id=' + slTemp[j] +
-              ' AND phn_owner_is_measure="0";';
+            q := 'SELECT COUNT(*) FROM ' + MainForm.Configuration.sMySQLDatabase +
+              '._phn WHERE phn_owner_id=' + slTemp[j] + ' AND phn_owner_is_measure="0";';
             MainForm.LogThis(q, GroupGUID, lmtSQL);
-            i := mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)), Length(q));
+            i := mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)),
+              Length(q));
             if i = 0 then
             begin
               MainForm.LogThis('Запрос выполнен успешно.', GroupGUID, lmtInfo);
@@ -448,11 +475,13 @@ begin
                 i := mysql_num_rows(ResultSet);
                 if i = 1 then
                 begin
-                  MainForm.LogThis('Количество строк выборки соответствует требуемому (1).', GroupGUID, lmtInfo);
+                  MainForm.LogThis('Количество строк выборки соответствует требуемому (1).',
+                    GroupGUID, lmtInfo);
                   ResultRow := mysql_fetch_row(ResultSet);
                   if ResultRow <> nil then
                   begin
-                    MainForm.LogThis('Операция получения строки выборки прошла успешно.', GroupGUID, lmtInfo);
+                    MainForm.LogThis('Операция получения строки выборки прошла успешно.',
+                      GroupGUID, lmtInfo);
                     k := StrToIntDef(string(ResultRow[0]), -1);
                     if k > -1 then
                     begin
@@ -468,14 +497,15 @@ begin
                   end
                   else
                   begin
-                    s := 'Возникла ошибка при загрузке данных строки выборки (порядковый номер строки равен ' +
-                      IntToStr(j) + ')!';
+                    s := 'Возникла ошибка при загрузке данных строки выборки (порядковый номер строки равен '
+                      + IntToStr(j) + ')!';
                     bError := True;
                   end;
                 end
                 else
                 begin
-                  s := 'Количество полученных строк (' + IntToStr(i) + ') не соответствует требуемому (1)!';
+                  s := 'Количество полученных строк (' + IntToStr(i) +
+                    ') не соответствует требуемому (1)!';
                   bError := True;
                 end;
               end
@@ -486,13 +516,15 @@ begin
               end;
               if ResultSet <> nil then
               begin
-                MainForm.LogThis('Освобождение ресурсов, занятых результатом выборки...', GroupGUID, lmtInfo);
+                MainForm.LogThis('Освобождение ресурсов, занятых результатом выборки...',
+                  GroupGUID, lmtInfo);
                 mysql_free_result(ResultSet);
               end;
             end
             else
             begin
-              s := 'Возникла ошибка попытке проверки организации ID#' + slTemp[j] + ' на наличие номеров телефонов!';
+              s := 'Возникла ошибка попытке проверки организации ID#' + slTemp[j] +
+                ' на наличие номеров телефонов!';
               bError := True;
             end;
           end;
@@ -503,7 +535,8 @@ begin
           MainForm.LogThis(s, GroupGUID, lmtError);
           Screen.Cursor := crDefault;
           Application.ProcessMessages;
-          MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'), MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
+          MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'),
+            MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
         end
         else
         begin
@@ -536,10 +569,11 @@ begin
             sbClearing.SimpleText :=
               'Составление списка помеченных на удаление "пустых" организаций на которых не числятся мероприятия...';
             Application.ProcessMessages;
-            q := 'SELECT COUNT(*) FROM ' + MainForm.Configuration.sMySQLDatabase + '._msr WHERE msr_organization_id=' +
-              slTemp[j] + ';';
+            q := 'SELECT COUNT(*) FROM ' + MainForm.Configuration.sMySQLDatabase +
+              '._msr WHERE msr_organization_id=' + slTemp[j] + ';';
             MainForm.LogThis(q, GroupGUID, lmtSQL);
-            i := mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)), Length(q));
+            i := mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)),
+              Length(q));
             if i = 0 then
             begin
               MainForm.LogThis('Запрос выполнен успешно.', GroupGUID, lmtInfo);
@@ -550,11 +584,13 @@ begin
                 i := mysql_num_rows(ResultSet);
                 if i = 1 then
                 begin
-                  MainForm.LogThis('Количество строк выборки соответствует требуемому (1).', GroupGUID, lmtInfo);
+                  MainForm.LogThis('Количество строк выборки соответствует требуемому (1).',
+                    GroupGUID, lmtInfo);
                   ResultRow := mysql_fetch_row(ResultSet);
                   if ResultRow <> nil then
                   begin
-                    MainForm.LogThis('Операция получения строки выборки прошла успешно.', GroupGUID, lmtInfo);
+                    MainForm.LogThis('Операция получения строки выборки прошла успешно.',
+                      GroupGUID, lmtInfo);
                     k := StrToIntDef(string(ResultRow[0]), -1);
                     if k > -1 then
                     begin
@@ -570,14 +606,15 @@ begin
                   end
                   else
                   begin
-                    s := 'Возникла ошибка при загрузке данных строки выборки (порядковый номер строки равен ' +
-                      IntToStr(j) + ')!';
+                    s := 'Возникла ошибка при загрузке данных строки выборки (порядковый номер строки равен '
+                      + IntToStr(j) + ')!';
                     bError := True;
                   end;
                 end
                 else
                 begin
-                  s := 'Количество полученных строк (' + IntToStr(i) + ') не соответствует требуемому (1)!';
+                  s := 'Количество полученных строк (' + IntToStr(i) +
+                    ') не соответствует требуемому (1)!';
                   bError := True;
                 end;
               end
@@ -588,13 +625,15 @@ begin
               end;
               if ResultSet <> nil then
               begin
-                MainForm.LogThis('Освобождение ресурсов, занятых результатом выборки...', GroupGUID, lmtInfo);
+                MainForm.LogThis('Освобождение ресурсов, занятых результатом выборки...',
+                  GroupGUID, lmtInfo);
                 mysql_free_result(ResultSet);
               end;
             end
             else
             begin
-              s := 'Возникла ошибка попытке проверки организации ID#' + slTemp[j] + ' на наличие мероприятий!';
+              s := 'Возникла ошибка попытке проверки организации ID#' + slTemp[j] +
+                ' на наличие мероприятий!';
               bError := True;
             end;
           end;
@@ -605,7 +644,8 @@ begin
           MainForm.LogThis(s, GroupGUID, lmtError);
           Screen.Cursor := crDefault;
           Application.ProcessMessages;
-          MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'), MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
+          MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'),
+            MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
         end
         else
         begin
@@ -639,12 +679,14 @@ begin
           begin
             if not bError then
             begin
-              sbClearing.SimpleText := 'Составление списка записей таблицы фирм, подлежащих удалению...';
+              sbClearing.SimpleText :=
+                'Составление списка записей таблицы фирм, подлежащих удалению...';
               Application.ProcessMessages;
-              q := 'SELECT org_firm_code FROM ' + MainForm.Configuration.sMySQLDatabase + '._org WHERE org_id=' +
-                slTemp[j] + ';';
+              q := 'SELECT org_firm_code FROM ' + MainForm.Configuration.sMySQLDatabase +
+                '._org WHERE org_id=' + slTemp[j] + ';';
               MainForm.LogThis(q, GroupGUID, lmtSQL);
-              i := mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)), Length(q));
+              i := mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)),
+                Length(q));
               if i = 0 then
               begin
                 MainForm.LogThis('Запрос выполнен успешно.', GroupGUID, lmtInfo);
@@ -655,23 +697,26 @@ begin
                   i := mysql_num_rows(ResultSet);
                   if i = 1 then
                   begin
-                    MainForm.LogThis('Количество строк выборки соответствует требуемому (1).', GroupGUID, lmtInfo);
+                    MainForm.LogThis('Количество строк выборки соответствует требуемому (1).',
+                      GroupGUID, lmtInfo);
                     ResultRow := mysql_fetch_row(ResultSet);
                     if ResultRow <> nil then
                     begin
-                      MainForm.LogThis('Операция получения строки выборки прошла успешно.', GroupGUID, lmtInfo);
+                      MainForm.LogThis('Операция получения строки выборки прошла успешно.',
+                        GroupGUID, lmtInfo);
                       slTemp2.Add(string(ResultRow[0]));
                     end
                     else
                     begin
-                      s := 'Возникла ошибка при загрузке данных строки выборки (порядковый номер строки равен ' +
-                        IntToStr(j) + ')!';
+                      s := 'Возникла ошибка при загрузке данных строки выборки (порядковый номер строки равен '
+                        + IntToStr(j) + ')!';
                       bError := True;
                     end;
                   end
                   else
                   begin
-                    s := 'Количество полученных строк (' + IntToStr(i) + ') не соответствует требуемому (1)!';
+                    s := 'Количество полученных строк (' + IntToStr(i) +
+                      ') не соответствует требуемому (1)!';
                     bError := True;
                   end;
                 end
@@ -682,7 +727,8 @@ begin
                 end;
                 if ResultSet <> nil then
                 begin
-                  MainForm.LogThis('Освобождение ресурсов, занятых результатом выборки...', GroupGUID, lmtInfo);
+                  MainForm.LogThis('Освобождение ресурсов, занятых результатом выборки...',
+                    GroupGUID, lmtInfo);
                   mysql_free_result(ResultSet);
                 end;
               end
@@ -699,7 +745,8 @@ begin
             MainForm.LogThis(s, GroupGUID, lmtError);
             Screen.Cursor := crDefault;
             Application.ProcessMessages;
-            MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'), MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
+            MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'),
+              MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
           end
           else
           begin
@@ -719,19 +766,24 @@ begin
             begin
               sbClearing.SimpleText := 'Попытка удаления записей таблицы организаций...';
               Application.ProcessMessages;
-              q := 'DELETE FROM ' + MainForm.Configuration.sMySQLDatabase + '._org WHERE org_id=' + slTemp[j] + ';';
+              q := 'DELETE FROM ' + MainForm.Configuration.sMySQLDatabase + '._org WHERE org_id=' +
+                slTemp[j] + ';';
               MainForm.LogThis(q, GroupGUID, lmtSQL);
-              i := mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)), Length(q));
+              i := mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)),
+                Length(q));
               if i = 0 then
               begin
                 MainForm.LogThis('Запрос выполнен успешно.', GroupGUID, lmtInfo);
                 i := mysql_affected_rows(MainForm.MySQLConnectionHandler);
-                MainForm.LogThis('Количество удалённых строк равно ' + IntToStr(i) + '.', GroupGUID, lmtInfo);
+                MainForm.LogThis('Количество удалённых строк равно ' + IntToStr(i) + '.',
+                  GroupGUID, lmtInfo);
                 if i = 1 then
-                  MainForm.LogThis('Удаление записи таблицы организаций произведена успешно.', GroupGUID, lmtInfo)
+                  MainForm.LogThis('Удаление записи таблицы организаций произведена успешно.',
+                    GroupGUID, lmtInfo)
                 else
                 begin
-                  s := 'Количество удалённых строк (' + IntToStr(i) + ') не соответствует требуемому (1)!';
+                  s := 'Количество удалённых строк (' + IntToStr(i) +
+                    ') не соответствует требуемому (1)!';
                   bError := True;
                 end
               end
@@ -748,7 +800,8 @@ begin
             MainForm.LogThis(s, GroupGUID, lmtError);
             Screen.Cursor := crDefault;
             Application.ProcessMessages;
-            MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'), MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
+            MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'),
+              MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
           end
           else
           begin
@@ -770,17 +823,21 @@ begin
               Application.ProcessMessages;
               q := 'DELETE FROM minsk.firma WHERE firm_code=' + slTemp2[j] + ';';
               MainForm.LogThis(q, GroupGUID, lmtSQL);
-              i := mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)), Length(q));
+              i := mysql_real_query(MainForm.MySQLConnectionHandler, PAnsiChar(AnsiString(q)),
+                Length(q));
               if i = 0 then
               begin
                 MainForm.LogThis('Запрос выполнен успешно.', GroupGUID, lmtInfo);
                 i := mysql_affected_rows(MainForm.MySQLConnectionHandler);
-                MainForm.LogThis('Количество удалённых строк равно ' + IntToStr(i) + '.', GroupGUID, lmtInfo);
+                MainForm.LogThis('Количество удалённых строк равно ' + IntToStr(i) + '.',
+                  GroupGUID, lmtInfo);
                 if i = 1 then
-                  MainForm.LogThis('Удаление записи таблицы фирм произведена успешно.', GroupGUID, lmtInfo)
+                  MainForm.LogThis('Удаление записи таблицы фирм произведена успешно.',
+                    GroupGUID, lmtInfo)
                 else
                 begin
-                  s := 'Количество удалённых строк (' + IntToStr(i) + ') не соответствует требуемому (1)!';
+                  s := 'Количество удалённых строк (' + IntToStr(i) +
+                    ') не соответствует требуемому (1)!';
                   bError := True;
                 end
               end
@@ -797,7 +854,8 @@ begin
             MainForm.LogThis(s, GroupGUID, lmtError);
             Screen.Cursor := crDefault;
             Application.ProcessMessages;
-            MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'), MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
+            MessageBox(Handle, PChar(s), PChar('OA4 - Ошибка!'),
+              MB_OK + MB_ICONERROR + MB_DEFBUTTON1);
           end
           else
           begin
@@ -863,12 +921,18 @@ begin
     (chkbxClearingUserTable.Enabled and chkbxClearingUserTable.Checked);
   btnClearing.Enabled := b;
   btnClearing.default := b;
-  pbClearingPhonesDetail.Visible := chkbxClearingPhoneTable.Enabled and chkbxClearingPhoneTable.Checked;
-  pbClearingOrganizationsDetail.Visible := chkbxClearingOrganizationTable.Enabled and chkbxClearingOrganizationTable.Checked;
-  pbClearingMeasuresDetail.Visible := chkbxClearingMeasureTable.Enabled and chkbxClearingMeasureTable.Checked;
-  pbClearingMessagesDetail.Visible := chkbxClearingMessageTable.Enabled and chkbxClearingMessageTable.Checked;
-  pbClearingEventsDetail.Visible := chkbxClearingEventTable.Enabled and chkbxClearingEventTable.Checked;
-  pbClearingUsersDetail.Visible := chkbxClearingUserTable.Enabled and chkbxClearingUserTable.Checked;
+  pbClearingPhonesDetail.Visible := chkbxClearingPhoneTable.Enabled and
+    chkbxClearingPhoneTable.Checked;
+  pbClearingOrganizationsDetail.Visible := chkbxClearingOrganizationTable.Enabled and
+    chkbxClearingOrganizationTable.Checked;
+  pbClearingMeasuresDetail.Visible := chkbxClearingMeasureTable.Enabled and
+    chkbxClearingMeasureTable.Checked;
+  pbClearingMessagesDetail.Visible := chkbxClearingMessageTable.Enabled and
+    chkbxClearingMessageTable.Checked;
+  pbClearingEventsDetail.Visible := chkbxClearingEventTable.Enabled and
+    chkbxClearingEventTable.Checked;
+  pbClearingUsersDetail.Visible := chkbxClearingUserTable.Enabled and
+    chkbxClearingUserTable.Checked;
 end;
 
 end.
