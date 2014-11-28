@@ -1,4 +1,4 @@
-unit uTMainForm;
+unit MAPITest.uTMainForm;
 
 interface
 
@@ -17,9 +17,17 @@ uses
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   Vcl.ExtActns,
-  MAPI, IdMessage, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
-  IdExplicitTLSClientServerBase, IdMessageClient, IdSMTPBase, IdSMTP,
-  CastersPackage.uTAboutWindow;
+  MAPI,
+  IdMessage,
+  IdBaseComponent,
+  IdComponent,
+  IdTCPConnection,
+  IdTCPClient,
+  IdExplicitTLSClientServerBase,
+  IdMessageClient,
+  IdSMTPBase,
+  IdSMTP,
+  AboutPackage.uTAboutWindow;
 
 type
   TMainForm = class(TForm)
@@ -37,7 +45,7 @@ type
     IdMessage: TIdMessage;
     Button2: TButton;
     actSendByOutlook: TAction;
-    AboutWindow1: TAboutWindow;
+    AboutWindow: TAboutWindow;
     procedure actSendByMAPIUpdate(Sender: TObject);
     procedure actSendByMAPIExecute(Sender: TObject);
     procedure actSendBySMTPExecute(Sender: TObject);
@@ -74,22 +82,25 @@ implementation
 {$R *.dfm}
 
 uses
-  System.Win.ComObj;
+  System.Win.ComObj,
+  System.AnsiStrings;
 
 procedure TMainForm.actSendByMAPIExecute(Sender: TObject);
 var
   Letter: TMapiMessage;
   session: LPLHANDLE;
-  c: Cardinal;
+  {c: Cardinal;}
 begin
   Letter := GetLetter;
-  //c := MapiLogOn(Application.Handle, '', '', MAPI_LOGON_UI, 0, @session);
-  MapiSendMail(NativeUInt(session), Application.Handle, Letter, 0{MAPI_DIALOG or  MAPI_LOGON_UI or MAPI_NEW_SESSION}, 0);
+  // c := MapiLogOn(Application.Handle, '', '', MAPI_LOGON_UI, 0, @session);
+  MapiSendMail(NativeUInt(session), Application.Handle, Letter,
+    0 { MAPI_DIALOG or  MAPI_LOGON_UI or MAPI_NEW_SESSION } , 0);
 end;
 
 procedure TMainForm.actSendByMAPIUpdate(Sender: TObject);
 begin
-  actSendByMAPI.Enabled := (Trim(ledFrom.Text) <> EmptyStr) and (Trim(ledTo.Text) <> EmptyStr) and (Trim(ledSubject.Text) <> EmptyStr) and (Trim(meBody.Lines.Text) <> EmptyStr);
+  actSendByMAPI.Enabled := (Trim(ledFrom.Text) <> EmptyStr) and (Trim(ledTo.Text) <> EmptyStr) and
+    (Trim(ledSubject.Text) <> EmptyStr) and (Trim(meBody.Lines.Text) <> EmptyStr);
 end;
 
 function TMainForm.GetSubject: LPSTR;
@@ -100,7 +111,7 @@ begin
   s := Trim(ledSubject.Text);
   if s <> EmptyStr then
   begin
-    Result := StrNew(PAnsiChar(AnsiString(s)));
+    Result := System.AnsiStrings.StrNew(PAnsiChar(AnsiString(s)));
   end;
 end;
 
@@ -112,7 +123,7 @@ begin
   s := Trim(meBody.Lines.Text);
   if s <> EmptyStr then
   begin
-    Result := StrNew(PAnsiChar(AnsiString(s)));
+    Result := System.AnsiStrings.StrNew(PAnsiChar(AnsiString(s)));
   end;
 end;
 
@@ -124,7 +135,7 @@ begin
   s := Trim(ledFrom.Text);
   if s <> EmptyStr then
   begin
-    Result := StrNew(PAnsiChar(AnsiString(s)));
+    Result := System.AnsiStrings.StrNew(PAnsiChar(AnsiString(s)));
   end;
 end;
 
@@ -139,7 +150,8 @@ begin
   Result.flFlags := 0; { unread,return receipt }
   Result.lpOriginator := Originator; { Originator descriptor }
   Result.nRecipCount := 1; { Number of recipients }
-  Result.lpRecips := Recipient; // PMapiRecipDesc;  { Recipient descriptors                  }
+  Result.lpRecips := Recipient;
+  // PMapiRecipDesc;  { Recipient descriptors                  }
   Result.nFileCount := 0; { # of file attachments }
   Result.lpFiles := nil; { Attachment descriptors }
 end;
@@ -164,7 +176,7 @@ begin
   s := Trim(ledTo.Text);
   if s <> EmptyStr then
   begin
-    Result := StrNew(PAnsiChar(AnsiString(s)));
+    Result := System.AnsiStrings.StrNew(PAnsiChar(AnsiString(s)));
   end;
 end;
 
@@ -182,7 +194,8 @@ end;
 
 procedure TMainForm.actSendBySMTPUpdate(Sender: TObject);
 begin
-  actSendBySMTP.Enabled := (Trim(ledFrom.Text) <> EmptyStr) and (Trim(ledTo.Text) <> EmptyStr) and (Trim(ledSubject.Text) <> EmptyStr) and (Trim(meBody.Lines.Text) <> EmptyStr);
+  actSendBySMTP.Enabled := (Trim(ledFrom.Text) <> EmptyStr) and (Trim(ledTo.Text) <> EmptyStr) and
+    (Trim(ledSubject.Text) <> EmptyStr) and (Trim(meBody.Lines.Text) <> EmptyStr);
 end;
 
 procedure TMainForm.actSendBySMTPExecute(Sender: TObject);
@@ -200,10 +213,10 @@ begin
   IdSMTP.Password := 'Njhgtlf2009';
   IdSMTP.Port := 25;
 
-//  IdSMTP.Host := 'smtp.yandex.ru';
-//  IdSMTP.Port := 25;
-//  IdSMTP.Username := 'caster1977';
-//  IdSMTP.Password := 'grandmaster';
+  // IdSMTP.Host := 'smtp.yandex.ru';
+  // IdSMTP.Port := 25;
+  // IdSMTP.Username := 'caster1977';
+  // IdSMTP.Password := 'grandmaster';
   IdSMTP.Connect;
   try
     if IdSMTP.Connected then
@@ -234,7 +247,7 @@ begin
   vMailItem.Subject := string(Subject);
   vMailItem.Body := string(Body);
   vMailItem.Recipients.Add(string(Recip));
-  //vMailItem.Attachments.Add('C:\temp\sample.txt');
+  // vMailItem.Attachments.Add('C:\temp\sample.txt');
   vMailItem.Send;
 
   VarClear(Outlook);
@@ -242,7 +255,8 @@ end;
 
 procedure TMainForm.actSendByOutlookUpdate(Sender: TObject);
 begin
-  actSendByOutlook.Enabled := (Trim(ledFrom.Text) <> EmptyStr) and (Trim(ledTo.Text) <> EmptyStr) and (Trim(ledSubject.Text) <> EmptyStr) and (Trim(meBody.Lines.Text) <> EmptyStr);
+  actSendByOutlook.Enabled := (Trim(ledFrom.Text) <> EmptyStr) and (Trim(ledTo.Text) <> EmptyStr)
+    and (Trim(ledSubject.Text) <> EmptyStr) and (Trim(meBody.Lines.Text) <> EmptyStr);
 end;
 
 end.

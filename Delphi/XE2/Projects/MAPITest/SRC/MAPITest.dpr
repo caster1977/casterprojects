@@ -2,7 +2,7 @@ program MAPITest;
 
 uses
   Vcl.Forms,
-  uTMainForm in 'uTMainForm.pas' {MainForm};
+  MAPITest.uTMainForm in 'UI\MAPITest.uTMainForm.pas' {MainForm};
 
 {$R *.res}
 
