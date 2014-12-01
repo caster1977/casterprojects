@@ -38,7 +38,8 @@ uses
   CastersPackage.uTStatusBarEx,
   CastersPackage.uTApplicationOnHint,
   DBUShared.uIDBUServerLogRecords,
-  System.SyncObjs;
+  System.SyncObjs,
+  LoginPackage.uTLoginWindow;
 
 type
   TMainForm = class(TForm)
@@ -119,6 +120,7 @@ type
     mniRefresh: TMenuItem;
     actActionTesting: TAction;
     mniActionTesting: TMenuItem;
+    LoginWindow: TLoginWindow;
     procedure actAboutExecute(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -208,7 +210,6 @@ uses
   DBUServerManager.Configuration.uTInterface,
   DBUServerManager.uTConfigurationForm,
   DBUShared.uConsts,
-  LoginPackage.uShowLoginForm,
   DBUShared.uTDBUServerLogRecords,
   DBUShared.uIDBUServerLogRecord;
 
@@ -337,7 +338,8 @@ begin
   if Configuration.Section<TInterface>.EnableQuitConfirmation then
   begin
     CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
-      PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
+      PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])),
+      MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
   end;
 end;
 
@@ -381,8 +383,8 @@ begin
   FWindowMessage := RegisterWindowMessage(PWideChar(APPLICATION_NAME));
   if FWindowMessage = 0 then
   begin
-    MessageBox(Handle, PWideChar(RsErrorRegisterWindowMessage), PWideChar(Format(RsErrorCaption, [Application.Title])),
-      MESSAGE_TYPE_ERROR);
+    MessageBox(Handle, PWideChar(RsErrorRegisterWindowMessage),
+      PWideChar(Format(RsErrorCaption, [Application.Title])), MESSAGE_TYPE_ERROR);
   end;
 end;
 
@@ -538,14 +540,14 @@ end;
 
 procedure TMainForm.actConnectExecute(Sender: TObject);
 begin
-  if ShowLoginForm(Self) = mrOk then
+  if LoginWindow.Execute then
   begin
     try
       IdTCPClient.Connect;
       if IdTCPClient.Connected then
       begin
         StateImage.State := True;
-        //ShowMessage(IdTCPClient.IOHandler.ReadLn);
+        // ShowMessage(IdTCPClient.IOHandler.ReadLn);
         actRefresh.Execute;
         lvLog.Visible := True;
       end;
@@ -697,14 +699,14 @@ end;
 
 procedure TMainForm.actAddDBTypeExecute(Sender: TObject);
 var
-  //index: SmallInt;
+  // index: SmallInt;
   db_type: string;
   s: string;
 begin
   IdTCPClient.SendCmd('TCP_ADD_NEW_DATABASE_TYPE');
   db_type := 'db_type';
   IdTCPClient.IOHandler.WriteLn(db_type);
-  //index :=
+  // index :=
   IdTCPClient.IOHandler.ReadSmallInt;
   s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
   ShowMessage(s);
