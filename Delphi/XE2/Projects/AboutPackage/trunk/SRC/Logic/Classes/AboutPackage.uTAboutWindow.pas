@@ -15,7 +15,7 @@ type
     function GetPosition: TPosition;
     procedure SetPosition(const AValue: TPosition);
   published
-    property Position: TPosition read GetPosition write SetPosition default poScreenCenter;
+    property Position: TPosition read GetPosition write SetPosition default poDesktopCenter;
 
   strict private
     FEMail: string;
@@ -48,7 +48,7 @@ uses
 constructor TAboutWindow.Create(AOwner: TComponent);
 begin
   inherited;
-  FPosition := poScreenCenter;
+  FPosition := poDesktopCenter;
   FEMail := 'caster1977@yandex.ru';
 end;
 
@@ -68,10 +68,13 @@ begin
 end;
 
 procedure TAboutWindow.SetEMail(const AValue: string);
+var
+  s: string;
 begin
-  if FEMail <> AValue then
+  s := Trim(AValue);
+  if FEMail <> s then
   begin
-    FEMail := AValue;
+    FEMail := s;
   end;
 end;
 
