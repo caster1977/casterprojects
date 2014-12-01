@@ -27,7 +27,7 @@ object LoginForm: TLoginForm
     Width = 34
     Height = 13
     Caption = '&'#1051#1086#1075#1080#1085':'
-    FocusControl = edbxLogin
+    FocusControl = edtLogin
   end
   object lblPassword: TLabel
     Left = 0
@@ -35,7 +35,7 @@ object LoginForm: TLoginForm
     Width = 41
     Height = 13
     Caption = '&'#1055#1072#1088#1086#1083#1100':'
-    FocusControl = mePassword
+    FocusControl = medtPassword
   end
   object pnlButtons: TPanel
     Left = 0
@@ -82,7 +82,7 @@ object LoginForm: TLoginForm
       TabOrder = 2
     end
   end
-  object edbxLogin: TEdit
+  object edtLogin: TEdit
     Left = 47
     Top = 0
     Width = 237
@@ -92,13 +92,14 @@ object LoginForm: TLoginForm
     TabOrder = 0
     TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1083#1086#1075#1080#1085' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
   end
-  object mePassword: TMaskEdit
+  object medtPassword: TMaskEdit
     Left = 47
     Top = 27
     Width = 237
     Height = 21
     Hint = #1042#1074#1077#1076#1080#1090#1077' '#1042#1072#1096' '#1087#1072#1088#1086#1083#1100
     Anchors = [akLeft, akTop, akRight]
+    PasswordChar = '*'
     TabOrder = 1
     Text = ''
     TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1087#1072#1088#1086#1083#1100' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
@@ -108,7 +109,7 @@ object LoginForm: TLoginForm
     Left = 248
     Top = 8
     Bitmap = {
-      494C010102000400C80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400040110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000005346450053464500534645005346450053464500534645000000

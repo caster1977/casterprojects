@@ -34,6 +34,6 @@ requires
 
 contains
   LoginPackage.uTLoginForm in 'UI\LoginPackage.uTLoginForm.pas' {Form2},
-  LoginPackage.uShowLoginForm in 'Logic\Other\LoginPackage.uShowLoginForm.pas';
+  LoginPackage.uTLoginWindow in 'Logic\Classes\LoginPackage.uTLoginWindow.pas';
 
 end.
