@@ -57,9 +57,8 @@ object ConfigurationForm: TConfigurationForm
         TabOrder = 0
         OnSelect = cmbPageNameSelect
         Items.Strings = (
-          ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
-          ' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1088#1077#1079#1091#1083#1100#1090#1072#1090#1086#1074' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103
-          ' '#1087#1088#1086#1095#1080#1077)
+          ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089'a'
+          ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091)
       end
       object btnNextPage: TButton
         Left = 423
@@ -148,13 +147,13 @@ object ConfigurationForm: TConfigurationForm
     Top = 53
     Width = 462
     Height = 240
-    ActivePage = tsInterface
+    ActivePage = tsConnection
     Align = alClient
     Style = tsButtons
     TabOrder = 1
     TabStop = False
     object tsInterface: TTabSheet
-      Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089#1072
+      Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089'a'
       TabVisible = False
       object gbInterface: TGroupBox
         Left = 0
@@ -221,169 +220,104 @@ object ConfigurationForm: TConfigurationForm
         end
       end
     end
-    object tsResults: TTabSheet
-      Caption = ' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1088#1077#1079#1091#1083#1100#1090#1072#1090#1086#1074' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103
-      ImageIndex = 2
+    object tsConnection: TTabSheet
+      Caption = ' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091
+      ImageIndex = 3
       TabVisible = False
-      object gbConnection: TGroupBox
+      object grpConnection: TGroupBox
         Left = 0
         Top = 0
         Width = 454
         Height = 230
         Align = alClient
         TabOrder = 0
-        DesignSize = (
-          454
-          230)
-        object lblServerName: TLabel
+        object bvlConnection: TBevel
+          Left = 2
+          Top = 15
+          Width = 450
+          Height = 82
+          Align = alTop
+          Shape = bsBottomLine
+        end
+        object lblTimeout: TLabel
           Left = 10
-          Top = 9
-          Width = 199
+          Top = 71
+          Width = 74
           Height = 13
-          Caption = '&1. '#1042#1099#1073#1077#1088#1080#1090#1077' '#1080#1083#1080' '#1074#1074#1077#1076#1080#1090#1077' '#1080#1084#1103' '#1089#1077#1088#1074#1077#1088#1072':'
-          FocusControl = cmbServers
+          Caption = '&'#1058#1072#1081#1084#1072#1091#1090' ('#1089#1077#1082'):'
         end
-        object lblDatabaseName: TLabel
+        object lblPort: TLabel
           Left = 10
-          Top = 174
-          Width = 194
+          Top = 43
+          Width = 68
           Height = 13
-          Caption = '&3. '#1042#1099#1073#1077#1088#1080#1090#1077' '#1073#1072#1079#1091' '#1076#1072#1085#1085#1099#1093' '#1085#1072' '#1089#1077#1088#1074#1077#1088#1077':'
-          Enabled = False
-          FocusControl = cmbDatabaseName
+          Caption = #1053#1086'&'#1084#1077#1088' '#1087#1086#1088#1090#1072':'
         end
-        object lblLogin: TLabel
-          Left = 67
-          Top = 123
-          Width = 30
-          Height = 13
-          Caption = #1051#1086'&'#1075#1080#1085
-          Enabled = False
-          FocusControl = ebLogin
-        end
-        object lblPassword: TLabel
-          Left = 67
-          Top = 150
-          Width = 37
-          Height = 13
-          Caption = #1055#1072'&'#1088#1086#1083#1100
-          Enabled = False
-          FocusControl = mePassword
-        end
-        object lblSecurity: TLabel
+        object lblHost: TLabel
           Left = 10
-          Top = 55
-          Width = 197
+          Top = 16
+          Width = 143
           Height = 13
-          Caption = '&2. '#1044#1083#1103' '#1074#1093#1086#1076#1072' '#1085#1072' '#1089#1077#1088#1074#1077#1088' '#1080#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100':'
-          FocusControl = rbWinNTSecurity
+          Caption = #1053'&'#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077'/'#1072#1076#1088#1077#1089' '#1093#1086#1089#1090#1072':'
         end
-        object cmbServers: TComboBox
-          Left = 43
-          Top = 28
-          Width = 373
-          Height = 21
-          Anchors = [akLeft, akTop, akRight]
-          Sorted = True
-          TabOrder = 0
-          OnChange = cmbServersChange
-          OnDropDown = cmbServersDropDown
-          OnKeyDown = cmbServersKeyDown
-          OnSelect = cmbServersSelect
-        end
-        object cmbDatabaseName: TComboBox
-          Left = 43
-          Top = 193
-          Width = 374
-          Height = 21
-          Style = csDropDownList
-          Anchors = [akLeft, akTop, akRight]
-          Enabled = False
-          TabOrder = 8
-        end
-        object rbWinNTSecurity: TRadioButton
-          Left = 43
-          Top = 74
-          Width = 402
+        object chkEnableStoreLogin: TCheckBox
+          Left = 10
+          Top = 103
+          Width = 435
           Height = 17
-          Action = actUseWinNTSecurity
-          Anchors = [akLeft, akTop, akRight]
-          TabOrder = 2
-          TabStop = True
-        end
-        object rbLoginAndPassword: TRadioButton
-          Left = 43
-          Top = 97
-          Width = 402
-          Height = 17
-          Action = actUseLoginAndPassword
-          Anchors = [akLeft, akTop, akRight]
-          TabOrder = 3
-        end
-        object chkEnableEmptyPassword: TCheckBox
-          Left = 302
-          Top = 149
-          Width = 63
-          Height = 17
-          Action = actEnableEmptyPassword
-          TabOrder = 6
+          Caption = #1047#1072#1087#1086#1084'&'#1080#1085#1072#1090#1100' '#1087#1086#1089#1083#1077#1076#1085#1080#1081' '#1074#1074#1077#1076#1105#1085#1085#1099#1081' '#1083#1086#1075#1080#1085' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
+          TabOrder = 4
         end
         object chkEnableStorePassword: TCheckBox
-          Left = 371
-          Top = 149
-          Width = 74
+          Left = 10
+          Top = 126
+          Width = 435
           Height = 17
-          Action = actEnablePasswordSaving
-          Anchors = [akLeft, akTop, akRight]
-          TabOrder = 7
-        end
-        object ebLogin: TEdit
-          Left = 110
-          Top = 120
-          Width = 186
-          Height = 21
-          Anchors = [akLeft, akTop, akRight]
-          Enabled = False
-          TabOrder = 4
-          OnKeyDown = ebLoginKeyDown
-        end
-        object mePassword: TMaskEdit
-          Left = 110
-          Top = 147
-          Width = 186
-          Height = 21
-          Anchors = [akLeft, akTop, akRight]
-          Enabled = False
-          PasswordChar = '*'
+          Caption = #1047#1072#1087#1086#1084#1080#1085'&'#1072#1090#1100' '#1087#1086#1089#1083#1077#1076#1085#1080#1081' '#1074#1074#1077#1076#1105#1085#1085#1099#1081' '#1087#1072#1088#1086#1083#1100' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
           TabOrder = 5
-          Text = ''
-          OnKeyDown = mePasswordKeyDown
         end
-        object btnRefreshServers: TButton
-          Left = 423
-          Top = 28
-          Width = 22
+        object chkEnableAutoLogon: TCheckBox
+          Left = 10
+          Top = 149
+          Width = 435
+          Height = 17
+          Caption = '&'#1042#1099#1087#1086#1083#1085#1103#1090#1100' '#1074#1093#1086#1076' '#1072#1074#1090#1086#1084#1072#1090#1080#1095#1077#1089#1082#1080
+          TabOrder = 6
+        end
+        object seTimeout: TSpinEdit
+          Left = 159
+          Top = 68
+          Width = 65
+          Height = 22
+          MaxValue = 0
+          MinValue = 0
+          TabOrder = 3
+          Value = 0
+        end
+        object sePort: TSpinEdit
+          Left = 159
+          Top = 40
+          Width = 65
+          Height = 22
+          MaxValue = 65535
+          MinValue = 0
+          TabOrder = 2
+          Value = 0
+        end
+        object cbbHost: TComboBox
+          Left = 159
+          Top = 13
+          Width = 186
           Height = 21
-          Cursor = crHandPoint
-          Action = actRefreshServers
-          Anchors = [akTop, akRight]
-          Images = ImageList
-          ParentShowHint = False
-          ShowHint = True
+          TabOrder = 0
+        end
+        object btnClearHosts: TButton
+          Left = 351
+          Top = 11
+          Width = 75
+          Height = 25
+          Action = actClearHosts
           TabOrder = 1
-        end
-        object btnRefreshDatabases: TButton
-          Left = 423
-          Top = 193
-          Width = 22
-          Height = 21
-          Cursor = crHandPoint
-          Action = actRefreshDatabases
-          Anchors = [akTop, akRight]
-          Images = ImageList
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 9
         end
       end
     end
@@ -412,9 +346,8 @@ object ConfigurationForm: TConfigurationForm
     end
   end
   object ActionList: TActionList
-    OnUpdate = ActionListUpdate
     Left = 408
-    Top = 80
+    Top = 112
     object actCancel: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
       Caption = '&'#1054#1090#1084#1077#1085#1072
@@ -463,47 +396,6 @@ object ConfigurationForm: TConfigurationForm
       OnExecute = actNextPageExecute
       OnUpdate = actNextPageUpdate
     end
-    object actRefreshServers: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      Hint = #1054#1073#1085#1086#1074#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1089#1077#1088#1074#1077#1088#1086#1074'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1103' '#1089#1087#1080#1089#1082#1072' '#1089#1077#1088#1074#1077#1088#1086#1074
-      ImageIndex = 2
-      OnExecute = actRefreshServersExecute
-    end
-    object actRefreshDatabases: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      Hint = 
-        #1054#1073#1085#1086#1074#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1041#1044'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1103' '#1089#1087#1080#1089#1082#1072' '#1073#1072#1079' '#1076#1072#1085#1085#1099#1093' '#1085#1072' '#1074 +
-        #1099#1073#1088#1072#1085#1085#1086#1084' '#1089#1077#1088#1074#1077#1088#1077
-      ImageIndex = 2
-      OnExecute = actRefreshDatabasesExecute
-    end
-    object actUseWinNTSecurity: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      AutoCheck = True
-      Caption = #1074#1089#1090#1088#1086#1077#1085#1085#1091#1102' '#1089#1080#1089#1090#1077#1084#1091' &'#1073#1077#1079#1086#1087#1072#1089#1085#1086#1089#1090#1080' Windows NT'
-      Checked = True
-      OnExecute = actUseWinNTSecurityExecute
-    end
-    object actUseLoginAndPassword: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      AutoCheck = True
-      Caption = #1089#1083#1077#1076#1091#1102#1097#1080#1077' &'#1083#1086#1075#1080#1085' '#1080' '#1087#1072#1088#1086#1083#1100' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103':'
-      OnExecute = actUseLoginAndPasswordExecute
-    end
-    object actEnablePasswordSaving: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      AutoCheck = True
-      Caption = #1089#1086'&'#1093#1088#1072#1085#1080#1090#1100
-      Enabled = False
-      OnExecute = actEnablePasswordSavingExecute
-    end
-    object actEnableEmptyPassword: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      AutoCheck = True
-      Caption = #1087#1091#1089#1090#1086'&'#1081
-      Enabled = False
-      OnExecute = actEnableEmptyPasswordExecute
-    end
     object Action_Help1: TAction_Help
       Category = #1057#1087#1088#1072#1074#1082#1072
       Caption = '&'#1057#1087#1088#1072#1074#1082#1072
@@ -512,23 +404,20 @@ object ConfigurationForm: TConfigurationForm
       ImageIndex = 3
       ShortCut = 112
     end
-    object actEnableStoreTasks: TAction
+    object actClearHosts: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      AutoCheck = True
-      Caption = #1057#1086#1093#1088#1072#1085#1103#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1090#1077#1089#1090#1086#1074' '#1074' '#1087#1088#1086#1092#1080#1083#1077
+      Caption = #1054'&'#1095#1080#1089#1090#1080#1090#1100
+      Hint = #1054#1095#1080#1089#1090#1080#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1095#1080#1089#1090#1082#1080' '#1089#1087#1080#1089#1082#1072' '#1093#1086#1089#1090#1086#1074
+      OnExecute = actClearHostsExecute
+      OnUpdate = actClearHostsUpdate
     end
-  end
-  object ADOConnection: TADOConnection
-    Provider = 'SQLOLEDB.1'
-    Left = 368
-    Top = 120
   end
   object ImageList: TImageList
     AllocBy = 3
-    Left = 336
-    Top = 64
+    Left = 344
+    Top = 112
     Bitmap = {
-      494C010104000800940010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800D80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
