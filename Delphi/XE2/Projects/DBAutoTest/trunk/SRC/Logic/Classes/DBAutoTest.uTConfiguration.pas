@@ -27,9 +27,7 @@ type
 implementation
 
 uses
-  CastersPackage.uIModified,
   System.SysUtils,
-  System.Classes,
   ConfigPackage.uEConfiguration,
   DBAutoTest.Configuration.uTInterface,
   DBAutoTest.Configuration.uTReports,
@@ -37,15 +35,11 @@ uses
   DBAutoTest.Configuration.uTOther,
   DBAutoTest.uTRecents,
   DBAutoTest.uIRecent,
-  Vcl.Dialogs,
   DBAutoTest.uTRecent;
 
 resourcestring
-  RsInterface = 'Интерфейс';
   RsRecents = 'Ранее открытые профили';
   RsRecentProfile = 'Профиль %s';
-  RsOther = 'Прочие';
-  RsReports = 'Отчёты';
   RsQuantity = 'Количество';
   RsConfigurationSaveError = 'Произошла ошибка при попытке записи настроек программы в файл.';
 
@@ -97,7 +91,6 @@ begin
   begin
     with FIniFile do
     begin
-      Recents.Clear;
       for i := 0 to Pred(ReadInteger(RsRecents, RsQuantity, RECENTS_DEFAULT_COUNT)) do
       begin
         s := Format(RsRecentProfile, [IntToStr(i)]);
