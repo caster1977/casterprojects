@@ -46,7 +46,7 @@ type
     property EMail: string read GetEMail nodefault;
 
   public
-    constructor Create(AOwner: TComponent; const ASplash: Boolean; const AEMail: string); reintroduce; virtual;
+    constructor Create(const AOwner: TComponent; const ASplash: Boolean; const AEMail: string); reintroduce; virtual;
   end;
 
 implementation
@@ -62,7 +62,7 @@ resourcestring
   RsVersionInfo = 'Версия %d.%d Release %d Build %d';
   RsCaption = 'О программе "%s"';
 
-constructor TAboutForm.Create(AOwner: TComponent; const ASplash: Boolean; const AEMail: string);
+constructor TAboutForm.Create(const AOwner: TComponent; const ASplash: Boolean; const AEMail: string);
 var
   s: string;
 begin
