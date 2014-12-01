@@ -132,8 +132,6 @@ type
     procedure TrayIconDblClick(Sender: TObject);
     procedure actRestoreUpdate(Sender: TObject);
     procedure TrayIconClick(Sender: TObject);
-    procedure IdTCPClientDisconnected(Sender: TObject);
-    procedure IdTCPClientConnected(Sender: TObject);
     procedure actTestConnectionExecute(Sender: TObject);
     procedure actConnectExecute(Sender: TObject);
     procedure actDisconnectExecute(Sender: TObject);
@@ -201,13 +199,14 @@ implementation
 uses
   Winapi.WinSvc,
   System.SysUtils,
-  Winapi.CommCtrl,
+
   Winapi.Windows,
   Vcl.Dialogs,
   IdGlobal,
-  CastersPackage.uTHackControl,
+
   DBUServerManager.uConsts,
   DBUServerManager.Configuration.uTInterface,
+  DBUServerManager.Configuration.uTConnection,
   DBUServerManager.uTConfigurationForm,
   DBUShared.uConsts,
   DBUShared.uTDBUServerLogRecords,
@@ -232,7 +231,12 @@ procedure TMainForm.actConfigurationExecute(Sender: TObject);
 var
   form: TForm;
 begin
-  form := TConfigurationForm.Create(Self, Configuration);
+  if not Assigned(Configuration) then
+  begin
+    Exit;
+  end;
+
+  form := TConfigurationForm.Create(Self, Configuration, Configuration.CurrentPage);
   if not Assigned(form) then
   begin
     Exit;
@@ -302,6 +306,11 @@ procedure TMainForm.ApplyConfiguration;
 var
   b: Boolean;
 begin
+  if not Assigned(Configuration) then
+  begin
+    Exit;
+  end;
+
   b := Configuration.Section<TInterface>.EnableStatusbar;
   actStatusBar.Checked := b;
   StatusBar.Visible := b;
@@ -311,6 +320,23 @@ begin
   acttbToolBar.Visible := b;
 
   TrayIcon.Visible := (not Visible) or Configuration.Section<TInterface>.EnableAlwaysShowTrayIcon;
+
+  { TODO -c!!!!! :
+    Добавить код переподключения к серверу
+    в случае изменения настроек подключения серверу. }
+
+{  b := IdTCPClient.Connected;
+  if b then
+  begin
+    IdTCPClient.DisconnectNotifyPeer;
+  end;}
+  IdTCPClient.Host := Configuration.Section<TConnection>.Host;
+  IdTCPClient.Port := Configuration.Section<TConnection>.Port;
+  IdTCPClient.ConnectTimeout := Configuration.Section<TConnection>.Timeout;
+  {if b then
+  begin
+    IdTCPClient.Connect;
+  end;}
 end;
 
 destructor TMainForm.Destroy;
@@ -521,16 +547,6 @@ end;
 procedure TMainForm.actRestoreUpdate(Sender: TObject);
 begin
   actRestore.Enabled := not Visible;
-end;
-
-procedure TMainForm.IdTCPClientConnected(Sender: TObject);
-begin
-  // ShowMessage('Connected');
-end;
-
-procedure TMainForm.IdTCPClientDisconnected(Sender: TObject);
-begin
-  // ShowMessage('Disconnected');
 end;
 
 { procedure TMainForm.Lock;

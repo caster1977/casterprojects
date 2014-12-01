@@ -6,16 +6,13 @@ uses
   Winapi.Windows,
   CastersPackage.uISingletonAppSession,
   CastersPackage.uTSingletonAppSession,
-  DBUServerManager.uTMainForm in 'UI\DBUServerManager.uTMainForm.pas' {MainForm},
+  DBUServerManager.uTMainForm in 'UI\DBUServerManager.uTMainForm.pas' {MainForm} ,
   DBUServerManager.uConsts in 'Logic\Other\DBUServerManager.uConsts.pas',
-  DBUServerManager.Configuration.uTInterface in 'Logic\Classes\DBUServerManager.Configuration.uTInterface.pas',
-  DBUServerManager.Configuration.uTConnection in 'Logic\Classes\DBUServerManager.Configuration.uTConnection.pas',
-  DBUServerManager.Configuration.uTOther in 'Logic\Classes\DBUServerManager.Configuration.uTOther.pas',
+  DBUServerManager.Configuration.uTInterface
+    in 'Logic\Classes\DBUServerManager.Configuration.uTInterface.pas',
+  DBUServerManager.Configuration.uTConnection
+    in 'Logic\Classes\DBUServerManager.Configuration.uTConnection.pas',
   DBUServerManager.uTConfiguration in 'Logic\Classes\DBUServerManager.uTConfiguration.pas',
-  DBUServerManager.uIRecents in 'Logic\Interfaces\DBUServerManager.uIRecents.pas',
-  DBUServerManager.uIRecent in 'Logic\Interfaces\DBUServerManager.uIRecent.pas',
-  DBUServerManager.uTRecent in 'Logic\Classes\DBUServerManager.uTRecent.pas',
-  DBUServerManager.uTRecents in 'Logic\Classes\DBUServerManager.uTRecents.pas',
   DBUServerManager.uTConfigurationForm in 'UI\DBUServerManager.uTConfigurationForm.pas' {Form1};
 
 {$R *.res}
@@ -53,4 +50,5 @@ begin
   begin
     AppSession.ShowError;
   end;
+
 end.
