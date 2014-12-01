@@ -84,10 +84,7 @@ end;
 
 procedure TDBUState.Finalize;
 begin
-  if Assigned(FIcon) then
-  begin
-    FreeAndNil(FIcon);
-  end;
+  Icon := nil;
 end;
 
 function TDBUState.GetFlags: Word;
