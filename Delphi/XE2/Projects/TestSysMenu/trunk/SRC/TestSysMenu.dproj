@@ -62,7 +62,7 @@
         <DCC_ImageBase>00400000</DCC_ImageBase>
         <DCC_Optimize>false</DCC_Optimize>
         <DCC_Platform>x86</DCC_Platform>
-        <DCC_UsePackage>vclx;vcl;VclSmp;rtl;bdertl;vclactnband;vclshlctrls;Package1;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_UsePackage>vclx;vcl;VclSmp;rtl;bdertl;vclactnband;vclshlctrls;$(DCC_UsePackage)</DCC_UsePackage>
         <DCC_K>false</DCC_K>
         <DCC_N>true</DCC_N>
         <DCC_S>false</DCC_S>
