@@ -16,6 +16,7 @@ type
     property AutoSize default True;
     property Width default 98;
     property Height default 17;
+    property Step default 1;
 
   private
     FStatusBar: TStatusBar;
@@ -79,6 +80,7 @@ begin
   AutoSize := True;
   Width := 98;
   Height := 17;
+  Step := 1;
   Constraints.MaxHeight := 17;
   Constraints.MaxWidth := 98;
   Constraints.MinHeight := 17;

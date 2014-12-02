@@ -76,6 +76,8 @@ contains
   CastersPackage.uTStatusBarEx in 'Logic\Classes\CastersPackage.uTStatusBarEx.pas',
   CastersPackage.uTApplicationOnHint in 'Logic\Classes\CastersPackage.uTApplicationOnHint.pas',
   CastersPackage.uEIniFileDataStorage in 'Logic\Classes\CastersPackage.uEIniFileDataStorage.pas',
-  CastersPackage.uTIniFileDataStorageClass in 'Logic\Classes\CastersPackage.uTIniFileDataStorageClass.pas';
+  CastersPackage.uTIniFileDataStorageClass in 'Logic\Classes\CastersPackage.uTIniFileDataStorageClass.pas',
+  CastersPackage.uIListItemAdapter in 'Logic\Interfaces\CastersPackage.uIListItemAdapter.pas',
+  CastersPackage.uConsts in 'Logic\Other\CastersPackage.uConsts.pas';
 
 end.
