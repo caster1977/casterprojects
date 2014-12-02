@@ -18,7 +18,10 @@ uses
   IdCommandHandlers,
   Vcl.ImgList,
   DBUServerService.uTConfiguration,
-  DBUShared.uIDBUServerLogRecords;
+  DBUShared.uIDBUServerLogRecords,
+  IdBaseComponent,
+  IdComponent,
+  IdTCPServer;
 
 type
   TDBUServer = class(TService)
@@ -41,6 +44,7 @@ type
     procedure GetDbuStatesItemsCommand(ASender: TIdCommand);
     procedure IdCmdTCPServerCommandHandlers1Command(ASender: TIdCommand);
     procedure ServiceDestroy(Sender: TObject);
+    procedure LoginCommand(ASender: TIdCommand);
   public
     function GetServiceController: TServiceController; override;
 
@@ -79,7 +83,6 @@ uses
   IdSocketHandle,
   IdGlobal,
   DBUShared.uTDBUServerLogRecords;
-
 
 type
   THackImageList = class(TImageList);
@@ -155,7 +158,8 @@ begin
   ASender.Context.Connection.IOHandler.Write(Configuration.DatabaseTypes.Count);
   for i := 0 to Pred(Configuration.DatabaseTypes.Count) do
   begin
-    ASender.Context.Connection.IOHandler.WriteLn(Configuration.DatabaseTypes[i].Name, IndyTextEncoding_OSDefault);
+    ASender.Context.Connection.IOHandler.WriteLn(Configuration.DatabaseTypes[i].Name,
+      IndyTextEncoding_OSDefault);
     ASender.Context.Connection.IOHandler.Write(Configuration.DatabaseTypes[i].Id);
   end;
   LogMessage('Stop GetDbuDatabaseTypeItemsCommand', EVENTLOG_INFORMATION_TYPE);
@@ -257,14 +261,16 @@ end;
 
 procedure TDBUServer.IdCmdTCPServerConnect(AContext: TIdContext);
 begin
-  LogMessage(Format('Клиент "%s" подключен к серверу "%s:%d"', [AContext.Connection.Socket.Binding.PeerIP,
-    IdCmdTCPServer.Bindings[0].IP, IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE, 0, 1);
+  LogMessage(Format('Клиент "%s" подключен к серверу "%s:%d"',
+    [AContext.Connection.Socket.Binding.PeerIP, IdCmdTCPServer.Bindings[0].IP,
+    IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE, 0, 1);
 end;
 
 procedure TDBUServer.IdCmdTCPServerDisconnect(AContext: TIdContext);
 begin
-  LogMessage(Format('Клиент "%s" отключен от сервера "%s:%d"', [AContext.Connection.Socket.Binding.PeerIP,
-    IdCmdTCPServer.Bindings[0].IP, IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE, 0, 2);
+  LogMessage(Format('Клиент "%s" отключен от сервера "%s:%d"',
+    [AContext.Connection.Socket.Binding.PeerIP, IdCmdTCPServer.Bindings[0].IP,
+    IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE, 0, 2);
 end;
 
 function TDBUServer.GetServiceController: TServiceController;
@@ -314,12 +320,13 @@ begin
   sckt := IdCmdTCPServer.Bindings.Add;
   if Assigned(sckt) then
   begin
-    sckt.IP := IfThen(Configuration.Section<TConnection>.Host = CONFIGURATION_DEFAULT_HOST, Routines.GetLocalIP,
-      Configuration.Section<TConnection>.Host);
+    sckt.IP := IfThen(Configuration.Section<TConnection>.Host = CONFIGURATION_DEFAULT_HOST,
+      Routines.GetLocalIP, Configuration.Section<TConnection>.Host);
     sckt.Port := IfThen(Configuration.Section<TConnection>.Port = CONFIGURATION_DEFAULT_PORT,
       CONFIGURATION_DEFAULT_PORT, Configuration.Section<TConnection>.Port);
     IdCmdTCPServer.Active := True;
-    LogMessage(Format('Сервер DBU запущен на "%s:%d"', [sckt.IP, sckt.Port]), EVENTLOG_INFORMATION_TYPE);
+    LogMessage(Format('Сервер DBU запущен на "%s:%d"', [sckt.IP, sckt.Port]),
+      EVENTLOG_INFORMATION_TYPE);
   end;
 end;
 
@@ -327,8 +334,8 @@ procedure TDBUServer.ServiceStop(Sender: TService; var Stopped: Boolean);
 begin
   IdCmdTCPServer.Active := False;
   { TODO : добавить сохранение лога в файл }
-  LogMessage(Format('Сервер DBU остановлен на "%s:%d"', [IdCmdTCPServer.Bindings[0].IP, IdCmdTCPServer.Bindings[0].Port]
-    ), EVENTLOG_INFORMATION_TYPE);
+  LogMessage(Format('Сервер DBU остановлен на "%s:%d"', [IdCmdTCPServer.Bindings[0].IP,
+    IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE);
 end;
 
 function TDBUServer.GetLog: IDBUServerLogRecords;
@@ -384,9 +391,32 @@ begin
   if Assigned(a) then
   begin
     Log.Add(a);
-    LogMessage('Выделены новые номера для DBU.' + sLineBreak + a.ToString, EVENTLOG_INFORMATION_TYPE);
+    LogMessage('Выделены новые номера для DBU.' + sLineBreak + a.ToString,
+      EVENTLOG_INFORMATION_TYPE);
   end;
   LogMessage('Stop GetReserveNewDBUpdateNumbersCommand', EVENTLOG_INFORMATION_TYPE);
+end;
+
+procedure TDBUServer.LoginCommand(ASender: TIdCommand);
+var
+  login: string;
+  pass: string;
+  t: Byte;
+  s: string;
+begin
+  LogMessage('Start LoginCommand', EVENTLOG_INFORMATION_TYPE);
+  login := Trim(ASender.Context.Connection.IOHandler.ReadLn);
+  pass := ASender.Context.Connection.IOHandler.ReadLn;
+  t := 1;
+  { TODO : добавить код проверки валидности введённых логина и пароля на основе списка пользователей }
+  { TODO : реализовать механизм редактирования списка пользователей }
+  if (login = 'root') and (pass = '1-Future') then
+  begin
+    t := 2;
+    LogMessage(Format('User %s Logon Successfully', [login]), EVENTLOG_INFORMATION_TYPE);
+  end;
+  ASender.Context.Connection.IOHandler.Write(t);
+  LogMessage('Stop LoginCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
 procedure TDBUServer.AddNewDatabaseTypeCommand(ASender: TIdCommand);

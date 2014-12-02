@@ -116,6 +116,17 @@ object DBUServer: TDBUServer
         ParseParams = True
         Tag = 0
         OnCommand = AddNewDatabaseTypeCommand
+      end
+      item
+        CmdDelimiter = ' '
+        Command = 'TCP_LOGIN'
+        Disconnect = False
+        Name = 'LoginHandler'
+        NormalReply.Code = '200'
+        ParamDelimiter = ' '
+        ParseParams = True
+        Tag = 0
+        OnCommand = LoginCommand
       end>
     ExceptionReply.Code = '500'
     ExceptionReply.Text.Strings = (
