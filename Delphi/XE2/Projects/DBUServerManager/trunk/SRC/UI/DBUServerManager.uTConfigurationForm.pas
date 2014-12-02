@@ -283,11 +283,6 @@ procedure TConfigurationForm.actApplyExecute(Sender: TObject);
 var
   i: Integer;
 begin
-
-  { TODO -c!!!!! :
-    Добавить код переподключения к серверу
-    в случае изменения настроек подключения серверу. }
-
   if Assigned(Configuration) then
   begin
     Configuration.Section<TInterface>.EnableQuitConfirmation := EnableQuitConfirmation;
@@ -573,6 +568,10 @@ begin
     end;
 
     cbbHost.ItemIndex := i;
+  end
+  else
+  begin
+    cbbHost.Text := s;
   end;
 end;
 
