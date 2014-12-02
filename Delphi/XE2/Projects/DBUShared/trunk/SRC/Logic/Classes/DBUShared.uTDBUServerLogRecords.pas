@@ -26,7 +26,7 @@ uses
   System.SysUtils,
   Vcl.Dialogs,
   DBUShared.uTDBUServerLogRecord,
-  DBUShared.uConsts;
+  CastersPackage.uConsts;
 
 resourcestring
   RsCantAddItemToList = 'Не удалось добавить запись в лог.';

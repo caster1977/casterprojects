@@ -36,7 +36,6 @@ contains
   DBUShared.uTDBUServerLogRecord in 'Logic\Classes\DBUShared.uTDBUServerLogRecord.pas',
   DBUShared.uTDBUServerLogRecords in 'Logic\Classes\DBUShared.uTDBUServerLogRecords.pas',
   DBUShared.uIDBUServerLogRecord in 'Logic\Interfaces\DBUShared.uIDBUServerLogRecord.pas',
-  DBUShared.uIDBUServerLogRecords in 'Logic\Interfaces\DBUShared.uIDBUServerLogRecords.pas',
-  DBUShared.uConsts in 'Logic\Other\DBUShared.uConsts.pas';
+  DBUShared.uIDBUServerLogRecords in 'Logic\Interfaces\DBUShared.uIDBUServerLogRecords.pas';
 
 end.
