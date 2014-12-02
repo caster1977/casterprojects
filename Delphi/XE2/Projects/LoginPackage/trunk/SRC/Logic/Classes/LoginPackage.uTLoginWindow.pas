@@ -225,6 +225,11 @@ begin
       Form.Position := Position;
     end;
     Result := Form.ShowModal = mrOk;
+    if Result then
+    begin
+      Login := Form.Login;
+      Password := Form.Password;
+    end;
   finally
     Form := nil;
   end;
