@@ -51,14 +51,7 @@ type
     actHelpContents: THelpContentsAction;
     actAbout: TAction;
     actQuit: TQuitAction;
-    actCreateProfile: TAction;
-    actLoadProfile: TAction;
-    actRecentProfiles: TAction;
-    actSaveProfile: TAction;
-    actSaveProfileAs: TAction;
     actConfiguration: TAction_Configuration;
-    actRecentProfilesProperties: TAction;
-    actProfileProperties: TAction;
     actViewMenuGroupAction: TViewMenuGroupAction;
     actStatusBar: TAction;
     actToolBar: TAction;
@@ -75,7 +68,6 @@ type
     mniHelpContents: TMenuItem;
     N18: TMenuItem;
     mniAbout: TMenuItem;
-    acttbToolBar: TActionToolBar;
     actRestore: TAction;
     pmTray: TPopupMenu;
     mniTrayRestore: TMenuItem;
@@ -121,6 +113,53 @@ type
     actActionTesting: TAction;
     mniActionTesting: TMenuItem;
     LoginWindow: TLoginWindow;
+    pgcMain: TPageControl;
+    tsLogRecords: TTabSheet;
+    tsUsers: TTabSheet;
+    tsSQLActions: TTabSheet;
+    tsSQLSubjects: TTabSheet;
+    tsDatabaseTypes: TTabSheet;
+    lvUsers: TListView;
+    lvSQLSubjects: TListView;
+    lvDatabaseTypes: TListView;
+    lvSQLActions: TListView;
+    actAddItem: TAction;
+    actEditItem: TAction;
+    actDeleteItem: TAction;
+    tlbMain: TToolBar;
+    btnQuit: TToolButton;
+    btn2: TToolButton;
+    btnConfiguration: TToolButton;
+    btnConnect: TToolButton;
+    btn6: TToolButton;
+    btnDisconnect: TToolButton;
+    btn1: TToolButton;
+    btnAddItem: TToolButton;
+    btnEditItem: TToolButton;
+    btnDeleteItem: TToolButton;
+    btn3: TToolButton;
+    btnRefresh: TToolButton;
+    btn4: TToolButton;
+    btn5: TToolButton;
+    btn7: TToolButton;
+    btnAbout: TToolButton;
+    pmMain: TPopupMenu;
+    mniPopupAddItem: TMenuItem;
+    mniPopupEditItem: TMenuItem;
+    mniPopupDeleteItem: TMenuItem;
+    mniPopupSeparator1: TMenuItem;
+    mniPopupRefresh: TMenuItem;
+    mniPopupSeparator2: TMenuItem;
+    mniPopupConnect: TMenuItem;
+    mniPopupDisconnect: TMenuItem;
+    mniPopupSeparator3: TMenuItem;
+    mniPopupHelpContents: TMenuItem;
+    mniPopupSeparator4: TMenuItem;
+    mniPopupQuit: TMenuItem;
+    mniN2: TMenuItem;
+    mniAddItem: TMenuItem;
+    mniEditItem: TMenuItem;
+    mniDeleteItem: TMenuItem;
     procedure actAboutExecute(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -199,11 +238,11 @@ implementation
 uses
   Winapi.WinSvc,
   System.SysUtils,
-
+  System.StrUtils,
   Winapi.Windows,
   Vcl.Dialogs,
   IdGlobal,
-
+  CastersPackage.uIListItemAdapter,
   DBUServerManager.uConsts,
   DBUServerManager.Configuration.uTInterface,
   DBUServerManager.Configuration.uTConnection,
@@ -273,16 +312,6 @@ begin
   begin
     Configuration.Section<TInterface>.EnableStatusbar := b;
   end;
-
-  if actStatusBar.Checked then
-  begin
-    IdTCPClient.Connect;
-  end
-  else
-  begin
-    IdTCPClient.IOHandler.InputBuffer.Clear;
-    IdTCPClient.Disconnect;
-  end;
 end;
 
 procedure TMainForm.actToolBarExecute(Sender: TObject);
@@ -291,9 +320,9 @@ var
 begin
   b := actToolBar.Checked;
 
-  if acttbToolBar.Visible <> b then
+  if tlbMain.Visible <> b then
   begin
-    acttbToolBar.Visible := b;
+    tlbMain.Visible := b;
   end;
 
   if Configuration.Section<TInterface>.EnableToolbar <> b then
@@ -317,26 +346,37 @@ begin
 
   b := Configuration.Section<TInterface>.EnableToolbar;
   actToolBar.Checked := b;
-  acttbToolBar.Visible := b;
+  tlbMain.Visible := b;
 
   TrayIcon.Visible := (not Visible) or Configuration.Section<TInterface>.EnableAlwaysShowTrayIcon;
 
-  { TODO -c!!!!! :
-    Добавить код переподключения к серверу
-    в случае изменения настроек подключения серверу. }
+  if not Configuration.Section<TConnection>.EnableStorePassword then
+  begin
+    Configuration.Section<TConnection>.Password := EmptyStr;
+    Configuration.Section<TConnection>.EnableAutoLogon := False;
+  end;
 
-{  b := IdTCPClient.Connected;
+  if not Configuration.Section<TConnection>.EnableStoreLogin then
+  begin
+    Configuration.Section<TConnection>.Password := EmptyStr;
+    Configuration.Section<TConnection>.Login := EmptyStr;
+    Configuration.Section<TConnection>.EnableAutoLogon := False;
+  end;
+
+  b := (IdTCPClient.Connected) and ((IdTCPClient.Host <> Configuration.Section<TConnection>.Host) or
+    (IdTCPClient.Port <> Configuration.Section<TConnection>.Port) or
+    (IdTCPClient.ConnectTimeout <> Configuration.Section<TConnection>.Timeout));
   if b then
   begin
-    IdTCPClient.DisconnectNotifyPeer;
-  end;}
+    actDisconnect.Execute;
+  end;
   IdTCPClient.Host := Configuration.Section<TConnection>.Host;
   IdTCPClient.Port := Configuration.Section<TConnection>.Port;
   IdTCPClient.ConnectTimeout := Configuration.Section<TConnection>.Timeout;
-  {if b then
+  if b then
   begin
-    IdTCPClient.Connect;
-  end;}
+    actConnect.Execute;
+  end;
 end;
 
 destructor TMainForm.Destroy;
@@ -389,6 +429,8 @@ begin
   b := Configuration.Section<TInterface>.EnableStartAtTray;
   Application.ShowMainForm := not b;
   Visible := not b;
+
+  StatusBar.Panels[ProgressBar.BindPanelIndex].Width := 0;
 
 {$IFDEF DEBUG}
   actActionTesting.Visible := True;
@@ -514,7 +556,8 @@ end;
 
 procedure TMainForm.actRefreshUpdate(Sender: TObject);
 begin
-  (Sender as TAction).Enabled := IdTCPClient.Connected;
+  (Sender as TAction).Enabled := IdTCPClient.Connected and pgcMain.Visible and
+    Assigned(pgcMain.ActivePage);
 end;
 
 procedure TMainForm.actReserveNewDBUNUmberExecute(Sender: TObject);
@@ -555,20 +598,75 @@ end;
   end; }
 
 procedure TMainForm.actConnectExecute(Sender: TObject);
+var
+  itc: TIdTCPClient;
+  t: Byte;
 begin
-  if LoginWindow.Execute then
+  LoginWindow.Login := Configuration.Section<TConnection>.Login;
+  LoginWindow.Password := Configuration.Section<TConnection>.Password;
+
+  if not Configuration.Section<TConnection>.EnableAutoLogon then
   begin
+    if LoginWindow.Execute then
+    begin
+      Configuration.Section<TConnection>.Login :=
+        IfThen(Configuration.Section<TConnection>.EnableStoreLogin, LoginWindow.Login);
+      Configuration.Section<TConnection>.Password :=
+        IfThen(Configuration.Section<TConnection>.EnableStorePassword, LoginWindow.Password);
+    end
+    else
+    begin
+      Exit;
+    end;
+  end;
+
+  t := 0;
+  try
     try
-      IdTCPClient.Connect;
-      if IdTCPClient.Connected then
-      begin
-        StateImage.State := True;
-        // ShowMessage(IdTCPClient.IOHandler.ReadLn);
-        actRefresh.Execute;
-        lvLog.Visible := True;
+      itc := TIdTCPClient.Create(Self);
+      try
+        itc.Host := IdTCPClient.Host;
+        itc.Port := IdTCPClient.Port;
+        itc.ConnectTimeout := IdTCPClient.ConnectTimeout;
+        itc.Connect;
+        try
+          // ShowMessage(itc.IOHandler.ReadLn);
+          itc.SendCmd('TCP_LOGIN');
+          itc.IOHandler.WriteLn(LoginWindow.Login);
+          itc.IOHandler.WriteLn(LoginWindow.Password);
+          t := itc.IOHandler.ReadByte;
+        finally
+          itc.Disconnect;
+        end;
+      finally
+        itc.Free;
       end;
     except
-      ShowMessage('Не удалось подключиться к серверу');
+    end;
+  finally
+    case t of
+      0:
+        begin
+          ShowMessage('Не удалось подключиться к серверу.' + sLineBreak +
+            'Проверьте правильность настроек подключения.');
+        end;
+      1:
+        begin
+          ShowMessage('Введены неверные данные пользователя.');
+          Configuration.Section<TConnection>.EnableAutoLogon := False;
+        end;
+      2:
+        begin
+          IdTCPClient.Connect;
+          if IdTCPClient.Connected then
+          begin
+            StateImage.State := True;
+            // ShowMessage(IdTCPClient.IOHandler.ReadLn);
+            pgcMain.ActivePage := tsLogRecords;
+            pgcMain.Visible := True;
+            actRefresh.Execute;
+          end;
+        end;
     end;
   end;
 end;
@@ -580,7 +678,7 @@ end;
 
 procedure TMainForm.actDisconnectExecute(Sender: TObject);
 begin
-  lvLog.Visible := False;
+  pgcMain.Visible := False;
   lvLog.Items.BeginUpdate;
   try
     lvLog.Clear;
@@ -813,54 +911,95 @@ var
   i: Integer;
   li: TListItem;
   rec: IDBUServerLogRecord;
+  lv: TListView;
+  lia: IListItemAdapter;
+  items_count: Integer;
 begin
-  IdTCPClient.SendCmd('TCP_GET_DBU_NEW_NUMBER_LOG_GRID');
+  if not pgcMain.Visible then
+  begin
+    Exit;
+  end;
 
-  IdTCPClient.IOHandler.WriteLn;
+  if not Assigned(pgcMain.ActivePage) then
+  begin
+    Exit;
+  end;
 
-  line_count := IdTCPClient.IOHandler.ReadLongInt;
-
-  sl := TStringList.Create;
+  Screen.Cursor := crHourGlass;
   try
-    for i := 0 to Pred(line_count) do
-    begin
-      sl.Append(IdTCPClient.IOHandler.ReadLn);
-    end;
-
-    lvLog.Items.BeginUpdate;
+    sl := TStringList.Create;
     try
-      lvLog.Clear;
-      FServerLog := GetIDBUServerLogRecords(sl);
-      if not Assigned(FServerLog) then
+      lv := nil;
+
+      if pgcMain.ActivePage = tsLogRecords then
+      begin
+        lv := lvLog;
+        IdTCPClient.SendCmd('TCP_GET_DBU_NEW_NUMBER_LOG_GRID');
+        IdTCPClient.IOHandler.WriteLn;
+        line_count := IdTCPClient.IOHandler.ReadLongInt;
+        for i := 0 to Pred(line_count) do
+        begin
+          sl.Append(IdTCPClient.IOHandler.ReadLn);
+        end;
+        FServerLog := GetIDBUServerLogRecords(sl);
+        if not Assigned(FServerLog) then
+        begin
+          Exit;
+        end;
+        items_count := FServerLog.Count;
+      end;
+      { TODO : добавить остальные страницы }
+
+      if not Assigned(lv) then
       begin
         Exit;
       end;
 
-      for i := 0 to Pred(FServerLog.Count) do
-      begin
-        rec := FServerLog[i];
-        if Assigned(rec) then
+      lv.Items.BeginUpdate;
+      try
+        lv.Clear;
+        if StatusBar.Visible then
         begin
-          li := lvLog.Items.Add;
-          if Assigned(li) then
+          ProgressBar.Position := 0;
+          ProgressBar.Max := items_count;
+          StatusBar.Panels[ProgressBar.BindPanelIndex].Width := STATUSBAR_PROGRESS_PANEL_WIDTH;
+          ProgressBar.Visible := True;
+        end;
+
+
+        for i := 0 to Pred(items_count) do
+        begin
+          if StatusBar.Visible then
           begin
-            li.Caption := FormatDateTime(DATE_TIME_FORMAT_RU, rec.DateTime);
-            if Assigned(li.SubItems) then
+            ProgressBar.StepIt;
+            Application.ProcessMessages;
+          end;
+
+          if pgcMain.ActivePage = tsLogRecords then
+          begin
+            if not Supports(FServerLog[i], IListItemAdapter, lia) then
             begin
-              li.SubItems.Add(rec.DatabaseType);
-              li.SubItems.Add(Format('%d', [rec.FirstNumber]));
-              li.SubItems.Add(rec.Creator);
-              li.SubItems.Add(Format('%d', [rec.Quantity]));
-              li.Data := Pointer(rec);
+              Continue;
             end;
           end;
+
+          { TODO : добавить остальные страницы }
+
+          lia.AppendToListView(lv);
         end;
+        if StatusBar.Visible then
+        begin
+          ProgressBar.Visible := False;
+          StatusBar.Panels[ProgressBar.BindPanelIndex].Width := 0;
+        end;
+      finally
+        lv.Items.EndUpdate;
       end;
     finally
-      lvLog.Items.EndUpdate;
+      sl.Free;
     end;
   finally
-    sl.Free;
+    Screen.Cursor := crDefault;
   end;
 end;
 

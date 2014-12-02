@@ -13,6 +13,8 @@ const
   STATUSBAR_SERVER_NAME: Integer = 2;
   STATUSBAR_HINT_PANEL_NUMBER: Integer = 3;
 
+  STATUSBAR_PROGRESS_PANEL_WIDTH = 100;
+
   INTERFACE_SECTION = 'Интерфейс';
   CONNECTION_SECTION = 'Подключение';
   OTHER_SECTION = 'Прочие';

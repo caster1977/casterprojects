@@ -82,10 +82,6 @@ Coordinates=617,166,95,36
 [actQuit]
 Coordinates=617,221,55,36
 
-[acttbToolBar]
-Coordinates=617,276,77,33
-Visible=True
-
 [mniTestConnection]
 Coordinates=617,331,125,36
 
@@ -216,7 +212,8 @@ Coordinates=922,635,110,36
 Coordinates=773,635,141,36
 
 []
-Coordinates=1041,441,51,36
+Coordinates=617,276,77,33
+Visible=True
 
 [(TMenuItem)]
 Coordinates=234,71,75,33

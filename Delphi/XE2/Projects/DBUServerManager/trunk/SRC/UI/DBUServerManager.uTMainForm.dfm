@@ -13,6 +13,7 @@ object MainForm: TMainForm
   Font.Style = []
   Menu = mmMain
   OldCreateOrder = False
+  PopupMenu = pmMain
   Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -67,74 +68,6 @@ object MainForm: TMainForm
     BindPanelIndex = 0
     StateImages = ilStates
   end
-  object acttbToolBar: TActionToolBar
-    Left = 0
-    Top = 0
-    Width = 620
-    Height = 26
-    ActionManager = actmgrMain
-    Caption = 'acttbToolBar'
-    Color = clMenuBar
-    ColorMap.DisabledFontColor = 7171437
-    ColorMap.HighlightColor = clWhite
-    ColorMap.BtnSelectedFont = clBlack
-    ColorMap.UnusedColor = clWhite
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    ParentShowHint = False
-    ShowHint = True
-    Spacing = 0
-  end
-  object lvLog: TListView
-    AlignWithMargins = True
-    Left = 0
-    Top = 26
-    Width = 620
-    Height = 370
-    Margins.Left = 0
-    Margins.Top = 0
-    Margins.Right = 0
-    Margins.Bottom = 2
-    Align = alClient
-    Columns = <
-      item
-        Caption = #1044#1072#1090#1072'/'#1074#1088#1077#1084#1103
-        Width = 100
-      end
-      item
-        Caption = #1058#1080#1087' '#1041#1044
-        Width = 100
-      end
-      item
-        Alignment = taRightJustify
-        Caption = #1053#1086#1084#1077#1088' DBU'
-        Width = 100
-      end
-      item
-        Caption = #1057#1086#1079#1076#1072#1090#1077#1083#1100
-        Width = 100
-      end
-      item
-        Alignment = taRightJustify
-        AutoSize = True
-        Caption = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' DBU'
-      end>
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ReadOnly = True
-    RowSelect = True
-    ParentFont = False
-    TabOrder = 1
-    ViewStyle = vsReport
-    Visible = False
-  end
   object StatusBar: TStatusBar
     Left = 0
     Top = 398
@@ -165,9 +98,333 @@ object MainForm: TMainForm
     Constraints.MaxWidth = 98
     Constraints.MinHeight = 17
     Constraints.MinWidth = 98
-    TabOrder = 3
+    TabOrder = 1
+    Visible = False
     StatusBar = StatusBar
     BindPanelIndex = 1
+  end
+  object pgcMain: TPageControl
+    AlignWithMargins = True
+    Left = 2
+    Top = 29
+    Width = 618
+    Height = 367
+    Margins.Left = 2
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 2
+    ActivePage = tsLogRecords
+    Align = alClient
+    DoubleBuffered = True
+    ParentDoubleBuffered = False
+    TabOrder = 2
+    Visible = False
+    object tsLogRecords: TTabSheet
+      Caption = #1051#1086#1075' '#1074#1099#1076#1077#1083#1077#1085#1080#1103' '#1085#1086#1084#1077#1088#1086#1074' DBU'
+      object lvLog: TListView
+        AlignWithMargins = True
+        Left = 0
+        Top = 0
+        Width = 608
+        Height = 338
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Right = 2
+        Margins.Bottom = 1
+        Align = alClient
+        Columns = <
+          item
+            AutoSize = True
+            Caption = #1044#1072#1090#1072'/'#1074#1088#1077#1084#1103
+          end
+          item
+            AutoSize = True
+            Caption = #1058#1080#1087' '#1041#1044
+          end
+          item
+            Alignment = taRightJustify
+            AutoSize = True
+            Caption = #1053#1086#1084#1077#1088' DBU'
+          end
+          item
+            AutoSize = True
+            Caption = #1057#1086#1079#1076#1072#1090#1077#1083#1100
+          end
+          item
+            Alignment = taRightJustify
+            AutoSize = True
+            Caption = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' DBU'
+          end>
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ReadOnly = True
+        RowSelect = True
+        ParentFont = False
+        TabOrder = 0
+        ViewStyle = vsReport
+      end
+    end
+    object tsSQLActions: TTabSheet
+      Caption = #1044#1077#1081#1089#1090#1074#1080#1103' SQL'
+      ImageIndex = 2
+      object lvSQLActions: TListView
+        AlignWithMargins = True
+        Left = 0
+        Top = 0
+        Width = 608
+        Height = 338
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Right = 2
+        Margins.Bottom = 1
+        Align = alClient
+        Columns = <
+          item
+            AutoSize = True
+            Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077
+          end
+          item
+            AutoSize = True
+            Caption = #1040#1073#1073#1088#1077#1074#1080#1072#1090#1091#1088#1072
+          end>
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ReadOnly = True
+        RowSelect = True
+        ParentFont = False
+        TabOrder = 0
+        ViewStyle = vsReport
+      end
+    end
+    object tsSQLSubjects: TTabSheet
+      Caption = #1054#1073#1098#1077#1082#1090#1099' SQL'
+      ImageIndex = 3
+      object lvSQLSubjects: TListView
+        AlignWithMargins = True
+        Left = 0
+        Top = 0
+        Width = 608
+        Height = 338
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Right = 2
+        Margins.Bottom = 1
+        Align = alClient
+        Columns = <
+          item
+            AutoSize = True
+            Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077
+          end
+          item
+            AutoSize = True
+            Caption = #1040#1073#1073#1088#1077#1074#1080#1072#1090#1091#1088#1072
+          end>
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ReadOnly = True
+        RowSelect = True
+        ParentFont = False
+        TabOrder = 0
+        ViewStyle = vsReport
+      end
+    end
+    object tsDatabaseTypes: TTabSheet
+      Caption = #1058#1080#1087#1099' '#1041#1044
+      ImageIndex = 4
+      object lvDatabaseTypes: TListView
+        AlignWithMargins = True
+        Left = 0
+        Top = 0
+        Width = 608
+        Height = 338
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Right = 2
+        Margins.Bottom = 1
+        Align = alClient
+        Columns = <
+          item
+            AutoSize = True
+            Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077
+          end
+          item
+            Alignment = taCenter
+            AutoSize = True
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088
+          end>
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ReadOnly = True
+        RowSelect = True
+        ParentFont = False
+        TabOrder = 0
+        ViewStyle = vsReport
+      end
+    end
+    object tsUsers: TTabSheet
+      Caption = #1055#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1080
+      ImageIndex = 1
+      object lvUsers: TListView
+        AlignWithMargins = True
+        Left = 0
+        Top = 0
+        Width = 608
+        Height = 338
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Right = 2
+        Margins.Bottom = 1
+        Align = alClient
+        Columns = <
+          item
+            AutoSize = True
+            Caption = #1051#1086#1075#1080#1085
+          end
+          item
+            AutoSize = True
+            Caption = #1055#1086#1083#1085#1086#1077' '#1080#1084#1103
+          end
+          item
+            Alignment = taCenter
+            AutoSize = True
+            Caption = #1041#1083#1086#1082#1080#1088#1086#1074#1082#1072
+          end
+          item
+            Alignment = taCenter
+            AutoSize = True
+            Caption = #1040#1076#1084#1080#1085#1080#1089#1090#1088#1072#1090#1086#1088
+          end>
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ReadOnly = True
+        RowSelect = True
+        ParentFont = False
+        TabOrder = 0
+        ViewStyle = vsReport
+      end
+    end
+  end
+  object tlbMain: TToolBar
+    Left = 0
+    Top = 0
+    Width = 620
+    Height = 29
+    Caption = 'tlbMain'
+    Images = ilActions
+    TabOrder = 3
+    object btnQuit: TToolButton
+      Left = 0
+      Top = 0
+      Action = actQuit
+    end
+    object btn2: TToolButton
+      Left = 23
+      Top = 0
+      Width = 8
+      Caption = 'btn2'
+      ImageIndex = 1
+      Style = tbsSeparator
+    end
+    object btnConfiguration: TToolButton
+      Left = 31
+      Top = 0
+      Action = actConfiguration
+    end
+    object btn6: TToolButton
+      Left = 54
+      Top = 0
+      Width = 8
+      Caption = 'btn6'
+      ImageIndex = 4
+      Style = tbsSeparator
+    end
+    object btnConnect: TToolButton
+      Left = 62
+      Top = 0
+      Action = actConnect
+    end
+    object btnDisconnect: TToolButton
+      Left = 85
+      Top = 0
+      Action = actDisconnect
+    end
+    object btn1: TToolButton
+      Left = 108
+      Top = 0
+      Width = 8
+      Caption = 'btn1'
+      ImageIndex = 15
+      Style = tbsSeparator
+    end
+    object btnAddItem: TToolButton
+      Left = 116
+      Top = 0
+      Action = actAddItem
+    end
+    object btnEditItem: TToolButton
+      Left = 139
+      Top = 0
+      Action = actEditItem
+    end
+    object btnDeleteItem: TToolButton
+      Left = 162
+      Top = 0
+      Action = actDeleteItem
+    end
+    object btn3: TToolButton
+      Left = 185
+      Top = 0
+      Width = 8
+      Caption = 'btn3'
+      ImageIndex = 10
+      Style = tbsSeparator
+    end
+    object btnRefresh: TToolButton
+      Left = 193
+      Top = 0
+      Action = actRefresh
+    end
+    object btn4: TToolButton
+      Left = 216
+      Top = 0
+      Width = 8
+      Caption = 'btn4'
+      ImageIndex = 17
+      Style = tbsSeparator
+    end
+    object btn5: TToolButton
+      Left = 224
+      Top = 0
+      Action = actHelpContents
+    end
+    object btn7: TToolButton
+      Left = 247
+      Top = 0
+      Width = 8
+      Caption = 'btn7'
+      ImageIndex = 3
+      Style = tbsSeparator
+    end
+    object btnAbout: TToolButton
+      Left = 255
+      Top = 0
+      Action = actAbout
+    end
   end
   object AboutWindow: TAboutWindow
     EMail = 'v_ivanov@rtl.by'
@@ -179,7 +436,7 @@ object MainForm: TMainForm
     Left = 168
     Top = 128
     Bitmap = {
-      494C01011100A000680510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01011100A000F00510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -880,6 +1137,24 @@ object MainForm: TMainForm
             Caption = '-'
           end
           item
+            Action = actAddItem
+            ImageIndex = 7
+            ShortCut = 45
+          end
+          item
+            Action = actEditItem
+            ImageIndex = 8
+            ShortCut = 113
+          end
+          item
+            Action = actDeleteItem
+            ImageIndex = 9
+            ShortCut = 46
+          end
+          item
+            Caption = '-'
+          end
+          item
             Action = actRefresh
             ImageIndex = 16
             ShortCut = 116
@@ -900,7 +1175,6 @@ object MainForm: TMainForm
             ImageIndex = 1
             ShortCut = 123
           end>
-        ActionBar = acttbToolBar
       end>
     Images = ilActions
     Left = 224
@@ -942,37 +1216,6 @@ object MainForm: TMainForm
       ShortCut = 32883
       OnExecute = actQuitExecute
     end
-    object actCreateProfile: TAction
-      Category = #1055#1088#1086#1092#1080#1083#1100
-      Caption = '&'#1057#1086#1079#1076#1072#1090#1100
-      Enabled = False
-      Hint = #1057#1086#1079#1076#1072#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1089#1086#1079#1076#1072#1085#1080#1103' '#1085#1086#1074#1086#1075#1086' '#1087#1088#1086#1092#1080#1083#1103
-    end
-    object actLoadProfile: TAction
-      Category = #1055#1088#1086#1092#1080#1083#1100
-      Caption = '&'#1054#1090#1082#1088#1099#1090#1100'...'
-      Enabled = False
-      Hint = #1054#1090#1082#1088#1099#1090#1100'...|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1092#1072#1081#1083#1072' '#1087#1088#1086#1092#1080#1083#1103
-    end
-    object actRecentProfiles: TAction
-      Category = #1055#1088#1086#1092#1080#1083#1100
-      Caption = #1055#1086#1089#1083#1077'&'#1076#1085#1080#1077
-      Hint = #1055#1086#1089#1083#1077#1076#1085#1080#1077' '#1086#1090#1082#1088#1099#1090#1099#1077'|'#1047#1072#1075#1088#1091#1079#1080#1090#1100' '#1086#1076#1080#1085' '#1080#1079' '#1087#1086#1089#1083#1077#1076#1085#1080#1093' '#1086#1090#1082#1088#1099#1090#1099#1093' '#1092#1072#1081#1083#1086#1074
-    end
-    object actSaveProfile: TAction
-      Category = #1055#1088#1086#1092#1080#1083#1100
-      Caption = #1057#1086'&'#1093#1088#1072#1085#1080#1090#1100
-      Enabled = False
-      Hint = #1057#1086#1093#1088#1072#1085#1080#1090#1100'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1090#1077#1082#1091#1097#1077#1075#1086' '#1087#1088#1086#1092#1080#1083#1103' '#1074' '#1092#1072#1081#1083
-    end
-    object actSaveProfileAs: TAction
-      Category = #1055#1088#1086#1092#1080#1083#1100
-      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' &'#1082#1072#1082'...'
-      Enabled = False
-      Hint = 
-        #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1082#1072#1082'...|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1103' '#1090#1077#1082#1091#1097#1077#1075#1086' '#1087#1088#1086#1092#1080#1083#1103' '#1074' '#1085#1086#1074#1099#1081 +
-        ' '#1092#1072#1081#1083
-    end
     object actConfiguration: TAction_Configuration
       Category = #1060#1072#1081#1083
       Caption = '&'#1050#1086#1085#1092#1080#1075#1091#1088#1072#1094#1080#1103'...'
@@ -980,16 +1223,6 @@ object MainForm: TMainForm
       ImageIndex = 3
       ShortCut = 32888
       OnExecute = actConfigurationExecute
-    end
-    object actRecentProfilesProperties: TAction
-      Category = #1055#1088#1086#1092#1080#1083#1100
-      Caption = #1057#1074#1086'&'#1081#1089#1090#1074#1072'...'
-      Hint = #1057#1074#1086#1081#1089#1090#1074#1072'...|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103' '#1086#1082#1085#1072' '#1089#1074#1086#1081#1089#1090#1074' '#1087#1088#1086#1092#1080#1083#1077#1081
-    end
-    object actProfileProperties: TAction
-      Category = #1055#1088#1086#1092#1080#1083#1100
-      Caption = '&'#1055#1088#1086#1092#1080#1083#1100'...'
-      Hint = #1055#1088#1086#1092#1080#1083#1100'...|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1086#1082#1085#1072' '#1085#1072#1089#1090#1088#1086#1077#1082' '#1090#1077#1082#1091#1097#1077#1075#1086' '#1087#1088#1086#1092#1080#1083#1103
     end
     object actViewMenuGroupAction: TViewMenuGroupAction
       Category = #1042#1080#1076
@@ -1132,10 +1365,37 @@ object MainForm: TMainForm
       OnExecute = actGetLogDataExecute
       OnUpdate = actGetLogDataUpdate
     end
+    object actAddItem: TAction
+      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1101#1083#1077#1084#1077#1085#1090
+      Hint = 
+        #1044#1086#1073#1072#1074#1080#1090#1100' '#1101#1083#1077#1084#1077#1085#1090'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1088#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1103' '#1076#1086#1073#1072#1074#1083#1077#1085#1080#1103' '#1085#1086#1074#1086#1075#1086' '#1101#1083 +
+        #1077#1084#1077#1085#1090#1072' '#1074' '#1089#1087#1080#1089#1086#1082
+      ImageIndex = 7
+      ShortCut = 45
+    end
+    object actEditItem: TAction
+      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100' '#1101#1083#1077#1084#1077#1085#1090
+      Hint = 
+        #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100' '#1101#1083#1077#1084#1077#1085#1090'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1088#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1103' '#1074#1099#1076#1077#1083#1077#1085#1085#1086#1075#1086' '#1101#1083#1077 +
+        #1084#1077#1085#1090#1072' '#1089#1087#1080#1089#1082#1072
+      ImageIndex = 8
+      ShortCut = 113
+    end
+    object actDeleteItem: TAction
+      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Caption = #1059#1076#1072#1083#1080#1090#1100' '#1101#1083#1077#1084#1077#1085#1090
+      Hint = 
+        #1059#1076#1072#1083#1080#1090#1100' '#1101#1083#1077#1084#1077#1085#1090'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1074#1099#1076#1077#1083#1077#1085#1085#1086#1075#1086' '#1101#1083#1077#1084#1077#1085#1090#1072' '#1080#1079' '#1089#1087#1080 +
+        #1089#1082#1072
+      ImageIndex = 9
+      ShortCut = 46
+    end
     object actRefresh: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1083#1086#1075
-      Hint = #1054#1073#1085#1086#1074#1080#1090#1100' '#1083#1086#1075'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1103' '#1083#1086#1075#1072' '#1089#1077#1088#1074#1077#1088#1072
+      Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1089#1087#1080#1089#1086#1082
+      Hint = #1054#1073#1085#1086#1074#1080#1090#1100' '#1089#1087#1080#1089#1086#1082'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1103' '#1090#1077#1082#1091#1097#1077#1075#1086' '#1089#1087#1080#1089#1082#1072
       ImageIndex = 16
       ShortCut = 116
       OnExecute = actRefreshExecute
@@ -1175,6 +1435,18 @@ object MainForm: TMainForm
         Action = actDisconnect
       end
       object mniN4: TMenuItem
+        Caption = '-'
+      end
+      object mniAddItem: TMenuItem
+        Action = actAddItem
+      end
+      object mniEditItem: TMenuItem
+        Action = actEditItem
+      end
+      object mniDeleteItem: TMenuItem
+        Action = actDeleteItem
+      end
+      object mniN2: TMenuItem
         Caption = '-'
       end
       object mniRefresh: TMenuItem
@@ -1274,7 +1546,7 @@ object MainForm: TMainForm
     Left = 224
     Top = 184
     Bitmap = {
-      494C010102000400740710001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400FC0710001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1425,5 +1697,46 @@ object MainForm: TMainForm
     Title = ''
     Left = 168
     Top = 240
+  end
+  object pmMain: TPopupMenu
+    Images = ilActions
+    Left = 416
+    Top = 128
+    object mniPopupConnect: TMenuItem
+      Action = actConnect
+    end
+    object mniPopupDisconnect: TMenuItem
+      Action = actDisconnect
+    end
+    object mniPopupSeparator1: TMenuItem
+      Caption = '-'
+    end
+    object mniPopupAddItem: TMenuItem
+      Action = actAddItem
+    end
+    object mniPopupEditItem: TMenuItem
+      Action = actEditItem
+    end
+    object mniPopupDeleteItem: TMenuItem
+      Action = actDeleteItem
+    end
+    object mniPopupSeparator2: TMenuItem
+      Caption = '-'
+    end
+    object mniPopupRefresh: TMenuItem
+      Action = actRefresh
+    end
+    object mniPopupSeparator3: TMenuItem
+      Caption = '-'
+    end
+    object mniPopupHelpContents: TMenuItem
+      Action = actHelpContents
+    end
+    object mniPopupSeparator4: TMenuItem
+      Caption = '-'
+    end
+    object mniPopupQuit: TMenuItem
+      Action = actQuit
+    end
   end
 end
