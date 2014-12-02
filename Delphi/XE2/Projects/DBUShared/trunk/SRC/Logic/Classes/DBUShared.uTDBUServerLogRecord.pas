@@ -5,10 +5,12 @@ interface
 uses
   DBUShared.uIDBUServerLogRecord,
   CastersPackage.uICustomized,
-  System.Classes;
+  CastersPackage.uIListItemAdapter,
+  System.Classes,
+  Vcl.ComCtrls;
 
 type
-  TDBUServerLogRecord = class(TInterfacedObject, IDBUServerLogRecord, ICustomized)
+  TDBUServerLogRecord = class(TInterfacedObject, IDBUServerLogRecord, ICustomized, IListItemAdapter)
   strict protected
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -53,6 +55,7 @@ type
 
   public
     function ToString: string; override;
+    procedure AppendToListView(const AListView: TListView); virtual;
   end;
 
 function GetIDBUServerLogRecord: IDBUServerLogRecord; overload;
@@ -62,6 +65,7 @@ function GetIDBUServerLogRecord(const ADatabaseType: string; const AFirstNumber,
 implementation
 
 uses
+  CastersPackage.uConsts,
   System.SysUtils,
   System.StrUtils;
 
@@ -195,11 +199,50 @@ begin
   end;
 end;
 
+procedure TDBUServerLogRecord.AppendToListView(const AListView: TListView);
+var
+  rec: IDBUServerLogRecord;
+  li: TListItem;
+begin
+  if not Assigned(AListView) then
+  begin
+    Exit;
+  end;
+
+  if not Assigned(AListView.Items) then
+  begin
+    Exit;
+  end;
+
+  li := AListView.Items.Add;
+
+  if not Assigned(li) then
+  begin
+    Exit;
+  end;
+
+  li.Caption := FormatDateTime(DATE_TIME_FORMAT_RU, DateTime);
+
+  if Assigned(li.SubItems) then
+  begin
+    li.SubItems.Add(DatabaseType);
+    li.SubItems.Add(Format('%d', [FirstNumber]));
+    li.SubItems.Add(Creator);
+    li.SubItems.Add(Format('%d', [Quantity]));
+
+    if Supports(Self, IDBUServerLogRecord, rec) then
+    begin
+      li.Data := Pointer(rec)
+    end;
+  end;
+end;
+
 function TDBUServerLogRecord.ToString: string;
 begin
   Result := IfThen(inherited > EmptyStr, inherited + sLineBreak) +
     Format('=> DateTime: %s, DatabaseType: %s, Creator: %s, FirstNumber: %d, Quantity: %d',
-    [FormatDateTime('yyyy.mm.dd HH.mm.ss', DateTime), DatabaseType, Creator, FirstNumber, Quantity]);
+    [FormatDateTime('yyyy.mm.dd HH.mm.ss', DateTime), DatabaseType, Creator, FirstNumber,
+    Quantity]);
 end;
 
 end.
