@@ -13,12 +13,13 @@ type
   strict protected
     procedure Initialize; override;
   public
-    procedure ToStringList(var AList: TStrings; const ADatabaseType: string = ''; const ASeparator: string = '^^');
+    procedure ToStringList(var AList: TStrings; const ADatabaseType: string = '';
+      const ASeparator: string = '^^');
   end;
 
 function GetIDBUServerLogRecords: IDBUServerLogRecords; overload;
-function GetIDBUServerLogRecords(const AList: TStrings; const ASeparator: string = '^^'): IDBUServerLogRecords;
-  overload;
+function GetIDBUServerLogRecords(const AList: TStrings; const ASeparator: string = '^^')
+  : IDBUServerLogRecords; overload;
 
 implementation
 
@@ -37,18 +38,17 @@ begin
   Result := TDBUServerLogRecords.Create;
 end;
 
-function GetIDBUServerLogRecords(const AList: TStrings; const ASeparator: string = '^^'): IDBUServerLogRecords;
+function GetIDBUServerLogRecords(const AList: TStrings; const ASeparator: string = '^^')
+  : IDBUServerLogRecords;
 var
   i: Integer;
   j: Integer;
   sl: TStrings;
-  separator: string;
   s: string;
   s1: string;
-  rec: IDBUServerLogRecord;
+  a: IDBUServerLogRecord;
 begin
-  separator := Trim(ASeparator);
-  Assert(Length(separator) > 0, 'Ќе указан разделитель строк записей лога');
+  Assert(Length(ASeparator) > 0, 'Ќе указан разделитель строк записей лога');
   Result := GetIDBUServerLogRecords;
   if not Assigned(Result) then
   begin
@@ -73,7 +73,7 @@ begin
       s := AList[i];
       while Length(s) > 0 do
       begin
-        j := Pos(separator, s);
+        j := Pos(ASeparator, s);
         if j = 0 then
         begin
           sl.Append(s);
@@ -81,19 +81,19 @@ begin
         end
         else
         begin
-          s1 := Copy(s, 0, j - 1);
+          s1 := Copy(s, 0, Pred(j));
           sl.Append(s1);
-          s1 := Copy(s, j + 2, Length(s));
+          s1 := Copy(s, j + Length(ASeparator), Length(s));
           s := s1;
         end;
       end;
       if sl.Count = 5 then
       begin
-        rec := GetIDBUServerLogRecord(sl[1], StrToInt(sl[2]), StrToInt(sl[4]), sl[3],
+        a := GetIDBUServerLogRecord(sl[1], StrToInt(sl[2]), StrToInt(sl[4]), sl[3],
           StrToDateTime(sl[0], TFormatSettings.Create('ru-RU')));
-        if Assigned(rec) then
+        if Assigned(a) then
         begin
-          Result.Add(rec);
+          Result.Add(a);
         end;
       end;
     end;
@@ -127,8 +127,9 @@ begin
     begin
       if (s = EmptyStr) or (Items[i].DatabaseType = s) then
       begin
-        AList.Append(Format('%s^^%s^^%d^^%s^^%d^^', [FormatDateTime(DATE_TIME_FORMAT_RU, Items[i].DateTime),
-          Items[i].DatabaseType, Items[i].FirstNumber, Items[i].Creator, Items[i].Quantity]));
+        AList.Append(Format('%s^^%s^^%d^^%s^^%d^^', [FormatDateTime(DATE_TIME_FORMAT_RU,
+          Items[i].DateTime), Items[i].DatabaseType, Items[i].FirstNumber, Items[i].Creator,
+          Items[i].Quantity]));
       end;
     end;
   end;

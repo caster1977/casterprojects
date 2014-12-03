@@ -76,31 +76,25 @@ end;
 
 function GetIDBUServerLogRecord(const ADatabaseType: string; const AFirstNumber, AQuantity: Integer;
   const ACreator: string; const ADateTime: TDateTime): IDBUServerLogRecord; overload;
-var
-  a: IDBUServerLogRecord;
 begin
-  Result := nil;
-
-  a := GetIDBUServerLogRecord;
-  if not Assigned(a) then
+  Result := GetIDBUServerLogRecord;
+  if not Assigned(Result) then
   begin
     Exit;
   end;
 
   if ADateTime = 0 then
   begin
-    a.DateTime := Now;
+    Result.DateTime := Now;
   end
   else
   begin
-    a.DateTime := ADateTime;
+    Result.DateTime := ADateTime;
   end;
-  a.DatabaseType := ADatabaseType;
-  a.Creator := ACreator;
-  a.FirstNumber := AFirstNumber;
-  a.Quantity := AQuantity;
-
-  Result := a;
+  Result.DatabaseType := ADatabaseType;
+  Result.Creator := ACreator;
+  Result.FirstNumber := AFirstNumber;
+  Result.Quantity := AQuantity;
 end;
 
 constructor TDBUServerLogRecord.Create;
@@ -201,7 +195,7 @@ end;
 
 procedure TDBUServerLogRecord.AppendToListView(const AListView: TListView);
 var
-  rec: IDBUServerLogRecord;
+  a: IDBUServerLogRecord;
   li: TListItem;
 begin
   if not Assigned(AListView) then
@@ -230,9 +224,9 @@ begin
     li.SubItems.Add(Creator);
     li.SubItems.Add(Format('%d', [Quantity]));
 
-    if Supports(Self, IDBUServerLogRecord, rec) then
+    if Supports(Self, IDBUServerLogRecord, a) then
     begin
-      li.Data := Pointer(rec)
+      li.Data := Pointer(a)
     end;
   end;
 end;

@@ -33,9 +33,25 @@ requires
   CastersPackage;
 
 contains
+  DBUShared.uIDatabaseType in 'Logic\Interfaces\DBUShared.uIDatabaseType.pas',
+  DBUShared.uIDatabaseTypes in 'Logic\Interfaces\DBUShared.uIDatabaseTypes.pas',
+  DBUShared.uIDBUServerLogRecord in 'Logic\Interfaces\DBUShared.uIDBUServerLogRecord.pas',
+  DBUShared.uIDBUServerLogRecords in 'Logic\Interfaces\DBUShared.uIDBUServerLogRecords.pas',
+  DBUShared.uIDBUState in 'Logic\Interfaces\DBUShared.uIDBUState.pas',
+  DBUShared.uIDBUStates in 'Logic\Interfaces\DBUShared.uIDBUStates.pas',
+  DBUShared.uISQLAction in 'Logic\Interfaces\DBUShared.uISQLAction.pas',
+  DBUShared.uISQLActions in 'Logic\Interfaces\DBUShared.uISQLActions.pas',
+  DBUShared.uISQLSubject in 'Logic\Interfaces\DBUShared.uISQLSubject.pas',
+  DBUShared.uISQLSubjects in 'Logic\Interfaces\DBUShared.uISQLSubjects.pas',
+  DBUShared.uTDatabaseType in 'Logic\Classes\DBUShared.uTDatabaseType.pas',
+  DBUShared.uTDatabaseTypes in 'Logic\Classes\DBUShared.uTDatabaseTypes.pas',
   DBUShared.uTDBUServerLogRecord in 'Logic\Classes\DBUShared.uTDBUServerLogRecord.pas',
   DBUShared.uTDBUServerLogRecords in 'Logic\Classes\DBUShared.uTDBUServerLogRecords.pas',
-  DBUShared.uIDBUServerLogRecord in 'Logic\Interfaces\DBUShared.uIDBUServerLogRecord.pas',
-  DBUShared.uIDBUServerLogRecords in 'Logic\Interfaces\DBUShared.uIDBUServerLogRecords.pas';
+  DBUShared.uTDBUState in 'Logic\Classes\DBUShared.uTDBUState.pas',
+  DBUShared.uTDBUStates in 'Logic\Classes\DBUShared.uTDBUStates.pas',
+  DBUShared.uTSQLAction in 'Logic\Classes\DBUShared.uTSQLAction.pas',
+  DBUShared.uTSQLActions in 'Logic\Classes\DBUShared.uTSQLActions.pas',
+  DBUShared.uTSQLSubject in 'Logic\Classes\DBUShared.uTSQLSubject.pas',
+  DBUShared.uTSQLSubjects in 'Logic\Classes\DBUShared.uTSQLSubjects.pas';
 
 end.
