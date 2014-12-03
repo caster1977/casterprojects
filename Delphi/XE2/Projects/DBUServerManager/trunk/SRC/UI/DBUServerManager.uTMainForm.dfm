@@ -119,6 +119,7 @@ object MainForm: TMainForm
     ParentDoubleBuffered = False
     TabOrder = 2
     Visible = False
+    OnChange = pgcMainChange
     object tsLogRecords: TTabSheet
       Caption = #1051#1086#1075' '#1074#1099#1076#1077#1083#1077#1085#1080#1103' '#1085#1086#1084#1077#1088#1086#1074' DBU'
       object lvLog: TListView
@@ -170,6 +171,10 @@ object MainForm: TMainForm
     object tsSQLActions: TTabSheet
       Caption = #1044#1077#1081#1089#1090#1074#1080#1103' SQL'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lvSQLActions: TListView
         AlignWithMargins = True
         Left = 0
@@ -205,6 +210,10 @@ object MainForm: TMainForm
     object tsSQLSubjects: TTabSheet
       Caption = #1054#1073#1098#1077#1082#1090#1099' SQL'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lvSQLSubjects: TListView
         AlignWithMargins = True
         Left = 0
@@ -240,6 +249,10 @@ object MainForm: TMainForm
     object tsDatabaseTypes: TTabSheet
       Caption = #1058#1080#1087#1099' '#1041#1044
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lvDatabaseTypes: TListView
         AlignWithMargins = True
         Left = 0
@@ -276,6 +289,10 @@ object MainForm: TMainForm
     object tsUsers: TTabSheet
       Caption = #1055#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1080
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lvUsers: TListView
         AlignWithMargins = True
         Left = 0
@@ -436,7 +453,7 @@ object MainForm: TMainForm
     Left = 168
     Top = 128
     Bitmap = {
-      494C01011100A000F00510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01011100A000FC0510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1546,7 +1563,7 @@ object MainForm: TMainForm
     Left = 224
     Top = 184
     Bitmap = {
-      494C010102000400FC0710001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400080810001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
