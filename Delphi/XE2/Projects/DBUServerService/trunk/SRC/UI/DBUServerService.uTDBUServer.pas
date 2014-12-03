@@ -80,6 +80,7 @@ uses
   DBUShared.uTDatabaseType,
   System.Math,
   System.StrUtils,
+  DBUShared.uConsts,
   DBUServerService.uConsts,
   IdSocketHandle,
   IdGlobal,
@@ -253,30 +254,6 @@ begin
   Result := FConfiguration;
 end;
 
-procedure TDBUServer.GetUsersCommand(ASender: TIdCommand);
-var
-  i: Integer;
-begin
-  LogMessage('Start GetUsersCommand', EVENTLOG_INFORMATION_TYPE);
-  if not Assigned(Configuration) then
-  begin
-    Exit;
-  end;
-
-  if not Assigned(Configuration.SQLSubjects) then
-  begin
-    Exit;
-  end;
-
-  ASender.Context.Connection.IOHandler.Write(Configuration.SQLSubjects.Count);
-  for i := 0 to Pred(Configuration.SQLSubjects.Count) do
-  begin
-    ASender.Context.Connection.IOHandler.WriteLn(Format('%s:%s', [Configuration.SQLSubjects[i].Name,
-      Configuration.SQLSubjects[i].Abbreviation]), IndyTextEncoding_OSDefault);
-  end;
-  LogMessage('Stop GetUsersCommand', EVENTLOG_INFORMATION_TYPE);
-end;
-
 procedure TDBUServer.IdCmdTCPServerCommandHandlers1Command(ASender: TIdCommand);
 begin
   LogMessage('Start IdCmdTCPServerCommandHandlers1Command', EVENTLOG_INFORMATION_TYPE);
@@ -422,47 +399,6 @@ begin
   LogMessage('Stop GetReserveNewDBUpdateNumbersCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
-procedure TDBUServer.LoginCommand(ASender: TIdCommand);
-var
-  login: string;
-  pass: string;
-  t: Byte;
-  i: Integer;
-begin
-  LogMessage('Start LoginCommand', EVENTLOG_INFORMATION_TYPE);
-  login := Trim(ASender.Context.Connection.IOHandler.ReadLn);
-  pass := ASender.Context.Connection.IOHandler.ReadLn;
-  t := 1;
-  { TODO : добавить код проверки валидности введённых логина и пароля на основе списка пользователей }
-  { TODO : реализовать механизм редактирования списка пользователей }
-  if Assigned(Configuration.Users) then
-  begin
-    for i := 0 to Pred(Configuration.Users.Count) do
-    begin
-      if Assigned(Configuration.Users[i]) then
-      begin
-        if (login = Configuration.Users[i].login) and (pass = Configuration.Users[i].PasswordHash)
-        then
-        begin
-          if Configuration.Users[i].Blocked then
-          begin
-            t := 2;
-            LogMessage(Format('Logon failed cause user "%s" is blocked', [login]), EVENTLOG_INFORMATION_TYPE);
-          end
-          else
-          begin
-            t := 3;
-            LogMessage(Format('User "%s" logon successfully', [login]), EVENTLOG_INFORMATION_TYPE);
-          end;
-          Break;
-        end;
-      end;
-    end;
-  end;
-  ASender.Context.Connection.IOHandler.Write(t);
-  LogMessage('Stop LoginCommand', EVENTLOG_INFORMATION_TYPE);
-end;
-
 procedure TDBUServer.AddNewDatabaseTypeCommand(ASender: TIdCommand);
 var
   si: SmallInt;
@@ -550,6 +486,81 @@ begin
     sl.Free;
   end;
   LogMessage('Stop GetNewNumberLogGridCommand', EVENTLOG_INFORMATION_TYPE);
+end;
+
+procedure TDBUServer.GetUsersCommand(ASender: TIdCommand);
+var
+  i: Integer;
+begin
+  LogMessage('Start GetUsersCommand', EVENTLOG_INFORMATION_TYPE);
+  if not Assigned(Configuration) then
+  begin
+    Exit;
+  end;
+
+  if not Assigned(Configuration.Users) then
+  begin
+    Exit;
+  end;
+
+  ASender.Context.Connection.IOHandler.Write(Configuration.Users.Count);
+  for i := 0 to Pred(Configuration.Users.Count) do
+  begin
+    ASender.Context.Connection.IOHandler.WriteLn(Format('%s%s%s%s%s%s%d%s%d', [Configuration.Users[i].Login,
+      DEFAULT_USER_LIST_SEPARATOR, Configuration.Users[i].PasswordHash, DEFAULT_USER_LIST_SEPARATOR,
+      Configuration.Users[i].FullName, DEFAULT_USER_LIST_SEPARATOR,
+      Integer(Configuration.Users[i].Blocked), DEFAULT_USER_LIST_SEPARATOR,
+      Integer(Configuration.Users[i].Administrator)]), IndyTextEncoding_OSDefault);
+  end;
+  LogMessage('Stop GetUsersCommand', EVENTLOG_INFORMATION_TYPE);
+end;
+
+procedure TDBUServer.LoginCommand(ASender: TIdCommand);
+var
+  Login: string;
+  pass: string;
+  t: Byte;
+  t1: Byte;
+  i: Integer;
+begin
+  LogMessage('Start LoginCommand', EVENTLOG_INFORMATION_TYPE);
+  Login := Trim(ASender.Context.Connection.IOHandler.ReadLn);
+  pass := ASender.Context.Connection.IOHandler.ReadLn;
+  t := 1;
+  { TODO : добавить код проверки валидности введённых логина и пароля на основе списка пользователей }
+  { TODO : реализовать механизм редактирования списка пользователей }
+  if Assigned(Configuration.Users) then
+  begin
+    for i := 0 to Pred(Configuration.Users.Count) do
+    begin
+      if Assigned(Configuration.Users[i]) then
+      begin
+        if (Login = Configuration.Users[i].Login) and (pass = Configuration.Users[i].PasswordHash)
+        then
+        begin
+          if Configuration.Users[i].Blocked then
+          begin
+            t := 2;
+            LogMessage(Format('Logon failed cause user "%s" is blocked', [Login]),
+              EVENTLOG_INFORMATION_TYPE);
+          end
+          else
+          begin
+            t := 3;
+            t1 := Integer(Configuration.Users[i].Administrator);
+            LogMessage(Format('User "%s" logon successfully', [Login]), EVENTLOG_INFORMATION_TYPE);
+          end;
+          Break;
+        end;
+      end;
+    end;
+  end;
+  ASender.Context.Connection.IOHandler.Write(t);
+  if t = 3 then
+  begin
+    ASender.Context.Connection.IOHandler.Write(t1);
+  end;
+  LogMessage('Stop LoginCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
 end.
