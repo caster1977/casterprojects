@@ -97,6 +97,9 @@
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="vcl.dcp"/>
         <DCCReference Include="xmlrtl.dcp"/>
+        <DCCReference Include="IndySystem.dcp"/>
+        <DCCReference Include="IndyProtocols.dcp"/>
+        <DCCReference Include="IndyCore.dcp"/>
         <DCCReference Include="Logic\Classes\CastersPackage.uTSysMenu.pas"/>
         <DCCReference Include="Logic\Classes\CastersPackage.uTfisSysMenu.pas"/>
         <DCCReference Include="Logic\Classes\CastersPackage.uTListViewEx.pas"/>

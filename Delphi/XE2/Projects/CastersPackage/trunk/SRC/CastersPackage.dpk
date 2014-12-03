@@ -31,7 +31,10 @@ package CastersPackage;
 requires
   rtl,
   vcl,
-  xmlrtl;
+  xmlrtl,
+  IndySystem,
+  IndyProtocols,
+  IndyCore;
 
 contains
   CastersPackage.uTSysMenu in 'Logic\Classes\CastersPackage.uTSysMenu.pas',
