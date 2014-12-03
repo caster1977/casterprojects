@@ -68,6 +68,9 @@ type
     class procedure SetCheckBoxState(const ACheckBox: TCheckBox; const AValue: Boolean); static;
 
     (*class function LoadBitmap256(const AHInstance: HWND; const ABitmapName: PChar): HBITMAP; static;*)
+    class function Explode(const ASource: string; const ASeparators: array of string): TStrings; overload; static;
+    class function Explode(const ASource: TStrings; const ASeparators: array of string): TStrings; overload; static;
+    class function Hash(const AString: string): string;
   end;
 
 implementation
@@ -78,6 +81,7 @@ uses
   System.AnsiStrings,
   System.SysUtils,
   Vcl.Clipbrd,
+  IdHashCRC,
   System.Win.Registry;
 
 class function Routines.GetLocalIP: string;
@@ -98,6 +102,18 @@ begin
         Result := string(iNet_ntoa(PInAddr(P^.h_addr_list^)^));
     end;
     WSACleanup;
+  end;
+end;
+
+class function Routines.Hash(const AString: string): string;
+var
+  h: TIdHashCRC32;
+begin
+  h := TIdHashCRC32.Create;
+  try
+    Result := h.HashStringAsHex(AString);
+  finally
+    h.Free;
   end;
 end;
 
@@ -648,5 +664,77 @@ begin
     GlobalUnlock(hRes);
   end;
 end;*)
+
+class function Routines.Explode(const ASource: string; const ASeparators: array of string): TStrings;
+var
+  i: Integer;
+  i1: Integer;
+  j: Integer;
+  s: string;
+  s1: string;
+  sl: TStrings;
+  sl1: TStrings;
+begin
+  Assert(Length(ASeparators) > 0, 'Не указан ни один разделитель строк');
+  for i := 0 to Pred(Length(ASeparators)) do
+  begin
+    Assert(Length(ASeparators[i]) > 0, 'Разделитель строки не может быть пустой строкой');
+  end;
+
+  Result := nil;
+
+  sl := TStringList.Create;
+  if not Assigned(sl) then
+  begin
+    Exit;
+  end;
+
+  sl.Text := ASource;
+
+  sl1 := TStringList.Create;
+  try
+    // в цикле начинаем перебирать все разделители
+    for i := 0 to Pred(Length(ASeparators)) do
+    begin
+      // в цикле начинаем перебирать строки списка и дробить их текущим разделителем
+      sl1.Clear;
+      for i1 := 0 to Pred(sl.Count) do
+      begin
+        s := sl[i1];
+        while Length(s) > 0 do
+        begin
+          j := Pos(ASeparators[i], s);
+          if j = 0 then
+          begin
+            sl1.Append(s);
+            Break;
+          end
+          else
+          begin
+            s1 := Copy(s, 0, Pred(j));
+            sl1.Append(s1);
+            s1 := Copy(s, j + Length(ASeparators[i]), Length(s));
+            s := s1;
+          end;
+        end;
+      end;
+      sl.Text := sl1.Text;
+    end;
+  finally
+    sl1.Free;
+  end;
+
+  Result := sl;
+end;
+
+class function Routines.Explode(const ASource: TStrings; const ASeparators: array of string): TStrings;
+begin
+  Result := nil;
+  if not Assigned(ASource) then
+  begin
+    Exit;
+  end;
+  Result := Explode(ASource.Text, ASeparators);
+end;
 
 end.
