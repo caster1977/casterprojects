@@ -116,6 +116,7 @@ object MainForm: TMainForm
     ActivePage = tsUsers
     Align = alClient
     DoubleBuffered = True
+    HotTrack = True
     ParentDoubleBuffered = False
     TabOrder = 2
     Visible = False
@@ -370,7 +371,10 @@ object MainForm: TMainForm
     object btnQuit: TToolButton
       Left = 0
       Top = 0
+      Cursor = crHandPoint
       Action = actQuit
+      ParentShowHint = False
+      ShowHint = True
     end
     object btn2: TToolButton
       Left = 23
@@ -383,7 +387,10 @@ object MainForm: TMainForm
     object btnConfiguration: TToolButton
       Left = 31
       Top = 0
+      Cursor = crHandPoint
       Action = actConfiguration
+      ParentShowHint = False
+      ShowHint = True
     end
     object btn6: TToolButton
       Left = 54
@@ -396,12 +403,18 @@ object MainForm: TMainForm
     object btnConnect: TToolButton
       Left = 62
       Top = 0
+      Cursor = crHandPoint
       Action = actConnect
+      ParentShowHint = False
+      ShowHint = True
     end
     object btnDisconnect: TToolButton
       Left = 85
       Top = 0
+      Cursor = crHandPoint
       Action = actDisconnect
+      ParentShowHint = False
+      ShowHint = True
     end
     object btn1: TToolButton
       Left = 108
@@ -414,17 +427,26 @@ object MainForm: TMainForm
     object btnAddItem: TToolButton
       Left = 116
       Top = 0
+      Cursor = crHandPoint
       Action = actAddItem
+      ParentShowHint = False
+      ShowHint = True
     end
     object btnEditItem: TToolButton
       Left = 139
       Top = 0
+      Cursor = crHandPoint
       Action = actEditItem
+      ParentShowHint = False
+      ShowHint = True
     end
     object btnDeleteItem: TToolButton
       Left = 162
       Top = 0
+      Cursor = crHandPoint
       Action = actDeleteItem
+      ParentShowHint = False
+      ShowHint = True
     end
     object btn3: TToolButton
       Left = 185
@@ -437,7 +459,10 @@ object MainForm: TMainForm
     object btnRefresh: TToolButton
       Left = 193
       Top = 0
+      Cursor = crHandPoint
       Action = actRefresh
+      ParentShowHint = False
+      ShowHint = True
     end
     object btn4: TToolButton
       Left = 216
@@ -450,7 +475,10 @@ object MainForm: TMainForm
     object btn5: TToolButton
       Left = 224
       Top = 0
+      Cursor = crHandPoint
       Action = actHelpContents
+      ParentShowHint = False
+      ShowHint = True
     end
     object btn7: TToolButton
       Left = 247
@@ -463,7 +491,10 @@ object MainForm: TMainForm
     object btnAbout: TToolButton
       Left = 255
       Top = 0
+      Cursor = crHandPoint
       Action = actAbout
+      ParentShowHint = False
+      ShowHint = True
     end
   end
   object AboutWindow: TAboutWindow
@@ -476,7 +507,7 @@ object MainForm: TMainForm
     Left = 168
     Top = 128
     Bitmap = {
-      494C01011100A0002C0610001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01011100A000480610001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1479,36 +1510,6 @@ object MainForm: TMainForm
       object mniReserveNewDBUNUmber: TMenuItem
         Action = actReserveNewDBUNUmber
       end
-      object mniGetSQLActionList: TMenuItem
-        Caption = '&3. '#1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1076#1077#1081#1089#1090#1074#1080#1081' SQL'
-        Hint = 
-          #1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1076#1077#1081#1089#1090#1074#1080#1081' SQL|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1089#1087#1080#1089#1082#1072' '#1074#1086#1079#1084#1086#1078 +
-          #1085#1099#1093' '#1076#1077#1081#1089#1090#1074#1080#1081' SQL'
-      end
-      object mniGetSQLSubjectList: TMenuItem
-        Caption = '&4. '#1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1086#1073#1098#1077#1082#1090#1086#1074' SQL'
-        Hint = 
-          #1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1086#1073#1098#1077#1082#1090#1086#1074' SQL|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1089#1087#1080#1089#1082#1072' '#1090#1080#1087#1086#1074' ' +
-          #1086#1073#1098#1077#1082#1090#1086#1074' SQL'
-      end
-      object mniGetLogDataByDBType: TMenuItem
-        Caption = '&5. '#1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1083#1086#1075#1072' '#1087#1086' '#1091#1082#1072#1079#1072#1085#1085#1086#1084#1091' '#1090#1080#1087#1091' '#1041#1044
-        Hint = 
-          #1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1083#1086#1075#1072' '#1087#1086' '#1091#1082#1072#1079#1072#1085#1085#1086#1084#1091' '#1090#1080#1087#1091' '#1041#1044'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1083#1086#1075#1072' ' +
-          #1088#1072#1073#1086#1090#1099' '#1089#1077#1088#1074#1077#1088#1072' '#1087#1086' '#1091#1082#1072#1079#1072#1085#1085#1086#1084#1091' '#1090#1080#1087#1091' '#1041#1044
-      end
-      object mniGetDBTypeList: TMenuItem
-        Caption = '&6. '#1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1090#1080#1087#1086#1074' '#1041#1044
-        Hint = 
-          #1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1090#1080#1087#1086#1074' '#1041#1044'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1089#1087#1080#1089#1082#1072' '#1090#1080#1087#1086#1074' '#1073#1072#1079' ' +
-          #1076#1072#1085#1085#1099#1093
-      end
-      object mniGetDBUStateList: TMenuItem
-        Caption = '&7. '#1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1089#1086#1089#1090#1086#1103#1085#1080#1081' DBU'
-        Hint = 
-          #1055#1086#1083#1091#1095#1080#1090#1100' '#1089#1087#1080#1089#1086#1082' '#1089#1086#1089#1090#1086#1103#1085#1080#1081' DBU|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1089#1087#1080#1089#1082#1072' '#1089#1086#1089#1090#1086 +
-          #1103#1085#1080#1081' '#1080' '#1080#1079#1086#1073#1088#1072#1078#1077#1085#1080#1103' DBU'
-      end
       object mniAddDBType: TMenuItem
         Action = actAddDBType
       end
@@ -1556,7 +1557,7 @@ object MainForm: TMainForm
     Left = 224
     Top = 184
     Bitmap = {
-      494C010102000400380810001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400540810001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

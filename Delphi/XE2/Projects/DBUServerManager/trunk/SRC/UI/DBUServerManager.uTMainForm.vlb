@@ -40,9 +40,6 @@ Coordinates=446,166,51,36
 [mniHelpContents]
 Coordinates=446,221,113,36
 
-[mniGetDBUStateList]
-Coordinates=446,276,133,36
-
 [actCreateProfile]
 Coordinates=446,331,107,36
 
@@ -51,12 +48,6 @@ Coordinates=446,386,94,36
 
 [StatusBar]
 Coordinates=20,77,62,51
-
-[mniGetSQLSubjectList]
-Coordinates=158,413,145,36
-
-[mniGetLogDataByDBType]
-Coordinates=617,1,165,36
 
 [N28]
 Coordinates=109,413,40,36
@@ -67,9 +58,6 @@ Coordinates=40,413,63,36
 [aplctnhnt1]
 Coordinates=617,56,74,36
 
-[mniGetDBTypeList]
-Coordinates=617,111,122,36
-
 [actDisconnect]
 Coordinates=617,166,95,36
 
@@ -78,9 +66,6 @@ Coordinates=617,221,55,36
 
 [mniTestConnection]
 Coordinates=617,331,125,36
-
-[mniGetSQLActionList]
-Coordinates=617,386,137,36
 
 [mniReserveNewDBUNUmber]
 Coordinates=820,1,183,36
@@ -197,7 +182,7 @@ Coordinates=1041,606,65,36
 Coordinates=922,635,110,36
 
 []
-Coordinates=234,133,162,36
+Coordinates=446,276,133,36
 Visible=True
 
 [(TMenuItem)]
