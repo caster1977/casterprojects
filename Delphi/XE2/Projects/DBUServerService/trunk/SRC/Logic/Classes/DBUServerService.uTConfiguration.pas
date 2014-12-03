@@ -7,6 +7,7 @@ uses
   DBUShared.uISQLSubjects,
   DBUShared.uIDatabaseTypes,
   DBUShared.uIDBUStates,
+  DBUShared.uIUsers,
   ConfigPackage.uTCustomConfiguration;
 
 type
@@ -38,6 +39,12 @@ type
     function GetDBUStates: IDBUStates;
   public
     property DBUStates: IDBUStates read GetDBUStates nodefault;
+
+  strict private
+    FUsers: IUsers;
+    function GetUsers: IUsers;
+  public
+    property Users: IUsers read GetUsers nodefault;
   end;
 
 implementation
@@ -51,6 +58,7 @@ uses
   Vcl.Graphics,
   ConfigPackage.uEConfiguration,
   DBUServerService.Configuration.uTConnection,
+  CastersPackage.uRoutines,
   DBUShared.uISQLAction,
   DBUShared.uTSQLActions,
   DBUShared.uTSQLAction,
@@ -62,7 +70,10 @@ uses
   DBUShared.uTDatabaseType,
   DBUShared.uIDBUState,
   DBUShared.uTDBUStates,
-  DBUShared.uTDBUState;
+  DBUShared.uTDBUState,
+  DBUShared.uIUser,
+  DBUShared.uTUser,
+  DBUShared.uTUsers;
 
 resourcestring
   RsSQLActions = 'Действия SQL';
@@ -70,15 +81,19 @@ resourcestring
   RsDatabaseTypes = 'Типы БД';
   RsDBUStates = 'Состояния DBU';
   RsDBUState = 'Состояние DBU %d';
+  RsUsers = 'Пользователи';
+  RsUser = 'Пользователь %d';
   RsQuantity = 'Количество';
   RsId = 'Идентификатор';
   RsName = 'Наименование';
   RsFlags = 'Флаги';
   RsIcon = 'Иконка';
+  RsLogin = 'Логин';
+  RsPasswordHash = 'Хэш пароля';
+  RsFullName = 'Полное имя';
+  RsBlocked = 'Заблокирован';
+  RsAdministrator = 'Администратор';
   RsConfigurationSaveError = 'Произошла ошибка при попытке записи настроек программы в файл.';
-
-  // type
-  // THackBitmap = class(TBitmap);
 
 function TConfiguration.GetDatabaseTypes: IDatabaseTypes;
 begin
@@ -116,6 +131,15 @@ begin
   Result := FSQLSubjects;
 end;
 
+function TConfiguration.GetUsers: IUsers;
+begin
+  if not Assigned(FUsers) then
+  begin
+    FUsers := GetIUsers;
+  end;
+  Result := FUsers;
+end;
+
 procedure TConfiguration.Initialize;
 var
   i: Integer;
@@ -123,10 +147,13 @@ var
   iss: ISQLSubject;
   dbt: IDatabaseType;
   dbus: IDBUState;
+  u: IUser;
   sl: TStringList;
   dbu_states_quantity: Integer;
+  users_quantity: Integer;
   ms: TMemoryStream;
   ico: TIcon;
+  b: Boolean;
 begin
   inherited;
   RegisterSection(TConnection);
@@ -135,6 +162,7 @@ begin
   SQLSubjects.Clear;
   DatabaseTypes.Clear;
   DBUStates.Clear;
+  Users.Clear;
 
   if Assigned(FIniFile) then
   begin
@@ -160,7 +188,6 @@ begin
       end;
 
       sl.Clear;
-
       if FIniFile.SectionExists(RsSQLSubjects) then
       begin
         FIniFile.ReadSectionValues(RsSQLSubjects, sl);
@@ -181,7 +208,6 @@ begin
       end;
 
       sl.Clear;
-
       if FIniFile.SectionExists(RsDatabaseTypes) then
       begin
         FIniFile.ReadSection(RsDatabaseTypes, sl);
@@ -240,6 +266,57 @@ begin
           end;
         end;
       end;
+
+      users_quantity := 0;
+      if FIniFile.SectionExists(RsUsers) then
+      begin
+        users_quantity := FIniFile.ReadInteger(RsUsers, RsQuantity, 0);
+      end;
+
+      for i := 0 to Pred(users_quantity) do
+      begin
+        u := GetIUser;
+        if Assigned(u) then
+        begin
+          u.Login := FIniFile.ReadString(Format(RsUser, [i]), RsLogin, EmptyStr);
+          u.PasswordHash := FIniFile.ReadString(Format(RsUser, [i]), RsPasswordHash, EmptyStr);
+          u.FullName := FIniFile.ReadString(Format(RsDBUState, [i]), RsFullName, EmptyStr);
+          u.Blocked := FIniFile.ReadBool(Format(RsDBUState, [i]), RsBlocked, False);
+          u.Administrator := FIniFile.ReadBool(Format(RsDBUState, [i]), RsAdministrator, False);
+          if (u.Login <> EmptyStr) and (u.PasswordHash <> EmptyStr) then
+          begin
+            Users.Add(u);
+          end;
+        end;
+      end;
+
+      b := False;
+      for i := 0 to Pred(Users.Count) do
+      begin
+        if Users[i].Login = 'root' then
+        begin
+          b := True;
+          Break;
+        end;
+      end;
+
+      // если нет рута, добавляем его с настройками по умолчанию
+      if not b then
+      begin
+        u := GetIUser;
+        if Assigned(u) then
+        begin
+          u.Login := 'root';
+          u.PasswordHash := 'FCAA41CB'; //Routines.Hash('1-Future');
+          u.FullName := 'Мастер-пользователь';
+          u.Blocked := False;
+          u.Administrator := True;
+          Users.Insert(0, u);
+        end;
+      end;
+
+
+
     finally
       sl.Free;
     end;

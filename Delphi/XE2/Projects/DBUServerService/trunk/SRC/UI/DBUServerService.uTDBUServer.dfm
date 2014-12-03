@@ -127,6 +127,17 @@ object DBUServer: TDBUServer
         ParseParams = True
         Tag = 0
         OnCommand = LoginCommand
+      end
+      item
+        CmdDelimiter = ' '
+        Command = 'TCP_GET_USERS'
+        Disconnect = False
+        Name = 'GetUsersHandler'
+        NormalReply.Code = '200'
+        ParamDelimiter = ' '
+        ParseParams = True
+        Tag = 0
+        OnCommand = GetUsersCommand
       end>
     ExceptionReply.Code = '500'
     ExceptionReply.Text.Strings = (
