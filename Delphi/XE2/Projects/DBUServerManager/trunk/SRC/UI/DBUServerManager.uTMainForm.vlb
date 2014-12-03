@@ -1,9 +1,6 @@
 ﻿[actLoadProfile]
 Coordinates=253,78,97,36
 
-[actGetLogDataByDBType]
-Coordinates=234,133,162,36
-
 [mniActionMenuGroupAction]
 Coordinates=234,188,174,36
 
@@ -51,9 +48,6 @@ Coordinates=446,331,107,36
 
 [mniTrayAbout]
 Coordinates=446,386,94,36
-
-[actGetDBUStateList]
-Coordinates=307,413,130,36
 
 [StatusBar]
 Coordinates=20,77,62,51
@@ -109,9 +103,6 @@ Coordinates=330,487,163,36
 [IdTCPClient]
 Coordinates=241,487,84,36
 
-[actGetDBTypeList]
-Coordinates=112,487,119,36
-
 [actGetLogData]
 Coordinates=0,451,101,36
 
@@ -163,9 +154,6 @@ Coordinates=375,561,58,36
 [actSaveProfileAs]
 Coordinates=256,561,113,36
 
-[actGetSQLActionList]
-Coordinates=117,561,134,36
-
 [lvLog]
 Coordinates=99,1,97,249
 
@@ -208,11 +196,8 @@ Coordinates=1041,606,65,36
 [actHelpContents]
 Coordinates=922,635,110,36
 
-[actGetSQLSubjectList]
-Coordinates=773,635,141,36
-
 []
-Coordinates=617,276,77,33
+Coordinates=234,133,162,36
 Visible=True
 
 [(TMenuItem)]

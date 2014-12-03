@@ -39,6 +39,10 @@ uses
   CastersPackage.uTApplicationOnHint,
   DBUShared.uIDBUServerLogRecords,
   DBUShared.uISQLActions,
+  DBUShared.uISQLSubjects,
+  DBUShared.uIDBUStates,
+  DBUShared.uIDatabaseTypes,
+  DBUShared.uIUsers,
   System.SyncObjs,
   LoginPackage.uTLoginWindow;
 
@@ -94,15 +98,10 @@ type
     mniTestConnection: TMenuItem;
     actReserveNewDBUNUmber: TAction;
     mniReserveNewDBUNUmber: TMenuItem;
-    actGetSQLActionList: TAction;
     mniGetSQLActionList: TMenuItem;
-    actGetSQLSubjectList: TAction;
     mniGetSQLSubjectList: TMenuItem;
-    actGetLogDataByDBType: TAction;
     mniGetLogDataByDBType: TMenuItem;
-    actGetDBTypeList: TAction;
     mniGetDBTypeList: TMenuItem;
-    actGetDBUStateList: TAction;
     mniGetDBUStateList: TMenuItem;
     actAddDBType: TAction;
     mniAddDBType: TMenuItem;
@@ -161,6 +160,9 @@ type
     mniAddItem: TMenuItem;
     mniEditItem: TMenuItem;
     mniDeleteItem: TMenuItem;
+    tsDBUStates: TTabSheet;
+    lvDBUStates: TListView;
+    ilDBUStates: TImageList;
     procedure actAboutExecute(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -180,16 +182,11 @@ type
     procedure actTestConnectionUpdate(Sender: TObject);
     procedure actReserveNewDBUNUmberUpdate(Sender: TObject);
     procedure actReserveNewDBUNUmberExecute(Sender: TObject);
-    procedure actGetSQLActionListExecute(Sender: TObject);
     procedure actGetSQLActionListUpdate(Sender: TObject);
     procedure actGetSQLSubjectListUpdate(Sender: TObject);
-    procedure actGetSQLSubjectListExecute(Sender: TObject);
     procedure actGetLogDataByDBTypeUpdate(Sender: TObject);
-    procedure actGetLogDataByDBTypeExecute(Sender: TObject);
-    procedure actGetDBTypeListExecute(Sender: TObject);
     procedure actGetDBTypeListUpdate(Sender: TObject);
     procedure actGetDBUStateListUpdate(Sender: TObject);
-    procedure actGetDBUStateListExecute(Sender: TObject);
     procedure actAddDBTypeUpdate(Sender: TObject);
     procedure actAddDBTypeExecute(Sender: TObject);
     procedure actGetLogDataUpdate(Sender: TObject);
@@ -229,6 +226,10 @@ type
   strict private
     FServerLog: IDBUServerLogRecords;
     FSQLActions: ISQLActions;
+    FSQLSubjects: ISQLSubjects;
+    FDBUStates: IDBUStates;
+    FDatabaseTypes: IDatabaseTypes;
+    FUsers: IUsers;
   end;
 
 var
@@ -245,6 +246,7 @@ uses
   Winapi.Windows,
   Vcl.Dialogs,
   IdGlobal,
+  CastersPackage.uRoutines,
   CastersPackage.uIListItemAdapter,
   DBUServerManager.uConsts,
   DBUServerManager.Configuration.uTInterface,
@@ -252,8 +254,11 @@ uses
   DBUServerManager.uTConfigurationForm,
   DBUShared.uConsts,
   DBUShared.uTDBUServerLogRecords,
-  DBUShared.uIDBUServerLogRecord,
-  DBUShared.uTSQLActions;
+  DBUShared.uTSQLActions,
+  DBUShared.uTSQLSubjects,
+  DBUShared.uTDBUStates,
+  DBUShared.uTDatabaseTypes,
+  DBUShared.uTUsers;
 
 resourcestring
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
@@ -642,7 +647,7 @@ begin
           // ShowMessage(itc.IOHandler.ReadLn);
           itc.SendCmd('TCP_LOGIN');
           itc.IOHandler.WriteLn(LoginWindow.Login);
-          itc.IOHandler.WriteLn(LoginWindow.Password);
+          itc.IOHandler.WriteLn(Routines.Hash(LoginWindow.Password));
           t := itc.IOHandler.ReadByte;
         finally
           itc.Disconnect;
@@ -665,6 +670,11 @@ begin
           Configuration.Section<TConnection>.EnableAutoLogon := False;
         end;
       2:
+        begin
+          ShowMessage('Учётная запись пользователя заблокирована.');
+          Configuration.Section<TConnection>.EnableAutoLogon := False;
+        end;
+      3:
         begin
           IdTCPClient.Connect;
           if IdTCPClient.Connected then
@@ -705,26 +715,6 @@ begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
 end;
 
-procedure TMainForm.actGetDBTypeListExecute(Sender: TObject);
-var
-  type_count: Integer;
-  sl: TStringList;
-  i: Integer;
-begin
-  IdTCPClient.SendCmd('TCP_GET_DBU_DATABASE_TYPE_ITEMS');
-  type_count := IdTCPClient.IOHandler.ReadLongInt;
-  sl := TStringList.Create;
-  try
-    for i := 0 to Pred(type_count) do
-    begin
-      sl.AddObject(IdTCPClient.IOHandler.ReadLn, TObject(IdTCPClient.IOHandler.ReadLongInt));
-    end;
-    ShowMessage(Format('Список типов БД:' + sLineBreak + sLineBreak + '%s', [sl.Text]));
-  finally
-    sl.Free;
-  end;
-end;
-
 procedure TMainForm.actGetDBTypeListUpdate(Sender: TObject);
 begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
@@ -740,49 +730,9 @@ begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
 end;
 
-procedure TMainForm.actGetSQLActionListExecute(Sender: TObject);
-var
-  action_count: Integer;
-  sl: TStringList;
-  i: Integer;
-begin
-  IdTCPClient.SendCmd('TCP_GET_DBU_SQL_ACTION_ITEMS');
-  action_count := IdTCPClient.IOHandler.ReadLongInt;
-  sl := TStringList.Create;
-  try
-    for i := 0 to Pred(action_count) do
-    begin
-      sl.Append(IdTCPClient.IOHandler.ReadLn);
-    end;
-    ShowMessage(Format('Список действий:' + sLineBreak + sLineBreak + '%s', [sl.Text]));
-  finally
-    sl.Free;
-  end;
-end;
-
 procedure TMainForm.actGetSQLActionListUpdate(Sender: TObject);
 begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
-end;
-
-procedure TMainForm.actGetSQLSubjectListExecute(Sender: TObject);
-var
-  action_count: Integer;
-  sl: TStringList;
-  i: Integer;
-begin
-  IdTCPClient.SendCmd('TCP_GET_DBU_SQL_SUBJ_ITEMS');
-  action_count := IdTCPClient.IOHandler.ReadLongInt;
-  sl := TStringList.Create;
-  try
-    for i := 0 to Pred(action_count) do
-    begin
-      sl.Append(IdTCPClient.IOHandler.ReadLn);
-    end;
-    ShowMessage(Format('Список объектов:' + sLineBreak + sLineBreak + '%s', [sl.Text]));
-  finally
-    sl.Free;
-  end;
 end;
 
 procedure TMainForm.actGetSQLSubjectListUpdate(Sender: TObject);
@@ -840,55 +790,9 @@ begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
 end;
 
-procedure TMainForm.actGetDBUStateListExecute(Sender: TObject);
-var
-  sl: TStringList;
-  st: TStream;
-begin
-  IdTCPClient.SendCmd('TCP_GET_DBU_STATES_ITEMS');
-  sl := TStringList.Create;
-  try
-    IdTCPClient.IOHandler.ReadStrings(sl, -1, IndyTextEncoding_OSDefault);
-    st := TMemoryStream.Create;
-    try
-      IdTCPClient.IOHandler.ReadStream(st);
-      st.Position := 0;
-      THackImageList(ilActions).ReadData(st);
-    finally
-      st.Free;
-    end;
-    ShowMessage(sl.Text);
-  finally
-    sl.Free;
-  end;
-end;
-
 procedure TMainForm.actGetDBUStateListUpdate(Sender: TObject);
 begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
-end;
-
-procedure TMainForm.actGetLogDataByDBTypeExecute(Sender: TObject);
-var
-  log_count: Integer;
-  sl: TStringList;
-  i: Integer;
-  db_type: string;
-begin
-  IdTCPClient.SendCmd('TCP_GET_DBU_NEW_NUMBER_LOG_GRID');
-  db_type := 'db_type';
-  IdTCPClient.IOHandler.WriteLn(db_type);
-  log_count := IdTCPClient.IOHandler.ReadLongInt;
-  sl := TStringList.Create;
-  try
-    for i := 0 to Pred(log_count) do
-    begin
-      sl.Append(IdTCPClient.IOHandler.ReadLn);
-    end;
-    ShowMessage(Format('Лог работы сервера:' + sLineBreak + sLineBreak + '%s', [sl.Text]));
-  finally
-    sl.Free;
-  end;
 end;
 
 procedure TMainForm.actGetLogDataExecute(Sender: TObject);
@@ -918,12 +822,12 @@ var
   line_count: Integer;
   sl: TStrings;
   i: Integer;
-  li: TListItem;
-  rec: IDBUServerLogRecord;
   lv: TListView;
   lia: IListItemAdapter;
   items_count: Integer;
+  st: TStream;
 begin
+  items_count := 0;
   if not pgcMain.Visible then
   begin
     Exit;
@@ -950,7 +854,7 @@ begin
         begin
           sl.Append(IdTCPClient.IOHandler.ReadLn);
         end;
-        FServerLog := GetIDBUServerLogRecords(sl);
+        FServerLog := GetIDBUServerLogRecords(sl, ['^^']);
         if not Assigned(FServerLog) then
         begin
           Exit;
@@ -967,14 +871,88 @@ begin
         begin
           sl.Append(IdTCPClient.IOHandler.ReadLn);
         end;
-        FSQLActions := GetISQLActions(sl);
+        FSQLActions := GetISQLActions(sl, [':']);
         if not Assigned(FSQLActions) then
         begin
           Exit;
         end;
         items_count := FSQLActions.Count;
       end;
-      { TODO : добавить остальные страницы }
+
+      if pgcMain.ActivePage = tsSQLSubjects then
+      begin
+        lv := lvSQLSubjects;
+        IdTCPClient.SendCmd('TCP_GET_DBU_SQL_SUBJ_ITEMS');
+        line_count := IdTCPClient.IOHandler.ReadLongInt;
+        for i := 0 to Pred(line_count) do
+        begin
+          sl.Append(IdTCPClient.IOHandler.ReadLn);
+        end;
+        FSQLSubjects := GetISQLSubjects(sl, [':']);
+        if not Assigned(FSQLSubjects) then
+        begin
+          Exit;
+        end;
+        items_count := FSQLSubjects.Count;
+      end;
+
+      if pgcMain.ActivePage = tsDBUStates then
+      begin
+        lv := lvDBUStates;
+        IdTCPClient.SendCmd('TCP_GET_DBU_STATES_ITEMS');
+        IdTCPClient.IOHandler.ReadStrings(sl, -1, IndyTextEncoding_OSDefault);
+
+        st := TMemoryStream.Create;
+        try
+          IdTCPClient.IOHandler.ReadStream(st);
+          st.Position := 0;
+          THackImageList(ilDBUStates).ReadData(st);
+        finally
+          st.Free;
+        end;
+
+        FDBUStates := GetIDBUStates(sl, ilDBUStates, ['=', ':']);
+        if not Assigned(FDBUStates) then
+        begin
+          Exit;
+        end;
+        items_count := FDBUStates.Count;
+      end;
+
+      if pgcMain.ActivePage = tsDatabaseTypes then
+      begin
+        lv := lvDatabaseTypes;
+        IdTCPClient.SendCmd('TCP_GET_DBU_DATABASE_TYPE_ITEMS');
+        line_count := IdTCPClient.IOHandler.ReadLongInt;
+        for i := 0 to Pred(line_count) do
+        begin
+          sl.Append(Format('%s=%d', [IdTCPClient.IOHandler.ReadLn,
+            IdTCPClient.IOHandler.ReadLongInt]));
+        end;
+        FDatabaseTypes := GetIDatabaseTypes(sl, ['=']);
+        if not Assigned(FDatabaseTypes) then
+        begin
+          Exit;
+        end;
+        items_count := FDatabaseTypes.Count;
+      end;
+
+      if pgcMain.ActivePage = tsUsers then
+      begin
+        lv := lvDatabaseTypes;
+        IdTCPClient.SendCmd('TCP_GET_USERS');
+        line_count := IdTCPClient.IOHandler.ReadLongInt;
+        for i := 0 to Pred(line_count) do
+        begin
+          sl.Append(IdTCPClient.IOHandler.ReadLn);
+        end;
+        FUsers := GetIUsers(sl, ['^^^^^']);
+        if not Assigned(FUsers) then
+        begin
+          Exit;
+        end;
+        items_count := FUsers.Count;
+      end;
 
       if not Assigned(lv) then
       begin
@@ -1016,7 +994,37 @@ begin
             end;
           end;
 
-          { TODO : добавить остальные страницы }
+          if pgcMain.ActivePage = tsSQLSubjects then
+          begin
+            if not Supports(FSQLSubjects[i], IListItemAdapter, lia) then
+            begin
+              Continue;
+            end;
+          end;
+
+          if pgcMain.ActivePage = tsDBUStates then
+          begin
+            if not Supports(FDBUStates[i], IListItemAdapter, lia) then
+            begin
+              Continue;
+            end;
+          end;
+
+          if pgcMain.ActivePage = tsDatabaseTypes then
+          begin
+            if not Supports(FDatabaseTypes[i], IListItemAdapter, lia) then
+            begin
+              Continue;
+            end;
+          end;
+
+          if pgcMain.ActivePage = tsUsers then
+          begin
+            if not Supports(FUsers[i], IListItemAdapter, lia) then
+            begin
+              Continue;
+            end;
+          end;
 
           lia.AppendToListView(lv);
         end;
