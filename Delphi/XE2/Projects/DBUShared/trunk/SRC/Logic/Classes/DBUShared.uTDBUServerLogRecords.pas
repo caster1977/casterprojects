@@ -18,7 +18,7 @@ type
   end;
 
 function GetIDBUServerLogRecords: IDBUServerLogRecords; overload;
-function GetIDBUServerLogRecords(const AList: TStrings; const ASeparator: string = '^^')
+function GetIDBUServerLogRecords(const AList: TStrings; const ASeparators: array of string)
   : IDBUServerLogRecords; overload;
 
 implementation
@@ -27,7 +27,8 @@ uses
   System.SysUtils,
   Vcl.Dialogs,
   DBUShared.uTDBUServerLogRecord,
-  CastersPackage.uConsts;
+  CastersPackage.uConsts,
+  CastersPackage.uRoutines;
 
 resourcestring
   RsCantAddItemToList = 'Ќе удалось добавить запись в лог.';
@@ -38,17 +39,14 @@ begin
   Result := TDBUServerLogRecords.Create;
 end;
 
-function GetIDBUServerLogRecords(const AList: TStrings; const ASeparator: string = '^^')
+function GetIDBUServerLogRecords(const AList: TStrings; const ASeparators: array of string)
   : IDBUServerLogRecords;
 var
   i: Integer;
-  j: Integer;
   sl: TStrings;
-  s: string;
-  s1: string;
   a: IDBUServerLogRecord;
 begin
-  Assert(Length(ASeparator) > 0, 'Ќе указан разделитель строк записей лога');
+  Assert(Length(ASeparators) > 0, 'Ќе указан ни один разделитель строк записей лога');
   Result := GetIDBUServerLogRecords;
   if not Assigned(Result) then
   begin
@@ -65,40 +63,22 @@ begin
     Exit;
   end;
 
-  sl := TStringList.Create;
-  try
-    for i := 1 to Pred(AList.Count) do
-    begin
-      sl.Clear;
-      s := AList[i];
-      while Length(s) > 0 do
-      begin
-        j := Pos(ASeparator, s);
-        if j = 0 then
-        begin
-          sl.Append(s);
-          Break;
-        end
-        else
-        begin
-          s1 := Copy(s, 0, Pred(j));
-          sl.Append(s1);
-          s1 := Copy(s, j + Length(ASeparator), Length(s));
-          s := s1;
-        end;
-      end;
+  for i := 1 to Pred(AList.Count) do
+  begin
+    sl := Routines.Explode(AList[i], ASeparators);
+    try
       if sl.Count = 5 then
       begin
-        a := GetIDBUServerLogRecord(sl[1], StrToInt(sl[2]), StrToInt(sl[4]), sl[3],
+        a := GetIDBUServerLogRecord(sl[1], StrToIntDef(sl[2], -1), StrToIntDef(sl[4], -1), sl[3],
           StrToDateTime(sl[0], TFormatSettings.Create('ru-RU')));
         if Assigned(a) then
         begin
           Result.Add(a);
         end;
       end;
+    finally
+      sl.Free;
     end;
-  finally
-    sl.Free;
   end;
 end;
 

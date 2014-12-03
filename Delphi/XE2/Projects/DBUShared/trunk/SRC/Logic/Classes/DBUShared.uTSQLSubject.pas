@@ -5,10 +5,12 @@ interface
 uses
   DBUShared.uISQLSubject,
   CastersPackage.uICustomized,
-  System.Classes;
+  System.Classes,
+  CastersPackage.uIListItemAdapter,
+  Vcl.ComCtrls;
 
 type
-  TSQLSubject = class(TInterfacedObject, ISQLSubject, ICustomized)
+  TSQLSubject = class(TInterfacedObject, ISQLSubject, ICustomized, IListItemAdapter)
   strict protected
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -32,9 +34,11 @@ type
 
   public
     function ToString: string; override;
+    procedure AppendToListView(const AListView: TListView); virtual;
   end;
 
-function GetISQLSubject: ISQLSubject;
+function GetISQLSubject: ISQLSubject; overload;
+function GetISQLSubject(const AName, AAbbreviation: string): ISQLSubject; overload;
 
 implementation
 
@@ -45,6 +49,55 @@ uses
 function GetISQLSubject: ISQLSubject;
 begin
   Result := TSQLSubject.Create;
+end;
+
+function GetISQLSubject(const AName, AAbbreviation: string): ISQLSubject;
+begin
+  Result := GetISQLSubject;
+
+  if not Assigned(Result) then
+  begin
+    Exit;
+  end;
+
+  Result.Name := Trim(AName);
+  Result.Abbreviation := Trim(AAbbreviation);
+end;
+
+
+procedure TSQLSubject.AppendToListView(const AListView: TListView);
+var
+  a: ISQLSubject;
+  li: TListItem;
+begin
+  if not Assigned(AListView) then
+  begin
+    Exit;
+  end;
+
+  if not Assigned(AListView.Items) then
+  begin
+    Exit;
+  end;
+
+  li := AListView.Items.Add;
+
+  if not Assigned(li) then
+  begin
+    Exit;
+  end;
+
+  li.Caption := Name;
+
+  if Assigned(li.SubItems) then
+  begin
+    li.SubItems.Add(Abbreviation);
+
+    if Supports(Self, ISQLSubject, a) then
+    begin
+      li.Data := Pointer(a);
+    end;
+  end;
 end;
 
 constructor TSQLSubject.Create;

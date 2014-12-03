@@ -226,7 +226,7 @@ begin
 
     if Supports(Self, IDBUServerLogRecord, a) then
     begin
-      li.Data := Pointer(a)
+      li.Data := Pointer(a);
     end;
   end;
 end;

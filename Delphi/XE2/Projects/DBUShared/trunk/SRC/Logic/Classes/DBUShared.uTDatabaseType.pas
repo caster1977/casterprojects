@@ -5,10 +5,12 @@ interface
 uses
   DBUShared.uIDatabaseType,
   CastersPackage.uICustomized,
-  System.Classes;
+  System.Classes,
+  CastersPackage.uIListItemAdapter,
+  Vcl.ComCtrls;
 
 type
-  TDatabaseType = class(TInterfacedObject, IDatabaseType, ICustomized)
+  TDatabaseType = class(TInterfacedObject, IDatabaseType, ICustomized, IListItemAdapter)
   strict protected
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -28,13 +30,15 @@ type
     function GetName: string;
     procedure SetName(const AValue: string);
   public
-    property Name: string read GetName write SetName nodefault;
+    property name: string read GetName write SetName nodefault;
 
   public
     function ToString: string; override;
+    procedure AppendToListView(const AListView: TListView); virtual;
   end;
 
-function GetIDatabaseType: IDatabaseType;
+function GetIDatabaseType: IDatabaseType; overload;
+function GetIDatabaseType(const AId: Integer; const AName: string): IDatabaseType; overload;
 
 implementation
 
@@ -45,6 +49,55 @@ uses
 function GetIDatabaseType: IDatabaseType;
 begin
   Result := TDatabaseType.Create;
+end;
+
+function GetIDatabaseType(const AId: Integer; const AName: string): IDatabaseType;
+begin
+  Result := GetIDatabaseType;
+
+  if not Assigned(Result) then
+  begin
+    Exit;
+  end;
+
+  Result.Id := AId;
+  Result.Name := Trim(AName);
+end;
+
+procedure TDatabaseType.AppendToListView(const AListView: TListView);
+var
+  a: IDatabaseType;
+  li: TListItem;
+begin
+  if not Assigned(AListView) then
+  begin
+    Exit;
+  end;
+
+  if not Assigned(AListView.Items) then
+  begin
+    Exit;
+  end;
+
+  li := AListView.Items.Add;
+
+  if not Assigned(li) then
+  begin
+    Exit;
+  end;
+
+  li.StateIndex := Id;
+  li.Caption := IntToStr(Id);
+
+  if Assigned(li.SubItems) then
+  begin
+    li.SubItems.Add(name);
+
+    if Supports(Self, IDatabaseType, a) then
+    begin
+      li.Data := Pointer(a);
+    end;
+  end;
 end;
 
 constructor TDatabaseType.Create;
@@ -62,7 +115,7 @@ end;
 procedure TDatabaseType.Initialize;
 begin
   Id := -1;
-  Name := EmptyStr;
+  name := EmptyStr;
 end;
 
 procedure TDatabaseType.Finalize;
@@ -100,8 +153,8 @@ end;
 
 function TDatabaseType.ToString: string;
 begin
-  Result := IfThen(inherited > EmptyStr, inherited + sLineBreak) +
-    Format('=> Id: %d, Name: %s', [Id, Name]);
+  Result := IfThen(inherited > EmptyStr, inherited + sLineBreak) + Format('=> Id: %d, Name: %s',
+    [Id, name]);
 end;
 
 end.

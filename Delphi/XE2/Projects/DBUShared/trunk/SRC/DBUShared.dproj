@@ -90,6 +90,9 @@
         </DelphiCompile>
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="CastersPackage.dcp"/>
+        <DCCReference Include="IndySystem.dcp"/>
+        <DCCReference Include="IndyProtocols.dcp"/>
+        <DCCReference Include="IndyCore.dcp"/>
         <DCCReference Include="Logic\Interfaces\DBUShared.uIDatabaseType.pas"/>
         <DCCReference Include="Logic\Interfaces\DBUShared.uIDatabaseTypes.pas"/>
         <DCCReference Include="Logic\Interfaces\DBUShared.uIDBUServerLogRecord.pas"/>
@@ -110,6 +113,10 @@
         <DCCReference Include="Logic\Classes\DBUShared.uTSQLActions.pas"/>
         <DCCReference Include="Logic\Classes\DBUShared.uTSQLSubject.pas"/>
         <DCCReference Include="Logic\Classes\DBUShared.uTSQLSubjects.pas"/>
+        <DCCReference Include="Logic\Interfaces\DBUShared.uIUser.pas"/>
+        <DCCReference Include="Logic\Interfaces\DBUShared.uIUsers.pas"/>
+        <DCCReference Include="Logic\Classes\DBUShared.uTUsers.pas"/>
+        <DCCReference Include="Logic\Classes\DBUShared.uTUser.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
