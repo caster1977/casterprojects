@@ -59,6 +59,7 @@ uses
   ConfigPackage.uEConfiguration,
   DBUServerService.Configuration.uTConnection,
   CastersPackage.uRoutines,
+  DBUShared.uConsts,
   DBUShared.uISQLAction,
   DBUShared.uTSQLActions,
   DBUShared.uTSQLAction,
@@ -281,8 +282,10 @@ begin
           u.Login := FIniFile.ReadString(Format(RsUser, [i]), RsLogin, EmptyStr);
           u.PasswordHash := FIniFile.ReadString(Format(RsUser, [i]), RsPasswordHash, EmptyStr);
           u.FullName := FIniFile.ReadString(Format(RsDBUState, [i]), RsFullName, EmptyStr);
-          u.Blocked := FIniFile.ReadBool(Format(RsDBUState, [i]), RsBlocked, False);
-          u.Administrator := FIniFile.ReadBool(Format(RsDBUState, [i]), RsAdministrator, False);
+          u.Blocked := FIniFile.ReadBool(Format(RsDBUState, [i]), RsBlocked,
+            CONFIGURATION_DEFAULT_USER_BLOCKED);
+          u.Administrator := FIniFile.ReadBool(Format(RsDBUState, [i]), RsAdministrator,
+            CONFIGURATION_DEFAULT_USER_ADMINISTRATOR);
           if (u.Login <> EmptyStr) and (u.PasswordHash <> EmptyStr) then
           begin
             Users.Add(u);
@@ -300,22 +303,20 @@ begin
         end;
       end;
 
-      // если нет рута, добавляем его с настройками по умолчанию
+      // если нет встроенного админа, добавляем его с настройками по умолчанию
       if not b then
       begin
         u := GetIUser;
         if Assigned(u) then
         begin
           u.Login := 'root';
-          u.PasswordHash := 'FCAA41CB'; //Routines.Hash('1-Future');
-          u.FullName := 'Мастер-пользователь';
+          u.PasswordHash := 'FCAA41CB'; // Routines.Hash('1-Future');
+          u.FullName := 'Встроенный администратор';
           u.Blocked := False;
           u.Administrator := True;
           Users.Insert(0, u);
         end;
       end;
-
-
 
     finally
       sl.Free;
@@ -416,6 +417,8 @@ begin
           end;
         end;
       end;
+
+      { TODO : дописать запись списка пользователей в файл конфигурации }
     except
       on EIniFileException do
       begin
