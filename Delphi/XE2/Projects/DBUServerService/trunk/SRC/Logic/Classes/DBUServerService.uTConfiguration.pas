@@ -3,10 +3,10 @@ unit DBUServerService.uTConfiguration;
 interface
 
 uses
-  DBUServerService.uISQLActions,
-  DBUServerService.uISQLSubjects,
-  DBUServerService.uIDatabaseTypes,
-  DBUServerService.uIDBUStates,
+  DBUShared.uISQLActions,
+  DBUShared.uISQLSubjects,
+  DBUShared.uIDatabaseTypes,
+  DBUShared.uIDBUStates,
   ConfigPackage.uTCustomConfiguration;
 
 type
@@ -51,18 +51,18 @@ uses
   Vcl.Graphics,
   ConfigPackage.uEConfiguration,
   DBUServerService.Configuration.uTConnection,
-  DBUServerService.uISQLAction,
-  DBUServerService.uTSQLActions,
-  DBUServerService.uTSQLAction,
-  DBUServerService.uISQLSubject,
-  DBUServerService.uTSQLSubjects,
-  DBUServerService.uTSQLSubject,
-  DBUServerService.uIDatabaseType,
-  DBUServerService.uTDatabaseTypes,
-  DBUServerService.uTDatabaseType,
-  DBUServerService.uIDBUState,
-  DBUServerService.uTDBUStates,
-  DBUServerService.uTDBUState;
+  DBUShared.uISQLAction,
+  DBUShared.uTSQLActions,
+  DBUShared.uTSQLAction,
+  DBUShared.uISQLSubject,
+  DBUShared.uTSQLSubjects,
+  DBUShared.uTSQLSubject,
+  DBUShared.uIDatabaseType,
+  DBUShared.uTDatabaseTypes,
+  DBUShared.uTDatabaseType,
+  DBUShared.uIDBUState,
+  DBUShared.uTDBUStates,
+  DBUShared.uTDBUState;
 
 resourcestring
   RsSQLActions = 'Действия SQL';
