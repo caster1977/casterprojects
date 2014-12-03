@@ -15,13 +15,14 @@ type
   end;
 
 function GetISQLActions: ISQLActions; overload;
-function GetISQLActions(const AList: TStrings; const ASeparator: string = ':')
+function GetISQLActions(const AList: TStrings; const ASeparators: array of string)
   : ISQLActions; overload;
 
 implementation
 
 uses
-  DBUShared.uTSQLAction;
+  DBUShared.uTSQLAction,
+  CastersPackage.uRoutines;
 
 resourcestring
   RsCantAddItemToList = 'Не удалось добавить действие SQL в список.';
@@ -32,16 +33,13 @@ begin
   Result := TSQLActions.Create;
 end;
 
-function GetISQLActions(const AList: TStrings; const ASeparator: string): ISQLActions;
+function GetISQLActions(const AList: TStrings; const ASeparators: array of string): ISQLActions;
 var
   i: Integer;
-  j: Integer;
   a: ISQLAction;
   sl: TStrings;
-  s: string;
-  s1: string;
 begin
-  Assert(Length(ASeparator) > 0, 'Не указан разделитель строк записей действий SQL');
+  Assert(Length(ASeparators) > 0, 'Не указан ни один разделитель строк записей действий SQL');
   Result := GetISQLActions;
 
   if not Assigned(Result) then
@@ -54,28 +52,10 @@ begin
     Exit;
   end;
 
-  sl := TStringList.Create;
-  try
-    for i := 0 to Pred(AList.Count) do
-    begin
-      sl.Clear;
-      s := AList[i];
-      while Length(s) > 0 do
-      begin
-        j := Pos(ASeparator, s);
-        if j = 0 then
-        begin
-          sl.Append(s);
-          Break;
-        end
-        else
-        begin
-          s1 := Copy(s, 0, Pred(j));
-          sl.Append(s1);
-          s1 := Copy(s, j + Length(ASeparator), Length(s));
-          s := s1;
-        end;
-      end;
+  for i := 0 to Pred(AList.Count) do
+  begin
+    sl := Routines.Explode(AList[i], ASeparators);
+    try
       if sl.Count = 2 then
       begin
         a := GetISQLAction(sl[0], sl[1]);
@@ -84,9 +64,9 @@ begin
           Result.Add(a);
         end;
       end;
+    finally
+      sl.Free;
     end;
-  finally
-    sl.Free;
   end;
 end;
 

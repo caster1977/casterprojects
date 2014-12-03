@@ -94,7 +94,7 @@ begin
 
     if Supports(Self, ISQLAction, a) then
     begin
-      li.Data := Pointer(a)
+      li.Data := Pointer(a);
     end;
   end;
 end;

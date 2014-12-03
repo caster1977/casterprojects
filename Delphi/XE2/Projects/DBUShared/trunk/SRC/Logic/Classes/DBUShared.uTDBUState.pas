@@ -6,10 +6,12 @@ uses
   DBUShared.uIDBUState,
   CastersPackage.uICustomized,
   System.Classes,
-  Vcl.Graphics;
+  Vcl.Graphics,
+  CastersPackage.uIListItemAdapter,
+  Vcl.ComCtrls;
 
 type
-  TDBUState = class(TInterfacedObject, IDBUState, ICustomized)
+  TDBUState = class(TInterfacedObject, IDBUState, ICustomized, IListItemAdapter)
   strict protected
     procedure Initialize; virtual;
     procedure Finalize; virtual;
@@ -47,19 +49,96 @@ type
 
   public
     function ToString: string; override;
+    procedure AppendToListView(const AListView: TListView); virtual;
   end;
 
-function GetIDBUState: IDBUState;
+function GetIDBUState: IDBUState; overload;
+function GetIDBUState(const AId: Integer; const AName: string; const AFlags: Word; const AIcon: TIcon = nil): IDBUState; overload;
 
 implementation
 
 uses
-  System.SysUtils,
-  System.StrUtils;
+  System.StrUtils,
+  System.SysUtils;
 
 function GetIDBUState: IDBUState;
 begin
   Result := TDBUState.Create;
+end;
+
+function GetIDBUState(const AId: Integer; const AName: string; const AFlags: Word; const AIcon: TIcon): IDBUState;
+begin
+  Result := GetIDBUState;
+
+  if not Assigned(Result) then
+  begin
+    Exit;
+  end;
+
+  Result.Id := AId;
+  Result.Name := Trim(AName);
+  Result.Flags := AFlags;
+  Result.Icon := AIcon;
+end;
+
+
+procedure TDBUState.AppendToListView(const AListView: TListView);
+var
+  a: IDBUState;
+  li: TListItem;
+  s: string;
+begin
+  if not Assigned(AListView) then
+  begin
+    Exit;
+  end;
+
+  if not Assigned(AListView.Items) then
+  begin
+    Exit;
+  end;
+
+  li := AListView.Items.Add;
+
+  if not Assigned(li) then
+  begin
+    Exit;
+  end;
+
+  li.StateIndex := Id;
+  li.Caption := IntToStr(Id);
+
+  if Assigned(li.SubItems) then
+  begin
+    li.SubItems.Add(Name);
+    s := EmptyStr;
+    if (Flags and 1) > 0 then
+    begin
+      s := s + 'заблокирован';
+    end;
+    if (Flags and 2) > 0 then
+    begin
+      if Length(s) > 0 then
+      begin
+        s := s + ', ';
+      end;
+      s := s + 'дорабатывается';
+    end;
+    if (Flags and 4) > 0 then
+    begin
+      if Length(s) > 0 then
+      begin
+        s := s + ', ';
+      end;
+      s := s + 'отменён';
+    end;
+    li.SubItems.Add(s);
+
+    if Supports(Self, IDBUState, a) then
+    begin
+      li.Data := Pointer(a);
+    end;
+  end;
 end;
 
 constructor TDBUState.Create;
