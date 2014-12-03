@@ -59,6 +59,7 @@ contains
   DBUShared.uIUser in 'Logic\Interfaces\DBUShared.uIUser.pas',
   DBUShared.uIUsers in 'Logic\Interfaces\DBUShared.uIUsers.pas',
   DBUShared.uTUsers in 'Logic\Classes\DBUShared.uTUsers.pas',
-  DBUShared.uTUser in 'Logic\Classes\DBUShared.uTUser.pas';
+  DBUShared.uTUser in 'Logic\Classes\DBUShared.uTUser.pas',
+  DBUShared.uConsts in 'Logic\Other\DBUShared.uConsts.pas';
 
 end.

@@ -117,6 +117,7 @@
         <DCCReference Include="Logic\Interfaces\DBUShared.uIUsers.pas"/>
         <DCCReference Include="Logic\Classes\DBUShared.uTUsers.pas"/>
         <DCCReference Include="Logic\Classes\DBUShared.uTUser.pas"/>
+        <DCCReference Include="Logic\Other\DBUShared.uConsts.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
