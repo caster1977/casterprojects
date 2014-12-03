@@ -98,11 +98,6 @@ type
     mniTestConnection: TMenuItem;
     actReserveNewDBUNUmber: TAction;
     mniReserveNewDBUNUmber: TMenuItem;
-    mniGetSQLActionList: TMenuItem;
-    mniGetSQLSubjectList: TMenuItem;
-    mniGetLogDataByDBType: TMenuItem;
-    mniGetDBTypeList: TMenuItem;
-    mniGetDBUStateList: TMenuItem;
     actAddDBType: TAction;
     mniAddDBType: TMenuItem;
     actGetLogData: TAction;
@@ -246,13 +241,13 @@ uses
   Winapi.Windows,
   Vcl.Dialogs,
   IdGlobal,
+  DBUShared.uConsts,
   CastersPackage.uRoutines,
   CastersPackage.uIListItemAdapter,
   DBUServerManager.uConsts,
   DBUServerManager.Configuration.uTInterface,
   DBUServerManager.Configuration.uTConnection,
   DBUServerManager.uTConfigurationForm,
-  DBUShared.uConsts,
   DBUShared.uTDBUServerLogRecords,
   DBUShared.uTSQLActions,
   DBUShared.uTSQLSubjects,
@@ -386,6 +381,8 @@ begin
   begin
     actConnect.Execute;
   end;
+  StateImage.Hint := Format('Сервер: [%s], порт: [%d]',
+    [Configuration.Section<TConnection>.Host, Configuration.Section<TConnection>.Port]);
 end;
 
 destructor TMainForm.Destroy;
@@ -615,6 +612,7 @@ procedure TMainForm.actConnectExecute(Sender: TObject);
 var
   itc: TIdTCPClient;
   t: Byte;
+  t1: Byte;
 begin
   LoginWindow.Login := Configuration.Section<TConnection>.Login;
   LoginWindow.Password := Configuration.Section<TConnection>.Password;
@@ -649,6 +647,11 @@ begin
           itc.IOHandler.WriteLn(LoginWindow.Login);
           itc.IOHandler.WriteLn(Routines.Hash(LoginWindow.Password));
           t := itc.IOHandler.ReadByte;
+          if t = 3 then
+          begin
+            t1 := itc.IOHandler.ReadByte;
+          end;
+
         finally
           itc.Disconnect;
         end;
@@ -684,6 +687,11 @@ begin
             pgcMain.ActivePage := tsLogRecords;
             pgcMain.Visible := True;
             actRefresh.Execute;
+            if t1 = 1 then
+            begin
+              { TODO : дописать применение админских прав }
+              ShowMessage('Пользователь является администратором');
+            end;
           end;
         end;
     end;
@@ -939,14 +947,14 @@ begin
 
       if pgcMain.ActivePage = tsUsers then
       begin
-        lv := lvDatabaseTypes;
+        lv := lvUsers;
         IdTCPClient.SendCmd('TCP_GET_USERS');
         line_count := IdTCPClient.IOHandler.ReadLongInt;
         for i := 0 to Pred(line_count) do
         begin
-          sl.Append(IdTCPClient.IOHandler.ReadLn);
+          sl.Append(IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault));
         end;
-        FUsers := GetIUsers(sl, ['^^^^^']);
+        FUsers := GetIUsers(sl, [DEFAULT_USER_LIST_SEPARATOR]);
         if not Assigned(FUsers) then
         begin
           Exit;
