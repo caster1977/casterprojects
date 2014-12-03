@@ -4,25 +4,9 @@ uses
   Vcl.SvcMgr,
   DBUServerService.uTDBUServer in 'UI\DBUServerService.uTDBUServer.pas' {DBUServer: TService},
   DBUServerService.uDBUServerUtils in 'Logic\Other\DBUServerService.uDBUServerUtils.pas',
-  DBUServerService.uISQLActions in 'Logic\Interfaces\DBUServerService.uISQLActions.pas',
-  DBUServerService.uISQLAction in 'Logic\Interfaces\DBUServerService.uISQLAction.pas',
-  DBUServerService.uTSQLActions in 'Logic\Classes\DBUServerService.uTSQLActions.pas',
-  DBUServerService.uTSQLAction in 'Logic\Classes\DBUServerService.uTSQLAction.pas',
-  DBUServerService.uISQLSubject in 'Logic\Interfaces\DBUServerService.uISQLSubject.pas',
-  DBUServerService.uISQLSubjects in 'Logic\Interfaces\DBUServerService.uISQLSubjects.pas',
-  DBUServerService.uTSQLSubjects in 'Logic\Classes\DBUServerService.uTSQLSubjects.pas',
-  DBUServerService.uTSQLSubject in 'Logic\Classes\DBUServerService.uTSQLSubject.pas',
   DBUServerService.Configuration.uTConnection in 'Logic\Classes\DBUServerService.Configuration.uTConnection.pas',
   DBUServerService.uConsts in 'Logic\Other\DBUServerService.uConsts.pas',
-  DBUServerService.uTConfiguration in 'Logic\Classes\DBUServerService.uTConfiguration.pas',
-  DBUServerService.uIDatabaseType in 'Logic\Interfaces\DBUServerService.uIDatabaseType.pas',
-  DBUServerService.uIDatabaseTypes in 'Logic\Interfaces\DBUServerService.uIDatabaseTypes.pas',
-  DBUServerService.uTDatabaseTypes in 'Logic\Classes\DBUServerService.uTDatabaseTypes.pas',
-  DBUServerService.uTDatabaseType in 'Logic\Classes\DBUServerService.uTDatabaseType.pas',
-  DBUServerService.uIDBUState in 'Logic\Interfaces\DBUServerService.uIDBUState.pas',
-  DBUServerService.uIDBUStates in 'Logic\Interfaces\DBUServerService.uIDBUStates.pas',
-  DBUServerService.uTDBUStates in 'Logic\Classes\DBUServerService.uTDBUStates.pas',
-  DBUServerService.uTDBUState in 'Logic\Classes\DBUServerService.uTDBUState.pas';
+  DBUServerService.uTConfiguration in 'Logic\Classes\DBUServerService.uTConfiguration.pas';
 
 {$R *.RES}
 
