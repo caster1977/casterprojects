@@ -38,6 +38,7 @@ uses
   CastersPackage.uTStatusBarEx,
   CastersPackage.uTApplicationOnHint,
   DBUShared.uIDBUServerLogRecords,
+  DBUShared.uISQLActions,
   System.SyncObjs,
   LoginPackage.uTLoginWindow;
 
@@ -196,6 +197,7 @@ type
     procedure actRefreshUpdate(Sender: TObject);
     procedure actRefreshExecute(Sender: TObject);
     procedure actActionTestingExecute(Sender: TObject);
+    procedure pgcMainChange(Sender: TObject);
 
   strict private
     FConfiguration: TConfiguration;
@@ -226,6 +228,7 @@ type
 
   strict private
     FServerLog: IDBUServerLogRecords;
+    FSQLActions: ISQLActions;
   end;
 
 var
@@ -249,7 +252,8 @@ uses
   DBUServerManager.uTConfigurationForm,
   DBUShared.uConsts,
   DBUShared.uTDBUServerLogRecords,
-  DBUShared.uIDBUServerLogRecord;
+  DBUShared.uIDBUServerLogRecord,
+  DBUShared.uTSQLActions;
 
 resourcestring
   RsExitConfirmationMessage = '¬ы действительно хотите завершить работу программы?';
@@ -444,6 +448,11 @@ begin
     FConfiguration := TConfiguration.Create;
   end;
   Result := FConfiguration;
+end;
+
+procedure TMainForm.pgcMainChange(Sender: TObject);
+begin
+  actRefresh.Execute;
 end;
 
 procedure TMainForm.RegisterWindowMessages;
@@ -948,6 +957,23 @@ begin
         end;
         items_count := FServerLog.Count;
       end;
+
+      if pgcMain.ActivePage = tsSQLActions then
+      begin
+        lv := lvSQLActions;
+        IdTCPClient.SendCmd('TCP_GET_DBU_SQL_ACTION_ITEMS');
+        line_count := IdTCPClient.IOHandler.ReadLongInt;
+        for i := 0 to Pred(line_count) do
+        begin
+          sl.Append(IdTCPClient.IOHandler.ReadLn);
+        end;
+        FSQLActions := GetISQLActions(sl);
+        if not Assigned(FSQLActions) then
+        begin
+          Exit;
+        end;
+        items_count := FSQLActions.Count;
+      end;
       { TODO : добавить остальные страницы }
 
       if not Assigned(lv) then
@@ -966,7 +992,6 @@ begin
           ProgressBar.Visible := True;
         end;
 
-
         for i := 0 to Pred(items_count) do
         begin
           if StatusBar.Visible then
@@ -978,6 +1003,14 @@ begin
           if pgcMain.ActivePage = tsLogRecords then
           begin
             if not Supports(FServerLog[i], IListItemAdapter, lia) then
+            begin
+              Continue;
+            end;
+          end;
+
+          if pgcMain.ActivePage = tsSQLActions then
+          begin
+            if not Supports(FSQLActions[i], IListItemAdapter, lia) then
             begin
               Continue;
             end;
