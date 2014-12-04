@@ -64,7 +64,6 @@ const
   ICON_LOGIN = 1;
 
 resourcestring
-  RsLoginForm = 'авторизации';
   RsHelpFileNonFound = 'Извините, справочный файл к данной программе не найден.';
   RsWarning = '%s - Предупреждение';
 
