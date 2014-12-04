@@ -527,6 +527,7 @@ begin
   Login := Trim(ASender.Context.Connection.IOHandler.ReadLn);
   pass := ASender.Context.Connection.IOHandler.ReadLn;
   t := 1;
+  t1 := 0;
   { TODO : добавить код проверки валидности введённых логина и пароля на основе списка пользователей }
   { TODO : реализовать механизм редактирования списка пользователей }
   if Assigned(Configuration.Users) then
