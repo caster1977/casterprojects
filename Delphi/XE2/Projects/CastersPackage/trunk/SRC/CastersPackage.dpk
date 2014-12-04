@@ -81,6 +81,7 @@ contains
   CastersPackage.uEIniFileDataStorage in 'Logic\Classes\CastersPackage.uEIniFileDataStorage.pas',
   CastersPackage.uTIniFileDataStorageClass in 'Logic\Classes\CastersPackage.uTIniFileDataStorageClass.pas',
   CastersPackage.uIListItemAdapter in 'Logic\Interfaces\CastersPackage.uIListItemAdapter.pas',
-  CastersPackage.uConsts in 'Logic\Other\CastersPackage.uConsts.pas';
+  CastersPackage.uConsts in 'Logic\Other\CastersPackage.uConsts.pas',
+  CastersPackage.uTEnterStringForm in 'UI\CastersPackage.uTEnterStringForm.pas' {EnterStringForm};
 
 end.
