@@ -123,20 +123,20 @@ type
     actDeleteItem: TAction;
     tlbMain: TToolBar;
     btnQuit: TToolButton;
-    btn2: TToolButton;
+    btnSeparator1: TToolButton;
     btnConfiguration: TToolButton;
     btnConnect: TToolButton;
-    btn6: TToolButton;
+    btnSeparator2: TToolButton;
     btnDisconnect: TToolButton;
-    btn1: TToolButton;
+    btnSeparator3: TToolButton;
     btnAddItem: TToolButton;
     btnEditItem: TToolButton;
     btnDeleteItem: TToolButton;
-    btn3: TToolButton;
+    btnSeparator4: TToolButton;
     btnRefresh: TToolButton;
-    btn4: TToolButton;
+    btnSeparator5: TToolButton;
     btn5: TToolButton;
-    btn7: TToolButton;
+    btnSeparator6: TToolButton;
     btnAbout: TToolButton;
     pmMain: TPopupMenu;
     mniPopupAddItem: TMenuItem;
@@ -190,6 +190,12 @@ type
     procedure actRefreshExecute(Sender: TObject);
     procedure actActionTestingExecute(Sender: TObject);
     procedure pgcMainChange(Sender: TObject);
+    procedure actAddItemExecute(Sender: TObject);
+    procedure actAddItemUpdate(Sender: TObject);
+    procedure actEditItemExecute(Sender: TObject);
+    procedure actEditItemUpdate(Sender: TObject);
+    procedure actDeleteItemExecute(Sender: TObject);
+    procedure actDeleteItemUpdate(Sender: TObject);
 
   strict private
     FConfiguration: TConfiguration;
@@ -225,6 +231,7 @@ type
     FDBUStates: IDBUStates;
     FDatabaseTypes: IDatabaseTypes;
     FUsers: IUsers;
+    FCurrentUserIsAdmin: Boolean;
   end;
 
 var
@@ -235,7 +242,6 @@ implementation
 {$R *.dfm}
 
 uses
-  Winapi.WinSvc,
   System.SysUtils,
   System.StrUtils,
   Winapi.Windows,
@@ -381,8 +387,8 @@ begin
   begin
     actConnect.Execute;
   end;
-  StateImage.Hint := Format('Сервер: [%s], порт: [%d]',
-    [Configuration.Section<TConnection>.Host, Configuration.Section<TConnection>.Port]);
+  StateImage.Hint := Format('Сервер: [%s], порт: [%d]', [Configuration.Section<TConnection>.Host,
+    Configuration.Section<TConnection>.Port]);
 end;
 
 destructor TMainForm.Destroy;
@@ -633,6 +639,7 @@ begin
   end;
 
   t := 0;
+  t1 := 0;
   try
     try
       itc := TIdTCPClient.Create(Self);
@@ -687,11 +694,11 @@ begin
             pgcMain.ActivePage := tsLogRecords;
             pgcMain.Visible := True;
             actRefresh.Execute;
-            if t1 = 1 then
-            begin
-              { TODO : дописать применение админских прав }
-              ShowMessage('Пользователь является администратором');
-            end;
+            { TODO : дописать применение админских прав }
+            FCurrentUserIsAdmin := t1 = 1;
+            tsUsers.TabVisible := FCurrentUserIsAdmin;
+            tsUsers.Visible := FCurrentUserIsAdmin;
+            // ShowMessage('Пользователь является администратором');
           end;
         end;
     end;
@@ -701,6 +708,16 @@ end;
 procedure TMainForm.actConnectUpdate(Sender: TObject);
 begin
   (Sender as TAction).Enabled := not IdTCPClient.Connected;
+end;
+
+procedure TMainForm.actDeleteItemExecute(Sender: TObject);
+begin
+//
+end;
+
+procedure TMainForm.actDeleteItemUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := IdTCPClient.Connected and FCurrentUserIsAdmin;
 end;
 
 procedure TMainForm.actDisconnectExecute(Sender: TObject);
@@ -713,14 +730,60 @@ begin
   finally
     lvLog.Items.EndUpdate;
   end;
+  lvSQLActions.Items.BeginUpdate;
+  try
+    lvSQLActions.Clear;
+    FSQLActions := nil;
+  finally
+    lvSQLActions.Items.EndUpdate;
+  end;
+  lvSQLSubjects.Items.BeginUpdate;
+  try
+    lvSQLSubjects.Clear;
+    FSQLSubjects := nil;
+  finally
+    lvSQLSubjects.Items.EndUpdate;
+  end;
+  lvDBUStates.Items.BeginUpdate;
+  try
+    lvDBUStates.Clear;
+    FDBUStates := nil;
+  finally
+    lvDBUStates.Items.EndUpdate;
+  end;
+  lvDatabaseTypes.Items.BeginUpdate;
+  try
+    lvDatabaseTypes.Clear;
+    FDatabaseTypes := nil;
+  finally
+    lvDatabaseTypes.Items.EndUpdate;
+  end;
+  lvUsers.Items.BeginUpdate;
+  try
+    lvUsers.Clear;
+    FUsers := nil;
+  finally
+    lvUsers.Items.EndUpdate;
+  end;
   IdTCPClient.IOHandler.InputBuffer.Clear;
   IdTCPClient.Disconnect;
   StateImage.State := False;
+  FCurrentUserIsAdmin := False;
 end;
 
 procedure TMainForm.actDisconnectUpdate(Sender: TObject);
 begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
+end;
+
+procedure TMainForm.actEditItemExecute(Sender: TObject);
+begin
+//
+end;
+
+procedure TMainForm.actEditItemUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := IdTCPClient.Connected and FCurrentUserIsAdmin;
 end;
 
 procedure TMainForm.actGetDBTypeListUpdate(Sender: TObject);
@@ -796,6 +859,16 @@ end;
 procedure TMainForm.actAddDBTypeUpdate(Sender: TObject);
 begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
+end;
+
+procedure TMainForm.actAddItemExecute(Sender: TObject);
+begin
+//
+end;
+
+procedure TMainForm.actAddItemUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := IdTCPClient.Connected and FCurrentUserIsAdmin;
 end;
 
 procedure TMainForm.actGetDBUStateListUpdate(Sender: TObject);

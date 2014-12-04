@@ -376,11 +376,11 @@ object MainForm: TMainForm
       ParentShowHint = False
       ShowHint = True
     end
-    object btn2: TToolButton
+    object btnSeparator1: TToolButton
       Left = 23
       Top = 0
       Width = 8
-      Caption = 'btn2'
+      Caption = 'btnSeparator1'
       ImageIndex = 1
       Style = tbsSeparator
     end
@@ -392,11 +392,11 @@ object MainForm: TMainForm
       ParentShowHint = False
       ShowHint = True
     end
-    object btn6: TToolButton
+    object btnSeparator2: TToolButton
       Left = 54
       Top = 0
       Width = 8
-      Caption = 'btn6'
+      Caption = 'btnSeparator2'
       ImageIndex = 4
       Style = tbsSeparator
     end
@@ -416,11 +416,11 @@ object MainForm: TMainForm
       ParentShowHint = False
       ShowHint = True
     end
-    object btn1: TToolButton
+    object btnSeparator3: TToolButton
       Left = 108
       Top = 0
       Width = 8
-      Caption = 'btn1'
+      Caption = 'btnSeparator3'
       ImageIndex = 15
       Style = tbsSeparator
     end
@@ -448,11 +448,11 @@ object MainForm: TMainForm
       ParentShowHint = False
       ShowHint = True
     end
-    object btn3: TToolButton
+    object btnSeparator4: TToolButton
       Left = 185
       Top = 0
       Width = 8
-      Caption = 'btn3'
+      Caption = 'btnSeparator4'
       ImageIndex = 10
       Style = tbsSeparator
     end
@@ -464,11 +464,11 @@ object MainForm: TMainForm
       ParentShowHint = False
       ShowHint = True
     end
-    object btn4: TToolButton
+    object btnSeparator5: TToolButton
       Left = 216
       Top = 0
       Width = 8
-      Caption = 'btn4'
+      Caption = 'btnSeparator5'
       ImageIndex = 17
       Style = tbsSeparator
     end
@@ -480,11 +480,11 @@ object MainForm: TMainForm
       ParentShowHint = False
       ShowHint = True
     end
-    object btn7: TToolButton
+    object btnSeparator6: TToolButton
       Left = 247
       Top = 0
       Width = 8
-      Caption = 'btn7'
+      Caption = 'btnSeparator6'
       ImageIndex = 3
       Style = tbsSeparator
     end
@@ -507,7 +507,7 @@ object MainForm: TMainForm
     Left = 168
     Top = 128
     Bitmap = {
-      494C01011100A000480610001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01011100A000680610001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1399,6 +1399,8 @@ object MainForm: TMainForm
         #1077#1084#1077#1085#1090#1072' '#1074' '#1089#1087#1080#1089#1086#1082
       ImageIndex = 7
       ShortCut = 45
+      OnExecute = actAddItemExecute
+      OnUpdate = actAddItemUpdate
     end
     object actEditItem: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
@@ -1408,6 +1410,8 @@ object MainForm: TMainForm
         #1084#1077#1085#1090#1072' '#1089#1087#1080#1089#1082#1072
       ImageIndex = 8
       ShortCut = 113
+      OnExecute = actEditItemExecute
+      OnUpdate = actEditItemUpdate
     end
     object actDeleteItem: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
@@ -1417,6 +1421,8 @@ object MainForm: TMainForm
         #1089#1082#1072
       ImageIndex = 9
       ShortCut = 46
+      OnExecute = actDeleteItemExecute
+      OnUpdate = actDeleteItemUpdate
     end
     object actRefresh: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
@@ -1557,7 +1563,7 @@ object MainForm: TMainForm
     Left = 224
     Top = 184
     Bitmap = {
-      494C010102000400540810001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400740810001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
