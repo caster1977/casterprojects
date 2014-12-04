@@ -6,12 +6,10 @@ uses
   Winapi.Windows,
   CastersPackage.uISingletonAppSession,
   CastersPackage.uTSingletonAppSession,
-  DBUServerManager.uTMainForm in 'UI\DBUServerManager.uTMainForm.pas' {MainForm} ,
+  DBUServerManager.uTMainForm in 'UI\DBUServerManager.uTMainForm.pas' {MainForm},
   DBUServerManager.uConsts in 'Logic\Other\DBUServerManager.uConsts.pas',
-  DBUServerManager.Configuration.uTInterface
-    in 'Logic\Classes\DBUServerManager.Configuration.uTInterface.pas',
-  DBUServerManager.Configuration.uTConnection
-    in 'Logic\Classes\DBUServerManager.Configuration.uTConnection.pas',
+  DBUServerManager.Configuration.uTInterface in 'Logic\Classes\DBUServerManager.Configuration.uTInterface.pas',
+  DBUServerManager.Configuration.uTConnection in 'Logic\Classes\DBUServerManager.Configuration.uTConnection.pas',
   DBUServerManager.uTConfiguration in 'Logic\Classes\DBUServerManager.uTConfiguration.pas',
   DBUServerManager.uTConfigurationForm in 'UI\DBUServerManager.uTConfigurationForm.pas' {Form1};
 

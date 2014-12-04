@@ -250,6 +250,7 @@ uses
   DBUShared.uConsts,
   CastersPackage.uRoutines,
   CastersPackage.uIListItemAdapter,
+  CastersPackage.uTEnterStringForm,
   DBUServerManager.uConsts,
   DBUServerManager.Configuration.uTInterface,
   DBUServerManager.Configuration.uTConnection,
@@ -841,34 +842,9 @@ begin
   //
 end;
 
-procedure TMainForm.actAddDBTypeExecute(Sender: TObject);
-var
-  // index: SmallInt;
-  db_type: string;
-  s: string;
-begin
-  IdTCPClient.SendCmd('TCP_ADD_NEW_DATABASE_TYPE');
-  db_type := 'db_type';
-  IdTCPClient.IOHandler.WriteLn(db_type);
-  // index :=
-  IdTCPClient.IOHandler.ReadSmallInt;
-  s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
-  ShowMessage(s);
-end;
-
 procedure TMainForm.actAddDBTypeUpdate(Sender: TObject);
 begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
-end;
-
-procedure TMainForm.actAddItemExecute(Sender: TObject);
-begin
-//
-end;
-
-procedure TMainForm.actAddItemUpdate(Sender: TObject);
-begin
-  (Sender as TAction).Enabled := IdTCPClient.Connected and FCurrentUserIsAdmin;
 end;
 
 procedure TMainForm.actGetDBUStateListUpdate(Sender: TObject);
@@ -1123,6 +1099,71 @@ begin
   finally
     Screen.Cursor := crDefault;
   end;
+end;
+
+procedure TMainForm.actAddDBTypeExecute(Sender: TObject);
+var
+  // index: SmallInt;
+  db_type: string;
+  s: string;
+begin
+  IdTCPClient.SendCmd('TCP_ADD_NEW_DATABASE_TYPE');
+  db_type := 'db_type';
+  IdTCPClient.IOHandler.WriteLn(db_type);
+  // index :=
+  IdTCPClient.IOHandler.ReadSmallInt;
+  s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
+  ShowMessage(s);
+end;
+
+procedure TMainForm.actAddItemExecute(Sender: TObject);
+var
+  id: Integer;
+  form: TEnterStringForm;
+  s: string;
+begin
+  if not pgcMain.Visible then
+  begin
+    Exit;
+  end;
+
+  if not Assigned(pgcMain.ActivePage) then
+  begin
+    Exit;
+  end;
+
+  Screen.Cursor := crHourGlass;
+  try
+    if pgcMain.ActivePage = tsDatabaseTypes then
+    begin
+      form := TEnterStringForm.Create(Self, 'Создание типа БД', 'Наименование:');
+      try
+        form.ShowModal;
+        if form.ModalResult = mrOk then
+        begin
+          s := form.Value;
+          IdTCPClient.SendCmd('TCP_ADD_NEW_DATABASE_TYPE');
+          IdTCPClient.IOHandler.WriteLn(s);
+          id := IdTCPClient.IOHandler.ReadSmallInt;
+          s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
+//          ShowMessage(s);
+          if id > -1 then
+          begin
+            actRefresh.Execute;
+          end;
+        end;
+      finally
+        form.Free;
+      end;
+    end;
+  finally
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TMainForm.actAddItemUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled := IdTCPClient.Connected and FCurrentUserIsAdmin;
 end;
 
 end.
