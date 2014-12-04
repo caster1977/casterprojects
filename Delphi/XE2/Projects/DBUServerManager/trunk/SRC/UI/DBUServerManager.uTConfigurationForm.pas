@@ -5,10 +5,8 @@ interface
 uses
   System.SysUtils,
   System.Classes,
-  Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.ComCtrls,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
@@ -17,8 +15,6 @@ uses
   Vcl.ActnList,
   DBUServerManager.uConsts,
   DBUServerManager.uTConfiguration,
-  Data.DB,
-  Data.Win.ADODB,
   Vcl.Samples.Spin,
   Vcl.ImgList,
   Vcl.StdActns;
@@ -185,7 +181,6 @@ implementation
 
 uses
   CastersPackage.uRoutines,
-
   System.UITypes,
   DBUServerManager.Configuration.uTInterface,
   DBUServerManager.Configuration.uTConnection;
