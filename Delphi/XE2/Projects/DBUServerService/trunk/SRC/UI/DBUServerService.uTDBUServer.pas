@@ -46,6 +46,7 @@ type
     procedure ServiceDestroy(Sender: TObject);
     procedure LoginCommand(ASender: TIdCommand);
     procedure GetUsersCommand(ASender: TIdCommand);
+    procedure AddUserCommand(ASender: TIdCommand);
   public
     function GetServiceController: TServiceController; override;
 
@@ -78,6 +79,8 @@ uses
   DBUShared.uTDBUServerLogRecord,
   DBUShared.uIDatabaseType,
   DBUShared.uTDatabaseType,
+  DBUShared.uIUser,
+  DBUShared.uTUser,
   System.Math,
   System.StrUtils,
   DBUShared.uConsts,
@@ -506,8 +509,9 @@ begin
   ASender.Context.Connection.IOHandler.Write(Configuration.Users.Count);
   for i := 0 to Pred(Configuration.Users.Count) do
   begin
-    ASender.Context.Connection.IOHandler.WriteLn(Format('%s%s%s%s%s%s%d%s%d', [Configuration.Users[i].Login,
-      DEFAULT_USER_LIST_SEPARATOR, Configuration.Users[i].PasswordHash, DEFAULT_USER_LIST_SEPARATOR,
+    ASender.Context.Connection.IOHandler.WriteLn(Format('%s%s%s%s%s%s%d%s%d',
+      [Configuration.Users[i].Login, DEFAULT_USER_LIST_SEPARATOR,
+      Configuration.Users[i].PasswordHash, DEFAULT_USER_LIST_SEPARATOR,
       Configuration.Users[i].FullName, DEFAULT_USER_LIST_SEPARATOR,
       Integer(Configuration.Users[i].Blocked), DEFAULT_USER_LIST_SEPARATOR,
       Integer(Configuration.Users[i].Administrator)]), IndyTextEncoding_OSDefault);
@@ -562,6 +566,86 @@ begin
     ASender.Context.Connection.IOHandler.Write(t1);
   end;
   LogMessage('Stop LoginCommand', EVENTLOG_INFORMATION_TYPE);
+end;
+
+procedure TDBUServer.AddUserCommand(ASender: TIdCommand);
+var
+  user_login: string;
+  user_password_hash: string;
+  user_full_name: string;
+  user_blocked: Byte;
+  user_admin: Byte;
+  u: IUser;
+  t: Byte;
+  s: string;
+begin
+  LogMessage('Start AddUserCommand', EVENTLOG_INFORMATION_TYPE);
+  t := ERROR_UNKNOWN;
+  s := EmptyStr;
+  try
+    try
+      user_login := ASender.Context.Connection.IOHandler.ReadLn;
+      user_password_hash := ASender.Context.Connection.IOHandler.ReadLn;
+      user_full_name := ASender.Context.Connection.IOHandler.ReadLn;
+      user_blocked := ASender.Context.Connection.IOHandler.ReadByte;
+      user_admin := ASender.Context.Connection.IOHandler.ReadByte;
+
+      if not Assigned(Configuration) then
+      begin
+        t := ERROR_CONFIGURATION_OBJECT_NOT_EXISTS;
+        s := 'Объект конфигурации не существует';
+        Exit;
+      end;
+
+      if not Assigned(Configuration.Users) then
+      begin
+        t := ERROR_USERS_OBJECT_NOT_EXISTS;
+        s := 'Объект списка пользователей не существует';
+        Exit;
+      end;
+
+      u := Configuration.Users.GetUserByLogin(user_login);
+      if Assigned(u) then
+      begin
+        t := ERROR_USER_ALREADY_EXISTS;
+        s := Format('Пользователь с логином "%s" уже существует.', [u.Login]);
+        Exit;
+      end;
+
+      u := GetIUser;
+      if not Assigned(u) then
+      begin
+        t := ERROR_CAN_NOT_CREATE_USER_OBJECT;
+        s := 'Не удалось создать объект для нового пользователя';
+        Exit;
+      end;
+
+      u.Login := user_login;
+      u.PasswordHash := user_password_hash;
+      u.FullName := user_full_name;
+      u.Blocked := user_blocked = 1;
+      u.Administrator := user_admin = 1;
+
+      if Configuration.Users.Add(u) < 0 then
+      begin
+        t := ERROR_CAN_NOT_ADD_USER_OBJECT_TO_USERS;
+        s := 'Не удалось добавить объект пользователя в список';
+        Exit;
+      end;
+
+      t := SUCCESS_ADD_USER;
+      s := Format('Пользователь с логином "%s" успешно добавлен', [u.Login]);
+    except
+      on E: Exception do
+      begin
+        s := E.Message;
+      end;
+    end;
+  finally
+    ASender.Context.Connection.IOHandler.Write(t);
+    ASender.Context.Connection.IOHandler.WriteLn(s, IndyTextEncoding_OSDefault);
+  end;
+  LogMessage('Stop AddUserCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
 end.

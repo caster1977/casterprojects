@@ -122,7 +122,7 @@ object DBUServer: TDBUServer
         Command = 'TCP_LOGIN'
         Disconnect = False
         Name = 'LoginHandler'
-        NormalReply.Code = '200'
+        NormalReply.Code = '209'
         ParamDelimiter = ' '
         ParseParams = True
         Tag = 0
@@ -133,11 +133,22 @@ object DBUServer: TDBUServer
         Command = 'TCP_GET_USERS'
         Disconnect = False
         Name = 'GetUsersHandler'
-        NormalReply.Code = '200'
+        NormalReply.Code = '210'
         ParamDelimiter = ' '
         ParseParams = True
         Tag = 0
         OnCommand = GetUsersCommand
+      end
+      item
+        CmdDelimiter = ' '
+        Command = 'TCP_ADD_USER'
+        Disconnect = False
+        Name = 'AddUserHandler'
+        NormalReply.Code = '211'
+        ParamDelimiter = ' '
+        ParseParams = True
+        Tag = 0
+        OnCommand = AddUserCommand
       end>
     ExceptionReply.Code = '500'
     ExceptionReply.Text.Strings = (
