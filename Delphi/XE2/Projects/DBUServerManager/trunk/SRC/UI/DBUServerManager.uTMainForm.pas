@@ -711,16 +711,6 @@ begin
   (Sender as TAction).Enabled := not IdTCPClient.Connected;
 end;
 
-procedure TMainForm.actDeleteItemExecute(Sender: TObject);
-begin
-//
-end;
-
-procedure TMainForm.actDeleteItemUpdate(Sender: TObject);
-begin
-  (Sender as TAction).Enabled := IdTCPClient.Connected and FCurrentUserIsAdmin;
-end;
-
 procedure TMainForm.actDisconnectExecute(Sender: TObject);
 begin
   pgcMain.Visible := False;
@@ -775,16 +765,6 @@ end;
 procedure TMainForm.actDisconnectUpdate(Sender: TObject);
 begin
   (Sender as TAction).Enabled := IdTCPClient.Connected;
-end;
-
-procedure TMainForm.actEditItemExecute(Sender: TObject);
-begin
-//
-end;
-
-procedure TMainForm.actEditItemUpdate(Sender: TObject);
-begin
-  (Sender as TAction).Enabled := IdTCPClient.Connected and FCurrentUserIsAdmin;
 end;
 
 procedure TMainForm.actGetDBTypeListUpdate(Sender: TObject);
@@ -1146,7 +1126,7 @@ begin
           IdTCPClient.IOHandler.WriteLn(s);
           id := IdTCPClient.IOHandler.ReadSmallInt;
           s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
-//          ShowMessage(s);
+          // ShowMessage(s);
           if id > -1 then
           begin
             actRefresh.Execute;
@@ -1161,9 +1141,171 @@ begin
   end;
 end;
 
-procedure TMainForm.actAddItemUpdate(Sender: TObject);
+procedure TMainForm.actDeleteItemUpdate(Sender: TObject);
+var
+  b: Boolean;
 begin
-  (Sender as TAction).Enabled := IdTCPClient.Connected and FCurrentUserIsAdmin;
+  b := False;
+  try
+    if not(pgcMain.Visible and IdTCPClient.Connected and FCurrentUserIsAdmin) then
+    begin
+      Exit;
+    end;
+
+    if pgcMain.ActivePage = tsSQLActions then
+    begin
+      if lvSQLActions.SelCount <> 1 then
+      begin
+        Exit;
+      end;
+
+      b := True;
+    end;
+
+    if pgcMain.ActivePage = tsSQLSubjects then
+    begin
+      if lvSQLSubjects.SelCount <> 1 then
+      begin
+        Exit;
+      end;
+
+      b := True;
+    end;
+
+    if pgcMain.ActivePage = tsUsers then
+    begin
+      if lvUsers.SelCount <> 1 then
+      begin
+        Exit;
+      end;
+
+      if not Assigned(lvUsers.Selected) then
+      begin
+        Exit;
+      end;
+
+      if lvUsers.Selected.Caption = 'root' then
+      begin
+        Exit;
+      end;
+
+      b := True;
+    end;
+  finally
+    (Sender as TAction).Enabled := b;
+  end;
+end;
+
+procedure TMainForm.actDeleteItemExecute(Sender: TObject);
+begin
+  { TODO : дописать }
+  ShowMessage('Удаление элемента');
+end;
+
+procedure TMainForm.actEditItemExecute(Sender: TObject);
+begin
+  { TODO : дописать }
+  ShowMessage('Редактирование элемента');
+end;
+
+procedure TMainForm.actEditItemUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  try
+    if not(pgcMain.Visible and IdTCPClient.Connected and FCurrentUserIsAdmin) then
+    begin
+      Exit;
+    end;
+
+    if pgcMain.ActivePage = tsSQLActions then
+    begin
+      if lvSQLActions.SelCount <> 1 then
+      begin
+        Exit;
+      end;
+
+      b := True;
+    end;
+
+    if pgcMain.ActivePage = tsSQLSubjects then
+    begin
+      if lvSQLSubjects.SelCount <> 1 then
+      begin
+        Exit;
+      end;
+
+      b := True;
+    end;
+
+    if pgcMain.ActivePage = tsDBUStates then
+    begin
+      if lvDBUStates.SelCount <> 1 then
+      begin
+        Exit;
+      end;
+
+      b := True;
+    end;
+
+    if pgcMain.ActivePage = tsUsers then
+    begin
+      if lvUsers.SelCount <> 1 then
+      begin
+        Exit;
+      end;
+
+      if not Assigned(lvUsers.Selected) then
+      begin
+        Exit;
+      end;
+
+      b := True;
+    end;
+  finally
+    (Sender as TAction).Enabled := b;
+  end;
+end;
+
+procedure TMainForm.actAddItemUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  try
+    if not(pgcMain.Visible and IdTCPClient.Connected and FCurrentUserIsAdmin) then
+    begin
+      Exit;
+    end;
+
+    if pgcMain.ActivePage = tsSQLActions then
+    begin
+      b := True;
+    end;
+
+    if pgcMain.ActivePage = tsSQLSubjects then
+    begin
+      b := True;
+    end;
+
+    if pgcMain.ActivePage = tsDBUStates then
+    begin
+      b := True;
+    end;
+
+    if pgcMain.ActivePage = tsDatabaseTypes then
+    begin
+      b := True;
+    end;
+
+    if pgcMain.ActivePage = tsUsers then
+    begin
+      b := True;
+    end;
+  finally
+    (Sender as TAction).Enabled := b;
+  end;
 end;
 
 end.
