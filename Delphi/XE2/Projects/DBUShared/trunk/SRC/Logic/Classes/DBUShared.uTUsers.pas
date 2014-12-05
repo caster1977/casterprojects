@@ -12,6 +12,9 @@ type
   TUsers = class(TInterfaceListOfGivenType<IUser>, IUsers)
   strict protected
     procedure Initialize; override;
+  public
+    function GetUserByLogin(const ALogin: string): IUser;
+    function GetIndexByByLogin(const ALogin: string): Integer;
   end;
 
 function GetIUsers: IUsers; overload;
@@ -68,6 +71,41 @@ begin
     finally
       sl.Free;
     end;
+  end;
+end;
+
+function TUsers.GetIndexByByLogin(const ALogin: string): Integer;
+var
+  i: Integer;
+  s: string;
+begin
+  Result := -1;
+  s := Trim(ALogin);
+
+  for i := 0 to Pred(Count) do
+  begin
+    if Assigned(Items[i]) then
+    begin
+      if Items[i].Login = s then
+      begin
+        Result := i;
+        Break;
+      end;
+    end;
+  end;
+end;
+
+function TUsers.GetUserByLogin(const ALogin: string): IUser;
+var
+  i: Integer;
+  s: string;
+begin
+  Result := nil;
+
+  i := GetIndexByByLogin(ALogin);
+  if i > -1 then
+  begin
+    Result := Items[i];
   end;
 end;
 
