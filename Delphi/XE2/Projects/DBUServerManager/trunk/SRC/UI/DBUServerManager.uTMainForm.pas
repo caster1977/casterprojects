@@ -1101,6 +1101,7 @@ var
   id: Integer;
   form: TEnterStringForm;
   s: string;
+  t: Byte;
 begin
   if not pgcMain.Visible then
   begin
@@ -1114,6 +1115,25 @@ begin
 
   Screen.Cursor := crHourGlass;
   try
+    if pgcMain.ActivePage = tsUsers then
+    begin
+      IdTCPClient.SendCmd('TCP_ADD_USER');
+      IdTCPClient.IOHandler.WriteLn('user');
+      IdTCPClient.IOHandler.WriteLn(Routines.Hash('1'));
+      IdTCPClient.IOHandler.WriteLn('user_full_name');
+      t := 0;
+      IdTCPClient.IOHandler.Write(t); // user_blocked
+      IdTCPClient.IOHandler.Write(t); // user_admin
+      t := IdTCPClient.IOHandler.ReadByte;
+      s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
+      if t = SUCCESS_ADD_USER then
+      begin
+        actRefresh.Execute;
+      end;
+      ShowMessage(s);
+      Exit;
+    end;
+
     if pgcMain.ActivePage = tsDatabaseTypes then
     begin
       form := TEnterStringForm.Create(Self, 'Создание типа БД', 'Наименование:');
@@ -1126,15 +1146,16 @@ begin
           IdTCPClient.IOHandler.WriteLn(s);
           id := IdTCPClient.IOHandler.ReadSmallInt;
           s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
-          // ShowMessage(s);
           if id > -1 then
           begin
             actRefresh.Execute;
           end;
+          ShowMessage(s);
         end;
       finally
         form.Free;
       end;
+      Exit;
     end;
   finally
     Screen.Cursor := crDefault;
