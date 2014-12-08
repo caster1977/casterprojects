@@ -35,20 +35,22 @@ type
     procedure ServiceContinue(Sender: TService; var Continued: Boolean);
     procedure ServiceShutdown(Sender: TService);
     procedure AddNewDatabaseTypeCommand(ASender: TIdCommand);
-    procedure GetReserveNewDBUpdateNumbersCommand(ASender: TIdCommand);
+    procedure ReserveNewDBUpdateNumbersCommand(ASender: TIdCommand);
     procedure GetSqlActionItemsCommand(ASender: TIdCommand);
     procedure GetSqlSubjItemsCommand(ASender: TIdCommand);
     procedure NewNumberLogCommand(ASender: TIdCommand); // не используется клиентом
     procedure GetNewNumberLogGridCommand(ASender: TIdCommand);
     procedure GetDbuDatabaseTypeItemsCommand(ASender: TIdCommand);
     procedure GetDbuStatesItemsCommand(ASender: TIdCommand);
-    procedure IdCmdTCPServerCommandHandlers1Command(ASender: TIdCommand);
+    procedure ConnectionTestCommand(ASender: TIdCommand);
     procedure ServiceDestroy(Sender: TObject);
     procedure LoginCommand(ASender: TIdCommand);
-    procedure GetUsersCommand(ASender: TIdCommand);
+    procedure GetUserListCommand(ASender: TIdCommand);
     procedure AddUserCommand(ASender: TIdCommand);
+    procedure DeleteUserCommand(ASender: TIdCommand);
   public
     function GetServiceController: TServiceController; override;
+    constructor Create(AOwner: TComponent); override;
 
   strict private
     FConfiguration: TConfiguration;
@@ -62,6 +64,8 @@ type
 
   strict private
     function BuildDbuNewNumberLog(var ACount: SmallInt): string;
+    procedure CreateTCPCommand(const ACommand: string; const ACommandEvent: TIdCommandEvent);
+    procedure CreateTCPCommands;
   end;
 
 var
@@ -257,7 +261,7 @@ begin
   Result := FConfiguration;
 end;
 
-procedure TDBUServer.IdCmdTCPServerCommandHandlers1Command(ASender: TIdCommand);
+procedure TDBUServer.ConnectionTestCommand(ASender: TIdCommand);
 begin
   LogMessage('Start IdCmdTCPServerCommandHandlers1Command', EVENTLOG_INFORMATION_TYPE);
   ASender.Context.Connection.IOHandler.WriteLn('CONNECTION_TEST_OK', IndyTextEncoding_OSDefault);
@@ -377,7 +381,7 @@ begin
   end;
 end;
 
-procedure TDBUServer.GetReserveNewDBUpdateNumbersCommand(ASender: TIdCommand);
+procedure TDBUServer.ReserveNewDBUpdateNumbersCommand(ASender: TIdCommand);
 var
   db_count: SmallInt;
   db_type: string;
@@ -491,11 +495,11 @@ begin
   LogMessage('Stop GetNewNumberLogGridCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
-procedure TDBUServer.GetUsersCommand(ASender: TIdCommand);
+procedure TDBUServer.GetUserListCommand(ASender: TIdCommand);
 var
   i: Integer;
 begin
-  LogMessage('Start GetUsersCommand', EVENTLOG_INFORMATION_TYPE);
+  LogMessage('Start GetUserListCommand', EVENTLOG_INFORMATION_TYPE);
   if not Assigned(Configuration) then
   begin
     Exit;
@@ -516,7 +520,7 @@ begin
       Integer(Configuration.Users[i].Blocked), DEFAULT_USER_LIST_SEPARATOR,
       Integer(Configuration.Users[i].Administrator)]), IndyTextEncoding_OSDefault);
   end;
-  LogMessage('Stop GetUsersCommand', EVENTLOG_INFORMATION_TYPE);
+  LogMessage('Stop GetUserListCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
 procedure TDBUServer.LoginCommand(ASender: TIdCommand);
@@ -646,6 +650,108 @@ begin
     ASender.Context.Connection.IOHandler.WriteLn(s, IndyTextEncoding_OSDefault);
   end;
   LogMessage('Stop AddUserCommand', EVENTLOG_INFORMATION_TYPE);
+end;
+
+procedure TDBUServer.DeleteUserCommand(ASender: TIdCommand);
+var
+  user_login: string;
+  t: Byte;
+  s: string;
+  i: Integer;
+begin
+  LogMessage('Start DeleteUserCommand', EVENTLOG_INFORMATION_TYPE);
+  t := ERROR_UNKNOWN;
+  s := EmptyStr;
+  try
+    try
+      user_login := Trim(ASender.Context.Connection.IOHandler.ReadLn);
+
+      if not Assigned(Configuration) then
+      begin
+        t := ERROR_CONFIGURATION_OBJECT_NOT_EXISTS;
+        s := 'Объект конфигурации не существует';
+        Exit;
+      end;
+
+      if not Assigned(Configuration.Users) then
+      begin
+        t := ERROR_USERS_OBJECT_NOT_EXISTS;
+        s := 'Объект списка пользователей не существует';
+        Exit;
+      end;
+
+      i := Configuration.Users.GetIndexByLogin(user_login);
+      if i < 0 then
+      begin
+        t := ERROR_USER_NOT_EXISTS;
+        s := Format('Пользователь с логином "%s" не существует.', [user_login]);
+        Exit;
+      end;
+
+      Configuration.Users.Delete(i);
+
+      i := Configuration.Users.GetIndexByLogin(user_login);
+      if i > -1 then
+      begin
+        t := ERROR_USER_NOT_DELETED;
+        s := Format('Не удалось удалить пользователя с логином "%s".', [user_login]);
+        Exit;
+      end;
+
+      t := SUCCESS_DELETE_USER;
+      s := Format('Пользователь с логином "%s" успешно удалён', [user_login]);
+    except
+      on E: Exception do
+      begin
+        s := E.Message;
+      end;
+    end;
+  finally
+    ASender.Context.Connection.IOHandler.Write(t);
+    ASender.Context.Connection.IOHandler.WriteLn(s, IndyTextEncoding_OSDefault);
+  end;
+  LogMessage('Stop DeleteUserCommand', EVENTLOG_INFORMATION_TYPE);
+end;
+
+constructor TDBUServer.Create(AOwner: TComponent);
+begin
+  inherited;
+  CreateTCPCommands;
+end;
+
+procedure TDBUServer.CreateTCPCommand(const ACommand: string; const ACommandEvent: TIdCommandEvent);
+var
+  ch: TIdCommandHandler;
+begin
+  ch := IdCmdTCPServer.CommandHandlers.Add;
+  if not Assigned(ch) then
+  begin
+    LogMessage(Format('DBU Server: Error creating TCP command "%s"', [ACommand]),
+      EVENTLOG_ERROR_TYPE);
+    Exit;
+  end;
+
+  ch.Command := Trim(ACommand);
+  ch.OnCommand := ACommandEvent;
+  LogMessage(Format('DBU Server: Succesfull creating TCP command "%s"', [ACommand]),
+    EVENTLOG_INFORMATION_TYPE);
+end;
+
+procedure TDBUServer.CreateTCPCommands;
+begin
+  CreateTCPCommand(TCP_COMMAND_CONNECTION_TEST, ConnectionTestCommand);
+  CreateTCPCommand(TCP_COMMAND_GET_DBU_DATABASE_TYPE_ITEMS, GetDbuDatabaseTypeItemsCommand);
+  CreateTCPCommand(TCP_COMMAND_GET_DBU_STATES_ITEMS, GetDbuStatesItemsCommand);
+  CreateTCPCommand(TCP_COMMAND_GET_DBU_SQL_ACTION_ITEMS, GetSqlActionItemsCommand);
+  CreateTCPCommand(TCP_COMMAND_GET_DBU_SQL_SUBJ_ITEMS, GetSqlSubjItemsCommand);
+  CreateTCPCommand(TCP_COMMAND_GET_DBU_NEW_NUMBER_LOG_GRID, GetNewNumberLogGridCommand);
+  CreateTCPCommand(TCP_COMMAND_GET_DBU_NEW_NUMBER_LOG, NewNumberLogCommand);
+  CreateTCPCommand(TCP_COMMAND_ADD_NEW_DATABASE_TYPE, AddNewDatabaseTypeCommand);
+  CreateTCPCommand(TCP_COMMAND_RESERVE_NEW_DBUPDATE_NUMBER, ReserveNewDBUpdateNumbersCommand);
+  CreateTCPCommand(TCP_COMMAND_LOGIN, LoginCommand);
+  CreateTCPCommand(TCP_COMMAND_GET_USER_LIST, GetUserListCommand);
+  CreateTCPCommand(TCP_COMMAND_ADD_USER, AddUserCommand);
+  CreateTCPCommand(TCP_COMMAND_DELETE_USER, DeleteUserCommand);
 end;
 
 end.
