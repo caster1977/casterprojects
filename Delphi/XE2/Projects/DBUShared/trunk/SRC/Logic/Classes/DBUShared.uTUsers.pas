@@ -14,7 +14,7 @@ type
     procedure Initialize; override;
   public
     function GetUserByLogin(const ALogin: string): IUser;
-    function GetIndexByByLogin(const ALogin: string): Integer;
+    function GetIndexByLogin(const ALogin: string): Integer;
   end;
 
 function GetIUsers: IUsers; overload;
@@ -74,7 +74,7 @@ begin
   end;
 end;
 
-function TUsers.GetIndexByByLogin(const ALogin: string): Integer;
+function TUsers.GetIndexByLogin(const ALogin: string): Integer;
 var
   i: Integer;
   s: string;
@@ -102,7 +102,7 @@ var
 begin
   Result := nil;
 
-  i := GetIndexByByLogin(ALogin);
+  i := GetIndexByLogin(ALogin);
   if i > -1 then
   begin
     Result := Items[i];

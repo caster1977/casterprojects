@@ -11,7 +11,7 @@ type
   IUsers = interface(IInterfaceListOfGivenType<IUser>)
     ['{156D0C80-6009-41D7-B100-E207D0A19A7F}']
     function GetUserByLogin(const ALogin: string): IUser;
-    function GetIndexByByLogin(const ALogin: string): Integer;
+    function GetIndexByLogin(const ALogin: string): Integer;
   end;
 
 implementation
