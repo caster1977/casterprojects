@@ -260,6 +260,7 @@ uses
   DBUShared.uTSQLSubjects,
   DBUShared.uTDBUStates,
   DBUShared.uTDatabaseTypes,
+  DBUShared.uIUser,
   DBUShared.uTUsers;
 
 resourcestring
@@ -583,7 +584,7 @@ var
   db_count: SmallInt;
   new_number: SmallInt;
 begin
-  IdTCPClient.SendCmd('TCP_RESERVE_NEW_DBUPDATE_NUMBER');
+  IdTCPClient.SendCmd(TCP_COMMAND_RESERVE_NEW_DBUPDATE_NUMBER);
   IdTCPClient.IOHandler.WriteLn('db_type');
   db_count := 3;
   IdTCPClient.IOHandler.Write(db_count);
@@ -651,7 +652,7 @@ begin
         itc.Connect;
         try
           // ShowMessage(itc.IOHandler.ReadLn);
-          itc.SendCmd('TCP_LOGIN');
+          itc.SendCmd(TCP_COMMAND_LOGIN);
           itc.IOHandler.WriteLn(LoginWindow.Login);
           itc.IOHandler.WriteLn(Routines.Hash(LoginWindow.Password));
           t := itc.IOHandler.ReadByte;
@@ -797,7 +798,7 @@ var
   s: string;
 begin
   try
-    IdTCPClient.SendCmd('TCP_CONNECTION_TEST');
+    IdTCPClient.SendCmd(TCP_COMMAND_CONNECTION_TEST);
     s := IdTCPClient.IOHandler.ReadLn;
     if s = 'CONNECTION_TEST_OK' then
     begin
@@ -838,7 +839,7 @@ var
   sl: TStringList;
   i: Integer;
 begin
-  IdTCPClient.SendCmd('TCP_GET_DBU_NEW_NUMBER_LOG');
+  IdTCPClient.SendCmd(TCP_COMMAND_GET_DBU_NEW_NUMBER_LOG);
   log_count := 20;
   IdTCPClient.IOHandler.Write(log_count);
   log_count := IdTCPClient.IOHandler.ReadSmallInt;
@@ -884,7 +885,7 @@ begin
       if pgcMain.ActivePage = tsLogRecords then
       begin
         lv := lvLog;
-        IdTCPClient.SendCmd('TCP_GET_DBU_NEW_NUMBER_LOG_GRID');
+        IdTCPClient.SendCmd(TCP_COMMAND_GET_DBU_NEW_NUMBER_LOG_GRID);
         IdTCPClient.IOHandler.WriteLn;
         line_count := IdTCPClient.IOHandler.ReadLongInt;
         for i := 0 to Pred(line_count) do
@@ -902,7 +903,7 @@ begin
       if pgcMain.ActivePage = tsSQLActions then
       begin
         lv := lvSQLActions;
-        IdTCPClient.SendCmd('TCP_GET_DBU_SQL_ACTION_ITEMS');
+        IdTCPClient.SendCmd(TCP_COMMAND_GET_DBU_SQL_ACTION_ITEMS);
         line_count := IdTCPClient.IOHandler.ReadLongInt;
         for i := 0 to Pred(line_count) do
         begin
@@ -919,7 +920,7 @@ begin
       if pgcMain.ActivePage = tsSQLSubjects then
       begin
         lv := lvSQLSubjects;
-        IdTCPClient.SendCmd('TCP_GET_DBU_SQL_SUBJ_ITEMS');
+        IdTCPClient.SendCmd(TCP_COMMAND_GET_DBU_SQL_SUBJ_ITEMS);
         line_count := IdTCPClient.IOHandler.ReadLongInt;
         for i := 0 to Pred(line_count) do
         begin
@@ -936,7 +937,7 @@ begin
       if pgcMain.ActivePage = tsDBUStates then
       begin
         lv := lvDBUStates;
-        IdTCPClient.SendCmd('TCP_GET_DBU_STATES_ITEMS');
+        IdTCPClient.SendCmd(TCP_COMMAND_GET_DBU_STATES_ITEMS);
         IdTCPClient.IOHandler.ReadStrings(sl, -1, IndyTextEncoding_OSDefault);
 
         st := TMemoryStream.Create;
@@ -959,7 +960,7 @@ begin
       if pgcMain.ActivePage = tsDatabaseTypes then
       begin
         lv := lvDatabaseTypes;
-        IdTCPClient.SendCmd('TCP_GET_DBU_DATABASE_TYPE_ITEMS');
+        IdTCPClient.SendCmd(TCP_COMMAND_GET_DBU_DATABASE_TYPE_ITEMS);
         line_count := IdTCPClient.IOHandler.ReadLongInt;
         for i := 0 to Pred(line_count) do
         begin
@@ -977,7 +978,7 @@ begin
       if pgcMain.ActivePage = tsUsers then
       begin
         lv := lvUsers;
-        IdTCPClient.SendCmd('TCP_GET_USERS');
+        IdTCPClient.SendCmd(TCP_COMMAND_GET_USER_LIST);
         line_count := IdTCPClient.IOHandler.ReadLongInt;
         for i := 0 to Pred(line_count) do
         begin
@@ -1087,7 +1088,7 @@ var
   db_type: string;
   s: string;
 begin
-  IdTCPClient.SendCmd('TCP_ADD_NEW_DATABASE_TYPE');
+  IdTCPClient.SendCmd(TCP_COMMAND_ADD_NEW_DATABASE_TYPE);
   db_type := 'db_type';
   IdTCPClient.IOHandler.WriteLn(db_type);
   // index :=
@@ -1117,7 +1118,7 @@ begin
   try
     if pgcMain.ActivePage = tsUsers then
     begin
-      IdTCPClient.SendCmd('TCP_ADD_USER');
+      IdTCPClient.SendCmd(TCP_COMMAND_ADD_USER);
       IdTCPClient.IOHandler.WriteLn('user');
       IdTCPClient.IOHandler.WriteLn(Routines.Hash('1'));
       IdTCPClient.IOHandler.WriteLn('user_full_name');
@@ -1142,7 +1143,7 @@ begin
         if form.ModalResult = mrOk then
         begin
           s := form.Value;
-          IdTCPClient.SendCmd('TCP_ADD_NEW_DATABASE_TYPE');
+          IdTCPClient.SendCmd(TCP_COMMAND_ADD_NEW_DATABASE_TYPE);
           IdTCPClient.IOHandler.WriteLn(s);
           id := IdTCPClient.IOHandler.ReadSmallInt;
           s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
@@ -1215,12 +1216,6 @@ begin
   finally
     (Sender as TAction).Enabled := b;
   end;
-end;
-
-procedure TMainForm.actDeleteItemExecute(Sender: TObject);
-begin
-  { TODO : дописать }
-  ShowMessage('Удаление элемента');
 end;
 
 procedure TMainForm.actEditItemExecute(Sender: TObject);
@@ -1326,6 +1321,62 @@ begin
     end;
   finally
     (Sender as TAction).Enabled := b;
+  end;
+end;
+
+procedure TMainForm.actDeleteItemExecute(Sender: TObject);
+var
+  s: string;
+  t: Byte;
+  li: TListItem;
+  u: IUser;
+begin
+  if not pgcMain.Visible then
+  begin
+    Exit;
+  end;
+
+  if not Assigned(pgcMain.ActivePage) then
+  begin
+    Exit;
+  end;
+
+  Screen.Cursor := crHourGlass;
+  try
+    if pgcMain.ActivePage = tsUsers then
+    begin
+      li := lvUsers.Selected;
+      if not Assigned(li) then
+      begin
+        Exit;
+      end;
+
+      if not Assigned(li.Data) then
+      begin
+        Exit;
+      end;
+
+      u := IUser(li.Data);
+      if not Assigned(u) then
+      begin
+        Exit;
+      end;
+
+      IdTCPClient.SendCmd(TCP_COMMAND_DELETE_USER);
+      IdTCPClient.IOHandler.WriteLn(u.Login);
+      t := IdTCPClient.IOHandler.ReadByte;
+      s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
+      if t = SUCCESS_DELETE_USER then
+      begin
+        actRefresh.Execute;
+      end;
+      ShowMessage(s);
+      Exit;
+    end;
+
+    ShowMessage('Удаление элемента');
+  finally
+    Screen.Cursor := crDefault;
   end;
 end;
 
