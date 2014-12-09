@@ -51,7 +51,7 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1049</VerInfo_Locale>
         <DCC_BplOutput>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion)</DCC_BplOutput>
-        <DCC_UnitSearchPath>..\..\CastersPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\ConfigPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\AboutPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\DBUShared\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\LoginPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\CastersPackage\SRC\UI;..\..\AboutPackage\SRC\UI;..\..\LoginPackage\SRC\UI;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\..\CastersPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\ConfigPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\AboutPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\DBUShared\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\LoginPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\DialogsPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\CastersPackage\SRC\UI;..\..\AboutPackage\SRC\UI;..\..\LoginPackage\SRC\UI;..\..\DialogsPackage\SRC\UI;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <Icon_MainIcon>DBUServerManager_Icon.ico</Icon_MainIcon>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=DBU Server Manager;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion)</DCC_DcpOutput>
@@ -86,8 +86,8 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>347</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.347;InternalName=DBU Server Manager x86 Debug;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager x86 Debug;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Build>355</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.355;InternalName=DBU Server Manager x86 Debug;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager x86 Debug;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
