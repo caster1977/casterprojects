@@ -44,7 +44,8 @@ uses
   DBUShared.uIDatabaseTypes,
   DBUShared.uIUsers,
   System.SyncObjs,
-  LoginPackage.uTLoginWindow;
+  LoginPackage.uTLoginWindow,
+  DialogsPackage.uTEnterStringDialog;
 
 type
   TMainForm = class(TForm)
@@ -158,6 +159,7 @@ type
     tsDBUStates: TTabSheet;
     lvDBUStates: TListView;
     ilDBUStates: TImageList;
+    esdDatabaseType: TEnterStringDialog;
     procedure actAboutExecute(Sender: TObject);
     procedure actQuitExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -250,7 +252,6 @@ uses
   DBUShared.uConsts,
   CastersPackage.uRoutines,
   CastersPackage.uIListItemAdapter,
-  CastersPackage.uTEnterStringForm,
   DBUServerManager.uConsts,
   DBUServerManager.Configuration.uTInterface,
   DBUServerManager.Configuration.uTConnection,
@@ -1100,7 +1101,6 @@ end;
 procedure TMainForm.actAddItemExecute(Sender: TObject);
 var
   id: Integer;
-  form: TEnterStringForm;
   s: string;
   t: Byte;
 begin
@@ -1137,24 +1137,19 @@ begin
 
     if pgcMain.ActivePage = tsDatabaseTypes then
     begin
-      form := TEnterStringForm.Create(Self, 'Создание типа БД', 'Наименование:');
-      try
-        form.ShowModal;
-        if form.ModalResult = mrOk then
+      esdDatabaseType.Value := EmptyStr;
+      if esdDatabaseType.Execute then
+      begin
+        s := esdDatabaseType.Value;
+        IdTCPClient.SendCmd(TCP_COMMAND_ADD_NEW_DATABASE_TYPE);
+        IdTCPClient.IOHandler.WriteLn(s);
+        id := IdTCPClient.IOHandler.ReadSmallInt;
+        s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
+        if id > -1 then
         begin
-          s := form.Value;
-          IdTCPClient.SendCmd(TCP_COMMAND_ADD_NEW_DATABASE_TYPE);
-          IdTCPClient.IOHandler.WriteLn(s);
-          id := IdTCPClient.IOHandler.ReadSmallInt;
-          s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
-          if id > -1 then
-          begin
-            actRefresh.Execute;
-          end;
-          ShowMessage(s);
+          actRefresh.Execute;
         end;
-      finally
-        form.Free;
+        ShowMessage(s);
       end;
       Exit;
     end;
