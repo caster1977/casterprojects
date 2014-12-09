@@ -8,7 +8,6 @@ uses
   Vcl.ActnList,
   Vcl.ImgList,
   Vcl.Controls,
-  Vcl.Mask,
   Vcl.StdCtrls,
   System.Actions,
   Vcl.Graphics,
@@ -16,7 +15,6 @@ uses
 
 type
   TEnterStringForm = class(TForm)
-    ImageList: TImageList;
     ActionList: TActionList;
     actHelp: TAction;
     actApply: TAction;
@@ -34,8 +32,8 @@ type
     procedure actHelpUpdate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
 
-  strict private
-    function GetValue: string;
+  strict protected
+    function GetValue: string; virtual;
   public
     property Value: string read GetValue nodefault;
 
@@ -56,8 +54,6 @@ uses
 
 const
   MESSAGE_TYPE_ERROR: Cardinal = MB_OK + MB_ICONERROR + MB_DEFBUTTON1;
-
-  ICON_LOGIN = 1;
 
 resourcestring
   RsHelpFileNonFound = 'Извините, справочный файл к данной программе не найден.';
@@ -131,12 +127,14 @@ begin
     end
     else
     begin
-      ImageList.GetIcon(ICON_LOGIN, Icon);
+      Icon := Application.Icon;
+      // ImageList.GetIcon(ICON_LOGIN, Icon);
     end;
   end
   else
   begin
-    ImageList.GetIcon(ICON_LOGIN, Icon);
+    Icon := Application.Icon;
+    // ImageList.GetIcon(ICON_LOGIN, Icon);
   end;
 end;
 
