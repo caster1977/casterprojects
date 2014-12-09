@@ -61,7 +61,7 @@ uses
 const
   MESSAGE_TYPE_ERROR: Cardinal = MB_OK + MB_ICONERROR + MB_DEFBUTTON1;
 
-  ICON_LOGIN = 1;
+  ICON_LOGIN = 0;
 
 resourcestring
   RsHelpFileNonFound = 'Извините, справочный файл к данной программе не найден.';
