@@ -5,7 +5,6 @@
         <DCC_DcpOutput>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion)</DCC_DcpOutput>
         <DCC_ExeOutput>..\$(Platform)\$(Config)\$(ProductVersion)</DCC_ExeOutput>
         <DCC_UnitSearchPath>..\..\CastersPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\ConfigPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\AboutPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\DBUShared\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\LoginPackage\$(Platform)\$(Config)\$(ProductVersion)\DCU;..\..\CastersPackage\SRC\UI;..\..\CastersPackage\SRC\Logic\Classes;..\..\AboutPackage\SRC\UI;..\..\LoginPackage\SRC\UI;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-        <VerInfo_Keys>FileVersion=1.0.0.0;ProductVersion=1.0.0.0</VerInfo_Keys>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Winapi;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_Locale>1049</VerInfo_Locale>
         <DCC_ImageBase>00400000</DCC_ImageBase>
