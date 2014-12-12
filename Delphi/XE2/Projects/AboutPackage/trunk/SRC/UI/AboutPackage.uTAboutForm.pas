@@ -83,6 +83,8 @@ begin
     lblLegalCopyright.Caption := GSFileVersionInfo.LegalCopyright;
   end;
   lblEMailAddress.Caption := EMail;
+  lblEMail.Left := (Width - (lblEMail.Width + 6 + lblEMailAddress.Width)) div 2;
+  lblEMailAddress.Left := lblEMail.Left + lblEMail.Width + 6;
 end;
 
 procedure TAboutForm.FormShow(Sender: TObject);
