@@ -504,8 +504,9 @@ var
   XMLDocument: IXMLDocument;
   XMLLogkeeperdata: IXMLLogkeeperdataType;
   XMLMessageSource, XMLMessageDestination: IXMLMessageType;
+  a: IUnknown;
 begin
-  NewCOMInitClass;
+  a := NewCOMInitClass;
   inherited;
   try
     while not Terminated do
