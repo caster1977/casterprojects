@@ -262,7 +262,9 @@ uses
   DBUShared.uTDBUStates,
   DBUShared.uTDatabaseTypes,
   DBUShared.uIUser,
-  DBUShared.uTUsers;
+  DBUShared.uTUsers,
+  DBUServerManager.uTUserForm,
+  DBUServerManager.uTPasswordForm;
 
 resourcestring
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
@@ -376,8 +378,7 @@ begin
     Configuration.Section<TConnection>.EnableAutoLogon := False;
   end;
 
-  b := (IdTCPClient.Connected) and ((IdTCPClient.Host <> Configuration.Section<TConnection>.Host) or
-    (IdTCPClient.Port <> Configuration.Section<TConnection>.Port) or
+  b := (IdTCPClient.Connected) and ((IdTCPClient.Host <> Configuration.Section<TConnection>.Host) or (IdTCPClient.Port <> Configuration.Section<TConnection>.Port) or
     (IdTCPClient.ConnectTimeout <> Configuration.Section<TConnection>.Timeout));
   if b then
   begin
@@ -390,8 +391,7 @@ begin
   begin
     actConnect.Execute;
   end;
-  StateImage.Hint := Format('Сервер: [%s], порт: [%d]', [Configuration.Section<TConnection>.Host,
-    Configuration.Section<TConnection>.Port]);
+  StateImage.Hint := Format('Сервер: [%s], порт: [%d]', [Configuration.Section<TConnection>.Host, Configuration.Section<TConnection>.Port]);
 end;
 
 destructor TMainForm.Destroy;
@@ -418,9 +418,7 @@ begin
 
   if Configuration.Section<TInterface>.EnableQuitConfirmation then
   begin
-    CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage),
-      PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])),
-      MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
+    CanClose := MessageBox(Handle, PWideChar(RsExitConfirmationMessage), PWideChar(Format(RsExitConfirmationCaption, [APPLICATION_NAME])), MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDOK;
   end;
 end;
 
@@ -471,8 +469,7 @@ begin
   FWindowMessage := RegisterWindowMessage(PWideChar(APPLICATION_NAME));
   if FWindowMessage = 0 then
   begin
-    MessageBox(Handle, PWideChar(RsErrorRegisterWindowMessage),
-      PWideChar(Format(RsErrorCaption, [Application.Title])), MESSAGE_TYPE_ERROR);
+    MessageBox(Handle, PWideChar(RsErrorRegisterWindowMessage), PWideChar(Format(RsErrorCaption, [Application.Title])), MESSAGE_TYPE_ERROR);
   end;
 end;
 
@@ -576,8 +573,7 @@ end;
 
 procedure TMainForm.actRefreshUpdate(Sender: TObject);
 begin
-  (Sender as TAction).Enabled := IdTCPClient.Connected and pgcMain.Visible and
-    Assigned(pgcMain.ActivePage);
+  (Sender as TAction).Enabled := IdTCPClient.Connected and pgcMain.Visible and Assigned(pgcMain.ActivePage);
 end;
 
 procedure TMainForm.actReserveNewDBUNUmberExecute(Sender: TObject);
@@ -630,10 +626,8 @@ begin
   begin
     if LoginWindow.Execute then
     begin
-      Configuration.Section<TConnection>.Login :=
-        IfThen(Configuration.Section<TConnection>.EnableStoreLogin, LoginWindow.Login);
-      Configuration.Section<TConnection>.Password :=
-        IfThen(Configuration.Section<TConnection>.EnableStorePassword, LoginWindow.Password);
+      Configuration.Section<TConnection>.Login := IfThen(Configuration.Section<TConnection>.EnableStoreLogin, LoginWindow.Login);
+      Configuration.Section<TConnection>.Password := IfThen(Configuration.Section<TConnection>.EnableStorePassword, LoginWindow.Password);
     end
     else
     begin
@@ -674,8 +668,7 @@ begin
     case t of
       0:
         begin
-          ShowMessage('Не удалось подключиться к серверу.' + sLineBreak +
-            'Проверьте правильность настроек подключения.');
+          ShowMessage('Не удалось подключиться к серверу.' + sLineBreak + 'Проверьте правильность настроек подключения.');
         end;
       1:
         begin
@@ -965,8 +958,7 @@ begin
         line_count := IdTCPClient.IOHandler.ReadLongInt;
         for i := 0 to Pred(line_count) do
         begin
-          sl.Append(Format('%s=%d', [IdTCPClient.IOHandler.ReadLn,
-            IdTCPClient.IOHandler.ReadLongInt]));
+          sl.Append(Format('%s=%d', [IdTCPClient.IOHandler.ReadLn, IdTCPClient.IOHandler.ReadLongInt]));
         end;
         FDatabaseTypes := GetIDatabaseTypes(sl, ['=']);
         if not Assigned(FDatabaseTypes) then
@@ -1103,6 +1095,8 @@ var
   id: Integer;
   s: string;
   t: Byte;
+  i: Integer;
+  pwdh: string;
 begin
   if not pgcMain.Visible then
   begin
@@ -1118,20 +1112,27 @@ begin
   try
     if pgcMain.ActivePage = tsUsers then
     begin
-      IdTCPClient.SendCmd(TCP_COMMAND_ADD_USER);
-      IdTCPClient.IOHandler.WriteLn('user');
-      IdTCPClient.IOHandler.WriteLn(Routines.Hash('1'));
-      IdTCPClient.IOHandler.WriteLn('user_full_name');
-      t := 0;
-      IdTCPClient.IOHandler.Write(t); // user_blocked
-      IdTCPClient.IOHandler.Write(t); // user_admin
-      t := IdTCPClient.IOHandler.ReadByte;
-      s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
-      if t = SUCCESS_ADD_USER then
+      i := -1;
+      pwdh := EmptyStr;
+      if ShowPasswordForm(Self, pwdh) then
       begin
-        actRefresh.Execute;
       end;
-      ShowMessage(s);
+      if ShowUserDialog(Self, FUsers, i) then
+      begin
+        IdTCPClient.SendCmd(TCP_COMMAND_ADD_USER);
+        IdTCPClient.IOHandler.WriteLn(FUsers[i].Login);
+        IdTCPClient.IOHandler.WriteLn(FUsers[i].PasswordHash);
+        IdTCPClient.IOHandler.WriteLn(FUsers[i].FullName);
+        IdTCPClient.IOHandler.Write(Byte(FUsers[i].Blocked));
+        IdTCPClient.IOHandler.Write(Byte(FUsers[i].Administrator));
+        t := IdTCPClient.IOHandler.ReadByte;
+        s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
+        if t = SUCCESS_ADD_USER then
+        begin
+          actRefresh.Execute;
+        end;
+        ShowMessage(s);
+      end;
       Exit;
     end;
 
