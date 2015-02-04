@@ -11,7 +11,9 @@ uses
   DBUServerManager.Configuration.uTInterface in 'Logic\Classes\DBUServerManager.Configuration.uTInterface.pas',
   DBUServerManager.Configuration.uTConnection in 'Logic\Classes\DBUServerManager.Configuration.uTConnection.pas',
   DBUServerManager.uTConfiguration in 'Logic\Classes\DBUServerManager.uTConfiguration.pas',
-  DBUServerManager.uTConfigurationForm in 'UI\DBUServerManager.uTConfigurationForm.pas' {Form1};
+  DBUServerManager.uTConfigurationForm in 'UI\DBUServerManager.uTConfigurationForm.pas' {Form1},
+  DBUServerManager.uTUserForm in 'UI\DBUServerManager.uTUserForm.pas' {UserForm},
+  DBUServerManager.uTPasswordForm in 'UI\DBUServerManager.uTPasswordForm.pas' {PasswordForm};
 
 {$R *.res}
 

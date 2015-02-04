@@ -86,8 +86,8 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>355</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.355;InternalName=DBU Server Manager x86 Debug;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager x86 Debug;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Build>356</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.356;InternalName=DBU Server Manager x86 Debug;LegalCopyright=(C)opyright 2014 by Ivanov Vlad;LegalTrademarks=;OriginalFilename=DBUServerManager.exe;ProductName=DBU Server Manager x86 Debug;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -114,6 +114,14 @@
         <DCCReference Include="Logic\Classes\DBUServerManager.uTConfiguration.pas"/>
         <DCCReference Include="UI\DBUServerManager.uTConfigurationForm.pas">
             <Form>Form1</Form>
+        </DCCReference>
+        <DCCReference Include="UI\DBUServerManager.uTUserForm.pas">
+            <Form>UserForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UI\DBUServerManager.uTPasswordForm.pas">
+            <Form>PasswordForm</Form>
+            <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
