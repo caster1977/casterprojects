@@ -519,7 +519,7 @@ var
   i: Integer;
 begin
   LogMessage('Start LoginCommand', EVENTLOG_INFORMATION_TYPE);
-  Login := Trim(ASender.Context.Connection.IOHandler.ReadLn);
+  Login := Trim(ASender.Context.Connection.IOHandler.ReadLn(IndyTextEncoding_OSDefault));
   pass := ASender.Context.Connection.IOHandler.ReadLn;
   t := 1;
   t1 := 0;
@@ -573,9 +573,9 @@ begin
   s := EmptyStr;
   try
     try
-      user_login := ASender.Context.Connection.IOHandler.ReadLn;
+      user_login := ASender.Context.Connection.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
       user_password_hash := ASender.Context.Connection.IOHandler.ReadLn;
-      user_full_name := ASender.Context.Connection.IOHandler.ReadLn;
+      user_full_name := ASender.Context.Connection.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
       user_blocked := ASender.Context.Connection.IOHandler.ReadByte;
       user_admin := ASender.Context.Connection.IOHandler.ReadByte;
 
@@ -653,9 +653,9 @@ begin
   s := EmptyStr;
   try
     try
-      user_login := ASender.Context.Connection.IOHandler.ReadLn;
+      user_login := ASender.Context.Connection.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
       user_password_hash := ASender.Context.Connection.IOHandler.ReadLn;
-      user_full_name := ASender.Context.Connection.IOHandler.ReadLn;
+      user_full_name := ASender.Context.Connection.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
       user_blocked := ASender.Context.Connection.IOHandler.ReadByte;
       user_admin := ASender.Context.Connection.IOHandler.ReadByte;
 
@@ -713,7 +713,7 @@ begin
   s := EmptyStr;
   try
     try
-      user_login := Trim(ASender.Context.Connection.IOHandler.ReadLn);
+      user_login := Trim(ASender.Context.Connection.IOHandler.ReadLn(IndyTextEncoding_OSDefault));
 
       if not Assigned(Configuration) then
       begin
