@@ -14,7 +14,7 @@ type
 
     function GetName: string;
     procedure SetName(const AValue: string);
-    property Name: string read GetName write SetName;
+    property name: string read GetName write SetName;
 
     function ToString: string;
   end;

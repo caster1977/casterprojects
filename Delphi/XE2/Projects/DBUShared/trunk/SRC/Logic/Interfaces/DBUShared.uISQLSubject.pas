@@ -10,7 +10,7 @@ type
     ['{4AADE810-C9A7-4154-9A5F-9AE6A9DB5A9B}']
     function GetName: string;
     procedure SetName(const AValue: string);
-    property Name: string read GetName write SetName;
+    property name: string read GetName write SetName;
 
     function GetAbbreviation: string;
     procedure SetAbbreviation(const AValue: string);

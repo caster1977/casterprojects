@@ -16,8 +16,7 @@ type
   end;
 
 function GetIDBUStates: IDBUStates; overload;
-function GetIDBUStates(const AList: TStrings; const AImages: TImageList;
-  const ASeparators: array of string): IDBUStates; overload;
+function GetIDBUStates(const AList: TStrings; const AImages: TImageList; const ASeparators: array of string): IDBUStates; overload;
 
 implementation
 
@@ -36,8 +35,7 @@ begin
   Result := TDBUStates.Create;
 end;
 
-function GetIDBUStates(const AList: TStrings; const AImages: TImageList;
-  const ASeparators: array of string): IDBUStates;
+function GetIDBUStates(const AList: TStrings; const AImages: TImageList; const ASeparators: array of string): IDBUStates;
 var
   i: Integer;
   j: Integer;

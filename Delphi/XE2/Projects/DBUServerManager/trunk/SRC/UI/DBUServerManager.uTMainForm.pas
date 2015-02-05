@@ -263,8 +263,7 @@ uses
   DBUShared.uTDatabaseTypes,
   DBUShared.uIUser,
   DBUShared.uTUsers,
-  DBUServerManager.uTUserForm,
-  DBUServerManager.uTPasswordForm;
+  DBUServerManager.uTUserForm;
 
 resourcestring
   RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
@@ -1090,13 +1089,67 @@ begin
   ShowMessage(s);
 end;
 
+procedure TMainForm.actEditItemExecute(Sender: TObject);
+var
+  s: string;
+  t: Byte;
+  i: Integer;
+begin
+  if not pgcMain.Visible then
+  begin
+    Exit;
+  end;
+
+  if not Assigned(pgcMain.ActivePage) then
+  begin
+    Exit;
+  end;
+
+  Screen.Cursor := crHourGlass;
+  try
+    if pgcMain.ActivePage = tsUsers then
+    begin
+      if lvUsers.SelCount <> 1 then
+      begin
+        Exit;
+      end;
+
+      if not Assigned(lvUsers.Selected) then
+      begin
+        Exit;
+      end;
+
+      i := lvUsers.Selected.Index;
+
+      if ShowUserDialog(Self, FUsers, i) then
+      begin
+        IdTCPClient.SendCmd(TCP_COMMAND_EDIT_USER);
+        IdTCPClient.IOHandler.WriteLn(FUsers[i].Login);
+        IdTCPClient.IOHandler.WriteLn(FUsers[i].PasswordHash);
+        IdTCPClient.IOHandler.WriteLn(FUsers[i].FullName);
+        IdTCPClient.IOHandler.Write(Byte(FUsers[i].Blocked));
+        IdTCPClient.IOHandler.Write(Byte(FUsers[i].Administrator));
+        t := IdTCPClient.IOHandler.ReadByte;
+        s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
+        if t = SUCCESS_EDIT_USER then
+        begin
+          actRefresh.Execute;
+        end;
+        ShowMessage(s);
+      end;
+      Exit;
+    end;
+  finally
+    Screen.Cursor := crDefault;
+  end;
+end;
+
 procedure TMainForm.actAddItemExecute(Sender: TObject);
 var
   id: Integer;
   s: string;
   t: Byte;
   i: Integer;
-  pwdh: string;
 begin
   if not pgcMain.Visible then
   begin
@@ -1113,10 +1166,6 @@ begin
     if pgcMain.ActivePage = tsUsers then
     begin
       i := -1;
-      pwdh := EmptyStr;
-      if ShowPasswordForm(Self, pwdh) then
-      begin
-      end;
       if ShowUserDialog(Self, FUsers, i) then
       begin
         IdTCPClient.SendCmd(TCP_COMMAND_ADD_USER);
@@ -1212,12 +1261,6 @@ begin
   finally
     (Sender as TAction).Enabled := b;
   end;
-end;
-
-procedure TMainForm.actEditItemExecute(Sender: TObject);
-begin
-  { TODO : дописать }
-  ShowMessage('Редактирование элемента');
 end;
 
 procedure TMainForm.actEditItemUpdate(Sender: TObject);

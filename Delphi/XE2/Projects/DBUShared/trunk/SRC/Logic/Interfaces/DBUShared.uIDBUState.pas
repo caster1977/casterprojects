@@ -15,7 +15,7 @@ type
 
     function GetName: string;
     procedure SetName(const AValue: string);
-    property Name: string read GetName write SetName;
+    property name: string read GetName write SetName;
 
     function GetFlags: Word;
     procedure SetFlags(const AValue: Word);

@@ -18,8 +18,7 @@ type
   end;
 
 function GetIDatabaseTypes: IDatabaseTypes; overload;
-function GetIDatabaseTypes(const AList: TStrings; const ASeparators: array of string)
-  : IDatabaseTypes; overload;
+function GetIDatabaseTypes(const AList: TStrings; const ASeparators: array of string): IDatabaseTypes; overload;
 
 implementation
 
@@ -37,8 +36,7 @@ begin
   Result := TDatabaseTypes.Create;
 end;
 
-function GetIDatabaseTypes(const AList: TStrings; const ASeparators: array of string)
-  : IDatabaseTypes;
+function GetIDatabaseTypes(const AList: TStrings; const ASeparators: array of string): IDatabaseTypes;
 var
   i: Integer;
   j: Integer;
