@@ -647,7 +647,7 @@ begin
         try
           // ShowMessage(itc.IOHandler.ReadLn);
           itc.SendCmd(TCP_COMMAND_LOGIN);
-          itc.IOHandler.WriteLn(LoginWindow.Login);
+          itc.IOHandler.WriteLn(LoginWindow.Login, IndyTextEncoding_OSDefault);
           itc.IOHandler.WriteLn(Routines.Hash(LoginWindow.Password));
           t := itc.IOHandler.ReadByte;
           if t = 3 then
@@ -1124,9 +1124,9 @@ begin
       if ShowUserDialog(Self, FUsers, i) then
       begin
         IdTCPClient.SendCmd(TCP_COMMAND_EDIT_USER);
-        IdTCPClient.IOHandler.WriteLn(FUsers[i].Login);
+        IdTCPClient.IOHandler.WriteLn(FUsers[i].Login, IndyTextEncoding_OSDefault);
         IdTCPClient.IOHandler.WriteLn(FUsers[i].PasswordHash);
-        IdTCPClient.IOHandler.WriteLn(FUsers[i].FullName);
+        IdTCPClient.IOHandler.WriteLn(FUsers[i].FullName, IndyTextEncoding_OSDefault);
         IdTCPClient.IOHandler.Write(Byte(FUsers[i].Blocked));
         IdTCPClient.IOHandler.Write(Byte(FUsers[i].Administrator));
         t := IdTCPClient.IOHandler.ReadByte;
@@ -1169,9 +1169,9 @@ begin
       if ShowUserDialog(Self, FUsers, i) then
       begin
         IdTCPClient.SendCmd(TCP_COMMAND_ADD_USER);
-        IdTCPClient.IOHandler.WriteLn(FUsers[i].Login);
+        IdTCPClient.IOHandler.WriteLn(FUsers[i].Login, IndyTextEncoding_OSDefault);
         IdTCPClient.IOHandler.WriteLn(FUsers[i].PasswordHash);
-        IdTCPClient.IOHandler.WriteLn(FUsers[i].FullName);
+        IdTCPClient.IOHandler.WriteLn(FUsers[i].FullName, IndyTextEncoding_OSDefault);
         IdTCPClient.IOHandler.Write(Byte(FUsers[i].Blocked));
         IdTCPClient.IOHandler.Write(Byte(FUsers[i].Administrator));
         t := IdTCPClient.IOHandler.ReadByte;
@@ -1402,7 +1402,7 @@ begin
       end;
 
       IdTCPClient.SendCmd(TCP_COMMAND_DELETE_USER);
-      IdTCPClient.IOHandler.WriteLn(u.Login);
+      IdTCPClient.IOHandler.WriteLn(u.Login, IndyTextEncoding_OSDefault);
       t := IdTCPClient.IOHandler.ReadByte;
       s := IdTCPClient.IOHandler.ReadLn(IndyTextEncoding_OSDefault);
       if t = SUCCESS_DELETE_USER then
