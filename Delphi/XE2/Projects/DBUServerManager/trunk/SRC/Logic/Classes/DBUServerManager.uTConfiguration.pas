@@ -18,8 +18,7 @@ type
     function GetCurrentPage: Integer;
     procedure SetCurrentPage(const AValue: Integer);
   public
-    property CurrentPage: Integer read GetCurrentPage write SetCurrentPage
-      default CONFIGURATION_DEFAULT_ACTIVE_PAGE;
+    property CurrentPage: Integer read GetCurrentPage write SetCurrentPage default CONFIGURATION_DEFAULT_ACTIVE_PAGE;
 
   strict private
     FHosts: TStrings;

@@ -172,47 +172,9 @@ begin
 end;
 
 procedure TPasswordForm.actGeneratePasswordExecute(Sender: TObject);
-var
-  upper_case: string;
-  lower_case: string;
-  numbers: string;
-  symbols: string;
-  b: Byte;
-  s: string;
 begin
   ShowSymbols := True;
-
-  upper_case := EmptyStr;
-  for b := 65 to 90 do
-  begin
-    upper_case := upper_case + Chr(b);
-  end;
-
-  lower_case := EmptyStr;
-  for b := 97 to 122 do
-  begin
-    lower_case := lower_case + Chr(b);
-  end;
-
-  numbers := EmptyStr;
-  for b := 48 to 57 do
-  begin
-    numbers := numbers + Chr(b);
-  end;
-
-  symbols := '!"#$%''()*+,-./:;<>=?@_';
-
-  Randomize;
-
-  s := upper_case[RandomRange(1, Succ(Length(upper_case)))];
-  Insert(upper_case[RandomRange(1, Length(upper_case))], s, RandomRange(1, Succ(Length(s))));
-  Insert(lower_case[RandomRange(1, Length(lower_case))], s, RandomRange(1, Succ(Length(s))));
-  Insert(lower_case[RandomRange(1, Length(lower_case))], s, RandomRange(1, Succ(Length(s))));
-  Insert(numbers[RandomRange(1, Length(numbers))], s, RandomRange(1, Succ(Length(s))));
-  Insert(numbers[RandomRange(1, Length(numbers))], s, RandomRange(1, Succ(Length(s))));
-  Insert(symbols[RandomRange(1, Length(symbols))], s, RandomRange(1, Succ(Length(s))));
-  Insert(symbols[RandomRange(1, Length(symbols))], s, RandomRange(1, Succ(Length(s))));
-  Password := s;
+  Password := Routines.GeneratePassword;
 end;
 
 procedure TPasswordForm.ActionListUpdate(Action: TBasicAction; var Handled: Boolean);

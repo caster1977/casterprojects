@@ -15,8 +15,7 @@ type
   end;
 
 function GetISQLActions: ISQLActions; overload;
-function GetISQLActions(const AList: TStrings; const ASeparators: array of string)
-  : ISQLActions; overload;
+function GetISQLActions(const AList: TStrings; const ASeparators: array of string): ISQLActions; overload;
 
 implementation
 

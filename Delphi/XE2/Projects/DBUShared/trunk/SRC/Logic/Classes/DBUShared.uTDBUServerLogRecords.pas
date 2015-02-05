@@ -13,13 +13,11 @@ type
   strict protected
     procedure Initialize; override;
   public
-    procedure ToStringList(var AList: TStrings; const ADatabaseType: string = '';
-      const ASeparator: string = '^^');
+    procedure ToStringList(var AList: TStrings; const ADatabaseType: string = ''; const ASeparator: string = '^^');
   end;
 
 function GetIDBUServerLogRecords: IDBUServerLogRecords; overload;
-function GetIDBUServerLogRecords(const AList: TStrings; const ASeparators: array of string)
-  : IDBUServerLogRecords; overload;
+function GetIDBUServerLogRecords(const AList: TStrings; const ASeparators: array of string): IDBUServerLogRecords; overload;
 
 implementation
 
@@ -39,8 +37,7 @@ begin
   Result := TDBUServerLogRecords.Create;
 end;
 
-function GetIDBUServerLogRecords(const AList: TStrings; const ASeparators: array of string)
-  : IDBUServerLogRecords;
+function GetIDBUServerLogRecords(const AList: TStrings; const ASeparators: array of string): IDBUServerLogRecords;
 var
   i: Integer;
   sl: TStrings;
@@ -69,8 +66,7 @@ begin
     try
       if sl.Count = 5 then
       begin
-        a := GetIDBUServerLogRecord(sl[1], StrToIntDef(sl[2], -1), StrToIntDef(sl[4], -1), sl[3],
-          StrToDateTime(sl[0], TFormatSettings.Create('ru-RU')));
+        a := GetIDBUServerLogRecord(sl[1], StrToIntDef(sl[2], -1), StrToIntDef(sl[4], -1), sl[3], StrToDateTime(sl[0], TFormatSettings.Create('ru-RU')));
         if Assigned(a) then
         begin
           Result.Add(a);
@@ -82,8 +78,7 @@ begin
   end;
 end;
 
-procedure TDBUServerLogRecords.ToStringList(var AList: TStrings; const ADatabaseType: string = '';
-  const ASeparator: string = '^^');
+procedure TDBUServerLogRecords.ToStringList(var AList: TStrings; const ADatabaseType: string = ''; const ASeparator: string = '^^');
 var
   i: Integer;
   s: string;
@@ -107,9 +102,7 @@ begin
     begin
       if (s = EmptyStr) or (Items[i].DatabaseType = s) then
       begin
-        AList.Append(Format('%s^^%s^^%d^^%s^^%d^^', [FormatDateTime(DATE_TIME_FORMAT_RU,
-          Items[i].DateTime), Items[i].DatabaseType, Items[i].FirstNumber, Items[i].Creator,
-          Items[i].Quantity]));
+        AList.Append(Format('%s^^%s^^%d^^%s^^%d^^', [FormatDateTime(DATE_TIME_FORMAT_RU, Items[i].DateTime), Items[i].DatabaseType, Items[i].FirstNumber, Items[i].Creator, Items[i].Quantity]));
       end;
     end;
   end;

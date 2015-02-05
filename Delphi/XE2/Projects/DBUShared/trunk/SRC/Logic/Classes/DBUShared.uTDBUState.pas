@@ -31,7 +31,7 @@ type
     function GetName: string;
     procedure SetName(const AValue: string);
   public
-    property Name: string read GetName write SetName nodefault;
+    property name: string read GetName write SetName nodefault;
 
   strict private
     FFlags: Word;
@@ -81,7 +81,6 @@ begin
   Result.Icon := AIcon;
 end;
 
-
 procedure TDBUState.AppendToListView(const AListView: TListView);
 var
   a: IDBUState;
@@ -110,7 +109,7 @@ begin
 
   if Assigned(li.SubItems) then
   begin
-    li.SubItems.Add(Name);
+    li.SubItems.Add(name);
     s := EmptyStr;
     if (Flags and 1) > 0 then
     begin
@@ -156,7 +155,7 @@ end;
 procedure TDBUState.Initialize;
 begin
   Id := -1;
-  Name := EmptyStr;
+  name := EmptyStr;
   Flags := 0;
   Icon := nil;
 end;
@@ -245,8 +244,7 @@ begin
     ico_s := 'nil';
   end;
 
-  Result := IfThen(inherited > EmptyStr, inherited + sLineBreak) +
-    Format('=> Id: %d, Name: %s, Flags: %d, Icon: %s', [Id, Name, Flags, ico_s]);
+  Result := IfThen(inherited > EmptyStr, inherited + sLineBreak) + Format('=> Id: %d, Name: %s, Flags: %d, Icon: %s', [Id, name, Flags, ico_s]);
 end;
 
 end.

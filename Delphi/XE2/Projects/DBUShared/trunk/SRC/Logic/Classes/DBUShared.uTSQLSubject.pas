@@ -23,7 +23,7 @@ type
     function GetName: string;
     procedure SetName(const AValue: string);
   public
-    property Name: string read GetName write SetName nodefault;
+    property name: string read GetName write SetName nodefault;
 
   strict private
     FAbbreviation: string;
@@ -64,7 +64,6 @@ begin
   Result.Abbreviation := Trim(AAbbreviation);
 end;
 
-
 procedure TSQLSubject.AppendToListView(const AListView: TListView);
 var
   a: ISQLSubject;
@@ -87,7 +86,7 @@ begin
     Exit;
   end;
 
-  li.Caption := Name;
+  li.Caption := name;
 
   if Assigned(li.SubItems) then
   begin
@@ -114,7 +113,7 @@ end;
 
 procedure TSQLSubject.Initialize;
 begin
-  Name := EmptyStr;
+  name := EmptyStr;
   Abbreviation := EmptyStr;
 end;
 
@@ -156,8 +155,7 @@ end;
 
 function TSQLSubject.ToString: string;
 begin
-  Result := IfThen(inherited > EmptyStr, inherited + sLineBreak) +
-    Format('=> Name: %s, Abbreviation: %s', [Name, Abbreviation]);
+  Result := IfThen(inherited > EmptyStr, inherited + sLineBreak) + Format('=> Name: %s, Abbreviation: %s', [name, Abbreviation]);
 end;
 
 end.

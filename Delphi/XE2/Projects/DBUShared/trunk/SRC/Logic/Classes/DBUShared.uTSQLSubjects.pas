@@ -15,8 +15,7 @@ type
   end;
 
 function GetISQLSubjects: ISQLSubjects; overload;
-function GetISQLSubjects(const AList: TStrings; const ASeparators: array of string)
-  : ISQLSubjects; overload;
+function GetISQLSubjects(const AList: TStrings; const ASeparators: array of string): ISQLSubjects; overload;
 
 implementation
 

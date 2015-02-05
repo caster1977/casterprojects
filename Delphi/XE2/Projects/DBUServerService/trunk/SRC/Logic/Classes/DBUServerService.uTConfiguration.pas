@@ -282,10 +282,8 @@ begin
           u.Login := FIniFile.ReadString(Format(RsUser, [i]), RsLogin, EmptyStr);
           u.PasswordHash := FIniFile.ReadString(Format(RsUser, [i]), RsPasswordHash, EmptyStr);
           u.FullName := FIniFile.ReadString(Format(RsDBUState, [i]), RsFullName, EmptyStr);
-          u.Blocked := FIniFile.ReadBool(Format(RsDBUState, [i]), RsBlocked,
-            CONFIGURATION_DEFAULT_USER_BLOCKED);
-          u.Administrator := FIniFile.ReadBool(Format(RsDBUState, [i]), RsAdministrator,
-            CONFIGURATION_DEFAULT_USER_ADMINISTRATOR);
+          u.Blocked := FIniFile.ReadBool(Format(RsDBUState, [i]), RsBlocked, CONFIGURATION_DEFAULT_USER_BLOCKED);
+          u.Administrator := FIniFile.ReadBool(Format(RsDBUState, [i]), RsAdministrator, CONFIGURATION_DEFAULT_USER_ADMINISTRATOR);
           if (u.Login <> EmptyStr) and (u.PasswordHash <> EmptyStr) then
           begin
             Users.Add(u);

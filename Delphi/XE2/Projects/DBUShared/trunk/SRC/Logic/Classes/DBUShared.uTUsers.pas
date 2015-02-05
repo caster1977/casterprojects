@@ -61,8 +61,7 @@ begin
     try
       if sl.Count = 5 then
       begin
-        a := GetIUser(sl[0], sl[1], sl[2], Boolean(StrToIntDef(sl[3], 1)),
-          Boolean(StrToIntDef(sl[4], 0)));
+        a := GetIUser(sl[0], sl[1], sl[2], Boolean(StrToIntDef(sl[3], 1)), Boolean(StrToIntDef(sl[4], 0)));
         if Assigned(a) then
         begin
           Result.Add(a);
@@ -98,7 +97,6 @@ end;
 function TUsers.GetUserByLogin(const ALogin: string): IUser;
 var
   i: Integer;
-  s: string;
 begin
   Result := nil;
 

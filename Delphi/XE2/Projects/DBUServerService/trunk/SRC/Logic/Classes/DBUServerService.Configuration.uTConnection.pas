@@ -9,6 +9,7 @@ uses
   DBUServerService.uConsts;
 
 type
+
   [TSection(CONNECTION_SECTION)]
   TConnection = class(TCustomSection)
   public

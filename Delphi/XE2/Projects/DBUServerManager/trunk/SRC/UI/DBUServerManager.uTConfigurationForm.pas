@@ -83,8 +83,7 @@ type
   strict private
     function GetActivePage: Integer;
     procedure SetActivePage(const AValue: Integer);
-    property ActivePage: Integer read GetActivePage write SetActivePage
-      default CONFIGURATION_DEFAULT_ACTIVE_PAGE;
+    property ActivePage: Integer read GetActivePage write SetActivePage default CONFIGURATION_DEFAULT_ACTIVE_PAGE;
 
   strict private
     function GetPageCount: Integer;
@@ -96,51 +95,43 @@ type
     property Configuration: TConfiguration read GetConfiguration nodefault;
 
   public
-    constructor Create(AOwner: TComponent; const AConfiguration: TConfiguration;
-      const AActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
+    constructor Create(AOwner: TComponent; const AConfiguration: TConfiguration; const AActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
 
   strict private
     function GetEnableQuitConfirmation: Boolean;
     procedure SetEnableQuitConfirmation(const AValue: Boolean);
-    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation
-      write SetEnableQuitConfirmation default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
+    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation write SetEnableQuitConfirmation default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
 
   strict private
     function GetEnableSplashAtStart: Boolean;
     procedure SetEnableSplashAtStart(const AValue: Boolean);
-    property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart
-      default CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
+    property EnableSplashAtStart: Boolean read GetEnableSplashAtStart write SetEnableSplashAtStart default CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
 
   strict private
     function GetEnableStatusbar: Boolean;
     procedure SetEnableStatusbar(const AValue: Boolean);
-    property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar
-      default CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
+    property EnableStatusbar: Boolean read GetEnableStatusbar write SetEnableStatusbar default CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
 
   strict private
     function GetEnableToolbar: Boolean;
     procedure SetEnableToolbar(const AValue: Boolean);
-    property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar
-      default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
+    property EnableToolbar: Boolean read GetEnableToolbar write SetEnableToolbar default CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
 
   strict private
     function GetEnableStoreMainFormSizesAndPosition: Boolean;
     procedure SetEnableStoreMainFormSizesAndPosition(const AValue: Boolean);
-    property EnableStoreMainFormSizesAndPosition: Boolean
-      read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition
+    property EnableStoreMainFormSizesAndPosition: Boolean read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition
       default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
 
   strict private
     function GetEnableAlwaysShowTrayIcon: Boolean;
     procedure SetEnableAlwaysShowTrayIcon(const AValue: Boolean);
-    property EnableAlwaysShowTrayIcon: Boolean read GetEnableAlwaysShowTrayIcon
-      write SetEnableAlwaysShowTrayIcon default CONFIGURATION_DEFAULT_ENABLE_ALWAYS_SHOW_TRAY_ICON;
+    property EnableAlwaysShowTrayIcon: Boolean read GetEnableAlwaysShowTrayIcon write SetEnableAlwaysShowTrayIcon default CONFIGURATION_DEFAULT_ENABLE_ALWAYS_SHOW_TRAY_ICON;
 
   strict private
     function GetEnableStartAtTray: Boolean;
     procedure SetEnableStartAtTray(const AValue: Boolean);
-    property EnableStartAtTray: Boolean read GetEnableStartAtTray write SetEnableStartAtTray
-      default CONFIGURATION_DEFAULT_ENABLE_START_AT_TRAY;
+    property EnableStartAtTray: Boolean read GetEnableStartAtTray write SetEnableStartAtTray default CONFIGURATION_DEFAULT_ENABLE_START_AT_TRAY;
 
   strict private
     function GetHost: string;
@@ -155,26 +146,22 @@ type
   strict private
     function GetTimeout: Integer;
     procedure SetTimeout(const AValue: Integer);
-    property Timeout: Integer read GetTimeout write SetTimeout
-      default CONFIGURATION_DEFAULT_TIMEOUT;
+    property Timeout: Integer read GetTimeout write SetTimeout default CONFIGURATION_DEFAULT_TIMEOUT;
 
   strict private
     function GetEnableStoreLogin: Boolean;
     procedure SetEnableStoreLogin(const AValue: Boolean);
-    property EnableStoreLogin: Boolean read GetEnableStoreLogin write SetEnableStoreLogin
-      default CONFIGURATION_DEFAULT_ENABLE_STORE_LOGIN;
+    property EnableStoreLogin: Boolean read GetEnableStoreLogin write SetEnableStoreLogin default CONFIGURATION_DEFAULT_ENABLE_STORE_LOGIN;
 
   strict private
     function GetEnableStorePassword: Boolean;
     procedure SetEnableStorePassword(const AValue: Boolean);
-    property EnableStorePassword: Boolean read GetEnableStorePassword write SetEnableStorePassword
-      default CONFIGURATION_DEFAULT_ENABLE_STORE_PASSWORD;
+    property EnableStorePassword: Boolean read GetEnableStorePassword write SetEnableStorePassword default CONFIGURATION_DEFAULT_ENABLE_STORE_PASSWORD;
 
   strict private
     function GetEnableAutoLogon: Boolean;
     procedure SetEnableAutoLogon(const AValue: Boolean);
-    property EnableAutoLogon: Boolean read GetEnableAutoLogon write SetEnableAutoLogon
-      default CONFIGURATION_DEFAULT_ENABLE_AUTO_LOGON;
+    property EnableAutoLogon: Boolean read GetEnableAutoLogon write SetEnableAutoLogon default CONFIGURATION_DEFAULT_ENABLE_AUTO_LOGON;
   end;
 
 implementation
@@ -190,8 +177,7 @@ resourcestring
 
 {$R *.dfm}
 
-constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: TConfiguration;
-  const AActivePage: Integer);
+constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: TConfiguration; const AActivePage: Integer);
 
   procedure ApplyConfiguration;
   begin
@@ -202,8 +188,7 @@ constructor TConfigurationForm.Create(AOwner: TComponent; const AConfiguration: 
       EnableSplashAtStart := Configuration.Section<TInterface>.EnableSplashAtStart;
       EnableStatusbar := Configuration.Section<TInterface>.EnableStatusbar;
       EnableToolbar := Configuration.Section<TInterface>.EnableToolbar;
-      EnableStoreMainFormSizesAndPosition :=
-        Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition;
+      EnableStoreMainFormSizesAndPosition := Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition;
       EnableAlwaysShowTrayIcon := Configuration.Section<TInterface>.EnableAlwaysShowTrayIcon;
       EnableStartAtTray := Configuration.Section<TInterface>.EnableStartAtTray;
       Host := Configuration.Section<TConnection>.Host;
@@ -231,8 +216,7 @@ begin
     EnableSplashAtStart := CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START;
     EnableStatusbar := CONFIGURATION_DEFAULT_ENABLE_STATUSBAR;
     EnableToolbar := CONFIGURATION_DEFAULT_ENABLE_TOOLBAR;
-    EnableStoreMainFormSizesAndPosition :=
-      CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
+    EnableStoreMainFormSizesAndPosition := CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
     EnableAlwaysShowTrayIcon := CONFIGURATION_DEFAULT_ENABLE_ALWAYS_SHOW_TRAY_ICON;
     EnableStartAtTray := CONFIGURATION_DEFAULT_ENABLE_START_AT_TRAY;
   end;
@@ -254,22 +238,15 @@ begin
   b := False;
   if PageControl.ActivePage = tsInterface then
   begin
-    b := not((EnableQuitConfirmation = CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION) and
-      (EnableSplashAtStart = CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START) and
-      (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and
-      (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR) and
-      (EnableStoreMainFormSizesAndPosition =
-      CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION) and
-      (EnableAlwaysShowTrayIcon = CONFIGURATION_DEFAULT_ENABLE_ALWAYS_SHOW_TRAY_ICON) and
+    b := not((EnableQuitConfirmation = CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION) and (EnableSplashAtStart = CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START) and
+      (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR) and
+      (EnableStoreMainFormSizesAndPosition = CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION) and (EnableAlwaysShowTrayIcon = CONFIGURATION_DEFAULT_ENABLE_ALWAYS_SHOW_TRAY_ICON) and
       (EnableStartAtTray = CONFIGURATION_DEFAULT_ENABLE_START_AT_TRAY));
   end;
   if PageControl.ActivePage = tsConnection then
   begin
-    b := not((Host = CONFIGURATION_DEFAULT_HOST) and (Port = CONFIGURATION_DEFAULT_PORT) and
-      (Timeout = CONFIGURATION_DEFAULT_TIMEOUT) and
-      (EnableStoreLogin = CONFIGURATION_DEFAULT_ENABLE_STORE_LOGIN) and
-      (EnableStorePassword = CONFIGURATION_DEFAULT_ENABLE_STORE_PASSWORD) and
-      (EnableAutoLogon = CONFIGURATION_DEFAULT_ENABLE_AUTO_LOGON));
+    b := not((Host = CONFIGURATION_DEFAULT_HOST) and (Port = CONFIGURATION_DEFAULT_PORT) and (Timeout = CONFIGURATION_DEFAULT_TIMEOUT) and (EnableStoreLogin = CONFIGURATION_DEFAULT_ENABLE_STORE_LOGIN)
+      and (EnableStorePassword = CONFIGURATION_DEFAULT_ENABLE_STORE_PASSWORD) and (EnableAutoLogon = CONFIGURATION_DEFAULT_ENABLE_AUTO_LOGON));
   end;
   actDefaults.Enabled := b;
 end;
@@ -284,8 +261,7 @@ begin
     Configuration.Section<TInterface>.EnableSplashAtStart := EnableSplashAtStart;
     Configuration.Section<TInterface>.EnableStatusbar := EnableStatusbar;
     Configuration.Section<TInterface>.EnableToolbar := EnableToolbar;
-    Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition :=
-      EnableStoreMainFormSizesAndPosition;
+    Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition := EnableStoreMainFormSizesAndPosition;
     Configuration.Section<TInterface>.EnableAlwaysShowTrayIcon := EnableAlwaysShowTrayIcon;
     Configuration.Section<TInterface>.EnableStartAtTray := EnableStartAtTray;
     Configuration.Section<TConnection>.Host := Host;
@@ -316,21 +292,14 @@ begin
   b := False;
   if Assigned(Configuration) then
   begin
-    b := not((Configuration.Section<TInterface>.EnableQuitConfirmation = EnableQuitConfirmation) and
-      (Configuration.Section<TInterface>.EnableSplashAtStart = EnableSplashAtStart) and
-      (Configuration.Section<TInterface>.EnableStatusbar = EnableStatusbar) and
-      (Configuration.Section<TInterface>.EnableToolbar = EnableToolbar) and
-      (Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition =
-      EnableStoreMainFormSizesAndPosition) and
-      (Configuration.Section<TInterface>.EnableAlwaysShowTrayIcon = EnableAlwaysShowTrayIcon) and
-      (Configuration.Section<TInterface>.EnableStartAtTray = EnableStartAtTray) and
+    b := not((Configuration.Section<TInterface>.EnableQuitConfirmation = EnableQuitConfirmation) and (Configuration.Section<TInterface>.EnableSplashAtStart = EnableSplashAtStart) and
+      (Configuration.Section<TInterface>.EnableStatusbar = EnableStatusbar) and (Configuration.Section<TInterface>.EnableToolbar = EnableToolbar) and
+      (Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition = EnableStoreMainFormSizesAndPosition) and
+      (Configuration.Section<TInterface>.EnableAlwaysShowTrayIcon = EnableAlwaysShowTrayIcon) and (Configuration.Section<TInterface>.EnableStartAtTray = EnableStartAtTray) and
 
-      (Configuration.Section<TConnection>.Host = Host) and
-      (Configuration.Section<TConnection>.Port = Port) and
-      (Configuration.Section<TConnection>.Timeout = Timeout) and
+      (Configuration.Section<TConnection>.Host = Host) and (Configuration.Section<TConnection>.Port = Port) and (Configuration.Section<TConnection>.Timeout = Timeout) and
 
-      (Configuration.Section<TConnection>.EnableStoreLogin = EnableStoreLogin) and
-      (Configuration.Section<TConnection>.EnableStorePassword = EnableStorePassword) and
+      (Configuration.Section<TConnection>.EnableStoreLogin = EnableStoreLogin) and (Configuration.Section<TConnection>.EnableStorePassword = EnableStorePassword) and
       (Configuration.Section<TConnection>.EnableAutoLogon = EnableAutoLogon));
   end;
   actApply.Enabled := b;
@@ -390,8 +359,7 @@ end;
 
 function TConfigurationForm.GetEnableStoreMainFormSizesAndPosition: Boolean;
 begin
-  Result := chkEnableStoreMainFormSizesAndPosition.Enabled and
-    chkEnableStoreMainFormSizesAndPosition.Checked;
+  Result := chkEnableStoreMainFormSizesAndPosition.Enabled and chkEnableStoreMainFormSizesAndPosition.Checked;
 end;
 
 function TConfigurationForm.GetEnableToolbar: Boolean;

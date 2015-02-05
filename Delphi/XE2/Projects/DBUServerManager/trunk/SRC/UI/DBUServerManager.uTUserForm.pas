@@ -23,6 +23,12 @@ uses
   Vcl.StdCtrls,
   Vcl.ExtCtrls;
 
+const
+  DEFAULT_LOGIN = '';
+  DEFAULT_FULL_NAME = '';
+  DEFAULT_ADMINISTRATOR = False;
+  DEFAULT_BLOCKED = False;
+
 type
   TUserForm = class(TForm, ICustomized)
     actApply: TAction;
@@ -38,14 +44,18 @@ type
     ImageList: TImageList;
     grpMain: TGroupBox;
     ledLogin: TLabeledEdit;
-    ledPassword: TLabeledEdit;
     ledFullName: TLabeledEdit;
     chkBlocked: TCheckBox;
     chkAdministrator: TCheckBox;
-    btnNextPage: TButton;
-    actGeneratePassword: TAction;
+    btnPassword: TButton;
+    actPassword: TAction;
     procedure actCancelExecute(Sender: TObject);
     procedure actApplyExecute(Sender: TObject);
+    procedure actPasswordExecute(Sender: TObject);
+    procedure actApplyUpdate(Sender: TObject);
+    procedure actDefaultsUpdate(Sender: TObject);
+    procedure actDefaultsExecute(Sender: TObject);
+    procedure ActionListUpdate(Action: TBasicAction; var Handled: Boolean);
 
   protected
     procedure Initialize; virtual;
@@ -62,13 +72,10 @@ type
     property Login: string read GetLogin write SetLogin nodefault;
 
   strict private
-    function GetPassword: string;
-    procedure SetPassword(const AValue: string);
-    property Password: string read GetPassword write SetPassword nodefault;
-
-  strict private
+    FPasswordHash: string;
     function GetPasswordHash: string;
-    property PasswordHash: string read GetPasswordHash nodefault;
+    procedure SetPasswordHash(const AValue: string);
+    property PasswordHash: string read GetPasswordHash write SetPasswordHash nodefault;
 
   strict private
     function GetFullName: string;
@@ -78,12 +85,12 @@ type
   strict private
     function GetBlocked: Boolean;
     procedure SetBlocked(const AValue: Boolean);
-    property Blocked: Boolean read GetBlocked write SetBlocked nodefault;
+    property Blocked: Boolean read GetBlocked write SetBlocked default DEFAULT_BLOCKED;
 
   strict private
     function GetAdministrator: Boolean;
     procedure SetAdministrator(const AValue: Boolean);
-    property Administrator: Boolean read GetAdministrator write SetAdministrator nodefault;
+    property Administrator: Boolean read GetAdministrator write SetAdministrator default DEFAULT_ADMINISTRATOR;
 
   strict private
     FUser: IUser;
@@ -97,8 +104,8 @@ function ShowUserDialog(const AOwner: TComponent; var AUser: IUser): Boolean; ov
 function ShowUserDialog(const AOwner: TComponent; const AUsers: IUsers; var AIndex: Integer): Boolean; overload;
 
 exports //
-  ShowUserDialog(const AOwner: TComponent; const AUser: IUser), //
-  ShowUserDialog(const AOwner: TComponent; const AUsers: IUsers; const AIndex: Integer); //
+  ShowUserDialog(const AOwner: TComponent; const AUser: IUser)name 'ShowUserDialogByObject', //
+  ShowUserDialog(const AOwner: TComponent; const AUsers: IUsers; const AIndex: Integer)name 'ShowUserDialogByObjectList'; //
 
 implementation
 
@@ -106,7 +113,8 @@ implementation
 
 uses
   CastersPackage.uRoutines,
-  DBUShared.uTUser;
+  DBUShared.uTUser,
+  DBUServerManager.uTPasswordForm;
 
 resourcestring
   RsAddUserCaption = 'Добавление пользователя';
@@ -132,6 +140,14 @@ begin
     try
       form.User := AUser;
       form.Initialize;
+      if Assigned(form.User) then
+      begin
+        form.ActiveControl := form.ledFullName;
+      end
+      else
+      begin
+        form.ActiveControl := form.ledLogin;
+      end;
       Result := form.ShowModal = mrOk;
       if not Result then
       begin
@@ -175,8 +191,6 @@ begin
 end;
 
 procedure TUserForm.actApplyExecute(Sender: TObject);
-var
-  i: Integer;
 begin
   if not Assigned(User) then
   begin
@@ -190,7 +204,10 @@ begin
   end;
 
   User.Login := Login;
-  User.PasswordHash := PasswordHash;
+  if PasswordHash <> DEFAULT_PASSWORD then // если пароль был изменён, значит записываем его хэш
+  begin
+    User.PasswordHash := PasswordHash;
+  end;
   User.FullName := FullName;
   User.Blocked := Blocked;
   User.Administrator := Administrator;
@@ -200,11 +217,11 @@ end;
 
 procedure TUserForm.Initialize;
 begin
-  Password := EmptyStr;
   if Assigned(User) then
   begin
     Caption := RsEditUserCaption;
     Login := User.Login;
+    PasswordHash := User.PasswordHash;
     FullName := User.FullName;
     Blocked := User.Blocked;
     Administrator := User.Administrator;
@@ -212,10 +229,11 @@ begin
   else
   begin
     Caption := RsAddUserCaption;
-    Login := EmptyStr;
-    FullName := EmptyStr;
-    Blocked := False;
-    Administrator := False;
+    Login := DEFAULT_LOGIN;
+    PasswordHash := EmptyStr;
+    FullName := DEFAULT_FULL_NAME;
+    Blocked := DEFAULT_BLOCKED;
+    Administrator := DEFAULT_ADMINISTRATOR;
   end;
 end;
 
@@ -225,9 +243,92 @@ begin
   Initialize;
 end;
 
+procedure TUserForm.actApplyUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  try
+    if Login = EmptyStr then
+    begin
+      Exit;
+    end;
+
+    if not Assigned(User) then
+    begin
+      if PasswordHash = EmptyStr then
+      begin
+        Exit;
+      end;
+    end;
+
+    b := True;
+  finally
+    (Sender as TAction).Enabled := b;
+  end;
+end;
+
 procedure TUserForm.actCancelExecute(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TUserForm.actDefaultsExecute(Sender: TObject);
+begin
+  Initialize;
+end;
+
+procedure TUserForm.actDefaultsUpdate(Sender: TObject);
+var
+  b: Boolean;
+begin
+  b := False;
+  try
+    if not Assigned(User) then
+    begin
+      if Login <> DEFAULT_LOGIN then
+      begin
+        b := True;
+      end;
+      if FullName <> DEFAULT_FULL_NAME then
+      begin
+        b := True;
+      end;
+      if Administrator <> DEFAULT_ADMINISTRATOR then
+      begin
+        b := True;
+      end;
+      if Blocked <> DEFAULT_BLOCKED then
+      begin
+        b := True;
+      end;
+      if PasswordHash <> EmptyStr then
+      begin
+        b := True;
+      end;
+    end;
+  finally
+    (Sender as TAction).Enabled := b;
+  end;
+end;
+
+procedure TUserForm.ActionListUpdate(Action: TBasicAction;
+  var Handled: Boolean);
+begin
+  ledLogin.Enabled := not Assigned(User);
+end;
+
+procedure TUserForm.actPasswordExecute(Sender: TObject);
+var
+  pwdh: string;
+begin
+  pwdh := EmptyStr;
+  if not ShowPasswordForm(Self, pwdh) then
+  begin
+    Exit;
+  end;
+  PasswordHash := pwdh;
+//  ShowMessage('Пароль успешно изменён');
 end;
 
 procedure TUserForm.Finalize;
@@ -260,14 +361,9 @@ begin
   Result := Trim(ledLogin.Text);
 end;
 
-function TUserForm.GetPassword: string;
-begin
-  Result := Trim(ledPassword.Text);
-end;
-
 function TUserForm.GetPasswordHash: string;
 begin
-  Result := Routines.Hash(Password);
+  Result := FPasswordHash;
 end;
 
 function TUserForm.GetUser: IUser;
@@ -313,14 +409,14 @@ begin
   end;
 end;
 
-procedure TUserForm.SetPassword(const AValue: string);
+procedure TUserForm.SetPasswordHash(const AValue: string);
 var
   s: string;
 begin
   s := Trim(AValue);
-  if ledPassword.Text <> s then
+  if FPasswordHash <> s then
   begin
-    ledPassword.Text := s;
+    FPasswordHash := s;
   end;
 end;
 

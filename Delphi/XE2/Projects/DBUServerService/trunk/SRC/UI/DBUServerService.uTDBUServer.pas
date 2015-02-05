@@ -47,6 +47,7 @@ type
     procedure LoginCommand(ASender: TIdCommand);
     procedure GetUserListCommand(ASender: TIdCommand);
     procedure AddUserCommand(ASender: TIdCommand);
+    procedure EditUserCommand(ASender: TIdCommand);
     procedure DeleteUserCommand(ASender: TIdCommand);
   public
     function GetServiceController: TServiceController; override;
@@ -119,8 +120,7 @@ begin
   ASender.Context.Connection.IOHandler.Write(Configuration.SQLActions.Count);
   for i := 0 to Pred(Configuration.SQLActions.Count) do
   begin
-    ASender.Context.Connection.IOHandler.WriteLn(Format('%s:%s', [Configuration.SQLActions[i].Name,
-      Configuration.SQLActions[i].Abbreviation]), IndyTextEncoding_OSDefault);
+    ASender.Context.Connection.IOHandler.WriteLn(Format('%s:%s', [Configuration.SQLActions[i].Name, Configuration.SQLActions[i].Abbreviation]), IndyTextEncoding_OSDefault);
   end;
   LogMessage('Stop GetSqlActionItemsCommand', EVENTLOG_INFORMATION_TYPE);
 end;
@@ -143,8 +143,7 @@ begin
   ASender.Context.Connection.IOHandler.Write(Configuration.SQLSubjects.Count);
   for i := 0 to Pred(Configuration.SQLSubjects.Count) do
   begin
-    ASender.Context.Connection.IOHandler.WriteLn(Format('%s:%s', [Configuration.SQLSubjects[i].Name,
-      Configuration.SQLSubjects[i].Abbreviation]), IndyTextEncoding_OSDefault);
+    ASender.Context.Connection.IOHandler.WriteLn(Format('%s:%s', [Configuration.SQLSubjects[i].Name, Configuration.SQLSubjects[i].Abbreviation]), IndyTextEncoding_OSDefault);
   end;
   LogMessage('Stop GetSqlSubjItemsCommand', EVENTLOG_INFORMATION_TYPE);
 end;
@@ -167,8 +166,7 @@ begin
   ASender.Context.Connection.IOHandler.Write(Configuration.DatabaseTypes.Count);
   for i := 0 to Pred(Configuration.DatabaseTypes.Count) do
   begin
-    ASender.Context.Connection.IOHandler.WriteLn(Configuration.DatabaseTypes[i].Name,
-      IndyTextEncoding_OSDefault);
+    ASender.Context.Connection.IOHandler.WriteLn(Configuration.DatabaseTypes[i].Name, IndyTextEncoding_OSDefault);
     ASender.Context.Connection.IOHandler.Write(Configuration.DatabaseTypes[i].Id);
   end;
   LogMessage('Stop GetDbuDatabaseTypeItemsCommand', EVENTLOG_INFORMATION_TYPE);
@@ -198,8 +196,7 @@ begin
   try
     for i := 0 to Pred(Configuration.DBUStates.Count) do
     begin
-      s := Format('%d=%s:%d', [Configuration.DBUStates[i].Id, Configuration.DBUStates[i].Name,
-        Configuration.DBUStates[i].Flags]);
+      s := Format('%d=%s:%d', [Configuration.DBUStates[i].Id, Configuration.DBUStates[i].Name, Configuration.DBUStates[i].Flags]);
       sl.Append(s);
     end;
     ASender.Context.Connection.IOHandler.Write(sl, True, IndyTextEncoding_OSDefault);
@@ -270,16 +267,14 @@ end;
 
 procedure TDBUServer.IdCmdTCPServerConnect(AContext: TIdContext);
 begin
-  LogMessage(Format('Клиент "%s" подключен к серверу "%s:%d"',
-    [AContext.Connection.Socket.Binding.PeerIP, IdCmdTCPServer.Bindings[0].IP,
-    IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE, 0, 1);
+  LogMessage(Format('Клиент "%s" подключен к серверу "%s:%d"', [AContext.Connection.Socket.Binding.PeerIP, IdCmdTCPServer.Bindings[0].IP, IdCmdTCPServer.Bindings[0].Port]),
+    EVENTLOG_INFORMATION_TYPE, 0, 1);
 end;
 
 procedure TDBUServer.IdCmdTCPServerDisconnect(AContext: TIdContext);
 begin
-  LogMessage(Format('Клиент "%s" отключен от сервера "%s:%d"',
-    [AContext.Connection.Socket.Binding.PeerIP, IdCmdTCPServer.Bindings[0].IP,
-    IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE, 0, 2);
+  LogMessage(Format('Клиент "%s" отключен от сервера "%s:%d"', [AContext.Connection.Socket.Binding.PeerIP, IdCmdTCPServer.Bindings[0].IP, IdCmdTCPServer.Bindings[0].Port]),
+    EVENTLOG_INFORMATION_TYPE, 0, 2);
 end;
 
 function TDBUServer.GetServiceController: TServiceController;
@@ -329,13 +324,10 @@ begin
   sckt := IdCmdTCPServer.Bindings.Add;
   if Assigned(sckt) then
   begin
-    sckt.IP := IfThen(Configuration.Section<TConnection>.Host = CONFIGURATION_DEFAULT_HOST,
-      Routines.GetLocalIP, Configuration.Section<TConnection>.Host);
-    sckt.Port := IfThen(Configuration.Section<TConnection>.Port = CONFIGURATION_DEFAULT_PORT,
-      CONFIGURATION_DEFAULT_PORT, Configuration.Section<TConnection>.Port);
+    sckt.IP := IfThen(Configuration.Section<TConnection>.Host = CONFIGURATION_DEFAULT_HOST, Routines.GetLocalIP, Configuration.Section<TConnection>.Host);
+    sckt.Port := IfThen(Configuration.Section<TConnection>.Port = CONFIGURATION_DEFAULT_PORT, CONFIGURATION_DEFAULT_PORT, Configuration.Section<TConnection>.Port);
     IdCmdTCPServer.Active := True;
-    LogMessage(Format('Сервер DBU запущен на "%s:%d"', [sckt.IP, sckt.Port]),
-      EVENTLOG_INFORMATION_TYPE);
+    LogMessage(Format('Сервер DBU запущен на "%s:%d"', [sckt.IP, sckt.Port]), EVENTLOG_INFORMATION_TYPE);
   end;
 end;
 
@@ -343,8 +335,7 @@ procedure TDBUServer.ServiceStop(Sender: TService; var Stopped: Boolean);
 begin
   IdCmdTCPServer.Active := False;
   { TODO : добавить сохранение лога в файл }
-  LogMessage(Format('Сервер DBU остановлен на "%s:%d"', [IdCmdTCPServer.Bindings[0].IP,
-    IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE);
+  LogMessage(Format('Сервер DBU остановлен на "%s:%d"', [IdCmdTCPServer.Bindings[0].IP, IdCmdTCPServer.Bindings[0].Port]), EVENTLOG_INFORMATION_TYPE);
 end;
 
 function TDBUServer.GetLog: IDBUServerLogRecords;
@@ -400,8 +391,7 @@ begin
   if Assigned(a) then
   begin
     Log.Add(a);
-    LogMessage('Выделены новые номера для DBU.' + sLineBreak + a.ToString,
-      EVENTLOG_INFORMATION_TYPE);
+    LogMessage('Выделены новые номера для DBU.' + sLineBreak + a.ToString, EVENTLOG_INFORMATION_TYPE);
   end;
   LogMessage('Stop GetReserveNewDBUpdateNumbersCommand', EVENTLOG_INFORMATION_TYPE);
 end;
@@ -513,11 +503,8 @@ begin
   ASender.Context.Connection.IOHandler.Write(Configuration.Users.Count);
   for i := 0 to Pred(Configuration.Users.Count) do
   begin
-    ASender.Context.Connection.IOHandler.WriteLn(Format('%s%s%s%s%s%s%d%s%d',
-      [Configuration.Users[i].Login, DEFAULT_USER_LIST_SEPARATOR,
-      Configuration.Users[i].PasswordHash, DEFAULT_USER_LIST_SEPARATOR,
-      Configuration.Users[i].FullName, DEFAULT_USER_LIST_SEPARATOR,
-      Integer(Configuration.Users[i].Blocked), DEFAULT_USER_LIST_SEPARATOR,
+    ASender.Context.Connection.IOHandler.WriteLn(Format('%s%s%s%s%s%s%d%s%d', [Configuration.Users[i].Login, DEFAULT_USER_LIST_SEPARATOR, Configuration.Users[i].PasswordHash,
+      DEFAULT_USER_LIST_SEPARATOR, Configuration.Users[i].FullName, DEFAULT_USER_LIST_SEPARATOR, Integer(Configuration.Users[i].Blocked), DEFAULT_USER_LIST_SEPARATOR,
       Integer(Configuration.Users[i].Administrator)]), IndyTextEncoding_OSDefault);
   end;
   LogMessage('Stop GetUserListCommand', EVENTLOG_INFORMATION_TYPE);
@@ -544,14 +531,12 @@ begin
     begin
       if Assigned(Configuration.Users[i]) then
       begin
-        if (Login = Configuration.Users[i].Login) and (pass = Configuration.Users[i].PasswordHash)
-        then
+        if (Login = Configuration.Users[i].Login) and (pass = Configuration.Users[i].PasswordHash) then
         begin
           if Configuration.Users[i].Blocked then
           begin
             t := 2;
-            LogMessage(Format('Logon failed cause user "%s" is blocked', [Login]),
-              EVENTLOG_INFORMATION_TYPE);
+            LogMessage(Format('Logon failed cause user "%s" is blocked', [Login]), EVENTLOG_INFORMATION_TYPE);
           end
           else
           begin
@@ -652,6 +637,70 @@ begin
   LogMessage('Stop AddUserCommand', EVENTLOG_INFORMATION_TYPE);
 end;
 
+procedure TDBUServer.EditUserCommand(ASender: TIdCommand);
+var
+  user_login: string;
+  user_password_hash: string;
+  user_full_name: string;
+  user_blocked: Byte;
+  user_admin: Byte;
+  u: IUser;
+  t: Byte;
+  s: string;
+begin
+  LogMessage('Start EditUserCommand', EVENTLOG_INFORMATION_TYPE);
+  t := ERROR_UNKNOWN;
+  s := EmptyStr;
+  try
+    try
+      user_login := ASender.Context.Connection.IOHandler.ReadLn;
+      user_password_hash := ASender.Context.Connection.IOHandler.ReadLn;
+      user_full_name := ASender.Context.Connection.IOHandler.ReadLn;
+      user_blocked := ASender.Context.Connection.IOHandler.ReadByte;
+      user_admin := ASender.Context.Connection.IOHandler.ReadByte;
+
+      if not Assigned(Configuration) then
+      begin
+        t := ERROR_CONFIGURATION_OBJECT_NOT_EXISTS;
+        s := 'Объект конфигурации не существует';
+        Exit;
+      end;
+
+      if not Assigned(Configuration.Users) then
+      begin
+        t := ERROR_USERS_OBJECT_NOT_EXISTS;
+        s := 'Объект списка пользователей не существует';
+        Exit;
+      end;
+
+      u := Configuration.Users.GetUserByLogin(user_login);
+      if not Assigned(u) then
+      begin
+        t := ERROR_USER_NOT_EXISTS;
+        s := Format('Пользователь с логином "%s" не существует.', [user_login]);
+        Exit;
+      end;
+
+      u.PasswordHash := user_password_hash;
+      u.FullName := user_full_name;
+      u.Blocked := user_blocked = 1;
+      u.Administrator := user_admin = 1;
+
+      t := SUCCESS_EDIT_USER;
+      s := Format('Данные пользователя с логином "%s" успешно исправлены', [u.Login]);
+    except
+      on E: Exception do
+      begin
+        s := E.Message;
+      end;
+    end;
+  finally
+    ASender.Context.Connection.IOHandler.Write(t);
+    ASender.Context.Connection.IOHandler.WriteLn(s, IndyTextEncoding_OSDefault);
+  end;
+  LogMessage('Stop EditUserCommand', EVENTLOG_INFORMATION_TYPE);
+end;
+
 procedure TDBUServer.DeleteUserCommand(ASender: TIdCommand);
 var
   user_login: string;
@@ -726,15 +775,13 @@ begin
   ch := IdCmdTCPServer.CommandHandlers.Add;
   if not Assigned(ch) then
   begin
-    LogMessage(Format('DBU Server: Error creating TCP command "%s"', [ACommand]),
-      EVENTLOG_ERROR_TYPE);
+    LogMessage(Format('DBU Server: Error creating TCP command "%s"', [ACommand]), EVENTLOG_ERROR_TYPE);
     Exit;
   end;
 
   ch.Command := Trim(ACommand);
   ch.OnCommand := ACommandEvent;
-  LogMessage(Format('DBU Server: Succesfull creating TCP command "%s"', [ACommand]),
-    EVENTLOG_INFORMATION_TYPE);
+  LogMessage(Format('DBU Server: Succesfull creating TCP command "%s"', [ACommand]), EVENTLOG_INFORMATION_TYPE);
 end;
 
 procedure TDBUServer.CreateTCPCommands;
@@ -751,6 +798,7 @@ begin
   CreateTCPCommand(TCP_COMMAND_LOGIN, LoginCommand);
   CreateTCPCommand(TCP_COMMAND_GET_USER_LIST, GetUserListCommand);
   CreateTCPCommand(TCP_COMMAND_ADD_USER, AddUserCommand);
+  CreateTCPCommand(TCP_COMMAND_EDIT_USER, EditUserCommand);
   CreateTCPCommand(TCP_COMMAND_DELETE_USER, DeleteUserCommand);
 end;
 

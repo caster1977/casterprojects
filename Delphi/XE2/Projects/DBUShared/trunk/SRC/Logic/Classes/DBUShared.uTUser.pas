@@ -59,8 +59,7 @@ type
   end;
 
 function GetIUser: IUser; overload;
-function GetIUser(const ALogin, APasswordHash, AFullName: string;
-  const ABlocked, AAdministrator: Boolean): IUser; overload;
+function GetIUser(const ALogin, APasswordHash, AFullName: string; const ABlocked, AAdministrator: Boolean): IUser; overload;
 
 implementation
 
@@ -78,8 +77,7 @@ begin
   Result := TUser.Create;
 end;
 
-function GetIUser(const ALogin, APasswordHash, AFullName: string;
-  const ABlocked, AAdministrator: Boolean): IUser;
+function GetIUser(const ALogin, APasswordHash, AFullName: string; const ABlocked, AAdministrator: Boolean): IUser;
 begin
   Result := GetIUser;
 
@@ -233,8 +231,7 @@ end;
 
 function TUser.ToString: string;
 begin
-  Result := IfThen(inherited > EmptyStr, inherited + sLineBreak) +
-    Format('=> Login: %s, PasswordHash: %s, FullName: %s, Blocked: %s, Administrator: %s',
+  Result := IfThen(inherited > EmptyStr, inherited + sLineBreak) + Format('=> Login: %s, PasswordHash: %s, FullName: %s, Blocked: %s, Administrator: %s',
     [Login, PasswordHash, FullName, BoolToStr(Blocked, True), BoolToStr(Administrator, True)]);
 end;
 

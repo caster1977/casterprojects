@@ -2,7 +2,7 @@ program DBUServerService;
 
 uses
   Vcl.SvcMgr,
-  DBUServerService.uTDBUServer in 'UI\DBUServerService.uTDBUServer.pas' {DBUServer: TService},
+  DBUServerService.uTDBUServer in 'UI\DBUServerService.uTDBUServer.pas' {DBUServer: TService} ,
   DBUServerService.uDBUServerUtils in 'Logic\Other\DBUServerService.uDBUServerUtils.pas',
   DBUServerService.Configuration.uTConnection in 'Logic\Classes\DBUServerService.Configuration.uTConnection.pas',
   DBUServerService.uConsts in 'Logic\Other\DBUServerService.uConsts.pas',
@@ -31,4 +31,5 @@ begin
   end;
   Application.CreateForm(TDBUServer, DBUServer);
   Application.Run;
+
 end.

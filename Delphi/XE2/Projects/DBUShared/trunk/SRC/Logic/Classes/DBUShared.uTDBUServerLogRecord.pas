@@ -59,8 +59,7 @@ type
   end;
 
 function GetIDBUServerLogRecord: IDBUServerLogRecord; overload;
-function GetIDBUServerLogRecord(const ADatabaseType: string; const AFirstNumber, AQuantity: Integer;
-  const ACreator: string; const ADateTime: TDateTime = 0): IDBUServerLogRecord; overload;
+function GetIDBUServerLogRecord(const ADatabaseType: string; const AFirstNumber, AQuantity: Integer; const ACreator: string; const ADateTime: TDateTime = 0): IDBUServerLogRecord; overload;
 
 implementation
 
@@ -74,8 +73,7 @@ begin
   Result := TDBUServerLogRecord.Create;
 end;
 
-function GetIDBUServerLogRecord(const ADatabaseType: string; const AFirstNumber, AQuantity: Integer;
-  const ACreator: string; const ADateTime: TDateTime): IDBUServerLogRecord; overload;
+function GetIDBUServerLogRecord(const ADatabaseType: string; const AFirstNumber, AQuantity: Integer; const ACreator: string; const ADateTime: TDateTime): IDBUServerLogRecord; overload;
 begin
   Result := GetIDBUServerLogRecord;
   if not Assigned(Result) then
@@ -233,10 +231,8 @@ end;
 
 function TDBUServerLogRecord.ToString: string;
 begin
-  Result := IfThen(inherited > EmptyStr, inherited + sLineBreak) +
-    Format('=> DateTime: %s, DatabaseType: %s, Creator: %s, FirstNumber: %d, Quantity: %d',
-    [FormatDateTime('yyyy.mm.dd HH.mm.ss', DateTime), DatabaseType, Creator, FirstNumber,
-    Quantity]);
+  Result := IfThen(inherited > EmptyStr, inherited + sLineBreak) + Format('=> DateTime: %s, DatabaseType: %s, Creator: %s, FirstNumber: %d, Quantity: %d',
+    [FormatDateTime('yyyy.mm.dd HH.mm.ss', DateTime), DatabaseType, Creator, FirstNumber, Quantity]);
 end;
 
 end.
