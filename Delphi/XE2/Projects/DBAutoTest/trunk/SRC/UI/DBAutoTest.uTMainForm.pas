@@ -846,7 +846,7 @@ var
 begin
   if Assigned(ATask) then
   begin
-    for i := 0 to lvTaskList.Items.Count - 1 do
+    for i := 0 to Pred(lvTaskList.Items.Count) do
     begin
       if lvTaskList.Items[i].Data = Pointer(ATask) then
       begin
