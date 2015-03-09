@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab3", "Lab3\Lab3.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programming Assignment 1", "Programming Assignment 1\Programming Assignment 1.csproj", "{E45F76F6-DF3F-4F0F-917F-96283DEFFD4E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programming Assignment 2", "Programming Assignment 2\Programming Assignment 2\Programming Assignment 2.csproj", "{6DC09F78-0A83-40DA-A536-5BACF022EC0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programming Assignment 2Content", "Programming Assignment 2\Programming Assignment 2Content\Programming Assignment 2Content.contentproj", "{D41E2778-A561-4183-94AB-12282150B0AC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -31,6 +35,12 @@ Global
 		{E45F76F6-DF3F-4F0F-917F-96283DEFFD4E}.Debug|x86.Build.0 = Debug|x86
 		{E45F76F6-DF3F-4F0F-917F-96283DEFFD4E}.Release|x86.ActiveCfg = Release|x86
 		{E45F76F6-DF3F-4F0F-917F-96283DEFFD4E}.Release|x86.Build.0 = Release|x86
+		{6DC09F78-0A83-40DA-A536-5BACF022EC0D}.Debug|x86.ActiveCfg = Debug|x86
+		{6DC09F78-0A83-40DA-A536-5BACF022EC0D}.Debug|x86.Build.0 = Debug|x86
+		{6DC09F78-0A83-40DA-A536-5BACF022EC0D}.Release|x86.ActiveCfg = Release|x86
+		{6DC09F78-0A83-40DA-A536-5BACF022EC0D}.Release|x86.Build.0 = Release|x86
+		{D41E2778-A561-4183-94AB-12282150B0AC}.Debug|x86.ActiveCfg = Debug|x86
+		{D41E2778-A561-4183-94AB-12282150B0AC}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
