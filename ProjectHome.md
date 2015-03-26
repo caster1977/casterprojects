@@ -1,0 +1,1 @@
+Just a svn copy of working Delphi, PHP, Java and Python projects
