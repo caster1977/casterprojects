@@ -26,6 +26,7 @@ package DBUShared;
 {$DEFINE DEBUG}
 {$DEFINE Platform32bit}
 {$ENDIF IMPLICITBUILDING}
+{$RUNONLY}
 {$IMPLICITBUILD ON}
 
 requires

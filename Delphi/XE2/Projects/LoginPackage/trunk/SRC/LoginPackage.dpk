@@ -26,6 +26,7 @@ package LoginPackage;
 {$DEFINE DEBUG}
 {$DEFINE Platform32bit}
 {$ENDIF IMPLICITBUILDING}
+{$DESIGNONLY}
 {$IMPLICITBUILD ON}
 
 requires

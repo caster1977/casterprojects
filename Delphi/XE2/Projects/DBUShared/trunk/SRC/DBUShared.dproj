@@ -40,6 +40,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
+        <RuntimeOnlyPackage>true</RuntimeOnlyPackage>
         <SanitizedProjectName>DBUShared</SanitizedProjectName>
         <DCC_DcuOutput>..\$(Platform)\$(Config)\$(ProductVersion)\DCU</DCC_DcuOutput>
         <DCC_UnitSearchPath>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion);..\..\AboutPackage\SRC\UI;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
@@ -179,24 +180,27 @@
                     <VersionInfoKeys Name="CFBundleInfoDictionaryVersion"/>
                     <VersionInfoKeys Name="CFBundleDevelopmentRegion"/>
                 </VersionInfoKeys>
-                <Excluded_Packages/>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k200.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp200.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Platforms>
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">False</Platform>
             </Platforms>
             <Deployment>
-                <DeployFile LocalName="..\..\Packages\Win32\Debug\15.0\DBUShared.bpl" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>DBUShared.bpl</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib" Class="DependencyModule">
                     <Platform Name="OSX32">
                         <Overwrite>true</Overwrite>
                     </Platform>
                     <Platform Name="iOSSimulator">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\Packages\Win32\Debug\15.0\DBUShared.bpl" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>DBUShared.bpl</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -358,6 +362,7 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceInfoPList"/>
                 <DeployClass Name="ProjectiOSInfoPList"/>
                 <DeployClass Name="iPad_Launch1024">
                     <Platform Name="iOSDevice">
@@ -367,6 +372,7 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
+                <DeployClass Name="ProjectiOSSimulatorInfoPList"/>
                 <DeployClass Name="Android_DefaultAppIcon">
                     <Platform Name="Android">
                         <RemoteDir>res\drawable</RemoteDir>

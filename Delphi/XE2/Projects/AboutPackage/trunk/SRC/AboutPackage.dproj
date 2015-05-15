@@ -46,6 +46,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
+        <DesignOnlyPackage>true</DesignOnlyPackage>
         <SanitizedProjectName>AboutPackage</SanitizedProjectName>
         <DCC_UnitSearchPath>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <GenPackage>true</GenPackage>
@@ -169,7 +170,10 @@
                 <Source>
                     <Source Name="MainSource">AboutPackage.dpk</Source>
                 </Source>
-                <Excluded_Packages/>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k200.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp200.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment/>
             <Platforms>

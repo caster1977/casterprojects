@@ -40,6 +40,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
+        <DesignOnlyPackage>true</DesignOnlyPackage>
         <SanitizedProjectName>LoginPackage</SanitizedProjectName>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <DCC_UnitSearchPath>..\..\Packages\$(Platform)\$(Config)\$(ProductVersion);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
@@ -159,6 +160,10 @@
                     <VersionInfoKeys Name="CFBundleInfoDictionaryVersion"/>
                     <VersionInfoKeys Name="CFBundleDevelopmentRegion"/>
                 </VersionInfoKeys>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k200.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp200.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment>
                 <DeployFile LocalName="..\..\Packages\Win32\Debug\15.0\LoginPackage.bpl" Configuration="Debug" Class="ProjectOutput">
@@ -325,6 +330,7 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceInfoPList"/>
                 <DeployClass Name="ProjectiOSInfoPList"/>
                 <DeployClass Name="iPad_Launch1024">
                     <Platform Name="iOSDevice">
@@ -334,6 +340,7 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
+                <DeployClass Name="ProjectiOSSimulatorInfoPList"/>
                 <DeployClass Name="Android_DefaultAppIcon">
                     <Platform Name="Android">
                         <RemoteDir>res\drawable</RemoteDir>
