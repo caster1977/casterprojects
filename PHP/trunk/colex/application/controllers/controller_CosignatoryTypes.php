@@ -11,6 +11,6 @@ class Controller_CosignatoryTypes extends Controller
 	function action_index()
 	{
 		$data = $this->model->get_data();		
-		$this->view->generate('CosignatoryTypes_view.php', 'template_view.php', $data);
+		$this->view->generate('view_CosignatoryTypes.php', 'view_template.php', $data);
 	}
 }

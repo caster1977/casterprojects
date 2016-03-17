@@ -90,7 +90,7 @@ a {
 
 #content {
 	padding: 0 0 0 10px;
-	width: 615px;
+	width: 865px;
 	margin: 0 0 0 285px;
 }
 
@@ -105,35 +105,10 @@ a {
 	color: #353535;
 }
 
-#header {
-	height: 155px;
-	padding: 25px;
-	position: relative;
-	/*background: url(http://colex.com/images/logo.jpg) no-repeat 20px 30px;*/
-}
-
-#logo {
-	position: absolute;
-	top: 40px;
-	left: 20px;
-	height: 155px;
-	line-height: 155px;
-	
-}
-
-#logo a {
-	color: #ffffff;
-	text-shadow: black 0px 0px 7px;
-	text-decoration: none;
-	font-family: "Open Sans", sans-serif;
-	font-size: 35px;
-}
-
-
-#logo img {
+/*#logo img {
 	margin-left: 0px;
 	vertical-align: middle;
-}
+}*/
 
 #menu {
 	line-height: 57px;
@@ -203,7 +178,7 @@ a {
 	color: #353535;
 	background: #f3f3f3;
 	position: relative;
-	width: 898px;
+	width: 1120px;
 	border-top: solid 1px #e3e3e3;
 	box-shadow: inset 0px 0px 0px 1px #fff;
 	text-shadow: 1px 1px 0px rgba(255,255,255,0.9);
@@ -255,14 +230,47 @@ a {
 	box-shadow: inset 0px 0px 0px 1px #fff;
 }
 
+#logo {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	height: 145px;
+  width: 1148px;
+	line-height: 145px;
+	background: #f3f3f3;
+	border: solid 1px #e3e3e3;
+	box-shadow: inset 0px 0px 0px 1px #fff;
+}
+
+#logo a {
+	color: #ffffff;
+  margin-left: 20px;
+	text-shadow: black 0px 0px 7px;
+	text-decoration: none;
+	font-family: "Open Sans", sans-serif;
+	font-size: 50px;
+}
+
+#header {
+  width: 1150px;
+	position: relative;
+	height: 140px;
+	padding: 25px;
+	/*background: url(http://colex.com/images/logo.jpg) no-repeat 20px 30px;*/
+}
+
 #wrapper {
-	width: 978px;
+	width: 1200px; /*978px;*/
 	position: relative;
 	background: #FFF;
 	margin: 0 auto 0 auto;
 	box-shadow: 10px 100px 150px 0px rgba(0,0,0,0.15);
 	border: solid 1px #f3f3f3;
 	border-top: 0;
+}
+
+.box {
+  width: 835px;
 }
 
 .box img {
@@ -283,16 +291,29 @@ a {
 	border-collapse:collapse;
 }
 
+.box table {
+  table-layout: fixed;
+  width: 835px;
+}
+
 .box table, th, td {
 	border: 1px solid #e3e3e3;
 	padding: 5px;
 }
 
-#references h3 {
-  cursor: pointer;
+#news th {
+ 	text-align: left;
 }
 
-#references h3:hover {
+#references h3:hover, #reports h3:hover {
   cursor: pointer;
+  text-decoration: underline;
+}
+
+.side-box a {
+  text-decoration: none;
+}
+
+.side-box a:hover {
   text-decoration: underline;
 }

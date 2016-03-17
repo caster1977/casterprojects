@@ -11,6 +11,6 @@ class Controller_AccessGroups extends Controller
 	function action_index()
 	{
 		$data = $this->model->get_data();		
-		$this->view->generate('AccessGroups_view.php', 'template_view.php', $data);
+		$this->view->generate('view_AccessGroups.php', 'view_template.php', $data);
 	}
 }
