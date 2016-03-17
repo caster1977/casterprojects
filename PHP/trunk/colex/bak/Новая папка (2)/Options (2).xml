@@ -1,0 +1,6 @@
+<Options>
+  <Connection>
+    <Server>CASTER-HOME\SQLEXPRESS</Server>
+    <DataBase>DBRevision</DataBase>
+  </Connection>
+</Options>
