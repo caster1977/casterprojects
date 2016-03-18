@@ -11,7 +11,7 @@
   
 abstract class Model
 {
-  const ServerName = 'CASTER-HOME\SQLEXPRESS';
+  const ServerName = '.'; //'CASTER-HOME\SQLEXPRESS';
   const ConnectionOptions = array("Database"=>"Colex", "LoginTimeout"=>60, "UID"=>"caster1977", "PWD"=>"=OKY<osc1977", "CharacterSet" => "UTF-8");
 
   protected $Connection;
