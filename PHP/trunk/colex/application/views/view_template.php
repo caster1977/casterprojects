@@ -35,13 +35,6 @@
       <div id="logo">
         <a href="/">Colex</a>
       </div>
-      <!--div id="menu">
-        <ul>
-          <li class="first active"><a href="/">Справочники</a></li>
-          <li class="last"><a href="/contacts">Контакты</a></li>
-        </ul>
-      </div-->
-      <!--br class="clearfix" /-->
     </div>    
     <div id="page">
       <div id="sidebar">
@@ -95,7 +88,6 @@
         </div>
         <br class="clearfix" />
       </div>
-      <!--br class="clearfix" /-->
       <div id="page-bottom">
         <div id="page-bottom-sidebar">
           <h3>Наши контакты</h3>

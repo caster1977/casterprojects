@@ -7,6 +7,13 @@
 */
 class Route
 {
+	function ErrorPage404()
+	{
+    $host = 'http://'.$_SERVER['HTTP_HOST'].'/';
+    header('HTTP/1.1 404 Not Found');
+		header("Status: 404 Not Found");
+		header('Location:'.$host.'404');
+  }
 
 	static function start()
 	{
@@ -15,15 +22,15 @@ class Route
 		$action_name = 'index';
 		
 		$routes = explode('/', $_SERVER['REQUEST_URI']);
-
+    
 		// получаем имя контроллера
-		if ( !empty($routes[1]) )
+		if (!empty($routes[1]))
 		{	
 			$controller_name = $routes[1];
 		}
 		
 		// получаем имя экшена
-		if ( !empty($routes[2]) )
+		if (!empty($routes[2]))
 		{
 			$action_name = $routes[2];
 		}
@@ -33,14 +40,11 @@ class Route
 		$controller_name = 'Controller_'.$controller_name;
 		$action_name = 'action_'.$action_name;
 
-		/*
-		echo "Model: $model_name <br>";
+		/*echo "Model: $model_name <br>";
 		echo "Controller: $controller_name <br>";
-		echo "Action: $action_name <br>";
-		*/
+		echo "Action: $action_name <br>";*/
 
 		// подцепляем файл с классом модели (файла модели может и не быть)
-
 		$model_file = strtolower($model_name).'.php';
 		$model_path = "application/models/".$model_file;
 		if(file_exists($model_path))
@@ -61,6 +65,7 @@ class Route
 			правильно было бы кинуть здесь исключение,
 			но для упрощения сразу сделаем редирект на страницу 404
 			*/
+      //echo "if(file_exists($controller_path))";
 			Route::ErrorPage404();
 		}
 		
@@ -75,18 +80,9 @@ class Route
 		}
 		else
 		{
+      //echo "if(method_exists($controller, $action))";
 			// здесь также разумнее было бы кинуть исключение
 			Route::ErrorPage404();
 		}
-	
 	}
-
-	function ErrorPage404()
-	{
-        $host = 'http://'.$_SERVER['HTTP_HOST'].'/';
-        header('HTTP/1.1 404 Not Found');
-		header("Status: 404 Not Found");
-		header('Location:'.$host.'404');
-    }
-    
 }

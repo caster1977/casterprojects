@@ -11,12 +11,22 @@
   
 abstract class Model
 {
-  const ServerName = '.'; //'CASTER-HOME\SQLEXPRESS';
-  const ConnectionOptions = array("Database"=>"Colex", "LoginTimeout"=>60, "UID"=>"caster1977", "PWD"=>"=OKY<osc1977", "CharacterSet" => "UTF-8");
+  const ServerName = '.';
+  const ConnectionOptions = array(
+    "Database" => "Colex",
+    "LoginTimeout" => 60,
+    //"UID" => "colex",
+    //"PWD" => "1/2_5a",
+    "CharacterSet" => "UTF-8",
+    "MultipleActiveResultSets" => 1
+    );
 
   protected $Connection;
 
-	abstract public function get_data();
+	abstract public function sel_data($data = null);
+  abstract public function add_data($data = null);
+  abstract public function edit_data($data = null);
+  abstract public function delete_data($data = null);
 
 	function __construct()
 	{

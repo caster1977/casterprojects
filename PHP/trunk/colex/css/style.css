@@ -1,22 +1,51 @@
-﻿/*
-Design by Free CSS Templates
-http://www.freecsstemplates.org
-Released for free under a Creative Commons Attribution 3.0 License
-
-Name       : Accumen
-Description: A two-column, fixed-width design with dark color scheme.
-Version    : 1.0
-Released   : 20120712
-*/
-
-* {
+﻿* {
 	margin: 0;
 	padding: 0;
+}
+
+caption {
+  text-align: left;
+  margin-bottom: 30px;
 }
 
 a {
 	text-decoration: underline;
 	color: #353535;
+}
+
+button {
+  height: 22px;
+  width: 100px;
+}
+
+button.action {
+  width: 22px;
+}
+
+button img {
+  align: middle;
+  vertical-align: middle; 
+}
+
+button img:hover {
+  cursor: pointer;
+}
+
+col.identity {
+  width: 50px;
+}
+
+col.activity {
+  width: 22px;
+}
+
+col.actions {
+  width: 48px;
+}
+
+input.activity {
+  align: center;
+  vertical-align: middle; 
 }
 
 a:hover {
@@ -31,7 +60,7 @@ body {
 	color: #353535;
 }
 
-body,input {
+body, input {
 	font-family: Kreon, serif;
 }
 
@@ -39,7 +68,7 @@ br.clearfix {
 	clear: both;
 }
 
-h1,h2,h3,h4 {
+h1, h2, h3, h4 {
 	text-transform: uppercase;
 	font-weight: normal;
 	font-family: "Open Sans", sans-serif;
@@ -105,11 +134,6 @@ a {
 	color: #353535;
 }
 
-/*#logo img {
-	margin-left: 0px;
-	vertical-align: middle;
-}*/
-
 #menu {
 	line-height: 57px;
 	position: absolute;
@@ -158,14 +182,10 @@ a {
 	clear: both;
 }
 
-/*#sidebar ul {
-	list-style: none;
-}*/
-
 #sidebar ul li {
 	border-top: solid 1px #e3e3e3;
 	padding: 0;
-        margin-left: 20px;
+  margin-left: 20px;
 }
 
 #sidebar ul li.first {
@@ -256,11 +276,9 @@ a {
 	position: relative;
 	height: 140px;
 	padding: 25px;
-	/*background: url(http://colex.com/images/logo.jpg) no-repeat 20px 30px;*/
 }
 
 #wrapper {
-	width: 1200px; /*978px;*/
 	position: relative;
 	background: #FFF;
 	margin: 0 auto 0 auto;
@@ -271,11 +289,6 @@ a {
 
 .box {
   width: 835px;
-}
-
-.box img {
-	margin: 0px 20px 0px 0px;
-	border: solid 1px #e3e3e3;
 }
 
 .box p {
@@ -292,7 +305,6 @@ a {
 }
 
 .box table {
-  table-layout: fixed;
   width: 835px;
 }
 
@@ -310,6 +322,10 @@ a {
   text-decoration: underline;
 }
 
+#login {
+  width: 300px;
+}
+
 .side-box a {
   text-decoration: none;
 }
@@ -317,3 +333,12 @@ a {
 .side-box a:hover {
   text-decoration: underline;
 }
+
+.success {
+  color: green;
+}
+
+.failure {
+  color: red;
+}
+
