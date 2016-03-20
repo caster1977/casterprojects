@@ -2,9 +2,17 @@
 
 class Model_ModelParts extends Model
 {
-  public function get_data()
+  public function sel_data($data = null)
   {
-    $result = self::Open("{CALL colex_sel_ModelParts (?, ?)}", array(-1, 1));
+    $id = -1;
+    if (isset($data))
+    {
+      if (isset($data['Id']))
+      {
+        $id = $data['Id'];
+      }
+    }
+    $result = self::Open("{CALL colex_sel_ModelParts (?, ?)}", array($id, NULL));
     try
     {
       $data = array();
@@ -20,5 +28,70 @@ class Model_ModelParts extends Model
     }
     return $data;
   }
+  
+  public function add_data($data = null)
+  {
+    //var_dump($data);
+    return array(true, 'Создание выполнено успешно.');
+  }
+  
+  public function edit_data($data = null)
+  {
+    //var_dump($data);
 
+    extract($data);
+
+    if (isset($Id) && isset($Name))
+    {
+      // если переменная есть - значит флажок включен
+      $active = isset($Active) ? 1 : 0;
+      
+      $result = self::Open("{CALL colex_upd_ModelParts (?, ?, ?)}", array($Id, $Name, $active));
+      try
+      {
+        if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
+        {
+          return array($row['Result'], $row['Message']);
+        }
+        else
+        {
+          return array(0, self::GetLastErrors());
+        }
+      }
+      finally
+      {
+        self::Close($result);
+      }
+    }    
+  }
+
+  public function delete_data($data = null)
+  {
+    //var_dump($data);
+
+    extract($data);
+
+    if (isset($Id))
+    {
+      $result = self::Open("{CALL colex_del_ModelParts (?)}", array($Id));
+      try
+      {
+        //var_dump($result);
+        $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+        //var_dump($row);
+        if ($row)
+        {
+          return array($row['Result'], $row['Message']);
+        }
+        else
+        {
+          return array(0, self::GetLastErrors());
+        }
+      }
+      finally
+      {
+        self::Close($result);
+      }
+    }    
+  }
 }

@@ -61,7 +61,7 @@
               <li><a href="/PositionAccess">Доступ должностей</a></li>
               <li><a href="/CosignatoryTypes">Типы субъектов</a></li>
               <li><a href="/Cosignatories">Субъекты</a></li>
-              <li><a href="/DealershipAgreements">Диллерские соглашения</a></li>
+              <li><a href="/DealershipAgreements">Дилерские соглашения</a></li>
               <li><a href="/WarrantyTypes">Типы гарантий</a></li>
               <li><a href="/Models">Модели оборудования</a></li>
               <li><a href="/ModelPartTypes">Типы частей моделей оборудования</a></li>

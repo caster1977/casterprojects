@@ -12,7 +12,7 @@ class Model_Positions extends Model
         $id = $data['Id'];
       }
     }
-    $result = self::Open("{CALL colex_sel_Positions (?, ?)}", array($data, NULL));
+    $result = self::Open("{CALL colex_sel_Positions (?, ?)}", array($id, NULL));
     try
     {
       $data = array();
