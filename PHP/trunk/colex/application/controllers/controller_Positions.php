@@ -62,9 +62,9 @@ class Controller_Positions extends Controller
 
   function action_Clear()
   {
-    var_dump($_POST);
+    //var_dump($_POST);
     $data = $this->model->sel_data();
-    var_dump($data);
+    //var_dump($data);
     $this->view->generate('view_Positions_Clear.php', 'view_template.php', $data);
   }
 }

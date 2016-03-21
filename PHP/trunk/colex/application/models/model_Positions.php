@@ -31,7 +31,7 @@ class Model_Positions extends Model
   
   public function add_data($data = null)
   {
-    var_dump($data);
+    //var_dump($data);
 
     extract($data);
     
@@ -63,7 +63,7 @@ class Model_Positions extends Model
   
   public function edit_data($data = null)
   {
-    var_dump($data);
+    //var_dump($data);
 
     extract($data);
 
@@ -93,7 +93,7 @@ class Model_Positions extends Model
 
   public function delete_data($data = null)
   {
-    var_dump($data);
+    //var_dump($data);
 
     extract($data);
 
