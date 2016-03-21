@@ -18,7 +18,14 @@
         <TH class="identity"><ABBR title="Идентификатор">ID</></TH>
         <TH>Наименование</TH>
         <TH class="activity"><ABBR title="Активность">*</></TH>
-        <TH class="actions"><ABBR title="Доступные действия">**</ABBR></TH>
+        <TH class="actions">
+          <NOBR>
+            <FORM METHOD="POST" ACTION="">
+              <BUTTON CLASS="action" TYPE="SUBMIT" FORMACTION="/Positions/Add" ALT="Добавить"><IMG SRC="/images/add.png"></BUTTON>
+              <BUTTON CLASS="action" TYPE="SUBMIT" FORMACTION="/Positions/Clear" ALT="Удалить все"><IMG SRC="/images/close_cancel_deny_denied.png"></BUTTON>
+            </FORM>
+          </NOBR>
+        </TH>
       </TR>
     </THEAD>
     <TBODY>
@@ -38,8 +45,8 @@
             <TD>
               <NOBR>
                 <FORM METHOD="POST" ACTION="">
-                  <BUTTON CLASS="action" TYPE="SUBMIT" FORMACTION="/Positions/Edit" ALT="Редактировать" Name="Id" VALUE="%d"><IMG SRC="/images/b_edit.png"></BUTTON>
-                  <BUTTON CLASS="action" TYPE="SUBMIT" FORMACTION="/Positions/Delete" ALT="Удалить" Name="Id" VALUE="%d"><IMG SRC="/images/b_drop.png"></BUTTON>
+                  <BUTTON CLASS="action" TYPE="SUBMIT" FORMACTION="/Positions/Edit" ALT="Редактировать" Name="Id" VALUE="%d"><IMG SRC="/images/write_edit_pen.png"></BUTTON>
+                  <BUTTON CLASS="action" TYPE="SUBMIT" FORMACTION="/Positions/Delete" ALT="Удалить" Name="Id" VALUE="%d"><IMG SRC="/images/close_cancel_deny_denied.png"></BUTTON>
                 </FORM>
               </NOBR>
             </TD>

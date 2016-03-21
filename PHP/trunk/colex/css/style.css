@@ -19,7 +19,8 @@ button {
 }
 
 button.action {
-  width: 22px;
+  width: 32px;
+  height: 32px;
 }
 
 button img {
@@ -308,9 +309,17 @@ a {
   width: 835px;
 }
 
+.box table tr:nth-child(even){
+	background-color: #f3f3f3;
+}
+
 .box table, th, td {
 	border: 1px solid #e3e3e3;
 	padding: 5px;
+}
+
+.box table th {
+	background-color: #f3f3f3;
 }
 
 #news th {

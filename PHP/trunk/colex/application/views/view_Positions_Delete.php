@@ -1,6 +1,6 @@
 <h1>Должности | Удаление</h1>
 <p>
-  <form name="edit" method="post" action="/positions">
+  <form method="post" action="/positions">
     <table>
       <col class="identity">
       <col>
@@ -29,9 +29,10 @@
       ?>
         <tr>
           <td colspan="3" align="left">
-            <button type="submit" name="action" value="delete" width="100">Удалить</button>
-            &nbsp;
-            <button type="submit" name="action" value="cancel" width="100">Отмена</button>
+            <nobr>
+              <button type="submit" class="action" name="action" value="delete" ALT="Удалить"><IMG SRC="/images/tick_ok_yes.png"></button>
+              <button type="submit" class="action" name="action" value="cancel" ALT="Отмена"><IMG SRC="/images/arrow_top_left.png"></button>
+            </nobr>
           </td>
         </tr>
       </tbody>

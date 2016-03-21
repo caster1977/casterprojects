@@ -1,4 +1,4 @@
-<h1>Должности | Редактирование</h1>
+<h1>Должности | Удаление всех</h1>
 <p>
   <form method="post" action="/positions">
     <table>
@@ -21,16 +21,16 @@
             $checked = " checked";
           printf('
             <tr>
-              <td>%d<input type="hidden" name="Id" value="%s"></td>
-              <td><input type="text" name="Name" maxlength="255" size="100" value="%s"></td>
-              <td><input type="checkbox" name="Active" class="activity" %s></td>
-            </tr>', $row['Id'], $row['Id'], $row['Name'], $checked);
+              <td>%d</td>
+              <td>%s</td>
+              <td><input type="checkbox" class="activity" disabled %s></td>
+            </tr>', $row['Id'], $row['Name'], $checked);
         }
       ?>
         <tr>
           <td colspan="3" align="left">
             <nobr>
-              <button type="submit" class="action" name="action" value="edit" ALT="Сохранить"><IMG SRC="/images/tick_ok_yes.png"></button>
+              <button type="submit" class="action" name="action" value="clear" ALT="Удалить все"><IMG SRC="/images/tick_ok_yes.png"></button>
               <button type="submit" class="action" name="action" value="cancel" ALT="Отмена"><IMG SRC="/images/arrow_top_left.png"></button>
             </nobr>
           </td>

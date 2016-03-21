@@ -27,6 +27,7 @@ abstract class Model
   abstract public function add_data($data = null);
   abstract public function edit_data($data = null);
   abstract public function delete_data($data = null);
+  abstract public function clear_data($data = null);
 
 	function __construct()
 	{

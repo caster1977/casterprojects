@@ -15,7 +15,7 @@ class Controller_Positions extends Controller
     {
       // если действие является допустимым, передаём его на обработку модели
       $action = strtolower($_POST['action']);
-      if (in_array($action, array("add", "edit", "delete")))
+      if (in_array($action, array("add", "edit", "delete", "clear")))
       {
         // получаем реузльтат выполнения действия в виде массива (bool, string)
         $action = $_POST['action']."_data";
@@ -23,13 +23,15 @@ class Controller_Positions extends Controller
       }
     }
     // и выводим список данных из модели
-    $data = $this->model->sel_data(-1);
+    $data = $this->model->sel_data();
     $this->view->generate('view_Positions.php', 'view_template.php', $data, $prev_action_result);
   }
 
   function action_Add()
   {
-    $this->view->generate('view_Positions_Add.php', 'view_template.php');
+    var_dump($_POST);
+    $data = $this->model->sel_data($_POST);
+    $this->view->generate('view_Positions_Add.php', 'view_template.php', $data);
   }
   
   function action_Edit()
@@ -56,5 +58,13 @@ class Controller_Positions extends Controller
     {
       header('Location:/Positions/');
     }
+  }
+
+  function action_Clear()
+  {
+    var_dump($_POST);
+    $data = $this->model->sel_data();
+    var_dump($data);
+    $this->view->generate('view_Positions_Clear.php', 'view_template.php', $data);
   }
 }
