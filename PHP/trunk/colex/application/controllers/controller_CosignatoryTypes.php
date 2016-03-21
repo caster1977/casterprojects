@@ -15,14 +15,11 @@ class Controller_CosignatoryTypes extends Controller
     {
       // если действие является допустимым, передаём его на обработку модели
       $action = strtolower($_POST['action']);
-      //echo $action;
       if (in_array($action, array("add", "edit", "delete")))
       {
         // получаем реузльтат выполнения действия в виде массива (bool, string)
         $action = $_POST['action']."_data";
-        //echo $action;
         $prev_action_result = $this->model->$action($_POST);
-        //var_dump($prev_action_result);
       }
     }
     // и выводим список данных из модели
@@ -39,7 +36,7 @@ class Controller_CosignatoryTypes extends Controller
   {
     if (isset($_POST['Id']))
     {
-      $data = $this->model->sel_data($_POST['Id']);
+      $data = $this->model->sel_data($_POST);
       $this->view->generate('view_CosignatoryTypes_Edit.php', 'view_template.php', $data);
     }
     else
@@ -52,7 +49,7 @@ class Controller_CosignatoryTypes extends Controller
   {
     if (isset($_POST['Id']))
     {
-      $data = $this->model->sel_data($_POST['Id']);
+      $data = $this->model->sel_data($_POST);
       $this->view->generate('view_CosignatoryTypes_Delete.php', 'view_template.php', $data);
     }
     else
