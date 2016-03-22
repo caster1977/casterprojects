@@ -1,6 +1,6 @@
-<h1>должности | удаление</h1>
+<h1>группы доступа | редактирование</h1>
 <p>
-  <form method="post" action="/positions">
+  <form method="post" action="/accessgroups">
     <table>
       <col class="identity">
       <col>
@@ -19,15 +19,15 @@
           printf('
             <tr>
               <td>%d<input type="hidden" name="id" value="%s"></td>
-              <td>%s</td>
-              <td><input type="checkbox" class="activity" disabled%s></td>
-            </tr>', $row['id'], $row['id'], $row['name'], ($row['active'] === 1 ? " checked" : ""));
+              <td><input type="text" name="name" maxlength="255" size="100" value="%s"></td>
+              <td><input type="checkbox" name="active" class="activity" %s></td>
+            </tr>', $row['id'], $row['id'], $row['name'], (($row['active'] === 1) ? " checked" : ""));
         }
       ?>
         <tr>
           <td colspan="3" align="left">
             <nobr>
-              <button type="submit" class="action" name="action" value="delete" alt="удалить"><img src="/images/tick_ok_yes.png"></button>
+              <button type="submit" class="action" name="action" value="edit" alt="сохранить"><img src="/images/tick_ok_yes.png"></button>
               <button type="submit" class="action" name="action" value="cancel" alt="отмена"><img src="/images/arrow_top_left.png"></button>
             </nobr>
           </td>

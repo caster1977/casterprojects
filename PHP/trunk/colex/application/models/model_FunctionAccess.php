@@ -29,9 +29,7 @@ class model_functionaccess extends model
 
     if (isset($name))
     {
-      $active = isset($active) ? 1 : 0;
-      
-      $result = self::open("{call colex_upd_functionaccess (?, ?, ?)}", array($id, $name, $active));
+      $result = self::open("{call colex_upd_functionaccess (?, ?, ?)}", array($id, $name, (isset($active) ? 1 : 0)));
       try
       {
         if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))

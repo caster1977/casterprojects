@@ -27,11 +27,9 @@ class model_cosignments extends model
     
     $id = -1;
 
-    if (isset($name))
+    if (isset($number) && isset($registrationdate))
     {
-      $active = isset($active) ? 1 : 0;
-      
-      $result = self::open("{call colex_upd_cosignments (?, ?, ?)}", array($id, $name, $active));
+      $result = self::open("{call colex_upd_cosignments (?, ?, ?, ?)}", array($id, $number, $registrationdate, (isset($active) ? 1 : 0)));
       try
       {
         if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
@@ -54,9 +52,9 @@ class model_cosignments extends model
   {
     extract($data);
 
-    if (isset($id) && isset($name))
+    if (isset($id) && isset($number) && isset($registrationdate))
     {
-      $result = self::open("{call colex_upd_cosignments (?, ?, ?)}", array($id, $name, (isset($active) ? 1 : 0)));
+      $result = self::open("{call colex_upd_cosignments (?, ?, ?, ?)}", array($id, $number, $registrationdate, (isset($active) ? 1 : 0)));
       try
       {
         if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))

@@ -1,6 +1,6 @@
-<h1>должности | удаление</h1>
+<h1>группы доступа | удаление всех</h1>
 <p>
-  <form method="post" action="/positions">
+  <form method="post" action="/accessgroups">
     <table>
       <col class="identity">
       <col>
@@ -12,22 +12,17 @@
           <th class="activity">aктивность</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody>      
       <?php
         foreach($data as $row)
         {
-          printf('
-            <tr>
-              <td>%d<input type="hidden" name="id" value="%s"></td>
-              <td>%s</td>
-              <td><input type="checkbox" class="activity" disabled%s></td>
-            </tr>', $row['id'], $row['id'], $row['name'], ($row['active'] === 1 ? " checked" : ""));
+          printf('<tr><td>%d</td><td>%s</td><td><input type="checkbox" class="activity" disabled%s></td></tr>', $row['id'], $row['name'], ($row['active'] === 1 ? " checked" : ""));
         }
       ?>
         <tr>
           <td colspan="3" align="left">
             <nobr>
-              <button type="submit" class="action" name="action" value="delete" alt="удалить"><img src="/images/tick_ok_yes.png"></button>
+              <button type="submit" class="action" name="action" value="clear" alt="удалить все"><img src="/images/tick_ok_yes.png"></button>
               <button type="submit" class="action" name="action" value="cancel" alt="отмена"><img src="/images/arrow_top_left.png"></button>
             </nobr>
           </td>

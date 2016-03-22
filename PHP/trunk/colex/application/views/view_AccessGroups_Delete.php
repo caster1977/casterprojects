@@ -1,6 +1,6 @@
-<h1>должности | удаление</h1>
+<h1>группы доступа | удаление</h1>
 <p>
-  <form method="post" action="/positions">
+  <form method="post" action="/accessgroups">
     <table>
       <col class="identity">
       <col>
