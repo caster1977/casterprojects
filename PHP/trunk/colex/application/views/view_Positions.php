@@ -1,58 +1,53 @@
-<H1>Должности</h1>
-<P>
-  <TABLE>
-    <CAPTION>
+<h1>должности</h1>
+<p>
+  <table>
+    <caption>
       <?php
         if (isset($prev_action_result))
         {
-          echo self::ShowResult($prev_action_result);
+          echo self::showresult($prev_action_result);
         }
       ?>
-    </CAPTION>
-    <COL class="identity">
-    <COL>
-    <COL class="activity">
-    <COL class="actions">
-    <THEAD>
-      <TR>
-        <TH class="identity"><ABBR title="Идентификатор">ID</></TH>
-        <TH>Наименование</TH>
-        <TH class="activity"><ABBR title="Активность">*</></TH>
-        <TH class="actions">
-          <NOBR>
-            <FORM METHOD="POST" ACTION="">
-              <BUTTON CLASS="action" TYPE="SUBMIT" FORMACTION="/Positions/Add" ALT="Добавить"><IMG SRC="/images/add.png"></BUTTON>
-              <BUTTON CLASS="action" TYPE="SUBMIT" FORMACTION="/Positions/Clear" ALT="Удалить все"><IMG SRC="/images/close_cancel_deny_denied.png"></BUTTON>
-            </FORM>
-          </NOBR>
-        </TH>
-      </TR>
-    </THEAD>
-    <TBODY>
+    </caption>
+    <col class="identity">
+    <col>
+    <col class="activity">
+    <col class="actions">
+    <thead>
+      <tr>
+        <th class="identity"><abbr title="идентификатор">id</abbr></th>
+        <th>наименование</th>
+        <th class="activity">активность</th>
+        <th class="actions">
+          <nobr>
+            <form method="post" action="">
+              <button class="action" type="submit" formaction="/positions/add" alt="добавить"><img src="/images/add.png"></button>
+              <button class="action" type="submit" formaction="/positions/clear" alt="удалить все"><img src="/images/close_cancel_deny_denied.png"></button>
+            </form>
+          </nobr>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
     <?php
       foreach($data as $row)
       {
-        $checked = "";
-        if ($row['Active'] === 1)
-        {
-          $checked = " CHECKED";
-        };
-        printf('
-          <TR>
-            <TD>%d</TD>
-            <TD>%s</TD>
-            <TD><INPUT class="activity" TYPE="checkbox" DISABLED%s></TD>
-            <TD>
-              <NOBR>
-                <FORM METHOD="POST" ACTION="">
-                  <BUTTON CLASS="action" TYPE="SUBMIT" FORMACTION="/Positions/Edit" ALT="Редактировать" Name="Id" VALUE="%d"><IMG SRC="/images/write_edit_pen.png"></BUTTON>
-                  <BUTTON CLASS="action" TYPE="SUBMIT" FORMACTION="/Positions/Delete" ALT="Удалить" Name="Id" VALUE="%d"><IMG SRC="/images/close_cancel_deny_denied.png"></BUTTON>
-                </FORM>
-              </NOBR>
-            </TD>
-          </TR>', $row['Id'], $row['Name'], $checked, $row['Id'], $row['Id']);
+        printf(
+'     <tr>
+        <td>%d</td>
+        <td>%s</td>
+        <td><input class="activity" type="checkbox" disabled%s></td>
+        <td>
+          <nobr>
+            <form method="post" action="">
+              <button class="action" type="submit" formaction="/positions/edit" alt="редактировать" name="id" value="%d"><img src="/images/write_edit_pen.png"></button>
+              <button class="action" type="submit" formaction="/positions/delete" alt="удалить" name="id" value="%d"><img src="/images/close_cancel_deny_denied.png"></button>
+            </form>
+          </nobr>
+        </td>
+      </tr>', $row['id'], $row['name'], (($row['active'] === 1) ? " checked" : ""), $row['id'], $row['id']);
       }      
     ?>
-    </TBODY>
-  </TABLE>
-</P>
+    </tbody>
+  </table>
+</p>

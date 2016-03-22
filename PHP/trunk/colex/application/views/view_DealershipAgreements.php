@@ -1,20 +1,20 @@
-<H1>Дилерские соглашения</h1>
-<P>
-  <TABLE>
-    <!--CAPTION></CAPTION-->
-    <TBODY>
-    <TR>
-      <TH>Идентификатор</TH>
-      <TH>Наименование</TH>
-      <TH>Условия</TH>
-      <TH>Активность</TH>
-    </TR>
+<h1>дилерские соглашения</h1>
+<p>
+  <table>
+    <!--caption></caption-->
+    <tbody>
+    <tr>
+      <th>идентификатор</th>
+      <th>наименование</th>
+      <th>условия</th>
+      <th>активность</th>
+    </tr>
     <?php
       foreach($data as $row)
       {
-        printf('<TR><TD>%d</TD><TD>%s</TD><TD>%s</TD><TD>%d</TD></TR>', $row['Id'], $row['Name'], $row['Details'], $row['Active']);
+        printf('<tr><td>%d</td><td>%s</td><td>%s</td><td>%d</td></tr>', $row['id'], $row['name'], $row['details'], $row['active']);
       }      
     ?>
-    </TBODY>
-  </TABLE>
-</P>
+    </tbody>
+  </table>
+</p>

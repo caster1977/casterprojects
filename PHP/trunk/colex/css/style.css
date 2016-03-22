@@ -15,7 +15,11 @@ a {
 
 button {
   height: 22px;
-  width: 100px;
+  width: 100px;  
+}
+
+button:first-letter {
+  text-transform: capitalize;
 }
 
 button.action {
@@ -30,6 +34,10 @@ button img {
 
 button img:hover {
   cursor: pointer;
+}
+
+col:first-letter {
+  text-transform: capitalize;
 }
 
 col.identity {
@@ -62,7 +70,7 @@ body {
 }
 
 body, input {
-	font-family: Kreon, serif;
+	font-family: kreon, serif;
 }
 
 br.clearfix {
@@ -72,7 +80,7 @@ br.clearfix {
 h1, h2, h3, h4 {
 	text-transform: uppercase;
 	font-weight: normal;
-	font-family: "Open Sans", sans-serif;
+	font-family: "open sans", sans-serif;
 	color: #353535;
 	margin-bottom: 1em;
 }
@@ -141,13 +149,13 @@ a {
 	right: 40px;
 	top: 76px;
 	height: 57px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "open sans", sans-serif;
 }
 
 #menu a {
 	text-transform: uppercase;
 	text-decoration: underline;
-	color: #1C1C1C;
+	color: #1c1c1c;
 	font-size: 1.2em;
 }
 
@@ -189,8 +197,7 @@ a {
   margin-left: 20px;
 }
 
-#sidebar ul li.first {
-	padding-top: 0;
+#sidebar ul li:first-child {
 	border-top: 0;
 }
 
@@ -206,7 +213,7 @@ a {
 }
 
 #page-bottom a {
-	color: #1B1A18;
+	color: #1b1a18;
 }
 
 #page-bottom h2, #page-bottom h3, #page-bottom h4 {
@@ -268,7 +275,7 @@ a {
   margin-left: 20px;
 	text-shadow: black 0px 0px 7px;
 	text-decoration: none;
-	font-family: "Open Sans", sans-serif;
+	font-family: "open sans", sans-serif;
 	font-size: 50px;
 }
 
@@ -281,7 +288,7 @@ a {
 
 #wrapper {
 	position: relative;
-	background: #FFF;
+	background: #fff;
 	margin: 0 auto 0 auto;
 	box-shadow: 10px 100px 150px 0px rgba(0,0,0,0.15);
 	border: solid 1px #f3f3f3;
@@ -316,6 +323,10 @@ a {
 .box table, th, td {
 	border: 1px solid #e3e3e3;
 	padding: 5px;
+}
+
+.box table:first-letter, th:first-letter, td:first-letter {
+  text-transform: capitalize;
 }
 
 .box table th {

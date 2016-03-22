@@ -33,50 +33,50 @@
   <div id="wrapper">
     <div id="header">
       <div id="logo">
-        <a href="/">Colex</a>
+        <a href="/">colex</a>
       </div>
     </div>    
     <div id="page">
       <div id="sidebar">
         <!--div class="side-box">
-          <h3>Новости</h3>
+          <h3>новости</h3>
           <p align="justify" class="quote" >
-            <b>TODO:</b> Добавить функционал по отображению текущих новостей компании.
+            <b>todo:</b> добавить функционал по отображению текущих новостей компании.
           </p>
         </div-->
         <div class="side-box">
-          <h3><a href="/">Главная</a></h3>
-          <h3><a href="/News">Новости</a></h3>
+          <h3><a href="/">главная</a></h3>
+          <h3><a href="/news">новости</a></h3>
           <div id="references">
-            <h3>Справочники</h3>
+            <h3>справочники</h3>
           </div>
           <noindex>
             <ul class="list" id="references_list">
-              <li class="first"><a href="/Functions">Пользовательские функции</a></li>
-              <li><a href="/Positions">Должности</a></li>
-              <li><a href="/Employees">Работники</a></li>
-              <li><a href="/EmployeePositions">Должности работников</a></li>
-              <li><a href="/AccessGroups">Группы доступа</a></li>
-              <li><a href="/FunctionAccess">Доступ к функционалу</a></li>
-              <li><a href="/PositionAccess">Доступ должностей</a></li>
-              <li><a href="/CosignatoryTypes">Типы субъектов</a></li>
-              <li><a href="/Cosignatories">Субъекты</a></li>
-              <li><a href="/DealershipAgreements">Дилерские соглашения</a></li>
-              <li><a href="/WarrantyTypes">Типы гарантий</a></li>
-              <li><a href="/Models">Модели оборудования</a></li>
-              <li><a href="/ModelPartTypes">Типы частей моделей оборудования</a></li>
-              <li><a href="/ModelParts">Части оборудования</a></li>
-              <li class="last"><a href="/Cosignments">Партии изделий</a></li>
+              <li><a href="/functions">пользовательские функции</a></li>
+              <li><a href="/positions">должности</a></li>
+              <li><a href="/employees">работники</a></li>
+              <li><a href="/employeepositions">должности работников</a></li>
+              <li><a href="/accessgroups">группы доступа</a></li>
+              <li><a href="/functionaccess">доступ к функционалу</a></li>
+              <li><a href="/positionaccess">доступ должностей</a></li>
+              <li><a href="/cosignatorytypes">типы субъектов</a></li>
+              <li><a href="/cosignatories">субъекты</a></li>
+              <li><a href="/dealershipagreements">дилерские соглашения</a></li>
+              <li><a href="/warrantytypes">типы гарантий</a></li>
+              <li><a href="/models">модели оборудования</a></li>
+              <li><a href="/modelparttypes">типы частей моделей оборудования</a></li>
+              <li><a href="/modelparts">части оборудования</a></li>
+              <li><a href="/cosignments">партии изделий</a></li>
             </ul>            
           </noindex>
           <div id="reports">
-            <h3>Отчёты</h3>
+            <h3>отчёты</h3>
           </div>
           <noindex>
             <ul class="list" id="reports_list">
-              <li class="first"><a href="/Reports/_1">Отчёт #1</a></li>
-              <li><a href="/Reports/_2">Отчёт #2</a></li>
-              <li class="last"><a href="/Reports/_3">Отчёт #3</a></li>
+              <li><a href="/reports/_1">отчёт #1</a></li>
+              <li><a href="/reports/_2">отчёт #2</a></li>
+              <li><a href="/reports/_3">отчёт #3</a></li>
             </ul>            
           </noindex>
           <h3><a href="/Contacts">Контакты</a></h3>
@@ -92,19 +92,19 @@
         <div id="page-bottom-sidebar">
           <h3>Наши контакты</h3>
           <ul class="list">
-            <li class="first">skypeid: caster1977</li>
-            <li class="last">email: caster1977@yandex.ru</li>
+            <li>skypeid: caster1977</li>
+            <li>email: caster1977@yandex.ru</li>
           </ul>
         </div>
         <div id="page-bottom-content">
-          <h3>О Компании</h3>
-          <p><b>TODO:</b> Добавить функционал по отображению информации о компании.</p>
+          <h3>о компании</h3>
+          <p><b>todo:</b> добавить функционал по отображению информации о компании.</p>
         </div>
         <br class="clearfix" />
       </div>
     </div>
     <div id="footer">
-      &copy; 2016 <a href="/">Colex</a>
+      &copy; 2016 <a href="/">colex</a>
     </div>
     <script>$('#references').toggle(function() {$('#references_list').slideUp();}, function() {$('#references_list').slideDown();});</script>
     <script>$('#reports').toggle(function() {$('#reports_list').slideUp();}, function() {$('#reports_list').slideDown();});</script>

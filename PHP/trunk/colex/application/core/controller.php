@@ -1,15 +1,14 @@
 <?php
 
-abstract class Controller
+abstract class controller
 {
 	public $model;
 	public $view;
 	
 	function __construct()
 	{
-		$this->view = new View();
+		$this->view = new view();
 	}
 	
-	// действие (action), вызываемое по умолчанию
 	abstract function action_index();
 }

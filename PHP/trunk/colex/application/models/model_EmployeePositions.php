@@ -1,18 +1,10 @@
 <?php
-
-class Model_EmployeePositions extends Model
+class model_employeepositions extends model
 {
   public function sel_data($data = null)
   {
-    $id = -1;
-    if (isset($data))
-    {
-      if (isset($data['Id']))
-      {
-        $id = $data['Id'];
-      }
-    }
-    $result = self::Open("{CALL colex_sel_EmployeePositions (?, ?)}", array($id, NULL));
+    $id = (isset($data)) && (isset($data['id'])) ? $data['id'] : -1;
+    $result = self::open("{call colex_sel_employeepositions (?, ?)}", array($id, null));
     try
     {
       $data = array();
@@ -24,74 +16,110 @@ class Model_EmployeePositions extends Model
     }
     finally
     {
-      self::Close($result);
+      self::close($result);
     }
     return $data;
   }
   
   public function add_data($data = null)
   {
-    //var_dump($data);
-    return array(true, 'Создание выполнено успешно.');
-  }
-  
-  public function edit_data($data = null)
-  {
-    //var_dump($data);
-
     extract($data);
+    
+    $id = -1;
 
-    if (isset($Id) && isset($Name))
+    if (isset($name))
     {
-      // если переменная есть - значит флажок включен
-      $active = isset($Active) ? 1 : 0;
+      $active = isset($active) ? 1 : 0;
       
-      $result = self::Open("{CALL colex_upd_EmployeePositions (?, ?, ?)}", array($Id, $Name, $active));
+      $result = self::open("{call colex_upd_employeepositions (?, ?, ?)}", array($id, $name, $active));
       try
       {
         if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
         {
-          return array($row['Result'], $row['Message']);
+          return array($row['result'], $row['message']);
         }
         else
         {
-          return array(0, self::GetLastErrors());
+          return array(0, self::getlasterrors());
         }
       }
       finally
       {
-        self::Close($result);
+        self::close($result);
+      }
+    }    
+  }
+  
+  public function edit_data($data = null)
+  {
+    extract($data);
+
+    if (isset($id) && isset($name))
+    {
+      $result = self::open("{call colex_upd_employeepositions (?, ?, ?)}", array($id, $name, (isset($active) ? 1 : 0)));
+      try
+      {
+        if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
+        {
+          return array($row['result'], $row['message']);
+        }
+        else
+        {
+          return array(0, self::getlasterrors());
+        }
+      }
+      finally
+      {
+        self::close($result);
       }
     }    
   }
 
   public function delete_data($data = null)
   {
-    //var_dump($data);
-
     extract($data);
 
-    if (isset($Id))
+    if (isset($id))
     {
-      $result = self::Open("{CALL colex_del_EmployeePositions (?)}", array($Id));
+      $result = self::open("{call colex_del_employeepositions (?)}", array($id));
       try
       {
-        //var_dump($result);
         $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
-        //var_dump($row);
         if ($row)
         {
-          return array($row['Result'], $row['Message']);
+          return array($row['result'], $row['message']);
         }
         else
         {
-          return array(0, self::GetLastErrors());
+          return array(0, self::getlasterrors());
         }
       }
       finally
       {
-        self::Close($result);
+        self::close($result);
       }
     }    
+  }
+  
+  public function clear_data($data = null)
+  {
+    $id = -1;    
+    $result = self::open("{call colex_del_employeepositions (?)}", array($id));
+    try
+    {
+      $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+      if ($row)
+      {
+        return array($row['result'], $row['message']);
+      }
+      else
+      {
+        return array(0, self::getlasterrors());
+      }
+    }
+    finally
+    {
+      self::close($result);
+    }
   }
 }

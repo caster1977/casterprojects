@@ -1,24 +1,23 @@
 <?php
-
 /*
-Класс-маршрутизатор для определения запрашиваемой страницы.
+класс-маршрутизатор для определения запрашиваемой страницы.
 > цепляет классы контроллеров и моделей;
 > создает экземпляры контролеров страниц и вызывает действия этих контроллеров.
 */
-class Route
+class route
 {
-	function ErrorPage404()
+	function errorpage404()
 	{
-    $host = 'http://'.$_SERVER['HTTP_HOST'].'/';
-    header('HTTP/1.1 404 Not Found');
-		header("Status: 404 Not Found");
-		header('Location:'.$host.'404');
+    $host = 'http://'.$_server['http_host'].'/';
+    header('http/1.1 404 not found');
+		header("status: 404 not found");
+		header('location:'.$host.'404');
   }
 
 	static function start()
 	{
 		// контроллер и действие по умолчанию
-		$controller_name = 'Main';
+		$controller_name = 'main';
 		$action_name = 'index';
 		
 		$routes = explode('/', $_SERVER['REQUEST_URI']);
@@ -36,13 +35,13 @@ class Route
 		}
 
 		// добавляем префиксы
-		$model_name = 'Model_'.$controller_name;
-		$controller_name = 'Controller_'.$controller_name;
+		$model_name = 'model_'.$controller_name;
+		$controller_name = 'controller_'.$controller_name;
 		$action_name = 'action_'.$action_name;
 
-		/*echo "Model: $model_name <br>";
-		echo "Controller: $controller_name <br>";
-		echo "Action: $action_name <br>";*/
+		/*echo "model: $model_name <br>";
+		echo "controller: $controller_name <br>";
+		echo "action: $action_name <br>";*/
 
 		// подцепляем файл с классом модели (файла модели может и не быть)
 		$model_file = strtolower($model_name).'.php';
@@ -61,28 +60,20 @@ class Route
 		}
 		else
 		{
-			/*
-			правильно было бы кинуть здесь исключение,
-			но для упрощения сразу сделаем редирект на страницу 404
-			*/
-      //echo "if(file_exists($controller_path))";
-			Route::ErrorPage404();
+			route::errorpage404(); // правильно было бы кинуть здесь исключение, но для упрощения сразу сделаем редирект на страницу 404
 		}
 		
 		// создаем контроллер
 		$controller = new $controller_name;
 		$action = $action_name;
 		
-		if(method_exists($controller, $action))
-		{
-			// вызываем действие контроллера
-			$controller->$action();
+		if (method_exists($controller, $action))
+		{			
+			$controller->$action(); // вызываем действие контроллера
 		}
 		else
 		{
-      //echo "if(method_exists($controller, $action))";
-			// здесь также разумнее было бы кинуть исключение
-			Route::ErrorPage404();
+			route::errorpage404(); // здесь также разумнее было бы кинуть исключение
 		}
 	}
 }

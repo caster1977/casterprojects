@@ -1,21 +1,21 @@
-<h1>Новости</h1>
+<h1>новости</h1>
 <?php
   foreach($data as $row):
 ?>
-  <TABLE id="news">
-    <TBODY>
-      <TR>
-        <TH>[<?php echo $row['ChangeDate'];?>]: <?php echo $row['Title'];?></TH>
-      </TR>
-      <TR>
-        <TD><?php echo $row['Body'];?></TD>
-      </TR>
-      <!--TR>
-        <TD>Автор: пользователь <?php echo $row['EmployeeId'];?></TD>
-      </TR-->
-    </TBODY>
-  </TABLE>
-  <BR>
+  <table id="news">
+    <tbody>
+      <tr>
+        <th>[<?php echo $row['changedate'];?>]: <?php echo $row['title'];?></th>
+      </tr>
+      <tr>
+        <td><?php echo $row['body'];?></td>
+      </tr>
+      <!--tr>
+        <td>автор: пользователь <?php echo $row['employeeid'];?></td>
+      </tr-->
+    </tbody>
+  </table>
+  <br>
 <?php
   endforeach;
 ?>

@@ -1,60 +1,63 @@
 <?php
-class Controller_Cosignatories extends Controller
+class controller_cosignatories extends controller
 {
   function __construct()
   {
-    $this->model = new Model_Cosignatories();
-    $this->view = new View();
+    $this->model = new model_cosignatories();
+    $this->view = new view();
   }
 
   function action_index()
   {
-    // проверяем на необходимость выполнить выбранное пользователем действие
     $prev_action_result = null;
     if (isset($_POST['action']))
     {
-      // если действие является допустимым, передаём его на обработку модели
       $action = strtolower($_POST['action']);
-      if (in_array($action, array("add", "edit", "delete")))
+      if (in_array($action, array("add", "edit", "delete", "clear")))
       {
-        // получаем реузльтат выполнения действия в виде массива (bool, string)
         $action = $_POST['action']."_data";
         $prev_action_result = $this->model->$action($_POST);
       }
     }
-    // и выводим список данных из модели
-    $data = $this->model->sel_data(-1);
-    $this->view->generate('view_Cosignatories.php', 'view_template.php', $data, $prev_action_result);
+    $data = $this->model->sel_data();
+    $this->view->generate('view_cosignatories.php', 'view_template.php', $data, $prev_action_result);
   }
 
-  function action_Add()
+  function action_add()
   {
-    $this->view->generate('view_Cosignatories_Add.php', 'view_template.php');
+    $data = $this->model->sel_data($_POST);
+    $this->view->generate('view_cosignatories_add.php', 'view_template.php', $data);
   }
   
-  function action_Edit()
+  function action_edit()
   {
-    if (isset($_POST['Id']))
+    if (isset($_POST['id']))
     {
       $data = $this->model->sel_data($_POST);
-      $this->view->generate('view_Cosignatories_Edit.php', 'view_template.php', $data);
+      $this->view->generate('view_cosignatories_edit.php', 'view_template.php', $data);
     }
     else
     {
-      header('Location:/Cosignatories/');
+      header('location:/cosignatories/');
     }
   }
 
-  function action_Delete()
+  function action_delete()
   {
-    if (isset($_POST['Id']))
+    if (isset($_POST['id']))
     {
       $data = $this->model->sel_data($_POST);
-      $this->view->generate('view_Cosignatories_Delete.php', 'view_template.php', $data);
+      $this->view->generate('view_cosignatories_delete.php', 'view_template.php', $data);
     }
     else
     {
-      header('Location:/Cosignatories/');
+      header('location:/cosignatories/');
     }
+  }
+
+  function action_clear()
+  {
+    $data = $this->model->sel_data();
+    $this->view->generate('view_cosignatories_clear.php', 'view_template.php', $data);
   }
 }

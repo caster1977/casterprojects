@@ -1,20 +1,20 @@
-<H1>Партии изделий</h1>
-<P>
-  <TABLE>
-    <!--CAPTION></CAPTION-->
-    <TBODY>
-    <TR>
-      <TH>Идентификатор</TH>
-      <TH>Номер</TH>
-      <TH>Дата регистрации</TH>
-      <TH>Активность</TH>
-    </TR>
+<h1>партии изделий</h1>
+<p>
+  <table>
+    <!--caption></caption-->
+    <tbody>
+    <tr>
+      <th>идентификатор</th>
+      <th>номер</th>
+      <th>дата регистрации</th>
+      <th>активность</th>
+    </tr>
     <?php
       foreach($data as $row)
       {
-        printf('<TR><TD>%d</TD><TD>%s</TD><TD>%s</TD><TD>%d</TD></TR>', $row['Id'], $row['Number'], $row['RegistrationDate'], $row['Active']);
+        printf('<tr><td>%d</td><td>%s</td><td>%s</td><td>%d</td></tr>', $row['id'], $row['number'], $row['registrationdate'], $row['active']);
       }      
     ?>
-    </TBODY>
-  </TABLE>
-</P>
+    </tbody>
+  </table>
+</p>

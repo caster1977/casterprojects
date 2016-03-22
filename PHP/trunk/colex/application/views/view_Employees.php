@@ -1,26 +1,26 @@
-<H1>Работники</h1>
-<P>
-  <TABLE>
-    <!--CAPTION></CAPTION-->
-    <TBODY>
-    <TR>
-      <TH>Идентификатор</TH>
-      <TH>Фамилия</TH>
-      <TH>Имя</TH>
-      <TH>Отчество</TH>
-      <TH>Дата рождения</TH>
-      <TH>Логин</TH>
-      <!--TH>HASH пароля</TH-->
-      <TH>Последний вход в систему</TH>
-      <TH>Активность</TH>
-    </TR>
+<h1>работники</h1>
+<p>
+  <table>
+    <!--caption></caption-->
+    <tbody>
+    <tr>
+      <th>идентификатор</th>
+      <th>фамилия</th>
+      <th>имя</th>
+      <th>отчество</th>
+      <th>дата рождения</th>
+      <th>логин</th>
+      <!--th>hash пароля</th-->
+      <th>последний вход в систему</th>
+      <th>активность</th>
+    </tr>
     <?php
       foreach($data as $row)
       {
-        printf('<TR><TD>%d</TD><TD>%s</TD><TD>%s</TD><TD>%s</TD><TD>%s</TD><TD>%s</TD><TD>%s</TD><TD>%d</TD></TR>', 
-	  $row['Id'], $row['LastName'], $row['FirstName'], $row['MiddleName'], $row['BirthDate'], $row['Login'], $row['LastLogon'], $row['Active']);
+        printf('<tr><td>%d</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%d</td></tr>', 
+	  $row['id'], $row['lastname'], $row['firstname'], $row['middlename'], $row['birthdate'], $row['login'], $row['lastlogon'], $row['active']);
       }      
     ?>
-    </TBODY>
-  </TABLE>
-</P>
+    </tbody>
+  </table>
+</p>

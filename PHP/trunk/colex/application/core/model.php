@@ -1,27 +1,26 @@
 <?php
-
 	/*
-		Модель обычно включает методы выборки данных, это могут быть:
+		модель обычно включает методы выборки данных, это могут быть:
 			> методы нативных библиотек pgsql или mysql;
-			> методы библиотек, реализующих абстракицю данных. Например, методы библиотеки PEAR MDB2;
-			> методы ORM;
-			> методы для работы с NoSQL;
+			> методы библиотек, реализующих абстракицю данных. например, методы библиотеки pear mdb2;
+			> методы orm;
+			> методы для работы с nosql;
 			> и др.
 	*/
   
-abstract class Model
+abstract class model
 {
-  const ServerName = '.';
-  const ConnectionOptions = array(
-    "Database" => "Colex",
-    "LoginTimeout" => 60,
-    //"UID" => "colex",
-    //"PWD" => "1/2_5a",
-    "CharacterSet" => "UTF-8",
-    "MultipleActiveResultSets" => 1
+  const servername = '.';
+  const connectionoptions = array(
+    "database" => "colex",
+    "logintimeout" => 60,
+    //"uid" => "colex",
+    //"pwd" => "1/2_5a",
+    "characterset" => "utf-8",
+    "multipleactiveresultsets" => 1
     );
 
-  protected $Connection;
+  protected $connection;
 
 	abstract public function sel_data($data = null);
   abstract public function add_data($data = null);
@@ -32,12 +31,12 @@ abstract class Model
 	function __construct()
 	{
     /* parent::__construct();*/
-    self::Connect();
+    self::connect();
 	}
   
   function __destruct()
   {
-    self::Disconnect();
+    self::disconnect();
     /*try
     {
     }
@@ -47,57 +46,57 @@ abstract class Model
     }*/
   }
 
-  protected function Connect()
+  protected function connect()
   {
-    $this->Connection = sqlsrv_connect(self::ServerName, self::ConnectionOptions);
-    if ($this->Connection === false)
+    $this->connection = sqlsrv_connect(self::servername, self::connectionoptions);
+    if ($this->connection === false)
     {
-      echo "Ошибка подключения к серверу MSSQL:<BR>";
-      die(self::GetLastErrors());
+      echo "Ошибка подключения к серверу mssql:<br>";
+      die(self::getlasterrors());
     }
   }
     
-  protected function Disconnect()
+  protected function disconnect()
   {
-    if (isset($this->Connection))
+    if (isset($this->connection))
     {
-      if (sqlsrv_close($this->Connection) === false)
+      if (sqlsrv_close($this->connection) === false)
       {
-        echo "Ошибка отключения от сервера MSSQL:<BR>";
-        die(self::GetLastErrors());
+        echo "Ошибка отключения от сервера mssql:<br>";
+        die(self::getlasterrors());
       }
     }
   }
   
-  protected function GetLastErrors()
+  protected function getlasterrors()
   {
     $result = "";
     foreach (sqlsrv_errors() as $error)
     {
-      $result = sprintf("<BR>SQLSTATE: %s<BR>Code: %s<BR>Message: %s", $error['SQLSTATE'], $error['code'], $error['message'], $result);
+      $result = sprintf("<br>SqlState: %s<br>Code: %s<br>Message: %s", $error['SqlState'], $error['Code'], $error['Message'], $result);
     }
     return $result;
   }
   
-  protected function Open($SQL, $Params)
+  protected function open($sql, $params)
   {
-    $result = sqlsrv_query($this->Connection, $SQL, $Params);
+    $result = sqlsrv_query($this->connection, $sql, $params);
     if ($result === false)
     {
-      echo "Не удалось получить результат выполнения запроса:<BR>";
-      die(self::GetLastErrors());
+      echo "Не удалось получить результат выполнения запроса:<br>";
+      die(self::getlasterrors());
     }
     return $result;
   }
   
-  protected function Close($Statement)
+  protected function close($statement)
   {
-    if (isset($Statement))
+    if (isset($statement))
     {
-      if (sqlsrv_free_stmt($Statement) === false)
+      if (sqlsrv_free_stmt($statement) === false)
       {
-        echo "Не удалось освободить результат выполнения запроса:<BR>";
-        die(self::GetLastErrors());
+        echo "Не удалось освободить результат выполнения запроса:<br>";
+        die(self::getlasterrors());
       }
     }
   }

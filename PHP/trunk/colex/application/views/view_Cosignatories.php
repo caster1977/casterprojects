@@ -1,20 +1,20 @@
-<H1>Субъекты</h1>
-<P>
-  <TABLE>
-    <!--CAPTION></CAPTION-->
-    <TBODY>
-    <TR>
-      <TH>Идентификатор</TH>
-      <TH>Тип</TH>
-      <TH>Наименование</TH>
-      <TH>Активность</TH>
-    </TR>
+<h1>субъекты</h1>
+<p>
+  <table>
+    <!--caption></caption-->
+    <tbody>
+    <tr>
+      <th>идентификатор</th>
+      <th>тип</th>
+      <th>наименование</th>
+      <th>активность</th>
+    </tr>
     <?php
       foreach($data as $row)
       {
-        printf('<TR><TD>%d</TD><TD>%d</TD><TD>%s</TD><TD>%d</TD></TR>', $row['Id'], $row['CosignatoryTypeId'], $row['Name'], $row['Active']);
+        printf('<tr><td>%d</td><td>%d</td><td>%s</td><td>%d</td></tr>', $row['id'], $row['cosignatorytypeid'], $row['name'], $row['active']);
       }      
     ?>
-    </TBODY>
-  </TABLE>
-</P>
+    </tbody>
+  </table>
+</p>

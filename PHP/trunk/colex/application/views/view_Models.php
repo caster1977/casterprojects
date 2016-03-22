@@ -1,21 +1,21 @@
-<H1>Модели оборудования</h1>
-<P>
-  <TABLE>
-    <!--CAPTION></CAPTION-->
-    <TBODY>
-    <TR>
-      <TH>Идентификатор</TH>
-      <TH>Наименование</TH>
-      <TH>Прототип</TH>
-      <TH>Описание</TH>
-      <TH>Активность</TH>
-    </TR>
+<h1>модели оборудования</h1>
+<p>
+  <table>
+    <!--caption></caption-->
+    <tbody>
+    <tr>
+      <th>идентификатор</th>
+      <th>наименование</th>
+      <th>прототип</th>
+      <th>описание</th>
+      <th>активность</th>
+    </tr>
     <?php
       foreach($data as $row)
       {
-        printf('<TR><TD>%d</TD><TD>%s</TD><TD>%d</TD><TD>%s</TD><TD>%d</TD></TR>', $row['Id'], $row['Name'], $row['Prototype'], $row['Description'], $row['Active']);
+        printf('<tr><td>%d</td><td>%s</td><td>%d</td><td>%s</td><td>%d</td></tr>', $row['id'], $row['name'], $row['prototype'], $row['description'], $row['active']);
       }      
     ?>
-    </TBODY>
-  </TABLE>
-</P>
+    </tbody>
+  </table>
+</p>
