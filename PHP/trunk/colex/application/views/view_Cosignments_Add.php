@@ -15,7 +15,7 @@
       <tbody>
         <tr>
           <td><input type="text" name="number" maxlength="255" size="100"></td>
-          <td><input type="text" name="registrationdate" maxlength="10" size="10"></td>
+          <td><input type="date" name="registrationdate" value="<?php echo date('Y-m-d');?>"></td>
           <td><input type="checkbox" name="active" class="activity" checked></td>
         </tr>
         <tr>

@@ -12,7 +12,7 @@ class view
     {
       if (count($result) === 2)
       {
-        return sprintf("<span class='%s'>%s</span>", ($result[0] > 0 ? "success" : "failure"), $result[1]);
+        return sprintf("<span class='%s'>%s</span>", ($result[0] >= 0 ? "success" : "failure"), $result[1]);
       }
     }
   }

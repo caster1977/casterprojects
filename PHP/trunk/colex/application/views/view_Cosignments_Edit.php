@@ -22,7 +22,7 @@
             <tr>
               <td>%d<input type="hidden" name="id" value="%s"></td>
               <td><input type="text" name="number" maxlength="255" size="100" value="%s"></td>
-              <td><input type="text" name="registrationdate" maxlength="10" size="10" value="%s"></td>
+              <td><input type="date" name="registrationdate" value="%s"></td>
               <td><input type="checkbox" name="active" class="activity" %s></td>
             </tr>', $row['id'], $row['id'], $row['number'], $row['registrationdate'], (($row['active'] === 1) ? " checked" : ""));
         }
