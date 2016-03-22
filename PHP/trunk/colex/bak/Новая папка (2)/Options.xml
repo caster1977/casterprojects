@@ -1,6 +1,6 @@
 <Options>
   <Connection>
     <Server>.</Server>
-    <DataBase>DBRevision</DataBase>
+    <DataBase>Updates</DataBase>
   </Connection>
 </Options>
