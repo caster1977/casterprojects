@@ -18,5 +18,10 @@ require_once 'core/controller.php';
 	> и др.
 */
 
+if (!isset($_SESSION))
+{
+  session_start();
+}
+
 require_once 'core/route.php';
 Route::start(); // запускаем маршрутизатор

@@ -7,22 +7,6 @@ class controller_models extends controller
     $this->view = new view();
   }
 
-  function action_index()
-  {
-    $prev_action_result = null;
-    if (isset($_POST['action']))
-    {
-      $action = strtolower($_POST['action']);
-      if (in_array($action, array("add", "edit", "delete", "clear")))
-      {
-        $action = $_POST['action']."_data";
-        $prev_action_result = $this->model->$action($_POST);
-      }
-    }
-    $data = $this->model->sel_data();
-    $this->view->generate('view_models.php', 'view_template.php', $data, $prev_action_result);
-  }
-
   function action_add()
   {
     $data = $this->model->sel_data($_POST);

@@ -29,7 +29,7 @@ class model_dealershipagreements extends model
 
     if (isset($name))
     {
-      $result = self::open("{call colex_upd_dealershipagreements (?, ?, ?)}", array($id, $name, (isset($active) ? 1 : 0)));
+      $result = self::open("{call colex_upd_dealershipagreements (?, ?, ?, ?)}", array($id, $name, $details, (isset($active) ? 1 : 0)));
       try
       {
         if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
@@ -54,7 +54,7 @@ class model_dealershipagreements extends model
 
     if (isset($id) && isset($name))
     {
-      $result = self::open("{call colex_upd_dealershipagreements (?, ?, ?)}", array($id, $name, (isset($active) ? 1 : 0)));
+      $result = self::open("{call colex_upd_dealershipagreements (?, ?, ?, ?)}", array($id, $name, $details, (isset($active) ? 1 : 0)));
       try
       {
         if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))

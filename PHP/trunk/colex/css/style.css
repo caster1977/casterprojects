@@ -325,7 +325,7 @@ a {
 	padding: 5px;
 }
 
-.box table:first-letter, th:first-letter, td:first-letter {
+.box table:first-letter, th:first-letter {
   text-transform: capitalize;
 }
 
