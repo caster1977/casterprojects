@@ -15,14 +15,14 @@ class controller_news extends controller
   
   function action_edit()
   {
-    if (isset($_POST['id']))
+    if (isset($_POST["id"]))
     {
       $data = $this->model->sel_data($_POST);
-      $this->view->generate('view_news_edit.php', 'view_template.php', $data);
+      $this->view->generate(model::get_caption(), 'view_news_edit.php', 'view_template.php', $data);
     }
     else
     {
-      header('location:/news/');
+      header("location:/news/");
     }
   }
 

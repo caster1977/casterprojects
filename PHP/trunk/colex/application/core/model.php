@@ -21,8 +21,8 @@ abstract class model
     );
 
   protected $connection;
-
-	abstract public function sel_data($data = null);
+	
+  abstract public function sel_data($data = null);
   abstract public function add_data($data = null);
   abstract public function edit_data($data = null);
   abstract public function delete_data($data = null);

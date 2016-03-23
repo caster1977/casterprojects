@@ -1,7 +1,7 @@
 <H1>Доступ к функционалу</h1>
 <P>
   <TABLE>
-    <!--CAPTION></CAPTION-->
+    <caption><?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?></caption>
     <TBODY>
     <TR>
       <TH>Идентификатор</TH>

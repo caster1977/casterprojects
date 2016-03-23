@@ -1,14 +1,7 @@
 <h1>работники</h1>
 <p>
   <table>
-    <caption>
-      <?php
-        if (isset($prev_action_result))
-        {
-          echo self::showresult($prev_action_result);
-        }
-      ?>
-    </caption>
+    <caption><?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?></caption>
     <colgroup>
       <col class="identity">
       <col>

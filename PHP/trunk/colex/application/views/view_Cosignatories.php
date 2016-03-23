@@ -1,7 +1,7 @@
 <h1>субъекты</h1>
 <p>
   <table>
-    <!--caption></caption-->
+    <caption><?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?></caption>
     <tbody>
     <tr>
       <th>идентификатор</th>
