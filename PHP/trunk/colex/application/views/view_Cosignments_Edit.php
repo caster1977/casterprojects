@@ -20,7 +20,7 @@
         {
           printf('
             <tr>
-              <td>%d<input type="hidden" name="id" value="%s"></td>
+              <td>%d<input type="hidden" name="id" value="%d"></td>
               <td><input type="text" name="number" maxlength="255" size="100" value="%s"></td>
               <td><input type="date" name="registrationdate" value="%s"></td>
               <td><input type="checkbox" name="active" class="activity" %s></td>

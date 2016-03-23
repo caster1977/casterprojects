@@ -26,7 +26,7 @@ class model_employees extends model
     extract($data);
     
     $id = -1;
-
+    
     if (isset($name))
     {
       $result = self::open("{call colex_upd_employees (?, ?, ?)}", array($id, $name, (isset($active) ? 1 : 0)));
