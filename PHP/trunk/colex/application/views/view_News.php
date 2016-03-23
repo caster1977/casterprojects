@@ -1,7 +1,5 @@
 <h1>новости</h1>
-<?php
-  foreach($data as $row):
-?>
+<?php foreach($data as $row):?>
   <table id="news">
     <tbody>
       <tr>
@@ -15,7 +13,5 @@
       </tr-->
     </tbody>
   </table>
-  <br>
-<?php
-  endforeach;
-?>
+  <br />
+<?php endforeach;?>
