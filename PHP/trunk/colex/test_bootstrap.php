@@ -5,14 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
-
+    <title>Bootstrap Test</title>
     <!-- Bootstrap -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    
-     <!-- Custom styles for this template -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">     
+    <!-- Custom styles-->
     <link href="/css/sticky-footer-navbar.css" rel="stylesheet">
-
+    <link href="/css/my.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -21,16 +19,19 @@
     <![endif]-->
   </head>
   <body>
+    <!-- навигационная панель страницы -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
+        <!-- логитип и кнопка объединены для лучшего отображения на мобилах -->
         <div class="navbar-header">
+          <!-- кнопка выпадающего меню для мелких устройств-->
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
+          <!-- логотип -->
           <a class="navbar-brand" href="#">colex</a>
         </div>
 
@@ -74,14 +75,14 @@
               <form class="navbar-form navbar-left" role="search">
                 <div class="form-group">
                   <input type="text" class="form-control text-capitalize" placeholder="поиск">
+                  <button type="submit" class="btn btn-default text-capitalize">пуск</button>
                 </div>
-                <button type="submit" class="btn btn-default text-capitalize">пуск</button>
               </form>            
             </li>
             <!--li><a href="#">Войти</a></li-->
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <span><img class="img-circle img-avatar" alt="Profile Image" src="/images/islands-retina-50.jpg"></span> Влад Иванов <span class="caret"></span>
+                <span><img class="img-circle img-avatar" alt="Profile Image" src="/images/islands-retina-50.jpg"></span>Влад Иванов <span class="caret"></span>
               </a>
               <ul class="dropdown-menu text-capitalize-first">
                 <li><a href="#">настройка профиля</a></li>
@@ -93,8 +94,13 @@
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
+    <!-- тело страницы-->
+    <div class="container-fluid">
+    
+    </div>
+    <!-- футер страницы-->
     <footer class="footer">
-      <div class="container">
+      <div class="container-fluid">
         <p class="text-muted">Copyright, 2016 Иванов Влад, команда <a class="text-capitalize" href="#">colex</a>. Все права защищены.</p>
       </div>
     </footer>
