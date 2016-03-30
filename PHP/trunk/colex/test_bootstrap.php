@@ -39,7 +39,7 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav text-uppercase">
+          <ul class="nav navbar-nav navbar-left text-uppercase">
             <li class="active"><a href="#">главная <span class="sr-only">(current)</span></a></li>
             <li><a href="#">новости</a></li>
             <li class="dropdown">
@@ -97,8 +97,7 @@
       </div><!-- /.container-fluid -->
     </nav>
     <!-- тело страницы-->
-    <div class="container-fluid">
-    
+    <div class="container-fluid">    
     </div>
     <!-- футер страницы-->
     <footer class="footer">

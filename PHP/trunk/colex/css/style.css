@@ -54,17 +54,21 @@ body {
   padding-top: 20px;  
 }
 
+/* wide-screen */
 @media screen and (min-width: 1200px) {
 }
 
+/* desktops */
 @media screen and (min-width: 992px) {
 
 }
 
+/* tablets */
 @media screen and (min-width: 768px) {
 
 }
 
+/* phones */
 @media screen and (min-width: 480px) {
 
 }
