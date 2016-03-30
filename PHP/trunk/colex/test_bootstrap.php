@@ -5,12 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
     <title>Bootstrap Test</title>
-    <!-- Bootstrap -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">     
-    <!-- Custom styles-->
-    <link href="/css/sticky-footer-navbar.css" rel="stylesheet">
-    <link href="/css/my.css" rel="stylesheet">
+    <!-- подключение Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css">
+    
+    <!-- подключение пользовательских стилей -->
+    <link type="text/css" rel="stylesheet" href="/css/style.css">
+    
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -38,7 +40,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav text-uppercase">
-            <li class="_active"><a href="#">главная <span class="sr-only">(current)</span></a></li>
+            <li class="active"><a href="#">главная <span class="sr-only">(current)</span></a></li>
             <li><a href="#">новости</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">справочники <span class="caret"></span></a>
@@ -69,19 +71,19 @@
                 <li><a href="#">партии изделий</a></li>
               </ul>
             </li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
             <li>
-              <form class="navbar-form navbar-left" role="search">
-                <div class="form-group">
+              <div class="form-group">
+                <form class="navbar-form" role="search">
                   <input type="text" class="form-control text-capitalize" placeholder="поиск">
                   <button type="submit" class="btn btn-default text-capitalize">пуск</button>
-                </div>
-              </form>            
+                </form>            
+              </div>
             </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
             <!--li><a href="#">Войти</a></li-->
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <span><img class="img-circle img-avatar" alt="Profile Image" src="/images/islands-retina-50.jpg"></span>Влад Иванов <span class="caret"></span>
               </a>
               <ul class="dropdown-menu text-capitalize-first">
