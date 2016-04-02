@@ -1,112 +1,117 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <meta name="description" content="" />
-  <meta name="keywords" content="" />
-  <title>Colex</title>
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
-  <link href="http://fonts.googleapis.com/css?family=Kreon" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" type="text/css" href="/css/oldstyle.css" />
-  <script src="/js/jquery-1.6.2.js" type="text/javascript"></script>
-  <script type="text/javascript">
-    // return a random integer between 0 and number
-    function random(number)
-    {
-      return Math.floor(Math.random() * (number + 1));
-    };
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    // show random quote
-    $(document).ready
-    (
-      function()
-      { 
-        var quotes = $('.quote');
-        quotes.hide();      
-        var qlen = quotes.length; //document.write( random(qlen-1) );
-        $('.quote:eq(' + random(qlen-1) + ')').show(); //tag:eq(1)
-      }
-    );
-  </script>
-</head>
-<body>
-  <div id="wrapper">
-    <div id="header">
-      <div id="logo">
-        <a href="/">colex</a>
-      </div>
-    </div>    
-    <div id="page">
-      <div id="sidebar">
-        <!--div class="side-box">
-          <h3>новости</h3>
-          <p align="justify" class="quote" >
-            <b>todo:</b> добавить функционал по отображению текущих новостей компании.
-          </p>
-        </div-->
-        <div class="side-box">
-          <h3><a href="/">главная</a></h3>
-          <h3><a href="/news">новости</a></h3>
-          <div id="references">
-            <h3>справочники</h3>
-          </div>
-          <noindex>
-            <ul class="list" id="references_list">
-              <li><a href="/functions">пользовательские функции</a></li>
-              <li><a href="/positions">должности</a></li>
-              <li><a href="/employees">работники</a></li>
-              <li><a href="/employeepositions">должности работников</a></li>
-              <li><a href="/accessgroups">группы доступа</a></li>
-              <li><a href="/functionaccess">доступ к функционалу</a></li>
-              <li><a href="/positionaccess">доступ должностей</a></li>
-              <li><a href="/cosignatorytypes">типы субъектов</a></li>
-              <li><a href="/cosignatories">субъекты</a></li>
-              <li><a href="/dealershipagreements">дилерские соглашения</a></li>
-              <li><a href="/warrantytypes">типы гарантий</a></li>
-              <li><a href="/models">модели оборудования</a></li>
-              <li><a href="/modelparttypes">типы частей моделей оборудования</a></li>
-              <li><a href="/modelparts">части оборудования</a></li>
-              <li><a href="/cosignments">партии изделий</a></li>
-            </ul>            
-          </noindex>
-          <div id="reports">
-            <h3>отчёты</h3>
-          </div>
-          <noindex>
-            <ul class="list" id="reports_list">
-              <li><a href="/reports/_1">отчёт #1</a></li>
-              <li><a href="/reports/_2">отчёт #2</a></li>
-              <li><a href="/reports/_3">отчёт #3</a></li>
-            </ul>            
-          </noindex>
-          <h3><a href="/Contacts">Контакты</a></h3>
+    <title>Bootstrap Test</title>
+    <!-- подключение Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css">
+    
+    <!-- подключение пользовательских стилей -->
+    <link type="text/css" rel="stylesheet" href="/css/style.css">
+    
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="/js/html5shiv.min.js"></script>
+      <script src="/js/respond.min.js"></script>
+    <![endif]-->
+    <meta name="description" content="Тестовый проект автоматизации учёта для Colex">
+    <meta name="author" content="Иванов Влад">
+    <link rel="icon" href="/images/favicon.ico">
+  </head>
+  <body>
+    <!-- навигационная панель страницы -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- логитип и кнопка объединены для лучшего отображения на мобилах -->
+        <div class="navbar-header">
+          <!-- кнопка выпадающего меню для мелких устройств-->
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- логотип -->
+          <a class="navbar-brand" href="#">colex</a>
         </div>
-      </div>
-      <div id="content">
-        <div class="box">
-          <?php include 'application/views/'.$view_content; ?>
-        </div>
-        <br class="clearfix" />
-      </div>
-      <div id="page-bottom">
-        <div id="page-bottom-sidebar">
-          <h3>Наши контакты</h3>
-          <ul class="list">
-            <li>skypeid: caster1977</li>
-            <li>email: caster1977@yandex.ru</li>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-left text-uppercase">
+            <li><a href="/">главная <span class="sr-only">(current)</span></a></li>
+            <li><a href="/news">новости</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">справочники <span class="caret"></span></a>
+              <ul class="dropdown-menu text-capitalize-first" aria-labelledby="dropdownMenu3">
+                <li class="dropdown-header text-uppercase">Функционал</li>
+                <li><a href="/functions">пользовательские функции</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header text-uppercase">Персонал</li>
+                <li><a href="/positions">должности</a></li>
+                <li><a href="/employees">работники</a></li>
+                <li><a href="/employeepositions">должности работников</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header text-uppercase">Доступ</li>
+                <li><a href="/accessgroups">группы доступа</a></li>
+                <li><a href="/functionaccess">доступ к функционалу</a></li>
+                <li><a href="/positionaccess">доступ должностей</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header text-uppercase">Связи</li>
+                <li><a href="/cosignatorytypes">типы субъектов</a></li>
+                <li><a href="/cosignatories">субъекты</a></li>
+                <li><a href="/dealershipagreements">дилерские соглашения</a></li>
+                <li><a href="/warrantytypes">типы гарантий</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header text-uppercase">Продукция</li>
+                <li><a href="/models">модели оборудования</a></li>
+                <li><a href="/modelparttypes">типы частей моделей оборудования</a></li>
+                <li><a href="/modelparts">части оборудования</a></li>
+                <li><a href="/cosignments">партии изделий</a></li>
+              </ul>
+            </li>
+            <li>
+              <div class="form-group">
+                <form class="navbar-form" role="search">
+                  <input type="text" class="form-control text-capitalize" placeholder="поиск">
+                  <button type="submit" class="btn btn-default text-capitalize">пуск</button>
+                </form>            
+              </div>
+            </li>
           </ul>
-        </div>
-        <div id="page-bottom-content">
-          <h3>о компании</h3>
-          <p><b>todo:</b> добавить функционал по отображению информации о компании.</p>
-        </div>
-        <br class="clearfix" />
+          <ul class="nav navbar-nav navbar-right">
+            <!--li><a href="#">Войти</a></li-->
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <span><img class="img-circle img-avatar" alt="Profile Image" src="/images/islands-retina-50.jpg"></span>Влад Иванов <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu text-capitalize-first">
+                <li><a href="#">настройка профиля</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">выйти</a></li>
+              </ul>
+            </li>
+          </ul>          
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <!-- тело страницы-->
+    <div class="container-fluid">
+      <?php include 'application/views/'.$view_content; ?>
+    </div>
+    <!-- футер страницы-->
+    <footer class="footer">
+      <div class="container-fluid">
+        <p class="text-muted">Copyright, 2016 Иванов Влад, команда <a class="text-capitalize" href="#">colex</a>. Все права защищены.</p>
       </div>
-    </div>
-    <div id="footer">
-      &copy; 2016 <a href="/">colex</a>
-    </div>
-    <script>$('#references').toggle(function() {$('#references_list').slideUp();}, function() {$('#references_list').slideDown();});</script>
-    <script>$('#reports').toggle(function() {$('#reports_list').slideUp();}, function() {$('#reports_list').slideDown();});</script>
+    </footer>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/js/bootstrap.min.js"></script>
   </body>
 </html>

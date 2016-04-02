@@ -1,6 +1,8 @@
-<h1>новости</h1>
+<div class="page-header">
+  <h1 class="text-uppercase">новости</h1>
+</div>
 <?php foreach($data as $row):?>
-  <table id="news">
+  <table class="table">
     <tbody>
       <tr>
         <th>[<?php echo $row['changedate'];?>]: <?php echo $row['title'];?></th>
@@ -8,10 +10,9 @@
       <tr>
         <td><?php echo $row['body'];?></td>
       </tr>
-      <!--tr>
+      <!tr>
         <td>автор: пользователь <?php echo $row['employeeid'];?></td>
-      </tr-->
+      </tr>
     </tbody>
   </table>
-  <br />
 <?php endforeach;?>
