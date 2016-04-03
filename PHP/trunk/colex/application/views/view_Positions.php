@@ -15,6 +15,11 @@
         <th class="text-capitalize text-center">активность</th>
         <th class="text-capitalize text-center">
           <form method="post">
+            <div class="btn-group" role="group" aria-label="Панель действий">
+              <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus" aria-label="добавить"></span></button>
+              <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash" aria-label="удалить все"></button>
+            </div>
+          
             <button class="action" type="submit" formaction="/positions/add" alt="добавить"><img src="/images/add.png"></button>
             <button class="action" type="submit" formaction="/positions/clear" alt="удалить все"><img src="/images/close_cancel_deny_denied.png"></button>
           </form>
@@ -25,12 +30,8 @@
       <?php foreach($data as $row):?>      
       <tr>
         <td><?php echo $row["name"];?></td>
-        <td>
-          <div class="checkbox disabled text-center">
-            <label>
-              <input type="checkbox" disabled <?php echo ($row["active"] === 1) ? "checked" : "";?>>
-            </label>
-          </div>
+        <td class="text-center activity">
+          <span class="glyphicon glyphicon-<?php echo ($row["active"] === 1) ? "ok" : "remove";?>" aria-hidden="true"></span>
         </td>
         <td>
           <form method="post">

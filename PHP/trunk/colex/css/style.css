@@ -17,6 +17,14 @@ col.activity {
   width: 20px;
 }
 
+.activity .glyphicon-ok {
+  color: #3c763d;
+}
+
+.activity .glyphicon-remove {
+  color: #a94442;
+}
+
 .footer {
   position: absolute;
   bottom: 0;

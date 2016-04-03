@@ -1,7 +1,10 @@
-<h1>должности | добавление</h1>
-<p>
+<div class="page-header">
+  <h1 class="text-uppercase">должности | добавление</h1>
+</div>
+<?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?>
+<div class="table-responsive">
   <form method="post" action="/positions">
-    <table>
+	<table class="table table-condensed table-hover table-bordered">
       <col>
       <col class="activity">
       <thead>
@@ -26,4 +29,4 @@
       </tbody>
     </table>
   </form>
-</p>
+</div>
