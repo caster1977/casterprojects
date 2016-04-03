@@ -12,7 +12,14 @@ class view
     {
       if (count($result) === 2)
       {
-        return sprintf("<span class='%s'>%s</span>", ($result[0] >= 0 ? "success" : "failure"), $result[1]);
+        return sprintf(
+            '<div class="alert alert-%s" role="alert">'.
+            '<span class="glyphicon glyphicon-%s" aria-hidden="true"></span>'.
+            '<span class="sr-only">%s:</span> %s</div>',
+            ($result[0] >= 0 ? "success" : "danger"), 
+            ($result[0] >= 0 ? "ok" : "exclamation-sign"),
+            ($result[0] >= 0 ? "Успех" : "Ошибка"),
+            $result[1]);
       }
     }
   }

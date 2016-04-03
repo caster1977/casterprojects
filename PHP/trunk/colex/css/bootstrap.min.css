@@ -2129,7 +2129,7 @@ th {
 .table-bordered>thead>tr>td,.table-bordered>thead>tr>th {
     border-bottom-width: 2px
 }
-.table-striped>tbody>tr: nth-of-type(odd) {
+.table-striped>tbody>tr:nth-of-type(odd) {
     background-color: #f9f9f9
 }
 .table-hover>tbody>tr:hover {
@@ -2353,7 +2353,7 @@ input[type=search] {
     position: relative;
     display: inline-block;
     padding-left: 20px;
-    margin-bottom: 0;
+    margin-bottom: 0;  
     font-weight: 400;
     vertical-align: middle;
     cursor: pointer
