@@ -37,13 +37,13 @@
             <span class="icon-bar"></span>
           </button>
           <!-- логотип -->
-          <a class="navbar-brand" href="#">colex</a>
+          <a class="navbar-brand text-uppercase" href="/">colex<span> &#174</span></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-left text-uppercase">
-            <li><a href="/">главная <span class="sr-only">(current)</span></a></li>
+            <li><a href="/"><span class="glyphicon glyphicon-home"></span> главная<!--span class="sr-only">(текущая)</span--></a></li>
             <li><a href="/news">новости</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">справочники <span class="caret"></span></a>
@@ -106,7 +106,7 @@
     <!-- футер страницы-->
     <footer class="footer">
       <div class="container-fluid">
-        <p class="text-muted">Copyright, 2016 Иванов Влад, команда <a class="text-capitalize" href="#">colex</a>. Все права защищены.</p>
+        <p class="text-muted">&#169 2016 Иванов Влад, команда <a class="text-capitalize" href="/">colex</a>. Все права защищены.</p>
       </div>
     </footer>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
