@@ -58,7 +58,7 @@
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header text-uppercase">Доступ</li>
                 <li><a href="/accessgroups">группы доступа</a></li>
-                <li><a href="/functionaccess">доступ к функционалу</a></li>
+                <li><a href="/functionaccess">доступ к пользовательским функциям</a></li>
                 <li><a href="/positionaccess">доступ должностей</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header text-uppercase">Связи</li>
@@ -90,7 +90,7 @@
                 <span><img class="img-circle img-avatar" alt="Profile Image" src="/images/islands-retina-50.jpg"></span>Влад Иванов <span class="caret"></span>
               </a>
               <ul class="dropdown-menu text-capitalize-first">
-                <li><a href="#">настройка профиля</a></li>
+                <li><a  href="/profile">настройка профиля</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="#">выйти</a></li>
               </ul>

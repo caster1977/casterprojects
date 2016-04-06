@@ -1,47 +1,62 @@
-<h1>партии изделий</h1>
-<p>
-  <table>
-    <caption><?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?></caption>
+<div class="page-header">
+  <h5><a href="/">справочники</a><span class="level"></span>партии изделий</h5>
+</div>
+<?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?>
+<div class="table-responsive">
+  <table class="table table-condensed table-hover table-bordered">
     <colgroup>
-      <col class="identity" />
-      <col />
-      <col />
-      <col class="activity" />
-      <col class="actions" />
+      <col class="actions"/>
+      <col/>
+      <col/>
+      <col class="activity"/>
     </colgroup>
     <thead>
       <tr>
-        <th class="identity"><abbr title="идентификатор">id</abbr></th>
-        <th>номер</th>
-        <th>дата регистрации</th>
-        <th class="activity">активность</th>
-        <th class="actions">
-          <nobr>
-            <form method="post">
-              <button class="action" type="submit" formaction="/cosignments/add" alt="добавить"><img src="/images/add.png"></button>
-              <button class="action" type="submit" formaction="/cosignments/clear" alt="удалить все"><img src="/images/close_cancel_deny_denied.png"></button>
-            </form>
-          </nobr>
+        <th class="text-center">
+          <form class="form-inline" method="post">
+            <div class="form-group-xs">
+              <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
+              <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-success btn-xs" formaction="/cosignments/add"><span class="glyphicon glyphicon-plus" alt="добавить" aria-label="добавить"></span></button>
+              </div>
+              <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-danger btn-xs" formaction="/cosignments/clear"><span class="glyphicon glyphicon-trash" alt="удалить все" aria-label="удалить все"></span></button>
+              </div>
+            </div>
+          </form>
         </th>
+        <th class="text-left">номер</th>
+        <th class="text-left">дата регистрации</th>
+        <th class="text-center"><abbr title="активность">*</abbr></th>
       </tr>
     </thead>
     <tbody>
-<?php foreach($data as $row):?>
-     <tr>
-        <td><?php echo $row["id"];?></td>
+      <?php foreach($data as $row):?>      
+      <tr>
+        <td class="text-center">
+          <form class="form-inline" method="post">
+            <div class="form-group-xs">
+              <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
+              <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-warning btn-xs" formaction="/cosignments/edit" name="id" value="<?php echo $row["id"];?>">
+                  <span class="glyphicon glyphicon-pencil" alt="редактировать" aria-label="редактировать"></span>
+                </button>
+              </div>
+              <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-danger btn-xs" formaction="/cosignments/delete" name="id" value="<?php echo $row["id"];?>">
+                  <span class="glyphicon glyphicon-trash" alt="удалить" aria-label="удалить"></span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </td>
         <td><?php echo $row["number"];?></td>
         <td><?php echo $row["registrationdate"];?></td>
-        <td><input class="activity" type="checkbox" disabled <?php ($row['active'] === 1) ? "checked" : "";?>/></td>
-        <td>
-          <nobr>
-            <form method="post">
-              <button class="action" type="submit" formaction="/cosignments/edit" alt="редактировать" name="id" value="<?php echo $row["id"];?>"><img src="/images/write_edit_pen.png"></button>
-              <button class="action" type="submit" formaction="/cosignments/delete" alt="удалить" name="id" value="<?php echo $row["id"];?>"><img src="/images/close_cancel_deny_denied.png"></button>
-            </form>
-          </nobr>
+        <td class="text-center activity">
+          <span class="glyphicon glyphicon-<?php echo ($row["active"] === 1) ? "ok" : "remove";?>" aria-hidden="true"></span>
         </td>
       </tr>
-<?php endforeach;?>
+    <?php endforeach;?>
     </tbody>
   </table>
-</p>
+</div>

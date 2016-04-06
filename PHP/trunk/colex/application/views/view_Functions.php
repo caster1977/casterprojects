@@ -12,7 +12,7 @@
     </colgroup>
     <thead>
       <tr>
-        <th class="text-capitalize text-center">
+        <th class="text-center">
           <form class="form-inline" method="post">
             <div class="form-group-xs">
               <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
@@ -25,9 +25,9 @@
             </div>
           </form>
         </th>
-        <th class="text-capitalize text-left">наименование</th>
-        <th class="text-capitalize text-left">код</th>
-        <th class="text-capitalize text-center"><abbr title="активность">*</abbr></th>
+        <th class="text-left">наименование</th>
+        <th class="text-left">код</th>
+        <th class="text-center"><abbr title="активность">*</abbr></th>
       </tr>
     </thead>
     <tbody>
