@@ -8,7 +8,7 @@
 
     <title>Colex</title>
     <!-- подключение Bootstrap -->
-    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.css">
     
     <!-- подключение пользовательских стилей -->
     <link type="text/css" rel="stylesheet" href="/css/style.css">
