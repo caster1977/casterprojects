@@ -53,7 +53,7 @@
           <span class="glyphicon glyphicon-<?php echo ($row["active"] === 1) ? "ok" : "remove";?>" aria-hidden="true"></span>
         </td>
       </tr>
-    <?php endforeach;?>
+      <?php endforeach;?>
     </tbody>
   </table>
 </div>
