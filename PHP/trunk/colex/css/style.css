@@ -114,11 +114,11 @@ a.navbar-brand:focus,a.navbar-brand:hover {
 }
 
 .text-capitalize-first {
-  text-transform: lowercase;
+  text-transform: lowercase!important;
 }
 
-.text-capitalize-first > li:first-letter {
-    text-transform: capitalize;
+.text-capitalize-first > li:first-letter, label.text-capitalize-first:first-letter {
+    text-transform: capitalize!important;
 }
 
 .footer > .container-fluid > .text-muted {

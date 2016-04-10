@@ -1,10 +1,13 @@
 <div class="page-header">
   <h5><a href="/">справочники</a><span class="level"></span>должности</h5>
 </div>
-<?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?>
+<div class="row-fluid">
+  <div class="col-sm-* col-xs-*">
+    <?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?>
+  </div>
+</div>
 <div class="table-responsive">
   <table class="table table-condensed table-hover table-bordered">
-    <colgroup>
       <col class="actions"/>
       <col/>
       <col class="activity"/>

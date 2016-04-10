@@ -48,40 +48,65 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">справочники <span class="caret"></span></a>
               <ul class="dropdown-menu text-capitalize-first" aria-labelledby="dropdownMenu3">
-                <li class="dropdown-header text-uppercase">Функционал</li>
+                <li class="dropdown-header text-uppercase">функционал</li>
                 <li><a href="/functions">пользовательские функции</a></li>
                 <li role="separator" class="divider"></li>
-                <li class="dropdown-header text-uppercase">Персонал</li>
+                <li class="dropdown-header text-uppercase">персонал</li>
                 <li><a href="/positions">должности</a></li>
                 <li><a href="/employees">работники</a></li>
                 <li><a href="/employeepositions">должности работников</a></li>
                 <li role="separator" class="divider"></li>
-                <li class="dropdown-header text-uppercase">Доступ</li>
+                <li class="dropdown-header text-uppercase">доступ</li>
                 <li><a href="/accessgroups">группы доступа</a></li>
                 <li><a href="/functionaccess">доступ к пользовательским функциям</a></li>
                 <li><a href="/positionaccess">доступ должностей</a></li>
                 <li role="separator" class="divider"></li>
-                <li class="dropdown-header text-uppercase">Связи</li>
+                <li class="dropdown-header text-uppercase">связи</li>
                 <li><a href="/cosignatorytypes">типы субъектов</a></li>
                 <li><a href="/cosignatories">субъекты</a></li>
                 <li><a href="/dealershipagreements">дилерские соглашения</a></li>
                 <li><a href="/warrantytypes">типы гарантий</a></li>
                 <li role="separator" class="divider"></li>
-                <li class="dropdown-header text-uppercase">Продукция</li>
+                <li class="dropdown-header text-uppercase">продукция</li>
                 <li><a href="/models">модели оборудования</a></li>
                 <li><a href="/modelparttypes">типы частей моделей оборудования</a></li>
                 <li><a href="/modelparts">части оборудования</a></li>
                 <li><a href="/cosignments">партии изделий</a></li>
               </ul>
             </li>
-            <li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">управление <span class="caret"></span></a>
+              <ul class="dropdown-menu text-capitalize-first" aria-labelledby="dropdownMenu3">
+                <li class="dropdown-header text-uppercase">Этап 1</li>
+                <li><a href="/">проектирование прототипа</a></li>
+                <li><a href="/">заказ прототипа</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header text-uppercase">Этап 2</li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header text-uppercase">Этап 3</li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header text-uppercase">Этап 4</li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header text-uppercase">Этап 5</li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header text-uppercase">Этап 6</li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header text-uppercase">Этап 7</li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header text-uppercase">Этап 8</li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header text-uppercase">Этап 9</li>
+              </ul>
+            </li>
+            <li><a href="/reports">отчёты</a></li>
+            <!--li>
               <div class="form-group">
                 <form class="navbar-form" role="search">
                   <input type="text" class="form-control text-capitalize" placeholder="поиск">
                   <button type="submit" class="btn btn-default text-capitalize">пуск</button>
                 </form>            
               </div>
-            </li>
+            </li-->
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <!--li><a href="#">Войти</a></li-->
