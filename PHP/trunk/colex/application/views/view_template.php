@@ -92,13 +92,9 @@
                 <li class="dropdown-header text-uppercase">Этап 6</li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header text-uppercase">Этап 7</li>
-                <li role="separator" class="divider"></li>
-                <li class="dropdown-header text-uppercase">Этап 8</li>
-                <li role="separator" class="divider"></li>
-                <li class="dropdown-header text-uppercase">Этап 9</li>
               </ul>
             </li>
-            <li><a href="/reports">отчёты</a></li>
+            <li><a href="/">отчёты</a></li>
             <!--li>
               <div class="form-group">
                 <form class="navbar-form" role="search">
