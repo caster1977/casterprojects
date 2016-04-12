@@ -17,7 +17,8 @@
     <form method="post" action="/functions">
       <div class="form-group-xs text-capitalize-first">
         <label for="name" class="text-capitalize-first">наименование</label>
-        <input type="text" class="form-control" id="name" name="name" maxlength="255" placeholder="Введите наименование">
+        <input type="text" class="form-control" id="name" name="name" maxlength="255" placeholder="Введите наименование" autofocus>
+        <script>if (!("autofocus" in document.createElement("input"))) {document.getElementById("name").focus();}</script>
       </div>
       <div class="form-group-xs">
         <label for="name" class="text-capitalize-first">код</label>

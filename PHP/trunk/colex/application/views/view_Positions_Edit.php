@@ -19,7 +19,8 @@
         <div class="form-group-xs">
           <input type="hidden" name="id" value="<?php echo $row["id"];?>">
           <label for="name" class="text-capitalize-first">наименование</label>
-          <input type="text" class="form-control" id="name" name="name" maxlength="255" value="<?php echo $row["name"];?>" placeholder="Введите наименование">
+          <input type="text" class="form-control" id="name" name="name" maxlength="255" value="<?php echo $row["name"];?>" placeholder="Введите наименование" autofocus>
+          <script>if (!("autofocus" in document.createElement("input"))) document.getElementById("name").focus();</script>
         </div>
         <div class="checkbox">
           <label class="text-capitalize-first"><input type="checkbox" name="active" <?php if ($row["active"] === 1) echo "checked";?>>aктивность</label>
