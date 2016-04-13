@@ -75,23 +75,31 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">управление <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">логистика <span class="caret"></span></a>
               <ul class="dropdown-menu text-capitalize-first" aria-labelledby="dropdownMenu3">
                 <li class="dropdown-header text-uppercase">Этап 1</li>
-                <li><a href="/">проектирование прототипа</a></li>
-                <li><a href="/">заказ прототипа</a></li>
+                <li><a href="/">заказ прототипа у поставщика</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header text-uppercase">Этап 2</li>
+                <li><a href="/">прибытие в порт</a></li>
+                <li><a href="/">растаможка</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header text-uppercase">Этап 3</li>
+                <li><a href="/">прибытие в цех</a></li>
+                <li><a href="/">приёмка</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header text-uppercase">Этап 4</li>
+                <li><a href="/"></a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header text-uppercase">Этап 5</li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header text-uppercase">Этап 6</li>
+                <li><a href="/">доставка заказчику</a></li>
+                <li><a href="/">установка и настройка</a></li>
+                <li><a href="/">обучение пользователей</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header text-uppercase">Этап 7</li>
+                <li><a href="/">Техническая поддержка</a></li>
               </ul>
             </li>
             <li><a href="/">отчёты</a></li>

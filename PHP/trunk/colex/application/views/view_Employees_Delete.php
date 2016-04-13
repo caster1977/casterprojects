@@ -1,57 +1,72 @@
-<h1>работники | удаление</h1>
-<p>
-  <form method="post" action="/employees">
-    <table>
+<div class="page-header">
+  <h5>
+    <a href="/">справочники</a>
+    <span class="level"></span>
+    <a href="/employees">работники</a>
+    <span class="level"></span>
+    удаление
+  </h5>
+</div>
+<div class="table-responsive">
+  <form class="form-inline" method="post" action="/employees">
+    <table class="table table-condensed table-hover table-bordered">
       <colgroup>
-        <col class="identity" />
-        <col />
-        <col />
-        <col />
-        <col />
-        <col />
-        <col />
-        <col class="activity" />
+        <col/>
+        <col/>
+        <col/>
+        <col/>
+        <col/>
+        <col/>
+        <col class="activity"/>
       </colgroup>
       <thead>
         <tr>
-          <th class="identity"><abbr title="идентификатор">id</abbr></th>
-          <th>фамилия</th>
-          <th>имя</th>
-          <th>отчество</th>
-          <th>дата рождения</th>
-          <th>логин</th>
-          <th>последний вход в систему</th>
-          <th class="activity">активность</th>
+          <th class="text-left">фамилия</th>
+          <th class="text-left">имя</th>
+          <th class="text-left">отчество</th>
+          <th class="text-left">дата рождения</th>
+          <th class="text-left">логин</th>
+          <th class="text-left">последний вход в систему</th>
+          <th class="text-center"><abbr title="активность">*</abbr></th>
         </tr>
       </thead>
-      <tbody>
-      <?php
-        foreach($data as $row)
-        {
-          printf('
+      <tfoot>
         <tr>
-          <td>%d<input type="hidden" name="id" value="%s"></td>
-          <td>%s</td>
-          <td>%s</td>
-          <td>%s</td>
-          <td>%s</td>
-          <td>%s</td>
-          <td>%s</td>
-          <td><input type="checkbox" class="activity" disabled%s></td>
-        </tr>',
-            $row['id'], $row['id'], $row['lastname'], $row['firstname'], $row['middlename'], $row['birthdate'], $row['login'], $row['lastlogon'], 
-            ($row['active'] === 1 ? " checked" : ""));
-        }
-      ?>
-        <tr>
-          <td colspan="8" align="left">
-            <nobr>
-              <button type="submit" class="action" name="action" value="delete" alt="удалить"><img src="/images/tick_ok_yes.png"></button>
-              <button type="submit" class="action" name="action" value="cancel" alt="отмена"><img src="/images/arrow_top_left.png"></button>
-            </nobr>
+          <td colspan="7" class="text-left">
+            <div class="form-group-xs">
+              <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
+              <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-success btn-xs" name="action" value="delete" alt="удалить">
+                  <span class="glyphicon glyphicon-ok-sign" alt="удалить" aria-label="удалить"></span>
+                </button>
+              </div>
+              <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-danger btn-xs" name="action" value="cancel" alt="отмена">
+                  <span class="glyphicon glyphicon-remove-sign" alt="отмена" aria-label="отмена"></span>
+                </button>
+              </div>
+            </div>
           </td>
         </tr>
+      </tfoot>
+      <tbody>
+        <?php foreach($data as $row):?>      
+        <tr>
+          <td>
+            <input type="hidden" name="id" value="<?php echo $row["id"];?>">
+            <?php echo $row["lastname"];?>
+          </td>
+          <td><?php echo $row["firstname"];?></td>
+          <td><?php echo $row["middlename"];?></td>
+          <td><?php echo $row["birthdate"];?></td>
+          <td><?php echo $row["login"];?></td>
+          <td><?php echo $row["lastlogon"];?></td>
+          <td class="text-center activity">
+            <span class="glyphicon glyphicon-<?php echo ($row["active"] === 1) ? "ok" : "remove";?>" aria-hidden="true"></span>
+          </td>
+        </tr>
+        <?php endforeach;?>
       </tbody>
     </table>
-  </form>
-</p>
+  </form>        
+</div>
