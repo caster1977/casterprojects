@@ -22,7 +22,7 @@
           <option value="<?php echo $row["id"];?>"><?php echo $row["fullname"];?></option>
         <?php endforeach;?>
         </select>
-        <script>if (!("autofocus" in document.createElement("select"))) document.getElementById("employee").focus();</script>
+        <script>if (!("autofocus" in document.createElement("select"))) document.getElementById("employees").focus();</script>
       </div>
       <div class="form-group-xs">
         <label for="positions" class="text-capitalize-first">должность</label>
