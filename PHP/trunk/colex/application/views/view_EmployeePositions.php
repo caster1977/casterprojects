@@ -39,7 +39,7 @@
       </tr>
     </thead>
     <tbody>
-      <?php foreach($data as $row):?>      
+      <?php foreach($data["employeepositions"] as $row):?>
       <tr>
         <td class="text-center">
           <form class="form-inline" method="post">

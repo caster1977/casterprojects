@@ -7,17 +7,53 @@ class model_employeepositions extends model
     $result = self::open("{call colex_sel_employeepositions (?, ?)}", array($id, null));
     try
     {
-      $data = array();
+      $employeepositions = array();
       
       while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
       {
-        $data[] = $row;
+        $employeepositions[] = $row;
       }
     }
     finally
     {
       self::close($result);
     }
+
+    $result = self::open("{call colex_sel_employees (?, ?)}", array(-1, 1));
+    try
+    {
+      $employees = array();
+      
+      while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
+      {
+        $employees[] = $row;
+      }
+    }
+    finally
+    {
+      self::close($result);
+    }
+
+    $result = self::open("{call colex_sel_positions (?, ?)}", array(-1, 1));
+    try
+    {
+      $positions = array();
+      
+      while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
+      {
+        $positions[] = $row;
+      }
+    }
+    finally
+    {
+      self::close($result);
+    }
+    
+    $data = array();
+    $data["employeepositions"] = $employeepositions;
+    $data["employees"] = $employees;
+    $data["positions"] = $positions;
+    
     return $data;
   }
   
