@@ -3,7 +3,7 @@ class model_warrantytypes extends model
 {
   public function sel_data($data = null)
   {
-    $id = (isset($data)) && (isset($data['id'])) ? $data['id'] : -1;
+    $id = isset($data, $data['id']) ? $data['id'] : -1;
     $result = self::open("{call colex_sel_warrantytypes (?, ?)}", array($id, null));
     try
     {
@@ -27,9 +27,9 @@ class model_warrantytypes extends model
     
     $id = -1;
 
-    if (isset($name))
+    if (isset($name, $details))
     {
-      $result = self::open("{call colex_upd_warrantytypes (?, ?, ?)}", array($id, $name, (isset($active) ? 1 : 0)));
+      $result = self::open("{call colex_upd_warrantytypes (?, ?, ?, ?)}", array($id, $name, $details, (isset($active) ? 1 : 0)));
       try
       {
         if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
@@ -52,9 +52,9 @@ class model_warrantytypes extends model
   {
     extract($data);
 
-    if (isset($id) && isset($name))
+    if (isset($id, $name))
     {
-      $result = self::open("{call colex_upd_warrantytypes (?, ?, ?)}", array($id, $name, (isset($active) ? 1 : 0)));
+      $result = self::open("{call colex_upd_warrantytypes (?, ?, ?, ?)}", array($id, $name, $details, (isset($active) ? 1 : 0)));
       try
       {
         if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))

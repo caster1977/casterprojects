@@ -2,7 +2,7 @@
   <h5>
     <a href="/">справочники</a>
     <span class="level"></span>
-    <a href="/functions">пользовательские функции</a>
+    <a href="/warrantytypes">типы гарантий</a>
     <span class="level"></span>
     добавление
   </h5>
@@ -14,15 +14,15 @@
 </div>
 <div class="row-fluid">
   <div class="col-sm-* col-xs-*">
-    <form method="post" action="/functions">
-      <div class="form-group-xs text-capitalize-first">
+    <form method="post" action="/warrantytypes">
+      <div class="form-group-xs">
         <label for="name" class="text-capitalize-first">наименование</label>
         <input type="text" class="form-control" id="name" name="name" maxlength="255" placeholder="Введите наименование" autofocus>
-        <script>if (!("autofocus" in document.createElement("input"))) {document.getElementById("name").focus();}</script>
+        <script>if (!("autofocus" in document.createElement("input"))) document.getElementById("name").focus();</script>
       </div>
       <div class="form-group-xs">
-        <label for="code" class="text-capitalize-first">код</label>
-        <input type="text" class="form-control" id="code" name="code" maxlength="255" placeholder="Введите код">
+        <label for="details" class="text-capitalize-first">условия</label>
+        <textarea class="form-control" name="details" id="details" rows="20" cols="60" placeholder="Введите условия"></textarea>
       </div>
       <div class="checkbox">
         <label class="text-capitalize-first"><input type="checkbox" name="active" checked>aктивность</label>

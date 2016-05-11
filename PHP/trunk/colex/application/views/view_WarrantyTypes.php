@@ -55,7 +55,7 @@
           </form>
         </td>
         <td><?php echo $row["name"];?></td>
-        <td><?php echo $row["details"];?></td>
+        <td><?php echo strlen($row["details"]) > 100 ? substr($row["details"], 0, 100)."..." : $row["details"];?></td>
         <td class="text-center activity">
           <span class="glyphicon glyphicon-<?php echo ($row["active"] === 1) ? "ok" : "remove";?>" aria-hidden="true"></span>
         </td>

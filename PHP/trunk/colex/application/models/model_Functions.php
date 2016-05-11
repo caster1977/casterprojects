@@ -3,7 +3,7 @@ class model_functions extends model
 {
   public function sel_data($data = null)
   {
-    $id = (isset($data)) && (isset($data['id'])) ? $data['id'] : -1;
+    $id = isset($data, $data['id']) ? $data['id'] : -1;
     $result = self::open("{call colex_sel_functions (?, ?)}", array($id, null));
     try
     {
@@ -52,7 +52,7 @@ class model_functions extends model
   {
     extract($data);
 
-    if (isset($id) && isset($name))
+    if (isset($id, $name))
     {
       $result = self::open("{call colex_upd_functions (?, ?, ?, ?)}", array($id, $name, $code, (isset($active) ? 1 : 0)));
       try

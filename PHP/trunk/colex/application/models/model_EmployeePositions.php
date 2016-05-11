@@ -3,7 +3,7 @@ class model_employeepositions extends model
 {
   public function sel_data($data = null)
   {
-    $id = (isset($data)) && (isset($data['id'])) ? $data['id'] : -1;
+    $id = isset($data, $data['id']) ? $data['id'] : -1;
     $result = self::open("{call colex_sel_employeepositions (?, ?)}", array($id, null));
     try
     {
@@ -88,7 +88,7 @@ class model_employeepositions extends model
   {
     extract($data);
 
-    if (isset($id) && isset($name))
+    if (isset($id, $name))
     {
       $result = self::open("{call colex_upd_employeepositions (?, ?, ?)}", array($id, $name, (isset($active) ? 1 : 0)));
       try

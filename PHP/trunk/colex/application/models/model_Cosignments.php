@@ -3,7 +3,7 @@ class model_cosignments extends model
 {
   public function sel_data($data = null)
   {
-    $id = (isset($data)) && (isset($data['id'])) ? $data['id'] : -1;
+    $id = isset($data, $data['id']) ? $data['id'] : -1;
     $result = self::open("{call colex_sel_cosignments (?, ?)}", array($id, null));
     try
     {
@@ -27,9 +27,10 @@ class model_cosignments extends model
     
     $id = -1;
 
-    if (isset($number) && isset($registrationdate))
+    if (isset($number, $registrationdate))
     {
-      $result = self::open("{call colex_upd_cosignments (?, ?, ?, ?)}", array($id, $number, $registrationdate, (isset($active) ? 1 : 0)));
+      $result = self::open("{call colex_upd_cosignments (?, ?, ?, ?)}", 
+        array($id, $number, date_format(date_create($registrationdate), 'Ymd'), (isset($active) ? 1 : 0)));
       try
       {
         if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
@@ -52,9 +53,10 @@ class model_cosignments extends model
   {
     extract($data);
 
-    if (isset($id) && isset($number) && isset($registrationdate))
+    if (isset($id, $number, $registrationdate))
     {
-      $result = self::open("{call colex_upd_cosignments (?, ?, ?, ?)}", array($id, $number, $registrationdate, (isset($active) ? 1 : 0)));
+      $result = self::open("{call colex_upd_cosignments (?, ?, ?, ?)}",
+        array($id, $number, date_format(date_create($registrationdate), 'Ymd'), (isset($active) ? 1 : 0)));
       try
       {
         if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
