@@ -1,6 +1,7 @@
-<div class="page-header">
-  <h5><a href="/">справочники</a><span class="level"></span>должности</h5>
-</div>
+<ol class="breadcrumb">
+  <li><a href="/">справочники</a></li>
+  <li class="active">должности</li>
+</ol>
 <div class="row-fluid">
   <div class="col-sm-* col-xs-*">
     <?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?>

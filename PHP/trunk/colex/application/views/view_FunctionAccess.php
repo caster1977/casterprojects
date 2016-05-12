@@ -1,6 +1,7 @@
-<div class="page-header">
-  <h5><a href="/">справочники</a><span class="level"></span>доступ к пользовательским функциям</h5>
-</div>
+<ol class="breadcrumb">
+  <li><a href="/">справочники</a></li>
+  <li class="active">доступ к пользовательским функциям</li>
+</ol>
 <div class="row-fluid">
   <div class="col-sm-* col-xs-*">
     <?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?>
@@ -36,7 +37,7 @@
       </tr>
     </thead>
     <tbody>
-      <?php foreach($data as $row):?>      
+      <?php foreach($data as $row):?>
       <tr>
         <td class="text-center">
           <form class="form-inline" method="post">

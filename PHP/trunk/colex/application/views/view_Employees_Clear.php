@@ -1,12 +1,8 @@
-<div class="page-header">
-  <h5>
-    <a href="/">справочники</a>
-    <span class="level"></span>
-    <a href="/employees">работники</a>
-    <span class="level"></span>
-    удаление всех
-  </h5>
-</div>
+<ol class="breadcrumb">
+  <li><a href="/">справочники</a></li>
+  <li><a href="/employees">работники</a></li>
+  <li class="active">удаление всех</li>
+</ol>
 <div class="table-responsive">
   <table class="table table-condensed table-hover table-bordered">
     <colgroup>
@@ -47,12 +43,12 @@
                 </div>
               </div>
             </div>
-          </form>        
+          </form>
         </td>
       </tr>
     </tfoot>
     <tbody>
-      <?php foreach($data as $row):?>      
+      <?php foreach($data as $row):?>
       <tr>
         <td><?php echo $row["lastname"];?></td>
         <td><?php echo $row["firstname"];?></td>

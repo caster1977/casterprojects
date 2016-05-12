@@ -1,6 +1,6 @@
-<div class="page-header">
-  <h5>новости</h5>
-</div>
+<ol class="breadcrumb">
+  <li class="active">новости</li>
+</ol>
 <div class="row-fluid">
   <?php foreach($data as $row):?>
   <div class="col-sm-4 col-xs-6">

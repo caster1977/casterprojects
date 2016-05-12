@@ -1,12 +1,8 @@
-<div class="page-header">
-  <h5>
-    <a href="/">справочники</a>
-    <span class="level"></span>
-    <a href="/cosignments">партии изделий</a>
-    <span class="level"></span>
-    удаление
-  </h5>
-</div>
+<ol class="breadcrumb">
+  <li><a href="/">справочники</a></li>
+  <li><a href="/cosignments">партии изделий</a></li>
+  <li class="active">удаление</li>
+</ol>
 <div class="table-responsive">
   <form class="form-inline" method="post" action="/cosignments">
     <table class="table table-condensed table-hover table-bordered">

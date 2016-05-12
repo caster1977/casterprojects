@@ -42,7 +42,7 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav navbar-left text-uppercase">
+          <ul class="nav navbar-left navbar-nav text-uppercase"> <!--для растягивания по ширине экрана nav-justified-->
             <li><a href="/"><span class="glyphicon glyphicon-home"></span> главная<!--span class="sr-only">(текущая)</span--></a></li>
             <li><a href="/news">новости</a></li>
             <li class="dropdown">

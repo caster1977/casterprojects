@@ -1,12 +1,8 @@
-<div class="page-header">
-  <h5>
-    <a href="/">справочники</a>
-    <span class="level"></span>
-    <a href="/employeepositions">должности работников</a>
-    <span class="level"></span>
-    редактирование
-  </h5>
-</div>
+<ol class="breadcrumb">
+  <li><a href="/">справочники</a></li>
+  <li><a href="/employeepositions">должности работников</a></li>
+  <li class="active">редактирование</li>
+</ol>
 <div class="row-fluid">
   <div class="col-sm-* col-xs-*">
     <?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?>
@@ -15,7 +11,7 @@
 <div class="row-fluid">
   <div class="col-sm-* col-xs-*">
     <form method="post" action="/employeepositions">
-      <?php foreach($data["employeepositions"] as $employeeposition):?>      
+      <?php foreach($data["employeepositions"] as $employeeposition):?>
       <div class="form-group-xs">
         <input type="hidden" name="id" value="<?php echo $employeeposition["id"];?>">
         <label for="employees" class="text-capitalize-first">работник</label>
@@ -32,7 +28,7 @@
           <?php foreach($data["positions"] as $position):?>
           <option value="<?php echo $position["id"];?>"<?php if($employeeposition["positionid"] === $position["id"]) echo " selected";?>><?php echo $position["name"];?></option>
           <?php endforeach;?>
-        </select>          
+        </select>
       </div>
       <div class="form-group-xs">
         <label for="startdate" class="text-capitalize-first">дата вступления в должность</label>
@@ -44,7 +40,7 @@
       </div>
       <div class="checkbox">
         <label class="text-capitalize-first"><input type="checkbox" name="active" <?php if ($employeeposition["active"] === 1) echo "checked";?>>aктивность</label>
-      </div>      
+      </div>
       <div class="form-group-xs">
         <div class="col-sm-* col-xs-*">
           <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">

@@ -1,12 +1,8 @@
-<div class="page-header">
-  <h5>
-    <a href="/">справочники</a>
-    <span class="level"></span>
-    <a href="/employees">работники</a>
-    <span class="level"></span>
-    удаление
-  </h5>
-</div>
+<ol class="breadcrumb">
+  <li><a href="/">справочники</a></li>
+  <li><a href="/employees">работники</a></li>
+  <li class="active">удаление</li>
+</ol>
 <div class="table-responsive">
   <form class="form-inline" method="post" action="/employees">
     <table class="table table-condensed table-hover table-bordered">

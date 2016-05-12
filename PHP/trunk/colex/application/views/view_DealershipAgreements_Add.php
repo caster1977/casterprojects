@@ -1,12 +1,8 @@
-<div class="page-header">
-  <h5>
-    <a href="/">справочники</a>
-    <span class="level"></span>
-    <a href="/dealershipagreements">дилерские соглашения</a>
-    <span class="level"></span>
-    добавление
-  </h5>
-</div>
+<ol class="breadcrumb">
+  <li><a href="/">справочники</a></li>
+  <li><a href="/dealershipagreements">дилерские соглашения</a></li>
+  <li class="active">добавление</li>
+</ol>
 <div class="row-fluid">
   <div class="col-sm-* col-xs-*">
     <?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?>
@@ -26,7 +22,7 @@
       </div>
       <div class="checkbox">
         <label class="text-capitalize-first"><input type="checkbox" name="active" checked>aктивность</label>
-      </div>      
+      </div>
       <div class="form-group-xs">
         <div class="col-sm-* col-xs-*">
           <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">

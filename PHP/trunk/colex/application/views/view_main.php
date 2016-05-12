@@ -1,6 +1,6 @@
-<div class="page-header">
-  <h5><span class="glyphicon glyphicon-home"></span> главная</h5>
-</div>
+<ol class="breadcrumb">
+  <li class="active"><span class="glyphicon glyphicon-home"></span> главная</li>
+</ol>
 <div class="row-fluid">
   <div class="col-sm-* col-xs-*">
     <p class="lead">Добро пожаловать!</p>

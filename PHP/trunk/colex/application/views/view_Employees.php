@@ -1,6 +1,7 @@
-<div class="page-header">
-  <h5><a href="/">справочники</a><span class="level"></span>работники</h5>
-</div>
+<ol class="breadcrumb">
+  <li><a href="/">справочники</a></li>
+  <li class="active">работники</li>
+</ol>
 <?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?>
 <div class="table-responsive">
   <table class="table table-condensed table-hover table-bordered">
@@ -40,7 +41,7 @@
       </tr>
     </thead>
     <tbody>
-      <?php foreach($data as $row):?>      
+      <?php foreach($data as $row):?>
       <tr>
         <td class="text-center">
           <form class="form-inline" method="post">
