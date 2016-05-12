@@ -1,41 +1,61 @@
-<h1>дилерские соглашения | удаление</h1>
-<p>
-  <form method="post" action="/dealershipagreements">
-    <table>
-      <col class="identity">
-      <col>
-      <col>
-      <col class="activity">
+<div class="page-header">
+  <h5>
+    <a href="/">справочники</a>
+    <span class="level"></span>
+    <a href="/dealershipagreements">дилерские соглашения</a>
+    <span class="level"></span>
+    удаление
+  </h5>
+</div>
+<div class="table-responsive">
+  <form class="form-inline" method="post" action="/dealershipagreements">
+    <table class="table table-condensed table-hover table-bordered">
+      <colgroup>
+        <col/>
+        <col/>
+        <col class="activity"/>
+      </colgroup>
       <thead>
         <tr>
-          <th class="identity"><abbr title="идентификатор">id</abbr></th>
-          <th>наименование</th>
-          <th>условия</th>
-          <th class="activity">aктивность</th>
+          <th class="text-left">наименование</th>
+          <th class="text-left">условия</th>
+          <th class="text-center"><abbr title="активность">*</abbr></th>
         </tr>
       </thead>
-      <tbody>
-      <?php
-        foreach($data as $row)
-        {
-          printf('
-            <tr>
-              <td>%d<input type="hidden" name="id" value="%s"></td>
-              <td>%s</td>
-              <td>%s</td>
-              <td><input type="checkbox" class="activity" disabled%s></td>
-            </tr>', $row['id'], $row['id'], $row['name'], $row['details'], ($row['active'] === 1 ? " checked" : ""));
-        }
-      ?>
+      <tfoot>
         <tr>
-          <td colspan="4" align="left">
-            <nobr>
-              <button type="submit" class="action" name="action" value="delete" alt="удалить"><img src="/images/tick_ok_yes.png"></button>
-              <button type="submit" class="action" name="action" value="cancel" alt="отмена"><img src="/images/arrow_top_left.png"></button>
-            </nobr>
+          <td colspan="3" class="text-left">
+            <div class="form-group-xs">
+              <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-success btn-xs" name="action" value="delete" alt="удалить">
+                    <span class="glyphicon glyphicon-ok-sign" alt="удалить" aria-label="удалить"></span>
+                  </button>
+                </div>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-danger btn-xs" name="action" value="cancel" alt="отмена">
+                    <span class="glyphicon glyphicon-remove-sign" alt="отмена" aria-label="отмена"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </td>
         </tr>
+      </tfoot>
+      <tbody>
+        <?php foreach($data as $row):?>
+        <tr>
+          <td>
+            <input type="hidden" name="id" value="<?php echo $row["id"];?>">
+            <?php echo $row["name"];?>
+          </td>
+          <td><?php echo str_replace(PHP_EOL, '<BR>', strlen($row["details"]) > 100 ? substr($row["details"], 0, 100)."..." : $row["details"]);?></td>
+          <td class="text-center activity">
+            <span class="glyphicon glyphicon-<?php echo ($row["active"] === 1) ? "ok" : "remove";?>" aria-hidden="true"></span>
+          </td>
+        </tr>
+        <?php endforeach;?>
       </tbody>
     </table>
   </form>
-</p>
+</div>

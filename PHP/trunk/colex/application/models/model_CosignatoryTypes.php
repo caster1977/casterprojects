@@ -52,7 +52,7 @@ class model_cosignatorytypes extends model
   {
     extract($data);
 
-    if (isset($id, $name)
+    if (isset($id, $name))
     {
       $result = self::open("{call colex_upd_cosignatorytypes (?, ?, ?)}", array($id, $name, (isset($active) ? 1 : 0)));
       try

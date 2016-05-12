@@ -18,18 +18,18 @@
       <div class="form-group-xs">
         <label for="employees" class="text-capitalize-first">работник</label>
         <select class="form-control" id="employees" name="employees" autofocus>
-        <?php foreach($data["employees"] as $row):?>
+          <?php foreach($data["employees"] as $row):?>
           <option value="<?php echo $row["id"];?>"><?php echo $row["fullname"];?></option>
-        <?php endforeach;?>
+          <?php endforeach;?>
         </select>
         <script>if (!("autofocus" in document.createElement("select"))) document.getElementById("employees").focus();</script>
       </div>
       <div class="form-group-xs">
         <label for="positions" class="text-capitalize-first">должность</label>
         <select class="form-control" id="positions" name="positions">
-        <?php foreach($data["positions"] as $row):?>
+          <?php foreach($data["positions"] as $row):?>
           <option value="<?php echo $row["id"];?>"><?php echo $row["name"];?></option>
-        <?php endforeach;?>
+          <?php endforeach;?>
         </select>
       </div>
       <div class="form-group-xs">
@@ -46,15 +46,16 @@
       <div class="form-group-xs">
         <div class="col-sm-* col-xs-*">
           <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
-          <div class="btn-group" role="group">
-            <button type="submit" class="btn btn-success btn-xs" name="action" value="add" alt="добавить">
-              <span class="glyphicon glyphicon-ok-sign" alt="добавить" aria-label="добавить"></span>
-            </button>
-          </div>
-          <div class="btn-group" role="group">
-            <button type="submit" class="btn btn-danger btn-xs" name="action" value="cancel" alt="отмена">
-              <span class="glyphicon glyphicon-remove-sign" alt="отмена" aria-label="отмена"></span>
-            </button>
+            <div class="btn-group" role="group">
+              <button type="submit" class="btn btn-success btn-xs" name="action" value="add" alt="добавить">
+                <span class="glyphicon glyphicon-ok-sign" alt="добавить" aria-label="добавить"></span>
+              </button>
+            </div>
+            <div class="btn-group" role="group">
+              <button type="submit" class="btn btn-danger btn-xs" name="action" value="cancel" alt="отмена">
+                <span class="glyphicon glyphicon-remove-sign" alt="отмена" aria-label="отмена"></span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

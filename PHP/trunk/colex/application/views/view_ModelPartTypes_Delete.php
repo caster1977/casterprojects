@@ -2,13 +2,13 @@
   <h5>
     <a href="/">справочники</a>
     <span class="level"></span>
-    <a href="/cosignatorytypes">типы субъектов</a>
+    <a href="/modelparttypes">типы частей оборудования</a>
     <span class="level"></span>
     удаление
   </h5>
 </div>
 <div class="table-responsive">
-  <form class="form-inline" method="post" action="/cosignatorytypes">
+  <form class="form-inline" method="post" action="/modelparttypes">
     <table class="table table-condensed table-hover table-bordered">
       <colgroup>
         <col/>

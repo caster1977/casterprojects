@@ -1,38 +1,47 @@
-<h1>группы доступа | редактирование</h1>
-<p>
-  <form method="post" action="/accessgroups">
-    <table>
-      <col class="identity">
-      <col>
-      <col class="activity">
-      <thead>
-        <tr>
-          <th class="identity"><abbr title="идентификатор">id</abbr></th>
-          <th>наименование</th>
-          <th class="activity">aктивность</th>
-        </tr>
-      </thead>
-      <tbody>
-      <?php
-        foreach($data as $row)
-        {
-          printf('
-            <tr>
-              <td>%d<input type="hidden" name="id" value="%s"></td>
-              <td><input type="text" name="name" maxlength="255" size="100" value="%s"></td>
-              <td><input type="checkbox" name="active" class="activity" %s></td>
-            </tr>', $row['id'], $row['id'], $row['name'], (($row['active'] === 1) ? " checked" : ""));
-        }
-      ?>
-        <tr>
-          <td colspan="3" align="left">
-            <nobr>
-              <button type="submit" class="action" name="action" value="edit" alt="сохранить"><img src="/images/tick_ok_yes.png"></button>
-              <button type="submit" class="action" name="action" value="cancel" alt="отмена"><img src="/images/arrow_top_left.png"></button>
-            </nobr>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </form>
-</p>
+<div class="page-header">
+  <h5>
+    <a href="/">справочники</a>
+    <span class="level"></span>
+    <a href="/accessgroups">группы доступа</a>
+    <span class="level"></span>
+    редактирование
+  </h5>
+</div>
+<div class="row-fluid">
+  <div class="col-sm-* col-xs-*">
+    <?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?>
+  </div>
+</div>
+<div class="row-fluid">
+  <div class="col-sm-* col-xs-*">
+    <form method="post" action="/accessgroups">
+      <?php foreach($data as $row):?>
+      <div class="form-group-xs">
+        <input type="hidden" name="id" value="<?php echo $row["id"];?>">
+        <label for="name" class="text-capitalize-first">наименование</label>
+        <input type="text" class="form-control" id="name" name="name" maxlength="255" value="<?php echo $row["name"];?>" placeholder="Введите наименование" autofocus>
+        <script>if (!("autofocus" in document.createElement("input"))) document.getElementById("name").focus();</script>
+      </div>
+      <div class="checkbox">
+        <label class="text-capitalize-first"><input type="checkbox" name="active" <?php if ($row["active"] === 1) echo "checked";?>>aктивность</label>
+      </div>
+      <div class="form-group-xs">
+        <div class="col-sm-* col-xs-*">
+          <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
+            <div class="btn-group" role="group">
+              <button type="submit" class="btn btn-success btn-xs" name="action" value="edit" alt="сохранить">
+                <span class="glyphicon glyphicon-ok-sign" alt="сохранить" aria-label="сохранить"></span>
+              </button>
+            </div>
+            <div class="btn-group" role="group">
+              <button type="submit" class="btn btn-danger btn-xs" name="action" value="cancel" alt="отмена">
+                <span class="glyphicon glyphicon-remove-sign" alt="отмена" aria-label="отмена"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <?php endforeach;?>
+    </form>
+  </div>
+</div>

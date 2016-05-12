@@ -20,11 +20,12 @@
           <form class="form-inline" method="post">
             <div class="form-group-xs">
               <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-success btn-xs" formaction="/cosignments/add"><span class="glyphicon glyphicon-plus" alt="добавить" aria-label="добавить"></span></button>
-              </div>
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-danger btn-xs" formaction="/cosignments/clear"><span class="glyphicon glyphicon-trash" alt="удалить все" aria-label="удалить все"></span></button>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-success btn-xs" formaction="/cosignments/add"><span class="glyphicon glyphicon-plus" alt="добавить" aria-label="добавить"></span></button>
+                </div>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-danger btn-xs" formaction="/cosignments/clear"><span class="glyphicon glyphicon-trash" alt="удалить все" aria-label="удалить все"></span></button>
+                </div>
               </div>
             </div>
           </form>
@@ -35,21 +36,22 @@
       </tr>
     </thead>
     <tbody>
-      <?php foreach($data as $row):?>      
+      <?php foreach($data as $row):?>
       <tr>
         <td class="text-center">
           <form class="form-inline" method="post">
             <div class="form-group-xs">
               <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-warning btn-xs" formaction="/cosignments/edit" name="id" value="<?php echo $row["id"];?>">
-                  <span class="glyphicon glyphicon-pencil" alt="редактировать" aria-label="редактировать"></span>
-                </button>
-              </div>
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-danger btn-xs" formaction="/cosignments/delete" name="id" value="<?php echo $row["id"];?>">
-                  <span class="glyphicon glyphicon-trash" alt="удалить" aria-label="удалить"></span>
-                </button>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-warning btn-xs" formaction="/cosignments/edit" name="id" value="<?php echo $row["id"];?>">
+                    <span class="glyphicon glyphicon-pencil" alt="редактировать" aria-label="редактировать"></span>
+                  </button>
+                </div>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-danger btn-xs" formaction="/cosignments/delete" name="id" value="<?php echo $row["id"];?>">
+                    <span class="glyphicon glyphicon-trash" alt="удалить" aria-label="удалить"></span>
+                  </button>
+                </div>
               </div>
             </div>
           </form>

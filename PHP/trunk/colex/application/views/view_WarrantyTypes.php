@@ -20,11 +20,12 @@
           <form class="form-inline" method="post">
             <div class="form-group-xs">
               <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-success btn-xs" formaction="/warrantytypes/add"><span class="glyphicon glyphicon-plus" alt="добавить" aria-label="добавить"></span></button>
-              </div>
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-danger btn-xs" formaction="/warrantytypes/clear"><span class="glyphicon glyphicon-trash" alt="удалить все" aria-label="удалить все"></span></button>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-success btn-xs" formaction="/warrantytypes/add"><span class="glyphicon glyphicon-plus" alt="добавить" aria-label="добавить"></span></button>
+                </div>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-danger btn-xs" formaction="/warrantytypes/clear"><span class="glyphicon glyphicon-trash" alt="удалить все" aria-label="удалить все"></span></button>
+                </div>
               </div>
             </div>
           </form>
@@ -41,26 +42,27 @@
           <form class="form-inline" method="post">
             <div class="form-group-xs">
               <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-warning btn-xs" formaction="/warrantytypes/edit" name="id" value="<?php echo $row["id"];?>">
-                  <span class="glyphicon glyphicon-pencil" alt="редактировать" aria-label="редактировать"></span>
-                </button>
-              </div>
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-danger btn-xs" formaction="/warrantytypes/delete" name="id" value="<?php echo $row["id"];?>">
-                  <span class="glyphicon glyphicon-trash" alt="удалить" aria-label="удалить"></span>
-                </button>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-warning btn-xs" formaction="/warrantytypes/edit" name="id" value="<?php echo $row["id"];?>">
+                    <span class="glyphicon glyphicon-pencil" alt="редактировать" aria-label="редактировать"></span>
+                  </button>
+                </div>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-danger btn-xs" formaction="/warrantytypes/delete" name="id" value="<?php echo $row["id"];?>">
+                    <span class="glyphicon glyphicon-trash" alt="удалить" aria-label="удалить"></span>
+                  </button>
+                </div>
               </div>
             </div>
           </form>
         </td>
         <td><?php echo $row["name"];?></td>
-        <td><?php echo strlen($row["details"]) > 100 ? substr($row["details"], 0, 100)."..." : $row["details"];?></td>
+        <td><?php echo str_replace(PHP_EOL, '<BR>', strlen($row["details"]) > 100 ? substr($row["details"], 0, 100)."..." : $row["details"]);?></td>
         <td class="text-center activity">
           <span class="glyphicon glyphicon-<?php echo ($row["active"] === 1) ? "ok" : "remove";?>" aria-hidden="true"></span>
         </td>
       </tr>
-    <?php endforeach;?>
+      <?php endforeach;?>
     </tbody>
   </table>
 </div>

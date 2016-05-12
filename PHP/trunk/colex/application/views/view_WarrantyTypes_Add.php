@@ -26,19 +26,20 @@
       </div>
       <div class="checkbox">
         <label class="text-capitalize-first"><input type="checkbox" name="active" checked>aктивность</label>
-      </div>      
+      </div>
       <div class="form-group-xs">
         <div class="col-sm-* col-xs-*">
-          <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
-          <div class="btn-group" role="group">
-            <button type="submit" class="btn btn-success btn-xs" name="action" value="add" alt="добавить">
-              <span class="glyphicon glyphicon-ok-sign" alt="добавить" aria-label="добавить"></span>
-            </button>
-          </div>
-          <div class="btn-group" role="group">
-            <button type="submit" class="btn btn-danger btn-xs" name="action" value="cancel" alt="отмена">
-              <span class="glyphicon glyphicon-remove-sign" alt="отмена" aria-label="отмена"></span>
-            </button>
+          <div class="btn-toolbar" role="toolbar" aria-label="Панель действий">
+            <div class="btn-group" role="group">
+              <button type="submit" class="btn btn-success btn-xs" name="action" value="add" alt="добавить">
+                <span class="glyphicon glyphicon-ok-sign" alt="добавить" aria-label="добавить"></span>
+              </button>
+            </div>
+            <div class="btn-group" role="group">
+              <button type="submit" class="btn btn-danger btn-xs" name="action" value="cancel" alt="отмена">
+                <span class="glyphicon glyphicon-remove-sign" alt="отмена" aria-label="отмена"></span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

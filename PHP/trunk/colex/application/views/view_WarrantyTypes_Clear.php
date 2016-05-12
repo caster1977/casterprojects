@@ -27,26 +27,27 @@
           <form class="form-inline" method="post" action="/warrantytypes">
             <div class="form-group-xs">
               <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-success btn-xs" name="action" value="clear" alt="удалить все">
-                  <span class="glyphicon glyphicon-ok-sign" alt="удалить все" aria-label="удалить все"></span>
-                </button>
-              </div>
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-danger btn-xs" name="action" value="cancel" alt="отмена">
-                  <span class="glyphicon glyphicon-remove-sign" alt="отмена" aria-label="отмена"></span>
-                </button>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-success btn-xs" name="action" value="clear" alt="удалить все">
+                    <span class="glyphicon glyphicon-ok-sign" alt="удалить все" aria-label="удалить все"></span>
+                  </button>
+                </div>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-danger btn-xs" name="action" value="cancel" alt="отмена">
+                    <span class="glyphicon glyphicon-remove-sign" alt="отмена" aria-label="отмена"></span>
+                  </button>
+                </div>
               </div>
             </div>
-          </form>        
+          </form>
         </td>
       </tr>
     </tfoot>
     <tbody>
-      <?php foreach($data as $row):?>      
+      <?php foreach($data as $row):?>
       <tr>
         <td><?php echo $row["name"];?></td>
-        <td><?php echo $row["details"];?></td>
+        <td><?php echo str_replace(PHP_EOL, '<BR>', strlen($row["details"]) > 100 ? substr($row["details"], 0, 100)."..." : $row["details"]);?></td>
         <td class="text-center activity">
           <span class="glyphicon glyphicon-<?php echo ($row["active"] === 1) ? "ok" : "remove";?>" aria-hidden="true"></span>
         </td>

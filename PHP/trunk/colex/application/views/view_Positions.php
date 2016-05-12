@@ -8,6 +8,7 @@
 </div>
 <div class="table-responsive">
   <table class="table table-condensed table-hover table-bordered">
+    <colgroup>
       <col class="actions"/>
       <col/>
       <col class="activity"/>
@@ -18,11 +19,12 @@
           <form class="form-inline" method="post">
             <div class="form-group-xs">
               <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-success btn-xs" formaction="/positions/add"><span class="glyphicon glyphicon-plus" alt="добавить" aria-label="добавить"></span></button>
-              </div>
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-danger btn-xs" formaction="/positions/clear"><span class="glyphicon glyphicon-trash" alt="удалить все" aria-label="удалить все"></span></button>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-success btn-xs" formaction="/positions/add"><span class="glyphicon glyphicon-plus" alt="добавить" aria-label="добавить"></span></button>
+                </div>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-danger btn-xs" formaction="/positions/clear"><span class="glyphicon glyphicon-trash" alt="удалить все" aria-label="удалить все"></span></button>
+                </div>
               </div>
             </div>
           </form>
@@ -38,15 +40,16 @@
           <form class="form-inline" method="post">
             <div class="form-group-xs">
               <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-warning btn-xs" formaction="/positions/edit" name="id" value="<?php echo $row["id"];?>">
-                  <span class="glyphicon glyphicon-pencil" alt="редактировать" aria-label="редактировать"></span>
-                </button>
-              </div>
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-danger btn-xs" formaction="/positions/delete" name="id" value="<?php echo $row["id"];?>">
-                  <span class="glyphicon glyphicon-trash" alt="удалить" aria-label="удалить"></span>
-                </button>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-warning btn-xs" formaction="/positions/edit" name="id" value="<?php echo $row["id"];?>">
+                    <span class="glyphicon glyphicon-pencil" alt="редактировать" aria-label="редактировать"></span>
+                  </button>
+                </div>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-danger btn-xs" formaction="/positions/delete" name="id" value="<?php echo $row["id"];?>">
+                    <span class="glyphicon glyphicon-trash" alt="удалить" aria-label="удалить"></span>
+                  </button>
+                </div>
               </div>
             </div>
           </form>

@@ -35,15 +35,16 @@
           <td colspan="7" class="text-left">
             <div class="form-group-xs">
               <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-success btn-xs" name="action" value="delete" alt="удалить">
-                  <span class="glyphicon glyphicon-ok-sign" alt="удалить" aria-label="удалить"></span>
-                </button>
-              </div>
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-danger btn-xs" name="action" value="cancel" alt="отмена">
-                  <span class="glyphicon glyphicon-remove-sign" alt="отмена" aria-label="отмена"></span>
-                </button>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-success btn-xs" name="action" value="delete" alt="удалить">
+                    <span class="glyphicon glyphicon-ok-sign" alt="удалить" aria-label="удалить"></span>
+                  </button>
+                </div>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-danger btn-xs" name="action" value="cancel" alt="отмена">
+                    <span class="glyphicon glyphicon-remove-sign" alt="отмена" aria-label="отмена"></span>
+                  </button>
+                </div>
               </div>
             </div>
           </td>

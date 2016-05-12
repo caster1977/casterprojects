@@ -2,7 +2,7 @@
   <h5>
     <a href="/">справочники</a>
     <span class="level"></span>
-    <a href="/cosignments">партии изделий</a>
+    <a href="/modelparttypes">типы частей оборудования</a>
     <span class="level"></span>
     редактирование
   </h5>
@@ -14,17 +14,13 @@
 </div>
 <div class="row-fluid">
   <div class="col-sm-* col-xs-*">
-    <form method="post" action="/cosignments">
+    <form method="post" action="/modelparttypes">
       <?php foreach($data as $row):?>
       <div class="form-group-xs">
         <input type="hidden" name="id" value="<?php echo $row["id"];?>">
-        <label for="number" class="text-capitalize-first">номер</label>
-        <input type="text" class="form-control" id="number" name="number" maxlength="255" value="<?php echo $row["number"];?>" placeholder="Введите номер" autofocus>
-        <script>if (!("autofocus" in document.createElement("input"))) document.getElementById("number").focus();</script>
-      </div>
-      <div class="form-group-xs">
-        <label for="registrationdate" class="text-capitalize-first">дата регистрации</label>
-        <input type="date" class="form-control" id="registrationdate" name="registrationdate" value="<?php echo $row["registrationdate"];?>">
+        <label for="name" class="text-capitalize-first">наименование</label>
+        <input type="text" class="form-control" id="name" name="name" maxlength="255" value="<?php echo $row["name"];?>" placeholder="Введите наименование" autofocus>
+        <script>if (!("autofocus" in document.createElement("input"))) document.getElementById("name").focus();</script>
       </div>
       <div class="checkbox">
         <label class="text-capitalize-first"><input type="checkbox" name="active" <?php if ($row["active"] === 1) echo "checked";?>>aктивность</label>

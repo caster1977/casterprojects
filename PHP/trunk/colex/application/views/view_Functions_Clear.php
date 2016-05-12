@@ -27,15 +27,16 @@
           <form class="form-inline" method="post" action="/functions">
             <div class="form-group-xs">
               <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-success btn-xs" name="action" value="clear" alt="удалить все">
-                  <span class="glyphicon glyphicon-ok-sign" alt="удалить все" aria-label="удалить все"></span>
-                </button>
-              </div>
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-danger btn-xs" name="action" value="cancel" alt="отмена">
-                  <span class="glyphicon glyphicon-remove-sign" alt="отмена" aria-label="отмена"></span>
-                </button>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-success btn-xs" name="action" value="clear" alt="удалить все">
+                    <span class="glyphicon glyphicon-ok-sign" alt="удалить все" aria-label="удалить все"></span>
+                  </button>
+                </div>
+                <div class="btn-group" role="group">
+                  <button type="submit" class="btn btn-danger btn-xs" name="action" value="cancel" alt="отмена">
+                    <span class="glyphicon glyphicon-remove-sign" alt="отмена" aria-label="отмена"></span>
+                  </button>
+                </div>
               </div>
             </div>
           </form>        
