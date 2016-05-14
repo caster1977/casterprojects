@@ -2,9 +2,9 @@
 
 class controller_profile extends controller
 {
-
-	function action_index()
-	{	
-		$this->view->generate('view_profile.php', 'view_template.php');
-	}
+  function __construct()
+  {
+    parent::__construct();
+    $this->model = new model_profile();
+  }
 }

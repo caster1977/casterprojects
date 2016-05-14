@@ -3,8 +3,8 @@ class controller_cosignatories extends controller
 {
   function __construct()
   {
+    parent::__construct();
     $this->model = new model_cosignatories();
-    $this->view = new view();
   }
 
   function action_add()

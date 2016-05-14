@@ -3,8 +3,8 @@ class controller_positionaccess extends controller
 {
   function __construct()
   {
+    parent::__construct();
     $this->model = new model_positionaccess();
-    $this->view = new view();
   }
 
   function action_add()

@@ -3,8 +3,8 @@ class controller_news extends controller
 {
   function __construct()
   {
+    parent::__construct();
     $this->model = new model_news();
-    $this->view = new view();
   }
 
   function action_add()

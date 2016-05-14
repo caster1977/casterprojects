@@ -3,8 +3,8 @@ class controller_accessgroups extends controller
 {
   function __construct()
   {
+    parent::__construct();
     $this->model = new model_accessgroups();
-    $this->view = new view();
   }
 
   function action_add()

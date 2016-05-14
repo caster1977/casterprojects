@@ -9,16 +9,26 @@ body {
   min-height: 1000px;
 }
 
+.table>caption {
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 0 0 10px 5px;
+  color: #428bca;
+}
 .table>thead>tr>th, .table>tfoot>tr>td {
   background-color: #f5f5f5;
   vertical-align: middle;  
 }
 
-.table>thead>tr>th {
+.table>tbody>tr>th {
+  font-weight: normal;
+}
+
+.table>thead>tr>th, .table>tbody>tr>th {
   text-transform: lowercase;
 }
 
-.table>thead>tr>th:first-letter {
+.table>thead>tr>th:first-letter, .table>tbody>tr>th:first-letter {
   text-transform: capitalize;
 }
 
@@ -53,10 +63,6 @@ col.actions {
 .footer p {
   color: black;
 }
-
-/*span.level:before {
-  content: " » ";
-}*/
 
 .navbar {
   background-color: #bcbcbc;

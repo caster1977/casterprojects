@@ -119,7 +119,7 @@
                 <span><img class="img-circle img-avatar" alt="Profile Image" src="/images/islands-retina-50.jpg"></span>Влад Иванов <span class="caret"></span>
               </a>
               <ul class="dropdown-menu text-capitalize-first">
-                <li><a  href="/profile">настройка профиля</a></li>
+                <li><a  href="/profile">профиль</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="#">выйти</a></li>
               </ul>

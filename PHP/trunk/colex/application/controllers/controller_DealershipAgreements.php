@@ -3,8 +3,8 @@ class controller_dealershipagreements extends controller
 {
   function __construct()
   {
+    parent::__construct();
     $this->model = new model_dealershipagreements();
-    $this->view = new view();
   }
 
   function action_add()
@@ -12,7 +12,7 @@ class controller_dealershipagreements extends controller
     $data = $this->model->sel_data($_POST);
     $this->view->generate('view_dealershipagreements_add.php', 'view_template.php', $data);
   }
-  
+
   function action_edit()
   {
     if (isset($_POST['id']))

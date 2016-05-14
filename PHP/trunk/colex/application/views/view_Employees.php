@@ -13,6 +13,7 @@
       <col/>
       <col/>
       <col/>
+      <col/>
       <col class="activity"/>
     </colgroup>
     <thead>
@@ -34,9 +35,10 @@
         <th class="text-left">фамилия</th>
         <th class="text-left">имя</th>
         <th class="text-left">отчество</th>
-        <th class="text-left">дата рождения</th>
+        <th class="text-center">дата рождения</th>
+        <th class="text-center">пол</th>
         <th class="text-left">логин</th>
-        <th class="text-left">последний вход в систему</th>
+        <th class="text-center">последний вход в систему</th>
         <th class="text-center"><abbr title="активность">*</abbr></th>
       </tr>
     </thead>
@@ -64,9 +66,10 @@
         <td><?php echo $row["lastname"];?></td>
         <td><?php echo $row["firstname"];?></td>
         <td><?php echo $row["middlename"];?></td>
-        <td><?php echo $row["birthdate"];?></td>
+        <td class="text-center"><?php echo $row["birthdate"];?></td>
+        <td class="text-center"><?php echo $row["male"] ? "мужской" : "женский";?></td>
         <td><?php echo $row["login"];?></td>
-        <td><?php echo $row["lastlogon"];?></td>
+        <td class="text-center"><?php echo $row["lastlogon"];?></td>
         <td class="text-center activity">
           <span class="glyphicon glyphicon-<?php echo ($row["active"] === 1) ? "ok" : "remove";?>" aria-hidden="true"></span>
         </td>

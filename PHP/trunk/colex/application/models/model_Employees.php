@@ -8,7 +8,7 @@ class model_employees extends model
     try
     {
       $data = array();
-      
+
       while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
       {
         $data[] = $row;
@@ -20,17 +20,17 @@ class model_employees extends model
     }
     return $data;
   }
-  
+
   public function add_data($data = null)
   {
     extract($data);
-    
+
     $id = -1;
-    
-    if (isset($lastname, $firstname, $middlename, $birthdate, $login, $password))
+
+    if (isset($lastname, $firstname, $middlename, $birthdate, $male, $login, $password))
     {
-      $result = self::open("{call colex_upd_employees (?, ?, ?, ?, ?, ?, ?, ?)}", 
-        array($id, $lastname, $firstname, $middlename, date_format(date_create($birthdate), 'Ymd'), 
+      $result = self::open("{call colex_upd_employees (?, ?, ?, ?, ?, ?, ?, ?, ?)}",
+        array($id, $lastname, $firstname, $middlename, date_format(date_create($birthdate), 'Ymd'), $male,
         $login, md5($password), (isset($active) ? 1 : 0)));
       try
       {
@@ -47,17 +47,17 @@ class model_employees extends model
       {
         self::close($result);
       }
-    }    
+    }
   }
-  
+
   public function edit_data($data = null)
   {
     extract($data);
 
-    if (isset($id, $lastname, $firstname, $middlename, $birthdate, $login, $password))
+    if (isset($id, $lastname, $firstname, $middlename, $birthdate, $male, $login, $password))
     {
-      $result = self::open("{call colex_upd_employees (?, ?, ?, ?, ?, ?, ?, ?)}", 
-        array($id, $lastname, $firstname, $middlename, date_format(date_create($birthdate), 'Ymd'),
+      $result = self::open("{call colex_upd_employees (?, ?, ?, ?, ?, ?, ?, ?, ?)}",
+        array($id, $lastname, $firstname, $middlename, date_format(date_create($birthdate), 'Ymd'), $male,
         $login, md5($password), (isset($active) ? 1 : 0)));
       try
       {
@@ -74,7 +74,7 @@ class model_employees extends model
       {
         self::close($result);
       }
-    }    
+    }
   }
 
   public function delete_data($data = null)
@@ -100,12 +100,12 @@ class model_employees extends model
       {
         self::close($result);
       }
-    }    
+    }
   }
-  
+
   public function clear_data($data = null)
   {
-    $id = -1;    
+    $id = -1;
     $result = self::open("{call colex_del_employees (?)}", array($id));
     try
     {

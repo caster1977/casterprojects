@@ -31,6 +31,15 @@
         <input type="date" class="form-control" id="birthdate" name="birthdate" value="<?php echo $row["birthdate"];?>">
       </div>
       <div class="form-group-xs">
+        <label class="control-label text-capitalize-first">пол</label>
+        <div class="radio">
+          <label><input type="radio" name="male" id="male1" value="1" <?php if ($row["male"] === 1) echo "checked";?>>мужской</label>
+        </div>
+        <div class="radio">
+          <label><input type="radio" name="male" id="male0" value="0" <?php if ($row["male"] === 0) echo "checked";?>>женский</label>
+        </div>
+      </div>
+      <div class="form-group-xs">
         <label for="login" class="text-capitalize-first">логин</label>
         <input type="text" class="form-control" id="login" name="login" maxlength="255" value="<?php echo $row["login"];?>" placeholder="Введите логин">
       </div>

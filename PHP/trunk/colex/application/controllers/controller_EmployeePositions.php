@@ -3,8 +3,8 @@ class controller_employeepositions extends controller
 {
   function __construct()
   {
+    parent::__construct();
     $this->model = new model_employeepositions();
-    $this->view = new view();
   }
 
   function action_add()
@@ -12,7 +12,7 @@ class controller_employeepositions extends controller
     $data = $this->model->sel_data($_POST);
     $this->view->generate('view_employeepositions_add.php', 'view_template.php', $data);
   }
-  
+
   function action_edit()
   {
     if (isset($_POST['id']))

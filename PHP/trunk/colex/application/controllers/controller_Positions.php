@@ -3,8 +3,8 @@ class controller_positions extends controller
 {
   function __construct()
   {
+    parent::__construct();
     $this->model = new model_positions();
-    $this->view = new view();
   }
 
   function action_add()

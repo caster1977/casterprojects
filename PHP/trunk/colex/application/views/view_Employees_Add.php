@@ -29,6 +29,15 @@
         <input type="date" class="form-control" id="birthdate" name="birthdate" value="<?php echo date('Y-m-d');?>">
       </div>
       <div class="form-group-xs">
+        <label class="control-label text-capitalize-first">пол</label>
+        <div class="radio">
+          <label><input type="radio" name="male" id="male1" value="1">мужской</label>
+        </div>
+        <div class="radio">
+          <label><input type="radio" name="male" id="male0" value="0">женский</label>
+        </div>
+      </div>
+      <div class="form-group-xs">
         <label for="login" class="text-capitalize-first">логин</label>
         <input type="text" class="form-control" id="login" name="login" maxlength="255" placeholder="Введите логин">
       </div>

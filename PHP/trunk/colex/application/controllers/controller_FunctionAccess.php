@@ -3,8 +3,8 @@ class controller_functionaccess extends controller
 {
   function __construct()
   {
+    parent::__construct();
     $this->model = new model_functionaccess();
-    $this->view = new view();
   }
 
   function action_add()

@@ -3,8 +3,8 @@ class controller_functions extends controller
 {
   function __construct()
   {
+    parent::__construct();
     $this->model = new model_functions();
-    $this->view = new view();
   }
 
   function action_add()

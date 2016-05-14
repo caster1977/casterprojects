@@ -3,8 +3,8 @@ class controller_cosignatorytypes extends controller
 {
   function __construct()
   {
+    parent::__construct();
     $this->model = new model_cosignatorytypes();
-    $this->view = new view();
   }
 
   function action_add()

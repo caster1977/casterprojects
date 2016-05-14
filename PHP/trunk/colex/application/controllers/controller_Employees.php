@@ -3,8 +3,8 @@ class controller_employees extends controller
 {
   function __construct()
   {
+    parent::__construct();
     $this->model = new model_employees();
-    $this->view = new view();
   }
 
   function action_add()

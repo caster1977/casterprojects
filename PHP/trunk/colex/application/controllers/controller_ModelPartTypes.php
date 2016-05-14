@@ -3,8 +3,8 @@ class controller_modelparttypes extends controller
 {
   function __construct()
   {
+    parent::__construct();
     $this->model = new model_modelparttypes();
-    $this->view = new view();
   }
 
   function action_add()
