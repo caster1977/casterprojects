@@ -24,8 +24,7 @@
     <link rel="icon" href="/images/favicon.ico">
   </head>
   <body>
-    <!-- навигационная панель страницы -->
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <header class="navbar navbar-default navbar-fixed-top" role="banner">
       <div class="container-fluid">
         <!-- логитип и кнопка объединены для лучшего отображения на мобилах -->
         <div class="navbar-header">
@@ -102,7 +101,7 @@
                 <li><a href="/">Техническая поддержка</a></li>
               </ul>
             </li>
-            <li><a href="/reports">отчёты</a></li>
+            <li class="hidden"><a href="/reports">отчёты</a></li>
             <!--li>
               <div class="form-group">
                 <form class="navbar-form" role="search">
@@ -113,8 +112,8 @@
             </li-->
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <!--li><a href="#">Войти</a></li-->
-            <li class="dropdown">
+            <li><a href="/profile/login">Войти</a></li>
+            <!--li class="dropdown">
               <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <span><img class="img-circle img-avatar" alt="Profile Image" src="/images/islands-retina-50.jpg"></span>Влад Иванов <span class="caret"></span>
               </a>
@@ -123,16 +122,18 @@
                 <li role="separator" class="divider"></li>
                 <li><a href="#">выйти</a></li>
               </ul>
-            </li>
+            </li-->
           </ul>          
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
-    </nav>
-    <!-- тело страницы-->
-    <div class="container-fluid">
-      <?php include 'application/views/'.$view_content; ?>
-    </div>
-    <!-- футер страницы-->
+    </header>
+    <main role="main">
+      <section class="section">
+        <div class="container-fluid">
+          <?php include 'application/views/'.$view_content; ?>
+        </div>
+      </section>
+    </main>
     <footer class="footer">
       <div class="container-fluid">
         <p class="text-muted">&#169 2016 Иванов Влад, команда <a class="text-capitalize" href="/">colex</a>. Все права защищены.</p>
