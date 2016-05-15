@@ -43,10 +43,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-left navbar-nav text-uppercase"> <!--для растягивания по ширине экрана nav-justified-->
-            <li><a href="/"><span class="glyphicon glyphicon-home"></span> главная<!--span class="sr-only">(текущая)</span--></a></li>
+            <li><a href="/">главная</a></li>
             <li><a href="/news">новости</a></li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">справочники <span class="caret"></span></a>
+              <a href="/references" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">справочники <span class="caret"></span></a>
               <ul class="dropdown-menu text-capitalize-first" aria-labelledby="dropdownMenu3">
                 <li class="dropdown-header text-uppercase">функционал</li>
                 <li><a href="/functions">пользовательские функции</a></li>
@@ -69,7 +69,7 @@
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header text-uppercase">продукция</li>
                 <li><a href="/models">модели оборудования</a></li>
-                <li><a href="/modelparttypes">типы частей моделей оборудования</a></li>
+                <li><a href="/modelparttypes">типы частей оборудования</a></li>
                 <li><a href="/modelparts">части оборудования</a></li>
                 <li><a href="/cosignments">партии изделий</a></li>
               </ul>
@@ -102,7 +102,7 @@
                 <li><a href="/">Техническая поддержка</a></li>
               </ul>
             </li>
-            <li><a href="/">отчёты</a></li>
+            <li><a href="/reports">отчёты</a></li>
             <!--li>
               <div class="form-group">
                 <form class="navbar-form" role="search">

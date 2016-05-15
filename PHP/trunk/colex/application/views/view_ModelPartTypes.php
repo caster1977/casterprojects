@@ -1,6 +1,8 @@
-<div class="page-header">
-  <h5><a href="/">справочники</a><span class="level"></span>типы частей оборудования</h5>
-</div>
+<ol class="breadcrumb">
+  <li><a href="/">главная</a></li>
+  <li><a href="/references">справочники</a></li>
+  <li class="active">типы частей оборудования</li>
+</ol>
 <div class="row-fluid">
   <div class="col-sm-* col-xs-*">
     <?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?>

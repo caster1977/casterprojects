@@ -1,4 +1,5 @@
 <ol class="breadcrumb">
+  <li><a href="/">главная</a></li>
   <li class="active">новости</li>
 </ol>
 <div class="row-fluid">

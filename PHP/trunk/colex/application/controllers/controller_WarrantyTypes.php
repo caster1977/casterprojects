@@ -4,6 +4,7 @@ class controller_warrantytypes extends controller
   function __construct()
   {
     parent::__construct();
+    $this->allowed_actions = array('add', 'edit', 'delete', 'clear');
     $this->model = new model_warrantytypes();
   }
 

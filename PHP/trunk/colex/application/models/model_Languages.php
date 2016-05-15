@@ -4,7 +4,7 @@ class model_languages extends model
   public function sel_data($data = null)
   {
     $id = isset($data, $data['id']) ? $data['id'] : -1;
-    $result = self::open("{call colex_sel_languages (?, ?)}", array($id, null));
+    $result = self::open("{call colex_sel_languages (?, ?)}", array($id, isset($data, $data['active']) ? $data['active'] : null));
     try
     {
       $data = array();

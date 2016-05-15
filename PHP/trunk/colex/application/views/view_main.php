@@ -1,5 +1,5 @@
 <ol class="breadcrumb">
-  <li class="active"><span class="glyphicon glyphicon-home"></span> главная</li>
+  <li class="active">главная</li>
 </ol>
 <div class="row-fluid">
   <div class="col-sm-* col-xs-*">

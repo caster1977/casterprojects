@@ -1,5 +1,6 @@
 <ol class="breadcrumb">
-  <li><a href="/">справочники</a></li>
+  <li><a href="/">главная</a></li>
+  <li><a href="/references">справочники</a></li>
   <li><a href="/functions">пользовательские функции</a></li>
   <li class="active">редактирование</li>
 </ol>

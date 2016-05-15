@@ -1,5 +1,6 @@
 <ol class="breadcrumb">
-  <li><a href="/">справочники</a></li>
+  <li><a href="/">главная</a></li>
+  <li><a href="/references">справочники</a></li>
   <li class="active">дилерские соглашения</li>
 </ol>
 <div class="row-fluid">

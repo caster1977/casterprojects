@@ -17,31 +17,31 @@
     <tbody>
       <tr>
         <th class="text-left">логин</th>
-        <td class="text-left"><?php echo '$data["employees"]["login"]';?></td>
+        <td class="text-left"><?php echo $data['profiles'][0]['employee']['login'];?></td>
       </tr>
       <tr>
         <th class="text-left">фамилия</th>
-        <td class="text-left"><?php echo '$data["employees"]["lastname"]';?></td>
+        <td class="text-left"><?php echo $data['profiles'][0]['employee']['lastname'];?></td>
       </tr>
       <tr>
         <th class="text-left">имя</th>
-        <td class="text-left"><?php echo '$data["employees"]["firstname"]';?></td>
+        <td class="text-left"><?php echo $data['profiles'][0]['employee']['firstname'];?></td>
       </tr>
       <tr>
         <th class="text-left">отчество</th>
-        <td class="text-left"><?php echo '$data["employees"]["middlename"]';?></td>
+        <td class="text-left"><?php echo $data['profiles'][0]['employee']['middlename'];?></td>
       </tr>
       <tr>
         <th class="text-left">пол</th>
-        <td class="text-left"><?php echo '$data["employees"]["male"]';?></td>
+        <td class="text-left"><?php echo $data['profiles'][0]['employee']['male'] === 1 ? "мужской" : "женский";?></td>
       </tr>
       <tr>
         <th class="text-left">дата рождения</th>
-        <td class="text-left"><?php echo '$data["employees"]["birthdate"]';?></td>
+        <td class="text-left"><?php echo $data['profiles'][0]['employee']['birthdate'];?></td>
       </tr>
       <tr>
         <th class="text-left">последний вход в систему</th>
-        <td class="text-left"><?php echo '$data["employees"]["lastlogon"]';?></td>
+        <td class="text-left"><?php echo $data['profiles'][0]['employee']['lastlogon'];?></td>
       </tr>
     </tbody>
   </table>
@@ -60,7 +60,7 @@
           <form class="form-inline" method="post">
             <div class="form-group-xs">
               <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-warning btn-xs" formaction="/password/edit" name="id" value="<?php echo '$data["employees"]["id"]';?>">
+                <button type="submit" class="btn btn-warning btn-xs" formaction="/password/edit" name="id" value="<?php echo $data['profiles'][0]['id'];?>">
                   <span class="glyphicon glyphicon-pencil" alt="редактировать" aria-label="редактировать"></span>
                 </button>
               </div>
@@ -85,12 +85,12 @@
             <div class="form-group-xs">
               <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
                 <div class="btn-group" role="group">
-                  <button type="submit" class="btn btn-warning btn-xs" formaction="/profile/edit" name="id" value="<?php echo '$data["employees"]["id"]';?>">
+                  <button type="submit" class="btn btn-warning btn-xs" formaction="/profile/edit" name="id" value="<?php echo $data['profiles'][0]['id'];?>">
                     <span class="glyphicon glyphicon-pencil" alt="редактировать" aria-label="редактировать"></span>
                   </button>
                 </div>
                 <div class="btn-group" role="group">
-                  <button type="submit" class="btn btn-danger btn-xs" formaction="/profile/delete" name="id" value="<?php echo '$data["employees"]["id"]';?>">
+                  <button type="submit" class="btn btn-danger btn-xs" formaction="/profile/delete" name="id" value="<?php echo $data['profiles'][0]['id'];?>">
                     <span class="glyphicon glyphicon-trash" alt="удалить" aria-label="удалить"></span>
                   </button>
                 </div>
@@ -103,7 +103,7 @@
     <tbody>
       <tr>
         <th class="text-left">язык</th>
-        <td class="text-left"><?php echo '$data["languages"]["name"]';?></td>
+        <td class="text-left"><?php echo $data['profiles'][0]['language']['name'];?></td>
       </tr>
     </tbody>
   </table>

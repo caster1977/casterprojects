@@ -1,5 +1,6 @@
 <ol class="breadcrumb">
-  <li><a href="/">справочники</a></li>
+  <li><a href="/">главная</a></li>
+  <li><a href="/references">справочники</a></li>
   <li class="active">работники</li>
 </ol>
 <?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?>

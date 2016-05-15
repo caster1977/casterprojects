@@ -4,6 +4,7 @@ class controller_cosignatorytypes extends controller
   function __construct()
   {
     parent::__construct();
+    $this->allowed_actions = array('add', 'edit', 'delete', 'clear');
     $this->model = new model_cosignatorytypes();
   }
 

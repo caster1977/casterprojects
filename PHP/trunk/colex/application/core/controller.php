@@ -4,10 +4,12 @@ abstract class controller
 {
 	public $model;
 	public $view;
+  protected $allowed_actions;
 	
 	function __construct()
 	{
 		$this->view = new view();
+    $this->allowed_actions = array();
 	}
 	
   function action_index()
@@ -15,9 +17,9 @@ abstract class controller
     if (isset($_POST['action']))
     {
       $action = strtolower($_POST['action']);
-      if (in_array($action, array("add", "edit", "delete", "clear")))
+      if (in_array($action, $this->allowed_actions))
       {
-        $action = $_POST['action']."_data";
+        $action = $_POST['action'].'_data';
         $_SESSION[__CLASS__."_action_result"] = $this->model->$action($_POST);
       }
       header('location:'.$_SERVER['REQUEST_URI']);

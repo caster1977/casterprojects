@@ -1,5 +1,6 @@
 <ol class="breadcrumb">
-  <li><a href="/">справочники</a></li>
+  <li><a href="/">главная</a></li>
+  <li><a href="/references">справочники</a></li>
   <li><a href="/modelparttypes">типы частей оборудования</a></li>
   <li class="active">редактирование</li>
 </ol>

@@ -6,9 +6,9 @@
 */
 class route
 {
-	function errorpage404()
+	static function errorpage404()
 	{
-    $host = 'http://'.$_server['http_host'].'/';
+    $host = 'http://'.$_SERVER['HTTP_HOST'].'/';
     header('http/1.1 404 not found');
 		header("status: 404 not found");
 		header('location:'.$host.'404');
