@@ -148,7 +148,7 @@
     </main>
     <footer class="footer">
       <div class="container-fluid">
-        <p class="text-muted">&#169 2016 Иванов Влад, Кузьменков Илья.<br>Все права <nobr>!защищены.</nobr></p>
+        <p class="text-muted">&#169 2016 Иванов Влад, Кузьменков Илья. Все права <nobr>!защищены.</nobr></p>
       </div>
     </footer>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

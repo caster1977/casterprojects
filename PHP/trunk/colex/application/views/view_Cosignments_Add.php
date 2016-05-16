@@ -14,12 +14,12 @@
     <form method="post" action="/cosignments">
       <div class="form-group-xs">
         <label for="number" class="text-capitalize-first">номер</label>
-        <input type="text" class="form-control" id="number" name="number" maxlength="255" placeholder="Введите номер" autofocus>
+        <input type="text" class="form-control" id="number" name="number" maxlength="255" placeholder="Введите номер" autofocus required>
         <script>if (!("autofocus" in document.createElement("input"))) document.getElementById("number").focus();</script>
       </div>
       <div class="form-group-xs">
         <label for="registrationdate" class="text-capitalize-first">дата регистрации</label>
-        <input type="date" class="form-control" id="registrationdate" name="registrationdate" value="<?php echo date('Y-m-d');?>">
+        <input type="date" class="form-control" id="registrationdate" name="registrationdate" value="<?php echo date('Y-m-d');?>" required>
       </div>
       <div class="checkbox">
         <label class="text-capitalize-first"><input type="checkbox" name="active" checked>aктивность</label>

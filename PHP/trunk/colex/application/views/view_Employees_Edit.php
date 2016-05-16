@@ -42,11 +42,11 @@
       </div>
       <div class="form-group-xs">
         <label for="login" class="text-capitalize-first">логин</label>
-        <input type="text" class="form-control" id="login" name="login" maxlength="255" value="<?php echo htmlspecialchars($row["login"]);?>" placeholder="Введите логин">
+        <input type="text" class="form-control" id="login" name="login" maxlength="255" value="<?php echo htmlspecialchars($row["login"]);?>" placeholder="Введите логин" required>
       </div>
       <div class="form-group-xs">
         <label for="password" class="text-capitalize-first">пароль</label>
-        <input type="password" class="form-control" id="password" name="password" maxlength="255" placeholder="Введите новый пароль">
+        <input type="password" class="form-control" id="password" name="password" maxlength="255" placeholder="Введите новый пароль" required>
       </div>
       <div class="checkbox">
         <label class="text-capitalize-first"><input type="checkbox" name="active" <?php if ($row["active"] === 1) echo "checked";?>>aктивность</label>

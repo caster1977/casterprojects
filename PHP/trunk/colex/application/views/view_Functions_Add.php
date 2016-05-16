@@ -14,12 +14,12 @@
     <form method="post" action="/functions">
       <div class="form-group-xs text-capitalize-first">
         <label for="name" class="text-capitalize-first">наименование</label>
-        <input type="text" class="form-control" id="name" name="name" maxlength="255" placeholder="Введите наименование" autofocus>
+        <input type="text" class="form-control" id="name" name="name" maxlength="255" placeholder="Введите наименование" autofocus required>
         <script>if (!("autofocus" in document.createElement("input"))) {document.getElementById("name").focus();}</script>
       </div>
       <div class="form-group-xs">
         <label for="code" class="text-capitalize-first">код</label>
-        <input type="text" class="form-control" id="code" name="code" maxlength="255" placeholder="Введите код">
+        <input type="text" class="form-control" id="code" name="code" maxlength="255" placeholder="Введите код" required>
       </div>
       <div class="checkbox">
         <label class="text-capitalize-first"><input type="checkbox" name="active" checked>aктивность</label>

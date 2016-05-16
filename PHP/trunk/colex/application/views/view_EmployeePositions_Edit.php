@@ -16,7 +16,7 @@
       <div class="form-group-xs">
         <input type="hidden" name="id" value="<?php echo $employeeposition["id"];?>">
         <label for="employees" class="text-capitalize-first">работник</label>
-        <select class="form-control" id="employees" name="employees" autofocus>
+        <select class="form-control" id="employees" name="employees" autofocus required>
           <?php foreach($data["employees"] as $employee):?>
           <option value="<?php echo $employee["id"];?>"<?php if($employeeposition["employeeid"] === $employee["id"]) echo " selected";?>><?php echo htmlspecialchars($employee["fullname"]);?></option>
           <?php endforeach;?>
@@ -25,7 +25,7 @@
       </div>
       <div class="form-group-xs">
         <label for="positions" class="text-capitalize-first">должность</label>
-        <select class="form-control" id="positions" name="positions">
+        <select class="form-control" id="positions" name="positions" required>
           <?php foreach($data["positions"] as $position):?>
           <option value="<?php echo $position["id"];?>"<?php if($employeeposition["positionid"] === $position["id"]) echo " selected";?>><?php echo htmlspecialchars($position["name"]);?></option>
           <?php endforeach;?>
@@ -33,7 +33,7 @@
       </div>
       <div class="form-group-xs">
         <label for="startdate" class="text-capitalize-first">дата вступления в должность</label>
-        <input type="date" class="form-control" id="startdate" name="startdate" value="<?php echo htmlspecialchars($employeeposition["startdate"]);?>">
+        <input type="date" class="form-control" id="startdate" name="startdate" value="<?php echo htmlspecialchars($employeeposition["startdate"]);?>" required>
       </div>
       <div class="form-group-xs">
         <label for="stopdate" class="text-capitalize-first">дата выхода из должности</label>

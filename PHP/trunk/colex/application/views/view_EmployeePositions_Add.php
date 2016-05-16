@@ -14,7 +14,7 @@
     <form method="post" action="/employeepositions">
       <div class="form-group-xs">
         <label for="employees" class="text-capitalize-first">работник</label>
-        <select class="form-control" id="employees" name="employees" autofocus>
+        <select class="form-control" id="employees" name="employees" autofocus required>
           <?php foreach($data["employees"] as $row):?>
           <option value="<?php echo $row["id"];?>"><?php echo $row["fullname"];?></option>
           <?php endforeach;?>
@@ -23,7 +23,7 @@
       </div>
       <div class="form-group-xs">
         <label for="positions" class="text-capitalize-first">должность</label>
-        <select class="form-control" id="positions" name="positions">
+        <select class="form-control" id="positions" name="positions" required>
           <?php foreach($data["positions"] as $row):?>
           <option value="<?php echo $row["id"];?>"><?php echo $row["name"];?></option>
           <?php endforeach;?>
@@ -31,7 +31,7 @@
       </div>
       <div class="form-group-xs">
         <label for="startdate" class="text-capitalize-first">дата вступления в должность</label>
-        <input type="date" class="form-control" id="startdate" name="startdate" value="<?php echo date('Y-m-d');?>">
+        <input type="date" class="form-control" id="startdate" name="startdate" value="<?php echo date('Y-m-d');?>" required>
       </div>
       <div class="form-group-xs">
         <label for="stopdate" class="text-capitalize-first">дата выхода из должности</label>

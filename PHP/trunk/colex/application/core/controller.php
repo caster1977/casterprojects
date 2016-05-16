@@ -3,7 +3,7 @@
 abstract class controller
 {
 	public $model;
-	public $view;
+	protected $view;
   protected $allowed_actions;
 	
 	function __construct()

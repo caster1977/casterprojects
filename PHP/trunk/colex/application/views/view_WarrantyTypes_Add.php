@@ -14,12 +14,12 @@
     <form method="post" action="/warrantytypes">
       <div class="form-group-xs">
         <label for="name" class="text-capitalize-first">наименование</label>
-        <input type="text" class="form-control" id="name" name="name" maxlength="255" placeholder="Введите наименование" autofocus>
+        <input type="text" class="form-control" id="name" name="name" maxlength="255" placeholder="Введите наименование" autofocus required>
         <script>if (!("autofocus" in document.createElement("input"))) document.getElementById("name").focus();</script>
       </div>
       <div class="form-group-xs">
         <label for="details" class="text-capitalize-first">условия</label>
-        <textarea class="form-control" name="details" id="details" rows="20" cols="60" placeholder="Введите условия"></textarea>
+        <textarea class="form-control" name="details" id="details" rows="20" cols="60" placeholder="Введите условия" required></textarea>
       </div>
       <div class="checkbox">
         <label class="text-capitalize-first"><input type="checkbox" name="active" checked>aктивность</label>

@@ -17,7 +17,7 @@ body {
 }
 .table>thead>tr>th, .table>tfoot>tr>td {
   background-color: #f5f5f5;
-  vertical-align: middle;  
+  vertical-align: middle;
 }
 
 .table>tbody>tr>th {
@@ -53,10 +53,10 @@ col.actions {
 }
 
 .footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
-  height: 60px;
+  height: 30px;
   background-color: #bcbcbc;
 }
 
@@ -133,7 +133,7 @@ a.navbar-brand:focus,a.navbar-brand:hover {
 
 .footer > .container-fluid > .text-muted {
   text-align: center;
-  padding-top: 20px;  
+  padding-top: 5px;
 }
 
 .page-header {
