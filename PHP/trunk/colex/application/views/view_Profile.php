@@ -55,7 +55,7 @@
     </colgroup>
     <tbody>
       <tr>
-        <th class="text-left">смена пароля</th>
+        <th class="text-left">пароль</th>
         <td class="text-left">
           <form class="form-inline" method="post">
             <div class="form-group-xs">
@@ -104,6 +104,20 @@
       <tr>
         <th class="text-left">язык</th>
         <td class="text-left"><?php echo $data['profiles'][0]['language']['name'];?></td>
+      </tr>
+      <tr>
+        <th class="text-left">аватар</th>
+        <td class="text-left">
+          <form class="form-inline" method="post">
+            <div class="form-group-xs">
+              <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-warning btn-xs" formaction="/avatar/edit" name="id" value="<?php echo $data['profiles'][0]['id'];?>">
+                  <span class="glyphicon glyphicon-pencil" alt="редактировать" aria-label="редактировать"></span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </td>
       </tr>
     </tbody>
   </table>

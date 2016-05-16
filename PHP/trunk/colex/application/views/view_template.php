@@ -12,6 +12,7 @@
     
     <!-- подключение пользовательских стилей -->
     <link type="text/css" rel="stylesheet" href="/css/style.css">
+    <!--link type="text/css" rel="stylesheet" href="/css/logon.css"-->
     
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -42,8 +43,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-left navbar-nav text-uppercase"> <!--для растягивания по ширине экрана nav-justified-->
-            <li><a href="/">главная</a></li>
             <li><a href="/news">новости</a></li>
+            <?php if (isset($_SESSION, $_SESSION['logged'], $_SESSION['user_id'], $_SESSION['user_name']) and $_SESSION['logged'] === 1):?>
             <li class="dropdown">
               <a href="/references" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">справочники <span class="caret"></span></a>
               <ul class="dropdown-menu text-capitalize-first" aria-labelledby="dropdownMenu3">
@@ -101,7 +102,7 @@
                 <li><a href="/">Техническая поддержка</a></li>
               </ul>
             </li>
-            <li class="hidden"><a href="/reports">отчёты</a></li>
+            <li><a href="/reports">отчётность</a></li>
             <!--li>
               <div class="form-group">
                 <form class="navbar-form" role="search">
@@ -110,19 +111,29 @@
                 </form>            
               </div>
             </li-->
+            <?php endif;?>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/profile/login">Войти</a></li>
-            <!--li class="dropdown">
+            <?php if (isset($_SESSION, $_SESSION['logged'], $_SESSION['user_id'], $_SESSION['user_name']) and $_SESSION['logged'] === 1):?>
+            <li class="dropdown">
               <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <span><img class="img-circle img-avatar" alt="Profile Image" src="/images/islands-retina-50.jpg"></span>Влад Иванов <span class="caret"></span>
+                <?php if (isset($_SESSION, $_SESSION['avatar'])):?>
+                <span>
+                  <img class="img-circle img-avatar" alt="Avatar image" src="<?php echo $_SESSION['avatar'];?>">
+                </span>
+                <?php endif;?>
+                <?php echo $_SESSION['user_name'];?>
+                &nbsp;<span class="caret"></span>
               </a>
               <ul class="dropdown-menu text-capitalize-first">
                 <li><a  href="/profile">профиль</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="#">выйти</a></li>
+                <li><a href="/profile/logoff">выйти</a></li>
               </ul>
-            </li-->
+            </li>
+            <?php else :?>
+            <li class="text-uppercase"><a href="/profile/logon">войти</a></li>
+            <?php endif;?>
           </ul>          
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
@@ -136,7 +147,7 @@
     </main>
     <footer class="footer">
       <div class="container-fluid">
-        <p class="text-muted">&#169 2016 Иванов Влад, команда <a class="text-capitalize" href="/">colex</a>. Все права защищены.</p>
+        <p class="text-muted">&#169 2016 Иванов Влад, Кузьменков Илья. Все права защищены.</p>
       </div>
     </footer>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

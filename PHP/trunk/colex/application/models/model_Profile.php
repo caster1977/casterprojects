@@ -39,6 +39,7 @@ class model_profile extends model
     {
       $data = $model_employees->sel_data(array('id'=>$profile['employeeid']));
       $profile['employee'] = (isset($data) and count($data) > 0) ? $data[0] : null;
+      
       $data = $model_languages->sel_data(array('id'=>$profile['languageid']));
       $profile['language'] = (isset($data) and count($data) > 0) ? $data[0] : null;
     }

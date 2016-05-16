@@ -41,7 +41,8 @@ class route
 
 		/*echo "model: $model_name <br>";
 		echo "controller: $controller_name <br>";
-		echo "action: $action_name <br>";*/
+		echo "action: $action_name <br>";
+    var_dump($_SESSION);*/
 
 		// подцепляем файл с классом модели (файла модели может и не быть)
 		$model_file = strtolower($model_name).'.php';
@@ -60,6 +61,7 @@ class route
 		}
 		else
 		{
+      //die();
 			route::errorpage404(); // правильно было бы кинуть здесь исключение, но для упрощения сразу сделаем редирект на страницу 404
 		}
 		
@@ -73,6 +75,7 @@ class route
 		}
 		else
 		{
+      //die();
 			route::errorpage404(); // здесь также разумнее было бы кинуть исключение
 		}
 	}

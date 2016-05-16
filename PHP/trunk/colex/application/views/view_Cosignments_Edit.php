@@ -16,12 +16,12 @@
       <div class="form-group-xs">
         <input type="hidden" name="id" value="<?php echo $row["id"];?>">
         <label for="number" class="text-capitalize-first">номер</label>
-        <input type="text" class="form-control" id="number" name="number" maxlength="255" value="<?php echo $row["number"];?>" placeholder="Введите номер" autofocus>
+        <input type="text" class="form-control" id="number" name="number" maxlength="255" value="<?php echo htmlspecialchars($row["number"]);?>" placeholder="Введите номер" autofocus>
         <script>if (!("autofocus" in document.createElement("input"))) document.getElementById("number").focus();</script>
       </div>
       <div class="form-group-xs">
         <label for="registrationdate" class="text-capitalize-first">дата регистрации</label>
-        <input type="date" class="form-control" id="registrationdate" name="registrationdate" value="<?php echo $row["registrationdate"];?>">
+        <input type="date" class="form-control" id="registrationdate" name="registrationdate" value="<?php echo htmlspecialchars($row["registrationdate"]);?>">
       </div>
       <div class="checkbox">
         <label class="text-capitalize-first"><input type="checkbox" name="active" <?php if ($row["active"] === 1) echo "checked";?>>aктивность</label>

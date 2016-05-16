@@ -4,7 +4,10 @@ class model_employees extends model
   public function sel_data($data = null)
   {
     $id = isset($data, $data['id']) ? $data['id'] : -1;
-    $result = self::open("{call colex_sel_employees (?, ?)}", array($id, null));
+    $login = isset($data, $data['login']) ? $data['login'] : null;
+    $active = isset($data, $data['active']) ? $data['active'] : null;
+    $passwordmd5 = isset($data, $data['passwordmd5']) ? $data['passwordmd5'] : null;
+    $result = self::open("{call colex_sel_employees (?, ?, ?, ?)}", array($id, $login, $passwordmd5, $active));
     try
     {
       $data = array();

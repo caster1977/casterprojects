@@ -4,7 +4,7 @@
 require_once 'core/model.php';
 require_once 'core/view.php';
 require_once 'core/controller.php';
-//require_once 'core/lang.php';
+require_once 'core/routines.php';
 
 /*
 Здесь обычно подключаются дополнительные модули, реализующие различный функционал:
@@ -20,9 +20,12 @@ require_once 'core/controller.php';
 	> и др.
 */
 
-if (!isset($_SESSION))
+//if (!isset($_SESSION))
+if (!is_session_started())
 {
-  session_start();
+  session_start();  
+  session_regenerate_id();
+  header("Cache-control:private");
 }
 
 require_once 'core/route.php';
