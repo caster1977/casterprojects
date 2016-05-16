@@ -39,6 +39,7 @@
       <?php foreach($data as $row):?>
       <tr>
         <td class="text-center">
+          <?php if ($row['editable'] === 1) :?>
           <form class="form-inline" method="post">
             <div class="form-group-xs">
               <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
@@ -55,6 +56,7 @@
               </div>
             </div>
           </form>
+          <?php endif; ?>
         </td>
         <td><?php echo $row["name"];?></td>
         <td class="text-center activity">

@@ -21,7 +21,7 @@
       <script src="/js/respond.min.js"></script>
     <![endif]-->
     <meta name="description" content="Тестовый проект автоматизации учёта для Colex">
-    <meta name="author" content="Иванов Влад">
+    <meta name="author" content="Иванов Владислав">
     <link rel="icon" href="/images/favicon.ico">
   </head>
   <body>
@@ -32,6 +32,7 @@
           <!-- кнопка выпадающего меню для мелких устройств-->
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
             <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -147,7 +148,7 @@
     </main>
     <footer class="footer">
       <div class="container-fluid">
-        <p class="text-muted">&#169 2016 Иванов Влад, Кузьменков Илья. Все права защищены.</p>
+        <p class="text-muted">&#169 2016 Иванов Влад, Кузьменков Илья.<br>Все права <nobr>!защищены.</nobr></p>
       </div>
     </footer>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
