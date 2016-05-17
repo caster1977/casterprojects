@@ -41,7 +41,7 @@
         <th class="text-center"><abbr title="активность">*</abbr></th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="selectable">
       <?php foreach($data["employeepositions"] as $row):?>
       <tr>
         <td class="text-center">

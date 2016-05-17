@@ -9,11 +9,11 @@
     <title>Colex</title>
     <!-- подключение Bootstrap -->
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.css">
-    
+
     <!-- подключение пользовательских стилей -->
     <link type="text/css" rel="stylesheet" href="/css/style.css">
     <!--link type="text/css" rel="stylesheet" href="/css/logon.css"-->
-    
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -109,7 +109,7 @@
                 <form class="navbar-form" role="search">
                   <input type="text" class="form-control text-capitalize" placeholder="поиск">
                   <button type="submit" class="btn btn-default text-capitalize">пуск</button>
-                </form>            
+                </form>
               </div>
             </li-->
             <?php endif;?>
@@ -135,7 +135,7 @@
             <?php else :?>
             <li class="text-uppercase"><a href="/profile/logon">войти</a></li>
             <?php endif;?>
-          </ul>          
+          </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </header>
@@ -155,5 +155,6 @@
     <script src="/js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/my.js"></script>
   </body>
 </html>
