@@ -5,8 +5,7 @@ html {
 
 body {
   margin-bottom: 60px;
-  padding-top: 50px;
-  min-height: 1000px;
+  padding-top: 110px;
 }
 
 .table>caption {
@@ -89,8 +88,8 @@ col.actions {
 }
 
 .table-condensed .checkbox {
-    margin-top: 0px;
-    margin-bottom: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 .navbar-nav>li>a {
@@ -99,10 +98,6 @@ col.actions {
 .navbar-nav>li>a.avatar {
   margin-top: -1px;
 }
-
-/*.navbar-nav>li {
-  float: none;
-}*/
 
 .navbar-brand {
   height: 70px;
@@ -140,14 +135,19 @@ a.navbar-brand:focus,a.navbar-brand:hover {
   text-transform: uppercase;
 }
 
-.breadcrumb {
-  margin-top: 40px;
+main > .breadcrumb {
   text-transform: uppercase;
-  padding-bottom: 8px;
   border: 1px solid #ddd;
+  margin-top: 40px;
+  padding: 1px 15px;
+  top: 30px;
+  position: fixed;
+  width: 100%;
+  border-radius: 0px;
+  z-index: 1;
 }
 
-.breadcrumb > li + li:before {
+main > .breadcrumb > li + li:before {
   /*content: "/\00a0";*/
   content: " » ";
 }

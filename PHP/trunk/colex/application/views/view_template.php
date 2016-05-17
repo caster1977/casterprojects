@@ -140,11 +140,7 @@
       </div><!-- /.container-fluid -->
     </header>
     <main role="main">
-      <section class="section">
-        <div class="container-fluid">
-          <?php include 'application/views/'.$view_content; ?>
-        </div>
-      </section>
+    <?php include 'application/views/'.$view_content; ?>
     </main>
     <footer class="footer">
       <div class="container-fluid">
