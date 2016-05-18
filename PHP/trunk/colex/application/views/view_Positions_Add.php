@@ -14,7 +14,7 @@
     <form method="post" action="/positions">
       <div class="form-group-xs">
         <label for="name" class="text-capitalize-first">наименование</label>
-        <input type="text" class="form-control" id="name" name="name" maxlength="255" placeholder="Введите наименование" autofocus required>
+        <input type="text" class="form-control" id="name" name="name" maxlength="255" placeholder="Введите наименование" autofocus>
         <script>if (!("autofocus" in document.createElement("input"))) document.getElementById("name").focus();</script>
       </div>
       <div class="checkbox">

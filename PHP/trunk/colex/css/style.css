@@ -5,18 +5,24 @@ html {
 
 body {
   margin-bottom: 60px;
-  padding-top: 110px;
+  padding-top: 145px;
 }
 
-.table>caption {
+/* используется на странице профилей */
+.table > caption {
   text-transform: uppercase;
   font-weight: bold;
   padding: 0 0 10px 5px;
   color: #428bca;
 }
+
 .table>thead>tr>th, .table>tfoot>tr>td {
   background-color: #f5f5f5;
   vertical-align: middle;
+}
+
+.table>tbody.selectable {
+  cursor: pointer;
 }
 
 .table>tbody>tr>th {
@@ -33,6 +39,14 @@ body {
 
 .table>tbody>tr>td {
   vertical-align: middle;
+}
+
+.table>tbody>tr.active {
+  color: #428bca;
+}
+
+.table>tbody>tr.active>td:first-child:before {
+  content: "» ";
 }
 
 col.activity {
@@ -135,21 +149,36 @@ a.navbar-brand:focus,a.navbar-brand:hover {
   text-transform: uppercase;
 }
 
-main > .breadcrumb {
-  text-transform: uppercase;
+.action-menu {
   border: 1px solid #ddd;
-  margin-top: 40px;
-  padding: 1px 15px;
-  top: 30px;
+  top: 70px;
   position: fixed;
+  margin: 0;
   width: 100%;
+  padding: 5px;
+  background-color: white;
   border-radius: 0px;
   z-index: 1;
 }
 
-main > .breadcrumb > li + li:before {
+.action-menu > .breadcrumb {
+  text-transform: uppercase;
+  border: 1px solid #ddd;
+  padding: 2px 15px;
+  margin: 0;
+}
+
+.action-menu > .breadcrumb + form {
+  margin-top: 5px;
+}
+
+.action-menu > form button {
+  text-transform: uppercase!important;
+}
+
+.breadcrumb > li + li:before {
   /*content: "/\00a0";*/
-  content: " » ";
+  content: "»";
 }
 
 .form-signin {
