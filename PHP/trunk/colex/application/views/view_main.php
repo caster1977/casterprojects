@@ -1,9 +1,11 @@
-<ol class="breadcrumb">
-  <li class="active">главная</li>
-</ol>
+<div class="container top-bar-single">
+  <ol class="breadcrumb">
+    <li class="active">главная</li>
+  </ol>
+</div>
 <div class="container-fluid">
-  <div class="row-fluid">
-    <div class="col-sm-* col-xs-*">
+  <div class="row">
+    <div class="col-xs-*">
       <p class="lead">Добро пожаловать!</p>
       <p>Вашему вниманию представлена наша пробная совместная разработка.</p>
       <p>Она включает себя следующий функционал:

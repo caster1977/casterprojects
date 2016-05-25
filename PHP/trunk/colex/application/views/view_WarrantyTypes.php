@@ -3,8 +3,8 @@
   <li><a href="/references">справочники</a></li>
   <li class="active">типы гарантий</li>
 </ol>
-<div class="row-fluid">
-  <div class="col-sm-* col-xs-*">
+<div class="row">
+  <div class="col-xs-*">
     <?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?>
   </div>
 </div>

@@ -4,13 +4,13 @@
   <li><a href="/accessgroups">группы доступа</a></li>
   <li class="active">редактирование</li>
 </ol>
-<div class="row-fluid">
-  <div class="col-sm-* col-xs-*">
+<div class="row">
+  <div class="col-xs-*">
     <?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?>
   </div>
 </div>
-<div class="row-fluid">
-  <div class="col-sm-* col-xs-*">
+<div class="row">
+  <div class="col-xs-*">
     <form method="post" action="/accessgroups">
       <?php foreach($data as $row):?>
       <div class="form-group-xs">
@@ -23,7 +23,7 @@
         <label class="text-capitalize-first"><input type="checkbox" name="active" <?php if ($row["active"] === 1) echo "checked";?>>aктивность</label>
       </div>
       <div class="form-group-xs">
-        <div class="col-sm-* col-xs-*">
+        <div class="col-xs-*">
           <div class="btn-toolbar" role="toolbar"  aria-label="Панель действий">
             <div class="btn-group" role="group">
               <button type="submit" class="btn btn-success btn-xs" name="action" value="edit" alt="сохранить">

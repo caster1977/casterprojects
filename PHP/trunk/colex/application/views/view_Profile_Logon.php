@@ -1,12 +1,16 @@
-<ol class="breadcrumb">
-  <li><a href="/">главная</a></li>
-  <li class="active">вход</li>
-</ol>
-<div class="row-fluid">
-  <div class="col-sm-* col-xs-*">
+<div class="container top-bar-single">
+  <ol class="breadcrumb">
+    <li><a href="/">главная</a></li>
+    <li class="active">вход</li>
+  </ol>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-*">
     <?php echo (isset($prev_action_result)) ? self::showresult($prev_action_result): "";?>
+    </div>
   </div>
-  <div class="container">
+  <div class="row">
     <form class="form-signin" role="form" action="/profile/logon" method="post">
       <p class="lead form-signin-heading">Авторизация</p>
       <input type="text" name="login" class="form-control" placeholder="Логин" required autofocus>
