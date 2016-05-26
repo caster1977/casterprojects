@@ -12,12 +12,12 @@
         </button>
       </div>
       <div class="btn-group btn-group-xs" role="group">
-        <button type="submit" class="btn btn-warning btn-xs" formaction="/functions/edit" name="id" role="button">
+        <button type="submit" class="btn btn-warning btn-xs disabled" formaction="/functions/edit" name="id" role="button">
           <span class="glyphicon glyphicon-pencil" alt="редактировать" aria-label="редактировать"></span> редактировать
         </button>
       </div>
       <div class="btn-group btn-group-xs" role="group">
-        <button type="submit" class="btn btn-danger btn-xs" formaction="/functions/delete" name="id" role="button">
+        <button type="submit" class="btn btn-danger btn-xs disabled" formaction="/functions/delete" name="id" role="button">
           <span class="glyphicon glyphicon-minus" alt="удалить" aria-label="удалить"></span> удалить
         </button>
       </div>

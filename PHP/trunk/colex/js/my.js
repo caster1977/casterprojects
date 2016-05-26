@@ -3,7 +3,7 @@ $(document).ready
   function()
   {
     var id_buttons = $('button:submit[name="id"]'); // получаем все кнопки действий, требуюих идентификатора
-    id_buttons.addClass("disabled"); // делаем их недоступными
+    //id_buttons.addClass("disabled"); // делаем их недоступными
     
     $('.selectable tr').click // вещаем обработчик на событие клика выделяемой строке таблиц
     (
