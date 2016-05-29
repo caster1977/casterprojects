@@ -139,12 +139,16 @@ footer > .container > p {
 }
 
 .table>tbody>tr.active {
-  color: #428bca;
+  color: #428bca;  
 }
 
-.table>tbody>tr.active>td:first-child:before {
-  content: "» ";
+.table>tbody>tr.active>td:first-child {
+  text-decoration: underline;
 }
+
+/*.table>tbody>tr.active>td:first-child:before {
+  content: "» ";
+}*/
 
 col.activity {
   width: 30px;
