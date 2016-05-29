@@ -100,7 +100,7 @@
                 <li class="disabled"><a href="/">обучение пользователей</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header text-uppercase">Этап 7</li>
-                <li class="disabled"><a href="/">Техническая поддержка</a></li>
+                <li><a href="/support">Техническая поддержка</a></li>
               </ul>
             </li>
             <li><a href="/reports">отчётность</a></li>
