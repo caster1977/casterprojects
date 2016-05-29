@@ -92,7 +92,8 @@ footer > .container > p {
   margin-top: 70px;
 }
 
-.top-bar > form button, .top-bar-single > form button {
+.top-bar > form button, .top-bar-single > form button,
+.btn-toolbar .btn-group button {
   text-transform: uppercase!important;
 }
 
