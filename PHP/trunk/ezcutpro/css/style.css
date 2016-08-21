@@ -14,29 +14,43 @@ html {
 
 /* тело */
 main {
-  padding: 70px 5px 35px;
+  padding: 70px 5px 80px;
 }
 
 /* футер */
 footer {
   position: fixed;
+  height: 80px;
   bottom: 0;
   width: 100%;
-  height: 30px;
-  background-color: #bcbcbc;
-  color: black;
+  background-color: #002433;
+  color: #d3d9db;
 }
 
 /* текст футера */
-footer > .container > p {
-  color: black;
-  text-align: center;
+footer p {
+  text-align: left;
   padding-top: 5px;
+  margin-left: -10px;
+}
+
+footer a {
+  color: #8a979c;
+}
+
+footer a:focus, footer a:hover {
+  color: white!important;
+  text-decoration: none;  
+  cursor: auto;
+}
+
+footer ul {
+  padding-left: 5px;
 }
 
 /* главное меню */
 .navbar {
-  background-color: #bcbcbc;
+  background-color: white;
   margin-bottom: 0;
 }
 
@@ -57,7 +71,7 @@ footer > .container > p {
   width: 100%;
   margin: 0 -5px;
   padding: 0 5px;
-  background-color: white;
+  background-color: #00a1e6;
   z-index: 1;
 }
 
@@ -69,9 +83,18 @@ footer > .container > p {
 /* путь навигации на панели инструментов страницы */
 .top-bar > .breadcrumb, .top-bar-single > .breadcrumb {
   margin-bottom: 0;
+  background-color: #005073;
   text-transform: uppercase;
-  border: 1px solid #ddd;
+  /*border: 1px solid black;*/
   padding: 2px 10px;
+}
+
+.breadcrumb a {
+  color: #ffcb47;
+}
+
+.breadcrumb > .active {
+  color: white;
 }
 
 /* последний из элементов на панели инструментов страницы */
@@ -97,108 +120,23 @@ footer > .container > p {
   text-transform: uppercase!important;
 }
 
-
-
-
-
-
-
-
-
-
-/* используется на странице профилей */
-.table > caption {
-  text-transform: uppercase;
-  font-weight: bold;
-  padding: 0 0 10px 5px;
-  color: #428bca;
-}
-
-.table>thead>tr>th, .table>tfoot>tr>td {
-  background-color: #f5f5f5;
-  vertical-align: middle;
-}
-
-.table>tbody.selectable {
-  cursor: pointer;
-}
-
-.table>tbody>tr>th {
-  font-weight: normal;
-}
-
-.table>thead>tr>th, .table>tbody>tr>th {
-  text-transform: lowercase;
-}
-
-.table>thead>tr>th:first-letter, .table>tbody>tr>th:first-letter {
-  text-transform: capitalize;
-}
-
-.table>tbody>tr>td {
-  vertical-align: middle;
-}
-
-.table>tbody>tr.active {
-  color: #428bca;  
-}
-
-.table>tbody>tr.active>td:first-child {
-  text-decoration: underline;
-}
-
-/*.table>tbody>tr.active>td:first-child:before {
-  content: "» ";
-}*/
-
-col.activity {
-  width: 30px;
-}
-
-col.actions {
-  width: 65px;
-}
-
-.activity .glyphicon-ok {
-  color: #3c763d;
-}
-
-.activity .glyphicon-remove {
-  color: #a94442;
-}
-
-.navbar-form {
-  margin: 0;
-  padding: 15px 0 0 15px;
-  line-height: 40px;
-}
-
-.img-avatar {
-  width: 40px;
-  height: 40px;
-  margin: 0 10px;
-}
-
-.table-condensed .checkbox {
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-
 .navbar-nav>li>a {
   line-height: 40px;
-}
-.navbar-nav>li>a.avatar {
-  margin-top: -1px;
 }
 
 .navbar-brand {
   height: 70px;
-  line-height: 25px;
+  line-height: 10px;
   font-weight: bold;
-  color: #ee1d23!important;
-  font-family: Book Antiqua;
-  padding-top: 3px;
-  font-size: 55px;
+  color: black!important;
+  padding-top: 15px;
+  padding-left: 70px;
+  font-size: 40px;
+  background-repeat: no-repeat;
+  background-position: 5px 5px;
+  background-size: 60px 60px;
+  width: 450px;
+  background-image: url("/images/EZ-CUT-PRO_final.svg");
 }
 
 .navbar-brand span {
@@ -207,61 +145,9 @@ col.actions {
 }
 
 a.navbar-brand:focus,a.navbar-brand:hover {
-  color: red!important;
+  color: #ffcb47!important;
 }
 
 .page-header {
   text-transform: uppercase;
-}
-
-.form-signin {
-  max-width: 200px;
-  margin: 0 auto;
-}
-.form-signin .form-signin-heading, .form-signin .checkbox {
-  margin-bottom: 10px;
-}
-.form-signin .checkbox {
-  font-weight: normal;
-  padding: 0 0 0 20px;
-}
-.form-signin .form-control {
-  position: relative;
-  /*height: auto;*/
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
-  padding: 10px;
-}
-
-.form-signin .form-control:focus {
-  z-index: 2;
-}
-.form-signin input[type="text"] {
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.form-signin input[type="password"] {
-  border-top-right-radius: 0;
-  border-top-left-radius: 0;
-  margin-bottom: 10px;
-}
-
-.page-header {
-/* wide-screen */
-@media screen and (min-width: 1200px) {
-}
-
-/* desktops */
-@media screen and (min-width: 992px) {
-
-}
-
-/* tablets */
-@media screen and (min-width: 768px) {
-}
-
-/* phones */
-@media screen and (min-width: 480px) {
-
 }
