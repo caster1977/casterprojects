@@ -14,24 +14,24 @@ html {
 
 /* тело */
 main {
-  padding: 70px 5px 80px;
+  padding: 90px 5px 30px;
 }
 
 /* футер */
 footer {
   position: fixed;
-  height: 80px;
+  height: 30px;
   bottom: 0;
   width: 100%;
-  background-color: #002433;
+  background-color: #005073;
   color: #d3d9db;
 }
 
 /* текст футера */
 footer p {
   text-align: left;
+  text-align: center;
   padding-top: 5px;
-  margin-left: -10px;
 }
 
 footer a {
@@ -54,6 +54,22 @@ footer ul {
   margin-bottom: 0;
 }
 
+.navbar-toggle {
+  margin-top: 15px;
+}
+
+.address-banner {
+  background-color: #00a1e6;
+  padding-top: 0;
+  height: 20px;
+  font-size: 10px;
+  line-height: 10px;
+}
+
+.address-banner a { 
+  color: #ffcb47;
+}
+
 /* пункты главного меню */
 .navbar-default .navbar-nav > li > a {
   color: black;
@@ -61,7 +77,12 @@ footer ul {
 
 /* подсвеченные пунктов главного меню */
 .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
-  color: white;
+  color: #ffcb47;
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    color: #ffcb47;
+    background-color: #005073;
 }
 
 /* панель инструментов страницы */
@@ -129,13 +150,13 @@ footer ul {
   line-height: 10px;
   font-weight: bold;
   color: black!important;
-  padding-top: 15px;
+  padding-top: 20px;
   padding-left: 70px;
-  font-size: 40px;
+  font-size: 30px;
   background-repeat: no-repeat;
   background-position: 5px 5px;
   background-size: 60px 60px;
-  width: 450px;
+  width: 275px;
   background-image: url("/images/EZ-CUT-PRO_final.svg");
 }
 
@@ -150,4 +171,27 @@ a.navbar-brand:focus,a.navbar-brand:hover {
 
 .page-header {
   text-transform: uppercase;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  color: #ffcb47;
+  text-decoration: none;
+  background-color: #005073;
+}
+
+/* phones */
+@media screen and (min-width: 480px) {
+}
+
+/* tablets */
+@media screen and (min-width: 768px) {
+}
+  
+/* desktops */
+@media screen and (min-width: 992px) {
+}
+
+/* wide-screen */
+@media screen and (min-width: 1200px) {
 }

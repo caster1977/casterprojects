@@ -8,11 +8,14 @@
   <div class="row">
     <div class="col-xs-*">
       <address>
-        <strong>Ez Cut Pro LLC</strong> <br>
+        <strong>EZ Cut Pro LLC</strong> <br>
         603 Forest ave, <br>
         Paramus, NJ 07652 <br>
-        Phone: +1973424395 <br>
-        Phone: +12018736744
+        <br>
+        <strong>Sales</strong> <br>
+        E-Mail: <a href="mailto:sales@ezcutpro.com"><strong>sales@ezcutpro.com</strong></a><br>
+        Phone: +19733424395 (Monday-Saturday 8am-8pm (EST))<br>
+        Phone: +12018736744 (Monday-Saturday 8am-8pm (EST))
       </address>
       <!--address>
         <strong>Full Name</strong><br>

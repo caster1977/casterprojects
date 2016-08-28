@@ -9,7 +9,7 @@
     <div class="col-xs-*">
       <h1>404: page not found</h1>
       <p>We looked everywhere but can't find that page.</p>
-      <p>P.S.: So sorry for the trouble. Please try again or contact us.</p>
+      <p>P.S.: So sorry for the trouble. Please try again or <a href="/contact">contact us</a>.</p>
       <p class="small"><a href="/">Back to main page</a></p>
     </div>
   </div>

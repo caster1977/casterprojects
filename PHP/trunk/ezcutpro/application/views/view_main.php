@@ -7,9 +7,8 @@
   <div class="row">
     <div class="col-xs-*">
       <h2>This site is under construction</h2>
-      <p>We are currently undergoing construction on your site.</p>
-      <p>22% already done.</p>
-      <p>P.S.: So sorry for the trouble. Please contact us.</p>
+      <p>We are currently undergoing construction on your site. 27% already done.</p>
+      <p>P.S.: So sorry for the trouble. Please <a href="/contact">contact us</a>.</p>
     </div>
   </div>
 </div>
