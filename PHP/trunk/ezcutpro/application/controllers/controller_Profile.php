@@ -77,7 +77,7 @@ class controller_profile extends controller
         {
           $_SESSION['avatar'] = '/images/ilya.jpg';
         }
-        header('location:/news/');
+        header('location:/blog/');
       }
       else
       {
@@ -103,32 +103,3 @@ class controller_profile extends controller
     }
   }
 }
-
-
-// /* проверка логина пользователя */
-// $user_login = "";/* по-умолчанию берём пустой логин */
-// if(isset($_POST['user_login'])) : /* если логин сохранён в переменной формы */
-  // if(trim($_POST['user_login'] != "")): /* если логин в переменной формы не пустой */
-    // $user_login = trim($_POST['user_login']);/* берём логин из переменной формы */
-    // $_SESSION['user_login'] = $user_login; /* созраняем логин в переменных сессии */
-  // endif;
-// elseif(isset($_SESSION['user_login'])): /* иначе, если логин сохранён в переменных сессии */
-  // if($_SESSION['user_login'] != ""): /* если логин в переменных сессии не пустой */
-    // $user_login = $_SESSION['user_login'];/* берём логин из переменных сессии */
-  // else: /* иначе */
-    // unset($_SESSION['user_login']);/* удаляем логин из переменных сессии */
-  // endif;
-// endif;
-
-// if($user_login != ""): /* если логин не пустой */
-  // /* проверка пароля пользователя */
-  // $user_password = "";/* по-умолчанию берём пустой пароль */
-  // if(isset($_POST['user_password'])): /* если пароль сохранён в переменной формы */
-    // $user_password = trim($_POST['user_password']);/* берём пароль из переменной формы */
-    // $_SESSION['user_password'] = $user_password; /* сохраняем пароль в переменных сессии */
-  // elseif(isset($_SESSION['user_password'])): /* иначе, если пароль сохранён в переменных сессии */
-    // $user_password = $_SESSION['user_password'];/* берём пароль из переменных сессии */
-  // endif;
-// else:
-  // unset($_SESSION['user_password']);/* удаляем пароль из переменных сессии */
-// endif;

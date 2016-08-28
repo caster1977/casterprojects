@@ -1,7 +1,7 @@
 <?php
-  $_SESSION['logged'] = 1;
-  $_SESSION['user_id'] = 1;
-  $_SESSION['user_name'] = 'caster';
+  //$_SESSION['logged'] = 1;
+  //$_SESSION['user_id'] = 1;
+  //$_SESSION['user_name'] = 'caster';
 ?>
 <!DOCTYPE html>
 <html lang="en">
