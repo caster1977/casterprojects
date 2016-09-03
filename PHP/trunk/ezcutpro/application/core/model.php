@@ -10,12 +10,13 @@
   
 abstract class model
 {
-  const servername = '.';
+  //const servername = '.';
+  const servername = '209.17.116.4';
   const connectionoptions = array(
-    "database" => "colex",
+    "database" => "ezcutpro",
     "logintimeout" => 60,
-    //"uid" => "colex",
-    //"pwd" => "1/2_5a",
+    "uid" => "ezcutpro",
+    "pwd" => "EzCutPro2016",
     "characterset" => "utf-8",
     "multipleactiveresultsets" => 1
     );
