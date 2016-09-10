@@ -25,9 +25,9 @@
       <div class="container-fluid">
   	    <div class="row">
           <div class="address-banner text-center col-xs-*">
-            <abbr title="Monday-Saturday 8am-8pm (EST)">Phones:</abbr> 
-            +19733424395 +12018736744, 
-            <span class="text-nowrap">E-Mail:</span> 
+            <abbr title="Monday-Saturday 8am-8pm (EST)">+19733424395</abbr>
+            <abbr title="Monday-Saturday 8am-8pm (EST)">+12018736744</abbr>
+            <!--span class="text-nowrap">E-Mail:</span--> 
             <a href="mailto:sales@ezcutpro.com">sales@ezcutpro.com</a>
           </div>
         </div>        
