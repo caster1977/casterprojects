@@ -2,9 +2,9 @@
 
 class controller_about extends controller
 {
-
-	function action_index()
-	{	
-		$this->view->generate('view_about.php', 'view_template.php');
-	}
+  function __construct()
+  {
+    parent::__construct();
+    $this->model = new model_about();
+  }
 }

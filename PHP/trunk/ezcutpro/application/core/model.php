@@ -10,8 +10,8 @@
   
 abstract class model
 {
-  //const servername = '.';
-  const servername = '209.17.116.4';
+  const servername = '.';
+  //const servername = '209.17.116.4';
   const connectionoptions = array(
     "database" => "ezcutpro",
     "logintimeout" => 60,

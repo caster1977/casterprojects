@@ -14,13 +14,13 @@ class model_employees extends model
 
       while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
       {
-        $data[] = $row;
+        $data[$row['id']] = $row;
       }
     }
     finally
     {
       self::close($result);
-    }
+    }    
     return $data;
   }
 

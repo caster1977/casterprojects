@@ -1,31 +1,23 @@
 <?php
-class model_blog extends model
+class model_positions extends model
 {
   public function sel_data($data = null)
   {
-    require_once 'model_employees.php';
-    $model_employees = new model_employees();
-
     $id = isset($data, $data['id']) ? $data['id'] : -1;
-    $result = self::open('{call sel_blog (?, ?, ?)}', array($id, -1, 1));
+    $result = self::open("{call sel_positions (?, ?)}", array($id, null));
     try
     {
-      $blog = array();
+      $data = array();
       
       while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
       {
-        $blog[$row['id']] = $row;
+        $data[$row['id']] = $row;
       }
     }
     finally
     {
       self::close($result);
     }
-    
-    $data = array();    
-    $data['blog'] = $blog;
-    $data['employees'] = $model_employees->sel_data();
-    
     return $data;
   }
   
@@ -37,7 +29,7 @@ class model_blog extends model
 
     if (isset($name))
     {
-      $result = self::open('{call upd_blog (?, ?, ?, ?)}', array($id, $name, (isset($active) ? 1 : 0)));
+      $result = self::open("{call upd_positions (?, ?, ?)}", array($id, $name, (isset($active) ? 1 : 0)));
       try
       {
         if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
@@ -62,7 +54,7 @@ class model_blog extends model
 
     if (isset($id, $name))
     {
-      $result = self::open('{call upd_blog (?, ?, ?, ?)}', array($id, $name, (isset($active) ? 1 : 0)));
+      $result = self::open("{call upd_positions (?, ?, ?)}", array($id, $name, (isset($active) ? 1 : 0)));
       try
       {
         if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC))
@@ -87,7 +79,7 @@ class model_blog extends model
 
     if (isset($id))
     {
-      $result = self::open('{call del_blog (?)}', array($id));
+      $result = self::open("{call del_positions (?)}", array($id));
       try
       {
         $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
@@ -110,7 +102,7 @@ class model_blog extends model
   public function clear_data($data = null)
   {
     $id = -1;    
-    $result = self::open('{call del_blog (?)}', array($id));
+    $result = self::open("{call del_positions (?)}", array($id));
     try
     {
       $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);

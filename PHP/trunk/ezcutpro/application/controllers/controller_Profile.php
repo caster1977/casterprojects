@@ -64,19 +64,13 @@ class controller_profile extends controller
       require_once 'application/models/model_employees.php';
       $model_employees = new model_employees();
       $data = $model_employees->sel_data(array('login'=>$_POST['login'], 'passwordmd5'=>md5($_POST['password'])));
+      var_dump($data);
       if (count($data) === 1)
       {
         $_SESSION['logged'] = 1;
-        $_SESSION['user_id'] = $data[0]['id'];
-        $_SESSION['user_name'] = $data[0]['lastname'].' '.$data[0]['firstname'];
-        if ($_SESSION['user_id'] === 1)
-        {
-          $_SESSION['avatar'] = '/images/islands-retina-50.jpg';
-        }
-        if ($_SESSION['user_id'] === 2)
-        {
-          $_SESSION['avatar'] = '/images/ilya.jpg';
-        }
+        $_SESSION['user_id'] = current($data)['id'];
+        $_SESSION['user_name'] = current($data)['lastname'].' '.current($data)['firstname'];
+        $_SESSION['avatar'] = current($data)['avatar'];
         header('location:/blog/');
       }
       else
@@ -92,14 +86,22 @@ class controller_profile extends controller
 
   function action_logoff()
   {
-    if (isset($_POST, $_POST['confirm'], $_SESSION, $_SESSION['logged']))
+    if (isset($_SESSION, $_SESSION['logged']))
     {
-      session_destroy();
-      header('Location:/');
+      if (isset($_POST, $_POST['confirm']))
+      {
+        session_destroy();
+        unset($_SESSION);
+        header('Location:/');
+      }
+      else
+      {
+        $this->view->generate('view_profile_logoff.php', 'view_template.php');
+      }
     }
     else
     {
-      $this->view->generate('view_profile_logoff.php', 'view_template.php');
+      header('Location:/');
     }
   }
 }

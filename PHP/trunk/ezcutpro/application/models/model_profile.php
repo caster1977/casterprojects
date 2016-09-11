@@ -20,7 +20,7 @@ class model_profile extends model
 
       while($row = sqlsrv_fetch_array($statement, SQLSRV_FETCH_ASSOC))
       {
-        $data[] = $row;
+        $data[$row['id']] = $row;
       }
     }
     finally

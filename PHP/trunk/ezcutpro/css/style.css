@@ -14,7 +14,7 @@ html {
 
 /* тело */
 main {
-  padding: 90px 5px 30px;
+  padding: 92px 5px 30px;
 }
 
 /* футер */
@@ -233,11 +233,65 @@ a.navbar-brand:focus,a.navbar-brand:hover {
   line-height: 39px;
 }
 
+.container-sm {
+  max-width: 700px;
+}
+
+.article-title {
+  font-size: 24px;
+  margin-bottom: 15px;
+  line-height: 1.25;
+  font-weight: 600;
+  color: #242b2e;
+  letter-spacing: -.01em;
+}
+
 .article-image {
   display: block;
   max-width: 100%;
   height: auto;
   margin-bottom: 15px;
+}
+
+.ascent-line {
+  content: "";
+  display: block;
+  position: relative;
+  width: 40px;
+  height: 1px;
+  background-color: #edf1f2;
+  margin: 20px 0 15px;
+}
+
+.aside {
+  display: block;
+}
+
+.article-author {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.article-author-img {
+  padding-right: 15px;
+  vertical-align: middle;
+  display: table-cell;
+  font-size: 16px;
+}
+
+.article-author-img img {
+  width: 40px;
+  height: 40px;
+}
+
+.article-author-name {
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.article-author-name h4 {
+  font-size: 14px;
+  color: #4f5c61;
 }
 
 /* phones */
