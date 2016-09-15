@@ -15,6 +15,8 @@
         <strong>Sales</strong> <br>
         Monday-Saturday 08:00am-08:00pm (EST)<br>
         E-Mail: <a href="mailto:sales@ezcutpro.com"><strong>sales@ezcutpro.com</strong></a><br>
+        E-Mail: <a href="mailto:a.stuliy@yahoo.com"><strong>a.stuliy@yahoo.com</strong></a><br>
+        <br>
         Phone: +19733424395<br>
         Phone: +12018736744<!--br>
         <br>

@@ -9,14 +9,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ez Cut Pro</title>
+    <title>EZ Cut Pro</title>
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.css">
     <link type="text/css" rel="stylesheet" href="/css/style.css">
     <!--[if lt IE 9]>
       <script src="/js/html5shiv.min.js"></script>
       <script src="/js/respond.min.js"></script>
     <![endif]-->
-    <meta name="description" content="Ez Cut Pro Online business card">
+    <meta name="description" content="EZ Cut Pro Online business card">
     <meta name="author" content="Ivanov Vladislav">
     <link rel="icon" href="/images/favicon.ico">
   </head>
@@ -41,7 +41,7 @@
             <span class="icon-bar"></span>
             </span>
           </button>
-          <a class="navbar-brand text-uppercase" href="/">Ez Cut Pro<span> &#174</span></a>
+          <a class="navbar-brand text-uppercase" href="/">EZ Cut Pro<span> &#174</span></a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-left navbar-nav text-uppercase">
@@ -93,7 +93,7 @@
       <div class="container-fluid">
   	    <div class="row">
           <div class="col-xs-*">
-            <p>&#169 2016 Ez Cut Pro LLC</p>
+            <p>&#169 2016 EZ Cut Pro LLC</p>
           </div>
         </div>
       </div>
