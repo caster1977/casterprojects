@@ -75,5 +75,5 @@ def listDirectory(directory, fileExtList):
 
 if __name__ == "__main__":
     for info in listDirectory("D:\\Public\\Music\\Baldur's Gate 1\\", [".mp3"]): 
-        print "\n".join(["%s=%s" % (k, v) for k, v in info.items()])
-        print
+        print ("\n".join(["%s=%s" % (k, v) for k, v in info.items()]))
+        print ()

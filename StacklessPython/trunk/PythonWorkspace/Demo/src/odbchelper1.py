@@ -1,23 +1,23 @@
 # coding=utf8
 import odbchelper
 params = {"server":"mpilgrim", "database":"master", "uid":"sa", "pwd":"secret"}
-print odbchelper.buildConnectionString(params) 
-print odbchelper.buildConnectionString.__doc__
-print odbchelper.__name__
+print (odbchelper.buildConnectionString(params))
+print (odbchelper.buildConnectionString.__doc__)
+print (odbchelper.__name__)
 d = {"server":"mpilgrim", "database":"master"}
-print d
-print d["server"]
-print d["database"]
+print (d)
+print (d["server"])
+print (d["database"])
 d["uid"] = "sa"
-print d
+print (d)
 d[42] = "douglas"
 d["retrycount"] = 3
-print d
+print (d)
 del d[42]
-print d
+print (d)
 d.clear()
-print d
-
+print (d)
+'''
 li = ["a", "b", "mpilgrim", "z", "example"] 
 print li
 print li[0]                                       
@@ -92,3 +92,4 @@ s = ";".join(li)
 print s
 print s.split(";")
 print s.split(";", 1)
+'''

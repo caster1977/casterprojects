@@ -8,4 +8,4 @@ if __name__ == "__main__":
                 "database":"master", \
                 "uid":"sa", \
                 "pwd":"secret"}
-    print buildConnectionString(myParams)
+    print (buildConnectionString(myParams))
