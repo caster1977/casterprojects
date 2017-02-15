@@ -8,12 +8,12 @@ pong_channel = stackless.channel()
 
 def ping():
     while ping_channel.receive(): #blocks here
-        print ("PING")
+        print("PING")
         pong_channel.send("from ping")
 
 def pong():
     while pong_channel.receive():
-        print ("PONG")
+        print("PONG")
         ping_channel.send("from pong")
 
 stackless.tasklet(ping)()

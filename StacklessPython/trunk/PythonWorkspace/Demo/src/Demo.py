@@ -1,7 +1,7 @@
 import stackless
 
 def print_x(x):
-    print (x)
+    print(x)
 
 stackless.tasklet(print_x)("one")
 stackless.tasklet(print_x)("two")
