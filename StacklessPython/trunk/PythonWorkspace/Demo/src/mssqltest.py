@@ -15,12 +15,14 @@ try:
 
 	formats = [(r[0], r[1]) for r in conn.get_header()]
 	#print(formats, '\n')
-
-	for row in conn:
+	
+	print([[(formats[col][0], row[col]) for col in range(len(formats))] for row in conn])
+	
+	'''for row in conn:
 		current_row = []
 		for col in range(len(formats)):
-			s = formats[col][0] + '=' + str(row[col])
+			s = formats[col][0] + ' = ' + str(row[col])
 			current_row.append(s)
-		print(current_row)
+		print(current_row)'''
 finally:
 	conn.close()
