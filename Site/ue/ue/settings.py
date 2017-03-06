@@ -73,12 +73,32 @@ WSGI_APPLICATION = 'ue.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-DATABASES = {
+'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+}'''
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'sql_server.pyodbc',
+        'NAME': 'ue_django',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '.',
+        'PORT': '',
+
+        'OPTIONS': {
+            'driver': 'ODBC Driver 11 for SQL Server',
+            #'unicode_results': 'True',
+            'MARS_Connection': 'True',
+        },
+    },
 }
+
+# set this to False if you want to turn off pyodbc's connection pooling
+#DATABASE_CONNECTION_POOLING = False
 
 
 # Password validation
