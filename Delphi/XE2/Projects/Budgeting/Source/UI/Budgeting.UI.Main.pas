@@ -42,7 +42,7 @@ uses
   System.Actions,
   Vcl.ActnList,
   AboutPackage.Logic.TAboutWindow,
-  Budgeting.Logic.Interfaces.IMainFormBusinessLogic,
+//  Budgeting.Logic.Interfaces.IMainFormBusinessLogic,
   AboutPackage.Logic.TGSFileVersionInfo,
   Vcl.Menus,
   cxHyperLinkEdit,
@@ -104,7 +104,8 @@ uses
   cxImageComboBox,
   cxCurrencyEdit,
   cxCalendar,
-  cxCalc;
+  cxCalc, dxBarBuiltInMenu, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxPC,
+  LoginPackage.Logic.TLoginWindow;
 
 type
   TMainForm = class(TForm)
@@ -121,14 +122,7 @@ type
     dxbrmngrMain: TdxBarManager;
     cxmglstActions: TcxImageList;
     actlstMain: TActionList;
-    actLoadList: TAction;
-    actProcess: TAction;
     actConfiguration: TAction;
-    dxbrbtn1: TdxBarButton;
-    dxbrbtn2: TdxBarButton;
-    dxbrbtn3: TdxBarButton;
-    dxbrbtn4: TdxBarButton;
-    dxbrbtn5: TdxBarButton;
     AboutWindow: TAboutWindow;
     gsflvrsnfMain: TGSFileVersionInfo;
     mmMain: TMainMenu;
@@ -143,13 +137,9 @@ type
     N9: TMenuItem;
     N10: TMenuItem;
     dxbrToolBar: TdxBar;
-    dxbrbtn6: TdxBarButton;
-    dxbrbtn7: TdxBarButton;
-    dxbrbtn8: TdxBarButton;
-    dxbrbtn9: TdxBarButton;
-    dxbrbtn10: TdxBarButton;
-    dxbrbtn11: TdxBarButton;
-    dxbrbtn12: TdxBarButton;
+    btnQuit: TdxBarButton;
+    btnHelpContext: TdxBarButton;
+    btnAbout: TdxBarButton;
     N11: TMenuItem;
     N12: TMenuItem;
     N13: TMenuItem;
@@ -158,7 +148,6 @@ type
     cxgrdtblvwFiles: TcxGridTableView;
     colFileName: TcxGridColumn;
     cxgrdlvl2: TcxGridLevel;
-    dxbrbtn13: TdxBarButton;
     N16: TMenuItem;
     N17: TMenuItem;
     pctnbrMain: TPopupActionBar;
@@ -170,7 +159,7 @@ type
     N24: TMenuItem;
     N25: TMenuItem;
     N26: TMenuItem;
-    dxbrbtn14: TdxBarButton;
+    btnConfiguration: TdxBarButton;
     N27: TMenuItem;
     N28: TMenuItem;
     N29: TMenuItem;
@@ -180,31 +169,31 @@ type
     colNumber: TcxGridColumn;
     colType: TcxGridColumn;
     colStatus: TcxGridColumn;
-    pnlFiles: TPanel;
-    lblFiles: TcxLabel;
-    cxspltr1: TcxSplitter;
-    pnlResult: TPanel;
-    lblResult: TcxLabel;
-    cxgrdResult: TcxGrid;
-    cxgrdtblvwResult: TcxGridTableView;
-    colSeries2: TcxGridColumn;
-    colNumber2: TcxGridColumn;
-    colUNP: TcxGridColumn;
-    colConsignorAddress: TcxGridColumn;
-    cxgrdlvlResult: TcxGridLevel;
-    colConsigneeAddress: TcxGridColumn;
-    colSum: TcxGridColumn;
-    colVAT: TcxGridColumn;
-    colSumWithVAT: TcxGridColumn;
-    colDate: TcxGridColumn;
-    colLoadingPoint: TcxGridColumn;
-    colUnloadingPoint: TcxGridColumn;
     actExcel: TAction;
-    dxbrbtn15: TdxBarButton;
+    btnExcel: TdxBarButton;
     N31: TMenuItem;
     N32: TMenuItem;
     N19: TMenuItem;
-    colType2: TcxGridColumn;
+    btnConnect: TdxBarButton;
+    actConnect: TAction;
+    actDisconnect: TAction;
+    actAdd: TAction;
+    actEdit: TAction;
+    actDelete: TAction;
+    actRefresh: TAction;
+    cxpgcntrlMain: TcxPageControl;
+    cxtbshtExports: TcxTabSheet;
+    cxtbshtReferences: TcxTabSheet;
+    cbbReferences: TcxComboBox;
+    References: TcxGrid;
+    cxgrdlvlWarehouses1: TcxGridLevel;
+    cxgrdlvlWarehouses2: TcxGridLevel;
+    shtReports: TcxTabSheet;
+    btn1: TdxBarButton;
+    dxBarButton1: TdxBarButton;
+    dxBarButton2: TdxBarButton;
+    dxBarButton3: TdxBarButton;
+    LoginWindow: TLoginWindow;
     procedure actQuitExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -216,9 +205,9 @@ type
     procedure actToolBarExecute(Sender: TObject);
     procedure actViewExecute(Sender: TObject);
     procedure actActionExecute(Sender: TObject);
-    procedure actProcessExecute(Sender: TObject);
+    procedure actAddExecute(Sender: TObject);
     procedure actHelpContextExecute(Sender: TObject);
-    procedure actProcessUpdate(Sender: TObject);
+    procedure actAddUpdate(Sender: TObject);
     procedure actQuitUpdate(Sender: TObject);
     procedure actAboutUpdate(Sender: TObject);
     procedure actHelpContextUpdate(Sender: TObject);
@@ -228,9 +217,10 @@ type
     procedure actExcelExecute(Sender: TObject);
     procedure actLoadListUpdate(Sender: TObject);
     procedure actConfigurationUpdate(Sender: TObject);
+    procedure actConnectExecute(Sender: TObject);
 
   strict private
-    FLogic: IMainFormBusinessLogic;
+//    FLogic: IMainFormBusinessLogic;
     FProcessing: Boolean;
 
     procedure ApplyConfiguration();
@@ -246,7 +236,8 @@ implementation
 uses
   System.DateUtils,
   Budgeting.Logic.Consts,
-  Budgeting.Logic.Classes.TMainFormBusinessLogic;
+  Budgeting.UI.Configuration;
+//  Budgeting.Logic.Classes.TMainFormBusinessLogic;
 
 procedure TMainForm.actFileExecute(Sender: TObject);
 begin
@@ -254,14 +245,8 @@ begin
 end;
 
 procedure TMainForm.actAboutUpdate(Sender: TObject);
-var
-  b: Boolean;
 begin
-  b := (not FProcessing);
-  if actAbout.Enabled <> b then
-  begin
-    actAbout.Enabled := b;
-  end;
+  // заглушка
 end;
 
 procedure TMainForm.actActionExecute(Sender: TObject);
@@ -284,7 +269,7 @@ var
   d, h, n, s, ms: word;
   sh: word;
 begin
-  if not Assigned(FLogic) then
+{  if not Assigned(FLogic) then
   begin
     Exit();
   end;
@@ -322,39 +307,22 @@ begin
     begin
       MessageBox(Handle, PWideChar(e.ToString()), PWideChar(Format(RsErrorCaption, [Caption])), MESSAGE_TYPE_ERROR);
     end;
-  end;
+  end;}
 end;
 
 procedure TMainForm.actLoadListUpdate(Sender: TObject);
-var
-  b: Boolean;
 begin
-  b := (not FProcessing);
-  if actLoadList.Enabled <> b then
-  begin
-    actLoadList.Enabled := b;
-  end;
+  // заглушка
 end;
 
 procedure TMainForm.actHelpContextExecute(Sender: TObject);
 begin
-  if not Assigned(FLogic) then
-  begin
-    Exit();
-  end;
-
-  FLogic.HelpContext();
+  // заглушка
 end;
 
 procedure TMainForm.actHelpContextUpdate(Sender: TObject);
-var
-  b: Boolean;
 begin
-  b := (not FProcessing);
-  if actHelpContext.Enabled <> b then
-  begin
-    actHelpContext.Enabled := b;
-  end;
+  // заглушка
 end;
 
 procedure TMainForm.actAboutExecute(Sender: TObject);
@@ -368,81 +336,63 @@ begin
 end;
 
 procedure TMainForm.actQuitUpdate(Sender: TObject);
-var
-  b: Boolean;
 begin
-  b := (not FProcessing);
-  if actQuit.Enabled <> b then
-  begin
-    actQuit.Enabled := b;
-  end;
+  // заглушка
 end;
 
 procedure TMainForm.actConfigurationExecute(Sender: TObject);
+var
+  tmpForm: TForm;
 begin
-  if not Assigned(FLogic) then
+  tmpForm := TConfigurationForm.Create(Owner, nil, 0 {Configuration, Configuration.CurrentPage});
+  try
+    {Result := } tmpForm.ShowModal {= mrOk};
+  finally
+    tmpForm.Free();
+  end;
+  {if not FLogic.ShowConfigurationForm() then
   begin
     Exit;
   end;
-
-  if not FLogic.ShowConfigurationForm() then
-  begin
-    Exit;
-  end;
-  ApplyConfiguration();
+  ApplyConfiguration();}
 end;
 
 procedure TMainForm.actConfigurationUpdate(Sender: TObject);
-var
-  b: Boolean;
 begin
-  b := False;
-  try
-    if not Assigned(FLogic) then
+  // заглушка
+end;
+
+procedure TMainForm.actConnectExecute(Sender: TObject);
+begin
+  LoginWindow.Login := '';// Configuration.Section<TConnection>.Login;
+  LoginWindow.Password := '';//Configuration.Section<TConnection>.Password;
+
+//  if not Configuration.Section<TConnection>.EnableAutoLogon then
+  begin
+    if LoginWindow.Execute then
+    begin
+//      Configuration.Section<TConnection>.Login := IfThen(Configuration.Section<TConnection>.EnableStoreLogin, LoginWindow.Login);
+//      Configuration.Section<TConnection>.Password := IfThen(Configuration.Section<TConnection>.EnableStorePassword, LoginWindow.Password);
+    end
+    else
     begin
       Exit;
-    end;
-
-    b := not FProcessing;
-  finally
-    if actConfiguration.Enabled <> b then
-    begin
-      actConfiguration.Enabled := b;
     end;
   end;
 end;
 
 procedure TMainForm.actExcelExecute(Sender: TObject);
 begin
-  if not Assigned(FLogic) then
-  begin
-    Exit();
-  end;
-
-  FLogic.ExportExcel(cxgrdResult);
+  // заглушка
+//  FLogic.ExportExcel(cxgrdResult);
 end;
 
 procedure TMainForm.actExcelUpdate(Sender: TObject);
-var
-  b: Boolean;
 begin
-  b := False;
-  try
-    if not Assigned(FLogic) then
-    begin
-      Exit;
-    end;
-
-    b := (not FProcessing) and FLogic.CanExportExcel();
-  finally
-    if actExcel.Enabled <> b then
-    begin
-      actExcel.Enabled := b;
-    end;
-  end;
+  // заглушка
 end;
 
-procedure TMainForm.actProcessExecute(Sender: TObject);
+procedure TMainForm.actAddExecute(Sender: TObject);
 var
   b: Boolean;
   i: Integer;
@@ -452,7 +402,7 @@ var
   d, h, n, s, ms: word;
   sh: word;
 begin
-  if not Assigned(FLogic) then
+  {if not Assigned(FLogic) then
   begin
     Exit();
   end;
@@ -490,27 +440,12 @@ begin
     begin
       MessageBox(Handle, PWideChar(e.ToString()), PWideChar(Format(RsErrorCaption, [Caption])), MESSAGE_TYPE_ERROR);
     end;
-  end;
+  end;}
 end;
 
-procedure TMainForm.actProcessUpdate(Sender: TObject);
-var
-  b: Boolean;
+procedure TMainForm.actAddUpdate(Sender: TObject);
 begin
-  b := False;
-  try
-    if not Assigned(FLogic) then
-    begin
-      Exit;
-    end;
-
-    b := (not FProcessing) and FLogic.CanProcess();
-  finally
-    if actProcess.Enabled <> b then
-    begin
-      actProcess.Enabled := b;
-    end;
-  end;
+  // заглушка
 end;
 
 procedure TMainForm.actStatusBarExecute(Sender: TObject);
@@ -524,12 +459,12 @@ begin
     StatusBar.Visible := b;
   end;
 
-  if not Assigned(FLogic) then
+  {if not Assigned(FLogic) then
   begin
     Exit;
   end;
 
-  FLogic.EnableStatusbar := b;
+  FLogic.EnableStatusbar := b;}
 end;
 
 procedure TMainForm.actToolBarExecute(Sender: TObject);
@@ -543,12 +478,12 @@ begin
     dxbrToolBar.Visible := b;
   end;
 
-  if not Assigned(FLogic) then
+  {if not Assigned(FLogic) then
   begin
     Exit;
   end;
 
-  FLogic.EnableToolbar := b;
+  FLogic.EnableToolbar := b;}
 end;
 
 procedure TMainForm.actViewExecute(Sender: TObject);
@@ -560,7 +495,7 @@ procedure TMainForm.ApplyConfiguration();
 var
   b: Boolean;
 begin
-  if not Assigned(FLogic) then
+  {if not Assigned(FLogic) then
   begin
     Exit;
   end;
@@ -571,24 +506,24 @@ begin
 
   b := FLogic.EnableToolbar;
   actToolBar.Checked := b;
-  dxbrToolBar.Visible := b;
+  dxbrToolBar.Visible := b;}
 end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   CanClose := True;
 
-  if not Assigned(FLogic) then
+  {if not Assigned(FLogic) then
   begin
     Exit;
   end;
 
-  CanClose := FLogic.CloseQuery();
+  CanClose := FLogic.CloseQuery();}
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-  FLogic := TMainFormBusinessLogic.Create(Self, cxgrdtblvwFiles, cxgrdtblvwResult);
+//  FLogic := TMainFormBusinessLogic.Create(Self, cxgrdtblvwFiles, cxgrdtblvwResult);
   FProcessing := False;
 
   gsflvrsnfMain.Filename := Application.ExeName;
@@ -597,20 +532,20 @@ begin
 
   ApplyConfiguration();
 
-  if not Assigned(FLogic) then
+  {if not Assigned(FLogic) then
   begin
     Exit;
   end;
 
   if FLogic.EnableSplashAtStart then
-  begin
+  begin}
     AboutWindow.Show(True);
-  end;
+//  end;
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
-  FLogic := nil;
+//  FLogic := nil;
 end;
 
 end.

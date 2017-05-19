@@ -138,6 +138,9 @@ type
       reintroduce; virtual;
   end;
 
+var
+  ConfigurationForm: TConfigurationForm;
+
 implementation
 
 uses
@@ -179,7 +182,7 @@ constructor TConfigurationForm.Create(const aOwner: TComponent; const aConfigura
   end;
 
 begin
-  Assert(Assigned(aConfiguration), RsAConfigurationIsNil);
+//  Assert(Assigned(aConfiguration), RsAConfigurationIsNil);
   inherited Create(aOwner);
   ActivePage := aActivePage;
   FConfiguration := aConfiguration;
@@ -215,7 +218,7 @@ var
   b: Boolean;
   tmpDate: string;
 begin
-  b := False;
+  {b := False;
   if PageControl.ActivePage = tsGeneral then
   begin
     tmpDate := FormatDateTime('yyyymmdd', Date());
@@ -231,7 +234,7 @@ begin
   begin
     b := not((EnablePlaySoundOnComplete = CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE));
   end;
-  actDefaults.Enabled := b;
+  actDefaults.Enabled := b;}
 end;
 
 procedure TConfigurationForm.actApplyExecute(Sender: TObject);
@@ -257,7 +260,7 @@ var
   tmpStartDate: string;
   tmpStopDate: string;
 begin
-  b := False;
+  {b := False;
   if Assigned(Configuration) then
   begin
     tmpStartDate := FormatDateTime('yyyymmdd', StartDate);
@@ -271,7 +274,7 @@ begin
   end;
   actApply.Enabled := b;
   btnApply.Default := b;
-  btnCancel.Default := not b;
+  btnCancel.Default := not b;}
 end;
 
 procedure TConfigurationForm.actCancelExecute(Sender: TObject);

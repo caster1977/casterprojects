@@ -33,323 +33,169 @@ object MainForm: TMainForm
     Font.Name = 'Tahoma'
     Font.Style = []
   end
-  object pnlFiles: TPanel
+  object cxpgcntrlMain: TcxPageControl
+    AlignWithMargins = True
     Left = 0
-    Top = 28
+    Top = 31
     Width = 784
-    Height = 237
-    Align = alTop
-    BevelOuter = bvNone
-    Caption = 'pnl1'
-    ShowCaption = False
-    TabOrder = 2
-    object lblFiles: TcxLabel
-      Left = 0
-      Top = 0
-      Align = alTop
-      Caption = #1057#1087#1080#1089#1086#1082' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1076#1083#1103' '#1086#1073#1088#1072#1073#1086#1090#1082#1080
-    end
-    object cxgrdFiles: TcxGrid
-      Left = 0
-      Top = 17
-      Width = 784
-      Height = 220
-      Align = alClient
-      TabOrder = 1
-      object cxgrdtblvwFiles: TcxGridTableView
-        Navigator.Buttons.CustomButtons = <>
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <
-          item
-            Format = '# ### ###;;-'
-            Kind = skCount
-            Column = colId
-          end>
-        DataController.Summary.SummaryGroups = <>
-        Images = cxmglstActions
-        OptionsCustomize.ColumnGrouping = False
-        OptionsCustomize.ColumnHidingOnGrouping = False
-        OptionsCustomize.ColumnMoving = False
-        OptionsCustomize.ColumnSorting = False
-        OptionsData.CancelOnExit = False
-        OptionsData.Deleting = False
-        OptionsData.DeletingConfirmation = False
-        OptionsData.Editing = False
-        OptionsData.Inserting = False
-        OptionsSelection.MultiSelect = True
-        OptionsView.NoDataToDisplayInfoText = '<'#1057#1087#1080#1089#1086#1082' '#1087#1091#1089#1090'>'
-        OptionsView.ColumnAutoWidth = True
-        OptionsView.Footer = True
-        OptionsView.GroupByBox = False
-        object colId: TcxGridColumn
-          Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088
-          DataBinding.ValueType = 'Integer'
-          PropertiesClassName = 'TcxLabelProperties'
-          Properties.Alignment.Horz = taRightJustify
-          Properties.Alignment.Vert = taVCenter
-          FooterAlignmentHorz = taRightJustify
-          HeaderAlignmentHorz = taCenter
-          Options.Editing = False
-        end
-        object colSeries: TcxGridColumn
-          Caption = #1057#1077#1088#1080#1103
-          PropertiesClassName = 'TcxLabelProperties'
-          Properties.Alignment.Vert = taVCenter
-          FooterAlignmentHorz = taRightJustify
-          HeaderAlignmentHorz = taCenter
-          Options.Editing = False
-          Options.Moving = False
-        end
-        object colNumber: TcxGridColumn
-          Caption = #1053#1086#1084#1077#1088
-          PropertiesClassName = 'TcxLabelProperties'
-          Properties.Alignment.Vert = taVCenter
-          HeaderAlignmentHorz = taCenter
-          Options.Editing = False
-          Options.Moving = False
-        end
-        object colFileName: TcxGridColumn
-          Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1092#1072#1081#1083#1072
-          PropertiesClassName = 'TcxLabelProperties'
-          Properties.Alignment.Vert = taVCenter
-          HeaderAlignmentHorz = taCenter
-          Options.Editing = False
-          Options.Moving = False
-        end
-        object colType: TcxGridColumn
-          Caption = #1058#1080#1087
-          PropertiesClassName = 'TcxLabelProperties'
-          Properties.Alignment.Horz = taCenter
-          HeaderAlignmentHorz = taCenter
-          Options.Editing = False
-          Options.Moving = False
-        end
-        object colStatus: TcxGridColumn
-          Caption = #1054#1073#1088#1072#1073#1086#1090#1072#1085
-          DataBinding.ValueType = 'Boolean'
-          PropertiesClassName = 'TcxImageComboBoxProperties'
-          Properties.Alignment.Horz = taCenter
-          Properties.DefaultImageIndex = 0
-          Properties.Images = cxmglstActions
-          Properties.ImmediatePost = True
-          Properties.ImmediateUpdateText = True
-          Properties.Items = <
-            item
-              ImageIndex = 15
-              Value = True
-            end
-            item
-              ImageIndex = 10
-              Value = False
-            end>
-          Properties.LargeImages = cxmglstActions
-          Properties.ReadOnly = True
-          HeaderAlignmentHorz = taCenter
-          Options.Moving = False
-        end
-      end
-      object cxgrdlvl2: TcxGridLevel
-        GridView = cxgrdtblvwFiles
-      end
-    end
-  end
-  object cxspltr1: TcxSplitter
-    Left = 0
-    Top = 265
-    Width = 784
-    Height = 8
-    AlignSplitter = salTop
-    Control = pnlFiles
-  end
-  object pnlResult: TPanel
-    Left = 0
-    Top = 273
-    Width = 784
-    Height = 269
+    Height = 508
+    Margins.Left = 0
+    Margins.Right = 0
     Align = alClient
-    BevelOuter = bvNone
-    Caption = 'pnlResult'
-    ShowCaption = False
-    TabOrder = 7
-    object lblResult: TcxLabel
-      Left = 0
-      Top = 0
-      Align = alTop
-      Caption = #1044#1072#1085#1085#1099#1077' '#1080#1079' '#1092#1072#1081#1083#1086#1074':'
+    TabOrder = 5
+    Properties.ActivePage = cxtbshtReferences
+    Properties.CustomButtons.Buttons = <>
+    ClientRectBottom = 504
+    ClientRectLeft = 4
+    ClientRectRight = 780
+    ClientRectTop = 24
+    object cxtbshtExports: TcxTabSheet
+      Caption = #1069#1082#1089#1087#1086#1088#1090#1099
+      ImageIndex = 0
+      TabVisible = False
+      object cxgrdFiles: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 776
+        Height = 480
+        Align = alClient
+        TabOrder = 0
+        object cxgrdtblvwFiles: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = '# ### ###;;-'
+              Kind = skCount
+              Column = colId
+            end>
+          DataController.Summary.SummaryGroups = <>
+          Images = cxmglstActions
+          OptionsCustomize.ColumnGrouping = False
+          OptionsCustomize.ColumnHidingOnGrouping = False
+          OptionsCustomize.ColumnMoving = False
+          OptionsCustomize.ColumnSorting = False
+          OptionsData.CancelOnExit = False
+          OptionsData.Deleting = False
+          OptionsData.DeletingConfirmation = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsSelection.MultiSelect = True
+          OptionsView.NoDataToDisplayInfoText = '<'#1057#1087#1080#1089#1086#1082' '#1087#1091#1089#1090'>'
+          OptionsView.ColumnAutoWidth = True
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          object colId: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxLabelProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.Alignment.Vert = taVCenter
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Options.Editing = False
+          end
+          object colSeries: TcxGridColumn
+            Caption = #1057#1077#1088#1080#1103
+            PropertiesClassName = 'TcxLabelProperties'
+            Properties.Alignment.Vert = taVCenter
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Options.Editing = False
+            Options.Moving = False
+          end
+          object colNumber: TcxGridColumn
+            Caption = #1053#1086#1084#1077#1088
+            PropertiesClassName = 'TcxLabelProperties'
+            Properties.Alignment.Vert = taVCenter
+            HeaderAlignmentHorz = taCenter
+            Options.Editing = False
+            Options.Moving = False
+          end
+          object colFileName: TcxGridColumn
+            Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1092#1072#1081#1083#1072
+            PropertiesClassName = 'TcxLabelProperties'
+            Properties.Alignment.Vert = taVCenter
+            HeaderAlignmentHorz = taCenter
+            Options.Editing = False
+            Options.Moving = False
+          end
+          object colType: TcxGridColumn
+            Caption = #1058#1080#1087
+            PropertiesClassName = 'TcxLabelProperties'
+            Properties.Alignment.Horz = taCenter
+            HeaderAlignmentHorz = taCenter
+            Options.Editing = False
+            Options.Moving = False
+          end
+          object colStatus: TcxGridColumn
+            Caption = #1054#1073#1088#1072#1073#1086#1090#1072#1085
+            DataBinding.ValueType = 'Boolean'
+            PropertiesClassName = 'TcxImageComboBoxProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.DefaultImageIndex = 0
+            Properties.Images = cxmglstActions
+            Properties.ImmediatePost = True
+            Properties.ImmediateUpdateText = True
+            Properties.Items = <
+              item
+                ImageIndex = 15
+                Value = True
+              end
+              item
+                ImageIndex = 10
+                Value = False
+              end>
+            Properties.LargeImages = cxmglstActions
+            Properties.ReadOnly = True
+            HeaderAlignmentHorz = taCenter
+            Options.Moving = False
+          end
+        end
+        object cxgrdlvl2: TcxGridLevel
+          GridView = cxgrdtblvwFiles
+        end
+      end
     end
-    object cxgrdResult: TcxGrid
-      Left = 0
-      Top = 17
-      Width = 784
-      Height = 252
-      Align = alClient
-      PopupMenu = pctnbrMain
-      TabOrder = 1
-      object cxgrdtblvwResult: TcxGridTableView
-        Navigator.Buttons.CustomButtons = <>
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <
-          item
-            Format = ',0.00;-,0.00;-'
-            Kind = skSum
-            Column = colVAT
+    object cxtbshtReferences: TcxTabSheet
+      Caption = #1057#1087#1088#1072#1074#1086#1095#1085#1080#1082#1080
+      ImageIndex = 2
+      object cbbReferences: TcxComboBox
+        AlignWithMargins = True
+        Left = 3
+        Top = 3
+        Align = alTop
+        Properties.AutoSelect = False
+        Properties.DropDownListStyle = lsFixedList
+        Properties.Items.Strings = (
+          '1'
+          '2'
+          '3'
+          '4')
+        Properties.ReadOnly = False
+        Properties.Revertable = True
+        Properties.Sorted = True
+        TabOrder = 0
+        Width = 770
+      end
+      object References: TcxGrid
+        AlignWithMargins = True
+        Left = 3
+        Top = 30
+        Width = 770
+        Height = 447
+        Align = alClient
+        TabOrder = 1
+        object cxgrdlvlWarehouses1: TcxGridLevel
+          Caption = #1057#1082#1083#1072#1076#1099
+          object cxgrdlvlWarehouses2: TcxGridLevel
           end
-          item
-            Format = ',0.00;-,0.00;-'
-            Kind = skSum
-            Column = colSumWithVAT
-          end
-          item
-            Format = ',0.00;-,0.00;-'
-            Kind = skSum
-            Column = colSum
-          end
-          item
-            Format = '# ### ###;;-'
-            Kind = skCount
-            Column = colType2
-          end>
-        DataController.Summary.SummaryGroups = <>
-        Images = cxmglstActions
-        OptionsCustomize.ColumnGrouping = False
-        OptionsCustomize.ColumnHidingOnGrouping = False
-        OptionsCustomize.ColumnMoving = False
-        OptionsData.CancelOnExit = False
-        OptionsData.Deleting = False
-        OptionsData.DeletingConfirmation = False
-        OptionsData.Editing = False
-        OptionsData.Inserting = False
-        OptionsSelection.CellSelect = False
-        OptionsSelection.MultiSelect = True
-        OptionsView.NoDataToDisplayInfoText = '<'#1057#1087#1080#1089#1086#1082' '#1087#1091#1089#1090'>'
-        OptionsView.ColumnAutoWidth = True
-        OptionsView.Footer = True
-        OptionsView.GroupByBox = False
-        object colType2: TcxGridColumn
-          Caption = #1058#1080#1087' '#1076#1086#1082#1091#1084#1077#1085#1090#1072
-          PropertiesClassName = 'TcxLabelProperties'
-          Properties.Alignment.Horz = taCenter
-          Properties.Alignment.Vert = taVCenter
-          FooterAlignmentHorz = taRightJustify
-        end
-        object colSeries2: TcxGridColumn
-          Caption = #1057#1077#1088#1080#1103
-          PropertiesClassName = 'TcxLabelProperties'
-          Properties.Alignment.Vert = taVCenter
-          FooterAlignmentHorz = taRightJustify
-          HeaderAlignmentHorz = taCenter
-          HeaderGlyphAlignmentHorz = taCenter
-          Options.Editing = False
-        end
-        object colNumber2: TcxGridColumn
-          Caption = #1053#1086#1084#1077#1088
-          PropertiesClassName = 'TcxLabelProperties'
-          Properties.Alignment.Vert = taVCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderGlyphAlignmentHorz = taCenter
-          Options.Editing = False
-        end
-        object colUNP: TcxGridColumn
-          Caption = #1059#1053#1055
-          PropertiesClassName = 'TcxLabelProperties'
-          Properties.Alignment.Vert = taVCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderGlyphAlignmentHorz = taCenter
-          Options.Editing = False
-        end
-        object colConsignorAddress: TcxGridColumn
-          Caption = #1040#1076#1088#1077#1089#1072' '#1086#1090#1087#1088#1072#1074#1080#1090#1077#1083#1103
-          PropertiesClassName = 'TcxLabelProperties'
-          Properties.Alignment.Vert = taVCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderGlyphAlignmentHorz = taCenter
-          Options.Editing = False
-        end
-        object colConsigneeAddress: TcxGridColumn
-          Caption = #1040#1076#1088#1077#1089#1072' '#1087#1086#1083#1091#1095#1072#1090#1077#1083#1103
-          PropertiesClassName = 'TcxLabelProperties'
-          Properties.Alignment.Vert = taVCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderGlyphAlignmentHorz = taCenter
-        end
-        object colLoadingPoint: TcxGridColumn
-          Caption = #1055#1091#1085#1082#1090' '#1087#1086#1075#1088#1091#1079#1082#1080
-          PropertiesClassName = 'TcxLabelProperties'
-          Properties.Alignment.Vert = taVCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderGlyphAlignmentHorz = taCenter
-          Options.Editing = False
-        end
-        object colUnloadingPoint: TcxGridColumn
-          Caption = #1055#1091#1085#1082#1090' '#1088#1072#1079#1075#1088#1091#1079#1082#1080
-          PropertiesClassName = 'TcxLabelProperties'
-          Properties.Alignment.Vert = taVCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderGlyphAlignmentHorz = taCenter
-          Options.Editing = False
-        end
-        object colSum: TcxGridColumn
-          Caption = #1057#1091#1084#1084#1072' '#1073#1077#1079' '#1053#1044#1057
-          DataBinding.ValueType = 'Float'
-          PropertiesClassName = 'TcxCalcEditProperties'
-          Properties.Alignment.Horz = taRightJustify
-          Properties.DisplayFormat = ',0.00;-,0.00;-'
-          Properties.ImmediatePost = True
-          Properties.Precision = 2
-          Properties.ReadOnly = True
-          Properties.UseThousandSeparator = True
-          FooterAlignmentHorz = taRightJustify
-          HeaderAlignmentHorz = taCenter
-          HeaderGlyphAlignmentHorz = taCenter
-          Options.Editing = False
-        end
-        object colVAT: TcxGridColumn
-          Caption = #1057#1091#1084#1084#1072' '#1053#1044#1057
-          DataBinding.ValueType = 'Float'
-          PropertiesClassName = 'TcxCalcEditProperties'
-          Properties.Alignment.Horz = taRightJustify
-          Properties.DisplayFormat = ',0.00;-,0.00;-'
-          Properties.ImmediatePost = True
-          Properties.Precision = 2
-          Properties.ReadOnly = True
-          Properties.UseThousandSeparator = True
-          FooterAlignmentHorz = taRightJustify
-          HeaderAlignmentHorz = taCenter
-          HeaderGlyphAlignmentHorz = taCenter
-          Options.Editing = False
-        end
-        object colSumWithVAT: TcxGridColumn
-          Caption = #1048#1090#1086#1075#1086' '#1089' '#1053#1044#1057
-          DataBinding.ValueType = 'Float'
-          PropertiesClassName = 'TcxCalcEditProperties'
-          Properties.Alignment.Horz = taRightJustify
-          Properties.DisplayFormat = ',0.00;-,0.00;-'
-          Properties.ImmediatePost = True
-          Properties.Precision = 2
-          Properties.ReadOnly = True
-          Properties.UseThousandSeparator = True
-          FooterAlignmentHorz = taRightJustify
-          HeaderAlignmentHorz = taCenter
-          HeaderGlyphAlignmentHorz = taCenter
-          Options.Editing = False
-        end
-        object colDate: TcxGridColumn
-          Caption = #1044#1072#1090#1072' '#1076#1086#1082#1091#1084#1077#1085#1090#1072
-          DataBinding.ValueType = 'DateTime'
-          PropertiesClassName = 'TcxDateEditProperties'
-          Properties.Alignment.Horz = taCenter
-          Properties.DisplayFormat = 'dd.mm.yyyy'
-          Properties.EditFormat = 'dd.mm.yyyy'
-          Properties.ImmediatePost = True
-          Properties.ReadOnly = True
-          HeaderAlignmentHorz = taCenter
-          HeaderGlyphAlignmentHorz = taCenter
-          Options.Editing = False
         end
       end
-      object cxgrdlvlResult: TcxGridLevel
-        GridView = cxgrdtblvwResult
-      end
+    end
+    object shtReports: TcxTabSheet
+      Caption = #1054#1090#1095#1105#1090#1099
+      ImageIndex = 1
     end
   end
   object dxbrmngrMain: TdxBarManager
@@ -395,36 +241,48 @@ object MainForm: TMainForm
       ItemLinks = <
         item
           Visible = True
-          ItemName = 'dxbrbtn6'
+          ItemName = 'btnQuit'
         end
         item
           BeginGroup = True
           Visible = True
-          ItemName = 'dxbrbtn14'
+          ItemName = 'btnConfiguration'
         end
         item
           BeginGroup = True
           Visible = True
-          ItemName = 'dxbrbtn11'
+          ItemName = 'btnConnect'
+        end
+        item
+          Visible = True
+          ItemName = 'btn1'
         end
         item
           BeginGroup = True
           Visible = True
-          ItemName = 'dxbrbtn12'
+          ItemName = 'dxBarButton1'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton2'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton3'
         end
         item
           BeginGroup = True
           Visible = True
-          ItemName = 'dxbrbtn15'
+          ItemName = 'btnExcel'
         end
         item
           BeginGroup = True
           Visible = True
-          ItemName = 'dxbrbtn7'
+          ItemName = 'btnHelpContext'
         end
         item
           Visible = True
-          ItemName = 'dxbrbtn8'
+          ItemName = 'btnAbout'
         end>
       OneOnRow = True
       Row = 0
@@ -435,76 +293,44 @@ object MainForm: TMainForm
       Visible = True
       WholeRow = False
     end
-    object dxbrbtn1: TdxBarButton
+    object btnQuit: TdxBarButton
       Action = actQuit
       Category = 0
     end
-    object dxbrbtn2: TdxBarButton
-      Category = 0
-      Visible = ivAlways
-    end
-    object dxbrbtn3: TdxBarButton
-      Category = 0
-      Visible = ivAlways
-    end
-    object dxbrbtn4: TdxBarButton
-      Category = 0
-      Visible = ivAlways
-    end
-    object dxbrbtn5: TdxBarButton
-      Action = actAbout
-      Category = 0
-    end
-    object dxbrbtn6: TdxBarButton
-      Action = actQuit
-      Category = 0
-    end
-    object dxbrbtn7: TdxBarButton
+    object btnHelpContext: TdxBarButton
       Action = actHelpContext
       Category = 0
     end
-    object dxbrbtn8: TdxBarButton
+    object btnAbout: TdxBarButton
       Action = actAbout
       Category = 0
     end
-    object dxbrbtn9: TdxBarButton
-      Action = actLoadList
-      Category = 0
-    end
-    object dxbrbtn10: TdxBarButton
-      Caption = #1044#1086#1073#1072#1074#1083#1077#1085#1080#1077' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1074' '#1089#1087#1080#1089#1086#1082
-      Category = 0
-      Hint = 
-        #1044#1086#1073#1072#1074#1083#1077#1085#1080#1077' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1074' '#1089#1087#1080#1089#1086#1082'|'#1053#1072#1078#1080#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1076#1080#1072#1083#1086#1075#1072' '#1074#1099#1073 +
-        #1086#1088#1072' '#1092#1072#1081#1083#1086#1074' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1076#1083#1103' '#1086#1073#1088#1072#1073#1086#1090#1082#1080
-      Visible = ivAlways
-      ImageIndex = 7
-      ShortCut = 45
-    end
-    object dxbrbtn11: TdxBarButton
-      Action = actLoadList
-      Category = 0
-    end
-    object dxbrbtn12: TdxBarButton
-      Action = actProcess
-      Category = 0
-    end
-    object dxbrbtn13: TdxBarButton
-      Caption = '&'#1059#1076#1072#1083#1077#1085#1080#1077' '#1076#1086#1082#1091#1084#1077#1085#1090#1072' '#1080#1079' '#1089#1087#1080#1089#1082#1072
-      Category = 0
-      Hint = 
-        #1059#1076#1072#1083#1077#1085#1080#1077' '#1076#1086#1082#1091#1084#1077#1085#1090#1072' '#1080#1079' '#1089#1087#1080#1089#1082#1072'|'#1053#1072#1078#1080#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1074#1099#1073#1088#1072#1085#1085#1099#1093' '#1076#1086#1082 +
-        #1091#1084#1077#1085#1090#1086#1074' '#1080#1079' '#1089#1087#1080#1089#1082#1072' '#1086#1073#1088#1072#1073#1086#1090#1082#1080
-      Visible = ivAlways
-      ImageIndex = 9
-      ShortCut = 46
-    end
-    object dxbrbtn14: TdxBarButton
+    object btnConfiguration: TdxBarButton
       Action = actConfiguration
       Category = 0
     end
-    object dxbrbtn15: TdxBarButton
+    object btnExcel: TdxBarButton
       Action = actExcel
+      Category = 0
+    end
+    object btnConnect: TdxBarButton
+      Action = actConnect
+      Category = 0
+    end
+    object btn1: TdxBarButton
+      Action = actDisconnect
+      Category = 0
+    end
+    object dxBarButton1: TdxBarButton
+      Action = actAdd
+      Category = 0
+    end
+    object dxBarButton2: TdxBarButton
+      Action = actEdit
+      Category = 0
+    end
+    object dxBarButton3: TdxBarButton
+      Action = actDelete
       Category = 0
     end
   end
@@ -1568,28 +1394,6 @@ object MainForm: TMainForm
       Caption = '&'#1044#1077#1081#1089#1090#1074#1080#1077
       OnExecute = actActionExecute
     end
-    object actLoadList: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      Caption = #1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074
-      Hint = 
-        #1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074' '#1080#1079' '#1041 +
-        #1044
-      ImageIndex = 20
-      ShortCut = 114
-      OnExecute = actLoadListExecute
-      OnUpdate = actLoadListUpdate
-    end
-    object actProcess: TAction
-      Category = #1044#1077#1081#1089#1090#1074#1080#1077
-      Caption = #1054#1073#1088#1072#1073#1086#1090#1082#1072' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074
-      Hint = 
-        #1054#1073#1088#1072#1073#1086#1090#1082#1072' '#1092#1072#1081#1083#1086#1074'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103' '#1086#1087#1077#1088#1072#1094#1080#1080' '#1086#1073#1088#1072#1073#1086#1090#1082#1080' '#1076#1086#1082#1091#1084 +
-        #1077#1085#1090#1086#1074', '#1089#1086#1076#1077#1088#1078#1072#1097#1080#1093#1089#1103' '#1074' '#1089#1087#1080#1089#1082#1077
-      ImageIndex = 17
-      ShortCut = 116
-      OnExecute = actProcessExecute
-      OnUpdate = actProcessUpdate
-    end
     object actConfiguration: TAction
       Category = #1060#1072#1081#1083
       Caption = '&'#1053#1072#1089#1090#1088#1086#1081#1082#1080'...'
@@ -1612,9 +1416,59 @@ object MainForm: TMainForm
       OnExecute = actExcelExecute
       OnUpdate = actExcelUpdate
     end
+    object actConnect: TAction
+      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Caption = '&'#1055#1086#1076#1082#1083#1102#1095#1080#1090#1100#1089#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091
+      Hint = 
+        #1055#1086#1076#1082#1083#1102#1095#1080#1090#1100#1089#1103' '#1082' '#1089#1077#1088#1074#1077#1088#1091'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1080#1103' '#1084#1077#1085#1077#1076#1078#1077#1088#1072' '#1082' '#1089#1077#1088#1074#1077 +
+        #1088#1091
+      ImageIndex = 13
+      OnExecute = actConnectExecute
+    end
+    object actDisconnect: TAction
+      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Caption = '&'#1054#1090#1082#1083#1102#1095#1080#1090#1100#1089#1103' '#1086#1090' '#1089#1077#1088#1074#1077#1088#1072
+      Enabled = False
+      Hint = 
+        #1054#1090#1082#1083#1102#1095#1080#1090#1100#1089#1103' '#1086#1090' '#1089#1077#1088#1074#1077#1088#1072'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1083#1102#1095#1077#1085#1080#1103' '#1084#1077#1085#1077#1076#1078#1077#1088#1072' '#1086#1090' '#1089#1077#1088#1074#1077 +
+        #1088#1072
+      ImageIndex = 14
+    end
+    object actAdd: TAction
+      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1101#1083#1077#1084#1077#1085#1090
+      Hint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1101#1083#1077#1084#1077#1085#1090'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1076#1086#1073#1072#1074#1083#1077#1085#1080#1103' '#1085#1086#1074#1086#1075#1086' '#1101#1083#1077#1084#1077#1085#1090#1072' '#1074' '#1089#1087#1080#1089#1086#1082
+      ImageIndex = 7
+      ShortCut = 45
+    end
+    object actEdit: TAction
+      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100' '#1101#1083#1077#1084#1077#1085#1090
+      Hint = 
+        #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100' '#1101#1083#1077#1084#1077#1085#1090'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1088#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1103' '#1074#1099#1076#1077#1083#1077#1085#1085#1086#1075#1086' '#1101#1083#1077 +
+        #1084#1077#1085#1090#1072' '#1089#1087#1080#1089#1082#1072
+      ImageIndex = 8
+      ShortCut = 113
+    end
+    object actDelete: TAction
+      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Caption = #1059#1076#1072#1083#1080#1090#1100' '#1101#1083#1077#1084#1077#1085#1090
+      Hint = 
+        #1059#1076#1072#1083#1080#1090#1100' '#1101#1083#1077#1084#1077#1085#1090'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1074#1099#1076#1077#1083#1077#1085#1085#1086#1075#1086' '#1101#1083#1077#1084#1077#1085#1090#1072' '#1080#1079' '#1089#1087#1080 +
+        #1089#1082#1072
+      ImageIndex = 9
+      ShortCut = 46
+    end
+    object actRefresh: TAction
+      Category = #1044#1077#1081#1089#1090#1074#1080#1077
+      Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1089#1087#1080#1089#1086#1082
+      Hint = #1054#1073#1085#1086#1074#1080#1090#1100' '#1089#1087#1080#1089#1086#1082'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1103' '#1090#1077#1082#1091#1097#1077#1075#1086' '#1089#1087#1080#1089#1082#1072
+      ImageIndex = 16
+      ShortCut = 116
+    end
   end
   object AboutWindow: TAboutWindow
-    EMail = 'support@shate-m.com'
+    EMail = 'caster1977@yandex.ru'
     Left = 320
     Top = 324
   end
@@ -1660,13 +1514,25 @@ object MainForm: TMainForm
         Caption = '-'
       end
       object N11: TMenuItem
-        Action = actLoadList
+        Caption = #1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074
+        Hint = 
+          #1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074' '#1080#1079' '#1041 +
+          #1044
+        ImageIndex = 20
+        ShortCut = 114
+        OnClick = actLoadListExecute
       end
       object N13: TMenuItem
         Caption = '-'
       end
       object N14: TMenuItem
-        Action = actProcess
+        Caption = #1044'&'#1086#1073#1072#1074#1083#1077#1085#1080#1077
+        Hint = 
+          #1054#1073#1088#1072#1073#1086#1090#1082#1072' '#1092#1072#1081#1083#1086#1074'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103' '#1086#1087#1077#1088#1072#1094#1080#1080' '#1086#1073#1088#1072#1073#1086#1090#1082#1080' '#1076#1086#1082#1091#1084 +
+          #1077#1085#1090#1086#1074', '#1089#1086#1076#1077#1088#1078#1072#1097#1080#1093#1089#1103' '#1074' '#1089#1087#1080#1089#1082#1077
+        ImageIndex = 7
+        ShortCut = 116
+        OnClick = actAddExecute
       end
       object N31: TMenuItem
         Caption = '-'
@@ -1704,13 +1570,25 @@ object MainForm: TMainForm
     Left = 160
     Top = 228
     object N21: TMenuItem
-      Action = actLoadList
+      Caption = #1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074
+      Hint = 
+        #1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074' '#1080#1079' '#1041 +
+        #1044
+      ImageIndex = 20
+      ShortCut = 114
+      OnClick = actLoadListExecute
     end
     object N22: TMenuItem
       Caption = '-'
     end
     object N18: TMenuItem
-      Action = actProcess
+      Caption = #1044'&'#1086#1073#1072#1074#1083#1077#1085#1080#1077
+      Hint = 
+        #1054#1073#1088#1072#1073#1086#1090#1082#1072' '#1092#1072#1081#1083#1086#1074'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103' '#1086#1087#1077#1088#1072#1094#1080#1080' '#1086#1073#1088#1072#1073#1086#1090#1082#1080' '#1076#1086#1082#1091#1084 +
+        #1077#1085#1090#1086#1074', '#1089#1086#1076#1077#1088#1078#1072#1097#1080#1093#1089#1103' '#1074' '#1089#1087#1080#1089#1082#1077
+      ImageIndex = 7
+      ShortCut = 116
+      OnClick = actAddExecute
     end
     object N15: TMenuItem
       Caption = '-'
@@ -1736,5 +1614,12 @@ object MainForm: TMainForm
     object N26: TMenuItem
       Action = actQuit
     end
+  end
+  object LoginWindow: TLoginWindow
+    Login = ''
+    Password = ''
+    Title = ''
+    Left = 180
+    Top = 359
   end
 end
