@@ -1,23 +1,36 @@
-unit IncomingDocQueue.Modules.CrossDockingViewer.Logic.Interfaces.IView;
+unit Budgeting.Logic.Interfaces.IView;
 
 interface
 
 uses
   System.SysUtils,
-  IncomingDocQueue.Modules.CrossDockingViewer.Logic.TViewEnumEvent,
-  IncomingDocQueue.Modules.CrossDockingViewer.Logic.TViewEnumAction;
+  Vcl.Controls,
+  Data.DB,
+  Budgeting.Logic.TViewEnumEvent,
+  Budgeting.Logic.TViewEnumAction;
 
 type
   IView = interface(IInterface)
-    ['{59B0614C-7F7F-4752-A166-BF3F277489E2}']
+    function ShowMessage(const aMessage: string; const aStatus: Cardinal): Integer;
+
+    function GetControl(): TWinControl;
+    property Control: TWinControl read GetControl;
+
     procedure SetOnEventSimple(const aValue: TProc<TViewEnumEvent>);
     property OnEventSimple: TProc<TViewEnumEvent> write SetOnEventSimple;
+
     function GetActionStates(const aValue: TViewEnumAction): Boolean;
     procedure SetActionStates(const aKey: TViewEnumAction; const aValue: Boolean);
     property ActionStates[const aValue: TViewEnumAction]: Boolean read GetActionStates write SetActionStates;
+
+    procedure ShowProgress(const aTitle: string; const aMax: Integer = 100);
+    procedure StepProgress(const aNewTitle: string = ''; const aToPosition: Integer = -1);
+    procedure HideProgress();
     procedure RefreshStates();
-    procedure ShowMessage(const aMessage: string; const aStatus: Integer);
+
     procedure StorePresenter(const aPresenter: IInterface);
+
+    function GetConnection(const aConnectionString: string): TCustomConnection;
   end;
 
 implementation

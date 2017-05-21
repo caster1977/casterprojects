@@ -16,7 +16,6 @@ object MainForm: TMainForm
   Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object StatusBar: TdxStatusBar
@@ -178,7 +177,7 @@ object MainForm: TMainForm
         TabOrder = 0
         Width = 770
       end
-      object References: TcxGrid
+      object cxgrdReferences: TcxGrid
         AlignWithMargins = True
         Left = 3
         Top = 30
@@ -186,10 +185,62 @@ object MainForm: TMainForm
         Height = 447
         Align = alClient
         TabOrder = 1
-        object cxgrdlvlWarehouses1: TcxGridLevel
-          Caption = #1057#1082#1083#1072#1076#1099
-          object cxgrdlvlWarehouses2: TcxGridLevel
-          end
+        object tblvAccountingCenters: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object tblvBanks: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object tblvBudgetItems: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object tblvBudgetItemTypes: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object tblvCosignatories: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object tblvCurrencies: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object tblvGoods: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object tblvGoodsTypes: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object tblvUsers: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object lvl1: TcxGridLevel
+          GridView = tblvAccountingCenters
         end
       end
     end
@@ -216,8 +267,8 @@ object MainForm: TMainForm
     NotDocking = [dsNone, dsLeft, dsTop, dsRight, dsBottom]
     PopupMenuLinks = <>
     UseSystemFont = True
-    Left = 384
-    Top = 208
+    Left = 328
+    Top = 112
     DockControlHeights = (
       0
       0
@@ -283,6 +334,11 @@ object MainForm: TMainForm
         item
           Visible = True
           ItemName = 'btnAbout'
+        end
+        item
+          BeginGroup = True
+          Visible = True
+          ItemName = 'cxbrdtmProgress'
         end>
       OneOnRow = True
       Row = 0
@@ -310,7 +366,7 @@ object MainForm: TMainForm
       Category = 0
     end
     object btnExcel: TdxBarButton
-      Action = actExcel
+      Action = actExportToExcel
       Category = 0
     end
     object btnConnect: TdxBarButton
@@ -333,10 +389,24 @@ object MainForm: TMainForm
       Action = actDelete
       Category = 0
     end
+    object cxbrdtmProgress: TcxBarEditItem
+      Align = iaClient
+      Category = 0
+      Visible = ivInCustomizing
+      PropertiesClassName = 'TcxProgressBarProperties'
+      BarStyleDropDownButton = False
+      CanSelect = False
+      Properties.AssignedValues.Min = True
+      Properties.BeginColor = 54056
+      Properties.PeakValue = 20.000000000000000000
+      Properties.ShowTextStyle = cxtsText
+      Properties.SolidTextColor = True
+      InternalEditValue = 0
+    end
   end
   object cxmglstActions: TcxImageList
     FormatVersion = 1
-    DesignInfo = 14156240
+    DesignInfo = 7340416
     ImageInfo = <
       item
         Image.Data = {
@@ -1325,8 +1395,8 @@ object MainForm: TMainForm
   end
   object actlstMain: TActionList
     Images = cxmglstActions
-    Left = 508
-    Top = 380
+    Left = 528
+    Top = 112
     object actFile: TAction
       Category = #1060#1072#1081#1083
       Caption = '&'#1060#1072#1081#1083
@@ -1403,7 +1473,7 @@ object MainForm: TMainForm
       OnExecute = actConfigurationExecute
       OnUpdate = actConfigurationUpdate
     end
-    object actExcel: TAction
+    object actExportToExcel: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
       Caption = '&'#1057#1086#1093#1088#1072#1085#1077#1085#1080#1077' '#1088#1077#1079#1091#1083#1100#1090#1072#1090#1086#1074
       Hint = 
@@ -1413,8 +1483,8 @@ object MainForm: TMainForm
       SecondaryShortCuts.Strings = (
         'F2')
       ShortCut = 16467
-      OnExecute = actExcelExecute
-      OnUpdate = actExcelUpdate
+      OnExecute = actExportToExcelExecute
+      OnUpdate = actExportToExcelUpdate
     end
     object actConnect: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
@@ -1469,17 +1539,17 @@ object MainForm: TMainForm
   end
   object AboutWindow: TAboutWindow
     EMail = 'caster1977@yandex.ru'
-    Left = 320
-    Top = 324
+    Left = 56
+    Top = 112
   end
   object gsflvrsnfMain: TGSFileVersionInfo
-    Left = 296
-    Top = 252
+    Left = 128
+    Top = 112
   end
   object mmMain: TMainMenu
     Images = cxmglstActions
-    Left = 548
-    Top = 164
+    Left = 456
+    Top = 112
     object N1: TMenuItem
       Action = actFile
       object N27: TMenuItem
@@ -1494,51 +1564,29 @@ object MainForm: TMainForm
     end
     object N4: TMenuItem
       Action = actAction
-      object N12: TMenuItem
-        Caption = #1044#1086#1073#1072#1074#1083#1077#1085#1080#1077' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1074' '#1089#1087#1080#1089#1086#1082
-        Hint = 
-          #1044#1086#1073#1072#1074#1083#1077#1085#1080#1077' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1074' '#1089#1087#1080#1089#1086#1082'|'#1053#1072#1078#1080#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1088#1099#1090#1080#1103' '#1076#1080#1072#1083#1086#1075#1072' '#1074#1099#1073 +
-          #1086#1088#1072' '#1092#1072#1081#1083#1086#1074' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1076#1083#1103' '#1086#1073#1088#1072#1073#1086#1090#1082#1080
-        ImageIndex = 7
-        ShortCut = 45
-      end
-      object N17: TMenuItem
-        Caption = '&'#1059#1076#1072#1083#1077#1085#1080#1077' '#1076#1086#1082#1091#1084#1077#1085#1090#1072' '#1080#1079' '#1089#1087#1080#1089#1082#1072
-        Hint = 
-          #1059#1076#1072#1083#1077#1085#1080#1077' '#1076#1086#1082#1091#1084#1077#1085#1090#1072' '#1080#1079' '#1089#1087#1080#1089#1082#1072'|'#1053#1072#1078#1080#1084#1080#1090#1077' '#1076#1083#1103' '#1091#1076#1072#1083#1077#1085#1080#1103' '#1074#1099#1073#1088#1072#1085#1085#1099#1093' '#1076#1086#1082 +
-          #1091#1084#1077#1085#1090#1086#1074' '#1080#1079' '#1089#1087#1080#1089#1082#1072' '#1086#1073#1088#1072#1073#1086#1090#1082#1080
-        ImageIndex = 9
-        ShortCut = 46
-      end
-      object N16: TMenuItem
-        Caption = '-'
-      end
       object N11: TMenuItem
-        Caption = #1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074
-        Hint = 
-          #1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074' '#1080#1079' '#1041 +
-          #1044
-        ImageIndex = 20
-        ShortCut = 114
-        OnClick = actLoadListExecute
+        Action = actConnect
+      end
+      object N12: TMenuItem
+        Action = actDisconnect
       end
       object N13: TMenuItem
         Caption = '-'
       end
       object N14: TMenuItem
-        Caption = #1044'&'#1086#1073#1072#1074#1083#1077#1085#1080#1077
-        Hint = 
-          #1054#1073#1088#1072#1073#1086#1090#1082#1072' '#1092#1072#1081#1083#1086#1074'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103' '#1086#1087#1077#1088#1072#1094#1080#1080' '#1086#1073#1088#1072#1073#1086#1090#1082#1080' '#1076#1086#1082#1091#1084 +
-          #1077#1085#1090#1086#1074', '#1089#1086#1076#1077#1088#1078#1072#1097#1080#1093#1089#1103' '#1074' '#1089#1087#1080#1089#1082#1077
-        ImageIndex = 7
-        ShortCut = 116
-        OnClick = actAddExecute
+        Action = actAdd
       end
-      object N31: TMenuItem
+      object N16: TMenuItem
+        Action = actEdit
+      end
+      object N17: TMenuItem
+        Action = actDelete
+      end
+      object N20: TMenuItem
         Caption = '-'
       end
-      object N32: TMenuItem
-        Action = actExcel
+      object N31: TMenuItem
+        Action = actRefresh
       end
     end
     object N2: TMenuItem
@@ -1567,8 +1615,8 @@ object MainForm: TMainForm
   end
   object pctnbrMain: TPopupActionBar
     Images = cxmglstActions
-    Left = 160
-    Top = 228
+    Left = 264
+    Top = 112
     object N21: TMenuItem
       Caption = #1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074
       Hint = 
@@ -1594,7 +1642,7 @@ object MainForm: TMainForm
       Caption = '-'
     end
     object N19: TMenuItem
-      Action = actExcel
+      Action = actExportToExcel
     end
     object N23: TMenuItem
       Caption = '-'
@@ -1619,7 +1667,7 @@ object MainForm: TMainForm
     Login = ''
     Password = ''
     Title = ''
-    Left = 180
-    Top = 359
+    Left = 208
+    Top = 112
   end
 end

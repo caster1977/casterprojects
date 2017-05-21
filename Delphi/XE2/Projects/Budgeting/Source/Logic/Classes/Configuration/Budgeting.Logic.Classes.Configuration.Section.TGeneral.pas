@@ -1,4 +1,4 @@
-unit Budgeting.Logic.Classes.Configuration.TGeneralSection;
+unit Budgeting.Logic.Classes.Configuration.Section.TGeneral;
 
 interface
 
@@ -14,7 +14,7 @@ type
   /// Основные настройки
   /// </summary>
   [TSection(GENERAL_SECTION)]
-  TGeneralSection = class(TCustomSection)
+  TGeneral = class(TCustomSection)
   public
     /// <summary>
     /// Время начала периода расчётов

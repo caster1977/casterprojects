@@ -1,4 +1,4 @@
-unit Budgeting.Logic.Classes.Configuration.TOtherSection;
+unit Budgeting.Logic.Classes.Configuration.Section.TOther;
 
 interface
 
@@ -11,7 +11,7 @@ uses
 type
 
   [TSection(OTHER_SECTION)]
-  TOtherSection = class(TCustomSection)
+  TOther = class(TCustomSection)
   public
     [TDefaultValue(CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE)]
     property EnablePlaySoundOnComplete: Boolean index 0 read GetBooleanValue write SetBooleanValue;

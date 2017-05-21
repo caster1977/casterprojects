@@ -1,4 +1,4 @@
-unit Budgeting.Logic.Classes.Configuration.TInterfaceSection;
+unit Budgeting.Logic.Classes.Configuration.Section.TInterface;
 
 interface
 
@@ -11,7 +11,7 @@ uses
 type
 
   [TSection(INTERFACE_SECTION)]
-  TInterfaceSection = class(TCustomSection)
+  TInterface = class(TCustomSection)
   public
     [TDefaultValue(CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION)]
     property EnableQuitConfirmation: Boolean index 0 read GetBooleanValue write SetBooleanValue;

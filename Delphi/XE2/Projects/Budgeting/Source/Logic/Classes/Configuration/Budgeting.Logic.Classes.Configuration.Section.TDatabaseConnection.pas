@@ -1,4 +1,4 @@
-unit Budgeting.Logic.Classes.Configuration.TDatabaseConnectionSection;
+unit Budgeting.Logic.Classes.Configuration.Section.TDatabaseConnection;
 
 interface
 
@@ -14,24 +14,24 @@ type
   /// Настройки подключения к серверу БД
   /// </summary>
   [TSection(DATABASE_CONNECTION_SECTION)]
-  TDatabaseConnectionSection = class(TCustomSection)
+  TDatabaseConnection = class(TCustomSection)
   public
     /// <summary>
     /// Наименование/адрес сервера
     /// </summary>
-    [TDefaultValue('svbyprisd028')]
+    [TDefaultValue('.')]
     property Host: string index 0 read GetStringValue write SetStringValue;
 
     /// <summary>
     /// Наименование БД
     /// </summary>
-    [TDefaultValue('Shate-M-Test')]
+    [TDefaultValue('Budgeting')]
     property Database: string index 1 read GetStringValue write SetStringValue;
 
     /// <summary>
     /// Таймаут в секундах при попытке подключения к серверу
     /// </summary>
-    [TDefaultValue(300)]
+    [TDefaultValue(30)]
     property ConnectionTimeOut: Integer index 2 read GetIntegerValue write SetIntegerValue;
 
     /// <summary>

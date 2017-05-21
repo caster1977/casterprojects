@@ -145,9 +145,9 @@ implementation
 
 uses
   System.UITypes,
-  Budgeting.Logic.Classes.Configuration.TGeneralSection,
-  Budgeting.Logic.Classes.Configuration.TInterfaceSection,
-  Budgeting.Logic.Classes.Configuration.TOtherSection;
+  Budgeting.Logic.Classes.Configuration.Section.TGeneral,
+  Budgeting.Logic.Classes.Configuration.Section.TInterface,
+  Budgeting.Logic.Classes.Configuration.Section.TOther;
 
 resourcestring
   RsAConfigurationIsNil = 'aConfiguration is nil.';
@@ -167,17 +167,17 @@ constructor TConfigurationForm.Create(const aOwner: TComponent; const aConfigura
   begin
     if Assigned(Configuration) then
     begin
-      StartDate := EncodeDate(Configuration.Section<TGeneralSection>.StartDate.Substring(0, 4).ToInteger(),
-        Configuration.Section<TGeneralSection>.StartDate.Substring(4, 2).ToInteger(), Configuration.Section<TGeneralSection>.StartDate.Substring(6, 2)
+      StartDate := EncodeDate(Configuration.Section<TGeneral>.StartDate.Substring(0, 4).ToInteger(),
+        Configuration.Section<TGeneral>.StartDate.Substring(4, 2).ToInteger(), Configuration.Section<TGeneral>.StartDate.Substring(6, 2)
         .ToInteger());
-      StopDate := EncodeDate(Configuration.Section<TGeneralSection>.StopDate.Substring(0, 4).ToInteger(),
-        Configuration.Section<TGeneralSection>.StopDate.Substring(4, 2).ToInteger(), Configuration.Section<TGeneralSection>.StopDate.Substring(6, 2)
+      StopDate := EncodeDate(Configuration.Section<TGeneral>.StopDate.Substring(0, 4).ToInteger(),
+        Configuration.Section<TGeneral>.StopDate.Substring(4, 2).ToInteger(), Configuration.Section<TGeneral>.StopDate.Substring(6, 2)
         .ToInteger());
-      EnableQuitConfirmation := Configuration.Section<TInterfaceSection>.EnableQuitConfirmation;
-      EnableSplashAtStart := Configuration.Section<TInterfaceSection>.EnableSplashAtStart;
-      EnableStatusbar := Configuration.Section<TInterfaceSection>.EnableStatusbar;
-      EnableToolbar := Configuration.Section<TInterfaceSection>.EnableToolbar;
-      EnableStoreMainFormSizesAndPosition := Configuration.Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition;
+      EnableQuitConfirmation := Configuration.Section<TInterface>.EnableQuitConfirmation;
+      EnableSplashAtStart := Configuration.Section<TInterface>.EnableSplashAtStart;
+      EnableStatusbar := Configuration.Section<TInterface>.EnableStatusbar;
+      EnableToolbar := Configuration.Section<TInterface>.EnableToolbar;
+      EnableStoreMainFormSizesAndPosition := Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition;
     end;
   end;
 
@@ -241,14 +241,14 @@ procedure TConfigurationForm.actApplyExecute(Sender: TObject);
 begin
   if Assigned(Configuration) then
   begin
-    Configuration.Section<TGeneralSection>.StartDate := FormatDateTime('yyyymmdd', StartDate);
-    Configuration.Section<TGeneralSection>.StopDate := FormatDateTime('yyyymmdd', StopDate);
-    Configuration.Section<TInterfaceSection>.EnableQuitConfirmation := EnableQuitConfirmation;
-    Configuration.Section<TInterfaceSection>.EnableSplashAtStart := EnableSplashAtStart;
-    Configuration.Section<TInterfaceSection>.EnableStatusbar := EnableStatusbar;
-    Configuration.Section<TInterfaceSection>.EnableToolbar := EnableToolbar;
-    Configuration.Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition := EnableStoreMainFormSizesAndPosition;
-    Configuration.Section<TOtherSection>.EnablePlaySoundOnComplete := EnablePlaySoundOnComplete;
+    Configuration.Section<TGeneral>.StartDate := FormatDateTime('yyyymmdd', StartDate);
+    Configuration.Section<TGeneral>.StopDate := FormatDateTime('yyyymmdd', StopDate);
+    Configuration.Section<TInterface>.EnableQuitConfirmation := EnableQuitConfirmation;
+    Configuration.Section<TInterface>.EnableSplashAtStart := EnableSplashAtStart;
+    Configuration.Section<TInterface>.EnableStatusbar := EnableStatusbar;
+    Configuration.Section<TInterface>.EnableToolbar := EnableToolbar;
+    Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition := EnableStoreMainFormSizesAndPosition;
+    Configuration.Section<TOther>.EnablePlaySoundOnComplete := EnablePlaySoundOnComplete;
     Configuration.CurrentPage := ActivePage;
   end;
   ModalResult := mrOk;

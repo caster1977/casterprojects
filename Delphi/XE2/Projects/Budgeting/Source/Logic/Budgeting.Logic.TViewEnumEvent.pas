@@ -3,8 +3,8 @@ unit Budgeting.Logic.TViewEnumEvent;
 interface
 
 type
-  TViewEnumEvent = (veOpenOldExecute, veOpenOldUpdate, veOpenNewExecute, veOpenNewUpdate, veChooseDestinationFolderExecute,
-    veChooseDestinationFolderUpdate, veStartExecute, veStartUpdate, veOpenResultExecute, veOpenResultUpdate);
+  TViewEnumEvent = (veQuitExecute, veQuitUpdate, veConfigurationExecute, veConfigurationUpdate, veRefreshExecute,
+    veRefreshUpdate, veAboutExecute, veAboutUpdate, veExportToExcelExecute, veExportToExcelUpdate);
 
 implementation
 

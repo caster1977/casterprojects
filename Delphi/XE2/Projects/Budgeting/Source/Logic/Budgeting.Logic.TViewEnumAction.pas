@@ -3,7 +3,7 @@ unit Budgeting.Logic.TViewEnumAction;
 interface
 
 type
-  TViewEnumAction = (vaOpenOld, vaOpenNew, vaChooseDestinationFolder, vaStart, vaOpenResult);
+  TViewEnumAction = (vaQuit, vaConfiguration, vaRefresh, vaAbout, vaExportToExcel);
 
 implementation
 

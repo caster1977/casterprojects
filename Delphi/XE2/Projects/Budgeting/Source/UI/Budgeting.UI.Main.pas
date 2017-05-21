@@ -42,7 +42,6 @@ uses
   System.Actions,
   Vcl.ActnList,
   AboutPackage.Logic.TAboutWindow,
-//  Budgeting.Logic.Interfaces.IMainFormBusinessLogic,
   AboutPackage.Logic.TGSFileVersionInfo,
   Vcl.Menus,
   cxHyperLinkEdit,
@@ -105,10 +104,16 @@ uses
   cxCurrencyEdit,
   cxCalendar,
   cxCalc, dxBarBuiltInMenu, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxPC,
-  LoginPackage.Logic.TLoginWindow;
+  LoginPackage.Logic.TLoginWindow,
+  Budgeting.Logic.Interfaces.IView,
+  Budgeting.Logic.Interfaces.IViewMain,
+  Budgeting.Logic.TViewEnumActionArray,
+  Budgeting.Logic.TViewEnumAction,
+  Budgeting.Logic.TViewEnumEvent,
+  cxProgressBar, cxBarEditItem;
 
 type
-  TMainForm = class(TForm)
+  TMainForm = class(TForm, IView, IViewMain)
     actQuit: TAction;
     actFile: TAction;
     actHelp: TAction;
@@ -140,16 +145,10 @@ type
     btnQuit: TdxBarButton;
     btnHelpContext: TdxBarButton;
     btnAbout: TdxBarButton;
-    N11: TMenuItem;
-    N12: TMenuItem;
-    N13: TMenuItem;
-    N14: TMenuItem;
     cxgrdFiles: TcxGrid;
     cxgrdtblvwFiles: TcxGridTableView;
     colFileName: TcxGridColumn;
     cxgrdlvl2: TcxGridLevel;
-    N16: TMenuItem;
-    N17: TMenuItem;
     pctnbrMain: TPopupActionBar;
     N21: TMenuItem;
     N15: TMenuItem;
@@ -169,10 +168,8 @@ type
     colNumber: TcxGridColumn;
     colType: TcxGridColumn;
     colStatus: TcxGridColumn;
-    actExcel: TAction;
+    actExportToExcel: TAction;
     btnExcel: TdxBarButton;
-    N31: TMenuItem;
-    N32: TMenuItem;
     N19: TMenuItem;
     btnConnect: TdxBarButton;
     actConnect: TAction;
@@ -185,21 +182,36 @@ type
     cxtbshtExports: TcxTabSheet;
     cxtbshtReferences: TcxTabSheet;
     cbbReferences: TcxComboBox;
-    References: TcxGrid;
-    cxgrdlvlWarehouses1: TcxGridLevel;
-    cxgrdlvlWarehouses2: TcxGridLevel;
+    cxgrdReferences: TcxGrid;
     shtReports: TcxTabSheet;
     btn1: TdxBarButton;
     dxBarButton1: TdxBarButton;
     dxBarButton2: TdxBarButton;
     dxBarButton3: TdxBarButton;
     LoginWindow: TLoginWindow;
+    cxbrdtmProgress: TcxBarEditItem;
+    N11: TMenuItem;
+    N12: TMenuItem;
+    N13: TMenuItem;
+    N14: TMenuItem;
+    N16: TMenuItem;
+    N17: TMenuItem;
+    N20: TMenuItem;
+    N31: TMenuItem;
+    tblvAccountingCenters: TcxGridTableView;
+    tblvBanks: TcxGridTableView;
+    tblvBudgetItems: TcxGridTableView;
+    tblvBudgetItemTypes: TcxGridTableView;
+    tblvCosignatories: TcxGridTableView;
+    tblvCurrencies: TcxGridTableView;
+    tblvGoods: TcxGridTableView;
+    tblvGoodsTypes: TcxGridTableView;
+    tblvUsers: TcxGridTableView;
+    lvl1: TcxGridLevel;
     procedure actQuitExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure actAboutExecute(Sender: TObject);
-    procedure actFileExecute(Sender: TObject);
     procedure actHelpExecute(Sender: TObject);
     procedure actStatusBarExecute(Sender: TObject);
     procedure actToolBarExecute(Sender: TObject);
@@ -213,17 +225,32 @@ type
     procedure actHelpContextUpdate(Sender: TObject);
     procedure actConfigurationExecute(Sender: TObject);
     procedure actLoadListExecute(Sender: TObject);
-    procedure actExcelUpdate(Sender: TObject);
-    procedure actExcelExecute(Sender: TObject);
+    procedure actExportToExcelUpdate(Sender: TObject);
+    procedure actExportToExcelExecute(Sender: TObject);
     procedure actLoadListUpdate(Sender: TObject);
     procedure actConfigurationUpdate(Sender: TObject);
     procedure actConnectExecute(Sender: TObject);
+    procedure actFileExecute(Sender: TObject);
 
   strict private
-//    FLogic: IMainFormBusinessLogic;
     FProcessing: Boolean;
+    FOnEventSimple: TProc<TViewEnumEvent>;
+    FActionStates: TViewEnumActionArray;
+    FPresenter: IInterface;
 
     procedure ApplyConfiguration();
+    function ShowMessage(const aMessage: string; const aStatus: Cardinal): Integer;
+    function GetControl: TWinControl;
+    procedure SetOnEventSimple(const aValue: TProc<TViewEnumEvent>);
+    function GetActionStates(const aValue: TViewEnumAction): Boolean;
+    procedure SetActionStates(const aKey: TViewEnumAction; const aValue: Boolean);
+    procedure ShowProgress(const aTitle: string; const aMax: Integer);
+    procedure StepProgress(const aNewTitle: string = ''; const aToPosition: Integer = -1);
+    procedure HideProgress();
+    procedure RefreshStates();
+    procedure StorePresenter(const aPresenter: IInterface);
+    function GetConnection(const aConnectionString: string): TCustomConnection;
+    function GetActiveGrid(): TcxGrid;
   end;
 
 var
@@ -234,15 +261,16 @@ implementation
 {$R *.dfm}
 
 uses
+  CodesiteLogging,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.ASync,
+  FireDAC.DApt,
+  FireDAC.Stan.Def,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
   System.DateUtils,
   Budgeting.Logic.Consts,
   Budgeting.UI.Configuration;
-//  Budgeting.Logic.Classes.TMainFormBusinessLogic;
-
-procedure TMainForm.actFileExecute(Sender: TObject);
-begin
-  // заглушка
-end;
 
 procedure TMainForm.actAboutUpdate(Sender: TObject);
 begin
@@ -269,45 +297,45 @@ var
   d, h, n, s, ms: word;
   sh: word;
 begin
-{  if not Assigned(FLogic) then
-  begin
+  { if not Assigned(FLogic) then
+    begin
     Exit();
-  end;
+    end;
 
-  try
+    try
     FProcessing := True;
     for i := 0 to Pred(actlstMain.ActionCount) do
     begin
-      actlstMain.Actions[i].Update();
-      Application.ProcessMessages();
-      StatusBar.SimplePanelStyle.Text := 'Пожалуйста, подождите...';
+    actlstMain.Actions[i].Update();
+    Application.ProcessMessages();
+    StatusBar.SimplePanelStyle.Text := 'Пожалуйста, подождите...';
     end;
 
     tmpStartTime := Now();
 
     try
-      b := FLogic.LoadList();
+    b := FLogic.LoadList();
     finally
-      FProcessing := False;
+    FProcessing := False;
     end;
     if b then
     begin
-      tmpStopTime := Now();
-      StatusBar.SimplePanelStyle.Text := EmptyStr;
+    tmpStopTime := Now();
+    StatusBar.SimplePanelStyle.Text := EmptyStr;
 
-      dt := tmpStopTime - tmpStartTime;
-      d := DaysBetween(dt, 0);
-      DecodeTime(dt, h, n, s, ms);
-      sh := d * 24 + h;
-      MessageBox(Handle, PWideChar(Format('Действие выполнено успешно. Затраченное время: %s',
-        [Format('%d:%2d:%2d', [sh, n, s]).Replace(' ', '0', [rfReplaceAll])])), PWideChar(Format(RsInfoCaption, [Caption])), MESSAGE_TYPE_OK);
+    dt := tmpStopTime - tmpStartTime;
+    d := DaysBetween(dt, 0);
+    DecodeTime(dt, h, n, s, ms);
+    sh := d * 24 + h;
+    MessageBox(Handle, PWideChar(Format('Действие выполнено успешно. Затраченное время: %s',
+    [Format('%d:%2d:%2d', [sh, n, s]).Replace(' ', '0', [rfReplaceAll])])), PWideChar(Format(RsInfoCaption, [Caption])), MESSAGE_TYPE_OK);
     end;
-  except
+    except
     on e: Exception do
     begin
-      MessageBox(Handle, PWideChar(e.ToString()), PWideChar(Format(RsErrorCaption, [Caption])), MESSAGE_TYPE_ERROR);
+    MessageBox(Handle, PWideChar(e.ToString()), PWideChar(Format(RsErrorCaption, [Caption])), MESSAGE_TYPE_ERROR);
     end;
-  end;}
+    end; }
 end;
 
 procedure TMainForm.actLoadListUpdate(Sender: TObject);
@@ -331,48 +359,54 @@ begin
 end;
 
 procedure TMainForm.actQuitExecute(Sender: TObject);
+var
+  tmpCursor: TCursor;
 begin
-  Close();
+  tmpCursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;
+  try
+    FOnEventSimple(veQuitExecute);
+  finally
+    Screen.Cursor := tmpCursor;
+  end;
 end;
 
 procedure TMainForm.actQuitUpdate(Sender: TObject);
 begin
-  // заглушка
+  FOnEventSimple(veQuitUpdate);
+  (Sender as TAction).Enabled := FActionStates[vaQuit];
 end;
 
 procedure TMainForm.actConfigurationExecute(Sender: TObject);
 var
-  tmpForm: TForm;
+  tmpCursor: TCursor;
 begin
-  tmpForm := TConfigurationForm.Create(Owner, nil, 0 {Configuration, Configuration.CurrentPage});
+  tmpCursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;
   try
-    {Result := } tmpForm.ShowModal {= mrOk};
+    FOnEventSimple(veConfigurationExecute);
   finally
-    tmpForm.Free();
+    Screen.Cursor := tmpCursor;
   end;
-  {if not FLogic.ShowConfigurationForm() then
-  begin
-    Exit;
-  end;
-  ApplyConfiguration();}
 end;
 
 procedure TMainForm.actConfigurationUpdate(Sender: TObject);
 begin
-  // заглушка
+  FOnEventSimple(veConfigurationUpdate);
+  (Sender as TAction).Enabled := FActionStates[vaConfiguration];
 end;
 
 procedure TMainForm.actConnectExecute(Sender: TObject);
 begin
-  LoginWindow.Login := '';// Configuration.Section<TConnection>.Login;
-  LoginWindow.Password := '';//Configuration.Section<TConnection>.Password;
+  LoginWindow.Login := ''; // Configuration.Section<TConnection>.Login;
+  LoginWindow.Password := ''; // Configuration.Section<TConnection>.Password;
 
-//  if not Configuration.Section<TConnection>.EnableAutoLogon then
+  // if not Configuration.Section<TConnection>.EnableAutoLogon then
   begin
     if LoginWindow.Execute then
     begin
-//      Configuration.Section<TConnection>.Login := IfThen(Configuration.Section<TConnection>.EnableStoreLogin, LoginWindow.Login);
-//      Configuration.Section<TConnection>.Password := IfThen(Configuration.Section<TConnection>.EnableStorePassword, LoginWindow.Password);
+      // Configuration.Section<TConnection>.Login := IfThen(Configuration.Section<TConnection>.EnableStoreLogin, LoginWindow.Login);
+      // Configuration.Section<TConnection>.Password := IfThen(Configuration.Section<TConnection>.EnableStorePassword, LoginWindow.Password);
     end
     else
     begin
@@ -381,13 +415,26 @@ begin
   end;
 end;
 
-procedure TMainForm.actExcelExecute(Sender: TObject);
+procedure TMainForm.actExportToExcelExecute(Sender: TObject);
+var
+  tmpCursor: TCursor;
 begin
-  // заглушка
-//  FLogic.ExportExcel(cxgrdResult);
+  tmpCursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;
+  try
+    FOnEventSimple(veExportToExcelExecute);
+  finally
+    Screen.Cursor := tmpCursor;
+  end;
 end;
 
-procedure TMainForm.actExcelUpdate(Sender: TObject);
+procedure TMainForm.actExportToExcelUpdate(Sender: TObject);
+begin
+  FOnEventSimple(veExportToExcelUpdate);
+  (Sender as TAction).Enabled := FActionStates[vaExportToExcel];
+end;
+
+procedure TMainForm.actFileExecute(Sender: TObject);
 begin
   // заглушка
 end;
@@ -402,45 +449,45 @@ var
   d, h, n, s, ms: word;
   sh: word;
 begin
-  {if not Assigned(FLogic) then
-  begin
+  { if not Assigned(FLogic) then
+    begin
     Exit();
-  end;
+    end;
 
-  try
+    try
     FProcessing := True;
     for i := 0 to Pred(actlstMain.ActionCount) do
     begin
-      actlstMain.Actions[i].Update();
-      Application.ProcessMessages();
-      StatusBar.SimplePanelStyle.Text := 'Пожалуйста, подождите...';
+    actlstMain.Actions[i].Update();
+    Application.ProcessMessages();
+    StatusBar.SimplePanelStyle.Text := 'Пожалуйста, подождите...';
     end;
 
     tmpStartTime := Now();
 
     try
-      b := FLogic.Process();
+    b := FLogic.Process();
     finally
-      FProcessing := False;
+    FProcessing := False;
     end;
     if b then
     begin
-      tmpStopTime := Now();
-      StatusBar.SimplePanelStyle.Text := EmptyStr;
+    tmpStopTime := Now();
+    StatusBar.SimplePanelStyle.Text := EmptyStr;
 
-      dt := tmpStopTime - tmpStartTime;
-      d := DaysBetween(dt, 0);
-      DecodeTime(dt, h, n, s, ms);
-      sh := d * 24 + h;
-      MessageBox(Handle, PWideChar(Format('Действие выполнено успешно. Затраченное время: %s',
-        [Format('%d:%2d:%2d', [sh, n, s]).Replace(' ', '0', [rfReplaceAll])])), PWideChar(Format(RsInfoCaption, [Caption])), MESSAGE_TYPE_OK);
+    dt := tmpStopTime - tmpStartTime;
+    d := DaysBetween(dt, 0);
+    DecodeTime(dt, h, n, s, ms);
+    sh := d * 24 + h;
+    MessageBox(Handle, PWideChar(Format('Действие выполнено успешно. Затраченное время: %s',
+    [Format('%d:%2d:%2d', [sh, n, s]).Replace(' ', '0', [rfReplaceAll])])), PWideChar(Format(RsInfoCaption, [Caption])), MESSAGE_TYPE_OK);
     end;
-  except
+    except
     on e: Exception do
     begin
-      MessageBox(Handle, PWideChar(e.ToString()), PWideChar(Format(RsErrorCaption, [Caption])), MESSAGE_TYPE_ERROR);
+    MessageBox(Handle, PWideChar(e.ToString()), PWideChar(Format(RsErrorCaption, [Caption])), MESSAGE_TYPE_ERROR);
     end;
-  end;}
+    end; }
 end;
 
 procedure TMainForm.actAddUpdate(Sender: TObject);
@@ -459,12 +506,12 @@ begin
     StatusBar.Visible := b;
   end;
 
-  {if not Assigned(FLogic) then
-  begin
+  { if not Assigned(FLogic) then
+    begin
     Exit;
-  end;
+    end;
 
-  FLogic.EnableStatusbar := b;}
+    FLogic.EnableStatusbar := b; }
 end;
 
 procedure TMainForm.actToolBarExecute(Sender: TObject);
@@ -478,12 +525,12 @@ begin
     dxbrToolBar.Visible := b;
   end;
 
-  {if not Assigned(FLogic) then
-  begin
+  { if not Assigned(FLogic) then
+    begin
     Exit;
-  end;
+    end;
 
-  FLogic.EnableToolbar := b;}
+    FLogic.EnableToolbar := b; }
 end;
 
 procedure TMainForm.actViewExecute(Sender: TObject);
@@ -495,35 +542,35 @@ procedure TMainForm.ApplyConfiguration();
 var
   b: Boolean;
 begin
-  {if not Assigned(FLogic) then
-  begin
+  { if not Assigned(FLogic) then
+    begin
     Exit;
-  end;
+    end;
 
-  b := FLogic.EnableStatusbar;
-  actStatusBar.Checked := b;
-  StatusBar.Visible := b;
+    b := FLogic.EnableStatusbar;
+    actStatusBar.Checked := b;
+    StatusBar.Visible := b;
 
-  b := FLogic.EnableToolbar;
-  actToolBar.Checked := b;
-  dxbrToolBar.Visible := b;}
+    b := FLogic.EnableToolbar;
+    actToolBar.Checked := b;
+    dxbrToolBar.Visible := b; }
 end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   CanClose := True;
 
-  {if not Assigned(FLogic) then
-  begin
+  { if not Assigned(FLogic) then
+    begin
     Exit;
-  end;
+    end;
 
-  CanClose := FLogic.CloseQuery();}
+    CanClose := FLogic.CloseQuery(); }
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-//  FLogic := TMainFormBusinessLogic.Create(Self, cxgrdtblvwFiles, cxgrdtblvwResult);
+  // FLogic := TMainFormBusinessLogic.Create(Self, cxgrdtblvwFiles, cxgrdtblvwResult);
   FProcessing := False;
 
   gsflvrsnfMain.Filename := Application.ExeName;
@@ -532,20 +579,146 @@ begin
 
   ApplyConfiguration();
 
-  {if not Assigned(FLogic) then
-  begin
+  { if not Assigned(FLogic) then
+    begin
     Exit;
-  end;
+    end;
 
-  if FLogic.EnableSplashAtStart then
-  begin}
-    AboutWindow.Show(True);
-//  end;
+    if FLogic.EnableSplashAtStart then
+    begin }
+  AboutWindow.Show(True);
+  // end;
 end;
 
-procedure TMainForm.FormDestroy(Sender: TObject);
+function TMainForm.GetActionStates(const aValue: TViewEnumAction): Boolean;
 begin
-//  FLogic := nil;
+  Result := FActionStates[aValue];
+end;
+
+function TMainForm.GetActiveGrid(): TcxGrid;
+begin
+  Result := cxgrdReferences;
+  { TODO : дописать }
+end;
+
+function TMainForm.GetConnection(
+  const aConnectionString: string): TCustomConnection;
+var
+  tmpConnection: TFDConnection;
+begin
+  {$IFDEF DEBUG}
+  Result := nil;
+  CodeSite.EnterMethod(Self, 'GetConnection()');
+  try
+    {$ENDIF}
+    try
+      {$REGION 'Создание подлюкчения к БД'}
+      tmpConnection := TFDConnection.Create(nil);
+      if Assigned(tmpConnection) then
+      begin
+        tmpConnection.LoginPrompt := False;
+        tmpConnection.FetchOptions.AutoClose := False;
+        tmpConnection.FetchOptions.Mode := fmAll;
+        tmpConnection.ResourceOptions.SilentMode := True;
+        tmpConnection.ResourceOptions.DirectExecute := True;
+        tmpConnection.ResourceOptions.MacroCreate := False;
+        tmpConnection.ResourceOptions.MacroExpand := False;
+        tmpConnection.ConnectionString := aConnectionString;
+        {$IFDEF DEBUG}
+        CodeSite.Send('ConnectionString', tmpConnection.ConnectionString);
+        {$ENDIF}
+      end;
+      Result := tmpConnection;
+      {$ENDREGION}
+    except
+      on e: Exception do
+      begin
+        CodeSite.SendException(e);
+        raise;
+      end;
+    end;
+    {$IFDEF DEBUG}
+  finally
+    CodeSite.ExitMethod(Self, 'GetConnection()');
+  end;
+  {$ENDIF}
+end;
+
+function TMainForm.GetControl(): TWinControl;
+begin
+  Result := Self;
+end;
+
+procedure TMainForm.HideProgress();
+begin
+  (cxbrdtmProgress.Properties as TcxProgressBarProperties).Text := EmptyStr;
+  cxbrdtmProgress.Visible := ivNever;
+end;
+
+procedure TMainForm.RefreshStates();
+var
+  i: Integer;
+begin
+  for i := 0 to Pred(actlstMain.ActionCount) do
+    actlstMain.Actions[i].Update();
+end;
+
+procedure TMainForm.SetActionStates(const aKey: TViewEnumAction;
+  const aValue: Boolean);
+begin
+  FActionStates[aKey] := aValue;
+end;
+
+procedure TMainForm.SetOnEventSimple(const aValue: TProc<TViewEnumEvent>);
+begin
+  FOnEventSimple := aValue;
+end;
+
+function TMainForm.ShowMessage(const aMessage: string; const aStatus: Cardinal): Integer;
+var
+  sCaption: string;
+begin
+  case aStatus of
+    MESSAGE_TYPE_OK: sCaption := Format('%s - Информация', [Application.Title]);
+    MESSAGE_TYPE_ERROR: sCaption := Format('%s - Ошибка', [Application.Title]);
+    MESSAGE_TYPE_WARNING, MESSAGE_TYPE_CONFIRMATION_WARNING_OK, MESSAGE_TYPE_CONFIRMATION_WARNING_CANCEL: sCaption := Format('%s - Внимание', [Application.Title]);
+    MESSAGE_TYPE_CONFIRMATION_QUESTION: sCaption := Format('%s - Подтверждение', [Application.Title]);
+  end;
+  Result := MessageBox(Handle, PWideChar(aMessage), PWideChar(sCaption), aStatus);
+end;
+
+procedure TMainForm.ShowProgress(const aTitle: string; const aMax: Integer);
+begin
+  (cxbrdtmProgress.Properties as TcxProgressBarProperties).Text := aTitle.Trim();
+  (cxbrdtmProgress.Properties as TcxProgressBarProperties).Max := aMax;
+  cxbrdtmProgress.EditValue := 0;
+  cxbrdtmProgress.Visible := ivAlways;
+  Application.ProcessMessages();
+end;
+
+procedure TMainForm.StepProgress(const aNewTitle: string;
+  const aToPosition: Integer);
+var
+  i: Integer;
+begin
+  if aNewTitle <> EmptyStr then
+  begin
+    (cxbrdtmProgress.Properties as TcxProgressBarProperties).Text := aNewTitle.Trim();
+  end;
+  if aToPosition > -1 then
+  begin
+    cxbrdtmProgress.EditValue := aToPosition;
+  end
+  else
+  begin
+    i := cxbrdtmProgress.EditValue;
+    cxbrdtmProgress.EditValue := Succ(i);
+  end;
+end;
+
+procedure TMainForm.StorePresenter(const aPresenter: IInterface);
+begin
+  FPresenter := aPresenter;
 end;
 
 end.
