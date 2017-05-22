@@ -14,9 +14,7 @@ uses
   Vcl.ActnList,
   Budgeting.Logic.Consts,
   Budgeting.Logic.Classes.Configuration.TConfiguration,
-  Vcl.Samples.Spin,
-  Vcl.ImgList,
-  Vcl.StdActns,
+
   cxGraphics,
   cxControls,
   cxLookAndFeels,
@@ -29,7 +27,7 @@ uses
   cxTextEdit,
   cxMaskEdit,
   cxDropDownEdit,
-  cxCalendar;
+  cxCalendar, Vcl.ImgList;
 
 type
   TConfigurationForm = class(TForm)
@@ -167,12 +165,10 @@ constructor TConfigurationForm.Create(const aOwner: TComponent; const aConfigura
   begin
     if Assigned(Configuration) then
     begin
-      StartDate := EncodeDate(Configuration.Section<TGeneral>.StartDate.Substring(0, 4).ToInteger(),
-        Configuration.Section<TGeneral>.StartDate.Substring(4, 2).ToInteger(), Configuration.Section<TGeneral>.StartDate.Substring(6, 2)
-        .ToInteger());
-      StopDate := EncodeDate(Configuration.Section<TGeneral>.StopDate.Substring(0, 4).ToInteger(),
-        Configuration.Section<TGeneral>.StopDate.Substring(4, 2).ToInteger(), Configuration.Section<TGeneral>.StopDate.Substring(6, 2)
-        .ToInteger());
+      StartDate := EncodeDate(Configuration.Section<TGeneral>.StartDate.Substring(0, 4).ToInteger(), Configuration.Section<TGeneral>.StartDate.Substring(4, 2)
+        .ToInteger(), Configuration.Section<TGeneral>.StartDate.Substring(6, 2).ToInteger());
+      StopDate := EncodeDate(Configuration.Section<TGeneral>.StopDate.Substring(0, 4).ToInteger(), Configuration.Section<TGeneral>.StopDate.Substring(4, 2)
+        .ToInteger(), Configuration.Section<TGeneral>.StopDate.Substring(6, 2).ToInteger());
       EnableQuitConfirmation := Configuration.Section<TInterface>.EnableQuitConfirmation;
       EnableSplashAtStart := Configuration.Section<TInterface>.EnableSplashAtStart;
       EnableStatusbar := Configuration.Section<TInterface>.EnableStatusbar;
@@ -182,7 +178,7 @@ constructor TConfigurationForm.Create(const aOwner: TComponent; const aConfigura
   end;
 
 begin
-//  Assert(Assigned(aConfiguration), RsAConfigurationIsNil);
+  // Assert(Assigned(aConfiguration), RsAConfigurationIsNil);
   inherited Create(aOwner);
   ActivePage := aActivePage;
   FConfiguration := aConfiguration;
@@ -214,27 +210,27 @@ begin
 end;
 
 procedure TConfigurationForm.actDefaultsUpdate(Sender: TObject);
-var
-  b: Boolean;
-  tmpDate: string;
+// var
+// b: Boolean;
+// tmpDate: string;
 begin
-  {b := False;
-  if PageControl.ActivePage = tsGeneral then
-  begin
+  { b := False;
+    if PageControl.ActivePage = tsGeneral then
+    begin
     tmpDate := FormatDateTime('yyyymmdd', Date());
     b := not((Configuration.Section<TGeneralSection>.StartDate = tmpDate) and (Configuration.Section<TGeneralSection>.StopDate = tmpDate));
-  end;
-  if PageControl.ActivePage = tsInterface then
-  begin
+    end;
+    if PageControl.ActivePage = tsInterface then
+    begin
     b := not((EnableQuitConfirmation = CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION) and (EnableSplashAtStart = CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START)
-      and (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR) and
-      (EnableStoreMainFormSizesAndPosition = CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION));
-  end;
-  if PageControl.ActivePage = tsOther then
-  begin
+    and (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR) and
+    (EnableStoreMainFormSizesAndPosition = CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION));
+    end;
+    if PageControl.ActivePage = tsOther then
+    begin
     b := not((EnablePlaySoundOnComplete = CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE));
-  end;
-  actDefaults.Enabled := b;}
+    end;
+    actDefaults.Enabled := b; }
 end;
 
 procedure TConfigurationForm.actApplyExecute(Sender: TObject);
@@ -255,26 +251,26 @@ begin
 end;
 
 procedure TConfigurationForm.actApplyUpdate(Sender: TObject);
-var
-  b: Boolean;
-  tmpStartDate: string;
-  tmpStopDate: string;
+// var
+// b: Boolean;
+// tmpStartDate: string;
+// tmpStopDate: string;
 begin
-  {b := False;
-  if Assigned(Configuration) then
-  begin
+  { b := False;
+    if Assigned(Configuration) then
+    begin
     tmpStartDate := FormatDateTime('yyyymmdd', StartDate);
     tmpStopDate := FormatDateTime('yyyymmdd', StopDate);
     b := not((Configuration.Section<TInterfaceSection>.EnableQuitConfirmation = EnableQuitConfirmation) and
-      (Configuration.Section<TGeneralSection>.StartDate = tmpStartDate) and (Configuration.Section<TGeneralSection>.StopDate = tmpStopDate) and
-      (Configuration.Section<TInterfaceSection>.EnableSplashAtStart = EnableSplashAtStart) and
-      (Configuration.Section<TInterfaceSection>.EnableStatusbar = EnableStatusbar) and (Configuration.Section<TInterfaceSection>.EnableToolbar = EnableToolbar)
-      and (Configuration.Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition = EnableStoreMainFormSizesAndPosition) and
-      (Configuration.Section<TOtherSection>.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete));
-  end;
-  actApply.Enabled := b;
-  btnApply.Default := b;
-  btnCancel.Default := not b;}
+    (Configuration.Section<TGeneralSection>.StartDate = tmpStartDate) and (Configuration.Section<TGeneralSection>.StopDate = tmpStopDate) and
+    (Configuration.Section<TInterfaceSection>.EnableSplashAtStart = EnableSplashAtStart) and
+    (Configuration.Section<TInterfaceSection>.EnableStatusbar = EnableStatusbar) and (Configuration.Section<TInterfaceSection>.EnableToolbar = EnableToolbar)
+    and (Configuration.Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition = EnableStoreMainFormSizesAndPosition) and
+    (Configuration.Section<TOtherSection>.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete));
+    end;
+    actApply.Enabled := b;
+    btnApply.Default := b;
+    btnCancel.Default := not b; }
 end;
 
 procedure TConfigurationForm.actCancelExecute(Sender: TObject);

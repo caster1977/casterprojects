@@ -29,8 +29,6 @@ type
     procedure RefreshStates();
 
     procedure StorePresenter(const aPresenter: IInterface);
-
-    function GetConnection(const aConnectionString: string): TCustomConnection;
   end;
 
 implementation

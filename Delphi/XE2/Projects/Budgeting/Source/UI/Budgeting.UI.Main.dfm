@@ -42,16 +42,108 @@ object MainForm: TMainForm
     Margins.Right = 0
     Align = alClient
     TabOrder = 5
-    Properties.ActivePage = cxtbshtReferences
+    Properties.ActivePage = shtReferences
     Properties.CustomButtons.Buttons = <>
+    ExplicitLeft = -5
+    ExplicitTop = 39
     ClientRectBottom = 504
     ClientRectLeft = 4
     ClientRectRight = 780
     ClientRectTop = 24
-    object cxtbshtExports: TcxTabSheet
-      Caption = #1069#1082#1089#1087#1086#1088#1090#1099
+    object shtReferences: TcxTabSheet
+      Caption = #1057#1087#1088#1072#1074#1086#1095#1085#1080#1082#1080
       ImageIndex = 0
-      TabVisible = False
+      object cbbReferences: TcxComboBox
+        AlignWithMargins = True
+        Left = 3
+        Top = 3
+        Align = alTop
+        Properties.AutoSelect = False
+        Properties.DropDownListStyle = lsFixedList
+        Properties.Items.Strings = (
+          '1'
+          '2'
+          '3'
+          '4')
+        Properties.ReadOnly = False
+        Properties.Revertable = True
+        Properties.Sorted = True
+        TabOrder = 0
+        Width = 770
+      end
+      object cxgrdReferences: TcxGrid
+        AlignWithMargins = True
+        Left = 3
+        Top = 30
+        Width = 770
+        Height = 447
+        Align = alClient
+        TabOrder = 1
+        object tblvAccountingCenters: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          OnFocusedRecordChanged = tblvAccountingCentersFocusedRecordChanged
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsView.NoDataToDisplayInfoText = '<'#1054#1090#1089#1091#1090#1089#1074#1091#1102#1090' '#1076#1072#1085#1085#1099#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103'>'
+          OptionsView.GroupByBox = False
+        end
+        object tblvBanks: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object tblvBudgetItems: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object tblvBudgetItemTypes: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object tblvCosignatories: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object tblvCurrencies: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object tblvGoods: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object tblvGoodsTypes: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object tblvUsers: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object lvl1: TcxGridLevel
+          GridView = tblvAccountingCenters
+        end
+      end
+    end
+    object shtOperations: TcxTabSheet
+      Caption = #1054#1087#1077#1088#1072#1094#1080#1080
+      ImageIndex = 0
       object cxgrdFiles: TcxGrid
         Left = 0
         Top = 0
@@ -156,94 +248,6 @@ object MainForm: TMainForm
         end
       end
     end
-    object cxtbshtReferences: TcxTabSheet
-      Caption = #1057#1087#1088#1072#1074#1086#1095#1085#1080#1082#1080
-      ImageIndex = 2
-      object cbbReferences: TcxComboBox
-        AlignWithMargins = True
-        Left = 3
-        Top = 3
-        Align = alTop
-        Properties.AutoSelect = False
-        Properties.DropDownListStyle = lsFixedList
-        Properties.Items.Strings = (
-          '1'
-          '2'
-          '3'
-          '4')
-        Properties.ReadOnly = False
-        Properties.Revertable = True
-        Properties.Sorted = True
-        TabOrder = 0
-        Width = 770
-      end
-      object cxgrdReferences: TcxGrid
-        AlignWithMargins = True
-        Left = 3
-        Top = 30
-        Width = 770
-        Height = 447
-        Align = alClient
-        TabOrder = 1
-        object tblvAccountingCenters: TcxGridTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-        end
-        object tblvBanks: TcxGridTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-        end
-        object tblvBudgetItems: TcxGridTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-        end
-        object tblvBudgetItemTypes: TcxGridTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-        end
-        object tblvCosignatories: TcxGridTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-        end
-        object tblvCurrencies: TcxGridTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-        end
-        object tblvGoods: TcxGridTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-        end
-        object tblvGoodsTypes: TcxGridTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-        end
-        object tblvUsers: TcxGridTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-        end
-        object lvl1: TcxGridLevel
-          GridView = tblvAccountingCenters
-        end
-      end
-    end
     object shtReports: TcxTabSheet
       Caption = #1054#1090#1095#1105#1090#1099
       ImageIndex = 1
@@ -320,6 +324,11 @@ object MainForm: TMainForm
         item
           Visible = True
           ItemName = 'dxBarButton3'
+        end
+        item
+          BeginGroup = True
+          Visible = True
+          ItemName = 'btnRefresh'
         end
         item
           BeginGroup = True
@@ -402,6 +411,10 @@ object MainForm: TMainForm
       Properties.ShowTextStyle = cxtsText
       Properties.SolidTextColor = True
       InternalEditValue = 0
+    end
+    object btnRefresh: TdxBarButton
+      Action = actRefresh
+      Category = 0
     end
   end
   object cxmglstActions: TcxImageList
@@ -1494,6 +1507,7 @@ object MainForm: TMainForm
         #1088#1091
       ImageIndex = 13
       OnExecute = actConnectExecute
+      OnUpdate = actConnectUpdate
     end
     object actDisconnect: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
@@ -1503,6 +1517,8 @@ object MainForm: TMainForm
         #1054#1090#1082#1083#1102#1095#1080#1090#1100#1089#1103' '#1086#1090' '#1089#1077#1088#1074#1077#1088#1072'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1090#1082#1083#1102#1095#1077#1085#1080#1103' '#1084#1077#1085#1077#1076#1078#1077#1088#1072' '#1086#1090' '#1089#1077#1088#1074#1077 +
         #1088#1072
       ImageIndex = 14
+      OnExecute = actDisconnectExecute
+      OnUpdate = actDisconnectUpdate
     end
     object actAdd: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
@@ -1510,6 +1526,8 @@ object MainForm: TMainForm
       Hint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1101#1083#1077#1084#1077#1085#1090'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1076#1086#1073#1072#1074#1083#1077#1085#1080#1103' '#1085#1086#1074#1086#1075#1086' '#1101#1083#1077#1084#1077#1085#1090#1072' '#1074' '#1089#1087#1080#1089#1086#1082
       ImageIndex = 7
       ShortCut = 45
+      OnExecute = actAddExecute
+      OnUpdate = actAddUpdate
     end
     object actEdit: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
@@ -1519,6 +1537,8 @@ object MainForm: TMainForm
         #1084#1077#1085#1090#1072' '#1089#1087#1080#1089#1082#1072
       ImageIndex = 8
       ShortCut = 113
+      OnExecute = actEditExecute
+      OnUpdate = actEditUpdate
     end
     object actDelete: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
@@ -1528,6 +1548,8 @@ object MainForm: TMainForm
         #1089#1082#1072
       ImageIndex = 9
       ShortCut = 46
+      OnExecute = actDeleteExecute
+      OnUpdate = actDeleteUpdate
     end
     object actRefresh: TAction
       Category = #1044#1077#1081#1089#1090#1074#1080#1077
@@ -1535,12 +1557,9 @@ object MainForm: TMainForm
       Hint = #1054#1073#1085#1086#1074#1080#1090#1100' '#1089#1087#1080#1089#1086#1082'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1103' '#1090#1077#1082#1091#1097#1077#1075#1086' '#1089#1087#1080#1089#1082#1072
       ImageIndex = 16
       ShortCut = 116
+      OnExecute = actRefreshExecute
+      OnUpdate = actRefreshUpdate
     end
-  end
-  object AboutWindow: TAboutWindow
-    EMail = 'caster1977@yandex.ru'
-    Left = 56
-    Top = 112
   end
   object gsflvrsnfMain: TGSFileVersionInfo
     Left = 128
@@ -1624,7 +1643,6 @@ object MainForm: TMainForm
         #1044
       ImageIndex = 20
       ShortCut = 114
-      OnClick = actLoadListExecute
     end
     object N22: TMenuItem
       Caption = '-'
@@ -1662,12 +1680,5 @@ object MainForm: TMainForm
     object N26: TMenuItem
       Action = actQuit
     end
-  end
-  object LoginWindow: TLoginWindow
-    Login = ''
-    Password = ''
-    Title = ''
-    Left = 208
-    Top = 112
   end
 end

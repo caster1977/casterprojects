@@ -4,7 +4,8 @@ interface
 
 uses
   System.SysUtils,
-  FireDAC.Comp.Client,
+  // FireDAC.Comp.Client,
+  Vcl.Controls,
   Budgeting.Logic.Interfaces.IPresenter,
   Budgeting.Logic.Interfaces.IViewMain,
   Budgeting.Logic.TViewEnumEvent,
@@ -12,8 +13,10 @@ uses
 
 type
   TPresenterMain = class(TPresenter, IPresenter)
-//  strict private
-//    FCurrentDocumentId: Integer;
+  strict private
+    FCurrentDocumentId: Integer;
+    procedure AboutExecute(const aOwner: TWinControl; const aSplash: Boolean = False);
+
   strict protected
     procedure OnEventSimple(aValue: TViewEnumEvent); override;
     procedure Initialize(); override;
@@ -23,34 +26,60 @@ implementation
 
 uses
   System.Math,
+  System.StrUtils,
   Vcl.Forms,
   Winapi.Windows,
   Data.DB,
   cxGrid,
   Vcl.Dialogs,
   Winapi.ShellApi,
-  Vcl.Controls,
   cxGridExportLink,
   Budgeting.Logic.TViewEnumAction,
+  AboutPackage.Logic.TAboutWindow,
+  Budgeting.Logic.Classes.Configuration.TConfiguration,
+  Budgeting.Logic.Classes.Configuration.Section.TInterface,
+  // Budgeting.Logic.Classes.Configuration.Section.TDatabaseConnection,
+  LoginPackage.Logic.TLoginWindow,
   Budgeting.Logic.Consts;
-//  Budgeting.Logic.Classes.TPresenterDetail,
-//  Budgeting.Logic.Classes.TQuery,
-//  Budgeting.UI.Detail;
+// Budgeting.Logic.Classes.TPresenterDetail,
+// Budgeting.Logic.Classes.TQuery,
+// Budgeting.UI.Detail;
 
 resourcestring
   RsResultDefaultExt = 'xlsx';
   RsResultFilters = 'Документ Excel (*.xlsx)|*.xlsx|Все файлы (*.*)|*.*';
   RsResultTitle = 'Введите имя файла для сохранения результатов...';
+  RsExitConfirmationMessage = 'Вы действительно хотите завершить работу программы?';
+  RsExitConfirmationCaption = '%s - Подтверждение выхода';
+  RsHelpNotFound = 'Файл справки к программе [%s] не найден.';
 
 procedure TPresenterMain.Initialize();
 var
   tmpView: IViewMain;
 begin
   inherited;
-//  FCurrentDocumentId := -1;
+  FCurrentDocumentId := -1;
   if Supports(FView, IViewMain, tmpView) then
   begin
-//    FCurrentDocumentId := tmpView.CurrentDocumentId;
+    FCurrentDocumentId := tmpView.CurrentDocumentId;
+
+    if TConfiguration.Get(TConfiguration).Section<TInterface>.EnableSplashAtStart then
+    begin
+      AboutExecute(tmpView.Control, True);
+    end;
+  end;
+end;
+
+procedure TPresenterMain.AboutExecute(const aOwner: TWinControl; const aSplash: Boolean = False);
+var
+  tmpAbout: TAboutWindow;
+begin
+  tmpAbout := TAboutWindow.Create(aOwner);
+  try
+    tmpAbout.EMail := 'caster1977@yandex.ru';
+    tmpAbout.Show(aSplash);
+  finally
+    tmpAbout.Free();
   end;
 end;
 
@@ -58,28 +87,28 @@ procedure TPresenterMain.OnEventSimple(aValue: TViewEnumEvent);
 var
   tmpView: IViewMain;
 
-  {procedure LoadQueueReciever();
-  var
+  { procedure LoadQueueReciever();
+    var
     tmpQuery: TFDQuery;
-  begin
+    begin
     tmpQuery := TFDQuery.Create(nil);
     try
-      tmpQuery.Connection := FFDConnection;
-      tmpQuery.SQL.Text := TQuery.SpStatusViewerStatusMessageSel.Name;
-      tmpQuery.ParamByName(TQuery.SpStatusViewerStatusMessageSel.Param.AOrderCode).AsString := tmpView.OrderCode;
-      tmpQuery.ParamByName(TQuery.SpStatusViewerStatusMessageSel.Param.ABeginDate).AsDateTime := tmpView.BeginDate;
-      tmpQuery.ParamByName(TQuery.SpStatusViewerStatusMessageSel.Param.AEndDate).AsDateTime := tmpView.EndDate;
-      tmpQuery.Open();
-      try
-        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
-        tmpView.Queue := tmpQuery;
-      finally
-        tmpQuery.Close();
-      end;
+    tmpQuery.Connection := FFDConnection;
+    tmpQuery.SQL.Text := TQuery.SpStatusViewerStatusMessageSel.Name;
+    tmpQuery.ParamByName(TQuery.SpStatusViewerStatusMessageSel.Param.AOrderCode).AsString := tmpView.OrderCode;
+    tmpQuery.ParamByName(TQuery.SpStatusViewerStatusMessageSel.Param.ABeginDate).AsDateTime := tmpView.BeginDate;
+    tmpQuery.ParamByName(TQuery.SpStatusViewerStatusMessageSel.Param.AEndDate).AsDateTime := tmpView.EndDate;
+    tmpQuery.Open();
+    try
+    tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
+    tmpView.Queue := tmpQuery;
     finally
-      tmpQuery.Free();
+    tmpQuery.Close();
     end;
-  end;}
+    finally
+    tmpQuery.Free();
+    end;
+    end; }
 
   procedure RefreshExecute();
   begin
@@ -88,7 +117,7 @@ var
     try
       tmpView.ShowProgress('Обновление списка...');
       try
-//        LoadQueueReciever();
+        // LoadQueueReciever();
       finally
         FProcessign := False;
       end;
@@ -104,47 +133,41 @@ var
 
   procedure SelectedRecordChanged();
   begin
-//    FCurrentDocumentId := tmpView.CurrentDocumentId;
+    FCurrentDocumentId := tmpView.CurrentDocumentId;
   end;
 
   procedure QuitUpdate();
   begin
-    tmpView.ActionStates[vaQuit] := not FProcessign;// and (FCurrentDocumentId > -1);
+    tmpView.ActionStates[vaCloseQuery] := not FProcessign;
   end;
 
-  procedure QuitExecute();
-  var
-    tmpView: IViewMain;
+  procedure CloseQuery();
   begin
-    if Supports(FView, IViewMain, tmpView) then
+    if TConfiguration.Get(TConfiguration).Section<TInterface>.EnableQuitConfirmation then
     begin
-      tmpView.Close();
+      tmpView.ActionStates[vaCloseQuery] := MessageBox(tmpView.Control.Handle, PWideChar(RsExitConfirmationMessage),
+        PWideChar(Format(RsExitConfirmationCaption, [Application.MainForm.Caption])), MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDYES;
     end;
   end;
 
   procedure ConfigurationExecute();
-  var
-    tmpView: IViewMain;
   begin
-    if Supports(FView, IViewMain, tmpView) then
-    begin
-(*var
-  tmpForm: TForm;
-begin
-  tmpForm := TConfigurationForm.Create(Owner, nil, 0 { Configuration, Configuration.CurrentPage } );
-  try
-    { Result := } tmpForm.ShowModal { = mrOk };
-  finally
-    tmpForm.Free();
-  end;
-  { if not FLogic.ShowConfigurationForm() then
-    begin
-    Exit;
-    end;
-    ApplyConfiguration(); }
-end;*)
-      { TODO : дописать }
-    end;
+    (* var
+      tmpForm: TForm;
+      begin
+      tmpForm := TConfigurationForm.Create(Owner, nil, 0 { Configuration, Configuration.CurrentPage } );
+      try
+      { Result := } tmpForm.ShowModal { = mrOk };
+      finally
+      tmpForm.Free();
+      end;
+      { if not FLogic.ShowConfigurationForm() then
+      begin
+      Exit;
+      end;
+      ApplyConfiguration(); }
+      end; *)
+    { TODO : дописать }
   end;
 
   procedure ConfigurationUpdate();
@@ -192,51 +215,154 @@ end;*)
   end;
 
   procedure ExportToExcelExecute();
-  var
-    tmpView: IViewMain;
   begin
-    if Supports(FView, IViewMain, tmpView) then
-    begin
-      { TODO : дописать }
-      ExportExcel(tmpView.GetActiveGrid());
-    end;
+    ExportExcel(tmpView.GetActiveGrid());
   end;
 
   procedure ExportToExcelUpdate();
   begin
     tmpView.ActionStates[vaExportToExcel] := not FProcessign;
     { TODO : дописать }
-    //Result := FGridTableViewResult.DataController.RecordCount > 0;
+    // and (FCurrentDocumentId > -1);;
+    // Result := FGridTableViewResult.DataController.RecordCount > 0;
   end;
 
-  {procedure HistoryExecute();
+{ procedure HistoryExecute();
   var
-    tmpForm: TfrmDetail;
-    tmpPresenter: IPresenter;
+  tmpForm: TfrmDetail;
+  tmpPresenter: IPresenter;
   begin
-    FProcessign := True;
-    tmpView.RefreshStates();
+  FProcessign := True;
+  tmpView.RefreshStates();
+  try
+  tmpView.ShowProgress('Просмотр истории...');
+  try
+  tmpForm := TfrmDetail.Create(nil);
+  try
+  tmpPresenter := TPresenterDetail.Create(tmpForm, FFDConnection, tmpView.CurrentDocumentId);
+  if not Assigned(tmpPresenter) then
+  begin
+  Exit;
+  end;
+  tmpForm.ShowModal();
+  finally
+  tmpForm.Free();
+  end;
+  finally
+  FProcessign := False;
+  end;
+  finally
+  tmpView.HideProgress();
+  end;
+  end; }
+
+  procedure HelpContextExecute();
+  begin
+    if not FileExists(Application.HelpFile) then
+    begin
+      tmpView.ShowMessage(Format(RsHelpNotFound, [Application.HelpFile]), MESSAGE_TYPE_ERROR);
+      Exit;
+    end;
+
+    Application.HelpShowTableOfContents();
+  end;
+
+  procedure HelpContextUpdate();
+  begin
+    tmpView.ActionStates[vaHelpContext] := not FProcessign;
+  end;
+
+  procedure AboutUpdate();
+  begin
+    tmpView.ActionStates[vaAbout] := not FProcessign;
+  end;
+
+  procedure StatusBarExecute();
+  var
+    b: Boolean;
+  begin
+    b := not TConfiguration.Get(TConfiguration).Section<TInterface>.EnableStatusbar;
+    TConfiguration.Get(TConfiguration).Section<TInterface>.EnableStatusbar := b;
+    tmpView.EnableStatusbar := b;
+  end;
+
+  procedure ToolBarExecute();
+  var
+    b: Boolean;
+  begin
+    b := not TConfiguration.Get(TConfiguration).Section<TInterface>.EnableToolbar;
+    TConfiguration.Get(TConfiguration).Section<TInterface>.EnableToolbar := b;
+    tmpView.EnableToolbar := b;
+  end;
+
+  procedure ConnectExecute();
+  var
+    tmpLoginWindow: TLoginWindow;
+  begin
+    tmpLoginWindow := TLoginWindow.Create(tmpView.Control);
     try
-      tmpView.ShowProgress('Просмотр истории...');
-      try
-        tmpForm := TfrmDetail.Create(nil);
-        try
-          tmpPresenter := TPresenterDetail.Create(tmpForm, FFDConnection, tmpView.CurrentDocumentId);
-          if not Assigned(tmpPresenter) then
-          begin
-            Exit;
-          end;
-          tmpForm.ShowModal();
-        finally
-          tmpForm.Free();
+      tmpLoginWindow.Login := TConfiguration.Get(TConfiguration).Section<TInterface>.Login;
+      tmpLoginWindow.Password := TConfiguration.Get(TConfiguration).Section<TInterface>.Password;
+      if not TConfiguration.Get(TConfiguration).Section<TInterface>.EnableAutoLogon then
+      begin
+        if tmpLoginWindow.Execute() then
+        begin
+          TConfiguration.Get(TConfiguration).Section<TInterface>.Login := IfThen(TConfiguration.Get(TConfiguration).Section<TInterface>.EnableStoreLogin,
+            tmpLoginWindow.Login);
+          TConfiguration.Get(TConfiguration).Section<TInterface>.Password := IfThen(TConfiguration.Get(TConfiguration).Section<TInterface>.EnableStorePassword,
+            tmpLoginWindow.Password);
         end;
-      finally
-        FProcessign := False;
+      end
+      else
+      begin
+        Exit;
       end;
     finally
-      tmpView.HideProgress();
+      tmpLoginWindow.Free();
     end;
-  end;}
+  end;
+
+  procedure ConnectUpdate();
+  begin
+    tmpView.ActionStates[vaConnect] := not FProcessign; // и не соединено
+    { TODO : дописать }
+  end;
+
+  procedure AddExecute();
+  begin
+  end;
+
+  procedure AddUpdate();
+  begin
+    tmpView.ActionStates[vaAdd] := not FProcessign;
+  end;
+
+  procedure EditExecute();
+  begin
+  end;
+
+  procedure EditUpdate();
+  begin
+    tmpView.ActionStates[vaEdit] := not FProcessign;
+  end;
+
+  procedure DeleteExecute();
+  begin
+  end;
+
+  procedure DeleteUpdate();
+  begin
+    tmpView.ActionStates[vaDelete] := not FProcessign;
+  end;
+
+  procedure DisconnectExecute();
+  begin
+  end;
+
+  procedure DisconnectUpdate();
+  begin
+    tmpView.ActionStates[vaDisconnect] := not FProcessign;
+  end;
 
 begin
   if not Supports(FView, IViewMain, tmpView) then
@@ -245,8 +371,8 @@ begin
   end;
 
   case aValue of
-    veQuitExecute:
-      QuitExecute();
+    veCloseQuery:
+      CloseQuery();
     veQuitUpdate:
       QuitUpdate();
     veConfigurationExecute:
@@ -261,9 +387,86 @@ begin
       ExportToExcelExecute();
     veExportToExcelUpdate:
       ExportToExcelUpdate();
-//    veSelectedRecordChanged:
-//      SelectedRecordChanged();
+    veHelpContextExecute:
+      HelpContextExecute();
+    veHelpContextUpdate:
+      HelpContextUpdate();
+    veSelectedRecordChanged:
+      SelectedRecordChanged();
+    veAboutExecute:
+      AboutExecute(tmpView.Control);
+    veAboutUpdate:
+      AboutUpdate();
+    veStatusBarExecute:
+      StatusBarExecute();
+    veToolBarExecute:
+      ToolBarExecute();
+    veConnectExecute:
+      ConnectExecute();
+    veConnectUpdate:
+      ConnectUpdate();
+    veDisconnectExecute:
+      DisconnectExecute();
+    veDisconnectUpdate:
+      DisconnectUpdate();
+    veAddExecute:
+      AddExecute();
+    veAddUpdate:
+      AddUpdate();
+    veEditExecute:
+      EditExecute();
+    veEditUpdate:
+      EditUpdate();
+    veDeleteExecute:
+      DeleteExecute();
+    veDeleteUpdate:
+      DeleteUpdate();
   end;
 end;
+
+{
+  var
+  b: Boolean;
+  i: Integer;
+  tmpStartTime: TDateTime;
+  tmpStopTime: TDateTime;
+  dt: TDateTime;
+  d, h, n, s, ms: word;
+  sh: word;
+
+  try
+  FProcessing := True;
+  for i := 0 to Pred(actlstMain.ActionCount) do
+  begin
+  actlstMain.Actions[i].Update();
+  Application.ProcessMessages();
+  StatusBar.SimplePanelStyle.Text := 'Пожалуйста, подождите...';
+  end;
+
+  tmpStartTime := Now();
+
+  try
+  b := FLogic.Process();
+  finally
+  FProcessing := False;
+  end;
+  if b then
+  begin
+  tmpStopTime := Now();
+  StatusBar.SimplePanelStyle.Text := EmptyStr;
+
+  dt := tmpStopTime - tmpStartTime;
+  d := DaysBetween(dt, 0);
+  DecodeTime(dt, h, n, s, ms);
+  sh := d * 24 + h;
+  MessageBox(Handle, PWideChar(Format('Действие выполнено успешно. Затраченное время: %s',
+  [Format('%d:%2d:%2d', [sh, n, s]).Replace(' ', '0', [rfReplaceAll])])), PWideChar(Format(RsInfoCaption, [Caption])), MESSAGE_TYPE_OK);
+  end;
+  except
+  on e: Exception do
+  begin
+  MessageBox(Handle, PWideChar(e.ToString()), PWideChar(Format(RsErrorCaption, [Caption])), MESSAGE_TYPE_ERROR);
+  end;
+  end; }
 
 end.

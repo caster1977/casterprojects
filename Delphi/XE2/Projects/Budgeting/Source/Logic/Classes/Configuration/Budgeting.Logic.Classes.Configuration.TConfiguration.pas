@@ -27,8 +27,7 @@ uses
   Budgeting.Logic.Classes.Configuration.Section.TInterface,
   Budgeting.Logic.Classes.Configuration.Section.TDatabaseConnection,
   Budgeting.Logic.Classes.Configuration.Section.TOther,
-  System.SysUtils,
-  System.IniFiles;
+  System.SysUtils;
 
 resourcestring
   RsConfigurationSaveError = 'Произошла ошибка при попытке записи настроек программы в файл.';
@@ -56,5 +55,3 @@ begin
 end;
 
 end.
-
-
