@@ -24,7 +24,6 @@ uses
   cxContainer,
   cxGridCustomTableView,
   cxGridTableView,
-  cxGridDBTableView,
   cxLabel,
   cxGridLevel,
   cxClasses,
@@ -112,7 +111,13 @@ uses
   cxBarEditItem,
   cxCustomData,
   cxFilter,
-  cxData;
+  cxData,
+  cxCheckBox,
+  FireDAC.Stan.Intf,
+  FireDAC.Phys,
+  FireDAC.Phys.ODBCBase,
+  FireDAC.Phys.MSSQL,
+  System.Generics.Collections;
 
 type
   TMainForm = class(TForm, IView, IViewMain)
@@ -146,7 +151,7 @@ type
     btnQuit: TdxBarButton;
     btnHelpContext: TdxBarButton;
     btnAbout: TdxBarButton;
-    cxgrdFiles: TcxGrid;
+    cxgrdOperations: TcxGrid;
     cxgrdtblvwFiles: TcxGridTableView;
     colFileName: TcxGridColumn;
     cxgrdlvl2: TcxGridLevel;
@@ -179,7 +184,7 @@ type
     actEdit: TAction;
     actDelete: TAction;
     actRefresh: TAction;
-    cxpgcntrlMain: TcxPageControl;
+    pcMain: TcxPageControl;
     shtOperations: TcxTabSheet;
     shtReferences: TcxTabSheet;
     cbbReferences: TcxComboBox;
@@ -198,17 +203,60 @@ type
     N17: TMenuItem;
     N20: TMenuItem;
     N31: TMenuItem;
-    tblvAccountingCenters: TcxGridTableView;
-    tblvBanks: TcxGridTableView;
-    tblvBudgetItems: TcxGridTableView;
-    tblvBudgetItemTypes: TcxGridTableView;
-    tblvCosignatories: TcxGridTableView;
-    tblvCurrencies: TcxGridTableView;
-    tblvGoods: TcxGridTableView;
-    tblvGoodsTypes: TcxGridTableView;
-    tblvUsers: TcxGridTableView;
     lvl1: TcxGridLevel;
     btnRefresh: TdxBarButton;
+    col1: TcxGridColumn;
+    col2: TcxGridColumn;
+    col3: TcxGridColumn;
+    col4: TcxGridColumn;
+    col5: TcxGridColumn;
+    col6: TcxGridColumn;
+    cxgrdlvl1: TcxGridLevel;
+    cbbOperations: TcxComboBox;
+
+    cxgrdReports: TcxGrid;
+    tblv1: TcxGridTableView;
+    cbbReports: TcxComboBox;
+
+    tblvAccountingCenters: TcxGridTableView;
+    colAccountingCenters_Id_AccountingCenter: TcxGridColumn;
+    colAccountingCenters_Code: TcxGridColumn;
+    colAccountingCenters_Name: TcxGridColumn;
+    colAccountingCenters_Description: TcxGridColumn;
+    colAccountingCenters_Activity: TcxGridColumn;
+
+    tblvBanks: TcxGridTableView;
+    colBanks_Id_Bank: TcxGridColumn;
+    colBanks_Name: TcxGridColumn;
+    colBanks_Code: TcxGridColumn;
+    colBanks_Address: TcxGridColumn;
+    colBanks_Activity: TcxGridColumn;
+
+    tblvBudgetItems: TcxGridTableView;
+
+    tblvBudgetItemTypes: TcxGridTableView;
+
+    tblvCosignatories: TcxGridTableView;
+
+    tblvCurrencies: TcxGridTableView;
+    colCurrencies_Id_Currency: TcxGridColumn;
+    colCurrencies_Code: TcxGridColumn;
+    colCurrencies_Description: TcxGridColumn;
+    colCurrencies_Activity: TcxGridColumn;
+
+    tblvGoods: TcxGridTableView;
+    colGoods_Id_Good: TcxGridColumn;
+    colGoods_Id_Goods_Type: TcxGridColumn;
+    colGoods_Code: TcxGridColumn;
+    colGoods_Description: TcxGridColumn;
+    colGoods_Activity: TcxGridColumn;
+
+    tblvGoodsTypes: TcxGridTableView;
+    colGoodsTypes_Id_GoodsType: TcxGridColumn;
+    colGoodsTypes_Name: TcxGridColumn;
+    colGoodsTypes_Activity: TcxGridColumn;
+
+    fdphysmsqldrvrlnk: TFDPhysMSSQLDriverLink;
     procedure actQuitExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -241,6 +289,8 @@ type
     procedure actConnectUpdate(Sender: TObject);
     procedure actRefreshExecute(Sender: TObject);
     procedure actRefreshUpdate(Sender: TObject);
+    procedure cbbReferencesPropertiesChange(Sender: TObject);
+    procedure pcMainChange(Sender: TObject);
 
   strict private
     FProcessing: Boolean;
@@ -263,6 +313,14 @@ type
     function GetCurrentDocumentId(): Integer;
     procedure SetEnableStatusbar(const aValue: Boolean);
     procedure SetEnableToolbar(const aValue: Boolean);
+    procedure SetAccountingCenters(const aValue: TDataSet);
+    procedure SetBanks(const aValue: TDataSet);
+    procedure SetBudgetItems(const aValue: TDataSet);
+    procedure SetBudgetItemTypes(const aValue: TDataSet);
+    procedure SetCosignatories(const aValue: TDataSet);
+    procedure SetCurrencies(const aValue: TDataSet);
+    procedure SetGoods(const aValue: TDataSet);
+    procedure SetGoodsTypes(const aValue: TDataSet);
   end;
 
 var
@@ -281,9 +339,10 @@ uses
   FireDAC.Stan.Option,
   FireDAC.Stan.Param,
   Budgeting.Logic.Classes.Configuration.TConfiguration,
-//  Budgeting.Logic.Classes.Configuration.Section.TGeneral,
+  // Budgeting.Logic.Classes.Configuration.Section.TGeneral,
   Budgeting.Logic.Classes.Configuration.Section.TInterface,
-  Budgeting.Logic.Consts;
+  Budgeting.Logic.Consts,
+  Budgeting.Logic.Classes.TQuery;
 
 procedure TMainForm.actViewExecute(Sender: TObject);
 begin
@@ -392,11 +451,32 @@ end;
 procedure TMainForm.actRefreshExecute(Sender: TObject);
 var
   tmpCursor: TCursor;
+  tmpGrid: TcxGrid;
 begin
   tmpCursor := Screen.Cursor;
   Screen.Cursor := crHourGlass;
   try
-    FOnEventSimple(veRefreshExecute);
+    tmpGrid := GetActiveGrid();
+
+    if Assigned(tmpGrid) then
+    begin
+      if tmpGrid.ActiveView = tblvAccountingCenters then
+        FOnEventSimple(veRefreshAccountingCentersExecute);
+      if tmpGrid.ActiveView = tblvBanks then
+        FOnEventSimple(veRefreshBanksExecute);
+      if tmpGrid.ActiveView = tblvBudgetItems then
+        FOnEventSimple(veRefreshBudgetItemsExecute);
+      if tmpGrid.ActiveView = tblvBudgetItemTypes then
+        FOnEventSimple(veRefreshBudgetItemTypesExecute);
+      if tmpGrid.ActiveView = tblvCosignatories then
+        FOnEventSimple(veRefreshCosignatoriesExecute);
+      if tmpGrid.ActiveView = tblvCurrencies then
+        FOnEventSimple(veRefreshCurrenciesExecute);
+      if tmpGrid.ActiveView = tblvGoods then
+        FOnEventSimple(veRefreshGoodsExecute);
+      if tmpGrid.ActiveView = tblvGoodsTypes then
+        FOnEventSimple(veRefreshGoodsTypesExecute);
+    end;
   finally
     Screen.Cursor := tmpCursor;
   end;
@@ -538,6 +618,80 @@ begin
   end;
 end;
 
+procedure TMainForm.SetGoods(const aValue: TDataSet);
+var
+  i: Integer;
+begin
+  tblvGoods.BeginUpdate();
+  try
+    tblvGoods.DataController.RecordCount := 0;
+
+    if not Assigned(aValue) then
+    begin
+      Exit;
+    end;
+
+    if aValue.IsEmpty() then
+    begin
+      Exit;
+    end;
+
+    aValue.First();
+    tblvGoods.DataController.RecordCount := aValue.RecordCount;
+
+    for i := 0 to Pred(aValue.RecordCount) do
+    begin
+      tblvGoods.DataController.Values[i, colGoods_Id_Good.Index] := aValue.FieldByName(TQuery.sp_goods_sel.Field.Id).AsInteger;
+      tblvGoods.DataController.Values[i, colGoods_Id_Good.Index] := aValue.FieldByName(TQuery.sp_goods_sel.Field.Id_GoodsType).AsInteger;
+      tblvGoods.DataController.Values[i, colGoods_Code.Index] := aValue.FieldByName(TQuery.sp_goods_sel.Field.Code).AsString;
+      tblvGoods.DataController.Values[i, colGoods_Description.Index] := aValue.FieldByName(TQuery.sp_goods_sel.Field.Description).AsString;
+      tblvGoods.DataController.Values[i, colGoods_Activity.Index] := aValue.FieldByName(TQuery.sp_goods_sel.Field.Activity).AsBoolean;
+
+      StepProgress();
+
+      aValue.Next();
+    end;
+  finally
+    tblvGoods.EndUpdate();
+  end;
+end;
+
+procedure TMainForm.SetGoodsTypes(const aValue: TDataSet);
+var
+  i: Integer;
+begin
+  tblvGoodsTypes.BeginUpdate();
+  try
+    tblvGoodsTypes.DataController.RecordCount := 0;
+
+    if not Assigned(aValue) then
+    begin
+      Exit;
+    end;
+
+    if aValue.IsEmpty() then
+    begin
+      Exit;
+    end;
+
+    aValue.First();
+    tblvGoodsTypes.DataController.RecordCount := aValue.RecordCount;
+
+    for i := 0 to Pred(aValue.RecordCount) do
+    begin
+      tblvGoodsTypes.DataController.Values[i, colGoodsTypes_Id_GoodsType.Index] := aValue.FieldByName(TQuery.sp_goods_types_sel.Field.Id).AsInteger;
+      tblvGoodsTypes.DataController.Values[i, colGoodsTypes_Name.Index] := aValue.FieldByName(TQuery.sp_goods_types_sel.Field.Name).AsString;
+      tblvGoodsTypes.DataController.Values[i, colGoodsTypes_Activity.Index] := aValue.FieldByName(TQuery.sp_goods_types_sel.Field.Activity).AsBoolean;
+
+      StepProgress();
+
+      aValue.Next();
+    end;
+  finally
+    tblvGoodsTypes.EndUpdate();
+  end;
+end;
+
 procedure TMainForm.actToolBarExecute(Sender: TObject);
 var
   tmpCursor: TCursor;
@@ -580,8 +734,30 @@ begin
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
+var
+  tmpPair: TPair<string, TcxGridTableView>;
+  tmpReferences: TDictionary<string, TcxGridTableView>;
 begin
   FProcessing := False;
+  tmpReferences := TDictionary<string, TcxGridTableView>.Create;
+  try
+    tmpReferences.Add('Центры учёта затрат', tblvAccountingCenters);
+    tmpReferences.Add('Банки', tblvBanks);
+    tmpReferences.Add('Статьи бюджета', tblvBudgetItems);
+    tmpReferences.Add('Типы статей бюджета', tblvBudgetItemTypes);
+    tmpReferences.Add('Субъекты', tblvCosignatories);
+    tmpReferences.Add('Валюты', tblvCurrencies);
+    tmpReferences.Add('Товары', tblvGoods);
+    tmpReferences.Add('Виды товаров', tblvGoodsTypes);
+
+    for tmpPair in tmpReferences do
+    begin
+      cbbReferences.Properties.Items.AddObject(tmpPair.Key, tmpPair.Value);
+    end;
+  finally
+    FreeAndNil(tmpReferences);
+  end;
+
   gsflvrsnfMain.Filename := Application.ExeName;
   Caption := gsflvrsnfMain.InternalName;
   Application.HelpFile := ChangeFileExt(Application.ExeName, '.hlp');
@@ -595,8 +771,25 @@ end;
 
 function TMainForm.GetActiveGrid(): TcxGrid;
 begin
-  Result := cxgrdReferences;
-  { TODO : дописать }
+  Result := nil;
+  if pcMain.ActivePage = shtReferences then
+  begin
+    Result := cxgrdReferences;
+  end
+  else
+  begin
+    if pcMain.ActivePage = shtOperations then
+    begin
+      Result := cxgrdOperations;
+    end
+    else
+    begin
+      if pcMain.ActivePage = shtReports then
+      begin
+        Result := cxgrdReports;
+      end;
+    end;
+  end;
 end;
 
 function TMainForm.GetControl(): TWinControl;
@@ -635,6 +828,11 @@ begin
   cxbrdtmProgress.Visible := ivNever;
 end;
 
+procedure TMainForm.pcMainChange(Sender: TObject);
+begin
+  btnRefresh.Click();
+end;
+
 procedure TMainForm.RefreshStates();
 var
   i: Integer;
@@ -646,6 +844,195 @@ end;
 procedure TMainForm.SetActionStates(const aKey: TViewEnumAction; const aValue: Boolean);
 begin
   FActionStates[aKey] := aValue;
+end;
+
+procedure TMainForm.SetBanks(const aValue: TDataSet);
+var
+  i: Integer;
+begin
+  tblvBanks.BeginUpdate();
+  try
+    tblvBanks.DataController.RecordCount := 0;
+
+    if not Assigned(aValue) then
+    begin
+      Exit;
+    end;
+
+    if aValue.IsEmpty() then
+    begin
+      Exit;
+    end;
+
+    aValue.First();
+    tblvBanks.DataController.RecordCount := aValue.RecordCount;
+
+    for i := 0 to Pred(aValue.RecordCount) do
+    begin
+      tblvBanks.DataController.Values[i, colBanks_Id_Bank.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Id).AsInteger;
+      tblvBanks.DataController.Values[i, colBanks_Name.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Name).AsString;
+      tblvBanks.DataController.Values[i, colBanks_Code.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Code).AsString;
+      tblvBanks.DataController.Values[i, colBanks_Address.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Address).AsString;
+      tblvBanks.DataController.Values[i, colBanks_Activity.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Activity).AsBoolean;
+
+      StepProgress();
+
+      aValue.Next();
+    end;
+  finally
+    tblvBanks.EndUpdate();
+  end;
+end;
+
+procedure TMainForm.SetBudgetItems(const aValue: TDataSet);
+// var
+// i: Integer;
+begin
+  { tblvBanks.BeginUpdate();
+    try
+    tblvBanks.DataController.RecordCount := 0;
+
+    if not Assigned(aValue) then
+    begin
+    Exit;
+    end;
+
+    if aValue.IsEmpty() then
+    begin
+    Exit;
+    end;
+
+    aValue.First();
+    tblvBanks.DataController.RecordCount := aValue.RecordCount;
+
+    for i := 0 to Pred(aValue.RecordCount) do
+    begin
+    tblvBanks.DataController.Values[i, colBanks_Id_Bank.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Id).AsInteger;
+    tblvBanks.DataController.Values[i, colBanks_Name.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Name).AsString;
+    tblvBanks.DataController.Values[i, colBanks_Code.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Code).AsString;
+    tblvBanks.DataController.Values[i, colBanks_Address.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Address).AsString;
+    tblvBanks.DataController.Values[i, colAccountingCenters_Activity.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Activity).AsBoolean;
+
+    StepProgress();
+
+    aValue.Next();
+    end;
+    finally
+    tblvBanks.EndUpdate();
+    end; }
+end;
+
+procedure TMainForm.SetBudgetItemTypes(const aValue: TDataSet);
+// var
+// i: Integer;
+begin
+  { tblvBanks.BeginUpdate();
+    try
+    tblvBanks.DataController.RecordCount := 0;
+
+    if not Assigned(aValue) then
+    begin
+    Exit;
+    end;
+
+    if aValue.IsEmpty() then
+    begin
+    Exit;
+    end;
+
+    aValue.First();
+    tblvBanks.DataController.RecordCount := aValue.RecordCount;
+
+    for i := 0 to Pred(aValue.RecordCount) do
+    begin
+    tblvBanks.DataController.Values[i, colBanks_Id_Bank.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Id).AsInteger;
+    tblvBanks.DataController.Values[i, colBanks_Name.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Name).AsString;
+    tblvBanks.DataController.Values[i, colBanks_Code.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Code).AsString;
+    tblvBanks.DataController.Values[i, colBanks_Address.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Address).AsString;
+    tblvBanks.DataController.Values[i, colAccountingCenters_Activity.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Activity).AsBoolean;
+
+    StepProgress();
+
+    aValue.Next();
+    end;
+    finally
+    tblvBanks.EndUpdate();
+    end; }
+end;
+
+procedure TMainForm.SetCosignatories(const aValue: TDataSet);
+// var
+// i: Integer;
+begin
+  { tblvBanks.BeginUpdate();
+    try
+    tblvBanks.DataController.RecordCount := 0;
+
+    if not Assigned(aValue) then
+    begin
+    Exit;
+    end;
+
+    if aValue.IsEmpty() then
+    begin
+    Exit;
+    end;
+
+    aValue.First();
+    tblvBanks.DataController.RecordCount := aValue.RecordCount;
+
+    for i := 0 to Pred(aValue.RecordCount) do
+    begin
+    tblvBanks.DataController.Values[i, colBanks_Id_Bank.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Id).AsInteger;
+    tblvBanks.DataController.Values[i, colBanks_Name.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Name).AsString;
+    tblvBanks.DataController.Values[i, colBanks_Code.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Code).AsString;
+    tblvBanks.DataController.Values[i, colBanks_Address.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Address).AsString;
+    tblvBanks.DataController.Values[i, colAccountingCenters_Activity.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Activity).AsBoolean;
+
+    StepProgress();
+
+    aValue.Next();
+    end;
+    finally
+    tblvBanks.EndUpdate();
+    end; }
+end;
+
+procedure TMainForm.SetCurrencies(const aValue: TDataSet);
+var
+  i: Integer;
+begin
+  tblvCurrencies.BeginUpdate();
+  try
+    tblvCurrencies.DataController.RecordCount := 0;
+
+    if not Assigned(aValue) then
+    begin
+      Exit;
+    end;
+
+    if aValue.IsEmpty() then
+    begin
+      Exit;
+    end;
+
+    aValue.First();
+    tblvCurrencies.DataController.RecordCount := aValue.RecordCount;
+
+    for i := 0 to Pred(aValue.RecordCount) do
+    begin
+      tblvCurrencies.DataController.Values[i, colCurrencies_Id_Currency.Index] := aValue.FieldByName(TQuery.sp_currencies_sel.Field.Id).AsInteger;
+      tblvCurrencies.DataController.Values[i, colCurrencies_Code.Index] := aValue.FieldByName(TQuery.sp_currencies_sel.Field.Code).AsString;
+      tblvCurrencies.DataController.Values[i, colCurrencies_Description.Index] := aValue.FieldByName(TQuery.sp_currencies_sel.Field.Description).AsString;
+      tblvCurrencies.DataController.Values[i, colCurrencies_Activity.Index] := aValue.FieldByName(TQuery.sp_currencies_sel.Field.Activity).AsBoolean;
+
+      StepProgress();
+
+      aValue.Next();
+    end;
+  finally
+    tblvCurrencies.EndUpdate();
+  end;
 end;
 
 procedure TMainForm.SetOnEventSimple(const aValue: TProc<TViewEnumEvent>);
@@ -723,55 +1110,53 @@ begin
   SetEnableToolbar(TConfiguration.Get(TConfiguration).Section<TInterface>.EnableToolbar);
 end;
 
+procedure TMainForm.cbbReferencesPropertiesChange(Sender: TObject);
+begin
+  cxgrdReferences.ActiveLevel.GridView := cbbReferences.Properties.Items.Objects[cbbReferences.ItemIndex] as TcxGridTableView;
+  btnRefresh.Click();
+end;
 
-// procedure TMainForm.actLoadListExecute(Sender: TObject);
-// var
-// b: Boolean;
-// i: Integer;
-// tmpStartTime: TDateTime;
-// tmpStopTime: TDateTime;
-// dt: TDateTime;
-// d, h, n, s, ms: word;
-// sh: word;
-// begin
-{ if not Assigned(FLogic) then
-  begin
-  Exit();
-  end;
-
+procedure TMainForm.SetAccountingCenters(const aValue: TDataSet);
+var
+  i: Integer;
+begin
+  tblvAccountingCenters.BeginUpdate();
   try
-  FProcessing := True;
-  for i := 0 to Pred(actlstMain.ActionCount) do
-  begin
-  actlstMain.Actions[i].Update();
-  Application.ProcessMessages();
-  StatusBar.SimplePanelStyle.Text := 'Пожалуйста, подождите...';
-  end;
+    tblvAccountingCenters.DataController.RecordCount := 0;
 
-  tmpStartTime := Now();
+    if not Assigned(aValue) then
+    begin
+      Exit;
+    end;
 
-  try
-  b := FLogic.LoadList();
+    if aValue.IsEmpty() then
+    begin
+      Exit;
+    end;
+
+    aValue.First();
+    tblvAccountingCenters.DataController.RecordCount := aValue.RecordCount;
+
+    for i := 0 to Pred(aValue.RecordCount) do
+    begin
+      tblvAccountingCenters.DataController.Values[i, colAccountingCenters_Id_AccountingCenter.Index] :=
+        aValue.FieldByName(TQuery.sp_accounting_centers_sel.Field.Id).AsInteger;
+      tblvAccountingCenters.DataController.Values[i, colAccountingCenters_Code.Index] :=
+        aValue.FieldByName(TQuery.sp_accounting_centers_sel.Field.Code).AsString;
+      tblvAccountingCenters.DataController.Values[i, colAccountingCenters_Name.Index] :=
+        aValue.FieldByName(TQuery.sp_accounting_centers_sel.Field.Name).AsString;
+      tblvAccountingCenters.DataController.Values[i, colAccountingCenters_Description.Index] :=
+        aValue.FieldByName(TQuery.sp_accounting_centers_sel.Field.Description).AsString;
+      tblvAccountingCenters.DataController.Values[i, colAccountingCenters_Activity.Index] := aValue.FieldByName(TQuery.sp_accounting_centers_sel.Field.Activity)
+        .AsBoolean;
+
+      StepProgress();
+
+      aValue.Next();
+    end;
   finally
-  FProcessing := False;
+    tblvAccountingCenters.EndUpdate();
   end;
-  if b then
-  begin
-  tmpStopTime := Now();
-  StatusBar.SimplePanelStyle.Text := EmptyStr;
-
-  dt := tmpStopTime - tmpStartTime;
-  d := DaysBetween(dt, 0);
-  DecodeTime(dt, h, n, s, ms);
-  sh := d * 24 + h;
-  MessageBox(Handle, PWideChar(Format('Действие выполнено успешно. Затраченное время: %s',
-  [Format('%d:%2d:%2d', [sh, n, s]).Replace(' ', '0', [rfReplaceAll])])), PWideChar(Format(RsInfoCaption, [Caption])), MESSAGE_TYPE_OK);
-  end;
-  except
-  on e: Exception do
-  begin
-  MessageBox(Handle, PWideChar(e.ToString()), PWideChar(Format(RsErrorCaption, [Caption])), MESSAGE_TYPE_ERROR);
-  end;
-  end; }
+end;
 
 end.

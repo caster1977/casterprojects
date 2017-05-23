@@ -6,6 +6,7 @@ uses
   Budgeting.Logic.Interfaces.IView,
   Vcl.Controls,
   Data.DB,
+  cxGridTableView,
   cxGrid;
 
 type
@@ -24,8 +25,29 @@ type
     // procedure SetOrderCode(const aValue: string);
     // property OrderCode: string read GetOrderCode write SetOrderCode;
 
-    // procedure SetQueue(const aValue: TDataSet);
-    // property Queue: TDataSet write SetQueue;
+    procedure SetAccountingCenters(const aValue: TDataSet);
+    property AccountingCenters: TDataSet write SetAccountingCenters;
+
+    procedure SetBanks(const aValue: TDataSet);
+    property Banks: TDataSet write SetBanks;
+
+    procedure SetBudgetItems(const aValue: TDataSet);
+    property BudgetItems: TDataSet write SetBudgetItems;
+
+    procedure SetBudgetItemTypes(const aValue: TDataSet);
+    property BudgetItemTypes: TDataSet write SetBudgetItemTypes;
+
+    procedure SetCosignatories(const aValue: TDataSet);
+    property Cosignatories: TDataSet write SetCosignatories;
+
+    procedure SetCurrencies(const aValue: TDataSet);
+    property Currencies: TDataSet write SetCurrencies;
+
+    procedure SetGoods(const aValue: TDataSet);
+    property Goods: TDataSet write SetGoods;
+
+    procedure SetGoodsTypes(const aValue: TDataSet);
+    property GoodsTypes: TDataSet write SetGoodsTypes;
 
     function GetCurrentDocumentId(): Integer;
     property CurrentDocumentId: Integer read GetCurrentDocumentId;

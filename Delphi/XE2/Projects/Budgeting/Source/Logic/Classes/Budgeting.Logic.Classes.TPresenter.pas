@@ -5,6 +5,7 @@ interface
 uses
   System.SysUtils,
   Data.DB,
+  FireDAC.Comp.Client,
   Budgeting.Logic.Interfaces.IPresenter,
   Budgeting.Logic.Interfaces.IView,
   Budgeting.Logic.TViewEnumEvent;
@@ -12,11 +13,11 @@ uses
 type
   TPresenter = class(TInterfacedObject, IPresenter)
   strict private
-    function GetConnection(const aConnectionString: string): TCustomConnection;
+    function GetConnection(const aConnectionString: string): TFDConnection;
   strict protected
     FView: IView;
     FProcessign: Boolean;
-    FConnection: TCustomConnection;
+    FConnection: TFDConnection;
     procedure OnEventSimple(aValue: TViewEnumEvent); virtual; abstract;
     procedure Initialize(); virtual;
     function GetConnectionString(): string;
@@ -30,7 +31,6 @@ implementation
 uses
   CodeSiteLogging,
   Budgeting.Logic.Classes.Configuration.TConfiguration,
-  FireDAC.Comp.Client,
   FireDAC.Stan.ASync,
   FireDAC.DApt,
   FireDAC.Stan.Def,
@@ -54,10 +54,10 @@ function TPresenter.GetConnectionString(): string;
 begin
   Result := Format('Server=%s;Database=%s;MARS=yes;OSAuthent=Yes;DriverID=MSSQL;User_Name=%s;Password=%s;LoginTimeout=%d',
     [TConfiguration.Get(TConfiguration).Section<TDatabaseConnection>.Host.Trim(), TConfiguration.Get(TConfiguration)
-    .Section<TDatabaseConnection>.Database.Trim(), 'root', 'qweasdzxc', TConfiguration.Get(TConfiguration).Section<TDatabaseConnection>.ConnectionTimeOut]);
+    .Section<TDatabaseConnection>.Database.Trim(), 'r81t', 'M+fL5lT7lGqW8RGoVyN1UAFDzNoM2u17T7I2M+izrHo=', TConfiguration.Get(TConfiguration).Section<TDatabaseConnection>.ConnectionTimeOut]);
 end;
 
-function TPresenter.GetConnection(const aConnectionString: string): TCustomConnection;
+function TPresenter.GetConnection(const aConnectionString: string): TFDConnection;
 var
   tmpConnection: TFDConnection;
 begin

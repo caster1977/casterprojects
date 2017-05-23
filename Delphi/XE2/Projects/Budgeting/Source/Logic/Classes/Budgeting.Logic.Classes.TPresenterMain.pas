@@ -40,7 +40,9 @@ uses
   Budgeting.Logic.Classes.Configuration.Section.TInterface,
   // Budgeting.Logic.Classes.Configuration.Section.TDatabaseConnection,
   LoginPackage.Logic.TLoginWindow,
-  Budgeting.Logic.Consts;
+  Budgeting.Logic.Consts,
+  Budgeting.Logic.Classes.TQuery,
+  FireDAC.Comp.Client;
 // Budgeting.Logic.Classes.TPresenterDetail,
 // Budgeting.Logic.Classes.TQuery,
 // Budgeting.UI.Detail;
@@ -87,37 +89,209 @@ procedure TPresenterMain.OnEventSimple(aValue: TViewEnumEvent);
 var
   tmpView: IViewMain;
 
-  { procedure LoadQueueReciever();
-    var
+  procedure LoadAccountingCenters();
+  var
     tmpQuery: TFDQuery;
-    begin
+  begin
     tmpQuery := TFDQuery.Create(nil);
     try
-    tmpQuery.Connection := FFDConnection;
-    tmpQuery.SQL.Text := TQuery.SpStatusViewerStatusMessageSel.Name;
-    tmpQuery.ParamByName(TQuery.SpStatusViewerStatusMessageSel.Param.AOrderCode).AsString := tmpView.OrderCode;
-    tmpQuery.ParamByName(TQuery.SpStatusViewerStatusMessageSel.Param.ABeginDate).AsDateTime := tmpView.BeginDate;
-    tmpQuery.ParamByName(TQuery.SpStatusViewerStatusMessageSel.Param.AEndDate).AsDateTime := tmpView.EndDate;
-    tmpQuery.Open();
-    try
-    tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
-    tmpView.Queue := tmpQuery;
+      tmpQuery.Connection := FConnection;
+      tmpQuery.SQL.Text := TQuery.sp_accounting_centers_sel.Name;
+      tmpQuery.ParamByName(TQuery.sp_accounting_centers_sel.Param.Id).DataType := ftInteger;
+      tmpQuery.ParamByName(TQuery.sp_accounting_centers_sel.Param.Activity).DataType := ftBoolean;
+      tmpQuery.Open();
+      try
+        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
+        tmpView.AccountingCenters := tmpQuery;
+      finally
+        tmpQuery.Close();
+      end;
     finally
-    tmpQuery.Close();
+      tmpQuery.Free();
     end;
-    finally
-    tmpQuery.Free();
-    end;
-    end; }
+  end;
 
-  procedure RefreshExecute();
+  procedure LoadBanks();
+  var
+    tmpQuery: TFDQuery;
+  begin
+    tmpQuery := TFDQuery.Create(nil);
+    try
+      tmpQuery.Connection := FConnection;
+      tmpQuery.SQL.Text := TQuery.sp_banks_sel.Name;
+      tmpQuery.ParamByName(TQuery.sp_banks_sel.Param.Id).DataType := ftInteger;
+      tmpQuery.ParamByName(TQuery.sp_banks_sel.Param.Activity).DataType := ftBoolean;
+      tmpQuery.Open();
+      try
+        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
+        tmpView.Banks := tmpQuery;
+      finally
+        tmpQuery.Close();
+      end;
+    finally
+      tmpQuery.Free();
+    end;
+  end;
+
+  procedure LoadBudgetItems();
+  var
+    tmpQuery: TFDQuery;
+  begin
+    tmpQuery := TFDQuery.Create(nil);
+    try
+      tmpQuery.Connection := FConnection;
+      tmpQuery.SQL.Text := TQuery.sp_budget_items_sel.Name;
+      tmpQuery.ParamByName(TQuery.sp_budget_items_sel.Param.Id).DataType := ftInteger;
+      tmpQuery.ParamByName(TQuery.sp_budget_items_sel.Param.Activity).DataType := ftBoolean;
+      tmpQuery.Open();
+      try
+        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
+        tmpView.BudgetItems := tmpQuery;
+      finally
+        tmpQuery.Close();
+      end;
+    finally
+      tmpQuery.Free();
+    end;
+  end;
+
+  procedure LoadBudgetItemTypes();
+  var
+    tmpQuery: TFDQuery;
+  begin
+    tmpQuery := TFDQuery.Create(nil);
+    try
+      tmpQuery.Connection := FConnection;
+      tmpQuery.SQL.Text := TQuery.sp_budget_item_types_sel.Name;
+      tmpQuery.ParamByName(TQuery.sp_budget_item_types_sel.Param.Id).DataType := ftInteger;
+      tmpQuery.ParamByName(TQuery.sp_budget_item_types_sel.Param.Activity).DataType := ftBoolean;
+      tmpQuery.Open();
+      try
+        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
+        tmpView.BudgetItemTypes := tmpQuery;
+      finally
+        tmpQuery.Close();
+      end;
+    finally
+      tmpQuery.Free();
+    end;
+  end;
+
+  procedure LoadCosignatories();
+  var
+    tmpQuery: TFDQuery;
+  begin
+    tmpQuery := TFDQuery.Create(nil);
+    try
+      tmpQuery.Connection := FConnection;
+      tmpQuery.SQL.Text := TQuery.sp_cosignatories_sel.Name;
+      tmpQuery.ParamByName(TQuery.sp_cosignatories_sel.Param.Id).DataType := ftInteger;
+      tmpQuery.ParamByName(TQuery.sp_cosignatories_sel.Param.Activity).DataType := ftBoolean;
+      tmpQuery.Open();
+      try
+        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
+        tmpView.Cosignatories := tmpQuery;
+      finally
+        tmpQuery.Close();
+      end;
+    finally
+      tmpQuery.Free();
+    end;
+  end;
+
+  procedure LoadCurrencies();
+  var
+    tmpQuery: TFDQuery;
+  begin
+    tmpQuery := TFDQuery.Create(nil);
+    try
+      tmpQuery.Connection := FConnection;
+      tmpQuery.SQL.Text := TQuery.sp_currencies_sel.Name;
+      tmpQuery.ParamByName(TQuery.sp_currencies_sel.Param.Id).DataType := ftInteger;
+      tmpQuery.ParamByName(TQuery.sp_currencies_sel.Param.Activity).DataType := ftBoolean;
+      tmpQuery.Open();
+      try
+        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
+        tmpView.Currencies := tmpQuery;
+      finally
+        tmpQuery.Close();
+      end;
+    finally
+      tmpQuery.Free();
+    end;
+  end;
+
+  procedure LoadGoods();
+  var
+    tmpQuery: TFDQuery;
+  begin
+    tmpQuery := TFDQuery.Create(nil);
+    try
+      tmpQuery.Connection := FConnection;
+      tmpQuery.SQL.Text := TQuery.sp_goods_sel.Name;
+      tmpQuery.ParamByName(TQuery.sp_goods_sel.Param.Id).DataType := ftInteger;
+      tmpQuery.ParamByName(TQuery.sp_goods_sel.Param.Activity).DataType := ftBoolean;
+      tmpQuery.Open();
+      try
+        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
+        tmpView.Goods := tmpQuery;
+      finally
+        tmpQuery.Close();
+      end;
+    finally
+      tmpQuery.Free();
+    end;
+  end;
+
+  procedure LoadGoodsTypes();
+  var
+    tmpQuery: TFDQuery;
+  begin
+    tmpQuery := TFDQuery.Create(nil);
+    try
+      tmpQuery.Connection := FConnection;
+      tmpQuery.SQL.Text := TQuery.sp_goods_types_sel.Name;
+      tmpQuery.ParamByName(TQuery.sp_goods_types_sel.Param.Id).DataType := ftInteger;
+      tmpQuery.ParamByName(TQuery.sp_goods_types_sel.Param.Activity).DataType := ftBoolean;
+      tmpQuery.Open();
+      try
+        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
+        tmpView.GoodsTypes := tmpQuery;
+      finally
+        tmpQuery.Close();
+      end;
+    finally
+      tmpQuery.Free();
+    end;
+  end;
+
+
+  procedure RefreshExecute(aValue: TViewEnumEvent);
   begin
     FProcessign := True;
     tmpView.RefreshStates();
     try
       tmpView.ShowProgress('Обновление списка...');
       try
-        // LoadQueueReciever();
+        case aValue of
+          veRefreshAccountingCentersExecute:
+            LoadAccountingCenters();
+          veRefreshBanksExecute:
+            LoadBanks();
+          veRefreshBudgetItemsExecute:
+            LoadBudgetItems();
+          veRefreshBudgetItemTypesExecute:
+            LoadBudgetItemTypes();
+          veRefreshCosignatoriesExecute:
+            LoadCosignatories();
+          veRefreshCurrenciesExecute:
+            LoadCurrencies();
+          veRefreshGoodsExecute:
+            LoadGoods();
+          veRefreshGoodsTypesExecute:
+            LoadGoodsTypes();
+        end;
+
       finally
         FProcessign := False;
       end;
@@ -379,8 +553,9 @@ begin
       ConfigurationExecute();
     veConfigurationUpdate:
       ConfigurationUpdate();
-    veRefreshExecute:
-      RefreshExecute();
+    veRefreshAccountingCentersExecute, veRefreshBanksExecute, veRefreshBudgetItemsExecute, veRefreshBudgetItemTypesExecute, veRefreshCosignatoriesExecute,
+      veRefreshCurrenciesExecute, veRefreshGoodsExecute, veRefreshGoodsTypesExecute:
+      RefreshExecute(aValue);
     veRefreshUpdate:
       RefreshUpdate();
     veExportToExcelExecute:
@@ -447,6 +622,56 @@ end;
 
   try
   b := FLogic.Process();
+  finally
+  FProcessing := False;
+  end;
+  if b then
+  begin
+  tmpStopTime := Now();
+  StatusBar.SimplePanelStyle.Text := EmptyStr;
+
+  dt := tmpStopTime - tmpStartTime;
+  d := DaysBetween(dt, 0);
+  DecodeTime(dt, h, n, s, ms);
+  sh := d * 24 + h;
+  MessageBox(Handle, PWideChar(Format('Действие выполнено успешно. Затраченное время: %s',
+  [Format('%d:%2d:%2d', [sh, n, s]).Replace(' ', '0', [rfReplaceAll])])), PWideChar(Format(RsInfoCaption, [Caption])), MESSAGE_TYPE_OK);
+  end;
+  except
+  on e: Exception do
+  begin
+  MessageBox(Handle, PWideChar(e.ToString()), PWideChar(Format(RsErrorCaption, [Caption])), MESSAGE_TYPE_ERROR);
+  end;
+  end; }
+
+// procedure TMainForm.actLoadListExecute(Sender: TObject);
+// var
+// b: Boolean;
+// i: Integer;
+// tmpStartTime: TDateTime;
+// tmpStopTime: TDateTime;
+// dt: TDateTime;
+// d, h, n, s, ms: word;
+// sh: word;
+// begin
+{ if not Assigned(FLogic) then
+  begin
+  Exit();
+  end;
+
+  try
+  FProcessing := True;
+  for i := 0 to Pred(actlstMain.ActionCount) do
+  begin
+  actlstMain.Actions[i].Update();
+  Application.ProcessMessages();
+  StatusBar.SimplePanelStyle.Text := 'Пожалуйста, подождите...';
+  end;
+
+  tmpStartTime := Now();
+
+  try
+  b := FLogic.LoadList();
   finally
   FProcessing := False;
   end;
