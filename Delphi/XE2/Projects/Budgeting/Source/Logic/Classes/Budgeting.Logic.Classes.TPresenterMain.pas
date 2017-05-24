@@ -9,17 +9,23 @@ uses
   Budgeting.Logic.Interfaces.IPresenter,
   Budgeting.Logic.Interfaces.IViewMain,
   Budgeting.Logic.TViewEnumEvent,
-  Budgeting.Logic.Classes.TPresenter;
+  Budgeting.Logic.Classes.TPresenter,
+  System.Generics.Collections,
+  Budgeting.Logic.TEntityType;
 
 type
   TPresenterMain = class(TPresenter, IPresenter)
   strict private
-    FCurrentDocumentId: Integer;
+    FCurrentEntity: TEntityType;
+    FGridId: TDictionary<TEntityType, Integer>;
     procedure AboutExecute(const aOwner: TWinControl; const aSplash: Boolean = False);
 
   strict protected
     procedure OnEventSimple(aValue: TViewEnumEvent); override;
     procedure Initialize(); override;
+
+  public
+    destructor Destroy(); override;
   end;
 
 implementation
@@ -55,16 +61,24 @@ resourcestring
   RsExitConfirmationCaption = '%s - Подтверждение выхода';
   RsHelpNotFound = 'Файл справки к программе [%s] не найден.';
 
+destructor TPresenterMain.Destroy;
+begin
+  try
+    FreeAndNil(FGridId);
+  finally
+    inherited;
+  end;
+end;
+
 procedure TPresenterMain.Initialize();
 var
   tmpView: IViewMain;
 begin
   inherited;
-  FCurrentDocumentId := -1;
+  FCurrentEntity := etUnknown;
+  FGridId := TDictionary<TEntityType, Integer>.Create();
   if Supports(FView, IViewMain, tmpView) then
   begin
-    FCurrentDocumentId := tmpView.CurrentDocumentId;
-
     if TConfiguration.Get(TConfiguration).Section<TInterface>.EnableSplashAtStart then
     begin
       AboutExecute(tmpView.Control, True);
@@ -265,33 +279,31 @@ var
     end;
   end;
 
-
-  procedure RefreshExecute(aValue: TViewEnumEvent);
+  procedure RefreshExecute();
   begin
     FProcessign := True;
     tmpView.RefreshStates();
     try
       tmpView.ShowProgress('Обновление списка...');
       try
-        case aValue of
-          veRefreshAccountingCentersExecute:
+        case tmpView.CurrentEntity of
+          etAccountingCenters:
             LoadAccountingCenters();
-          veRefreshBanksExecute:
+          etBanks:
             LoadBanks();
-          veRefreshBudgetItemsExecute:
+          etBudgetItems:
             LoadBudgetItems();
-          veRefreshBudgetItemTypesExecute:
+          etBudgetItemTypes:
             LoadBudgetItemTypes();
-          veRefreshCosignatoriesExecute:
+          etCosignatories:
             LoadCosignatories();
-          veRefreshCurrenciesExecute:
+          etCurrencies:
             LoadCurrencies();
-          veRefreshGoodsExecute:
+          etGoods:
             LoadGoods();
-          veRefreshGoodsTypesExecute:
+          etGoodsTypes:
             LoadGoodsTypes();
         end;
-
       finally
         FProcessign := False;
       end;
@@ -307,7 +319,15 @@ var
 
   procedure SelectedRecordChanged();
   begin
-    FCurrentDocumentId := tmpView.CurrentDocumentId;
+    if FCurrentEntity <> etUnknown then
+    begin
+      FGridId.AddOrSetValue(FCurrentEntity, tmpView.GetCurrentId(FCurrentEntity));
+    end;
+  end;
+
+  procedure EntityChanged();
+  begin
+    FCurrentEntity := tmpView.CurrentEntity;
   end;
 
   procedure QuitUpdate();
@@ -521,12 +541,97 @@ var
   end;
 
   procedure DeleteExecute();
+  var
+    tmpQuery: TFDQuery;
+    i: Integer;
+    tmpSPName: string;
+    tmpCurrentId: Integer;
   begin
+    case FCurrentEntity of
+      etAccountingCenters:
+        tmpSPName := 'accounting_centers_del';
+      etBanks:
+        tmpSPName := 'banks_del';
+      etBudgetItems:
+        tmpSPName := 'budget_items_del';
+      etBudgetItemTypes:
+        tmpSPName := 'budget_item_types_del';
+      etCosignatories:
+        tmpSPName := 'cosignatories_del';
+      etCurrencies:
+        tmpSPName := 'currencies_del';
+      etGoods:
+        tmpSPName := 'goods_del';
+      etGoodsTypes:
+        tmpSPName := 'goods_types_del';
+    else
+      Exit;
+    end;
+
+    if not FGridId.TryGetValue(FCurrentEntity, tmpCurrentId) then
+    begin
+      Exit;
+    end;
+
+    if tmpCurrentId < 0 then
+    begin
+      Exit;
+    end;
+
+    FProcessign := True;
+    tmpView.RefreshStates();
+    try
+      tmpView.ShowProgress('Удаление элемента...', 1);
+      try
+        tmpQuery := TFDQuery.Create(nil);
+        try
+          tmpQuery.Connection := FConnection;
+          tmpQuery.SQL.Text := Format(TQuery.sp_xxx_del.Name, [tmpSPName]);
+          tmpQuery.ParamByName(TQuery.sp_xxx_del.Param.Id).DataType := ftInteger;
+          tmpQuery.ParamByName(TQuery.sp_xxx_del.Param.Id).AsInteger := tmpCurrentId;
+          tmpQuery.Open();
+          try
+            tmpView.ShowProgress('Удаление элемента...', 1);
+
+            if tmpQuery.IsEmpty() then
+            begin
+              Exit;
+            end;
+
+            tmpQuery.First();
+
+            i := tmpQuery.FieldByName(TQuery.sp_xxx_del.Field.Result).AsInteger;
+
+            tmpView.StepProgress();
+
+            if i < 0 then
+            begin
+              tmpView.ShowMessage(tmpQuery.FieldByName(TQuery.sp_xxx_del.Field.Message).AsString, MESSAGE_TYPE_ERROR);
+            end;
+          finally
+            tmpQuery.Close();
+          end;
+        finally
+          tmpQuery.Free();
+        end;
+      finally
+        FProcessign := False;
+      end;
+    finally
+      tmpView.HideProgress();
+    end;
   end;
 
   procedure DeleteUpdate();
+  var
+    i: Integer;
   begin
-    tmpView.ActionStates[vaDelete] := not FProcessign;
+    if not FGridId.TryGetValue(FCurrentEntity, i) then
+    begin
+      i := -1;
+    end;
+
+    tmpView.ActionStates[vaDelete] := (not FProcessign) and (i > -1);
   end;
 
   procedure DisconnectExecute();
@@ -553,9 +658,8 @@ begin
       ConfigurationExecute();
     veConfigurationUpdate:
       ConfigurationUpdate();
-    veRefreshAccountingCentersExecute, veRefreshBanksExecute, veRefreshBudgetItemsExecute, veRefreshBudgetItemTypesExecute, veRefreshCosignatoriesExecute,
-      veRefreshCurrenciesExecute, veRefreshGoodsExecute, veRefreshGoodsTypesExecute:
-      RefreshExecute(aValue);
+    veRefreshExecute:
+      RefreshExecute();
     veRefreshUpdate:
       RefreshUpdate();
     veExportToExcelExecute:
@@ -566,6 +670,8 @@ begin
       HelpContextExecute();
     veHelpContextUpdate:
       HelpContextUpdate();
+    veEntityChanged:
+      EntityChanged();
     veSelectedRecordChanged:
       SelectedRecordChanged();
     veAboutExecute:
@@ -593,7 +699,10 @@ begin
     veEditUpdate:
       EditUpdate();
     veDeleteExecute:
-      DeleteExecute();
+      begin
+        DeleteExecute();
+        RefreshExecute();
+      end;
     veDeleteUpdate:
       DeleteUpdate();
   end;

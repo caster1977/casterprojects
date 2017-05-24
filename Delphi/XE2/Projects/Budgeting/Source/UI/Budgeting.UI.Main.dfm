@@ -78,7 +78,7 @@ object MainForm: TMainForm
         TabOrder = 1
         object tblvAccountingCenters: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
-          OnFocusedRecordChanged = tblvAccountingCentersFocusedRecordChanged
+          OnFocusedRecordChanged = tblvFocusedRecordChanged
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
@@ -146,7 +146,7 @@ object MainForm: TMainForm
         end
         object tblvBanks: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
-          OnFocusedRecordChanged = tblvAccountingCentersFocusedRecordChanged
+          OnFocusedRecordChanged = tblvFocusedRecordChanged
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
@@ -214,7 +214,7 @@ object MainForm: TMainForm
         end
         object tblvBudgetItems: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
-          OnFocusedRecordChanged = tblvAccountingCentersFocusedRecordChanged
+          OnFocusedRecordChanged = tblvFocusedRecordChanged
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
@@ -230,10 +230,63 @@ object MainForm: TMainForm
           OptionsView.NoDataToDisplayInfoText = '<'#1054#1090#1089#1091#1090#1089#1074#1091#1102#1090' '#1076#1072#1085#1085#1099#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103'>'
           OptionsView.ColumnAutoWidth = True
           OptionsView.GroupByBox = False
+          object colBudgetItems_Id_BudgetItem: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colBudgetItems_Id_BudgetItemType: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088' '#1090#1080#1087#1072' '#1089#1090#1072#1090#1100#1080' '#1079#1072#1090#1088#1072#1090
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colBudgetItems_Code: TcxGridColumn
+            Caption = #1050#1086#1076
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.MaxLength = 0
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colBudgetItems_Description: TcxGridColumn
+            Caption = #1054#1087#1080#1089#1072#1085#1080#1077
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.ReadOnly = True
+            HeaderAlignmentHorz = taCenter
+            Width = 195
+          end
+          object colBudgetItems_Activity: TcxGridColumn
+            Caption = #1040#1082#1090#1080#1074#1085#1086#1089#1090#1100
+            DataBinding.ValueType = 'Boolean'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.Alignment = taCenter
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
         end
         object tblvBudgetItemTypes: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
-          OnFocusedRecordChanged = tblvAccountingCentersFocusedRecordChanged
+          OnFocusedRecordChanged = tblvFocusedRecordChanged
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
@@ -249,10 +302,41 @@ object MainForm: TMainForm
           OptionsView.NoDataToDisplayInfoText = '<'#1054#1090#1089#1091#1090#1089#1074#1091#1102#1090' '#1076#1072#1085#1085#1099#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103'>'
           OptionsView.ColumnAutoWidth = True
           OptionsView.GroupByBox = False
+          object colBudgetItemTypes_Id_BudgetItemType: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colBudgetItemTypes_Name: TcxGridColumn
+            Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taLeftJustify
+            Properties.ReadOnly = True
+            HeaderAlignmentHorz = taCenter
+            Width = 300
+          end
+          object colBudgetItemTypes_Activity: TcxGridColumn
+            Caption = #1040#1082#1090#1080#1074#1085#1086#1089#1090#1100
+            DataBinding.ValueType = 'Boolean'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.Alignment = taCenter
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
         end
         object tblvCosignatories: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
-          OnFocusedRecordChanged = tblvAccountingCentersFocusedRecordChanged
+          OnFocusedRecordChanged = tblvFocusedRecordChanged
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
@@ -268,10 +352,115 @@ object MainForm: TMainForm
           OptionsView.NoDataToDisplayInfoText = '<'#1054#1090#1089#1091#1090#1089#1074#1091#1102#1090' '#1076#1072#1085#1085#1099#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103'>'
           OptionsView.ColumnAutoWidth = True
           OptionsView.GroupByBox = False
+          object colCosignatories_Id_Cosignatory: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colCosignatories_Id_Bank: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colCosignatories_Name: TcxGridColumn
+            Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taLeftJustify
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colCosignatories_UNP: TcxGridColumn
+            Caption = #1059#1053#1055
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colCosignatories_Address: TcxGridColumn
+            Caption = #1040#1076#1088#1077#1089
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taLeftJustify
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colCosignatories_AgreementNumber: TcxGridColumn
+            Caption = #1053#1086#1084#1077#1088' '#1076#1086#1075#1086#1074#1086#1088#1072
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colCosignatories_AgreementStart: TcxGridColumn
+            Caption = #1044#1086#1075#1086#1074#1086#1088' '#1089
+            PropertiesClassName = 'TcxDateEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.DisplayFormat = 'dd.mm.yyyy'
+            Properties.ReadOnly = True
+            Properties.SaveTime = False
+            Properties.ShowTime = False
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colCosignatories_AgreementStop: TcxGridColumn
+            Caption = #1044#1086#1075#1086#1074#1086#1088' '#1087#1086
+            PropertiesClassName = 'TcxDateEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.DisplayFormat = 'dd.mm.yyyy'
+            Properties.ReadOnly = True
+            Properties.SaveTime = False
+            Properties.ShowTime = False
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colCosignatories_Account: TcxGridColumn
+            Caption = #1053#1086#1084#1077#1088' '#1089#1095#1105#1090#1072
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colCosignatories_Activity: TcxGridColumn
+            Caption = #1040#1082#1090#1080#1074#1085#1086#1089#1090#1100
+            DataBinding.ValueType = 'Boolean'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.Alignment = taCenter
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
         end
         object tblvCurrencies: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
-          OnFocusedRecordChanged = tblvAccountingCentersFocusedRecordChanged
+          OnFocusedRecordChanged = tblvFocusedRecordChanged
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
@@ -330,7 +519,7 @@ object MainForm: TMainForm
         end
         object tblvGoods: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
-          OnFocusedRecordChanged = tblvAccountingCentersFocusedRecordChanged
+          OnFocusedRecordChanged = tblvFocusedRecordChanged
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
@@ -402,7 +591,7 @@ object MainForm: TMainForm
         end
         object tblvGoodsTypes: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
-          OnFocusedRecordChanged = tblvAccountingCentersFocusedRecordChanged
+          OnFocusedRecordChanged = tblvFocusedRecordChanged
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
@@ -450,17 +639,13 @@ object MainForm: TMainForm
           end
         end
         object lvl1: TcxGridLevel
-          GridView = tblvGoods
+          GridView = tblvCosignatories
         end
       end
     end
     object shtOperations: TcxTabSheet
       Caption = #1054#1087#1077#1088#1072#1094#1080#1080
       ImageIndex = 0
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxgrdOperations: TcxGrid
         Left = 0
         Top = 27
@@ -468,100 +653,7 @@ object MainForm: TMainForm
         Height = 453
         Align = alClient
         TabOrder = 0
-        object cxgrdtblvwFiles: TcxGridTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <
-            item
-              Format = '# ### ###;;-'
-              Kind = skCount
-              Column = colId
-            end>
-          DataController.Summary.SummaryGroups = <>
-          Images = cxmglstActions
-          OptionsCustomize.ColumnGrouping = False
-          OptionsCustomize.ColumnHidingOnGrouping = False
-          OptionsCustomize.ColumnMoving = False
-          OptionsCustomize.ColumnSorting = False
-          OptionsData.CancelOnExit = False
-          OptionsData.Deleting = False
-          OptionsData.DeletingConfirmation = False
-          OptionsData.Editing = False
-          OptionsData.Inserting = False
-          OptionsSelection.MultiSelect = True
-          OptionsView.NoDataToDisplayInfoText = '<'#1057#1087#1080#1089#1086#1082' '#1087#1091#1089#1090'>'
-          OptionsView.ColumnAutoWidth = True
-          OptionsView.Footer = True
-          OptionsView.GroupByBox = False
-          object colId: TcxGridColumn
-            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088
-            DataBinding.ValueType = 'Integer'
-            PropertiesClassName = 'TcxLabelProperties'
-            Properties.Alignment.Horz = taRightJustify
-            Properties.Alignment.Vert = taVCenter
-            FooterAlignmentHorz = taRightJustify
-            HeaderAlignmentHorz = taCenter
-            Options.Editing = False
-          end
-          object colSeries: TcxGridColumn
-            Caption = #1057#1077#1088#1080#1103
-            PropertiesClassName = 'TcxLabelProperties'
-            Properties.Alignment.Vert = taVCenter
-            FooterAlignmentHorz = taRightJustify
-            HeaderAlignmentHorz = taCenter
-            Options.Editing = False
-            Options.Moving = False
-          end
-          object colNumber: TcxGridColumn
-            Caption = #1053#1086#1084#1077#1088
-            PropertiesClassName = 'TcxLabelProperties'
-            Properties.Alignment.Vert = taVCenter
-            HeaderAlignmentHorz = taCenter
-            Options.Editing = False
-            Options.Moving = False
-          end
-          object colFileName: TcxGridColumn
-            Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1092#1072#1081#1083#1072
-            PropertiesClassName = 'TcxLabelProperties'
-            Properties.Alignment.Vert = taVCenter
-            HeaderAlignmentHorz = taCenter
-            Options.Editing = False
-            Options.Moving = False
-          end
-          object colType: TcxGridColumn
-            Caption = #1058#1080#1087
-            PropertiesClassName = 'TcxLabelProperties'
-            Properties.Alignment.Horz = taCenter
-            HeaderAlignmentHorz = taCenter
-            Options.Editing = False
-            Options.Moving = False
-          end
-          object colStatus: TcxGridColumn
-            Caption = #1054#1073#1088#1072#1073#1086#1090#1072#1085
-            DataBinding.ValueType = 'Boolean'
-            PropertiesClassName = 'TcxImageComboBoxProperties'
-            Properties.Alignment.Horz = taCenter
-            Properties.DefaultImageIndex = 0
-            Properties.Images = cxmglstActions
-            Properties.ImmediatePost = True
-            Properties.ImmediateUpdateText = True
-            Properties.Items = <
-              item
-                ImageIndex = 15
-                Value = True
-              end
-              item
-                ImageIndex = 10
-                Value = False
-              end>
-            Properties.LargeImages = cxmglstActions
-            Properties.ReadOnly = True
-            HeaderAlignmentHorz = taCenter
-            Options.Moving = False
-          end
-        end
         object cxgrdlvl2: TcxGridLevel
-          GridView = cxgrdtblvwFiles
         end
       end
       object cbbOperations: TcxComboBox
@@ -586,10 +678,6 @@ object MainForm: TMainForm
     object shtReports: TcxTabSheet
       Caption = #1054#1090#1095#1105#1090#1099
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxgrdReports: TcxGrid
         Left = 0
         Top = 27
@@ -597,100 +685,7 @@ object MainForm: TMainForm
         Height = 453
         Align = alClient
         TabOrder = 0
-        object tblv1: TcxGridTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <
-            item
-              Format = '# ### ###;;-'
-              Kind = skCount
-              Column = col1
-            end>
-          DataController.Summary.SummaryGroups = <>
-          Images = cxmglstActions
-          OptionsCustomize.ColumnGrouping = False
-          OptionsCustomize.ColumnHidingOnGrouping = False
-          OptionsCustomize.ColumnMoving = False
-          OptionsCustomize.ColumnSorting = False
-          OptionsData.CancelOnExit = False
-          OptionsData.Deleting = False
-          OptionsData.DeletingConfirmation = False
-          OptionsData.Editing = False
-          OptionsData.Inserting = False
-          OptionsSelection.MultiSelect = True
-          OptionsView.NoDataToDisplayInfoText = '<'#1057#1087#1080#1089#1086#1082' '#1087#1091#1089#1090'>'
-          OptionsView.ColumnAutoWidth = True
-          OptionsView.Footer = True
-          OptionsView.GroupByBox = False
-          object col1: TcxGridColumn
-            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088
-            DataBinding.ValueType = 'Integer'
-            PropertiesClassName = 'TcxLabelProperties'
-            Properties.Alignment.Horz = taRightJustify
-            Properties.Alignment.Vert = taVCenter
-            FooterAlignmentHorz = taRightJustify
-            HeaderAlignmentHorz = taCenter
-            Options.Editing = False
-          end
-          object col2: TcxGridColumn
-            Caption = #1057#1077#1088#1080#1103
-            PropertiesClassName = 'TcxLabelProperties'
-            Properties.Alignment.Vert = taVCenter
-            FooterAlignmentHorz = taRightJustify
-            HeaderAlignmentHorz = taCenter
-            Options.Editing = False
-            Options.Moving = False
-          end
-          object col3: TcxGridColumn
-            Caption = #1053#1086#1084#1077#1088
-            PropertiesClassName = 'TcxLabelProperties'
-            Properties.Alignment.Vert = taVCenter
-            HeaderAlignmentHorz = taCenter
-            Options.Editing = False
-            Options.Moving = False
-          end
-          object col4: TcxGridColumn
-            Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1092#1072#1081#1083#1072
-            PropertiesClassName = 'TcxLabelProperties'
-            Properties.Alignment.Vert = taVCenter
-            HeaderAlignmentHorz = taCenter
-            Options.Editing = False
-            Options.Moving = False
-          end
-          object col5: TcxGridColumn
-            Caption = #1058#1080#1087
-            PropertiesClassName = 'TcxLabelProperties'
-            Properties.Alignment.Horz = taCenter
-            HeaderAlignmentHorz = taCenter
-            Options.Editing = False
-            Options.Moving = False
-          end
-          object col6: TcxGridColumn
-            Caption = #1054#1073#1088#1072#1073#1086#1090#1072#1085
-            DataBinding.ValueType = 'Boolean'
-            PropertiesClassName = 'TcxImageComboBoxProperties'
-            Properties.Alignment.Horz = taCenter
-            Properties.DefaultImageIndex = 0
-            Properties.Images = cxmglstActions
-            Properties.ImmediatePost = True
-            Properties.ImmediateUpdateText = True
-            Properties.Items = <
-              item
-                ImageIndex = 15
-                Value = True
-              end
-              item
-                ImageIndex = 10
-                Value = False
-              end>
-            Properties.LargeImages = cxmglstActions
-            Properties.ReadOnly = True
-            HeaderAlignmentHorz = taCenter
-            Options.Moving = False
-          end
-        end
         object cxgrdlvl1: TcxGridLevel
-          GridView = tblv1
         end
       end
       object cbbReports: TcxComboBox

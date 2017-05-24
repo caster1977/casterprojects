@@ -117,7 +117,7 @@ uses
   FireDAC.Phys,
   FireDAC.Phys.ODBCBase,
   FireDAC.Phys.MSSQL,
-  System.Generics.Collections;
+  Budgeting.Logic.TEntityType;
 
 type
   TMainForm = class(TForm, IView, IViewMain)
@@ -152,8 +152,6 @@ type
     btnHelpContext: TdxBarButton;
     btnAbout: TdxBarButton;
     cxgrdOperations: TcxGrid;
-    cxgrdtblvwFiles: TcxGridTableView;
-    colFileName: TcxGridColumn;
     cxgrdlvl2: TcxGridLevel;
     pctnbrMain: TPopupActionBar;
     N21: TMenuItem;
@@ -169,11 +167,6 @@ type
     N28: TMenuItem;
     N29: TMenuItem;
     N30: TMenuItem;
-    colId: TcxGridColumn;
-    colSeries: TcxGridColumn;
-    colNumber: TcxGridColumn;
-    colType: TcxGridColumn;
-    colStatus: TcxGridColumn;
     actExportToExcel: TAction;
     btnExcel: TdxBarButton;
     N19: TMenuItem;
@@ -205,17 +198,10 @@ type
     N31: TMenuItem;
     lvl1: TcxGridLevel;
     btnRefresh: TdxBarButton;
-    col1: TcxGridColumn;
-    col2: TcxGridColumn;
-    col3: TcxGridColumn;
-    col4: TcxGridColumn;
-    col5: TcxGridColumn;
-    col6: TcxGridColumn;
     cxgrdlvl1: TcxGridLevel;
     cbbOperations: TcxComboBox;
 
     cxgrdReports: TcxGrid;
-    tblv1: TcxGridTableView;
     cbbReports: TcxComboBox;
 
     tblvAccountingCenters: TcxGridTableView;
@@ -233,10 +219,28 @@ type
     colBanks_Activity: TcxGridColumn;
 
     tblvBudgetItems: TcxGridTableView;
+    colBudgetItems_Id_BudgetItem: TcxGridColumn;
+    colBudgetItems_Id_BudgetItemType: TcxGridColumn;
+    colBudgetItems_Code: TcxGridColumn;
+    colBudgetItems_Description: TcxGridColumn;
+    colBudgetItems_Activity: TcxGridColumn;
 
     tblvBudgetItemTypes: TcxGridTableView;
+    colBudgetItemTypes_Id_BudgetItemType: TcxGridColumn;
+    colBudgetItemTypes_Name: TcxGridColumn;
+    colBudgetItemTypes_Activity: TcxGridColumn;
 
     tblvCosignatories: TcxGridTableView;
+    colCosignatories_Id_Cosignatory: TcxGridColumn;
+    colCosignatories_Id_Bank: TcxGridColumn;
+    colCosignatories_Name: TcxGridColumn;
+    colCosignatories_UNP: TcxGridColumn;
+    colCosignatories_Address: TcxGridColumn;
+    colCosignatories_AgreementNumber: TcxGridColumn;
+    colCosignatories_AgreementStart: TcxGridColumn;
+    colCosignatories_AgreementStop: TcxGridColumn;
+    colCosignatories_Account: TcxGridColumn;
+    colCosignatories_Activity: TcxGridColumn;
 
     tblvCurrencies: TcxGridTableView;
     colCurrencies_Id_Currency: TcxGridColumn;
@@ -278,7 +282,7 @@ type
     procedure actConfigurationUpdate(Sender: TObject);
     procedure actConnectExecute(Sender: TObject);
     procedure actFileExecute(Sender: TObject);
-    procedure tblvAccountingCentersFocusedRecordChanged(Sender: TcxCustomGridTableView; APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
+    procedure tblvFocusedRecordChanged(Sender: TcxCustomGridTableView; APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
       ANewItemRecordFocusingChanged: Boolean);
     procedure actDeleteExecute(Sender: TObject);
     procedure actDeleteUpdate(Sender: TObject);
@@ -310,7 +314,8 @@ type
     procedure RefreshStates();
     procedure StorePresenter(const aPresenter: IInterface);
     function GetActiveGrid(): TcxGrid;
-    function GetCurrentDocumentId(): Integer;
+    function GetCurrentEntity(): TEntityType;
+    function GetCurrentId(const aEntityType: TEntityType): Integer;
     procedure SetEnableStatusbar(const aValue: Boolean);
     procedure SetEnableToolbar(const aValue: Boolean);
     procedure SetAccountingCenters(const aValue: TDataSet);
@@ -341,6 +346,7 @@ uses
   Budgeting.Logic.Classes.Configuration.TConfiguration,
   // Budgeting.Logic.Classes.Configuration.Section.TGeneral,
   Budgeting.Logic.Classes.Configuration.Section.TInterface,
+  System.Generics.Collections,
   Budgeting.Logic.Consts,
   Budgeting.Logic.Classes.TQuery;
 
@@ -452,6 +458,7 @@ procedure TMainForm.actRefreshExecute(Sender: TObject);
 var
   tmpCursor: TCursor;
   tmpGrid: TcxGrid;
+  tmpActiveView: TcxCustomGridView;
 begin
   tmpCursor := Screen.Cursor;
   Screen.Cursor := crHourGlass;
@@ -460,22 +467,11 @@ begin
 
     if Assigned(tmpGrid) then
     begin
-      if tmpGrid.ActiveView = tblvAccountingCenters then
-        FOnEventSimple(veRefreshAccountingCentersExecute);
-      if tmpGrid.ActiveView = tblvBanks then
-        FOnEventSimple(veRefreshBanksExecute);
-      if tmpGrid.ActiveView = tblvBudgetItems then
-        FOnEventSimple(veRefreshBudgetItemsExecute);
-      if tmpGrid.ActiveView = tblvBudgetItemTypes then
-        FOnEventSimple(veRefreshBudgetItemTypesExecute);
-      if tmpGrid.ActiveView = tblvCosignatories then
-        FOnEventSimple(veRefreshCosignatoriesExecute);
-      if tmpGrid.ActiveView = tblvCurrencies then
-        FOnEventSimple(veRefreshCurrenciesExecute);
-      if tmpGrid.ActiveView = tblvGoods then
-        FOnEventSimple(veRefreshGoodsExecute);
-      if tmpGrid.ActiveView = tblvGoodsTypes then
-        FOnEventSimple(veRefreshGoodsTypesExecute);
+      tmpActiveView := tmpGrid.ActiveView;
+      if Assigned(tmpActiveView) then
+      begin
+        FOnEventSimple(veRefreshExecute);
+      end;
     end;
   finally
     Screen.Cursor := tmpCursor;
@@ -797,27 +793,68 @@ begin
   Result := Self;
 end;
 
-function TMainForm.GetCurrentDocumentId(): Integer;
+function TMainForm.GetCurrentEntity(): TEntityType;
 var
-  tmpActiveGrid: TcxGrid;
+  tmpGrid: TcxGrid;
   tmpActiveView: TcxCustomGridView;
+begin
+  Result := etUnknown;
+  tmpGrid := GetActiveGrid();
+  if Assigned(tmpGrid) then
+  begin
+    tmpActiveView := tmpGrid.ActiveView;
+    if Assigned(tmpActiveView) then
+    begin
+      if tmpActiveView = tblvAccountingCenters then
+        Result := etAccountingCenters;
+      if tmpActiveView = tblvBanks then
+        Result := etBanks;
+      if tmpActiveView = tblvBudgetItems then
+        Result := etBudgetItems;
+      if tmpActiveView = tblvBudgetItemTypes then
+        Result := etBudgetItemTypes;
+      if tmpActiveView = tblvCosignatories then
+        Result := etCosignatories;
+      if tmpActiveView = tblvCurrencies then
+        Result := etCurrencies;
+      if tmpActiveView = tblvGoods then
+        Result := etGoods;
+      if tmpActiveView = tblvGoodsTypes then
+        Result := etGoodsTypes;
+      end;
+  end;
+end;
+
+function TMainForm.GetCurrentId(const aEntityType: TEntityType): Integer;
+var
   tmpController: TcxGridTableController;
 begin
   Result := -1;
-  tmpActiveGrid := GetActiveGrid();
-  if Assigned(tmpActiveGrid) then
+  tmpController := nil;
+
+  case aEntityType of
+    etAccountingCenters:
+      tmpController := tblvAccountingCenters.Controller;
+    etBanks:
+      tmpController := tblvBanks.Controller;
+    etBudgetItems:
+      tmpController := tblvBudgetItems.Controller;
+    etBudgetItemTypes:
+      tmpController := tblvBudgetItemTypes.Controller;
+    etCosignatories:
+      tmpController := tblvCosignatories.Controller;
+    etCurrencies:
+      tmpController := tblvCurrencies.Controller;
+    etGoods:
+      tmpController := tblvGoods.Controller;
+    etGoodsTypes:
+      tmpController := tblvGoodsTypes.Controller;
+  end;
+  if Assigned(tmpController) then
   begin
-    tmpActiveView := tmpActiveGrid.ActiveView;
-    if Assigned(tmpActiveView) then
+    if tmpController.SelectedRecordCount = 1 then
     begin
-      if (tmpActiveView.Controller is TcxGridTableController) then
-      begin
-        tmpController := tmpActiveView.Controller as TcxGridTableController;
-        if tmpController.SelectedRecordCount = 1 then
-        begin
-          Result := tmpController.SelectedRecords[0].Values[0 { colIdCrossDocking.Index } ];
-        end;
-      end;
+      Result := tmpController.SelectedRecords[0].Values[0]
     end;
   end;
 end;
@@ -829,8 +866,17 @@ begin
 end;
 
 procedure TMainForm.pcMainChange(Sender: TObject);
+var
+  tmpCursor: TCursor;
 begin
-  btnRefresh.Click();
+  tmpCursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;
+  try
+    FOnEventSimple(veEntityChanged);
+    btnRefresh.Click();
+  finally
+    Screen.Cursor := tmpCursor;
+  end;
 end;
 
 procedure TMainForm.RefreshStates();
@@ -885,117 +931,123 @@ begin
 end;
 
 procedure TMainForm.SetBudgetItems(const aValue: TDataSet);
-// var
-// i: Integer;
+var
+  i: Integer;
 begin
-  { tblvBanks.BeginUpdate();
-    try
-    tblvBanks.DataController.RecordCount := 0;
+  tblvBudgetItems.BeginUpdate();
+  try
+    tblvBudgetItems.DataController.RecordCount := 0;
 
     if not Assigned(aValue) then
     begin
-    Exit;
+      Exit;
     end;
 
     if aValue.IsEmpty() then
     begin
-    Exit;
+      Exit;
     end;
 
     aValue.First();
-    tblvBanks.DataController.RecordCount := aValue.RecordCount;
+    tblvBudgetItems.DataController.RecordCount := aValue.RecordCount;
 
     for i := 0 to Pred(aValue.RecordCount) do
     begin
-    tblvBanks.DataController.Values[i, colBanks_Id_Bank.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Id).AsInteger;
-    tblvBanks.DataController.Values[i, colBanks_Name.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Name).AsString;
-    tblvBanks.DataController.Values[i, colBanks_Code.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Code).AsString;
-    tblvBanks.DataController.Values[i, colBanks_Address.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Address).AsString;
-    tblvBanks.DataController.Values[i, colAccountingCenters_Activity.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Activity).AsBoolean;
+      tblvBudgetItems.DataController.Values[i, colBudgetItems_Id_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Id).AsInteger;
+      tblvBudgetItems.DataController.Values[i, colBudgetItems_Id_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Id_BudgetItemType)
+        .AsInteger;
+      tblvBudgetItems.DataController.Values[i, colBudgetItems_Code.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Code).AsString;
+      tblvBudgetItems.DataController.Values[i, colBudgetItems_Description.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Description).AsString;
+      tblvBudgetItems.DataController.Values[i, colBudgetItems_Activity.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Activity).AsBoolean;
 
-    StepProgress();
+      StepProgress();
 
-    aValue.Next();
+      aValue.Next();
     end;
-    finally
-    tblvBanks.EndUpdate();
-    end; }
+  finally
+    tblvBudgetItems.EndUpdate();
+  end;
 end;
 
 procedure TMainForm.SetBudgetItemTypes(const aValue: TDataSet);
-// var
-// i: Integer;
+var
+  i: Integer;
 begin
-  { tblvBanks.BeginUpdate();
-    try
-    tblvBanks.DataController.RecordCount := 0;
+  tblvBudgetItemTypes.BeginUpdate();
+  try
+    tblvBudgetItemTypes.DataController.RecordCount := 0;
 
     if not Assigned(aValue) then
     begin
-    Exit;
+      Exit;
     end;
 
     if aValue.IsEmpty() then
     begin
-    Exit;
+      Exit;
     end;
 
     aValue.First();
-    tblvBanks.DataController.RecordCount := aValue.RecordCount;
+    tblvBudgetItemTypes.DataController.RecordCount := aValue.RecordCount;
 
     for i := 0 to Pred(aValue.RecordCount) do
     begin
-    tblvBanks.DataController.Values[i, colBanks_Id_Bank.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Id).AsInteger;
-    tblvBanks.DataController.Values[i, colBanks_Name.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Name).AsString;
-    tblvBanks.DataController.Values[i, colBanks_Code.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Code).AsString;
-    tblvBanks.DataController.Values[i, colBanks_Address.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Address).AsString;
-    tblvBanks.DataController.Values[i, colAccountingCenters_Activity.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Activity).AsBoolean;
+      tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Id_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id)
+        .AsInteger;
+      tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Name.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString;
+      tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Activity.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Activity)
+        .AsBoolean;
 
-    StepProgress();
+      StepProgress();
 
-    aValue.Next();
+      aValue.Next();
     end;
-    finally
-    tblvBanks.EndUpdate();
-    end; }
+  finally
+    tblvBudgetItemTypes.EndUpdate();
+  end;
 end;
 
 procedure TMainForm.SetCosignatories(const aValue: TDataSet);
-// var
-// i: Integer;
+var
+  i: Integer;
 begin
-  { tblvBanks.BeginUpdate();
-    try
-    tblvBanks.DataController.RecordCount := 0;
+  tblvCosignatories.BeginUpdate();
+  try
+    tblvCosignatories.DataController.RecordCount := 0;
 
     if not Assigned(aValue) then
     begin
-    Exit;
+      Exit;
     end;
 
     if aValue.IsEmpty() then
     begin
-    Exit;
+      Exit;
     end;
 
     aValue.First();
-    tblvBanks.DataController.RecordCount := aValue.RecordCount;
+    tblvCosignatories.DataController.RecordCount := aValue.RecordCount;
 
     for i := 0 to Pred(aValue.RecordCount) do
     begin
-    tblvBanks.DataController.Values[i, colBanks_Id_Bank.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Id).AsInteger;
-    tblvBanks.DataController.Values[i, colBanks_Name.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Name).AsString;
-    tblvBanks.DataController.Values[i, colBanks_Code.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Code).AsString;
-    tblvBanks.DataController.Values[i, colBanks_Address.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Address).AsString;
-    tblvBanks.DataController.Values[i, colAccountingCenters_Activity.Index] := aValue.FieldByName(TQuery.sp_banks_sel.Field.Activity).AsBoolean;
+      tblvCosignatories.DataController.Values[i, colCosignatories_Id_Cosignatory.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Id).AsInteger;
+      tblvCosignatories.DataController.Values[i, colCosignatories_Id_Bank.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Id_Bank).AsInteger;
+      tblvCosignatories.DataController.Values[i, colCosignatories_Name.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Name).AsString;
+      tblvCosignatories.DataController.Values[i, colCosignatories_UNP.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.UNP).AsString;
+      tblvCosignatories.DataController.Values[i, colCosignatories_Address.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Address).AsString;
+      tblvCosignatories.DataController.Values[i, colCosignatories_AgreementNumber.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementNumber).AsString;
+      tblvCosignatories.DataController.Values[i, colCosignatories_AgreementStart.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStart).AsDateTime;
+      tblvCosignatories.DataController.Values[i, colCosignatories_AgreementStop.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStop).AsDateTime;
+      tblvCosignatories.DataController.Values[i, colCosignatories_Account.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Account).AsString;
+      tblvCosignatories.DataController.Values[i, colCosignatories_Activity.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Activity).AsBoolean;
 
-    StepProgress();
+      StepProgress();
 
-    aValue.Next();
+      aValue.Next();
     end;
-    finally
-    tblvBanks.EndUpdate();
-    end; }
+  finally
+    tblvCosignatories.EndUpdate();
+  end;
 end;
 
 procedure TMainForm.SetCurrencies(const aValue: TDataSet);
@@ -1090,7 +1142,7 @@ begin
   FPresenter := aPresenter;
 end;
 
-procedure TMainForm.tblvAccountingCentersFocusedRecordChanged(Sender: TcxCustomGridTableView; APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
+procedure TMainForm.tblvFocusedRecordChanged(Sender: TcxCustomGridTableView; APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
   ANewItemRecordFocusingChanged: Boolean);
 var
   tmpCursor: TCursor;
@@ -1111,9 +1163,18 @@ begin
 end;
 
 procedure TMainForm.cbbReferencesPropertiesChange(Sender: TObject);
+var
+  tmpCursor: TCursor;
 begin
-  cxgrdReferences.ActiveLevel.GridView := cbbReferences.Properties.Items.Objects[cbbReferences.ItemIndex] as TcxGridTableView;
-  btnRefresh.Click();
+  tmpCursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;
+  try
+    cxgrdReferences.ActiveLevel.GridView := cbbReferences.Properties.Items.Objects[cbbReferences.ItemIndex] as TcxGridTableView;
+    FOnEventSimple(veEntityChanged);
+    btnRefresh.Click();
+  finally
+    Screen.Cursor := tmpCursor;
+  end;
 end;
 
 procedure TMainForm.SetAccountingCenters(const aValue: TDataSet);

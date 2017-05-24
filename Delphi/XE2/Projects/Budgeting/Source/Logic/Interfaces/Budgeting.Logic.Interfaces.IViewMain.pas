@@ -7,7 +7,9 @@ uses
   Vcl.Controls,
   Data.DB,
   cxGridTableView,
-  cxGrid;
+  cxGrid,
+  System.Generics.Collections,
+  Budgeting.Logic.TEntityType;
 
 type
   IViewMain = interface(IView)
@@ -49,8 +51,10 @@ type
     procedure SetGoodsTypes(const aValue: TDataSet);
     property GoodsTypes: TDataSet write SetGoodsTypes;
 
-    function GetCurrentDocumentId(): Integer;
-    property CurrentDocumentId: Integer read GetCurrentDocumentId;
+    function GetCurrentEntity(): TEntityType;
+    property CurrentEntity: TEntityType read GetCurrentEntity;
+
+    function GetCurrentId(const aEntityType: TEntityType): Integer;
 
     procedure SetEnableStatusbar(const aValue: Boolean);
     property EnableStatusbar: Boolean write SetEnableStatusbar;

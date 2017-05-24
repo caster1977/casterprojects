@@ -1,38 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.725,=D:\2\Projects\Budgeting\Source\Logic\Classes\Budgeting.Logic.Classes.TPresenterMain.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.703,=C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.TInterfaceSection.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.608,=D:\2\Projects\Budgeting\Source\Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.Section.TOther.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.548,=D:\2\Projects\Budgeting\Source\Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.Section.TGeneral.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.725,=D:\2\Projects\Budgeting\Source\Logic\Classes\Budgeting.Logic.Classes.TPresenterMain.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.655,D:\2\Projects\Budgeting\Source\Logic\Budgeting.Logic.Exported.pas=</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.429,=D:\2\Projects\Budgeting\Source\Logic\Budgeting.Logic.Exported.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.846,=D:\2\Projects\Budgeting\Source\Logic\Budgeting.Logic.TViewEnumAction.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.864,=D:\2\Projects\Budgeting\Source\Logic\Budgeting.Logic.TViewEnumActionArray.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.260,=D:\2\Projects\Budgeting\Source\Logic\Interfaces\Budgeting.Logic.Interfaces.IPresenter.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.429,=D:\2\Projects\Budgeting\Source\Logic\Budgeting.Logic.Exported.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.503,=D:\2\Projects\Budgeting\Source\Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.Section.TDatabaseConnection.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.546,=C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.TConfiguration.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.766,=C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\UI\Budgeting.UI.Configuration.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.322,=D:\2\Projects\Budgeting\Source\Logic\Interfaces\Budgeting.Logic.Interfaces.IView.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.691,=C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.TGeneralSection.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.578,=D:\2\Projects\Budgeting\Source\Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.Section.TInterface.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.591,D:\2\Projects\Budgeting\Source\Logic\Interfaces\Budgeting.Logic.Interfaces.IPresenterMain.pas=</Transaction>
     <Transaction>1899.12.30 00:00:00.000.433,=D:\2\Projects\Budgeting\Source\Logic\Interfaces\Budgeting.Logic.Interfaces.IPresenterMain.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.591,D:\2\Projects\Budgeting\Source\Logic\Interfaces\Budgeting.Logic.Interfaces.IPresenterMain.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.260,=D:\2\Projects\Budgeting\Source\Logic\Interfaces\Budgeting.Logic.Interfaces.IPresenter.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.048,=D:\2\Projects\Budgeting\Source\UI\Budgeting.UI.Main.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.520,=D:\2\Projects\Budgeting\Source\Logic\Classes\Budgeting.Logic.Classes.TPresenter.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.538,C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\ES4FScan.dproj=C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\Budgeting.dproj</Transaction>
     <Transaction>1899.12.30 00:00:00.000.864,C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\UI\Budgeting.UI.Main.pas=</Transaction>
     <Transaction>1899.12.30 00:00:00.000.150,D:\2\Projects\Budgeting\Source\UI\Budgeting.UI.Main.pas=</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.406,=C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\Logic\Budgeting.Logic.Consts.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.679,=C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.TDatabaseConnectionSection.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.883,=D:\2\Projects\Budgeting\Source\Logic\Budgeting.Logic.TViewEnumEvent.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.679,=C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.TDatabaseConnectionSection.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.406,=C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\Logic\Budgeting.Logic.Consts.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.520,=D:\2\Projects\Budgeting\Source\Logic\Classes\Budgeting.Logic.Classes.TPresenter.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.814,=D:\2\Projects\Budgeting\Source\Logic\Interfaces\Budgeting.Logic.Interfaces.IViewMain.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.715,=C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.TOtherSection.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.538,C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\Budgeting.dproj=C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\ES4FScan.dproj</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.846,=D:\2\Projects\Budgeting\Source\Logic\Budgeting.Logic.TViewEnumAction.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.181,C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\UI\Budgeting.UI.Main.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.001,D:\2\Projects\Budgeting\Source\Logic\Classes\IncomingDocQueue.Modules.CrossDockingViewer.Logic.Classes.TQuery.pas=D:\2\Projects\Budgeting\Source\Logic\Classes\Budgeting.Logic.Classes.TQuery.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.789,=D:\2\Projects\Budgeting\Source\Logic\Classes\IncomingDocQueue.Modules.CrossDockingViewer.Logic.Classes.TQuery.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.728,=C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\UI\Budgeting.UI.Main.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.687,=C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\UI\Budgeting.UI.Main.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.718,=C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\UI\Budgeting.UI.Main.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.181,C:\Users\vivanov\Documents\Embarcadero\Studio\Projects\Budgeting\Source\UI\Budgeting.UI.Main.pas=</Transaction>
-    <Transaction>2017.05.23 11:16:00.789,=D:\2\Projects\Budgeting\Source\Logic\Classes\IncomingDocQueue.Modules.CrossDockingViewer.Logic.Classes.TQuery.pas</Transaction>
-    <Transaction>2017.05.23 11:16:19.001,D:\2\Projects\Budgeting\Source\Logic\Classes\Budgeting.Logic.Classes.TQuery.pas=D:\2\Projects\Budgeting\Source\Logic\Classes\IncomingDocQueue.Modules.CrossDockingViewer.Logic.Classes.TQuery.pas</Transaction>
+    <Transaction>2017.05.24 12:23:02.452,=D:\2\Projects\Budgeting\Source\Unit1.pas</Transaction>
+    <Transaction>2017.05.24 12:23:48.510,D:\2\Projects\Budgeting\Source\Logic\Budgeting.Logic.TEntityTypes.pas=D:\2\Projects\Budgeting\Source\Unit1.pas</Transaction>
+    <Transaction>2017.05.24 12:27:56.112,D:\2\Projects\Budgeting\Source\Logic\Budgeting.Logic.TEntityType.pas=D:\2\Projects\Budgeting\Source\Logic\Budgeting.Logic.TEntityTypes.pas</Transaction>
   </Transactions>
 </BorlandProject>

@@ -21,7 +21,8 @@ uses
   Budgeting.Logic.Classes.Configuration.TConfiguration in 'Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.TConfiguration.pas',
   Budgeting.Logic.Interfaces.IView in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IView.pas',
   Budgeting.Logic.Interfaces.IViewMain in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IViewMain.pas',
-  Budgeting.Logic.Classes.TQuery in 'Logic\Classes\Budgeting.Logic.Classes.TQuery.pas';
+  Budgeting.Logic.Classes.TQuery in 'Logic\Classes\Budgeting.Logic.Classes.TQuery.pas',
+  Budgeting.Logic.TEntityType in 'Logic\Budgeting.Logic.TEntityType.pas';
 
 {$R *.res}
 
