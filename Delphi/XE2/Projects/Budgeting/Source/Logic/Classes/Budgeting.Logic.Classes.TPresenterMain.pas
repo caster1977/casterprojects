@@ -536,8 +536,15 @@ var
   end;
 
   procedure EditUpdate();
+  var
+    i: Integer;
   begin
-    tmpView.ActionStates[vaEdit] := not FProcessign;
+    if not FGridId.TryGetValue(FCurrentEntity, i) then
+    begin
+      i := -1;
+    end;
+
+    tmpView.ActionStates[vaEdit] := (not FProcessign) and (i > -1);
   end;
 
   procedure DeleteExecute();

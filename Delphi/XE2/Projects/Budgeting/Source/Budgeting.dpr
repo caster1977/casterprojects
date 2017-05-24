@@ -22,7 +22,13 @@ uses
   Budgeting.Logic.Interfaces.IView in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IView.pas',
   Budgeting.Logic.Interfaces.IViewMain in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IViewMain.pas',
   Budgeting.Logic.Classes.TQuery in 'Logic\Classes\Budgeting.Logic.Classes.TQuery.pas',
-  Budgeting.Logic.TEntityType in 'Logic\Budgeting.Logic.TEntityType.pas';
+  Budgeting.Logic.TEntityType in 'Logic\Budgeting.Logic.TEntityType.pas',
+  Budgeting.Logic.Interfaces.IAccountingCenter in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IAccountingCenter.pas',
+  Budgeting.Logic.Interfaces.IBank in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IBank.pas',
+  Budgeting.Logic.Interfaces.IBudgetItem in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IBudgetItem.pas',
+  Budgeting.Logic.Interfaces.IBudgetItemType in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IBudgetItemType.pas',
+  Budgeting.Logic.Interfaces.ICurrency in 'Logic\Interfaces\Budgeting.Logic.Interfaces.ICurrency.pas',
+  Budgeting.Logic.Interfaces.IGoodsType in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IGoodsType.pas';
 
 {$R *.res}
 
