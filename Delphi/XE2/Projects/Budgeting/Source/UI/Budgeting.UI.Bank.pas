@@ -1,4 +1,4 @@
-unit Budgeting.UI.Details.Bank;
+unit Budgeting.UI.Bank;
 
 interface
 

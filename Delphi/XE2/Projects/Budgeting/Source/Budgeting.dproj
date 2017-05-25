@@ -84,9 +84,9 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>101</VerInfo_Build>
+        <VerInfo_Build>102</VerInfo_Build>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.101;InternalName=Budgeting x86 DEBUG;LegalCopyright=(C)opyright 2017 by Caster;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=Developed by Caster</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.102;InternalName=Budgeting x86 DEBUG;LegalCopyright=(C)opyright 2017 by Caster;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=Developed by Caster</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -105,21 +105,35 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="Logic\Budgeting.Logic.Consts.pas"/>
+        <DCCReference Include="Logic\Classes\Budgeting.Logic.Classes.TQuery.pas"/>
+        <DCCReference Include="Logic\Types\Budgeting.Logic.Types.TEntity.pas"/>
+        <DCCReference Include="Logic\Types\Budgeting.Logic.Types.TViewEnumAction.pas"/>
+        <DCCReference Include="Logic\Types\Budgeting.Logic.Types.TViewEnumActionArray.pas"/>
+        <DCCReference Include="Logic\Types\Budgeting.Logic.Types.TViewEnumEvent.pas"/>
         <DCCReference Include="UI\Budgeting.UI.Configuration.pas">
             <Form>ConfigurationForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="Logic\Budgeting.Logic.Consts.pas"/>
         <DCCReference Include="UI\Budgeting.UI.Main.pas">
             <Form>MainForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.TConfiguration.pas"/>
-        <DCCReference Include="Logic\Classes\Budgeting.Logic.Classes.TQuery.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TAccountingCenter.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TBank.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TBudgetItem.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TBudgetItemType.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TCosignatory.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TCurrency.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TGood.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TGoodsType.pas"/>
+        <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TCustomPresenter.pas"/>
+        <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TMainPresenter.pas"/>
         <DCCReference Include="Logic\Classes\Configuration\Sections\Budgeting.Logic.Classes.Configuration.Sections.TDatabaseSection.pas"/>
         <DCCReference Include="Logic\Classes\Configuration\Sections\Budgeting.Logic.Classes.Configuration.Sections.TGeneralSection.pas"/>
         <DCCReference Include="Logic\Classes\Configuration\Sections\Budgeting.Logic.Classes.Configuration.Sections.TInterfaceSection.pas"/>
         <DCCReference Include="Logic\Classes\Configuration\Sections\Budgeting.Logic.Classes.Configuration.Sections.TOtherSection.pas"/>
+        <DCCReference Include="Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.TConfiguration.pas"/>
         <DCCReference Include="Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IAccountingCenterModel.pas"/>
         <DCCReference Include="Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IBankModel.pas"/>
         <DCCReference Include="Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IBudgetItemModel.pas"/>
@@ -128,15 +142,10 @@
         <DCCReference Include="Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.ICurrencyModel.pas"/>
         <DCCReference Include="Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IProductModel.pas"/>
         <DCCReference Include="Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IProductTypeModel.pas"/>
+        <DCCReference Include="Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.ICustomPresenter.pas"/>
+        <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IBankView.pas"/>
         <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.ICustomView.pas"/>
         <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IMainView.pas"/>
-        <DCCReference Include="Logic\Types\Budgeting.Logic.Types.TEntity.pas"/>
-        <DCCReference Include="Logic\Types\Budgeting.Logic.Types.TViewEnumAction.pas"/>
-        <DCCReference Include="Logic\Types\Budgeting.Logic.Types.TViewEnumActionArray.pas"/>
-        <DCCReference Include="Logic\Types\Budgeting.Logic.Types.TViewEnumEvent.pas"/>
-        <DCCReference Include="Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.ICustomPresenter.pas"/>
-        <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TCustomPresenter.pas"/>
-        <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TMainPresenter.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
