@@ -3,7 +3,9 @@ unit Budgeting.Logic.Types.TViewEnumEvent;
 interface
 
 type
-  TViewEnumEvent = (veCloseQuery, veQuitUpdate, veConfigurationExecute, veConfigurationUpdate, veAboutExecute, veAboutUpdate,
+  TViewEnumEvent = (
+    veInitialization,
+    veCloseQuery, veQuitUpdate, veConfigurationExecute, veConfigurationUpdate, veAboutExecute, veAboutUpdate,
     veHelpContextExecute, veHelpContextUpdate, veStatusBarExecute, veToolBarExecute, veConnectExecute, veConnectUpdate, veDisconnectExecute,
     veDisconnectUpdate,
     veEntityChanged,

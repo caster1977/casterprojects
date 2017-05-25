@@ -187,10 +187,13 @@ type
     N17: TMenuItem;
     N20: TMenuItem;
     N31: TMenuItem;
+    N19: TMenuItem;
+    N21: TMenuItem;
+    N22: TMenuItem;
     lvl1: TcxGridLevel;
     btnRefresh: TdxBarButton;
+    fdphysmsqldrvrlnk: TFDPhysMSSQLDriverLink;
     cxgrdlvl1: TcxGridLevel;
-    cbbOperationTypes: TcxComboBox;
 
     cxgrdReports: TcxGrid;
     cbbReports: TcxComboBox;
@@ -249,15 +252,30 @@ type
     colProductTypes_Name: TcxGridColumn;
     colProductTypes_Activity: TcxGridColumn;
 
-    fdphysmsqldrvrlnk: TFDPhysMSSQLDriverLink;
-    cbbBudgetItemTypes: TcxComboBox;
     tblvActualBudget: TcxGridTableView;
+    colActualBudget_Id_ActualBudget: TcxGridColumn;
+    colActualBudget_Id_BudgetItem: TcxGridColumn;
+    colActualBudget_Id_AccountingCenter: TcxGridColumn;
+    colActualBudget_Id_Cosignatory: TcxGridColumn;
+    colActualBudget_Id_Product: TcxGridColumn;
+    colActualBudget_Id_Currency: TcxGridColumn;
+    colActualBudget_Document: TcxGridColumn;
+    colActualBudget_DocumentDate: TcxGridColumn;
+    colActualBudget_Description: TcxGridColumn;
+    colActualBudget_Amount: TcxGridColumn;
+
     tblvPlannedBudget: TcxGridTableView;
-    N19: TMenuItem;
-    N21: TMenuItem;
-    N22: TMenuItem;
-    colActualBudgetColumn1: TcxGridColumn;
-    colPlannedBudgetColumn1: TcxGridColumn;
+    colPlannedBudget_Id_PlannedBudget: TcxGridColumn;
+    colPlannedBudget_Id_BudgetItem: TcxGridColumn;
+    colPlannedBudget_Id_AccountingCenter: TcxGridColumn;
+    colPlannedBudget_Id_Currency: TcxGridColumn;
+    colPlannedBudget_Year: TcxGridColumn;
+    colPlannedBudget_Month: TcxGridColumn;
+    colPlannedBudget_Amount: TcxGridColumn;
+    pnlOperations: TPanel;
+    cbbOperationTypes: TcxComboBox;
+    cbbBudgetItemTypes: TcxComboBox;
+
     procedure actQuitExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -617,39 +635,47 @@ begin
 end;
 
 procedure TMainForm.SetPlannedBudget(const aValue: TDataSet);
-//var
-//  i: Integer;
+var
+  i: Integer;
 begin
-//  tblvProductTypes.BeginUpdate();
-//  try
-//    tblvProductTypes.DataController.RecordCount := 0;
-//
-//    if not Assigned(aValue) then
-//    begin
-//      Exit;
-//    end;
-//
-//    if aValue.IsEmpty() then
-//    begin
-//      Exit;
-//    end;
-//
-//    aValue.First();
-//    tblvProductTypes.DataController.RecordCount := aValue.RecordCount;
-//
-//    for i := 0 to Pred(aValue.RecordCount) do
-//    begin
-//      tblvProductTypes.DataController.Values[i, colProductTypes_Id_ProductType.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Id).AsInteger;
-//      tblvProductTypes.DataController.Values[i, colProductTypes_Name.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Name).AsString;
-//      tblvProductTypes.DataController.Values[i, colProductTypes_Activity.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Activity).AsBoolean;
-//
-//      StepProgress();
-//
-//      aValue.Next();
-//    end;
-//  finally
-//    tblvProductTypes.EndUpdate();
-//  end;
+  tblvPlannedBudget.BeginUpdate();
+  try
+    tblvPlannedBudget.DataController.RecordCount := 0;
+
+    if not Assigned(aValue) then
+    begin
+      Exit;
+    end;
+
+    if aValue.IsEmpty() then
+    begin
+      Exit;
+    end;
+
+    aValue.First();
+    tblvPlannedBudget.DataController.RecordCount := aValue.RecordCount;
+
+    for i := 0 to Pred(aValue.RecordCount) do
+    begin
+      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Id_PlannedBudget.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Id)
+        .AsInteger;
+      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Id_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_BudgetItem)
+        .AsInteger;
+      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Id_AccountingCenter.Index] :=
+        aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_AccountingCenter).AsInteger;
+      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Id_Currency.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_Currency)
+        .AsInteger;
+      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Year.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Year).AsInteger;
+      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Month.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Month).AsInteger;
+      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Amount.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Amount).AsCurrency;
+
+      StepProgress();
+
+      aValue.Next();
+    end;
+  finally
+    tblvPlannedBudget.EndUpdate();
+  end;
 end;
 
 procedure TMainForm.SetProducts(const aValue: TDataSet);
@@ -873,7 +899,7 @@ begin
         Result := etActualBudget;
       if tmpActiveView = tblvPlannedBudget then
         Result := etPlannedBudget;
-      end;
+    end;
   end;
 end;
 
@@ -918,12 +944,21 @@ begin
 end;
 
 procedure TMainForm.Initialize();
+var
+  tmpCursor: TCursor;
 begin
-  cbbReferences.ItemIndex := 0;
-  cbbOperationTypes.ItemIndex := 0;
-  cbbBudgetItemTypes.ItemIndex := 0;
-  cbbReports.ItemIndex := 0;
-  pcMain.ActivePage := shtReferences;
+  tmpCursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;
+  try
+    FOnEventSimple(veInitialization);
+    cbbReferences.ItemIndex := 0;
+    cbbOperationTypes.ItemIndex := 0;
+    cbbReports.ItemIndex := 0;
+    cbbBudgetItemTypes.ItemIndex := 0;
+    pcMain.ActivePage := shtReferences;
+  finally
+    Screen.Cursor := tmpCursor;
+  end;
 end;
 
 procedure TMainForm.pcMainChange(Sender: TObject);
@@ -954,39 +989,52 @@ begin
 end;
 
 procedure TMainForm.SetActualBudget(const aValue: TDataSet);
-//var
-//  i: Integer;
+var
+  i: Integer;
 begin
-//  tblvProductTypes.BeginUpdate();
-//  try
-//    tblvProductTypes.DataController.RecordCount := 0;
-//
-//    if not Assigned(aValue) then
-//    begin
-//      Exit;
-//    end;
-//
-//    if aValue.IsEmpty() then
-//    begin
-//      Exit;
-//    end;
-//
-//    aValue.First();
-//    tblvProductTypes.DataController.RecordCount := aValue.RecordCount;
-//
-//    for i := 0 to Pred(aValue.RecordCount) do
-//    begin
-//      tblvProductTypes.DataController.Values[i, colProductTypes_Id_ProductType.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Id).AsInteger;
-//      tblvProductTypes.DataController.Values[i, colProductTypes_Name.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Name).AsString;
-//      tblvProductTypes.DataController.Values[i, colProductTypes_Activity.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Activity).AsBoolean;
-//
-//      StepProgress();
-//
-//      aValue.Next();
-//    end;
-//  finally
-//    tblvProductTypes.EndUpdate();
-//  end;
+  tblvActualBudget.BeginUpdate();
+  try
+    tblvActualBudget.DataController.RecordCount := 0;
+
+    if not Assigned(aValue) then
+    begin
+      Exit;
+    end;
+
+    if aValue.IsEmpty() then
+    begin
+      Exit;
+    end;
+
+    aValue.First();
+    tblvActualBudget.DataController.RecordCount := aValue.RecordCount;
+
+    for i := 0 to Pred(aValue.RecordCount) do
+    begin
+      tblvActualBudget.DataController.Values[i, colActualBudget_Id_ActualBudget.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id).AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Id_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_BudgetItem)
+        .AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Id_AccountingCenter.Index] :=
+        aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_AccountingCenter).AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Id_Cosignatory.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Cosignatory)
+        .AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Id_Product.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Product).AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Id_Currency.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Currency)
+        .AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Document.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Document).AsString;
+      tblvActualBudget.DataController.Values[i, colActualBudget_DocumentDate.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.DocumentDate)
+        .AsDateTime;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Description.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Description)
+        .AsString;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Amount.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Amount).AsCurrency;
+
+      StepProgress();
+
+      aValue.Next();
+    end;
+  finally
+    tblvActualBudget.EndUpdate();
+  end;
 end;
 
 procedure TMainForm.SetBanks(const aValue: TDataSet);
@@ -1074,6 +1122,8 @@ begin
   try
     tblvBudgetItemTypes.DataController.RecordCount := 0;
 
+    cbbBudgetItemTypes.Properties.Items.Clear();
+
     if not Assigned(aValue) then
     begin
       Exit;
@@ -1087,17 +1137,26 @@ begin
     aValue.First();
     tblvBudgetItemTypes.DataController.RecordCount := aValue.RecordCount;
 
-    for i := 0 to Pred(aValue.RecordCount) do
-    begin
-      tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Id_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id)
-        .AsInteger;
-      tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Name.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString;
-      tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Activity.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Activity)
-        .AsBoolean;
+    cbbBudgetItemTypes.Properties.Items.BeginUpdate();
+    try
+      for i := 0 to Pred(aValue.RecordCount) do
+      begin
+        tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Id_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id)
+          .AsInteger;
+        tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Name.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString;
+        tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Activity.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Activity)
+          .AsBoolean;
 
-      StepProgress();
+        cbbBudgetItemTypes.Properties.Items.AddObject(aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString,
+          TObject(aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id).AsInteger));
 
-      aValue.Next();
+        StepProgress();
+
+        aValue.Next();
+      end;
+    finally
+      cbbBudgetItemTypes.Properties.Items.EndUpdate();
+      cbbBudgetItemTypes.ItemIndex := 0;
     end;
   finally
     tblvBudgetItemTypes.EndUpdate();
@@ -1137,9 +1196,12 @@ begin
       tblvCosignatories.DataController.Values[i, colCosignatories_Name.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Name).AsString;
       tblvCosignatories.DataController.Values[i, colCosignatories_UNP.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.UNP).AsString;
       tblvCosignatories.DataController.Values[i, colCosignatories_Address.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Address).AsString;
-      tblvCosignatories.DataController.Values[i, colCosignatories_AgreementNumber.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementNumber).AsString;
-      tblvCosignatories.DataController.Values[i, colCosignatories_AgreementStart.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStart).AsDateTime;
-      tblvCosignatories.DataController.Values[i, colCosignatories_AgreementStop.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStop).AsDateTime;
+      tblvCosignatories.DataController.Values[i, colCosignatories_AgreementNumber.Index] :=
+        aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementNumber).AsString;
+      tblvCosignatories.DataController.Values[i, colCosignatories_AgreementStart.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStart)
+        .AsDateTime;
+      tblvCosignatories.DataController.Values[i, colCosignatories_AgreementStop.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStop)
+        .AsDateTime;
       tblvCosignatories.DataController.Values[i, colCosignatories_Account.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Account).AsString;
       tblvCosignatories.DataController.Values[i, colCosignatories_Activity.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Activity).AsBoolean;
 

@@ -708,6 +708,8 @@ begin
   end;
 
   case aValue of
+    veInitialization:
+      LoadBudgetItemTypes();
     veCloseQuery:
       CloseQuery();
     veQuitUpdate:

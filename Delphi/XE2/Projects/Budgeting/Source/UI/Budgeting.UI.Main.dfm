@@ -647,77 +647,335 @@ object MainForm: TMainForm
       Caption = #1054#1087#1077#1088#1072#1094#1080#1080
       ImageIndex = 0
       object cxgrdOperations: TcxGrid
-        Left = 0
-        Top = 53
-        Width = 776
-        Height = 427
+        AlignWithMargins = True
+        Left = 3
+        Top = 30
+        Width = 770
+        Height = 447
         Align = alClient
         PopupMenu = pctnbrMain
         TabOrder = 0
+        ExplicitLeft = 0
+        ExplicitTop = 53
+        ExplicitWidth = 776
+        ExplicitHeight = 427
         object tblvActualBudget: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
+          OnFocusedRecordChanged = tblvFocusedRecordChanged
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
-          object colActualBudgetColumn1: TcxGridColumn
-            Caption = #1060#1072#1082#1090
+          OptionsCustomize.ColumnGrouping = False
+          OptionsCustomize.ColumnHidingOnGrouping = False
+          OptionsCustomize.ColumnMoving = False
+          OptionsData.CancelOnExit = False
+          OptionsData.Deleting = False
+          OptionsData.DeletingConfirmation = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsSelection.CellSelect = False
+          OptionsView.NoDataToDisplayInfoText = '<'#1054#1090#1089#1091#1090#1089#1074#1091#1102#1090' '#1076#1072#1085#1085#1099#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103'>'
+          OptionsView.ColumnAutoWidth = True
+          OptionsView.GroupByBox = False
+          object colActualBudget_Id_ActualBudget: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colActualBudget_Id_BudgetItem: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088' '#1089#1090#1072#1090#1100#1080' '#1073#1102#1076#1078#1077#1090#1072
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colActualBudget_Id_AccountingCenter: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088' '#1094#1077#1085#1090#1088#1072
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colActualBudget_Id_Cosignatory: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088' '#1082#1086#1085#1090#1088#1072#1075#1077#1085#1090#1072
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colActualBudget_Id_Product: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088' '#1090#1086#1074#1072#1088#1072
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colActualBudget_Id_Currency: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088' '#1074#1072#1083#1102#1090#1099
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colActualBudget_Document: TcxGridColumn
+            Caption = #1054#1087#1088#1072#1074#1076#1072#1090#1077#1083#1100#1085#1099#1081' '#1076#1086#1082#1091#1084#1077#1085#1090
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.MaxLength = 0
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 100
+            HeaderAlignmentHorz = taCenter
+            Width = 100
+          end
+          object colActualBudget_DocumentDate: TcxGridColumn
+            Caption = #1044#1072#1090#1072' '#1076#1086#1082#1091#1084#1077#1085#1090#1072
+            PropertiesClassName = 'TcxDateEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.DisplayFormat = 'dd.mm.yyyy'
+            Properties.ReadOnly = True
+            Properties.SaveTime = False
+            Properties.ShowTime = False
+            BestFitMaxWidth = 100
+            HeaderAlignmentHorz = taCenter
+            Width = 100
+          end
+          object colActualBudget_Description: TcxGridColumn
+            Caption = #1054#1087#1080#1089#1072#1085#1080#1077
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.ReadOnly = True
+            HeaderAlignmentHorz = taCenter
+            Width = 195
+          end
+          object colActualBudget_Amount: TcxGridColumn
+            Caption = #1057#1091#1084#1084#1072
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;-,0.00'
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 100
+            HeaderAlignmentHorz = taCenter
+            Width = 100
           end
         end
         object tblvPlannedBudget: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
+          OnFocusedRecordChanged = tblvFocusedRecordChanged
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
-          object colPlannedBudgetColumn1: TcxGridColumn
-            Caption = #1055#1083#1072#1085
+          OptionsCustomize.ColumnGrouping = False
+          OptionsCustomize.ColumnHidingOnGrouping = False
+          OptionsCustomize.ColumnMoving = False
+          OptionsData.CancelOnExit = False
+          OptionsData.Deleting = False
+          OptionsData.DeletingConfirmation = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsSelection.CellSelect = False
+          OptionsView.NoDataToDisplayInfoText = '<'#1054#1090#1089#1091#1090#1089#1074#1091#1102#1090' '#1076#1072#1085#1085#1099#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103'>'
+          OptionsView.ColumnAutoWidth = True
+          OptionsView.GroupByBox = False
+          object colPlannedBudget_Id_PlannedBudget: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colPlannedBudget_Id_BudgetItem: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088' '#1089#1090#1072#1090#1100#1080' '#1073#1102#1076#1078#1077#1090#1072
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colPlannedBudget_Id_AccountingCenter: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088' '#1094#1077#1085#1090#1088#1072
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colPlannedBudget_Id_Currency: TcxGridColumn
+            Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088' '#1074#1072#1083#1102#1090#1099
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colPlannedBudget_Year: TcxGridColumn
+            Caption = #1043#1086#1076
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colPlannedBudget_Month: TcxGridColumn
+            Caption = #1052#1077#1089#1103#1094
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colPlannedBudget_Amount: TcxGridColumn
+            Caption = #1057#1091#1084#1084#1072
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;-,0.00'
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 100
+            HeaderAlignmentHorz = taCenter
+            Width = 100
           end
         end
         object cxgrdlvl2: TcxGridLevel
+          GridView = tblvPlannedBudget
         end
       end
-      object cbbOperationTypes: TcxComboBox
+      object pnlOperations: TPanel
         AlignWithMargins = True
         Left = 3
         Top = 3
-        Margins.Bottom = 1
+        Width = 770
+        Height = 21
         Align = alTop
-        Properties.AutoSelect = False
-        Properties.DropDownListStyle = lsFixedList
-        Properties.ImmediatePost = True
-        Properties.ImmediateUpdateText = True
-        Properties.ReadOnly = False
-        Properties.Revertable = True
-        Properties.Sorted = True
-        Properties.OnChange = cbbOperationTypesPropertiesChange
+        BevelOuter = bvNone
+        Caption = 'pnlOperations'
+        ShowCaption = False
         TabOrder = 1
-        Width = 770
-      end
-      object cbbBudgetItemTypes: TcxComboBox
-        AlignWithMargins = True
-        Left = 3
-        Top = 28
-        Margins.Bottom = 4
-        Align = alTop
-        Properties.AutoSelect = False
-        Properties.DropDownListStyle = lsFixedList
-        Properties.ReadOnly = False
-        Properties.Revertable = True
-        Properties.Sorted = True
-        TabOrder = 2
-        Width = 770
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 776
+        object cbbOperationTypes: TcxComboBox
+          AlignWithMargins = True
+          Left = 0
+          Top = 0
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 0
+          Margins.Bottom = 0
+          Align = alLeft
+          Properties.AutoSelect = False
+          Properties.DropDownListStyle = lsFixedList
+          Properties.ImmediatePost = True
+          Properties.ImmediateUpdateText = True
+          Properties.ReadOnly = False
+          Properties.Revertable = True
+          Properties.Sorted = True
+          Properties.OnChange = cbbOperationTypesPropertiesChange
+          TabOrder = 0
+          ExplicitLeft = 3
+          ExplicitTop = 3
+          Width = 214
+        end
+        object cbbBudgetItemTypes: TcxComboBox
+          AlignWithMargins = True
+          Left = 220
+          Top = 0
+          Margins.Left = 6
+          Margins.Top = 0
+          Margins.Right = 0
+          Margins.Bottom = 0
+          Align = alClient
+          Properties.AutoSelect = False
+          Properties.DropDownListStyle = lsFixedList
+          Properties.ReadOnly = False
+          Properties.Revertable = True
+          Properties.Sorted = True
+          TabOrder = 1
+          ExplicitLeft = 6
+          ExplicitTop = 4
+          ExplicitWidth = 770
+          Width = 550
+        end
       end
     end
     object shtReports: TcxTabSheet
       Caption = #1054#1090#1095#1105#1090#1099
       ImageIndex = 1
       object cxgrdReports: TcxGrid
-        Left = 0
-        Top = 27
-        Width = 776
-        Height = 453
+        AlignWithMargins = True
+        Left = 3
+        Top = 30
+        Width = 770
+        Height = 447
         Align = alClient
         PopupMenu = pctnbrMain
         TabOrder = 0
+        ExplicitLeft = 0
+        ExplicitTop = 27
+        ExplicitWidth = 776
+        ExplicitHeight = 453
         object cxgrdlvl1: TcxGridLevel
         end
       end
@@ -758,8 +1016,8 @@ object MainForm: TMainForm
     NotDocking = [dsNone, dsLeft, dsTop, dsRight, dsBottom]
     PopupMenuLinks = <>
     UseSystemFont = True
-    Left = 328
-    Top = 112
+    Left = 376
+    Top = 256
     DockControlHeights = (
       0
       0
@@ -906,7 +1164,7 @@ object MainForm: TMainForm
   end
   object cxmglstActions: TcxImageList
     FormatVersion = 1
-    DesignInfo = 7340416
+    DesignInfo = 16777672
     ImageInfo = <
       item
         Image.Data = {
@@ -1895,8 +2153,8 @@ object MainForm: TMainForm
   end
   object actlstMain: TActionList
     Images = cxmglstActions
-    Left = 528
-    Top = 112
+    Left = 600
+    Top = 256
     object actFile: TAction
       Category = #1060#1072#1081#1083
       Caption = '&'#1060#1072#1081#1083
@@ -2049,13 +2307,13 @@ object MainForm: TMainForm
     end
   end
   object gsflvrsnfMain: TGSFileVersionInfo
-    Left = 128
-    Top = 112
+    Left = 136
+    Top = 256
   end
   object mmMain: TMainMenu
     Images = cxmglstActions
-    Left = 456
-    Top = 112
+    Left = 528
+    Top = 256
     object N1: TMenuItem
       Action = actFile
       object N27: TMenuItem
@@ -2121,8 +2379,8 @@ object MainForm: TMainForm
   end
   object pctnbrMain: TPopupActionBar
     Images = cxmglstActions
-    Left = 264
-    Top = 112
+    Left = 208
+    Top = 256
     object N18: TMenuItem
       Action = actAdd
     end
@@ -2140,7 +2398,7 @@ object MainForm: TMainForm
     end
   end
   object fdphysmsqldrvrlnk: TFDPhysMSSQLDriverLink
-    Left = 308
-    Top = 223
+    Left = 292
+    Top = 255
   end
 end
