@@ -52,6 +52,10 @@ object MainForm: TMainForm
     object shtReferences: TcxTabSheet
       Caption = #1057#1087#1088#1072#1074#1086#1095#1085#1080#1082#1080
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cbbReferences: TcxComboBox
         AlignWithMargins = True
         Left = 3
@@ -653,8 +657,6 @@ object MainForm: TMainForm
         Height = 427
         Align = alClient
         TabOrder = 0
-        ExplicitTop = 27
-        ExplicitHeight = 453
         object cxgrdlvl2: TcxGridLevel
         end
       end
@@ -694,13 +696,16 @@ object MainForm: TMainForm
         Properties.Revertable = True
         Properties.Sorted = True
         TabOrder = 2
-        ExplicitTop = 43
         Width = 770
       end
     end
     object shtReports: TcxTabSheet
       Caption = #1054#1090#1095#1105#1090#1099
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxgrdReports: TcxGrid
         Left = 0
         Top = 27

@@ -9,7 +9,7 @@ const
   STATUSBAR_PROGRESS_PANEL_WIDTH = 100;
 
   GENERAL_SECTION = 'Основные';
-  DATABASE_CONNECTION_SECTION = 'Подключение к БД';
+  DATABASE_SECTION = 'Подключение к БД';
   INTERFACE_SECTION = 'Интерфейс';
   OTHER_SECTION = 'Прочие';
 

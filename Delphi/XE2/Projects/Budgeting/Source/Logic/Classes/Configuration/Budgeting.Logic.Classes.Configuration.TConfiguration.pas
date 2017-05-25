@@ -23,10 +23,10 @@ type
 implementation
 
 uses
-  Budgeting.Logic.Classes.Configuration.Section.TGeneral,
-  Budgeting.Logic.Classes.Configuration.Section.TInterface,
-  Budgeting.Logic.Classes.Configuration.Section.TDatabaseConnection,
-  Budgeting.Logic.Classes.Configuration.Section.TOther,
+  Budgeting.Logic.Classes.Configuration.Sections.TGeneralSection,
+  Budgeting.Logic.Classes.Configuration.Sections.TInterfaceSection,
+  Budgeting.Logic.Classes.Configuration.Sections.TDatabaseSection,
+  Budgeting.Logic.Classes.Configuration.Sections.TOtherSection,
   System.SysUtils;
 
 resourcestring
@@ -41,10 +41,10 @@ procedure TConfiguration.Initialize();
 begin
   inherited;
   FCurrentPage := 0;
-  RegisterSection(TGeneral);
-  RegisterSection(TInterface);
-  RegisterSection(TDatabaseConnection);
-  RegisterSection(TOther);
+  RegisterSection(TGeneralSection);
+  RegisterSection(TInterfaceSection);
+  RegisterSection(TDatabaseSection);
+  RegisterSection(TOtherSection);
 end;
 
 procedure TConfiguration.SetCurrentPage(const AValue: Integer);

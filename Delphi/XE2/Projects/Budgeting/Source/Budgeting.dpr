@@ -8,43 +8,35 @@ uses
   Budgeting.UI.Configuration in 'UI\Budgeting.UI.Configuration.pas' {ConfigurationForm},
   Budgeting.Logic.Consts in 'Logic\Budgeting.Logic.Consts.pas',
   Budgeting.UI.Main in 'UI\Budgeting.UI.Main.pas' {MainForm},
-  Budgeting.Logic.TViewEnumAction in 'Logic\Budgeting.Logic.TViewEnumAction.pas',
-  Budgeting.Logic.TViewEnumActionArray in 'Logic\Budgeting.Logic.TViewEnumActionArray.pas',
-  Budgeting.Logic.TViewEnumEvent in 'Logic\Budgeting.Logic.TViewEnumEvent.pas',
-  Budgeting.Logic.Interfaces.IPresenter in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IPresenter.pas',
-  Budgeting.Logic.Classes.TPresenter in 'Logic\Classes\Budgeting.Logic.Classes.TPresenter.pas',
-  Budgeting.Logic.Classes.TPresenterMain in 'Logic\Classes\Budgeting.Logic.Classes.TPresenterMain.pas',
-  Budgeting.Logic.Classes.Configuration.Section.TDatabaseConnection in 'Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.Section.TDatabaseConnection.pas',
-  Budgeting.Logic.Classes.Configuration.Section.TGeneral in 'Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.Section.TGeneral.pas',
-  Budgeting.Logic.Classes.Configuration.Section.TInterface in 'Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.Section.TInterface.pas',
-  Budgeting.Logic.Classes.Configuration.Section.TOther in 'Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.Section.TOther.pas',
   Budgeting.Logic.Classes.Configuration.TConfiguration in 'Logic\Classes\Configuration\Budgeting.Logic.Classes.Configuration.TConfiguration.pas',
-  Budgeting.Logic.Interfaces.IView in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IView.pas',
-  Budgeting.Logic.Interfaces.IViewMain in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IViewMain.pas',
   Budgeting.Logic.Classes.TQuery in 'Logic\Classes\Budgeting.Logic.Classes.TQuery.pas',
-  Budgeting.Logic.TEntityType in 'Logic\Budgeting.Logic.TEntityType.pas',
-  Budgeting.Logic.Interfaces.IAccountingCenter in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IAccountingCenter.pas',
-  Budgeting.Logic.Interfaces.IBank in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IBank.pas',
-  Budgeting.Logic.Interfaces.IBudgetItem in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IBudgetItem.pas',
-  Budgeting.Logic.Interfaces.IBudgetItemType in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IBudgetItemType.pas',
-  Budgeting.Logic.Interfaces.ICurrency in 'Logic\Interfaces\Budgeting.Logic.Interfaces.ICurrency.pas',
-  Budgeting.Logic.Interfaces.IGoodsType in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IGoodsType.pas',
-  Budgeting.Logic.Interfaces.IGood in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IGood.pas',
-  Budgeting.Logic.Interfaces.ICosignatory in 'Logic\Interfaces\Budgeting.Logic.Interfaces.ICosignatory.pas',
-  Budgeting.Logic.Classes.TBank in 'Logic\Classes\Budgeting.Logic.Classes.TBank.pas',
-  Budgeting.Logic.Classes.TBudgetItem in 'Logic\Classes\Budgeting.Logic.Classes.TBudgetItem.pas',
-  Budgeting.Logic.Classes.TAccountingCenter in 'Logic\Classes\Budgeting.Logic.Classes.TAccountingCenter.pas',
-  Budgeting.Logic.Classes.TBudgetItemType in 'Logic\Classes\Budgeting.Logic.Classes.TBudgetItemType.pas',
-  Budgeting.Logic.Classes.TCurrency in 'Logic\Classes\Budgeting.Logic.Classes.TCurrency.pas',
-  Budgeting.Logic.Classes.TGood in 'Logic\Classes\Budgeting.Logic.Classes.TGood.pas',
-  Budgeting.Logic.Classes.TGoodsType in 'Logic\Classes\Budgeting.Logic.Classes.TGoodsType.pas',
-  Budgeting.Logic.Classes.TCosignatory in 'Logic\Classes\Budgeting.Logic.Classes.TCosignatory.pas';
+  Budgeting.Logic.Classes.Configuration.Sections.TDatabaseSection in 'Logic\Classes\Configuration\Sections\Budgeting.Logic.Classes.Configuration.Sections.TDatabaseSection.pas',
+  Budgeting.Logic.Classes.Configuration.Sections.TGeneralSection in 'Logic\Classes\Configuration\Sections\Budgeting.Logic.Classes.Configuration.Sections.TGeneralSection.pas',
+  Budgeting.Logic.Classes.Configuration.Sections.TInterfaceSection in 'Logic\Classes\Configuration\Sections\Budgeting.Logic.Classes.Configuration.Sections.TInterfaceSection.pas',
+  Budgeting.Logic.Classes.Configuration.Sections.TOtherSection in 'Logic\Classes\Configuration\Sections\Budgeting.Logic.Classes.Configuration.Sections.TOtherSection.pas',
+  Budgeting.Logic.Interfaces.Models.IAccountingCenterModel in 'Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IAccountingCenterModel.pas',
+  Budgeting.Logic.Interfaces.Models.IBankModel in 'Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IBankModel.pas',
+  Budgeting.Logic.Interfaces.Models.IBudgetItemModel in 'Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IBudgetItemModel.pas',
+  Budgeting.Logic.Interfaces.Models.IBudgetItemTypeModel in 'Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IBudgetItemTypeModel.pas',
+  Budgeting.Logic.Interfaces.Models.ICosignatoryModel in 'Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.ICosignatoryModel.pas',
+  Budgeting.Logic.Interfaces.Models.ICurrencyModel in 'Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.ICurrencyModel.pas',
+  Budgeting.Logic.Interfaces.Models.IProductModel in 'Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IProductModel.pas',
+  Budgeting.Logic.Interfaces.Models.IProductTypeModel in 'Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IProductTypeModel.pas',
+  Budgeting.Logic.Interfaces.Views.ICustomView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.ICustomView.pas',
+  Budgeting.Logic.Interfaces.Views.IMainView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IMainView.pas',
+  Budgeting.Logic.Types.TEntity in 'Logic\Types\Budgeting.Logic.Types.TEntity.pas',
+  Budgeting.Logic.Types.TViewEnumAction in 'Logic\Types\Budgeting.Logic.Types.TViewEnumAction.pas',
+  Budgeting.Logic.Types.TViewEnumActionArray in 'Logic\Types\Budgeting.Logic.Types.TViewEnumActionArray.pas',
+  Budgeting.Logic.Types.TViewEnumEvent in 'Logic\Types\Budgeting.Logic.Types.TViewEnumEvent.pas',
+  Budgeting.Logic.Interfaces.Presenters.ICustomPresenter in 'Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.ICustomPresenter.pas',
+  Budgeting.Logic.Classes.Presenters.TCustomPresenter in 'Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TCustomPresenter.pas',
+  Budgeting.Logic.Classes.Presenters.TMainPresenter in 'Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TMainPresenter.pas';
 
 {$R *.res}
 
 var
   CodeSiteDestination: TCodeSiteDestination;
-  PresenterMain: IPresenter;
+  MainPresenter: ICustomPresenter;
 
 begin
   CodeSiteManager.ConnectUsingTcp();
@@ -63,7 +55,7 @@ begin
   Application.Initialize();
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMainForm, MainForm);
-  PresenterMain := TPresenterMain.Create(MainForm);
+  MainPresenter := TMainPresenter.Create(MainForm);
   MainForm.cbbReferences.ItemIndex := 0;
   Application.Run();
 

@@ -135,9 +135,9 @@ uses
   System.Math,
   System.Variants,
   Budgeting.Logic.Classes.Configuration.TConfiguration,
-  Budgeting.Logic.Classes.Configuration.Section.TGeneral,
-  Budgeting.Logic.Classes.Configuration.Section.TInterface,
-  Budgeting.Logic.Classes.Configuration.Section.TOther;
+  Budgeting.Logic.Classes.Configuration.Sections.TGeneralSection,
+  Budgeting.Logic.Classes.Configuration.Sections.TInterfaceSection,
+  Budgeting.Logic.Classes.Configuration.Sections.TOtherSection;
 
 resourcestring
   RsAConfigurationIsNil = 'aConfiguration is nil.';
@@ -157,13 +157,13 @@ constructor TConfigurationForm.Create(const aOwner: TComponent; const aActivePag
   var
     tmpYear: Integer;
   begin
-    tmpYear := TConfiguration.Get(TConfiguration).Section<TGeneral>.Year;
+    tmpYear := TConfiguration.Get(TConfiguration).Section<TGeneralSection>.Year;
     Year := IfThen(tmpYear = 0, CurrentYear(), tmpYear);
-    EnableQuitConfirmation := TConfiguration.Get(TConfiguration).Section<TInterface>.EnableQuitConfirmation;
-    EnableSplashAtStart := TConfiguration.Get(TConfiguration).Section<TInterface>.EnableSplashAtStart;
-    EnableStatusbar := TConfiguration.Get(TConfiguration).Section<TInterface>.EnableStatusbar;
-    EnableToolbar := TConfiguration.Get(TConfiguration).Section<TInterface>.EnableToolbar;
-    EnableStoreMainFormSizesAndPosition := TConfiguration.Get(TConfiguration).Section<TInterface>.EnableStoreMainFormSizesAndPosition;
+    EnableQuitConfirmation := TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableQuitConfirmation;
+    EnableSplashAtStart := TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableSplashAtStart;
+    EnableStatusbar := TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStatusbar;
+    EnableToolbar := TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableToolbar;
+    EnableStoreMainFormSizesAndPosition := TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition;
   end;
 
 begin
@@ -234,13 +234,13 @@ end;
 
 procedure TConfigurationForm.actApplyExecute(Sender: TObject);
 begin
-  TConfiguration.Get(TConfiguration).Section<TGeneral>.Year := Year;
-  TConfiguration.Get(TConfiguration).Section<TInterface>.EnableQuitConfirmation := EnableQuitConfirmation;
-  TConfiguration.Get(TConfiguration).Section<TInterface>.EnableSplashAtStart := EnableSplashAtStart;
-  TConfiguration.Get(TConfiguration).Section<TInterface>.EnableStatusbar := EnableStatusbar;
-  TConfiguration.Get(TConfiguration).Section<TInterface>.EnableToolbar := EnableToolbar;
-  TConfiguration.Get(TConfiguration).Section<TInterface>.EnableStoreMainFormSizesAndPosition := EnableStoreMainFormSizesAndPosition;
-  TConfiguration.Get(TConfiguration).Section<TOther>.EnablePlaySoundOnComplete := EnablePlaySoundOnComplete;
+  TConfiguration.Get(TConfiguration).Section<TGeneralSection>.Year := Year;
+  TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableQuitConfirmation := EnableQuitConfirmation;
+  TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableSplashAtStart := EnableSplashAtStart;
+  TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStatusbar := EnableStatusbar;
+  TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableToolbar := EnableToolbar;
+  TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition := EnableStoreMainFormSizesAndPosition;
+  TConfiguration.Get(TConfiguration).Section<TOtherSection>.EnablePlaySoundOnComplete := EnablePlaySoundOnComplete;
   (TConfiguration.Get(TConfiguration) as TConfiguration).CurrentPage := ActivePage;
   ModalResult := mrOk;
 end;

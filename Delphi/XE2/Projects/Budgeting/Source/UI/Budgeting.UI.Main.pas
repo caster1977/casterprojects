@@ -102,11 +102,11 @@ uses
   cxMaskEdit,
   cxDropDownEdit,
   cxPC,
-  Budgeting.Logic.Interfaces.IView,
-  Budgeting.Logic.Interfaces.IViewMain,
-  Budgeting.Logic.TViewEnumActionArray,
-  Budgeting.Logic.TViewEnumAction,
-  Budgeting.Logic.TViewEnumEvent,
+  Budgeting.Logic.Interfaces.Views.ICustomView,
+  Budgeting.Logic.Interfaces.Views.IMainView,
+  Budgeting.Logic.Types.TViewEnumActionArray,
+  Budgeting.Logic.Types.TViewEnumAction,
+  Budgeting.Logic.Types.TViewEnumEvent,
   cxProgressBar,
   cxBarEditItem,
   cxCustomData,
@@ -117,10 +117,10 @@ uses
   FireDAC.Phys,
   FireDAC.Phys.ODBCBase,
   FireDAC.Phys.MSSQL,
-  Budgeting.Logic.TEntityType;
+  Budgeting.Logic.Types.TEntity;
 
 type
-  TMainForm = class(TForm, IView, IViewMain)
+  TMainForm = class(TForm, ICustomView, IMainView)
     actQuit: TAction;
     actFile: TAction;
     actHelp: TAction;
@@ -314,9 +314,10 @@ type
     procedure HideProgress();
     procedure RefreshStates();
     procedure StorePresenter(const aPresenter: IInterface);
+    procedure SetCaption(const aValue: string);
     function GetActiveGrid(): TcxGrid;
-    function GetCurrentEntity(): TEntityType;
-    function GetCurrentId(const aEntityType: TEntityType): Integer;
+    function GetCurrentEntity(): TEntity;
+    function GetCurrentId(const aEntityType: TEntity): Integer;
     procedure SetEnableStatusbar(const aValue: Boolean);
     procedure SetEnableToolbar(const aValue: Boolean);
     procedure SetAccountingCenters(const aValue: TDataSet);
@@ -345,8 +346,8 @@ uses
   FireDAC.Stan.Option,
   FireDAC.Stan.Param,
   Budgeting.Logic.Classes.Configuration.TConfiguration,
-  // Budgeting.Logic.Classes.Configuration.Section.TGeneral,
-  Budgeting.Logic.Classes.Configuration.Section.TInterface,
+  // Budgeting.Logic.Classes.Configuration.Sections.TGeneralSection,
+  Budgeting.Logic.Classes.Configuration.Sections.TInterfaceSection,
   System.Generics.Collections,
   Budgeting.Logic.Consts,
   Budgeting.Logic.Classes.TQuery;
@@ -794,7 +795,7 @@ begin
   Result := Self;
 end;
 
-function TMainForm.GetCurrentEntity(): TEntityType;
+function TMainForm.GetCurrentEntity(): TEntity;
 var
   tmpGrid: TcxGrid;
   tmpActiveView: TcxCustomGridView;
@@ -826,7 +827,7 @@ begin
   end;
 end;
 
-function TMainForm.GetCurrentId(const aEntityType: TEntityType): Integer;
+function TMainForm.GetCurrentId(const aEntityType: TEntity): Integer;
 var
   tmpController: TcxGridTableController;
 begin
@@ -1008,6 +1009,11 @@ begin
   end;
 end;
 
+procedure TMainForm.SetCaption(const aValue: string);
+begin
+  Caption := aValue;
+end;
+
 procedure TMainForm.SetCosignatories(const aValue: TDataSet);
 var
   i: Integer;
@@ -1159,8 +1165,8 @@ end;
 
 procedure TMainForm.ApplyConfiguration();
 begin
-  SetEnableStatusbar(TConfiguration.Get(TConfiguration).Section<TInterface>.EnableStatusbar);
-  SetEnableToolbar(TConfiguration.Get(TConfiguration).Section<TInterface>.EnableToolbar);
+  SetEnableStatusbar(TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStatusbar);
+  SetEnableToolbar(TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableToolbar);
 end;
 
 procedure TMainForm.cbbReferencesPropertiesChange(Sender: TObject);
