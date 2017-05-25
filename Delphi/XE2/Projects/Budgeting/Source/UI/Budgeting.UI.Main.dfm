@@ -12,7 +12,6 @@ object MainForm: TMainForm
   Font.Style = []
   Menu = mmMain
   OldCreateOrder = False
-  PopupMenu = pctnbrMain
   Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -75,6 +74,7 @@ object MainForm: TMainForm
         Width = 770
         Height = 447
         Align = alClient
+        PopupMenu = pctnbrMain
         TabOrder = 1
         object tblvAccountingCenters: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
@@ -652,11 +652,30 @@ object MainForm: TMainForm
         Width = 776
         Height = 427
         Align = alClient
+        PopupMenu = pctnbrMain
         TabOrder = 0
+        object tblvActualBudget: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          object colActualBudgetColumn1: TcxGridColumn
+            Caption = #1060#1072#1082#1090
+          end
+        end
+        object tblvPlannedBudget: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          object colPlannedBudgetColumn1: TcxGridColumn
+            Caption = #1055#1083#1072#1085
+          end
+        end
         object cxgrdlvl2: TcxGridLevel
         end
       end
-      object cbbOperations: TcxComboBox
+      object cbbOperationTypes: TcxComboBox
         AlignWithMargins = True
         Left = 3
         Top = 3
@@ -664,18 +683,16 @@ object MainForm: TMainForm
         Align = alTop
         Properties.AutoSelect = False
         Properties.DropDownListStyle = lsFixedList
-        Properties.Items.Strings = (
-          '1'
-          '2'
-          '3'
-          '4')
+        Properties.ImmediatePost = True
+        Properties.ImmediateUpdateText = True
         Properties.ReadOnly = False
         Properties.Revertable = True
         Properties.Sorted = True
+        Properties.OnChange = cbbOperationTypesPropertiesChange
         TabOrder = 1
         Width = 770
       end
-      object cbb1: TcxComboBox
+      object cbbBudgetItemTypes: TcxComboBox
         AlignWithMargins = True
         Left = 3
         Top = 28
@@ -683,11 +700,6 @@ object MainForm: TMainForm
         Align = alTop
         Properties.AutoSelect = False
         Properties.DropDownListStyle = lsFixedList
-        Properties.Items.Strings = (
-          '1'
-          '2'
-          '3'
-          '4')
         Properties.ReadOnly = False
         Properties.Revertable = True
         Properties.Sorted = True
@@ -698,16 +710,13 @@ object MainForm: TMainForm
     object shtReports: TcxTabSheet
       Caption = #1054#1090#1095#1105#1090#1099
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxgrdReports: TcxGrid
         Left = 0
         Top = 27
         Width = 776
         Height = 453
         Align = alClient
+        PopupMenu = pctnbrMain
         TabOrder = 0
         object cxgrdlvl1: TcxGridLevel
         end
@@ -719,11 +728,10 @@ object MainForm: TMainForm
         Align = alTop
         Properties.AutoSelect = False
         Properties.DropDownListStyle = lsFixedList
+        Properties.ImmediatePost = True
+        Properties.ImmediateUpdateText = True
         Properties.Items.Strings = (
-          '1'
-          '2'
-          '3'
-          '4')
+          #1089#1074#1086#1076#1085#1099#1081' '#1086#1090#1095#1105#1090)
         Properties.ReadOnly = False
         Properties.Revertable = True
         Properties.Sorted = True
@@ -2115,49 +2123,20 @@ object MainForm: TMainForm
     Images = cxmglstActions
     Left = 264
     Top = 112
-    object N21: TMenuItem
-      Caption = #1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074
-      Hint = 
-        #1055#1086#1083#1091#1095#1077#1085#1080#1077' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1087#1086#1083#1091#1095#1077#1085#1080#1103' '#1089#1087#1080#1089#1082#1072' '#1092#1072#1081#1083#1086#1074' '#1080#1079' '#1041 +
-        #1044
-      ImageIndex = 20
-      ShortCut = 114
-    end
-    object N22: TMenuItem
-      Caption = '-'
-    end
     object N18: TMenuItem
-      Caption = #1044'&'#1086#1073#1072#1074#1083#1077#1085#1080#1077
-      Hint = 
-        #1054#1073#1088#1072#1073#1086#1090#1082#1072' '#1092#1072#1081#1083#1086#1074'|'#1053#1072#1078#1084#1080#1090#1077' '#1076#1083#1103' '#1074#1099#1087#1086#1083#1085#1077#1085#1080#1103' '#1086#1087#1077#1088#1072#1094#1080#1080' '#1086#1073#1088#1072#1073#1086#1090#1082#1080' '#1076#1086#1082#1091#1084 +
-        #1077#1085#1090#1086#1074', '#1089#1086#1076#1077#1088#1078#1072#1097#1080#1093#1089#1103' '#1074' '#1089#1087#1080#1089#1082#1077
-      ImageIndex = 7
-      ShortCut = 116
-      OnClick = actAddExecute
+      Action = actAdd
     end
     object N15: TMenuItem
-      Caption = '-'
+      Action = actEdit
     end
     object N19: TMenuItem
-      Action = actExportToExcel
+      Action = actDelete
     end
-    object N23: TMenuItem
+    object N21: TMenuItem
       Caption = '-'
     end
-    object N24: TMenuItem
-      Action = actHelpContext
-    end
-    object N29: TMenuItem
-      Caption = '-'
-    end
-    object N30: TMenuItem
-      Action = actConfiguration
-    end
-    object N25: TMenuItem
-      Caption = '-'
-    end
-    object N26: TMenuItem
-      Action = actQuit
+    object N22: TMenuItem
+      Action = actRefresh
     end
   end
   object fdphysmsqldrvrlnk: TFDPhysMSSQLDriverLink

@@ -51,6 +51,12 @@ type
     procedure SetProductTypes(const aValue: TDataSet);
     property ProductTypes: TDataSet write SetProductTypes;
 
+    procedure SetActualBudget(const aValue: TDataSet);
+    property ActualBudget: TDataSet write SetActualBudget;
+
+    procedure SetPlannedBudget(const aValue: TDataSet);
+    property PlannedBudget: TDataSet write SetPlannedBudget;
+
     function GetCurrentEntity(): TEntity;
     property CurrentEntity: TEntity read GetCurrentEntity;
 
@@ -61,6 +67,8 @@ type
 
     procedure SetEnableToolbar(const aValue: Boolean);
     property EnableToolbar: Boolean write SetEnableToolbar;
+
+    procedure Initialize();
   end;
 
 implementation

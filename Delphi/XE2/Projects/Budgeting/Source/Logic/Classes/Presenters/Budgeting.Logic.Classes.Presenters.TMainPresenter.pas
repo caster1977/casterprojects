@@ -84,6 +84,8 @@ begin
     begin
       AboutExecute(tmpView.Control, True);
     end;
+
+    tmpView.Initialize();
   end;
 end;
 
@@ -280,6 +282,48 @@ var
     end;
   end;
 
+  procedure LoadActualBudget();
+  var
+    tmpQuery: TFDQuery;
+  begin
+    tmpQuery := TFDQuery.Create(nil);
+    try
+      tmpQuery.Connection := FConnection;
+      tmpQuery.SQL.Text := TQuery.sp_actual_budget_sel.Name;
+      tmpQuery.ParamByName(TQuery.sp_actual_budget_sel.Param.Id).DataType := ftInteger;
+      tmpQuery.Open();
+      try
+        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
+        tmpView.ActualBudget := tmpQuery;
+      finally
+        tmpQuery.Close();
+      end;
+    finally
+      tmpQuery.Free();
+    end;
+  end;
+
+  procedure LoadPlannedBudget();
+  var
+    tmpQuery: TFDQuery;
+  begin
+    tmpQuery := TFDQuery.Create(nil);
+    try
+      tmpQuery.Connection := FConnection;
+      tmpQuery.SQL.Text := TQuery.sp_planned_budget_sel.Name;
+      tmpQuery.ParamByName(TQuery.sp_planned_budget_sel.Param.Id).DataType := ftInteger;
+      tmpQuery.Open();
+      try
+        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
+        tmpView.PlannedBudget := tmpQuery;
+      finally
+        tmpQuery.Close();
+      end;
+    finally
+      tmpQuery.Free();
+    end;
+  end;
+
   procedure RefreshExecute();
   begin
     FProcessign := True;
@@ -304,6 +348,10 @@ var
             LoadProducts();
           etProductTypes:
             LoadProductTypes();
+          etActualBudget:
+            LoadActualBudget();
+          etPlannedBudget:
+            LoadPlannedBudget();
         end;
       finally
         FProcessign := False;
@@ -570,6 +618,10 @@ var
         tmpSPName := 'products_del';
       etProductTypes:
         tmpSPName := 'product_types_del';
+      etActualBudget:
+        tmpSPName := 'actual_budget_del';
+      etPlannedBudget:
+        tmpSPName := 'planned_budget_del';
     else
       Exit;
     end;

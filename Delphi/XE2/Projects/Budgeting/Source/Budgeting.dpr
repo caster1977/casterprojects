@@ -39,7 +39,11 @@ uses
   Budgeting.Logic.Interfaces.Presenters.ICustomPresenter in 'Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.ICustomPresenter.pas',
   Budgeting.Logic.Interfaces.Views.IBankView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IBankView.pas',
   Budgeting.Logic.Interfaces.Views.ICustomView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.ICustomView.pas',
-  Budgeting.Logic.Interfaces.Views.IMainView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IMainView.pas';
+  Budgeting.Logic.Interfaces.Views.IMainView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IMainView.pas',
+  Budgeting.Logic.Interfaces.Models.IActualBudgetModel in 'Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IActualBudgetModel.pas',
+  Budgeting.Logic.Interfaces.Models.IPlannedBudgetModel in 'Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IPlannedBudgetModel.pas',
+  Budgeting.Logic.Classes.Models.TActualBudgetModel in 'Logic\Classes\Models\Budgeting.Logic.Classes.Models.TActualBudgetModel.pas',
+  Budgeting.Logic.Classes.Models.TPlannedBudgetModel in 'Logic\Classes\Models\Budgeting.Logic.Classes.Models.TPlannedBudgetModel.pas';
 
 {$R *.res}
 
@@ -64,10 +68,7 @@ begin
   Application.Initialize();
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMainForm, MainForm);
-  Application.CreateForm(TConfigurationForm, ConfigurationForm);
-  Application.CreateForm(TMainForm, MainForm);
   MainPresenter := TMainPresenter.Create(MainForm);
-  MainForm.cbbReferences.ItemIndex := 0;
   Application.Run();
 
 end.

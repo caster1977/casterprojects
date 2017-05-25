@@ -7,7 +7,7 @@ type
   public type
     sp_accounting_centers_sel = class(TObject)
     public const
-      Name = 'dbo.accounting_centers_sel :AId, :AActivity';
+      name = 'dbo.accounting_centers_sel :AId, :AActivity';
 
     type
       Param = class
@@ -20,7 +20,7 @@ type
       public const
         Id = 'id';
         Code = 'code';
-        Name = 'name';
+        name = 'name';
         Description = 'description';
         Activity = 'activity';
       end;
@@ -28,7 +28,7 @@ type
 
     sp_xxx_del = class(TObject)
     public const
-      Name = 'dbo.%s :AId';
+      name = 'dbo.%s :AId';
 
     type
       Param = class
@@ -39,13 +39,13 @@ type
       Field = class(TObject)
       public const
         Result = 'result';
-        Message = 'message';
+        message = 'message';
       end;
     end;
 
     sp_banks_sel = class(TObject)
     public const
-      Name = 'dbo.banks_sel :AId, :AActivity';
+      name = 'dbo.banks_sel :AId, :AActivity';
 
     type
       Param = class
@@ -57,7 +57,7 @@ type
       Field = class(TObject)
       public const
         Id = 'id';
-        Name = 'name';
+        name = 'name';
         Code = 'code';
         Address = 'address';
         Activity = 'activity';
@@ -66,7 +66,7 @@ type
 
     sp_budget_items_sel = class(TObject)
     public const
-      Name = 'dbo.budget_items_sel :AId, :AActivity';
+      name = 'dbo.budget_items_sel :AId, :AActivity';
 
     type
       Param = class
@@ -87,7 +87,7 @@ type
 
     sp_budget_item_types_sel = class(TObject)
     public const
-      Name = 'dbo.budget_item_types_sel :AId, :AActivity';
+      name = 'dbo.budget_item_types_sel :AId, :AActivity';
 
     type
       Param = class
@@ -99,14 +99,14 @@ type
       Field = class(TObject)
       public const
         Id = 'id';
-        Name = 'name';
+        name = 'name';
         Activity = 'activity';
       end;
     end;
 
     sp_cosignatories_sel = class(TObject)
     public const
-      Name = 'dbo.cosignatories_sel :AId, :AActivity';
+      name = 'dbo.cosignatories_sel :AId, :AActivity';
 
     type
       Param = class
@@ -119,7 +119,7 @@ type
       public const
         Id = 'id';
         Id_Bank = 'id_bank';
-        Name = 'name';
+        name = 'name';
         UNP = 'unp';
         Address = 'address';
         AgreementNumber = 'agreementnumber';
@@ -132,7 +132,7 @@ type
 
     sp_currencies_sel = class(TObject)
     public const
-      Name = 'dbo.currencies_sel :AId, :AActivity';
+      name = 'dbo.currencies_sel :AId, :AActivity';
 
     type
       Param = class
@@ -152,7 +152,7 @@ type
 
     sp_products_sel = class(TObject)
     public const
-      Name = 'dbo.products_sel :AId, :AActivity';
+      name = 'dbo.products_sel :AId, :AActivity';
 
     type
       Param = class
@@ -173,7 +173,7 @@ type
 
     sp_product_types_sel = class(TObject)
     public const
-      Name = 'dbo.product_types_sel :AId, :AActivity';
+      name = 'dbo.product_types_sel :AId, :AActivity';
 
     type
       Param = class
@@ -185,8 +185,55 @@ type
       Field = class(TObject)
       public const
         Id = 'id';
-        Name = 'name';
+        name = 'name';
         Activity = 'activity';
+      end;
+    end;
+
+    sp_actual_budget_sel = class(TObject)
+    public const
+      name = 'dbo.actual_budget_sel :AId';
+
+    type
+      Param = class
+      public const
+        Id = 'AId';
+      end;
+
+      Field = class(TObject)
+      public const
+        Id = 'id';
+        Id_BudgetItem = 'id_budget_item';
+        Id_AccountingCenter = 'id_account_center';
+        Id_Cosignatory = 'id_cosignatory';
+        Id_Product = 'id_product';
+        Id_Currency = 'id_currency';
+        Document = 'document';
+        DocumentDate = 'document_date';
+        Description = 'description';
+        Amount = 'amount';
+      end;
+    end;
+
+    sp_planned_budget_sel = class(TObject)
+    public const
+      name = 'dbo.planned_budget_sel :AId';
+
+    type
+      Param = class
+      public const
+        Id = 'AId';
+      end;
+
+      Field = class(TObject)
+      public const
+        Id = 'id';
+        Id_BudgetItem = 'id_budget_item';
+        Id_AccountingCenter = 'id_account_center';
+        Id_Currency = 'id_currency';
+        Year = 'year';
+        Month = 'month';
+        Amount = 'amount';
       end;
     end;
   end;

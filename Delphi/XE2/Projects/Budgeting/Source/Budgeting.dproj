@@ -84,9 +84,9 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>104</VerInfo_Build>
+        <VerInfo_Build>118</VerInfo_Build>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.104;InternalName=Budgeting x86 DEBUG;LegalCopyright=(C)opyright 2017 by Caster;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=Developed by Caster</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.118;InternalName=Budgeting x86 DEBUG;LegalCopyright=(C)opyright 2017 by Caster;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=Developed by Caster</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -146,6 +146,10 @@
         <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IBankView.pas"/>
         <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.ICustomView.pas"/>
         <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IMainView.pas"/>
+        <DCCReference Include="Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IActualBudgetModel.pas"/>
+        <DCCReference Include="Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IPlannedBudgetModel.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TActualBudgetModel.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TPlannedBudgetModel.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

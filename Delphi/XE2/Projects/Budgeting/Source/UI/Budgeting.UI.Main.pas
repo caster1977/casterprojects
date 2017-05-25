@@ -154,22 +154,13 @@ type
     cxgrdOperations: TcxGrid;
     cxgrdlvl2: TcxGridLevel;
     pctnbrMain: TPopupActionBar;
-    N21: TMenuItem;
     N15: TMenuItem;
-    N22: TMenuItem;
     N18: TMenuItem;
-    N23: TMenuItem;
-    N24: TMenuItem;
-    N25: TMenuItem;
-    N26: TMenuItem;
     btnConfiguration: TdxBarButton;
     N27: TMenuItem;
     N28: TMenuItem;
-    N29: TMenuItem;
-    N30: TMenuItem;
     actExportToExcel: TAction;
     btnExcel: TdxBarButton;
-    N19: TMenuItem;
     btnConnect: TdxBarButton;
     actConnect: TAction;
     actDisconnect: TAction;
@@ -199,7 +190,7 @@ type
     lvl1: TcxGridLevel;
     btnRefresh: TdxBarButton;
     cxgrdlvl1: TcxGridLevel;
-    cbbOperations: TcxComboBox;
+    cbbOperationTypes: TcxComboBox;
 
     cxgrdReports: TcxGrid;
     cbbReports: TcxComboBox;
@@ -259,7 +250,14 @@ type
     colProductTypes_Activity: TcxGridColumn;
 
     fdphysmsqldrvrlnk: TFDPhysMSSQLDriverLink;
-    cbb1: TcxComboBox;
+    cbbBudgetItemTypes: TcxComboBox;
+    tblvActualBudget: TcxGridTableView;
+    tblvPlannedBudget: TcxGridTableView;
+    N19: TMenuItem;
+    N21: TMenuItem;
+    N22: TMenuItem;
+    colActualBudgetColumn1: TcxGridColumn;
+    colPlannedBudgetColumn1: TcxGridColumn;
     procedure actQuitExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -294,6 +292,7 @@ type
     procedure actRefreshUpdate(Sender: TObject);
     procedure cbbReferencesPropertiesChange(Sender: TObject);
     procedure pcMainChange(Sender: TObject);
+    procedure cbbOperationTypesPropertiesChange(Sender: TObject);
 
   strict private
     FProcessing: Boolean;
@@ -326,6 +325,9 @@ type
     procedure SetCurrencies(const aValue: TDataSet);
     procedure SetProducts(const aValue: TDataSet);
     procedure SetProductTypes(const aValue: TDataSet);
+    procedure SetActualBudget(const aValue: TDataSet);
+    procedure SetPlannedBudget(const aValue: TDataSet);
+    procedure Initialize();
   end;
 
 var
@@ -614,6 +616,42 @@ begin
   end;
 end;
 
+procedure TMainForm.SetPlannedBudget(const aValue: TDataSet);
+//var
+//  i: Integer;
+begin
+//  tblvProductTypes.BeginUpdate();
+//  try
+//    tblvProductTypes.DataController.RecordCount := 0;
+//
+//    if not Assigned(aValue) then
+//    begin
+//      Exit;
+//    end;
+//
+//    if aValue.IsEmpty() then
+//    begin
+//      Exit;
+//    end;
+//
+//    aValue.First();
+//    tblvProductTypes.DataController.RecordCount := aValue.RecordCount;
+//
+//    for i := 0 to Pred(aValue.RecordCount) do
+//    begin
+//      tblvProductTypes.DataController.Values[i, colProductTypes_Id_ProductType.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Id).AsInteger;
+//      tblvProductTypes.DataController.Values[i, colProductTypes_Name.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Name).AsString;
+//      tblvProductTypes.DataController.Values[i, colProductTypes_Activity.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Activity).AsBoolean;
+//
+//      StepProgress();
+//
+//      aValue.Next();
+//    end;
+//  finally
+//    tblvProductTypes.EndUpdate();
+//  end;
+end;
+
 procedure TMainForm.SetProducts(const aValue: TDataSet);
 var
   i: Integer;
@@ -732,26 +770,36 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 var
   tmpPair: TPair<string, TcxGridTableView>;
-  tmpReferences: TDictionary<string, TcxGridTableView>;
+  tmpList: TDictionary<string, TcxGridTableView>;
 begin
   FProcessing := False;
-  tmpReferences := TDictionary<string, TcxGridTableView>.Create;
+  tmpList := TDictionary<string, TcxGridTableView>.Create;
   try
-    tmpReferences.Add('Центры учёта затрат', tblvAccountingCenters);
-    tmpReferences.Add('Банки', tblvBanks);
-    tmpReferences.Add('Статьи бюджета', tblvBudgetItems);
-    tmpReferences.Add('Типы статей бюджета', tblvBudgetItemTypes);
-    tmpReferences.Add('Субъекты', tblvCosignatories);
-    tmpReferences.Add('Валюты', tblvCurrencies);
-    tmpReferences.Add('Товары', tblvProducts);
-    tmpReferences.Add('Виды товаров', tblvProductTypes);
+    tmpList.Add('Центры учёта затрат', tblvAccountingCenters);
+    tmpList.Add('Банки', tblvBanks);
+    tmpList.Add('Статьи бюджета', tblvBudgetItems);
+    tmpList.Add('Типы статей бюджета', tblvBudgetItemTypes);
+    tmpList.Add('Субъекты', tblvCosignatories);
+    tmpList.Add('Валюты', tblvCurrencies);
+    tmpList.Add('Товары', tblvProducts);
+    tmpList.Add('Виды товаров', tblvProductTypes);
 
-    for tmpPair in tmpReferences do
+    for tmpPair in tmpList do
     begin
       cbbReferences.Properties.Items.AddObject(tmpPair.Key, tmpPair.Value);
     end;
+
+    tmpList.Clear();
+
+    tmpList.Add('План', tblvPlannedBudget);
+    tmpList.Add('Факт', tblvActualBudget);
+
+    for tmpPair in tmpList do
+    begin
+      cbbOperationTypes.Properties.Items.AddObject(tmpPair.Key, tmpPair.Value);
+    end;
   finally
-    FreeAndNil(tmpReferences);
+    FreeAndNil(tmpList);
   end;
 
   gsflvrsnfMain.Filename := Application.ExeName;
@@ -821,6 +869,10 @@ begin
         Result := etProducts;
       if tmpActiveView = tblvProductTypes then
         Result := etProductTypes;
+      if tmpActiveView = tblvActualBudget then
+        Result := etActualBudget;
+      if tmpActiveView = tblvPlannedBudget then
+        Result := etPlannedBudget;
       end;
   end;
 end;
@@ -865,6 +917,15 @@ begin
   cxbrdtmProgress.Visible := ivNever;
 end;
 
+procedure TMainForm.Initialize();
+begin
+  cbbReferences.ItemIndex := 0;
+  cbbOperationTypes.ItemIndex := 0;
+  cbbBudgetItemTypes.ItemIndex := 0;
+  cbbReports.ItemIndex := 0;
+  pcMain.ActivePage := shtReferences;
+end;
+
 procedure TMainForm.pcMainChange(Sender: TObject);
 var
   tmpCursor: TCursor;
@@ -890,6 +951,42 @@ end;
 procedure TMainForm.SetActionStates(const aKey: TViewEnumAction; const aValue: Boolean);
 begin
   FActionStates[aKey] := aValue;
+end;
+
+procedure TMainForm.SetActualBudget(const aValue: TDataSet);
+//var
+//  i: Integer;
+begin
+//  tblvProductTypes.BeginUpdate();
+//  try
+//    tblvProductTypes.DataController.RecordCount := 0;
+//
+//    if not Assigned(aValue) then
+//    begin
+//      Exit;
+//    end;
+//
+//    if aValue.IsEmpty() then
+//    begin
+//      Exit;
+//    end;
+//
+//    aValue.First();
+//    tblvProductTypes.DataController.RecordCount := aValue.RecordCount;
+//
+//    for i := 0 to Pred(aValue.RecordCount) do
+//    begin
+//      tblvProductTypes.DataController.Values[i, colProductTypes_Id_ProductType.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Id).AsInteger;
+//      tblvProductTypes.DataController.Values[i, colProductTypes_Name.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Name).AsString;
+//      tblvProductTypes.DataController.Values[i, colProductTypes_Activity.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Activity).AsBoolean;
+//
+//      StepProgress();
+//
+//      aValue.Next();
+//    end;
+//  finally
+//    tblvProductTypes.EndUpdate();
+//  end;
 end;
 
 procedure TMainForm.SetBanks(const aValue: TDataSet);
@@ -1165,6 +1262,21 @@ procedure TMainForm.ApplyConfiguration();
 begin
   SetEnableStatusbar(TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStatusbar);
   SetEnableToolbar(TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableToolbar);
+end;
+
+procedure TMainForm.cbbOperationTypesPropertiesChange(Sender: TObject);
+var
+  tmpCursor: TCursor;
+begin
+  tmpCursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;
+  try
+    cxgrdOperations.ActiveLevel.GridView := cbbOperationTypes.Properties.Items.Objects[cbbOperationTypes.ItemIndex] as TcxGridTableView;
+    FOnEventSimple(veEntityChanged);
+    btnRefresh.Click();
+  finally
+    Screen.Cursor := tmpCursor;
+  end;
 end;
 
 procedure TMainForm.cbbReferencesPropertiesChange(Sender: TObject);
