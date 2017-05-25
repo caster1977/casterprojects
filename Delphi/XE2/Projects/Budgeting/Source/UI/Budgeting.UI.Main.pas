@@ -261,6 +261,7 @@ type
     colGoodsTypes_Activity: TcxGridColumn;
 
     fdphysmsqldrvrlnk: TFDPhysMSSQLDriverLink;
+    cbb1: TcxComboBox;
     procedure actQuitExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);

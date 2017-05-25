@@ -17,16 +17,10 @@ type
   TGeneral = class(TCustomSection)
   public
     /// <summary>
-    /// Время начала периода расчётов
+    /// Расчётный год
     /// </summary>
-    [TDefaultValue('')]
-    property StartDate: string index 0 read GetStringValue write SetStringValue;
-
-    /// <summary>
-    /// Время окончания периода расчётов
-    /// </summary>
-    [TDefaultValue('')]
-    property StopDate: string index 1 read GetStringValue write SetStringValue;
+    [TDefaultValue(0)]
+    property Year: Integer index 0 read GetIntegerValue write SetIntegerValue;
   end;
 
 implementation

@@ -48,6 +48,7 @@ uses
   LoginPackage.Logic.TLoginWindow,
   Budgeting.Logic.Consts,
   Budgeting.Logic.Classes.TQuery,
+  Budgeting.UI.Configuration,
   FireDAC.Comp.Client;
 // Budgeting.Logic.Classes.TPresenterDetail,
 // Budgeting.Logic.Classes.TQuery,
@@ -345,23 +346,21 @@ var
   end;
 
   procedure ConfigurationExecute();
+  var
+    tmpForm: TForm;
+    b: Boolean;
   begin
-    (* var
-      tmpForm: TForm;
-      begin
-      tmpForm := TConfigurationForm.Create(Owner, nil, 0 { Configuration, Configuration.CurrentPage } );
-      try
-      { Result := } tmpForm.ShowModal { = mrOk };
-      finally
+    tmpForm := TConfigurationForm.Create(tmpView.Control, (TConfiguration.Get(TConfiguration) as TConfiguration).CurrentPage);
+    try
+      b := tmpForm.ShowModal = mrOk ;
+    finally
       tmpForm.Free();
-      end;
-      { if not FLogic.ShowConfigurationForm() then
-      begin
-      Exit;
-      end;
-      ApplyConfiguration(); }
-      end; *)
-    { TODO : дописать }
+    end;
+    if b then
+    begin
+      //ApplyConfiguration();
+      { TODO : дописать }
+    end;
   end;
 
   procedure ConfigurationUpdate();

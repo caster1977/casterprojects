@@ -42,7 +42,7 @@ object MainForm: TMainForm
     Margins.Right = 0
     Align = alClient
     TabOrder = 5
-    Properties.ActivePage = shtReferences
+    Properties.ActivePage = shtOperations
     Properties.CustomButtons.Buttons = <>
     OnChange = pcMainChange
     ClientRectBottom = 504
@@ -648,11 +648,13 @@ object MainForm: TMainForm
       ImageIndex = 0
       object cxgrdOperations: TcxGrid
         Left = 0
-        Top = 27
+        Top = 53
         Width = 776
-        Height = 453
+        Height = 427
         Align = alClient
         TabOrder = 0
+        ExplicitTop = 27
+        ExplicitHeight = 453
         object cxgrdlvl2: TcxGridLevel
         end
       end
@@ -660,6 +662,7 @@ object MainForm: TMainForm
         AlignWithMargins = True
         Left = 3
         Top = 3
+        Margins.Bottom = 1
         Align = alTop
         Properties.AutoSelect = False
         Properties.DropDownListStyle = lsFixedList
@@ -672,6 +675,26 @@ object MainForm: TMainForm
         Properties.Revertable = True
         Properties.Sorted = True
         TabOrder = 1
+        Width = 770
+      end
+      object cbb1: TcxComboBox
+        AlignWithMargins = True
+        Left = 3
+        Top = 28
+        Margins.Bottom = 4
+        Align = alTop
+        Properties.AutoSelect = False
+        Properties.DropDownListStyle = lsFixedList
+        Properties.Items.Strings = (
+          '1'
+          '2'
+          '3'
+          '4')
+        Properties.ReadOnly = False
+        Properties.Revertable = True
+        Properties.Sorted = True
+        TabOrder = 2
+        ExplicitTop = 43
         Width = 770
       end
     end

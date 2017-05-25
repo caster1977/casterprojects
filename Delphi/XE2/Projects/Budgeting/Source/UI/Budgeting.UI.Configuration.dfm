@@ -138,7 +138,7 @@ object ConfigurationForm: TConfigurationForm
     Top = 53
     Width = 462
     Height = 240
-    ActivePage = tsOther
+    ActivePage = tsGeneral
     Align = alClient
     Style = tsButtons
     TabOrder = 1
@@ -146,44 +146,24 @@ object ConfigurationForm: TConfigurationForm
     object tsGeneral: TTabSheet
       Caption = ' '#1086#1089#1085#1086#1074#1085#1099#1077
       TabVisible = False
-      object cxdtdtStartDate: TcxDateEdit
-        Left = 10
-        Top = 26
-        Properties.DisplayFormat = 'dd.mm.yyyy'
-        Properties.EditFormat = 'dd.mm.yyyy'
-        Properties.ImmediatePost = True
-        TabOrder = 1
-        Width = 121
-      end
-      object lblStartDate: TcxLabel
+      object cxlblYear: TcxLabel
         Left = 10
         Top = 3
-        Caption = #1044#1072#1090#1072' &'#1085#1072#1095#1072#1083#1072' '#1088#1072#1089#1095#1105#1090#1085#1086#1075#1086' '#1087#1077#1088#1080#1086#1076#1072' ('#1074#1082#1083#1102#1095#1080#1090#1077#1083#1100#1085#1086')'
-        FocusControl = cxdtdtStartDate
+        Caption = '&'#1056#1072#1089#1095#1105#1090#1085#1099#1081' '#1075#1086#1076
       end
-      object lblStopDate: TcxLabel
+      object cxspndtYear: TcxSpinEdit
         Left = 10
-        Top = 53
-        Caption = #1044#1072#1090#1072' '#1086'&'#1082#1086#1085#1095#1072#1085#1080#1103' '#1088#1072#1089#1095#1105#1090#1085#1086#1075#1086' '#1087#1077#1088#1080#1086#1076#1072' ('#1074#1082#1083#1102#1095#1080#1090#1077#1083#1100#1085#1086')'
-        FocusControl = cxdtdtStopDate
-      end
-      object cxdtdtStopDate: TcxDateEdit
-        Left = 10
-        Top = 76
-        Properties.DisplayFormat = 'dd.mm.yyyy'
-        Properties.EditFormat = 'dd.mm.yyyy'
+        Top = 26
         Properties.ImmediatePost = True
-        TabOrder = 3
+        Properties.OnChange = cxspndtYearPropertiesChange
+        Properties.OnEditValueChanged = cxspndtYearPropertiesEditValueChanged
+        TabOrder = 1
         Width = 121
       end
     end
     object tsInterface: TTabSheet
       Caption = ' '#1080#1085#1090#1077#1088#1092#1077#1081#1089'a'
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object gbInterface: TGroupBox
         Left = 0
         Top = 0
@@ -307,7 +287,7 @@ object ConfigurationForm: TConfigurationForm
     Left = 344
     Top = 112
     Bitmap = {
-      494C010102000800340110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000800380110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

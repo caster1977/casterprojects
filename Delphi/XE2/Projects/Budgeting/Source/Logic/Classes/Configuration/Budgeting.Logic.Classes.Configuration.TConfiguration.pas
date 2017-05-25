@@ -40,6 +40,7 @@ end;
 procedure TConfiguration.Initialize();
 begin
   inherited;
+  FCurrentPage := 0;
   RegisterSection(TGeneral);
   RegisterSection(TInterface);
   RegisterSection(TDatabaseConnection);

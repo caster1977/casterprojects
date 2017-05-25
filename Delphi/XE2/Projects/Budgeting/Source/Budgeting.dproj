@@ -84,9 +84,9 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>81</VerInfo_Build>
+        <VerInfo_Build>98</VerInfo_Build>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.81;InternalName=Budgeting x86 DEBUG;LegalCopyright=(C)opyright 2017 by Caster;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=Developed by Caster</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.98;InternalName=Budgeting x86 DEBUG;LegalCopyright=(C)opyright 2017 by Caster;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=Developed by Caster</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -135,6 +135,16 @@
         <DCCReference Include="Logic\Interfaces\Budgeting.Logic.Interfaces.IBudgetItemType.pas"/>
         <DCCReference Include="Logic\Interfaces\Budgeting.Logic.Interfaces.ICurrency.pas"/>
         <DCCReference Include="Logic\Interfaces\Budgeting.Logic.Interfaces.IGoodsType.pas"/>
+        <DCCReference Include="Logic\Interfaces\Budgeting.Logic.Interfaces.IGood.pas"/>
+        <DCCReference Include="Logic\Interfaces\Budgeting.Logic.Interfaces.ICosignatory.pas"/>
+        <DCCReference Include="Logic\Classes\Budgeting.Logic.Classes.TBank.pas"/>
+        <DCCReference Include="Logic\Classes\Budgeting.Logic.Classes.TBudgetItem.pas"/>
+        <DCCReference Include="Logic\Classes\Budgeting.Logic.Classes.TAccountingCenter.pas"/>
+        <DCCReference Include="Logic\Classes\Budgeting.Logic.Classes.TBudgetItemType.pas"/>
+        <DCCReference Include="Logic\Classes\Budgeting.Logic.Classes.TCurrency.pas"/>
+        <DCCReference Include="Logic\Classes\Budgeting.Logic.Classes.TGood.pas"/>
+        <DCCReference Include="Logic\Classes\Budgeting.Logic.Classes.TGoodsType.pas"/>
+        <DCCReference Include="Logic\Classes\Budgeting.Logic.Classes.TCosignatory.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

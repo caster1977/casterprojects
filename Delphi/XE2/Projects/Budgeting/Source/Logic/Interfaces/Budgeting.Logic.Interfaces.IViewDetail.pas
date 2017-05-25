@@ -9,8 +9,10 @@ uses
 
 type
   IViewDetail = interface(IView)
-    //procedure SetList(const aValue: TDataSet);
-    //property List: TDataSet write SetList;
+    ['{3DF049C9-9F77-4FB2-96C5-26747A3936AB}']
+    function GetItem(): IInterface;
+    procedure SetItem(const aValue: IInterface);
+    property Item: IInterface read GetItem write SetItem;
   end;
 
 implementation

@@ -28,7 +28,17 @@ uses
   Budgeting.Logic.Interfaces.IBudgetItem in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IBudgetItem.pas',
   Budgeting.Logic.Interfaces.IBudgetItemType in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IBudgetItemType.pas',
   Budgeting.Logic.Interfaces.ICurrency in 'Logic\Interfaces\Budgeting.Logic.Interfaces.ICurrency.pas',
-  Budgeting.Logic.Interfaces.IGoodsType in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IGoodsType.pas';
+  Budgeting.Logic.Interfaces.IGoodsType in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IGoodsType.pas',
+  Budgeting.Logic.Interfaces.IGood in 'Logic\Interfaces\Budgeting.Logic.Interfaces.IGood.pas',
+  Budgeting.Logic.Interfaces.ICosignatory in 'Logic\Interfaces\Budgeting.Logic.Interfaces.ICosignatory.pas',
+  Budgeting.Logic.Classes.TBank in 'Logic\Classes\Budgeting.Logic.Classes.TBank.pas',
+  Budgeting.Logic.Classes.TBudgetItem in 'Logic\Classes\Budgeting.Logic.Classes.TBudgetItem.pas',
+  Budgeting.Logic.Classes.TAccountingCenter in 'Logic\Classes\Budgeting.Logic.Classes.TAccountingCenter.pas',
+  Budgeting.Logic.Classes.TBudgetItemType in 'Logic\Classes\Budgeting.Logic.Classes.TBudgetItemType.pas',
+  Budgeting.Logic.Classes.TCurrency in 'Logic\Classes\Budgeting.Logic.Classes.TCurrency.pas',
+  Budgeting.Logic.Classes.TGood in 'Logic\Classes\Budgeting.Logic.Classes.TGood.pas',
+  Budgeting.Logic.Classes.TGoodsType in 'Logic\Classes\Budgeting.Logic.Classes.TGoodsType.pas',
+  Budgeting.Logic.Classes.TCosignatory in 'Logic\Classes\Budgeting.Logic.Classes.TCosignatory.pas';
 
 {$R *.res}
 

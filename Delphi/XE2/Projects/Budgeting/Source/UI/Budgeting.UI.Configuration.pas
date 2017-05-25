@@ -13,8 +13,6 @@ uses
   System.Actions,
   Vcl.ActnList,
   Budgeting.Logic.Consts,
-  Budgeting.Logic.Classes.Configuration.TConfiguration,
-
   cxGraphics,
   cxControls,
   cxLookAndFeels,
@@ -27,7 +25,9 @@ uses
   cxTextEdit,
   cxMaskEdit,
   cxDropDownEdit,
-  cxCalendar, Vcl.ImgList;
+  cxCalendar,
+  Vcl.ImgList,
+  cxSpinEdit;
 
 type
   TConfigurationForm = class(TForm)
@@ -59,10 +59,8 @@ type
     actPreviousPage: TAction;
     actNextPage: TAction;
     tsGeneral: TTabSheet;
-    cxdtdtStartDate: TcxDateEdit;
-    lblStartDate: TcxLabel;
-    lblStopDate: TcxLabel;
-    cxdtdtStopDate: TcxDateEdit;
+    cxlblYear: TcxLabel;
+    cxspndtYear: TcxSpinEdit;
     procedure actCancelExecute(Sender: TObject);
     procedure actNextPageExecute(Sender: TObject);
     procedure actNextPageUpdate(Sender: TObject);
@@ -73,6 +71,8 @@ type
     procedure actApplyUpdate(Sender: TObject);
     procedure actDefaultsExecute(Sender: TObject);
     procedure actDefaultsUpdate(Sender: TObject);
+    procedure cxspndtYearPropertiesChange(Sender: TObject);
+    procedure cxspndtYearPropertiesEditValueChanged(Sender: TObject);
 
   strict private
     function GetActivePage(): Integer;
@@ -84,19 +84,9 @@ type
     property PageCount: Integer read GetPageCount nodefault;
 
   strict private
-    FConfiguration: TConfiguration;
-    function GetConfiguration(): TConfiguration;
-    property Configuration: TConfiguration read GetConfiguration nodefault;
-
-  strict private
-    function GetStartDate(): TDateTime;
-    procedure SetStartDate(const AValue: TDateTime);
-    property StartDate: TDateTime read GetStartDate write SetStartDate nodefault;
-
-  strict private
-    function GetStopDate(): TDateTime;
-    procedure SetStopDate(const AValue: TDateTime);
-    property StopDate: TDateTime read GetStopDate write SetStopDate nodefault;
+    function GetYear(): Integer;
+    procedure SetYear(const AValue: Integer);
+    property Year: Integer read GetYear write SetYear nodefault;
 
   strict private
     function GetEnableQuitConfirmation(): Boolean;
@@ -132,8 +122,7 @@ type
       default CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
 
   public
-    constructor Create(const aOwner: TComponent; const aConfiguration: TConfiguration; const aActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE);
-      reintroduce; virtual;
+    constructor Create(const aOwner: TComponent; const aActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
   end;
 
 var
@@ -143,6 +132,9 @@ implementation
 
 uses
   System.UITypes,
+  System.Math,
+  System.Variants,
+  Budgeting.Logic.Classes.Configuration.TConfiguration,
   Budgeting.Logic.Classes.Configuration.Section.TGeneral,
   Budgeting.Logic.Classes.Configuration.Section.TInterface,
   Budgeting.Logic.Classes.Configuration.Section.TOther;
@@ -160,40 +152,49 @@ begin
   end;
 end;
 
-constructor TConfigurationForm.Create(const aOwner: TComponent; const aConfiguration: TConfiguration; const aActivePage: Integer);
+constructor TConfigurationForm.Create(const aOwner: TComponent; const aActivePage: Integer);
   procedure ApplyConfiguration();
+  var
+    tmpYear: Integer;
   begin
-    if Assigned(Configuration) then
-    begin
-      StartDate := EncodeDate(Configuration.Section<TGeneral>.StartDate.Substring(0, 4).ToInteger(), Configuration.Section<TGeneral>.StartDate.Substring(4, 2)
-        .ToInteger(), Configuration.Section<TGeneral>.StartDate.Substring(6, 2).ToInteger());
-      StopDate := EncodeDate(Configuration.Section<TGeneral>.StopDate.Substring(0, 4).ToInteger(), Configuration.Section<TGeneral>.StopDate.Substring(4, 2)
-        .ToInteger(), Configuration.Section<TGeneral>.StopDate.Substring(6, 2).ToInteger());
-      EnableQuitConfirmation := Configuration.Section<TInterface>.EnableQuitConfirmation;
-      EnableSplashAtStart := Configuration.Section<TInterface>.EnableSplashAtStart;
-      EnableStatusbar := Configuration.Section<TInterface>.EnableStatusbar;
-      EnableToolbar := Configuration.Section<TInterface>.EnableToolbar;
-      EnableStoreMainFormSizesAndPosition := Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition;
-    end;
+    tmpYear := TConfiguration.Get(TConfiguration).Section<TGeneral>.Year;
+    Year := IfThen(tmpYear = 0, CurrentYear(), tmpYear);
+    EnableQuitConfirmation := TConfiguration.Get(TConfiguration).Section<TInterface>.EnableQuitConfirmation;
+    EnableSplashAtStart := TConfiguration.Get(TConfiguration).Section<TInterface>.EnableSplashAtStart;
+    EnableStatusbar := TConfiguration.Get(TConfiguration).Section<TInterface>.EnableStatusbar;
+    EnableToolbar := TConfiguration.Get(TConfiguration).Section<TInterface>.EnableToolbar;
+    EnableStoreMainFormSizesAndPosition := TConfiguration.Get(TConfiguration).Section<TInterface>.EnableStoreMainFormSizesAndPosition;
   end;
 
 begin
-  // Assert(Assigned(aConfiguration), RsAConfigurationIsNil);
   inherited Create(aOwner);
   ActivePage := aActivePage;
-  FConfiguration := aConfiguration;
   ApplyConfiguration();
 end;
 
+procedure TConfigurationForm.cxspndtYearPropertiesChange(Sender: TObject);
+begin
+  cxspndtYear.EditValue := cxspndtYear.EditingValue;
+end;
+
+procedure TConfigurationForm.cxspndtYearPropertiesEditValueChanged(Sender: TObject);
+// var
+// tmpCursor: TCursor;
+begin
+//   tmpCursor := Screen.Cursor;
+//   Screen.Cursor := crHourGlass;
+//   try
+//   FOnEventSimple(veItemChanged);
+//   finally
+//   Screen.Cursor := tmpCursor;
+//   end;
+end;
+
 procedure TConfigurationForm.actDefaultsExecute(Sender: TObject);
-var
-  tmpDate: TDateTime;
 begin
   if PageControl.ActivePage = tsGeneral then
   begin
-    tmpDate := Date();
-    StartDate := tmpDate;
-    StopDate := tmpDate;
+    Year := CurrentYear();
   end;
   if PageControl.ActivePage = tsInterface then
   begin
@@ -210,43 +211,37 @@ begin
 end;
 
 procedure TConfigurationForm.actDefaultsUpdate(Sender: TObject);
-// var
-// b: Boolean;
-// tmpDate: string;
+var
+  b: Boolean;
 begin
-  { b := False;
-    if PageControl.ActivePage = tsGeneral then
-    begin
-    tmpDate := FormatDateTime('yyyymmdd', Date());
-    b := not((Configuration.Section<TGeneralSection>.StartDate = tmpDate) and (Configuration.Section<TGeneralSection>.StopDate = tmpDate));
-    end;
-    if PageControl.ActivePage = tsInterface then
-    begin
+  b := False;
+  if PageControl.ActivePage = tsGeneral then
+  begin
+    b := not(Year = CurrentYear());
+  end;
+  if PageControl.ActivePage = tsInterface then
+  begin
     b := not((EnableQuitConfirmation = CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION) and (EnableSplashAtStart = CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START)
-    and (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR) and
-    (EnableStoreMainFormSizesAndPosition = CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION));
-    end;
-    if PageControl.ActivePage = tsOther then
-    begin
+      and (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR) and
+      (EnableStoreMainFormSizesAndPosition = CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION));
+  end;
+  if PageControl.ActivePage = tsOther then
+  begin
     b := not((EnablePlaySoundOnComplete = CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE));
-    end;
-    actDefaults.Enabled := b; }
+  end;
+  actDefaults.Enabled := b;
 end;
 
 procedure TConfigurationForm.actApplyExecute(Sender: TObject);
 begin
-  if Assigned(Configuration) then
-  begin
-    Configuration.Section<TGeneral>.StartDate := FormatDateTime('yyyymmdd', StartDate);
-    Configuration.Section<TGeneral>.StopDate := FormatDateTime('yyyymmdd', StopDate);
-    Configuration.Section<TInterface>.EnableQuitConfirmation := EnableQuitConfirmation;
-    Configuration.Section<TInterface>.EnableSplashAtStart := EnableSplashAtStart;
-    Configuration.Section<TInterface>.EnableStatusbar := EnableStatusbar;
-    Configuration.Section<TInterface>.EnableToolbar := EnableToolbar;
-    Configuration.Section<TInterface>.EnableStoreMainFormSizesAndPosition := EnableStoreMainFormSizesAndPosition;
-    Configuration.Section<TOther>.EnablePlaySoundOnComplete := EnablePlaySoundOnComplete;
-    Configuration.CurrentPage := ActivePage;
-  end;
+  TConfiguration.Get(TConfiguration).Section<TGeneral>.Year := Year;
+  TConfiguration.Get(TConfiguration).Section<TInterface>.EnableQuitConfirmation := EnableQuitConfirmation;
+  TConfiguration.Get(TConfiguration).Section<TInterface>.EnableSplashAtStart := EnableSplashAtStart;
+  TConfiguration.Get(TConfiguration).Section<TInterface>.EnableStatusbar := EnableStatusbar;
+  TConfiguration.Get(TConfiguration).Section<TInterface>.EnableToolbar := EnableToolbar;
+  TConfiguration.Get(TConfiguration).Section<TInterface>.EnableStoreMainFormSizesAndPosition := EnableStoreMainFormSizesAndPosition;
+  TConfiguration.Get(TConfiguration).Section<TOther>.EnablePlaySoundOnComplete := EnablePlaySoundOnComplete;
+  (TConfiguration.Get(TConfiguration) as TConfiguration).CurrentPage := ActivePage;
   ModalResult := mrOk;
 end;
 
@@ -261,12 +256,12 @@ begin
     begin
     tmpStartDate := FormatDateTime('yyyymmdd', StartDate);
     tmpStopDate := FormatDateTime('yyyymmdd', StopDate);
-    b := not((Configuration.Section<TInterfaceSection>.EnableQuitConfirmation = EnableQuitConfirmation) and
-    (Configuration.Section<TGeneralSection>.StartDate = tmpStartDate) and (Configuration.Section<TGeneralSection>.StopDate = tmpStopDate) and
-    (Configuration.Section<TInterfaceSection>.EnableSplashAtStart = EnableSplashAtStart) and
-    (Configuration.Section<TInterfaceSection>.EnableStatusbar = EnableStatusbar) and (Configuration.Section<TInterfaceSection>.EnableToolbar = EnableToolbar)
-    and (Configuration.Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition = EnableStoreMainFormSizesAndPosition) and
-    (Configuration.Section<TOtherSection>.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete));
+    b := not((TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableQuitConfirmation = EnableQuitConfirmation) and
+    (TConfiguration.Get(TConfiguration).Section<TGeneralSection>.StartDate = tmpStartDate) and (TConfiguration.Get(TConfiguration).Section<TGeneralSection>.StopDate = tmpStopDate) and
+    (TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableSplashAtStart = EnableSplashAtStart) and
+    (TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStatusbar = EnableStatusbar) and (TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableToolbar = EnableToolbar)
+    and (TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStoreMainFormSizesAndPosition = EnableStoreMainFormSizesAndPosition) and
+    (TConfiguration.Get(TConfiguration).Section<TOtherSection>.EnablePlaySoundOnComplete = EnablePlaySoundOnComplete));
     end;
     actApply.Enabled := b;
     btnApply.Default := b;
@@ -283,14 +278,13 @@ begin
   Result := cmbPageName.ItemIndex;
 end;
 
-function TConfigurationForm.GetStartDate(): TDateTime;
+function TConfigurationForm.GetYear(): Integer;
 begin
-  Result := cxdtdtStartDate.EditValue;
-end;
-
-function TConfigurationForm.GetConfiguration(): TConfiguration;
-begin
-  Result := FConfiguration;
+  Result := 0;
+  if not VarIsNull(cxspndtYear.EditValue) then
+  begin
+    Result := cxspndtYear.EditValue;
+  end;
 end;
 
 function TConfigurationForm.GetEnablePlaySoundOnComplete(): Boolean;
@@ -321,11 +315,6 @@ end;
 function TConfigurationForm.GetEnableToolbar(): Boolean;
 begin
   Result := chkEnableToolbar.Enabled and chkEnableToolbar.Checked;
-end;
-
-function TConfigurationForm.GetStopDate(): TDateTime;
-begin
-  Result := cxdtdtStopDate.EditValue;
 end;
 
 function TConfigurationForm.GetPageCount(): Integer;
@@ -364,9 +353,9 @@ begin
   end;
 end;
 
-procedure TConfigurationForm.SetStartDate(const AValue: TDateTime);
+procedure TConfigurationForm.SetYear(const AValue: Integer);
 begin
-  cxdtdtStartDate.EditValue := AValue;
+  cxspndtYear.EditValue := AValue;
 end;
 
 procedure TConfigurationForm.SetEnableQuitConfirmation(const AValue: Boolean);
@@ -392,11 +381,6 @@ end;
 procedure TConfigurationForm.SetEnableToolbar(const AValue: Boolean);
 begin
   SetCheckBoxState(chkEnableToolbar, AValue);
-end;
-
-procedure TConfigurationForm.SetStopDate(const AValue: TDateTime);
-begin
-  cxdtdtStopDate.EditValue := AValue;
 end;
 
 procedure TConfigurationForm.actPreviousPageUpdate(Sender: TObject);
