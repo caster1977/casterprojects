@@ -271,7 +271,7 @@ var
       tmpQuery.Open();
       try
         tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
-        tmpView.GoodsTypes := tmpQuery;
+        tmpView.ProductTypes := tmpQuery;
       finally
         tmpQuery.Close();
       end;

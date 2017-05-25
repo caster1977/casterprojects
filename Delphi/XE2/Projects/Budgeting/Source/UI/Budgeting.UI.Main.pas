@@ -247,18 +247,16 @@ type
     colCurrencies_Code: TcxGridColumn;
     colCurrencies_Description: TcxGridColumn;
     colCurrencies_Activity: TcxGridColumn;
-
-    tblvGoods: TcxGridTableView;
-    colGoods_Id_Good: TcxGridColumn;
-    colGoods_Id_Goods_Type: TcxGridColumn;
-    colGoods_Code: TcxGridColumn;
-    colGoods_Description: TcxGridColumn;
-    colGoods_Activity: TcxGridColumn;
-
-    tblvGoodsTypes: TcxGridTableView;
-    colGoodsTypes_Id_GoodsType: TcxGridColumn;
-    colGoodsTypes_Name: TcxGridColumn;
-    colGoodsTypes_Activity: TcxGridColumn;
+    tblvProducts: TcxGridTableView;
+    colProducts_Id_Product: TcxGridColumn;
+    colProducts_Id_ProductType: TcxGridColumn;
+    colProducts_Code: TcxGridColumn;
+    colProducts_Description: TcxGridColumn;
+    colProducts_Activity: TcxGridColumn;
+    tblvProductTypes: TcxGridTableView;
+    colProductTypes_Id_ProductType: TcxGridColumn;
+    colProductTypes_Name: TcxGridColumn;
+    colProductTypes_Activity: TcxGridColumn;
 
     fdphysmsqldrvrlnk: TFDPhysMSSQLDriverLink;
     cbb1: TcxComboBox;
@@ -326,8 +324,8 @@ type
     procedure SetBudgetItemTypes(const aValue: TDataSet);
     procedure SetCosignatories(const aValue: TDataSet);
     procedure SetCurrencies(const aValue: TDataSet);
-    procedure SetGoods(const aValue: TDataSet);
-    procedure SetGoodsTypes(const aValue: TDataSet);
+    procedure SetProducts(const aValue: TDataSet);
+    procedure SetProductTypes(const aValue: TDataSet);
   end;
 
 var
@@ -616,13 +614,13 @@ begin
   end;
 end;
 
-procedure TMainForm.SetGoods(const aValue: TDataSet);
+procedure TMainForm.SetProducts(const aValue: TDataSet);
 var
   i: Integer;
 begin
-  tblvGoods.BeginUpdate();
+  tblvProducts.BeginUpdate();
   try
-    tblvGoods.DataController.RecordCount := 0;
+    tblvProducts.DataController.RecordCount := 0;
 
     if not Assigned(aValue) then
     begin
@@ -635,32 +633,32 @@ begin
     end;
 
     aValue.First();
-    tblvGoods.DataController.RecordCount := aValue.RecordCount;
+    tblvProducts.DataController.RecordCount := aValue.RecordCount;
 
     for i := 0 to Pred(aValue.RecordCount) do
     begin
-      tblvGoods.DataController.Values[i, colGoods_Id_Good.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Id).AsInteger;
-      tblvGoods.DataController.Values[i, colGoods_Id_Good.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Id_ProductType).AsInteger;
-      tblvGoods.DataController.Values[i, colGoods_Code.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Code).AsString;
-      tblvGoods.DataController.Values[i, colGoods_Description.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Description).AsString;
-      tblvGoods.DataController.Values[i, colGoods_Activity.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Activity).AsBoolean;
+      tblvProducts.DataController.Values[i, colProducts_Id_Product.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Id).AsInteger;
+      tblvProducts.DataController.Values[i, colProducts_Id_ProductType.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Id_ProductType).AsInteger;
+      tblvProducts.DataController.Values[i, colProducts_Code.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Code).AsString;
+      tblvProducts.DataController.Values[i, colProducts_Description.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Description).AsString;
+      tblvProducts.DataController.Values[i, colProducts_Activity.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Activity).AsBoolean;
 
       StepProgress();
 
       aValue.Next();
     end;
   finally
-    tblvGoods.EndUpdate();
+    tblvProducts.EndUpdate();
   end;
 end;
 
-procedure TMainForm.SetGoodsTypes(const aValue: TDataSet);
+procedure TMainForm.SetProductTypes(const aValue: TDataSet);
 var
   i: Integer;
 begin
-  tblvGoodsTypes.BeginUpdate();
+  tblvProductTypes.BeginUpdate();
   try
-    tblvGoodsTypes.DataController.RecordCount := 0;
+    tblvProductTypes.DataController.RecordCount := 0;
 
     if not Assigned(aValue) then
     begin
@@ -673,20 +671,20 @@ begin
     end;
 
     aValue.First();
-    tblvGoodsTypes.DataController.RecordCount := aValue.RecordCount;
+    tblvProductTypes.DataController.RecordCount := aValue.RecordCount;
 
     for i := 0 to Pred(aValue.RecordCount) do
     begin
-      tblvGoodsTypes.DataController.Values[i, colGoodsTypes_Id_GoodsType.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Id).AsInteger;
-      tblvGoodsTypes.DataController.Values[i, colGoodsTypes_Name.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Name).AsString;
-      tblvGoodsTypes.DataController.Values[i, colGoodsTypes_Activity.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Activity).AsBoolean;
+      tblvProductTypes.DataController.Values[i, colProductTypes_Id_ProductType.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Id).AsInteger;
+      tblvProductTypes.DataController.Values[i, colProductTypes_Name.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Name).AsString;
+      tblvProductTypes.DataController.Values[i, colProductTypes_Activity.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Activity).AsBoolean;
 
       StepProgress();
 
       aValue.Next();
     end;
   finally
-    tblvGoodsTypes.EndUpdate();
+    tblvProductTypes.EndUpdate();
   end;
 end;
 
@@ -745,8 +743,8 @@ begin
     tmpReferences.Add('Типы статей бюджета', tblvBudgetItemTypes);
     tmpReferences.Add('Субъекты', tblvCosignatories);
     tmpReferences.Add('Валюты', tblvCurrencies);
-    tmpReferences.Add('Товары', tblvGoods);
-    tmpReferences.Add('Виды товаров', tblvGoodsTypes);
+    tmpReferences.Add('Товары', tblvProducts);
+    tmpReferences.Add('Виды товаров', tblvProductTypes);
 
     for tmpPair in tmpReferences do
     begin
@@ -819,9 +817,9 @@ begin
         Result := etCosignatories;
       if tmpActiveView = tblvCurrencies then
         Result := etCurrencies;
-      if tmpActiveView = tblvGoods then
+      if tmpActiveView = tblvProducts then
         Result := etProducts;
-      if tmpActiveView = tblvGoodsTypes then
+      if tmpActiveView = tblvProductTypes then
         Result := etProductTypes;
       end;
   end;
@@ -848,9 +846,9 @@ begin
     etCurrencies:
       tmpController := tblvCurrencies.Controller;
     etProducts:
-      tmpController := tblvGoods.Controller;
+      tmpController := tblvProducts.Controller;
     etProductTypes:
-      tmpController := tblvGoodsTypes.Controller;
+      tmpController := tblvProductTypes.Controller;
   end;
   if Assigned(tmpController) then
   begin
