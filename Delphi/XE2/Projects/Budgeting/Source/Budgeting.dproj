@@ -84,9 +84,9 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>102</VerInfo_Build>
+        <VerInfo_Build>104</VerInfo_Build>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.102;InternalName=Budgeting x86 DEBUG;LegalCopyright=(C)opyright 2017 by Caster;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=Developed by Caster</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.104;InternalName=Budgeting x86 DEBUG;LegalCopyright=(C)opyright 2017 by Caster;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=Developed by Caster</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -119,14 +119,14 @@
             <Form>MainForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TAccountingCenter.pas"/>
-        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TBank.pas"/>
-        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TBudgetItem.pas"/>
-        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TBudgetItemType.pas"/>
-        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TCosignatory.pas"/>
-        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TCurrency.pas"/>
-        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TGood.pas"/>
-        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TGoodsType.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TAccountingCenterModel.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TBankModel.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TBudgetItemModel.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TBudgetItemTypeModel.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TCosignatoryModel.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TCurrencyModel.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TProductModel.pas"/>
+        <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TProductTypeModel.pas"/>
         <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TCustomPresenter.pas"/>
         <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TMainPresenter.pas"/>
         <DCCReference Include="Logic\Classes\Configuration\Sections\Budgeting.Logic.Classes.Configuration.Sections.TDatabaseSection.pas"/>

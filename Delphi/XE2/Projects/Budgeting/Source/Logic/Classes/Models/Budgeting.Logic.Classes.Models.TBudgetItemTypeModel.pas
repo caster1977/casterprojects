@@ -3,10 +3,10 @@ unit Budgeting.Logic.Classes.Models.TBudgetItemTypeModel;
 interface
 
 uses
-  Budgeting.Logic.Interfaces.IBudgetItemType;
+  Budgeting.Logic.Interfaces.Models.IBudgetItemTypeModel;
 
 type
-  TBudgetItemType = class(TInterfacedObject, IBudgetItemType)
+  TBudgetItemType = class(TInterfacedObject, IBudgetItemTypeModel)
   strict private
     FId: Integer;
     FName: string;
