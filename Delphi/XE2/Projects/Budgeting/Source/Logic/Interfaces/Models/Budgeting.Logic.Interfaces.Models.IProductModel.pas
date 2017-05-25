@@ -8,8 +8,8 @@ type
     function GetId(): Integer;
     property Id: Integer read GetId;
 
-    function GetGoodsTypeId(): Integer;
-    property GoodsTypeId: Integer read GetGoodsTypeId;
+    function GetProductTypeId(): Integer;
+    property ProductTypeId: Integer read GetProductTypeId;
 
     function GetCode(): string;
     property Code: string read GetCode;

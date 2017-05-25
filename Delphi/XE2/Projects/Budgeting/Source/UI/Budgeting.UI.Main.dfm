@@ -650,6 +650,10 @@ object MainForm: TMainForm
     object shtOperations: TcxTabSheet
       Caption = #1054#1087#1077#1088#1072#1094#1080#1080
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxgrdOperations: TcxGrid
         Left = 0
         Top = 53

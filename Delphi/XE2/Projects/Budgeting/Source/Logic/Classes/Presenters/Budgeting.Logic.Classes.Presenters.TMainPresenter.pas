@@ -236,20 +236,20 @@ var
     end;
   end;
 
-  procedure LoadGoods();
+  procedure LoadProducts();
   var
     tmpQuery: TFDQuery;
   begin
     tmpQuery := TFDQuery.Create(nil);
     try
       tmpQuery.Connection := FConnection;
-      tmpQuery.SQL.Text := TQuery.sp_goods_sel.Name;
-      tmpQuery.ParamByName(TQuery.sp_goods_sel.Param.Id).DataType := ftInteger;
-      tmpQuery.ParamByName(TQuery.sp_goods_sel.Param.Activity).DataType := ftBoolean;
+      tmpQuery.SQL.Text := TQuery.sp_products_sel.Name;
+      tmpQuery.ParamByName(TQuery.sp_products_sel.Param.Id).DataType := ftInteger;
+      tmpQuery.ParamByName(TQuery.sp_products_sel.Param.Activity).DataType := ftBoolean;
       tmpQuery.Open();
       try
         tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
-        tmpView.Goods := tmpQuery;
+        tmpView.Products := tmpQuery;
       finally
         tmpQuery.Close();
       end;
@@ -258,16 +258,16 @@ var
     end;
   end;
 
-  procedure LoadGoodsTypes();
+  procedure LoadProductTypes();
   var
     tmpQuery: TFDQuery;
   begin
     tmpQuery := TFDQuery.Create(nil);
     try
       tmpQuery.Connection := FConnection;
-      tmpQuery.SQL.Text := TQuery.sp_goods_types_sel.Name;
-      tmpQuery.ParamByName(TQuery.sp_goods_types_sel.Param.Id).DataType := ftInteger;
-      tmpQuery.ParamByName(TQuery.sp_goods_types_sel.Param.Activity).DataType := ftBoolean;
+      tmpQuery.SQL.Text := TQuery.sp_product_types_sel.Name;
+      tmpQuery.ParamByName(TQuery.sp_product_types_sel.Param.Id).DataType := ftInteger;
+      tmpQuery.ParamByName(TQuery.sp_product_types_sel.Param.Activity).DataType := ftBoolean;
       tmpQuery.Open();
       try
         tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
@@ -300,10 +300,10 @@ var
             LoadCosignatories();
           etCurrencies:
             LoadCurrencies();
-          etGoods:
-            LoadGoods();
-          etGoodsTypes:
-            LoadGoodsTypes();
+          etProducts:
+            LoadProducts();
+          etProductTypes:
+            LoadProductTypes();
         end;
       finally
         FProcessign := False;
@@ -566,10 +566,10 @@ var
         tmpSPName := 'cosignatories_del';
       etCurrencies:
         tmpSPName := 'currencies_del';
-      etGoods:
-        tmpSPName := 'goods_del';
-      etGoodsTypes:
-        tmpSPName := 'goods_types_del';
+      etProducts:
+        tmpSPName := 'products_del';
+      etProductTypes:
+        tmpSPName := 'product_types_del';
     else
       Exit;
     end;

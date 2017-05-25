@@ -150,9 +150,9 @@ type
       end;
     end;
 
-    sp_goods_sel = class(TObject)
+    sp_products_sel = class(TObject)
     public const
-      Name = 'dbo.goods_sel :AId, :AActivity';
+      Name = 'dbo.products_sel :AId, :AActivity';
 
     type
       Param = class
@@ -164,16 +164,16 @@ type
       Field = class(TObject)
       public const
         Id = 'id';
-        Id_GoodsType = 'id_goods_type';
+        Id_ProductType = 'id_product_type';
         Code = 'code';
         Description = 'description';
         Activity = 'activity';
       end;
     end;
 
-    sp_goods_types_sel = class(TObject)
+    sp_product_types_sel = class(TObject)
     public const
-      Name = 'dbo.goods_types_sel :AId, :AActivity';
+      Name = 'dbo.product_types_sel :AId, :AActivity';
 
     type
       Param = class

@@ -639,11 +639,11 @@ begin
 
     for i := 0 to Pred(aValue.RecordCount) do
     begin
-      tblvGoods.DataController.Values[i, colGoods_Id_Good.Index] := aValue.FieldByName(TQuery.sp_goods_sel.Field.Id).AsInteger;
-      tblvGoods.DataController.Values[i, colGoods_Id_Good.Index] := aValue.FieldByName(TQuery.sp_goods_sel.Field.Id_GoodsType).AsInteger;
-      tblvGoods.DataController.Values[i, colGoods_Code.Index] := aValue.FieldByName(TQuery.sp_goods_sel.Field.Code).AsString;
-      tblvGoods.DataController.Values[i, colGoods_Description.Index] := aValue.FieldByName(TQuery.sp_goods_sel.Field.Description).AsString;
-      tblvGoods.DataController.Values[i, colGoods_Activity.Index] := aValue.FieldByName(TQuery.sp_goods_sel.Field.Activity).AsBoolean;
+      tblvGoods.DataController.Values[i, colGoods_Id_Good.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Id).AsInteger;
+      tblvGoods.DataController.Values[i, colGoods_Id_Good.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Id_ProductType).AsInteger;
+      tblvGoods.DataController.Values[i, colGoods_Code.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Code).AsString;
+      tblvGoods.DataController.Values[i, colGoods_Description.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Description).AsString;
+      tblvGoods.DataController.Values[i, colGoods_Activity.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Activity).AsBoolean;
 
       StepProgress();
 
@@ -677,9 +677,9 @@ begin
 
     for i := 0 to Pred(aValue.RecordCount) do
     begin
-      tblvGoodsTypes.DataController.Values[i, colGoodsTypes_Id_GoodsType.Index] := aValue.FieldByName(TQuery.sp_goods_types_sel.Field.Id).AsInteger;
-      tblvGoodsTypes.DataController.Values[i, colGoodsTypes_Name.Index] := aValue.FieldByName(TQuery.sp_goods_types_sel.Field.Name).AsString;
-      tblvGoodsTypes.DataController.Values[i, colGoodsTypes_Activity.Index] := aValue.FieldByName(TQuery.sp_goods_types_sel.Field.Activity).AsBoolean;
+      tblvGoodsTypes.DataController.Values[i, colGoodsTypes_Id_GoodsType.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Id).AsInteger;
+      tblvGoodsTypes.DataController.Values[i, colGoodsTypes_Name.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Name).AsString;
+      tblvGoodsTypes.DataController.Values[i, colGoodsTypes_Activity.Index] := aValue.FieldByName(TQuery.sp_product_types_sel.Field.Activity).AsBoolean;
 
       StepProgress();
 
@@ -820,9 +820,9 @@ begin
       if tmpActiveView = tblvCurrencies then
         Result := etCurrencies;
       if tmpActiveView = tblvGoods then
-        Result := etGoods;
+        Result := etProducts;
       if tmpActiveView = tblvGoodsTypes then
-        Result := etGoodsTypes;
+        Result := etProductTypes;
       end;
   end;
 end;
@@ -847,9 +847,9 @@ begin
       tmpController := tblvCosignatories.Controller;
     etCurrencies:
       tmpController := tblvCurrencies.Controller;
-    etGoods:
+    etProducts:
       tmpController := tblvGoods.Controller;
-    etGoodsTypes:
+    etProductTypes:
       tmpController := tblvGoodsTypes.Controller;
   end;
   if Assigned(tmpController) then

@@ -45,11 +45,11 @@ type
     procedure SetCurrencies(const aValue: TDataSet);
     property Currencies: TDataSet write SetCurrencies;
 
-    procedure SetGoods(const aValue: TDataSet);
-    property Goods: TDataSet write SetGoods;
+    procedure SetProducts(const aValue: TDataSet);
+    property Products: TDataSet write SetProducts;
 
-    procedure SetGoodsTypes(const aValue: TDataSet);
-    property GoodsTypes: TDataSet write SetGoodsTypes;
+    procedure SetProductTypes(const aValue: TDataSet);
+    property ProductTypes: TDataSet write SetProductTypes;
 
     function GetCurrentEntity(): TEntity;
     property CurrentEntity: TEntity read GetCurrentEntity;
