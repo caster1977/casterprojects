@@ -4,6 +4,8 @@ interface
 
 uses
   FireDAC.Comp.Client,
+  System.Classes,
+  Budgeting.Logic.Interfaces.Presenters.ICosignatoryPresenter,
   Budgeting.Logic.Classes.Presenters.TCustomEditPresenter;
 
 type
@@ -11,6 +13,9 @@ type
   strict protected
     function CheckItem(): Boolean; override;
     procedure BeforeQueryOpen(const aQuery: TFDQuery); override;
+    procedure Initialize(); override;
+  strict private
+    procedure LoadBanks(var aList: TStringList);
   end;
 
 implementation
@@ -24,7 +29,8 @@ uses
   System.StrUtils,
   System.SysUtils,
   Budgeting.Logic.Classes.TQuery,
-  Budgeting.Logic.Interfaces.Models.ICosignatoryModel;
+  Budgeting.Logic.Interfaces.Models.ICosignatoryModel,
+  Budgeting.Logic.Interfaces.Views.ICosignatoryView;
 
 function TCosignatoryPresenter.CheckItem(): Boolean;
 var
@@ -36,6 +42,75 @@ begin
   begin
     Result := (tmpItem.Id_Bank > -1) and (tmpItem.Name > string.Empty)and (tmpItem.UNP > string.Empty)and (tmpItem.Address > string.Empty)
     and (tmpItem.AgreementNumber > string.Empty)and (tmpItem.AgreementStart > 0)and (tmpItem.AgreementStop > 0)and (tmpItem.Account > string.Empty);
+  end;
+end;
+
+procedure TCosignatoryPresenter.Initialize();
+var
+  tmpView: ICosignatoryView;
+  tmpList: TStringList;
+begin
+  tmpList := TStringList.Create();
+  try
+    tmpList.Sorted := False;
+    tmpList.Duplicates := dupAccept;
+    LoadBanks(tmpList);
+    if Supports(FView, ICosignatoryView, tmpView) then
+    begin
+      tmpView.Banks := tmpList;
+      inherited;
+    end;
+  finally
+    tmpList.Free();
+  end;
+end;
+
+procedure TCosignatoryPresenter.LoadBanks(var aList: TStringList);
+var
+  tmpQuery: TFDQuery;
+  i: Integer;
+begin
+  tmpQuery := TFDQuery.Create(nil);
+  try
+    tmpQuery.Connection := FConnection;
+    tmpQuery.SQL.Text := TQuery.sp_banks_sel.Name;
+    tmpQuery.ParamByName(TQuery.sp_banks_sel.Param.Id).DataType := ftInteger;
+    tmpQuery.ParamByName(TQuery.sp_banks_sel.Param.Activity).DataType := ftBoolean;
+    if not FEditMode then
+    begin
+      tmpQuery.ParamByName(TQuery.sp_banks_sel.Param.Activity).AsBoolean := True;
+    end;
+    tmpQuery.Open();
+    try
+      FView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
+      try
+        if tmpQuery.IsEmpty() then
+        begin
+          Exit;
+        end;
+
+        tmpQuery.First();
+
+        aList.Clear();
+
+        for i := 0 to Pred(tmpQuery.RecordCount) do
+        begin
+          aList.AddObject(Format('%s (код: %s, адрес: %s)', [tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Name).AsString,
+            tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Code).AsString, tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Address).AsString]),
+            TObject(tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Id).AsInteger));
+
+          tmpQuery.Next();
+
+          FView.StepProgress();
+        end;
+      finally
+        FView.HideProgress();
+      end;
+    finally
+      tmpQuery.Close();
+    end;
+  finally
+    tmpQuery.Free();
   end;
 end;
 

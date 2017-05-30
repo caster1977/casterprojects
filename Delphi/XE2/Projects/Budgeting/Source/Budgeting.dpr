@@ -70,7 +70,14 @@ uses
   Budgeting.UI.BudgetItemType in 'UI\Budgeting.UI.BudgetItemType.pas' {frmBudgetItemType},
   Budgeting.Logic.Interfaces.Views.IBudgetItemTypeView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IBudgetItemTypeView.pas',
   Budgeting.Logic.Interfaces.Views.IBudgetItemView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IBudgetItemView.pas',
-  Budgeting.UI.BudgetItem in 'UI\Budgeting.UI.BudgetItem.pas' {frmBudgetItem};
+  Budgeting.UI.BudgetItem in 'UI\Budgeting.UI.BudgetItem.pas' {frmBudgetItem},
+  Budgeting.Logic.Interfaces.Views.IProductView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IProductView.pas',
+  Budgeting.UI.Product in 'UI\Budgeting.UI.Product.pas' {frmProduct},
+  Budgeting.Logic.Interfaces.Presenters.IBudgetItemPresenter in 'Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.IBudgetItemPresenter.pas',
+  Budgeting.Logic.Interfaces.Presenters.ICosignatoryPresenter in 'Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.ICosignatoryPresenter.pas',
+  Budgeting.Logic.Interfaces.Views.ICosignatoryView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.ICosignatoryView.pas',
+  Budgeting.Logic.Interfaces.Presenters.IProductPresenter in 'Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.IProductPresenter.pas',
+  Budgeting.UI.Cosignatory in 'UI\Budgeting.UI.Cosignatory.pas' {frmCosignatory};
 
 {$R *.res}
 

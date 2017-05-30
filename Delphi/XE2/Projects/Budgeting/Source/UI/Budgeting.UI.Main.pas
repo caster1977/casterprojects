@@ -228,6 +228,7 @@ type
     tblvCosignatories: TcxGridTableView;
     colCosignatories_Id_Cosignatory: TcxGridColumn;
     colCosignatories_Id_Bank: TcxGridColumn;
+    colCosignatories_BankInfo: TcxGridColumn;
     colCosignatories_Name: TcxGridColumn;
     colCosignatories_UNP: TcxGridColumn;
     colCosignatories_Address: TcxGridColumn;
@@ -277,6 +278,7 @@ type
     cbbOperationTypes: TcxComboBox;
     cbbBudgetItemTypes: TcxComboBox;
     colBudgetItems_BudgetItemTypeName: TcxGridColumn;
+    colProducts_ProductTypeName: TcxGridColumn;
 
     procedure actQuitExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -706,6 +708,7 @@ begin
     begin
       tblvProducts.DataController.Values[i, colProducts_Id_Product.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Id).AsInteger;
       tblvProducts.DataController.Values[i, colProducts_Id_ProductType.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Id_ProductType).AsInteger;
+      tblvProducts.DataController.Values[i, colProducts_ProductTypeName.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.ProductTypeName).AsString;
       tblvProducts.DataController.Values[i, colProducts_Code.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Code).AsString;
       tblvProducts.DataController.Values[i, colProducts_Description.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Description).AsString;
       tblvProducts.DataController.Values[i, colProducts_Activity.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Activity).AsBoolean;
@@ -1202,6 +1205,7 @@ begin
     begin
       tblvCosignatories.DataController.Values[i, colCosignatories_Id_Cosignatory.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Id).AsInteger;
       tblvCosignatories.DataController.Values[i, colCosignatories_Id_Bank.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Id_Bank).AsInteger;
+      tblvCosignatories.DataController.Values[i, colCosignatories_BankInfo.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.BankInfo).AsString;
       tblvCosignatories.DataController.Values[i, colCosignatories_Name.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Name).AsString;
       tblvCosignatories.DataController.Values[i, colCosignatories_UNP.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.UNP).AsString;
       tblvCosignatories.DataController.Values[i, colCosignatories_Address.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Address).AsString;

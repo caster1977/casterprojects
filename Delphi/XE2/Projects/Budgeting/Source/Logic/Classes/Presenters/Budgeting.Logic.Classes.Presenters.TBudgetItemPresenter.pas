@@ -6,14 +6,16 @@ uses
   FireDAC.Comp.Client,
   System.Classes,
   Budgeting.Logic.Classes.Presenters.TCustomEditPresenter,
+  Budgeting.Logic.Interfaces.Presenters.IBudgetItemPresenter,
   Budgeting.Logic.Interfaces.Views.ICustomView;
 
 type
-  TBudgetItemPresenter = class(TCustomEditPresenter)
+  TBudgetItemPresenter = class(TCustomEditPresenter, IBudgetItemPresenter)
   strict protected
     function CheckItem(): Boolean; override;
     procedure BeforeQueryOpen(const aQuery: TFDQuery); override;
     procedure Initialize(); override;
+
   strict private
     procedure LoadBudgetItemTypes(var aList: TStringList);
   end;
@@ -33,53 +35,53 @@ uses
   Budgeting.Logic.Interfaces.Models.IBudgetItemModel,
   Budgeting.Logic.Interfaces.Views.IBudgetItemView;
 
-  procedure TBudgetItemPresenter.LoadBudgetItemTypes(var aList: TStringList);
-  var
-    tmpQuery: TFDQuery;
-    i: Integer;
-  begin
-    tmpQuery := TFDQuery.Create(nil);
+procedure TBudgetItemPresenter.LoadBudgetItemTypes(var aList: TStringList);
+var
+  tmpQuery: TFDQuery;
+  i: Integer;
+begin
+  tmpQuery := TFDQuery.Create(nil);
+  try
+    tmpQuery.Connection := FConnection;
+    tmpQuery.SQL.Text := TQuery.sp_budget_item_types_sel.Name;
+    tmpQuery.ParamByName(TQuery.sp_budget_item_types_sel.Param.Id).DataType := ftInteger;
+    tmpQuery.ParamByName(TQuery.sp_budget_item_types_sel.Param.Activity).DataType := ftBoolean;
+    if not FEditMode then
+    begin
+      tmpQuery.ParamByName(TQuery.sp_budget_item_types_sel.Param.Activity).AsBoolean := True;
+    end;
+    tmpQuery.Open();
     try
-      tmpQuery.Connection := FConnection;
-      tmpQuery.SQL.Text := TQuery.sp_budget_item_types_sel.Name;
-      tmpQuery.ParamByName(TQuery.sp_budget_item_types_sel.Param.Id).DataType := ftInteger;
-      tmpQuery.ParamByName(TQuery.sp_budget_item_types_sel.Param.Activity).DataType := ftBoolean;
-      if not FEditMode then
-      begin
-        tmpQuery.ParamByName(TQuery.sp_budget_item_types_sel.Param.Activity).AsBoolean := True;
-      end;
-      tmpQuery.Open();
+      FView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
       try
-        FView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
-        try
-          if tmpQuery.IsEmpty() then
-          begin
-            Exit;
-          end;
+        if tmpQuery.IsEmpty() then
+        begin
+          Exit;
+        end;
 
-          tmpQuery.First();
+        tmpQuery.First();
 
-          aList.Clear();
+        aList.Clear();
 
-          for i := 0 to Pred(tmpQuery.RecordCount) do
-          begin
-            aList.AddObject(tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString,
-              TObject(tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id).AsInteger));
+        for i := 0 to Pred(tmpQuery.RecordCount) do
+        begin
+          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString,
+            TObject(tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id).AsInteger));
 
-            tmpQuery.Next();
+          tmpQuery.Next();
 
-            FView.StepProgress();
-          end;
-        finally
-          FView.HideProgress();
+          FView.StepProgress();
         end;
       finally
-        tmpQuery.Close();
+        FView.HideProgress();
       end;
     finally
-      tmpQuery.Free();
+      tmpQuery.Close();
     end;
+  finally
+    tmpQuery.Free();
   end;
+end;
 
 function TBudgetItemPresenter.CheckItem(): Boolean;
 var
@@ -108,8 +110,6 @@ begin
       tmpView.BudgetItemTypes := tmpList;
       inherited;
     end;
-
-//    tmpView := nil;
   finally
     tmpList.Free();
   end;
@@ -136,4 +136,3 @@ begin
 end;
 
 end.
-

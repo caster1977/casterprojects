@@ -448,6 +448,15 @@ object MainForm: TMainForm
             HeaderAlignmentHorz = taCenter
             Width = 50
           end
+          object colCosignatories_BankInfo: TcxGridColumn
+            Caption = #1041#1072#1085#1082
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taLeftJustify
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 100
+            HeaderAlignmentHorz = taCenter
+            Width = 100
+          end
           object colCosignatories_Account: TcxGridColumn
             Caption = #1053#1086#1084#1077#1088' '#1089#1095#1105#1090#1072
             PropertiesClassName = 'TcxTextEditProperties'
@@ -571,6 +580,16 @@ object MainForm: TMainForm
             HeaderAlignmentHorz = taCenter
             Width = 50
           end
+          object colProducts_ProductTypeName: TcxGridColumn
+            Caption = #1058#1080#1087
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taLeftJustify
+            Properties.MaxLength = 0
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 75
+            HeaderAlignmentHorz = taCenter
+            Width = 75
+          end
           object colProducts_Code: TcxGridColumn
             Caption = #1050#1086#1076
             PropertiesClassName = 'TcxTextEditProperties'
@@ -649,7 +668,7 @@ object MainForm: TMainForm
           end
         end
         object lvl1: TcxGridLevel
-          GridView = tblvBudgetItems
+          GridView = tblvCosignatories
         end
       end
     end
@@ -669,10 +688,6 @@ object MainForm: TMainForm
         Align = alClient
         PopupMenu = pctnbrMain
         TabOrder = 0
-        ExplicitLeft = 0
-        ExplicitTop = 53
-        ExplicitWidth = 776
-        ExplicitHeight = 427
         object tblvActualBudget: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
           OnFocusedRecordChanged = tblvFocusedRecordChanged
@@ -927,9 +942,6 @@ object MainForm: TMainForm
         Caption = 'pnlOperations'
         ShowCaption = False
         TabOrder = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 776
         object cbbOperationTypes: TcxComboBox
           AlignWithMargins = True
           Left = 0
@@ -948,8 +960,6 @@ object MainForm: TMainForm
           Properties.Sorted = True
           Properties.OnChange = cbbOperationTypesPropertiesChange
           TabOrder = 0
-          ExplicitLeft = 3
-          ExplicitTop = 3
           Width = 214
         end
         object cbbBudgetItemTypes: TcxComboBox
@@ -967,8 +977,6 @@ object MainForm: TMainForm
           Properties.Revertable = True
           Properties.Sorted = True
           TabOrder = 1
-          ExplicitLeft = 6
-          ExplicitTop = 4
           Width = 550
         end
       end
@@ -989,10 +997,6 @@ object MainForm: TMainForm
         Align = alClient
         PopupMenu = pctnbrMain
         TabOrder = 0
-        ExplicitLeft = 0
-        ExplicitTop = 27
-        ExplicitWidth = 776
-        ExplicitHeight = 453
         object cxgrdlvl1: TcxGridLevel
         end
       end

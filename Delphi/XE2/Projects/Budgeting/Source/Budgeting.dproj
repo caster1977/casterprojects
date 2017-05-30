@@ -84,9 +84,9 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>227</VerInfo_Build>
+        <VerInfo_Build>248</VerInfo_Build>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.227;InternalName=Budgeting x86 DEBUG;LegalCopyright=(C)opyright 2017 by Caster;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=Developed by Caster</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.248;InternalName=Budgeting x86 DEBUG;LegalCopyright=(C)opyright 2017 by Caster;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=Developed by Caster</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -196,6 +196,19 @@
         <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IBudgetItemView.pas"/>
         <DCCReference Include="UI\Budgeting.UI.BudgetItem.pas">
             <Form>frmBudgetItem</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IProductView.pas"/>
+        <DCCReference Include="UI\Budgeting.UI.Product.pas">
+            <Form>frmProduct</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.IBudgetItemPresenter.pas"/>
+        <DCCReference Include="Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.ICosignatoryPresenter.pas"/>
+        <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.ICosignatoryView.pas"/>
+        <DCCReference Include="Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.IProductPresenter.pas"/>
+        <DCCReference Include="UI\Budgeting.UI.Cosignatory.pas">
+            <Form>frmCosignatory</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

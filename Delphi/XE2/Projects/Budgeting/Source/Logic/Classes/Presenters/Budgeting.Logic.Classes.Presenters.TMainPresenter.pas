@@ -4,7 +4,6 @@ interface
 
 uses
   System.SysUtils,
-  // FireDAC.Comp.Client,
   Vcl.Controls,
   Budgeting.Logic.Interfaces.Presenters.ICustomPresenter,
   Budgeting.Logic.Interfaces.Views.IMainView,
@@ -82,10 +81,10 @@ uses
   Budgeting.UI.Bank,
   Budgeting.UI.BudgetItem,
   Budgeting.UI.BudgetItemType,
-//  Budgeting.UI.Cosignatory,
+  Budgeting.UI.Cosignatory,
   Budgeting.UI.Currency,
 //  Budgeting.UI.PlannedBudget,
-//  Budgeting.UI.Product,
+  Budgeting.UI.Product,
   Budgeting.UI.ProductType,
 
   FireDAC.Comp.Client;
@@ -913,7 +912,7 @@ var
         end;
       etCosignatories:
         begin
-//          tmpFormClass := TfrmCosignatory;
+          tmpFormClass := TfrmCosignatory;
           tmpPresenterClass := TCosignatoryPresenter;
         end;
       etCurrencies:
@@ -923,7 +922,7 @@ var
         end;
       etProducts:
         begin
-//          tmpFormClass := TfrmProduct;
+          tmpFormClass := TfrmProduct;
           tmpPresenterClass := TProductPresenter;
         end;
       etProductTypes:

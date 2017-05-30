@@ -1,4 +1,4 @@
-unit Budgeting.UI.BudgetItem;
+unit Budgeting.UI.Product;
 
 interface
 
@@ -30,15 +30,15 @@ uses
   System.SysUtils,
   System.Generics.Collections,
   Budgeting.UI.CustomEdit,
-  Budgeting.Logic.Interfaces.Views.IBudgetItemView,
+  Budgeting.Logic.Interfaces.Views.IProductView,
   cxCurrencyEdit,
   cxSpinEdit,
   cxProgressBar;
 
 type
-  TfrmBudgetItem = class(TfrmCustomEdit, IBudgetItemView)
-    cxlblBudgetItemType: TcxLabel;
-    cbbBudgetItemType: TcxComboBox;
+  TfrmProduct = class(TfrmCustomEdit, IProductView)
+    cxlblProductType: TcxLabel;
+    cbbProductType: TcxComboBox;
     cxlblCode: TcxLabel;
     edtCode: TcxTextEdit;
     cxlblDescription: TcxLabel;
@@ -46,16 +46,16 @@ type
     chkActivity: TcxCheckBox;
     procedure edtCodePropertiesChange(Sender: TObject);
     procedure edtCodePropertiesEditValueChanged(Sender: TObject);
-    procedure edtDescriptionPropertiesChange(Sender: TObject);
-    procedure edtDescriptionPropertiesEditValueChanged(Sender: TObject);
     procedure chkActivityPropertiesChange(Sender: TObject);
     procedure chkActivityPropertiesEditValueChanged(Sender: TObject);
-    procedure cbbBudgetItemTypePropertiesEditValueChanged(Sender: TObject);
+    procedure cbbProductTypePropertiesEditValueChanged(Sender: TObject);
+    procedure edtDescriptionPropertiesChange(Sender: TObject);
+    procedure edtDescriptionPropertiesEditValueChanged(Sender: TObject);
 
   strict protected
     function GetItem(): IInterface; override;
     procedure SetItem(const aValue: IInterface); override;
-    procedure SetBudgetItemTypes(const aValue: TStringList);
+    procedure SetProductTypes(const aValue: TStringList);
   end;
 
 implementation
@@ -66,17 +66,17 @@ uses
   System.StrUtils,
   System.Variants,
   Budgeting.Logic.Classes.TQuery,
-  Budgeting.Logic.Interfaces.Models.IBudgetItemModel,
-  Budgeting.Logic.Classes.Models.TBudgetItemModel,
+  Budgeting.Logic.Interfaces.Models.IProductModel,
+  Budgeting.Logic.Classes.Models.TProductModel,
   Budgeting.Logic.Types.TViewEnumEvent,
   Budgeting.Logic.Consts;
 
-procedure TfrmBudgetItem.chkActivityPropertiesChange(Sender: TObject);
+procedure TfrmProduct.chkActivityPropertiesChange(Sender: TObject);
 begin
   chkActivity.EditValue := chkActivity.EditingValue;
 end;
 
-procedure TfrmBudgetItem.chkActivityPropertiesEditValueChanged(Sender: TObject);
+procedure TfrmProduct.chkActivityPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin
@@ -89,30 +89,12 @@ begin
   end;
 end;
 
-procedure TfrmBudgetItem.edtDescriptionPropertiesChange(Sender: TObject);
-begin
-  edtDescription.EditValue := edtDescription.EditingValue;
-end;
-
-procedure TfrmBudgetItem.edtDescriptionPropertiesEditValueChanged(Sender: TObject);
-var
-  tmpCursor: TCursor;
-begin
-  tmpCursor := Screen.Cursor;
-  Screen.Cursor := crHourGlass;
-  try
-    FOnEventSimple(veItemChanged);
-  finally
-    Screen.Cursor := tmpCursor;
-  end;
-end;
-
-procedure TfrmBudgetItem.edtCodePropertiesChange(Sender: TObject);
+procedure TfrmProduct.edtCodePropertiesChange(Sender: TObject);
 begin
   edtCode.EditValue := edtCode.EditingValue;
 end;
 
-procedure TfrmBudgetItem.edtCodePropertiesEditValueChanged(Sender: TObject);
+procedure TfrmProduct.edtCodePropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin
@@ -125,7 +107,25 @@ begin
   end;
 end;
 
-procedure TfrmBudgetItem.cbbBudgetItemTypePropertiesEditValueChanged(
+procedure TfrmProduct.edtDescriptionPropertiesChange(Sender: TObject);
+begin
+  edtDescription.EditValue := edtDescription.EditingValue;
+end;
+
+procedure TfrmProduct.edtDescriptionPropertiesEditValueChanged(Sender: TObject);
+var
+  tmpCursor: TCursor;
+begin
+  tmpCursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;
+  try
+    FOnEventSimple(veItemChanged);
+  finally
+    Screen.Cursor := tmpCursor;
+  end;
+end;
+
+procedure TfrmProduct.cbbProductTypePropertiesEditValueChanged(
   Sender: TObject);
 var
   tmpCursor: TCursor;
@@ -139,25 +139,25 @@ begin
   end;
 end;
 
-function TfrmBudgetItem.GetItem(): IInterface;
+function TfrmProduct.GetItem(): IInterface;
 var
   tmpId: Integer;
-  tmpBudgetItemTypeId: Integer;
+  tmpProductTypeId: Integer;
   tmpName: string;
   tmpCode: string;
   tmpDescription: string;
   tmpActivity: Boolean;
 begin
   tmpId := FId;
-  tmpBudgetItemTypeId := -1;
+  tmpProductTypeId := -1;
   tmpCode := string.Empty;
   tmpName := string.Empty;
   tmpDescription := string.Empty;
   tmpActivity := True;
 
-  if cbbBudgetItemType.ItemIndex > -1 then
+  if cbbProductType.ItemIndex > -1 then
   begin
-    tmpBudgetItemTypeId := Integer(cbbBudgetItemType.Properties.Items.Objects[cbbBudgetItemType.ItemIndex]);
+    tmpProductTypeId := Integer(cbbProductType.Properties.Items.Objects[cbbProductType.ItemIndex]);
   end;
 
   if not VarIsNull(edtCode.EditValue) then
@@ -175,16 +175,16 @@ begin
     tmpActivity := chkActivity.EditValue;
   end;
 
-  Result := TBudgetItemModel.Create(tmpId, tmpBudgetItemTypeId, tmpCode, tmpDescription, tmpActivity);
+  Result := TProductModel.Create(tmpId, tmpProductTypeId, tmpCode, tmpDescription, tmpActivity);
 end;
 
-procedure TfrmBudgetItem.SetBudgetItemTypes(const aValue: TStringList);
+procedure TfrmProduct.SetProductTypes(const aValue: TStringList);
 var
   i: Integer;
 begin
-  cbbBudgetItemType.Properties.BeginUpdate();
+  cbbProductType.Properties.BeginUpdate();
   try
-    cbbBudgetItemType.Properties.Items.Clear();
+    cbbProductType.Properties.Items.Clear();
 
     if not Assigned(aValue) then
     begin
@@ -198,31 +198,31 @@ begin
 
     for i := 0 to Pred(aValue.Count) do
     begin
-      cbbBudgetItemType.Properties.Items.AddObject(aValue[i], TObject(aValue.Objects[i]));
+      cbbProductType.Properties.Items.AddObject(aValue[i], TObject(aValue.Objects[i]));
     end;
   finally
-    cbbBudgetItemType.Properties.EndUpdate();
+    cbbProductType.Properties.EndUpdate();
   end;
 end;
 
-procedure TfrmBudgetItem.SetItem(const aValue: IInterface);
+procedure TfrmProduct.SetItem(const aValue: IInterface);
 var
-  tmpItem: IBudgetItemModel;
+  tmpItem: IProductModel;
   i: Integer;
 begin
   inherited;
-  cbbBudgetItemType.ItemIndex := -1;
+  cbbProductType.ItemIndex := -1;
   edtCode.EditValue := string.Empty;
   edtDescription.EditValue := string.Empty;
   chkActivity.EditValue := True;
 
-  if Supports(aValue, IBudgetItemModel, tmpItem) then
+  if Supports(aValue, IProductModel, tmpItem) then
   begin
-    for i := 0 to Pred(cbbBudgetItemType.Properties.Items.Count) do
+    for i := 0 to Pred(cbbProductType.Properties.Items.Count) do
     begin
-      if Integer(cbbBudgetItemType.Properties.Items.Objects[i]) = tmpItem.Id_BudgetItemType then
+      if Integer(cbbProductType.Properties.Items.Objects[i]) = tmpItem.Id_ProductType then
       begin
-        cbbBudgetItemType.ItemIndex := i;
+        cbbProductType.ItemIndex := i;
         Break;
       end;
     end;

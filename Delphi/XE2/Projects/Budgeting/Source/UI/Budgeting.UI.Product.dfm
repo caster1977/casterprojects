@@ -1,4 +1,4 @@
-inherited frmBudgetItem: TfrmBudgetItem
+inherited frmProduct: TfrmProduct
   ExplicitWidth = 400
   ExplicitHeight = 267
   PixelsPerInch = 96
@@ -9,24 +9,24 @@ inherited frmBudgetItem: TfrmBudgetItem
       ExplicitHeight = 23
     end
   end
-  object cxlblBudgetItemType: TcxLabel [2]
+  object cxlblProductType: TcxLabel [2]
     AlignWithMargins = True
     Left = 3
     Top = 6
     Margins.Top = 6
     Align = alTop
     Caption = '&'#1058#1080#1087':'
-    FocusControl = cbbBudgetItemType
+    FocusControl = cbbProductType
   end
-  object cbbBudgetItemType: TcxComboBox [3]
+  object cbbProductType: TcxComboBox [3]
     AlignWithMargins = True
     Left = 3
     Top = 29
     Align = alTop
     Properties.DropDownListStyle = lsEditFixedList
     Properties.ImmediatePost = True
-    Properties.OnEditValueChanged = cbbBudgetItemTypePropertiesEditValueChanged
-    TabOrder = 0
+    Properties.OnEditValueChanged = cbbProductTypePropertiesEditValueChanged
+    TabOrder = 1
     Width = 376
   end
   object cxlblCode: TcxLabel [4]
@@ -45,7 +45,7 @@ inherited frmBudgetItem: TfrmBudgetItem
     Align = alTop
     Properties.OnChange = edtCodePropertiesChange
     Properties.OnEditValueChanged = edtCodePropertiesEditValueChanged
-    TabOrder = 2
+    TabOrder = 3
     Width = 376
   end
   object cxlblDescription: TcxLabel [6]
@@ -63,7 +63,7 @@ inherited frmBudgetItem: TfrmBudgetItem
     Align = alTop
     Properties.OnChange = edtDescriptionPropertiesChange
     Properties.OnEditValueChanged = edtDescriptionPropertiesEditValueChanged
-    TabOrder = 4
+    TabOrder = 5
     Width = 376
   end
   object chkActivity: TcxCheckBox [8]
@@ -75,7 +75,7 @@ inherited frmBudgetItem: TfrmBudgetItem
     Caption = '&'#1040#1082#1090#1080#1074#1085#1086#1089#1090#1100
     Properties.OnChange = chkActivityPropertiesChange
     Properties.OnEditValueChanged = chkActivityPropertiesEditValueChanged
-    TabOrder = 5
+    TabOrder = 6
     Width = 376
   end
 end

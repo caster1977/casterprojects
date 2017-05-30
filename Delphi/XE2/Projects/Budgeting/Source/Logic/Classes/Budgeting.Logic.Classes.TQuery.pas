@@ -232,6 +232,7 @@ type
       public const
         Id = 'id';
         Id_Bank = 'id_bank';
+        BankInfo = 'bank_info';
         name = 'name';
         UNP = 'unp';
         Address = 'address';
@@ -312,6 +313,7 @@ type
       public const
         Id = 'id';
         Id_ProductType = 'id_product_type';
+        ProductTypeName = 'product_type_name';
         Code = 'code';
         Description = 'description';
         Activity = 'activity';
@@ -320,7 +322,7 @@ type
 
     sp_products_upd = class(TObject)
     public const
-      name = 'dbo.products_upd :AId, :AId_ProductType, :ACode, :AName, :ADescription, :AActivity';
+      name = 'dbo.products_upd :AId, :AId_ProductType, :ACode, :ADescription, :AActivity';
 
     type
       Param = class
@@ -328,7 +330,6 @@ type
         Id = 'AId';
         Id_ProductType = 'AId_ProductType';
         Code = 'ACode';
-        Name = 'AName';
         Description = 'ADescription';
         Activity = 'AActivity';
       end;
