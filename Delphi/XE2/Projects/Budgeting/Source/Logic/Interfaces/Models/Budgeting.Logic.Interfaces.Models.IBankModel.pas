@@ -2,12 +2,12 @@ unit Budgeting.Logic.Interfaces.Models.IBankModel;
 
 interface
 
-type
-  IBankModel = interface
-    ['{A9DC8C39-E9DA-48BD-A17E-347217AE614F}']
-    function GetId(): Integer;
-    property Id: Integer read GetId;
+uses
+  Budgeting.Logic.Interfaces.Models.ICustomModel;
 
+type
+  IBankModel = interface(ICustomModel)
+    ['{A9DC8C39-E9DA-48BD-A17E-347217AE614F}']
     function GetName(): string;
     property Name: string read GetName;
 

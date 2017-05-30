@@ -2,14 +2,14 @@ unit Budgeting.Logic.Interfaces.Models.ICosignatoryModel;
 
 interface
 
-type
-  ICosignatoryModel = interface
-    ['{B4B71664-DA58-492E-A678-75C2E06DE515}']
-    function GetId(): Integer;
-    property Id: Integer read GetId;
+uses
+  Budgeting.Logic.Interfaces.Models.ICustomModel;
 
-    function GetBankId(): Integer;
-    property BankId: Integer read GetBankId;
+type
+  ICosignatoryModel = interface(ICustomModel)
+    ['{B4B71664-DA58-492E-A678-75C2E06DE515}']
+    function GetId_Bank(): Integer;
+    property Id_Bank: Integer read GetId_Bank;
 
     function GetName(): string;
     property Name: string read GetName;

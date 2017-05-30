@@ -3,10 +3,11 @@ unit Budgeting.Logic.Classes.Models.TProductTypeModel;
 interface
 
 uses
+  Budgeting.Logic.Interfaces.Models.ICustomModel,
   Budgeting.Logic.Interfaces.Models.IProductTypeModel;
 
 type
-  TProductTypeModel = class(TInterfacedObject, IProductTypeModel)
+  TProductTypeModel = class(TInterfacedObject, ICustomModel, IProductTypeModel)
   strict private
     FId: Integer;
     FName: string;

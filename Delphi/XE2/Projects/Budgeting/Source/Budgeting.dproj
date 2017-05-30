@@ -84,9 +84,9 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>123</VerInfo_Build>
+        <VerInfo_Build>227</VerInfo_Build>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.123;InternalName=Budgeting x86 DEBUG;LegalCopyright=(C)opyright 2017 by Caster;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=Developed by Caster</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.227;InternalName=Budgeting x86 DEBUG;LegalCopyright=(C)opyright 2017 by Caster;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=Developed by Caster</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -150,6 +150,54 @@
         <DCCReference Include="Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.IPlannedBudgetModel.pas"/>
         <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TActualBudgetModel.pas"/>
         <DCCReference Include="Logic\Classes\Models\Budgeting.Logic.Classes.Models.TPlannedBudgetModel.pas"/>
+        <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.ICustomEditView.pas"/>
+        <DCCReference Include="UI\Budgeting.UI.CustomEdit.pas">
+            <Form>frmCustomEdit</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UI\Budgeting.UI.AccountingCenter.pas">
+            <Form>frmAccountingCenter</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.ICustomModel.pas"/>
+        <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TBankPresenter.pas"/>
+        <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TCustomEditPresenter.pas"/>
+        <DCCReference Include="Logic\Classes\Budgeting.Logic.Classes.TfrmCustomEditClass.pas"/>
+        <DCCReference Include="Logic\Classes\Budgeting.Logic.Classes.TCustomEditPresenterClass.pas"/>
+        <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TAccountingCenterPresenter.pas"/>
+        <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TActualBudgetPresenter.pas"/>
+        <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TBudgetItemPresenter.pas"/>
+        <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TBudgetItemTypePresenter.pas"/>
+        <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TCurrencyPresenter.pas"/>
+        <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TProductTypePresenter.pas"/>
+        <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TPlannedBudgetPresenter.pas"/>
+        <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TProductPresenter.pas"/>
+        <DCCReference Include="Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TCosignatoryPresenter.pas"/>
+        <DCCReference Include="UI\Budgeting.UI.Bank.pas">
+            <Form>frmBank</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IAccountingCenterView.pas"/>
+        <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.ICurrencyView.pas"/>
+        <DCCReference Include="UI\Budgeting.UI.Currency.pas">
+            <Form>frmCurrency</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IProductTypeView.pas"/>
+        <DCCReference Include="UI\Budgeting.UI.ProductType.pas">
+            <Form>frmProductType</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UI\Budgeting.UI.BudgetItemType.pas">
+            <Form>frmBudgetItemType</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IBudgetItemTypeView.pas"/>
+        <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IBudgetItemView.pas"/>
+        <DCCReference Include="UI\Budgeting.UI.BudgetItem.pas">
+            <Form>frmBudgetItem</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

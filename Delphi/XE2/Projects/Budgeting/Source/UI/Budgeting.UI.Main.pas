@@ -31,7 +31,7 @@ uses
   cxGrid,
   Vcl.ExtCtrls,
   cxSplitter,
-  Vcl.ImgList,
+
   dxBar,
   dxStatusBar,
   System.Actions,
@@ -110,14 +110,15 @@ uses
   cxProgressBar,
   cxBarEditItem,
   cxCustomData,
-  cxFilter,
-  cxData,
+
+
   cxCheckBox,
   FireDAC.Stan.Intf,
   FireDAC.Phys,
-  FireDAC.Phys.ODBCBase,
+
   FireDAC.Phys.MSSQL,
-  Budgeting.Logic.Types.TEntity;
+  Budgeting.Logic.Types.TEntity, cxFilter, cxData, FireDAC.Phys.ODBCBase,
+  Vcl.ImgList;
 
 type
   TMainForm = class(TForm, ICustomView, IMainView)
@@ -275,6 +276,7 @@ type
     pnlOperations: TPanel;
     cbbOperationTypes: TcxComboBox;
     cbbBudgetItemTypes: TcxComboBox;
+    colBudgetItems_BudgetItemTypeName: TcxGridColumn;
 
     procedure actQuitExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -346,6 +348,7 @@ type
     procedure SetActualBudget(const aValue: TDataSet);
     procedure SetPlannedBudget(const aValue: TDataSet);
     procedure Initialize();
+    procedure OnEventSimpleStub(aValue: TViewEnumEvent);
   end;
 
 var
@@ -356,7 +359,7 @@ implementation
 {$R *.dfm}
 
 uses
-  CodesiteLogging,
+
   FireDAC.Comp.Client,
   FireDAC.Stan.ASync,
   FireDAC.DApt,
@@ -799,6 +802,7 @@ var
   tmpList: TDictionary<string, TcxGridTableView>;
 begin
   FProcessing := False;
+  FOnEventSimple := OnEventSimpleStub;
   tmpList := TDictionary<string, TcxGridTableView>.Create;
   try
     tmpList.Add('÷ентры учЄта затрат', tblvAccountingCenters);
@@ -961,6 +965,10 @@ begin
   end;
 end;
 
+procedure TMainForm.OnEventSimpleStub(aValue: TViewEnumEvent);
+begin
+end;
+
 procedure TMainForm.pcMainChange(Sender: TObject);
 var
   tmpCursor: TCursor;
@@ -1101,6 +1109,7 @@ begin
       tblvBudgetItems.DataController.Values[i, colBudgetItems_Id_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Id).AsInteger;
       tblvBudgetItems.DataController.Values[i, colBudgetItems_Id_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Id_BudgetItemType)
         .AsInteger;
+      tblvBudgetItems.DataController.Values[i, colBudgetItems_BudgetItemTypeName.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.BudgetItemTypeName).AsString;
       tblvBudgetItems.DataController.Values[i, colBudgetItems_Code.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Code).AsString;
       tblvBudgetItems.DataController.Values[i, colBudgetItems_Description.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Description).AsString;
       tblvBudgetItems.DataController.Values[i, colBudgetItems_Activity.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Activity).AsBoolean;
@@ -1253,7 +1262,14 @@ end;
 
 procedure TMainForm.SetOnEventSimple(const aValue: TProc<TViewEnumEvent>);
 begin
-  FOnEventSimple := aValue;
+  if Assigned(aValue) then
+  begin
+    FOnEventSimple := aValue;
+  end
+  else
+  begin
+    FOnEventSimple := OnEventSimpleStub;
+  end;
 end;
 
 function TMainForm.ShowMessage(const aMessage: string; const aStatus: Cardinal): Integer;

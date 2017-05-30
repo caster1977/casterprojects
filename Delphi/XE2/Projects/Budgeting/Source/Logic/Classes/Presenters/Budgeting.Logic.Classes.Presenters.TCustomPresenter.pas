@@ -21,9 +21,9 @@ type
     procedure OnEventSimple(aValue: TViewEnumEvent); virtual; abstract;
     procedure Initialize(); virtual;
     function GetConnectionString(): string;
-
   public
     constructor Create(const aView: ICustomView); reintroduce; virtual;
+    destructor Destroy(); override;
   end;
 
 implementation
@@ -36,7 +36,9 @@ uses
   FireDAC.Stan.Def,
   FireDAC.Stan.Option,
   FireDAC.Stan.Param,
-  Budgeting.Logic.Classes.Configuration.Sections.TDatabaseSection;
+  System.StrUtils,
+  Budgeting.Logic.Classes.Configuration.Sections.TDatabaseSection,
+  Budgeting.Logic.Interfaces.Views.ICustomEditView;
 
 constructor TCustomPresenter.Create(const aView: ICustomView);
 begin
@@ -55,6 +57,19 @@ begin
   Result := Format('Server=%s;Database=%s;MARS=yes;OSAuthent=Yes;DriverID=MSSQL;User_Name=%s;Password=%s;LoginTimeout=%d',
     [TConfiguration.Get(TConfiguration).Section<TDatabaseSection>.Host.Trim(), TConfiguration.Get(TConfiguration)
     .Section<TDatabaseSection>.Database.Trim(), 'r81t', 'M+fL5lT7lGqW8RGoVyN1UAFDzNoM2u17T7I2M+izrHo=', TConfiguration.Get(TConfiguration).Section<TDatabaseSection>.ConnectionTimeOut]);
+end;
+
+destructor TCustomPresenter.Destroy();
+begin
+  try
+    if Assigned(FView) then
+    begin
+      FView.StorePresenter(nil);
+      FView.SetOnEventSimple(nil);
+    end;
+  finally
+    inherited;
+  end;
 end;
 
 function TCustomPresenter.GetConnection(const aConnectionString: string): TFDConnection;
@@ -101,6 +116,7 @@ end;
 
 procedure TCustomPresenter.Initialize();
 begin
+  OnEventSimple(veInitialization);
 end;
 
 end.

@@ -3,13 +3,14 @@ unit Budgeting.Logic.Classes.Models.TCosignatoryModel;
 interface
 
 uses
+  Budgeting.Logic.Interfaces.Models.ICustomModel,
   Budgeting.Logic.Interfaces.Models.ICosignatoryModel;
 
 type
-  TCosignatoryModel = class(TInterfacedObject, ICosignatoryModel)
+  TCosignatoryModel = class(TInterfacedObject, ICustomModel, ICosignatoryModel)
   strict private
     FId: Integer;
-    FBankId: Integer;
+    FId_Bank: Integer;
     FName: string;
     FUNP: string;
     FAddress: string;
@@ -19,7 +20,7 @@ type
     FAccount: string;
     FActivity: Boolean;
     function GetId(): Integer;
-    function GetBankId(): Integer;
+    function GetId_Bank(): Integer;
     function GetName(): string;
     function GetUNP(): string;
     function GetAddress(): string;
@@ -29,7 +30,7 @@ type
     function GetAccount(): string;
     function GetActivity(): Boolean;
   public
-    constructor Create(const AId, ABankId: Integer; const AName, AUNP, AAddress, AAgreementNumber: string; const AAgreementStart, AAgreementStop: TDate; const AAccount: string; const AActivity: Boolean); reintroduce; virtual;
+    constructor Create(const AId, AId_Bank: Integer; const AName, AUNP, AAddress, AAgreementNumber: string; const AAgreementStart, AAgreementStop: TDate; const AAccount: string; const AActivity: Boolean); reintroduce; virtual;
   end;
 
 implementation
@@ -37,11 +38,11 @@ implementation
 uses
   System.SysUtils;
 
-constructor TCosignatoryModel.Create(const AId, ABankId: Integer; const AName, AUNP, AAddress, AAgreementNumber: string; const AAgreementStart, AAgreementStop: TDate; const AAccount: string; const AActivity: Boolean);
+constructor TCosignatoryModel.Create(const AId, AId_Bank: Integer; const AName, AUNP, AAddress, AAgreementNumber: string; const AAgreementStart, AAgreementStop: TDate; const AAccount: string; const AActivity: Boolean);
 begin
   inherited Create();
   FId := AId;
-  FBankId := ABankId;
+  FId_Bank := AId_Bank;
   FName := AName;
   FUNP := AUNP;
   FAddress := AAddress;
@@ -82,9 +83,9 @@ begin
   Result := FAgreementStop;
 end;
 
-function TCosignatoryModel.GetBankId(): Integer;
+function TCosignatoryModel.GetId_Bank(): Integer;
 begin
-  Result := FBankId;
+  Result := FId_Bank;
 end;
 
 function TCosignatoryModel.GetId(): Integer;

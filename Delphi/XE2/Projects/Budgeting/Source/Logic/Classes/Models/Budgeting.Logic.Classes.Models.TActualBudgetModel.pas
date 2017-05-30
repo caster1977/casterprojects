@@ -3,34 +3,35 @@ unit Budgeting.Logic.Classes.Models.TActualBudgetModel;
 interface
 
 uses
+  Budgeting.Logic.Interfaces.Models.ICustomModel,
   Budgeting.Logic.Interfaces.Models.IActualBudgetModel;
 
 type
-  TActualBudgetModel = class(TInterfacedObject, IActualBudgetModel)
+  TActualBudgetModel = class(TInterfacedObject, ICustomModel, IActualBudgetModel)
   strict private
     FId: Integer;
-    FBudgetItemId: Integer;
-    FAccountingCenterId: Integer;
-    FCosignatoryId: Integer;
-    FProductId: Integer;
-    FCurrencyId: Integer;
+    FId_BudgetItem: Integer;
+    FId_AccountingCenter: Integer;
+    FId_Cosignatory: Integer;
+    FId_Product: Integer;
+    FId_Currency: Integer;
     FDocument: string;
     FDocumentDate: TDate;
     FDescription: string;
     FAmount: Currency;
     function GetId(): Integer;
-    function GetBudgetItemId(): Integer;
-    function GetAccountingCenterId(): Integer;
-    function GetCosignatoryId(): Integer;
-    function GetProductId(): Integer;
-    function GetCurrencyId(): Integer;
+    function GetId_BudgetItem(): Integer;
+    function GetId_AccountingCenter(): Integer;
+    function GetId_Cosignatory(): Integer;
+    function GetId_Product(): Integer;
+    function GetId_Currency(): Integer;
     function GetDocument(): string;
     function GetDocumentDate(): TDate;
     function GetDescription(): string;
     function GetAmount(): Currency;
 
   public
-    constructor Create(const AId, ABudgetItemId, AAccountingCenterId, ACosignatoryId, AProductId, ACurrencyId: Integer; const ADocument: string;
+    constructor Create(const AId, AId_BudgetItem, AId_AccountingCenter, AId_Cosignatory, AId_Product, AId_Currency: Integer; const ADocument: string;
       const ADocumentDate: TDate; const ADescription: string; const AAmount: Currency); reintroduce; virtual;
   end;
 
@@ -39,26 +40,26 @@ implementation
 uses
   System.SysUtils;
 
-constructor TActualBudgetModel.Create(const AId, ABudgetItemId, AAccountingCenterId, ACosignatoryId, AProductId, ACurrencyId: Integer; const ADocument: string;
+constructor TActualBudgetModel.Create(const AId, AId_BudgetItem, AId_AccountingCenter, AId_Cosignatory, AId_Product, AId_Currency: Integer; const ADocument: string;
   const ADocumentDate: TDate; const ADescription: string; const AAmount: Currency);
 
 begin
   inherited Create();
   FId := AId;
-  FBudgetItemId := ABudgetItemId;
-  FAccountingCenterId := AAccountingCenterId;
-  FCosignatoryId := ACosignatoryId;
-  FProductId := AProductId;
-  FCurrencyId := ACurrencyId;
+  FId_BudgetItem := AId_BudgetItem;
+  FId_AccountingCenter := AId_AccountingCenter;
+  FId_Cosignatory := AId_Cosignatory;
+  FId_Product := AId_Product;
+  FId_Currency := AId_Currency;
   FDocument := ADocument;
   FDocumentDate := ADocumentDate;
   FDescription := ADescription;
   FAmount := AAmount;
 end;
 
-function TActualBudgetModel.GetAccountingCenterId(): Integer;
+function TActualBudgetModel.GetId_AccountingCenter(): Integer;
 begin
-  Result := FAccountingCenterId;
+  Result := FId_AccountingCenter;
 end;
 
 function TActualBudgetModel.GetAmount(): Currency;
@@ -66,19 +67,19 @@ begin
   Result := FAmount;
 end;
 
-function TActualBudgetModel.GetBudgetItemId(): Integer;
+function TActualBudgetModel.GetId_BudgetItem(): Integer;
 begin
-  Result := FBudgetItemId;
+  Result := FId_BudgetItem;
 end;
 
-function TActualBudgetModel.GetCosignatoryId(): Integer;
+function TActualBudgetModel.GetId_Cosignatory(): Integer;
 begin
-  Result := FCosignatoryId;
+  Result := FId_Cosignatory;
 end;
 
-function TActualBudgetModel.GetCurrencyId(): Integer;
+function TActualBudgetModel.GetId_Currency(): Integer;
 begin
-  Result := FCurrencyId;
+  Result := FId_Currency;
 end;
 
 function TActualBudgetModel.GetDescription(): string;
@@ -101,9 +102,9 @@ begin
   Result := FId;
 end;
 
-function TActualBudgetModel.GetProductId(): Integer;
+function TActualBudgetModel.GetId_Product(): Integer;
 begin
-  Result := FProductId;
+  Result := FId_Product;
 end;
 
 end.

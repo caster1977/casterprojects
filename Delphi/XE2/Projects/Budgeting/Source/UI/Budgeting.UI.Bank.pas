@@ -29,23 +29,15 @@ uses
   cxMaskEdit,
   System.SysUtils,
   System.Generics.Collections,
-  Budgeting.Logic.TViewEnumEvent,
-  Budgeting.Logic.TViewEnumAction,
-  Budgeting.Logic.TViewEnumActionArray,
-  Budgeting.Logic.Interfaces.View.ICustomView,
-  Budgeting.Logic.Interfaces.View.IBank,
+  Budgeting.Logic.Interfaces.Views.ICustomView,
+  Budgeting.UI.CustomEdit,
+  Budgeting.Logic.Interfaces.Views.IBankView,
   cxCurrencyEdit,
-  cxSpinEdit;
+  cxSpinEdit,
+  cxProgressBar;
 
 type
-  TfrmBank = class(TForm, ICustomView, IBank)
-    ActionList: TActionList;
-    actSave: TAction;
-    actCancel: TAction;
-    pnlButtons: TPanel;
-    btnCancel: TButton;
-    btnSave: TButton;
-    bvl1: TBevel;
+  TfrmBank = class(TfrmCustomEdit, IBankView)
     cxlblName: TcxLabel;
     edtName: TcxTextEdit;
     cxlblCode: TcxLabel;
@@ -53,30 +45,18 @@ type
     cxlblAddress: TcxLabel;
     edtAddress: TcxTextEdit;
     chkActivity: TcxCheckBox;
-    procedure actSaveUpdate(Sender: TObject);
-    procedure actCancelExecute(Sender: TObject);
-    procedure actSaveExecute(Sender: TObject);
-    procedure actCancelUpdate(Sender: TObject);
+    procedure edtNamePropertiesChange(Sender: TObject);
+    procedure edtNamePropertiesEditValueChanged(Sender: TObject);
+    procedure edtCodePropertiesChange(Sender: TObject);
+    procedure edtCodePropertiesEditValueChanged(Sender: TObject);
+    procedure edtAddressPropertiesChange(Sender: TObject);
+    procedure edtAddressPropertiesEditValueChanged(Sender: TObject);
+    procedure chkActivityPropertiesChange(Sender: TObject);
+    procedure chkActivityPropertiesEditValueChanged(Sender: TObject);
 
-  strict private
-    FOnEventSimple: TProc<TViewEnumEvent>;
-    FActionStates: TViewEnumActionArray;
-    FPresenter: IInterface;
-    FId: Variant;
-    procedure SetOnEventSimple(const aValue: TProc<TViewEnumEvent>);
-    function GetActionStates(const aValue: TViewEnumAction): Boolean;
-    procedure SetActionStates(const aKey: TViewEnumAction; const aValue: Boolean);
-    procedure RefreshStates();
-    procedure ShowProgress(const aTitle: string; const aMax: Integer);
-    procedure StepProgress(const aNewTitle: string = ''; const aToPosition: Integer = -1);
-    procedure HideProgress();
-    function ShowMessage(const aMessage: string; const aStatus: Cardinal): Integer;
-    function GetControl: TWinControl;
-    procedure SetCaption(const aValue: string);
-    procedure StorePresenter(const aPresenter: IInterface);
-
-    function GetItem(): IInterface;
-    procedure SetItem(const aValue: IInterface);
+  strict protected
+    function GetItem(): IInterface; override;
+    procedure SetItem(const aValue: IInterface); override;
   end;
 
 implementation
@@ -87,146 +67,96 @@ uses
   System.StrUtils,
   System.Variants,
   Budgeting.Logic.Classes.TQuery,
-  Budgeting.Logic.Interfaces.IBank,
-  Budgeting.Logic.Classes.TBank,
+  Budgeting.Logic.Interfaces.Models.IBankModel,
+  Budgeting.Logic.Classes.Models.TBankModel,
+  Budgeting.Logic.Types.TViewEnumEvent,
   Budgeting.Logic.Consts;
 
-procedure TfrmBank.actCancelExecute(Sender: TObject);
+procedure TfrmBank.chkActivityPropertiesChange(Sender: TObject);
+begin
+  chkActivity.EditValue := chkActivity.EditingValue;
+end;
+
+procedure TfrmBank.chkActivityPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin
   tmpCursor := Screen.Cursor;
   Screen.Cursor := crHourGlass;
   try
-    FOnEventSimple(veCancelExecute);
-    ModalResult := mrCancel;
+    FOnEventSimple(veItemChanged);
   finally
     Screen.Cursor := tmpCursor;
   end;
 end;
 
-procedure TfrmBank.actCancelUpdate(Sender: TObject);
+procedure TfrmBank.edtAddressPropertiesChange(Sender: TObject);
 begin
-  FOnEventSimple(veCancelUpdate);
-  (Sender as TAction).Enabled := FActionStates[vaCancel];
+  edtAddress.EditValue := edtAddress.EditingValue;
 end;
 
-procedure TfrmBank.actSaveExecute(Sender: TObject);
+procedure TfrmBank.edtAddressPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin
   tmpCursor := Screen.Cursor;
   Screen.Cursor := crHourGlass;
   try
-    FOnEventSimple(veSaveExecute);
-    ModalResult := mrOk;
+    FOnEventSimple(veItemChanged);
   finally
     Screen.Cursor := tmpCursor;
   end;
 end;
 
-procedure TfrmBank.actSaveUpdate(Sender: TObject);
+procedure TfrmBank.edtCodePropertiesChange(Sender: TObject);
 begin
-  FOnEventSimple(veSaveUpdate);
-  (Sender as TAction).Enabled := FActionStates[vaSave];
+  edtCode.EditValue := edtCode.EditingValue;
 end;
 
-function TfrmBank.GetActionStates(const aValue: TViewEnumAction): Boolean;
-begin
-  Result := FActionStates[aValue];
-end;
-
-function TfrmBank.GetControl(): TWinControl;
-begin
-  Result := Self;
-end;
-
-procedure TfrmBank.RefreshStates();
+procedure TfrmBank.edtCodePropertiesEditValueChanged(Sender: TObject);
 var
-  i: Integer;
+  tmpCursor: TCursor;
 begin
-  for i := 0 to Pred(ActionList.ActionCount) do
-  begin
-    ActionList.Actions[i].Update();
+  tmpCursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;
+  try
+    FOnEventSimple(veItemChanged);
+  finally
+    Screen.Cursor := tmpCursor;
   end;
 end;
 
-procedure TfrmBank.SetActionStates(const aKey: TViewEnumAction; const aValue: Boolean);
+procedure TfrmBank.edtNamePropertiesChange(Sender: TObject);
 begin
-  FActionStates[aKey] := aValue;
+  edtName.EditValue := edtName.EditingValue;
 end;
 
-procedure TfrmBank.SetOnEventSimple(const aValue: TProc<TViewEnumEvent>);
-begin
-  FOnEventSimple := aValue;
-end;
-
-function TfrmBank.ShowMessage(const aMessage: string; const aStatus: Cardinal): Integer;
+procedure TfrmBank.edtNamePropertiesEditValueChanged(Sender: TObject);
 var
-  sCaption: string;
+  tmpCursor: TCursor;
 begin
-  case aStatus of
-    MESSAGE_TYPE_OK:
-      sCaption := Format('%s - Информация', [Application.Title]);
-    MESSAGE_TYPE_ERROR:
-      sCaption := Format('%s - Ошибка', [Application.Title]);
-    MESSAGE_TYPE_WARNING, MESSAGE_TYPE_CONFIRMATION_WARNING_OK, MESSAGE_TYPE_CONFIRMATION_WARNING_CANCEL:
-      sCaption := Format('%s - Внимание', [Application.Title]);
-    MESSAGE_TYPE_CONFIRMATION_QUESTION:
-      sCaption := Format('%s - Подтверждение', [Application.Title]);
-  end;
-  Result := MessageBox(Handle, PWideChar(aMessage), PWideChar(sCaption), aStatus);
-end;
-
-procedure TfrmBank.ShowProgress(const aTitle: string; const aMax: Integer);
-begin
-end;
-
-procedure TfrmBank.StepProgress(const aNewTitle: string;
-  const aToPosition: Integer);
-begin
-end;
-
-procedure TfrmBank.StorePresenter(const aPresenter: IInterface);
-begin
-  FPresenter := aPresenter;
-end;
-
-procedure TfrmBank.SetItem(const aValue: IInterface);
-var
-  tmpItem: IBank;
-begin
-  if Supports(aValue, IBank, tmpItem) then
-  begin
-    FId := tmpItem.Id;
-    edtName.EditValue := string.Empty;
-    edtCode.EditValue := string.Empty;
-    edtAddress.EditValue := string.Empty;
-    chkActivity.EditValue := False;
-
-    if Supports(aValue, IBank, tmpItem) then
-    begin
-      edtName.EditValue := tmpItem.Name;
-      edtCode.EditValue := tmpItem.Code;
-      edtAddress.EditValue := tmpItem.Address;
-      chkActivity.EditValue := tmpItem.Activity;
-    end;
+  tmpCursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;
+  try
+    FOnEventSimple(veItemChanged);
+  finally
+    Screen.Cursor := tmpCursor;
   end;
 end;
 
 function TfrmBank.GetItem(): IInterface;
 var
-  tmpId: Variant;
-  tmpName: Variant;
-  tmpCode: Variant;
-  tmpAddress: Variant;
-  tmpActivity: Variant;
+  tmpId: Integer;
+  tmpName: string;
+  tmpCode: string;
+  tmpAddress: string;
+  tmpActivity: Boolean;
 begin
   tmpId := FId;
-  tmpName := varNull;
-  tmpCode := varNull;
-  tmpAddress := varNull;
-  tmpActivity := varNull;
+  tmpName := string.Empty;
+  tmpCode := string.Empty;
+  tmpAddress := string.Empty;
+  tmpActivity := True;
 
   if not VarIsNull(edtName.EditValue) then
   begin
@@ -248,16 +178,25 @@ begin
     tmpActivity := chkActivity.EditValue;
   end;
 
-  Result := TBank.Create(tmpId, tmpName, tmpCode, tmpAddress, tmpActivity);
+  Result := TBankModel.Create(tmpId, tmpName, tmpCode, tmpAddress, tmpActivity);
 end;
 
-procedure TfrmBank.HideProgress;
+procedure TfrmBank.SetItem(const aValue: IInterface);
+var
+  tmpItem: IBankModel;
 begin
-end;
-
-procedure TfrmBank.SetCaption(const aValue: string);
-begin
-  Caption := aValue;
+  inherited;
+  edtName.EditValue := string.Empty;
+  edtCode.EditValue := string.Empty;
+  edtAddress.EditValue := string.Empty;
+  chkActivity.EditValue := True;
+  if Supports(aValue, IBankModel, tmpItem) then
+  begin
+    edtName.EditValue := tmpItem.Name;
+    edtCode.EditValue := tmpItem.Code;
+    edtAddress.EditValue := tmpItem.Address;
+    chkActivity.EditValue := tmpItem.Activity;
+  end;
 end;
 
 end.

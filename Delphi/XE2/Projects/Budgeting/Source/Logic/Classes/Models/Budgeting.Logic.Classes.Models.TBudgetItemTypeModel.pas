@@ -3,10 +3,11 @@ unit Budgeting.Logic.Classes.Models.TBudgetItemTypeModel;
 interface
 
 uses
+  Budgeting.Logic.Interfaces.Models.ICustomModel,
   Budgeting.Logic.Interfaces.Models.IBudgetItemTypeModel;
 
 type
-  TBudgetItemType = class(TInterfacedObject, IBudgetItemTypeModel)
+  TBudgetItemTypeModel = class(TInterfacedObject, ICustomModel, IBudgetItemTypeModel)
   strict private
     FId: Integer;
     FName: string;
@@ -23,7 +24,7 @@ implementation
 uses
   System.SysUtils;
 
-constructor TBudgetItemType.Create(const AId: Integer; const AName: string; const AActivity: Boolean);
+constructor TBudgetItemTypeModel.Create(const AId: Integer; const AName: string; const AActivity: Boolean);
 begin
   inherited Create();
   FId := AId;
@@ -31,17 +32,17 @@ begin
   FActivity := AActivity;
 end;
 
-function TBudgetItemType.GetActivity(): Boolean;
+function TBudgetItemTypeModel.GetActivity(): Boolean;
 begin
   Result := FActivity;
 end;
 
-function TBudgetItemType.GetId(): Integer;
+function TBudgetItemTypeModel.GetId(): Integer;
 begin
   Result := FId;
 end;
 
-function TBudgetItemType.GetName(): string;
+function TBudgetItemTypeModel.GetName(): string;
 begin
   Result := FName;
 end;

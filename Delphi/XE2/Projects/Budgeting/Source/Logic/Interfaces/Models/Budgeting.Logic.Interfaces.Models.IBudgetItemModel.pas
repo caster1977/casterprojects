@@ -2,14 +2,14 @@ unit Budgeting.Logic.Interfaces.Models.IBudgetItemModel;
 
 interface
 
-type
-  IBudgetItemModel = interface
-    ['{6155AE97-D425-48F7-B2EA-04C7017E57A9}']
-    function GetId(): Integer;
-    property Id: Integer read GetId;
+uses
+  Budgeting.Logic.Interfaces.Models.ICustomModel;
 
-    function GetBudgetItemTypeId(): Integer;
-    property BudgetItemTypeId: Integer read GetBudgetItemTypeId;
+type
+  IBudgetItemModel = interface(ICustomModel)
+    ['{BF8C7C0F-39E6-4A83-8746-4BC2DEC9C3DC}']
+    function GetId_BudgetItemType(): Integer;
+    property Id_BudgetItemType: Integer read GetId_BudgetItemType;
 
     function GetCode(): string;
     property Code: string read GetCode;

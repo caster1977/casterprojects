@@ -19,7 +19,8 @@ type
     veCancelExecute,
     veCancelUpdate,
     veSaveExecute,
-    veSaveUpdate
+    veSaveUpdate,
+    veItemChanged
     );
 
 implementation

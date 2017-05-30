@@ -2,12 +2,12 @@ unit Budgeting.Logic.Interfaces.Models.IAccountingCenterModel;
 
 interface
 
-type
-  IAccountingCenterModel = interface
-    ['{572B3403-5775-4337-B439-0E32D7916CF9}']
-    function GetId(): Integer;
-    property Id: Integer read GetId;
+uses
+  Budgeting.Logic.Interfaces.Models.ICustomModel;
 
+type
+  IAccountingCenterModel = interface(ICustomModel)
+    ['{572B3403-5775-4337-B439-0E32D7916CF9}']
     function GetCode(): string;
     property Code: string read GetCode;
 

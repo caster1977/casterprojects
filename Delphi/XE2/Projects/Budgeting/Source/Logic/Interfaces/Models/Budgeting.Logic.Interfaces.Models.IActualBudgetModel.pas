@@ -2,26 +2,26 @@ unit Budgeting.Logic.Interfaces.Models.IActualBudgetModel;
 
 interface
 
+uses
+  Budgeting.Logic.Interfaces.Models.ICustomModel;
+
 type
-  IActualBudgetModel = interface
+  IActualBudgetModel = interface(ICustomModel)
     ['{820D9CE4-7C36-43B2-92DB-C1B33DC5CC29}']
-    function GetId(): Integer;
-    property Id: Integer read GetId;
+    function GetId_BudgetItem(): Integer;
+    property Id_BudgetItem: Integer read GetId_BudgetItem;
 
-    function GetBudgetItemId(): Integer;
-    property BudgetItemId: Integer read GetBudgetItemId;
+    function GetId_AccountingCenter(): Integer;
+    property Id_AccountingCenter: Integer read GetId_AccountingCenter;
 
-    function GetAccountingCenterId(): Integer;
-    property AccountingCenterId: Integer read GetAccountingCenterId;
+    function GetId_Cosignatory(): Integer;
+    property Id_Cosignatory: Integer read GetId_Cosignatory;
 
-    function GetCosignatoryId(): Integer;
-    property CosignatoryId: Integer read GetCosignatoryId;
+    function GetId_Product(): Integer;
+    property Id_Product: Integer read GetId_Product;
 
-    function GetProductId(): Integer;
-    property ProductId: Integer read GetProductId;
-
-    function GetCurrencyId(): Integer;
-    property CurrencyId: Integer read GetCurrencyId;
+    function GetId_Currency(): Integer;
+    property Id_Currency: Integer read GetId_Currency;
 
     function GetDocument(): string;
     property Document: string read GetDocument;

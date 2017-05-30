@@ -2,12 +2,12 @@ unit Budgeting.Logic.Interfaces.Models.ICurrencyModel;
 
 interface
 
-type
-  ICurrencyModel = interface
-    ['{F1A5F7C4-C26D-4893-8B79-76EC505F8DFF}']
-    function GetId(): Integer;
-    property Id: Integer read GetId;
+uses
+  Budgeting.Logic.Interfaces.Models.ICustomModel;
 
+type
+  ICurrencyModel = interface(ICustomModel)
+    ['{F1A5F7C4-C26D-4893-8B79-76EC505F8DFF}']
     function GetCode(): string;
     property Code: string read GetCode;
 

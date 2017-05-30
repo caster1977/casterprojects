@@ -44,15 +44,51 @@ uses
   AboutPackage.Logic.TAboutWindow,
   Budgeting.Logic.Classes.Configuration.TConfiguration,
   Budgeting.Logic.Classes.Configuration.Sections.TInterfaceSection,
-  // Budgeting.Logic.Classes.Configuration.Sections.TDatabaseSection,
+  Budgeting.UI.CustomEdit,
   LoginPackage.Logic.TLoginWindow,
   Budgeting.Logic.Consts,
   Budgeting.Logic.Classes.TQuery,
   Budgeting.UI.Configuration,
+  Budgeting.Logic.Classes.TfrmCustomEditClass,
+  Budgeting.Logic.Classes.TCustomEditPresenterClass,
+  Budgeting.Logic.Interfaces.Views.ICustomView,
+  Budgeting.Logic.Interfaces.Views.ICustomEditView,
+
+  Budgeting.Logic.Interfaces.Models.ICustomModel,
+  Budgeting.Logic.Classes.Models.TAccountingCenterModel,
+  Budgeting.Logic.Classes.Models.TActualBudgetModel,
+  Budgeting.Logic.Classes.Models.TBankModel,
+  Budgeting.Logic.Classes.Models.TBudgetItemModel,
+  Budgeting.Logic.Classes.Models.TBudgetItemTypeModel,
+  Budgeting.Logic.Classes.Models.TCosignatoryModel,
+  Budgeting.Logic.Classes.Models.TCurrencyModel,
+  Budgeting.Logic.Classes.Models.TPlannedBudgetModel,
+  Budgeting.Logic.Classes.Models.TProductModel,
+  Budgeting.Logic.Classes.Models.TProductTypeModel,
+
+  Budgeting.Logic.Classes.Presenters.TAccountingCenterPresenter,
+  Budgeting.Logic.Classes.Presenters.TActualBudgetPresenter,
+  Budgeting.Logic.Classes.Presenters.TBankPresenter,
+  Budgeting.Logic.Classes.Presenters.TBudgetItemPresenter,
+  Budgeting.Logic.Classes.Presenters.TBudgetItemTypePresenter,
+  Budgeting.Logic.Classes.Presenters.TCosignatoryPresenter,
+  Budgeting.Logic.Classes.Presenters.TCurrencyPresenter,
+  Budgeting.Logic.Classes.Presenters.TPlannedBudgetPresenter,
+  Budgeting.Logic.Classes.Presenters.TProductPresenter,
+  Budgeting.Logic.Classes.Presenters.TProductTypePresenter,
+
+  Budgeting.UI.AccountingCenter,
+//  Budgeting.UI.ActualBudget,
+  Budgeting.UI.Bank,
+  Budgeting.UI.BudgetItem,
+  Budgeting.UI.BudgetItemType,
+//  Budgeting.UI.Cosignatory,
+  Budgeting.UI.Currency,
+//  Budgeting.UI.PlannedBudget,
+//  Budgeting.UI.Product,
+  Budgeting.UI.ProductType,
+
   FireDAC.Comp.Client;
-// Budgeting.Logic.Classes.TPresenterDetail,
-// Budgeting.Logic.Classes.TQuery,
-// Budgeting.UI.Detail;
 
 resourcestring
   RsResultDefaultExt = 'xlsx';
@@ -84,9 +120,8 @@ begin
     begin
       AboutExecute(tmpView.Control, True);
     end;
-
-    tmpView.Initialize();
   end;
+  FView.Initialize();
 end;
 
 procedure TMainPresenter.AboutExecute(const aOwner: TWinControl; const aSplash: Boolean = False);
@@ -105,8 +140,9 @@ end;
 procedure TMainPresenter.OnEventSimple(aValue: TViewEnumEvent);
 var
   tmpView: IMainView;
+  tmpCurrentId: Integer;
 
-  procedure LoadAccountingCenters();
+  function LoadAccountingCenters(const aId: Integer = -1): ICustomModel;
   var
     tmpQuery: TFDQuery;
   begin
@@ -115,11 +151,37 @@ var
       tmpQuery.Connection := FConnection;
       tmpQuery.SQL.Text := TQuery.sp_accounting_centers_sel.Name;
       tmpQuery.ParamByName(TQuery.sp_accounting_centers_sel.Param.Id).DataType := ftInteger;
+      if aId > -1 then
+      begin
+        tmpQuery.ParamByName(TQuery.sp_accounting_centers_sel.Param.Id).AsInteger := aId;
+      end;
       tmpQuery.ParamByName(TQuery.sp_accounting_centers_sel.Param.Activity).DataType := ftBoolean;
       tmpQuery.Open();
       try
-        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
-        tmpView.AccountingCenters := tmpQuery;
+        tmpView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
+        if aId = -1 then
+        begin
+          tmpView.AccountingCenters := tmpQuery;
+        end
+        else
+        begin
+          if tmpQuery.IsEmpty() then
+          begin
+            Exit;
+          end;
+
+          tmpQuery.First();
+
+          Result := TAccountingCenterModel.Create(
+            tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Id).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Code).AsString,
+            tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Name).AsString,
+            tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Description).AsString,
+            tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Activity).AsBoolean
+            );
+
+          FView.StepProgress();
+        end;
       finally
         tmpQuery.Close();
       end;
@@ -128,20 +190,44 @@ var
     end;
   end;
 
-  procedure LoadBanks();
+  function LoadBanks(const aId: Integer = -1): ICustomModel;
   var
     tmpQuery: TFDQuery;
   begin
+    Result := nil;
+
     tmpQuery := TFDQuery.Create(nil);
     try
       tmpQuery.Connection := FConnection;
       tmpQuery.SQL.Text := TQuery.sp_banks_sel.Name;
       tmpQuery.ParamByName(TQuery.sp_banks_sel.Param.Id).DataType := ftInteger;
+      if aId > -1 then
+      begin
+        tmpQuery.ParamByName(TQuery.sp_banks_sel.Param.Id).AsInteger := aId;
+      end;
       tmpQuery.ParamByName(TQuery.sp_banks_sel.Param.Activity).DataType := ftBoolean;
       tmpQuery.Open();
       try
-        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
-        tmpView.Banks := tmpQuery;
+        tmpView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
+        if aId = -1 then
+        begin
+          tmpView.Banks := tmpQuery;
+        end
+        else
+        begin
+          if tmpQuery.IsEmpty() then
+          begin
+            Exit;
+          end;
+
+          tmpQuery.First();
+
+          Result := TBankModel.Create(tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Id).AsInteger, tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Name)
+            .AsString, tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Code).AsString, tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Address).AsString,
+            tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Activity).AsBoolean);
+
+          FView.StepProgress();
+        end;
       finally
         tmpQuery.Close();
       end;
@@ -150,7 +236,7 @@ var
     end;
   end;
 
-  procedure LoadBudgetItems();
+  function LoadBudgetItems(const aId: Integer = -1): ICustomModel;
   var
     tmpQuery: TFDQuery;
   begin
@@ -159,11 +245,37 @@ var
       tmpQuery.Connection := FConnection;
       tmpQuery.SQL.Text := TQuery.sp_budget_items_sel.Name;
       tmpQuery.ParamByName(TQuery.sp_budget_items_sel.Param.Id).DataType := ftInteger;
+      if aId > -1 then
+      begin
+        tmpQuery.ParamByName(TQuery.sp_budget_items_sel.Param.Id).AsInteger := aId;
+      end;
       tmpQuery.ParamByName(TQuery.sp_budget_items_sel.Param.Activity).DataType := ftBoolean;
       tmpQuery.Open();
       try
-        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
-        tmpView.BudgetItems := tmpQuery;
+        tmpView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
+        if aId = -1 then
+        begin
+          tmpView.BudgetItems := tmpQuery;
+        end
+        else
+        begin
+          if tmpQuery.IsEmpty() then
+          begin
+            Exit;
+          end;
+
+          tmpQuery.First();
+
+          Result := TBudgetItemModel.Create(
+            tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Id).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Id_BudgetItemType).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Code).AsString,
+            tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Description).AsString,
+            tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Activity).AsBoolean
+            );
+
+          FView.StepProgress();
+        end;
       finally
         tmpQuery.Close();
       end;
@@ -172,7 +284,7 @@ var
     end;
   end;
 
-  procedure LoadBudgetItemTypes();
+  function LoadBudgetItemTypes(const aId: Integer = -1): ICustomModel;
   var
     tmpQuery: TFDQuery;
   begin
@@ -181,11 +293,35 @@ var
       tmpQuery.Connection := FConnection;
       tmpQuery.SQL.Text := TQuery.sp_budget_item_types_sel.Name;
       tmpQuery.ParamByName(TQuery.sp_budget_item_types_sel.Param.Id).DataType := ftInteger;
+      if aId > -1 then
+      begin
+        tmpQuery.ParamByName(TQuery.sp_budget_item_types_sel.Param.Id).AsInteger := aId;
+      end;
       tmpQuery.ParamByName(TQuery.sp_budget_item_types_sel.Param.Activity).DataType := ftBoolean;
       tmpQuery.Open();
       try
-        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
-        tmpView.BudgetItemTypes := tmpQuery;
+        tmpView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
+        if aId = -1 then
+        begin
+          tmpView.BudgetItemTypes := tmpQuery;
+        end
+        else
+        begin
+          if tmpQuery.IsEmpty() then
+          begin
+            Exit;
+          end;
+
+          tmpQuery.First();
+
+          Result := TBudgetItemTypeModel.Create(
+            tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString,
+            tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Activity).AsBoolean
+            );
+
+          FView.StepProgress();
+        end;
       finally
         tmpQuery.Close();
       end;
@@ -194,7 +330,7 @@ var
     end;
   end;
 
-  procedure LoadCosignatories();
+  function LoadCosignatories(const aId: Integer = -1): ICustomModel;
   var
     tmpQuery: TFDQuery;
   begin
@@ -203,11 +339,42 @@ var
       tmpQuery.Connection := FConnection;
       tmpQuery.SQL.Text := TQuery.sp_cosignatories_sel.Name;
       tmpQuery.ParamByName(TQuery.sp_cosignatories_sel.Param.Id).DataType := ftInteger;
+      if aId > -1 then
+      begin
+        tmpQuery.ParamByName(TQuery.sp_cosignatories_sel.Param.Id).AsInteger := aId;
+      end;
       tmpQuery.ParamByName(TQuery.sp_cosignatories_sel.Param.Activity).DataType := ftBoolean;
       tmpQuery.Open();
       try
-        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
-        tmpView.Cosignatories := tmpQuery;
+        tmpView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
+        if aId = -1 then
+        begin
+          tmpView.Cosignatories := tmpQuery;
+        end
+        else
+        begin
+          if tmpQuery.IsEmpty() then
+          begin
+            Exit;
+          end;
+
+          tmpQuery.First();
+
+          Result := TCosignatoryModel.Create(
+            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Id).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Id_Bank).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Name).AsString,
+            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.UNP).AsString,
+            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Address).AsString,
+            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementNumber).AsString,
+            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStart).AsDateTime,
+            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStop).AsDateTime,
+            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Account).AsString,
+            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Activity).AsBoolean
+            );
+
+          FView.StepProgress();
+        end;
       finally
         tmpQuery.Close();
       end;
@@ -216,7 +383,7 @@ var
     end;
   end;
 
-  procedure LoadCurrencies();
+  function LoadCurrencies(const aId: Integer = -1): ICustomModel;
   var
     tmpQuery: TFDQuery;
   begin
@@ -225,11 +392,36 @@ var
       tmpQuery.Connection := FConnection;
       tmpQuery.SQL.Text := TQuery.sp_currencies_sel.Name;
       tmpQuery.ParamByName(TQuery.sp_currencies_sel.Param.Id).DataType := ftInteger;
+      if aId > -1 then
+      begin
+        tmpQuery.ParamByName(TQuery.sp_currencies_sel.Param.Id).AsInteger := aId;
+      end;
       tmpQuery.ParamByName(TQuery.sp_currencies_sel.Param.Activity).DataType := ftBoolean;
       tmpQuery.Open();
       try
-        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
-        tmpView.Currencies := tmpQuery;
+        tmpView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
+        if aId = -1 then
+        begin
+          tmpView.Currencies := tmpQuery;
+        end
+        else
+        begin
+          if tmpQuery.IsEmpty() then
+          begin
+            Exit;
+          end;
+
+          tmpQuery.First();
+
+          Result := TCurrencyModel.Create(
+            tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Id).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Code).AsString,
+            tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Description).AsString,
+            tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Activity).AsBoolean
+            );
+
+          FView.StepProgress();
+        end;
       finally
         tmpQuery.Close();
       end;
@@ -238,7 +430,7 @@ var
     end;
   end;
 
-  procedure LoadProducts();
+  function LoadProducts(const aId: Integer = -1): ICustomModel;
   var
     tmpQuery: TFDQuery;
   begin
@@ -247,11 +439,37 @@ var
       tmpQuery.Connection := FConnection;
       tmpQuery.SQL.Text := TQuery.sp_products_sel.Name;
       tmpQuery.ParamByName(TQuery.sp_products_sel.Param.Id).DataType := ftInteger;
+      if aId > -1 then
+      begin
+        tmpQuery.ParamByName(TQuery.sp_products_sel.Param.Id).AsInteger := aId;
+      end;
       tmpQuery.ParamByName(TQuery.sp_products_sel.Param.Activity).DataType := ftBoolean;
       tmpQuery.Open();
       try
-        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
-        tmpView.Products := tmpQuery;
+        tmpView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
+        if aId = -1 then
+        begin
+          tmpView.Products := tmpQuery;
+        end
+        else
+        begin
+          if tmpQuery.IsEmpty() then
+          begin
+            Exit;
+          end;
+
+          tmpQuery.First();
+
+          Result := TProductModel.Create(
+            tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Id).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Id_ProductType).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Code).AsString,
+            tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Description).AsString,
+            tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Activity).AsBoolean
+            );
+
+          FView.StepProgress();
+        end;
       finally
         tmpQuery.Close();
       end;
@@ -260,7 +478,7 @@ var
     end;
   end;
 
-  procedure LoadProductTypes();
+  function LoadProductTypes(const aId: Integer = -1): ICustomModel;
   var
     tmpQuery: TFDQuery;
   begin
@@ -269,11 +487,35 @@ var
       tmpQuery.Connection := FConnection;
       tmpQuery.SQL.Text := TQuery.sp_product_types_sel.Name;
       tmpQuery.ParamByName(TQuery.sp_product_types_sel.Param.Id).DataType := ftInteger;
+      if aId > -1 then
+      begin
+        tmpQuery.ParamByName(TQuery.sp_product_types_sel.Param.Id).AsInteger := aId;
+      end;
       tmpQuery.ParamByName(TQuery.sp_product_types_sel.Param.Activity).DataType := ftBoolean;
       tmpQuery.Open();
       try
-        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
-        tmpView.ProductTypes := tmpQuery;
+        tmpView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
+        if aId = -1 then
+        begin
+          tmpView.ProductTypes := tmpQuery;
+        end
+        else
+        begin
+          if tmpQuery.IsEmpty() then
+          begin
+            Exit;
+          end;
+
+          tmpQuery.First();
+
+          Result := TProductTypeModel.Create(
+            tmpQuery.FieldByName(TQuery.sp_product_types_sel.Field.Id).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_product_types_sel.Field.Name).AsString,
+            tmpQuery.FieldByName(TQuery.sp_product_types_sel.Field.Activity).AsBoolean
+            );
+
+          FView.StepProgress();
+        end;
       finally
         tmpQuery.Close();
       end;
@@ -282,7 +524,7 @@ var
     end;
   end;
 
-  procedure LoadActualBudget();
+  function LoadActualBudget(const aId: Integer = -1): ICustomModel;
   var
     tmpQuery: TFDQuery;
   begin
@@ -291,10 +533,41 @@ var
       tmpQuery.Connection := FConnection;
       tmpQuery.SQL.Text := TQuery.sp_actual_budget_sel.Name;
       tmpQuery.ParamByName(TQuery.sp_actual_budget_sel.Param.Id).DataType := ftInteger;
+      if aId > -1 then
+      begin
+        tmpQuery.ParamByName(TQuery.sp_actual_budget_sel.Param.Id).AsInteger := aId;
+      end;
       tmpQuery.Open();
       try
-        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
-        tmpView.ActualBudget := tmpQuery;
+        tmpView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
+        if aId = -1 then
+        begin
+          tmpView.ActualBudget := tmpQuery;
+        end
+        else
+        begin
+          if tmpQuery.IsEmpty() then
+          begin
+            Exit;
+          end;
+
+          tmpQuery.First();
+
+          Result := TActualBudgetModel.Create(
+            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_BudgetItem).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_AccountingCenter).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Cosignatory).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Product).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Currency).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Document).AsString,
+            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.DocumentDate).AsDateTime,
+            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Description).AsString,
+            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Amount).AsCurrency
+            );
+
+          FView.StepProgress();
+        end;
       finally
         tmpQuery.Close();
       end;
@@ -303,7 +576,7 @@ var
     end;
   end;
 
-  procedure LoadPlannedBudget();
+  function LoadPlannedBudget(const aId: Integer = -1): ICustomModel;
   var
     tmpQuery: TFDQuery;
   begin
@@ -312,10 +585,38 @@ var
       tmpQuery.Connection := FConnection;
       tmpQuery.SQL.Text := TQuery.sp_planned_budget_sel.Name;
       tmpQuery.ParamByName(TQuery.sp_planned_budget_sel.Param.Id).DataType := ftInteger;
+      if aId > -1 then
+      begin
+        tmpQuery.ParamByName(TQuery.sp_planned_budget_sel.Param.Id).AsInteger := aId;
+      end;
       tmpQuery.Open();
       try
-        tmpView.ShowProgress('Загрузка списка...', tmpQuery.RecordCount);
-        tmpView.PlannedBudget := tmpQuery;
+        tmpView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
+        if aId = -1 then
+        begin
+          tmpView.PlannedBudget := tmpQuery;
+        end
+        else
+        begin
+          if tmpQuery.IsEmpty() then
+          begin
+            Exit;
+          end;
+
+          tmpQuery.First();
+
+          Result := TPlannedBudgetModel.Create(
+            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Id).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_BudgetItem).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_AccountingCenter).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_Currency).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Year).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Month).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Amount).AsCurrency
+            );
+
+          FView.StepProgress();
+        end;
       finally
         tmpQuery.Close();
       end;
@@ -400,13 +701,13 @@ var
   begin
     tmpForm := TConfigurationForm.Create(tmpView.Control, (TConfiguration.Get(TConfiguration) as TConfiguration).CurrentPage);
     try
-      b := tmpForm.ShowModal = mrOk ;
+      b := tmpForm.ShowModal = mrOk;
     finally
       tmpForm.Free();
     end;
     if b then
     begin
-      //ApplyConfiguration();
+      // ApplyConfiguration();
       { TODO : дописать }
     end;
   end;
@@ -464,38 +765,8 @@ var
   begin
     tmpView.ActionStates[vaExportToExcel] := not FProcessign;
     { TODO : дописать }
-    // and (FCurrentDocumentId > -1);;
     // Result := FGridTableViewResult.DataController.RecordCount > 0;
   end;
-
-{ procedure HistoryExecute();
-  var
-  tmpForm: TfrmDetail;
-  tmpPresenter: IPresenter;
-  begin
-  FProcessign := True;
-  tmpView.RefreshStates();
-  try
-  tmpView.ShowProgress('Просмотр истории...');
-  try
-  tmpForm := TfrmDetail.Create(nil);
-  try
-  tmpPresenter := TPresenterDetail.Create(tmpForm, FFDConnection, tmpView.CurrentDocumentId);
-  if not Assigned(tmpPresenter) then
-  begin
-  Exit;
-  end;
-  tmpForm.ShowModal();
-  finally
-  tmpForm.Free();
-  end;
-  finally
-  FProcessign := False;
-  end;
-  finally
-  tmpView.HideProgress();
-  end;
-  end; }
 
   procedure HelpContextExecute();
   begin
@@ -548,10 +819,10 @@ var
       begin
         if tmpLoginWindow.Execute() then
         begin
-          TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.Login := IfThen(TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStoreLogin,
-            tmpLoginWindow.Login);
-          TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.Password := IfThen(TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStorePassword,
-            tmpLoginWindow.Password);
+          TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.Login :=
+            IfThen(TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStoreLogin, tmpLoginWindow.Login);
+          TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.Password :=
+            IfThen(TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStorePassword, tmpLoginWindow.Password);
         end;
       end
       else
@@ -569,17 +840,136 @@ var
     { TODO : дописать }
   end;
 
-  procedure AddExecute();
-  begin
-  end;
-
   procedure AddUpdate();
   begin
     tmpView.ActionStates[vaAdd] := not FProcessign;
   end;
 
-  procedure EditExecute();
+  function GetCurrentModel(const aId: Integer): ICustomModel;
   begin
+    Result := nil;
+
+    if aId < 0 then
+    begin
+      Exit;
+    end;
+
+    case FCurrentEntity of
+      etAccountingCenters:
+        Result := LoadAccountingCenters(aId);
+      etBanks:
+        Result := LoadBanks(aId);
+      etBudgetItems:
+        Result := LoadBudgetItems(aId);
+      etBudgetItemTypes:
+        Result := LoadBudgetItemTypes(aId);
+      etCosignatories:
+        Result := LoadCosignatories(aId);
+      etCurrencies:
+        Result := LoadCurrencies(aId);
+      etProducts:
+        Result := LoadProducts(aId);
+      etProductTypes:
+        Result := LoadProductTypes(aId);
+      etActualBudget:
+        Result := LoadActualBudget(aId);
+      etPlannedBudget:
+        Result := LoadPlannedBudget(aId);
+    else
+      Exit;
+    end;
+  end;
+
+  procedure AddEditExecute(const aId: Integer = -1);
+  var
+    tmpFormClass: TfrmCustomEditClass;
+    tmpCustomEditView: ICustomEditView;
+    tmpPresenter: ICustomPresenter;
+    tmpPresenterClass: TCustomEditPresenterClass;
+    tmpCurrentModel: ICustomModel;
+  begin
+    tmpFormClass := nil;
+
+    case FCurrentEntity of
+      etAccountingCenters:
+        begin
+          tmpFormClass := TfrmAccountingCenter;
+          tmpPresenterClass := TAccountingCenterPresenter;
+        end;
+      etBanks:
+        begin
+          tmpFormClass := TfrmBank;
+          tmpPresenterClass := TBankPresenter;
+        end;
+      etBudgetItems:
+        begin
+          tmpFormClass := TfrmBudgetItem;
+          tmpPresenterClass := TBudgetItemPresenter;
+        end;
+      etBudgetItemTypes:
+        begin
+          tmpFormClass := TfrmBudgetItemType;
+          tmpPresenterClass := TBudgetItemTypePresenter;
+        end;
+      etCosignatories:
+        begin
+//          tmpFormClass := TfrmCosignatory;
+          tmpPresenterClass := TCosignatoryPresenter;
+        end;
+      etCurrencies:
+        begin
+          tmpFormClass := TfrmCurrency;
+          tmpPresenterClass := TCurrencyPresenter;
+        end;
+      etProducts:
+        begin
+//          tmpFormClass := TfrmProduct;
+          tmpPresenterClass := TProductPresenter;
+        end;
+      etProductTypes:
+        begin
+          tmpFormClass := TfrmProductType;
+          tmpPresenterClass := TProductTypePresenter;
+        end;
+      etActualBudget:
+        begin
+//          tmpFormClass := TfrmActualBudget;
+          tmpPresenterClass := TActualBudgetPresenter;
+        end;
+      etPlannedBudget:
+        begin
+//          tmpFormClass := TfrmPlannedBudget;
+          tmpPresenterClass := TPlannedBudgetPresenter;
+        end;
+    else
+      Exit;
+    end;
+
+    FProcessign := True;
+
+    tmpView.RefreshStates();
+    try
+      tmpCurrentModel := GetCurrentModel(aId);
+
+      tmpView.ShowProgress(IfThen(Assigned(tmpCurrentModel), 'Редактирование элемента...', 'Добавление элемента...'));
+      try
+        tmpCustomEditView := tmpFormClass.Create(nil);
+        try
+          tmpPresenter := tmpPresenterClass.Create(tmpCustomEditView, tmpCurrentModel);
+          try
+            tmpCustomEditView.ShowModal();
+          finally
+            tmpPresenter := nil;
+          end;
+        finally
+          tmpCustomEditView := nil;
+        end;
+      finally
+        tmpView.HideProgress();
+      end;
+    finally
+      FProcessign := False;
+    end;
   end;
 
   procedure EditUpdate();
@@ -707,6 +1097,12 @@ begin
     Exit;
   end;
 
+  tmpCurrentId := -1;
+  if Assigned(FGridId) then
+  begin
+    FGridId.TryGetValue(FCurrentEntity, tmpCurrentId);
+  end;
+
   case aValue of
     veInitialization:
       LoadBudgetItemTypes();
@@ -751,11 +1147,17 @@ begin
     veDisconnectUpdate:
       DisconnectUpdate();
     veAddExecute:
-      AddExecute();
+      begin
+        AddEditExecute();
+        RefreshExecute();
+      end;
     veAddUpdate:
       AddUpdate();
     veEditExecute:
-      EditExecute();
+      begin
+        AddEditExecute(tmpCurrentId);
+        RefreshExecute();
+      end;
     veEditUpdate:
       EditUpdate();
     veDeleteExecute:

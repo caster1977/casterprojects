@@ -3,10 +3,11 @@ unit Budgeting.Logic.Classes.Models.TBankModel;
 interface
 
 uses
+  Budgeting.Logic.Interfaces.Models.ICustomModel,
   Budgeting.Logic.Interfaces.Models.IBankModel;
 
 type
-  TBankModel = class(TInterfacedObject, IBankModel)
+  TBankModel = class(TInterfacedObject, ICustomModel, IBankModel)
   strict private
     FId: Integer;
     FName: string;

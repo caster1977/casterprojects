@@ -3,10 +3,11 @@ unit Budgeting.Logic.Classes.Models.TCurrencyModel;
 interface
 
 uses
+  Budgeting.Logic.Interfaces.Models.ICustomModel,
   Budgeting.Logic.Interfaces.Models.ICurrencyModel;
 
 type
-  TCurrencyModel = class(TInterfacedObject, ICurrencyModel)
+  TCurrencyModel = class(TInterfacedObject, ICustomModel, ICurrencyModel)
   strict private
     FId: Integer;
     FCode: string;

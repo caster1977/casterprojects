@@ -67,8 +67,6 @@ type
 
     procedure SetEnableToolbar(const aValue: Boolean);
     property EnableToolbar: Boolean write SetEnableToolbar;
-
-    procedure Initialize();
   end;
 
 implementation

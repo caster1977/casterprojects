@@ -3,23 +3,24 @@ unit Budgeting.Logic.Classes.Models.TBudgetItemModel;
 interface
 
 uses
+  Budgeting.Logic.Interfaces.Models.ICustomModel,
   Budgeting.Logic.Interfaces.Models.IBudgetItemModel;
 
 type
-  TBudgetItemModel = class(TInterfacedObject, IBudgetItemModel)
+  TBudgetItemModel = class(TInterfacedObject, ICustomModel, IBudgetItemModel)
   strict private
     FId: Integer;
-    FBudgetItemTypeId: Integer;
+    FId_BudgetItemType: Integer;
     FCode: string;
     FDescription: string;
     FActivity: Boolean;
     function GetId(): Integer;
-    function GetBudgetItemTypeId(): Integer;
+    function GetId_BudgetItemType(): Integer;
     function GetCode(): string;
     function GetDescription(): string;
     function GetActivity(): Boolean;
   public
-    constructor Create(const AId, ABudgetItemTypeId: Integer; const ACode, ADescription: string; const AActivity: Boolean); reintroduce; virtual;
+    constructor Create(const AId, AId_BudgetItemType: Integer; const ACode, ADescription: string; const AActivity: Boolean); reintroduce; virtual;
   end;
 
 implementation
@@ -27,11 +28,11 @@ implementation
 uses
   System.SysUtils;
 
-constructor TBudgetItemModel.Create(const AId, ABudgetItemTypeId: Integer; const ACode, ADescription: string; const AActivity: Boolean);
+constructor TBudgetItemModel.Create(const AId, AId_BudgetItemType: Integer; const ACode, ADescription: string; const AActivity: Boolean);
 begin
   inherited Create();
   FId := AId;
-  FBudgetItemTypeId := ABudgetItemTypeId;
+  FId_BudgetItemType := AId_BudgetItemType;
   FCode := ACode;
   FDescription := ADescription;
   FActivity := AActivity;
@@ -57,9 +58,9 @@ begin
   Result := FId;
 end;
 
-function TBudgetItemModel.GetBudgetItemTypeId(): Integer;
+function TBudgetItemModel.GetId_BudgetItemType(): Integer;
 begin
-  Result := FBudgetItemTypeId;
+  Result := FId_BudgetItemType;
 end;
 
 end.

@@ -3,19 +3,20 @@ unit Budgeting.Logic.Classes.Models.TAccountingCenterModel;
 interface
 
 uses
+  Budgeting.Logic.Interfaces.Models.ICustomModel,
   Budgeting.Logic.Interfaces.Models.IAccountingCenterModel;
 
 type
-  TAccountingCenterModel = class(TInterfacedObject, IAccountingCenterModel)
+  TAccountingCenterModel = class(TInterfacedObject, ICustomModel, IAccountingCenterModel)
   strict private
     FId: Integer;
-    FName: string;
     FCode: string;
+    FName: string;
     FDescription: string;
     FActivity: Boolean;
     function GetId(): Integer;
-    function GetCode(): string;
     function GetName(): string;
+    function GetCode(): string;
     function GetDescription(): string;
     function GetActivity(): Boolean;
   public

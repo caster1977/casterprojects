@@ -29,7 +29,10 @@ type
     procedure RefreshStates();
 
     procedure StorePresenter(const aPresenter: IInterface);
+    procedure OnEventSimpleStub(aValue: TViewEnumEvent);
     procedure SetCaption(const aValue: string);
+
+    procedure Initialize();
   end;
 
 implementation

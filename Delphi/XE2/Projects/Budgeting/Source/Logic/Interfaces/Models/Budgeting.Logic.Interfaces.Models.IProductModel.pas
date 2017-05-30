@@ -2,14 +2,14 @@ unit Budgeting.Logic.Interfaces.Models.IProductModel;
 
 interface
 
-type
-  IProductModel = interface
-    ['{962BA86A-228A-4695-942E-BA02AEC90137}']
-    function GetId(): Integer;
-    property Id: Integer read GetId;
+uses
+  Budgeting.Logic.Interfaces.Models.ICustomModel;
 
-    function GetProductTypeId(): Integer;
-    property ProductTypeId: Integer read GetProductTypeId;
+type
+  IProductModel = interface(ICustomModel)
+    ['{962BA86A-228A-4695-942E-BA02AEC90137}']
+    function GetId_ProductType(): Integer;
+    property Id_ProductType: Integer read GetId_ProductType;
 
     function GetCode(): string;
     property Code: string read GetCode;
