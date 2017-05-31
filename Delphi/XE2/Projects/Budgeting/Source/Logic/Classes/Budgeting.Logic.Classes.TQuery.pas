@@ -39,6 +39,7 @@ type
         Code = 'code';
         name = 'name';
         Description = 'description';
+        Info = 'info';
         Activity = 'activity';
       end;
     end;
@@ -60,19 +61,21 @@ type
 
     sp_actual_budget_sel = class(TObject)
     public const
-      name = 'dbo.actual_budget_sel :AId';
+      name = 'dbo.actual_budget_sel :AId, :AActivity';
 
     type
       Param = class
       public const
         Id = 'AId';
+        Activity = 'AActivity';
       end;
 
       Field = class(TObject)
       public const
         Id = 'id';
         Id_BudgetItem = 'id_budget_item';
-        Id_AccountingCenter = 'id_account_center';
+        Id_AccountingCenter = 'id_accounting_center';
+        AccountingCenter = 'accounting_center_name';
         Id_Cosignatory = 'id_cosignatory';
         Id_Product = 'id_product';
         Id_Currency = 'id_currency';
@@ -163,7 +166,7 @@ type
       public const
         Id = 'id';
         Id_BudgetItemType = 'id_budget_item_type';
-        BudgetItemTypeName = 'budget_item_type_name';
+        BudgetItemType = 'budget_item_type';
         Code = 'code';
         Description = 'description';
         Activity = 'activity';
@@ -232,7 +235,7 @@ type
       public const
         Id = 'id';
         Id_Bank = 'id_bank';
-        BankInfo = 'bank_info';
+        Bank = 'bank';
         name = 'name';
         UNP = 'unp';
         Address = 'address';
@@ -313,7 +316,7 @@ type
       public const
         Id = 'id';
         Id_ProductType = 'id_product_type';
-        ProductTypeName = 'product_type_name';
+        ProductType = 'product_type';
         Code = 'code';
         Description = 'description';
         Activity = 'activity';
@@ -370,19 +373,21 @@ type
 
     sp_planned_budget_sel = class(TObject)
     public const
-      name = 'dbo.planned_budget_sel :AId';
+      name = 'dbo.planned_budget_sel :AId, :AActivity';
 
     type
       Param = class
       public const
         Id = 'AId';
+        Activity = 'AActivity';
       end;
 
       Field = class(TObject)
       public const
         Id = 'id';
         Id_BudgetItem = 'id_budget_item';
-        Id_AccountingCenter = 'id_account_center';
+        Id_AccountingCenter = 'id_accounting_center';
+        AccountingCenter = 'accounting_center';
         Id_Currency = 'id_currency';
         Year = 'year';
         Month = 'month';

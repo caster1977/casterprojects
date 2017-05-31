@@ -49,8 +49,8 @@ type
     procedure edtNamePropertiesEditValueChanged(Sender: TObject);
     procedure edtCodePropertiesChange(Sender: TObject);
     procedure edtCodePropertiesEditValueChanged(Sender: TObject);
-    procedure edtAddressPropertiesChange(Sender: TObject);
-    procedure edtAddressPropertiesEditValueChanged(Sender: TObject);
+    procedure edtDescriptionPropertiesChange(Sender: TObject);
+    procedure edtDescriptionPropertiesEditValueChanged(Sender: TObject);
     procedure chkActivityPropertiesChange(Sender: TObject);
     procedure chkActivityPropertiesEditValueChanged(Sender: TObject);
 
@@ -90,12 +90,12 @@ begin
   end;
 end;
 
-procedure TfrmAccountingCenter.edtAddressPropertiesChange(Sender: TObject);
+procedure TfrmAccountingCenter.edtDescriptionPropertiesChange(Sender: TObject);
 begin
   edtDescription.EditValue := edtDescription.EditingValue;
 end;
 
-procedure TfrmAccountingCenter.edtAddressPropertiesEditValueChanged(Sender: TObject);
+procedure TfrmAccountingCenter.edtDescriptionPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin

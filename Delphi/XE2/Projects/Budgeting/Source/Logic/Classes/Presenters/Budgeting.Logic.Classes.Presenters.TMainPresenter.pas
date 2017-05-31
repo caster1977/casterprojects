@@ -77,7 +77,7 @@ uses
   Budgeting.Logic.Classes.Presenters.TProductTypePresenter,
 
   Budgeting.UI.AccountingCenter,
-//  Budgeting.UI.ActualBudget,
+  Budgeting.UI.ActualBudget,
   Budgeting.UI.Bank,
   Budgeting.UI.BudgetItem,
   Budgeting.UI.BudgetItemType,
@@ -536,6 +536,7 @@ var
       begin
         tmpQuery.ParamByName(TQuery.sp_actual_budget_sel.Param.Id).AsInteger := aId;
       end;
+      tmpQuery.ParamByName(TQuery.sp_actual_budget_sel.Param.Activity).DataType := ftBoolean;
       tmpQuery.Open();
       try
         tmpView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
@@ -588,6 +589,7 @@ var
       begin
         tmpQuery.ParamByName(TQuery.sp_planned_budget_sel.Param.Id).AsInteger := aId;
       end;
+      tmpQuery.ParamByName(TQuery.sp_planned_budget_sel.Param.Activity).DataType := ftBoolean;
       tmpQuery.Open();
       try
         tmpView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
@@ -932,7 +934,7 @@ var
         end;
       etActualBudget:
         begin
-//          tmpFormClass := TfrmActualBudget;
+          tmpFormClass := TfrmActualBudget;
           tmpPresenterClass := TActualBudgetPresenter;
         end;
       etPlannedBudget:

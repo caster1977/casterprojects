@@ -77,7 +77,10 @@ uses
   Budgeting.Logic.Interfaces.Presenters.ICosignatoryPresenter in 'Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.ICosignatoryPresenter.pas',
   Budgeting.Logic.Interfaces.Views.ICosignatoryView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.ICosignatoryView.pas',
   Budgeting.Logic.Interfaces.Presenters.IProductPresenter in 'Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.IProductPresenter.pas',
-  Budgeting.UI.Cosignatory in 'UI\Budgeting.UI.Cosignatory.pas' {frmCosignatory};
+  Budgeting.UI.Cosignatory in 'UI\Budgeting.UI.Cosignatory.pas' {frmCosignatory},
+  Budgeting.Logic.Interfaces.Views.IActualBudgetView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IActualBudgetView.pas',
+  Budgeting.UI.ActualBudget in 'UI\Budgeting.UI.ActualBudget.pas' {frmActualBudget},
+  Budgeting.Logic.Interfaces.Presenters.IActualBudgetPresenter in 'Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.IActualBudgetPresenter.pas';
 
 {$R *.res}
 

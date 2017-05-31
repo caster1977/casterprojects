@@ -26,7 +26,7 @@ inherited frmProduct: TfrmProduct
     Properties.DropDownListStyle = lsEditFixedList
     Properties.ImmediatePost = True
     Properties.OnEditValueChanged = cbbProductTypePropertiesEditValueChanged
-    TabOrder = 1
+    TabOrder = 0
     Width = 376
   end
   object cxlblCode: TcxLabel [4]
@@ -45,7 +45,7 @@ inherited frmProduct: TfrmProduct
     Align = alTop
     Properties.OnChange = edtCodePropertiesChange
     Properties.OnEditValueChanged = edtCodePropertiesEditValueChanged
-    TabOrder = 3
+    TabOrder = 2
     Width = 376
   end
   object cxlblDescription: TcxLabel [6]
@@ -55,6 +55,7 @@ inherited frmProduct: TfrmProduct
     Margins.Top = 6
     Align = alTop
     Caption = #1054'&'#1087#1080#1089#1072#1085#1080#1077':'
+    FocusControl = edtDescription
   end
   object edtDescription: TcxTextEdit [7]
     AlignWithMargins = True
@@ -63,7 +64,7 @@ inherited frmProduct: TfrmProduct
     Align = alTop
     Properties.OnChange = edtDescriptionPropertiesChange
     Properties.OnEditValueChanged = edtDescriptionPropertiesEditValueChanged
-    TabOrder = 5
+    TabOrder = 4
     Width = 376
   end
   object chkActivity: TcxCheckBox [8]
@@ -75,7 +76,7 @@ inherited frmProduct: TfrmProduct
     Caption = '&'#1040#1082#1090#1080#1074#1085#1086#1089#1090#1100
     Properties.OnChange = chkActivityPropertiesChange
     Properties.OnEditValueChanged = chkActivityPropertiesEditValueChanged
-    TabOrder = 6
+    TabOrder = 5
     Width = 376
   end
 end

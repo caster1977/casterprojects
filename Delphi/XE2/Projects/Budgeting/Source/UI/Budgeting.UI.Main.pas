@@ -228,7 +228,7 @@ type
     tblvCosignatories: TcxGridTableView;
     colCosignatories_Id_Cosignatory: TcxGridColumn;
     colCosignatories_Id_Bank: TcxGridColumn;
-    colCosignatories_BankInfo: TcxGridColumn;
+    colCosignatories_Bank: TcxGridColumn;
     colCosignatories_Name: TcxGridColumn;
     colCosignatories_UNP: TcxGridColumn;
     colCosignatories_Address: TcxGridColumn;
@@ -277,8 +277,9 @@ type
     pnlOperations: TPanel;
     cbbOperationTypes: TcxComboBox;
     cbbBudgetItemTypes: TcxComboBox;
-    colBudgetItems_BudgetItemTypeName: TcxGridColumn;
-    colProducts_ProductTypeName: TcxGridColumn;
+    colBudgetItems_BudgetItemType: TcxGridColumn;
+    colProducts_ProductType: TcxGridColumn;
+    colActualBudget_AccountingCenter: TcxGridColumn;
 
     procedure actQuitExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -708,7 +709,7 @@ begin
     begin
       tblvProducts.DataController.Values[i, colProducts_Id_Product.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Id).AsInteger;
       tblvProducts.DataController.Values[i, colProducts_Id_ProductType.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Id_ProductType).AsInteger;
-      tblvProducts.DataController.Values[i, colProducts_ProductTypeName.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.ProductTypeName).AsString;
+      tblvProducts.DataController.Values[i, colProducts_ProductType.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.ProductType).AsString;
       tblvProducts.DataController.Values[i, colProducts_Code.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Code).AsString;
       tblvProducts.DataController.Values[i, colProducts_Description.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Description).AsString;
       tblvProducts.DataController.Values[i, colProducts_Activity.Index] := aValue.FieldByName(TQuery.sp_products_sel.Field.Activity).AsBoolean;
@@ -934,6 +935,10 @@ begin
       tmpController := tblvProducts.Controller;
     etProductTypes:
       tmpController := tblvProductTypes.Controller;
+    etActualBudget:
+      tmpController := tblvActualBudget.Controller;
+    etPlannedBudget:
+      tmpController := tblvPlannedBudget.Controller;
   end;
   if Assigned(tmpController) then
   begin
@@ -1027,6 +1032,8 @@ begin
         .AsInteger;
       tblvActualBudget.DataController.Values[i, colActualBudget_Id_AccountingCenter.Index] :=
         aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_AccountingCenter).AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_AccountingCenter.Index] :=
+        aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.AccountingCenter).AsString;
       tblvActualBudget.DataController.Values[i, colActualBudget_Id_Cosignatory.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Cosignatory)
         .AsInteger;
       tblvActualBudget.DataController.Values[i, colActualBudget_Id_Product.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Product).AsInteger;
@@ -1112,7 +1119,7 @@ begin
       tblvBudgetItems.DataController.Values[i, colBudgetItems_Id_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Id).AsInteger;
       tblvBudgetItems.DataController.Values[i, colBudgetItems_Id_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Id_BudgetItemType)
         .AsInteger;
-      tblvBudgetItems.DataController.Values[i, colBudgetItems_BudgetItemTypeName.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.BudgetItemTypeName).AsString;
+      tblvBudgetItems.DataController.Values[i, colBudgetItems_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.BudgetItemType).AsString;
       tblvBudgetItems.DataController.Values[i, colBudgetItems_Code.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Code).AsString;
       tblvBudgetItems.DataController.Values[i, colBudgetItems_Description.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Description).AsString;
       tblvBudgetItems.DataController.Values[i, colBudgetItems_Activity.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Activity).AsBoolean;
@@ -1205,7 +1212,7 @@ begin
     begin
       tblvCosignatories.DataController.Values[i, colCosignatories_Id_Cosignatory.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Id).AsInteger;
       tblvCosignatories.DataController.Values[i, colCosignatories_Id_Bank.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Id_Bank).AsInteger;
-      tblvCosignatories.DataController.Values[i, colCosignatories_BankInfo.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.BankInfo).AsString;
+      tblvCosignatories.DataController.Values[i, colCosignatories_Bank.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Bank).AsString;
       tblvCosignatories.DataController.Values[i, colCosignatories_Name.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Name).AsString;
       tblvCosignatories.DataController.Values[i, colCosignatories_UNP.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.UNP).AsString;
       tblvCosignatories.DataController.Values[i, colCosignatories_Address.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Address).AsString;

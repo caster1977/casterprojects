@@ -25,7 +25,7 @@ inherited frmAccountingCenter: TfrmAccountingCenter
     Align = alTop
     Properties.OnChange = edtNamePropertiesChange
     Properties.OnEditValueChanged = edtNamePropertiesEditValueChanged
-    TabOrder = 3
+    TabOrder = 2
     Width = 376
   end
   object cxlblCode: TcxLabel [4]
@@ -44,7 +44,7 @@ inherited frmAccountingCenter: TfrmAccountingCenter
     Align = alTop
     Properties.OnChange = edtCodePropertiesChange
     Properties.OnEditValueChanged = edtCodePropertiesEditValueChanged
-    TabOrder = 1
+    TabOrder = 0
     Width = 376
   end
   object cxlblDescription: TcxLabel [6]
@@ -60,9 +60,9 @@ inherited frmAccountingCenter: TfrmAccountingCenter
     Left = 3
     Top = 135
     Align = alTop
-    Properties.OnChange = edtAddressPropertiesChange
-    Properties.OnEditValueChanged = edtAddressPropertiesEditValueChanged
-    TabOrder = 5
+    Properties.OnChange = edtDescriptionPropertiesChange
+    Properties.OnEditValueChanged = edtDescriptionPropertiesEditValueChanged
+    TabOrder = 4
     Width = 376
   end
   object chkActivity: TcxCheckBox [8]
@@ -74,7 +74,7 @@ inherited frmAccountingCenter: TfrmAccountingCenter
     Caption = '&'#1040#1082#1090#1080#1074#1085#1086#1089#1090#1100
     Properties.OnChange = chkActivityPropertiesChange
     Properties.OnEditValueChanged = chkActivityPropertiesEditValueChanged
-    TabOrder = 6
+    TabOrder = 5
     Width = 376
   end
 end

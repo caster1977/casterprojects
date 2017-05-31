@@ -6,10 +6,12 @@ inherited frmCurrency: TfrmCurrency
   TextHeight = 13
   inherited bvl1: TBevel
     Top = 136
+    ExplicitTop = 136
   end
   inherited pnlButtons: TPanel
     Top = 147
     TabOrder = 5
+    ExplicitTop = 147
     inherited pbProgress: TcxProgressBar
       ExplicitHeight = 23
     end
@@ -40,17 +42,15 @@ inherited frmCurrency: TfrmCurrency
     Margins.Top = 6
     Align = alTop
     Caption = #1054'&'#1087#1080#1089#1072#1085#1080#1077':'
-    ExplicitTop = 112
   end
   object edtDescription: TcxTextEdit [5]
     AlignWithMargins = True
     Left = 3
     Top = 82
     Align = alTop
-    Properties.OnChange = edtAddressPropertiesChange
-    Properties.OnEditValueChanged = edtAddressPropertiesEditValueChanged
+    Properties.OnChange = edtDescriptionPropertiesChange
+    Properties.OnEditValueChanged = edtDescriptionPropertiesEditValueChanged
     TabOrder = 1
-    ExplicitTop = 135
     Width = 376
   end
   object chkActivity: TcxCheckBox [6]
@@ -63,7 +63,6 @@ inherited frmCurrency: TfrmCurrency
     Properties.OnChange = chkActivityPropertiesChange
     Properties.OnEditValueChanged = chkActivityPropertiesEditValueChanged
     TabOrder = 2
-    ExplicitTop = 165
     Width = 376
   end
 end

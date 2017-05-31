@@ -45,8 +45,8 @@ type
     chkActivity: TcxCheckBox;
     procedure edtCodePropertiesChange(Sender: TObject);
     procedure edtCodePropertiesEditValueChanged(Sender: TObject);
-    procedure edtAddressPropertiesChange(Sender: TObject);
-    procedure edtAddressPropertiesEditValueChanged(Sender: TObject);
+    procedure edtDescriptionPropertiesChange(Sender: TObject);
+    procedure edtDescriptionPropertiesEditValueChanged(Sender: TObject);
     procedure chkActivityPropertiesChange(Sender: TObject);
     procedure chkActivityPropertiesEditValueChanged(Sender: TObject);
 
@@ -86,12 +86,12 @@ begin
   end;
 end;
 
-procedure TfrmCurrency.edtAddressPropertiesChange(Sender: TObject);
+procedure TfrmCurrency.edtDescriptionPropertiesChange(Sender: TObject);
 begin
   edtDescription.EditValue := edtDescription.EditingValue;
 end;
 
-procedure TfrmCurrency.edtAddressPropertiesEditValueChanged(Sender: TObject);
+procedure TfrmCurrency.edtDescriptionPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin

@@ -256,7 +256,7 @@ object MainForm: TMainForm
             HeaderAlignmentHorz = taCenter
             Width = 50
           end
-          object colBudgetItems_BudgetItemTypeName: TcxGridColumn
+          object colBudgetItems_BudgetItemType: TcxGridColumn
             Caption = #1058#1080#1087
             PropertiesClassName = 'TcxTextEditProperties'
             Properties.Alignment.Horz = taLeftJustify
@@ -448,7 +448,7 @@ object MainForm: TMainForm
             HeaderAlignmentHorz = taCenter
             Width = 50
           end
-          object colCosignatories_BankInfo: TcxGridColumn
+          object colCosignatories_Bank: TcxGridColumn
             Caption = #1041#1072#1085#1082
             PropertiesClassName = 'TcxTextEditProperties'
             Properties.Alignment.Horz = taLeftJustify
@@ -580,7 +580,7 @@ object MainForm: TMainForm
             HeaderAlignmentHorz = taCenter
             Width = 50
           end
-          object colProducts_ProductTypeName: TcxGridColumn
+          object colProducts_ProductType: TcxGridColumn
             Caption = #1058#1080#1087
             PropertiesClassName = 'TcxTextEditProperties'
             Properties.Alignment.Horz = taLeftJustify
@@ -675,10 +675,6 @@ object MainForm: TMainForm
     object shtOperations: TcxTabSheet
       Caption = #1054#1087#1077#1088#1072#1094#1080#1080
       ImageIndex = 0
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxgrdOperations: TcxGrid
         AlignWithMargins = True
         Left = 3
@@ -745,6 +741,16 @@ object MainForm: TMainForm
             HeaderAlignmentHorz = taCenter
             Width = 50
           end
+          object colActualBudget_AccountingCenter: TcxGridColumn
+            Caption = #1062#1060#1054
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.MaxLength = 0
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 100
+            HeaderAlignmentHorz = taCenter
+            Width = 100
+          end
           object colActualBudget_Id_Cosignatory: TcxGridColumn
             Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088' '#1082#1086#1085#1090#1088#1072#1075#1077#1085#1090#1072
             DataBinding.ValueType = 'Integer'
@@ -785,7 +791,7 @@ object MainForm: TMainForm
             Width = 50
           end
           object colActualBudget_Document: TcxGridColumn
-            Caption = #1054#1087#1088#1072#1074#1076#1072#1090#1077#1083#1100#1085#1099#1081' '#1076#1086#1082#1091#1084#1077#1085#1090
+            Caption = #1044#1086#1082#1091#1084#1077#1085#1090
             PropertiesClassName = 'TcxTextEditProperties'
             Properties.Alignment.Horz = taCenter
             Properties.MaxLength = 0
@@ -795,7 +801,7 @@ object MainForm: TMainForm
             Width = 100
           end
           object colActualBudget_DocumentDate: TcxGridColumn
-            Caption = #1044#1072#1090#1072' '#1076#1086#1082#1091#1084#1077#1085#1090#1072
+            Caption = #1044#1072#1090#1072
             PropertiesClassName = 'TcxDateEditProperties'
             Properties.Alignment.Horz = taCenter
             Properties.DisplayFormat = 'dd.mm.yyyy'
@@ -928,7 +934,7 @@ object MainForm: TMainForm
           end
         end
         object cxgrdlvl2: TcxGridLevel
-          GridView = tblvPlannedBudget
+          GridView = tblvActualBudget
         end
       end
       object pnlOperations: TPanel
@@ -984,10 +990,6 @@ object MainForm: TMainForm
     object shtReports: TcxTabSheet
       Caption = #1054#1090#1095#1105#1090#1099
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxgrdReports: TcxGrid
         AlignWithMargins = True
         Left = 3
