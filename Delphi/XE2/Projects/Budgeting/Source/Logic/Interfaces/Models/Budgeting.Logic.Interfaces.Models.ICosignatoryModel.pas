@@ -12,7 +12,7 @@ type
     property Id_Bank: Integer read GetId_Bank;
 
     function GetName(): string;
-    property Name: string read GetName;
+    property name: string read GetName;
 
     function GetUNP(): string;
     property UNP: string read GetUNP;

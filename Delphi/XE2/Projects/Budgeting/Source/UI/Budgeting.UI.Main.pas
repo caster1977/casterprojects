@@ -116,10 +116,11 @@ uses
 
   FireDAC.Phys.MSSQL,
   Budgeting.Logic.Types.TEntity,
-  cxFilter,
-  cxData,
+
   FireDAC.Phys.ODBCBase,
-  Vcl.ImgList;
+  Vcl.ImgList,
+  cxFilter,
+  cxData;
 
 type
   TMainForm = class(TForm, ICustomView, IMainView)
@@ -312,8 +313,7 @@ type
     procedure actConfigurationUpdate(Sender: TObject);
     procedure actConnectExecute(Sender: TObject);
     procedure actFileExecute(Sender: TObject);
-    procedure tblvFocusedRecordChanged(Sender: TcxCustomGridTableView; APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
-      ANewItemRecordFocusingChanged: Boolean);
+    procedure tblvFocusedRecordChanged(Sender: TcxCustomGridTableView; APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
     procedure actDeleteExecute(Sender: TObject);
     procedure actDeleteUpdate(Sender: TObject);
     procedure actEditExecute(Sender: TObject);
@@ -675,14 +675,13 @@ begin
 
     for i := 0 to Pred(aValue.RecordCount) do
     begin
-      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Id_PlannedBudget.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Id)
-        .AsInteger;
-      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Id_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_BudgetItem)
-        .AsInteger;
-      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Id_AccountingCenter.Index] :=
-        aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_AccountingCenter).AsInteger;
-      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Id_Currency.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_Currency)
-        .AsInteger;
+      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Id_PlannedBudget.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Id).AsInteger;
+      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Id_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_BudgetItem).AsInteger;
+      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.BudgetItem).AsString;
+      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Id_AccountingCenter.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_AccountingCenter).AsInteger;
+      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_AccountingCenter.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.AccountingCenter).AsString;
+      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Id_Currency.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_Currency).AsInteger;
+      tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Currency.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Currency).AsString;
       tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Year.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Year).AsInteger;
       tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Month.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Month).AsInteger;
       tblvPlannedBudget.DataController.Values[i, colPlannedBudget_Amount.Index] := aValue.FieldByName(TQuery.sp_planned_budget_sel.Field.Amount).AsCurrency;
@@ -1049,27 +1048,19 @@ begin
     for i := 0 to Pred(aValue.RecordCount) do
     begin
       tblvActualBudget.DataController.Values[i, colActualBudget_Id_ActualBudget.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id).AsInteger;
-      tblvActualBudget.DataController.Values[i, colActualBudget_Id_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_BudgetItem)
-        .AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Id_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_BudgetItem).AsInteger;
       tblvActualBudget.DataController.Values[i, colActualBudget_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.BudgetItem).AsString;
-      tblvActualBudget.DataController.Values[i, colActualBudget_Id_AccountingCenter.Index] :=
-        aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_AccountingCenter).AsInteger;
-      tblvActualBudget.DataController.Values[i, colActualBudget_AccountingCenter.Index] :=
-        aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.AccountingCenter).AsString;
-      tblvActualBudget.DataController.Values[i, colActualBudget_Id_Cosignatory.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Cosignatory)
-        .AsInteger;
-      tblvActualBudget.DataController.Values[i, colActualBudget_Cosignatory.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Cosignatory)
-        .AsString;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Id_AccountingCenter.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_AccountingCenter).AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_AccountingCenter.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.AccountingCenter).AsString;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Id_Cosignatory.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Cosignatory).AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Cosignatory.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Cosignatory).AsString;
       tblvActualBudget.DataController.Values[i, colActualBudget_Id_Product.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Product).AsInteger;
       tblvActualBudget.DataController.Values[i, colActualBudget_Product.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Product).AsString;
-      tblvActualBudget.DataController.Values[i, colActualBudget_Id_Currency.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Currency)
-        .AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Id_Currency.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Currency).AsInteger;
       tblvActualBudget.DataController.Values[i, colActualBudget_Currency.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Currency).AsString;
       tblvActualBudget.DataController.Values[i, colActualBudget_Document.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Document).AsString;
-      tblvActualBudget.DataController.Values[i, colActualBudget_DocumentDate.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.DocumentDate)
-        .AsDateTime;
-      tblvActualBudget.DataController.Values[i, colActualBudget_Description.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Description)
-        .AsString;
+      tblvActualBudget.DataController.Values[i, colActualBudget_DocumentDate.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.DocumentDate).AsDateTime;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Description.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Description).AsString;
       tblvActualBudget.DataController.Values[i, colActualBudget_Amount.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Amount).AsCurrency;
 
       StepProgress();
@@ -1143,10 +1134,8 @@ begin
     for i := 0 to Pred(aValue.RecordCount) do
     begin
       tblvBudgetItems.DataController.Values[i, colBudgetItems_Id_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Id).AsInteger;
-      tblvBudgetItems.DataController.Values[i, colBudgetItems_Id_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Id_BudgetItemType)
-        .AsInteger;
-      tblvBudgetItems.DataController.Values[i, colBudgetItems_BudgetItemType.Index] :=
-        aValue.FieldByName(TQuery.sp_budget_items_sel.Field.BudgetItemType).AsString;
+      tblvBudgetItems.DataController.Values[i, colBudgetItems_Id_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Id_BudgetItemType).AsInteger;
+      tblvBudgetItems.DataController.Values[i, colBudgetItems_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.BudgetItemType).AsString;
       tblvBudgetItems.DataController.Values[i, colBudgetItems_Code.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Code).AsString;
       tblvBudgetItems.DataController.Values[i, colBudgetItems_Description.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Description).AsString;
       tblvBudgetItems.DataController.Values[i, colBudgetItems_Activity.Index] := aValue.FieldByName(TQuery.sp_budget_items_sel.Field.Activity).AsBoolean;
@@ -1187,14 +1176,11 @@ begin
 
       for i := 0 to Pred(aValue.RecordCount) do
       begin
-        tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Id_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id)
-          .AsInteger;
+        tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Id_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id).AsInteger;
         tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Name.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString;
-        tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Activity.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Activity)
-          .AsBoolean;
+        tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Activity.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Activity).AsBoolean;
 
-        cbbBudgetItemTypes.Properties.Items.AddObject(aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString,
-          TObject(aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id).AsInteger));
+        cbbBudgetItemTypes.Properties.Items.AddObject(aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString, TObject(aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id).AsInteger));
 
         StepProgress();
 
@@ -1243,12 +1229,9 @@ begin
       tblvCosignatories.DataController.Values[i, colCosignatories_Name.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Name).AsString;
       tblvCosignatories.DataController.Values[i, colCosignatories_UNP.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.UNP).AsString;
       tblvCosignatories.DataController.Values[i, colCosignatories_Address.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Address).AsString;
-      tblvCosignatories.DataController.Values[i, colCosignatories_AgreementNumber.Index] :=
-        aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementNumber).AsString;
-      tblvCosignatories.DataController.Values[i, colCosignatories_AgreementStart.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStart)
-        .AsDateTime;
-      tblvCosignatories.DataController.Values[i, colCosignatories_AgreementStop.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStop)
-        .AsDateTime;
+      tblvCosignatories.DataController.Values[i, colCosignatories_AgreementNumber.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementNumber).AsString;
+      tblvCosignatories.DataController.Values[i, colCosignatories_AgreementStart.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStart).AsDateTime;
+      tblvCosignatories.DataController.Values[i, colCosignatories_AgreementStop.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStop).AsDateTime;
       tblvCosignatories.DataController.Values[i, colCosignatories_Account.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Account).AsString;
       tblvCosignatories.DataController.Values[i, colCosignatories_Activity.Index] := aValue.FieldByName(TQuery.sp_cosignatories_sel.Field.Activity).AsBoolean;
 
@@ -1360,8 +1343,7 @@ begin
   FPresenter := aPresenter;
 end;
 
-procedure TMainForm.tblvFocusedRecordChanged(Sender: TcxCustomGridTableView; APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
-  ANewItemRecordFocusingChanged: Boolean);
+procedure TMainForm.tblvFocusedRecordChanged(Sender: TcxCustomGridTableView; APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
 var
   tmpCursor: TCursor;
 begin
@@ -1450,16 +1432,11 @@ begin
 
     for i := 0 to Pred(aValue.RecordCount) do
     begin
-      tblvAccountingCenters.DataController.Values[i, colAccountingCenters_Id_AccountingCenter.Index] :=
-        aValue.FieldByName(TQuery.sp_accounting_centers_sel.Field.Id).AsInteger;
-      tblvAccountingCenters.DataController.Values[i, colAccountingCenters_Code.Index] :=
-        aValue.FieldByName(TQuery.sp_accounting_centers_sel.Field.Code).AsString;
-      tblvAccountingCenters.DataController.Values[i, colAccountingCenters_Name.Index] :=
-        aValue.FieldByName(TQuery.sp_accounting_centers_sel.Field.Name).AsString;
-      tblvAccountingCenters.DataController.Values[i, colAccountingCenters_Description.Index] :=
-        aValue.FieldByName(TQuery.sp_accounting_centers_sel.Field.Description).AsString;
-      tblvAccountingCenters.DataController.Values[i, colAccountingCenters_Activity.Index] := aValue.FieldByName(TQuery.sp_accounting_centers_sel.Field.Activity)
-        .AsBoolean;
+      tblvAccountingCenters.DataController.Values[i, colAccountingCenters_Id_AccountingCenter.Index] := aValue.FieldByName(TQuery.sp_accounting_centers_sel.Field.Id).AsInteger;
+      tblvAccountingCenters.DataController.Values[i, colAccountingCenters_Code.Index] := aValue.FieldByName(TQuery.sp_accounting_centers_sel.Field.Code).AsString;
+      tblvAccountingCenters.DataController.Values[i, colAccountingCenters_Name.Index] := aValue.FieldByName(TQuery.sp_accounting_centers_sel.Field.Name).AsString;
+      tblvAccountingCenters.DataController.Values[i, colAccountingCenters_Description.Index] := aValue.FieldByName(TQuery.sp_accounting_centers_sel.Field.Description).AsString;
+      tblvAccountingCenters.DataController.Values[i, colAccountingCenters_Activity.Index] := aValue.FieldByName(TQuery.sp_accounting_centers_sel.Field.Activity).AsBoolean;
 
       StepProgress();
 

@@ -14,6 +14,7 @@ type
   TCustomPresenter = class(TInterfacedObject, ICustomPresenter)
   strict private
     function GetConnection(const aConnectionString: string): TFDConnection;
+
   strict protected
     FView: ICustomView;
     FProcessign: Boolean;
@@ -21,6 +22,7 @@ type
     procedure OnEventSimple(aValue: TViewEnumEvent); virtual; abstract;
     procedure Initialize(); virtual;
     function GetConnectionString(): string;
+
   public
     constructor Create(const aView: ICustomView); reintroduce; virtual;
     destructor Destroy(); override;
@@ -36,9 +38,8 @@ uses
   FireDAC.Stan.Def,
   FireDAC.Stan.Option,
   FireDAC.Stan.Param,
-  System.StrUtils,
-  Budgeting.Logic.Classes.Configuration.Sections.TDatabaseSection,
-  Budgeting.Logic.Interfaces.Views.ICustomEditView;
+
+  Budgeting.Logic.Classes.Configuration.Sections.TDatabaseSection;
 
 constructor TCustomPresenter.Create(const aView: ICustomView);
 begin
@@ -54,9 +55,8 @@ end;
 
 function TCustomPresenter.GetConnectionString(): string;
 begin
-  Result := Format('Server=%s;Database=%s;MARS=yes;OSAuthent=Yes;DriverID=MSSQL;User_Name=%s;Password=%s;LoginTimeout=%d',
-    [TConfiguration.Get(TConfiguration).Section<TDatabaseSection>.Host.Trim(), TConfiguration.Get(TConfiguration)
-    .Section<TDatabaseSection>.Database.Trim(), 'r81t', 'M+fL5lT7lGqW8RGoVyN1UAFDzNoM2u17T7I2M+izrHo=', TConfiguration.Get(TConfiguration).Section<TDatabaseSection>.ConnectionTimeOut]);
+  Result := Format('Server=%s;Database=%s;MARS=yes;OSAuthent=Yes;DriverID=MSSQL;User_Name=%s;Password=%s;LoginTimeout=%d', [TConfiguration.Get(TConfiguration).Section<TDatabaseSection>.Host.Trim(),
+    TConfiguration.Get(TConfiguration).Section<TDatabaseSection>.Database.Trim(), 'r81t', 'M+fL5lT7lGqW8RGoVyN1UAFDzNoM2u17T7I2M+izrHo=', TConfiguration.Get(TConfiguration).Section<TDatabaseSection>.ConnectionTimeOut]);
 end;
 
 destructor TCustomPresenter.Destroy();
@@ -78,7 +78,7 @@ var
 begin
   {$IFDEF DEBUG}
   Result := nil;
-   CodeSite.EnterMethod(Self, 'GetConnection()');
+  CodeSite.EnterMethod(Self, 'GetConnection()');
   try
     {$ENDIF}
     try

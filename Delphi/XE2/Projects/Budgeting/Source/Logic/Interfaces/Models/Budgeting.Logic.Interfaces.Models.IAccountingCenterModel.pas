@@ -12,7 +12,7 @@ type
     property Code: string read GetCode;
 
     function GetName(): string;
-    property Name: string read GetName;
+    property name: string read GetName;
 
     function GetDescription(): string;
     property Description: string read GetDescription;

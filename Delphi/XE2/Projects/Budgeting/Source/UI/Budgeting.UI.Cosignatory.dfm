@@ -6,15 +6,16 @@ inherited frmCosignatory: TfrmCosignatory
   TextHeight = 13
   inherited bvl1: TBevel
     Top = 401
+    ExplicitTop = 401
   end
   inherited pnlButtons: TPanel
     Top = 412
     TabOrder = 15
+    ExplicitTop = 412
     inherited btnSave: TButton
       Caption = #1057#1086'&'#1093#1088#1072#1085#1080#1090#1100
     end
     inherited pbProgress: TcxProgressBar
-      ExplicitTop = -2
       ExplicitHeight = 23
     end
   end
@@ -26,7 +27,7 @@ inherited frmCosignatory: TfrmCosignatory
     Align = alTop
     Caption = '&'#1041#1072#1085#1082':'
     FocusControl = cbbBankInfo
-    ExplicitLeft = 8
+    ExplicitTop = 291
   end
   object cbbBankInfo: TcxComboBox [3]
     AlignWithMargins = True
@@ -36,9 +37,7 @@ inherited frmCosignatory: TfrmCosignatory
     Properties.DropDownListStyle = lsEditFixedList
     Properties.ImmediatePost = True
     Properties.OnEditValueChanged = cbbBankInfoPropertiesEditValueChanged
-    TabOrder = 11
-    ExplicitLeft = 19
-    ExplicitTop = 203
+    TabOrder = 8
     Width = 376
   end
   object cxlblName: TcxLabel [4]
@@ -49,7 +48,6 @@ inherited frmCosignatory: TfrmCosignatory
     Align = alTop
     Caption = '&'#1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077':'
     FocusControl = edtName
-    ExplicitTop = 59
   end
   object edtName: TcxTextEdit [5]
     AlignWithMargins = True
@@ -58,9 +56,7 @@ inherited frmCosignatory: TfrmCosignatory
     Align = alTop
     Properties.OnChange = edtNamePropertiesChange
     Properties.OnEditValueChanged = edtNamePropertiesEditValueChanged
-    TabOrder = 1
-    ExplicitLeft = -2
-    ExplicitTop = 68
+    TabOrder = 0
     Width = 376
   end
   object cxlblAddress: TcxLabel [6]
@@ -71,6 +67,7 @@ inherited frmCosignatory: TfrmCosignatory
     Align = alTop
     Caption = '&'#1040#1076#1088#1077#1089':'
     FocusControl = edtAddress
+    ExplicitTop = 116
   end
   object edtAddress: TcxTextEdit [7]
     AlignWithMargins = True
@@ -79,7 +76,7 @@ inherited frmCosignatory: TfrmCosignatory
     Align = alTop
     Properties.OnChange = edtAddressPropertiesChange
     Properties.OnEditValueChanged = edtAddressPropertiesEditValueChanged
-    TabOrder = 5
+    TabOrder = 2
     Width = 376
   end
   object chkActivity: TcxCheckBox [8]
@@ -91,8 +88,7 @@ inherited frmCosignatory: TfrmCosignatory
     Caption = '&'#1040#1082#1090#1080#1074#1085#1086#1089#1090#1100
     Properties.OnChange = chkActivityPropertiesChange
     Properties.OnEditValueChanged = chkActivityPropertiesEditValueChanged
-    TabOrder = 14
-    ExplicitTop = 165
+    TabOrder = 12
     Width = 376
   end
   object cxlblUNP: TcxLabel [9]
@@ -103,9 +99,6 @@ inherited frmCosignatory: TfrmCosignatory
     Align = alTop
     Caption = '&'#1059#1053#1055':'
     FocusControl = edtUNP
-    ExplicitLeft = 11
-    ExplicitTop = 67
-    ExplicitWidth = 7
   end
   object edtUNP: TcxTextEdit [10]
     AlignWithMargins = True
@@ -114,9 +107,7 @@ inherited frmCosignatory: TfrmCosignatory
     Align = alTop
     Properties.OnChange = edtUNPPropertiesChange
     Properties.OnEditValueChanged = edtUNPPropertiesEditValueChanged
-    TabOrder = 3
-    ExplicitLeft = 6
-    ExplicitTop = 90
+    TabOrder = 1
     Width = 376
   end
   object cxlblAgreementNumber: TcxLabel [11]
@@ -126,8 +117,6 @@ inherited frmCosignatory: TfrmCosignatory
     Margins.Top = 6
     Align = alTop
     Caption = #1053#1086'&'#1084#1077#1088' '#1076#1086#1075#1086#1074#1086#1088#1072':'
-    ExplicitLeft = 8
-    ExplicitTop = 210
   end
   object edtAgreementNumber: TcxTextEdit [12]
     AlignWithMargins = True
@@ -136,9 +125,7 @@ inherited frmCosignatory: TfrmCosignatory
     Align = alTop
     Properties.OnChange = edtAgreementNumberPropertiesChange
     Properties.OnEditValueChanged = edtAgreementNumberPropertiesEditValueChanged
-    TabOrder = 7
-    ExplicitLeft = 8
-    ExplicitTop = 214
+    TabOrder = 4
     Width = 376
   end
   object cxlblAccount: TcxLabel [13]
@@ -149,7 +136,7 @@ inherited frmCosignatory: TfrmCosignatory
     Align = alTop
     Caption = #1053#1086'&'#1084#1077#1088' '#1089#1095#1105#1090#1072':'
     FocusControl = edtAccount
-    ExplicitLeft = 19
+    ExplicitTop = 328
   end
   object edtAccount: TcxTextEdit [14]
     AlignWithMargins = True
@@ -158,9 +145,7 @@ inherited frmCosignatory: TfrmCosignatory
     Align = alTop
     Properties.OnChange = edtlAccountPropertiesChange
     Properties.OnEditValueChanged = edtlAccountPropertiesEditValueChanged
-    TabOrder = 13
-    ExplicitLeft = 19
-    ExplicitTop = 321
+    TabOrder = 9
     Width = 376
   end
   object cxlblAgreementPeriod: TcxLabel [15]
@@ -170,8 +155,6 @@ inherited frmCosignatory: TfrmCosignatory
     Margins.Top = 6
     Align = alTop
     Caption = #1057#1088#1086#1082' '#1076#1077#1081#1089#1090#1074#1080#1103' '#1076#1086#1075#1086#1074#1086#1088#1072':'
-    ExplicitLeft = 8
-    ExplicitTop = 201
   end
   object pnlAgreementPeriod: TPanel [16]
     AlignWithMargins = True
@@ -181,8 +164,7 @@ inherited frmCosignatory: TfrmCosignatory
     Height = 21
     Align = alTop
     BevelOuter = bvNone
-    TabOrder = 9
-    ExplicitLeft = -29
+    TabOrder = 5
     object deAgreementStart: TcxDateEdit
       Left = 12
       Top = 0
@@ -195,7 +177,6 @@ inherited frmCosignatory: TfrmCosignatory
       Properties.OnChange = deAgreementStartPropertiesChange
       Properties.OnEditValueChanged = deAgreementStartPropertiesEditValueChanged
       TabOrder = 0
-      ExplicitLeft = -21
       Width = 121
     end
     object cxlblAgreementStart: TcxLabel
@@ -206,8 +187,6 @@ inherited frmCosignatory: TfrmCosignatory
       Align = alLeft
       Caption = '&c'
       FocusControl = deAgreementStart
-      ExplicitLeft = -3
-      ExplicitTop = 6
     end
     object cxlbl1: TcxLabel
       AlignWithMargins = True
@@ -217,8 +196,6 @@ inherited frmCosignatory: TfrmCosignatory
       Align = alLeft
       Caption = '&'#1087#1086
       FocusControl = deAgreementStop
-      ExplicitLeft = 148
-      ExplicitTop = 6
     end
     object deAgreementStop: TcxDateEdit
       Left = 158
@@ -232,7 +209,6 @@ inherited frmCosignatory: TfrmCosignatory
       Properties.OnChange = deAgreementStopPropertiesChange
       Properties.OnEditValueChanged = deAgreementStopPropertiesEditValueChanged
       TabOrder = 1
-      ExplicitLeft = 242
       Width = 121
     end
   end

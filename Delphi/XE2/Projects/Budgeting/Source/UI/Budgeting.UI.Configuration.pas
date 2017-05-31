@@ -26,8 +26,9 @@ uses
   cxMaskEdit,
   cxDropDownEdit,
   cxCalendar,
-  Vcl.ImgList,
-  cxSpinEdit;
+
+  cxSpinEdit,
+  Vcl.ImgList;
 
 type
   TConfigurationForm = class(TForm)
@@ -91,8 +92,7 @@ type
   strict private
     function GetEnableQuitConfirmation(): Boolean;
     procedure SetEnableQuitConfirmation(const AValue: Boolean);
-    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation write SetEnableQuitConfirmation
-      default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
+    property EnableQuitConfirmation: Boolean read GetEnableQuitConfirmation write SetEnableQuitConfirmation default CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION;
 
   strict private
     function GetEnableSplashAtStart(): Boolean;
@@ -112,14 +112,12 @@ type
   strict private
     function GetEnableStoreMainFormSizesAndPosition(): Boolean;
     procedure SetEnableStoreMainFormSizesAndPosition(const AValue: Boolean);
-    property EnableStoreMainFormSizesAndPosition: Boolean read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition
-      default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
+    property EnableStoreMainFormSizesAndPosition: Boolean read GetEnableStoreMainFormSizesAndPosition write SetEnableStoreMainFormSizesAndPosition default CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION;
 
   strict private
     function GetEnablePlaySoundOnComplete(): Boolean;
     procedure SetEnablePlaySoundOnComplete(const AValue: Boolean);
-    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete write SetEnablePlaySoundOnComplete
-      default CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
+    property EnablePlaySoundOnComplete: Boolean read GetEnablePlaySoundOnComplete write SetEnablePlaySoundOnComplete default CONFIGURATION_DEFAULT_ENABLE_PLAY_SOUND_ON_COMPLETE;
 
   public
     constructor Create(const aOwner: TComponent; const aActivePage: Integer = CONFIGURATION_DEFAULT_ACTIVE_PAGE); reintroduce; virtual;
@@ -181,13 +179,13 @@ procedure TConfigurationForm.cxspndtYearPropertiesEditValueChanged(Sender: TObje
 // var
 // tmpCursor: TCursor;
 begin
-//   tmpCursor := Screen.Cursor;
-//   Screen.Cursor := crHourGlass;
-//   try
-//   FOnEventSimple(veItemChanged);
-//   finally
-//   Screen.Cursor := tmpCursor;
-//   end;
+  // tmpCursor := Screen.Cursor;
+  // Screen.Cursor := crHourGlass;
+  // try
+  // FOnEventSimple(veItemChanged);
+  // finally
+  // Screen.Cursor := tmpCursor;
+  // end;
 end;
 
 procedure TConfigurationForm.actDefaultsExecute(Sender: TObject);
@@ -221,9 +219,8 @@ begin
   end;
   if PageControl.ActivePage = tsInterface then
   begin
-    b := not((EnableQuitConfirmation = CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION) and (EnableSplashAtStart = CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START)
-      and (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR) and
-      (EnableStoreMainFormSizesAndPosition = CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION));
+    b := not((EnableQuitConfirmation = CONFIGURATION_DEFAULT_ENABLE_QUIT_CONFIRMATION) and (EnableSplashAtStart = CONFIGURATION_DEFAULT_ENABLE_SPLASH_AT_START) and (EnableStatusbar = CONFIGURATION_DEFAULT_ENABLE_STATUSBAR) and
+      (EnableToolbar = CONFIGURATION_DEFAULT_ENABLE_TOOLBAR) and (EnableStoreMainFormSizesAndPosition = CONFIGURATION_DEFAULT_ENABLE_STORE_MAINFORM_SIZES_AND_POSITION));
   end;
   if PageControl.ActivePage = tsOther then
   begin

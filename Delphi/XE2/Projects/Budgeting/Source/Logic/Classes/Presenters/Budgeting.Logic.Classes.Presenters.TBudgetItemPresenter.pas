@@ -28,7 +28,7 @@ uses
   Winapi.Windows,
   Data.DB,
   Vcl.Controls,
-  System.StrUtils,
+
   System.SysUtils,
   Budgeting.Logic.Classes.TQuery,
   Budgeting.Logic.Interfaces.Models.ICustomModel,
@@ -65,8 +65,7 @@ begin
 
         for i := 0 to Pred(tmpQuery.RecordCount) do
         begin
-          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString,
-            TObject(tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id).AsInteger));
+          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString, TObject(tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id).AsInteger));
 
           tmpQuery.Next();
 

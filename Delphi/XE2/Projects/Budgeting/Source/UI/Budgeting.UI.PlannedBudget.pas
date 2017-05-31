@@ -1,4 +1,4 @@
-unit Budgeting.UI.ActualBudget;
+unit Budgeting.UI.PlannedBudget;
 
 interface
 
@@ -10,7 +10,6 @@ uses
   Vcl.Dialogs,
   Vcl.ExtCtrls,
   Vcl.ActnList,
-
   cxGraphics,
   cxControls,
   cxLookAndFeels,
@@ -28,9 +27,8 @@ uses
   cxCalc,
   cxMaskEdit,
   System.SysUtils,
-
   Budgeting.UI.CustomEdit,
-  Budgeting.Logic.Interfaces.Views.IActualBudgetView,
+  Budgeting.Logic.Interfaces.Views.IPlannedBudgetView,
   cxCurrencyEdit,
   cxSpinEdit,
   cxProgressBar,
@@ -41,38 +39,27 @@ uses
   Vcl.StdCtrls;
 
 type
-  TfrmActualBudget = class(TfrmCustomEdit, IActualBudgetView)
+  TfrmPlannedBudget = class(TfrmCustomEdit, IPlannedBudgetView)
     cxlblBudgetItem: TcxLabel;
     cbbBudgetItem: TcxComboBox;
-    cxlblDocument: TcxLabel;
-    edtDocument: TcxTextEdit;
-    cxlblDescription: TcxLabel;
-    edtDescription: TcxTextEdit;
+    cxlblMonth: TcxLabel;
     cxlblAccountingCenter: TcxLabel;
     cbbAccountingCenter: TcxComboBox;
-    cxlblCosignatory: TcxLabel;
-    cbbCosignatory: TcxComboBox;
-    cxlblProduct: TcxLabel;
-    cbbProduct: TcxComboBox;
     cxlblCurrency: TcxLabel;
     cbbCurrency: TcxComboBox;
     pnlDocumentDate: TPanel;
-    deDocumentDate: TcxDateEdit;
-    cxlblDocumentDate: TcxLabel;
+    cxlblYear: TcxLabel;
     cxlblAmount: TcxLabel;
     pnlAmount: TPanel;
     cxcrncydtAmount: TcxCurrencyEdit;
+    pnlMonth: TPanel;
+    cbbMonth: TcxComboBox;
+    cbbYear: TcxComboBox;
     procedure cbbBudgetItemPropertiesEditValueChanged(Sender: TObject);
     procedure cbbAccountingCenterPropertiesEditValueChanged(Sender: TObject);
-    procedure cbbCosignatoryPropertiesEditValueChanged(Sender: TObject);
-    procedure cbbProductPropertiesEditValueChanged(Sender: TObject);
     procedure cbbCurrencyPropertiesEditValueChanged(Sender: TObject);
-    procedure edtDocumentPropertiesChange(Sender: TObject);
-    procedure edtDocumentPropertiesEditValueChanged(Sender: TObject);
-    procedure deDocumentDatePropertiesEditValueChanged(Sender: TObject);
-    procedure deDocumentDatePropertiesChange(Sender: TObject);
-    procedure edtDescriptionPropertiesChange(Sender: TObject);
-    procedure edtDescriptionPropertiesEditValueChanged(Sender: TObject);
+    procedure cbbYearPropertiesEditValueChanged(Sender: TObject);
+    procedure cbbMonthPropertiesEditValueChanged(Sender: TObject);
     procedure cxcrncydtAmountPropertiesChange(Sender: TObject);
     procedure cxcrncydtAmountPropertiesEditValueChanged(Sender: TObject);
 
@@ -81,9 +68,9 @@ type
     procedure SetItem(const aValue: IInterface); override;
     procedure SetBudgetItems(const aValue: TStringList);
     procedure SetAccountingCenters(const aValue: TStringList);
-    procedure SetCosignatories(const aValue: TStringList);
-    procedure SetProducts(const aValue: TStringList);
     procedure SetCurrencies(const aValue: TStringList);
+    procedure SetYears(const aValue: TStringList);
+    procedure SetMonths(const aValue: TStringList);
   end;
 
 implementation
@@ -91,19 +78,17 @@ implementation
 {$R *.dfm}
 
 uses
-
   System.Variants,
-
-  Budgeting.Logic.Interfaces.Models.IActualBudgetModel,
-  Budgeting.Logic.Classes.Models.TActualBudgetModel,
+  Budgeting.Logic.Interfaces.Models.IPlannedBudgetModel,
+  Budgeting.Logic.Classes.Models.TPlannedBudgetModel,
   Budgeting.Logic.Types.TViewEnumEvent;
 
-procedure TfrmActualBudget.cxcrncydtAmountPropertiesChange(Sender: TObject);
+procedure TfrmPlannedBudget.cxcrncydtAmountPropertiesChange(Sender: TObject);
 begin
   cxcrncydtAmount.EditValue := cxcrncydtAmount.EditingValue;
 end;
 
-procedure TfrmActualBudget.cxcrncydtAmountPropertiesEditValueChanged(Sender: TObject);
+procedure TfrmPlannedBudget.cxcrncydtAmountPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin
@@ -116,12 +101,7 @@ begin
   end;
 end;
 
-procedure TfrmActualBudget.deDocumentDatePropertiesChange(Sender: TObject);
-begin
-  deDocumentDate.EditValue := deDocumentDate.EditingValue;
-end;
-
-procedure TfrmActualBudget.deDocumentDatePropertiesEditValueChanged(Sender: TObject);
+procedure TfrmPlannedBudget.cbbAccountingCenterPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin
@@ -134,12 +114,7 @@ begin
   end;
 end;
 
-procedure TfrmActualBudget.edtDocumentPropertiesChange(Sender: TObject);
-begin
-  edtDocument.EditValue := edtDocument.EditingValue;
-end;
-
-procedure TfrmActualBudget.edtDocumentPropertiesEditValueChanged(Sender: TObject);
+procedure TfrmPlannedBudget.cbbBudgetItemPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin
@@ -152,12 +127,7 @@ begin
   end;
 end;
 
-procedure TfrmActualBudget.edtDescriptionPropertiesChange(Sender: TObject);
-begin
-  edtDescription.EditValue := edtDescription.EditingValue;
-end;
-
-procedure TfrmActualBudget.edtDescriptionPropertiesEditValueChanged(Sender: TObject);
+procedure TfrmPlannedBudget.cbbCurrencyPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin
@@ -170,7 +140,7 @@ begin
   end;
 end;
 
-procedure TfrmActualBudget.cbbAccountingCenterPropertiesEditValueChanged(Sender: TObject);
+procedure TfrmPlannedBudget.cbbMonthPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin
@@ -183,7 +153,7 @@ begin
   end;
 end;
 
-procedure TfrmActualBudget.cbbBudgetItemPropertiesEditValueChanged(Sender: TObject);
+procedure TfrmPlannedBudget.cbbYearPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin
@@ -196,67 +166,22 @@ begin
   end;
 end;
 
-procedure TfrmActualBudget.cbbCosignatoryPropertiesEditValueChanged(Sender: TObject);
-var
-  tmpCursor: TCursor;
-begin
-  tmpCursor := Screen.Cursor;
-  Screen.Cursor := crHourGlass;
-  try
-    FOnEventSimple(veItemChanged);
-  finally
-    Screen.Cursor := tmpCursor;
-  end;
-end;
-
-procedure TfrmActualBudget.cbbCurrencyPropertiesEditValueChanged(Sender: TObject);
-var
-  tmpCursor: TCursor;
-begin
-  tmpCursor := Screen.Cursor;
-  Screen.Cursor := crHourGlass;
-  try
-    FOnEventSimple(veItemChanged);
-  finally
-    Screen.Cursor := tmpCursor;
-  end;
-end;
-
-procedure TfrmActualBudget.cbbProductPropertiesEditValueChanged(Sender: TObject);
-var
-  tmpCursor: TCursor;
-begin
-  tmpCursor := Screen.Cursor;
-  Screen.Cursor := crHourGlass;
-  try
-    FOnEventSimple(veItemChanged);
-  finally
-    Screen.Cursor := tmpCursor;
-  end;
-end;
-
-function TfrmActualBudget.GetItem(): IInterface;
+function TfrmPlannedBudget.GetItem(): IInterface;
 var
   tmpId: Integer;
   tmpBudgetItemId: Integer;
   tmpAccountingCenterId: Integer;
-  tmpCosignatoryId: Integer;
-  tmpProductId: Integer;
   tmpCurrencyId: Integer;
-  tmpDocument: string;
-  tmpDocumentDate: TDate;
-  tmpDescription: string;
+  tmpYear: Integer;
+  tmpMonth: Integer;
   tmpAmount: Currency;
 begin
   tmpId := FId;
   tmpBudgetItemId := -1;
   tmpAccountingCenterId := -1;
-  tmpCosignatoryId := -1;
-  tmpProductId := -1;
   tmpCurrencyId := -1;
-  tmpDocument := string.Empty;
-  tmpDocumentDate := Date();
-  tmpDescription := string.Empty;
+  tmpYear := -1;
+  tmpMonth := -1;
   tmpAmount := 0;
 
   if cbbBudgetItem.ItemIndex > -1 then
@@ -269,34 +194,19 @@ begin
     tmpAccountingCenterId := Integer(cbbAccountingCenter.Properties.Items.Objects[cbbAccountingCenter.ItemIndex]);
   end;
 
-  if cbbCosignatory.ItemIndex > -1 then
-  begin
-    tmpCosignatoryId := Integer(cbbCosignatory.Properties.Items.Objects[cbbCosignatory.ItemIndex]);
-  end;
-
-  if cbbProduct.ItemIndex > -1 then
-  begin
-    tmpProductId := Integer(cbbProduct.Properties.Items.Objects[cbbProduct.ItemIndex]);
-  end;
-
   if cbbCurrency.ItemIndex > -1 then
   begin
     tmpCurrencyId := Integer(cbbCurrency.Properties.Items.Objects[cbbCurrency.ItemIndex]);
   end;
 
-  if not VarIsNull(edtDocument.EditValue) then
+  if cbbYear.ItemIndex > -1 then
   begin
-    tmpDocument := edtDocument.EditValue;
+    tmpYear := Integer(cbbYear.Properties.Items.Objects[cbbYear.ItemIndex]);
   end;
 
-  if not VarIsNull(deDocumentDate.EditValue) then
+  if cbbMonth.ItemIndex > -1 then
   begin
-    tmpDocumentDate := deDocumentDate.EditValue;
-  end;
-
-  if not VarIsNull(edtDescription.EditValue) then
-  begin
-    tmpDescription := edtDescription.EditValue;
+    tmpMonth := Integer(cbbMonth.Properties.Items.Objects[cbbMonth.ItemIndex]);
   end;
 
   if not VarIsNull(cxcrncydtAmount.EditValue) then
@@ -304,10 +214,10 @@ begin
     tmpAmount := cxcrncydtAmount.EditValue;
   end;
 
-  Result := TActualBudgetModel.Create(tmpId, tmpBudgetItemId, tmpAccountingCenterId, tmpCosignatoryId, tmpProductId, tmpCurrencyId, tmpDocument, tmpDocumentDate, tmpDescription, tmpAmount);
+  Result := TPlannedBudgetModel.Create(tmpId, tmpBudgetItemId, tmpAccountingCenterId, tmpCurrencyId, tmpYear, tmpMonth, tmpAmount);
 end;
 
-procedure TfrmActualBudget.SetAccountingCenters(const aValue: TStringList);
+procedure TfrmPlannedBudget.SetAccountingCenters(const aValue: TStringList);
 var
   i: Integer;
 begin
@@ -334,7 +244,7 @@ begin
   end;
 end;
 
-procedure TfrmActualBudget.SetBudgetItems(const aValue: TStringList);
+procedure TfrmPlannedBudget.SetBudgetItems(const aValue: TStringList);
 var
   i: Integer;
 begin
@@ -361,13 +271,13 @@ begin
   end;
 end;
 
-procedure TfrmActualBudget.SetCosignatories(const aValue: TStringList);
+procedure TfrmPlannedBudget.SetYears(const aValue: TStringList);
 var
   i: Integer;
 begin
-  cbbCosignatory.Properties.BeginUpdate();
+  cbbYear.Properties.BeginUpdate();
   try
-    cbbCosignatory.Properties.Items.Clear();
+    cbbYear.Properties.Items.Clear();
 
     if not Assigned(aValue) then
     begin
@@ -381,14 +291,14 @@ begin
 
     for i := 0 to Pred(aValue.Count) do
     begin
-      cbbCosignatory.Properties.Items.AddObject(aValue[i], TObject(aValue.Objects[i]));
+      cbbYear.Properties.Items.AddObject(aValue[i], TObject(aValue.Objects[i]));
     end;
   finally
-    cbbCosignatory.Properties.EndUpdate();
+    cbbYear.Properties.EndUpdate();
   end;
 end;
 
-procedure TfrmActualBudget.SetCurrencies(const aValue: TStringList);
+procedure TfrmPlannedBudget.SetCurrencies(const aValue: TStringList);
 var
   i: Integer;
 begin
@@ -415,23 +325,20 @@ begin
   end;
 end;
 
-procedure TfrmActualBudget.SetItem(const aValue: IInterface);
+procedure TfrmPlannedBudget.SetItem(const aValue: IInterface);
 var
-  tmpItem: IActualBudgetModel;
+  tmpItem: IPlannedBudgetModel;
   i: Integer;
 begin
   inherited;
   cbbBudgetItem.ItemIndex := -1;
   cbbAccountingCenter.ItemIndex := -1;
-  cbbCosignatory.ItemIndex := -1;
-  cbbProduct.ItemIndex := -1;
   cbbCurrency.ItemIndex := -1;
-  edtDocument.EditValue := string.Empty;
-  deDocumentDate.EditValue := Date();
-  edtDescription.EditValue := string.Empty;
+  cbbYear.ItemIndex := -1;
+  cbbMonth.ItemIndex := -1;
   cxcrncydtAmount.EditValue := 0;
 
-  if Supports(aValue, IActualBudgetModel, tmpItem) then
+  if Supports(aValue, IPlannedBudgetModel, tmpItem) then
   begin
     for i := 0 to Pred(cbbBudgetItem.Properties.Items.Count) do
     begin
@@ -451,24 +358,6 @@ begin
       end;
     end;
 
-    for i := 0 to Pred(cbbCosignatory.Properties.Items.Count) do
-    begin
-      if Integer(cbbCosignatory.Properties.Items.Objects[i]) = tmpItem.Id_Cosignatory then
-      begin
-        cbbCosignatory.ItemIndex := i;
-        Break;
-      end;
-    end;
-
-    for i := 0 to Pred(cbbProduct.Properties.Items.Count) do
-    begin
-      if Integer(cbbProduct.Properties.Items.Objects[i]) = tmpItem.Id_Product then
-      begin
-        cbbProduct.ItemIndex := i;
-        Break;
-      end;
-    end;
-
     for i := 0 to Pred(cbbCurrency.Properties.Items.Count) do
     begin
       if Integer(cbbCurrency.Properties.Items.Objects[i]) = tmpItem.Id_Currency then
@@ -478,20 +367,35 @@ begin
       end;
     end;
 
-    edtDocument.EditValue := tmpItem.Document;
-    deDocumentDate.EditValue := tmpItem.DocumentDate;
-    edtDescription.EditValue := tmpItem.Description;
+    for i := 0 to Pred(cbbYear.Properties.Items.Count) do
+    begin
+      if Integer(cbbYear.Properties.Items.Objects[i]) = tmpItem.Year then
+      begin
+        cbbYear.ItemIndex := i;
+        Break;
+      end;
+    end;
+
+    for i := 0 to Pred(cbbMonth.Properties.Items.Count) do
+    begin
+      if Integer(cbbMonth.Properties.Items.Objects[i]) = tmpItem.Month then
+      begin
+        cbbMonth.ItemIndex := i;
+        Break;
+      end;
+    end;
+
     cxcrncydtAmount.EditValue := tmpItem.Amount;
   end;
 end;
 
-procedure TfrmActualBudget.SetProducts(const aValue: TStringList);
+procedure TfrmPlannedBudget.SetMonths(const aValue: TStringList);
 var
   i: Integer;
 begin
-  cbbProduct.Properties.BeginUpdate();
+  cbbMonth.Properties.BeginUpdate();
   try
-    cbbProduct.Properties.Items.Clear();
+    cbbMonth.Properties.Items.Clear();
 
     if not Assigned(aValue) then
     begin
@@ -505,10 +409,10 @@ begin
 
     for i := 0 to Pred(aValue.Count) do
     begin
-      cbbProduct.Properties.Items.AddObject(aValue[i], TObject(aValue.Objects[i]));
+      cbbMonth.Properties.Items.AddObject(aValue[i], TObject(aValue.Objects[i]));
     end;
   finally
-    cbbProduct.Properties.EndUpdate();
+    cbbMonth.Properties.EndUpdate();
   end;
 end;
 

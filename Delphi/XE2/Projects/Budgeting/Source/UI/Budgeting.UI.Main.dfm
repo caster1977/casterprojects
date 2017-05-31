@@ -1051,6 +1051,10 @@ object MainForm: TMainForm
     object shtReports: TcxTabSheet
       Caption = #1054#1090#1095#1105#1090#1099
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxgrdReports: TcxGrid
         AlignWithMargins = True
         Left = 3

@@ -31,8 +31,8 @@ type
     function GetAmount(): Currency;
 
   public
-    constructor Create(const AId, AId_BudgetItem, AId_AccountingCenter, AId_Cosignatory, AId_Product, AId_Currency: Integer; const ADocument: string;
-      const ADocumentDate: TDate; const ADescription: string; const AAmount: Currency); reintroduce; virtual;
+    constructor Create(const AId, AId_BudgetItem, AId_AccountingCenter, AId_Cosignatory, AId_Product, AId_Currency: Integer; const ADocument: string; const ADocumentDate: TDate; const ADescription: string; const AAmount: Currency);
+      reintroduce; virtual;
   end;
 
 implementation
@@ -40,8 +40,8 @@ implementation
 uses
   System.SysUtils;
 
-constructor TActualBudgetModel.Create(const AId, AId_BudgetItem, AId_AccountingCenter, AId_Cosignatory, AId_Product, AId_Currency: Integer; const ADocument: string;
-  const ADocumentDate: TDate; const ADescription: string; const AAmount: Currency);
+constructor TActualBudgetModel.Create(const AId, AId_BudgetItem, AId_AccountingCenter, AId_Cosignatory, AId_Product, AId_Currency: Integer; const ADocument: string; const ADocumentDate: TDate; const ADescription: string;
+  const AAmount: Currency);
 
 begin
   inherited Create();

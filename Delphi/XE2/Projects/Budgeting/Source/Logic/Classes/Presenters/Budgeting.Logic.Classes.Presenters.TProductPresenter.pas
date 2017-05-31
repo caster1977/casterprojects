@@ -14,6 +14,7 @@ type
     function CheckItem(): Boolean; override;
     procedure BeforeQueryOpen(const aQuery: TFDQuery); override;
     procedure Initialize(); override;
+
   strict private
     procedure LoadProductTypes(var aList: TStringList);
   end;
@@ -26,7 +27,7 @@ uses
   Winapi.Windows,
   Data.DB,
   Vcl.Controls,
-  System.StrUtils,
+
   System.SysUtils,
   Budgeting.Logic.Classes.TQuery,
   Budgeting.Logic.Interfaces.Models.IProductModel,
@@ -94,8 +95,7 @@ begin
 
         for i := 0 to Pred(tmpQuery.RecordCount) do
         begin
-          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_product_types_sel.Field.Name).AsString,
-            TObject(tmpQuery.FieldByName(TQuery.sp_product_types_sel.Field.Id).AsInteger));
+          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_product_types_sel.Field.Name).AsString, TObject(tmpQuery.FieldByName(TQuery.sp_product_types_sel.Field.Id).AsInteger));
 
           tmpQuery.Next();
 
@@ -133,4 +133,3 @@ begin
 end;
 
 end.
-

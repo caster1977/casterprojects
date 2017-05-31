@@ -29,6 +29,7 @@ type
     function GetAgreementStop(): TDate;
     function GetAccount(): string;
     function GetActivity(): Boolean;
+
   public
     constructor Create(const AId, AId_Bank: Integer; const AName, AUNP, AAddress, AAgreementNumber: string; const AAgreementStart, AAgreementStop: TDate; const AAccount: string; const AActivity: Boolean); reintroduce; virtual;
   end;
@@ -104,4 +105,3 @@ begin
 end;
 
 end.
-

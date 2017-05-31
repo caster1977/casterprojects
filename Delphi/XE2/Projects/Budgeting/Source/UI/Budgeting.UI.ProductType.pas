@@ -10,7 +10,7 @@ uses
   Vcl.Dialogs,
   Vcl.ExtCtrls,
   Vcl.ActnList,
-  Vcl.StdCtrls,
+
   cxGraphics,
   cxControls,
   cxLookAndFeels,
@@ -28,13 +28,13 @@ uses
   cxCalc,
   cxMaskEdit,
   System.SysUtils,
-  System.Generics.Collections,
-  Budgeting.Logic.Interfaces.Views.ICustomView,
+
   Budgeting.UI.CustomEdit,
   Budgeting.Logic.Interfaces.Views.IProductTypeView,
   cxCurrencyEdit,
   cxSpinEdit,
-  cxProgressBar;
+  cxProgressBar,
+  Vcl.StdCtrls;
 
 type
   TfrmProductType = class(TfrmCustomEdit, IProductTypeView)
@@ -56,13 +56,12 @@ implementation
 {$R *.dfm}
 
 uses
-  System.StrUtils,
+
   System.Variants,
-  Budgeting.Logic.Classes.TQuery,
+
   Budgeting.Logic.Interfaces.Models.IProductTypeModel,
   Budgeting.Logic.Classes.Models.TProductTypeModel,
-  Budgeting.Logic.Types.TViewEnumEvent,
-  Budgeting.Logic.Consts;
+  Budgeting.Logic.Types.TViewEnumEvent;
 
 procedure TfrmProductType.chkActivityPropertiesChange(Sender: TObject);
 begin

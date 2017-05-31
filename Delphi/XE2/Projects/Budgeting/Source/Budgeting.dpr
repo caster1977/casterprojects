@@ -11,8 +11,8 @@ uses
   Budgeting.Logic.Types.TViewEnumAction in 'Logic\Types\Budgeting.Logic.Types.TViewEnumAction.pas',
   Budgeting.Logic.Types.TViewEnumActionArray in 'Logic\Types\Budgeting.Logic.Types.TViewEnumActionArray.pas',
   Budgeting.Logic.Types.TViewEnumEvent in 'Logic\Types\Budgeting.Logic.Types.TViewEnumEvent.pas',
-  Budgeting.UI.Configuration in 'UI\Budgeting.UI.Configuration.pas' {ConfigurationForm},
-  Budgeting.UI.Main in 'UI\Budgeting.UI.Main.pas' {MainForm},
+  Budgeting.UI.Configuration in 'UI\Budgeting.UI.Configuration.pas' {ConfigurationForm} ,
+  Budgeting.UI.Main in 'UI\Budgeting.UI.Main.pas' {MainForm} ,
   Budgeting.Logic.Classes.Models.TAccountingCenterModel in 'Logic\Classes\Models\Budgeting.Logic.Classes.Models.TAccountingCenterModel.pas',
   Budgeting.Logic.Classes.Models.TBankModel in 'Logic\Classes\Models\Budgeting.Logic.Classes.Models.TBankModel.pas',
   Budgeting.Logic.Classes.Models.TBudgetItemModel in 'Logic\Classes\Models\Budgeting.Logic.Classes.Models.TBudgetItemModel.pas',
@@ -45,8 +45,8 @@ uses
   Budgeting.Logic.Classes.Models.TActualBudgetModel in 'Logic\Classes\Models\Budgeting.Logic.Classes.Models.TActualBudgetModel.pas',
   Budgeting.Logic.Classes.Models.TPlannedBudgetModel in 'Logic\Classes\Models\Budgeting.Logic.Classes.Models.TPlannedBudgetModel.pas',
   Budgeting.Logic.Interfaces.Views.ICustomEditView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.ICustomEditView.pas',
-  Budgeting.UI.CustomEdit in 'UI\Budgeting.UI.CustomEdit.pas' {frmCustomEdit},
-  Budgeting.UI.AccountingCenter in 'UI\Budgeting.UI.AccountingCenter.pas' {frmAccountingCenter},
+  Budgeting.UI.CustomEdit in 'UI\Budgeting.UI.CustomEdit.pas' {frmCustomEdit} ,
+  Budgeting.UI.AccountingCenter in 'UI\Budgeting.UI.AccountingCenter.pas' {frmAccountingCenter} ,
   Budgeting.Logic.Interfaces.Models.ICustomModel in 'Logic\Interfaces\Models\Budgeting.Logic.Interfaces.Models.ICustomModel.pas',
   Budgeting.Logic.Classes.Presenters.TBankPresenter in 'Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TBankPresenter.pas',
   Budgeting.Logic.Classes.Presenters.TCustomEditPresenter in 'Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TCustomEditPresenter.pas',
@@ -61,26 +61,29 @@ uses
   Budgeting.Logic.Classes.Presenters.TPlannedBudgetPresenter in 'Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TPlannedBudgetPresenter.pas',
   Budgeting.Logic.Classes.Presenters.TProductPresenter in 'Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TProductPresenter.pas',
   Budgeting.Logic.Classes.Presenters.TCosignatoryPresenter in 'Logic\Classes\Presenters\Budgeting.Logic.Classes.Presenters.TCosignatoryPresenter.pas',
-  Budgeting.UI.Bank in 'UI\Budgeting.UI.Bank.pas' {frmBank},
+  Budgeting.UI.Bank in 'UI\Budgeting.UI.Bank.pas' {frmBank} ,
   Budgeting.Logic.Interfaces.Views.IAccountingCenterView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IAccountingCenterView.pas',
   Budgeting.Logic.Interfaces.Views.ICurrencyView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.ICurrencyView.pas',
-  Budgeting.UI.Currency in 'UI\Budgeting.UI.Currency.pas' {frmCurrency},
+  Budgeting.UI.Currency in 'UI\Budgeting.UI.Currency.pas' {frmCurrency} ,
   Budgeting.Logic.Interfaces.Views.IProductTypeView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IProductTypeView.pas',
-  Budgeting.UI.ProductType in 'UI\Budgeting.UI.ProductType.pas' {frmProductType},
-  Budgeting.UI.BudgetItemType in 'UI\Budgeting.UI.BudgetItemType.pas' {frmBudgetItemType},
+  Budgeting.UI.ProductType in 'UI\Budgeting.UI.ProductType.pas' {frmProductType} ,
+  Budgeting.UI.BudgetItemType in 'UI\Budgeting.UI.BudgetItemType.pas' {frmBudgetItemType} ,
   Budgeting.Logic.Interfaces.Views.IBudgetItemTypeView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IBudgetItemTypeView.pas',
   Budgeting.Logic.Interfaces.Views.IBudgetItemView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IBudgetItemView.pas',
-  Budgeting.UI.BudgetItem in 'UI\Budgeting.UI.BudgetItem.pas' {frmBudgetItem},
+  Budgeting.UI.BudgetItem in 'UI\Budgeting.UI.BudgetItem.pas' {frmBudgetItem} ,
   Budgeting.Logic.Interfaces.Views.IProductView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IProductView.pas',
-  Budgeting.UI.Product in 'UI\Budgeting.UI.Product.pas' {frmProduct},
+  Budgeting.UI.Product in 'UI\Budgeting.UI.Product.pas' {frmProduct} ,
   Budgeting.Logic.Interfaces.Presenters.IBudgetItemPresenter in 'Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.IBudgetItemPresenter.pas',
   Budgeting.Logic.Interfaces.Presenters.ICosignatoryPresenter in 'Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.ICosignatoryPresenter.pas',
   Budgeting.Logic.Interfaces.Views.ICosignatoryView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.ICosignatoryView.pas',
   Budgeting.Logic.Interfaces.Presenters.IProductPresenter in 'Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.IProductPresenter.pas',
-  Budgeting.UI.Cosignatory in 'UI\Budgeting.UI.Cosignatory.pas' {frmCosignatory},
+  Budgeting.UI.Cosignatory in 'UI\Budgeting.UI.Cosignatory.pas' {frmCosignatory} ,
   Budgeting.Logic.Interfaces.Views.IActualBudgetView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IActualBudgetView.pas',
-  Budgeting.UI.ActualBudget in 'UI\Budgeting.UI.ActualBudget.pas' {frmActualBudget},
-  Budgeting.Logic.Interfaces.Presenters.IActualBudgetPresenter in 'Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.IActualBudgetPresenter.pas';
+  Budgeting.UI.ActualBudget in 'UI\Budgeting.UI.ActualBudget.pas' {frmActualBudget} ,
+  Budgeting.Logic.Interfaces.Presenters.IActualBudgetPresenter in 'Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.IActualBudgetPresenter.pas',
+  Budgeting.UI.PlannedBudget in 'UI\Budgeting.UI.PlannedBudget.pas' {frmPlannedBudget} ,
+  Budgeting.Logic.Interfaces.Views.IPlannedBudgetView in 'Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IPlannedBudgetView.pas',
+  Budgeting.Logic.Interfaces.Presenters.IPlannedBudgetPresenter in 'Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.IPlannedBudgetPresenter.pas';
 
 {$R *.res}
 
@@ -93,8 +96,7 @@ begin
   CodeSiteDestination := TCodeSiteDestination.Create(nil);
   if Assigned(CodeSiteDestination) then
   begin
-    CodeSiteDestination.LogFile.filename := ChangeFileExt(ExtractFileName(IfThen(ModuleIsLib, GetModuleName(HInstance), ParamStr(0))),
-      '.' + FormatDateTime('yyyymmddhhnnss', Now(), TFormatSettings.Create('ru-ru')) + '.csl');
+    CodeSiteDestination.LogFile.filename := ChangeFileExt(ExtractFileName(IfThen(ModuleIsLib, GetModuleName(HInstance), ParamStr(0))), '.' + FormatDateTime('yyyymmddhhnnss', Now(), TFormatSettings.Create('ru-ru')) + '.csl');
     CodeSiteDestination.LogFile.FilePath := ExtractFilePath(IfThen(ModuleIsLib, GetModuleName(HInstance), ParamStr(0))).Replace('\\?\', EmptyStr);
     CodeSiteDestination.LogFile.MaxSize := 5120;
     CodeSiteDestination.LogFile.Active := True;

@@ -5,7 +5,7 @@ interface
 uses
   FireDAC.Comp.Client,
   System.Classes,
-  Budgeting.Logic.Interfaces.Presenters.ICosignatoryPresenter,
+
   Budgeting.Logic.Classes.Presenters.TCustomEditPresenter;
 
 type
@@ -27,7 +27,7 @@ uses
   Winapi.Windows,
   Data.DB,
   Vcl.Controls,
-  System.StrUtils,
+
   System.SysUtils,
   Budgeting.Logic.Classes.TQuery,
   Budgeting.Logic.Interfaces.Models.ICosignatoryModel,
@@ -41,8 +41,8 @@ begin
 
   if Supports(FItem, ICosignatoryModel, tmpItem) then
   begin
-    Result := (tmpItem.Id_Bank > -1) and (tmpItem.Name > string.Empty) and (tmpItem.UNP > string.Empty) and (tmpItem.Address > string.Empty) and
-      (tmpItem.AgreementNumber > string.Empty) and (tmpItem.AgreementStart > 0) and (tmpItem.AgreementStop > 0) and (tmpItem.Account > string.Empty);
+    Result := (tmpItem.Id_Bank > -1) and (tmpItem.Name > string.Empty) and (tmpItem.UNP > string.Empty) and (tmpItem.Address > string.Empty) and (tmpItem.AgreementNumber > string.Empty) and (tmpItem.AgreementStart > 0) and
+      (tmpItem.AgreementStop > 0) and (tmpItem.Account > string.Empty);
   end;
 end;
 

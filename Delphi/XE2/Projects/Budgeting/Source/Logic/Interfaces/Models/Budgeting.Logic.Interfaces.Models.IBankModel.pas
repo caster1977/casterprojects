@@ -9,7 +9,7 @@ type
   IBankModel = interface(ICustomModel)
     ['{A9DC8C39-E9DA-48BD-A17E-347217AE614F}']
     function GetName(): string;
-    property Name: string read GetName;
+    property name: string read GetName;
 
     function GetCode(): string;
     property Code: string read GetCode;

@@ -10,7 +10,7 @@ uses
   Vcl.Dialogs,
   Vcl.ExtCtrls,
   Vcl.ActnList,
-  Vcl.StdCtrls,
+
   cxGraphics,
   cxControls,
   cxLookAndFeels,
@@ -28,13 +28,13 @@ uses
   cxCalc,
   cxMaskEdit,
   System.SysUtils,
-  System.Generics.Collections,
-  Budgeting.Logic.Interfaces.Views.ICustomView,
+
   Budgeting.UI.CustomEdit,
   Budgeting.Logic.Interfaces.Views.ICurrencyView,
   cxCurrencyEdit,
   cxSpinEdit,
-  cxProgressBar;
+  cxProgressBar,
+  Vcl.StdCtrls;
 
 type
   TfrmCurrency = class(TfrmCustomEdit, ICurrencyView)
@@ -60,13 +60,12 @@ implementation
 {$R *.dfm}
 
 uses
-  System.StrUtils,
+
   System.Variants,
-  Budgeting.Logic.Classes.TQuery,
+
   Budgeting.Logic.Interfaces.Models.ICurrencyModel,
   Budgeting.Logic.Classes.Models.TCurrencyModel,
-  Budgeting.Logic.Types.TViewEnumEvent,
-  Budgeting.Logic.Consts;
+  Budgeting.Logic.Types.TViewEnumEvent;
 
 procedure TfrmCurrency.chkActivityPropertiesChange(Sender: TObject);
 begin

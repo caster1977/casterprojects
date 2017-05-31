@@ -10,7 +10,7 @@ uses
   Vcl.Dialogs,
   Vcl.ExtCtrls,
   Vcl.ActnList,
-  Vcl.StdCtrls,
+
   cxGraphics,
   cxControls,
   cxLookAndFeels,
@@ -28,12 +28,17 @@ uses
   cxCalc,
   cxMaskEdit,
   System.SysUtils,
-  System.Generics.Collections,
+
   Budgeting.UI.CustomEdit,
   Budgeting.Logic.Interfaces.Views.ICosignatoryView,
   cxCurrencyEdit,
   cxSpinEdit,
-  cxProgressBar, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar;
+  cxProgressBar,
+  Vcl.ComCtrls,
+  dxCore,
+  cxDateUtils,
+  cxCalendar,
+  Vcl.StdCtrls;
 
 type
   TfrmCosignatory = class(TfrmCustomEdit, ICosignatoryView)
@@ -85,13 +90,12 @@ implementation
 {$R *.dfm}
 
 uses
-  System.StrUtils,
+
   System.Variants,
-  Budgeting.Logic.Classes.TQuery,
+
   Budgeting.Logic.Interfaces.Models.ICosignatoryModel,
   Budgeting.Logic.Classes.Models.TCosignatoryModel,
-  Budgeting.Logic.Types.TViewEnumEvent,
-  Budgeting.Logic.Consts;
+  Budgeting.Logic.Types.TViewEnumEvent;
 
 procedure TfrmCosignatory.chkActivityPropertiesChange(Sender: TObject);
 begin
@@ -116,8 +120,7 @@ begin
   deAgreementStart.EditValue := deAgreementStart.EditingValue;
 end;
 
-procedure TfrmCosignatory.deAgreementStartPropertiesEditValueChanged(
-  Sender: TObject);
+procedure TfrmCosignatory.deAgreementStartPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin
@@ -135,8 +138,7 @@ begin
   deAgreementStop.EditValue := deAgreementStop.EditingValue;
 end;
 
-procedure TfrmCosignatory.deAgreementStopPropertiesEditValueChanged(
-  Sender: TObject);
+procedure TfrmCosignatory.deAgreementStopPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin
@@ -208,8 +210,7 @@ begin
   edtAgreementNumber.EditValue := edtAgreementNumber.EditingValue;
 end;
 
-procedure TfrmCosignatory.edtAgreementNumberPropertiesEditValueChanged(
-  Sender: TObject);
+procedure TfrmCosignatory.edtAgreementNumberPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin
@@ -227,8 +228,7 @@ begin
   edtAccount.EditValue := edtAccount.EditingValue;
 end;
 
-procedure TfrmCosignatory.edtlAccountPropertiesEditValueChanged(
-  Sender: TObject);
+procedure TfrmCosignatory.edtlAccountPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin
@@ -241,8 +241,7 @@ begin
   end;
 end;
 
-procedure TfrmCosignatory.cbbBankInfoPropertiesEditValueChanged(
-  Sender: TObject);
+procedure TfrmCosignatory.cbbBankInfoPropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin

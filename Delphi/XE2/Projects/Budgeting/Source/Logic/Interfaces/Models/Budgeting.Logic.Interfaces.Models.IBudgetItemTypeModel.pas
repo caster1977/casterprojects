@@ -9,7 +9,7 @@ type
   IBudgetItemTypeModel = interface(ICustomModel)
     ['{20882139-1059-4A72-8158-23BEB10FCF91}']
     function GetName(): string;
-    property Name: string read GetName;
+    property name: string read GetName;
 
     function GetActivity(): Boolean;
     property Activity: Boolean read GetActivity;

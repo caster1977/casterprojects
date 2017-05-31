@@ -84,7 +84,7 @@ uses
   Budgeting.UI.BudgetItemType,
   Budgeting.UI.Cosignatory,
   Budgeting.UI.Currency,
-//  Budgeting.UI.PlannedBudget,
+  Budgeting.UI.PlannedBudget,
   Budgeting.UI.Product,
   Budgeting.UI.ProductType,
 
@@ -173,13 +173,9 @@ var
 
           tmpQuery.First();
 
-          Result := TAccountingCenterModel.Create(
-            tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Id).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Code).AsString,
-            tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Name).AsString,
-            tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Description).AsString,
-            tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Activity).AsBoolean
-            );
+          Result := TAccountingCenterModel.Create(tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Id).AsInteger, tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Code).AsString,
+            tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Name).AsString, tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Description).AsString,
+            tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Activity).AsBoolean);
 
           FView.StepProgress();
         end;
@@ -223,9 +219,8 @@ var
 
           tmpQuery.First();
 
-          Result := TBankModel.Create(tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Id).AsInteger, tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Name)
-            .AsString, tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Code).AsString, tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Address).AsString,
-            tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Activity).AsBoolean);
+          Result := TBankModel.Create(tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Id).AsInteger, tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Name).AsString, tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Code).AsString,
+            tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Address).AsString, tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Activity).AsBoolean);
 
           FView.StepProgress();
         end;
@@ -267,13 +262,8 @@ var
 
           tmpQuery.First();
 
-          Result := TBudgetItemModel.Create(
-            tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Id).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Id_BudgetItemType).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Code).AsString,
-            tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Description).AsString,
-            tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Activity).AsBoolean
-            );
+          Result := TBudgetItemModel.Create(tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Id).AsInteger, tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Id_BudgetItemType).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Code).AsString, tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Description).AsString, tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Activity).AsBoolean);
 
           FView.StepProgress();
         end;
@@ -315,11 +305,8 @@ var
 
           tmpQuery.First();
 
-          Result := TBudgetItemTypeModel.Create(
-            tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString,
-            tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Activity).AsBoolean
-            );
+          Result := TBudgetItemTypeModel.Create(tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id).AsInteger, tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString,
+            tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Activity).AsBoolean);
 
           FView.StepProgress();
         end;
@@ -361,18 +348,11 @@ var
 
           tmpQuery.First();
 
-          Result := TCosignatoryModel.Create(
-            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Id).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Id_Bank).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Name).AsString,
-            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.UNP).AsString,
-            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Address).AsString,
-            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementNumber).AsString,
-            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStart).AsDateTime,
-            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStop).AsDateTime,
-            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Account).AsString,
-            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Activity).AsBoolean
-            );
+          Result := TCosignatoryModel.Create(tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Id).AsInteger, tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Id_Bank).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Name).AsString, tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.UNP).AsString, tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Address).AsString,
+            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementNumber).AsString, tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStart).AsDateTime,
+            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.AgreementStop).AsDateTime, tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Account).AsString,
+            tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Activity).AsBoolean);
 
           FView.StepProgress();
         end;
@@ -414,12 +394,8 @@ var
 
           tmpQuery.First();
 
-          Result := TCurrencyModel.Create(
-            tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Id).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Code).AsString,
-            tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Description).AsString,
-            tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Activity).AsBoolean
-            );
+          Result := TCurrencyModel.Create(tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Id).AsInteger, tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Code).AsString,
+            tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Description).AsString, tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Activity).AsBoolean);
 
           FView.StepProgress();
         end;
@@ -461,13 +437,8 @@ var
 
           tmpQuery.First();
 
-          Result := TProductModel.Create(
-            tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Id).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Id_ProductType).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Code).AsString,
-            tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Description).AsString,
-            tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Activity).AsBoolean
-            );
+          Result := TProductModel.Create(tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Id).AsInteger, tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Id_ProductType).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Code).AsString, tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Description).AsString, tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Activity).AsBoolean);
 
           FView.StepProgress();
         end;
@@ -509,11 +480,8 @@ var
 
           tmpQuery.First();
 
-          Result := TProductTypeModel.Create(
-            tmpQuery.FieldByName(TQuery.sp_product_types_sel.Field.Id).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_product_types_sel.Field.Name).AsString,
-            tmpQuery.FieldByName(TQuery.sp_product_types_sel.Field.Activity).AsBoolean
-            );
+          Result := TProductTypeModel.Create(tmpQuery.FieldByName(TQuery.sp_product_types_sel.Field.Id).AsInteger, tmpQuery.FieldByName(TQuery.sp_product_types_sel.Field.Name).AsString,
+            tmpQuery.FieldByName(TQuery.sp_product_types_sel.Field.Activity).AsBoolean);
 
           FView.StepProgress();
         end;
@@ -560,18 +528,11 @@ var
 
           tmpQuery.First();
 
-          Result := TActualBudgetModel.Create(
-            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_BudgetItem).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_AccountingCenter).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Cosignatory).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Product).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Currency).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Document).AsString,
-            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.DocumentDate).AsDateTime,
-            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Description).AsString,
-            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Amount).AsCurrency
-            );
+          Result := TActualBudgetModel.Create(tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id).AsInteger, tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_BudgetItem).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_AccountingCenter).AsInteger, tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Cosignatory).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Product).AsInteger, tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Currency).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Document).AsString, tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.DocumentDate).AsDateTime,
+            tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Description).AsString, tmpQuery.FieldByName(TQuery.sp_actual_budget_sel.Field.Amount).AsCurrency);
 
           FView.StepProgress();
         end;
@@ -618,15 +579,9 @@ var
 
           tmpQuery.First();
 
-          Result := TPlannedBudgetModel.Create(
-            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Id).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_BudgetItem).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_AccountingCenter).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_Currency).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Year).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Month).AsInteger,
-            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Amount).AsCurrency
-            );
+          Result := TPlannedBudgetModel.Create(tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Id).AsInteger, tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_BudgetItem).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_AccountingCenter).AsInteger, tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Id_Currency).AsInteger,
+            tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Year).AsInteger, tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Month).AsInteger, tmpQuery.FieldByName(TQuery.sp_planned_budget_sel.Field.Amount).AsCurrency);
 
           FView.StepProgress();
         end;
@@ -711,8 +666,7 @@ var
   begin
     if TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableQuitConfirmation then
     begin
-      tmpView.ActionStates[vaCloseQuery] := MessageBox(tmpView.Control.Handle, PWideChar(RsExitConfirmationMessage),
-        PWideChar(Format(RsExitConfirmationCaption, [Application.MainForm.Caption])), MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDYES;
+      tmpView.ActionStates[vaCloseQuery] := MessageBox(tmpView.Control.Handle, PWideChar(RsExitConfirmationMessage), PWideChar(Format(RsExitConfirmationCaption, [Application.MainForm.Caption])), MESSAGE_TYPE_CONFIRMATION_QUESTION) = IDYES;
     end;
   end;
 
@@ -841,10 +795,8 @@ var
       begin
         if tmpLoginWindow.Execute() then
         begin
-          TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.Login :=
-            IfThen(TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStoreLogin, tmpLoginWindow.Login);
-          TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.Password :=
-            IfThen(TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStorePassword, tmpLoginWindow.Password);
+          TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.Login := IfThen(TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStoreLogin, tmpLoginWindow.Login);
+          TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.Password := IfThen(TConfiguration.Get(TConfiguration).Section<TInterfaceSection>.EnableStorePassword, tmpLoginWindow.Password);
         end;
       end
       else
@@ -910,8 +862,6 @@ var
     tmpPresenterClass: TCustomEditPresenterClass;
     tmpCurrentModel: ICustomModel;
   begin
-    tmpFormClass := nil;
-
     case FCurrentEntity of
       etAccountingCenters:
         begin
@@ -960,7 +910,7 @@ var
         end;
       etPlannedBudget:
         begin
-//          tmpFormClass := TfrmPlannedBudget;
+          tmpFormClass := TfrmPlannedBudget;
           tmpPresenterClass := TPlannedBudgetPresenter;
         end;
     else

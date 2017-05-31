@@ -32,7 +32,7 @@ uses
   Winapi.Windows,
   Data.DB,
   Vcl.Controls,
-  System.StrUtils,
+
   System.SysUtils,
   Budgeting.Logic.Classes.TQuery,
   Budgeting.Logic.Interfaces.Models.ICustomModel,
@@ -47,13 +47,7 @@ begin
 
   if Supports(FItem, IActualBudgetModel, tmpItem) then
   begin
-    Result := (tmpItem.Id_BudgetItem > -1) and
-    (tmpItem.Id_AccountingCenter > -1) and
-    (tmpItem.Id_Cosignatory > -1) and
-    (tmpItem.Id_Product > -1) and
-    (tmpItem.Id_Currency > -1) and
-    (tmpItem.DocumentDate > 0) and
-    (tmpItem.Amount > 0);
+    Result := (tmpItem.Id_BudgetItem > -1) and (tmpItem.Id_AccountingCenter > -1) and (tmpItem.Id_Cosignatory > -1) and (tmpItem.Id_Product > -1) and (tmpItem.Id_Currency > -1) and (tmpItem.DocumentDate > 0) and (tmpItem.Amount > 0);
   end;
 end;
 
@@ -124,8 +118,7 @@ begin
 
         for i := 0 to Pred(tmpQuery.RecordCount) do
         begin
-          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Info).AsString,
-            TObject(tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Id).AsInteger));
+          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Info).AsString, TObject(tmpQuery.FieldByName(TQuery.sp_accounting_centers_sel.Field.Id).AsInteger));
 
           tmpQuery.Next();
 
@@ -172,8 +165,7 @@ begin
 
         for i := 0 to Pred(tmpQuery.RecordCount) do
         begin
-          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Info).AsString,
-            TObject(tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Id).AsInteger));
+          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Info).AsString, TObject(tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Id).AsInteger));
 
           tmpQuery.Next();
 
@@ -220,8 +212,7 @@ begin
 
         for i := 0 to Pred(tmpQuery.RecordCount) do
         begin
-          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Info).AsString,
-            TObject(tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Id).AsInteger));
+          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Info).AsString, TObject(tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Id).AsInteger));
 
           tmpQuery.Next();
 
@@ -268,8 +259,7 @@ begin
 
         for i := 0 to Pred(tmpQuery.RecordCount) do
         begin
-          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Info).AsString,
-            TObject(tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Id).AsInteger));
+          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Info).AsString, TObject(tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Id).AsInteger));
 
           tmpQuery.Next();
 
@@ -316,8 +306,7 @@ begin
 
         for i := 0 to Pred(tmpQuery.RecordCount) do
         begin
-          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Info).AsString,
-            TObject(tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Id).AsInteger));
+          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Info).AsString, TObject(tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Id).AsInteger));
 
           tmpQuery.Next();
 
@@ -360,4 +349,3 @@ begin
 end;
 
 end.
-

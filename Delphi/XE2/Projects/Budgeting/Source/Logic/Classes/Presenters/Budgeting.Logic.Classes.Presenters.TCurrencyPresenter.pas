@@ -4,8 +4,7 @@ interface
 
 uses
   FireDAC.Comp.Client,
-  Budgeting.Logic.Classes.Presenters.TCustomEditPresenter,
-  Budgeting.Logic.Interfaces.Views.ICustomView;
+  Budgeting.Logic.Classes.Presenters.TCustomEditPresenter;
 
 type
   TCurrencyPresenter = class(TCustomEditPresenter)
@@ -22,10 +21,9 @@ uses
   Winapi.Windows,
   Data.DB,
   Vcl.Controls,
-  System.StrUtils,
+
   System.SysUtils,
-  Budgeting.Logic.Consts,
-  Budgeting.Logic.Types.TViewEnumAction,
+
   Budgeting.Logic.Classes.TQuery,
   Budgeting.Logic.Interfaces.Models.ICurrencyModel;
 
@@ -61,4 +59,3 @@ begin
 end;
 
 end.
-

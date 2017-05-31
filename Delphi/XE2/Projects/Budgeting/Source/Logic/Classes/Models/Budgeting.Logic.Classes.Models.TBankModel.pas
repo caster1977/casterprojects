@@ -19,6 +19,7 @@ type
     function GetCode(): string;
     function GetAddress(): string;
     function GetActivity(): Boolean;
+
   public
     constructor Create(const AId: Integer; const AName, ACode, AAddress: string; const AActivity: Boolean); reintroduce; virtual;
   end;
@@ -64,4 +65,3 @@ begin
 end;
 
 end.
-

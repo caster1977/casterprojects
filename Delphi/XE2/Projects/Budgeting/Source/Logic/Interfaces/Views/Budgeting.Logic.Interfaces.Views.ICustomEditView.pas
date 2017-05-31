@@ -3,8 +3,7 @@ unit Budgeting.Logic.Interfaces.Views.ICustomEditView;
 interface
 
 uses
-  Budgeting.Logic.Interfaces.Views.ICustomView,
-  System.UITypes;
+  Budgeting.Logic.Interfaces.Views.ICustomView;
 
 type
   ICustomEditView = interface(ICustomView)

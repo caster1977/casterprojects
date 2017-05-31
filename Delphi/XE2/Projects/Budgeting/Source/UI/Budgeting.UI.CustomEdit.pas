@@ -28,7 +28,7 @@ uses
   cxCalc,
   cxMaskEdit,
   System.SysUtils,
-  System.Generics.Collections,
+
   Budgeting.Logic.Types.TViewEnumEvent,
   Budgeting.Logic.Types.TViewEnumAction,
   Budgeting.Logic.Types.TViewEnumActionArray,
@@ -74,6 +74,7 @@ type
     function GetItem(): IInterface; virtual; abstract;
     procedure SetItem(const aValue: IInterface); virtual;
     procedure Initialize(); virtual;
+
   public
     constructor Create(AOwner: TComponent); override;
   end;
@@ -83,9 +84,9 @@ implementation
 {$R *.dfm}
 
 uses
-  System.StrUtils,
+
   System.Variants,
-  Budgeting.Logic.Classes.TQuery,
+
   Budgeting.Logic.Interfaces.Models.ICustomModel,
   Budgeting.Logic.Consts;
 

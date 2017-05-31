@@ -53,7 +53,7 @@ type
       public const
         Id = 'AId';
         Code = 'ACode';
-        Name = 'AName';
+        name = 'AName';
         Description = 'ADescription';
         Activity = 'AActivity';
       end;
@@ -126,7 +126,7 @@ type
       Field = class(TObject)
       public const
         Id = 'id';
-        Name = 'name';
+        name = 'name';
         Code = 'code';
         Address = 'address';
         Activity = 'activity';
@@ -142,7 +142,7 @@ type
       Param = class
       public const
         Id = 'AId';
-        Name = 'AName';
+        name = 'AName';
         Code = 'ACode';
         Address = 'AAddress';
         Activity = 'AActivity';
@@ -154,7 +154,7 @@ type
       Field = class(TObject)
       public const
         Result = 'result';
-        Message = 'message';
+        message = 'message';
       end;
     end;
 
@@ -224,7 +224,7 @@ type
       Param = class
       public const
         Id = 'AId';
-        Name = 'AName';
+        name = 'AName';
         Activity = 'AActivity';
       end;
     end;
@@ -266,7 +266,7 @@ type
       public const
         Id = 'AId';
         Id_Bank = 'AId_Bank';
-        Name = 'AName';
+        name = 'AName';
         UNP = 'AUNP';
         Address = 'AAddress';
         AgreementNumber = 'AAgreementNumber';
@@ -378,11 +378,10 @@ type
       Param = class
       public const
         Id = 'AId';
-        Name = 'AName';
+        name = 'AName';
         Activity = 'AActivity';
       end;
     end;
-
 
     sp_planned_budget_sel = class(TObject)
     public const
@@ -426,6 +425,22 @@ type
         Year = 'AYear';
         Month = 'AMonth';
         Amount = 'AAmount';
+      end;
+    end;
+
+    sp_planned_budget_years_sel = class(TObject)
+    public const
+      name = 'dbo.planned_budget_years_sel :AYear';
+
+    type
+      Param = class
+      public const
+        Year = 'AYear';
+      end;
+
+      Field = class(TObject)
+      public const
+        Year = 'year';
       end;
     end;
   end;

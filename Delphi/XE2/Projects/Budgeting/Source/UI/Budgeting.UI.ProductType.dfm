@@ -6,10 +6,12 @@ inherited frmProductType: TfrmProductType
   TextHeight = 13
   inherited bvl1: TBevel
     Top = 83
+    ExplicitTop = 83
   end
   inherited pnlButtons: TPanel
     Top = 94
     TabOrder = 3
+    ExplicitTop = 94
     inherited pbProgress: TcxProgressBar
       ExplicitHeight = 23
     end
@@ -22,7 +24,6 @@ inherited frmProductType: TfrmProductType
     Align = alTop
     Caption = '&'#1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077':'
     FocusControl = edtName
-    ExplicitTop = 59
   end
   object edtName: TcxTextEdit [3]
     AlignWithMargins = True
@@ -31,8 +32,7 @@ inherited frmProductType: TfrmProductType
     Align = alTop
     Properties.OnChange = edtNamePropertiesChange
     Properties.OnEditValueChanged = edtNamePropertiesEditValueChanged
-    TabOrder = 1
-    ExplicitTop = 82
+    TabOrder = 0
     Width = 376
   end
   object chkActivity: TcxCheckBox [4]
@@ -44,8 +44,7 @@ inherited frmProductType: TfrmProductType
     Caption = '&'#1040#1082#1090#1080#1074#1085#1086#1089#1090#1100
     Properties.OnChange = chkActivityPropertiesChange
     Properties.OnEditValueChanged = chkActivityPropertiesEditValueChanged
-    TabOrder = 2
-    ExplicitTop = 165
+    TabOrder = 1
     Width = 376
   end
 end

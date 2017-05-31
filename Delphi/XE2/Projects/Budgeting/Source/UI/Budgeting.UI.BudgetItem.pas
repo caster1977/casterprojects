@@ -10,7 +10,7 @@ uses
   Vcl.Dialogs,
   Vcl.ExtCtrls,
   Vcl.ActnList,
-  Vcl.StdCtrls,
+
   cxGraphics,
   cxControls,
   cxLookAndFeels,
@@ -28,12 +28,13 @@ uses
   cxCalc,
   cxMaskEdit,
   System.SysUtils,
-  System.Generics.Collections,
+
   Budgeting.UI.CustomEdit,
   Budgeting.Logic.Interfaces.Views.IBudgetItemView,
   cxCurrencyEdit,
   cxSpinEdit,
-  cxProgressBar;
+  cxProgressBar,
+  Vcl.StdCtrls;
 
 type
   TfrmBudgetItem = class(TfrmCustomEdit, IBudgetItemView)
@@ -63,13 +64,12 @@ implementation
 {$R *.dfm}
 
 uses
-  System.StrUtils,
+
   System.Variants,
-  Budgeting.Logic.Classes.TQuery,
+
   Budgeting.Logic.Interfaces.Models.IBudgetItemModel,
   Budgeting.Logic.Classes.Models.TBudgetItemModel,
-  Budgeting.Logic.Types.TViewEnumEvent,
-  Budgeting.Logic.Consts;
+  Budgeting.Logic.Types.TViewEnumEvent;
 
 procedure TfrmBudgetItem.chkActivityPropertiesChange(Sender: TObject);
 begin
@@ -125,8 +125,7 @@ begin
   end;
 end;
 
-procedure TfrmBudgetItem.cbbBudgetItemTypePropertiesEditValueChanged(
-  Sender: TObject);
+procedure TfrmBudgetItem.cbbBudgetItemTypePropertiesEditValueChanged(Sender: TObject);
 var
   tmpCursor: TCursor;
 begin

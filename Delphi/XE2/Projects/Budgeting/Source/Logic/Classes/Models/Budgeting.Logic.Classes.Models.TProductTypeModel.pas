@@ -15,6 +15,7 @@ type
     function GetId(): Integer;
     function GetName(): string;
     function GetActivity(): Boolean;
+
   public
     constructor Create(const AId: Integer; const AName: string; const AActivity: Boolean); reintroduce; virtual;
   end;
@@ -48,4 +49,3 @@ begin
 end;
 
 end.
-

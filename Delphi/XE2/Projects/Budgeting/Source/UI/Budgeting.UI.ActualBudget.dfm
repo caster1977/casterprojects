@@ -44,6 +44,7 @@ inherited frmActualBudget: TfrmActualBudget
     Align = alTop
     Caption = #1054#1087'&'#1088#1072#1074#1076#1072#1090#1077#1083#1100#1085#1099#1081' '#1076#1086#1082#1091#1084#1077#1085#1090':'
     FocusControl = edtDocument
+    ExplicitTop = 287
   end
   object edtDocument: TcxTextEdit [5]
     AlignWithMargins = True
@@ -63,6 +64,7 @@ inherited frmActualBudget: TfrmActualBudget
     Align = alTop
     Caption = #1054'&'#1087#1080#1089#1072#1085#1080#1077':'
     FocusControl = edtDescription
+    ExplicitTop = 397
   end
   object edtDescription: TcxTextEdit [7]
     AlignWithMargins = True
@@ -194,7 +196,7 @@ inherited frmActualBudget: TfrmActualBudget
     Margins.Top = 6
     Align = alTop
     Caption = '&'#1057#1091#1084#1084#1072':'
-    FocusControl = edtDescription
+    FocusControl = cxcrncydtAmount
   end
   object pnlAmount: TPanel [19]
     AlignWithMargins = True

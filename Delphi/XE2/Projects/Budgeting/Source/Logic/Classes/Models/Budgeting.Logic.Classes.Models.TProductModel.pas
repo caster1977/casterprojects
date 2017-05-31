@@ -19,6 +19,7 @@ type
     function GetCode(): string;
     function GetDescription(): string;
     function GetActivity(): Boolean;
+
   public
     constructor Create(const AId, AId_ProductType: Integer; const ACode, ADescription: string; const AActivity: Boolean); reintroduce; virtual;
   end;
@@ -64,4 +65,3 @@ begin
 end;
 
 end.
-
