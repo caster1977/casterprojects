@@ -129,7 +129,7 @@ var
 begin
   tmpAbout := TAboutWindow.Create(aOwner);
   try
-    tmpAbout.EMail := 'caster1977@yandex.ru';
+    tmpAbout.EMail := 'alenapranevich@gmail.com';
     tmpAbout.Show(aSplash);
   finally
     tmpAbout.Free();
