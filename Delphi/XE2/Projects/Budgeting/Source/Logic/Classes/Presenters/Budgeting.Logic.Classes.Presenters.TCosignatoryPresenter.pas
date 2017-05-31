@@ -14,6 +14,7 @@ type
     function CheckItem(): Boolean; override;
     procedure BeforeQueryOpen(const aQuery: TFDQuery); override;
     procedure Initialize(); override;
+
   strict private
     procedure LoadBanks(var aList: TStringList);
   end;
@@ -40,8 +41,8 @@ begin
 
   if Supports(FItem, ICosignatoryModel, tmpItem) then
   begin
-    Result := (tmpItem.Id_Bank > -1) and (tmpItem.Name > string.Empty)and (tmpItem.UNP > string.Empty)and (tmpItem.Address > string.Empty)
-    and (tmpItem.AgreementNumber > string.Empty)and (tmpItem.AgreementStart > 0)and (tmpItem.AgreementStop > 0)and (tmpItem.Account > string.Empty);
+    Result := (tmpItem.Id_Bank > -1) and (tmpItem.Name > string.Empty) and (tmpItem.UNP > string.Empty) and (tmpItem.Address > string.Empty) and
+      (tmpItem.AgreementNumber > string.Empty) and (tmpItem.AgreementStart > 0) and (tmpItem.AgreementStop > 0) and (tmpItem.Account > string.Empty);
   end;
 end;
 
@@ -95,9 +96,7 @@ begin
 
         for i := 0 to Pred(tmpQuery.RecordCount) do
         begin
-          aList.AddObject(Format('%s (код: %s, адрес: %s)', [tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Name).AsString,
-            tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Code).AsString, tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Address).AsString]),
-            TObject(tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Id).AsInteger));
+          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Info).AsString, TObject(tmpQuery.FieldByName(TQuery.sp_banks_sel.Field.Id).AsInteger));
 
           tmpQuery.Next();
 
@@ -140,4 +139,3 @@ begin
 end;
 
 end.
-

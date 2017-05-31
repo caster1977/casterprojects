@@ -172,7 +172,7 @@ begin
 
         for i := 0 to Pred(tmpQuery.RecordCount) do
         begin
-          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Code).AsString,
+          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Info).AsString,
             TObject(tmpQuery.FieldByName(TQuery.sp_budget_items_sel.Field.Id).AsInteger));
 
           tmpQuery.Next();
@@ -220,7 +220,7 @@ begin
 
         for i := 0 to Pred(tmpQuery.RecordCount) do
         begin
-          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Name).AsString,
+          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Info).AsString,
             TObject(tmpQuery.FieldByName(TQuery.sp_cosignatories_sel.Field.Id).AsInteger));
 
           tmpQuery.Next();
@@ -268,7 +268,7 @@ begin
 
         for i := 0 to Pred(tmpQuery.RecordCount) do
         begin
-          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Code).AsString,
+          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Info).AsString,
             TObject(tmpQuery.FieldByName(TQuery.sp_currencies_sel.Field.Id).AsInteger));
 
           tmpQuery.Next();
@@ -316,7 +316,7 @@ begin
 
         for i := 0 to Pred(tmpQuery.RecordCount) do
         begin
-          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Code).AsString,
+          aList.AddObject(tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Info).AsString,
             TObject(tmpQuery.FieldByName(TQuery.sp_products_sel.Field.Id).AsInteger));
 
           tmpQuery.Next();

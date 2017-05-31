@@ -41,7 +41,7 @@ object MainForm: TMainForm
     Margins.Right = 0
     Align = alClient
     TabOrder = 5
-    Properties.ActivePage = shtReferences
+    Properties.ActivePage = shtOperations
     Properties.CustomButtons.Buttons = <>
     OnChange = pcMainChange
     ClientRectBottom = 504
@@ -84,7 +84,6 @@ object MainForm: TMainForm
           DataController.Summary.SummaryGroups = <>
           OptionsCustomize.ColumnGrouping = False
           OptionsCustomize.ColumnHidingOnGrouping = False
-          OptionsCustomize.ColumnMoving = False
           OptionsData.CancelOnExit = False
           OptionsData.Deleting = False
           OptionsData.DeletingConfirmation = False
@@ -152,7 +151,6 @@ object MainForm: TMainForm
           DataController.Summary.SummaryGroups = <>
           OptionsCustomize.ColumnGrouping = False
           OptionsCustomize.ColumnHidingOnGrouping = False
-          OptionsCustomize.ColumnMoving = False
           OptionsData.CancelOnExit = False
           OptionsData.Deleting = False
           OptionsData.DeletingConfirmation = False
@@ -220,7 +218,6 @@ object MainForm: TMainForm
           DataController.Summary.SummaryGroups = <>
           OptionsCustomize.ColumnGrouping = False
           OptionsCustomize.ColumnHidingOnGrouping = False
-          OptionsCustomize.ColumnMoving = False
           OptionsData.CancelOnExit = False
           OptionsData.Deleting = False
           OptionsData.DeletingConfirmation = False
@@ -302,7 +299,6 @@ object MainForm: TMainForm
           DataController.Summary.SummaryGroups = <>
           OptionsCustomize.ColumnGrouping = False
           OptionsCustomize.ColumnHidingOnGrouping = False
-          OptionsCustomize.ColumnMoving = False
           OptionsData.CancelOnExit = False
           OptionsData.Deleting = False
           OptionsData.DeletingConfirmation = False
@@ -352,7 +348,6 @@ object MainForm: TMainForm
           DataController.Summary.SummaryGroups = <>
           OptionsCustomize.ColumnGrouping = False
           OptionsCustomize.ColumnHidingOnGrouping = False
-          OptionsCustomize.ColumnMoving = False
           OptionsData.CancelOnExit = False
           OptionsData.Deleting = False
           OptionsData.DeletingConfirmation = False
@@ -485,7 +480,6 @@ object MainForm: TMainForm
           DataController.Summary.SummaryGroups = <>
           OptionsCustomize.ColumnGrouping = False
           OptionsCustomize.ColumnHidingOnGrouping = False
-          OptionsCustomize.ColumnMoving = False
           OptionsData.CancelOnExit = False
           OptionsData.Deleting = False
           OptionsData.DeletingConfirmation = False
@@ -544,7 +538,6 @@ object MainForm: TMainForm
           DataController.Summary.SummaryGroups = <>
           OptionsCustomize.ColumnGrouping = False
           OptionsCustomize.ColumnHidingOnGrouping = False
-          OptionsCustomize.ColumnMoving = False
           OptionsData.CancelOnExit = False
           OptionsData.Deleting = False
           OptionsData.DeletingConfirmation = False
@@ -626,7 +619,6 @@ object MainForm: TMainForm
           DataController.Summary.SummaryGroups = <>
           OptionsCustomize.ColumnGrouping = False
           OptionsCustomize.ColumnHidingOnGrouping = False
-          OptionsCustomize.ColumnMoving = False
           OptionsData.CancelOnExit = False
           OptionsData.Deleting = False
           OptionsData.DeletingConfirmation = False
@@ -692,7 +684,6 @@ object MainForm: TMainForm
           DataController.Summary.SummaryGroups = <>
           OptionsCustomize.ColumnGrouping = False
           OptionsCustomize.ColumnHidingOnGrouping = False
-          OptionsCustomize.ColumnMoving = False
           OptionsData.CancelOnExit = False
           OptionsData.Deleting = False
           OptionsData.DeletingConfirmation = False
@@ -727,6 +718,16 @@ object MainForm: TMainForm
             FooterAlignmentHorz = taRightJustify
             HeaderAlignmentHorz = taCenter
             Width = 50
+          end
+          object colActualBudget_BudgetItem: TcxGridColumn
+            Caption = #1057#1090#1072#1090#1100#1103' '#1073#1102#1076#1078#1077#1090#1072
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.MaxLength = 0
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 100
+            HeaderAlignmentHorz = taCenter
+            Width = 100
           end
           object colActualBudget_Id_AccountingCenter: TcxGridColumn
             Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088' '#1094#1077#1085#1090#1088#1072
@@ -764,6 +765,16 @@ object MainForm: TMainForm
             HeaderAlignmentHorz = taCenter
             Width = 50
           end
+          object colActualBudget_Cosignatory: TcxGridColumn
+            Caption = #1050#1086#1085#1090#1088#1072#1075#1077#1085#1090
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.MaxLength = 0
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 100
+            HeaderAlignmentHorz = taCenter
+            Width = 100
+          end
           object colActualBudget_Id_Product: TcxGridColumn
             Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088' '#1090#1086#1074#1072#1088#1072
             DataBinding.ValueType = 'Integer'
@@ -777,6 +788,16 @@ object MainForm: TMainForm
             HeaderAlignmentHorz = taCenter
             Width = 50
           end
+          object colActualBudget_Product: TcxGridColumn
+            Caption = #1058#1086#1074#1072#1088
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.MaxLength = 0
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 100
+            HeaderAlignmentHorz = taCenter
+            Width = 100
+          end
           object colActualBudget_Id_Currency: TcxGridColumn
             Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088' '#1074#1072#1083#1102#1090#1099
             DataBinding.ValueType = 'Integer'
@@ -789,6 +810,16 @@ object MainForm: TMainForm
             FooterAlignmentHorz = taRightJustify
             HeaderAlignmentHorz = taCenter
             Width = 50
+          end
+          object colActualBudget_Currency: TcxGridColumn
+            Caption = #1042#1072#1083#1102#1090#1072
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.MaxLength = 0
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 100
+            HeaderAlignmentHorz = taCenter
+            Width = 100
           end
           object colActualBudget_Document: TcxGridColumn
             Caption = #1044#1086#1082#1091#1084#1077#1085#1090
@@ -838,7 +869,6 @@ object MainForm: TMainForm
           DataController.Summary.SummaryGroups = <>
           OptionsCustomize.ColumnGrouping = False
           OptionsCustomize.ColumnHidingOnGrouping = False
-          OptionsCustomize.ColumnMoving = False
           OptionsData.CancelOnExit = False
           OptionsData.Deleting = False
           OptionsData.DeletingConfirmation = False
@@ -990,6 +1020,10 @@ object MainForm: TMainForm
     object shtReports: TcxTabSheet
       Caption = #1054#1090#1095#1105#1090#1099
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxgrdReports: TcxGrid
         AlignWithMargins = True
         Left = 3

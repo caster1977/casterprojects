@@ -39,8 +39,8 @@ type
         Code = 'code';
         name = 'name';
         Description = 'description';
-        Info = 'info';
         Activity = 'activity';
+        Info = 'info';
       end;
     end;
 
@@ -74,15 +74,20 @@ type
       public const
         Id = 'id';
         Id_BudgetItem = 'id_budget_item';
+        BudgetItem = 'budget_item';
         Id_AccountingCenter = 'id_accounting_center';
-        AccountingCenter = 'accounting_center_name';
+        AccountingCenter = 'accounting_center';
         Id_Cosignatory = 'id_cosignatory';
+        Cosignatory = 'cosignatory';
         Id_Product = 'id_product';
+        Product = 'product';
         Id_Currency = 'id_currency';
+        Currency = 'currency';
         Document = 'document';
         DocumentDate = 'document_date';
         Description = 'description';
         Amount = 'amount';
+        Info = 'info';
       end;
     end;
 
@@ -120,10 +125,11 @@ type
       Field = class(TObject)
       public const
         Id = 'id';
-        name = 'name';
+        Name = 'name';
         Code = 'code';
         Address = 'address';
         Activity = 'activity';
+        Info = 'info';
       end;
     end;
 
@@ -170,6 +176,7 @@ type
         Code = 'code';
         Description = 'description';
         Activity = 'activity';
+        Info = 'info';
       end;
     end;
 
@@ -204,6 +211,7 @@ type
         Id = 'id';
         name = 'name';
         Activity = 'activity';
+        Info = 'info';
       end;
     end;
 
@@ -244,6 +252,7 @@ type
         AgreementStop = 'agreementstop';
         Account = 'account';
         Activity = 'activity';
+        Info = 'info';
       end;
     end;
 
@@ -284,6 +293,7 @@ type
         Code = 'code';
         Description = 'description';
         Activity = 'activity';
+        Info = 'info';
       end;
     end;
 
@@ -320,6 +330,7 @@ type
         Code = 'code';
         Description = 'description';
         Activity = 'activity';
+        Info = 'info';
       end;
     end;
 
@@ -354,6 +365,7 @@ type
         Id = 'id';
         name = 'name';
         Activity = 'activity';
+        Info = 'info';
       end;
     end;
 
@@ -392,6 +404,7 @@ type
         Year = 'year';
         Month = 'month';
         Amount = 'amount';
+        Info = 'info';
       end;
     end;
 

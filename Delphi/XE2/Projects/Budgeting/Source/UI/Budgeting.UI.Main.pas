@@ -280,6 +280,10 @@ type
     colBudgetItems_BudgetItemType: TcxGridColumn;
     colProducts_ProductType: TcxGridColumn;
     colActualBudget_AccountingCenter: TcxGridColumn;
+    colActualBudget_BudgetItem: TcxGridColumn;
+    colActualBudget_Cosignatory: TcxGridColumn;
+    colActualBudget_Product: TcxGridColumn;
+    colActualBudget_Currency: TcxGridColumn;
 
     procedure actQuitExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -1028,22 +1032,19 @@ begin
     for i := 0 to Pred(aValue.RecordCount) do
     begin
       tblvActualBudget.DataController.Values[i, colActualBudget_Id_ActualBudget.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id).AsInteger;
-      tblvActualBudget.DataController.Values[i, colActualBudget_Id_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_BudgetItem)
-        .AsInteger;
-      tblvActualBudget.DataController.Values[i, colActualBudget_Id_AccountingCenter.Index] :=
-        aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_AccountingCenter).AsInteger;
-      tblvActualBudget.DataController.Values[i, colActualBudget_AccountingCenter.Index] :=
-        aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.AccountingCenter).AsString;
-      tblvActualBudget.DataController.Values[i, colActualBudget_Id_Cosignatory.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Cosignatory)
-        .AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Id_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_BudgetItem).AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.BudgetItem).AsString;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Id_AccountingCenter.Index] :=aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_AccountingCenter).AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_AccountingCenter.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.AccountingCenter).AsString;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Id_Cosignatory.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Cosignatory).AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Cosignatory.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Cosignatory).AsString;
       tblvActualBudget.DataController.Values[i, colActualBudget_Id_Product.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Product).AsInteger;
-      tblvActualBudget.DataController.Values[i, colActualBudget_Id_Currency.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Currency)
-        .AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Product.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Product).AsString;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Id_Currency.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Id_Currency).AsInteger;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Currency.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Currency).AsString;
       tblvActualBudget.DataController.Values[i, colActualBudget_Document.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Document).AsString;
-      tblvActualBudget.DataController.Values[i, colActualBudget_DocumentDate.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.DocumentDate)
-        .AsDateTime;
-      tblvActualBudget.DataController.Values[i, colActualBudget_Description.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Description)
-        .AsString;
+      tblvActualBudget.DataController.Values[i, colActualBudget_DocumentDate.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.DocumentDate).AsDateTime;
+      tblvActualBudget.DataController.Values[i, colActualBudget_Description.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Description).AsString;
       tblvActualBudget.DataController.Values[i, colActualBudget_Amount.Index] := aValue.FieldByName(TQuery.sp_actual_budget_sel.Field.Amount).AsCurrency;
 
       StepProgress();
