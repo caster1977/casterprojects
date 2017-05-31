@@ -60,6 +60,9 @@ type
     function GetCurrentEntity(): TEntity;
     property CurrentEntity: TEntity read GetCurrentEntity;
 
+    function GetCurrentBudgetItemType(): Integer;
+    property CurrentBudgetItemType: Integer read GetCurrentBudgetItemType;
+
     function GetCurrentId(const aEntity: TEntity): Integer;
 
     procedure SetEnableStatusbar(const aValue: Boolean);

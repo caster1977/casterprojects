@@ -16,6 +16,7 @@ type
   TMainPresenter = class(TCustomPresenter, ICustomPresenter)
   strict private
     FCurrentEntity: TEntity;
+    FCurrentBudgetItemType: Integer;
     FGridId: TDictionary<TEntity, Integer>;
     procedure AboutExecute(const aOwner: TWinControl; const aSplash: Boolean = False);
 
@@ -112,6 +113,7 @@ var
 begin
   inherited;
   FCurrentEntity := etUnknown;
+  FCurrentBudgetItemType := -1;
   FGridId := TDictionary<TEntity, Integer>.Create();
   if Supports(FView, IMainView, tmpView) then
   begin
@@ -537,6 +539,11 @@ var
         tmpQuery.ParamByName(TQuery.sp_actual_budget_sel.Param.Id).AsInteger := aId;
       end;
       tmpQuery.ParamByName(TQuery.sp_actual_budget_sel.Param.Activity).DataType := ftBoolean;
+      tmpQuery.ParamByName(TQuery.sp_actual_budget_sel.Param.Id_BudgetItemType).DataType := ftInteger;
+      if FCurrentBudgetItemType > -1 then
+      begin
+        tmpQuery.ParamByName(TQuery.sp_actual_budget_sel.Param.Id_BudgetItemType).AsInteger := FCurrentBudgetItemType;
+      end;
       tmpQuery.Open();
       try
         tmpView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
@@ -590,6 +597,11 @@ var
         tmpQuery.ParamByName(TQuery.sp_planned_budget_sel.Param.Id).AsInteger := aId;
       end;
       tmpQuery.ParamByName(TQuery.sp_planned_budget_sel.Param.Activity).DataType := ftBoolean;
+      tmpQuery.ParamByName(TQuery.sp_planned_budget_sel.Param.Id_BudgetItemType).DataType := ftInteger;
+      if FCurrentBudgetItemType > -1 then
+      begin
+        tmpQuery.ParamByName(TQuery.sp_planned_budget_sel.Param.Id_BudgetItemType).AsInteger := FCurrentBudgetItemType;
+      end;
       tmpQuery.Open();
       try
         tmpView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
@@ -676,9 +688,18 @@ var
     end;
   end;
 
+  procedure BudgetItemTypeChanged();
+  begin
+    FCurrentBudgetItemType := tmpView.CurrentBudgetItemType;
+  end;
+
   procedure EntityChanged();
   begin
     FCurrentEntity := tmpView.CurrentEntity;
+    if FCurrentEntity in [etActualBudget, etPlannedBudget] then
+    begin
+      BudgetItemTypeChanged();
+    end;
   end;
 
   procedure QuitUpdate();
@@ -1129,6 +1150,8 @@ begin
       HelpContextUpdate();
     veEntityChanged:
       EntityChanged();
+    veBudgetItemTypeChanged:
+      BudgetItemTypeChanged();
     veSelectedRecordChanged:
       SelectedRecordChanged();
     veAboutExecute:
