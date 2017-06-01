@@ -57,6 +57,10 @@ type
     procedure SetPlannedBudget(const aValue: TDataSet);
     property PlannedBudget: TDataSet write SetPlannedBudget;
 
+    procedure SetSummaryReport(const aValue: TDataSet);
+    property SummaryReport: TDataSet write SetSummaryReport;
+
+
     function GetCurrentEntity(): TEntity;
     property CurrentEntity: TEntity read GetCurrentEntity;
 

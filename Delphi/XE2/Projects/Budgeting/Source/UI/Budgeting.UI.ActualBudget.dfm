@@ -53,7 +53,7 @@ inherited frmActualBudget: TfrmActualBudget
     Align = alTop
     Properties.OnChange = edtDocumentPropertiesChange
     Properties.OnEditValueChanged = edtDocumentPropertiesEditValueChanged
-    TabOrder = 9
+    TabOrder = 7
     Width = 376
   end
   object cxlblDescription: TcxLabel [6]
@@ -73,7 +73,7 @@ inherited frmActualBudget: TfrmActualBudget
     Align = alTop
     Properties.OnChange = edtDescriptionPropertiesChange
     Properties.OnEditValueChanged = edtDescriptionPropertiesEditValueChanged
-    TabOrder = 14
+    TabOrder = 12
     Width = 376
   end
   object cxlblAccountingCenter: TcxLabel [8]
@@ -93,7 +93,7 @@ inherited frmActualBudget: TfrmActualBudget
     Properties.DropDownListStyle = lsEditFixedList
     Properties.ImmediatePost = True
     Properties.OnEditValueChanged = cbbAccountingCenterPropertiesEditValueChanged
-    TabOrder = 2
+    TabOrder = 1
     Width = 376
   end
   object cxlblCosignatory: TcxLabel [10]
@@ -113,7 +113,7 @@ inherited frmActualBudget: TfrmActualBudget
     Properties.DropDownListStyle = lsEditFixedList
     Properties.ImmediatePost = True
     Properties.OnEditValueChanged = cbbCosignatoryPropertiesEditValueChanged
-    TabOrder = 4
+    TabOrder = 2
     Width = 376
   end
   object cxlblProduct: TcxLabel [12]
@@ -133,7 +133,7 @@ inherited frmActualBudget: TfrmActualBudget
     Properties.DropDownListStyle = lsEditFixedList
     Properties.ImmediatePost = True
     Properties.OnEditValueChanged = cbbProductPropertiesEditValueChanged
-    TabOrder = 5
+    TabOrder = 3
     Width = 376
   end
   object cxlblCurrency: TcxLabel [14]
@@ -153,7 +153,7 @@ inherited frmActualBudget: TfrmActualBudget
     Properties.DropDownListStyle = lsEditFixedList
     Properties.ImmediatePost = True
     Properties.OnEditValueChanged = cbbCurrencyPropertiesEditValueChanged
-    TabOrder = 7
+    TabOrder = 5
     Width = 376
   end
   object pnlDocumentDate: TPanel [16]
@@ -164,7 +164,7 @@ inherited frmActualBudget: TfrmActualBudget
     Height = 21
     Align = alTop
     BevelOuter = bvNone
-    TabOrder = 11
+    TabOrder = 8
     object deDocumentDate: TcxDateEdit
       Left = 0
       Top = 0
@@ -206,7 +206,7 @@ inherited frmActualBudget: TfrmActualBudget
     Height = 21
     Align = alTop
     BevelOuter = bvNone
-    TabOrder = 16
+    TabOrder = 14
     object cxcrncydtAmount: TcxCurrencyEdit
       Left = 0
       Top = 0

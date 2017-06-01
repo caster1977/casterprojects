@@ -41,7 +41,7 @@ object MainForm: TMainForm
     Margins.Right = 0
     Align = alClient
     TabOrder = 5
-    Properties.ActivePage = shtReferences
+    Properties.ActivePage = shtReports
     Properties.CustomButtons.Buttons = <>
     OnChange = pcMainChange
     ClientRectBottom = 504
@@ -411,7 +411,7 @@ object MainForm: TMainForm
             Width = 50
           end
           object colCosignatories_AgreementNumber: TcxGridColumn
-            Caption = #1053#1086#1084#1077#1088' '#1076#1086#1075#1086#1074#1086#1088#1072
+            Caption = #1044#1086#1075#1086#1074#1086#1088
             PropertiesClassName = 'TcxTextEditProperties'
             Properties.Alignment.Horz = taCenter
             Properties.ReadOnly = True
@@ -852,6 +852,7 @@ object MainForm: TMainForm
           end
           object colActualBudget_Amount: TcxGridColumn
             Caption = #1057#1091#1084#1084#1072
+            DataBinding.ValueType = 'Currency'
             PropertiesClassName = 'TcxCurrencyEditProperties'
             Properties.Alignment.Horz = taRightJustify
             Properties.DisplayFormat = ',0.00;-,0.00'
@@ -904,10 +905,20 @@ object MainForm: TMainForm
             HeaderAlignmentHorz = taCenter
             Width = 50
           end
+          object colPlannedBudget_AccountingCenter: TcxGridColumn
+            Caption = #1062#1060#1054
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taLeftJustify
+            Properties.MaxLength = 0
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
           object colPlannedBudget_BudgetItem: TcxGridColumn
             Caption = #1057#1090#1072#1090#1100#1103' '#1073#1102#1076#1078#1077#1090#1072
             PropertiesClassName = 'TcxTextEditProperties'
-            Properties.Alignment.Horz = taCenter
+            Properties.Alignment.Horz = taLeftJustify
             Properties.MaxLength = 0
             Properties.ReadOnly = True
             BestFitMaxWidth = 100
@@ -926,16 +937,6 @@ object MainForm: TMainForm
             FooterAlignmentHorz = taRightJustify
             HeaderAlignmentHorz = taCenter
             Width = 50
-          end
-          object colPlannedBudget_AccountingCenter: TcxGridColumn
-            Caption = #1062#1060#1054
-            PropertiesClassName = 'TcxTextEditProperties'
-            Properties.Alignment.Horz = taCenter
-            Properties.MaxLength = 0
-            Properties.ReadOnly = True
-            BestFitMaxWidth = 100
-            HeaderAlignmentHorz = taCenter
-            Width = 100
           end
           object colPlannedBudget_Id_Currency: TcxGridColumn
             Caption = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088' '#1074#1072#1083#1102#1090#1099
@@ -956,9 +957,9 @@ object MainForm: TMainForm
             Properties.Alignment.Horz = taCenter
             Properties.MaxLength = 0
             Properties.ReadOnly = True
-            BestFitMaxWidth = 100
+            BestFitMaxWidth = 40
             HeaderAlignmentHorz = taCenter
-            Width = 100
+            Width = 40
           end
           object colPlannedBudget_Year: TcxGridColumn
             Caption = #1043#1086#1076
@@ -967,9 +968,9 @@ object MainForm: TMainForm
             Properties.Alignment.Horz = taCenter
             Properties.ImmediatePost = True
             Properties.ReadOnly = True
-            BestFitMaxWidth = 50
+            BestFitMaxWidth = 40
             HeaderAlignmentHorz = taCenter
-            Width = 50
+            Width = 40
           end
           object colPlannedBudget_Month: TcxGridColumn
             Caption = #1052#1077#1089#1103#1094
@@ -978,19 +979,20 @@ object MainForm: TMainForm
             Properties.Alignment.Horz = taCenter
             Properties.ImmediatePost = True
             Properties.ReadOnly = True
-            BestFitMaxWidth = 50
+            BestFitMaxWidth = 40
             HeaderAlignmentHorz = taCenter
-            Width = 50
+            Width = 40
           end
           object colPlannedBudget_Amount: TcxGridColumn
             Caption = #1057#1091#1084#1084#1072
+            DataBinding.ValueType = 'Currency'
             PropertiesClassName = 'TcxCurrencyEditProperties'
             Properties.Alignment.Horz = taRightJustify
             Properties.DisplayFormat = ',0.00;-,0.00'
             Properties.ReadOnly = True
-            BestFitMaxWidth = 100
+            BestFitMaxWidth = 50
             HeaderAlignmentHorz = taCenter
-            Width = 100
+            Width = 50
           end
         end
         object cxgrdlvl2: TcxGridLevel
@@ -1051,10 +1053,6 @@ object MainForm: TMainForm
     object shtReports: TcxTabSheet
       Caption = #1054#1090#1095#1105#1090#1099
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxgrdReports: TcxGrid
         AlignWithMargins = True
         Left = 3
@@ -1064,7 +1062,110 @@ object MainForm: TMainForm
         Align = alClient
         PopupMenu = pctnbrMain
         TabOrder = 0
+        object tblvSummaryReport: TcxGridTableView
+          Navigator.Buttons.CustomButtons = <>
+          OnFocusedRecordChanged = tblvFocusedRecordChanged
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsCustomize.ColumnGrouping = False
+          OptionsCustomize.ColumnHidingOnGrouping = False
+          OptionsData.CancelOnExit = False
+          OptionsData.Deleting = False
+          OptionsData.DeletingConfirmation = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsSelection.CellSelect = False
+          OptionsView.NoDataToDisplayInfoText = '<'#1054#1090#1089#1091#1090#1089#1074#1091#1102#1090' '#1076#1072#1085#1085#1099#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103'>'
+          OptionsView.ColumnAutoWidth = True
+          OptionsView.GroupByBox = False
+          object colSummaryReport_BudgetItem: TcxGridColumn
+            Caption = #1057#1090#1072#1090#1100#1103' '#1073#1102#1076#1078#1077#1090#1072
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.MaxLength = 0
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colSummaryReport_BudgetItemType: TcxGridColumn
+            Caption = #1058#1080#1087' '#1089#1090#1072#1090#1100#1080
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.MaxLength = 0
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colSummaryReport_AccountingCenter: TcxGridColumn
+            Caption = #1062#1060#1054
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.MaxLength = 0
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colSummaryReport_Month: TcxGridColumn
+            Caption = #1052#1077#1089#1103#1094
+            DataBinding.ValueType = 'Integer'
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.ImmediatePost = True
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colSummaryReport_Currency: TcxGridColumn
+            Caption = #1042#1072#1083#1102#1090#1072
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.MaxLength = 0
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colSummaryReport_PlannedAmount: TcxGridColumn
+            Caption = #1055#1083#1072#1085
+            DataBinding.ValueType = 'Currency'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;-,0.00'
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colSummaryReport_ActualAmount: TcxGridColumn
+            Caption = #1060#1072#1082#1090
+            DataBinding.ValueType = 'Currency'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;-,0.00'
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colSummaryReport_Balance: TcxGridColumn
+            Caption = #1041#1072#1083#1072#1085#1089
+            DataBinding.ValueType = 'Currency'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = ',0.00;-,0.00'
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+        end
         object cxgrdlvl1: TcxGridLevel
+          GridView = tblvSummaryReport
         end
       end
       object cbbReports: TcxComboBox
@@ -1076,8 +1177,6 @@ object MainForm: TMainForm
         Properties.DropDownListStyle = lsFixedList
         Properties.ImmediatePost = True
         Properties.ImmediateUpdateText = True
-        Properties.Items.Strings = (
-          #1089#1074#1086#1076#1085#1099#1081' '#1086#1090#1095#1105#1090)
         Properties.ReadOnly = False
         Properties.Revertable = True
         Properties.Sorted = True

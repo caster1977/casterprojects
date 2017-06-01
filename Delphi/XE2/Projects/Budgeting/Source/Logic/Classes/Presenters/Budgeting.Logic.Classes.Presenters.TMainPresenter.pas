@@ -53,7 +53,7 @@ uses
   Budgeting.Logic.Classes.TCustomEditPresenterClass,
   Budgeting.Logic.Interfaces.Views.ICustomView,
   Budgeting.Logic.Interfaces.Views.ICustomEditView,
-
+  Budgeting.Logic.Classes.Configuration.Sections.TGeneralSection,
   Budgeting.Logic.Interfaces.Models.ICustomModel,
   Budgeting.Logic.Classes.Models.TAccountingCenterModel,
   Budgeting.Logic.Classes.Models.TActualBudgetModel,
@@ -593,6 +593,34 @@ var
     end;
   end;
 
+  procedure LoadSummaryReport();
+  var
+    tmpQuery: TFDQuery;
+    tmpYear: Integer;
+  begin
+    tmpYear := TConfiguration.Get(TConfiguration).Section<TGeneralSection>.Year;
+    if tmpYear = 0 then
+    begin
+      tmpYear := CurrentYear();
+    end;
+
+    tmpQuery := TFDQuery.Create(nil);
+    try
+      tmpQuery.Connection := FConnection;
+      tmpQuery.SQL.Text := TQuery.sp_summary_report_sel.Name;
+      tmpQuery.ParamByName(TQuery.sp_summary_report_sel.Param.Year).AsInteger := tmpYear;
+      tmpQuery.Open();
+      try
+        tmpView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);
+        tmpView.SummaryReport := tmpQuery;
+      finally
+        tmpQuery.Close();
+      end;
+    finally
+      tmpQuery.Free();
+    end;
+  end;
+
   procedure RefreshExecute();
   begin
     FProcessign := True;
@@ -621,6 +649,8 @@ var
             LoadActualBudget();
           etPlannedBudget:
             LoadPlannedBudget();
+          etSummaryReport:
+            LoadSummaryReport();
         end;
       finally
         FProcessign := False;
@@ -927,7 +957,7 @@ var
       try
         tmpCustomEditView := tmpFormClass.Create(nil);
         try
-          tmpPresenter := tmpPresenterClass.Create(tmpCustomEditView, tmpCurrentModel);
+          tmpPresenter := tmpPresenterClass.Create(tmpCustomEditView, tmpCurrentModel, FCurrentBudgetItemType);
           try
             tmpCustomEditView.ShowModal();
           finally
@@ -1144,99 +1174,8 @@ begin
   end;
 end;
 
-{
-  var
-  b: Boolean;
-  i: Integer;
-  tmpStartTime: TDateTime;
-  tmpStopTime: TDateTime;
-  dt: TDateTime;
-  d, h, n, s, ms: word;
-  sh: word;
-
-  try
-  FProcessing := True;
-  for i := 0 to Pred(actlstMain.ActionCount) do
-  begin
-  actlstMain.Actions[i].Update();
-  Application.ProcessMessages();
-  StatusBar.SimplePanelStyle.Text := 'Пожалуйста, подождите...';
-  end;
-
-  tmpStartTime := Now();
-
-  try
-  b := FLogic.Process();
-  finally
-  FProcessing := False;
-  end;
-  if b then
-  begin
-  tmpStopTime := Now();
-  StatusBar.SimplePanelStyle.Text := EmptyStr;
-
-  dt := tmpStopTime - tmpStartTime;
-  d := DaysBetween(dt, 0);
-  DecodeTime(dt, h, n, s, ms);
-  sh := d * 24 + h;
-  MessageBox(Handle, PWideChar(Format('Действие выполнено успешно. Затраченное время: %s',
-  [Format('%d:%2d:%2d', [sh, n, s]).Replace(' ', '0', [rfReplaceAll])])), PWideChar(Format(RsInfoCaption, [Caption])), MESSAGE_TYPE_OK);
-  end;
-  except
-  on e: Exception do
-  begin
-  MessageBox(Handle, PWideChar(e.ToString()), PWideChar(Format(RsErrorCaption, [Caption])), MESSAGE_TYPE_ERROR);
-  end;
-  end; }
-
-// procedure TMainForm.actLoadListExecute(Sender: TObject);
-// var
-// b: Boolean;
-// i: Integer;
-// tmpStartTime: TDateTime;
-// tmpStopTime: TDateTime;
-// dt: TDateTime;
-// d, h, n, s, ms: word;
-// sh: word;
-// begin
-{ if not Assigned(FLogic) then
-  begin
-  Exit();
-  end;
-
-  try
-  FProcessing := True;
-  for i := 0 to Pred(actlstMain.ActionCount) do
-  begin
-  actlstMain.Actions[i].Update();
-  Application.ProcessMessages();
-  StatusBar.SimplePanelStyle.Text := 'Пожалуйста, подождите...';
-  end;
-
-  tmpStartTime := Now();
-
-  try
-  b := FLogic.LoadList();
-  finally
-  FProcessing := False;
-  end;
-  if b then
-  begin
-  tmpStopTime := Now();
-  StatusBar.SimplePanelStyle.Text := EmptyStr;
-
-  dt := tmpStopTime - tmpStartTime;
-  d := DaysBetween(dt, 0);
-  DecodeTime(dt, h, n, s, ms);
-  sh := d * 24 + h;
-  MessageBox(Handle, PWideChar(Format('Действие выполнено успешно. Затраченное время: %s',
-  [Format('%d:%2d:%2d', [sh, n, s]).Replace(' ', '0', [rfReplaceAll])])), PWideChar(Format(RsInfoCaption, [Caption])), MESSAGE_TYPE_OK);
-  end;
-  except
-  on e: Exception do
-  begin
-  MessageBox(Handle, PWideChar(e.ToString()), PWideChar(Format(RsErrorCaption, [Caption])), MESSAGE_TYPE_ERROR);
-  end;
-  end; }
+{ TODO : доделать функционал логирования }
+{ TODO : при загрузке списка планового/фактического бюджета выдавать только записи за выставленный в настройках год }
+{ TODO : доделать основной отчёт }
 
 end.

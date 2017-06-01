@@ -16,6 +16,7 @@ type
     FYear: Integer;
     FMonth: Integer;
     FAmount: Currency;
+//    FCurrentBudgetItemType: Integer;
     function GetId(): Integer;
     function GetId_BudgetItem(): Integer;
     function GetId_AccountingCenter(): Integer;
@@ -23,9 +24,11 @@ type
     function GetYear(): Integer;
     function GetMonth(): Integer;
     function GetAmount(): Currency;
+//    function GetCurrentBudgetItemType(): Integer;
 
   public
-    constructor Create(const AId, AId_BudgetItem, AId_AccountingCenter, AId_Currency, AYear, AMonth: Integer; const AAmount: Currency); reintroduce; virtual;
+    constructor Create(const AId, AId_BudgetItem, AId_AccountingCenter, AId_Currency, AYear, AMonth: Integer; const AAmount: Currency{;
+      const aCurrentBudgetItemType: Integer}); reintroduce; virtual;
   end;
 
 implementation
@@ -33,7 +36,8 @@ implementation
 uses
   System.SysUtils;
 
-constructor TPlannedBudgetModel.Create(const AId, AId_BudgetItem, AId_AccountingCenter, AId_Currency, AYear, AMonth: Integer; const AAmount: Currency);
+constructor TPlannedBudgetModel.Create(const AId, AId_BudgetItem, AId_AccountingCenter, AId_Currency, AYear, AMonth: Integer; const AAmount: Currency{;
+  const aCurrentBudgetItemType: Integer});
 
 begin
   inherited Create();
@@ -44,6 +48,7 @@ begin
   FYear := AYear;
   FMonth := AMonth;
   FAmount := AAmount;
+//  FCurrentBudgetItemType := aCurrentBudgetItemType;
 end;
 
 function TPlannedBudgetModel.GetId_AccountingCenter(): Integer;
@@ -55,6 +60,11 @@ function TPlannedBudgetModel.GetAmount(): Currency;
 begin
   Result := FAmount;
 end;
+
+//function TPlannedBudgetModel.GetCurrentBudgetItemType(): Integer;
+//begin
+//  Result := FCurrentBudgetItemType;
+//end;
 
 function TPlannedBudgetModel.GetId_BudgetItem(): Integer;
 begin

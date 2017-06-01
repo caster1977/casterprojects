@@ -291,6 +291,15 @@ type
     colPlannedBudget_AccountingCenter: TcxGridColumn;
     colPlannedBudget_BudgetItem: TcxGridColumn;
     colPlannedBudget_Currency: TcxGridColumn;
+    tblvSummaryReport: TcxGridTableView;
+    colSummaryReport_BudgetItem: TcxGridColumn;
+    colSummaryReport_AccountingCenter: TcxGridColumn;
+    colSummaryReport_BudgetItemType: TcxGridColumn;
+    colSummaryReport_Month: TcxGridColumn;
+    colSummaryReport_PlannedAmount: TcxGridColumn;
+    colSummaryReport_ActualAmount: TcxGridColumn;
+    colSummaryReport_Balance: TcxGridColumn;
+    colSummaryReport_Currency: TcxGridColumn;
 
     procedure actQuitExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -362,6 +371,7 @@ type
     procedure SetProductTypes(const aValue: TDataSet);
     procedure SetActualBudget(const aValue: TDataSet);
     procedure SetPlannedBudget(const aValue: TDataSet);
+    procedure SetSummaryReport(const aValue: TDataSet);
     procedure Initialize();
     procedure OnEventSimpleStub(aValue: TViewEnumEvent);
   end;
@@ -843,6 +853,15 @@ begin
     begin
       cbbOperationTypes.Properties.Items.AddObject(tmpPair.Key, tmpPair.Value);
     end;
+
+    tmpList.Clear();
+
+    tmpList.Add('Èעמדמגûי מעק¸ע חא דמה', tblvSummaryReport);
+
+    for tmpPair in tmpList do
+    begin
+      cbbReports.Properties.Items.AddObject(tmpPair.Key, tmpPair.Value);
+    end;
   finally
     FreeAndNil(tmpList);
   end;
@@ -927,6 +946,8 @@ begin
         Result := etActualBudget;
       if tmpActiveView = tblvPlannedBudget then
         Result := etPlannedBudget;
+      if tmpActiveView = tblvSummaryReport then
+        Result := etSummaryReport;
     end;
   end;
 end;
@@ -1444,6 +1465,47 @@ begin
     end;
   finally
     tblvAccountingCenters.EndUpdate();
+  end;
+end;
+
+procedure TMainForm.SetSummaryReport(const aValue: TDataSet);
+var
+  i: Integer;
+begin
+  tblvSummaryReport.BeginUpdate();
+  try
+    tblvSummaryReport.DataController.RecordCount := 0;
+
+    if not Assigned(aValue) then
+    begin
+      Exit;
+    end;
+
+    if aValue.IsEmpty() then
+    begin
+      Exit;
+    end;
+
+    aValue.First();
+    tblvSummaryReport.DataController.RecordCount := aValue.RecordCount;
+
+    for i := 0 to Pred(aValue.RecordCount) do
+    begin
+      tblvSummaryReport.DataController.Values[i, colSummaryReport_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.BudgetItem).AsString;
+      tblvSummaryReport.DataController.Values[i, colSummaryReport_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.BudgetItemType).AsString;
+      tblvSummaryReport.DataController.Values[i, colSummaryReport_AccountingCenter.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.AccountingCenter).AsString;
+      tblvSummaryReport.DataController.Values[i, colSummaryReport_Month.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.Month).AsInteger;
+      tblvSummaryReport.DataController.Values[i, colSummaryReport_Currency.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.Currency).AsString;
+      tblvSummaryReport.DataController.Values[i, colSummaryReport_PlannedAmount.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.PlannedAmount).AsCurrency;
+      tblvSummaryReport.DataController.Values[i, colSummaryReport_ActualAmount.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.ActualAmount).AsCurrency;
+      tblvSummaryReport.DataController.Values[i, colSummaryReport_Balance.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.Balance).AsCurrency;
+
+      StepProgress();
+
+      aValue.Next();
+    end;
+  finally
+    tblvSummaryReport.EndUpdate();
   end;
 end;
 

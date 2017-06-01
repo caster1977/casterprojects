@@ -34,6 +34,9 @@ type
 
     function GetAmount(): Currency;
     property Amount: Currency read GetAmount;
+
+//    function GetCurrentBudgetItemType(): Integer;
+//    property CurrentBudgetItemType: Integer read GetCurrentBudgetItemType;
   end;
 
 implementation

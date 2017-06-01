@@ -151,6 +151,11 @@ begin
     begin
       tmpQuery.ParamByName(TQuery.sp_budget_items_sel.Param.Activity).AsBoolean := True;
     end;
+    tmpQuery.ParamByName(TQuery.sp_budget_items_sel.Param.Id_BudgetItemType).DataType := ftInteger;
+    if FTag > -1 then
+    begin
+      tmpQuery.ParamByName(TQuery.sp_budget_items_sel.Param.Id_BudgetItemType).AsInteger := FTag;
+    end;
     tmpQuery.Open();
     try
       FView.ShowProgress('Загрузка данных из базы...', tmpQuery.RecordCount);

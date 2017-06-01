@@ -79,6 +79,8 @@ implementation
 
 uses
   System.Variants,
+  Budgeting.Logic.Classes.Configuration.TConfiguration,
+  Budgeting.Logic.Classes.Configuration.Sections.TGeneralSection,
   Budgeting.Logic.Interfaces.Models.IPlannedBudgetModel,
   Budgeting.Logic.Classes.Models.TPlannedBudgetModel,
   Budgeting.Logic.Types.TViewEnumEvent;
@@ -329,6 +331,7 @@ procedure TfrmPlannedBudget.SetItem(const aValue: IInterface);
 var
   tmpItem: IPlannedBudgetModel;
   i: Integer;
+  tmpYear: Integer;
 begin
   inherited;
   cbbBudgetItem.ItemIndex := -1;
@@ -386,6 +389,24 @@ begin
     end;
 
     cxcrncydtAmount.EditValue := tmpItem.Amount;
+    tmpYear := tmpItem.Year;
+  end
+  else
+  begin
+    tmpYear := TConfiguration.Get(TConfiguration).Section<TGeneralSection>.Year;
+    if tmpYear = 0 then
+    begin
+      tmpYear := CurrentYear();
+    end;
+  end;
+
+  for i := 0 to Pred(cbbYear.Properties.Items.Count) do
+  begin
+    if Integer(cbbYear.Properties.Items.Objects[i]) = tmpYear then
+    begin
+      cbbYear.ItemIndex := i;
+      Break;
+    end;
   end;
 end;
 

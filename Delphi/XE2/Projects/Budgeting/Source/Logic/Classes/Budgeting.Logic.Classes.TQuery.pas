@@ -160,13 +160,14 @@ type
 
     sp_budget_items_sel = class(TObject)
     public const
-      name = 'dbo.budget_items_sel :AId, :AActivity';
+      name = 'dbo.budget_items_sel :AId, :AActivity, :AId_BudgetItemType';
 
     type
       Param = class
       public const
         Id = 'AId';
         Activity = 'AActivity';
+        Id_BudgetItemType = 'AId_BudgetItemType';
       end;
 
       Field = class(TObject)
@@ -441,6 +442,29 @@ type
       Field = class(TObject)
       public const
         Year = 'year';
+      end;
+    end;
+
+    sp_summary_report_sel = class(TObject)
+    public const
+      name = 'dbo.summary_report_sel :AYear';
+
+    type
+      Param = class
+      public const
+        Year = 'AYear';
+      end;
+
+      Field = class(TObject)
+      public const
+        BudgetItem = 'budget_item';
+        BudgetItemType = 'budget_item_type';
+        AccountingCenter = 'accounting_center';
+        Currency = 'currency';
+        Month = 'month';
+        PlannedAmount = 'planned_amount';
+        ActualAmount = 'actual_amount';
+        Balance = 'balance';
       end;
     end;
   end;

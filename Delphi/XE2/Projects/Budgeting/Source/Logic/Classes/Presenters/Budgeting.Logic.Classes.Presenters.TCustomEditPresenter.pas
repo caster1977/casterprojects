@@ -15,6 +15,7 @@ type
   strict protected
     FItem: ICustomModel;
     FEditMode: Boolean;
+    FTag: Integer;
     procedure Initialize(); override;
     procedure ItemChanged(); virtual; final;
     procedure CancelExecute; virtual; final;
@@ -26,7 +27,7 @@ type
     procedure OnEventSimple(aValue: TViewEnumEvent); override;
 
   public
-    constructor Create(const aView: ICustomView; const aItem: ICustomModel); reintroduce; virtual;
+    constructor Create(const aView: ICustomView; const aItem: ICustomModel; const aTag: Integer = -1); reintroduce; virtual;
   end;
 
 implementation
@@ -40,10 +41,11 @@ uses
   Budgeting.Logic.Types.TViewEnumAction,
   Budgeting.Logic.Interfaces.Views.ICustomEditView;
 
-constructor TCustomEditPresenter.Create(const aView: ICustomView; const aItem: ICustomModel);
+constructor TCustomEditPresenter.Create(const aView: ICustomView; const aItem: ICustomModel; const aTag: Integer);
 begin
   FEditMode := Assigned(aItem);
   FItem := aItem;
+  FTag := aTag;
   inherited Create(aView);
   FView.SetCaption(Format('%s элемента', [IfThen(FEditMode, 'Редактирование', 'Добавление')]));
 end;

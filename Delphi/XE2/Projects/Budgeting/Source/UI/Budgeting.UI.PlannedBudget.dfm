@@ -11,7 +11,7 @@ inherited frmPlannedBudget: TfrmPlannedBudget
   inherited pnlButtons: TPanel
     Top = 331
     TabOrder = 12
-    ExplicitTop = 490
+    ExplicitTop = 331
     inherited pbProgress: TcxProgressBar
       ExplicitHeight = 23
     end
@@ -44,7 +44,6 @@ inherited frmPlannedBudget: TfrmPlannedBudget
     Align = alTop
     Caption = '&'#1052#1077#1089#1103#1094':'
     FocusControl = cbbMonth
-    ExplicitTop = 230
   end
   object cxlblAccountingCenter: TcxLabel [5]
     AlignWithMargins = True
@@ -63,7 +62,7 @@ inherited frmPlannedBudget: TfrmPlannedBudget
     Properties.DropDownListStyle = lsEditFixedList
     Properties.ImmediatePost = True
     Properties.OnEditValueChanged = cbbAccountingCenterPropertiesEditValueChanged
-    TabOrder = 2
+    TabOrder = 1
     Width = 376
   end
   object cxlblCurrency: TcxLabel [7]
@@ -83,8 +82,7 @@ inherited frmPlannedBudget: TfrmPlannedBudget
     Properties.DropDownListStyle = lsEditFixedList
     Properties.ImmediatePost = True
     Properties.OnEditValueChanged = cbbCurrencyPropertiesEditValueChanged
-    TabOrder = 4
-    ExplicitTop = 241
+    TabOrder = 2
     Width = 376
   end
   object pnlDocumentDate: TPanel [9]
@@ -95,8 +93,7 @@ inherited frmPlannedBudget: TfrmPlannedBudget
     Height = 21
     Align = alTop
     BevelOuter = bvNone
-    TabOrder = 6
-    ExplicitLeft = -2
+    TabOrder = 3
     object cbbYear: TcxComboBox
       Left = 0
       Top = 0
@@ -104,7 +101,6 @@ inherited frmPlannedBudget: TfrmPlannedBudget
       Properties.ImmediatePost = True
       Properties.OnEditValueChanged = cbbYearPropertiesEditValueChanged
       TabOrder = 0
-      ExplicitLeft = 8
       Width = 121
     end
   end
@@ -134,8 +130,7 @@ inherited frmPlannedBudget: TfrmPlannedBudget
     Height = 21
     Align = alTop
     BevelOuter = bvNone
-    TabOrder = 10
-    ExplicitTop = 453
+    TabOrder = 7
     object cxcrncydtAmount: TcxCurrencyEdit
       Left = 0
       Top = 0
@@ -158,9 +153,7 @@ inherited frmPlannedBudget: TfrmPlannedBudget
     Height = 21
     Align = alTop
     BevelOuter = bvNone
-    TabOrder = 8
-    ExplicitLeft = -2
-    ExplicitTop = 255
+    TabOrder = 5
     object cbbMonth: TcxComboBox
       Left = 0
       Top = 0

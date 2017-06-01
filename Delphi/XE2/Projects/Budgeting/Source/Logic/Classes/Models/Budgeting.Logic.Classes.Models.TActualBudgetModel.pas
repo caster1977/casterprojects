@@ -19,6 +19,7 @@ type
     FDocumentDate: TDate;
     FDescription: string;
     FAmount: Currency;
+//    FCurrentBudgetItemType: Integer;
     function GetId(): Integer;
     function GetId_BudgetItem(): Integer;
     function GetId_AccountingCenter(): Integer;
@@ -29,10 +30,11 @@ type
     function GetDocumentDate(): TDate;
     function GetDescription(): string;
     function GetAmount(): Currency;
+//    function GetCurrentBudgetItemType(): Integer;
 
   public
-    constructor Create(const AId, AId_BudgetItem, AId_AccountingCenter, AId_Cosignatory, AId_Product, AId_Currency: Integer; const ADocument: string; const ADocumentDate: TDate; const ADescription: string; const AAmount: Currency);
-      reintroduce; virtual;
+    constructor Create(const AId, AId_BudgetItem, AId_AccountingCenter, AId_Cosignatory, AId_Product, AId_Currency: Integer; const ADocument: string; const ADocumentDate: TDate; const ADescription: string;
+    const AAmount: Currency{; const aCurrentBudgetItemType: Integer}); reintroduce; virtual;
   end;
 
 implementation
@@ -41,7 +43,7 @@ uses
   System.SysUtils;
 
 constructor TActualBudgetModel.Create(const AId, AId_BudgetItem, AId_AccountingCenter, AId_Cosignatory, AId_Product, AId_Currency: Integer; const ADocument: string; const ADocumentDate: TDate; const ADescription: string;
-  const AAmount: Currency);
+  const AAmount: Currency{; const aCurrentBudgetItemType: Integer});
 
 begin
   inherited Create();
@@ -55,6 +57,7 @@ begin
   FDocumentDate := ADocumentDate;
   FDescription := ADescription;
   FAmount := AAmount;
+//  FCurrentBudgetItemType := aCurrentBudgetItemType;
 end;
 
 function TActualBudgetModel.GetId_AccountingCenter(): Integer;
@@ -66,6 +69,11 @@ function TActualBudgetModel.GetAmount(): Currency;
 begin
   Result := FAmount;
 end;
+
+//function TActualBudgetModel.GetCurrentBudgetItemType(): Integer;
+//begin
+//  Result := FCurrentBudgetItemType;
+//end;
 
 function TActualBudgetModel.GetId_BudgetItem(): Integer;
 begin
