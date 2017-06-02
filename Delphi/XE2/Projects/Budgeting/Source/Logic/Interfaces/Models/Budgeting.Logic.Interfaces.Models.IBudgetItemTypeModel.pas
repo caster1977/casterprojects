@@ -11,6 +11,9 @@ type
     function GetName(): string;
     property name: string read GetName;
 
+    function GetSign(): Boolean;
+    property Sign: Boolean read GetSign;
+
     function GetActivity(): Boolean;
     property Activity: Boolean read GetActivity;
   end;

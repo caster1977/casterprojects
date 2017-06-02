@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<TgConfig Version="3" SubLevelDisabled="False">
+  <Option Name="Diagram.DetailLevel" Type="Borland.Together.OpenAPI3.Config.DiagramDetail" Value="Implementation" Category="Diagram" />
+  <Option Name="DiagramView.ZoomFactor" Type="System.Single" Value="0.1116781" Category="Diagram" IsBrowsable="False" />
+</TgConfig>

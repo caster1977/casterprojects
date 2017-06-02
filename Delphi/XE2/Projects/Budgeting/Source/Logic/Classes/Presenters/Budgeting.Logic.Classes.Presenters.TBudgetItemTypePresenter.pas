@@ -53,6 +53,7 @@ begin
     aQuery.SQL.Text := TQuery.sp_budget_item_types_upd.Name;
     aQuery.ParamByName(TQuery.sp_budget_item_types_upd.Param.Id).AsInteger := tmpItem.Id;
     aQuery.ParamByName(TQuery.sp_budget_item_types_upd.Param.Name).AsString := tmpItem.Name.Trim();
+    aQuery.ParamByName(TQuery.sp_budget_item_types_upd.Param.Sign).AsBoolean := tmpItem.Sign;
     aQuery.ParamByName(TQuery.sp_budget_item_types_upd.Param.Activity).AsBoolean := tmpItem.Activity;
   end;
 end;

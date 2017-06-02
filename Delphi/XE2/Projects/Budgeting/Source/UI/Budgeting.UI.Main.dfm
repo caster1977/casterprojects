@@ -41,7 +41,7 @@ object MainForm: TMainForm
     Margins.Right = 0
     Align = alClient
     TabOrder = 5
-    Properties.ActivePage = shtReports
+    Properties.ActivePage = shtReferences
     Properties.CustomButtons.Buttons = <>
     OnChange = pcMainChange
     ClientRectBottom = 504
@@ -328,6 +328,16 @@ object MainForm: TMainForm
             Properties.ReadOnly = True
             HeaderAlignmentHorz = taCenter
             Width = 300
+          end
+          object colBudgetItemTypes_Sign: TcxGridColumn
+            Caption = #1054#1090#1088#1080#1094#1072#1090#1077#1083#1100#1085#1099#1077' '#1086#1087#1077#1088#1072#1094#1080#1080
+            DataBinding.ValueType = 'Boolean'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.Alignment = taCenter
+            Properties.ReadOnly = True
+            BestFitMaxWidth = 100
+            HeaderAlignmentHorz = taCenter
+            Width = 100
           end
           object colBudgetItemTypes_Activity: TcxGridColumn
             Caption = #1040#1082#1090#1080#1074#1085#1086#1089#1090#1100
@@ -660,13 +670,17 @@ object MainForm: TMainForm
           end
         end
         object lvl1: TcxGridLevel
-          GridView = tblvCosignatories
+          GridView = tblvBudgetItemTypes
         end
       end
     end
     object shtOperations: TcxTabSheet
       Caption = #1054#1087#1077#1088#1072#1094#1080#1080
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxgrdOperations: TcxGrid
         AlignWithMargins = True
         Left = 3
@@ -1105,6 +1119,17 @@ object MainForm: TMainForm
             Properties.Alignment.Horz = taCenter
             Properties.MaxLength = 0
             Properties.ReadOnly = True
+            Visible = False
+            BestFitMaxWidth = 50
+            HeaderAlignmentHorz = taCenter
+            Width = 50
+          end
+          object colSummaryReport_Currency: TcxGridColumn
+            Caption = #1042#1072#1083#1102#1090#1072
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.MaxLength = 0
+            Properties.ReadOnly = True
             BestFitMaxWidth = 50
             HeaderAlignmentHorz = taCenter
             Width = 50
@@ -1115,16 +1140,6 @@ object MainForm: TMainForm
             PropertiesClassName = 'TcxCalcEditProperties'
             Properties.Alignment.Horz = taCenter
             Properties.ImmediatePost = True
-            Properties.ReadOnly = True
-            BestFitMaxWidth = 50
-            HeaderAlignmentHorz = taCenter
-            Width = 50
-          end
-          object colSummaryReport_Currency: TcxGridColumn
-            Caption = #1042#1072#1083#1102#1090#1072
-            PropertiesClassName = 'TcxTextEditProperties'
-            Properties.Alignment.Horz = taCenter
-            Properties.MaxLength = 0
             Properties.ReadOnly = True
             BestFitMaxWidth = 50
             HeaderAlignmentHorz = taCenter
@@ -1163,6 +1178,15 @@ object MainForm: TMainForm
             HeaderAlignmentHorz = taCenter
             Width = 50
           end
+        end
+        object btblvwSummaryReport: TcxGridBandedTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          Bands = <
+            item
+            end>
         end
         object cxgrdlvl1: TcxGridLevel
           GridView = tblvSummaryReport

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="jevoi0qqixt_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:Budgeting:Budgeting.@unitclass">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_field:src:Budgeting:Budgeting.@unitclass.CodeSiteDestination" />
+      <reference referencedUin="delphi:e_field:src:Budgeting:Budgeting.@unitclass.MainPresenter" />
+    </reference>
+    <reference referencedUin="design:view:::h1qclq7ka4s_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,100,164" />
+      <reference referencedUin="design:view:::9b9j6uhfizr_v" />
+      <reference referencedUin="design:view:::eayanghrsep_v" />
+      <reference referencedUin="design:view:::pjgdk4suxve_v" />
+      <reference referencedUin="design:view:::4ylqkovxt0m_v" />
+    </reference>
+    <reference referencedUin="design:view:::j189fdxzsjs_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="129,1,111,299" />
+      <reference referencedUin="design:view:::ehsbbp2pttt_v" />
+      <reference referencedUin="design:view:::28l7bgg5j1j_v" />
+      <reference referencedUin="design:view:::60nolgkyjfj_v" />
+      <reference referencedUin="design:view:::ynmit0iu1ys_v" />
+      <reference referencedUin="design:view:::m78lc2z306p_v" />
+      <reference referencedUin="design:view:::ypjk51i9bdq_v" />
+      <reference referencedUin="design:view:::fwlaj6o10aq_v" />
+      <reference referencedUin="design:view:::mrz91bqrsyt_v" />
+      <reference referencedUin="design:view:::6gyj0wyj30q_v" />
+      <reference referencedUin="design:view:::53xixxw0nrq_v" />
+      <reference referencedUin="design:view:::yfs0se0gy6i_v" />
+      <reference referencedUin="design:view:::30hcd4df1ai_v" />
+      <reference referencedUin="design:view:::hnbui45wp0k_v" />
+    </reference>
+  </view>
+</nodeSet>

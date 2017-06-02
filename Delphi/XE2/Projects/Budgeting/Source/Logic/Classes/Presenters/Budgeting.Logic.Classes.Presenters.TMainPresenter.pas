@@ -306,6 +306,7 @@ var
           tmpQuery.First();
 
           Result := TBudgetItemTypeModel.Create(tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id).AsInteger, tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString,
+            tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Sign).AsBoolean,
             tmpQuery.FieldByName(TQuery.sp_budget_item_types_sel.Field.Activity).AsBoolean);
 
           FView.StepProgress();
@@ -846,7 +847,7 @@ var
 
   procedure AddUpdate();
   begin
-    tmpView.ActionStates[vaAdd] := not FProcessign;
+    tmpView.ActionStates[vaAdd] := (not FProcessign) and (FCurrentEntity in [etAccountingCenters, etBanks, etBudgetItems, etBudgetItemTypes, etCosignatories, etCurrencies, etProducts, etProductTypes, etActualBudget, etPlannedBudget]);
   end;
 
   function GetCurrentModel(const aId: Integer): ICustomModel;
@@ -983,7 +984,7 @@ var
       i := -1;
     end;
 
-    tmpView.ActionStates[vaEdit] := (not FProcessign) and (i > -1);
+    tmpView.ActionStates[vaEdit] := (not FProcessign) and (i > -1) and (FCurrentEntity in [etAccountingCenters, etBanks, etBudgetItems, etBudgetItemTypes, etCosignatories, etCurrencies, etProducts, etProductTypes, etActualBudget, etPlannedBudget]);
   end;
 
   procedure DeleteExecute();
@@ -1081,7 +1082,7 @@ var
       i := -1;
     end;
 
-    tmpView.ActionStates[vaDelete] := (not FProcessign) and (i > -1);
+    tmpView.ActionStates[vaDelete] := (not FProcessign) and (i > -1) and (FCurrentEntity in [etAccountingCenters, etBanks, etBudgetItems, etBudgetItemTypes, etCosignatories, etCurrencies, etProducts, etProductTypes, etActualBudget, etPlannedBudget]);
   end;
 
   procedure DisconnectExecute();

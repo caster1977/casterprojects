@@ -41,10 +41,13 @@ type
     cxlblName: TcxLabel;
     edtName: TcxTextEdit;
     chkActivity: TcxCheckBox;
+    chkSign: TcxCheckBox;
     procedure edtNamePropertiesChange(Sender: TObject);
     procedure edtNamePropertiesEditValueChanged(Sender: TObject);
     procedure chkActivityPropertiesChange(Sender: TObject);
     procedure chkActivityPropertiesEditValueChanged(Sender: TObject);
+    procedure chkSignPropertiesChange(Sender: TObject);
+    procedure chkSignPropertiesEditValueChanged(Sender: TObject);
 
   strict protected
     function GetItem(): IInterface; override;
@@ -81,6 +84,24 @@ begin
   end;
 end;
 
+procedure TfrmBudgetItemType.chkSignPropertiesChange(Sender: TObject);
+begin
+  chkSign.EditValue := chkSign.EditingValue;
+end;
+
+procedure TfrmBudgetItemType.chkSignPropertiesEditValueChanged(Sender: TObject);
+var
+  tmpCursor: TCursor;
+begin
+  tmpCursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;
+  try
+    FOnEventSimple(veItemChanged);
+  finally
+    Screen.Cursor := tmpCursor;
+  end;
+end;
+
 procedure TfrmBudgetItemType.edtNamePropertiesChange(Sender: TObject);
 begin
   edtName.EditValue := edtName.EditingValue;
@@ -103,10 +124,12 @@ function TfrmBudgetItemType.GetItem(): IInterface;
 var
   tmpId: Integer;
   tmpName: string;
+  tmpSign: Boolean;
   tmpActivity: Boolean;
 begin
   tmpId := FId;
   tmpName := string.Empty;
+  tmpSign := False;
   tmpActivity := True;
 
   if not VarIsNull(edtName.EditValue) then
@@ -114,12 +137,17 @@ begin
     tmpName := edtName.EditValue;
   end;
 
+  if not VarIsNull(chkSign.EditValue) then
+  begin
+    tmpSign := chkSign.EditValue;
+  end;
+
   if not VarIsNull(chkActivity.EditValue) then
   begin
     tmpActivity := chkActivity.EditValue;
   end;
 
-  Result := TBudgetItemTypeModel.Create(tmpId, tmpName, tmpActivity);
+  Result := TBudgetItemTypeModel.Create(tmpId, tmpName, tmpSign, tmpActivity);
 end;
 
 procedure TfrmBudgetItemType.SetItem(const aValue: IInterface);
@@ -128,10 +156,12 @@ var
 begin
   inherited;
   edtName.EditValue := string.Empty;
+  chkSign.EditValue := False;
   chkActivity.EditValue := True;
   if Supports(aValue, IBudgetItemTypeModel, tmpItem) then
   begin
     edtName.EditValue := tmpItem.Name;
+    chkSign.EditValue := tmpItem.Sign;
     chkActivity.EditValue := tmpItem.Activity;
   end;
 end;

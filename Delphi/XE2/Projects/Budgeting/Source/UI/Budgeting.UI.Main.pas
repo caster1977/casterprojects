@@ -120,7 +120,7 @@ uses
   FireDAC.Phys.ODBCBase,
   Vcl.ImgList,
   cxFilter,
-  cxData;
+  cxData, cxGridBandedTableView;
 
 type
   TMainForm = class(TForm, ICustomView, IMainView)
@@ -300,6 +300,8 @@ type
     colSummaryReport_ActualAmount: TcxGridColumn;
     colSummaryReport_Balance: TcxGridColumn;
     colSummaryReport_Currency: TcxGridColumn;
+    colBudgetItemTypes_Sign: TcxGridColumn;
+    btblvwSummaryReport: TcxGridBandedTableView;
 
     procedure actQuitExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -1199,6 +1201,7 @@ begin
       begin
         tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Id_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id).AsInteger;
         tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Name.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString;
+        tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Sign.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Sign).AsBoolean;
         tblvBudgetItemTypes.DataController.Values[i, colBudgetItemTypes_Activity.Index] := aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Activity).AsBoolean;
 
         cbbBudgetItemTypes.Properties.Items.AddObject(aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Name).AsString, TObject(aValue.FieldByName(TQuery.sp_budget_item_types_sel.Field.Id).AsInteger));
@@ -1493,7 +1496,7 @@ begin
     begin
       tblvSummaryReport.DataController.Values[i, colSummaryReport_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.BudgetItem).AsString;
       tblvSummaryReport.DataController.Values[i, colSummaryReport_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.BudgetItemType).AsString;
-      tblvSummaryReport.DataController.Values[i, colSummaryReport_AccountingCenter.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.AccountingCenter).AsString;
+//      tblvSummaryReport.DataController.Values[i, colSummaryReport_AccountingCenter.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.AccountingCenter).AsString;
       tblvSummaryReport.DataController.Values[i, colSummaryReport_Month.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.Month).AsInteger;
       tblvSummaryReport.DataController.Values[i, colSummaryReport_Currency.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.Currency).AsString;
       tblvSummaryReport.DataController.Values[i, colSummaryReport_PlannedAmount.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.PlannedAmount).AsCurrency;

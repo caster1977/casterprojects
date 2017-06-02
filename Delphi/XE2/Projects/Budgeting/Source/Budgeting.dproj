@@ -83,9 +83,9 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>308</VerInfo_Build>
+        <VerInfo_Build>311</VerInfo_Build>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.308;InternalName=Budgeting x86 DEBUG;LegalCopyright=(C)opyright 2017 by Caster;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=Developed by Alena Pranevich</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.311;InternalName=Budgeting x86 DEBUG;LegalCopyright=(C)opyright 2017 by Caster;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=Developed by Alena Pranevich</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -221,6 +221,105 @@
         </DCCReference>
         <DCCReference Include="Logic\Interfaces\Views\Budgeting.Logic.Interfaces.Views.IPlannedBudgetView.pas"/>
         <DCCReference Include="Logic\Interfaces\Presenters\Budgeting.Logic.Interfaces.Presenters.IPlannedBudgetPresenter.pas"/>
+        <None Include="ModelSupport_Budgeting\default.txaPackage"/>
+        <None Include="ModelSupport_Budgeting\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\default.txaPackage"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Presenters\default.txaPackage"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Presenters\ICustomPresenter\default.txaPackage"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\UI\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Consts\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Types\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\UI\ProductType\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\UI\Configuration\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\UI\BudgetItem\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\UI\Cosignatory\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\UI\AccountingCenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\UI\Main\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\UI\CustomEdit\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\UI\Product\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\UI\BudgetItemType\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\UI\Currency\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\UI\Bank\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\UI\PlannedBudget\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\UI\ActualBudget\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\default.txaPackage"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Configuration\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\TCustomEditPresenterClass\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Models\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Types\TViewEnumActionArray\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Types\TEntity\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Types\TViewEnumAction\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Types\TViewEnumEvent\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Models\ICosignatoryModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Models\IBankModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Models\IProductModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Models\ICustomModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Models\IProductTypeModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Models\IPlannedBudgetModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Models\ICurrencyModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Models\IBudgetItemModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Models\IBudgetItemTypeModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Models\IAccountingCenterModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Models\IActualBudgetModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Presenters\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Presenters\IPlannedBudgetPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Presenters\ICosignatoryPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Presenters\IActualBudgetPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Presenters\IBudgetItemPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Presenters\IProductPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Presenters\ICustomPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Models\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Models\TAccountingCenterModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Models\TActualBudgetModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Models\TBankModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Models\TBudgetItemModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Models\TBudgetItemTypeModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Models\TCosignatoryModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Models\TCurrencyModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Models\TPlannedBudgetModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Models\TProductModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Models\TProductTypeModel\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Presenters\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Presenters\TAccountingCenterPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Presenters\TActualBudgetPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Presenters\TBankPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Presenters\TBudgetItemPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Presenters\TBudgetItemTypePresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Presenters\TCosignatoryPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Presenters\TCurrencyPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Presenters\TCustomEditPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Presenters\TCustomPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Presenters\TMainPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Presenters\TPlannedBudgetPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Presenters\TProductPresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Presenters\TProductTypePresenter\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\TfrmCustomEditClass\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\TQuery\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Configuration\Sections\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Configuration\Sections\TDatabaseSection\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Configuration\Sections\TDatabaseSection\default.txaPackage"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Configuration\Sections\TGeneralSection\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Configuration\Sections\TInterfaceSection\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Configuration\Sections\TOtherSection\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Classes\Configuration\TConfiguration\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Views\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Views\IAccountingCenterView\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Views\IActualBudgetView\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Views\IBankView\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Views\IBudgetItemTypeView\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Views\IBudgetItemView\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Views\ICosignatoryView\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Views\ICurrencyView\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Views\ICustomEditView\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Views\ICustomView\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Views\IMainView\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Views\IPlannedBudgetView\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Views\IProductTypeView\default.txvpck"/>
+        <None Include="ModelSupport_Budgeting\Budgeting\Logic\Interfaces\Views\IProductView\default.txvpck"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -248,6 +347,7 @@
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">False</Platform>
             </Platforms>
+            <ModelSupport>True</ModelSupport>
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>

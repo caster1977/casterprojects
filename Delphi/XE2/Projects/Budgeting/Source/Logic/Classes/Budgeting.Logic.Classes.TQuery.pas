@@ -212,6 +212,7 @@ type
       public const
         Id = 'id';
         name = 'name';
+        Sign = 'sign';
         Activity = 'activity';
         Info = 'info';
       end;
@@ -219,13 +220,14 @@ type
 
     sp_budget_item_types_upd = class(TObject)
     public const
-      name = 'dbo.budget_item_types_upd :AId, :AName, :AActivity';
+      name = 'dbo.budget_item_types_upd :AId, :AName, :ASign, :AActivity';
 
     type
       Param = class
       public const
         Id = 'AId';
         name = 'AName';
+        Sign = 'ASign';
         Activity = 'AActivity';
       end;
     end;
