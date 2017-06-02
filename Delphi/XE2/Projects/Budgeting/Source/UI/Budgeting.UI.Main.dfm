@@ -677,10 +677,6 @@ object MainForm: TMainForm
     object shtOperations: TcxTabSheet
       Caption = #1054#1087#1077#1088#1072#1094#1080#1080
       ImageIndex = 0
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxgrdOperations: TcxGrid
         AlignWithMargins = True
         Left = 3
@@ -1079,9 +1075,62 @@ object MainForm: TMainForm
         object tblvSummaryReport: TcxGridTableView
           Navigator.Buttons.CustomButtons = <>
           OnFocusedRecordChanged = tblvFocusedRecordChanged
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
+          DataController.Summary.DefaultGroupSummaryItems = <
+            item
+              Format = ',0.00;-,0.00'
+              Position = spFooter
+              Column = colSummaryReport_PlannedAmount
+            end
+            item
+              Format = ',0.00;-,0.00'
+              Kind = skSum
+              Column = colSummaryReport_PlannedAmount
+            end>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = ',0.00;-,0.00'
+              Kind = skSum
+              Column = colSummaryReport_PlannedAmount
+            end
+            item
+              Format = ',0.00;-,0.00'
+              Kind = skSum
+              Column = colSummaryReport_ActualAmount
+            end
+            item
+              Format = ',0.00;-,0.00'
+              Kind = skSum
+              Column = colSummaryReport_Balance
+            end>
+          DataController.Summary.SummaryGroups = <
+            item
+              Links = <
+                item
+                  Column = colSummaryReport_BudgetItem
+                end
+                item
+                  Column = colSummaryReport_AccountingCenter
+                end>
+              SummaryItems = <
+                item
+                  Format = ',0.00;-,0.00'
+                  Kind = skSum
+                  Column = colSummaryReport_PlannedAmount
+                  DisplayText = #1055#1083#1072#1085
+                end
+                item
+                  Format = ',0.00;-,0.00'
+                  Kind = skSum
+                  Column = colSummaryReport_ActualAmount
+                  DisplayText = #1060#1072#1082#1090
+                end
+                item
+                  Format = ',0.00;-,0.00'
+                  Kind = skSum
+                  Column = colSummaryReport_Balance
+                  DisplayText = #1041#1072#1083#1072#1085#1089
+                end>
+            end>
           OptionsCustomize.ColumnGrouping = False
           OptionsCustomize.ColumnHidingOnGrouping = False
           OptionsData.CancelOnExit = False
@@ -1092,7 +1141,9 @@ object MainForm: TMainForm
           OptionsSelection.CellSelect = False
           OptionsView.NoDataToDisplayInfoText = '<'#1054#1090#1089#1091#1090#1089#1074#1091#1102#1090' '#1076#1072#1085#1085#1099#1077' '#1076#1083#1103' '#1086#1090#1086#1073#1088#1072#1078#1077#1085#1080#1103'>'
           OptionsView.ColumnAutoWidth = True
+          OptionsView.Footer = True
           OptionsView.GroupByBox = False
+          OptionsView.GroupSummaryLayout = gslAlignWithColumnsAndDistribute
           object colSummaryReport_BudgetItem: TcxGridColumn
             Caption = #1057#1090#1072#1090#1100#1103' '#1073#1102#1076#1078#1077#1090#1072
             PropertiesClassName = 'TcxTextEditProperties'
@@ -1100,6 +1151,7 @@ object MainForm: TMainForm
             Properties.MaxLength = 0
             Properties.ReadOnly = True
             BestFitMaxWidth = 50
+            GroupIndex = 0
             HeaderAlignmentHorz = taCenter
             Width = 50
           end
@@ -1109,6 +1161,7 @@ object MainForm: TMainForm
             Properties.Alignment.Horz = taCenter
             Properties.MaxLength = 0
             Properties.ReadOnly = True
+            Visible = False
             BestFitMaxWidth = 50
             HeaderAlignmentHorz = taCenter
             Width = 50
@@ -1119,8 +1172,8 @@ object MainForm: TMainForm
             Properties.Alignment.Horz = taCenter
             Properties.MaxLength = 0
             Properties.ReadOnly = True
-            Visible = False
             BestFitMaxWidth = 50
+            GroupIndex = 1
             HeaderAlignmentHorz = taCenter
             Width = 50
           end
@@ -1136,10 +1189,9 @@ object MainForm: TMainForm
           end
           object colSummaryReport_Month: TcxGridColumn
             Caption = #1052#1077#1089#1103#1094
-            DataBinding.ValueType = 'Integer'
-            PropertiesClassName = 'TcxCalcEditProperties'
+            PropertiesClassName = 'TcxTextEditProperties'
             Properties.Alignment.Horz = taCenter
-            Properties.ImmediatePost = True
+            Properties.MaxLength = 0
             Properties.ReadOnly = True
             BestFitMaxWidth = 50
             HeaderAlignmentHorz = taCenter
@@ -1152,7 +1204,10 @@ object MainForm: TMainForm
             Properties.Alignment.Horz = taRightJustify
             Properties.DisplayFormat = ',0.00;-,0.00'
             Properties.ReadOnly = True
+            Properties.UseThousandSeparator = True
             BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            GroupSummaryAlignment = taRightJustify
             HeaderAlignmentHorz = taCenter
             Width = 50
           end
@@ -1163,7 +1218,10 @@ object MainForm: TMainForm
             Properties.Alignment.Horz = taRightJustify
             Properties.DisplayFormat = ',0.00;-,0.00'
             Properties.ReadOnly = True
+            Properties.UseThousandSeparator = True
             BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            GroupSummaryAlignment = taRightJustify
             HeaderAlignmentHorz = taCenter
             Width = 50
           end
@@ -1174,7 +1232,10 @@ object MainForm: TMainForm
             Properties.Alignment.Horz = taRightJustify
             Properties.DisplayFormat = ',0.00;-,0.00'
             Properties.ReadOnly = True
+            Properties.UseThousandSeparator = True
             BestFitMaxWidth = 50
+            FooterAlignmentHorz = taRightJustify
+            GroupSummaryAlignment = taRightJustify
             HeaderAlignmentHorz = taCenter
             Width = 50
           end
@@ -1341,6 +1402,7 @@ object MainForm: TMainForm
     object btn1: TdxBarButton
       Action = actDisconnect
       Category = 0
+      Visible = ivNever
     end
     object dxBarButton1: TdxBarButton
       Action = actAdd

@@ -1496,8 +1496,8 @@ begin
     begin
       tblvSummaryReport.DataController.Values[i, colSummaryReport_BudgetItem.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.BudgetItem).AsString;
       tblvSummaryReport.DataController.Values[i, colSummaryReport_BudgetItemType.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.BudgetItemType).AsString;
-//      tblvSummaryReport.DataController.Values[i, colSummaryReport_AccountingCenter.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.AccountingCenter).AsString;
-      tblvSummaryReport.DataController.Values[i, colSummaryReport_Month.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.Month).AsInteger;
+      tblvSummaryReport.DataController.Values[i, colSummaryReport_AccountingCenter.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.AccountingCenter).AsString;
+      tblvSummaryReport.DataController.Values[i, colSummaryReport_Month.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.Month).AsString;
       tblvSummaryReport.DataController.Values[i, colSummaryReport_Currency.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.Currency).AsString;
       tblvSummaryReport.DataController.Values[i, colSummaryReport_PlannedAmount.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.PlannedAmount).AsCurrency;
       tblvSummaryReport.DataController.Values[i, colSummaryReport_ActualAmount.Index] := aValue.FieldByName(TQuery.sp_summary_report_sel.Field.ActualAmount).AsCurrency;
