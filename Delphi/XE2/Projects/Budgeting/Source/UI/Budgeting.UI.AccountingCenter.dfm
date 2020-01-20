@@ -1,6 +1,4 @@
 inherited frmAccountingCenter: TfrmAccountingCenter
-  ExplicitWidth = 400
-  ExplicitHeight = 267
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlButtons: TPanel
@@ -17,6 +15,7 @@ inherited frmAccountingCenter: TfrmAccountingCenter
     Align = alTop
     Caption = '&'#1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077':'
     FocusControl = edtName
+    ExplicitTop = 63
   end
   object edtName: TcxTextEdit [3]
     AlignWithMargins = True
@@ -25,7 +24,7 @@ inherited frmAccountingCenter: TfrmAccountingCenter
     Align = alTop
     Properties.OnChange = edtNamePropertiesChange
     Properties.OnEditValueChanged = edtNamePropertiesEditValueChanged
-    TabOrder = 1
+    TabOrder = 3
     Width = 376
   end
   object cxlblCode: TcxLabel [4]
@@ -44,7 +43,7 @@ inherited frmAccountingCenter: TfrmAccountingCenter
     Align = alTop
     Properties.OnChange = edtCodePropertiesChange
     Properties.OnEditValueChanged = edtCodePropertiesEditValueChanged
-    TabOrder = 0
+    TabOrder = 1
     Width = 376
   end
   object cxlblDescription: TcxLabel [6]
@@ -63,7 +62,7 @@ inherited frmAccountingCenter: TfrmAccountingCenter
     Align = alTop
     Properties.OnChange = edtDescriptionPropertiesChange
     Properties.OnEditValueChanged = edtDescriptionPropertiesEditValueChanged
-    TabOrder = 2
+    TabOrder = 5
     Width = 376
   end
   object chkActivity: TcxCheckBox [8]
@@ -75,7 +74,6 @@ inherited frmAccountingCenter: TfrmAccountingCenter
     Caption = '&'#1040#1082#1090#1080#1074#1085#1086#1089#1090#1100
     Properties.OnChange = chkActivityPropertiesChange
     Properties.OnEditValueChanged = chkActivityPropertiesEditValueChanged
-    TabOrder = 3
-    Width = 376
+    TabOrder = 6
   end
 end

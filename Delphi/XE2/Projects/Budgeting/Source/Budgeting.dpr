@@ -1,7 +1,6 @@
 program Budgeting;
 
 uses
-  CodeSiteLogging,
   System.SysUtils,
   System.StrUtils,
   Vcl.Forms,
@@ -88,22 +87,9 @@ uses
 {$R *.res}
 
 var
-  CodeSiteDestination: TCodeSiteDestination;
   MainPresenter: ICustomPresenter;
 
 begin
-  CodeSiteManager.ConnectUsingTcp();
-  CodeSiteDestination := TCodeSiteDestination.Create(nil);
-  if Assigned(CodeSiteDestination) then
-  begin
-    CodeSiteDestination.LogFile.filename := ChangeFileExt(ExtractFileName(IfThen(ModuleIsLib, GetModuleName(HInstance), ParamStr(0))), '.' + FormatDateTime('yyyymmddhhnnss', Now(), TFormatSettings.Create('ru-ru')) + '.csl');
-    CodeSiteDestination.LogFile.FilePath := ExtractFilePath(IfThen(ModuleIsLib, GetModuleName(HInstance), ParamStr(0))).Replace('\\?\', EmptyStr);
-    CodeSiteDestination.LogFile.MaxSize := 5120;
-    CodeSiteDestination.LogFile.Active := True;
-    CodeSiteDestination.Viewer.Active := False;
-    CodeSite.Destination := CodeSiteDestination;
-  end;
-
   Application.Initialize();
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMainForm, MainForm);

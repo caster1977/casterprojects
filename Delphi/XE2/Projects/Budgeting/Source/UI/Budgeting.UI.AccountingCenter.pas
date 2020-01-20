@@ -34,7 +34,7 @@ uses
   cxCurrencyEdit,
   cxSpinEdit,
   cxProgressBar,
-  Vcl.StdCtrls, Utils.Modules.SMSSender.Manager.UI.CustomEdit;
+  Vcl.StdCtrls;
 
 type
   TfrmAccountingCenter = class(TfrmCustomEdit, IAccountingCenterView)

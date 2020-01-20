@@ -241,6 +241,7 @@ var
       tmpQuery.Connection := FConnection;
       tmpQuery.SQL.Text := TQuery.sp_budget_items_sel.Name;
       tmpQuery.ParamByName(TQuery.sp_budget_items_sel.Param.Id).DataType := ftInteger;
+      tmpQuery.ParamByName(TQuery.sp_budget_items_sel.Param.Id_BudgetItemType).DataType := ftInteger;
       if aId > -1 then
       begin
         tmpQuery.ParamByName(TQuery.sp_budget_items_sel.Param.Id).AsInteger := aId;

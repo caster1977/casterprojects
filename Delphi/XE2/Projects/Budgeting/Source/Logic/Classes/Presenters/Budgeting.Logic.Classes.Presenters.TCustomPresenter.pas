@@ -31,7 +31,6 @@ type
 implementation
 
 uses
-  CodeSiteLogging,
   Budgeting.Logic.Classes.Configuration.TConfiguration,
   FireDAC.Stan.ASync,
   FireDAC.DApt,
@@ -78,8 +77,6 @@ var
 begin
   {$IFDEF DEBUG}
   Result := nil;
-  CodeSite.EnterMethod(Self, 'GetConnection()');
-  try
     {$ENDIF}
     try
       {$REGION 'Создание подлюкчения к БД'}
@@ -94,23 +91,16 @@ begin
         tmpConnection.ResourceOptions.MacroCreate := False;
         tmpConnection.ResourceOptions.MacroExpand := False;
         tmpConnection.ConnectionString := aConnectionString;
-        {$IFDEF DEBUG}
-        CodeSite.Send('ConnectionString', tmpConnection.ConnectionString);
-        {$ENDIF}
       end;
       Result := tmpConnection;
       {$ENDREGION}
     except
       on e: Exception do
       begin
-        CodeSite.SendException(e);
         raise;
       end;
     end;
     {$IFDEF DEBUG}
-  finally
-    CodeSite.ExitMethod(Self, 'GetConnection()');
-  end;
   {$ENDIF}
 end;
 
